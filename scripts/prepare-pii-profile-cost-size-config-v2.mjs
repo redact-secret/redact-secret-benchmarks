@@ -12,11 +12,12 @@ for (const argument of process.argv.slice(2)) {
   args[match[1]] = path.resolve(match[2]);
 }
 if (!args.baseline || !args.candidate || !args.output) throw new Error('Required: --baseline=<dir> --candidate=<dir> --output=<json>');
+// redact-secret#937: the `_pii` builds ship beside the defaults in the same qualified browser artifacts.
 const piiWasm = async qualified => {
-  const { readdir } = await import('node:fs/promises');
+  const { access } = await import('node:fs/promises');
   const rows = [];
-  for (const entry of (await readdir(qualified)).filter(name => /^wasm-[a-z0-9-]*pii[a-z0-9-]*$/.test(name)).sort())
-    for (const file of (await readdir(path.join(qualified, entry))).filter(name => name.endsWith('_bg.wasm')).sort()) rows.push([`pii:${entry}`, `${entry}/${file}`]);
+  for (const [profile, value] of [['pii:full', 'wasm-web/redact_secret_wasm_pii_bg.wasm'], ['pii:common', 'wasm-web-common/redact_secret_wasm_common_pii_bg.wasm']])
+    if (await access(path.join(qualified, value)).then(() => true, () => false)) rows.push([profile, value]);
   return rows;
 };
 const side = async root => {
@@ -32,7 +33,7 @@ const side = async root => {
   return { productCheckout: { path: product, commit: git('rev-parse', 'HEAD') },
     inventory, inventorySha256: sha256(await readFile(inventory)),
     npmTarballs: await Promise.all(['core', 'node', 'wasm'].map(async id => ({ id, ...(await artifact(path.join(root, 'candidate', npm(id)))) }))),
-    // Default full/common payloads, plus every `*_bg.wasm` in a qualified PII Wasm artifact (redact-secret#937).
+    // Default full/common payloads, plus the `_pii` payloads when the candidate has them (redact-secret#937).
     wasm: await Promise.all([['full', 'wasm-web/redact_secret_wasm_bg.wasm'],
       ['common', 'wasm-web-common/redact_secret_wasm_common_bg.wasm'], ...await piiWasm(path.join(root, 'qualified'))]
       .map(async ([profile, value]) => ({ profile, ...(await artifact(path.join(root, 'qualified', value))) }))),

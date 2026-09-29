@@ -13,6 +13,7 @@ import { B11_FAMILIES, B11_PLAN_SETS, B11_POPULATION_OWNER, B11_POPULATION_PLAN_
 import { C1_POPULATION_PLANS, C1_POPULATION_PLANS_V2 } from './email-network-population.ts';
 import { PII_ORACLE_PLANS } from './identity-oracle.ts';
 import regressionBudgets from '../../../regression-budgets.json';
+import acceptedRegressions from '../../../accepted-regressions.json';
 import operational879 from '../../../../evidence/879/pii-operational-evidence-v1.json';
 import arrivalContract from '../../../../qualification/pii-national-id-arrival-v1.json';
 
@@ -76,7 +77,7 @@ export function b11ProtectedEpochs(freeze: any) {
 }
 
 type SizeRow = { id: string; source: string; baselineValue: number | null; candidateValue: number; allowedIncrease: number | null; delta: number | null;
-  status: 'within' | 'regression' | 'no-frozen-budget' };
+  status: 'within' | 'regression' | 'no-frozen-budget'; acceptedBy?: string };
 /** #143 size budget rows (regression-budgets-v1, beta.8 baseline) for the artifacts this host can attribute. */
 export function b11SizeBudgetRows(freeze: any): SizeRow[] {
   const trigger = (id: string) => (regressionBudgets as any).triggers.find((row: any) => row.id === id);
@@ -134,27 +135,70 @@ function byteBudgets(operational: any) {
 }
 
 const gate = (id: string, status: 'met' | 'not-met' | 'unresolved' | 'not-run', reason: string, evidence?: unknown) => ({ id, status, reason, ...(evidence ? { evidence } : {}) });
+/**
+ * The #143 accepted-tradeoff ledger (`benchmarks/accepted-regressions.json`), read with its own matching rule: one row
+ * accepts exactly one trigger, against baseline `0.1.0-beta.8`, for exactly one candidate source commit. Nothing else
+ * waives a budget.
+ */
+export function b11AcceptedTradeoff(triggerId: string, sourceCommit: string): string | null {
+  const row = (acceptedRegressions as any[]).find(entry => entry.triggerId === triggerId && entry.baselineId === '0.1.0-beta.8' &&
+    entry.candidate?.sourceCommit === sourceCommit);
+  return row ? row.id : null;
+}
+/** Size-report rows of the official profile-cost run that are the same artifact measure as a #143 trigger. */
+export const B11_PROFILE_COST_SIZE_TRIGGERS: Readonly<Record<string, string>> = Object.freeze({
+  'wasmCompression:full/gzip9': 'size/wasm/full/gzip', 'wasmCompression:common/gzip9': 'size/wasm/common/gzip',
+  'npmPackages:wasm/packed': 'size/npm/wasm/packed',
+});
+function profileCostGate(profileCost: any, sourceCommit: string) {
+  if (!profileCost) return gate('profile-cost', 'unresolved', 'The #286 profile-cost protocol runs only as the official Linux GitHub Actions workflow (A/A, threshold freeze, candidate, size) on a reviewed plan for this candidate; qualification/pii-profile-cost-v2.json re-freezes it for pii-context/v2 and a split PII Wasm artifact, and it has not been dispatched for this candidate.');
+  const { candidate, size, runs } = profileCost;
+  if (candidate.sourceCommit !== sourceCommit || size.comparison.sourceCommit !== sourceCommit) return gate('profile-cost', 'unresolved', 'official profile-cost reports bind another source commit');
+  const runtime = candidate.evaluation.filter((row: any) => row.verdict === 'regression' || row.verdict === 'invalid-measurement');
+  const sizeRows = ['qualificationArtifacts', 'npmPackages', 'wasmCompression', 'browserBundle'].flatMap(section =>
+    (size[section] ?? []).filter((row: any) => row.verdict === 'regression').map((row: any) => {
+      const trigger = B11_PROFILE_COST_SIZE_TRIGGERS[`${section}:${row.id}`];
+      const accepted = trigger ? b11AcceptedTradeoff(trigger, sourceCommit) : null;
+      return { key: `${section}:${row.id}`, deltaBytes: row.deltaBytes, trigger: trigger ?? null, acceptedBy: accepted };
+    }));
+  const open = sizeRows.filter(row => !row.acceptedBy);
+  const status = candidate.verdict === 'accepted' && !runtime.length && !open.length ? 'met' : 'not-met';
+  return gate('profile-cost', status, [
+    `official runs ${runs.join(', ')}; runtime/memory verdict ${candidate.verdict} (${runtime.length} regression or invalid cells${runtime.length ? `: ${runtime.slice(0, 12).map((row: any) => `${row.key}/${row.metric}`).join(', ')}${runtime.length > 12 ? ', …' : ''}` : ''})`,
+    `size vs pre-PII f26dee26: ${sizeRows.length} regressing rows, ${sizeRows.length - open.length} covered by accepted-regressions.json` +
+      (open.length ? `; open: ${open.map(row => `${row.key} +${row.deltaBytes} B${row.trigger ? ` (needs ${row.trigger})` : ''}`).join(', ')}` : ''),
+  ].join('; '), { runtimeCells: runtime.map((row: any) => `${row.key}/${row.metric}:${row.verdict}`), sizeRows });
+}
+
 export const B11_COST_GATES = ['runtime-and-package-cost', 'size-regression-budget', 'profile-cost'] as const;
 
-export function buildB11Report(input: { freeze: any; observation: any; operational: any; parity: { file: string; report: any } | null }) {
+export function buildB11Report(input: { freeze: any; observation: any; operational: any; parity: { file: string; report: any } | null; profileCost?: any }) {
   const { freeze, observation, operational, parity } = input;
   const planSet = b11PlanSetOf(freeze);
   if (observation.freeze.freezeCommitment !== freeze.freezeCommitment || operational.freezeCommitment !== freeze.freezeCommitment)
     throw new Error('observation and operational evidence are not bound to this freeze');
   const bytes = byteBudgets(operational);
   const runtimePass = operational.runtimeComparisons.every((row: any) => Object.values(row.metrics).every((metric: any) => metric.pass));
-  const bytesPass = bytes.pairedLocalBuild.every(row => row.pass) && bytes.frozen879CommonBaseline.every(row => row.pass);
-  const sizeRows = operational.sizeBudgetRows as SizeRow[];
+  // The npm Wasm tarball row of the 879 package budget is the same artifact measure as #143 `size/npm/wasm/packed`; only an
+  // accepted-regressions.json row for that trigger and this exact candidate covers it. Nothing else is waived.
+  const wasmPackedAccepted = b11AcceptedTradeoff('size/npm/wasm/packed', freeze.candidate.sourceCommit);
+  const bytesOpen = bytes.pairedLocalBuild.filter(row => !row.pass && !(row.id === 'wasmPacked' && wasmPackedAccepted));
+  const bytesPass = !bytesOpen.length && bytes.frozen879CommonBaseline.every(row => row.pass);
+  const sizeRows = (operational.sizeBudgetRows as SizeRow[]).map(row => {
+    const acceptedBy = row.status === 'regression' ? b11AcceptedTradeoff(row.id, freeze.candidate.sourceCommit) : null;
+    return acceptedBy ? { ...row, acceptedBy } : row;
+  });
   const costGates = [
     gate('runtime-and-package-cost', runtimePass && bytesPass ? 'met' : 'not-met',
       [runtimePass ? null : 'runtime: a paired median exceeds both +50% and +5 ms',
-        ...bytes.pairedLocalBuild.filter(row => !row.pass).map(row => `${row.id} +${row.delta} B over a maximum increase of ${row.maximumIncrease} B (paired local build)`),
+        ...bytesOpen.map(row => `${row.id} +${row.delta} B over a maximum increase of ${row.maximumIncrease} B (paired local build)`),
+        ...(wasmPackedAccepted && bytes.pairedLocalBuild.some(row => row.id === 'wasmPacked' && !row.pass) ? [`(wasmPacked accepted: ${wasmPackedAccepted})`] : []),
         ...bytes.frozen879CommonBaseline.filter(row => !row.pass).map(row => `${row.id} +${row.delta} B over the frozen evidence/879 zero-growth baseline`)]
         .filter(Boolean).join('; ') || 'every evidence/879 runtime and byte budget passes'),
-    gate('size-regression-budget', sizeRows.some(row => row.status === 'regression') ? 'not-met' : 'met',
-      sizeRows.filter(row => row.status === 'regression').map(row => `${row.id} ${row.candidateValue} B vs beta.8 ${row.baselineValue} B (+${row.delta}, allowed +${row.allowedIncrease})`).join('; ') ||
-      'every #143 size row within budget'),
-    gate('profile-cost', 'unresolved', 'The #286 profile-cost protocol runs only as the official Linux GitHub Actions workflow (A/A, threshold freeze, candidate, size) on a reviewed plan for this candidate; qualification/pii-profile-cost-v2.json re-freezes it for pii-context/v2 and a split PII Wasm artifact, and it has not been dispatched for this candidate.'),
+    gate('size-regression-budget', sizeRows.some(row => row.status === 'regression' && !row.acceptedBy) ? 'not-met' : 'met',
+      sizeRows.filter(row => row.status === 'regression' && !row.acceptedBy).map(row => `${row.id} ${row.candidateValue} B vs beta.8 ${row.baselineValue} B (+${row.delta}, allowed +${row.allowedIncrease})`).join('; ') ||
+      (sizeRows.some(row => row.acceptedBy) ? `every #143 size row within budget or accepted (${sizeRows.filter(row => row.acceptedBy).map(row => `${row.id}: ${row.acceptedBy}`).join(', ')})` : 'every #143 size row within budget')),
+    profileCostGate(input.profileCost ?? null, freeze.candidate.sourceCommit),
   ];
   const parityGate = (() => {
     if (!parity) return gate('cross-surface-output', 'unresolved', `No #427 mixed-parity report for core ${freeze.candidate.sourceCommit.slice(0, 12)}; rerun npm run pii:parity:measure -- --target=core-commit for this commit.`);
@@ -230,6 +274,9 @@ export function buildB11Report(input: { freeze: any; observation: any; operation
       gate('contract-fixture-discrepancy', unexplained.length || revisedWrong.length ? 'not-met' : 'met',
         `${unexplained.length} frozen-plan deviation(s) without a pre-registered revision; ${revisedWrong.length} revised case(s) observed wrong`),
       parityGate,
+      // redact-secret#937: present only for an artifact with split _pii Wasm builds (older records re-score unchanged).
+      ...(operational.wasmSplit ? [gate('default-wasm-excludes-pii', operational.wasmSplit.status === 'met' ? 'met' : 'not-met',
+        operational.wasmSplit.builds.map((row: any) => `${row.glue}: ${row.piiSelectorResult}`).join('; '))] : []),
       ...costGates,
       gate('trusted-accounting-source', 'met', `observations bound to the committed freeze ${observation.freeze.commit} on a clean benchmark tree ${observation.benchmark.revision}`),
       gate('independent-evidence', 'met', planSet === 'b11-population-v1' ?

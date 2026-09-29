@@ -57,3 +57,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Add an independent peer runtime PII-redaction throughput comparison (flare-redact, OpenRedaction)](2026-09-28-add-peer-runtime-pii-redaction-throughput.md)
 - [Report unit-safe TP/TN/FP/FN diagnostics and verify the actual sanitized output](2026-09-28-report-unit-safe-diagnostics-and-verified-output.md) (proposed; diagnostics beside the v4 headline, never instead of it)
 - [Score the IP port suffix outside the network-address span](2026-09-28-score-the-ip-port-suffix-outside-the-network-address-span.md)
+- [Fix the profile-cost v2 candidate-report validator's artifact roster and re-freeze the plan](2026-09-29-fix-pii-profile-cost-v2-candidate-artifact-roster.md)

@@ -365,8 +365,8 @@ export function validatePiiProfileCostCandidateReport(value: unknown, thresholdA
       !/^[a-f0-9]{40}$/.test(report.provenance?.benchmarkCommit ?? '') || !digest(report.provenance?.configCommitment) ||
       !Number.isFinite(Date.parse(report.startedAt)) || !Number.isFinite(Date.parse(report.completedAt)) ||
       Date.parse(report.completedAt) < Date.parse(report.startedAt) ||
-      !Array.isArray(report.artifactCommitments) || JSON.stringify(report.artifactCommitments.map((row: any) => row.id).sort()) !== JSON.stringify(['browser-common-wasm',
-        'browser-full-wasm', 'candidate-inventory', 'cli-linux-x64', 'node-forced-wasm', 'node-native', 'python-wheel-install',
+      !Array.isArray(report.artifactCommitments) || JSON.stringify(report.artifactCommitments.map((row: any) => row.id).sort()) !== JSON.stringify(['browser-common-pii-wasm', 'browser-common-wasm',
+        'browser-full-pii-wasm', 'browser-full-wasm', 'candidate-inventory', 'cli-linux-x64', 'node-forced-wasm', 'node-native', 'python-wheel-install',
         'rust-release-helper']) || report.artifactCommitments.some((row: any) => !exact(row, ['id', 'sha256']) || !digest(row.sha256)) ||
       !Array.isArray(report.adapterCommitments) || JSON.stringify(report.adapterCommitments.map((row: any) => row.surface).sort()) !== JSON.stringify([...SURFACE_IDS].sort()) ||
       report.adapterCommitments.some((row: any) => !exact(row, ['surface', 'sha256']) || !digest(row.sha256)) ||

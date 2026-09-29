@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-29T23:14:56.038Z",
+  "observedAt": "2026-09-29T23:32:03.315Z",
   "sourceRun": {
-    "runId": "2026-09-29T23:14:56.038Z-3348b8",
-    "benchmarkRevision": "3c807e844004cf9010ec571e6bbb9744326961ab"
+    "runId": "2026-09-29T23:32:03.315Z-eebb2b",
+    "benchmarkRevision": "0f04da9f3bb5e437181d2ee4faafc4fc42009c4e"
   },
   "input": {
     "surface": "comparison/detector-coverage",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "446f54536b7e81628c775d2e463f4949a145a2d935922809bc8fcdaab1147999",
-    "fixtureCount": 1161,
-    "fixturesDigest": "2a500986d6ed65c93d1a5f87e00302228d9213be39894927ee681b1770065bc9",
+    "corpusHash": "ba8baf89e8ca4cb5acd67f462ab88312bea8c562a3e34b00d4099075326413ed",
+    "fixtureCount": 1163,
+    "fixturesDigest": "f0880e1ffda0e809282a2140c26ec2f1894d4076f60934e8d17822bfb5c92ec9",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "914a4ae94fea88879ab559e63558266d5d88371447ef62980a0f65cae27a1e3e",
-      "fixtureCount": 5088
+      "digest": "afe1b903d0acd944e40d18126b2677dc75b3863a37d5b0fc3d051b259fb1f48b",
+      "fixtureCount": 5090
     }
   },
   "peer": {
@@ -61,9 +61,21 @@
   },
   "findings": [
     {
+      "path": "cases/ai21-api-key-key-shape-bare-twin.txt",
+      "start": 13,
+      "end": 44,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/ai21-api-key-key-shape-bare.txt",
       "start": 13,
       "end": 45,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-key-shape-quoted-twin.txt",
+      "start": 20,
+      "end": 51,
       "family": "generic-token"
     },
     {
@@ -73,15 +85,15 @@
       "family": "generic-token"
     },
     {
-      "path": "cases/ai21-api-key-key-shape-unicode-crlf.txt",
+      "path": "cases/ai21-api-key-key-shape-unicode-crlf-twin.txt",
       "start": 34,
-      "end": 66,
+      "end": 65,
       "family": "generic-token"
     },
     {
-      "path": "cases/ai21-api-key-short-token.txt",
-      "start": 13,
-      "end": 44,
+      "path": "cases/ai21-api-key-key-shape-unicode-crlf.txt",
+      "start": 34,
+      "end": 66,
       "family": "generic-token"
     },
     {
@@ -1662,5 +1674,5 @@
       "family": "travisci-api-token"
     }
   ],
-  "digest": "c0546cee534dc723318b8030732cc0ac32d3e6da24a881faa7ccd906444dddfc"
+  "digest": "b016997ec497b7f07a4f309a7586b32177f56344725cfdf8982cc48b70acc1df"
 }

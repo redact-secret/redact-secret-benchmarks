@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-29T23:23:56.951Z",
+  "observedAt": "2026-09-29T23:41:25.045Z",
   "sourceRun": {
-    "runId": "0ae744d6-6227-42c6-ac1f-9628d22f842e",
-    "benchmarkRevision": "3c807e844004cf9010ec571e6bbb9744326961ab"
+    "runId": "b205b8cd-1e6f-4a71-94de-f2f117af2da6",
+    "benchmarkRevision": "0f04da9f3bb5e437181d2ee4faafc4fc42009c4e"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "15c8ecc466cca8954efdd42691d8efb1294af46ce1f1abd7e5efbae25a59ba64",
-    "fixtureCount": 40817,
-    "fixturesDigest": "39c7f6967b30f7a6f0418288bf9feeef016acdb63f58d6d56d93e2f3397bbbca",
+    "corpusHash": "290ac41c60322b8970b8b2a2bd6ec70be46ecd5d0fe50d5c0c263221bc592b65",
+    "fixtureCount": 40818,
+    "fixturesDigest": "2427b93b79d3be8756f03f9d7c28f4a78502944034c819029b55b071acbd6712",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "914a4ae94fea88879ab559e63558266d5d88371447ef62980a0f65cae27a1e3e",
-      "fixtureCount": 5088
+      "digest": "afe1b903d0acd944e40d18126b2677dc75b3863a37d5b0fc3d051b259fb1f48b",
+      "fixtureCount": 5090
     }
   },
   "peer": {
@@ -79019,7 +79019,31 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/detector-coverage--ai21-api-key-key-shape-bare--mutation/authored.twin.txt",
+      "start": 13,
+      "end": 44,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/detector-coverage--ai21-api-key-key-shape-bare--mutation/canonical.txt",
+      "start": 13,
+      "end": 45,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/detector-coverage--ai21-api-key-key-shape-bare-twin--differential/canonical.txt",
+      "start": 13,
+      "end": 44,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/detector-coverage--ai21-api-key-key-shape-bare-twin--twin/authored.twin.txt",
+      "start": 13,
+      "end": 44,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/detector-coverage--ai21-api-key-key-shape-bare-twin--twin/canonical.txt",
       "start": 13,
       "end": 45,
       "family": "generic-token"
@@ -79055,7 +79079,31 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/detector-coverage--ai21-api-key-key-shape-quoted--mutation/authored.twin.txt",
+      "start": 20,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/detector-coverage--ai21-api-key-key-shape-quoted--mutation/canonical.txt",
+      "start": 20,
+      "end": 52,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/detector-coverage--ai21-api-key-key-shape-quoted-twin--differential/canonical.txt",
+      "start": 20,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/detector-coverage--ai21-api-key-key-shape-quoted-twin--twin/authored.twin.txt",
+      "start": 20,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/detector-coverage--ai21-api-key-key-shape-quoted-twin--twin/canonical.txt",
       "start": 20,
       "end": 52,
       "family": "generic-token"
@@ -79085,75 +79133,33 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/detector-coverage--ai21-api-key-key-shape-unicode-crlf--mutation/authored.twin.txt",
+      "start": 34,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/detector-coverage--ai21-api-key-key-shape-unicode-crlf--mutation/canonical.txt",
       "start": 34,
       "end": 66,
       "family": "generic-token"
     },
     {
-      "path": "cases/detector-coverage--ai21-api-key-short-token--benign/canonical.txt",
-      "start": 13,
-      "end": 44,
+      "path": "cases/detector-coverage--ai21-api-key-key-shape-unicode-crlf-twin--differential/canonical.txt",
+      "start": 34,
+      "end": 65,
       "family": "generic-token"
     },
     {
-      "path": "cases/detector-coverage--ai21-api-key-short-token--differential/canonical.txt",
-      "start": 13,
-      "end": 44,
+      "path": "cases/detector-coverage--ai21-api-key-key-shape-unicode-crlf-twin--twin/authored.twin.txt",
+      "start": 34,
+      "end": 65,
       "family": "generic-token"
     },
     {
-      "path": "cases/detector-coverage--ai21-api-key-short-token--metamorphic/canonical.txt",
-      "start": 13,
-      "end": 44,
-      "family": "generic-token"
-    },
-    {
-      "path": "cases/detector-coverage--ai21-api-key-short-token--metamorphic/context.indent.txt",
-      "start": 17,
-      "end": 48,
-      "family": "generic-token"
-    },
-    {
-      "path": "cases/detector-coverage--ai21-api-key-short-token--metamorphic/context.json.txt",
-      "start": 23,
-      "end": 54,
-      "family": "generic-token"
-    },
-    {
-      "path": "cases/detector-coverage--ai21-api-key-short-token--metamorphic/context.markdown.txt",
-      "start": 14,
-      "end": 45,
-      "family": "generic-token"
-    },
-    {
-      "path": "cases/detector-coverage--ai21-api-key-short-token--metamorphic/context.quote.txt",
-      "start": 14,
-      "end": 45,
-      "family": "generic-token"
-    },
-    {
-      "path": "cases/detector-coverage--ai21-api-key-short-token--metamorphic/context.single-quote.txt",
-      "start": 14,
-      "end": 45,
-      "family": "generic-token"
-    },
-    {
-      "path": "cases/detector-coverage--ai21-api-key-short-token--metamorphic/context.unicode-prefix.txt",
-      "start": 33,
-      "end": 64,
-      "family": "generic-token"
-    },
-    {
-      "path": "cases/detector-coverage--ai21-api-key-short-token--metamorphic/context.yaml.txt",
-      "start": 21,
-      "end": 52,
-      "family": "generic-token"
-    },
-    {
-      "path": "cases/detector-coverage--ai21-api-key-short-token--mutation/canonical.txt",
-      "start": 13,
-      "end": 44,
+      "path": "cases/detector-coverage--ai21-api-key-key-shape-unicode-crlf-twin--twin/canonical.txt",
+      "start": 34,
+      "end": 66,
       "family": "generic-token"
     },
     {
@@ -94728,5 +94734,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "9c09f695823f0e6d0e68f333552ef22c78d28a1bacc532a86767884114abb486"
+  "digest": "469b0ee809795e51041153240f5e6cb39d480281f3213716d66fab59ea557661"
 }

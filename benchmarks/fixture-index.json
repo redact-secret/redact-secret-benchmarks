@@ -13,7 +13,7 @@
   "sources": {
     "reviewedMetadata": {
       "algorithm": "sha256",
-      "digest": "eb1bfe7898e50e4a167c24004207dc3d0647a93730059c87419c69116991be10"
+      "digest": "fed88fe7e0ad4073e4dd1dfb4507c992471f6906f72eba3965d625e463f800f8"
     },
     "scenarios": {
       "algorithm": "sha256",
@@ -41174,6 +41174,26 @@
       }
     },
     {
+      "slug": "beta8-384e--cohere-api-key-actions-env-literal",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "cohere-api-key-actions-env-literal",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/cohere-api-key-actions-env-literal.yml"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--cohere-api-key-actions-secret-reference",
       "source": {
         "categoryId": "beta8-384e",
@@ -41334,6 +41354,26 @@
       }
     },
     {
+      "slug": "beta8-384e--cohere-api-key-docker-run-env",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "cohere-api-key-docker-run-env",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/cohere-api-key-docker-run-env.sh"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--cohere-api-key-docs-ctor-placeholder",
       "source": {
         "categoryId": "beta8-384e",
@@ -41440,6 +41480,26 @@
         "fixtureId": "cohere-api-key-export",
         "corpus": "fixtures/generated/beta8-384e.json",
         "path": "cases/cohere-api-key-export.sh"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-http-request-header",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "cohere-api-key-http-request-header",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/cohere-api-key-http-request-header.http"
       },
       "familyIds": [
         "cohere:api-key"
@@ -41622,12 +41682,52 @@
       }
     },
     {
+      "slug": "beta8-384e--cohere-api-key-inline-env-command",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "cohere-api-key-inline-env-command",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/cohere-api-key-inline-env-command.sh"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--cohere-api-key-json-config",
       "source": {
         "categoryId": "beta8-384e",
         "fixtureId": "cohere-api-key-json-config",
         "corpus": "fixtures/generated/beta8-384e.json",
         "path": "cases/cohere-api-key-json-config.json"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-k8s-env-value",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "cohere-api-key-k8s-env-value",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/cohere-api-key-k8s-env-value.yml"
       },
       "familyIds": [
         "cohere:api-key"
@@ -41858,6 +41958,26 @@
       }
     },
     {
+      "slug": "beta8-384e--cohere-api-key-printenv-output",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "cohere-api-key-printenv-output",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/cohere-api-key-printenv-output.txt"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--cohere-api-key-project-uuid-public-id",
       "source": {
         "categoryId": "beta8-384e",
@@ -42019,6 +42139,26 @@
       },
       "relations": {
         "twinOf": "beta8-384e--cohere-api-key-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-384e--cohere-api-key-toml-config-key",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "cohere-api-key-toml-config-key",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/cohere-api-key-toml-config-key.toml"
+      },
+      "familyIds": [
+        "cohere:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
       }
     },
     {
@@ -42190,6 +42330,26 @@
       }
     },
     {
+      "slug": "beta8-384e--deepgram-api-key-actions-env-literal",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "deepgram-api-key-actions-env-literal",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/deepgram-api-key-actions-env-literal.yml"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--deepgram-api-key-actions-secret-reference",
       "source": {
         "categoryId": "beta8-384e",
@@ -42222,6 +42382,26 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-auth-failure-log",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "deepgram-api-key-auth-failure-log",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/deepgram-api-key-auth-failure-log.log"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
         "regression-behavior"
       ],
       "provenance": {
@@ -42370,6 +42550,26 @@
       }
     },
     {
+      "slug": "beta8-384e--deepgram-api-key-docker-run-env",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "deepgram-api-key-docker-run-env",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/deepgram-api-key-docker-run-env.sh"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--deepgram-api-key-docs-ctor-placeholder",
       "source": {
         "categoryId": "beta8-384e",
@@ -42476,6 +42676,26 @@
         "fixtureId": "deepgram-api-key-export",
         "corpus": "fixtures/generated/beta8-384e.json",
         "path": "cases/deepgram-api-key-export.sh"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-http-request-header",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "deepgram-api-key-http-request-header",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/deepgram-api-key-http-request-header.http"
       },
       "familyIds": [
         "deepgram:api-key"
@@ -42610,12 +42830,52 @@
       }
     },
     {
+      "slug": "beta8-384e--deepgram-api-key-inline-env-command",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "deepgram-api-key-inline-env-command",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/deepgram-api-key-inline-env-command.sh"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--deepgram-api-key-json-header-token",
       "source": {
         "categoryId": "beta8-384e",
         "fixtureId": "deepgram-api-key-json-header-token",
         "corpus": "fixtures/generated/beta8-384e.json",
         "path": "cases/deepgram-api-key-json-header-token.json"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-k8s-env-value",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "deepgram-api-key-k8s-env-value",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/deepgram-api-key-k8s-env-value.yml"
       },
       "familyIds": [
         "deepgram:api-key"
@@ -42830,6 +43090,26 @@
       }
     },
     {
+      "slug": "beta8-384e--deepgram-api-key-printenv-output",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "deepgram-api-key-printenv-output",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/deepgram-api-key-printenv-output.txt"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--deepgram-api-key-project-uuid-public-id",
       "source": {
         "categoryId": "beta8-384e",
@@ -42991,6 +43271,26 @@
       },
       "relations": {
         "twinOf": "beta8-384e--deepgram-api-key-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-384e--deepgram-api-key-toml-config-key",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "deepgram-api-key-toml-config-key",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/deepgram-api-key-toml-config-key.toml"
+      },
+      "familyIds": [
+        "deepgram:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
       }
     },
     {
@@ -43838,6 +44138,26 @@
       }
     },
     {
+      "slug": "beta8-384e--mistral-api-key-actions-env-literal",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "mistral-api-key-actions-env-literal",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/mistral-api-key-actions-env-literal.yml"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--mistral-api-key-actions-secret-reference",
       "source": {
         "categoryId": "beta8-384e",
@@ -43870,6 +44190,26 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-auth-failure-log",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "mistral-api-key-auth-failure-log",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/mistral-api-key-auth-failure-log.log"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
         "regression-behavior"
       ],
       "provenance": {
@@ -43938,6 +44278,26 @@
       }
     },
     {
+      "slug": "beta8-384e--mistral-api-key-camel-const",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "mistral-api-key-camel-const",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/mistral-api-key-camel-const.ts"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--mistral-api-key-compose-env",
       "source": {
         "categoryId": "beta8-384e",
@@ -43990,6 +44350,26 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-docker-run-env",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "mistral-api-key-docker-run-env",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/mistral-api-key-docker-run-env.sh"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
         "regression-behavior"
       ],
       "provenance": {
@@ -44104,6 +44484,26 @@
         "fixtureId": "mistral-api-key-export",
         "corpus": "fixtures/generated/beta8-384e.json",
         "path": "cases/mistral-api-key-export.sh"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-http-request-header",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "mistral-api-key-http-request-header",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/mistral-api-key-http-request-header.http"
       },
       "familyIds": [
         "mistral:api-key"
@@ -44286,12 +44686,52 @@
       }
     },
     {
+      "slug": "beta8-384e--mistral-api-key-inline-env-command",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "mistral-api-key-inline-env-command",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/mistral-api-key-inline-env-command.sh"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--mistral-api-key-json-config",
       "source": {
         "categoryId": "beta8-384e",
         "fixtureId": "mistral-api-key-json-config",
         "corpus": "fixtures/generated/beta8-384e.json",
         "path": "cases/mistral-api-key-json-config.json"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-k8s-env-value",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "mistral-api-key-k8s-env-value",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/mistral-api-key-k8s-env-value.yml"
       },
       "familyIds": [
         "mistral:api-key"
@@ -44522,6 +44962,26 @@
       }
     },
     {
+      "slug": "beta8-384e--mistral-api-key-printenv-output",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "mistral-api-key-printenv-output",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/mistral-api-key-printenv-output.txt"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--mistral-api-key-project-uuid-public-id",
       "source": {
         "categoryId": "beta8-384e",
@@ -44568,6 +45028,26 @@
         "fixtureId": "mistral-api-key-python-ctor",
         "corpus": "fixtures/generated/beta8-384e.json",
         "path": "cases/mistral-api-key-python-ctor.py"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-python-environ-assign",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "mistral-api-key-python-environ-assign",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/mistral-api-key-python-environ-assign.py"
       },
       "familyIds": [
         "mistral:api-key"
@@ -44683,6 +45163,26 @@
       },
       "relations": {
         "twinOf": "beta8-384e--mistral-api-key-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-384e--mistral-api-key-toml-config-key",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "mistral-api-key-toml-config-key",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/mistral-api-key-toml-config-key.toml"
+      },
+      "familyIds": [
+        "mistral:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
       }
     },
     {
@@ -51146,12 +51646,52 @@
       }
     },
     {
+      "slug": "beta8-434b--trigger-dev-token-compose-env",
+      "source": {
+        "categoryId": "beta8-434b",
+        "fixtureId": "trigger-dev-token-compose-env",
+        "corpus": "fixtures/generated/beta8-434b.json",
+        "path": "cases/trigger-dev-token-compose-env.yml"
+      },
+      "familyIds": [
+        "trigger-dev:secret-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434b",
+        "milestone": "beta.11"
+      }
+    },
+    {
       "slug": "beta8-434b--trigger-dev-token-configure-sdk",
       "source": {
         "categoryId": "beta8-434b",
         "fixtureId": "trigger-dev-token-configure-sdk",
         "corpus": "fixtures/generated/beta8-434b.json",
         "path": "cases/trigger-dev-token-configure-sdk.ts"
+      },
+      "familyIds": [
+        "trigger-dev:secret-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434b",
+        "milestone": "beta.11"
+      }
+    },
+    {
+      "slug": "beta8-434b--trigger-dev-token-curl-trigger-task",
+      "source": {
+        "categoryId": "beta8-434b",
+        "fixtureId": "trigger-dev-token-curl-trigger-task",
+        "corpus": "fixtures/generated/beta8-434b.json",
+        "path": "cases/trigger-dev-token-curl-trigger-task.sh"
       },
       "familyIds": [
         "trigger-dev:secret-api-key"
@@ -51356,6 +51896,26 @@
         "fixtureId": "trigger-dev-token-json-token",
         "corpus": "fixtures/generated/beta8-434b.json",
         "path": "cases/trigger-dev-token-json-token.json"
+      },
+      "familyIds": [
+        "trigger-dev:secret-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434b",
+        "milestone": "beta.11"
+      }
+    },
+    {
+      "slug": "beta8-434b--trigger-dev-token-k8s-secret",
+      "source": {
+        "categoryId": "beta8-434b",
+        "fixtureId": "trigger-dev-token-k8s-secret",
+        "corpus": "fixtures/generated/beta8-434b.json",
+        "path": "cases/trigger-dev-token-k8s-secret.yml"
       },
       "familyIds": [
         "trigger-dev:secret-api-key"
@@ -51971,6 +52531,26 @@
       }
     },
     {
+      "slug": "beta8-434c--e2b-api-key-compose-env",
+      "source": {
+        "categoryId": "beta8-434c",
+        "fixtureId": "e2b-api-key-compose-env",
+        "corpus": "fixtures/generated/beta8-434c.json",
+        "path": "cases/e2b-api-key-compose-env.yml"
+      },
+      "familyIds": [
+        "e2b:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434c",
+        "milestone": "beta.11"
+      }
+    },
+    {
       "slug": "beta8-434c--e2b-api-key-curl-x-api-key",
       "source": {
         "categoryId": "beta8-434c",
@@ -52568,6 +53148,26 @@
       }
     },
     {
+      "slug": "beta8-434d--posthog-project-secret-api-key-actions-env",
+      "source": {
+        "categoryId": "beta8-434d",
+        "fixtureId": "posthog-project-secret-api-key-actions-env",
+        "corpus": "fixtures/generated/beta8-434d.json",
+        "path": "cases/posthog-project-secret-api-key-actions-env.yml"
+      },
+      "familyIds": [
+        "posthog:project-secret-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434d",
+        "milestone": "beta.11"
+      }
+    },
+    {
       "slug": "beta8-434d--posthog-project-secret-api-key-actions-secret-reference",
       "source": {
         "categoryId": "beta8-434d",
@@ -52682,6 +53282,26 @@
         "fixtureId": "posthog-project-secret-api-key-chat-paste",
         "corpus": "fixtures/generated/beta8-434d.json",
         "path": "cases/posthog-project-secret-api-key-chat-paste.txt"
+      },
+      "familyIds": [
+        "posthog:project-secret-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434d",
+        "milestone": "beta.11"
+      }
+    },
+    {
+      "slug": "beta8-434d--posthog-project-secret-api-key-compose-env",
+      "source": {
+        "categoryId": "beta8-434d",
+        "fixtureId": "posthog-project-secret-api-key-compose-env",
+        "corpus": "fixtures/generated/beta8-434d.json",
+        "path": "cases/posthog-project-secret-api-key-compose-env.yml"
       },
       "familyIds": [
         "posthog:project-secret-api-key"
@@ -53273,6 +53893,46 @@
       }
     },
     {
+      "slug": "beta8-434d--posthog-project-secret-api-key-yaml-config",
+      "source": {
+        "categoryId": "beta8-434d",
+        "fixtureId": "posthog-project-secret-api-key-yaml-config",
+        "corpus": "fixtures/generated/beta8-434d.json",
+        "path": "cases/posthog-project-secret-api-key-yaml-config.yml"
+      },
+      "familyIds": [
+        "posthog:project-secret-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434d",
+        "milestone": "beta.11"
+      }
+    },
+    {
+      "slug": "beta8-434d--posthog-token-actions-env",
+      "source": {
+        "categoryId": "beta8-434d",
+        "fixtureId": "posthog-token-actions-env",
+        "corpus": "fixtures/generated/beta8-434d.json",
+        "path": "cases/posthog-token-actions-env.yml"
+      },
+      "familyIds": [
+        "posthog:personal-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434d",
+        "milestone": "beta.11"
+      }
+    },
+    {
       "slug": "beta8-434d--posthog-token-actions-secret-reference",
       "source": {
         "categoryId": "beta8-434d",
@@ -53387,6 +54047,26 @@
         "fixtureId": "posthog-token-chat-paste",
         "corpus": "fixtures/generated/beta8-434d.json",
         "path": "cases/posthog-token-chat-paste.txt"
+      },
+      "familyIds": [
+        "posthog:personal-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434d",
+        "milestone": "beta.11"
+      }
+    },
+    {
+      "slug": "beta8-434d--posthog-token-compose-env",
+      "source": {
+        "categoryId": "beta8-434d",
+        "fixtureId": "posthog-token-compose-env",
+        "corpus": "fixtures/generated/beta8-434d.json",
+        "path": "cases/posthog-token-compose-env.yml"
       },
       "familyIds": [
         "posthog:personal-api-key"
@@ -53978,6 +54658,46 @@
       }
     },
     {
+      "slug": "beta8-434d--posthog-token-yaml-config",
+      "source": {
+        "categoryId": "beta8-434d",
+        "fixtureId": "posthog-token-yaml-config",
+        "corpus": "fixtures/generated/beta8-434d.json",
+        "path": "cases/posthog-token-yaml-config.yml"
+      },
+      "familyIds": [
+        "posthog:personal-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434d",
+        "milestone": "beta.11"
+      }
+    },
+    {
+      "slug": "beta8-434e--helicone-api-key-actions-env",
+      "source": {
+        "categoryId": "beta8-434e",
+        "fixtureId": "helicone-api-key-actions-env",
+        "corpus": "fixtures/generated/beta8-434e.json",
+        "path": "cases/helicone-api-key-actions-env.yml"
+      },
+      "familyIds": [
+        "helicone:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434e",
+        "milestone": "beta.11"
+      }
+    },
+    {
       "slug": "beta8-434e--helicone-api-key-angle-placeholder",
       "source": {
         "categoryId": "beta8-434e",
@@ -54044,6 +54764,26 @@
         "fixtureId": "helicone-api-key-chat-paste",
         "corpus": "fixtures/generated/beta8-434e.json",
         "path": "cases/helicone-api-key-chat-paste.txt"
+      },
+      "familyIds": [
+        "helicone:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434e",
+        "milestone": "beta.11"
+      }
+    },
+    {
+      "slug": "beta8-434e--helicone-api-key-compose-env",
+      "source": {
+        "categoryId": "beta8-434e",
+        "fixtureId": "helicone-api-key-compose-env",
+        "corpus": "fixtures/generated/beta8-434e.json",
+        "path": "cases/helicone-api-key-compose-env.yml"
       },
       "familyIds": [
         "helicone:api-key"
@@ -55510,6 +56250,26 @@
       }
     },
     {
+      "slug": "beta8-434f--firecrawl-api-key-actions-env",
+      "source": {
+        "categoryId": "beta8-434f",
+        "fixtureId": "firecrawl-api-key-actions-env",
+        "corpus": "fixtures/generated/beta8-434f.json",
+        "path": "cases/firecrawl-api-key-actions-env.yml"
+      },
+      "familyIds": [
+        "firecrawl:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434f",
+        "milestone": "beta.11"
+      }
+    },
+    {
       "slug": "beta8-434f--firecrawl-api-key-actions-secret-reference",
       "source": {
         "categoryId": "beta8-434f",
@@ -55624,6 +56384,26 @@
         "fixtureId": "firecrawl-api-key-chat-paste",
         "corpus": "fixtures/generated/beta8-434f.json",
         "path": "cases/firecrawl-api-key-chat-paste.txt"
+      },
+      "familyIds": [
+        "firecrawl:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434f",
+        "milestone": "beta.11"
+      }
+    },
+    {
+      "slug": "beta8-434f--firecrawl-api-key-compose-env",
+      "source": {
+        "categoryId": "beta8-434f",
+        "fixtureId": "firecrawl-api-key-compose-env",
+        "corpus": "fixtures/generated/beta8-434f.json",
+        "path": "cases/firecrawl-api-key-compose-env.yml"
       },
       "familyIds": [
         "firecrawl:api-key"
@@ -55823,6 +56603,26 @@
       },
       "relations": {
         "twinOf": "beta8-434f--firecrawl-api-key-js-client"
+      }
+    },
+    {
+      "slug": "beta8-434f--firecrawl-api-key-go-http",
+      "source": {
+        "categoryId": "beta8-434f",
+        "fixtureId": "firecrawl-api-key-go-http",
+        "corpus": "fixtures/generated/beta8-434f.json",
+        "path": "cases/firecrawl-api-key-go-http.go"
+      },
+      "familyIds": [
+        "firecrawl:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434f",
+        "milestone": "beta.11"
       }
     },
     {
@@ -56306,6 +57106,26 @@
       }
     },
     {
+      "slug": "beta8-434g--composio-api-key-actions-env",
+      "source": {
+        "categoryId": "beta8-434g",
+        "fixtureId": "composio-api-key-actions-env",
+        "corpus": "fixtures/generated/beta8-434g.json",
+        "path": "cases/composio-api-key-actions-env.yml"
+      },
+      "familyIds": [
+        "composio:project-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434g",
+        "milestone": "beta.11"
+      }
+    },
+    {
       "slug": "beta8-434g--composio-api-key-actions-secret-reference",
       "source": {
         "categoryId": "beta8-434g",
@@ -56493,6 +57313,26 @@
         "fixtureId": "composio-api-key-chat-paste",
         "corpus": "fixtures/generated/beta8-434g.json",
         "path": "cases/composio-api-key-chat-paste.txt"
+      },
+      "familyIds": [
+        "composio:project-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434g",
+        "milestone": "beta.11"
+      }
+    },
+    {
+      "slug": "beta8-434g--composio-api-key-compose-env",
+      "source": {
+        "categoryId": "beta8-434g",
+        "fixtureId": "composio-api-key-compose-env",
+        "corpus": "fixtures/generated/beta8-434g.json",
+        "path": "cases/composio-api-key-compose-env.yml"
       },
       "familyIds": [
         "composio:project-api-key"
@@ -57062,6 +57902,26 @@
       }
     },
     {
+      "slug": "beta8-434g--composio-api-key-ts-constructor",
+      "source": {
+        "categoryId": "beta8-434g",
+        "fixtureId": "composio-api-key-ts-constructor",
+        "corpus": "fixtures/generated/beta8-434g.json",
+        "path": "cases/composio-api-key-ts-constructor.ts"
+      },
+      "familyIds": [
+        "composio:project-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434g",
+        "milestone": "beta.11"
+      }
+    },
+    {
       "slug": "beta8-434g--composio-api-key-uppercase-prefix-twin",
       "source": {
         "categoryId": "beta8-434g",
@@ -57095,6 +57955,26 @@
       },
       "familyIds": [
         "composio:project-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434g",
+        "milestone": "beta.11"
+      }
+    },
+    {
+      "slug": "beta8-434g--composio-org-api-key-actions-env",
+      "source": {
+        "categoryId": "beta8-434g",
+        "fixtureId": "composio-org-api-key-actions-env",
+        "corpus": "fixtures/generated/beta8-434g.json",
+        "path": "cases/composio-org-api-key-actions-env.yml"
+      },
+      "familyIds": [
+        "composio:org-api-key"
       ],
       "scenarioIds": [
         "context-and-encoding",
@@ -57244,6 +58124,26 @@
         "fixtureId": "composio-org-api-key-chat-paste",
         "corpus": "fixtures/generated/beta8-434g.json",
         "path": "cases/composio-org-api-key-chat-paste.txt"
+      },
+      "familyIds": [
+        "composio:org-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434g",
+        "milestone": "beta.11"
+      }
+    },
+    {
+      "slug": "beta8-434g--composio-org-api-key-compose-env",
+      "source": {
+        "categoryId": "beta8-434g",
+        "fixtureId": "composio-org-api-key-compose-env",
+        "corpus": "fixtures/generated/beta8-434g.json",
+        "path": "cases/composio-org-api-key-compose-env.yml"
       },
       "familyIds": [
         "composio:org-api-key"
@@ -57762,6 +58662,26 @@
       }
     },
     {
+      "slug": "beta8-434g--composio-org-api-key-ts-constructor",
+      "source": {
+        "categoryId": "beta8-434g",
+        "fixtureId": "composio-org-api-key-ts-constructor",
+        "corpus": "fixtures/generated/beta8-434g.json",
+        "path": "cases/composio-org-api-key-ts-constructor.ts"
+      },
+      "familyIds": [
+        "composio:org-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434g",
+        "milestone": "beta.11"
+      }
+    },
+    {
       "slug": "beta8-434g--composio-org-api-key-uppercase-prefix-twin",
       "source": {
         "categoryId": "beta8-434g",
@@ -57795,6 +58715,26 @@
       },
       "familyIds": [
         "composio:org-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434g",
+        "milestone": "beta.11"
+      }
+    },
+    {
+      "slug": "beta8-434g--composio-user-api-key-actions-env",
+      "source": {
+        "categoryId": "beta8-434g",
+        "fixtureId": "composio-user-api-key-actions-env",
+        "corpus": "fixtures/generated/beta8-434g.json",
+        "path": "cases/composio-user-api-key-actions-env.yml"
+      },
+      "familyIds": [
+        "composio:user-api-key"
       ],
       "scenarioIds": [
         "context-and-encoding",
@@ -57944,6 +58884,26 @@
         "fixtureId": "composio-user-api-key-chat-paste",
         "corpus": "fixtures/generated/beta8-434g.json",
         "path": "cases/composio-user-api-key-chat-paste.txt"
+      },
+      "familyIds": [
+        "composio:user-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434g",
+        "milestone": "beta.11"
+      }
+    },
+    {
+      "slug": "beta8-434g--composio-user-api-key-compose-env",
+      "source": {
+        "categoryId": "beta8-434g",
+        "fixtureId": "composio-user-api-key-compose-env",
+        "corpus": "fixtures/generated/beta8-434g.json",
+        "path": "cases/composio-user-api-key-compose-env.yml"
       },
       "familyIds": [
         "composio:user-api-key"
@@ -58454,6 +59414,26 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-434g",
+        "milestone": "beta.11"
+      }
+    },
+    {
+      "slug": "beta8-434g--composio-user-api-key-ts-constructor",
+      "source": {
+        "categoryId": "beta8-434g",
+        "fixtureId": "composio-user-api-key-ts-constructor",
+        "corpus": "fixtures/generated/beta8-434g.json",
+        "path": "cases/composio-user-api-key-ts-constructor.ts"
+      },
+      "familyIds": [
+        "composio:user-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
         "regression-behavior"
       ],
       "provenance": {
@@ -60608,6 +61588,26 @@
         "fixtureId": "resend-api-key-chat-paste",
         "corpus": "fixtures/generated/beta8-436d.json",
         "path": "cases/resend-api-key-chat-paste.txt"
+      },
+      "familyIds": [
+        "resend:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-436d",
+        "milestone": "beta.11"
+      }
+    },
+    {
+      "slug": "beta8-436d--resend-api-key-compose-env",
+      "source": {
+        "categoryId": "beta8-436d",
+        "fixtureId": "resend-api-key-compose-env",
+        "corpus": "fixtures/generated/beta8-436d.json",
+        "path": "cases/resend-api-key-compose-env.yml"
       },
       "familyIds": [
         "resend:api-key"
@@ -98638,7 +99638,7 @@
   "identity": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "1f960b1a6d21e89d76eec06536cab2865f58780e93276c12bfc8cadac4935106",
-    "fixtureCount": 4777
+    "digest": "5919a6764b77a9bb1f11925640c53ccb371a3fdacc8d9835a741eecda5689d42",
+    "fixtureCount": 4827
   }
 }

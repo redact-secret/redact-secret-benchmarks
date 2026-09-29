@@ -39,6 +39,10 @@ export function build434e({ fixture, synthetic }) {
       { axis: "header", slug: "helicone-auth", ext: "sh", build: heliconeAuth },
       { axis: "sdk-config", slug: "openai-default-headers", ext: "py", build: openaiHeaders },
     ];
+    if (role === "sk") extras.push(
+      { axis: "container-config", slug: "compose-env", ext: "yml", build: v => ["services:\n  gateway:\n    image: example.test/gateway:latest\n    environment:\n      HELICONE_API_KEY: ", v, "\n"] },
+      { axis: "ci-config", slug: "actions-env", ext: "yml", build: v => ["jobs:\n  eval:\n    runs-on: ubuntu-latest\n    env:\n      HELICONE_API_KEY: ", v, "\n"] },
+    );
     if (role === "pk") extras.push({ axis: "url", slug: "gateway-url-path", ext: "py", build: v => ["client = OpenAI(base_url=\"https://gateway.helicone.ai/", v, "/v1/\")\n"] });
     const all = [...contexts, ...extras];
     const k = {};

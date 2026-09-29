@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-29T17:14:41.626Z",
+  "observedAt": "2026-09-29T18:23:37.158Z",
   "sourceRun": {
-    "runId": "2026-09-29T17:14:41.626Z-35440f",
-    "benchmarkRevision": "f5754db4669de94bd2114f4f0575feb20ac3c584"
+    "runId": "2026-09-29T18:23:37.158Z-c5afc6",
+    "benchmarkRevision": "2e9ee7ad7c61fc91052b060da1a436f5de585fbe"
   },
   "input": {
     "surface": "comparison/beta8-434b",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "765cee5a62cc83bb62cd1553f0dc309ae7da11bd671575a684252bab18227c1b",
-    "fixtureCount": 67,
-    "fixturesDigest": "b889230e1bf28d79e82e6aa892b6d59f7da9e95822b414d74b24d851771bab75",
+    "corpusHash": "06fc33e89425363bd9cc32b941b3dff89fe77d2c21bf772bd3000dac53e4179f",
+    "fixtureCount": 70,
+    "fixturesDigest": "bd52fc7d7432a3ca36b23720dde3183012cb851741c1e8f7df26bebe2acda513",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "1f960b1a6d21e89d76eec06536cab2865f58780e93276c12bfc8cadac4935106",
-      "fixtureCount": 4777
+      "digest": "5919a6764b77a9bb1f11925640c53ccb371a3fdacc8d9835a741eecda5689d42",
+      "fixtureCount": 4827
     }
   },
   "peer": {
@@ -139,6 +139,17 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/trigger-dev-token-compose-env.yml",
+      "start": 105,
+      "end": 140,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-curl-trigger-task.sh",
+      "start": 100,
+      "end": 131
+    },
+    {
       "path": "cases/trigger-dev-token-json-api-key.json",
       "start": 16,
       "end": 51,
@@ -187,5 +198,5 @@
       "family": "generic-token"
     }
   ],
-  "digest": "da18dc3874aaf24907d845bf25e2a1584e9b7c1625365712e423572d0d25d17f"
+  "digest": "99c96a100f2b4456dd9caf0329edba54009b6a9a1c3790d5c991e52820abec80"
 }

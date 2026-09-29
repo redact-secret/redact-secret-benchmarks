@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-b11-protected-seal",
+  "supportClaims": false,
+  "issue": "redact-secret/redact-secret-benchmarks#428",
+  "sealId": "17dae942ee4b",
+  "inputCommitment": "500bf9732df5cfba9b250f1ec470aa00ef095567679fff492d40b486209e4694",
+  "seedCommitment": "98a490ff9a8cab068fd29175b222f33faa6cc49cbbb58f917414cb98c517a14a",
+  "review": {
+    "declaration": "reviewed",
+    "custodian": "isolated-agent-custodian (maintainer-directed 2026-09-29)",
+    "reviewer": "isolated-agent-reviewer (maintainer-directed 2026-09-29)",
+    "reviewedAt": "2026-09-29T16:01:37Z",
+    "statements": [
+      "syntheticOrReservedValuesOnly",
+      "noRealPersonData",
+      "noLiveCredentials",
+      "independentOfDevelopmentPlans",
+      "contextLanguagesEnglishOrKoreanOnly"
+    ]
+  },
+  "evaluation": {
+    "schemaVersion": 1,
+    "domain": "pii",
+    "evaluationProfile": "pii-v1",
+    "domainAccountingVersion": "pii-b11-protected-v1"
+  },
+  "families": [
+    {
+      "family": "pii:global:network-address",
+      "manifest": "pii-b11-17dae942ee4b-global-network-address.json",
+      "manifestCommitment": "5a73bf56bdfe31fd590c8bc724996f550cf9b1ff06885e1d5a85e56e4cd6e358",
+      "corpusHash": "433ac197b85aae8363ebf9b46f0b0ed385cbb83dfa12d77fa6999e802397f2bb",
+      "seedHash": "90ce532de12be658b520b4065242db8bdc366a1a3b8ce8e9c1cc8f2df63e4d2a",
+      "maxRuns": 1
+    },
+    {
+      "family": "pii:global:email",
+      "manifest": "pii-b11-17dae942ee4b-global-email.json",
+      "manifestCommitment": "1d8c570c1b6d662c2c7e41c94e1abe317348b201cbec06a4adc1ce1d3133bf75",
+      "corpusHash": "6f9039c7a3896b9bf9400c2c0a5d6cfe9b4d59bccf8bfd58acaeea10e30c32f4",
+      "seedHash": "ce4e10237a2665dadda35dbddc59b59f1d4e82be1c4437780843228c8c32c46b",
+      "maxRuns": 1
+    },
+    {
+      "family": "pii:global:payment-card",
+      "manifest": "pii-b11-17dae942ee4b-global-payment-card.json",
+      "manifestCommitment": "152bdf53e41d496be877b136aac956502f3dc4b138daca7a86f508cea6a4d9fa",
+      "corpusHash": "b7aec6a94093886b81b732b175cd5487dcf778e9c9dec768a9cfd416a2cf41f8",
+      "seedHash": "c63510b18d64add66955a0d56f3b84073bc6e0eea7073936acb18787e24dfc3e",
+      "maxRuns": 1
+    },
+    {
+      "family": "pii:global:iban",
+      "manifest": "pii-b11-17dae942ee4b-global-iban.json",
+      "manifestCommitment": "cddfb8711194518432d2064443debf3dacdbeec1715d1754cd14f0aa4a36d9d1",
+      "corpusHash": "dea1cbb976da6f70b54a9c2ca756e8f5fc782b933c5d5f221428ddbc125057d2",
+      "seedHash": "b4586c51d6ae6ae6a8944f06b126b059288ed233ec21a560e8e428ad2b0208a1",
+      "maxRuns": 1
+    },
+    {
+      "family": "pii:us:ssn",
+      "manifest": "pii-b11-17dae942ee4b-us-ssn.json",
+      "manifestCommitment": "0f43ac054c1ce6090124e85ebdae2367e7020f51446c26ca32f88645054ec54b",
+      "corpusHash": "4d3e0e1603d95bf316e85ce4bf27bdf2712a1279dbb892dd08a49d6cb0a0aab5",
+      "seedHash": "f92ae6316783cec174d03cca4c4ccf462f1f870bf08d7247039b6bb3863265ea",
+      "maxRuns": 1
+    },
+    {
+      "family": "pii:global:phone",
+      "manifest": "pii-b11-17dae942ee4b-global-phone.json",
+      "manifestCommitment": "cea27b68db573ab7fd6d53549d07433df0eb1461c01843b01259448c6523703c",
+      "corpusHash": "b896a8d4a4c2d441b6412e7b108b742de42bde5a07190914221cfa36f2627d8c",
+      "seedHash": "a069ac7bb3e19b24ed36260283f5fa597d1167040077243a829ec13e45c531b0",
+      "maxRuns": 1
+    }
+  ],
+  "absentFamilies": [],
+  "artifactCommitment": "63e62fa409f55f14a4d342485a9d18259953f2370f0efb3f9c5687a75edaa334"
+}

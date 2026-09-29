@@ -3,7 +3,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { b11ProfileCostAcceptance, piiProfileCostAcceptanceProblems, piiProfileCostAcceptances } from '../benchmarks/evaluation/domains/pii/profile-cost-acceptance.ts';
-import { B11P_BETA11_CORE_COMMIT, b11ProtectedPublicGates, buildB11ProtectedDisposition } from '../benchmarks/evaluation/domains/pii/beta11-protected.ts';
+import { B11P_BETA11_CORE_COMMIT, b11ProtectedFamilySlug, b11ProtectedPublicGates, buildB11ProtectedDisposition, validateB11ProtectedSeal } from '../benchmarks/evaluation/domains/pii/beta11-protected.ts';
+import { B11_FAMILIES } from '../benchmarks/evaluation/domains/pii/beta11-qualification.ts';
 
 const json = file => JSON.parse(readFileSync(new URL(`../${file}`, import.meta.url), 'utf8'));
 const bound = directory => {
@@ -87,9 +88,13 @@ test('the protected route treats an accepted profile-cost gate as met, and all s
     /cost-acceptance-not-bound-to-report|Holdout operation rejected/);
 });
 
-test('the committed 8b6a5fde protected disposition re-derives byte for byte from the report, the disposition and the acceptance', () => {
-  const record = buildB11ProtectedDisposition({ report: current.report, disposition: current.disposition, seal: null, runs: [],
-    costAcceptance: b11ProfileCostAcceptance(current) });
+test('the committed 8b6a5fde protected disposition re-derives byte for byte from the report, the disposition, the acceptance, the seal and the protected runs', () => {
+  // The sealed protected corpus (holdout/pii-b11-17dae942ee4b-seal.json) and one aggregate plus trust resolution per family.
+  const dir = `evidence/901/428/core-${B11P_BETA11_CORE_COMMIT.slice(0, 12)}/protected/`;
+  const runs = B11_FAMILIES.map(family => ({ aggregate: json(`${dir}${b11ProtectedFamilySlug(family)}-aggregate-v1.json`),
+    trust: json(`${dir}${b11ProtectedFamilySlug(family)}-trust-resolution-v1.json`) }));
+  const record = buildB11ProtectedDisposition({ report: current.report, disposition: current.disposition,
+    seal: validateB11ProtectedSeal(json('holdout/pii-b11-17dae942ee4b-seal.json')), runs, costAcceptance: b11ProfileCostAcceptance(current) });
   assert.equal(`${JSON.stringify(record, null, 2)}\n`,
     readFileSync(new URL(`../evidence/901/428/core-${B11P_BETA11_CORE_COMMIT.slice(0, 12)}/pii-beta11-protected-disposition-v2.json`, import.meta.url), 'utf8'));
 });

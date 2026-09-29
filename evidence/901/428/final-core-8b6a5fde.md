@@ -1,6 +1,6 @@
 # #428 final public-gate record: core `8b6a5fde`
 
-**All six PII families stay `pending`. Detection outcomes are identical to `8f97f14d` and `ec9224d9`. The report scores `profile-cost` `not-met`: the bound official candidate run has 172 regression cells and 3 tail-only invalid cells (175 failing), against 162 at `8f97f14d` and 183 at `ec9224d9`. On 2026-09-29 the maintainer accepted every failing cell and the 38 open size rows as a tradeoff ([below](#maintainer-acceptance-of-the-profile-cost-cells)). The Chromium diagnostic found no PII-on absolute-time regression against `8f97f14d`, so nothing is excluded from that acceptance. With it, every public gate of all six families counts as met, and each family is eligible for its protected run. The families stay `pending` until the custodian seals and runs the protected corpus.**
+**After the protected runs, network-address, email, payment-card, iban and phone are `provisional` and us-ssn stays `pending` ([below](#protected-partition-and-six-family-disposition-after-the-acceptance)). Detection outcomes are identical to `8f97f14d` and `ec9224d9`. The report scores `profile-cost` `not-met`: the bound official candidate run has 172 regression cells and 3 tail-only invalid cells (175 failing), against 162 at `8f97f14d` and 183 at `ec9224d9`. On 2026-09-29 the maintainer accepted every failing cell and the 38 open size rows as a tradeoff ([below](#maintainer-acceptance-of-the-profile-cost-cells)). The Chromium diagnostic found no PII-on absolute-time regression against `8f97f14d`, so nothing is excluded from that acceptance. With it, every public gate of all six families counts as met, and each family is eligible for its protected run. The custodian then sealed and ran the protected corpus once per family.**
 
 Of the 23 cells that first failed at `ec9224d9`, 7 are within budget in both official candidate runs at this commit, 6 fail in one run, and 10 fail in both. The paired diagnostics on the CI runners, [Node-Wasm](#2-us-ssn-exact-wasm-incremental) and [Chromium](#chromium-diagnostic-diagnostic-only), place the remaining Wasm cells in V8 tier-up timing or the unchanged instantiate gap, not in slower product code.
 
@@ -232,13 +232,28 @@ The acceptance excludes any cell that the Chromium diagnostic shows to be a real
 
 ## Protected partition and six-family disposition after the acceptance
 
-The protected disposition is [`core-8b6a5fde52ec/pii-beta11-protected-disposition-v2.json`](core-8b6a5fde52ec/pii-beta11-protected-disposition-v2.json), written by `npm run pii:beta11:protected -- disposition --core-commit=8b6a5fde52ecb4dfce13f09c7a947062d21483c7` and re-derived byte for byte in the tests. It binds the report, the disposition and the acceptance.
+The protected disposition is [`core-8b6a5fde52ec/pii-beta11-protected-disposition-v2.json`](core-8b6a5fde52ec/pii-beta11-protected-disposition-v2.json), written by `npm run pii:beta11:protected -- disposition --core-commit=8b6a5fde52ecb4dfce13f09c7a947062d21483c7 --seal=holdout/pii-b11-17dae942ee4b-seal.json` and re-derived byte for byte in the tests. It binds the report, the disposition, the acceptance, the seal and the six protected runs.
 
-| Family | Status | Public gates | Accepted tradeoff | Protected |
-| --- | --- | --- | --- | --- |
-| network-address, email, payment-card, iban, us-ssn, phone | pending | all met | `profile-cost:beta11-8b6a5fd-pii-profile-cost` | unspent, 0/1, `no-sealed-corpus`: eligible |
+The seal is [`holdout/pii-b11-17dae942ee4b-seal.json`](../../../holdout/pii-b11-17dae942ee4b-seal.json) with one manifest per family, committed at `8143b3f` before any run. Each family used its one attempt against core `8b6a5fde52ecb4dfce13f09c7a947062d21483c7`; the aggregates and trust resolutions are under [`core-8b6a5fde52ec/protected/`](core-8b6a5fde52ec/protected/). The trust resolution of every family is `accepted`: custody of no run is in doubt.
 
-No custodian corpus is sealed, so no protected run has happened. A family can reach `provisional`, never `stable`, only through its one protected attempt with an accepted trust resolution. The runner and [`holdout/PII-CUSTODIAN.md`](../../../holdout/PII-CUSTODIAN.md) name this candidate, and `run` no longer refuses on `profile-cost` while the acceptance matches.
+| Family | Status | Public gates | Protected cases | Sensitive detected (balanced / benign-heavy) | False alarms | Protected gate |
+| --- | --- | --- | ---: | --- | --- | --- |
+| network-address | provisional | all met (accepted `profile-cost`) | 32 | 7/7 / 4/4 | 0/9 / 0/12 | met |
+| email | provisional | all met (accepted `profile-cost`) | 32 | 7/7 / 4/4 | 0/9 / 0/12 | met |
+| payment-card | provisional | all met (accepted `profile-cost`) | 32 | 7/7 / 4/4 | 0/9 / 0/12 | met |
+| iban | provisional | all met (accepted `profile-cost`) | 30 | 7/7 / 4/4 | 0/8 / 0/11 | met |
+| us-ssn | pending | all met (accepted `profile-cost`) | 30 | 7/7 / 4/4 | 0/8 / 0/11 | not-met: `identity-only-classification` (`identity-failures:1`) |
+| phone | provisional | all met (accepted `profile-cost`) | 30 | 7/7 / 4/4 | 0/8 / 0/11 | met |
+
+Every family had 0 range mismatches, 0 action mismatches, 0 values left after redaction, 0 collateral findings, 0 activation problems, 0 cross-surface disagreements and 0 PII-off findings. For us-ssn, 1 of the 2 identity-only comparisons disagreed on sensitivity; the aggregate does not say which case, and the result stands as measured. Its single attempt is spent, and the runner refuses a second one. The distribution is 5 `provisional`, 1 `pending`, 0 `stable`; this route never produces `stable`.
+
+## Custody of the protected corpus
+
+By maintainer direction on 2026-09-29, the custodian and the reviewer were isolated agents, not the human custodian that [`holdout/PII-CUSTODIAN.md`](../../../holdout/PII-CUSTODIAN.md) assumes. This is a recorded deviation from the guide's human-custodian rule, following the #382 precedent. The attestation names them as `isolated-agent-custodian (maintainer-directed 2026-09-29)` and `isolated-agent-reviewer (maintainer-directed 2026-09-29)`.
+
+- **Could read.** The custodian guide, template and holdout README; the product PII contracts at `8b6a5fde` (`docs/contracts/pii/*`, the `pii-context` v1/v2 vocabularies, and the frozen network-address contract in `docs/audits/evidence/875/README.md`); and public authority sources (RFC 5737/3849/2606/6761, published test card numbers, NANP 555-0100 to 555-0199, ISO 13616, SSA structure rules).
+- **Could not read.** The benchmarks `qualification/`, `fixtures/`, `evidence/`, `benchmarks/`, `tests/` and `docs/reports/` trees, the #423 oracle plans, the #424 to #426 population plans, the v2 plans, the #427 parity plan, and any product test or fixture file. The custodian did not run the product scanner while authoring; labels come from the contracts. The only feedback during authoring was the validator's PASS/FAIL codes. The reviewer checked every label against the contracts before sealing, and its advisory findings were applied and re-reviewed. Only after all six runs did the custodian open `scripts/pii-beta11-protected.mjs` and the disposition test, to re-derive the committed disposition from the seal and the runs.
+- **Committed.** Only the seal and the per-family manifests (commitments), the per-family aggregates, the trust resolutions and the protected disposition. Case text, ids, ranges, labels, axis tags and the seed stayed in the ignored `holdout/generated/` directory.
 
 ## Support projection and site copy
 

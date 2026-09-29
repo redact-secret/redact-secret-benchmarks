@@ -12,7 +12,7 @@
   "freezeCommitment": "f79278aeb40c06cacaab5c91bd63aedddaadf1b8d3d68761c9a2dc5f78dce412",
   "reportCommitment": "530879bc6db9f3bc497164c936f56718262d94953cf068021255f730c09088bd",
   "dispositionCommitment": "50c2268060b48d852ff8510c61a713ef13e4dd537cf17d55ee71146c3dd4b518",
-  "sealCommitment": null,
+  "sealCommitment": "63e62fa409f55f14a4d342485a9d18259953f2370f0efb3f9c5687a75edaa334",
   "costAcceptance": {
     "sourceCommit": "8b6a5fde52ecb4dfce13f09c7a947062d21483c7",
     "reportCommitment": "530879bc6db9f3bc497164c936f56718262d94953cf068021255f730c09088bd",
@@ -28,14 +28,14 @@
   },
   "domainSeparation": "PII counts only; no credential count is merged and no combined credential+PII score exists.",
   "distribution": {
-    "pending": 6,
-    "provisional": 0,
+    "pending": 1,
+    "provisional": 5,
     "stable": 0
   },
   "families": [
     {
       "family": "pii:global:network-address",
-      "status": "pending",
+      "status": "provisional",
       "publicGates": {
         "met": 20,
         "notMet": [],
@@ -45,16 +45,18 @@
         ]
       },
       "protected": {
-        "state": "unspent",
-        "reason": "no-sealed-corpus",
-        "runs": "0/1",
+        "state": "met",
+        "reason": "protected-gates-met",
+        "runs": "1/1",
         "epochCommitment": "f3acc8eb4a33377c8d3ed5d2b4d913e5bbdfd01dc6cd0c5c427ee90f5a3ffc47",
-        "sealed": false
+        "sealed": true,
+        "aggregateCommitment": "6ab7c6086dc7933e1b55741514305099426a0bdd6e19feea6219f2c2b159b952",
+        "trustCommitment": "3d9d4951b6669cddb5b3c529f6c2e51b4ecfa4e4b8c843b60425b4538b273993"
       }
     },
     {
       "family": "pii:global:email",
-      "status": "pending",
+      "status": "provisional",
       "publicGates": {
         "met": 20,
         "notMet": [],
@@ -64,16 +66,18 @@
         ]
       },
       "protected": {
-        "state": "unspent",
-        "reason": "no-sealed-corpus",
-        "runs": "0/1",
+        "state": "met",
+        "reason": "protected-gates-met",
+        "runs": "1/1",
         "epochCommitment": "04d02d9f6b1aa593aff609045cf1479ddea5d042e71cb7e00af480c724d7c515",
-        "sealed": false
+        "sealed": true,
+        "aggregateCommitment": "479ad8c2f731f6f9dbf03803769b0f54c05e503c0da2ef3cb155aca103b6f0d4",
+        "trustCommitment": "d44e7880479b72435734e547c64c9deea97c0dc0d9aa88904a03980962b52e5e"
       }
     },
     {
       "family": "pii:global:payment-card",
-      "status": "pending",
+      "status": "provisional",
       "publicGates": {
         "met": 20,
         "notMet": [],
@@ -83,16 +87,18 @@
         ]
       },
       "protected": {
-        "state": "unspent",
-        "reason": "no-sealed-corpus",
-        "runs": "0/1",
+        "state": "met",
+        "reason": "protected-gates-met",
+        "runs": "1/1",
         "epochCommitment": "77ec7334e5883cae9b0427b5009a252abbb47f48e8a7836956c95fff511d3dc9",
-        "sealed": false
+        "sealed": true,
+        "aggregateCommitment": "c9bc82c16c00ac52288164659af7fd1200af98bc8362c2e81a65902e5c3e6681",
+        "trustCommitment": "c6d2954aec12c8d9f869918b5814e2aca7b576ff2fa2a51c2f2d81ee7b4500cc"
       }
     },
     {
       "family": "pii:global:iban",
-      "status": "pending",
+      "status": "provisional",
       "publicGates": {
         "met": 20,
         "notMet": [],
@@ -102,11 +108,13 @@
         ]
       },
       "protected": {
-        "state": "unspent",
-        "reason": "no-sealed-corpus",
-        "runs": "0/1",
+        "state": "met",
+        "reason": "protected-gates-met",
+        "runs": "1/1",
         "epochCommitment": "ab045b20028f1e3952ee4a730e5015b94df444f915c96b410348dd7014bcc4fc",
-        "sealed": false
+        "sealed": true,
+        "aggregateCommitment": "f98051176b84d3e5c8ef676fd0be50f19605c78176cc7d80a5ddb2b82f4fc5b3",
+        "trustCommitment": "4ac0480be2f8fa6f8e23a7527a89d0894994dadfb1acf4eb3b9d7d7e4b2bfbae"
       }
     },
     {
@@ -121,16 +129,18 @@
         ]
       },
       "protected": {
-        "state": "unspent",
-        "reason": "no-sealed-corpus",
-        "runs": "0/1",
+        "state": "not-met",
+        "reason": "protected-gates-not-met:identity-only-classification",
+        "runs": "1/1",
         "epochCommitment": "0269a49341fcb8071014785769e28759766fe2f98512e14e7d078cada3d17452",
-        "sealed": false
+        "sealed": true,
+        "aggregateCommitment": "049813e10c47f5a0638c5b379cb62cfeedd7e0b29589eb5fac9f1b0a0a3e971e",
+        "trustCommitment": "e60074f1617b8c72e6e36ac36c8cabd1198d7acda51df6e52b2fd30ec95b3de8"
       }
     },
     {
       "family": "pii:global:phone",
-      "status": "pending",
+      "status": "provisional",
       "publicGates": {
         "met": 20,
         "notMet": [],
@@ -140,13 +150,15 @@
         ]
       },
       "protected": {
-        "state": "unspent",
-        "reason": "no-sealed-corpus",
-        "runs": "0/1",
+        "state": "met",
+        "reason": "protected-gates-met",
+        "runs": "1/1",
         "epochCommitment": "63de326f17eeda45ed214ba86fe4110d95521f51900825a503bcea8234ae7fbb",
-        "sealed": false
+        "sealed": true,
+        "aggregateCommitment": "bfd4b25a710d3995bb0650c7b92fd6579e78c1f3228b0679ef53434cdff68a28",
+        "trustCommitment": "fac300037f5af2d28076aa67bc217bea87fd32e370b9aff7381bec39b48320cd"
       }
     }
   ],
-  "artifactCommitment": "ab2141416cc2ab92d21e96778ebddf48a3be55025808ffc5180625c6ed3148c8"
+  "artifactCommitment": "e3ea85dde722310766e95ea2c1bfa5750d99a251aff3a23bbe318c9b2b5b3401"
 }

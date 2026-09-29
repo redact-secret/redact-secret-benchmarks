@@ -36,7 +36,11 @@ A research issue is closed by the PR that records its verdict here
    has no dossier yet from [`_TEMPLATE.md`](_TEMPLATE.md). It never overwrites
    an existing file; for a new family in an existing dossier it prints the
    entry to add.
-3. `npm run dossiers:scaffold -- --check` fails if a taxonomy family has no
-   dossier entry.
+3. `npm run dossiers:check` fails if a taxonomy family has no dossier entry,
+   if the frontmatter breaks [`schemas/dossier-v1.json`](../../../schemas/dossier-v1.json),
+   if a provider or family id is not in `taxonomy.json`, or if a GitHub file
+   link is not a permalink (40-hex commit; `main` only for a living
+   `redact-secret` doc). The rules are recorded in
+   [the decision](../../../docs/decisions/2026-09-29-keep-provider-research-in-validated-dossiers.md).
 
 Never place a real, live or unrevoked credential in a dossier.

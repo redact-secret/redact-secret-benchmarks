@@ -47,6 +47,31 @@ validates every pack; `npm run evidence:query -- --class=<class>` lists
 public adversarial, protected holdout and maintainer regression evidence
 separately. Project-authored evidence is never described as independent.
 
+## Adding or researching a provider
+
+Every provider in `benchmarks/support/taxonomy.json` has one dossier at
+`benchmarks/support/dossiers/<provider>.md` (`generic.md` for provider-less
+families). Open it first: it shows each family's research verdict, tier, sources,
+blocker and open questions, so you can pick up the next piece of work. Rules are
+in [`benchmarks/support/dossiers/README.md`](benchmarks/support/dossiers/README.md)
+and the
+[decision](docs/decisions/2026-09-29-keep-provider-research-in-validated-dossiers.md).
+
+1. New provider or family: add it to `taxonomy.json`, then run
+   `npm run dossiers:scaffold`. It creates a stub and prints the entry to add
+   for a new family in an existing dossier.
+2. Researching: hand-write only the provider facts (verdict, tier, `sources`,
+   `issues`, `evidence`, `researchedAt`, `blockedBy`, prose). Status, fixture
+   counts and detector presence are derived and have no field. Verdicts are
+   `unresearched`, `ready`, `issuance-gated`, `date-gated`, `not-found` and
+   `rejected`. `anthropic.md` is the worked example.
+3. Links: a past state is a 40-hex commit permalink, a living `redact-secret`
+   doc may use `main`, and branch links are rejected. Never write a real, live
+   or new secret-shaped value: describe a shape in words or as a grammar.
+4. Close a research issue with the dossier PR (`Closes #N`), including a
+   `not-found` or `rejected` verdict.
+5. Run `npm run dossiers:check` (schema, taxonomy ids, permalinks, coverage).
+
 ## Recording a decision
 
 `docs/decisions/` holds this repository's ADRs — benchmark-methodology and

@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:redact-secret:dossier:1",
+  "title": "Provider dossier frontmatter (#474)",
+  "description": "Hand-written research judgement only. Measured status, fixture counts and detector presence are derived from taxonomy.json, detectors.json and the support matrix and have no field here.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["provider", "families"],
+  "properties": {
+    "provider": {
+      "description": "taxonomy.json providers[].id, or \"generic\" for provider-less families. Cross-checked against the taxonomy by dossiers:check.",
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "families": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/family" }
+    }
+  },
+  "$defs": {
+    "family": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "research", "blockedBy"],
+      "properties": {
+        "id": {
+          "description": "taxonomy.json families[].id; must belong to this dossier's provider (dossiers:check).",
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*:[a-z0-9]+(-[a-z0-9]+)*$"
+        },
+        "research": { "$ref": "#/$defs/research" },
+        "blockedBy": {
+          "description": "One line: what stops the next stage. Required for issuance-gated and date-gated.",
+          "type": ["string", "null"],
+          "minLength": 1,
+          "maxLength": 240,
+          "pattern": "^[^\\r\\n]+$"
+        }
+      },
+      "if": {
+        "properties": { "research": { "properties": { "verdict": { "enum": ["issuance-gated", "date-gated"] } } } }
+      },
+      "then": { "properties": { "blockedBy": { "type": "string" } } }
+    },
+    "research": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["verdict", "tier", "sources", "issues", "evidence", "researchedAt"],
+      "properties": {
+        "verdict": {
+          "enum": ["unresearched", "ready", "issuance-gated", "date-gated", "not-found", "rejected"]
+        },
+        "tier": { "enum": [null, "T0", "T1", "T2", "T3"] },
+        "sources": {
+          "description": "https URLs to provider docs, SDK or generator code backing the grammar. GitHub blob/tree/raw links follow the permalink rule (dossiers:check).",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^https://[^\\s]+$" }
+        },
+        "issues": {
+          "description": "owner/repo#N research issues, open or closed.",
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[1-9][0-9]*$" }
+        },
+        "evidence": {
+          "description": "Final evidence for a past state: a GitHub blob or tree link pinned to a 40-hex commit.",
+          "type": ["string", "null"],
+          "pattern": "^https://github\\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+/(blob|tree)/[0-9a-f]{40}/[^\\s]+$"
+        },
+        "researchedAt": {
+          "description": "YYYY-MM-DD of the latest verdict.",
+          "type": ["string", "null"],
+          "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$"
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "verdict": { "const": "unresearched" } } },
+          "then": {
+            "properties": {
+              "tier": { "const": null },
+              "evidence": { "const": null },
+              "researchedAt": { "const": null }
+            }
+          },
+          "else": { "properties": { "researchedAt": { "type": "string" } } }
+        },
+        {
+          "if": { "properties": { "verdict": { "enum": ["ready", "issuance-gated", "date-gated"] } } },
+          "then": { "properties": { "tier": { "enum": ["T0", "T1", "T2", "T3"] } } }
+        },
+        {
+          "if": { "properties": { "verdict": { "enum": ["ready", "issuance-gated", "date-gated", "not-found", "rejected"] } } },
+          "then": { "properties": { "issues": { "minItems": 1 } } }
+        }
+      ]
+    }
+  }
+}

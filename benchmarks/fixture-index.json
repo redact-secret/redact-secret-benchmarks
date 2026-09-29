@@ -13,7 +13,7 @@
   "sources": {
     "reviewedMetadata": {
       "algorithm": "sha256",
-      "digest": "7b4684722a02d8db4f24058756c6549ec5bc4b3496679ea8f4e3d9505c0ed253"
+      "digest": "145a09d78d34ea42fe022ef19f64aeb747d556f34753bf060702beb3197cb123"
     },
     "scenarios": {
       "algorithm": "sha256",
@@ -41260,6 +41260,46 @@
       }
     },
     {
+      "slug": "beta8-384e--ai21-api-key-actions-env-literal",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-actions-env-literal",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-actions-env-literal.yml"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-actions-secret-reference",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-actions-secret-reference",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-actions-secret-reference.yml"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--ai21-api-key-angle-key-placeholder",
       "source": {
         "categoryId": "beta8-384e",
@@ -41320,12 +41360,92 @@
       }
     },
     {
+      "slug": "beta8-384e--ai21-api-key-base64-text-encoded-value",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-base64-text-encoded-value",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-base64-text-encoded-value.yml"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-compose-env",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-compose-env",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-compose-env.yml"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--ai21-api-key-curl-header",
       "source": {
         "categoryId": "beta8-384e",
         "fixtureId": "ai21-api-key-curl-header",
         "corpus": "fixtures/generated/beta8-384e.json",
         "path": "cases/ai21-api-key-curl-header.sh"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-data-uri-encoded-value",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-data-uri-encoded-value",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-data-uri-encoded-value.md"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-docker-run-env",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-docker-run-env",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-docker-run-env.sh"
       },
       "familyIds": [
         "ai21:api-key"
@@ -41380,6 +41500,46 @@
       }
     },
     {
+      "slug": "beta8-384e--ai21-api-key-dotenv-alt",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-dotenv-alt",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-dotenv-alt.env"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-embedded-run-near-miss",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-embedded-run-near-miss",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-embedded-run-near-miss.txt"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--ai21-api-key-env-reference-reference",
       "source": {
         "categoryId": "beta8-384e",
@@ -41417,6 +41577,54 @@
       "provenance": {
         "categoryId": "beta8-384e",
         "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-id-named-compose-twin",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-id-named-compose-twin",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-id-named-compose-twin.yml"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384e--ai21-api-key-compose-env"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-id-named-env-alt-twin",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-id-named-env-alt-twin",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-id-named-env-alt-twin.env"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384e--ai21-api-key-dotenv-alt"
       }
     },
     {
@@ -41560,6 +41768,26 @@
       }
     },
     {
+      "slug": "beta8-384e--ai21-api-key-key-guidance-prose",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-key-guidance-prose",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-key-guidance-prose.md"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--ai21-api-key-langchain-kwarg",
       "source": {
         "categoryId": "beta8-384e",
@@ -41580,12 +41808,32 @@
       }
     },
     {
+      "slug": "beta8-384e--ai21-api-key-litellm-yaml",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-litellm-yaml",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-litellm-yaml.yml"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--ai21-api-key-long-value-twin",
       "source": {
         "categoryId": "beta8-384e",
         "fixtureId": "ai21-api-key-long-value-twin",
         "corpus": "fixtures/generated/beta8-384e.json",
-        "path": "cases/ai21-api-key-long-value-twin.py"
+        "path": "cases/ai21-api-key-long-value-twin.sh"
       },
       "familyIds": [
         "ai21:api-key"
@@ -41600,7 +41848,7 @@
         "milestone": "beta.10"
       },
       "relations": {
-        "twinOf": "beta8-384e--ai21-api-key-python-ctor"
+        "twinOf": "beta8-384e--ai21-api-key-export"
       }
     },
     {
@@ -41610,6 +41858,46 @@
         "fixtureId": "ai21-api-key-model-id-public-id",
         "corpus": "fixtures/generated/beta8-384e.json",
         "path": "cases/ai21-api-key-model-id-public-id.yml"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-model-notes-prose",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-model-notes-prose",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-model-notes-prose.md"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-object-id-public-id",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-object-id-public-id",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-object-id-public-id.json"
       },
       "familyIds": [
         "ai21:api-key"
@@ -41648,6 +41936,94 @@
       }
     },
     {
+      "slug": "beta8-384e--ai21-api-key-other-host-log-twin",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-other-host-log-twin",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-other-host-log-twin.log"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384e--ai21-api-key-proxy-log"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-other-provider-model-twin",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-other-provider-model-twin",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-other-provider-model-twin.yml"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384e--ai21-api-key-litellm-yaml"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-project-uuid-public-id",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-project-uuid-public-id",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-project-uuid-public-id.env"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-proxy-log",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-proxy-log",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-proxy-log.log"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--ai21-api-key-python-ctor",
       "source": {
         "categoryId": "beta8-384e",
@@ -41674,6 +42050,26 @@
         "fixtureId": "ai21-api-key-python-environ-reference",
         "corpus": "fixtures/generated/beta8-384e.json",
         "path": "cases/ai21-api-key-python-environ-reference.py"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-request-hex-public-id",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-request-hex-public-id",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-request-hex-public-id.txt"
       },
       "familyIds": [
         "ai21:api-key"
@@ -41792,6 +42188,26 @@
       }
     },
     {
+      "slug": "beta8-384e--ai21-api-key-unrelated-assignment-near-miss",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-unrelated-assignment-near-miss",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-unrelated-assignment-near-miss.env"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--ai21-api-key-unrelated-python-ctor-twin",
       "source": {
         "categoryId": "beta8-384e",
@@ -41837,6 +42253,46 @@
       },
       "relations": {
         "twinOf": "beta8-384e--ai21-api-key-ts-ctor"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-upper-name-placeholder",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-upper-name-placeholder",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-upper-name-placeholder.env"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-x-ellipsis-placeholder",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-x-ellipsis-placeholder",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-x-ellipsis-placeholder.env"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
       }
     },
     {
@@ -104664,7 +105120,7 @@
   "identity": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "411657b1d0c166a9380481014db3049ff1546724eb67a39490bd8fa0c75ca563",
-    "fixtureCount": 5066
+    "digest": "914a4ae94fea88879ab559e63558266d5d88371447ef62980a0f65cae27a1e3e",
+    "fixtureCount": 5088
   }
 }

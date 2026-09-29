@@ -15,7 +15,8 @@ import { th, gl, provider, field } from '../contract-sources.ts';
 //   - Mistral, Cohere, Deepgram: T2, because at least one scanner rule (gitleaks 8.30.1 for
 //     Cohere; trufflehog 3.97.4 and betterleaks for Deepgram; osv-scalibr, betterleaks and pleno-dlp
 //     for Mistral) fixes the length and the keyword gate.
-//   - AI21 and Exa: T0. AI21 has no scanner rule and a single ten-sample maintainer observation
+//   - AI21: T2 since redact-secret#1013 (one peer rule, two independent implementations; the corroborated
+//     route). Exa: T0. Before #1013 AI21 had no scanner rule and a single ten-sample maintainer observation
 //     of a 32-character mixed alphanumeric shape; Exa has no identifying shape at all (only its key
 //     id, team id and user id are documented, as UUIDs). Their contracts record uncertainty and
 //     claim nothing more than the keyword gate, which the product issue asks for.
@@ -54,6 +55,11 @@ const AI21_CREATE = 'https://docs.ai21.com/docs/create-api-key';
 const AI21_ENV = 'https://raw.githubusercontent.com/AI21Labs/ai21-python/main/ai21/ai21_env_config.py';
 const AI21_HTTP = 'https://raw.githubusercontent.com/AI21Labs/ai21-python/main/ai21/http_client/base_http_client.py';
 const AI21_LITELLM = 'https://docs.litellm.ai/docs/providers/ai21';
+// redact-secret#1013 corroborated route (frozen at redact-secret add1188f): one peer rule, two independent implementations.
+const AI21_VULNETIX = 'https://github.com/Vulnetix/cli/blob/c6e24fc9b0148dc0a227da70774300fba7f339ee/internal/sast/rules/vnx-sec-315.rego#L25';
+const AI21_KEYCHECKER = 'https://github.com/cunnymessiah/keychecker/blob/122eadc6bdbbeec9f31e94878f98c4692d5b5718/main.py#L242';
+const AI21_LLM_ROUTER = 'https://github.com/MCERQUA/LLM-Runner-Router/blob/dc020cfeb6ae071d5582bed6ce3563eea64ae8fd/src/auth/BYOKManager.js#L287-L290';
+const R1013_AI21 = 'https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/ai21-api-key.md';
 
 const EXA_GET_KEY = 'https://exa.ai/docs/reference/team-management/get-api-key';
 const EXA_UPDATE_KEY = 'https://exa.ai/docs/reference/team-management/update-api-key';
@@ -120,15 +126,20 @@ export const registryContracts: Record<string, FormatContract> = {
     ],
   },
   'ai21-api-key': {
-    tier: 'T0', contextGated: true,
+    tier: 'T2', contextGated: true,
     pattern: '^[A-Za-z0-9]{32}$',
-    candidateSource: provider(AI21_CREATE, 'AI21 Studio "Create new key" (Settings, API Keys)', 'AI21 documents key creation, that a key is shown once and that only its last characters are visible afterwards. It states no prefix, length, alphabet or example. The AI21 SDK sends Authorization: Bearer and does no validation. The 32-alphanumeric shape rests on one maintainer observation of ten distinct AI21Client(api_key="...") literals, not on a provider or scanner source', at),
-    references: [AI21_ENV, AI21_HTTP, AI21_LITELLM, R784, R867_868],
-    review: 'Context-gated arrival family with a pending contract (#384, product redact-secret#868; research #784). T0: there is no provider statement of any shape and no scanner rule (trufflehog, gitleaks, betterleaks, noseyparker, secretlint and Kingfisher have none; GitHub lists no AI21 row). The only shape evidence is a ten-sample maintainer observation of 32-character mixed-case alphanumeric bodies drawn from AI21Client(api_key="...") fragments in ten repositories, which is n=10 and provider-unconfirmed. It is recorded and used to author positives; it is not corroboration. The value is recognised only beside a same-line AI21_API_KEY name, an api.ai21.com host or an AI21 SDK constructor, so its positives score as project policy; no bare-value claim is made, since a bare 32-character run collides with hashes, UUID fragments and other providers\' keys.',
+    corroboration: [
+      { tool: 'Vulnetix vnx-sec-315', label: 'ai21[_-]?api[_-]?key assignment + exactly [A-Za-z0-9]{32} (2026-06-14)', url: AI21_VULNETIX },
+      { tool: 'keychecker (independent implementation)', label: '[A-Za-z0-9]{32} filter before a live AI21 check (2023-12-16)', url: AI21_KEYCHECKER },
+      { tool: 'LLM-Runner-Router (independent implementation)', label: "ai21 keyFormat '[A-Za-z0-9]{32}' (2025-08-26)", url: AI21_LLM_ROUTER },
+    ],
+    references: [AI21_CREATE, AI21_ENV, AI21_HTTP, AI21_LITELLM, R784, R867_868, R1013_AI21],
+    review: 'Context-gated family (#384, product redact-secret#868; research #784, T2 by redact-secret#1013). No AI21 page, staff statement or SDK code states a shape, so nothing reaches T1. The redact-secret#1013 pass (frozen at redact-secret add1188f) found the corroborated route without any provider material: the Vulnetix vnx-sec-315 peer rule (an ai21 key name then exactly 32 alphanumerics) and two independent implementations (keychecker, LLM-Runner-Router) that accept exactly [A-Za-z0-9]{32}: 3 references, 3 owners, 2 non-summary classes. AI21-committed key literals in its public example code (six, each 32 mixed alphanumerics, none a UUID) are of unknown validity; whether they count as provider examples is maintainer ruling Q-AI, so they are not counted and appear only as bounded evidence in the empirical record. Kingfisher (2025-07 to its 2026-08 deletion) read a UUID and octocode reads 40-64 alphanumerics; the contract claims exactly 32 and excludes both. The value is recognised only beside a same-line AI21_API_KEY name, an api.ai21.com host or an AI21 SDK constructor, so its positives score as project policy and its twins keep the value and change only the context; no bare-value claim is made, since a bare 32-character run collides with hashes, UUID fragments and other providers\' keys.',
     fields: [
-      field({ field: 'shape', claim: '32 alphanumeric characters, no prefix', basis: 'maintainer-observation', status: 'provisional', sources: [src(R784, 'row 8: ten distinct literals, all 32 characters, [A-Za-z0-9], upper, lower and digit present; values withheld')], note: 'Used to author positives only; no provider or scanner source.' }),
+      field({ field: 'shape', claim: '32 alphanumeric characters, no prefix', basis: 'tool', status: 'frozen', sources: [src(AI21_VULNETIX, 'exactly [A-Za-z0-9]{32} after an ai21 key name'), src(AI21_KEYCHECKER, 'a 32-alphanumeric filter'), src(AI21_LLM_ROUTER, "keyFormat '[A-Za-z0-9]{32}'"), src(R784, 'ten-sample maintainer observation, values withheld'), src(R1013_AI21)], note: 'One peer rule and two independent implementations (redact-secret#1013); no provider statement. AI21-committed literals agree but are held for ruling Q-AI.' }),
       field({ field: 'context', claim: 'a same-line AI21_API_KEY name, api.ai21.com host or AI21 SDK constructor', basis: 'provider-code', status: 'frozen', sources: [src(AI21_ENV, '_ENV_API_KEY = "AI21_API_KEY"'), src(AI21_HTTP, 'Authorization: Bearer {api_key}')] }),
-      field({ field: 'prefix-and-checksum', claim: 'no prefix or checksum was observed or documented', basis: 'research-hypothesis', status: 'unresolved', sources: [src(R784)] }),
+      field({ field: 'prefix-and-checksum', claim: 'no prefix or checksum was observed or documented', basis: 'research-hypothesis', status: 'unresolved', sources: [src(R784), src(R1013_AI21)] }),
+      field({ field: 'other-widths', claim: 'a UUID (Kingfisher, deleted 2026-08-21) or 40-64 alphanumerics (octocode)', basis: 'tool', status: 'unresolved', sources: [src(R1013_AI21, 'both readings contradict every AI21 literal found')], note: 'Excluded by the exact-32 contract; no fixture asserts either way.' }),
       field({ field: 'non-secrets', claim: 'AI21_API_HOST, AI21_API_VERSION, AI21_AWS_REGION and the console\'s masked suffix are not credentials', basis: 'provider-code', status: 'frozen', sources: [src(AI21_ENV)] }),
     ],
   },
@@ -156,6 +167,6 @@ export const profiles: Record<string, FixtureProfile> = {
   'mistral-api-key': 'context-48',
   'cohere-api-key': 'context-48',
   'deepgram-api-key': 'context-48',
-  'ai21-api-key': 'arrival-24',
+  'ai21-api-key': 'context-48',
   'exa-api-key': 'arrival-24',
 };

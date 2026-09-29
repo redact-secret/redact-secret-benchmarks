@@ -27,13 +27,13 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | Arrival / provisional | 101 | 120 |
 | Stable / documented | 101 | 120 |
 | Stable / empirical | 35 | 120 |
-| Context-constrained empirical | 19 | 120 |
+| Context-constrained empirical | 20 | 120 |
 
 ## Per family
 
 | Family | Tier | Target | Total fixtures | Positive/context cases | Non-twin benign controls | Twin pairs | Positive-context axes | Control axes | Confusion axes | Remaining debt |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| ai21-api-key | T0 | arrival-provisional | 36 | 3 | 15 | 10 | 8 | 5 | 7 | positive/context cases 3/6 |
+| ai21-api-key | T2 | context-constrained-empirical | 58 | 5 | 27 | 14 | 11 | 6 | 8 | none |
 | anthropic-admin01-key | T1 | stable-documented | 39 | 7 | 16 | 8 | 15 | 6 | 8 | none |
 | anthropic-api01-key | T1 | stable-documented | 37 | 8 | 15 | 7 | 15 | 6 | 8 | none |
 | anthropic-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 8 | 5 | 6 | none |

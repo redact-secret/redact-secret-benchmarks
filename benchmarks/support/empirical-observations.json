@@ -2479,6 +2479,66 @@
           "bound": "Bounded 2026-09-29 as redact-secret#1013 recommends: the benchmark contract claims 58 + T3BlbkFJ + 58 only, the export-74, powershell, handoff and go-const positives were re-authored at 58/58 and the two 74-width twins removed, so no positive, twin or control is 74/74 and nothing asserts it either way. The shipped detector keeps accepting 74/74 (security-first over-redaction, not measured)."
         }
       ]
+    },
+    {
+      "family": "ai21-api-key",
+      "mode": "context-constrained",
+      "supportsBareValues": false,
+      "uncertainty": "AI21 states no prefix, length or alphabet, and its SDK does no validation. The 32-alphanumeric shape rests on one peer rule (Vulnetix vnx-sec-315) and two independent implementations (keychecker, LLM-Runner-Router) that accept exactly [A-Za-z0-9]{32}, plus a ten-sample maintainer observation (#784). AI21 staff committed six key literals to public example code (2023-2025), each 32 mixed alphanumerics and none a UUID; their validity is unknown, and whether a provider-committed literal counts as a provider example is maintainer ruling Q-AI (redact-secret#1013), pending, so they are not counted. The value has no marker of its own, so it is claimed only beside a same-line AI21 name, host or SDK constructor. No pinned scanner has an AI21 rule, and no provider-issued key has been measured.",
+      "supportedContexts": [
+        "same line as AI21_API_KEY (dotenv, shell export, compose, CI env, docker run -e, tool-call export)",
+        "AI21Client(api_key=...), ChatAI21(api_key=...), new AI21({ apiKey }) and a litellm ai21/ model api_key",
+        "Authorization: Bearer on a curl line naming api.ai21.com, and a gateway log line naming the host",
+        "JSON ai21ApiKey field"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "vulnetix",
+          "reference": "https://github.com/Vulnetix/cli/blob/c6e24fc9b014/internal/sast/rules/vnx-sec-315.rego#L25",
+          "observedAt": "2026-09-29",
+          "supports": "vnx-sec-315 (2026-06-14): (?i)ai21[_-]?api[_-]?key assignment + exactly [A-Za-z0-9]{32}"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "cunnymessiah",
+          "reference": "https://github.com/cunnymessiah/keychecker/blob/122eadc6bdbb/main.py#L242",
+          "observedAt": "2026-09-29",
+          "supports": "keychecker (2023-12-16): ai21_and_mistral_regex [A-Za-z0-9]{32} filters candidates before a live AI21 check"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "mcerqua",
+          "reference": "https://github.com/MCERQUA/LLM-Runner-Router/blob/dc020cfeb6ae/src/auth/BYOKManager.js#L287-L290",
+          "observedAt": "2026-09-29",
+          "supports": "LLM-Runner-Router BYOK manager (2025-08-26): ai21 keyFormat '[A-Za-z0-9]{32}' with baseURL api.ai21.com"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/1013",
+          "observedAt": "2026-09-29",
+          "supports": "redact-secret#1013 T1/T2 pass (2026-09-29; frozen record docs/audits/evidence/1013/ai21-api-key.md at redact-secret add1188f): 3 references, 3 owners, 2 non-summary classes without provider material; READY-T2, context-constrained"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Kingfisher's AI21 rule (2025-07-18 until its deletion on 2026-08-21) read an ai21 keyword + a UUID.",
+          "status": "bounded",
+          "bound": "The contract claims exactly 32 alphanumerics and excludes UUIDs; no fixture asserts silence on a UUID beside an AI21 name. If ruling Q-AI accepts AI21's committed literals as provider examples they settle it, since every one is 32 alphanumerics and none a UUID."
+        },
+        {
+          "statement": "octocode's AI21 pattern (2026-07-12) reads AI21_API_KEY + 40 to 64 alphanumerics.",
+          "status": "bounded",
+          "bound": "The contract claims exactly 32; only 31- and 33-character length twins are asserted, nothing at 40-64. Settled instead under ruling Q-AI as above."
+        },
+        {
+          "statement": "AI21 staff committed six key literals of unknown validity to public example code (AI21Labs/ai21-python 2024-2025, a 2023 AI21 demo app); whether a provider-committed literal is a provider example (R5) or a leak is maintainer ruling Q-AI.",
+          "status": "bounded",
+          "bound": "Pending Q-AI the literals are not recorded as corroboration and never reproduced; the corroborated route clears without them (3 / 3 / 2)."
+        }
+      ]
     }
   ]
 }

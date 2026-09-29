@@ -6,28 +6,33 @@
     "arrival-provisional": 101,
     "stable-documented": 101,
     "stable-empirical": 35,
-    "context-constrained-empirical": 19
+    "context-constrained-empirical": 20
   },
   "families": [
     {
       "family": "ai21-api-key",
-      "tier": "T0",
+      "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "context-constrained-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
-      "cellsMet": [],
+      "target": "context-constrained-empirical",
+      "cellsMet": [
+        "context-constrained-empirical"
+      ],
       "cells": {
-        "totalFixtures": 36,
-        "positiveCases": 3,
-        "benignControls": 15,
-        "twinPairs": 10,
-        "positiveContextAxes": 8,
-        "controlAxes": 5,
-        "confusionAxes": 7,
+        "totalFixtures": 58,
+        "positiveCases": 5,
+        "benignControls": 27,
+        "twinPairs": 14,
+        "positiveContextAxes": 11,
+        "controlAxes": 6,
+        "confusionAxes": 8,
         "positiveContextAxisIds": [
+          "#384e · ai21-api-key · ci-config",
+          "#384e · ai21-api-key · container-config",
           "#384e · ai21-api-key · env",
           "#384e · ai21-api-key · header",
+          "#384e · ai21-api-key · log",
           "#384e · ai21-api-key · sdk-config",
           "#384e · ai21-api-key · shell-export",
           "#384e · ai21-api-key · source-code",
@@ -38,6 +43,7 @@
         "controlAxisIds": [
           "encoded-value",
           "near-miss",
+          "ordinary-prose",
           "placeholder",
           "public-identifier",
           "reference"
@@ -45,6 +51,7 @@
         "confusionAxisIds": [
           "encoded-value",
           "near-miss",
+          "ordinary-prose",
           "placeholder",
           "public-identifier",
           "reference",
@@ -53,22 +60,14 @@
         ]
       },
       "requiredCells": {
-        "totalFixtures": 24,
-        "positiveCases": 6,
-        "benignControls": 8,
-        "twinPairs": 5,
-        "positiveContextAxes": 4,
-        "controlAxes": 4
+        "totalFixtures": 48,
+        "positiveCases": 1,
+        "benignControls": 1,
+        "twinPairs": 10,
+        "confusionAxes": 6
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
-          "shortfall": 3
-        }
-      ]
+      "debt": []
     },
     {
       "family": "anthropic-admin01-key",

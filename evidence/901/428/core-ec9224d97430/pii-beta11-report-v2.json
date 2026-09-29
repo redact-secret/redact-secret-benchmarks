@@ -1439,8 +1439,443 @@
         },
         {
           "id": "profile-cost",
-          "status": "unresolved",
-          "reason": "The #286 profile-cost protocol runs only as the official Linux GitHub Actions workflow (A/A, threshold freeze, candidate, size) on a reviewed plan for this candidate; qualification/pii-profile-cost-v2.json re-freezes it for pii-context/v2 and a split PII Wasm artifact, and it has not been dispatched for this candidate."
+          "status": "not-met",
+          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 0 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/packed +643241 B (needs size/npm/wasm/packed), npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/gzip9 +35885 B (needs size/wasm/full/gzip), wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/gzip9 +21632 B (needs size/wasm/common/gzip), wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
+          "evidence": {
+            "runtimeCells": [
+              "rust-native/full/global/validator-heavy/wholeInput:regression",
+              "rust-native/full/global/validator-heavy/incremental:regression",
+              "rust-native/full/global/multilingual-context/wholeInput:regression",
+              "rust-native/full/global/multilingual-context/incremental:regression",
+              "rust-native/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "rust-native/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "rust-native/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "rust-native/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "rust-native/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "rust-native/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "rust-native/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "rust-native/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "rust-native/full/beta10-full/validator-heavy/wholeInput:regression",
+              "rust-native/full/beta10-full/validator-heavy/incremental:regression",
+              "rust-native/full/beta10-full/multilingual-context/wholeInput:regression",
+              "rust-native/full/beta10-full/multilingual-context/incremental:regression",
+              "rust-native/common/global/validator-heavy/wholeInput:regression",
+              "rust-native/common/global/validator-heavy/incremental:regression",
+              "rust-native/common/global/multilingual-context/wholeInput:regression",
+              "rust-native/common/global/multilingual-context/incremental:regression",
+              "rust-native/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "rust-native/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "rust-native/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "rust-native/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "rust-native/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "rust-native/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "rust-native/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "rust-native/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "rust-native/common/beta10-full/validator-heavy/wholeInput:regression",
+              "rust-native/common/beta10-full/validator-heavy/incremental:regression",
+              "rust-native/common/beta10-full/multilingual-context/wholeInput:regression",
+              "rust-native/common/beta10-full/multilingual-context/incremental:regression",
+              "node-native/full/global/validator-heavy/wholeInput:regression",
+              "node-native/full/global/validator-heavy/incremental:regression",
+              "node-native/full/global/multilingual-context/wholeInput:regression",
+              "node-native/full/global/multilingual-context/incremental:regression",
+              "node-native/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-native/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-native/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-native/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-native/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-native/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-native/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-native/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-native/full/beta10-full/validator-heavy/wholeInput:regression",
+              "node-native/full/beta10-full/validator-heavy/incremental:regression",
+              "node-native/full/beta10-full/multilingual-context/wholeInput:regression",
+              "node-native/full/beta10-full/multilingual-context/incremental:regression",
+              "node-native/common/global/validator-heavy/wholeInput:regression",
+              "node-native/common/global/validator-heavy/incremental:regression",
+              "node-native/common/global/multilingual-context/wholeInput:regression",
+              "node-native/common/global/multilingual-context/incremental:regression",
+              "node-native/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-native/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-native/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-native/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-native/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-native/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-native/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-native/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-native/common/beta10-full/validator-heavy/wholeInput:regression",
+              "node-native/common/beta10-full/validator-heavy/incremental:regression",
+              "node-native/common/beta10-full/multilingual-context/wholeInput:regression",
+              "node-native/common/beta10-full/multilingual-context/incremental:regression",
+              "node-wasm/full/global/validator-heavy/wholeInput:regression",
+              "node-wasm/full/global/validator-heavy/incremental:regression",
+              "node-wasm/full/global/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/global/multilingual-context/wholeInput:regression",
+              "node-wasm/full/global/multilingual-context/incremental:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/memory/nodePeakRss:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-wasm/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-wasm/full/beta10-full/validator-heavy/wholeInput:regression",
+              "node-wasm/full/beta10-full/validator-heavy/incremental:regression",
+              "node-wasm/full/beta10-full/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/beta10-full/validator-heavy/memory/nodeRetainedRss:regression",
+              "node-wasm/full/beta10-full/multilingual-context/wholeInput:regression",
+              "node-wasm/full/beta10-full/multilingual-context/incremental:regression",
+              "node-wasm/common/global/validator-heavy/wholeInput:regression",
+              "node-wasm/common/global/validator-heavy/incremental:regression",
+              "node-wasm/common/global/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/global/multilingual-context/wholeInput:regression",
+              "node-wasm/common/global/multilingual-context/incremental:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/memory/nodePeakRss:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/memory/nodeRetainedRss:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/memory/nodeRetainedRss:regression",
+              "node-wasm/common/beta10-full/validator-heavy/wholeInput:regression",
+              "node-wasm/common/beta10-full/validator-heavy/incremental:regression",
+              "node-wasm/common/beta10-full/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/beta10-full/validator-heavy/memory/nodeRetainedRss:regression",
+              "node-wasm/common/beta10-full/multilingual-context/wholeInput:regression",
+              "node-wasm/common/beta10-full/multilingual-context/incremental:regression",
+              "chromium-wasm/full/global/validator-heavy/initialize:regression",
+              "chromium-wasm/full/global/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/global/validator-heavy/incremental:regression",
+              "chromium-wasm/full/global/multilingual-context/initialize:regression",
+              "chromium-wasm/full/global/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/global/multilingual-context/incremental:regression",
+              "chromium-wasm/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/initialize:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/initialize:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/initialize:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/initialize:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/incremental:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/initialize:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/incremental:regression",
+              "chromium-wasm/common/global/validator-heavy/initialize:regression",
+              "chromium-wasm/common/global/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/global/validator-heavy/incremental:regression",
+              "chromium-wasm/common/global/multilingual-context/initialize:regression",
+              "chromium-wasm/common/global/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/global/multilingual-context/incremental:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/initialize:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/initialize:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/initialize:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/initialize:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/initialize:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/incremental:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/initialize:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/incremental:regression",
+              "python/full/global/validator-heavy/wholeInput:regression",
+              "python/full/global/validator-heavy/incremental:regression",
+              "python/full/global/multilingual-context/wholeInput:regression",
+              "python/full/global/multilingual-context/incremental:regression",
+              "python/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "python/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "python/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "python/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "python/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "python/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "python/full/us-jurisdiction/validator-heavy/memory/processPeakRss:regression",
+              "python/full/us-jurisdiction/validator-heavy/memory/processRetainedRss:regression",
+              "python/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "python/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "python/full/beta10-full/validator-heavy/wholeInput:regression",
+              "python/full/beta10-full/validator-heavy/incremental:regression",
+              "python/full/beta10-full/multilingual-context/wholeInput:regression",
+              "python/full/beta10-full/multilingual-context/incremental:regression",
+              "cli/full/global/validator-heavy/wholeInput:regression",
+              "cli/full/global/multilingual-context/wholeInput:regression",
+              "cli/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "cli/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "cli/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "cli/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "cli/full/beta10-full/validator-heavy/wholeInput:regression",
+              "cli/full/beta10-full/multilingual-context/wholeInput:regression"
+            ],
+            "sizeRows": [
+              {
+                "key": "qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret",
+                "deltaBytes": 429696,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe",
+                "deltaBytes": 403456,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret",
+                "deltaBytes": 443560,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret",
+                "deltaBytes": 448544,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe",
+                "deltaBytes": 457728,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret",
+                "deltaBytes": 470328,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node",
+                "deltaBytes": 419008,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node",
+                "deltaBytes": 418816,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node",
+                "deltaBytes": 454664,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node",
+                "deltaBytes": 454664,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node",
+                "deltaBytes": 470752,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node",
+                "deltaBytes": 474112,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node",
+                "deltaBytes": 501328,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node",
+                "deltaBytes": 500688,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz",
+                "deltaBytes": 145872,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl",
+                "deltaBytes": 214322,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl",
+                "deltaBytes": 215237,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                "deltaBytes": 218910,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl",
+                "deltaBytes": 218167,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl",
+                "deltaBytes": 226295,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl",
+                "deltaBytes": 226864,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+                "deltaBytes": 228789,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl",
+                "deltaBytes": 232112,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm",
+                "deltaBytes": 96241,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm",
+                "deltaBytes": 61388,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate",
+                "deltaBytes": 143385,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:core/unpacked",
+                "deltaBytes": 8533,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:node/packed",
+                "deltaBytes": 226269,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:node/unpacked",
+                "deltaBytes": 501329,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:wasm/packed",
+                "deltaBytes": 643241,
+                "trigger": "size/npm/wasm/packed",
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:wasm/unpacked",
+                "deltaBytes": 1796168,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/raw",
+                "deltaBytes": 96241,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/gzip9",
+                "deltaBytes": 35885,
+                "trigger": "size/wasm/full/gzip",
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/brotli11",
+                "deltaBytes": 25920,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/raw",
+                "deltaBytes": 61388,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/gzip9",
+                "deltaBytes": 21632,
+                "trigger": "size/wasm/common/gzip",
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/brotli11",
+                "deltaBytes": 16843,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:full/bytes",
+                "deltaBytes": 969178,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:full/gzip9",
+                "deltaBytes": 357736,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:common/bytes",
+                "deltaBytes": 748522,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:common/gzip9",
+                "deltaBytes": 281859,
+                "trigger": null,
+                "acceptedBy": null
+              }
+            ]
+          }
         },
         {
           "id": "trusted-accounting-source",
@@ -2444,8 +2879,443 @@
         },
         {
           "id": "profile-cost",
-          "status": "unresolved",
-          "reason": "The #286 profile-cost protocol runs only as the official Linux GitHub Actions workflow (A/A, threshold freeze, candidate, size) on a reviewed plan for this candidate; qualification/pii-profile-cost-v2.json re-freezes it for pii-context/v2 and a split PII Wasm artifact, and it has not been dispatched for this candidate."
+          "status": "not-met",
+          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 0 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/packed +643241 B (needs size/npm/wasm/packed), npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/gzip9 +35885 B (needs size/wasm/full/gzip), wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/gzip9 +21632 B (needs size/wasm/common/gzip), wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
+          "evidence": {
+            "runtimeCells": [
+              "rust-native/full/global/validator-heavy/wholeInput:regression",
+              "rust-native/full/global/validator-heavy/incremental:regression",
+              "rust-native/full/global/multilingual-context/wholeInput:regression",
+              "rust-native/full/global/multilingual-context/incremental:regression",
+              "rust-native/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "rust-native/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "rust-native/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "rust-native/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "rust-native/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "rust-native/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "rust-native/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "rust-native/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "rust-native/full/beta10-full/validator-heavy/wholeInput:regression",
+              "rust-native/full/beta10-full/validator-heavy/incremental:regression",
+              "rust-native/full/beta10-full/multilingual-context/wholeInput:regression",
+              "rust-native/full/beta10-full/multilingual-context/incremental:regression",
+              "rust-native/common/global/validator-heavy/wholeInput:regression",
+              "rust-native/common/global/validator-heavy/incremental:regression",
+              "rust-native/common/global/multilingual-context/wholeInput:regression",
+              "rust-native/common/global/multilingual-context/incremental:regression",
+              "rust-native/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "rust-native/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "rust-native/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "rust-native/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "rust-native/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "rust-native/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "rust-native/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "rust-native/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "rust-native/common/beta10-full/validator-heavy/wholeInput:regression",
+              "rust-native/common/beta10-full/validator-heavy/incremental:regression",
+              "rust-native/common/beta10-full/multilingual-context/wholeInput:regression",
+              "rust-native/common/beta10-full/multilingual-context/incremental:regression",
+              "node-native/full/global/validator-heavy/wholeInput:regression",
+              "node-native/full/global/validator-heavy/incremental:regression",
+              "node-native/full/global/multilingual-context/wholeInput:regression",
+              "node-native/full/global/multilingual-context/incremental:regression",
+              "node-native/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-native/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-native/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-native/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-native/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-native/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-native/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-native/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-native/full/beta10-full/validator-heavy/wholeInput:regression",
+              "node-native/full/beta10-full/validator-heavy/incremental:regression",
+              "node-native/full/beta10-full/multilingual-context/wholeInput:regression",
+              "node-native/full/beta10-full/multilingual-context/incremental:regression",
+              "node-native/common/global/validator-heavy/wholeInput:regression",
+              "node-native/common/global/validator-heavy/incremental:regression",
+              "node-native/common/global/multilingual-context/wholeInput:regression",
+              "node-native/common/global/multilingual-context/incremental:regression",
+              "node-native/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-native/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-native/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-native/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-native/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-native/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-native/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-native/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-native/common/beta10-full/validator-heavy/wholeInput:regression",
+              "node-native/common/beta10-full/validator-heavy/incremental:regression",
+              "node-native/common/beta10-full/multilingual-context/wholeInput:regression",
+              "node-native/common/beta10-full/multilingual-context/incremental:regression",
+              "node-wasm/full/global/validator-heavy/wholeInput:regression",
+              "node-wasm/full/global/validator-heavy/incremental:regression",
+              "node-wasm/full/global/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/global/multilingual-context/wholeInput:regression",
+              "node-wasm/full/global/multilingual-context/incremental:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/memory/nodePeakRss:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-wasm/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-wasm/full/beta10-full/validator-heavy/wholeInput:regression",
+              "node-wasm/full/beta10-full/validator-heavy/incremental:regression",
+              "node-wasm/full/beta10-full/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/beta10-full/validator-heavy/memory/nodeRetainedRss:regression",
+              "node-wasm/full/beta10-full/multilingual-context/wholeInput:regression",
+              "node-wasm/full/beta10-full/multilingual-context/incremental:regression",
+              "node-wasm/common/global/validator-heavy/wholeInput:regression",
+              "node-wasm/common/global/validator-heavy/incremental:regression",
+              "node-wasm/common/global/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/global/multilingual-context/wholeInput:regression",
+              "node-wasm/common/global/multilingual-context/incremental:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/memory/nodePeakRss:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/memory/nodeRetainedRss:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/memory/nodeRetainedRss:regression",
+              "node-wasm/common/beta10-full/validator-heavy/wholeInput:regression",
+              "node-wasm/common/beta10-full/validator-heavy/incremental:regression",
+              "node-wasm/common/beta10-full/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/beta10-full/validator-heavy/memory/nodeRetainedRss:regression",
+              "node-wasm/common/beta10-full/multilingual-context/wholeInput:regression",
+              "node-wasm/common/beta10-full/multilingual-context/incremental:regression",
+              "chromium-wasm/full/global/validator-heavy/initialize:regression",
+              "chromium-wasm/full/global/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/global/validator-heavy/incremental:regression",
+              "chromium-wasm/full/global/multilingual-context/initialize:regression",
+              "chromium-wasm/full/global/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/global/multilingual-context/incremental:regression",
+              "chromium-wasm/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/initialize:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/initialize:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/initialize:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/initialize:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/incremental:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/initialize:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/incremental:regression",
+              "chromium-wasm/common/global/validator-heavy/initialize:regression",
+              "chromium-wasm/common/global/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/global/validator-heavy/incremental:regression",
+              "chromium-wasm/common/global/multilingual-context/initialize:regression",
+              "chromium-wasm/common/global/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/global/multilingual-context/incremental:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/initialize:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/initialize:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/initialize:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/initialize:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/initialize:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/incremental:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/initialize:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/incremental:regression",
+              "python/full/global/validator-heavy/wholeInput:regression",
+              "python/full/global/validator-heavy/incremental:regression",
+              "python/full/global/multilingual-context/wholeInput:regression",
+              "python/full/global/multilingual-context/incremental:regression",
+              "python/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "python/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "python/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "python/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "python/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "python/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "python/full/us-jurisdiction/validator-heavy/memory/processPeakRss:regression",
+              "python/full/us-jurisdiction/validator-heavy/memory/processRetainedRss:regression",
+              "python/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "python/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "python/full/beta10-full/validator-heavy/wholeInput:regression",
+              "python/full/beta10-full/validator-heavy/incremental:regression",
+              "python/full/beta10-full/multilingual-context/wholeInput:regression",
+              "python/full/beta10-full/multilingual-context/incremental:regression",
+              "cli/full/global/validator-heavy/wholeInput:regression",
+              "cli/full/global/multilingual-context/wholeInput:regression",
+              "cli/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "cli/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "cli/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "cli/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "cli/full/beta10-full/validator-heavy/wholeInput:regression",
+              "cli/full/beta10-full/multilingual-context/wholeInput:regression"
+            ],
+            "sizeRows": [
+              {
+                "key": "qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret",
+                "deltaBytes": 429696,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe",
+                "deltaBytes": 403456,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret",
+                "deltaBytes": 443560,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret",
+                "deltaBytes": 448544,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe",
+                "deltaBytes": 457728,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret",
+                "deltaBytes": 470328,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node",
+                "deltaBytes": 419008,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node",
+                "deltaBytes": 418816,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node",
+                "deltaBytes": 454664,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node",
+                "deltaBytes": 454664,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node",
+                "deltaBytes": 470752,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node",
+                "deltaBytes": 474112,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node",
+                "deltaBytes": 501328,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node",
+                "deltaBytes": 500688,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz",
+                "deltaBytes": 145872,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl",
+                "deltaBytes": 214322,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl",
+                "deltaBytes": 215237,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                "deltaBytes": 218910,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl",
+                "deltaBytes": 218167,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl",
+                "deltaBytes": 226295,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl",
+                "deltaBytes": 226864,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+                "deltaBytes": 228789,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl",
+                "deltaBytes": 232112,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm",
+                "deltaBytes": 96241,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm",
+                "deltaBytes": 61388,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate",
+                "deltaBytes": 143385,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:core/unpacked",
+                "deltaBytes": 8533,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:node/packed",
+                "deltaBytes": 226269,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:node/unpacked",
+                "deltaBytes": 501329,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:wasm/packed",
+                "deltaBytes": 643241,
+                "trigger": "size/npm/wasm/packed",
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:wasm/unpacked",
+                "deltaBytes": 1796168,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/raw",
+                "deltaBytes": 96241,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/gzip9",
+                "deltaBytes": 35885,
+                "trigger": "size/wasm/full/gzip",
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/brotli11",
+                "deltaBytes": 25920,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/raw",
+                "deltaBytes": 61388,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/gzip9",
+                "deltaBytes": 21632,
+                "trigger": "size/wasm/common/gzip",
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/brotli11",
+                "deltaBytes": 16843,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:full/bytes",
+                "deltaBytes": 969178,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:full/gzip9",
+                "deltaBytes": 357736,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:common/bytes",
+                "deltaBytes": 748522,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:common/gzip9",
+                "deltaBytes": 281859,
+                "trigger": null,
+                "acceptedBy": null
+              }
+            ]
+          }
         },
         {
           "id": "trusted-accounting-source",
@@ -3451,8 +4321,443 @@
         },
         {
           "id": "profile-cost",
-          "status": "unresolved",
-          "reason": "The #286 profile-cost protocol runs only as the official Linux GitHub Actions workflow (A/A, threshold freeze, candidate, size) on a reviewed plan for this candidate; qualification/pii-profile-cost-v2.json re-freezes it for pii-context/v2 and a split PII Wasm artifact, and it has not been dispatched for this candidate."
+          "status": "not-met",
+          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 0 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/packed +643241 B (needs size/npm/wasm/packed), npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/gzip9 +35885 B (needs size/wasm/full/gzip), wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/gzip9 +21632 B (needs size/wasm/common/gzip), wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
+          "evidence": {
+            "runtimeCells": [
+              "rust-native/full/global/validator-heavy/wholeInput:regression",
+              "rust-native/full/global/validator-heavy/incremental:regression",
+              "rust-native/full/global/multilingual-context/wholeInput:regression",
+              "rust-native/full/global/multilingual-context/incremental:regression",
+              "rust-native/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "rust-native/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "rust-native/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "rust-native/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "rust-native/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "rust-native/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "rust-native/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "rust-native/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "rust-native/full/beta10-full/validator-heavy/wholeInput:regression",
+              "rust-native/full/beta10-full/validator-heavy/incremental:regression",
+              "rust-native/full/beta10-full/multilingual-context/wholeInput:regression",
+              "rust-native/full/beta10-full/multilingual-context/incremental:regression",
+              "rust-native/common/global/validator-heavy/wholeInput:regression",
+              "rust-native/common/global/validator-heavy/incremental:regression",
+              "rust-native/common/global/multilingual-context/wholeInput:regression",
+              "rust-native/common/global/multilingual-context/incremental:regression",
+              "rust-native/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "rust-native/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "rust-native/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "rust-native/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "rust-native/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "rust-native/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "rust-native/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "rust-native/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "rust-native/common/beta10-full/validator-heavy/wholeInput:regression",
+              "rust-native/common/beta10-full/validator-heavy/incremental:regression",
+              "rust-native/common/beta10-full/multilingual-context/wholeInput:regression",
+              "rust-native/common/beta10-full/multilingual-context/incremental:regression",
+              "node-native/full/global/validator-heavy/wholeInput:regression",
+              "node-native/full/global/validator-heavy/incremental:regression",
+              "node-native/full/global/multilingual-context/wholeInput:regression",
+              "node-native/full/global/multilingual-context/incremental:regression",
+              "node-native/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-native/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-native/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-native/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-native/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-native/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-native/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-native/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-native/full/beta10-full/validator-heavy/wholeInput:regression",
+              "node-native/full/beta10-full/validator-heavy/incremental:regression",
+              "node-native/full/beta10-full/multilingual-context/wholeInput:regression",
+              "node-native/full/beta10-full/multilingual-context/incremental:regression",
+              "node-native/common/global/validator-heavy/wholeInput:regression",
+              "node-native/common/global/validator-heavy/incremental:regression",
+              "node-native/common/global/multilingual-context/wholeInput:regression",
+              "node-native/common/global/multilingual-context/incremental:regression",
+              "node-native/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-native/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-native/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-native/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-native/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-native/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-native/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-native/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-native/common/beta10-full/validator-heavy/wholeInput:regression",
+              "node-native/common/beta10-full/validator-heavy/incremental:regression",
+              "node-native/common/beta10-full/multilingual-context/wholeInput:regression",
+              "node-native/common/beta10-full/multilingual-context/incremental:regression",
+              "node-wasm/full/global/validator-heavy/wholeInput:regression",
+              "node-wasm/full/global/validator-heavy/incremental:regression",
+              "node-wasm/full/global/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/global/multilingual-context/wholeInput:regression",
+              "node-wasm/full/global/multilingual-context/incremental:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/memory/nodePeakRss:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-wasm/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-wasm/full/beta10-full/validator-heavy/wholeInput:regression",
+              "node-wasm/full/beta10-full/validator-heavy/incremental:regression",
+              "node-wasm/full/beta10-full/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/beta10-full/validator-heavy/memory/nodeRetainedRss:regression",
+              "node-wasm/full/beta10-full/multilingual-context/wholeInput:regression",
+              "node-wasm/full/beta10-full/multilingual-context/incremental:regression",
+              "node-wasm/common/global/validator-heavy/wholeInput:regression",
+              "node-wasm/common/global/validator-heavy/incremental:regression",
+              "node-wasm/common/global/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/global/multilingual-context/wholeInput:regression",
+              "node-wasm/common/global/multilingual-context/incremental:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/memory/nodePeakRss:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/memory/nodeRetainedRss:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/memory/nodeRetainedRss:regression",
+              "node-wasm/common/beta10-full/validator-heavy/wholeInput:regression",
+              "node-wasm/common/beta10-full/validator-heavy/incremental:regression",
+              "node-wasm/common/beta10-full/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/beta10-full/validator-heavy/memory/nodeRetainedRss:regression",
+              "node-wasm/common/beta10-full/multilingual-context/wholeInput:regression",
+              "node-wasm/common/beta10-full/multilingual-context/incremental:regression",
+              "chromium-wasm/full/global/validator-heavy/initialize:regression",
+              "chromium-wasm/full/global/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/global/validator-heavy/incremental:regression",
+              "chromium-wasm/full/global/multilingual-context/initialize:regression",
+              "chromium-wasm/full/global/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/global/multilingual-context/incremental:regression",
+              "chromium-wasm/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/initialize:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/initialize:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/initialize:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/initialize:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/incremental:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/initialize:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/incremental:regression",
+              "chromium-wasm/common/global/validator-heavy/initialize:regression",
+              "chromium-wasm/common/global/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/global/validator-heavy/incremental:regression",
+              "chromium-wasm/common/global/multilingual-context/initialize:regression",
+              "chromium-wasm/common/global/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/global/multilingual-context/incremental:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/initialize:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/initialize:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/initialize:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/initialize:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/initialize:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/incremental:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/initialize:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/incremental:regression",
+              "python/full/global/validator-heavy/wholeInput:regression",
+              "python/full/global/validator-heavy/incremental:regression",
+              "python/full/global/multilingual-context/wholeInput:regression",
+              "python/full/global/multilingual-context/incremental:regression",
+              "python/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "python/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "python/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "python/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "python/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "python/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "python/full/us-jurisdiction/validator-heavy/memory/processPeakRss:regression",
+              "python/full/us-jurisdiction/validator-heavy/memory/processRetainedRss:regression",
+              "python/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "python/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "python/full/beta10-full/validator-heavy/wholeInput:regression",
+              "python/full/beta10-full/validator-heavy/incremental:regression",
+              "python/full/beta10-full/multilingual-context/wholeInput:regression",
+              "python/full/beta10-full/multilingual-context/incremental:regression",
+              "cli/full/global/validator-heavy/wholeInput:regression",
+              "cli/full/global/multilingual-context/wholeInput:regression",
+              "cli/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "cli/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "cli/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "cli/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "cli/full/beta10-full/validator-heavy/wholeInput:regression",
+              "cli/full/beta10-full/multilingual-context/wholeInput:regression"
+            ],
+            "sizeRows": [
+              {
+                "key": "qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret",
+                "deltaBytes": 429696,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe",
+                "deltaBytes": 403456,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret",
+                "deltaBytes": 443560,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret",
+                "deltaBytes": 448544,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe",
+                "deltaBytes": 457728,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret",
+                "deltaBytes": 470328,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node",
+                "deltaBytes": 419008,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node",
+                "deltaBytes": 418816,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node",
+                "deltaBytes": 454664,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node",
+                "deltaBytes": 454664,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node",
+                "deltaBytes": 470752,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node",
+                "deltaBytes": 474112,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node",
+                "deltaBytes": 501328,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node",
+                "deltaBytes": 500688,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz",
+                "deltaBytes": 145872,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl",
+                "deltaBytes": 214322,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl",
+                "deltaBytes": 215237,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                "deltaBytes": 218910,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl",
+                "deltaBytes": 218167,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl",
+                "deltaBytes": 226295,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl",
+                "deltaBytes": 226864,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+                "deltaBytes": 228789,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl",
+                "deltaBytes": 232112,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm",
+                "deltaBytes": 96241,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm",
+                "deltaBytes": 61388,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate",
+                "deltaBytes": 143385,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:core/unpacked",
+                "deltaBytes": 8533,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:node/packed",
+                "deltaBytes": 226269,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:node/unpacked",
+                "deltaBytes": 501329,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:wasm/packed",
+                "deltaBytes": 643241,
+                "trigger": "size/npm/wasm/packed",
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:wasm/unpacked",
+                "deltaBytes": 1796168,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/raw",
+                "deltaBytes": 96241,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/gzip9",
+                "deltaBytes": 35885,
+                "trigger": "size/wasm/full/gzip",
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/brotli11",
+                "deltaBytes": 25920,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/raw",
+                "deltaBytes": 61388,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/gzip9",
+                "deltaBytes": 21632,
+                "trigger": "size/wasm/common/gzip",
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/brotli11",
+                "deltaBytes": 16843,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:full/bytes",
+                "deltaBytes": 969178,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:full/gzip9",
+                "deltaBytes": 357736,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:common/bytes",
+                "deltaBytes": 748522,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:common/gzip9",
+                "deltaBytes": 281859,
+                "trigger": null,
+                "acceptedBy": null
+              }
+            ]
+          }
         },
         {
           "id": "trusted-accounting-source",
@@ -4410,8 +5715,443 @@
         },
         {
           "id": "profile-cost",
-          "status": "unresolved",
-          "reason": "The #286 profile-cost protocol runs only as the official Linux GitHub Actions workflow (A/A, threshold freeze, candidate, size) on a reviewed plan for this candidate; qualification/pii-profile-cost-v2.json re-freezes it for pii-context/v2 and a split PII Wasm artifact, and it has not been dispatched for this candidate."
+          "status": "not-met",
+          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 0 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/packed +643241 B (needs size/npm/wasm/packed), npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/gzip9 +35885 B (needs size/wasm/full/gzip), wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/gzip9 +21632 B (needs size/wasm/common/gzip), wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
+          "evidence": {
+            "runtimeCells": [
+              "rust-native/full/global/validator-heavy/wholeInput:regression",
+              "rust-native/full/global/validator-heavy/incremental:regression",
+              "rust-native/full/global/multilingual-context/wholeInput:regression",
+              "rust-native/full/global/multilingual-context/incremental:regression",
+              "rust-native/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "rust-native/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "rust-native/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "rust-native/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "rust-native/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "rust-native/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "rust-native/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "rust-native/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "rust-native/full/beta10-full/validator-heavy/wholeInput:regression",
+              "rust-native/full/beta10-full/validator-heavy/incremental:regression",
+              "rust-native/full/beta10-full/multilingual-context/wholeInput:regression",
+              "rust-native/full/beta10-full/multilingual-context/incremental:regression",
+              "rust-native/common/global/validator-heavy/wholeInput:regression",
+              "rust-native/common/global/validator-heavy/incremental:regression",
+              "rust-native/common/global/multilingual-context/wholeInput:regression",
+              "rust-native/common/global/multilingual-context/incremental:regression",
+              "rust-native/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "rust-native/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "rust-native/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "rust-native/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "rust-native/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "rust-native/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "rust-native/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "rust-native/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "rust-native/common/beta10-full/validator-heavy/wholeInput:regression",
+              "rust-native/common/beta10-full/validator-heavy/incremental:regression",
+              "rust-native/common/beta10-full/multilingual-context/wholeInput:regression",
+              "rust-native/common/beta10-full/multilingual-context/incremental:regression",
+              "node-native/full/global/validator-heavy/wholeInput:regression",
+              "node-native/full/global/validator-heavy/incremental:regression",
+              "node-native/full/global/multilingual-context/wholeInput:regression",
+              "node-native/full/global/multilingual-context/incremental:regression",
+              "node-native/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-native/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-native/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-native/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-native/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-native/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-native/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-native/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-native/full/beta10-full/validator-heavy/wholeInput:regression",
+              "node-native/full/beta10-full/validator-heavy/incremental:regression",
+              "node-native/full/beta10-full/multilingual-context/wholeInput:regression",
+              "node-native/full/beta10-full/multilingual-context/incremental:regression",
+              "node-native/common/global/validator-heavy/wholeInput:regression",
+              "node-native/common/global/validator-heavy/incremental:regression",
+              "node-native/common/global/multilingual-context/wholeInput:regression",
+              "node-native/common/global/multilingual-context/incremental:regression",
+              "node-native/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-native/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-native/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-native/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-native/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-native/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-native/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-native/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-native/common/beta10-full/validator-heavy/wholeInput:regression",
+              "node-native/common/beta10-full/validator-heavy/incremental:regression",
+              "node-native/common/beta10-full/multilingual-context/wholeInput:regression",
+              "node-native/common/beta10-full/multilingual-context/incremental:regression",
+              "node-wasm/full/global/validator-heavy/wholeInput:regression",
+              "node-wasm/full/global/validator-heavy/incremental:regression",
+              "node-wasm/full/global/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/global/multilingual-context/wholeInput:regression",
+              "node-wasm/full/global/multilingual-context/incremental:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/memory/nodePeakRss:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-wasm/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-wasm/full/beta10-full/validator-heavy/wholeInput:regression",
+              "node-wasm/full/beta10-full/validator-heavy/incremental:regression",
+              "node-wasm/full/beta10-full/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/beta10-full/validator-heavy/memory/nodeRetainedRss:regression",
+              "node-wasm/full/beta10-full/multilingual-context/wholeInput:regression",
+              "node-wasm/full/beta10-full/multilingual-context/incremental:regression",
+              "node-wasm/common/global/validator-heavy/wholeInput:regression",
+              "node-wasm/common/global/validator-heavy/incremental:regression",
+              "node-wasm/common/global/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/global/multilingual-context/wholeInput:regression",
+              "node-wasm/common/global/multilingual-context/incremental:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/memory/nodePeakRss:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/memory/nodeRetainedRss:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/memory/nodeRetainedRss:regression",
+              "node-wasm/common/beta10-full/validator-heavy/wholeInput:regression",
+              "node-wasm/common/beta10-full/validator-heavy/incremental:regression",
+              "node-wasm/common/beta10-full/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/beta10-full/validator-heavy/memory/nodeRetainedRss:regression",
+              "node-wasm/common/beta10-full/multilingual-context/wholeInput:regression",
+              "node-wasm/common/beta10-full/multilingual-context/incremental:regression",
+              "chromium-wasm/full/global/validator-heavy/initialize:regression",
+              "chromium-wasm/full/global/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/global/validator-heavy/incremental:regression",
+              "chromium-wasm/full/global/multilingual-context/initialize:regression",
+              "chromium-wasm/full/global/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/global/multilingual-context/incremental:regression",
+              "chromium-wasm/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/initialize:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/initialize:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/initialize:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/initialize:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/incremental:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/initialize:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/incremental:regression",
+              "chromium-wasm/common/global/validator-heavy/initialize:regression",
+              "chromium-wasm/common/global/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/global/validator-heavy/incremental:regression",
+              "chromium-wasm/common/global/multilingual-context/initialize:regression",
+              "chromium-wasm/common/global/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/global/multilingual-context/incremental:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/initialize:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/initialize:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/initialize:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/initialize:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/initialize:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/incremental:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/initialize:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/incremental:regression",
+              "python/full/global/validator-heavy/wholeInput:regression",
+              "python/full/global/validator-heavy/incremental:regression",
+              "python/full/global/multilingual-context/wholeInput:regression",
+              "python/full/global/multilingual-context/incremental:regression",
+              "python/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "python/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "python/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "python/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "python/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "python/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "python/full/us-jurisdiction/validator-heavy/memory/processPeakRss:regression",
+              "python/full/us-jurisdiction/validator-heavy/memory/processRetainedRss:regression",
+              "python/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "python/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "python/full/beta10-full/validator-heavy/wholeInput:regression",
+              "python/full/beta10-full/validator-heavy/incremental:regression",
+              "python/full/beta10-full/multilingual-context/wholeInput:regression",
+              "python/full/beta10-full/multilingual-context/incremental:regression",
+              "cli/full/global/validator-heavy/wholeInput:regression",
+              "cli/full/global/multilingual-context/wholeInput:regression",
+              "cli/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "cli/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "cli/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "cli/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "cli/full/beta10-full/validator-heavy/wholeInput:regression",
+              "cli/full/beta10-full/multilingual-context/wholeInput:regression"
+            ],
+            "sizeRows": [
+              {
+                "key": "qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret",
+                "deltaBytes": 429696,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe",
+                "deltaBytes": 403456,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret",
+                "deltaBytes": 443560,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret",
+                "deltaBytes": 448544,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe",
+                "deltaBytes": 457728,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret",
+                "deltaBytes": 470328,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node",
+                "deltaBytes": 419008,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node",
+                "deltaBytes": 418816,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node",
+                "deltaBytes": 454664,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node",
+                "deltaBytes": 454664,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node",
+                "deltaBytes": 470752,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node",
+                "deltaBytes": 474112,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node",
+                "deltaBytes": 501328,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node",
+                "deltaBytes": 500688,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz",
+                "deltaBytes": 145872,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl",
+                "deltaBytes": 214322,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl",
+                "deltaBytes": 215237,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                "deltaBytes": 218910,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl",
+                "deltaBytes": 218167,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl",
+                "deltaBytes": 226295,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl",
+                "deltaBytes": 226864,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+                "deltaBytes": 228789,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl",
+                "deltaBytes": 232112,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm",
+                "deltaBytes": 96241,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm",
+                "deltaBytes": 61388,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate",
+                "deltaBytes": 143385,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:core/unpacked",
+                "deltaBytes": 8533,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:node/packed",
+                "deltaBytes": 226269,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:node/unpacked",
+                "deltaBytes": 501329,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:wasm/packed",
+                "deltaBytes": 643241,
+                "trigger": "size/npm/wasm/packed",
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:wasm/unpacked",
+                "deltaBytes": 1796168,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/raw",
+                "deltaBytes": 96241,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/gzip9",
+                "deltaBytes": 35885,
+                "trigger": "size/wasm/full/gzip",
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/brotli11",
+                "deltaBytes": 25920,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/raw",
+                "deltaBytes": 61388,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/gzip9",
+                "deltaBytes": 21632,
+                "trigger": "size/wasm/common/gzip",
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/brotli11",
+                "deltaBytes": 16843,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:full/bytes",
+                "deltaBytes": 969178,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:full/gzip9",
+                "deltaBytes": 357736,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:common/bytes",
+                "deltaBytes": 748522,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:common/gzip9",
+                "deltaBytes": 281859,
+                "trigger": null,
+                "acceptedBy": null
+              }
+            ]
+          }
         },
         {
           "id": "trusted-accounting-source",
@@ -5486,8 +7226,443 @@
         },
         {
           "id": "profile-cost",
-          "status": "unresolved",
-          "reason": "The #286 profile-cost protocol runs only as the official Linux GitHub Actions workflow (A/A, threshold freeze, candidate, size) on a reviewed plan for this candidate; qualification/pii-profile-cost-v2.json re-freezes it for pii-context/v2 and a split PII Wasm artifact, and it has not been dispatched for this candidate."
+          "status": "not-met",
+          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 0 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/packed +643241 B (needs size/npm/wasm/packed), npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/gzip9 +35885 B (needs size/wasm/full/gzip), wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/gzip9 +21632 B (needs size/wasm/common/gzip), wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
+          "evidence": {
+            "runtimeCells": [
+              "rust-native/full/global/validator-heavy/wholeInput:regression",
+              "rust-native/full/global/validator-heavy/incremental:regression",
+              "rust-native/full/global/multilingual-context/wholeInput:regression",
+              "rust-native/full/global/multilingual-context/incremental:regression",
+              "rust-native/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "rust-native/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "rust-native/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "rust-native/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "rust-native/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "rust-native/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "rust-native/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "rust-native/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "rust-native/full/beta10-full/validator-heavy/wholeInput:regression",
+              "rust-native/full/beta10-full/validator-heavy/incremental:regression",
+              "rust-native/full/beta10-full/multilingual-context/wholeInput:regression",
+              "rust-native/full/beta10-full/multilingual-context/incremental:regression",
+              "rust-native/common/global/validator-heavy/wholeInput:regression",
+              "rust-native/common/global/validator-heavy/incremental:regression",
+              "rust-native/common/global/multilingual-context/wholeInput:regression",
+              "rust-native/common/global/multilingual-context/incremental:regression",
+              "rust-native/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "rust-native/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "rust-native/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "rust-native/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "rust-native/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "rust-native/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "rust-native/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "rust-native/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "rust-native/common/beta10-full/validator-heavy/wholeInput:regression",
+              "rust-native/common/beta10-full/validator-heavy/incremental:regression",
+              "rust-native/common/beta10-full/multilingual-context/wholeInput:regression",
+              "rust-native/common/beta10-full/multilingual-context/incremental:regression",
+              "node-native/full/global/validator-heavy/wholeInput:regression",
+              "node-native/full/global/validator-heavy/incremental:regression",
+              "node-native/full/global/multilingual-context/wholeInput:regression",
+              "node-native/full/global/multilingual-context/incremental:regression",
+              "node-native/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-native/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-native/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-native/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-native/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-native/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-native/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-native/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-native/full/beta10-full/validator-heavy/wholeInput:regression",
+              "node-native/full/beta10-full/validator-heavy/incremental:regression",
+              "node-native/full/beta10-full/multilingual-context/wholeInput:regression",
+              "node-native/full/beta10-full/multilingual-context/incremental:regression",
+              "node-native/common/global/validator-heavy/wholeInput:regression",
+              "node-native/common/global/validator-heavy/incremental:regression",
+              "node-native/common/global/multilingual-context/wholeInput:regression",
+              "node-native/common/global/multilingual-context/incremental:regression",
+              "node-native/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-native/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-native/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-native/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-native/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-native/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-native/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-native/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-native/common/beta10-full/validator-heavy/wholeInput:regression",
+              "node-native/common/beta10-full/validator-heavy/incremental:regression",
+              "node-native/common/beta10-full/multilingual-context/wholeInput:regression",
+              "node-native/common/beta10-full/multilingual-context/incremental:regression",
+              "node-wasm/full/global/validator-heavy/wholeInput:regression",
+              "node-wasm/full/global/validator-heavy/incremental:regression",
+              "node-wasm/full/global/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/global/multilingual-context/wholeInput:regression",
+              "node-wasm/full/global/multilingual-context/incremental:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/memory/nodePeakRss:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-wasm/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-wasm/full/beta10-full/validator-heavy/wholeInput:regression",
+              "node-wasm/full/beta10-full/validator-heavy/incremental:regression",
+              "node-wasm/full/beta10-full/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/beta10-full/validator-heavy/memory/nodeRetainedRss:regression",
+              "node-wasm/full/beta10-full/multilingual-context/wholeInput:regression",
+              "node-wasm/full/beta10-full/multilingual-context/incremental:regression",
+              "node-wasm/common/global/validator-heavy/wholeInput:regression",
+              "node-wasm/common/global/validator-heavy/incremental:regression",
+              "node-wasm/common/global/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/global/multilingual-context/wholeInput:regression",
+              "node-wasm/common/global/multilingual-context/incremental:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/memory/nodePeakRss:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/memory/nodeRetainedRss:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/memory/nodeRetainedRss:regression",
+              "node-wasm/common/beta10-full/validator-heavy/wholeInput:regression",
+              "node-wasm/common/beta10-full/validator-heavy/incremental:regression",
+              "node-wasm/common/beta10-full/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/beta10-full/validator-heavy/memory/nodeRetainedRss:regression",
+              "node-wasm/common/beta10-full/multilingual-context/wholeInput:regression",
+              "node-wasm/common/beta10-full/multilingual-context/incremental:regression",
+              "chromium-wasm/full/global/validator-heavy/initialize:regression",
+              "chromium-wasm/full/global/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/global/validator-heavy/incremental:regression",
+              "chromium-wasm/full/global/multilingual-context/initialize:regression",
+              "chromium-wasm/full/global/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/global/multilingual-context/incremental:regression",
+              "chromium-wasm/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/initialize:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/initialize:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/initialize:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/initialize:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/incremental:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/initialize:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/incremental:regression",
+              "chromium-wasm/common/global/validator-heavy/initialize:regression",
+              "chromium-wasm/common/global/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/global/validator-heavy/incremental:regression",
+              "chromium-wasm/common/global/multilingual-context/initialize:regression",
+              "chromium-wasm/common/global/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/global/multilingual-context/incremental:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/initialize:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/initialize:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/initialize:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/initialize:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/initialize:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/incremental:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/initialize:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/incremental:regression",
+              "python/full/global/validator-heavy/wholeInput:regression",
+              "python/full/global/validator-heavy/incremental:regression",
+              "python/full/global/multilingual-context/wholeInput:regression",
+              "python/full/global/multilingual-context/incremental:regression",
+              "python/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "python/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "python/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "python/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "python/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "python/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "python/full/us-jurisdiction/validator-heavy/memory/processPeakRss:regression",
+              "python/full/us-jurisdiction/validator-heavy/memory/processRetainedRss:regression",
+              "python/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "python/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "python/full/beta10-full/validator-heavy/wholeInput:regression",
+              "python/full/beta10-full/validator-heavy/incremental:regression",
+              "python/full/beta10-full/multilingual-context/wholeInput:regression",
+              "python/full/beta10-full/multilingual-context/incremental:regression",
+              "cli/full/global/validator-heavy/wholeInput:regression",
+              "cli/full/global/multilingual-context/wholeInput:regression",
+              "cli/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "cli/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "cli/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "cli/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "cli/full/beta10-full/validator-heavy/wholeInput:regression",
+              "cli/full/beta10-full/multilingual-context/wholeInput:regression"
+            ],
+            "sizeRows": [
+              {
+                "key": "qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret",
+                "deltaBytes": 429696,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe",
+                "deltaBytes": 403456,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret",
+                "deltaBytes": 443560,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret",
+                "deltaBytes": 448544,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe",
+                "deltaBytes": 457728,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret",
+                "deltaBytes": 470328,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node",
+                "deltaBytes": 419008,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node",
+                "deltaBytes": 418816,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node",
+                "deltaBytes": 454664,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node",
+                "deltaBytes": 454664,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node",
+                "deltaBytes": 470752,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node",
+                "deltaBytes": 474112,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node",
+                "deltaBytes": 501328,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node",
+                "deltaBytes": 500688,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz",
+                "deltaBytes": 145872,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl",
+                "deltaBytes": 214322,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl",
+                "deltaBytes": 215237,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                "deltaBytes": 218910,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl",
+                "deltaBytes": 218167,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl",
+                "deltaBytes": 226295,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl",
+                "deltaBytes": 226864,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+                "deltaBytes": 228789,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl",
+                "deltaBytes": 232112,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm",
+                "deltaBytes": 96241,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm",
+                "deltaBytes": 61388,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate",
+                "deltaBytes": 143385,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:core/unpacked",
+                "deltaBytes": 8533,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:node/packed",
+                "deltaBytes": 226269,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:node/unpacked",
+                "deltaBytes": 501329,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:wasm/packed",
+                "deltaBytes": 643241,
+                "trigger": "size/npm/wasm/packed",
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:wasm/unpacked",
+                "deltaBytes": 1796168,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/raw",
+                "deltaBytes": 96241,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/gzip9",
+                "deltaBytes": 35885,
+                "trigger": "size/wasm/full/gzip",
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/brotli11",
+                "deltaBytes": 25920,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/raw",
+                "deltaBytes": 61388,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/gzip9",
+                "deltaBytes": 21632,
+                "trigger": "size/wasm/common/gzip",
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/brotli11",
+                "deltaBytes": 16843,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:full/bytes",
+                "deltaBytes": 969178,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:full/gzip9",
+                "deltaBytes": 357736,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:common/bytes",
+                "deltaBytes": 748522,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:common/gzip9",
+                "deltaBytes": 281859,
+                "trigger": null,
+                "acceptedBy": null
+              }
+            ]
+          }
         },
         {
           "id": "trusted-accounting-source",
@@ -6486,8 +8661,443 @@
         },
         {
           "id": "profile-cost",
-          "status": "unresolved",
-          "reason": "The #286 profile-cost protocol runs only as the official Linux GitHub Actions workflow (A/A, threshold freeze, candidate, size) on a reviewed plan for this candidate; qualification/pii-profile-cost-v2.json re-freezes it for pii-context/v2 and a split PII Wasm artifact, and it has not been dispatched for this candidate."
+          "status": "not-met",
+          "reason": "official runs aa:36573058748, aa:36573062171, aa:36573066459, freeze:36574462251, candidate:36574535156, size:36573070782; runtime/memory verdict regression (183 regression or invalid cells: rust-native/full/global/validator-heavy/wholeInput, rust-native/full/global/validator-heavy/incremental, rust-native/full/global/multilingual-context/wholeInput, rust-native/full/global/multilingual-context/incremental, rust-native/full/us-ssn-exact/validator-heavy/wholeInput, rust-native/full/us-ssn-exact/validator-heavy/incremental, rust-native/full/us-ssn-exact/multilingual-context/wholeInput, rust-native/full/us-ssn-exact/multilingual-context/incremental, rust-native/full/us-jurisdiction/validator-heavy/wholeInput, rust-native/full/us-jurisdiction/validator-heavy/incremental, rust-native/full/us-jurisdiction/multilingual-context/wholeInput, rust-native/full/us-jurisdiction/multilingual-context/incremental, …); size vs pre-PII f26dee26: 41 regressing rows, 0 covered by accepted-regressions.json; open: qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret +429696 B, qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe +403456 B, qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret +443560 B, qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret +448544 B, qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe +457728 B, qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret +470328 B, qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node +419008 B, qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node +418816 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node +454664 B, qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node +454664 B, qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node +470752 B, qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node +474112 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node +501328 B, qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node +500688 B, qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz +145872 B, qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl +214322 B, qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl +215237 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl +218910 B, qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl +218167 B, qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl +226295 B, qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl +226864 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl +228789 B, qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl +232112 B, qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm +96241 B, qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm +61388 B, qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate +143385 B, npmPackages:core/unpacked +8533 B, npmPackages:node/packed +226269 B, npmPackages:node/unpacked +501329 B, npmPackages:wasm/packed +643241 B (needs size/npm/wasm/packed), npmPackages:wasm/unpacked +1796168 B, wasmCompression:full/raw +96241 B, wasmCompression:full/gzip9 +35885 B (needs size/wasm/full/gzip), wasmCompression:full/brotli11 +25920 B, wasmCompression:common/raw +61388 B, wasmCompression:common/gzip9 +21632 B (needs size/wasm/common/gzip), wasmCompression:common/brotli11 +16843 B, browserBundle:full/bytes +969178 B, browserBundle:full/gzip9 +357736 B, browserBundle:common/bytes +748522 B, browserBundle:common/gzip9 +281859 B",
+          "evidence": {
+            "runtimeCells": [
+              "rust-native/full/global/validator-heavy/wholeInput:regression",
+              "rust-native/full/global/validator-heavy/incremental:regression",
+              "rust-native/full/global/multilingual-context/wholeInput:regression",
+              "rust-native/full/global/multilingual-context/incremental:regression",
+              "rust-native/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "rust-native/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "rust-native/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "rust-native/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "rust-native/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "rust-native/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "rust-native/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "rust-native/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "rust-native/full/beta10-full/validator-heavy/wholeInput:regression",
+              "rust-native/full/beta10-full/validator-heavy/incremental:regression",
+              "rust-native/full/beta10-full/multilingual-context/wholeInput:regression",
+              "rust-native/full/beta10-full/multilingual-context/incremental:regression",
+              "rust-native/common/global/validator-heavy/wholeInput:regression",
+              "rust-native/common/global/validator-heavy/incremental:regression",
+              "rust-native/common/global/multilingual-context/wholeInput:regression",
+              "rust-native/common/global/multilingual-context/incremental:regression",
+              "rust-native/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "rust-native/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "rust-native/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "rust-native/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "rust-native/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "rust-native/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "rust-native/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "rust-native/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "rust-native/common/beta10-full/validator-heavy/wholeInput:regression",
+              "rust-native/common/beta10-full/validator-heavy/incremental:regression",
+              "rust-native/common/beta10-full/multilingual-context/wholeInput:regression",
+              "rust-native/common/beta10-full/multilingual-context/incremental:regression",
+              "node-native/full/global/validator-heavy/wholeInput:regression",
+              "node-native/full/global/validator-heavy/incremental:regression",
+              "node-native/full/global/multilingual-context/wholeInput:regression",
+              "node-native/full/global/multilingual-context/incremental:regression",
+              "node-native/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-native/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-native/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-native/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-native/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-native/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-native/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-native/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-native/full/beta10-full/validator-heavy/wholeInput:regression",
+              "node-native/full/beta10-full/validator-heavy/incremental:regression",
+              "node-native/full/beta10-full/multilingual-context/wholeInput:regression",
+              "node-native/full/beta10-full/multilingual-context/incremental:regression",
+              "node-native/common/global/validator-heavy/wholeInput:regression",
+              "node-native/common/global/validator-heavy/incremental:regression",
+              "node-native/common/global/multilingual-context/wholeInput:regression",
+              "node-native/common/global/multilingual-context/incremental:regression",
+              "node-native/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-native/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-native/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-native/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-native/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-native/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-native/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-native/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-native/common/beta10-full/validator-heavy/wholeInput:regression",
+              "node-native/common/beta10-full/validator-heavy/incremental:regression",
+              "node-native/common/beta10-full/multilingual-context/wholeInput:regression",
+              "node-native/common/beta10-full/multilingual-context/incremental:regression",
+              "node-wasm/full/global/validator-heavy/wholeInput:regression",
+              "node-wasm/full/global/validator-heavy/incremental:regression",
+              "node-wasm/full/global/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/global/multilingual-context/wholeInput:regression",
+              "node-wasm/full/global/multilingual-context/incremental:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-wasm/full/us-ssn-exact/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-wasm/full/us-ssn-exact/multilingual-context/memory/nodePeakRss:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-wasm/full/us-jurisdiction/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-wasm/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-wasm/full/beta10-full/validator-heavy/wholeInput:regression",
+              "node-wasm/full/beta10-full/validator-heavy/incremental:regression",
+              "node-wasm/full/beta10-full/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/full/beta10-full/validator-heavy/memory/nodeRetainedRss:regression",
+              "node-wasm/full/beta10-full/multilingual-context/wholeInput:regression",
+              "node-wasm/full/beta10-full/multilingual-context/incremental:regression",
+              "node-wasm/common/global/validator-heavy/wholeInput:regression",
+              "node-wasm/common/global/validator-heavy/incremental:regression",
+              "node-wasm/common/global/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/global/multilingual-context/wholeInput:regression",
+              "node-wasm/common/global/multilingual-context/incremental:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "node-wasm/common/us-ssn-exact/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/memory/nodePeakRss:regression",
+              "node-wasm/common/us-ssn-exact/multilingual-context/memory/nodeRetainedRss:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "node-wasm/common/us-jurisdiction/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "node-wasm/common/us-jurisdiction/multilingual-context/memory/nodeRetainedRss:regression",
+              "node-wasm/common/beta10-full/validator-heavy/wholeInput:regression",
+              "node-wasm/common/beta10-full/validator-heavy/incremental:regression",
+              "node-wasm/common/beta10-full/validator-heavy/memory/nodePeakRss:regression",
+              "node-wasm/common/beta10-full/validator-heavy/memory/nodeRetainedRss:regression",
+              "node-wasm/common/beta10-full/multilingual-context/wholeInput:regression",
+              "node-wasm/common/beta10-full/multilingual-context/incremental:regression",
+              "chromium-wasm/full/global/validator-heavy/initialize:regression",
+              "chromium-wasm/full/global/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/global/validator-heavy/incremental:regression",
+              "chromium-wasm/full/global/multilingual-context/initialize:regression",
+              "chromium-wasm/full/global/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/global/multilingual-context/incremental:regression",
+              "chromium-wasm/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/initialize:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/initialize:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/initialize:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/initialize:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/wholeInput:regression",
+              "chromium-wasm/full/beta10-full/validator-heavy/incremental:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/initialize:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/wholeInput:regression",
+              "chromium-wasm/full/beta10-full/multilingual-context/incremental:regression",
+              "chromium-wasm/common/global/validator-heavy/initialize:regression",
+              "chromium-wasm/common/global/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/global/validator-heavy/incremental:regression",
+              "chromium-wasm/common/global/multilingual-context/initialize:regression",
+              "chromium-wasm/common/global/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/global/multilingual-context/incremental:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/initialize:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/us-ssn-exact/validator-heavy/incremental:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/initialize:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/us-ssn-exact/multilingual-context/incremental:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/initialize:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/us-jurisdiction/validator-heavy/incremental:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/initialize:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/us-jurisdiction/multilingual-context/incremental:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/initialize:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/wholeInput:regression",
+              "chromium-wasm/common/beta10-full/validator-heavy/incremental:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/initialize:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/wholeInput:regression",
+              "chromium-wasm/common/beta10-full/multilingual-context/incremental:regression",
+              "python/full/global/validator-heavy/wholeInput:regression",
+              "python/full/global/validator-heavy/incremental:regression",
+              "python/full/global/multilingual-context/wholeInput:regression",
+              "python/full/global/multilingual-context/incremental:regression",
+              "python/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "python/full/us-ssn-exact/validator-heavy/incremental:regression",
+              "python/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "python/full/us-ssn-exact/multilingual-context/incremental:regression",
+              "python/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "python/full/us-jurisdiction/validator-heavy/incremental:regression",
+              "python/full/us-jurisdiction/validator-heavy/memory/processPeakRss:regression",
+              "python/full/us-jurisdiction/validator-heavy/memory/processRetainedRss:regression",
+              "python/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "python/full/us-jurisdiction/multilingual-context/incremental:regression",
+              "python/full/beta10-full/validator-heavy/wholeInput:regression",
+              "python/full/beta10-full/validator-heavy/incremental:regression",
+              "python/full/beta10-full/multilingual-context/wholeInput:regression",
+              "python/full/beta10-full/multilingual-context/incremental:regression",
+              "cli/full/global/validator-heavy/wholeInput:regression",
+              "cli/full/global/multilingual-context/wholeInput:regression",
+              "cli/full/us-ssn-exact/validator-heavy/wholeInput:regression",
+              "cli/full/us-ssn-exact/multilingual-context/wholeInput:regression",
+              "cli/full/us-jurisdiction/validator-heavy/wholeInput:regression",
+              "cli/full/us-jurisdiction/multilingual-context/wholeInput:regression",
+              "cli/full/beta10-full/validator-heavy/wholeInput:regression",
+              "cli/full/beta10-full/multilingual-context/wholeInput:regression"
+            ],
+            "sizeRows": [
+              {
+                "key": "qualificationArtifacts:cli/aarch64-apple-darwin/cli-aarch64-apple-darwin/redact-secret",
+                "deltaBytes": 429696,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/aarch64-pc-windows-msvc/cli-aarch64-pc-windows-msvc/redact-secret.exe",
+                "deltaBytes": 403456,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/aarch64-unknown-linux-gnu/cli-aarch64-unknown-linux-gnu/redact-secret",
+                "deltaBytes": 443560,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-apple-darwin/cli-x86_64-apple-darwin/redact-secret",
+                "deltaBytes": 448544,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-pc-windows-msvc/cli-x86_64-pc-windows-msvc/redact-secret.exe",
+                "deltaBytes": 457728,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:cli/x86_64-unknown-linux-gnu/cli-x86_64-unknown-linux-gnu/redact-secret",
+                "deltaBytes": 470328,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-apple-darwin/node-addon-aarch64-apple-darwin/redact-secret.darwin-arm64.node",
+                "deltaBytes": 419008,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-pc-windows-msvc/node-addon-aarch64-pc-windows-msvc/redact-secret.win32-arm64-msvc.node",
+                "deltaBytes": 418816,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-unknown-linux-gnu/node-addon-aarch64-unknown-linux-gnu/redact-secret.linux-arm64-gnu.node",
+                "deltaBytes": 454664,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/aarch64-unknown-linux-musl/node-addon-aarch64-unknown-linux-musl/redact-secret.linux-arm64-musl.node",
+                "deltaBytes": 454664,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-apple-darwin/node-addon-x86_64-apple-darwin/redact-secret.darwin-x64.node",
+                "deltaBytes": 470752,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-pc-windows-msvc/node-addon-x86_64-pc-windows-msvc/redact-secret.win32-x64-msvc.node",
+                "deltaBytes": 474112,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-unknown-linux-gnu/node-addon-x86_64-unknown-linux-gnu/redact-secret.linux-x64-gnu.node",
+                "deltaBytes": 501328,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:node-addon/x86_64-unknown-linux-musl/node-addon-x86_64-unknown-linux-musl/redact-secret.linux-x64-musl.node",
+                "deltaBytes": 500688,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-sdist/portable/python-sdist/redact_secret-<version>.tar.gz",
+                "deltaBytes": 145872,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-apple-darwin/python-wheel-aarch64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_11_0_arm64.whl",
+                "deltaBytes": 214322,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-pc-windows-msvc/python-wheel-aarch64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_arm64.whl",
+                "deltaBytes": 215237,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-unknown-linux-gnu/python-wheel-aarch64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl",
+                "deltaBytes": 218910,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/aarch64-unknown-linux-musl/python-wheel-aarch64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_aarch64.whl",
+                "deltaBytes": 218167,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-apple-darwin/python-wheel-x86_64-apple-darwin/redact_secret-<version>-cp310-abi3-macosx_10_12_x86_64.whl",
+                "deltaBytes": 226295,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-pc-windows-msvc/python-wheel-x86_64-pc-windows-msvc/redact_secret-<version>-cp310-abi3-win_amd64.whl",
+                "deltaBytes": 226864,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-unknown-linux-gnu/python-wheel-x86_64-unknown-linux-gnu/redact_secret-<version>-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+                "deltaBytes": 228789,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:python-wheel/x86_64-unknown-linux-musl/python-wheel-x86_64-unknown-linux-musl/redact_secret-<version>-cp310-abi3-musllinux_1_2_x86_64.whl",
+                "deltaBytes": 232112,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:browser/portable/wasm-web/redact_secret_wasm_bg.wasm",
+                "deltaBytes": 96241,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:browser-common/portable/wasm-web-common/redact_secret_wasm_common_bg.wasm",
+                "deltaBytes": 61388,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "qualificationArtifacts:crate/redact-secret/crate-package/redact-secret-<version>.crate",
+                "deltaBytes": 143385,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:core/unpacked",
+                "deltaBytes": 8533,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:node/packed",
+                "deltaBytes": 226269,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:node/unpacked",
+                "deltaBytes": 501329,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:wasm/packed",
+                "deltaBytes": 643241,
+                "trigger": "size/npm/wasm/packed",
+                "acceptedBy": null
+              },
+              {
+                "key": "npmPackages:wasm/unpacked",
+                "deltaBytes": 1796168,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/raw",
+                "deltaBytes": 96241,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/gzip9",
+                "deltaBytes": 35885,
+                "trigger": "size/wasm/full/gzip",
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:full/brotli11",
+                "deltaBytes": 25920,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/raw",
+                "deltaBytes": 61388,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/gzip9",
+                "deltaBytes": 21632,
+                "trigger": "size/wasm/common/gzip",
+                "acceptedBy": null
+              },
+              {
+                "key": "wasmCompression:common/brotli11",
+                "deltaBytes": 16843,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:full/bytes",
+                "deltaBytes": 969178,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:full/gzip9",
+                "deltaBytes": 357736,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:common/bytes",
+                "deltaBytes": 748522,
+                "trigger": null,
+                "acceptedBy": null
+              },
+              {
+                "key": "browserBundle:common/gzip9",
+                "deltaBytes": 281859,
+                "trigger": null,
+                "acceptedBy": null
+              }
+            ]
+          }
         },
         {
           "id": "trusted-accounting-source",
@@ -6521,5 +9131,5 @@
     }
   ],
   "domainAccounting": "PII only; credential findings are counted as credentialFindingCases and never enter a PII numerator or denominator",
-  "artifactCommitment": "3e551a32d8cfc7caa935f9684b1b51fcce4c87aa4a408b3dfb6fdd1673e748f8"
+  "artifactCommitment": "75ad00238606089428f6cd027a856972890ea8a713591974fcf20044ad1dce50"
 }

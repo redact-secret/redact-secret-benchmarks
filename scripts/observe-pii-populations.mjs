@@ -68,6 +68,11 @@ export async function packLockfileRelease(directory) {
   return packed;
 }
 
+export async function sameArtifacts(a, b) {
+  const [left, right] = await Promise.all([sideIdentity(a), sideIdentity(b)]);
+  return left.artifactSetCommitment === right.artifactSetCommitment;
+}
+
 async function sideIdentity(tarballs) {
   const components = {};
   for (const role of ['core', 'node', 'wasm']) components[role] = await digestFile(tarballs[role]);
@@ -125,6 +130,12 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     const baseline = explicit.length ? { core: path.resolve(args['baseline-core']), node: path.resolve(args['baseline-node']), wasm: path.resolve(args['baseline-wasm']) }
       : await packLockfileRelease(scratch);
     const candidate = { core: path.resolve(args['candidate-core']), node: path.resolve(args['candidate-node']), wasm: path.resolve(args['candidate-wasm']) };
+    // Right after a release there is no unreleased candidate: the candidate is the release the lockfile pins. There is
+    // nothing to compare, so write no bundle; publication then records the populations as not-measured.
+    if (!explicit.length && await sameArtifacts(baseline, candidate)) {
+      console.log('Candidate is the released lockfile package; no unreleased candidate to compare, so no population bundle is written.');
+      process.exit(0);
+    }
     const bundle = await observePiiPopulations({ baseline, candidate, candidateSourceCommit: args['candidate-source-commit'] ?? null });
     await mkdir(path.dirname(path.resolve(args.output)), { recursive: true });
     await writeFile(path.resolve(args.output), `${JSON.stringify(bundle)}\n`);

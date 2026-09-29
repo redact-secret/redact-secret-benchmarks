@@ -41,3 +41,17 @@ test('a population bundle binds only when its candidate is the measured product'
   assert.throws(() => populationBindingsFrom(bundle(undefined), PHONE_PRODUCT), /another product/);
   assert.throws(() => populationBindingsFrom({ ...matching, comparisons: matching.comparisons.slice(1) }, null), /Invalid PII population release bundle/);
 });
+
+test('a candidate that is the released lockfile package writes no population bundle', async () => {
+  const { mkdtemp, rm, access } = await import('node:fs/promises'), { tmpdir } = await import('node:os'), path = await import('node:path');
+  const { execFile } = await import('node:child_process'), { promisify } = await import('node:util');
+  const { packLockfileRelease } = await import('../scripts/observe-pii-populations.mjs');
+  const scratch = await mkdtemp(path.join(tmpdir(), 'pii-population-released-')), output = path.join(scratch, 'out', 'bundle.json');
+  try {
+    const released = await packLockfileRelease(scratch);
+    const { stdout } = await promisify(execFile)(process.execPath, ['--import', 'tsx', 'scripts/observe-pii-populations.mjs',
+      `--candidate-core=${released.core}`, `--candidate-node=${released.node}`, `--candidate-wasm=${released.wasm}`, `--output=${output}`]);
+    assert.match(stdout, /no unreleased candidate/);
+    await assert.rejects(access(output));
+  } finally { await rm(scratch, { recursive: true, force: true }); }
+});

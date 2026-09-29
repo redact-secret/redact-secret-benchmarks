@@ -1,5 +1,9 @@
 # Evidence: redact-secret#860 families and the Beta.11 candidate re-bound to product main ec9224d
 
+> **Superseded** by [`../8b6a5fd/README.md`](../8b6a5fd/README.md): the candidate moved to product main `8b6a5fd` (PR #996,
+> PII-only, output byte-identical); every family record and fixture outcome is identical there. This file stays as
+> history and keeps the #948 analysis.
+
 **Result:** candidate mode (product `ec9224d`, the re-bound Beta.11 candidate) reads **88 stable of 110** families
 (documented 63, empirical 25; 20 provisional, 2 pending), the same families and profiles as at `8f97f14`. Published
 mode (`@redact-secret/core` 0.1.0-beta.10) reads **61 stable of 110** (documented 38, empirical 23; 47 provisional, 2

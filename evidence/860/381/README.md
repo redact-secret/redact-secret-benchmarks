@@ -1,6 +1,6 @@
 # Evidence: credential mixed-document, streaming and binding parity at product main 1127bf9 (#381)
 
-**Current measurement:** the re-run at [ec9224d](#re-run-at-the-re-bound-beta11-candidate-ec9224d) (0 divergences). The 1127bf9 result directly below and the 1db8ff3 and 8f97f14 re-runs are history.
+**Current measurement:** the re-run at [8b6a5fd](#re-run-at-the-re-bound-beta11-candidate-8b6a5fd) (0 divergences). The 1127bf9 result directly below and the 1db8ff3, 8f97f14 and ec9224d re-runs are history.
 
 **Result:** on 10 mixed documents carrying 83 credential targets from 39 families (15 #377 ledger families, 24 #860
 families), candidate `1127bf9` gives the same UTF-8 spans and the same sanitized bytes on all six surfaces (Node addon,
@@ -11,7 +11,25 @@ targets and 9 of 12 policy targets are redacted exactly; 2 must-redact and 2 pol
 filler. The same checks show the #860 detectors (PR #938) cost 5.6–14.9% processing time and 13.6 KB of gzip in the full
 WASM build. Nothing here is a support-status claim.
 
-## Re-run at the re-bound Beta.11 candidate ec9224d
+## Re-run at the re-bound Beta.11 candidate 8b6a5fd
+
+Same frozen plan (commitment `021fb995…ec00`), harness at benchmarks `405892a5ba40b6eeef919d2fb818470ee495092c` (clean, the
+re-pin commit), product `8b6a5fde52ecb4dfce13f09c7a947062d21483c7` (main after PR #996, the #902 Wasm follow-up;
+PII-only code, output byte-identical). Components: core `467111e2…f74c`, node `9b8cd3e2…07b0`, wasm `61d135ba…6f2d`,
+wheel `71dff43d…214d`, CLI `5437647d…bb7f` (full hashes in the report). Files:
+[`8b6a5fde52ec/credential-mixed-parity-observation-v1.json`](8b6a5fde52ec/credential-mixed-parity-observation-v1.json),
+[`8b6a5fde52ec/credential-mixed-parity-report-v1.json`](8b6a5fde52ec/credential-mixed-parity-report-v1.json).
+
+- **Parity:** 0 divergences on every surface, with the same check counts as at ec9224d; only the declared token limit
+  fails closed (91 partitions per surface, 182 Node/Web streams), with no target value emitted before it.
+- **Outcomes:** identical to ec9224d. Every report section except the artifact identity (`target`) is equal once
+  hashes, the crate tree and runtime versions are set aside: must-redact 70 exact of 71, policy 11 exact of 12, the
+  same two remaining targets (#936, #932), no replacing collateral on a control.
+- **Runtime at 8b6a5fd:** see [`../8b6a5fd/README.md`](../8b6a5fd/README.md#performance-at-the-pin).
+
+The ec9224d re-run below is superseded by this one and kept as history.
+
+## Re-run at the re-bound Beta.11 candidate ec9224d (superseded by 8b6a5fd)
 
 Same frozen plan (commitment `021fb995…ec00`), harness at benchmarks `af180a5abc28e64b456aa431455de66da016d061` (clean, the
 re-pin commit), product `ec9224d9743066fe73d6e61e9843ef52bd853833` (main after PR #994: #948, #993, #902, #896).

@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-29T22:00:46.542Z",
+  "sourceRun": {
+    "runId": "2026-09-29T22:00:46.542Z-48ba53",
+    "benchmarkRevision": "5380aa3a421555883225a62358fa40f81dcd2baa"
+  },
+  "input": {
+    "surface": "comparison/beta8-464a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "973ae6d8af3d20b328bc3f5017cf3a80a22e5661931e1d3ff1739ac0bffb0794",
+    "fixtureCount": 38,
+    "fixturesDigest": "0004f884fceb4d15ddd4841021e526d1d948aac60389929fc6f9936f05250f17",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "6f66c4e499491ddb532f7cfe17236c043ac5796c43323d3f3e85e0eed9d820dd",
+      "fixtureCount": 5034
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "c33f4929e72d2715163765dca6af7e7f6e014fc0c671072ba94fb770c80cd2b4"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/daytona-api-key-actions-env.yml",
+      "start": 98,
+      "end": 166,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-body-63-twin.env",
+      "start": 23,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-body-65-twin.sh",
+      "start": 24,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-compose-env.yml",
+      "start": 96,
+      "end": 164,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-curl-bearer.sh",
+      "start": 69,
+      "end": 137
+    },
+    {
+      "path": "cases/daytona-api-key-dotenv.env",
+      "start": 23,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-export.sh",
+      "start": 24,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-hyphen-separator-twin.http",
+      "start": 55,
+      "end": 123,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-json-api-key.json",
+      "start": 16,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-json-token.json",
+      "start": 14,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-named-bare-hex-encoded-value.env",
+      "start": 16,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-non-hex-letter-twin.json",
+      "start": 16,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-openapi-example-placeholder.json",
+      "start": 13,
+      "end": 27,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-python-config.py",
+      "start": 76,
+      "end": 144,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-runner-key-unprefixed-encoded-value.env",
+      "start": 15,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-sandbox-log.log",
+      "start": 74,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-sdk-kwarg.py",
+      "start": 26,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-secret-then-hex-near-miss.env",
+      "start": 19,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-terraform-variable.tfvars",
+      "start": 66,
+      "end": 134,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-trailing-hyphen-twin.py",
+      "start": 26,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-trailing-underscore-twin.sh",
+      "start": 69,
+      "end": 139
+    },
+    {
+      "path": "cases/daytona-api-key-ts-client.ts",
+      "start": 82,
+      "end": 150,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-uppercase-hex-byte-twin.json",
+      "start": 14,
+      "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-x-api-key-header.http",
+      "start": 55,
+      "end": 123,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "8b71dd47c114cc196605b172a54483625280117864f3c049c1517fca5cb92f22"
+}

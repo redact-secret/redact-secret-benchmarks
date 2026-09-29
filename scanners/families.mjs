@@ -53,6 +53,9 @@ const gitleaks = {
   // #434: gitleaks 8.30.1 doppler-api-token is dp\.pt\.(?i)[a-z0-9]{43}, the personal token only (one width of the
   // documented 40-44 band), so it maps to that arrival family and to no other Doppler type.
   'doppler-api-token': 'doppler-personal-token',
+  // #464: gitleaks 8.30.1 clickhouse-cloud-api-secret-key is \b(4b1d[A-Za-z0-9]{38})\b with entropy 3, the T1 grammar of the
+  // ClickHouse Cloud key secret (benchmarks/lib/beta8/464b.ts), so it maps to that arrival family.
+  'clickhouse-cloud-api-secret-key': 'clickhouse-cloud-api-secret',
   // #436 (deferred to graduation): gitleaks 8.30.1 1password-service-account-token is ops_eyJ + standard Base64, the same
   // credential as the onepassword-service-account-token family over a different alphabet (it misses the Base64url
   // positives; peer lag, not a family difference). 1password-secret-key is the account Secret Key, never this family,
@@ -86,6 +89,9 @@ const trufflehog = {
   // family doppler-token (as Github maps to github-token) and a sibling-type finding reads as co-detection; its
   // posthog detector (label PosthogApp) reads phx_ + 43-48 of [a-zA-Z0-9_] only, the personal key.
   Doppler: 'doppler-token', PosthogApp: 'posthog-token',
+  // #464 arrival family (benchmarks/lib/beta8/464c.ts): trufflehog 3.97.4's nvapi detector (label NVAPI) reads an exact 64
+  // [a-zA-Z0-9_-] body after nvapi-, one width of the provider's open-ended grammar, so a finding maps to nvidia-api-key.
+  NVAPI: 'nvidia-api-key',
   // #436 (deferred to graduation): trufflehog 3.97.4's apify detector reads apify_api_ + exactly 36 alphanumerics, the
   // apify-api-token credential over a narrower width (it misses the 20- and 128-byte positives). Its weightsandbiases
   // detectors report under one label: v2 (wandb_v1_ keys, the wandb-api-key family) and v1 (the legacy keyword-gated

@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-29T22:00:46.542Z",
+  "sourceRun": {
+    "runId": "2026-09-29T22:00:46.542Z-48ba53",
+    "benchmarkRevision": "5380aa3a421555883225a62358fa40f81dcd2baa"
+  },
+  "input": {
+    "surface": "comparison/beta8-464e",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "7abd9197abe28af34ccd74c7e7189972ef4bddf4122767b746d2fe1c61c3b985",
+    "fixtureCount": 40,
+    "fixturesDigest": "93c17bacd6ae506c1d576c06b41d716e03f5ab92b2769f18c33bf66f96ea2339",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "6f66c4e499491ddb532f7cfe17236c043ac5796c43323d3f3e85e0eed9d820dd",
+      "fixtureCount": 5034
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "c33f4929e72d2715163765dca6af7e7f6e014fc0c671072ba94fb770c80cd2b4"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/cerebras-api-key-bearer-header-underscore.http",
+      "start": 61,
+      "end": 120,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/cerebras-api-key-bearer-header.http",
+      "start": 61,
+      "end": 120,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/cerebras-api-key-pinecone-underscore-glue-twin.http",
+      "start": 61,
+      "end": 121,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "54c0d8be3e244bebad4f9ded3ff38b4e1c7bd4b42a5bd196206685a7e9512bac"
+}

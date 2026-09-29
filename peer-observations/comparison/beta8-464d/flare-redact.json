@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-29T22:00:46.542Z",
+  "sourceRun": {
+    "runId": "2026-09-29T22:00:46.542Z-48ba53",
+    "benchmarkRevision": "5380aa3a421555883225a62358fa40f81dcd2baa"
+  },
+  "input": {
+    "surface": "comparison/beta8-464d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "fe9c00d1755f330b4bd3f45335d1b14ecb31f6fcd283c86a2c516171a33e5cb5",
+    "fixtureCount": 31,
+    "fixturesDigest": "5bc44960995f11bfb3e01a5ba63dd741ba19370935fd9c54e82c3335dc2b9291",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "6f66c4e499491ddb532f7cfe17236c043ac5796c43323d3f3e85e0eed9d820dd",
+      "fixtureCount": 5034
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "c33f4929e72d2715163765dca6af7e7f6e014fc0c671072ba94fb770c80cd2b4"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/browserbase-api-key-bearer-header.http",
+      "start": 65,
+      "end": 112,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-uppercase-prefix-twin.http",
+      "start": 65,
+      "end": 112,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "ee3beaa6e5d5ea827ea6cbe52d778926383180f7871429dafb85a14dfdec6db2"
+}

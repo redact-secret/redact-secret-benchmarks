@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-29T22:00:46.542Z",
+  "sourceRun": {
+    "runId": "2026-09-29T22:00:46.542Z-48ba53",
+    "benchmarkRevision": "5380aa3a421555883225a62358fa40f81dcd2baa"
+  },
+  "input": {
+    "surface": "comparison/beta8-464a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "973ae6d8af3d20b328bc3f5017cf3a80a22e5661931e1d3ff1739ac0bffb0794",
+    "fixtureCount": 38,
+    "fixturesDigest": "0004f884fceb4d15ddd4841021e526d1d948aac60389929fc6f9936f05250f17",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "6f66c4e499491ddb532f7cfe17236c043ac5796c43323d3f3e85e0eed9d820dd",
+      "fixtureCount": 5034
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "c33f4929e72d2715163765dca6af7e7f6e014fc0c671072ba94fb770c80cd2b4"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/daytona-api-key-bearer-header.http",
+      "start": 60,
+      "end": 135,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/daytona-api-key-curl-bearer.sh",
+      "start": 62,
+      "end": 137,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/daytona-api-key-trailing-underscore-twin.sh",
+      "start": 62,
+      "end": 139,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/daytona-api-key-uppercase-prefix-twin.http",
+      "start": 60,
+      "end": 135,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "92816eb77c707454573e51b079d6606b7ba0f5f671c33e265c6a85c3994d7e0a"
+}

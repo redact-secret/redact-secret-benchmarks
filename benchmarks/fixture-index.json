@@ -13,7 +13,7 @@
   "sources": {
     "reviewedMetadata": {
       "algorithm": "sha256",
-      "digest": "fed88fe7e0ad4073e4dd1dfb4507c992471f6906f72eba3965d625e463f800f8"
+      "digest": "014b69741e17c438d69fd4b638cc0f65f0f04ea3ae451c127b9c889e41b1e4b3"
     },
     "scenarios": {
       "algorithm": "sha256",
@@ -21,7 +21,7 @@
     },
     "taxonomy": {
       "algorithm": "sha256",
-      "digest": "c6a528022e77c840cf3e244784c071fe218bbfafad75d5a28dc45e8a6ab5518c"
+      "digest": "af86e340ac4c7f2e6bd14765f2719e83c70724300dc6756060e2f26dd71e24e0"
     }
   },
   "fixtures": [
@@ -63434,6 +63434,4346 @@
       }
     },
     {
+      "slug": "beta8-464a--daytona-api-key-actions-env",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-actions-env",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-actions-env.yml"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-actions-secret-reference",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-actions-secret-reference",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-actions-secret-reference.yml"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-artifact-marker-near-miss",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-artifact-marker-near-miss",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-artifact-marker-near-miss.log"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-bare-prose",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-bare-prose",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-bare-prose.md"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-bare-sha256-encoded-value",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-bare-sha256-encoded-value",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-bare-sha256-encoded-value.txt"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-bearer-header",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-bearer-header",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-bearer-header.http"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-body-63-twin",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-body-63-twin",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-body-63-twin.env"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464a--daytona-api-key-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-body-65-twin",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-body-65-twin",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-body-65-twin.sh"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464a--daytona-api-key-export"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-chat-paste",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-chat-paste",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-chat-paste.txt"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-compose-env",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-compose-env",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-compose-env.yml"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-curl-bearer",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-curl-bearer",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-curl-bearer.sh"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-dotenv",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-dotenv",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-dotenv.env"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-ellipsis-placeholder",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-ellipsis-placeholder",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-ellipsis-placeholder.sh"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-env-reference-reference",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-env-reference-reference",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-env-reference-reference.env"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-export",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-export",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-export.sh"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-hyphen-separator-twin",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-hyphen-separator-twin",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-hyphen-separator-twin.http"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464a--daytona-api-key-x-api-key-header"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-json-api-key",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-json-api-key",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-json-api-key.json"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-json-token",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-json-token",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-json-token.json"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-key-guidance-prose",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-key-guidance-prose",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-key-guidance-prose.md"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-leading-glue-twin",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-leading-glue-twin",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-leading-glue-twin.md"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464a--daytona-api-key-bare-prose"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-leading-underscore-twin",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-leading-underscore-twin",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-leading-underscore-twin.txt"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464a--daytona-api-key-chat-paste"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-masked-placeholder",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-masked-placeholder",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-masked-placeholder.md"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-named-bare-hex-encoded-value",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-named-bare-hex-encoded-value",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-named-bare-hex-encoded-value.env"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-non-hex-letter-twin",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-non-hex-letter-twin",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-non-hex-letter-twin.json"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464a--daytona-api-key-json-api-key"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-openapi-example-placeholder",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-openapi-example-placeholder",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-openapi-example-placeholder.json"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-python-config",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-python-config",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-python-config.py"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-runner-key-unprefixed-encoded-value",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-runner-key-unprefixed-encoded-value",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-runner-key-unprefixed-encoded-value.env"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-sandbox-log",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-sandbox-log",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-sandbox-log.log"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-sdk-kwarg",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-sdk-kwarg",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-sdk-kwarg.py"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-secret-placeholder-near-miss",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-secret-placeholder-near-miss",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-secret-placeholder-near-miss.txt"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-secret-then-hex-near-miss",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-secret-then-hex-near-miss",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-secret-then-hex-near-miss.env"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-terraform-variable",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-terraform-variable",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-terraform-variable.tfvars"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-trailing-hyphen-twin",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-trailing-hyphen-twin",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-trailing-hyphen-twin.py"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464a--daytona-api-key-sdk-kwarg"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-trailing-underscore-twin",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-trailing-underscore-twin",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-trailing-underscore-twin.sh"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464a--daytona-api-key-curl-bearer"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-ts-client",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-ts-client",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-ts-client.ts"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-uppercase-hex-byte-twin",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-uppercase-hex-byte-twin",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-uppercase-hex-byte-twin.json"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464a--daytona-api-key-json-token"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-uppercase-prefix-twin",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-uppercase-prefix-twin",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-uppercase-prefix-twin.http"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464a--daytona-api-key-bearer-header"
+      }
+    },
+    {
+      "slug": "beta8-464a--daytona-api-key-x-api-key-header",
+      "source": {
+        "categoryId": "beta8-464a",
+        "fixtureId": "daytona-api-key-x-api-key-header",
+        "corpus": "fixtures/generated/beta8-464a.json",
+        "path": "cases/daytona-api-key-x-api-key-header.http"
+      },
+      "familyIds": [
+        "daytona:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-actions-env",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-actions-env",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-actions-env.yml"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-actions-secret-reference",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-actions-secret-reference",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-actions-secret-reference.yml"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-bare-prose",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-bare-prose",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-bare-prose.md"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-base64-run-mid-encoded-value",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-base64-run-mid-encoded-value",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-base64-run-mid-encoded-value.yml"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-bearer-header",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-bearer-header",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-bearer-header.http"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-body-37-twin",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-body-37-twin",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-body-37-twin.env"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464b--clickhouse-cloud-api-secret-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-body-39-twin",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-body-39-twin",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-body-39-twin.sh"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464b--clickhouse-cloud-api-secret-export"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-chat-paste",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-chat-paste",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-chat-paste.txt"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-compose-env",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-compose-env",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-compose-env.yml"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-curl-user-literal",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-curl-user-literal",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-curl-user-literal.sh"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-curl-user-var",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-curl-user-var",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-curl-user-var.sh"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-docs-placeholders-placeholder",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-docs-placeholders-placeholder",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-docs-placeholders-placeholder.sh"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-dotenv",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-dotenv",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-dotenv.env"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-dotenv-key-id-pair",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-dotenv-key-id-pair",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-dotenv-key-id-pair.env"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-ellipsis-placeholder",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-ellipsis-placeholder",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-ellipsis-placeholder.md"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-env-reference-reference",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-env-reference-reference",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-env-reference-reference.env"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-export",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-export",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-export.sh"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-hyphen-in-body-twin",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-hyphen-in-body-twin",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-hyphen-in-body-twin.http"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464b--clickhouse-cloud-api-secret-x-api-key-header"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-json-api-key",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-json-api-key",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-json-api-key.json"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-json-token",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-json-token",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-json-token.json"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-key-guidance-prose",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-key-guidance-prose",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-key-guidance-prose.md"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-key-id-alone-public-id",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-key-id-alone-public-id",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-key-id-alone-public-id.env"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-knowledge-base-39-byte-total-twin",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-knowledge-base-39-byte-total-twin",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-knowledge-base-39-byte-total-twin.json"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464b--clickhouse-cloud-api-secret-json-token"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-leading-glue-twin",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-leading-glue-twin",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-leading-glue-twin.md"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464b--clickhouse-cloud-api-secret-bare-prose"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-leading-underscore-twin",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-leading-underscore-twin",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-leading-underscore-twin.txt"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464b--clickhouse-cloud-api-secret-chat-paste"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-python-requests-auth",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-python-requests-auth",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-python-requests-auth.py"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-sdk-kwarg",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-sdk-kwarg",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-sdk-kwarg.py"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-sha1-digest-4b1d-encoded-value",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-sha1-digest-4b1d-encoded-value",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-sha1-digest-4b1d-encoded-value.txt"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-sha256-digest-4b1d-encoded-value",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-sha256-digest-4b1d-encoded-value",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-sha256-digest-4b1d-encoded-value.txt"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-terraform-token-secret",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-terraform-token-secret",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-terraform-token-secret.tf"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-trailing-hyphen-twin",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-trailing-hyphen-twin",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-trailing-hyphen-twin.py"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464b--clickhouse-cloud-api-secret-sdk-kwarg"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-trailing-underscore-twin",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-trailing-underscore-twin",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-trailing-underscore-twin.sh"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464b--clickhouse-cloud-api-secret-curl-user-var"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-truncated-near-miss",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-truncated-near-miss",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-truncated-near-miss.log"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-uppercase-prefix-twin",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-uppercase-prefix-twin",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-uppercase-prefix-twin.json"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464b--clickhouse-cloud-api-secret-json-api-key"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-uuid-with-4b1d-public-id",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-uuid-with-4b1d-public-id",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-uuid-with-4b1d-public-id.yml"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-wrong-prefix-4b1c-twin",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-wrong-prefix-4b1c-twin",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-wrong-prefix-4b1c-twin.http"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464b--clickhouse-cloud-api-secret-bearer-header"
+      }
+    },
+    {
+      "slug": "beta8-464b--clickhouse-cloud-api-secret-x-api-key-header",
+      "source": {
+        "categoryId": "beta8-464b",
+        "fixtureId": "clickhouse-cloud-api-secret-x-api-key-header",
+        "corpus": "fixtures/generated/beta8-464b.json",
+        "path": "cases/clickhouse-cloud-api-secret-x-api-key-header.http"
+      },
+      "familyIds": [
+        "clickhouse-cloud:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464b",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-actions-secret-reference",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-actions-secret-reference",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-actions-secret-reference.yml"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-bare-prose",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-bare-prose",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-bare-prose.md"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-bearer-header",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-bearer-header",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-bearer-header.http"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-body-59-near-miss",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-body-59-near-miss",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-body-59-near-miss.log"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-body-59-twin",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-body-59-twin",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-body-59-twin.env"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464c--nvidia-api-key-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-chat-nvidia",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-chat-nvidia",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-chat-nvidia.py"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-chat-paste",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-chat-paste",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-chat-paste.txt"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-curl-bearer",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-curl-bearer",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-curl-bearer.sh"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-docker-login-stdin",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-docker-login-stdin",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-docker-login-stdin.sh"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-dot-in-body-twin",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-dot-in-body-twin",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-dot-in-body-twin.sh"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464c--nvidia-api-key-export"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-dotenv",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-dotenv",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-dotenv.env"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-dotenv-ngc",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-dotenv-ngc",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-dotenv-ngc.env"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-ellipsis-placeholder",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-ellipsis-placeholder",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-ellipsis-placeholder.md"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-env-reference-reference",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-env-reference-reference",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-env-reference-reference.env"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-export",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-export",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-export.sh"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-json-api-key",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-json-api-key",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-json-api-key.json"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-json-token",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-json-token",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-json-token.json"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-key-guidance-prose",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-key-guidance-prose",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-key-guidance-prose.md"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-leading-glue-twin",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-leading-glue-twin",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-leading-glue-twin.md"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464c--nvidia-api-key-bare-prose"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-leading-underscore-twin",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-leading-underscore-twin",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-leading-underscore-twin.txt"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464c--nvidia-api-key-chat-paste"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-openai-compat",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-openai-compat",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-openai-compat.py"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-other-prefix-64-near-miss",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-other-prefix-64-near-miss",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-other-prefix-64-near-miss.yml"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-prefix-at-eol-near-miss",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-prefix-at-eol-near-miss",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-prefix-at-eol-near-miss.log"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-sdk-crate-names-public-id",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-sdk-crate-names-public-id",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-sdk-crate-names-public-id.toml"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-sdk-kwarg",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-sdk-kwarg",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-sdk-kwarg.py"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-sdk-package-name-public-id",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-sdk-package-name-public-id",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-sdk-package-name-public-id.sh"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-underscore-prefix-twin",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-underscore-prefix-twin",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-underscore-prefix-twin.http"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464c--nvidia-api-key-x-api-key-header"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-uppercase-prefix-twin",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-uppercase-prefix-twin",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-uppercase-prefix-twin.http"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464c--nvidia-api-key-bearer-header"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-x-api-key-header",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-x-api-key-header",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-x-api-key-header.http"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-x-run-placeholder",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-x-run-placeholder",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-x-run-placeholder.env"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464c--nvidia-api-key-your-key-placeholder",
+      "source": {
+        "categoryId": "beta8-464c",
+        "fixtureId": "nvidia-api-key-your-key-placeholder",
+        "corpus": "fixtures/generated/beta8-464c.json",
+        "path": "cases/nvidia-api-key-your-key-placeholder.py"
+      },
+      "familyIds": [
+        "nvidia:ngc-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464c",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-actions-secret-reference",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-actions-secret-reference",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-actions-secret-reference.yml"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-bare-prose",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-bare-prose",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-bare-prose.md"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-bb-test-key-near-miss",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-bb-test-key-near-miss",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-bb-test-key-near-miss.env"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "cross-family-interactions",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-bearer-header",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-bearer-header",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-bearer-header.http"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-body-19-twin",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-body-19-twin",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-body-19-twin.json"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464d--browserbase-api-key-json-token"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-chat-paste",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-chat-paste",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-chat-paste.txt"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-dotenv",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-dotenv",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-dotenv.env"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-ellipsis-placeholder",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-ellipsis-placeholder",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-ellipsis-placeholder.md"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-env-reference-reference",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-env-reference-reference",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-env-reference-reference.env"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-export",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-export",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-export.sh"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-hyphen-prefix-twin",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-hyphen-prefix-twin",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-hyphen-prefix-twin.http"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464d--browserbase-api-key-x-api-key-header"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-json-api-key",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-json-api-key",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-json-api-key.json"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-json-token",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-json-token",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-json-token.json"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-key-guidance-prose",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-key-guidance-prose",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-key-guidance-prose.md"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-leading-glue-twin",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-leading-glue-twin",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-leading-glue-twin.md"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464d--browserbase-api-key-bare-prose"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-leading-underscore-twin",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-leading-underscore-twin",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-leading-underscore-twin.txt"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464d--browserbase-api-key-chat-paste"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-live-session-identifier-near-miss",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-live-session-identifier-near-miss",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-live-session-identifier-near-miss.log"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-mcp-env",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-mcp-env",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-mcp-env.json"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-prefix-at-eol-near-miss",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-prefix-at-eol-near-miss",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-prefix-at-eol-near-miss.log"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-project-id-public-id",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-project-id-public-id",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-project-id-public-id.env"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-python-sdk",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-python-sdk",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-python-sdk.py"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-sdk-kwarg",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-sdk-kwarg",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-sdk-kwarg.py"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-stagehand-ts",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-stagehand-ts",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-stagehand-ts.ts"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-timestamp-cookie-public-id",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-timestamp-cookie-public-id",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-timestamp-cookie-public-id.http"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-trailing-hyphen-twin",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-trailing-hyphen-twin",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-trailing-hyphen-twin.sh"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464d--browserbase-api-key-export"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-trailing-underscore-twin",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-trailing-underscore-twin",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-trailing-underscore-twin.env"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464d--browserbase-api-key-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-uppercase-prefix-twin",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-uppercase-prefix-twin",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-uppercase-prefix-twin.http"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464d--browserbase-api-key-bearer-header"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-x-api-key-header",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-x-api-key-header",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-x-api-key-header.http"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-x-bb-api-key-header",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-x-bb-api-key-header",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-x-bb-api-key-header.http"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-x-run-placeholder",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-x-run-placeholder",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-x-run-placeholder.ts"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464d--browserbase-api-key-your-api-key-here-placeholder",
+      "source": {
+        "categoryId": "beta8-464d",
+        "fixtureId": "browserbase-api-key-your-api-key-here-placeholder",
+        "corpus": "fixtures/generated/beta8-464d.json",
+        "path": "cases/browserbase-api-key-your-api-key-here-placeholder.env"
+      },
+      "familyIds": [
+        "browserbase:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464d",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-actions-secret-reference",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-actions-secret-reference",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-actions-secret-reference.yml"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-bare-prose",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-bare-prose",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-bare-prose.md"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-bare-prose-underscore",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-bare-prose-underscore",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-bare-prose-underscore.md"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-bearer-header",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-bearer-header",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-bearer-header.http"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-bearer-header-underscore",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-bearer-header-underscore",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-bearer-header-underscore.http"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-body-47-twin",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-body-47-twin",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-body-47-twin.env"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464e--cerebras-api-key-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-body-49-twin",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-body-49-twin",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-body-49-twin.sh"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464e--cerebras-api-key-export"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-chat-paste",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-chat-paste",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-chat-paste.txt"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-chat-paste-underscore",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-chat-paste-underscore",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-chat-paste-underscore.txt"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-dot-separator-twin",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-dot-separator-twin",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-dot-separator-twin.json"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464e--cerebras-api-key-json-api-key"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-dotenv",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-dotenv",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-dotenv.env"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-dotenv-underscore",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-dotenv-underscore",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-dotenv-underscore.env"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-ellipsis-placeholder",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-ellipsis-placeholder",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-ellipsis-placeholder.md"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-env-reference-reference",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-env-reference-reference",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-env-reference-reference.env"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-export",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-export",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-export.sh"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-export-underscore",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-export-underscore",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-export-underscore.sh"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-json-api-key",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-json-api-key",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-json-api-key.json"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-json-api-key-underscore",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-json-api-key-underscore",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-json-api-key-underscore.json"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-json-token",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-json-token",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-json-token.json"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-json-token-underscore",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-json-token-underscore",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-json-token-underscore.json"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-key-guidance-prose",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-key-guidance-prose",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-key-guidance-prose.md"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-leading-glue-twin",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-leading-glue-twin",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-leading-glue-twin.md"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464e--cerebras-api-key-bare-prose"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-leading-underscore-twin",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-leading-underscore-twin",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-leading-underscore-twin.txt"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464e--cerebras-api-key-chat-paste"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-openai-compat-underscore",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-openai-compat-underscore",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-openai-compat-underscore.py"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-pinecone-hyphen-glue-twin",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-pinecone-hyphen-glue-twin",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-pinecone-hyphen-glue-twin.http"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "cross-family-interactions",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464e--cerebras-api-key-x-api-key-header"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-pinecone-hyphen-key-near-miss",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-pinecone-hyphen-key-near-miss",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-pinecone-hyphen-key-near-miss.py"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "cross-family-interactions",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-pinecone-key-near-miss",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-pinecone-key-near-miss",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-pinecone-key-near-miss.env"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "cross-family-interactions",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-pinecone-neighbour-dotenv",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-pinecone-neighbour-dotenv",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-pinecone-neighbour-dotenv.env"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "cross-family-interactions",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-pinecone-underscore-glue-twin",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-pinecone-underscore-glue-twin",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-pinecone-underscore-glue-twin.http"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "cross-family-interactions",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464e--cerebras-api-key-bearer-header-underscore"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-prefix-at-eol-near-miss",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-prefix-at-eol-near-miss",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-prefix-at-eol-near-miss.log"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-python-sdk",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-python-sdk",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-python-sdk.py"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-sdk-kwarg",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-sdk-kwarg",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-sdk-kwarg.py"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-sdk-kwarg-underscore",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-sdk-kwarg-underscore",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-sdk-kwarg-underscore.py"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-snake-case-name-public-id",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-snake-case-name-public-id",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-snake-case-name-public-id.py"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-truncated-near-miss",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-truncated-near-miss",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-truncated-near-miss.log"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-uppercase-prefix-twin",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-uppercase-prefix-twin",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-uppercase-prefix-twin.json"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464e--cerebras-api-key-json-token"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-x-api-key-header",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-x-api-key-header",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-x-api-key-header.http"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-x-api-key-header-underscore",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-x-api-key-header-underscore",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-x-api-key-header-underscore.http"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-x-run-placeholder",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-x-run-placeholder",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-x-run-placeholder.py"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464e--cerebras-api-key-your-key-here-placeholder",
+      "source": {
+        "categoryId": "beta8-464e",
+        "fixtureId": "cerebras-api-key-your-key-here-placeholder",
+        "corpus": "fixtures/generated/beta8-464e.json",
+        "path": "cases/cerebras-api-key-your-key-here-placeholder.env"
+      },
+      "familyIds": [
+        "cerebras:inference-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-actions-secret-reference",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-actions-secret-reference",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-actions-secret-reference.yml"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-bare-prose",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-bare-prose",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-bare-prose.md"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-bearer-header",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-bearer-header",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-bearer-header.http"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-body-30-policy-floor-twin",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-body-30-policy-floor-twin",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-body-30-policy-floor-twin.env"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464f--runpod-api-key-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-chat-paste",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-chat-paste",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-chat-paste.txt"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-curl-graphql-bearer",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-curl-graphql-bearer",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-curl-graphql-bearer.sh"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-dotenv",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-dotenv",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-dotenv.env"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-ellipsis-placeholder",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-ellipsis-placeholder",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-ellipsis-placeholder.md"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-env-reference-reference",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-env-reference-reference",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-env-reference-reference.env"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-export",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-export",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-export.sh"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-hyphen-prefix-twin",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-hyphen-prefix-twin",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-hyphen-prefix-twin.http"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464f--runpod-api-key-x-api-key-header"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-json-api-key",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-json-api-key",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-json-api-key.json"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-json-token",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-json-token",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-json-token.json"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-key-guidance-prose",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-key-guidance-prose",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-key-guidance-prose.md"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-leading-glue-twin",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-leading-glue-twin",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-leading-glue-twin.md"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464f--runpod-api-key-bare-prose"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-leading-underscore-twin",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-leading-underscore-twin",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-leading-underscore-twin.txt"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464f--runpod-api-key-chat-paste"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-mcp-env",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-mcp-env",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-mcp-env.json"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-prefix-at-eol-near-miss",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-prefix-at-eol-near-miss",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-prefix-at-eol-near-miss.log"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-python-module",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-python-module",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-python-module.py"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-redirect-pizza-30-near-miss",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-redirect-pizza-30-near-miss",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-redirect-pizza-30-near-miss.env"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "cross-family-interactions",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-runpodctl-config",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-runpodctl-config",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-runpodctl-config.sh"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-s3-secret-rps-near-miss",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-s3-secret-rps-near-miss",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-s3-secret-rps-near-miss.env"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "cross-family-interactions",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-sdk-kwarg",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-sdk-kwarg",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-sdk-kwarg.py"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-trailing-hyphen-twin",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-trailing-hyphen-twin",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-trailing-hyphen-twin.json"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464f--runpod-api-key-json-token"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-trailing-underscore-twin",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-trailing-underscore-twin",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-trailing-underscore-twin.sh"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464f--runpod-api-key-export"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-truncated-near-miss",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-truncated-near-miss",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-truncated-near-miss.log"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-uppercase-prefix-twin",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-uppercase-prefix-twin",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-uppercase-prefix-twin.http"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-464f--runpod-api-key-bearer-header"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-word-fixture-placeholder",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-word-fixture-placeholder",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-word-fixture-placeholder.env"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-x-api-key-header",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-x-api-key-header",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-x-api-key-header.http"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-464f--runpod-api-key-x-run-placeholder",
+      "source": {
+        "categoryId": "beta8-464f",
+        "fixtureId": "runpod-api-key-x-run-placeholder",
+        "corpus": "fixtures/generated/beta8-464f.json",
+        "path": "cases/runpod-api-key-x-run-placeholder.env"
+      },
+      "familyIds": [
+        "runpod:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-464f",
+        "milestone": "beta.12"
+      }
+    },
+    {
       "slug": "beta8-948--datadog-api-key-truncated-in-prose-near-miss",
       "source": {
         "categoryId": "beta8-948",
@@ -99638,7 +103978,7 @@
   "identity": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "5919a6764b77a9bb1f11925640c53ccb371a3fdacc8d9835a741eecda5689d42",
-    "fixtureCount": 4827
+    "digest": "6f66c4e499491ddb532f7cfe17236c043ac5796c43323d3f3e85e0eed9d820dd",
+    "fixtureCount": 5034
   }
 }

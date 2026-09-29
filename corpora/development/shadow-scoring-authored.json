@@ -6072,6 +6072,438 @@
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/434"
         ]
       }
+    },
+    {
+      "id": "daytona-api-key-positive",
+      "path": "daytona-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DAYTONA_API_KEY=\u0064tn_a1b2c3d4e5f6a7b8a1b2c3d4e5f6a7b8a1b2c3d4e5f6a7b8a1b2c3d4e5f6a7b8\n",
+      "expected": [
+        {
+          "start": 16,
+          "end": 84,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "daytona-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "daytona-api-key",
+        "sources": [
+          "https://github.com/daytonaio/daytona/blob/01c502bb1f1ff8f2885d0cd490e043736083dca8/apps/api/src/common/utils/api-key.ts#L8-L18",
+          "https://github.com/daytonaio/daytona/blob/01c502bb1f1ff8f2885d0cd490e043736083dca8/apps/api/src/common/utils/api-key.ts#L8-L18",
+          "https://github.com/daytonaio/daytona/blob/5271af9f13fd/apps/api/src/api-key/api-key.service.ts#L27",
+          "https://www.daytona.io/docs/llms-full.txt",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/daytona.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/issuance-research/daytona.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/970",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/464"
+        ]
+      }
+    },
+    {
+      "id": "daytona-api-key-negative",
+      "path": "daytona-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DAYTONA_API_KEY=${DAYTONA_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "daytona-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "daytona-api-key",
+        "sources": [
+          "https://github.com/daytonaio/daytona/blob/01c502bb1f1ff8f2885d0cd490e043736083dca8/apps/api/src/common/utils/api-key.ts#L8-L18",
+          "https://github.com/daytonaio/daytona/blob/01c502bb1f1ff8f2885d0cd490e043736083dca8/apps/api/src/common/utils/api-key.ts#L8-L18",
+          "https://github.com/daytonaio/daytona/blob/5271af9f13fd/apps/api/src/api-key/api-key.service.ts#L27",
+          "https://www.daytona.io/docs/llms-full.txt",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/daytona.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/issuance-research/daytona.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/970",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/464"
+        ]
+      }
+    },
+    {
+      "id": "clickhouse-cloud-api-secret-positive",
+      "path": "clickhouse-cloud-api-secret/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CLICKHOUSE_CLOUD_API_SECRET=\u0034b1dReview7Alpha9Beta3Gamma5Delta1Omega2Ab\n",
+      "expected": [
+        {
+          "start": 28,
+          "end": 70,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "clickhouse-cloud-api-secret"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "clickhouse-cloud-api-secret",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/pull/1826",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/gitleaks/gitleaks/pull/1826",
+          "https://github.com/ClickHouse/terraform-provider-clickhouse/blob/cfa09c82da2856dc163ddf1529ea7ef7a3e76fe7/examples/provider/provider.tf#L16",
+          "https://github.com/ClickHouse/terraform-provider-clickhouse/blob/cfa09c82da2856dc163ddf1529ea7ef7a3e76fe7/internal/api/client_test.go#L20",
+          "https://api.clickhouse.cloud/v1",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/clickhouse-cloud.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/issuance-research/clickhouse-cloud.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/971",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/464"
+        ]
+      }
+    },
+    {
+      "id": "clickhouse-cloud-api-secret-negative",
+      "path": "clickhouse-cloud-api-secret/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CLICKHOUSE_CLOUD_API_SECRET=${CLICKHOUSE_CLOUD_API_SECRET_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "clickhouse-cloud-api-secret"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "clickhouse-cloud-api-secret",
+        "sources": [
+          "https://github.com/gitleaks/gitleaks/pull/1826",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/gitleaks/gitleaks/pull/1826",
+          "https://github.com/ClickHouse/terraform-provider-clickhouse/blob/cfa09c82da2856dc163ddf1529ea7ef7a3e76fe7/examples/provider/provider.tf#L16",
+          "https://github.com/ClickHouse/terraform-provider-clickhouse/blob/cfa09c82da2856dc163ddf1529ea7ef7a3e76fe7/internal/api/client_test.go#L20",
+          "https://api.clickhouse.cloud/v1",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/clickhouse-cloud.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/issuance-research/clickhouse-cloud.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/971",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/464"
+        ]
+      }
+    },
+    {
+      "id": "nvidia-api-key-positive",
+      "path": "nvidia-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "NVIDIA_API_KEY=\u006evapi-Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alpha7-Beta9Review_\n",
+      "expected": [
+        {
+          "start": 15,
+          "end": 85,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "nvidia-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "nvidia-api-key",
+        "sources": [
+          "https://github.com/NVIDIA-NeMo/nemo-helix/blob/689f7852611b0151cee2748ca2b68e8e163e3b65/plugins/nemo-agents/src/nemo_agents_plugin/skills/agents-secure/resources/pii_scan.py#L229-L232",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/nvapi/nvapi.go",
+          "https://github.com/betterleaks/betterleaks",
+          "https://github.com/NVIDIA-NeMo/nemo-helix/blob/689f7852611b0151cee2748ca2b68e8e163e3b65/plugins/nemo-agents/src/nemo_agents_plugin/skills/agents-secure/resources/pii_scan.py#L229-L232",
+          "https://github.com/NVIDIA/SkillEvaluator/blob/a2636b2f886235f974ed4329029f923a12d0328b/src/skillevaluator/validators/secrets.py#L57-L60",
+          "https://github.com/NVIDIA/NemoClaw/blob/6721c275ba9c30ea99c404872379110dfba5a99a/src/lib/validation.ts#L255-L271",
+          "https://github.com/NVIDIA-NeMo/labs-OO-Agents/blob/3374ceae9f1ba13ddbaceca752d8886d1d9dff3b/src/nooa/tracing/_secret_scrubber.py#L118",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/nvidia.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/issuance-research/nvidia.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/tier-b-rerank.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/972",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/464"
+        ]
+      }
+    },
+    {
+      "id": "nvidia-api-key-negative",
+      "path": "nvidia-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "NVIDIA_API_KEY=${NVIDIA_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "nvidia-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "nvidia-api-key",
+        "sources": [
+          "https://github.com/NVIDIA-NeMo/nemo-helix/blob/689f7852611b0151cee2748ca2b68e8e163e3b65/plugins/nemo-agents/src/nemo_agents_plugin/skills/agents-secure/resources/pii_scan.py#L229-L232",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/nvapi/nvapi.go",
+          "https://github.com/betterleaks/betterleaks",
+          "https://github.com/NVIDIA-NeMo/nemo-helix/blob/689f7852611b0151cee2748ca2b68e8e163e3b65/plugins/nemo-agents/src/nemo_agents_plugin/skills/agents-secure/resources/pii_scan.py#L229-L232",
+          "https://github.com/NVIDIA/SkillEvaluator/blob/a2636b2f886235f974ed4329029f923a12d0328b/src/skillevaluator/validators/secrets.py#L57-L60",
+          "https://github.com/NVIDIA/NemoClaw/blob/6721c275ba9c30ea99c404872379110dfba5a99a/src/lib/validation.ts#L255-L271",
+          "https://github.com/NVIDIA-NeMo/labs-OO-Agents/blob/3374ceae9f1ba13ddbaceca752d8886d1d9dff3b/src/nooa/tracing/_secret_scrubber.py#L118",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/nvidia.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/issuance-research/nvidia.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/tier-b-rerank.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/972",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/464"
+        ]
+      }
+    },
+    {
+      "id": "browserbase-api-key-positive",
+      "path": "browserbase-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "BROWSERBASE_API_KEY=\u0062b_live_ReviewAlpha7Beta9ReviewAlpha7Bet\n",
+      "expected": [
+        {
+          "start": 20,
+          "end": 60,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "browserbase-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "browserbase-api-key",
+        "sources": [
+          "https://github.com/browserbase/cookbook/blob/eff9eca8e61e16ea1635e9e75e043c7a765c5f88/scripts/verify.py#L383",
+          "https://github.com/browserbase/cookbook/blob/eff9eca8e61e16ea1635e9e75e043c7a765c5f88/scripts/verify.py#L383",
+          "https://github.com/browserbase/cookbook/blob/eff9eca8e61e16ea1635e9e75e043c7a765c5f88/scripts/import_sources.py#L22-L31",
+          "https://github.com/browserbase/stagehand/blob/ad2bf12ea7abd95bb1d6f3a59600842a0954fffb/packages/integrations/core/src/harness/redact.ts#L12",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/browserbase.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/issuance-research/browserbase.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/tier-b-rerank.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/973",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/464"
+        ]
+      }
+    },
+    {
+      "id": "browserbase-api-key-negative",
+      "path": "browserbase-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "BROWSERBASE_API_KEY=${BROWSERBASE_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "browserbase-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "browserbase-api-key",
+        "sources": [
+          "https://github.com/browserbase/cookbook/blob/eff9eca8e61e16ea1635e9e75e043c7a765c5f88/scripts/verify.py#L383",
+          "https://github.com/browserbase/cookbook/blob/eff9eca8e61e16ea1635e9e75e043c7a765c5f88/scripts/verify.py#L383",
+          "https://github.com/browserbase/cookbook/blob/eff9eca8e61e16ea1635e9e75e043c7a765c5f88/scripts/import_sources.py#L22-L31",
+          "https://github.com/browserbase/stagehand/blob/ad2bf12ea7abd95bb1d6f3a59600842a0954fffb/packages/integrations/core/src/harness/redact.ts#L12",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/browserbase.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/issuance-research/browserbase.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/tier-b-rerank.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/973",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/464"
+        ]
+      }
+    },
+    {
+      "id": "cerebras-api-key-positive",
+      "path": "cerebras-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CEREBRAS_API_KEY=\u0063sk-Review_Alpha7-Beta9Review_Alpha7-Beta9Review_Alp\n",
+      "expected": [
+        {
+          "start": 17,
+          "end": 69,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "cerebras-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "cerebras-api-key",
+        "sources": [
+          "https://github.com/Cerebras/vscode-cerebras-chat/blob/e03602fa96f3ddfc8122ea2655bfa39424a5d157/src/provider.ts#L113",
+          "https://github.com/betterleaks/betterleaks",
+          "https://github.com/Cerebras/vscode-cerebras-chat/blob/e03602fa96f3ddfc8122ea2655bfa39424a5d157/src/provider.ts#L113",
+          "https://github.com/Cerebras/vscode-cerebras-chat/blob/9d0253c1e071dd4d4afaad92cf5a6958bbea80eb/src/provider.ts#L176",
+          "https://github.com/Cerebras/vscode-cerebras-chat/pull/8#discussion_r2453931915",
+          "https://github.com/Cerebras/vscode-cerebras-chat/pull/8#discussion_r2462008982",
+          "https://github.com/Cerebras/vscode-cerebras-chat/issues/7",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/cerebras.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/issuance-research/cerebras.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/tier-b-rerank.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/975",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/464"
+        ]
+      }
+    },
+    {
+      "id": "cerebras-api-key-negative",
+      "path": "cerebras-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CEREBRAS_API_KEY=${CEREBRAS_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "cerebras-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "cerebras-api-key",
+        "sources": [
+          "https://github.com/Cerebras/vscode-cerebras-chat/blob/e03602fa96f3ddfc8122ea2655bfa39424a5d157/src/provider.ts#L113",
+          "https://github.com/betterleaks/betterleaks",
+          "https://github.com/Cerebras/vscode-cerebras-chat/blob/e03602fa96f3ddfc8122ea2655bfa39424a5d157/src/provider.ts#L113",
+          "https://github.com/Cerebras/vscode-cerebras-chat/blob/9d0253c1e071dd4d4afaad92cf5a6958bbea80eb/src/provider.ts#L176",
+          "https://github.com/Cerebras/vscode-cerebras-chat/pull/8#discussion_r2453931915",
+          "https://github.com/Cerebras/vscode-cerebras-chat/pull/8#discussion_r2462008982",
+          "https://github.com/Cerebras/vscode-cerebras-chat/issues/7",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/cerebras.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/issuance-research/cerebras.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/tier-b-rerank.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/975",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/464"
+        ]
+      }
+    },
+    {
+      "id": "runpod-api-key-positive",
+      "path": "runpod-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "RUNPOD_API_KEY=\u0072pa_REVIEWALPHA7BETA9REVIEWALPHA7BETA9REVIEWAb7xYz\n",
+      "expected": [
+        {
+          "start": 15,
+          "end": 65,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "runpod-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "runpod-api-key",
+        "sources": [
+          "https://github.com/runpod/runpod-mcp/blob/09a565a6adef8932f044dfa65243e7bc41cbdf2d/src/alp/scrub.ts#L36",
+          "https://github.com/betterleaks/betterleaks",
+          "https://github.com/runpod/runpod-mcp/blob/09a565a6adef8932f044dfa65243e7bc41cbdf2d/src/alp/scrub.ts#L36",
+          "https://www.runpod.io/blog/scoped-api-keys-runpod",
+          "https://docs.runpod.io/get-started/api-keys",
+          "https://github.com/runpod/docs/pull/456",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/runpod.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/issuance-research/runpod.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/tier-b-rerank.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/974",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/464"
+        ]
+      }
+    },
+    {
+      "id": "runpod-api-key-negative",
+      "path": "runpod-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "RUNPOD_API_KEY=${RUNPOD_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "runpod-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "runpod-api-key",
+        "sources": [
+          "https://github.com/runpod/runpod-mcp/blob/09a565a6adef8932f044dfa65243e7bc41cbdf2d/src/alp/scrub.ts#L36",
+          "https://github.com/betterleaks/betterleaks",
+          "https://github.com/runpod/runpod-mcp/blob/09a565a6adef8932f044dfa65243e7bc41cbdf2d/src/alp/scrub.ts#L36",
+          "https://www.runpod.io/blog/scoped-api-keys-runpod",
+          "https://docs.runpod.io/get-started/api-keys",
+          "https://github.com/runpod/docs/pull/456",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/runpod.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/issuance-research/runpod.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/tier-b-rerank.md",
+          "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/860",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/974",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/464"
+        ]
+      }
     }
   ]
 }

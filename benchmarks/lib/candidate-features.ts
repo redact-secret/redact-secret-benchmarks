@@ -371,9 +371,12 @@ export const LEAK_GUARD_MIN_LENGTH = 8;
 
 /** Throws if any string in the dataset contains an expected-span value of at least LEAK_GUARD_MIN_LENGTH scalar values. Names no value. */
 export function assertNoCandidateBytes(dataset: unknown, values: string[]): void {
-  const haystack = strings(dataset);
+  // Distinct strings only (row ids, family names and keys repeat thousands of times), joined once so each needle is a single
+  // substring search. A needle without the NUL separator cannot span two strings, so this equals the per-string search exactly.
+  const haystack = [...new Set(strings(dataset))];
   const needles = [...new Set(values)].filter(v => [...v].length >= LEAK_GUARD_MIN_LENGTH);
-  const leaked = needles.filter(v => haystack.some(s => s.includes(v))).length;
+  const joined = haystack.join('\0');
+  const leaked = needles.filter(v => (v.includes('\0') ? haystack.some(s => s.includes(v)) : joined.includes(v))).length;
   if (leaked) throw new Error(`Candidate feature dataset would carry ${leaked} candidate value(s); refusing to build it.`);
 }
 

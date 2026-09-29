@@ -137824,25 +137824,28 @@
       "resolvedRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196"
     },
     "0dcb2fcfea7594b09a12288109555a751cd82577fbdee7f304228ba164ee70fb": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
-      "note": "Differential observation on a Beta.10 fixture (#384, target cohere-api-key, must-not-flag/T2): redact-secret (published npm package 0.1.0-beta.9) reports [15,54) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/cohere-api-key.",
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (length: 39 vs contracted 40) is scoped to cohere-api-key, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no cohere-api-key finding, so the twin's own assertion (no typed cohere-api-key finding) holds. redact-secret attributes [15,54) to generic-token instead — the value still sits in a credential slot (a credential-named assignment, an api-key header or query parameter), where generic-token reports a value no typed detector claims (the project's T3 contextual policy, never a provider-format claim). The twin method records this as coDetected, not as a twin failure. trufflehog reports no finding at all — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/twin-boundary-family-reassignment.",
       "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
-      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+      "lastSeenAt": "2026-09-27T12:00:00.000Z",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "de9b5549037a44d48345943560882ffc5acebacb5424b36287b17dd94fd9b16f": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
-      "note": "Differential observation on a Beta.10 fixture (#384, target cohere-api-key, must-not-flag/T2): redact-secret (published npm package 0.1.0-beta.9) reports [22,61) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/cohere-api-key.",
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (length: 39 vs contracted 40) is scoped to cohere-api-key, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no cohere-api-key finding, so the twin's own assertion (no typed cohere-api-key finding) holds. redact-secret attributes [22,61) to generic-token instead — the value still sits in a credential slot (a credential-named assignment, an api-key header or query parameter), where generic-token reports a value no typed detector claims (the project's T3 contextual policy, never a provider-format claim). The twin method records this as coDetected, not as a twin failure. trufflehog reports no finding at all — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/twin-boundary-family-reassignment.",
       "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
-      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+      "lastSeenAt": "2026-09-27T12:00:00.000Z",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "67f851952310e456b7dd4a81df6e6d8800dea71776d719332a4869a8b18b9aa3": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
-      "note": "Differential observation on a Beta.10 fixture (#384, target cohere-api-key, must-not-flag/T2): redact-secret (published npm package 0.1.0-beta.9) reports [36,75) (labelled generic-token) while trufflehog reports no finding (labelled unmapped); the authored expectation is no finding. It matches no established class, so it is recorded open without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: benign-false-alarm-unconfirmed/cohere-api-key.",
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (length: 39 vs contracted 40) is scoped to cohere-api-key, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no cohere-api-key finding, so the twin's own assertion (no typed cohere-api-key finding) holds. redact-secret attributes [36,75) to generic-token instead — the value still sits in a credential slot (a credential-named assignment, an api-key header or query parameter), where generic-token reports a value no typed detector claims (the project's T3 contextual policy, never a provider-format claim). The twin method records this as coDetected, not as a twin failure. trufflehog reports no finding at all — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/twin-boundary-family-reassignment.",
       "lastSeenRun": "e4b2a3f0-3e2b-4c93-9a26-triage-beta10-196",
-      "lastSeenAt": "2026-09-27T12:00:00.000Z"
+      "lastSeenAt": "2026-09-27T12:00:00.000Z",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "432b724ea3ed6185d8df087c1c416f1778a11c56889a1e308dcb0a17ce5ec2e1": {
       "status": "open",
@@ -146373,7 +146376,7 @@
       "firstSeenRun": "f5bd102b-da71-426c-9baa-a6409ebc6ebf",
       "lastSeenRun": "9179e155-c41c-4392-846e-cbf0f9fcb595",
       "lastSeenAt": "2026-09-28T16:08:15.315Z",
-      "note": "redact-secret (published npm package 0.1.0-beta.10) reports no finding at all on this canonical policy/T3 positive (beta8-379/cohere-api-key-litellm-proxy-debug); gitleaks reports [99,139) (labelled generic-token), against this corpus's authored expected span [99,139). This is a genuine, currently-measured detection gap for cohere-api-key in the published package, not a corpus or peer artifact — it matches no established resolved or not-assertable class and needs a product-side decision or a promote-finding pass before it can be settled either way. Class: differential-coverage-gap/cohere-api-key."
+      "note": "Product false negative on the canonical variant of beta8-379/cohere-api-key-litellm-proxy-debug (positive, policy/T3, target cohere-api-key): gitleaks reports [99,139) as generic-token, the authored span, and redact-secret reports nothing because the value sits under LiteLLM's masked_api_key= name (known gap product-932-masked-key-policy). The value is a complete, unmasked 40-character key beside cohere/ on the same line; redact-secret/redact-secret#1018 (milestone v0.1.0.beta.12) asks the product to narrow the masked_ exclusion to values that are actually masked (security-first: the benchmark keeps its redact expectation either way). Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Recorded open so the family stays provisional until a release carries the fix; the fixture expectation is unchanged. Class: differential-coverage-gap/cohere-api-key."
     },
     "49a3d209a7f6bb58a3b3b8bb6e75de5204693fdf6b87f91462e42bed18dedeae": {
       "status": "not-assertable",

@@ -7022,6 +7022,71 @@
           "https://github.com/redact-secret/redact-secret-benchmarks/blob/754be29dedfe72632b77cf3112b443c161084b64/evidence/949/candidate-rerun-8b6a5fd.json"
         ]
       }
+    },
+    {
+      "id": "product-1038",
+      "title": "Python subscript assignments os.environ[\"NAME\"] = \"<literal>\" are never read as an assignment: credential values under MISTRAL_API_KEY, CO_API_KEY, API_TOKEN are missed",
+      "url": "https://github.com/redact-secret/redact-secret/issues/1038",
+      "number": 1038,
+      "fixtures": [
+        "beta8-384e--mistral-api-key-python-environ-assign"
+      ],
+      "kind": "false-negative",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.11",
+        "lockHash": "06a6ba659e9ae2d42ee49f0f11e13d682ed242539c89b6bb455c29cdb089c51f",
+        "sourceCommit": "94fc18a974f659ea882c89120dbf1adb3acf2f28"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/0ba1fa4f4bf45e104afa384ca409978350f28211/fixtures/generated/beta8/384e.mjs",
+          "https://github.com/redact-secret/redact-secret/blob/b9e90915f4139a79ca1527a79c93cf951fc0927d/docs/specs/detector-families.md"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-29",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/commit/0ba1fa4f4bf45e104afa384ca409978350f28211",
+            "https://github.com/redact-secret/redact-secret/issues/1038"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-29",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/0ba1fa4f4bf45e104afa384ca409978350f28211/fixtures/generated/beta8/384e.mjs",
+            "https://github.com/redact-secret/redact-secret/blob/b9e90915f4139a79ca1527a79c93cf951fc0927d/docs/specs/detector-families.md"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-29",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/1038"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/1038",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-1038",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-384e--mistral-api-key-python-environ-assign",
+          "corpusHash": "6cd48d23536d787898c5f9b188b320dbd349cfb92872065bd84dd8e8bb655931",
+          "expected": [
+            {
+              "start": 44,
+              "end": 76
+            }
+          ],
+          "actual": []
+        }
+      ]
     }
   ]
 }

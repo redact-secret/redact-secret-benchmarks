@@ -190,7 +190,7 @@ export function build211({ fixture, synthetic }) {
     { axis: "source-code", slug: "java-socket-mode-app", ext: "java",
       tpl: (slot, v) => ["SocketModeApp socketModeApp = new SocketModeApp(\"", slot(v), "\", app);\nsocketModeApp.start();\n"] },
     { axis: "structured-file", slug: "helm-values", ext: "yml",
-      tpl: (slot, v) => ["slack:\n  socketMode: true\n  appToken: \"", slot(v), "\"\n  botTokenSecret: slack-bot\n"] },
+      tpl: (slot, v) => ["slack:\n  socketMode: true\n  appToken: \"", slot(v), "\"\n  logLevel: info\n"] },
     { axis: "log", slug: "socket-mode-debug", variant: true, ext: "log",
       tpl: (slot, v) => ["DEBUG slack_sdk.socket_mode.builtin.client: Sending apps.connections.open with app_token=", slot(v), "\n"] },
     { axis: "shell-export", slug: "fish-set", ext: "fish",

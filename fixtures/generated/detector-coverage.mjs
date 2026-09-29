@@ -978,11 +978,13 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   add("deepgram-api-key", "mask", [`DEEPGRAM_API_KEY=${"*".repeat(40)}`]);
   add("deepgram-api-key", "reference", ["DEEPGRAM_API_KEY=${DEEPGRAM_API_KEY}\n"]);
   add("deepgram-api-key", "label-prose", ["Documentation mentions a Deepgram API key without embedding the key value."]);
-  // ai21-api-key has a pending (T0) contract: its positive scores unasserted.
+  // ai21-api-key is T2 since redact-secret#1013 (was a pending T0 contract whose positive scored unasserted). Same
+  // reasoning as mistral-api-key above: the 31-character near-miss beside the credential-named assignment is a
+  // negative twin of key-shape, so a same-span generic-token finding reads as co-detection, not an ai21 false alarm.
   const ai21Key = synthetic("coverage:ai21:api-key:body", 32, AI_ALNUM);
   positive("ai21-api-key", "key-shape", ["AI21_API_KEY=", { secret: ai21Key }]);
   add("ai21-api-key", "missing-keyword", [ai21Key]);
-  add("ai21-api-key", "short-token", [`AI21_API_KEY=${ai21Key.slice(0, 31)}`]);
+  addTwin("ai21-api-key", "key-shape", [`AI21_API_KEY=${ai21Key.slice(0, 31)}`], "length: 31 vs contracted 32");
   add("ai21-api-key", "mask", [`AI21_API_KEY=${"*".repeat(32)}`]);
   add("ai21-api-key", "reference", ["AI21_API_KEY=${AI21_API_KEY}\n"]);
   add("ai21-api-key", "label-prose", ["Documentation mentions an AI21 API key without embedding the key value."]);

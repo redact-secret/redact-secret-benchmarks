@@ -13,7 +13,7 @@
   "sources": {
     "reviewedMetadata": {
       "algorithm": "sha256",
-      "digest": "145a09d78d34ea42fe022ef19f64aeb747d556f34753bf060702beb3197cb123"
+      "digest": "a80c3cae5684f5822498f47f7d20b0a5668b741f8d00a86692067cdf9ee25123"
     },
     "scenarios": {
       "algorithm": "sha256",
@@ -76349,6 +76349,28 @@
       }
     },
     {
+      "slug": "detector-coverage--ai21-api-key-key-shape-bare-twin",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ai21-api-key-key-shape-bare-twin",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ai21-api-key-key-shape-bare-twin.txt"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      },
+      "relations": {
+        "twinOf": "detector-coverage--ai21-api-key-key-shape-bare"
+      }
+    },
+    {
       "slug": "detector-coverage--ai21-api-key-key-shape-quoted",
       "source": {
         "categoryId": "detector-coverage",
@@ -76367,6 +76389,28 @@
       }
     },
     {
+      "slug": "detector-coverage--ai21-api-key-key-shape-quoted-twin",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ai21-api-key-key-shape-quoted-twin",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ai21-api-key-key-shape-quoted-twin.txt"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      },
+      "relations": {
+        "twinOf": "detector-coverage--ai21-api-key-key-shape-quoted"
+      }
+    },
+    {
       "slug": "detector-coverage--ai21-api-key-key-shape-unicode-crlf",
       "source": {
         "categoryId": "detector-coverage",
@@ -76382,6 +76426,28 @@
       ],
       "provenance": {
         "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ai21-api-key-key-shape-unicode-crlf-twin",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ai21-api-key-key-shape-unicode-crlf-twin",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ai21-api-key-key-shape-unicode-crlf-twin.txt"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      },
+      "relations": {
+        "twinOf": "detector-coverage--ai21-api-key-key-shape-unicode-crlf"
       }
     },
     {
@@ -76448,25 +76514,6 @@
         "fixtureId": "ai21-api-key-reference",
         "corpus": "fixtures/generated/detector-coverage.json",
         "path": "cases/ai21-api-key-reference.txt"
-      },
-      "familyIds": [
-        "ai21:api-key"
-      ],
-      "scenarioIds": [
-        "benign-controls-and-twins",
-        "credential-shape-grammar"
-      ],
-      "provenance": {
-        "categoryId": "detector-coverage"
-      }
-    },
-    {
-      "slug": "detector-coverage--ai21-api-key-short-token",
-      "source": {
-        "categoryId": "detector-coverage",
-        "fixtureId": "ai21-api-key-short-token",
-        "corpus": "fixtures/generated/detector-coverage.json",
-        "path": "cases/ai21-api-key-short-token.txt"
       },
       "familyIds": [
         "ai21:api-key"
@@ -105120,7 +105167,7 @@
   "identity": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "914a4ae94fea88879ab559e63558266d5d88371447ef62980a0f65cae27a1e3e",
-    "fixtureCount": 5088
+    "digest": "afe1b903d0acd944e40d18126b2677dc75b3863a37d5b0fc3d051b259fb1f48b",
+    "fixtureCount": 5090
   }
 }

@@ -33,7 +33,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 
 | Family | Tier | Target | Total fixtures | Positive/context cases | Non-twin benign controls | Twin pairs | Positive-context axes | Control axes | Confusion axes | Remaining debt |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| ai21-api-key | T2 | context-constrained-empirical | 58 | 5 | 27 | 14 | 11 | 6 | 8 | none |
+| ai21-api-key | T2 | context-constrained-empirical | 60 | 2 | 26 | 17 | 11 | 6 | 8 | none |
 | anthropic-admin01-key | T1 | stable-documented | 39 | 7 | 16 | 8 | 15 | 6 | 8 | none |
 | anthropic-api01-key | T1 | stable-documented | 37 | 8 | 15 | 7 | 15 | 6 | 8 | none |
 | anthropic-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 8 | 5 | 6 | none |

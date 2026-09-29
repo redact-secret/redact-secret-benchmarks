@@ -41,7 +41,9 @@ test('every value is the snapshot summary, formatted only', () => {
     const name = o.tool === 'openredaction' ? 'OpenRedaction' : o.tool;
     const row = table.match(new RegExp(`<th scope="row">${name}</th>([\\s\\S]*?)</tr>`))[1];
     const cells = [...row.matchAll(/<td[^>]*>([^<]+)<\/td>/g)].map(m => m[1]);
-    assert.deepEqual(cells, [o.summary.medianMs.toFixed(2), o.summary.p95Ms.toFixed(2), (o.summary.medianBytesPerSecond / 1e6).toFixed(1)], `${o.tool}/${o.workload}`);
+    // Same formatter as the page: toFixed rounds a binary tie like 18.025 down, toLocaleString rounds it half-up.
+    const fixed = (value, digits) => value.toLocaleString('en-US', { minimumFractionDigits: digits, maximumFractionDigits: digits });
+    assert.deepEqual(cells, [fixed(o.summary.medianMs, 2), fixed(o.summary.p95Ms, 2), fixed(o.summary.medianBytesPerSecond / 1e6, 1)], `${o.tool}/${o.workload}`);
   }
   assert.ok(text(measured).includes(`${peerRuntimeThroughputPlan.sampleProtocol.samplesPerCell} samples per cell`));
   assert.ok(text(measured).includes(`Measured ${snapshot.generatedAt.slice(0, 10)}`));

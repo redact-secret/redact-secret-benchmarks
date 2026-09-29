@@ -16,7 +16,7 @@ families:
         - redact-secret/redact-secret#730
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-24
-    blockedBy: Provider docs contradict the observed prefix (pckey_ vs pcsk_) and give no widths; the prefix is provider code, the 5-6 and 63 character widths are tool-only (checklist in benchmarks#228).
+    blockedBy: null
   - id: pinecone:legacy-api-key
     research:
       verdict: ready
@@ -30,7 +30,7 @@ families:
         - redact-secret/redact-secret#702
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-25
-    blockedBy: No provider source states the UUID shape (unpinned tools only) and no new legacy key can be issued; it is claimable only beside a Pinecone API-key name, never as a bare value.
+    blockedBy: null
 ---
 
 # Pinecone
@@ -64,6 +64,7 @@ Admin API bearer token.
   (Python `repr`). Index hosts and `PINECONE_ENVIRONMENT` strings are public.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (frozen in the #726 record, implemented under #730).
+- **Open caveat:** Provider docs contradict the observed prefix (pckey_ vs pcsk_) and give no widths; the prefix is provider code, the 5-6 and 63 character widths are tool-only (checklist in benchmarks#228).
 
 ### `pinecone:legacy-api-key` — Legacy API key (bare UUID)
 
@@ -81,6 +82,7 @@ Admin API bearer token.
   assigned to a Pinecone API-key name on the same line (accepted 2026-09-24
   decision, linked from [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md));
   a bare UUID stays unclaimed. Issue #702 raised the question for this family.
+- **Open caveat:** No provider source states the UUID shape (unpinned tools only) and no new legacy key can be issued; it is claimable only beside a Pinecone API-key name, never as a bare value.
 
 ## Candidates that are not families yet
 

@@ -15,7 +15,7 @@ families:
         - redact-secret/redact-secret#730
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-24
-    blockedBy: The provider shows the pplx- prefix but no length or alphabet; the 48-character alphanumeric body is scanner-only and two of the scanners likely share lineage (checklist in benchmarks#226).
+    blockedBy: null
 ---
 
 # Perplexity
@@ -46,6 +46,7 @@ could show it again. Keys can be rotated through `generate_auth_token` and
   GitGuardian marks the type "not prefixed", which contradicts the other sources.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (frozen in the #726 record, implemented under #730).
+- **Open caveat:** The provider shows the pplx- prefix but no length or alphabet; the 48-character alphanumeric body is scanner-only and two of the scanners likely share lineage (checklist in benchmarks#226).
 
 ## Candidates that are not families yet
 

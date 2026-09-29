@@ -14,7 +14,7 @@ families:
         - redact-secret/redact-secret#654
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/654/README.md
       researchedAt: 2026-09-23
-    blockedBy: "T1 is a maintainer ruling on an SDK-reference type annotation (prefix) and an OpenAPI example (length 34); the alphabet is not provider-stated and api_org_ has no current source."
+    blockedBy: null
 ---
 
 # Hugging Face
@@ -31,6 +31,7 @@ the [`@huggingface/hub` SDK reference](https://huggingface.co/docs/huggingface.j
 - **Issuance:** not attempted.
 - **Collisions:** the `api_org_` variant has no current provider-domain source (a 2021 archived page shows a placeholder; the current SDK rejects org tokens at login), so it stays outside the T1 contract.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md) (row `huggingface:api-token`); evidence [#654 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/654/README.md).
+- **Open caveat:** T1 is a maintainer ruling on an SDK-reference type annotation (prefix) and an OpenAPI example (length 34); the alphabet is not provider-stated and api_org_ has no current source.
 
 ## Candidates that are not families yet
 

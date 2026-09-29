@@ -18,7 +18,7 @@ families:
         - redact-secret/redact-secret-benchmarks#436
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/wandb.md
       researchedAt: 2026-09-28
-    blockedBy: "The docs say \"about 86\" characters; every provider test uses exactly 86, but a confirming issuance is recommended (does not block the contract)."
+    blockedBy: null
 ---
 
 # Weights & Biases
@@ -34,6 +34,7 @@ Weights & Biases (W&B) is an ML experiment tracking platform. An API key (`WANDB
 - **Issuance:** not attempted; recommended because of the "about" in the docs.
 - **Collisions:** the legacy 40-hex key is SHA-1 and git-SHA shaped with no anchor; generic context already redacts it under `WANDB_API_KEY=`. Internal client JWTs go to the JWT detector.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md). That contract uses a tolerant 64 to 96 band around the documented width by an orchestrator decision on #917, wider than the handoff's exact 86; the handoff verdict here is unchanged.
+- **Open caveat:** The docs say "about 86" characters; every provider test uses exactly 86, but a confirming issuance is recommended (does not block the contract).
 
 ## Candidates that are not families yet
 

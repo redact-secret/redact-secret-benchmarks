@@ -15,7 +15,7 @@ families:
         - redact-secret/redact-secret#315
       evidence: null
       researchedAt: 2026-09-24
-    blockedBy: "Okta documents no grammar and its 2023 staff answer says not to assume a structure; tools disagree on = in the body and no issued token has been measured."
+    blockedBy: null
 ---
 
 # Okta
@@ -32,6 +32,7 @@ Okta issues Management API tokens from the Admin Console (Security, API, Tokens)
 - **Issuance:** UI only (the Okta API cannot create SSWS tokens); a free developer org works. The #694 hands-on checklist (total length, leading `00`, alphabet classes, header, checksum) has no recorded result.
 - **Collisions:** `00` is not a distinctive prefix; a value is claimed beside the `SSWS` scheme or a same-line `okta` keyword. TruffleHog gates on an Okta tenant domain.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); detector added by [redact-secret#315](https://github.com/redact-secret/redact-secret/issues/315). No frozen evidence folder exists for #694.
+- **Open caveat:** Okta documents no grammar and its 2023 staff answer says not to assume a structure; tools disagree on = in the body and no issued token has been measured.
 
 ## Candidates that are not families yet
 

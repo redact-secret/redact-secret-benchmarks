@@ -15,7 +15,7 @@ families:
         - redact-secret/redact-secret#659
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/659/README.md
       researchedAt: 2026-09-24
-    blockedBy: "No Sentry web domain states the format (skills.sentry.dev shows a sntryu_ placeholder labelled org token); prefix, 64 lowercase hex and legacy unprefixed tokens rest on Sentry server and CLI code."
+    blockedBy: null
   - id: sentry:organization-auth-token
     research:
       verdict: ready
@@ -28,7 +28,7 @@ families:
         - redact-secret/redact-secret#658
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/658/README.md
       researchedAt: 2026-09-24
-    blockedBy: "Nothing on a Sentry web domain states it; RFC 0091 (github.com, header still says draft) and Sentry code do. Whether a provider-authored RFC counts as T1 is an open maintainer ruling."
+    blockedBy: null
 ---
 
 # Sentry
@@ -44,6 +44,7 @@ Sentry issues personal (user) auth tokens, organization auth tokens (used for CI
 - **Issuance:** not attempted; 0 maintainer observations.
 - **Collisions:** `sntrys_`, `sntrya_` and `sntryi_` are sibling token types.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); evidence [#659 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/659/README.md).
+- **Open caveat:** No Sentry web domain states the format (skills.sentry.dev shows a sntryu_ placeholder labelled org token); prefix, 64 lowercase hex and legacy unprefixed tokens rest on Sentry server and CLI code.
 
 ### `sentry:organization-auth-token` — Organization auth token
 
@@ -52,6 +53,7 @@ Sentry issues personal (user) auth tokens, organization auth tokens (used for CI
 - **Issuance:** not attempted; no freshly issued token checked.
 - **Collisions:** the contract's `eyJ` anchor and `{26,}` payload floor are looser than every observed token, deliberately, to keep `url`-less payloads.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); evidence [#658 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/658/README.md).
+- **Open caveat:** Nothing on a Sentry web domain states it; RFC 0091 (github.com, header still says draft) and Sentry code do. Whether a provider-authored RFC counts as T1 is an open maintainer ruling.
 
 ## Candidates that are not families yet
 

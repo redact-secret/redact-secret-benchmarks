@@ -16,7 +16,7 @@ families:
         - redact-secret/redact-secret-benchmarks#436
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/convex.md
       researchedAt: 2026-09-28
-    blockedBy: "Hex-body keys only. The cloud eyJ2 body (Base64 alphabet, padding, length) is ISSUANCE-GATED (R4; still gated after the 2026-09-28 issuance research); needs a structure-only issuance check."
+    blockedBy: null
 ---
 
 # Convex
@@ -35,6 +35,7 @@ The disposition for this candidate is a split: READY for hex-body keys, ISSUANCE
 - **Issuance:** not attempted; structure-only check for the cloud body is the highest-value one named in the Tier B re-rank.
 - **Collisions:** `CONVEX_DEPLOYMENT=dev:<name>` and `*.convex.cloud` URLs are public selectors with no `|`. The pre-0.16.0 bare legacy key has no anchor. The name-only `bearer-token` partial span was a generic defect, fixed under #918. #919 later made the exact names `CONVEX_DEPLOY_KEY` and `CONVEX_SELF_HOSTED_ADMIN_KEY` a contextual finding, so a gated `eyJ2` body under those names is redacted. A preview deployment key can also read `preview:<branch-name>|` with a name up to 40 characters (`:` and `|` mapped to `_`); that can fall outside the bounded class and is an accepted false negative ([issuance research](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/issuance-research/convex.md)).
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); handoff and issuance research linked below.
+- **Open caveat:** Hex-body keys only. The cloud eyJ2 body (Base64 alphabet, padding, length) is ISSUANCE-GATED (R4; still gated after the 2026-09-28 issuance research); needs a structure-only issuance check.
 
 ## Candidates that are not families yet
 

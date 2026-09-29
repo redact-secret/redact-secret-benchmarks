@@ -14,7 +14,7 @@ families:
         - redact-secret/redact-secret#582
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/582/README.md
       researchedAt: 2026-09-23
-    blockedBy: The underscore delimiter and the [A-Za-z0-9_] body alphabet are stated by scanner rules only; the announcement gives the nfp prefix and a 40-character capacity.
+    blockedBy: null
   - id: netlify:other-prefixed-tokens
     research:
       verdict: unresearched
@@ -57,6 +57,7 @@ family is not recorded here.
   all five classes, so that legacy form cannot be labelled as a personal token.
   Site, account and deploy IDs and preview URLs are not credentials.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Open caveat:** The underscore delimiter and the [A-Za-z0-9_] body alphabet are stated by scanner rules only; the announcement gives the nfp prefix and a 40-character capacity.
 
 ### `netlify:other-prefixed-tokens` — CLI, OAuth, app and build tokens (nfc_/nfo_/nfu_/nfb_)
 

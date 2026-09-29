@@ -16,7 +16,7 @@ families:
         - redact-secret/redact-secret#728
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-24
-    blockedBy: The provider documents roles and contexts but no prefix, length or alphabet; segment widths and lowercase hex are scanner-corroborated only (checklist in benchmarks#219).
+    blockedBy: null
 ---
 
 # LangSmith
@@ -50,6 +50,7 @@ permissions, and service keys, scoped to a workspace or organization.
   metadata names such as `ls_provider`.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (frozen in the #726 record, implemented under #728).
+- **Open caveat:** The provider documents roles and contexts but no prefix, length or alphabet; segment widths and lowercase hex are scanner-corroborated only (checklist in benchmarks#219).
 
 ## Candidates that are not families yet
 

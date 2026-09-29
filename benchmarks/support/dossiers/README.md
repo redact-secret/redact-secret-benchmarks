@@ -60,7 +60,9 @@ detector (in the pinned inventory) and measured (support matrix reads `stable`
 or `provisional`). Only your verdict, tier, `blockedBy`, `researchedAt` and
 links are read from the dossier; the stages are derived, so the page answers
 "when will X be supported?" with a stage and a blocker, never a date. Do not put
-a forecast date in `blockedBy`. `npm run support:check:ui` keeps the page in
+a forecast date in `blockedBy`. `blockedBy` names what blocks the next stage, so
+it is `null` for a `ready` family: only `issuance-gated` and `date-gated` carry
+it. A caveat worth keeping for a `ready` family goes in the prose, not the field. `npm run support:check:ui` keeps the page in
 step with the taxonomy and both schemas.
 
 Research on a candidate whose provider is not in `taxonomy.json` has no

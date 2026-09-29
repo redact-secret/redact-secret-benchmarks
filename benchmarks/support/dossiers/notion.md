@@ -14,7 +14,7 @@ families:
         - redact-secret/redact-secret#300
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/642/README.md
       researchedAt: 2026-09-23
-    blockedBy: T1 on the secret_ prefix only; the 43-character alphanumeric body is tool-corroborated and Notion says token formats may change.
+    blockedBy: null
   - id: notion:integration-token
     research:
       verdict: ready
@@ -30,7 +30,7 @@ families:
         - redact-secret/redact-secret#729
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-24
-    blockedBy: The prefix is provider-documented but the 11 digit plus 35 alphanumeric body is tool-only, from one contributor's samples, and Notion advises against regexes for its tokens (checklist in benchmarks#225).
+    blockedBy: null
 ---
 
 # Notion
@@ -61,6 +61,7 @@ against" using regexes to identify or validate them because the format may chang
   and share-URL ids are public.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (T1 provider source recorded in the #642 evidence; the grammar was frozen under #300).
+- **Open caveat:** T1 on the secret_ prefix only; the 43-character alphanumeric body is tool-corroborated and Notion says token formats may change.
 
 ### `notion:integration-token` — Integration token
 
@@ -80,6 +81,7 @@ against" using regexes to identify or validate them because the format may chang
   (`bot_id`, `workspace_id`, PAT record id) are UUIDs and public.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (frozen in the #726 record; already implemented before #729, which left it unchanged).
+- **Open caveat:** The prefix is provider-documented but the 11 digit plus 35 alphanumeric body is tool-only, from one contributor's samples, and Notion advises against regexes for its tokens (checklist in benchmarks#225).
 
 ## Candidates that are not families yet
 

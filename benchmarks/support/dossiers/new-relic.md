@@ -13,7 +13,7 @@ families:
         - redact-secret/redact-secret#642
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/642/README.md
       researchedAt: 2026-09-23
-    blockedBy: "The NRAK- prefix is T1 but the provider says most user keys carry it, so unprefixed user keys are possible; the 27-character uppercase-alphanumeric body is tool-corroborated."
+    blockedBy: null
   - id: new-relic:license-key
     research:
       verdict: ready
@@ -29,7 +29,7 @@ families:
         - redact-secret/redact-secret-benchmarks#160
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/656/README.md
       researchedAt: 2026-09-24
-    blockedBy: "The NRAL suffix and total length 40 are T1; the hex body, the FFFF segment and the eu01xx region prefix are provider-code and tool corroborated, and the canonical API-keys page still says 40-character hexadecimal."
+    blockedBy: null
 ---
 
 # New Relic
@@ -47,6 +47,7 @@ New Relic issues user API keys (`NRAK-` prefix, sent as `Api-Key`) and ingest li
 - **Issuance:** not attempted.
 - **Collisions:** `NRAK-` appears in one New Relic docs page as the expected prefix of a license key, which reads as a documentation error.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); evidence in the [#642 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/642/README.md).
+- **Open caveat:** The NRAK- prefix is T1 but the provider says most user keys carry it, so unprefixed user keys are possible; the 27-character uppercase-alphanumeric body is tool-corroborated.
 
 ### `new-relic:license-key` — License key
 
@@ -55,6 +56,7 @@ New Relic issues user API keys (`NRAK-` prefix, sent as `Api-Key`) and ingest li
 - **Issuance:** not attempted; an empirical check of one or two fresh `Ingest - License` keys is specified in the #656 web-search pass.
 - **Collisions:** the legacy shape collides with SHA-1 digests and commit ids; suffixed shapes need no same-line keyword after [redact-secret#754](https://github.com/redact-secret/redact-secret/issues/754).
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md) (row `new-relic:license-key`); evidence [#656 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/656/README.md).
+- **Open caveat:** The NRAL suffix and total length 40 are T1; the hex body, the FFFF segment and the eu01xx region prefix are provider-code and tool corroborated, and the canonical API-keys page still says 40-character hexadecimal.
 
 ## Candidates that are not families yet
 

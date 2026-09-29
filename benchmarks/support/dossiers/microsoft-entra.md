@@ -15,7 +15,7 @@ families:
         - redact-secret/redact-secret-benchmarks#161
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/655/README.md
       researchedAt: 2026-09-24
-    blockedBy: "T1 is a maintainer ruling on two SDK-example values (3 chars, 8Q~, 34, 40 total); the marker digit to length coupling and the alphabet come from Microsoft security-utilities code and tools."
+    blockedBy: null
 ---
 
 # Microsoft Entra ID
@@ -32,6 +32,7 @@ the [Add-MgApplicationPassword reference](https://learn.microsoft.com/en-us/powe
 - **Issuance:** not attempted; secrets can be created and deleted per app registration.
 - **Collisions:** no provider prefix; the `<digit>Q~` marker is the identifying element.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md) (row `microsoft-entra:application-client-secret`); evidence [#655 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/655/README.md).
+- **Open caveat:** T1 is a maintainer ruling on two SDK-example values (3 chars, 8Q~, 34, 40 total); the marker digit to length coupling and the alphabet come from Microsoft security-utilities code and tools.
 
 ## Candidates that are not families yet
 

@@ -15,7 +15,7 @@ families:
         - redact-secret/redact-secret#701
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/582/README.md
       researchedAt: 2026-09-25
-    blockedBy: The key- + 32 shape is provider-shown only for the HTTP signing key. Three sources say the current private API key is a prefix-less 32-8-8 hex triplet, so key- may be the older shape. Needs one issued key.
+    blockedBy: null
   - id: mailgun:public-validation-key
     research:
       verdict: unresearched
@@ -36,7 +36,7 @@ families:
         - redact-secret/redact-secret-benchmarks#259
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/582/README.md
       researchedAt: 2026-09-25
-    blockedBy: No provider source shows the 32-8-8 shape and its role is unresolved (current private API key or superseded signing key); two scanner rules and three prose sources describe it. Needs one issued key.
+    blockedBy: null
 ---
 
 # Mailgun
@@ -67,6 +67,7 @@ in #582.
   key.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (`mailgun_api_key`, confidence-gated on a `mailgun` keyword).
+- **Open caveat:** The key- + 32 shape is provider-shown only for the HTTP signing key. Three sources say the current private API key is a prefix-less 32-8-8 hex triplet, so key- may be the older shape. Needs one issued key.
 
 ### `mailgun:public-validation-key` — Public validation key (pubkey-)
 
@@ -90,6 +91,7 @@ in #582.
 - **Current contract in core:** #701 made the product's `mailgun_api_key`
   detector also report this shape, inside the shared detector; see
   [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Open caveat:** No provider source shows the 32-8-8 shape and its role is unresolved (current private API key or superseded signing key); two scanner rules and three prose sources describe it. Needs one issued key.
 
 ## Candidates that are not families yet
 

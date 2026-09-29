@@ -17,7 +17,7 @@ families:
         - redact-secret/redact-secret#515
       evidence: null
       researchedAt: 2026-09-24
-    blockedBy: The 22 + _ + 8 layout is stated on the self-hosting page ("same format as the platform"); the hosted checksum algorithm and input are unresolved, so the checksum value is not asserted.
+    blockedBy: null
   - id: supabase:personal-access-token
     research:
       verdict: ready
@@ -29,7 +29,7 @@ families:
         - redact-secret/redact-secret-benchmarks#81
       evidence: null
       researchedAt: 2026-09-21
-    blockedBy: T1 on the sbp_ prefix (documented by example) only; the exact 40-character body for sbp_ and sbp_v0_ is tool-corroborated (TruffleHog's shape).
+    blockedBy: null
 ---
 
 # Supabase
@@ -64,6 +64,7 @@ tokens (`sbp_`) are a separate class.
   public GitHub repositories (provider statement).
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (T1 layout row, checked by position; the tightening followed #742).
+- **Open caveat:** The 22 + _ + 8 layout is stated on the self-hosting page ("same format as the platform"); the hosted checksum algorithm and input are unresolved, so the checksum value is not asserted.
 
 ### `supabase:personal-access-token` — Personal access token
 
@@ -77,6 +78,7 @@ tokens (`sbp_`) are a separate class.
 - **Collisions:** the secret key class above; evidence is kept independent in both
   directions.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Open caveat:** T1 on the sbp_ prefix (documented by example) only; the exact 40-character body for sbp_ and sbp_v0_ is tool-corroborated (TruffleHog's shape).
 
 ## Candidates that are not families yet
 

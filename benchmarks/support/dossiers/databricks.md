@@ -16,7 +16,7 @@ families:
         - redact-secret/redact-secret#698
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/582/README.md
       researchedAt: 2026-09-25
-    blockedBy: No Databricks page states the dapi prefix, length or alphabet; uppercase hex and the optional -<digit> suffix are disputed between sources. Needs one issued token (recorded in #697).
+    blockedBy: null
 ---
 
 # Databricks
@@ -51,6 +51,7 @@ candidates ranked in #582.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (`databricks_personal_access_token`, always redacted; the prefix makes it
   bare-detectable).
+- **Open caveat:** No Databricks page states the dapi prefix, length or alphabet; uppercase hex and the optional -<digit> suffix are disputed between sources. Needs one issued token (recorded in #697).
 
 ## Candidates that are not families yet
 

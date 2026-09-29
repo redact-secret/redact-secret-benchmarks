@@ -15,7 +15,7 @@ families:
         - redact-secret/redact-secret-benchmarks#436
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/onepassword.md
       researchedAt: 2026-09-28
-    blockedBy: "Length is variable by construction, with one T1 example; the minimum of 250 Base64url bytes after the prefix is project policy, not a provider fact."
+    blockedBy: null
 ---
 
 # 1Password
@@ -31,6 +31,7 @@ families:
 - **Issuance:** not attempted.
 - **Collisions:** the Connect server token (`OP_CONNECT_TOKEN`) is a standard JWT. The Account Secret Key is a separate credential. `op://vault/item/field` secret references are not secrets.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Open caveat:** Length is variable by construction, with one T1 example; the minimum of 250 Base64url bytes after the prefix is project policy, not a provider fact.
 
 ## Candidates that are not families yet
 

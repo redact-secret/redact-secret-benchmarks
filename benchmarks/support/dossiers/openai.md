@@ -16,7 +16,7 @@ families:
         - redact-secret/redact-secret#948
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/657/README.md
       researchedAt: 2026-09-23
-    blockedBy: No provider-domain page states prefix, marker, length or alphabet, so T1 is unreachable; the shipped contract stays a tool-corroborated T2 shape. Needs issued keys (steps in the #657 web-search pass).
+    blockedBy: null
   - id: openai:admin-api-key
     research:
       verdict: ready
@@ -32,7 +32,7 @@ families:
         - redact-secret/redact-secret-benchmarks#384
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/863/README.md
       researchedAt: 2026-09-27
-    blockedBy: No provider page states an admin-key length or alphabet, so T1 is unreachable; widths rest on gitleaks vectors. Needs one issued admin key (checklist in #777) to settle marker and width.
+    blockedBy: null
 ---
 
 # OpenAI
@@ -71,6 +71,7 @@ Whether and how core detects a family is not recorded here.
   #552 records that the frozen contract deliberately excludes shapes such as
   marker-less 48-byte bodies. #948 later made an off-grammar value under a
   provider-named variable such as `OPENAI_API_KEY=` a generic finding.
+- **Open caveat:** No provider-domain page states prefix, marker, length or alphabet, so T1 is unreachable; the shipped contract stays a tool-corroborated T2 shape. Needs issued keys (steps in the #657 web-search pass).
 
 ### `openai:admin-api-key` — Admin API key (sk-admin-)
 
@@ -94,6 +95,7 @@ Whether and how core detects a family is not recorded here.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
   #863 reconciled the precision contract (previously `pending`, T0) with the
   detector. Product PR #882 gave admin keys their own finding type.
+- **Open caveat:** No provider page states an admin-key length or alphabet, so T1 is unreachable; widths rest on gitleaks vectors. Needs one issued admin key (checklist in #777) to settle marker and width.
 
 ## Candidates that are not families yet
 

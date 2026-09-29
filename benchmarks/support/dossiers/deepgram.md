@@ -19,7 +19,7 @@ families:
         - redact-secret/redact-secret-benchmarks#384
       evidence: null
       researchedAt: 2026-09-27
-    blockedBy: No provider source states length or alphabet; the docs example is a 32-hex placeholder that contradicts the observed 40. Hex versus base36 is disputed between tools. Needs one issued key (checklist in #789).
+    blockedBy: null
 ---
 
 # Deepgram
@@ -61,6 +61,7 @@ Whether and how core detects a family is not recorded here.
   the wider of the two tools. #932 recognised the HTTPie `Authorization:Token`
   and Go `deepgram.NewRESTWithDefaults` forms, and #936 made the `Token`
   header high confidence when the line names a Deepgram API host.
+- **Open caveat:** No provider source states length or alphabet; the docs example is a 32-hex placeholder that contradicts the observed 40. Hex versus base36 is disputed between tools. Needs one issued key (checklist in #789).
 
 ## Candidates that are not families yet
 

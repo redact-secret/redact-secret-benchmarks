@@ -5,30 +5,36 @@ provider: hashicorp-vault
 families:
   - id: hashicorp-vault:service-token
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
-      issues: []
+      verdict: ready
+      tier: T1
+      sources:
+        - https://developer.hashicorp.com/vault/docs/concepts/tokens
+      issues:
+        - redact-secret/redact-secret-benchmarks#46
       evidence: null
-      researchedAt: null
+      researchedAt: 2026-09-20
     blockedBy: null
   - id: hashicorp-vault:batch-token
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
-      issues: []
+      verdict: ready
+      tier: T1
+      sources:
+        - https://developer.hashicorp.com/vault/docs/concepts/tokens
+      issues:
+        - redact-secret/redact-secret-benchmarks#46
       evidence: null
-      researchedAt: null
+      researchedAt: 2026-09-20
     blockedBy: null
   - id: hashicorp-vault:recovery-token
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
-      issues: []
+      verdict: ready
+      tier: T1
+      sources:
+        - https://developer.hashicorp.com/vault/docs/concepts/tokens
+      issues:
+        - redact-secret/redact-secret-benchmarks#46
       evidence: null
-      researchedAt: null
+      researchedAt: 2026-09-20
     blockedBy: null
 ---
 
@@ -36,23 +42,26 @@ families:
 
 HashiCorp Vault issues service tokens (prefix `hvs.`), batch tokens (`hvb.`) and recovery tokens (`hvr.`). HCP Terraform tokens are recorded under `hashicorp-terraform`.
 
-No family in this dossier has a recorded research verdict. Whether and how core detects a family is not recorded here.
+All three families are `ready` at T1 on the shipped `vault-token` contract (prefixes and minimum length only).
 
 ## Families
 
 ### `hashicorp-vault:service-token` — Service token
 
 - **Shape:** Standard Vault service token, prefixed hvs.
+- **Sources:** T1 per the shipped `vault-token` contract in the benchmarks assessment: the tokens concept page documents exactly the `hvs.`, `hvb.` and `hvr.` prefixes and a minimum of 24 random characters, and states the structure is opaque, so the 90 to 120 character rule the pinned tools use is corroboration, not contract. Re-checked 2026-09-20 in benchmarks#46 (PR #55).
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
 
 ### `hashicorp-vault:batch-token` — Batch token
 
 - **Shape:** Lightweight, non-renewable Vault batch token, prefixed hvb.
+- **Sources:** T1 per the shipped `vault-token` contract in the benchmarks assessment: the tokens concept page documents exactly the `hvs.`, `hvb.` and `hvr.` prefixes and a minimum of 24 random characters, and states the structure is opaque, so the 90 to 120 character rule the pinned tools use is corroboration, not contract. Re-checked 2026-09-20 in benchmarks#46 (PR #55).
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
 
 ### `hashicorp-vault:recovery-token` — Recovery token
 
 - **Shape:** Vault recovery operation token, prefixed hvr.
+- **Sources:** T1 per the shipped `vault-token` contract in the benchmarks assessment: the tokens concept page documents exactly the `hvs.`, `hvb.` and `hvr.` prefixes and a minimum of 24 random characters, and states the structure is opaque, so the 90 to 120 character rule the pinned tools use is corroboration, not contract. Re-checked 2026-09-20 in benchmarks#46 (PR #55).
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
 
 ## Candidates that are not families yet
@@ -61,9 +70,9 @@ None recorded. Legacy one-letter token prefixes exist and are not in the taxonom
 
 ## Open questions
 
-1. **All three families are unresearched.** Searched: core and benchmarks issue titles for Vault and HashiCorp (only unrelated Azure Key Vault and release-status issues matched), core `docs/specs`, evidence and decisions, benchmarks `docs/` and `benchmarks/support`. No research record exists.
-2. **Lead, not a verdict.** The benchmarks contract for `vault-token` cites Vault's tokens concept page (https://developer.hashicorp.com/vault/docs/concepts/tokens) as T1 for exactly three prefixes and a minimum of 24 random characters, and records that the provider states the structure is opaque, so the 90 to 120 character rule the pinned tools use is corroboration, not contract (re-checked 2026-09-20, benchmarks#46). Decide whether that row counts as a research record.
+1. The body beyond the 24-character minimum is provider-opaque; tool rules (90 to 120 characters) are not contract.
+2. The contract requires an explicit Vault endpoint alongside the token.
 
 ## Research log
 
-No research issues.
+- redact-secret-benchmarks#46 (PR #55, closed 2026-09-21) — twin coverage; re-checked the tokens concept page on 2026-09-20.

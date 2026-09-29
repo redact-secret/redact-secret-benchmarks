@@ -16,7 +16,7 @@ families:
         - redact-secret/redact-secret-benchmarks#436
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/resend.md
       researchedAt: 2026-09-28
-    blockedBy: "Segment layout and length rest on provider examples and SDK fixtures (R5), not a stated grammar; the alphanumeric superset was chosen deliberately over the base58 seen in samples."
+    blockedBy: null
 ---
 
 # Resend
@@ -32,6 +32,7 @@ Resend is a transactional email API. An API key (`RESEND_API_KEY`, `Authorizatio
 - **Issuance:** not attempted.
 - **Collisions:** `re_` is very short and ends many identifiers and Python names; the leading boundary removes glued cases and the handoff adds a mixed-case post check (false-negative cost about 6e-8). No other issuer using `re_` was found.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Open caveat:** Segment layout and length rest on provider examples and SDK fixtures (R5), not a stated grammar; the alphanumeric superset was chosen deliberately over the base58 seen in samples.
 
 ## Candidates that are not families yet
 

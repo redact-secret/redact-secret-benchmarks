@@ -15,7 +15,7 @@ families:
         - redact-secret/redact-secret#662
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/662/README.md
       researchedAt: 2026-09-24
-    blockedBy: "Length 32 is Twilio-owned client-side code (T1 candidate needing a maintainer ruling); the lowercase-hex alphabet is tool-corroborated; no prefix or marker, so it is only claimed beside same-line Twilio context."
+    blockedBy: null
   - id: twilio:api-key-secret
     research:
       verdict: ready
@@ -27,7 +27,7 @@ families:
         - redact-secret/redact-secret#661
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/661/README.md
       researchedAt: 2026-09-24
-    blockedBy: "No Twilio source states the secret's length or alphabet; 32 alphanumeric rests on TruffleHog and placeholder masks; only the paired SK SID has a documented grammar."
+    blockedBy: null
 ---
 
 # Twilio
@@ -44,6 +44,7 @@ Provider documentation: [Auth Token resource](https://www.twilio.com/docs/iam/ap
 - **Issuance:** not attempted; a token is bound to the account.
 - **Collisions:** any 32-hex run (MD5, UUID without dashes); hence the same-line `AC` SID or `twilio` gate.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); evidence [#662 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/662/README.md).
+- **Open caveat:** Length 32 is Twilio-owned client-side code (T1 candidate needing a maintainer ruling); the lowercase-hex alphabet is tool-corroborated; no prefix or marker, so it is only claimed beside same-line Twilio context.
 
 ### `twilio:api-key-secret` — API key secret
 
@@ -52,6 +53,7 @@ Provider documentation: [Auth Token resource](https://www.twilio.com/docs/iam/ap
 - **Issuance:** not attempted; the secret is shown once.
 - **Collisions:** same as the auth token; the `SK` SID within the same line is the context gate.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); evidence [#661 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/661/README.md).
+- **Open caveat:** No Twilio source states the secret's length or alphabet; 32 alphanumeric rests on TruffleHog and placeholder masks; only the paired SK SID has a documented grammar.
 
 ## Candidates that are not families yet
 

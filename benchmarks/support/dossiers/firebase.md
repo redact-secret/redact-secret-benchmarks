@@ -16,7 +16,7 @@ families:
         - redact-secret/redact-secret#649
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/649/README.md
       researchedAt: 2026-09-24
-    blockedBy: "No Google page states the shape; tool regexes trace to one 2020 write-up. The legacy FCM API was shut down in 2024, so a fresh key cannot be issued to check."
+    blockedBy: null
 ---
 
 # Firebase
@@ -32,6 +32,7 @@ Firebase Cloud Messaging (FCM) issued legacy HTTP and XMPP server keys, sent as 
 - **Issuance:** impossible: the legacy API is closed.
 - **Collisions:** FCM registration tokens (the 2017 Firebase blog calls a 153-character one a string that looks a lot like a server key) look similar and use the same `APA91b` body start; the `AIza` Google API key form belongs to `google:generic-api-key`.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); evidence [#649 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/649/README.md). Core's detector comments call the prefix and lengths "documented"; no provider does.
+- **Open caveat:** No Google page states the shape; tool regexes trace to one 2020 write-up. The legacy FCM API was shut down in 2024, so a fresh key cannot be issued to check.
 
 ## Candidates that are not families yet
 

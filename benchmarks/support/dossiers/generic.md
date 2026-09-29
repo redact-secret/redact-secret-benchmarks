@@ -31,18 +31,20 @@ families:
     blockedBy: null
   - id: generic:bearer-token
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
+      verdict: ready
+      tier: T3
+      sources:
+        - https://www.rfc-editor.org/rfc/rfc6750
       issues:
         - redact-secret/redact-secret#857
         - redact-secret/redact-secret-benchmarks#365
-      evidence: null
-      researchedAt: null
+        - redact-secret/redact-secret#650
+      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/650/README.md
+      researchedAt: 2026-09-26
     blockedBy: null
   - id: generic:connection-string-password
     research:
-      verdict: not-found
+      verdict: ready
       tier: T3
       sources:
         - https://www.rfc-editor.org/rfc/rfc3986
@@ -51,22 +53,24 @@ families:
         - redact-secret/redact-secret#857
         - redact-secret/redact-secret-benchmarks#365
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/651/README.md
-      researchedAt: 2026-09-23
+      researchedAt: 2026-09-26
     blockedBy: null
   - id: generic:otp-seed
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
+      verdict: ready
+      tier: T3
+      sources:
+        - https://github.com/google/google-authenticator/wiki/Key-Uri-Format
       issues:
         - redact-secret/redact-secret#857
         - redact-secret/redact-secret-benchmarks#365
-      evidence: null
-      researchedAt: null
+        - redact-secret/redact-secret#652
+      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/652/README.md
+      researchedAt: 2026-09-26
     blockedBy: null
   - id: generic:unclassified-assignment-literal
     research:
-      verdict: not-found
+      verdict: ready
       tier: T3
       sources:
         - https://www.rfc-editor.org/rfc/rfc6749.txt
@@ -75,7 +79,7 @@ families:
         - redact-secret/redact-secret#857
         - redact-secret/redact-secret-benchmarks#365
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/653/README.md
-      researchedAt: 2026-09-23
+      researchedAt: 2026-09-26
     blockedBy: null
 ---
 
@@ -104,14 +108,14 @@ These six families have no issuing provider. Their only possible "provider" is a
 ### `generic:bearer-token` — Bearer credential
 
 - **Shape:** RFC 6750 §2.1: scheme keyword `Bearer` (case-insensitive per RFC 9110), one or more spaces, then `b64token` = letters, digits and `-._~+/` followed by trailing `=` padding. The keyword sits outside the secret span. §5.2 leaves the token's contents unspecified and no RFC states a length; core's 16-byte floor (12 under an explicit `Authorization:` or `Proxy-Authorization:` header), cap of two `=` and HTAB acceptance are project policy.
-- **Sources:** carrier grammar only (RFC 6750, RFC 9110 §11.1, RFC 6749 §5.1). The #650 issue closed as NOT FOUND, exhaustive: no identifying element lies inside the span. The evidence record reads the same RFC text as FOUND-partial (carrier grammar) and leaves the choice to the maintainer; the two readings differ and no ruling was found, so the verdict is left `unresearched` (recorded as a conflict). Benchmarks [#365](https://github.com/redact-secret/redact-secret-benchmarks/issues/365#issuecomment-5851264102) freezes the bounded contract with the floors, padding cap and free-text scope as project policy and the accepted decision `docs/decisions/2026-09-26-qualify-bounded-t3-credential-policy.md` names this family as one of four `T3` / `project-policy` families, and the support matrix reads it T3. That fixes the family's contract tier at T3 but does not itself say which of the two #650 readings the maintainer chose; see Open questions.
+- **Sources:** carrier grammar only (RFC 6750, RFC 9110 §11.1, RFC 6749 §5.1). The #650 issue found no identifying element inside the span (history only). The boundary is project policy, not a provider grammar: the RFC 6750 `b64token` ABNF is the carrier syntax and the floors, padding cap and free-text scope are project choices. Benchmarks [#365](https://github.com/redact-secret/redact-secret-benchmarks/issues/365#issuecomment-5851264102) and core #857 freeze that contract, and the accepted decision `docs/decisions/2026-09-26-qualify-bounded-t3-credential-policy.md` names this family as one of four `T3` / `project-policy` families; the support matrix reads it T3. Provider-grammar research does not apply, so the verdict is `ready` at T3.
 - **Collisions:** the value may be a JWT, a provider-prefixed key or an opaque string; providers' own families win when a prefix matches.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); [#650 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/650/README.md).
 
 ### `generic:connection-string-password` — Connection-string password
 
 - **Shape:** RFC 3986 §3.2.1 userinfo: the password sits after the first `:` and before `@`. No RFC or vendor states a length or identifying element; §7.5 deprecates passwords in URIs. Vendors disagree on which characters need percent-encoding (MongoDB requires `$` encoded, MySQL Connector/J requires `( ) & =`, RabbitMQ forbids a raw `:`).
-- **Sources:** RFC 3986, RFC 1738, RabbitMQ URI spec, MongoDB and PostgreSQL docs: delimiter and alphabet only. Verdict NOT FOUND, exhaustive (2026-09-23); T3.
+- **Sources:** RFC 3986, RFC 1738, RabbitMQ URI spec, MongoDB and PostgreSQL docs: delimiter and alphabet only. The #651 hunt found no provider or RFC identifying element (2026-09-23); the boundary is project policy (T3, decision `2026-09-26-qualify-bounded-t3-credential-policy`, benchmarks#365, core #857), so the verdict is `ready` at T3, consistent with bearer and OTP seed.
 - **Issuance:** not applicable.
 - **Collisions:** providers that issue passwords with a fixed prefix (PlanetScale `pscale_pw_`, Neon `npg_`, Aiven and DigitalOcean `AVNS_`) are separate families.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); [#651 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/651/README.md). Password surfaces outside userinfo (`password=` parameters, Azure Storage `AccountKey=`) fall outside the family definition.
@@ -119,7 +123,7 @@ These six families have no issuing provider. Their only possible "provider" is a
 ### `generic:otp-seed` — OTP seed
 
 - **Shape:** `otpauth://TYPE/LABEL?PARAMETERS` with TYPE `hotp` or `totp` and a REQUIRED `secret` parameter in Base32 (alphabet `A-Z`, `2-7`, `=` padding). Core requires at least 16 characters and uppercase; the RFC 4226 §4 R6 floor is 128 bits and Google states no length.
-- **Sources:** Google's Key Uri Format wiki (Google Code Archive copy) documents the envelope and Base32 secret; no RFC defines `otpauth`. The #652 issue status is FOUND, conditional on accepting Google as the provider of a generic seed; the record says read it as NOT FOUND if that attribution is rejected. The two readings differ and no ruling was found, so the verdict is left `unresearched` (recorded as a conflict). The #650 record lists `otpauth-uri` among the RFC-position contracts that "are T3 today", and [benchmarks#365](https://github.com/redact-secret/redact-secret-benchmarks/issues/365#issuecomment-5851264102) with the accepted decision `docs/decisions/2026-09-26-qualify-bounded-t3-credential-policy.md` keeps it T3 with the 16-character floor, case rule, padding rule and first-parameter behaviour as project choices; the support matrix reads it T3. That fixes the contract tier at T3 but does not itself say whether Google counts as the provider; see Open questions.
+- **Sources:** Google's Key Uri Format wiki (Google Code Archive copy) documents the envelope and Base32 secret; no RFC defines `otpauth`. The boundary is project policy, not a provider grammar, so whether Google counts as the provider of a generic seed (the #652 condition) does not decide the verdict. The #650 record lists `otpauth-uri` among the RFC-position contracts that "are T3 today", and [benchmarks#365](https://github.com/redact-secret/redact-secret-benchmarks/issues/365#issuecomment-5851264102) and core #857 with the accepted decision `docs/decisions/2026-09-26-qualify-bounded-t3-credential-policy.md` keep it T3 with the 16-character floor, case rule, padding rule and first-parameter behaviour as project choices; the support matrix reads it T3. Provider-grammar research does not apply, so the verdict is `ready` at T3.
 - **Issuance:** not applicable.
 - **Collisions:** `apple-otpauth://` and `%3D` padding are recorded false-negative variants.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); [#652 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/652/README.md).
@@ -127,7 +131,7 @@ These six families have no issuing provider. Their only possible "provider" is a
 ### `generic:unclassified-assignment-literal` — Unclassified assignment literal
 
 - **Shape:** none. An arbitrary literal (8 to 4096 bytes in core) assigned to a sensitive-looking name such as `client_secret`; entropy only selects confidence. RFC 6749 allows any printable ASCII (`VSCHAR`), RFC 8265 any PRECIS freeform string.
-- **Sources:** none possible; the family has no provider (`"provider": null`). Verdict NOT FOUND, exhaustive, for the scored span; masking policy (T3).
+- **Sources:** none possible; the family has no provider (`"provider": null`). The #653 hunt found no source for the scored span; masking is project policy (T3, decision `2026-09-26-qualify-bounded-t3-credential-policy`, benchmarks#365, core #857), so the verdict is `ready` at T3, consistent with the other three policy families.
 - **Issuance:** not applicable.
 - **Collisions:** every provider family whose value sits in an assignment; a named provider detector wins.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); [#653 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/653/README.md); the ADRs it cites cover the warn-on-high-signal-names policy.
@@ -140,11 +144,9 @@ These six families have no issuing provider. Their only possible "provider" is a
 
 ## Open questions
 
-1. Bearer: does the RFC 6750 carrier grammar count as T1 when the keyword sits outside the span? Two readings in one record; maintainer choice. The accepted T3 decision and benchmarks#365 hold the contract at T3 (and the matrix reads T3), which is consistent with recording `not-found` T3 like the connection-string and assignment families; no comment says so explicitly.
-2. OTP seed: is Google the "provider" of a generic OTP seed? The same conditional applies, with the same T3 evidence and the same open choice.
-3. OTP seed floor: core's 16 characters (80 bits) is below the RFC 4226 R6 128-bit MUST; lowercase and lowercase-scheme forms are false negatives no provider settles.
-4. Connection-string minimum length: core accepts 1 character, most scanners require at least 3; neither is provider-backed.
-5. Private key and JWT: no research issue records the T1 acceptance itself; it is stated in #650's second pass and in the benchmarks contract. Link a ruling if one exists.
+1. OTP seed floor: core's 16 characters (80 bits) is below the RFC 4226 R6 128-bit MUST; lowercase and lowercase-scheme forms are false negatives no provider settles.
+2. Connection-string minimum length: core accepts 1 character, most scanners require at least 3; neither is provider-backed.
+3. Private key and JWT: no research issue records the T1 acceptance itself; it is stated in #650's second pass and in the benchmarks contract. Link a ruling if one exists.
 
 ## Research log
 
@@ -155,5 +157,5 @@ These six families have no issuing provider. Their only possible "provider" is a
 - [redact-secret#651](https://github.com/redact-secret/redact-secret/issues/651) — connection-string password: NOT FOUND, exhaustive (2026-09-23).
 - [redact-secret#652](https://github.com/redact-secret/redact-secret/issues/652) — OTP seed: found-partial, conditional on the provider attribution (2026-09-23).
 - [redact-secret#653](https://github.com/redact-secret/redact-secret/issues/653) — unclassified assignment literal: NOT FOUND, exhaustive (2026-09-23).
-- [redact-secret#857](https://github.com/redact-secret/redact-secret/issues/857) — Beta.10 hardening of the four supported-context generic families; its evidence record keeps all four at T3 project policy (bearer stays provisional after one protected-holdout failure). It rules on neither the RFC-carrier reading of #650 nor the provider attribution of #652.
+- [redact-secret#857](https://github.com/redact-secret/redact-secret/issues/857) — Beta.10 hardening of the four supported-context generic families; its evidence record keeps all four at T3 project policy (bearer stays provisional after one protected-holdout failure). The boundary of all four is project policy, so the #650 (RFC-carrier) and #652 (provider attribution) readings do not decide their verdicts; each is `ready` at T3.
 - [redact-secret-benchmarks#365](https://github.com/redact-secret/redact-secret-benchmarks/issues/365) — 2026-09-26 baseline and frozen bounded contracts for the four T3 families (bearer, connection-string, OTP seed, assignment literal); closed 2026-09-27. Product counterpart [redact-secret#857](https://github.com/redact-secret/redact-secret/issues/857). The `policy-qualified` profile names all four as T3 / `project-policy`.

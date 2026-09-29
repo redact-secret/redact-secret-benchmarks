@@ -18,7 +18,7 @@ families:
         - redact-secret/redact-secret-benchmarks#128
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/646/README.md
       researchedAt: 2026-09-24
-    blockedBy: "Discord documents no grammar (one legacy-shape example only); the 26/6/38 and 24/6/38 widths rest on dated empirical reports and third-party code; no freshly issued token has been measured."
+    blockedBy: null
 ---
 
 # Discord
@@ -35,6 +35,7 @@ Discord issues bot tokens from the Developer Portal bot page and uses them as `A
 - **Issuance:** not attempted. A fresh token (expected 26/6/38 for a new application) is the open empirical check.
 - **Collisions:** none with a fixed prefix; the shape is three dotted base64url runs, so ordinary dotted identifiers and other JWT-like values are the confusable class. detect-secrets additionally requires the first character to be M, N or O, which follows from base64 of a digit string.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); evidence [#646 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/646/README.md). The three-shape acceptance was added in [redact-secret#670](https://github.com/redact-secret/redact-secret/issues/670).
+- **Open caveat:** Discord documents no grammar (one legacy-shape example only); the 26/6/38 and 24/6/38 widths rest on dated empirical reports and third-party code; no freshly issued token has been measured.
 
 ## Candidates that are not families yet
 

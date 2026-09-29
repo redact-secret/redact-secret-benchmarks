@@ -15,7 +15,7 @@ families:
         - redact-secret/redact-secret#369
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/367/README.md
       researchedAt: 2026-09-17
-    blockedBy: The lowercase-hex body alphabet is tool-corroborated only; DigitalOcean's examples are placeholders that establish the 64-character length.
+    blockedBy: null
   - id: digitalocean:oauth-token
     research:
       verdict: ready
@@ -28,7 +28,7 @@ families:
         - redact-secret/redact-secret#369
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/367/README.md
       researchedAt: 2026-09-17
-    blockedBy: The lowercase-hex body alphabet is tool-corroborated only; DigitalOcean's examples are placeholders that establish the 64-character length.
+    blockedBy: null
   - id: digitalocean:refresh-token
     research:
       verdict: ready
@@ -41,7 +41,7 @@ families:
         - redact-secret/redact-secret#369
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/367/README.md
       researchedAt: 2026-09-17
-    blockedBy: The lowercase-hex body alphabet is tool-corroborated only; one gitleaks rule is case-insensitive and was treated as a tool artifact.
+    blockedBy: null
 ---
 
 # DigitalOcean
@@ -68,12 +68,14 @@ recorded here.
 - **Collisions:** the sibling prefixes below differ only in the three letters.
   Uppercase or mixed-case bodies are intentionally outside the grammar.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Open caveat:** The lowercase-hex body alphabet is tool-corroborated only; DigitalOcean's examples are placeholders that establish the 64-character length.
 
 ### `digitalocean:oauth-token` — OAuth token
 
 - **Shape:** prefix `doo_v1_` followed by 64 lowercase hexadecimal characters.
 - **Sources:** T1 for the prefix; length from a provider example in the OAuth
   reference; alphabet from the same two tools.
+- **Open caveat:** The lowercase-hex body alphabet is tool-corroborated only; DigitalOcean's examples are placeholders that establish the 64-character length.
 
 ### `digitalocean:refresh-token` — Refresh token
 
@@ -81,6 +83,7 @@ recorded here.
 - **Sources:** T1 for the prefix; length from a provider example. Gitleaks'
   refresh rule alone is case-insensitive, which the #367 review treated as a tool
   artifact and did not adopt.
+- **Open caveat:** The lowercase-hex body alphabet is tool-corroborated only; one gitleaks rule is case-insensitive and was treated as a tool artifact.
 
 ## Candidates that are not families yet
 

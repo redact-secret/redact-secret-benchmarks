@@ -20,7 +20,7 @@ families:
         - redact-secret/redact-secret-benchmarks#384
       evidence: null
       researchedAt: 2026-09-27
-    blockedBy: T1 covers the sk_ prefix and _residency_ suffix (SDK code, by ruling); the 48-lowercase-hex body is T2 with no provider statement. The legacy 32-hex form is unresearched; needs issued keys (checklist in #788).
+    blockedBy: null
 ---
 
 # ElevenLabs
@@ -60,6 +60,7 @@ Whether and how core detects a family is not recorded here.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md);
   the spec row records the T1 ruling and the T2 body. #866 covers the
   single-line SDK-argument form generically.
+- **Open caveat:** T1 covers the sk_ prefix and _residency_ suffix (SDK code, by ruling); the 48-lowercase-hex body is T2 with no provider statement. The legacy 32-hex form is unresearched; needs issued keys (checklist in #788).
 
 ## Candidates that are not families yet
 

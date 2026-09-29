@@ -30,7 +30,7 @@ families:
         - redact-secret/redact-secret#882
       evidence: null
       researchedAt: 2026-09-27
-    blockedBy: Body length, alphabet and tail are unmeasured for this prefix; needs one issued Enterprise key (checklist in #776).
+    blockedBy: null
   - id: anthropic:admin-api-key
     research:
       verdict: ready
@@ -46,7 +46,7 @@ families:
         - redact-secret/redact-secret#882
       evidence: null
       researchedAt: 2026-09-27
-    blockedBy: Body grammar is scanner-corroborated only (T2); confirming it needs one issued Console admin key (checklist in #775).
+    blockedBy: null
 ---
 
 # Anthropic
@@ -110,6 +110,7 @@ family is not recorded here.
   get their own type, `anthropic_enterprise_api_key`, named for the general
   Enterprise scope and deliberately not "compliance"
   ([#776 disposition](https://github.com/redact-secret/redact-secret/issues/776#issuecomment-5856725556)).
+- **Open caveat:** Body length, alphabet and tail are unmeasured for this prefix; needs one issued Enterprise key (checklist in #776).
 
 ### `anthropic:admin-api-key` — Admin API key (sk-ant-admin01-)
 
@@ -130,6 +131,7 @@ family is not recorded here.
   admin key is not the only credential seen in that API's headers. A GitHub
   secret-scanning type and several other scanners list it separately.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Open caveat:** Body grammar is scanner-corroborated only (T2); confirming it needs one issued Console admin key (checklist in #775).
 
 ## Candidates that are not families yet
 

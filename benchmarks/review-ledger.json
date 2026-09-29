@@ -810,18 +810,20 @@
       "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (alphabet: one uppercase byte vs the tool-corroborated lowercase [a-z0-9] body) is scoped to mailgun-api-key, and redact-secret reports no mailgun-api-key finding, so the twin's own assertion (no typed mailgun-api-key finding) holds. redact-secret attributes [37,73) to generic-token instead: under redact-secret#948 (product ec9224d, PR #994; amendment of decision-redact-provider-named-credential-assignments, 2026-09-29) a provider-named credential variable no longer disqualifies generic-token, so an off-grammar value under it is reported at the generic floors. The twin method records this as coDetected, not as a twin failure. trufflehog reports no finding at all — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/co-detection."
     },
     "a55971129c2e2cbb7f9e5d022172b5d2043138a197a1fe7cb59d8d8a4d233eff": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "7f87ff98-12ca-418c-bc89-cd53223c2344",
       "lastSeenRun": "7f87ff98-12ca-418c-bc89-cd53223c2344",
       "lastSeenAt": "2026-09-26T20:32:07.168Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.9 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta9-published-rebaseline."
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (85 characters: one extra trailing [A-Za-z0-9] byte after the four post-signature characters, against the documented 84) is scoped to azure-devops-personal-access-token, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no azure-devops-personal-access-token finding, so the twin's own assertion (no typed azure-devops-personal-access-token finding) holds. redact-secret attributes [30,115) to connection-string instead — the project's masking policy for a password in URL userinfo (T3 policy, never a provider-format claim). The twin method records this as coDetected, not as a twin failure. gitleaks reports no finding at all — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/independent-policy-family-on-scoped-twin.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "7d5f8df1b3ca2c34ddd5918d9bb409dbf94d2098b6418cd0fd835a47a94cbbbb": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "7f87ff98-12ca-418c-bc89-cd53223c2344",
       "lastSeenRun": "7f87ff98-12ca-418c-bc89-cd53223c2344",
       "lastSeenAt": "2026-09-26T20:32:07.168Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.9 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta9-published-rebaseline."
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (85 characters: one extra trailing [A-Za-z0-9] byte after the four post-signature characters, against the documented 84) is scoped to azure-devops-personal-access-token, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no azure-devops-personal-access-token finding, so the twin's own assertion (no typed azure-devops-personal-access-token finding) holds. redact-secret attributes [30,115) to connection-string instead — the project's masking policy for a password in URL userinfo (T3 policy, never a provider-format claim). The twin method records this as coDetected, not as a twin failure. trufflehog reports no finding at all — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/independent-policy-family-on-scoped-twin.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "a7f1fd3fb8e8968d304719a557ffafc1feba75a00ea7dcd56039f19dd41d203d": {
       "status": "resolved",

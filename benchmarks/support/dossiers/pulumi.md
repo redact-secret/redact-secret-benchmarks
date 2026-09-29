@@ -14,7 +14,7 @@ families:
         - redact-secret/redact-secret-benchmarks#67
       evidence: null
       researchedAt: 2026-09-21
-    blockedBy: Body length and alphabet (40 lowercase hex) rest on two tool rules, not on Pulumi text; one issued token would confirm it.
+    blockedBy: null
   - id: pulumi:organization-access-token
     research:
       verdict: ready
@@ -26,7 +26,7 @@ families:
         - redact-secret/redact-secret-benchmarks#67
       evidence: null
       researchedAt: 2026-09-21
-    blockedBy: Same as the personal token; no kind-specific prefix or body is documented, so identical grammar is an inference from the shared prefix statement.
+    blockedBy: null
   - id: pulumi:team-access-token
     research:
       verdict: ready
@@ -38,7 +38,7 @@ families:
         - redact-secret/redact-secret-benchmarks#67
       evidence: null
       researchedAt: 2026-09-21
-    blockedBy: Same as the personal token; no kind-specific prefix or body is documented, so identical grammar is an inference from the shared prefix statement.
+    blockedBy: null
 ---
 
 # Pulumi
@@ -69,18 +69,21 @@ recorded here.
   outside the 40-hex form (uppercase, other lengths) are outside this
   grammar.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Open caveat:** Body length and alphabet (40 lowercase hex) rest on two tool rules, not on Pulumi text; one issued token would confirm it.
 
 ### `pulumi:organization-access-token` — Organization access token
 
 - **Shape:** identical to the personal token.
 - **Sources:** the same T1 prefix statement; the community article shows a
   separate 40-hex example for this kind. No source states a distinct grammar.
+- **Open caveat:** Same as the personal token; no kind-specific prefix or body is documented, so identical grammar is an inference from the shared prefix statement.
 
 ### `pulumi:team-access-token` — Team access token
 
 - **Shape:** identical to the personal token.
 - **Sources:** the same T1 prefix statement; the community article shows a
   separate 40-hex example for this kind. No source states a distinct grammar.
+- **Open caveat:** Same as the personal token; no kind-specific prefix or body is documented, so identical grammar is an inference from the shared prefix statement.
 
 ## Candidates that are not families yet
 

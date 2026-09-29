@@ -14,7 +14,7 @@ families:
         - redact-secret/redact-secret#575
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/644/README.md
       researchedAt: 2026-09-23
-    blockedBy: "Length 32 and the DD-API-KEY / DD_API_KEY markers are T1; the lowercase-hex alphabet is tool- and provider-code-corroborated only."
+    blockedBy: null
   - id: datadog:application-key
     research:
       verdict: ready
@@ -30,7 +30,7 @@ families:
         - redact-secret/redact-secret-benchmarks#162
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/645/README.md
       researchedAt: 2026-09-23
-    blockedBy: "The ddapp_ prefix is T1; the 34-character alphanumeric body is corroborated by Datadog-owned code and AWS only, not by a provider page."
+    blockedBy: null
   - id: datadog:application-key-legacy
     research:
       verdict: ready
@@ -46,7 +46,7 @@ families:
         - redact-secret/redact-secret-benchmarks#162
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/645/README.md
       researchedAt: 2026-09-24
-    blockedBy: "No identifying element exists: a bare 40-hex value fits a SHA-1 digest, so the shape is only claimed beside a same-line application-key or datadog marker."
+    blockedBy: null
 ---
 
 # Datadog
@@ -63,6 +63,7 @@ Datadog issues three credential shapes that matter here: 32-character API keys (
 - **Issuance:** not attempted. An empirical check of one fresh key (length 32, any uppercase, any fixed leading text) is specified in the #644 web-search pass.
 - **Collisions:** a bare 32-hex run is common (MD5 digests, UUIDs without dashes), so the value needs marker context.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md) (row `datadog:api-key`); evidence [#644 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/644/README.md).
+- **Open caveat:** Length 32 and the DD-API-KEY / DD_API_KEY markers are T1; the lowercase-hex alphabet is tool- and provider-code-corroborated only.
 
 ### `datadog:application-key` — Application key (ddapp_-prefixed)
 
@@ -71,6 +72,7 @@ Datadog issues three credential shapes that matter here: 32-character API keys (
 - **Issuance:** not attempted; a fresh key would settle body length and alphabet.
 - **Collisions:** `ddpat_` and `ddsat_` tokens can be sent where an application key is expected, so a value under an app-key name may not be `ddapp_`.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); evidence [#645 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/645/README.md). The split from the legacy shape was made in [redact-secret#671](https://github.com/redact-secret/redact-secret/issues/671).
+- **Open caveat:** The ddapp_ prefix is T1; the 34-character alphanumeric body is corroborated by Datadog-owned code and AWS only, not by a provider page.
 
 ### `datadog:application-key-legacy` — Application key (legacy 40-hex)
 
@@ -79,6 +81,7 @@ Datadog issues three credential shapes that matter here: 32-character API keys (
 - **Issuance:** not attempted.
 - **Collisions:** SHA-1 digests and Git commit ids have the same shape, so no bare-value claim is made.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); the record is the #645 evidence above and the corroboration entry `datadog-application-key-legacy` in `benchmarks/support/empirical-observations.json`.
+- **Open caveat:** No identifying element exists: a bare 40-hex value fits a SHA-1 digest, so the shape is only claimed beside a same-line application-key or datadog marker.
 
 ## Candidates that are not families yet
 

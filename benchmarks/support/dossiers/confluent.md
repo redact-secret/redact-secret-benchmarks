@@ -16,7 +16,7 @@ families:
         - redact-secret/redact-secret#738
       evidence: null
       researchedAt: 2026-09-24
-    blockedBy: The checksum recipe is recomputed from the provider's own snippet, not yet checked against a freshly issued secret; every scope is assumed to issue the same shape.
+    blockedBy: null
   - id: confluent:cloud-api-secret-legacy
     research:
       verdict: ready
@@ -29,7 +29,7 @@ families:
         - redact-secret/redact-secret-benchmarks#233
       evidence: null
       researchedAt: 2026-09-24
-    blockedBy: Provider states no length or alphabet for the unprefixed form; 64 comes from doc examples, provider test data and two scanner rules, one doc example shows 60. No legacy secret can be newly issued.
+    blockedBy: null
 ---
 
 # Confluent Cloud
@@ -67,6 +67,7 @@ page. Older secrets keep working unprefixed.
   alphabet and length.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (evidence-backed table: T1 on prefix, body and checksum, #738).
+- **Open caveat:** The checksum recipe is recomputed from the provider's own snippet, not yet checked against a freshly issued secret; every scope is assumed to issue the same shape.
 
 ### `confluent:cloud-api-secret-legacy` — Cloud API secret (unprefixed, pre-2025-07-30)
 
@@ -86,6 +87,7 @@ page. Older secrets keep working unprefixed.
   inside URL userinfo breaks the run.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (keyword-gated legacy shape, confidence-gated).
+- **Open caveat:** Provider states no length or alphabet for the unprefixed form; 64 comes from doc examples, provider test data and two scanner rules, one doc example shows 60. No legacy secret can be newly issued.
 
 ## Candidates that are not families yet
 

@@ -17,7 +17,7 @@ families:
         - redact-secret/redact-secret-benchmarks#128
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/648/README.md
       researchedAt: 2026-09-23
-    blockedBy: "The dckr_pat_ prefix is T1; the 27-character body and its alphabet are tool-corroborated only (no Docker page states them)."
+    blockedBy: null
   - id: docker:oauth-access-token
     research:
       verdict: ready
@@ -31,7 +31,7 @@ families:
         - redact-secret/redact-secret#566
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/647/README.md
       researchedAt: 2026-09-24
-    blockedBy: "The dckr_oat_ prefix is T1; body width (27 in Docker's example, 32 per TruffleHog) is undecided by the provider and no fresh OAT has been measured."
+    blockedBy: null
 ---
 
 # Docker
@@ -48,6 +48,7 @@ the credential table in Docker's [AI Governance API reference](https://docs.dock
 - **Issuance:** not attempted. An optional check of one or two fresh PATs is described in the #648 broad-discovery pass.
 - **Collisions:** shares the `docker-token` detector and the `dckr_` namespace with the OAT family; the PAT width under the OAT prefix is a boundary case.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md) (row for both Docker families); evidence [#648 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/648/README.md).
+- **Open caveat:** The dckr_pat_ prefix is T1; the 27-character body and its alphabet are tool-corroborated only (no Docker page states them).
 
 ### `docker:oauth-access-token` — OAuth access token
 
@@ -56,6 +57,7 @@ the credential table in Docker's [AI Governance API reference](https://docs.dock
 - **Issuance:** needs an organization owner on a Team or Business plan; a fresh OAT is the only thing that can settle 27 versus 32 (checklist in the #647 broad-discovery pass).
 - **Collisions:** see the PAT family; an OAT-width body under the PAT prefix (or the reverse) is a boundary case; core accepts 27 or 32 body bytes for `dckr_oat_` since #708.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); evidence [#647 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/647/README.md).
+- **Open caveat:** The dckr_oat_ prefix is T1; body width (27 in Docker's example, 32 per TruffleHog) is undecided by the provider and no fresh OAT has been measured.
 
 ## Candidates that are not families yet
 

@@ -6,7 +6,7 @@ families:
   - id: tavily:api-key
     research:
       verdict: ready
-      tier: T1
+      tier: T2
       sources:
         - https://docs.tavily.com/documentation/api-reference/introduction
         - https://docs.tavily.com/documentation/enterprise/generate-keys
@@ -18,7 +18,7 @@ families:
         - redact-secret/redact-secret-benchmarks#384
       evidence: null
       researchedAt: 2026-09-27
-    blockedBy: T1 is the tvly- prefix only; the 32-alphanumeric body is T2 (one scanner rule, three observed samples). Needs one issued development key; tvly-prod- and production width open (checklist in #786).
+    blockedBy: null
 ---
 
 # Tavily
@@ -41,7 +41,7 @@ Whether and how core detects a family is not recorded here.
   production and enterprise key bodies are unresolved (a third-party page says
   production keys begin plain `tvly-`).
 - **Sources:** the spec and #867 record prefix T1, body T2 (the tier field
-  above follows that, see Open questions). Provider docs show `tvly-` only in a placeholder (`Bearer tvly-YOUR_API_KEY`) and `tvly-dev-`
+  above follows the assessment contract, T2, see Open questions). Provider docs show `tvly-` only in a placeholder (`Bearer tvly-YOUR_API_KEY`) and `tvly-dev-`
   in truncated samples, with no length or alphabet; the SDKs do no validation.
   The 32-character body rests on the noseyparker rule, which predates `dev-`
   and so misses it, and three observed samples. GitGuardian confirms
@@ -55,6 +55,7 @@ Whether and how core detects a family is not recorded here.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md),
   section Together AI and Tavily (#867). `tvly-prod-` and other widths stay
   unclaimed.
+- **Open caveat:** T1 is the tvly- prefix only; the 32-alphanumeric body is T2 (one scanner rule, three observed samples). Needs one issued development key; tvly-prod- and production width open (checklist in #786).
 
 ## Candidates that are not families yet
 
@@ -66,8 +67,9 @@ Whether and how core detects a family is not recorded here.
 1. **Production keys.** Prefix and width; enterprise expiring-key body width.
 2. **Alphabet.** Are `-` or `_` ever in the body? Only alphanumerics were seen.
 3. **Tier wording.** #786 and the spec say prefix T1, body T2; the #774
-   close-out table and the benchmarks ledger say T2 (empirical, stable). This
-   dossier uses T1 for the prefix as the brief directs and keeps the split here.
+   close-out table and the benchmarks ledger say T2 (empirical, stable). The
+   dossier tier is T2, aligned to the assessment contract the matrix derives
+   from; the prefix-only T1 split is kept here.
 4. **Forum evidence.** No Tavily forum or staff statement was located.
 
 ## Research log

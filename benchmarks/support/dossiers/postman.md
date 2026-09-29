@@ -14,7 +14,7 @@ families:
         - redact-secret/redact-secret#700
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/582/README.md
       researchedAt: 2026-09-25
-    blockedBy: Postman's docs state no PMAK- grammar (only the header). The 24 + 34 hex structure comes from scanners and Postman's own redaction config; no issued key has been measured.
+    blockedBy: null
   - id: postman:collection-access-key
     research:
       verdict: ready
@@ -29,7 +29,7 @@ families:
         - redact-secret/redact-secret-benchmarks#259
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/582/README.md
       researchedAt: 2026-09-25
-    blockedBy: The PMAT- prefix and 26-character count are shown masked in provider docs; the uppercase alphanumeric body comes from GitLab's rule alone. No issued key observed.
+    blockedBy: null
 ---
 
 # Postman
@@ -61,6 +61,7 @@ parameter. Postman was one of the four committed families in #582's ranking.
   as a near miss and not a credential. `PMAT-` is a separate credential.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (`postman_api_key`, always redacted).
+- **Open caveat:** Postman's docs state no PMAK- grammar (only the header). The 24 + 34 hex structure comes from scanners and Postman's own redaction config; no issued key has been measured.
 
 ### `postman:collection-access-key` — Collection access key
 
@@ -77,6 +78,7 @@ parameter. Postman was one of the four committed families in #582's ranking.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (`postman_collection_access_key`, always redacted). #700 asked whether `PMAT-`
   was its own family or an unsupported form; it is now a registry detector.
+- **Open caveat:** The PMAT- prefix and 26-character count are shown masked in provider docs; the uppercase alphanumeric body comes from GitLab's rule alone. No issued key observed.
 
 ## Open questions
 

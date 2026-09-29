@@ -15,7 +15,7 @@ families:
         - redact-secret/redact-secret#660
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/660/README.md
       researchedAt: 2026-09-24
-    blockedBy: "Telegram documents only example tokens and says the format may change; the secret width (34 in docs, 35 in tools) and the leading AA are unexplained; no fresh token measured."
+    blockedBy: null
 ---
 
 # Telegram
@@ -32,6 +32,7 @@ Telegram issues bot tokens through BotFather. Provider documentation:
 - **Issuance:** not attempted; a fresh BotFather token would settle width and lead.
 - **Collisions:** any short `digits:string` pair; the numeric id part alone is a weak marker, so the secret body carries the discrimination.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); evidence [#660 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/660/README.md).
+- **Open caveat:** Telegram documents only example tokens and says the format may change; the secret width (34 in docs, 35 in tools) and the leading AA are unexplained; no fresh token measured.
 
 ## Candidates that are not families yet
 

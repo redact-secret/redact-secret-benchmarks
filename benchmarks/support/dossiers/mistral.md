@@ -19,7 +19,7 @@ families:
         - redact-secret/redact-secret-benchmarks#384
       evidence: null
       researchedAt: 2026-09-27
-    blockedBy: No provider source states any shape; 32 alphanumeric rests on scanner rules that read as one assertion. Contextual only, never bare. Needs one issued Studio key (checklist in #781).
+    blockedBy: null
   - id: mistral:realtime-client-token
     research:
       verdict: issuance-gated
@@ -74,6 +74,7 @@ table uses the research name and names detector `mistral-api-key`.
   is a different shape. Model ids such as `mistral-large-latest` are benign.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md),
   section Keyword-gated provider keys (#868).
+- **Open caveat:** No provider source states any shape; 32 alphanumeric rests on scanner rules that read as one assertion. Contextual only, never bare. Needs one issued Studio key (checklist in #781).
 
 ### `mistral:realtime-client-token` — Realtime client token (rt_)
 

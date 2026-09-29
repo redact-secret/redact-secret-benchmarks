@@ -13,7 +13,7 @@ families:
         - redact-secret/redact-secret#517
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/decisions/2026-09-20-map-github-token-families-onto-independent-finding-types.md
       researchedAt: 2026-09-20
-    blockedBy: "Only the prefix and token role are provider-documented; the 36-character body follows GitHub's 2021-04-05 token-format post (36-byte body, CRC32 in the last six characters), and core does not verify the checksum."
+    blockedBy: null
   - id: github:oauth-access-token
     research:
       verdict: ready
@@ -24,7 +24,7 @@ families:
         - redact-secret/redact-secret#517
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/decisions/2026-09-20-map-github-token-families-onto-independent-finding-types.md
       researchedAt: 2026-09-20
-    blockedBy: "Only the prefix and token role are provider-documented; the 36-character body follows GitHub's 2021-04-05 token-format post (36-byte body, CRC32 in the last six characters), and core does not verify the checksum."
+    blockedBy: null
   - id: github:app-user-to-server-token
     research:
       verdict: ready
@@ -35,7 +35,7 @@ families:
         - redact-secret/redact-secret#517
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/decisions/2026-09-20-map-github-token-families-onto-independent-finding-types.md
       researchedAt: 2026-09-20
-    blockedBy: "Only the prefix and token role are provider-documented; the 36-character body follows GitHub's 2021-04-05 token-format post (36-byte body, CRC32 in the last six characters), and core does not verify the checksum."
+    blockedBy: null
   - id: github:app-server-to-server-token
     research:
       verdict: ready
@@ -46,7 +46,7 @@ families:
         - redact-secret/redact-secret#517
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/decisions/2026-09-20-map-github-token-families-onto-independent-finding-types.md
       researchedAt: 2026-09-20
-    blockedBy: "Only the prefix and token role are provider-documented; the 36-character body follows GitHub's 2021-04-05 token-format post (36-byte body, CRC32 in the last six characters), and core does not verify the checksum."
+    blockedBy: null
   - id: github:oauth-refresh-token
     research:
       verdict: ready
@@ -57,7 +57,7 @@ families:
         - redact-secret/redact-secret#517
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/decisions/2026-09-20-map-github-token-families-onto-independent-finding-types.md
       researchedAt: 2026-09-20
-    blockedBy: "Only the prefix and token role are provider-documented; the 36-character body follows GitHub's 2021-04-05 token-format post (36-byte body, CRC32 in the last six characters), and core does not verify the checksum."
+    blockedBy: null
   - id: github:fine-grained-personal-access-token
     research:
       verdict: ready
@@ -73,7 +73,7 @@ families:
         - redact-secret/redact-secret#729
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-27
-    blockedBy: Only the prefix is provider-documented; the 22 + 59 segment split and absence of a checksum rest on a community regex, a staff endorsement and scanner rules. Needs issued-key observations.
+    blockedBy: null
 ---
 
 # GitHub
@@ -92,14 +92,17 @@ five classic-format families carry the 36-byte body of GitHub's 2021 post.
 ### `github:classic-personal-access-token` — Classic personal access token
 
 - **Sources:** prefix and role from the token-formats page; body from GitHub's 2021-04-05 token-format post; contracted per family in #517 (T1; body tool-corroborated).
+- **Open caveat:** Only the prefix and token role are provider-documented; the 36-character body follows GitHub's 2021-04-05 token-format post (36-byte body, CRC32 in the last six characters), and core does not verify the checksum.
 
 ### `github:oauth-access-token` — OAuth access token
 
 - **Sources:** prefix and role from the token-formats page; body from GitHub's 2021-04-05 token-format post; contracted per family in #517 (T1; body tool-corroborated).
+- **Open caveat:** Only the prefix and token role are provider-documented; the 36-character body follows GitHub's 2021-04-05 token-format post (36-byte body, CRC32 in the last six characters), and core does not verify the checksum.
 
 ### `github:app-user-to-server-token` — GitHub App user-to-server token
 
 - **Sources:** prefix and role from the token-formats page; body from GitHub's 2021-04-05 token-format post; contracted per family in #517 (T1; body tool-corroborated).
+- **Open caveat:** Only the prefix and token role are provider-documented; the 36-character body follows GitHub's 2021-04-05 token-format post (36-byte body, CRC32 in the last six characters), and core does not verify the checksum.
 
 ### `github:app-server-to-server-token` — GitHub App server-to-server token
 
@@ -107,10 +110,12 @@ five classic-format families carry the 36-byte body of GitHub's 2021 post.
   that GitHub announced a new `ghs_APPID_JWT` installation-token format
   (variable length, about 520 characters, rollout from 2026-04-27), which
   belongs to this family and not to the fine-grained one.
+- **Open caveat:** Only the prefix and token role are provider-documented; the 36-character body follows GitHub's 2021-04-05 token-format post (36-byte body, CRC32 in the last six characters), and core does not verify the checksum.
 
 ### `github:oauth-refresh-token` — OAuth refresh token
 
 - **Sources:** prefix and role from the token-formats page; body from GitHub's 2021-04-05 token-format post; contracted per family in #517 (T1; body tool-corroborated).
+- **Open caveat:** Only the prefix and token role are provider-documented; the 36-character body follows GitHub's 2021-04-05 token-format post (36-byte body, CRC32 in the last six characters), and core does not verify the checksum.
 
 ### `github:fine-grained-personal-access-token` — Fine-grained personal access token
 
@@ -136,6 +141,7 @@ five classic-format families carry the 36-byte body of GitHub's 2021 post.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (Beta.8 arrival contracts, wave 1); the freeze is in the #726 evidence linked
   above.
+- **Open caveat:** Only the prefix is provider-documented; the 22 + 59 segment split and absence of a checksum rest on a community regex, a staff endorsement and scanner rules. Needs issued-key observations.
 
 ## Candidates that are not families yet
 

@@ -15,7 +15,7 @@ families:
         - redact-secret/redact-secret-benchmarks#235
       evidence: null
       researchedAt: 2026-09-24
-    blockedBy: The HRKU- prefix and the 41 and 65 character lengths are provider-stated; the AA start and the body alphabet of the 65-character form are example- and scanner-derived.
+    blockedBy: null
   - id: heroku:legacy-api-key
     research:
       verdict: ready
@@ -27,7 +27,7 @@ families:
         - redact-secret/redact-secret-benchmarks#232
       evidence: null
       researchedAt: 2026-09-24
-    blockedBy: Provider shows the bare UUID only as a changelog example; no marker separates it from Heroku ids, so it is claimable only beside a heroku keyword. No legacy token can be newly issued.
+    blockedBy: null
 ---
 
 # Heroku
@@ -64,6 +64,7 @@ the token an "API key" in places (the Dashboard, the CLI's `HEROKU_API_KEY`).
   token in the authentication article may be a stale example.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (`heroku_api_key`; see its `HRKU-` rows).
+- **Open caveat:** The HRKU- prefix and the 41 and 65 character lengths are provider-stated; the AA start and the body alphabet of the 65-character form are example- and scanner-derived.
 
 ### `heroku:legacy-api-key` — Legacy API key (bare UUID)
 
@@ -80,6 +81,7 @@ the token an "API key" in places (the Dashboard, the CLI's `HEROKU_API_KEY`).
   is the recorded false-positive control.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (`heroku_api_key_legacy`, confidence-gated).
+- **Open caveat:** Provider shows the bare UUID only as a changelog example; no marker separates it from Heroku ids, so it is claimable only beside a heroku keyword. No legacy token can be newly issued.
 
 ## Candidates that are not families yet
 

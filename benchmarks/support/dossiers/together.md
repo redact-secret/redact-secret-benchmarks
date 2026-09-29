@@ -17,7 +17,7 @@ families:
         - redact-secret/redact-secret-benchmarks#384
       evidence: null
       researchedAt: 2026-09-27
-    blockedBy: No provider source states prefix, length or alphabet; one scanner lineage and four samples back it. Needs one issued project key (checklist in #783); corroboration 2/2/1 against the 3/3/2 needed.
+    blockedBy: null
 ---
 
 # Together AI
@@ -57,6 +57,7 @@ was renamed to the detector id `together-ai-api-key`.
   corroboration of this one.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md),
   section Together AI and Tavily (#867). Legacy keys are not claimed.
+- **Open caveat:** No provider source states prefix, length or alphabet; one scanner lineage and four samples back it. Needs one issued project key (checklist in #783); corroboration 2/2/1 against the 3/3/2 needed.
 
 ## Candidates that are not families yet
 

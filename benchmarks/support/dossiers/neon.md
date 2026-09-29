@@ -6,7 +6,7 @@ families:
   - id: neon:api-key
     research:
       verdict: ready
-      tier: T1
+      tier: T2
       sources:
         - https://neon.com/docs/changelog/2025-01-31
         - https://github.com/betterleaks/betterleaks/blob/6cf4f1a29160b68be7c6390599b9b773234e5a43/cmd/generate/config/rules/neon.go
@@ -16,7 +16,7 @@ families:
         - redact-secret/redact-secret-benchmarks#259
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/524/README.md
       researchedAt: 2026-09-25
-    blockedBy: Prefix is T1; the 64-character body floor is T2 (betterleaks exactly 64, mask-go at least 64) and Neon calls a key a "64-bit token". Legacy unprefixed keys are outside the claim. No issued key observed.
+    blockedBy: null
 ---
 
 # Neon
@@ -36,7 +36,8 @@ credentials.
   read to the end of the run. Neon's API-keys page calls a key "a
   randomly-generated 64-bit token", which fits no string length, and its only
   written example is not a shape.
-- **Sources:** T1 for the prefix (Neon changelog, quoted in the #524 record).
+- **Sources:** the family tier is T2, following the assessment contract (#259: a T1
+  prefix with a tool-corroborated body stays at the weakest frozen field). T1 for the prefix (Neon changelog, quoted in the #524 record).
   The body floor is T2: betterleaks `neon-api-key` (`napi_` + exactly 64) and the
   mask-go library (64 as a floor). The pinned gitleaks 8.30.1 and trufflehog
   3.97.4 have no Neon rule. GitHub secret scanning lists `neon_api_key`
@@ -48,6 +49,7 @@ credentials.
   (`connection-string`) and never carries the `napi_` key.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (`neon_api_key`, always redacted); frozen in the #524 evidence.
+- **Open caveat:** Prefix is T1; the 64-character body floor is T2 (betterleaks exactly 64, mask-go at least 64) and Neon calls a key a "64-bit token". Legacy unprefixed keys are outside the claim. No issued key observed.
 
 ## Candidates that are not families yet
 

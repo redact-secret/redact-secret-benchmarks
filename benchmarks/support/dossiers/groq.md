@@ -16,7 +16,7 @@ families:
         - redact-secret/redact-secret#727
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-24
-    blockedBy: No provider source states length or alphabet; the 52-character body is tool-corroborated plus a four-sample maintainer observation (checklist in benchmarks#218).
+    blockedBy: null
 ---
 
 # Groq
@@ -47,6 +47,7 @@ and scoped to a project. Not to be confused with xAI's Grok (`xai:api-key`).
   is weak.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (frozen in the #726 record; the internal segment is not required).
+- **Open caveat:** No provider source states length or alphabet; the 52-character body is tool-corroborated plus a four-sample maintainer observation (checklist in benchmarks#218).
 
 ## Candidates that are not families yet
 

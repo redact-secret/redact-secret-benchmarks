@@ -17,7 +17,7 @@ families:
         - redact-secret/redact-secret#727
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-24
-    blockedBy: Body alphabet is not provider-stated (TruffleHog admits - and _, flare-redact does not); one issued token would settle it (checklist in benchmarks#217).
+    blockedBy: null
 ---
 
 # Replicate
@@ -52,6 +52,7 @@ it is not recorded here.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (Beta.8 arrival contracts, frozen in the #726 record linked above; the
   provider-stated length is exact and the alphabet is provisional).
+- **Open caveat:** Body alphabet is not provider-stated (TruffleHog admits - and _, flare-redact does not); one issued token would settle it (checklist in benchmarks#217).
 
 ## Candidates that are not families yet
 

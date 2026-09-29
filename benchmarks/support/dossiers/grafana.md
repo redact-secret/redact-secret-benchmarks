@@ -14,7 +14,7 @@ families:
         - redact-secret/redact-secret#642
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/642/README.md
       researchedAt: 2026-09-23
-    blockedBy: Provider text gives only the glsa prefix and that a checksum exists; separators, segment widths and the checksum alphabet are tool-corroborated (T2).
+    blockedBy: null
   - id: grafana:cloud-access-policy-token
     research:
       verdict: ready
@@ -27,7 +27,7 @@ families:
         - redact-secret/redact-secret#642
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/642/README.md
       researchedAt: 2026-09-23
-    blockedBy: Provider text gives only the glc_ prefix; the base64 body alphabet and 32-character floor are tool-corroborated (T2).
+    blockedBy: null
 ---
 
 # Grafana
@@ -55,6 +55,7 @@ detects a family is not recorded here.
 - **Collisions:** the legacy API key is a base64-encoded JSON object and is a
   different credential.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Open caveat:** Provider text gives only the glsa prefix and that a checksum exists; separators, segment widths and the checksum alphabet are tool-corroborated (T2).
 
 ### `grafana:cloud-access-policy-token` — Cloud access policy token
 
@@ -70,6 +71,7 @@ detects a family is not recorded here.
 - **Collisions:** none identified. Padding `=` characters are not part of the
   matched grammar.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Open caveat:** Provider text gives only the glc_ prefix; the base64 body alphabet and 32-character floor are tool-corroborated (T2).
 
 ## Candidates that are not families yet
 

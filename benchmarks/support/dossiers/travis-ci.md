@@ -15,7 +15,7 @@ families:
         - redact-secret/redact-secret-benchmarks#259
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/523/README.md
       researchedAt: 2026-09-25
-    blockedBy: Travis CI states no token length or alphabet; the 22-character shape and the travis keyword gate rest on two scanner rules. No provider-issued token has been observed.
+    blockedBy: null
 ---
 
 # Travis CI
@@ -49,6 +49,7 @@ evidence and picked Travis CI over CircleCI and Buildkite.
   would be missed.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (`travisci_api_token`, confidence-gated); frozen in the #523 evidence.
+- **Open caveat:** Travis CI states no token length or alphabet; the 22-character shape and the travis keyword gate rest on two scanner rules. No provider-issued token has been observed.
 
 ## Candidates that are not families yet
 

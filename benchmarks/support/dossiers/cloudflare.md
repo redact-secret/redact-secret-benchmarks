@@ -16,7 +16,7 @@ families:
         - redact-secret/redact-secret#566
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/566/README.md
       researchedAt: 2026-09-21
-    blockedBy: The 8-character lowercase-hex checksum width and alphabet come from one tool; Cloudflare only says a checksum follows the 40-character body.
+    blockedBy: null
 ---
 
 # Cloudflare
@@ -49,6 +49,7 @@ family is not recorded here.
   same format cell and are separate credentials, see below. The legacy
   unprefixed formats are recorded as an evidence-based exclusion.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Open caveat:** The 8-character lowercase-hex checksum width and alphabet come from one tool; Cloudflare only says a checksum follows the 40-character body.
 
 ## Candidates that are not families yet
 

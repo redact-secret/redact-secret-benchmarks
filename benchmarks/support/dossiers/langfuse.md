@@ -16,7 +16,7 @@ families:
         - redact-secret/redact-secret#728
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-24
-    blockedBy: The provider documents prefixes and roles but no body grammar; the UUIDv4 body is provider code (the key generator), and self-hosted operators can set arbitrary values.
+    blockedBy: null
 ---
 
 # Langfuse
@@ -51,6 +51,7 @@ as safe for browser code.
   description; no code mints it.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (frozen in the #726 record: issuer-minted keys only).
+- **Open caveat:** The provider documents prefixes and roles but no body grammar; the UUIDv4 body is provider code (the key generator), and self-hosted operators can set arbitrary values.
 
 ## Candidates that are not families yet
 

@@ -15,7 +15,7 @@ families:
         - redact-secret/redact-secret#642
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/642/README.md
       researchedAt: 2026-09-23
-    blockedBy: The 40-character alphanumeric body is tool-corroborated (gitleaks, trufflehog); Linear states only the lin_api_ prefix.
+    blockedBy: null
   - id: linear:oauth-access-token
     research:
       verdict: not-found
@@ -53,6 +53,7 @@ family is not recorded here.
 - **Collisions:** `lin_oauth_` is a separate credential. Gitleaks also has a
   context-gated 32-hex `linear-client-secret` rule for another Linear value.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Open caveat:** The 40-character alphanumeric body is tool-corroborated (gitleaks, trufflehog); Linear states only the lin_api_ prefix.
 
 ### `linear:oauth-access-token` — OAuth access token
 

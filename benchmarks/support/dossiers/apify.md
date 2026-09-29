@@ -15,7 +15,7 @@ families:
         - redact-secret/redact-secret-benchmarks#436
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/apify.md
       researchedAt: 2026-09-28
-    blockedBy: "Length is open-ended by construction (floor of 20); an issuance check could narrow it but nothing requires one. The upper cap of 128 is project policy."
+    blockedBy: null
 ---
 
 # Apify
@@ -31,6 +31,7 @@ Apify is a web scraping and automation platform. Its API token (`APIFY_TOKEN`, s
 - **Issuance:** not attempted. An optional structure-only check (one personal, one organization, one scoped token) could show whether 36 is uniform.
 - **Collisions:** `apify_ui_` Console session tokens are a documented sibling with a T1 prefix (R6) but no length or alphabet source. Placeholders such as a prefix followed by a word break the alphanumeric run below 20 characters.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); handoff linked in the frontmatter.
+- **Open caveat:** Length is open-ended by construction (floor of 20); an issuance check could narrow it but nothing requires one. The upper cap of 128 is project policy.
 
 ## Candidates that are not families yet
 

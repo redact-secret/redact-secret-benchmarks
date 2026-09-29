@@ -16,7 +16,7 @@ families:
         - redact-secret/redact-secret#699
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/582/README.md
       researchedAt: 2026-09-25
-    blockedBy: The provider states the shape only by examples, one with a 31-character body; length 32 follows scanners and a 2009 staff regex. Hex case and data-center literals are undecided. Needs one issued key.
+    blockedBy: null
 ---
 
 # Mailchimp
@@ -50,6 +50,7 @@ separate product. The family was a Beta.7 candidate ranked in #582.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (`mailchimp_api_key`, confidence-gated on a `mailchimp` keyword; the complete
   shape can also be read without the keyword).
+- **Open caveat:** The provider states the shape only by examples, one with a 31-character body; length 32 follows scanners and a 2009 staff regex. Hex case and data-center literals are undecided. Needs one issued key.
 
 ## Open questions
 

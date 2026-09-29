@@ -5,44 +5,52 @@ provider: stripe
 families:
   - id: stripe:secret-key-live
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
-      issues: []
+      verdict: ready
+      tier: T1
+      sources:
+        - https://docs.stripe.com/keys
+      issues:
+        - redact-secret/redact-secret-benchmarks#33
       evidence: null
-      researchedAt: null
+      researchedAt: 2026-09-20
     blockedBy: null
   - id: stripe:secret-key-test
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
-      issues: []
+      verdict: ready
+      tier: T1
+      sources:
+        - https://docs.stripe.com/keys
+      issues:
+        - redact-secret/redact-secret-benchmarks#33
       evidence: null
-      researchedAt: null
+      researchedAt: 2026-09-20
     blockedBy: null
   - id: stripe:restricted-key-live
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
-      issues: []
+      verdict: ready
+      tier: T1
+      sources:
+        - https://docs.stripe.com/keys
+      issues:
+        - redact-secret/redact-secret-benchmarks#33
       evidence: null
-      researchedAt: null
+      researchedAt: 2026-09-20
     blockedBy: null
   - id: stripe:restricted-key-test
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
-      issues: []
+      verdict: ready
+      tier: T1
+      sources:
+        - https://docs.stripe.com/keys
+      issues:
+        - redact-secret/redact-secret-benchmarks#33
       evidence: null
-      researchedAt: null
+      researchedAt: 2026-09-20
     blockedBy: null
   - id: stripe:organization-api-key
     research:
-      verdict: unresearched
-      tier: null
+      verdict: ready
+      tier: T1
       sources:
         - https://docs.stripe.com/keys
         - https://docs.stripe.com/keys/organization-api-keys
@@ -51,7 +59,7 @@ families:
         - redact-secret/redact-secret-benchmarks#127
         - redact-secret/redact-secret#513
       evidence: null
-      researchedAt: null
+      researchedAt: 2026-09-29
     blockedBy: null
   - id: stripe:webhook-signing-secret
     research:
@@ -71,7 +79,7 @@ families:
         - redact-secret/redact-secret#729
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-27
-    blockedBy: T1 on the whsec_ prefix and Stripe context only; body width and alphabet are not provider-stated, and Svix and Standard Webhooks issue whsec_ secrets too.
+    blockedBy: null
 ---
 
 # Stripe
@@ -86,25 +94,23 @@ Provider documentation: [API keys](https://docs.stripe.com/keys).
 
 ### `stripe:secret-key-live` — Live secret key
 
-- **Shape:** prefix `sk_live_` (taxonomy description only).
-- **Sources:** no research recorded in this dossier. Core issue #316 (related, not
-  research) expanded false-positive tests for public vs secret prefixes.
+- **Shape:** prefix `sk_live_`.
+- **Sources:** T1 on the provider-documented prefix (docs.stripe.com/keys), per the shipped `stripe-token` contract in the benchmarks assessment (re-checked 2026-09-20, benchmarks#33, closed by PR #34). The page states nothing about body length or alphabet; the 32-character body is tool-corroborated only and stays undecided here. Core issue #316 (related, not research) expanded false-positive tests for public vs secret prefixes.
 
 ### `stripe:secret-key-test` — Test secret key
 
-- **Shape:** prefix `sk_test_` (taxonomy description only).
-- **Sources:** no research recorded. Test-mode keys still count as secrets under
-  the test-depth rule in #316.
+- **Shape:** prefix `sk_test_`.
+- **Sources:** T1 on the provider-documented prefix (docs.stripe.com/keys), per the shipped `stripe-token` contract in the benchmarks assessment (re-checked 2026-09-20, benchmarks#33, closed by PR #34). The page states nothing about body length or alphabet; the 32-character body is tool-corroborated only and stays undecided here. Test-mode keys still count as secrets under the test-depth rule in #316.
 
 ### `stripe:restricted-key-live` — Live restricted key
 
-- **Shape:** prefix `rk_live_` (taxonomy description only).
-- **Sources:** no research recorded.
+- **Shape:** prefix `rk_live_`.
+- **Sources:** T1 on the provider-documented prefix (docs.stripe.com/keys), per the shipped `stripe-token` contract in the benchmarks assessment (re-checked 2026-09-20, benchmarks#33, closed by PR #34). The page states nothing about body length or alphabet; the 32-character body is tool-corroborated only and stays undecided here.
 
 ### `stripe:restricted-key-test` — Test restricted key
 
-- **Shape:** prefix `rk_test_` (taxonomy description only).
-- **Sources:** no research recorded.
+- **Shape:** prefix `rk_test_`.
+- **Sources:** T1 on the provider-documented prefix (docs.stripe.com/keys), per the shipped `stripe-token` contract in the benchmarks assessment (re-checked 2026-09-20, benchmarks#33, closed by PR #34). The page states nothing about body length or alphabet; the 32-character body is tool-corroborated only and stays undecided here.
 
 ### `stripe:organization-api-key` — Organization API key
 
@@ -112,7 +118,7 @@ Provider documentation: [API keys](https://docs.stripe.com/keys).
   keys page. No page gives a body length or alphabet. Core adopted the shape on the
   documented prefix alone (#513); the corpus keeps it pending because it asserts no
   ground truth without a documented body grammar (benchmarks#127).
-- **Sources:** no verdict recorded; see Open questions.
+- **Sources:** `ready`, T1 on the provider-documented prefix `sk_org_` and nothing else, as Anthropic (docs/specs/beta8-evidence.md, "Tier follows the evidence"). The body grammar is undecided, and per decision `2026-09-24-stop-asserting-provider-undecided-format-properties` a pending fixture never asserts an undecided body. Benchmarks#127 keeping the corpus fixtures pending reflects only the missing body grammar, not the prefix verdict; core #513 contracts the shape on the prefix.
 
 ### `stripe:webhook-signing-secret` — Webhook signing secret
 
@@ -135,6 +141,7 @@ Provider documentation: [API keys](https://docs.stripe.com/keys).
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (frozen in the #726 record as context-gated for qualification; the #729
   implementation detects the prefix bare, as attribution is a benchmark concept).
+- **Open caveat:** T1 on the whsec_ prefix and Stripe context only; body width and alphabet are not provider-stated, and Svix and Standard Webhooks issue whsec_ secrets too.
 
 ## Candidates that are not families yet
 
@@ -144,17 +151,8 @@ Provider documentation: [API keys](https://docs.stripe.com/keys).
 
 ## Open questions
 
-1. `stripe:secret-key-live`, `-test`, `restricted-key-live`, `-test`: no research
-   pass is recorded for these prefixes; the sources gave no basis for a verdict.
-2. `stripe:organization-api-key`: core (#513) contracts it on prefix documentation;
-   benchmarks#127 keeps it pending for lack of a body grammar. Neither is a
-   research verdict, so it stays unresearched until one is recorded. The facts
-   do not differ: benchmarks#45 (2026-09-20) and #127 (2026-09-22) both record
-   that the key-types and organization-keys pages name `sk_org_` and that neither
-   the provider nor either pinned peer gives a body length or alphabet; the two
-   positions differ only in bar (core adopts on the prefix, the corpus asserts no
-   ground truth without a grammar). A maintainer may record `not-found` T0 here,
-   as for the Vercel classes, or leave it for a research pass.
+1. Body length and alphabet of the `sk_`/`rk_` keys and of `sk_org_`: no Stripe page states them (benchmarks#33, #45, #127); the 32-character body is tool-corroborated only.
+2. `stripe:organization-api-key`: body grammar undecided; benchmarks#127 stays pending on that alone.
 3. Do Dashboard, API, v2 event destination, Connect and CLI secrets share width and
    alphabet? Do real secrets ever contain `+`, `/` or `=`?
 4. Is a 64-character variant real, or an artifact of placeholders and hex digests?

@@ -47,7 +47,7 @@ families:
         - redact-secret/redact-secret-benchmarks#434
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/composio.md
       researchedAt: 2026-09-28
-    blockedBy: "A provider CLI code comment shows a 20-byte body, a T2 source (R6) that conflicts with the staff-stated 43; an issuance check on one composio login key is kept as confirmation."
+    blockedBy: null
 ---
 
 # Composio
@@ -79,6 +79,7 @@ Composio is an agent tool platform whose keys authorize tool calls against a use
 - **Issuance:** the step-2 selection gated this shape on that conflict; the Tier A handoff lifted the gate under R6 and asked the maintainer to confirm. The issuance check (one `composio login` key, expect 43) stays as confirmation.
 - **Collisions:** none beyond the shared `ak_` substring, handled by the leading boundary.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Open caveat:** A provider CLI code comment shows a 20-byte body, a T2 source (R6) that conflicts with the staff-stated 43; an issuance check on one composio login key is kept as confirmation.
 
 ## Candidates that are not families yet
 

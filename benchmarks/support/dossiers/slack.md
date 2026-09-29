@@ -13,7 +13,7 @@ families:
         - redact-secret/redact-secret#371
       evidence: https://github.com/redact-secret/redact-secret/blob/54c9ab35cb693e0cd3aedc8f858ca19ab77e4363/docs/decisions/2026-09-17-freeze-slack-bot-token-segment-grammar.md
       researchedAt: 2026-09-17
-    blockedBy: "The prefix and dash-separated sections are provider-documented; the 10 to 13 digit section widths are tool agreement and the 18-byte secret floor is a support-policy choice."
+    blockedBy: null
   - id: slack:user-token
     research:
       verdict: ready
@@ -29,7 +29,7 @@ families:
         - redact-secret/redact-secret#730
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-27
-    blockedBy: Prefix and section anatomy are provider-stated; numeric-section widths and the secret's alphabet are tool-only and disagree. Needs one issued xoxp token (checklist in #229).
+    blockedBy: null
   - id: slack:app-level-token
     research:
       verdict: ready
@@ -44,11 +44,11 @@ families:
         - redact-secret/redact-secret#729
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-27
-    blockedBy: Only the xapp- prefix is provider-documented; section widths and alphabet are tool-only and contradictory (four sections, 97 characters versus two sections, 42). Needs one issued token (#222 checklist).
+    blockedBy: null
   - id: slack:workflow-webhook-token
     research:
-      verdict: unresearched
-      tier: null
+      verdict: ready
+      tier: T1
       sources:
         - https://docs.slack.dev/authentication/tokens
       issues:
@@ -56,7 +56,7 @@ families:
         - redact-secret/redact-secret-benchmarks#127
         - redact-secret/redact-secret#512
       evidence: null
-      researchedAt: null
+      researchedAt: 2026-09-29
     blockedBy: null
 ---
 
@@ -69,7 +69,7 @@ the prefixes and gives no section widths or alphabet. Slack's 2016
 [token lengthening note](https://docs.slack.dev/changelog/2016/08/23/token-lengthening)
 tells integrators to expect up to 255 characters and not to rely on any
 semantics in the string. The user-token, app-level and bot-token families are researched
-here; the workflow-webhook family was not in the sources reviewed.
+here; the workflow-webhook family is recorded on the tokens-page prefix alone (see its section).
 
 ## Families
 
@@ -77,6 +77,7 @@ here; the workflow-webhook family was not in the sources reviewed.
 
 - **Shape:** `xoxb-` + 10 to 13 digits + `-` + 10 to 13 digits + `-` + at least 18 alphanumerics, as frozen by #371.
 - **Sources:** T1 for the prefix and the dash-separated sections (docs.slack.dev tokens page); section widths are tool agreement and the 18-byte floor is a policy choice.
+- **Open caveat:** The prefix and dash-separated sections are provider-documented; the 10 to 13 digit section widths are tool agreement and the 18-byte secret floor is a support-policy choice.
 
 ### `slack:user-token` — User token
 
@@ -98,6 +99,7 @@ here; the workflow-webhook family was not in the sources reviewed.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (Beta.8 wave 2; `xoxp-` plus three numeric sections plus a final section, no
   width rule).
+- **Open caveat:** Prefix and section anatomy are provider-stated; numeric-section widths and the secret's alphabet are tool-only and disagree. Needs one issued xoxp token (checklist in #229).
 
 ### `slack:app-level-token` — App-level token
 
@@ -119,23 +121,11 @@ here; the workflow-webhook family was not in the sources reviewed.
   (`xoxe.xoxp-`) are a different credential; app ids are public.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (Beta.8 wave 1, empirical route).
+- **Open caveat:** Only the xapp- prefix is provider-documented; section widths and alphabet are tool-only and contradictory (four sections, 97 characters versus two sections, 42). Needs one issued token (#222 checklist).
 
 ### `slack:workflow-webhook-token` — Workflow webhook token
 
-- **Sources:** no research pass, so the verdict stays unresearched. The tokens
-  page lists the `xwfp-` prefix and no section widths or alphabet. Two
-  benchmark reviews recorded the same limit without researching the family:
-  [#45](https://github.com/redact-secret/redact-secret-benchmarks/issues/45)
-  (2026-09-20: "prefix is documented but body isn't", found a stale review
-  note, retained pending) and
-  [#127](https://github.com/redact-secret/redact-secret-benchmarks/issues/127)
-  (2026-09-22: the tokens page states workflow tokens begin `xwfp-` with no
-  section widths, no tool source, and the corpus keeps the shape T0 pending
-  because it asserts no ground truth without a documented body grammar). Core
-  [#512](https://github.com/redact-secret/redact-secret/issues/512) shipped an
-  open-floor rule for it that its module doc says clears neither the
-  two-source nor the provider-plus-tool bar. A research pass could record
-  `not-found` T0, as for the Vercel classes.
+- **Sources:** `ready`, T1 on the provider-documented prefix `xwfp-` and nothing else (docs/specs/beta8-evidence.md, "Tier follows the evidence": a documented prefix is T1 with the body unspecified, as Anthropic). The tokens page states workflow tokens begin `xwfp-` and gives no section widths or alphabet; the shipped `slack-token` contract cites the same page for the prefix (re-checked 2026-09-20, benchmarks#45). The body grammar is undecided, and per decision `2026-09-24-stop-asserting-provider-undecided-format-properties` a pending fixture never asserts an undecided body. Benchmarks#127 (2026-09-22) keeping the corpus fixtures pending reflects only the missing body grammar, not the prefix verdict; core [#512](https://github.com/redact-secret/redact-secret/issues/512) shipped an open-floor rule for it.
 
 ## Candidates that are not families yet
 
@@ -155,7 +145,7 @@ here; the workflow-webhook family was not in the sources reviewed.
 2. Is the second `xapp-` section the public app id? Scanner samples disagree.
 3. Have `xapp-` version digits other than `1` been issued?
 4. Answered by #512 (its 2026-09-20 decision): rotating `xoxe.xoxp-` and `xoxe.xoxb-` tokens and refresh tokens are their own supported variants in core, T1 on a single-digit version section with an opaque body; #730 keeps an `xoxp-` inside `xoxe.xoxp-` with the rotation variant. Whether the taxonomy should get a family for them is open.
-5. `slack:workflow-webhook-token` needs its own pass; #512 deliberately did not promote it (bare `xwfp-` prefix only, no tool source).
+5. `slack:workflow-webhook-token`: body grammar undecided; #512 deliberately did not promote it beyond the bare `xwfp-` prefix, and benchmarks#127 stays pending on the body alone.
 
 ## Research log
 

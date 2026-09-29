@@ -17,7 +17,7 @@ families:
         - redact-secret/redact-secret#741
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/643/README.md
       researchedAt: 2026-09-24
-    blockedBy: "T1 needs a maintainer ruling that an Atlassian Team forum answer counts as provider documentation; length, alphabet, the = delimiter and the CRC32 suffix are empirical only."
+    blockedBy: null
   - id: atlassian:access-token
     research:
       verdict: unresearched
@@ -45,6 +45,7 @@ Research ([redact-secret#643](https://github.com/redact-secret/redact-secret/iss
 - **Issuance:** one maintainer-issued key was used for the header check. A fresh key would settle the CRC32 (evidence checklist in the #643 passes).
 - **Collisions:** `ATBB` (Bitbucket app passwords, stopped working 2026-06-09) and `ATCT` (Bitbucket access tokens) share the layout. The `=` is outside the contract's alphabet, but since #741 core includes a directly following `=` plus 8 uppercase hex in the span.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); evidence [#643 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/643/README.md).
+- **Open caveat:** T1 needs a maintainer ruling that an Atlassian Team forum answer counts as provider documentation; length, alphabet, the = delimiter and the CRC32 suffix are empirical only.
 
 ### `atlassian:access-token` — Access token
 

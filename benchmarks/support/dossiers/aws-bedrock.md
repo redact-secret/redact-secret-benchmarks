@@ -18,7 +18,7 @@ families:
         - redact-secret/redact-secret-benchmarks#384
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/864/README.md
       researchedAt: 2026-09-27
-    blockedBy: T1 covers the ABSK prefix and Base64 alphabet only; total length (132, or 136 for a secondary key) and non-default IAM user names are T2. Needs issued keys (checklist in #778).
+    blockedBy: null
   - id: aws-bedrock:short-term-api-key
     research:
       verdict: ready
@@ -37,7 +37,7 @@ families:
         - redact-secret/redact-secret-benchmarks#384
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/864/README.md
       researchedAt: 2026-09-27
-    blockedBy: T1 covers the prefix, the fixed 133-character head and the alphabet; total length and the session-token part are T2 (undocumented). Needs console-issued keys to compare with SDK output (checklist in #779).
+    blockedBy: null
 ---
 
 # Amazon Bedrock
@@ -75,6 +75,7 @@ specification. Whether and how core detects a family is not recorded here.
   covers it is contradicted by GitHub's own pattern page.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md);
   final evidence in the #864 record linked in the frontmatter.
+- **Open caveat:** T1 covers the ABSK prefix and Base64 alphabet only; total length (132, or 136 for a secondary key) and non-default IAM user names are T2. Needs issued keys (checklist in #778).
 
 ### `aws-bedrock:short-term-api-key` — Short-term API key (bedrock-api-key-)
 
@@ -97,6 +98,7 @@ specification. Whether and how core detects a family is not recorded here.
   prefix and are a separate product.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md);
   final evidence in the #864 record linked in the frontmatter.
+- **Open caveat:** T1 covers the prefix, the fixed 133-character head and the alphabet; total length and the session-token part are T2 (undocumented). Needs console-issued keys to compare with SDK output (checklist in #779).
 
 ## Candidates that are not families yet
 

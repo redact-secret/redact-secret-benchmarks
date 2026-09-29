@@ -18,7 +18,7 @@ families:
         - redact-secret/redact-secret-benchmarks#384
       evidence: null
       researchedAt: 2026-09-27
-    blockedBy: No provider source states any shape; 40 alphanumeric is one gitleaks rule's inference, so contextual only. Needs one trial and one production key measured (checklist in #782).
+    blockedBy: null
 ---
 
 # Cohere
@@ -59,6 +59,7 @@ both. The core spec table also uses `cohere:api-key`.
   section Keyword-gated provider keys (#868). #932 recognised the Java
   `Cohere.builder().token(...)` form; a `masked_`-led LiteLLM log value stays
   unreported by policy.
+- **Open caveat:** No provider source states any shape; 40 alphanumeric is one gitleaks rule's inference, so contextual only. Needs one trial and one production key measured (checklist in #782).
 
 ## Candidates that are not families yet
 

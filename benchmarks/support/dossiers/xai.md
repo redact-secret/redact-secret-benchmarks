@@ -6,7 +6,7 @@ families:
   - id: xai:api-key
     research:
       verdict: ready
-      tier: T1
+      tier: T2
       sources:
         - https://docs.x.ai/developers/rest-api-reference/management/auth
         - https://docs.x.ai/developers/quickstart
@@ -17,7 +17,7 @@ families:
         - redact-secret/redact-secret#727
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-24
-    blockedBy: T1 on the prefix only; the 80-character length rests on one provider example plus tools and the body alphabet is unresolved (checklist in benchmarks#216).
+    blockedBy: null
 ---
 
 # xAI
@@ -36,7 +36,8 @@ the full value is returned once, at creation.
   error (LiteLLM, 2025-03) also shows an 80-character body. The alphabet is
   contested: TruffleHog admits `_`, betterleaks admits `_` and `-`, the
   others accept letters and digits only. No real key with `_` or `-` was seen.
-- **Sources:** T1 for the prefix; length is provider-example plus tool rules;
+- **Sources:** the family tier follows the assessment contract (T2, #208 record: the
+  prefix is provider-documented, the body is not); the prefix alone is T1. Length is provider-example plus tool rules;
   alphabet is unresolved. The official Python SDK reads `XAI_API_KEY` and
   validates nothing. GitHub lists xAI as a secret-scanning partner (regex not
   published).
@@ -49,6 +50,7 @@ the full value is returned once, at creation.
   characters). A Groq `gsk_` value stored under `XAI_API_KEY` is not an xAI key.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (frozen in the #726 record: 80 characters from the provisional union alphabet).
+- **Open caveat:** T1 on the prefix only; the 80-character length rests on one provider example plus tools and the body alphabet is unresolved (checklist in benchmarks#216).
 
 ## Candidates that are not families yet
 

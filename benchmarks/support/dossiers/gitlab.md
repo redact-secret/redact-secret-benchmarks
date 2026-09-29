@@ -13,7 +13,7 @@ families:
         - redact-secret/redact-secret#518
       evidence: https://github.com/redact-secret/redact-secret/blob/54c9ab35cb693e0cd3aedc8f858ca19ab77e4363/docs/decisions/2026-09-20-inventory-gitlab-token-families.md
       researchedAt: 2026-09-20
-    blockedBy: "Only the glpat- prefix is provider-documented (T1); the 20-character body is tool-corroborated, and an administrator-configured personal access token prefix is unsupported."
+    blockedBy: null
   - id: gitlab:routable-personal-access-token
     research:
       verdict: unresearched
@@ -38,7 +38,7 @@ families:
         - redact-secret/redact-secret#730
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-25
-    blockedBy: Prefix is documented; the 20-character body and routable grammar come from GitLab server code and gitleaks. glrtr-, instance-prefixed and unversioned routable forms are unverified. No issued token captured.
+    blockedBy: null
 ---
 
 # GitLab
@@ -56,6 +56,7 @@ routable one is recorded there as pending.
 ### `gitlab:legacy-personal-access-token` — Legacy personal access token
 
 - **Sources:** T1 for the `glpat-` prefix (token overview, observed 2026-09-20). The prefix also covers impersonation, project and group access tokens. Inventoried per family in #518, whose decision records the administrator-customized prefix as unsupported (T3 policy).
+- **Open caveat:** Only the glpat- prefix is provider-documented (T1); the 20-character body is tool-corroborated, and an administrator-configured personal access token prefix is unsupported.
 
 ### `gitlab:routable-personal-access-token` — Routable personal access token
 
@@ -91,6 +92,7 @@ routable one is recorded there as pending.
   (Beta.8 wave 2, empirical route): exact 20-byte body or the routable form with
   the length holder and CRC32 checked offline; `glrtr-`, instance-prefixed and
   unversioned forms are unclaimed.
+- **Open caveat:** Prefix is documented; the 20-character body and routable grammar come from GitLab server code and gitleaks. glrtr-, instance-prefixed and unversioned routable forms are unverified. No issued token captured.
 
 ## Candidates that are not families yet
 

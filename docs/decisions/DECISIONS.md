@@ -59,3 +59,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Score the IP port suffix outside the network-address span](2026-09-28-score-the-ip-port-suffix-outside-the-network-address-span.md)
 - [Fix the profile-cost v2 candidate-report validator's artifact roster and re-freeze the plan](2026-09-29-fix-pii-profile-cost-v2-candidate-artifact-roster.md)
 - [Judge adapter traversal on the harness's same-session change, and budget adapter allocation](2026-09-29-judge-adapter-traversal-on-same-session-change.md) (proposed; #472, rules for the overhead-v2 fields)
+- [Keep the TypeScript evaluation engine; do not start a Rust or WASM kernel after the P1-P3 fixes](2026-09-29-keep-the-typescript-evaluation-engine-after-p1-p3.md) (#479 P4; CI 5m22s to 1m24s, no language-bound kernel)

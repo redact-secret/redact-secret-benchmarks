@@ -75,3 +75,16 @@ test('a detector serving several families and a family served by several detecto
   assert.ok(familiesForDetector('stripe-token').length > 1);
   assert.ok(familiesForProvider('digitalocean').every(f => f.detectors.includes('digitalocean-token')));
 });
+
+// The product repository publishes each family's display name in its public
+// site feed (redact-secret docs/contracts/site-feed/v1/feed.schema.json),
+// which bounds every string so no free text or markup reaches a site. A name
+// outside that pattern makes the product's `site-feed:generate` fail on the
+// next support-matrix refresh, as `tr_<env>_` did for Beta.11. Spell
+// placeholders in capitals (`tr_ENV_`) instead of angle brackets.
+const FEED_FAMILY_NAME = /^[A-Za-z0-9][A-Za-z0-9 ()/,._+-]{0,79}$/;
+
+test('every family display name fits the product site feed v1 name pattern', () => {
+  const invalid = taxonomy.families.filter(family => !FEED_FAMILY_NAME.test(family.name)).map(family => `${family.id}: ${family.name}`);
+  assert.deepEqual(invalid, []);
+});

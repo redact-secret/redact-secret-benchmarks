@@ -39,7 +39,7 @@ Trigger.dev runs background and agent jobs. An environment secret key triggers a
 
 ## Families
 
-### `trigger-dev:secret-api-key` — Environment secret key (tr_<env>_ / tr_<env>_sk_)
+### `trigger-dev:secret-api-key` — Environment secret key (tr_ENV_ / tr_ENV_sk_)
 
 - **Shape:** `tr_` + one of `dev`, `stg`, `prod`, `preview` + `_` (root key) or `_sk_` (additional key, allowed since 2026-08-25), then an alphanumeric body of exactly 24 characters; legacy root keys (up to v4.0.0) have exactly 20. No checksum.
 - **Sources:** T1. The additional-key grammar is a regex in the published SDK core; the root and legacy grammars are generator code (R1); the docs corroborate the prefixes. Legacy 20-byte roots are kept because lookup is by value and no statement says they stopped authenticating.

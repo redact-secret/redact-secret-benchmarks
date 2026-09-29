@@ -160940,6 +160940,264 @@
       "firstSeenRun": "triage-508-2026-09-29",
       "resolvedRun": "triage-508-2026-09-29",
       "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.10, [85,109) as generic-token) matches this corpus's authored expected span(s) [85,109) on the canonical variant of beta8-434g/composio-org-api-key-ts-constructor. The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "434cfe1a043056cdab7fe07ee2dbe9018290ec8e49a354ef2d2b939de6ead306": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [97,133) as resend-api-key) matches this corpus's authored expected span(s) [97,133) on the canonical variant of beta8-436d/resend-api-key-compose-env (positive, must-redact/T1, target resend-api-key). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated resend-api-key detector. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "2c0fad755ff782fefcab109af5ceee4c152f7384b0b6ae1101fb6652e8290b23": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [97,133) as resend-api-key) matches this corpus's authored expected span(s) [97,133) on the canonical variant of beta8-436d/resend-api-key-compose-env (positive, must-redact/T1, target resend-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated resend-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "86fe8f886456e8f50e5b69a217c560af088865141f9823990679495aa94cbae8": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [105,140), the authored expected span, on the canonical variant of beta8-434b/trigger-dev-token-compose-env (positive, must-redact/T1, target trigger-dev-token). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it trigger-dev-token (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "d0a5843251f28a99dcbdf469ceb288c6cbbf31e1cd6ca85fe0fa372a712b0a22": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [105,140) as trigger-dev-token) matches this corpus's authored expected span(s) [105,140) on the canonical variant of beta8-434b/trigger-dev-token-compose-env (positive, must-redact/T1, target trigger-dev-token). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated trigger-dev-token detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "7538b0de6d70d90a8c80f64964ab326ae7c451301b00df2a5eeca5656b297f2c": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [100,131) as trigger-dev-token) matches this corpus's authored expected span(s) [100,131) on the canonical variant of beta8-434b/trigger-dev-token-curl-trigger-task (positive, must-redact/T1, target trigger-dev-token). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated trigger-dev-token detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "e7cb75582263f202c82786f18de67c2657a83993a488871a10c81712fc6e69fb": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [92,119) as trigger-dev-token) matches this corpus's authored expected span(s) [92,119) on the canonical variant of beta8-434b/trigger-dev-token-k8s-secret (positive, must-redact/T1, target trigger-dev-token). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated trigger-dev-token detector. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "eb82eff473c533dfd70fc057641452a5c02d262ebaca16947eefb6bdc0e9b050": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [92,119) as trigger-dev-token) matches this corpus's authored expected span(s) [92,119) on the canonical variant of beta8-434b/trigger-dev-token-k8s-secret (positive, must-redact/T1, target trigger-dev-token). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated trigger-dev-token detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "0241732a606a745938b2d983824265ae6e8fe932981846b53013c8cf32299bb8": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [92,136), the authored expected span, on the canonical variant of beta8-434c/e2b-api-key-compose-env (positive, must-redact/T1, target e2b-api-key). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it e2b-api-key (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "f3edbc310a10ffebff3e96ab192c8d00a717454b2c5a36889e1ed4b7830b845c": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [92,136) as e2b-api-key) matches this corpus's authored expected span(s) [92,136) on the canonical variant of beta8-434c/e2b-api-key-compose-env (positive, must-redact/T1, target e2b-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated e2b-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "48051d68ccb506fedfef39a6cb27fb266fc5eb2b0b31a89c665471214c51b2b7": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [105,155), the authored expected span, on the canonical variant of beta8-434d/posthog-token-compose-env (positive, must-redact/T1, target posthog-token). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it posthog-token (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "d68e4a96f082c45caca9f1701c7ad8a63164197ef7b579cfb7b30cb04e6738bb": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [83,134), the authored expected span, on the canonical variant of beta8-434d/posthog-token-actions-env (positive, must-redact/T1, target posthog-token). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it posthog-token (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "7f04de757de2f3e0e4e654b44b56e3e2f5789687f489e829ce821651fd97e6ec": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [52,104), the authored expected span, on the canonical variant of beta8-434d/posthog-token-yaml-config (positive, must-redact/T1, target posthog-token). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it posthog-token (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "d7d7abe64fc2747ff7026971ad47ae20ee6d3668caee0991072cf03853d325e3": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [111,161), the authored expected span, on the canonical variant of beta8-434d/posthog-project-secret-api-key-compose-env (positive, must-redact/T1, target posthog-project-secret-api-key). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it posthog-project-secret-api-key (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "dabd8bd75073217f56074236a6ed669283946d36cc2d1a0073a9f91c0bed761c": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [111,161) as posthog-project-secret-api-key) matches this corpus's authored expected span(s) [111,161) on the canonical variant of beta8-434d/posthog-project-secret-api-key-compose-env (positive, must-redact/T1, target posthog-project-secret-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated posthog-project-secret-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "b374ab308dd53533ee12759baf9338b4872a8aeac2331c2a5357e6eb1f610c87": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [89,140), the authored expected span, on the canonical variant of beta8-434d/posthog-project-secret-api-key-actions-env (positive, must-redact/T1, target posthog-project-secret-api-key). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it posthog-project-secret-api-key (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "b43cfcf68a939ccd10d418354c7767f5ef36c24a92d39f8f80ac2fb6d51ce89a": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [89,140) as posthog-project-secret-api-key) matches this corpus's authored expected span(s) [89,140) on the canonical variant of beta8-434d/posthog-project-secret-api-key-actions-env (positive, must-redact/T1, target posthog-project-secret-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated posthog-project-secret-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "824fa6b34b5a97c59d0be38ffda231329d4be324d3681de174b00524cbb5868f": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [52,104), the authored expected span, on the canonical variant of beta8-434d/posthog-project-secret-api-key-yaml-config (positive, must-redact/T1, target posthog-project-secret-api-key). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it posthog-project-secret-api-key (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "6f6589f76a362e64c281ebe90181fbcf9ffb299c2056b918a30f110b30767d1d": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [52,104) as posthog-project-secret-api-key) matches this corpus's authored expected span(s) [52,104) on the canonical variant of beta8-434d/posthog-project-secret-api-key-yaml-config (positive, must-redact/T1, target posthog-project-secret-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated posthog-project-secret-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "cf774f70c8f53e6c772ede3fc32829c3d19d48c2f7ab462239a821ecaa2832a3": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [101,147) as helicone-api-key) matches this corpus's authored expected span(s) [101,147) on the canonical variant of beta8-434e/helicone-api-key-compose-env (positive, must-redact/T1, target helicone-api-key). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated helicone-api-key detector. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "4ceee8652e15c2a472310b23ca1c2caf79f47199c5bff3bc774d890fc4d6d74b": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [101,147) as helicone-api-key) matches this corpus's authored expected span(s) [101,147) on the canonical variant of beta8-434e/helicone-api-key-compose-env (positive, must-redact/T1, target helicone-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated helicone-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "1497e414f2899dbe98fbe5a13fdcb419d7584e913e762720490f69aa77386a74": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [74,120) as helicone-api-key) matches this corpus's authored expected span(s) [74,120) on the canonical variant of beta8-434e/helicone-api-key-actions-env (positive, must-redact/T1, target helicone-api-key). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated helicone-api-key detector. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "7db7d07807093ad7e3c3bc3676d4b0230981fde7fb4794e8345fbbcaeb0bd98d": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [74,120) as helicone-api-key) matches this corpus's authored expected span(s) [74,120) on the canonical variant of beta8-434e/helicone-api-key-actions-env (positive, must-redact/T1, target helicone-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated helicone-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "ec30e92378f04f5bf0aa61494e8f1617a82ee67bc54c2279a8a103ad31670cda": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [102,137), the authored expected span, on the canonical variant of beta8-434f/firecrawl-api-key-compose-env (positive, must-redact/T1, target firecrawl-api-key). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it firecrawl-api-key (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "a4939d644c6f45889eb3487e319981f3dcc5b2d910acbaab6880e05c2528ded6": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [102,137) as firecrawl-api-key) matches this corpus's authored expected span(s) [102,137) on the canonical variant of beta8-434f/firecrawl-api-key-compose-env (positive, must-redact/T1, target firecrawl-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated firecrawl-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "0c44b7a706356c3d16649c204af0e4f65be46aa05aadd22cb38ffdb0893669f2": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [77,112), the authored expected span, on the canonical variant of beta8-434f/firecrawl-api-key-actions-env (positive, must-redact/T1, target firecrawl-api-key). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it firecrawl-api-key (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "6c921ab790c6ac82052b883d7a476910e27ba0e0623376277e401522d7820ca2": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [77,112) as firecrawl-api-key) matches this corpus's authored expected span(s) [77,112) on the canonical variant of beta8-434f/firecrawl-api-key-actions-env (positive, must-redact/T1, target firecrawl-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated firecrawl-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "c73d6b8c12d61e3d49d499205e473efa4807a73ecfea77e80c7ed6a3ea6d801e": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [119,154) as firecrawl-api-key) matches this corpus's authored expected span(s) [119,154) on the canonical variant of beta8-434f/firecrawl-api-key-go-http (positive, must-redact/T1, target firecrawl-api-key). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated firecrawl-api-key detector. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "45d986cf25cb9f365625629b4539364b586913234fbca0c8b848b56a21f15907": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [119,154) as firecrawl-api-key) matches this corpus's authored expected span(s) [119,154) on the canonical variant of beta8-434f/firecrawl-api-key-go-http (positive, must-redact/T1, target firecrawl-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated firecrawl-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "1198782d02fb1305917a36d5c18c7dbfcdf05a3c06f6e51bf1d44bb148ae354b": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [101,124), the authored expected span, on the canonical variant of beta8-434g/composio-api-key-compose-env (positive, must-redact/T1, target composio-api-key). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it composio-api-key (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "74afc9688f90baf8977555c6679ae5d69284bb53583118a2deddef52ff7de3fb": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [101,124) as composio-api-key) matches this corpus's authored expected span(s) [101,124) on the canonical variant of beta8-434g/composio-api-key-compose-env (positive, must-redact/T1, target composio-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated composio-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "4cbf82ea3bcb49f7def381f0ad1b797132a717d86258fc146b38e5f1de108c6d": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [74,97), the authored expected span, on the canonical variant of beta8-434g/composio-api-key-actions-env (positive, must-redact/T1, target composio-api-key). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it composio-api-key (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "a48fd12d8605aaf3b48ca93129a6895f813453c3903a0c7d053051c2357d784d": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [74,97) as composio-api-key) matches this corpus's authored expected span(s) [74,97) on the canonical variant of beta8-434g/composio-api-key-actions-env (positive, must-redact/T1, target composio-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated composio-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "4f6f1ad1cf22eb1ab33cde3cb69d473e7ecdbeaa9161309951ec4ff6b6505631": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [85,108), the authored expected span, on the canonical variant of beta8-434g/composio-api-key-ts-constructor (positive, must-redact/T1, target composio-api-key). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it composio-api-key (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "c2aa70ddfb1807a3bcad849bf3f699afebbf0b4b1be2670ea2c0c4d75848ca3a": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [85,108) as composio-api-key) matches this corpus's authored expected span(s) [85,108) on the canonical variant of beta8-434g/composio-api-key-ts-constructor (positive, must-redact/T1, target composio-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated composio-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "c7e88a65012ebbc1ce8c5fa0620e898feadb6c7b17535ee60fa0955a9f85a87a": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [105,129), the authored expected span, on the canonical variant of beta8-434g/composio-org-api-key-compose-env (positive, must-redact/T1, target composio-org-api-key). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it composio-org-api-key (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "b024082199861ba8438dd8221cff6b22d0188405676fa00ae3ddb641e0f6a393": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [105,129) as composio-org-api-key) matches this corpus's authored expected span(s) [105,129) on the canonical variant of beta8-434g/composio-org-api-key-compose-env (positive, must-redact/T1, target composio-org-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated composio-org-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "cd02db25f03039b14a3cdb581a004818771a984c59d79581fdc23424af71c0a4": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [78,102), the authored expected span, on the canonical variant of beta8-434g/composio-org-api-key-actions-env (positive, must-redact/T1, target composio-org-api-key). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it composio-org-api-key (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "6f8d24c635eb5e7b4e1e06f39d9769e4e78d79ed76c24ec473bcb27e6f6ef229": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [78,102) as composio-org-api-key) matches this corpus's authored expected span(s) [78,102) on the canonical variant of beta8-434g/composio-org-api-key-actions-env (positive, must-redact/T1, target composio-org-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated composio-org-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "b2d6b6c4e26073d41e895fbefe7250385e1b678dd221d2f2f1f729248ff5cca8": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [85,109) as composio-org-api-key) matches this corpus's authored expected span(s) [85,109) on the canonical variant of beta8-434g/composio-org-api-key-ts-constructor (positive, must-redact/T1, target composio-org-api-key). The disagreement is fully explained by gitleaks reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated composio-org-api-key detector. Class: redact-secret-only/gitleaks/range-matches-corpus."
+    },
+    "97be07726b940a7c767ffe1b016059a5416aa80a8fb5c74312de1f22c0b59882": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [85,109) as composio-org-api-key) matches this corpus's authored expected span(s) [85,109) on the canonical variant of beta8-434g/composio-org-api-key-ts-constructor (positive, must-redact/T1, target composio-org-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated composio-org-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "73735a75ffdf9591c9fcacafd939201a1569f0b64e7c7aaf159e23262203fcf2": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [106,153), the authored expected span, on the canonical variant of beta8-434g/composio-user-api-key-compose-env (positive, must-redact/T1, target composio-user-api-key). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it composio-user-api-key (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "29d3187cd3f0a6f3b20369a9078d5b12cff394ac62952a57f502a3820d535860": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [106,153) as composio-user-api-key) matches this corpus's authored expected span(s) [106,153) on the canonical variant of beta8-434g/composio-user-api-key-compose-env (positive, must-redact/T1, target composio-user-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated composio-user-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "8357b37468744052682eb7ff410b9aab546525043d1afae53deda86518ace058": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [79,126), the authored expected span, on the canonical variant of beta8-434g/composio-user-api-key-actions-env (positive, must-redact/T1, target composio-user-api-key). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it composio-user-api-key (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "fe59625d87cd3abd10585bf74927299a4c963a5c1c6d3c168cb65ff791f25f62": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [79,126) as composio-user-api-key) matches this corpus's authored expected span(s) [79,126) on the canonical variant of beta8-434g/composio-user-api-key-actions-env (positive, must-redact/T1, target composio-user-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated composio-user-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
+    },
+    "94fd463b83559782dc74a963afc0ba65649bfd70f924541dabbf19f770a807a8": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "note": "redact-secret and gitleaks both report [85,132), the authored expected span, on the canonical variant of beta8-434g/composio-user-api-key-ts-constructor (positive, must-redact/T1, target composio-user-api-key). redact-secret (published npm package 0.1.0-beta.11, release source 94fc18a) labels it composio-user-api-key (the fixture's assigned family); gitleaks labels it generic-token. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification."
+    },
+    "c109ef930a8ecf208166c26ef2897a85030f981815c2d30717f722a0f68272fe": {
+      "status": "resolved",
+      "firstSeenRun": "triage-511-2026-09-29",
+      "resolvedRun": "triage-511-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published npm package 0.1.0-beta.11, [85,132) as composio-user-api-key) matches this corpus's authored expected span(s) [85,132) on the canonical variant of beta8-434g/composio-user-api-key-ts-constructor (positive, must-redact/T1, target composio-user-api-key). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. The release source is 94fc18a; the finding is attributed to the dedicated composio-user-api-key detector. Class: redact-secret-only/trufflehog/range-matches-corpus."
     }
   }
 }

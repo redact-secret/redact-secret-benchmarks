@@ -257,4 +257,8 @@ By maintainer direction on 2026-09-29, the custodian and the reviewer were isola
 
 ## Support projection and site copy
 
-No status changes, so nothing was regenerated.
+The statuses changed, but `pii-support-matrix-v2` was not regenerated, because its generator cannot express this disposition yet.
+
+- **What the projection binds.** `pii:support:record` and `eval:publish:pii-support` build `pii-support-matrix-v2` from a committed `evidence/<n>/` product record (`pii-activation-evidence-v1.json` plus `pii-family-qualification-v1.json`, written by `pii:qualify:candidate`) and a population bundle. A family is `provisional` there only when its v1 qualification artifact is `qualified` and both v1 population comparisons are `no-regression` (`benchmarks/evaluation/domains/pii/support-v2.ts`).
+- **Why this disposition does not bind.** The Beta.11 route writes `pii-beta11-protected-disposition` from v2 plans and the protected runs. No v1 product record exists for `8b6a5fde`, and the frozen v1 plans pin `vocabulary=pii-context/v1` identities (see [README](README.md#not-done-here-with-reasons)). Reading the protected disposition in the projection needs a reviewed v2 binding path, which this record does not add.
+- **What the site shows until then.** The site publisher binds only a committed record for the product it measures, so `pii-support-matrix-v2` keeps projecting `pending` for all six families. The authoritative Beta.11 status is the protected disposition above: five `provisional`, us-ssn `pending`, none `stable`.

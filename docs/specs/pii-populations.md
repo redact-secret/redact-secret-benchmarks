@@ -235,9 +235,14 @@ the other's budget.
   `benchmarks/evaluation/domains/pii/profile-cost-acceptance.ts`). An
   acceptance counts only when it covers every failing cell and open size row
   of exactly those runs; the frozen report is never rescored with it. With the
-  acceptance, all six families stay `pending`, their public gates count as
-  met, and each is eligible for its protected run (`no-sealed-corpus` until the
-  custodian seals).
+  acceptance, the public gates of all six families count as met, and each is
+  eligible for its protected run. After the one sealed run per family
+  (`evidence/901/428/core-8b6a5fde52ec/pii-beta11-protected-disposition-v2.json`),
+  network-address, email, payment-card, IBAN and phone are `provisional`;
+  us-ssn stays `pending` (`protected-gates-not-met:identity-only-classification`,
+  attempt spent). `pii-support-matrix-v2` does not read this disposition: it
+  binds only v1 product records, so it keeps projecting `pending` until a
+  reviewed v2 binding path exists.
 
 The IBAN family binding pins family contract v1, SWIFT ISO 13616 IBAN Registry
 Release 103 (89 derived country/length rows), and the bounded `iban-mod97` v1

@@ -1,0 +1,255 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-b11-protected-aggregate",
+  "supportClaims": false,
+  "domain": "pii",
+  "evaluationProfile": "pii-v1",
+  "domainAccountingVersion": "pii-b11-protected-v1",
+  "family": "pii:global:email",
+  "runId": "e8984ee2-7322-42a4-9061-6c82be2bf571",
+  "planHash": "369f65aebf23d2d1690bf45704c66d67bcbb26db10b5ebb4c153696760ac8834",
+  "startedAt": "2026-09-29T16:02:32.970Z",
+  "finishedAt": "2026-09-29T16:02:37.916Z",
+  "status": "complete",
+  "methodology": "frozen-candidate-canonical-cases-aggregate-only",
+  "independence": "custodian-declared",
+  "corpus": {
+    "id": "2e160919-04a6-48d0-82df-d50f2394bb86",
+    "revision": 1,
+    "purpose": "protected",
+    "corpusHash": "6f9039c7a3896b9bf9400c2c0a5d6cfe9b4d59bccf8bfd58acaeea10e30c32f4",
+    "seedHash": "ce4e10237a2665dadda35dbddc59b59f1d4e82be1c4437780843228c8c32c46b",
+    "lifecycle": "sealed-at-execution"
+  },
+  "candidate": {
+    "sourceHash": "240e0c49fafa736dc9faed707428391563a80d67e10ed1d5b297921b371f3633",
+    "lockHash": "34c03c9b1a0697feb7666406af7bf62871a1b3a1d1466b743b1d49ccf9f502b3",
+    "candidateArtifactHash": "a9dad84c77b2a107a2cf58226e270d8f4908acbca16d412f3a2322a6a40fe26d"
+  },
+  "binding": {
+    "coreCommit": "8b6a5fde52ecb4dfce13f09c7a947062d21483c7",
+    "freezeCommitment": "f79278aeb40c06cacaab5c91bd63aedddaadf1b8d3d68761c9a2dc5f78dce412",
+    "reportCommitment": "530879bc6db9f3bc497164c936f56718262d94953cf068021255f730c09088bd",
+    "epochCommitment": "04d02d9f6b1aa593aff609045cf1479ddea5d042e71cb7e00af480c724d7c515",
+    "sealCommitment": "63e62fa409f55f14a4d342485a9d18259953f2370f0efb3f9c5687a75edaa334",
+    "manifestCommitment": "1d8c570c1b6d662c2c7e41c94e1abe317348b201cbec06a4adc1ce1d3133bf75",
+    "benchmarkRevision": "2f1f83eeea512cd7597531f34da36e6184dcc936",
+    "configurationHash": "de181cc40c23e0d15828dd28b47afc721360daa51ccbdd4b506d05b296f492e4"
+  },
+  "caseCount": 32,
+  "views": {
+    "diagnostic-balanced": {
+      "cases": 16,
+      "sensitive": {
+        "cases": 7,
+        "detected": 7,
+        "rangeMismatch": 0,
+        "actionMismatch": 0,
+        "missed": 0,
+        "leakedAfterRedaction": 0
+      },
+      "nonSensitive": {
+        "cases": 4,
+        "falseAlarm": 0
+      },
+      "notEstablished": {
+        "cases": 5,
+        "falseAlarm": 0
+      },
+      "benignAxisCount": 8,
+      "twinPairs": 5,
+      "collateralFindings": 0,
+      "outsideModifiedCases": 0,
+      "scanRedactDisagreements": 0,
+      "credentialFindingCases": 0,
+      "metrics": [
+        {
+          "id": "type-miss-rate",
+          "numerator": 0,
+          "denominator": 7,
+          "status": "met"
+        },
+        {
+          "id": "wrong-family-rate",
+          "numerator": 0,
+          "denominator": 7,
+          "status": "met"
+        },
+        {
+          "id": "sensitive-miss-rate",
+          "numerator": 0,
+          "denominator": 7,
+          "status": "met"
+        },
+        {
+          "id": "non-sensitive-flag-rate",
+          "numerator": 0,
+          "denominator": 4,
+          "status": "met"
+        },
+        {
+          "id": "context-discrimination-rate",
+          "numerator": 5,
+          "denominator": 5,
+          "status": "met"
+        },
+        {
+          "id": "benign-suppression-rate",
+          "numerator": 9,
+          "denominator": 9,
+          "status": "met"
+        },
+        {
+          "id": "range-collateral-rate",
+          "numerator": 0,
+          "denominator": 7,
+          "status": "met"
+        },
+        {
+          "id": "measurable-share",
+          "numerator": 16,
+          "denominator": 16,
+          "status": "met"
+        }
+      ]
+    },
+    "benign-heavy-stress": {
+      "cases": 16,
+      "sensitive": {
+        "cases": 4,
+        "detected": 4,
+        "rangeMismatch": 0,
+        "actionMismatch": 0,
+        "missed": 0,
+        "leakedAfterRedaction": 0
+      },
+      "nonSensitive": {
+        "cases": 5,
+        "falseAlarm": 0
+      },
+      "notEstablished": {
+        "cases": 7,
+        "falseAlarm": 0
+      },
+      "benignAxisCount": 10,
+      "twinPairs": 4,
+      "collateralFindings": 0,
+      "outsideModifiedCases": 0,
+      "scanRedactDisagreements": 0,
+      "credentialFindingCases": 0,
+      "metrics": [
+        {
+          "id": "type-miss-rate",
+          "numerator": 0,
+          "denominator": 4,
+          "status": "met"
+        },
+        {
+          "id": "wrong-family-rate",
+          "numerator": 0,
+          "denominator": 4,
+          "status": "met"
+        },
+        {
+          "id": "sensitive-miss-rate",
+          "numerator": 0,
+          "denominator": 4,
+          "status": "met"
+        },
+        {
+          "id": "non-sensitive-flag-rate",
+          "numerator": 0,
+          "denominator": 5,
+          "status": "met"
+        },
+        {
+          "id": "context-discrimination-rate",
+          "numerator": 4,
+          "denominator": 4,
+          "status": "met"
+        },
+        {
+          "id": "benign-suppression-rate",
+          "numerator": 12,
+          "denominator": 12,
+          "status": "met"
+        },
+        {
+          "id": "range-collateral-rate",
+          "numerator": 0,
+          "denominator": 4,
+          "status": "met"
+        },
+        {
+          "id": "measurable-share",
+          "numerator": 16,
+          "denominator": 16,
+          "status": "met"
+        }
+      ]
+    }
+  },
+  "identity": {
+    "eligible": 21,
+    "correct": 20,
+    "identityOnlyCompared": 1,
+    "identityMissed": 0,
+    "identityOverAccepted": 0,
+    "sensitivityMismatch": 0,
+    "equivalenceDisagreements": 0
+  },
+  "surfaces": {
+    "observedSelections": 10,
+    "activationProblems": 0,
+    "crossSurfaceDisagreements": 0,
+    "piiOffFindingCases": 0
+  },
+  "gates": [
+    {
+      "id": "activation-v2",
+      "status": "met",
+      "reasons": []
+    },
+    {
+      "id": "pii-off-invariance",
+      "status": "met",
+      "reasons": []
+    },
+    {
+      "id": "cross-surface-determinism",
+      "status": "met",
+      "reasons": []
+    },
+    {
+      "id": "diagnostic-population",
+      "status": "met",
+      "reasons": []
+    },
+    {
+      "id": "benign-heavy-population",
+      "status": "met",
+      "reasons": []
+    },
+    {
+      "id": "population-mass-resolved",
+      "status": "met",
+      "reasons": []
+    },
+    {
+      "id": "identity-only-classification",
+      "status": "met",
+      "reasons": []
+    },
+    {
+      "id": "source-artifact-equivalence",
+      "status": "met",
+      "reasons": []
+    },
+    {
+      "id": "candidate-stable",
+      "status": "met",
+      "reasons": []
+    }
+  ],
+  "protectedGate": "met"
+}

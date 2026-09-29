@@ -43,8 +43,13 @@ families:
     research:
       verdict: unresearched
       tier: null
-      sources: []
-      issues: []
+      sources:
+        - https://docs.stripe.com/keys
+        - https://docs.stripe.com/keys/organization-api-keys
+      issues:
+        - redact-secret/redact-secret-benchmarks#45
+        - redact-secret/redact-secret-benchmarks#127
+        - redact-secret/redact-secret#513
       evidence: null
       researchedAt: null
     blockedBy: null
@@ -143,7 +148,13 @@ Provider documentation: [API keys](https://docs.stripe.com/keys).
    pass is recorded for these prefixes; the sources gave no basis for a verdict.
 2. `stripe:organization-api-key`: core (#513) contracts it on prefix documentation;
    benchmarks#127 keeps it pending for lack of a body grammar. Neither is a
-   research verdict, so it stays unresearched until one is recorded.
+   research verdict, so it stays unresearched until one is recorded. The facts
+   do not differ: benchmarks#45 (2026-09-20) and #127 (2026-09-22) both record
+   that the key-types and organization-keys pages name `sk_org_` and that neither
+   the provider nor either pinned peer gives a body length or alphabet; the two
+   positions differ only in bar (core adopts on the prefix, the corpus asserts no
+   ground truth without a grammar). A maintainer may record `not-found` T0 here,
+   as for the Vercel classes, or leave it for a research pass.
 3. Do Dashboard, API, v2 event destination, Connect and CLI secrets share width and
    alphabet? Do real secrets ever contain `+`, `/` or `=`?
 4. Is a 64-character variant real, or an artifact of placeholders and hex digests?
@@ -161,6 +172,9 @@ Provider documentation: [API keys](https://docs.stripe.com/keys).
 - redact-secret-benchmarks#367 — beta.10 fixture-debt reconciliation (2026-09-27);
   redact-secret-benchmarks#372 froze the webhook contract and added an independent
   positive. Both closed 2026-09-27.
+- redact-secret-benchmarks#45 — 2026-09-20 review of the pending `stripe-token`
+  fixtures (`sk_org_`, `whsec_`): prefixes documented, no body grammar from the
+  provider or either pinned peer; retained pending.
 - redact-secret#513 — completion of the Stripe family in core (`sk_org_`, `whsec_`,
   `pk_` kept out); redact-secret-benchmarks#127 reviewed the benchmark side.
 - redact-secret#316 — related false-positive test depth for public vs secret prefixes

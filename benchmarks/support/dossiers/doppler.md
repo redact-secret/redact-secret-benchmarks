@@ -12,6 +12,7 @@ families:
       issues:
         - redact-secret/redact-secret#860
         - redact-secret/redact-secret#903
+        - redact-secret/redact-secret-benchmarks#434
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/doppler.md
       researchedAt: 2026-09-28
     blockedBy: null
@@ -24,6 +25,7 @@ families:
       issues:
         - redact-secret/redact-secret#860
         - redact-secret/redact-secret#903
+        - redact-secret/redact-secret-benchmarks#434
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/doppler.md
       researchedAt: 2026-09-28
     blockedBy: null
@@ -36,6 +38,7 @@ families:
       issues:
         - redact-secret/redact-secret#860
         - redact-secret/redact-secret#903
+        - redact-secret/redact-secret-benchmarks#434
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/doppler.md
       researchedAt: 2026-09-28
     blockedBy: null
@@ -48,6 +51,7 @@ families:
       issues:
         - redact-secret/redact-secret#860
         - redact-secret/redact-secret#903
+        - redact-secret/redact-secret-benchmarks#434
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/doppler.md
       researchedAt: 2026-09-28
     blockedBy: null
@@ -60,6 +64,7 @@ families:
       issues:
         - redact-secret/redact-secret#860
         - redact-secret/redact-secret#903
+        - redact-secret/redact-secret-benchmarks#434
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/doppler.md
       researchedAt: 2026-09-28
     blockedBy: null
@@ -72,6 +77,7 @@ families:
       issues:
         - redact-secret/redact-secret#860
         - redact-secret/redact-secret#903
+        - redact-secret/redact-secret-benchmarks#434
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/doppler.md
       researchedAt: 2026-09-28
     blockedBy: null
@@ -84,6 +90,7 @@ families:
       issues:
         - redact-secret/redact-secret#860
         - redact-secret/redact-secret#903
+        - redact-secret/redact-secret-benchmarks#434
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/doppler.md
       researchedAt: 2026-09-28
     blockedBy: null
@@ -161,3 +168,4 @@ Shared by all seven (provider docs regex, page `dateModified` 2025-05-29, unchan
 - redact-secret#860 — epic (open); [research table #40](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852387097); [Tier A handoffs](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871361534) (one detector, seven types).
 - redact-secret#903 — implementation issue for the seven-type detector (closed).
 - [Final disposition record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/disposition.md) lists it READY (seven types), 2026-09-28.
+- redact-secret-benchmarks#434 — Beta.11 contracts and synthetic corpus for the #860 Tier A READY families; closed 2026-09-28. Corpus work only, no change to the research verdict.

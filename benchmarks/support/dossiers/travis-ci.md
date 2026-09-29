@@ -12,6 +12,7 @@ families:
         - https://docs.travis-ci.com/user/triggering-builds
       issues:
         - redact-secret/redact-secret#523
+        - redact-secret/redact-secret-benchmarks#259
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/523/README.md
       researchedAt: 2026-09-25
     blockedBy: Travis CI states no token length or alphabet; the 22-character shape and the travis keyword gate rest on two scanner rules. No provider-issued token has been observed.
@@ -68,3 +69,4 @@ evidence and picked Travis CI over CircleCI and Buildkite.
 - redact-secret#523 — ranks Travis CI, CircleCI, Buildkite and GitHub Actions,
   freezes the Travis grammar (T2); closed 2026-09-25. Deferred from beta.6 on
   2026-09-21 because usage and lexical evidence pointed in opposite directions.
+- redact-secret-benchmarks#259 — Beta.8 arrival contracts and arrival-24 fixtures for the Travis CI, Neon, Postman collection key and Mailgun triplet families (redact-secret#773); closed 2026-09-25.

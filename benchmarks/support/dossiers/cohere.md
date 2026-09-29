@@ -73,7 +73,11 @@ both. The core spec table also uses `cohere:api-key`.
    were not checked.
 3. **Verdict history.** #782 concluded generic coverage sufficient; #868
    landed a contextual T2 row, which the benchmarks ledger keeps `provisional`
-   (#774 close-out). This dossier records the landed state.
+   (#774 close-out). This dossier records the landed state. Benchmarks#384's
+   [2026-09-27 scope comment](https://github.com/redact-secret/redact-secret-benchmarks/issues/384#issuecomment-5852472147)
+   records the maintainer direction to author contracts and corpus for the
+   keyword-gated contextual rows (Mistral, Cohere, AI21, Exa, Deepgram), so
+   the maintainer treats these rows as live, not `rejected`.
 4. **Reddit and Stack Overflow.** Not effectively searched.
 
 ## Research log

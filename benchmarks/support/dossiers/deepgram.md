@@ -76,7 +76,11 @@ Whether and how core detects a family is not recorded here.
 3. **Verdict history.** #789 concluded generic coverage sufficient, pending T1
    evidence; #868 landed a contextual T2 row, kept `provisional` in the
    benchmarks ledger with remaining `createClient` and WebSocket misses
-   (#774 close-out). This dossier records the landed state.
+   (#774 close-out). This dossier records the landed state. Benchmarks#384's
+   [2026-09-27 scope comment](https://github.com/redact-secret/redact-secret-benchmarks/issues/384#issuecomment-5852472147)
+   records the maintainer direction to author contracts and corpus for the
+   keyword-gated contextual rows (Mistral, Cohere, AI21, Exa, Deepgram), so
+   the maintainer treats these rows as live, not `rejected`.
 4. **Staff answer.** The community forum staff thread on short-lived keys was
    not readable.
 5. **Kingfisher.** Its native rule directory was not located.

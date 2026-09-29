@@ -37,13 +37,16 @@ families:
       sources:
         - https://docs.slack.dev/authentication/tokens
         - https://docs.slack.dev/apis/events-api/using-socket-mode
+        - https://github.com/slackapi/java-slack-sdk/blob/49b62a6b866bf43eb4c3bfe9c8423a65400d2928/docs/english/guides/socket-mode.md#L180
+        - https://github.com/slackapi/slack-cli/blob/20dd73092a65d3797180f95f0ee765053d7ef634/internal/goutils/strings_test.go#L198-L202
       issues:
         - redact-secret/redact-secret-benchmarks#222
         - redact-secret/redact-secret-benchmarks#367
         - redact-secret/redact-secret#726
         - redact-secret/redact-secret#729
-      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
-      researchedAt: 2026-09-27
+        - redact-secret/redact-secret#1013
+      evidence: https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/slack-app-level-token.md
+      researchedAt: 2026-09-29
     blockedBy: null
   - id: slack:workflow-webhook-token
     research:
@@ -110,9 +113,24 @@ here; the workflow-webhook family is recorded on the tokens-page prefix alone (s
   alphanumeric order with open widths.
 - **Sources:** T1 for the prefix and role (tokens page, Socket Mode guide,
   which shows `Authorization: Bearer xapp-1-123`). Everything else is T2 or
-  weaker: gitleaks and osv-scalibr agree on 1/11/13/64, Kingfisher's rule is an
-  import of that shape, and Nosey Parker's rule is two sections and 42
-  characters. Slack's CLI test placeholders disagree on section order.
+  weaker. gitleaks' rule (`(?i)xapp-\d-[A-Z0-9]+-\d+-[a-z0-9]+`, 2023-06-15,
+  "based on a limited number of examples") fixes the four-section order with
+  open widths; 1/11/13/64 is only its test samples, taken from a third-party
+  repository, not a width it enforces (an earlier reading said gitleaks and
+  osv-scalibr agree on 1/11/13/64; corrected by redact-secret#1013). osv-scalibr
+  is the rule that fixes those widths, Kingfisher's rule is an import of it,
+  Docker portcullis (2026-05-08) states the four-segment shape with its own
+  ranges, and Nosey Parker's rule is two sections and 42 characters. Slack's
+  own placeholders disagree: four sections in the Java SDK guide and sample
+  and the Slack CLI tests, one to three elsewhere (Socket Mode page, bolt
+  fixtures).
+- **Pending ruling Q-SL (redact-secret#1013):** may Slack's four-section
+  placeholders (Java SDK guide and `OAuth.java` sample, Slack CLI tests) count
+  as provider-example corroboration, with the shorter Slack placeholders
+  bounded? If yes, the four-section anatomy clears the corroborated route
+  (gitleaks, osv-scalibr, Docker and Slack: at least 4 owners, 2 non-summary
+  classes) with widths left open. If no, only one issued token closes it.
+  Until then the family has no `empirical-observations.json` record.
 - **Issuance:** Basic Information > App-Level Tokens, scope chosen at creation
   (`connections:write`, `authorizations:read`, `app_configurations:write`).
   Not attempted.
@@ -121,7 +139,7 @@ here; the workflow-webhook family is recorded on the tokens-page prefix alone (s
   (`xoxe.xoxp-`) are a different credential; app ids are public.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
   (Beta.8 wave 1, empirical route).
-- **Open caveat:** Only the xapp- prefix is provider-documented; section widths and alphabet are tool-only and contradictory (four sections, 97 characters versus two sections, 42). Needs one issued token (#222 checklist).
+- **Open caveat:** Only the xapp- prefix is provider-documented; the four-section order rests on peer rules and Slack placeholders that disagree with other Slack placeholders, and widths stay open (osv-scalibr 1/11/13/64, Docker 1/8-16/8-16/32-128 hex, Nosey Parker two sections). READY-T2 only if ruling Q-SL accepts the four-section placeholders; otherwise one issued token (#222 checklist, restated in #1013).
 
 ### `slack:workflow-webhook-token` — Workflow webhook token
 
@@ -149,6 +167,8 @@ here; the workflow-webhook family is recorded on the tokens-page prefix alone (s
 
 ## Research log
 
+- redact-secret#1013 — 2026-09-29 T1/T2 pass for `xapp-` ([evidence](https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/slack-app-level-token.md)):
+  READY-T2 conditional on Q-SL; gitleaks width reading corrected.
 - redact-secret-benchmarks#222 — `xapp-` broad-discovery pass (23 sources);
   closed 2026-09-24, routed to #211.
 - redact-secret-benchmarks#229 — `xoxp-` broad-discovery pass (30 sources);

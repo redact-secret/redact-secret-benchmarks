@@ -182,7 +182,10 @@ export function buildB11Report(input: { freeze: any; observation: any; operation
   // The npm Wasm tarball row of the 879 package budget is the same artifact measure as #143 `size/npm/wasm/packed`; only an
   // accepted-regressions.json row for that trigger and this exact candidate covers it. Nothing else is waived.
   const wasmPackedAccepted = b11AcceptedTradeoff('size/npm/wasm/packed', freeze.candidate.sourceCommit);
-  const bytesOpen = bytes.pairedLocalBuild.filter(row => !row.pass && !(row.id === 'wasmPacked' && wasmPackedAccepted));
+  // Same rule for the Node tarball row of the 879 budget: the #143 `size/npm/node-<platform>/packed` row for this exact commit.
+  const nodePackedAccepted = b11AcceptedTradeoff(`size/npm/node-${freeze.candidate.platform}/packed`, freeze.candidate.sourceCommit);
+  const acceptedPackedRow = (id: string) => id === 'wasmPacked' ? wasmPackedAccepted : id === 'nodePacked' ? nodePackedAccepted : null;
+  const bytesOpen = bytes.pairedLocalBuild.filter(row => !row.pass && !acceptedPackedRow(row.id));
   const bytesPass = !bytesOpen.length && bytes.frozen879CommonBaseline.every(row => row.pass);
   const sizeRows = (operational.sizeBudgetRows as SizeRow[]).map(row => {
     const acceptedBy = row.status === 'regression' ? b11AcceptedTradeoff(row.id, freeze.candidate.sourceCommit) : null;
@@ -192,7 +195,7 @@ export function buildB11Report(input: { freeze: any; observation: any; operation
     gate('runtime-and-package-cost', runtimePass && bytesPass ? 'met' : 'not-met',
       [runtimePass ? null : 'runtime: a paired median exceeds both +50% and +5 ms',
         ...bytesOpen.map(row => `${row.id} +${row.delta} B over a maximum increase of ${row.maximumIncrease} B (paired local build)`),
-        ...(wasmPackedAccepted && bytes.pairedLocalBuild.some(row => row.id === 'wasmPacked' && !row.pass) ? [`(wasmPacked accepted: ${wasmPackedAccepted})`] : []),
+        ...bytes.pairedLocalBuild.filter(row => !row.pass && acceptedPackedRow(row.id)).map(row => `(${row.id} +${row.delta} B over ${row.maximumIncrease} B accepted: ${acceptedPackedRow(row.id)})`),
         ...bytes.frozen879CommonBaseline.filter(row => !row.pass).map(row => `${row.id} +${row.delta} B over the frozen evidence/879 zero-growth baseline`)]
         .filter(Boolean).join('; ') || 'every evidence/879 runtime and byte budget passes'),
     gate('size-regression-budget', sizeRows.some(row => row.status === 'regression' && !row.acceptedBy) ? 'not-met' : 'met',

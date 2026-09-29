@@ -101,6 +101,22 @@ test('a perfect synthetic observation still stays pending: protected is never ru
   assert.equal(passing.cost.byteBudgets.pairedLocalBuild.find(row => row.id === 'wasmCommonGzip').pass, true);
 });
 
+test('the evidence/879 Node and Wasm package overruns are waived only by the #143 ledger rows for this exact commit and platform', () => {
+  const observation = syntheticObservation();
+  const operational = syntheticOperational(true);
+  operational.sizes.baseline.packed = { core: 40554, node: 589697, wasm: 559573 };
+  operational.sizes.candidate.packed = { core: 41650, node: 629737, wasm: 871030 };
+  const freeze = commit => ({ ...syntheticFreeze(), candidate: { sourceCommit: commit, versionString: 'x', platform: 'darwin-arm64' } });
+  const accepted = buildB11Report({ freeze: freeze('1db8ff38b16e50c51229eb27025452952bf621e1'), observation, operational, parity: null });
+  const gateOf = report => report.families[0].gates.find(row => row.id === 'runtime-and-package-cost');
+  assert.equal(gateOf(accepted).status, 'met');
+  assert.match(gateOf(accepted).reason, /nodePacked \+40040 B over 32768 B accepted: beta11-npm-node-darwin-arm64-packed-detectors/);
+  assert.match(gateOf(accepted).reason, /wasmPacked \+311457 B over 32768 B accepted: beta11-npm-wasm-packed-pii-split-and-detectors/);
+  const other = buildB11Report({ freeze: freeze('2'.repeat(40)), observation, operational, parity: null });
+  assert.equal(gateOf(other).status, 'not-met');
+  assert.match(gateOf(other).reason, /nodePacked \+40040 B/);
+});
+
 test('a public-finding disagreement between the seam and the artifact fails closed', () => {
   const observation = syntheticObservation();
   const lane = observation.candidate.families[0].lanes.find(row => row.lane === 'node-addon' && row.selection === 'exact');

@@ -1,5 +1,8 @@
 # Evidence: redact-secret#860 families and the Beta.11 candidate at product main 1db8ff3
 
+> **Superseded** by [`../8f97f14/README.md`](../8f97f14/README.md): the Beta.11 candidate was re-bound to product main
+> `8f97f14` (PR #991 and PR #992). Family status and all 4,768 fixture outcomes are unchanged there. This file stays as history.
+
 **Result:** candidate mode (product `1db8ff3`, the frozen Beta.11 candidate) reads 88 stable of 110 families (documented
 63, empirical 25; 20 provisional, 2 pending). All 24 #860 families are documented-stable. Of the 86 older families, 64
 are stable. Published mode (`@redact-secret/core` 0.1.0-beta.10) reads 61 stable of 110 (documented 38, empirical 23;

@@ -1,5 +1,7 @@
 # Evidence: credential mixed-document, streaming and binding parity at product main 1127bf9 (#381)
 
+**Current measurement:** the re-run at [8f97f14](#re-run-at-the-re-bound-beta11-candidate-8f97f14) (0 divergences). The 1127bf9 result directly below and the 1db8ff3 re-run are history.
+
 **Result:** on 10 mixed documents carrying 83 credential targets from 39 families (15 #377 ledger families, 24 #860
 families), candidate `1127bf9` gives the same UTF-8 spans and the same sanitized bytes on all six surfaces (Node addon,
 Node Wasm, browser Wasm, Python, Rust, CLI) in LF and CRLF, and every incremental partition and every Node/Web byte
@@ -9,7 +11,32 @@ targets and 9 of 12 policy targets are redacted exactly; 2 must-redact and 2 pol
 filler. The same checks show the #860 detectors (PR #938) cost 5.6–14.9% processing time and 13.6 KB of gzip in the full
 WASM build. Nothing here is a support-status claim.
 
-## Re-run at the frozen Beta.11 candidate 1db8ff3
+## Re-run at the re-bound Beta.11 candidate 8f97f14
+
+Same frozen plan (commitment `021fb995…ec00`), harness at benchmarks `005b19b85368d24910da437f31db701d670a2b8d` (clean),
+product `8f97f14d97d73b76602e5396eea35d0a5a4f0eb3` (main after PR #991, the #980 scan-path performance backlog, and PR
+#992, the #990 streaming fixes). Components: core `467111e2…f74c`, node `fe90a7de…f623`, wasm `b6819bfd…e966`, wheel
+`d7075b71…2599`, CLI `d95e9877…f4f2` (full hashes in the report). Files:
+[`8f97f14d97d7/credential-mixed-parity-observation-v1.json`](8f97f14d97d7/credential-mixed-parity-observation-v1.json),
+[`8f97f14d97d7/credential-mixed-parity-report-v1.json`](8f97f14d97d7/credential-mixed-parity-report-v1.json).
+
+- **Parity:** 0 divergences on every surface. Cross-surface, partition and stream divergences are 0 on all six surfaces
+  (Node addon 10,478 checks, Node Wasm 10,518, browser Wasm, Python and Rust 3,646 each, CLI 80), and only the declared
+  token limit fails closed (91 partitions per surface, 182 Node/Web streams), with no target value emitted before it.
+- **Outcomes:** identical to 1db8ff3. The report's `surfaces`, `surfaceSummary`, `targets`, `collateral`,
+  `discrepancies` and `acceptance` sections are equal to the 1db8ff3 report once artifact hashes, the crate tree and
+  runtime versions are set aside. Must-redact 70 exact of 71, policy 11 exact of 12; the two remaining targets are the
+  same (`mixed-01-log/L4/new-relic-license-key` warn-only, redact-secret#936; `mixed-02-markdown/L11/cohere-api-key`
+  not reported by product policy, #932). No #990 layout (a `X-Authorization: Bearer` line, a lone `\r` line end, a
+  phone extension at a line end) occurs in the plan's documents, so no outcome was expected to move.
+- **Runtime at 8f97f14:** every processing and initialization row is within the 0.1.0-beta.8 budgets, and processing
+  ratios fall to 0.22–0.33 on the medium workloads and 0.22–0.80 on the small ones (run
+  [36553832221](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36553832221)). Size tradeoffs:
+  [`../8f97f14/README.md`](../8f97f14/README.md).
+
+The 1db8ff3 re-run below is superseded by this one and kept as history.
+
+## Re-run at the frozen Beta.11 candidate 1db8ff3 (superseded by 8f97f14)
 
 Same frozen plan (commitment `021fb995…ec00`), harness at benchmarks `3d66c984e239851f1999233142b42832f793ba8a` (clean),
 product `1db8ff38b16e50c51229eb27025452952bf621e1` (PR #958). Components: core `4681ad42…29a1`, node `f08aab67…b37b`,

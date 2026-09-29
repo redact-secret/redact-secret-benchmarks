@@ -126793,14 +126793,16 @@
       "note": "Resolved as authored-expectation-correct: redact-secret's detection matches this corpus's authored expected span(s) exactly. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus."
     },
     "8dc8bc97c33783bcb95b93c4a846cb2367e50b877abbe81f39667520c5772714": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "5b00e881-6329-42e0-9478-04ec3b899f82",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This differential occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: differential-beta9-published-rebaseline."
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published @redact-secret/core 0.1.0-beta.11 (benchmarks beta12/1013-evidence-ledger, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots), [109,206) as slack-app-level-token) matches this corpus's authored expected span(s) [109,206) on the canonical variant of beta8-211/slack-app-level-token-bolt-js-app-token (positive, must-redact/T2, target slack-app-level-token). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
     },
     "2ececcf4eede37d67cffa6c0b7a8e077fd34ef97d390b33d832bed60cba9c0aa": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "5b00e881-6329-42e0-9478-04ec3b899f82",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This mutation occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: operator=lexical.invalid-alphabet."
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
     },
     "ac52498c60a0cade7200ee1942383aa971c6afa7b6cff45c63318e25c6069005": {
       "status": "open",
@@ -127661,14 +127663,16 @@
       "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
     },
     "87dd253ff4f14d7158d65bbea7914b9334679ccbf52cad4aeacb5b1e8e1bc6d1": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "556a902e-b557-47d9-aa86-44b4fc4e6064",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This mutation occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: operator=lexical.prefix-change."
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
     },
     "eb5e7ba57dcfa77104c8cc28f8023f05866c7c4335513c98671af80f3b660dbe": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "556a902e-b557-47d9-aa86-44b4fc4e6064",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This mutation occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: operator=boundary.remove-delimiter."
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
     },
     "53230c6663e373dc67ec040e1fefd98809c82a929cd3386c0d5365be64ed79bf": {
       "status": "open",
@@ -165609,6 +165613,180 @@
       "status": "resolved",
       "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
       "note": "Resolved as authored-expectation-correct: redact-secret's silence (published @redact-secret/core 0.1.0-beta.11 (benchmarks beta12/1013-evidence-ledger, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) matches this corpus's authored must-not-flag expectation exactly (expected span(s): none) on the canonical variant of beta8-211/github-fine-grained-pat-revocation-fingerprint-log-encoded-value (control, must-not-flag/T2, target github-fine-grained-pat). The disagreement is fully explained by gitleaks flagging this input anyway ([65,129) as generic-token), from its own broader pattern matching a value this corpus does not assert as a github-fine-grained-pat secret here. Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "6d884369bcc81daa1105b586ee4c43739394a8f178c3e4c92843e238f9b8058b": {
+      "status": "resolved",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (prefix: xapp_ (underscore for the documented dash) vs the documented xapp-; no Slack source, placeholder or cited rule writes xapp_) is scoped to slack-app-level-token, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks beta12/1013-evidence-ledger, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no slack-app-level-token finding, so the twin's own assertion (no typed slack-app-level-token finding) holds. redact-secret reports [16,113) as generic-token instead — an independent family's own policy (generic-token masks a credential-named assignment; a shared detector types a sibling class), never a slack-app-level-token format claim. The twin method records this as coDetected, not as a twin failure. gitleaks reports no finding. Class: redact-secret-only/gitleaks/independent-policy-family-on-scoped-twin.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "cf0d0201da463a0f97678134cb677ab8e9e6ffdffceba3b5ad8c1ff64c448b85": {
+      "status": "resolved",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (prefix: xapp_ (underscore for the documented dash) vs the documented xapp-; no Slack source, placeholder or cited rule writes xapp_) is scoped to slack-app-level-token, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks beta12/1013-evidence-ledger, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no slack-app-level-token finding, so the twin's own assertion (no typed slack-app-level-token finding) holds. redact-secret reports [16,113) as generic-token instead — an independent family's own policy (generic-token masks a credential-named assignment; a shared detector types a sibling class), never a slack-app-level-token format claim. The twin method records this as coDetected, not as a twin failure. trufflehog reports no finding. Class: redact-secret-only/trufflehog/independent-policy-family-on-scoped-twin.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "b4abbb1fa1ea8c50290d1ebfb18eac9ce85a20ba5082f3e268a02e87090099b1": {
+      "status": "resolved",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (prefix: xap- (one letter of the documented xapp- dropped); not a Slack token prefix) is scoped to slack-app-level-token, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks beta12/1013-evidence-ledger, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no slack-app-level-token finding, so the twin's own assertion (no typed slack-app-level-token finding) holds. redact-secret reports [96,192) as generic-token instead — an independent family's own policy (generic-token masks a credential-named assignment; a shared detector types a sibling class), never a slack-app-level-token format claim. The twin method records this as coDetected, not as a twin failure. trufflehog reports no finding. Class: redact-secret-only/trufflehog/independent-policy-family-on-scoped-twin.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "6b214f2f2a4475bb693d15788f6f6fd89c923c1d1e4061910348fd4e51c85e9b": {
+      "status": "resolved",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (boundary: a letter glued directly before xapp-, so the prefix is no longer at a token boundary (the value itself is unchanged)) is scoped to slack-app-level-token, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks beta12/1013-evidence-ledger, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no slack-app-level-token finding, so the twin's own assertion (no typed slack-app-level-token finding) holds. redact-secret reports [40,138) as generic-token instead — an independent family's own policy (generic-token masks a credential-named assignment; a shared detector types a sibling class), never a slack-app-level-token format claim. The twin method records this as coDetected, not as a twin failure. gitleaks reports [41,138) as unmapped. Class: range-disagreement/gitleaks/independent-policy-family-on-scoped-twin.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "f381f7244392b13ac2b7fbf6079080e71eeb5d2761d7695538539be0df6d26bf": {
+      "status": "resolved",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (boundary: a letter glued directly before xapp-, so the prefix is no longer at a token boundary (the value itself is unchanged)) is scoped to slack-app-level-token, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks beta12/1013-evidence-ledger, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no slack-app-level-token finding, so the twin's own assertion (no typed slack-app-level-token finding) holds. redact-secret reports [40,138) as generic-token instead — an independent family's own policy (generic-token masks a credential-named assignment; a shared detector types a sibling class), never a slack-app-level-token format claim. The twin method records this as coDetected, not as a twin failure. trufflehog reports no finding. Class: redact-secret-only/trufflehog/independent-policy-family-on-scoped-twin.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "879e1d56f9896f85c6b9133388f710bd3c02356275356825964e9319393269b6": {
+      "status": "resolved",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published @redact-secret/core 0.1.0-beta.11 (benchmarks beta12/1013-evidence-ledger, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots), [74,171) as slack-app-level-token) matches this corpus's authored expected span(s) [74,171) on the canonical variant of beta8-211/slack-app-level-token-actions-socket-mode-env (positive, must-redact/T2, target slack-app-level-token). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "ed99bfd274c9327f884c3374b03ef1f03686afd7322186c1fcb18182f8e0ce88": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "92f10d4dbfaa4a8f46a31bcaefb74573f17a97cd1661e2dd4240d5838391a6ba": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "b0e550e88f17151b7e3942acef2e3453b2ab2ad1d36bb382bacc5d6c07811cef": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "507b375315fdf317b578e3883abc8dffe19b0da0f63e258d5164d0be7535619a": {
+      "status": "resolved",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published @redact-secret/core 0.1.0-beta.11 (benchmarks beta12/1013-evidence-ledger, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots), [41,138) as slack-app-level-token) matches this corpus's authored expected span(s) [41,138) on the canonical variant of beta8-211/slack-app-level-token-printenv-grep (positive, must-redact/T2, target slack-app-level-token). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "45e2f59920c8a986f73df437f6f1ab9a8b80924d9eadd5ce0a1a2ddbb443c9ed": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "1dc81a75e2e3334a7dab3f6206d1d69d1b95905f9ff600b98d5cf86e74fbae21": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "2dfa591cd92c6766a59ab2825df8c477f76d80077caafabd04003f57bdee31cc": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "1f3134ccdfd8f4e4b7fcce8e0639e9639d1ec0c6d08ec200c222b08b4a72b5d6": {
+      "status": "resolved",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published @redact-secret/core 0.1.0-beta.11 (benchmarks beta12/1013-evidence-ledger, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots), [49,146) as slack-app-level-token) matches this corpus's authored expected span(s) [49,146) on the canonical variant of beta8-211/slack-app-level-token-java-socket-mode-app (positive, must-redact/T2, target slack-app-level-token). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "49a145b7db7ca9ea1d6c65e4540ba97e8d2dc9805b1e29a1930b5c020caf1722": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "1799d9b6848633a4e406f4258b096c9f565d6024a216a675f265b6d7bec0d1c5": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "ea4b68d8a6eeec3ec8099560779a7b15d923b185193b4796a170aee9e3694f78": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "8add029a13309c888eed9adda2a372f1ba87ef028e46e5c121439408e720c35b": {
+      "status": "resolved",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published @redact-secret/core 0.1.0-beta.11 (benchmarks beta12/1013-evidence-ledger, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots), [39,136) as slack-app-level-token) matches this corpus's authored expected span(s) [39,136) on the canonical variant of beta8-211/slack-app-level-token-helm-values (positive, must-redact/T2, target slack-app-level-token). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "8a948db9e3b4b1c02ff09a60bce2ba6af18c15d96ed0c6b426615f3f28cddb53": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "029097d4d13879a86f668f43b8df6c0f7924f9d7d14c1c0102526bce99178be5": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "813a03258d472d43e267b1187b8ede5ff33b860165543c9e6f2b2e54575bb4ed": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "88aaa0ae74c28b02355f974424b93feba74cd5b8e032c030427bb9ec8abab909": {
+      "status": "resolved",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published @redact-secret/core 0.1.0-beta.11 (benchmarks beta12/1013-evidence-ledger, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots), [89,186) as slack-app-level-token) matches this corpus's authored expected span(s) [89,186) on the canonical variant of beta8-211/slack-app-level-token-socket-mode-debug (positive, must-redact/T2, target slack-app-level-token). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "a370057621a7f6d92bfe33351281c19adf9ca4116d67712c0703cd848f7d191b": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "de69bf42c9b91ebc6c41ff15270ee2b606cf7a18287f670d9b3bf08d3400adbe": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "777a995cb2fde80f7e20637dd9e1c1d3933a1e0527f02713504eb6eb5bba4676": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "f20b2ec6d467163000b01ab3ff8f24e679fd1ece83d3b3432f3fe41a70b62745": {
+      "status": "resolved",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published @redact-secret/core 0.1.0-beta.11 (benchmarks beta12/1013-evidence-ledger, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots), [24,121) as slack-app-level-token) matches this corpus's authored expected span(s) [24,121) on the canonical variant of beta8-211/slack-app-level-token-fish-set (positive, must-redact/T2, target slack-app-level-token). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "fc562876be7fc1e8c675de77b084c0226435a5e9caa9032dd6b2dbaf5186360f": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `lexical.invalid-alphabet` replaces the last character of the secret value with a character outside the token's alphabet, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.invalid-alphabet.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "c591e77d31f3e0a7031823f50720e189a04b7050071bcbbfc8d2514fea31fae7": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `lexical.prefix-change` swaps the first character of the secret value for a different letter, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=lexical.prefix-change.",
+      "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
+    },
+    "84e3fe071a46b06f6945b03220b3f2226b84f814e94e8971223241c87b32fd37": {
+      "status": "not-assertable",
+      "firstSeenRun": "triage-1013-beta11-0ff9363-2026-09-29",
+      "note": "Mutation review-required by construction: operator `boundary.remove-delimiter` removes one internal delimiter (., -, or _) from the secret value, which breaks the fixture's lexical contract. Per the review-required strategy (benchmarks/engine/model.ts), no negative truth is inferable once a contract is broken — a different family or an independent contextual credential may still legitimately apply, and scanner silence or a match proves nothing either way. Ground truth requires a per-fixture authored decision that has not been made. Class: operator=boundary.remove-delimiter.",
       "resolvedRun": "triage-1013-beta11-0ff9363-2026-09-29"
     }
   }

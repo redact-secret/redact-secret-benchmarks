@@ -134,6 +134,18 @@ second time. The adapter-attributable quantities are instead:
 The last two are deterministic, so they catch double scanning with no noise
 at all.
 
+The dimension reads `redact-secret-adapters/overhead-v1` and `-v2` outputs
+alike (#472). v2 only adds fields: per-mode single-event latency and
+allocation, `derived.adapterOverheadRatio`, and, under the harness's
+`--baseline`, a per-result `baseline` and `change` against the previous
+adapter release measured in the same process. Either version yields the same
+three metrics. The added fields are not budgeted yet; the proposed rules for
+them are in
+[`2026-09-29-judge-adapter-traversal-on-same-session-change.md`](../decisions/2026-09-29-judge-adapter-traversal-on-same-session-change.md).
+The v2 harnesses also add workloads, which changes the workload digest, so a
+v2 candidate is `invalid-measurement` against a v1-digest baseline until the
+adapter baseline is promoted at the new digest.
+
 ## How thresholds are derived
 
 `deriveTriggers` computes every trigger from the current baseline snapshot and

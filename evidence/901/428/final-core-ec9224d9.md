@@ -1,5 +1,7 @@
 # #428 final public-gate record: core `ec9224d9`
 
+> **Superseded** for the release decision by [`final-core-8b6a5fde.md`](final-core-8b6a5fde.md): redact-secret#996 addressed the #902 Wasm regression recorded here, and the Beta.11 candidate moved to core `8b6a5fde`. This record stays as intermediate history.
+
 **All six PII families stay `pending`. Detection outcomes are identical to `8f97f14d`. `profile-cost` stays `not-met`, and it is worse than at `8f97f14d` on the Wasm surfaces: 183 of 640 cells regress, against 162.** Whole-input PII cost fell 7 to 20 times on every surface (#902), but no whole-input cell reached its budget, and 23 cells that were within budget at `8f97f14d` now regress. They are Wasm incremental time, Node-Wasm peak and retained RSS, and Chromium initialize. Under the maintainer's rule that any regression is fixed, this record reports them and does not accept them. The protected partition is unspent and not eligible.
 
 This record re-binds the #428 evidence to the new Beta.11 candidate. It supersedes [`final-core-8f97f14d.md`](final-core-8f97f14d.md) and [`package-budget-acceptance-core-8f97f14d.md`](package-budget-acceptance-core-8f97f14d.md) for the release decision, and edits no earlier evidence beyond a superseded note at their top. It makes no support claim. PII numerators and denominators are the only counts in it. Mode: candidate build (isolated tarballs from the commit, and qualified product run 36570726765 for the CI rows and the official workflow), not the published package.

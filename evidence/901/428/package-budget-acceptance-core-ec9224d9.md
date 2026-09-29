@@ -1,5 +1,7 @@
 # #428 / #448: accepted PII package-budget overrun at core `ec9224d9`
 
+> **Superseded** for the release decision by [`package-budget-acceptance-core-8b6a5fde.md`](package-budget-acceptance-core-8b6a5fde.md): the Beta.11 candidate moved to core `8b6a5fde` (redact-secret#996). This record stays as intermediate history.
+
 This record carries the beta.11 acceptance of the PII package-size overrun from [`package-budget-acceptance-core-8f97f14d.md`](package-budget-acceptance-core-8f97f14d.md) to the re-bound candidate `ec9224d9743066fe73d6e61e9843ef52bd853833` (product `main` after redact-secret#994), with the sizes measured at this commit. It changes no measurement, no budget and no frozen expectation, and it makes no support claim. Mode: candidate build (isolated tarballs from the commit), not the published package.
 
 ## Decision

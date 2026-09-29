@@ -12,7 +12,8 @@ import {
 import { piiBenignCollisionEvidence, type PiiBenignCollisionEvidence } from './benign-collision-evidence.ts';
 import type { PiiAccountingRow } from './accounting.ts';
 import type { PiiAuthority, PiiContract } from './types.ts';
-import { PII_SUPPORT_REGISTRY_SOURCE, piiSupportRegistryProjection, piiSupportSemanticProblem } from './support-semantics.ts';
+import { PII_SUPPORT_REGISTRY_SOURCE, piiProtectedRouteProblem, piiProtectedRouteReasonCodes, piiReviewedProtectedRoute, piiSupportRegistryProjection,
+  piiSupportSemanticProblem, type PiiProtectedRoute } from './support-semantics.ts';
 import { validatePiiProductBinding, type PiiTrustedProductBinding } from './product-binding.ts';
 
 export const PII_ACTIVATION_CONTRACT = Object.freeze({
@@ -43,6 +44,8 @@ export interface PiiSupportBuildOptions {
   populations?: readonly PopulationInput[];
   comparisons?: readonly PopulationComparisonInput[];
   product?: PiiTrustedProductBinding;
+  /** A reviewed v2 protected-disposition entry, already re-derived from committed evidence by `bindPiiProtectedSupport`. */
+  protectedRoute?: PiiProtectedRoute;
 }
 export interface PiiSupportMatrixV2 {
   schemaVersion: 2; reportType: 'pii-support-matrix'; supportClaims: false; domain: 'pii'; evaluationProfile: 'pii-v1';
@@ -62,6 +65,7 @@ export interface PiiSupportMatrixV2 {
       baselineFailed: number; candidateFailed: number; failedDelta: number; regressed: boolean }>;
   }>;
   distribution: Record<PiiSupportStatus, number>;
+  protectedRoute?: PiiProtectedRoute;
   families: Array<PiiSupportFamily & {
     activation: { state: 'not-measured' | 'available' | 'unavailable' | 'explicitly-unsupported'; selector: string; activationIdentity: string | null; productArtifactCommitment: string | null };
     status: { state: PiiSupportStatus; profile: { id: 'pii-v1'; version: 1 }; reasonCodes: string[] };
@@ -152,6 +156,14 @@ function assemble(options: PiiSupportBuildOptions): PiiSupportMatrixV2 {
   const registry = validatePiiSupportRegistry(options.registry ?? piiSupportRegistry), boundPopulations = options.populations !== undefined,
     inputs = options.populations ?? defaultPopulations();
   const product = options.product ? validatePiiProductBinding(options.product, registry.families.map(row => row.family)) : null;
+  const route = options.protectedRoute ? structuredClone(options.protectedRoute) : null;
+  if (route) {
+    const reviewed = piiReviewedProtectedRoute(route.id);
+    if (!reviewed || JSON.stringify(canonical(reviewed)) !== JSON.stringify(canonical(route))) throw new Error('PII protected route is not a reviewed binding');
+    const problem = piiProtectedRouteProblem(route, registry.families);
+    if (problem) throw new Error(problem);
+    if (product) throw new Error('PII v1 product record and v2 protected route cannot bind one matrix');
+  }
   if (inputs.length !== 2 || new Set(inputs.map(row => row.report.population)).size !== 2) throw new Error('PII support requires both population reports');
   const reports = inputs.map(input => validatePiiPopulationReport(input.report, input.contract ?? piiPopulationContract,
     input.evidence ?? piiBenignCollisionEvidence, input.validation ?? {}, input.rows));
@@ -199,8 +211,10 @@ function assemble(options: PiiSupportBuildOptions): PiiSupportMatrixV2 {
     else if (qualification.status !== 'qualified') reasonCodes.push(...qualification.reasonCodes);
     const qualified = available && diagnosticStatus === 'measured' && stressStatus === 'measured' && qualification?.status === 'qualified' &&
       comparisons.get('diagnostic-balanced') === 'no-regression' && comparisons.get('benign-heavy-stress') === 'no-regression';
-    return { ...family, activation: activationRow, status: { state: qualified ? 'provisional' as const : 'pending' as const,
-      profile: { id: 'pii-v1' as const, version: 1 as const }, reasonCodes: [...new Set(reasonCodes)].sort() }, populationEvidence,
+    const routed = route?.families.find(row => row.family === family.family) ?? null;
+    const state: 'pending' | 'provisional' = routed ? routed.status : qualified ? 'provisional' : 'pending';
+    return { ...family, activation: activationRow, status: { state,
+      profile: { id: 'pii-v1' as const, version: 1 as const }, reasonCodes: routed ? piiProtectedRouteReasonCodes(routed) : [...new Set(reasonCodes)].sort() }, populationEvidence,
       qualificationArtifactCommitment: qualification?.artifactCommitment ?? null };
   });
   const distribution = Object.fromEntries(['pending', 'provisional', 'stable', 'unsupported'].map(status =>
@@ -210,7 +224,7 @@ function assemble(options: PiiSupportBuildOptions): PiiSupportMatrixV2 {
     registryCommitment: registry.contentCommitment, activationContract: { ...PII_ACTIVATION_CONTRACT, productArtifact: product ? 'trusted' : 'not-measured',
       productSourceCommit: product?.sourceCommit ?? null, productArtifactCommitment: product?.artifactCommitment ?? null,
       candidateEvidenceCommitment: product?.candidateEvidenceCommitment ?? null, activationArtifactCommitment: product?.activationArtifactCommitment ?? null },
-    populationReports, populationComparisons, distribution, families, artifactCommitment: '0'.repeat(64) };
+    populationReports, populationComparisons, distribution, ...(route ? { protectedRoute: route } : {}), families, artifactCommitment: '0'.repeat(64) };
   matrix.artifactCommitment = piiSupportMatrixV2Commitment(matrix);
   return matrix;
 }
@@ -243,7 +257,11 @@ export function validatePiiSupportMatrixV2(value: unknown, bindings?: PiiSupport
   validatePiiSupportRegistry(registry);
   if (bindings && JSON.stringify(matrix) !== JSON.stringify(assemble(bindings))) throw new Error('PII support-matrix v2 does not reconcile with bound inputs');
   if (!bindings) {
-    const canonicalEmpty = assemble({ registry });
+    // A reviewed protected route is part of the canonical projection; an unknown one is refused before comparison.
+    const routeValue = (matrix as { protectedRoute?: unknown }).protectedRoute;
+    const reviewedRoute = routeValue === undefined ? undefined : piiReviewedProtectedRoute((routeValue as { id?: unknown })?.id);
+    if (reviewedRoute === null) throw new Error('PII protected route is not a reviewed binding');
+    const canonicalEmpty = assemble({ registry, ...(reviewedRoute ? { protectedRoute: reviewedRoute } : {}) });
     const withoutComparisons = (candidate: PiiSupportMatrixV2) => {
       const { populationComparisons: _comparisons, artifactCommitment: _commitment, ...rest } = candidate; return rest;
     };

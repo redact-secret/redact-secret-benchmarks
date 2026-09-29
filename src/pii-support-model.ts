@@ -1,6 +1,6 @@
 import Ajv from 'ajv';
 import schema from '../schemas/pii-support-matrix-v2.json';
-import { piiSupportRegistryProjection, piiSupportSemanticProblem } from '../benchmarks/evaluation/domains/pii/support-semantics.ts';
+import { piiSupportRegistryProjection, piiSupportSemanticProblem, type PiiProtectedRoute } from '../benchmarks/evaluation/domains/pii/support-semantics.ts';
 
 export type PiiSupportStatus = 'pending' | 'provisional' | 'stable' | 'unsupported';
 export type PiiAuthoritySupport = 'lexical' | 'validation' | 'allocation' | 'reserved-control' | 'sensitivity';
@@ -16,6 +16,8 @@ export interface PiiSupportMatrixFile {
     benignFalseAlarmDeltas: Array<{ family: string; scope: string; contextClass: string; evidenceClass: string; delta: number | null; regressed: boolean }>;
     diagnosticDeltas: Array<{ axis: string; delta: number | null; baselineFailed: number; candidateFailed: number; failedDelta: number; regressed: boolean }> }>;
   distribution: Record<PiiSupportStatus, number>;
+  /** Present when the reviewed v2 protected disposition (benchmarks #428) decides the family statuses. */
+  protectedRoute?: PiiProtectedRoute;
   families: Array<{ family: string; displayName: string; identityDomain: string; familyContractVersion: number; scope: string; jurisdiction: string | null;
     qualificationProfile: { id: 'pii-v1'; version: 1 }; authority: PiiAuthority[]; contextObligation: string; validatorApplicable: boolean;
     activation: { state: string; selector: string; activationIdentity: string | null; productArtifactCommitment: string | null };

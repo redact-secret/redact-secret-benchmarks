@@ -51,7 +51,26 @@ Plan [`qualification/pii-profile-cost-v2.json`](../../../qualification/pii-profi
 
 Regressing cells by surface: rust-native 32, node-native 32, node-wasm 31, chromium-wasm 41, python 18, cli 8. By metric: whole-input 80, incremental 65, initialize 13, memory 4. Six cells changed verdict in each direction (three initialize cells in Chromium and three peak-RSS cells now regress; six others no longer do), which is run-to-run spread.
 
-The activation-cost cells compare PII on against PII off in the same artifact. The PII-on processing time itself did not grow. Geometric mean of PII-on medians, `8f97f14d` over `1db8ff38`, per surface: whole input 0.94 (rust), 0.96 (node native), 0.98 (node Wasm), 1.02 (Chromium), 0.91 (Python), 0.40 (CLI); incremental 0.47 to 0.66. The activation ratios grew because PII-off got faster (#980 cut PII-off whole-input time by about 40 to 75 percent), so the largest ratio is now 173.9 (`node-native/common/beta10-full/validator-heavy` whole input, PII on 338.8 ms against PII off 1.95 ms), up from 147.5. The only whole-input cell where PII-on is more than 5 percent slower is `node-native/common/us-ssn-exact/validator-heavy` (69.9 to 79.1 ms). The same workload is faster on every other surface. Initialize medians rose by the same amount with PII on and off (node native +11 percent, rust +0.02 ms), so that change is not PII activation cost.
+The activation-cost cells compare PII on against PII off in the same artifact. The PII-on processing time itself did not grow. Geometric mean of PII-on medians, `8f97f14d` over `1db8ff38`, per surface: whole input 0.94 (rust), 0.96 (node native), 0.98 (node Wasm), 1.02 (Chromium), 0.91 (Python), 0.40 (CLI); incremental 0.47 to 0.66. The activation ratios grew because PII-off got faster (#980 cut PII-off whole-input time by about 40 to 75 percent), so the largest ratio is now 173.9 (`node-native/common/beta10-full/validator-heavy` whole input, PII on 338.8 ms against PII off 1.95 ms), up from 147.5. The only whole-input cell where PII-on is more than 5 percent slower is `node-native/common/us-ssn-exact/validator-heavy` (69.9 to 79.1 ms). That change comes from the runner, not the code (see the follow-up below). Initialize medians rose by the same amount with PII on and off (node native +11 percent, rust +0.02 ms), so that change is not PII activation cost.
+
+### Follow-up: the `node-native/common/us-ssn-exact/validator-heavy` whole-input cell is runner noise
+
+The 69.9 to 79.1 ms change compares two official candidate runs on different runner CPUs: `1db8ff38` ran on an AMD EPYC 7763 (run 36518206043), `8f97f14d` on an AMD EPYC 9V74 (run 36557492406). Both runs record the CPU model. The official A/A runs already contain like-for-like data for this cell (node addon, `common`, `pii:family:us:ssn`, `validator-heavy`, workload `58dccc01…05ad`, PII-on whole-input median, 12 fresh-process samples per side):
+
+| Run | Commit | CPU | Median (ms) |
+| --- | --- | --- | ---: |
+| A/A 36514261465, 36514268541, 36515595459, 36515624595 | `1db8ff38` | EPYC 7763 | 69.82 to 70.00 |
+| candidate 36518206043 (PII on) | `1db8ff38` | EPYC 7763 | 69.96 |
+| A/A 36554838004 | `8f97f14d` | EPYC 7763 | 69.41 / 69.44 |
+| A/A 36554846120 | `8f97f14d` | EPYC 9V74 | 61.39 / 61.45 |
+| A/A 36554853290 | `8f97f14d` | EPYC 9V74 | 79.18 / 79.17 |
+| candidate 36557492406 (PII on) | `8f97f14d` | EPYC 9V74 | 79.15 |
+
+- **Same CPU (EPYC 7763).** `8f97f14d` over `1db8ff38` is 69.43 / 69.91 ms = **0.993**, bootstrap 95% interval [0.9925, 0.9937] (24 against 108 samples).
+- **A/A spread.** Within-run A/A ratios are 0.9992 to 1.0010. Across hosts, the same `8f97f14d` build reads 61.4 ms and 79.2 ms on two EPYC 9V74 runners. The 79.1 ms candidate figure is that slow-host level, not a code change. The `us-jurisdiction` cell on the same hosts moves the same way (347 ms on the 7763; 263 and 339 ms on the two 9V74 runners).
+- **Local paired check** (macOS arm64, not the official environment): the same adapter (`scripts/pii-profile-cost/node-sample.mjs`), workload and activation; locally built `1db8ff38` and `8f97f14d` addons; ABBA-interleaved fresh processes, 80 samples per side. Results: 58.66 → 58.34 ms, ratio 0.995 [0.993, 0.997]. The A/A ratios were 1.000 [0.998, 1.002] (new against new) and 1.000 [0.999, 1.001] (old against old). `pii:us` on the same workload: 0.997 [0.993, 1.002]. PII off: 0.81.
+
+Verdict: no regression; the cell is 0.7% faster on like hardware. No product change is needed.
 
 The open size rows and the activation-cost regressions are the same maintainer decision as at `1db8ff38`, which this record does not make.
 

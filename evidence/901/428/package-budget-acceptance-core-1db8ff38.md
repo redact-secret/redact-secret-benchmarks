@@ -1,5 +1,7 @@
 # #428 / #448: accepted PII package-budget overrun at core `1db8ff38`
 
+> **Superseded** for the release decision by [`final-core-8f97f14d.md`](final-core-8f97f14d.md): the Beta.11 candidate moved to core `8f97f14d` (redact-secret #991 and #992). This record stays as history.
+
 This record accepts, for beta.11 only, the PII package-size overrun that [`final-core-1db8ff38.md`](final-core-1db8ff38.md) reported as `not-met`. It records a maintainer decision. It changes no measurement, no budget and no frozen expectation, and it makes no support claim. Mode: candidate build (isolated tarballs from the commit), not the published package.
 
 ## Approving decision (verbatim)

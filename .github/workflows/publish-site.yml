@@ -304,6 +304,10 @@ jobs:
           fi
           npm run eval:matrix
           npm run eval:publish:matrix
+          # The Providers roadmap (#478): each family's stage, blocker and
+          # research date, joining the provider dossiers with this matrix. Every
+          # stage is derived, so no status is hand-written on the site.
+          npm run dossiers:publish -- --require-matrix
           # Publish the strict domain descriptor only after both referenced
           # credential artifacts pass their existing validators. This v1 index
           # remains byte-compatible for existing credential consumers.

@@ -2219,6 +2219,125 @@
           "bound": "The example is an ascending-digit placeholder; the contract freezes 40 and no fixture asserts silence on a 32-hex value."
         }
       ]
+    },
+    {
+      "family": "github-fine-grained-pat",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "GitHub documents only the github_pat_ prefix (docs 'GitHub's token formats'); no GitHub page states the 22 + '_' + 59 body. The grammar is corroborated by three GitHub-owned redaction and DLP rules (which redact, never generate or validate), one full-length value in GitHub's own REST 'Revoke a list of credentials' example, two pinned peer rules (osv-scalibr, trivy) and four independent validators. A GitHub product manager endorsed the exact regex in community discussion 36441 (2022-10-24); whether that staff reply (R3) or the GitHub-owned code (R1/R9) is a T1 grammar statement is maintainer ruling Q-GH (redact-secret#1013), pending, so the family stays T2. No checksum, fixed '11' lead or GHES parity is claimed, and peer rules that admit other widths (trufflehog 36-255, CredSweeper 80-255, \\w{82}) are recorded as supersets. No provider-issued token has been measured.",
+      "supportedContexts": [
+        "bare github_pat_ value anywhere on a line (the prefix is the marker)",
+        ".env / shell export / CI or compose environment assignment (GH_TOKEN, GITHUB_PAT, RENOVATE_TOKEN)",
+        "Authorization: Bearer header and an octokit debug log 'token ' header value",
+        "git remote URL userinfo and git credential fill output",
+        "JSON (composer auth.json) and Terraform provider token string",
+        "gh auth login --with-token stdin",
+        "values with and without a leading '11' in segment 1 (neither is asserted)"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "provider-owned-code",
+          "owner": "github",
+          "reference": "https://github.com/github/CopilotForXcode/blob/258d4577dcf8fba0e9131b514dbe45b5dbb8906c/Tool/Sources/TelemetryService/TelemetryCleaner.swift#L65",
+          "observedAt": "2026-09-29",
+          "supports": "github/CopilotForXcode TelemetryCleaner (file first committed 2025-02-12, 'Release 0.30.0'): redactor regex github_pat_[a-zA-Z0-9]{22}_[a-zA-Z0-9]{59}; redacts, does not generate or validate"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "github",
+          "reference": "https://github.com/github/gh-aw-firewall/blob/8f9b21bf756e3a9a46819dc29118b92e96c1b7a8/src/dlp.ts#L64-L65",
+          "observedAt": "2026-09-29",
+          "supports": "github/gh-aw-firewall DLP rule (2026-03-13): the same 22 + '_' + 59 alphanumeric regex"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "github",
+          "reference": "https://github.com/github/gh-aw-mcpg/blob/4576c3e06752aae7d50502883db294b468844dc5/internal/sanitize/sanitize.go#L44",
+          "observedAt": "2026-09-29",
+          "supports": "github/gh-aw-mcpg sanitizer (2026-06-13): the same 22 + '_' + 59 alphanumeric regex"
+        },
+        {
+          "class": "provider-example",
+          "owner": "github",
+          "reference": "https://github.com/github/docs/blob/e4859a83ac13c5715b723b3d17e273beba5c4572/src/rest/data/fpt-2026-03-10/credentials.json#L29",
+          "observedAt": "2026-09-29",
+          "supports": "GitHub REST 'Revoke a list of credentials' example (file 2026-03-18; endpoint GA 2025-04-29): one full-length fine-grained PAT, 82 characters after the prefix, '_' at body offset 22, segments 22 and 59, alphanumeric only, starting with two letters (not '11'); value not reproduced"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "google",
+          "reference": "https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/github/pat_finegrained_detector.go#L24-L26",
+          "observedAt": "2026-09-29",
+          "supports": "veles fine-grained PAT detector (2025-09-18): github_pat_[A-Za-z0-9]{22}_[A-Za-z0-9]{59} (its comment's '92 bytes' is an off-by-one for 93)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "aquasecurity",
+          "reference": "https://github.com/aquasecurity/trivy/blob/3a1b311e63a1b64ab3221bf52683581b77187198/pkg/fanal/secret/builtin-rules.go#L171",
+          "observedAt": "2026-09-29",
+          "supports": "trivy builtin rule (2023-12-07): the same 22 + '_' + 59 alphanumeric regex"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "aws",
+          "reference": "https://github.com/aws/eks-anywhere/blob/8758183b5623691a8d565521241d53ac25a6d676/pkg/git/providers/github/github.go#L23",
+          "observedAt": "2026-09-29",
+          "supports": "eks-anywhere GitHub provider (2023-05-04; enforced at L120-L129): rejects a token that does not match; the fine-grained branch is anchored 22 + '_' + 59 alphanumeric"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "coderamp-labs",
+          "reference": "https://github.com/coderamp-labs/gitingest/blob/4e259a02fe72115bee538271622f1234a81c8e1a/src/gitingest/utils/git_utils.py#L26-L29",
+          "observedAt": "2026-09-29",
+          "supports": "gitingest token validator (2025-06-30; fullmatch at L395): '22 alphanumerics + _ + 59 alphanumerics'"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "slint-ui",
+          "reference": "https://github.com/slint-ui/slint/blob/d1371e535a4197afa36efcb95aa155c372af0175/tools/slintpad/src/github.ts#L26",
+          "observedAt": "2026-09-29",
+          "supports": "slintpad GitHub token validator (2023-03-29): anchored 22 + '_' + 59 alphanumeric"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "electron",
+          "reference": "https://github.com/electron/fiddle/blob/a63225b53664fd750828c29aa35de4b4d0eb0b28/src/constants.ts#L11-L15",
+          "observedAt": "2026-09-29",
+          "supports": "Electron Fiddle sign-in validation (2026-06-03): anchored 22 + '_' + 59 alphanumeric"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/github-fine-grained-personal-access-token.md",
+          "observedAt": "2026-09-29",
+          "supports": "redact-secret#1013 frozen research (2026-09-29): 9 full-shape references from 6 owners in 3 non-summary classes; staff endorsement (discussion 36441) held for ruling Q-GH"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Peer rules admit other widths or '_' anywhere: trufflehog v2 github_pat_ + [a-zA-Z0-9_]{36,255}, CredSweeper 80-255, gitleaks/noseyparker/secretlint \\w{82}.",
+          "status": "bounded",
+          "bound": "Supersets of the contract. The benchmark claims only 22 + '_' + 59 alphanumeric; no twin mutates width and no fixture asserts silence on another width or on '_' elsewhere in the body."
+        },
+        {
+          "statement": "A GitHub-owned skill file (github/awesome-copilot secret-patterns.md, community-authored) gives github_pat_ + 82 alphanumerics with no '_' separator.",
+          "status": "settled",
+          "bound": "GitHub's own REST example value has '_' at body offset 22 between segments of 22 and 59, and GitHub-owned redaction code matches 22 + '_' + 59; an 82-alphanumeric body without the separator cannot match the provider example. The contract keeps the separator.",
+          "settledBy": "https://github.com/github/docs/blob/e4859a83ac13c5715b723b3d17e273beba5c4572/src/rest/data/fpt-2026-03-10/credentials.json#L29"
+        },
+        {
+          "statement": "The regex a GitHub product manager endorsed in 2022 uses a character class that literally also admits '-'.",
+          "status": "settled",
+          "bound": "GitHub-owned code matches [a-zA-Z0-9] in both segments and the provider example is alphanumeric only; the contract body alphabet is [A-Za-z0-9].",
+          "settledBy": "https://github.com/github/CopilotForXcode/blob/258d4577dcf8fba0e9131b514dbe45b5dbb8906c/Tool/Sources/TelemetryService/TelemetryCleaner.swift#L65"
+        },
+        {
+          "statement": "A third-party README claims a fixed leading '11' and a body checksum.",
+          "status": "bounded",
+          "bound": "No provider source states either, GitHub's REST example starts with two letters, and the 2022 staff reply calls the token 'purely a high-entropy string'. The contract claims neither: positives are authored with and without '11', and no twin asserts a checksum."
+        }
+      ]
     }
   ]
 }

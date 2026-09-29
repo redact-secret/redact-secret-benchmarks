@@ -67,22 +67,41 @@ Rerun from the same candidate run; every record stays fixed and verified. Per-re
 
 ## Performance at the pin
 
-`performance-evaluation.yml` run [36553832221](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36553832221)
-was dispatched on this branch against candidate `8f97f14` and paired with baseline 0.1.0-beta.8 (`3144bb3`). Latency
-(10 rows), initialization (10) and memory (16) are all within budget, and the RC acceptance criteria all pass. Median
-processing ratios against beta.8 fall from about 0.79 at `1db8ff3` to 0.24–0.27 on the medium workloads, and from
-0.54–1.07 to 0.22–0.80 on the small ones. The rust-core initialization ratio reads 2.85–3.17, against
-0.70–0.73 before, on a median under 0.1 ms. That is below the trigger's 2 ms paired floor, so it is within budget, and the
-job's absolute p95 reads 0.060–0.062 ms. The workflow flagged 3 size rows, which are the accepted Beta.11 tradeoffs
-carried to this candidate. The re-evaluation with the ledger rows is ACCEPTED. Reports:
-[`../8f97f14-verified/`](../8f97f14-verified/).
+`performance-evaluation.yml` run [36557682258](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36557682258) is the evaluation of record. It was dispatched on this
+branch at `c61df33`, which carries the accepted rows below, against candidate `8f97f14` and paired with baseline
+0.1.0-beta.8 (`3144bb3`). The workflow concludes **success, ACCEPTED**:
+
+- Latency (10 rows), initialization (10) and memory (16) are all within budget, and the RC acceptance criteria all pass.
+- The 3 flagged size rows read as accepted tradeoffs.
+- Median processing ratios against beta.8 fall from about 0.79 at `1db8ff3` to 0.24–0.27 on the medium workloads, and
+  from 0.54–1.07 to 0.22–0.77 on the small ones.
+- The rust-core initialization ratio reads 1.71–2.42 on a median under 0.1 ms. That is below the trigger's 2 ms paired
+  floor, so it is within budget.
+
+Reports: [`../8f97f14-verified/`](../8f97f14-verified/).
+
+Earlier runs of the same candidate, kept for the record:
+
+- [36553832221](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36553832221), before acceptance. It was dispatched at `005b19b`, before the accepted rows existed.
+  Latency, initialization and memory were within budget, and it concluded failure on the 3 size rows alone. Its
+  `wasm-sizes.json` and `quickstart-bundle.json` are the measurements the ledger rows cite. They are byte-for-byte the
+  sizes 36557682258 measured.
+- [36555971146](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36555971146), a noise breach. At `c61df33` it concluded failure on one row,
+  `initialization/browser-wasm/scale-logs-small-whole/initialization-ratio`, at 1.277 against 1.25 allowed.
+- Paired `1db8ff3 → 8f97f14` runs and A/A runs, `rounds=20`, which measured that row head to head:
+  - paired: [36556597811](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36556597811), [36556606329](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36556606329), [36556615116](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36556615116);
+  - A/A: [36556623621](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36556623621), [36556627045](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36556627045).
+
+  8f97f14 is +1.0%, +2.7% and +1.3% on the row (95% intervals about ±13%), and 0.0% to +1.8% on the medium row. The
+  A/A runs move the row −1.3% and +11.0%. That is noise, not a shift caused by the +2.8% larger WASM, and it was not
+  recorded as an accepted tradeoff: [`../8f97f14-verified/browser-init-paired.md`](../8f97f14-verified/browser-init-paired.md).
 
 Rows recorded in `benchmarks/accepted-regressions.json` for candidate `8f97f14`. They carry the 2026-09-28 maintainer
 decisions and the later decision that #991 and #992 ship with the #983 increment accepted:
 
 | Trigger | Baseline (0.1.0-beta.8) | At 1db8ff3 | At 8f97f14 | Source |
 | --- | ---: | ---: | ---: | --- |
-| `size/wasm/full/gzip` | 137,639 | 179,388 | 184,422 (+2.8%) | run 36553832221 `wasm-sizes.json` |
+| `size/wasm/full/gzip` | 137,639 | 179,388 | 184,422 (+2.8%) | run 36553832221 `wasm-sizes.json` (36557682258 identical) |
 | `size/wasm/common/gzip` | 100,058 | 122,544 | 125,295 (+2.2%) | run 36553832221 |
 | `size/browser-bundle/quickstart/gzip` | 144,501 | 186,761 | 191,801 (+2.7%) | run 36553832221 `quickstart-bundle.json` |
 | `size/npm/wasm/packed` | 254,413 | 871,030 | 887,249 (+1.9%) | candidate tarball, [`../8f97f14-verified/npm-packed-sizes.json`](../8f97f14-verified/npm-packed-sizes.json) |
@@ -117,6 +136,7 @@ npm run eval:classify -- --candidate-package=<dir>/artifacts/redact-secret-core-
   --candidate-source-commit=8f97f14d97d73b76602e5396eea35d0a5a4f0eb3 --output=<dir>/support-status-candidate.json
 npm run eval:classify -- --output=<dir>/support-status-published.json
 gh workflow run performance-evaluation.yml --ref beta11/rebind-8f97f14-credentials -f candidate_revision=8f97f14d97d73b76602e5396eea35d0a5a4f0eb3
+# paired/A-A check of one row: add -f baseline_revision=<commit> -f rounds=20
 node --import tsx scripts/regression-budgets.mjs evaluate --summary <run>/summary.json --paired <run>/paired.json \
   --wasm-sizes <run>/wasm-sizes.json --quickstart-bundle <run>/quickstart-bundle.json \
   --source-commit 8f97f14d97d73b76602e5396eea35d0a5a4f0eb3 --json-out ../8f97f14-verified/regression-budgets.json \

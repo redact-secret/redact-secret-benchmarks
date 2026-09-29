@@ -30,8 +30,8 @@ product `8f97f14d97d73b76602e5396eea35d0a5a4f0eb3` (main after PR #991, the #980
   not reported by product policy, #932). No #990 layout (a `X-Authorization: Bearer` line, a lone `\r` line end, a
   phone extension at a line end) occurs in the plan's documents, so no outcome was expected to move.
 - **Runtime at 8f97f14:** every processing and initialization row is within the 0.1.0-beta.8 budgets, and processing
-  ratios fall to 0.22–0.33 on the medium workloads and 0.22–0.80 on the small ones (run
-  [36553832221](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36553832221)). Size tradeoffs:
+  ratios fall to 0.22–0.33 on the medium workloads and 0.22–0.77 on the small ones (run
+  [36557682258](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36557682258), ACCEPTED). Size tradeoffs:
   [`../8f97f14/README.md`](../8f97f14/README.md).
 
 The 1db8ff3 re-run below is superseded by this one and kept as history.

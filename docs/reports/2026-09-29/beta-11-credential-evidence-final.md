@@ -341,10 +341,13 @@ Met by this report.
     predates their detectors.
   - No family record changed in either mode against 1db8ff3.
 - **Performance at 8f97f14.** `performance-evaluation.yml` run
-  [36553832221](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36553832221)
-  is ACCEPTED against baseline 0.1.0-beta.8 once the size rows below are applied. Latency (10
+  [36557682258](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36557682258)
+  concludes ACCEPTED against baseline 0.1.0-beta.8, with the size rows below applied as accepted tradeoffs. Two earlier
+  runs are kept with their roles in the evidence README. 36553832221 ran before the rows were accepted and failed on
+  size only. 36555971146 breached the browser-wasm small-whole initialization ratio (1.277). Paired 1db8ff3 → 8f97f14
+  and A/A runs measured that breach as noise (+1.0% to +2.7% against A/A spread of −1.3% to +11%). Latency (10
   rows), initialization (10) and memory (16) are all within budget. Median processing ratios
-  drop to 0.24–0.27 on the medium workloads (about 0.79 at 1db8ff3) and to 0.22–0.80 on the
+  drop to 0.24–0.27 on the medium workloads (about 0.79 at 1db8ff3) and to 0.22–0.77 on the
   small ones (0.54–1.07). Reports:
   [`evidence/860/8f97f14-verified/`](https://github.com/redact-secret/redact-secret-benchmarks/tree/b71563765ea63bb5b5150d66dae38216e28c0ade/evidence/860/8f97f14-verified).
 - **Accepted size tradeoffs.** These rows are recorded in `benchmarks/accepted-regressions.json`

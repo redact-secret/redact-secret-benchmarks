@@ -25,26 +25,26 @@ These compare with the frozen snapshot measured in another job, possibly on anot
 
 | Metric | Snapshot | This run | Change |
 | --- | ---: | ---: | ---: |
-| `initialization/browser-wasm/scale-logs-medium-fixed4096/initialization-p95` | 17.400 | 17.600 | +1.1% |
-| `initialization/browser-wasm/scale-logs-small-whole/initialization-p95` | 13.100 | 15.900 | +21.4% |
-| `initialization/cli/scale-logs-medium-fixed4096/initialization-p95` | 2.832 | 2.438 | -13.9% |
-| `initialization/cli/scale-logs-small-whole/initialization-p95` | 2.616 | 2.489 | -4.9% |
-| `initialization/node/scale-logs-medium-fixed4096/initialization-p95` | 6.396 | 6.499 | +1.6% |
-| `initialization/node/scale-logs-small-whole/initialization-p95` | 6.092 | 6.441 | +5.7% |
-| `initialization/python/scale-logs-medium-fixed4096/initialization-p95` | 1.026 | 1.157 | +12.7% |
-| `initialization/python/scale-logs-small-whole/initialization-p95` | 0.970 | 1.169 | +20.5% |
-| `initialization/rust-core/scale-logs-medium-fixed4096/initialization-p95` | 0.028 | 0.062 | +120.6% |
-| `initialization/rust-core/scale-logs-small-whole/initialization-p95` | 0.028 | 0.060 | +112.8% |
-| `latency/browser-wasm/scale-logs-medium-fixed4096/processing-p95` | 115.500 | 28.600 | -75.2% |
+| `initialization/browser-wasm/scale-logs-medium-fixed4096/initialization-p95` | 17.400 | 17.400 | +0.0% |
+| `initialization/browser-wasm/scale-logs-small-whole/initialization-p95` | 13.100 | 14.500 | +10.7% |
+| `initialization/cli/scale-logs-medium-fixed4096/initialization-p95` | 2.832 | 2.352 | -16.9% |
+| `initialization/cli/scale-logs-small-whole/initialization-p95` | 2.616 | 2.272 | -13.2% |
+| `initialization/node/scale-logs-medium-fixed4096/initialization-p95` | 6.396 | 6.131 | -4.1% |
+| `initialization/node/scale-logs-small-whole/initialization-p95` | 6.092 | 5.982 | -1.8% |
+| `initialization/python/scale-logs-medium-fixed4096/initialization-p95` | 1.026 | 1.057 | +3.0% |
+| `initialization/python/scale-logs-small-whole/initialization-p95` | 0.970 | 1.015 | +4.6% |
+| `initialization/rust-core/scale-logs-medium-fixed4096/initialization-p95` | 0.028 | 0.053 | +91.1% |
+| `initialization/rust-core/scale-logs-small-whole/initialization-p95` | 0.028 | 0.052 | +84.2% |
+| `latency/browser-wasm/scale-logs-medium-fixed4096/processing-p95` | 115.500 | 29.500 | -74.5% |
 | `latency/browser-wasm/scale-logs-small-whole/processing-p95` | 35.300 | 21.500 | -39.1% |
-| `latency/cli/scale-logs-medium-fixed4096/processing-p95` | 85.563 | 21.977 | -74.3% |
-| `latency/cli/scale-logs-small-whole/processing-p95` | 23.400 | 7.775 | -66.8% |
-| `latency/node/scale-logs-medium-fixed4096/processing-p95` | 90.489 | 24.831 | -72.6% |
-| `latency/node/scale-logs-small-whole/processing-p95` | 15.848 | 3.746 | -76.4% |
-| `latency/python/scale-logs-medium-fixed4096/processing-p95` | 81.351 | 20.522 | -74.8% |
-| `latency/python/scale-logs-small-whole/processing-p95` | 15.893 | 4.059 | -74.5% |
-| `latency/rust-core/scale-logs-medium-fixed4096/processing-p95` | 79.304 | 19.521 | -75.4% |
-| `latency/rust-core/scale-logs-small-whole/processing-p95` | 18.381 | 3.802 | -79.3% |
+| `latency/cli/scale-logs-medium-fixed4096/processing-p95` | 85.563 | 21.319 | -75.1% |
+| `latency/cli/scale-logs-small-whole/processing-p95` | 23.400 | 7.455 | -68.1% |
+| `latency/node/scale-logs-medium-fixed4096/processing-p95` | 90.489 | 23.809 | -73.7% |
+| `latency/node/scale-logs-small-whole/processing-p95` | 15.848 | 3.685 | -76.7% |
+| `latency/python/scale-logs-medium-fixed4096/processing-p95` | 81.351 | 19.638 | -75.9% |
+| `latency/python/scale-logs-small-whole/processing-p95` | 15.893 | 3.837 | -75.9% |
+| `latency/rust-core/scale-logs-medium-fixed4096/processing-p95` | 79.304 | 18.761 | -76.3% |
+| `latency/rust-core/scale-logs-small-whole/processing-p95` | 18.381 | 3.639 | -80.2% |
 
 ## Measured rows with no baseline yet (baseline-pending, not judged)
 

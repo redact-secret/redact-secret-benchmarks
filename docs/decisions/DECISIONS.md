@@ -58,4 +58,7 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Report unit-safe TP/TN/FP/FN diagnostics and verify the actual sanitized output](2026-09-28-report-unit-safe-diagnostics-and-verified-output.md) (proposed; diagnostics beside the v4 headline, never instead of it)
 - [Score the IP port suffix outside the network-address span](2026-09-28-score-the-ip-port-suffix-outside-the-network-address-span.md)
 - [Fix the profile-cost v2 candidate-report validator's artifact roster and re-freeze the plan](2026-09-29-fix-pii-profile-cost-v2-candidate-artifact-roster.md)
+- [Judge adapter traversal on the harness's same-session change, and budget adapter allocation](2026-09-29-judge-adapter-traversal-on-same-session-change.md) (proposed; #472, rules for the overhead-v2 fields)
+- [Keep the TypeScript evaluation engine; do not start a Rust or WASM kernel after the P1-P3 fixes](2026-09-29-keep-the-typescript-evaluation-engine-after-p1-p3.md) (#479 P4; CI 5m22s to 1m24s, no language-bound kernel)
+- [Keep provider research in schema-validated dossiers in this repository](2026-09-29-keep-provider-research-in-validated-dossiers.md)
 - [Relabel the provider-named near-miss controls that redact-secret#948 makes credentials](2026-09-29-relabel-provider-named-near-miss-controls-under-948.md) (twins keep their scoped expectation; 25 controls move to policy/T3 on generic-token; nine replacement controls in `beta8-948`)

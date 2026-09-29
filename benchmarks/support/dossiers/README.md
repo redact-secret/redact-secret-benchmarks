@@ -47,4 +47,20 @@ an inert fixture stub under `fixtures/generated/families/`;
    `redact-secret` doc). The rules are recorded in
    [the decision](../../../docs/decisions/2026-09-29-keep-provider-research-in-validated-dossiers.md).
 
+## Where it shows up
+
+`npm run dossiers:publish` (run by `publish-site.yml` after the support matrix)
+joins every dossier with `taxonomy.json`, `benchmarks/detectors.json`, the
+fixture-profile floors and the support matrix into
+`public/results/provider-dossiers-v1.json`
+([`schemas/provider-dossiers-v1.json`](../../../schemas/provider-dossiers-v1.json)),
+and the site renders it at `/support/providers`. Per family the stages are
+researched, in taxonomy, benchmarked (fixtures meet the stable floors), core
+detector (in the pinned inventory) and measured (support matrix reads `stable`
+or `provisional`). Only your verdict, tier, `blockedBy`, `researchedAt` and
+links are read from the dossier; the stages are derived, so the page answers
+"when will X be supported?" with a stage and a blocker, never a date. Do not put
+a forecast date in `blockedBy`. `npm run support:check:ui` keeps the page in
+step with the taxonomy and both schemas.
+
 Never place a real, live or unrevoked credential in a dossier.

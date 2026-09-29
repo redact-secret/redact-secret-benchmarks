@@ -17,6 +17,7 @@ import type { Report, Run } from './types';
 import type { EvaluationReport } from './evaluation-types';
 import type { CandidateReport, ReviewLedgerFile } from './evaluation-model';
 import type { SupportMatrixFile } from './support-model';
+import type { ProviderDossiersFile } from './providers-model';
 import { domainDescriptor, evaluationDomainsProblem, type EvaluationDomainId } from './evaluation-domains';
 import { domainDescriptorV2, evaluationDomainsV2Problem } from './evaluation-domains-v2';
 import { piiSupportMatrixProblem, type PiiSupportMatrixFile } from './pii-support-model';
@@ -160,6 +161,22 @@ async function renderSupport(token: number, path: string, force: boolean) {
   restoreDetails();
 }
 
+/** The providers roadmap is generated like the support matrix: read, re-validated against the schema and taxonomy, then rendered. No stage is held in the app. */
+async function renderProviders(token: number, path: string, force: boolean) {
+  if (force) renderPage('<p role="status" class="small">Loading providers roadmap…</p>', 'Providers');
+  const { providersPage, providerStageFilterOf } = await import('./pages/providers');
+  const { providerDossiersProblem } = await import('./providers-model');
+  const body = await text('/results/provider-dossiers-v1.json');
+  if (token !== request || path !== location.pathname) return;
+  const payload = JSON.stringify([path, location.search, body]);
+  if (!force && payload === lastPayload) return;
+  lastPayload = payload;
+  let file: ProviderDossiersFile | null = null, problem: string | null = 'No provider dossiers published';
+  if (body) { try { const parsed = JSON.parse(body); problem = providerDossiersProblem(parsed); if (!problem) file = parsed; } catch { problem = 'Provider dossiers are unreadable'; } }
+  renderPage(providersPage(file, problem, providerStageFilterOf(location.search)), 'Providers');
+  restoreDetails();
+}
+
 async function renderEvaluationDomain(id: EvaluationDomainId, token: number, path: string, force: boolean) {
   const { domainEvaluationPage, domainEvaluationUnavailablePage } = await import('./pages/domain-evaluation');
   if (force) renderPage('<p role="status" class="small">Loading evaluation domain…</p>', 'Evaluation');
@@ -183,6 +200,7 @@ async function refresh(force = false): Promise<void> {
   if (current.kind === 'performance') { if (force) { const { performancePage } = await import('./pages/performance'); renderPage(performancePage(), 'Performance'); } return; }
   if (current.kind === 'workbench') return renderWorkbench(current, token, path, force);
   if (current.kind === 'support') return renderSupport(token, path, force);
+  if (current.kind === 'providers') return renderProviders(token, path, force);
   if (current.kind === 'evaluation-domain') return renderEvaluationDomain(current.id as EvaluationDomainId, token, path, force);
 
   const fixture = current.kind === 'fixture' ? fixtures.find(f => f.slug === current.id) : undefined;

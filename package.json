@@ -55,6 +55,7 @@
     "eval:matrix:drift": "node --import tsx benchmarks/support-matrix-drift.ts",
     "dossiers:scaffold": "node scripts/scaffold-dossiers.mjs",
     "dossiers:check": "node scripts/scaffold-dossiers.mjs --check",
+    "dossiers:publish": "node --import tsx benchmarks/generate-provider-dossiers.ts",
     "family:new": "node scripts/family-new.mjs",
     "family:status": "node scripts/family-status.mjs",
     "support:check:ui": "node --import tsx scripts/check-support-ui.mjs",

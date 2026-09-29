@@ -187,7 +187,7 @@ the other's budget.
   sealed as its own corpus with `maxRuns: 1`, which gives one attempt per
   family per epoch. A family left out is recorded as `no-sealed-corpus`.
 - **Run.** A run names the candidate explicitly (`--core-commit`). The beta.11
-  value is `1db8ff38b16e50c51229eb27025452952bf621e1`. Before any protected
+  value is `ec9224d9743066fe73d6e61e9843ef52bd853833`. Before any protected
   byte is read, the run freezes:
   - the committed #428 freeze and report for that commit;
   - the core, node and Wasm tarballs and every Wasm payload, including
@@ -227,9 +227,9 @@ the other's budget.
   - `unresolved` (trust rejected or run incomplete);
   - `not-met`.
 
-  This route never emits `stable`. Bound to the final `1127bf91` record, all
-  six families stay `pending` and unspent (`public-gates-failed`: runtime and
-  package cost, size regression budget).
+  This route never emits `stable`. Bound to the final `ec9224d9` record
+  (`evidence/901/428/final-core-ec9224d9.md`), all six families stay `pending`
+  and unspent (`public-gates-failed`, always including `profile-cost`).
 
 The IBAN family binding pins family contract v1, SWIFT ISO 13616 IBAN Registry
 Release 103 (89 derived country/length rows), and the bounded `iban-mod97` v1

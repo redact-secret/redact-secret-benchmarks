@@ -17,7 +17,7 @@ import { runHoldout } from '../holdout/lifecycle.ts';
 import { piiHoldoutDomain } from '../benchmarks/evaluation/domains/pii/holdout.ts';
 import { B11_EXPECTED_ACTIVATION, B11_FAMILIES, b11Commitment } from '../benchmarks/evaluation/domains/pii/beta11-qualification.ts';
 import { B11P_BETA11_CORE_COMMIT, B11P_INPUT_KIND, b11ProtectedCandidatePlan, b11ProtectedCounts, b11ProtectedDomain, b11ProtectedMinimums,
-  b11ProtectedPublicControl, buildB11ProtectedDisposition, buildB11ProtectedTrust, readB11ProtectedInput, runB11ProtectedFamily,
+  b11ProtectedPublicControl, b11ProtectedPublicGates, buildB11ProtectedDisposition, buildB11ProtectedTrust, readB11ProtectedInput, runB11ProtectedFamily,
   sealB11ProtectedInput, validateB11ProtectedAggregate, validateB11ProtectedInput } from '../benchmarks/evaluation/domains/pii/beta11-protected.ts';
 
 const repo = fileURLToPath(new URL('../', import.meta.url));
@@ -371,16 +371,22 @@ test('the disposition reaches provisional only when public gates, cost and the p
     /protected-run-not-bound/);
 });
 
-test('bound to the committed final #428 record (core 1127bf91): all six pending, unspent, with the failed public gates as reason', () => {
-  const dir = new URL('../evidence/901/428/core-1127bf913237/', import.meta.url);
+test('bound to the committed final #428 record (core ec9224d9, the beta.11 candidate): all six pending, unspent, refused on the failed public gates', () => {
+  assert.equal(B11P_BETA11_CORE_COMMIT, 'ec9224d9743066fe73d6e61e9843ef52bd853833');
+  const dir = new URL(`../evidence/901/428/core-${B11P_BETA11_CORE_COMMIT.slice(0, 12)}/`, import.meta.url);
   const report = JSON.parse(readFileSync(new URL('pii-beta11-report-v2.json', dir), 'utf8'));
   const disposition = JSON.parse(readFileSync(new URL('pii-beta11-disposition-v2.json', dir), 'utf8'));
+  assert.equal(report.candidate.sourceCommit, B11P_BETA11_CORE_COMMIT);
   const record = buildB11ProtectedDisposition({ report, disposition, seal: null, runs: [] });
   assert.deepEqual(record.distribution, { pending: 6, provisional: 0, stable: 0 });
   for (const row of record.families) {
+    const gates = b11ProtectedPublicGates(report, row.family);
+    // profile-cost is bound to the official runs and not-met; the cost gates the #143 ledger can cover follow the ledger rows.
+    assert.ok(gates.notMet.includes('profile-cost'));
+    assert.deepEqual(gates.unresolved, []);
     assert.equal(row.protected.state, 'unspent');
     assert.equal(row.protected.runs, '0/1');
-    assert.match(row.protected.reason, /^public-gates-failed:runtime-and-package-cost,size-regression-budget$/);
-    assert.deepEqual(row.publicGates.unresolved, ['profile-cost']);
+    assert.equal(row.protected.reason, `public-gates-failed:${gates.notMet.join(',')}`);
+    assert.deepEqual(row.publicGates.unresolved, []);
   }
 });

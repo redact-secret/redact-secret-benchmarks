@@ -38,7 +38,7 @@ import piiV1Profile from '../../../../qualification/pii-v1.json';
 // ---------------------------------------------------------------------------------------------------------------
 export const B11P_ISSUE = 'redact-secret/redact-secret-benchmarks#428';
 /** The frozen beta.11 candidate the protected run binds (supplied explicitly as --core-commit; never inferred). */
-export const B11P_BETA11_CORE_COMMIT = 'ec9224d9743066fe73d6e61e9843ef52bd853833';
+export const B11P_BETA11_CORE_COMMIT = '8b6a5fde52ecb4dfce13f09c7a947062d21483c7';
 export const B11P_INPUT_KIND = 'pii-b11-protected-input';
 export const B11P_FAMILY_KIND = 'pii-b11-protected-family';
 export const B11P_VIEWS = B11_POPULATION_VIEWS;

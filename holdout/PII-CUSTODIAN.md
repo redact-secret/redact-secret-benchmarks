@@ -136,21 +136,21 @@ git add holdout/pii-b11-*.json && git commit -m "chore(pii): seal the beta.11 pr
 ```
 
 **Run** one family. The frozen beta.11 candidate is core
-`ec9224d9743066fe73d6e61e9843ef52bd853833` (product `main` after
-redact-secret#994; its #428 record is
-[`final-core-ec9224d9.md`](../evidence/901/428/final-core-ec9224d9.md)), and you
+`8b6a5fde52ecb4dfce13f09c7a947062d21483c7` (product `main` after
+redact-secret#996; its #428 record is
+[`final-core-8b6a5fde.md`](../evidence/901/428/final-core-8b6a5fde.md)), and you
 always pass it explicitly:
 
 ```sh
-npm run pii:beta11:protected -- run --core-commit=ec9224d9743066fe73d6e61e9843ef52bd853833 \
+npm run pii:beta11:protected -- run --core-commit=8b6a5fde52ecb4dfce13f09c7a947062d21483c7 \
   --family=pii:global:email --seal=holdout/pii-b11-<id>-seal.json
 ```
 
 A run needs all of the following:
 
 - a clean working tree;
-- the committed #428 freeze and report under `evidence/901/428/core-ec9224d97430/`;
-- the frozen build outputs under `results-output/pii-beta11/core-ec9224d97430/`
+- the committed #428 freeze and report under `evidence/901/428/core-8b6a5fde52ec/`;
+- the frozen build outputs under `results-output/pii-beta11/core-8b6a5fde52ec/`
   (gitignored; they exist in the checkout that ran the #428 freeze and
   measurement). From another checkout, add
   `--work=<that checkout>/results-output/pii-beta11` to `run`. Do not rebuild
@@ -169,12 +169,12 @@ for that family is already `not-met`, it refuses and does not spend the
 budget.
 
 The aggregate is written to
-`evidence/901/428/core-ec9224d97430/protected/<family>-aggregate-v1.json`.
+`evidence/901/428/core-8b6a5fde52ec/protected/<family>-aggregate-v1.json`.
 
 **Resolve** trust. You and the reviewer read only the aggregate:
 
 ```sh
-npm run pii:beta11:protected -- resolve --core-commit=ec9224d9743066fe73d6e61e9843ef52bd853833 \
+npm run pii:beta11:protected -- resolve --core-commit=8b6a5fde52ecb4dfce13f09c7a947062d21483c7 \
   --family=pii:global:email --decision=accepted --custodian=<you> --reviewer=<reviewer>
 ```
 
@@ -184,7 +184,7 @@ then stays unresolved.
 **Disposition.** This binds the runs to the #428 record:
 
 ```sh
-npm run pii:beta11:protected -- disposition --core-commit=ec9224d9743066fe73d6e61e9843ef52bd853833 \
+npm run pii:beta11:protected -- disposition --core-commit=8b6a5fde52ecb4dfce13f09c7a947062d21483c7 \
   --seal=holdout/pii-b11-<id>-seal.json
 ```
 

@@ -1335,32 +1335,36 @@
       "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.9 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta9-published-rebaseline."
     },
     "734e93db95acf6487edc4e4ecd3be37e84d29c522154e3212c30dbb05aebd54f": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "7f87ff98-12ca-418c-bc89-cd53223c2344",
       "lastSeenRun": "7f87ff98-12ca-418c-bc89-cd53223c2344",
       "lastSeenAt": "2026-09-26T20:32:07.168Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.9 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta9-published-rebaseline."
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (length: 33-byte hex body (one extra at offset 16) vs the 32 of Mailchimp's own plugin example and every tool; suffix unchanged) is scoped to mailchimp-api-key, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no mailchimp-api-key finding, so the twin's own assertion (no typed mailchimp-api-key finding) holds. redact-secret attributes [63,100) to generic-token instead — the value still sits in a credential slot (a credential-named assignment, an api-key header or query parameter), where generic-token reports a value no typed detector claims (the project's T3 contextual policy, never a provider-format claim). The twin method records this as coDetected, not as a twin failure. trufflehog reports [64,100) as unmapped: its rule has no left boundary and matches the contracted-width tail inside the mutated value; the range disagreement is between classifications outside this twin's family. No corpus or redact-secret defect. Class: range-disagreement/trufflehog/co-detection.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "12a2e26c506a12a1cfda5fc606c7564b049039b83124ed90a2456f3d441ba833": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "7f87ff98-12ca-418c-bc89-cd53223c2344",
       "lastSeenRun": "7f87ff98-12ca-418c-bc89-cd53223c2344",
       "lastSeenAt": "2026-09-26T20:32:07.168Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.9 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta9-published-rebaseline."
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (length: 30-byte hex body vs the 32 of Mailchimp's own plugin example and every tool (no source reports 30); suffix unchanged) is scoped to mailchimp-api-key, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no mailchimp-api-key finding, so the twin's own assertion (no typed mailchimp-api-key finding) holds. redact-secret attributes [63,97) to generic-token instead — the value still sits in a credential slot (a credential-named assignment, an api-key header or query parameter), where generic-token reports a value no typed detector claims (the project's T3 contextual policy, never a provider-format claim). The twin method records this as coDetected, not as a twin failure. trufflehog reports no finding at all — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/twin-boundary-family-reassignment.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "6ab8b8375b018e13c11ba0a2fcf84865df9ed0d1588b14ba7f6b720aabf30e13": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "7f87ff98-12ca-418c-bc89-cd53223c2344",
       "lastSeenRun": "7f87ff98-12ca-418c-bc89-cd53223c2344",
       "lastSeenAt": "2026-09-26T20:32:07.168Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.9 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta9-published-rebaseline."
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (length: 40-byte hex body (a SHA-1 width: 8 extra hex bytes appended) vs the 32 of Mailchimp's own plugin example and every tool (no source reports 40); suffix unchanged) is scoped to mailchimp-api-key, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no mailchimp-api-key finding, so the twin's own assertion (no typed mailchimp-api-key finding) holds. redact-secret attributes [63,107) to generic-token instead — the value still sits in a credential slot (a credential-named assignment, an api-key header or query parameter), where generic-token reports a value no typed detector claims (the project's T3 contextual policy, never a provider-format claim). The twin method records this as coDetected, not as a twin failure. trufflehog reports [71,107) as unmapped: its rule has no left boundary and matches the contracted-width tail inside the mutated value; the range disagreement is between classifications outside this twin's family. No corpus or redact-secret defect. Class: range-disagreement/trufflehog/co-detection.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "5be9707d3b5c83862aba2ac9ba8c99602868fa54a4c29ad57759d2c391c24605": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "7f87ff98-12ca-418c-bc89-cd53223c2344",
       "lastSeenRun": "7f87ff98-12ca-418c-bc89-cd53223c2344",
       "lastSeenAt": "2026-09-26T20:32:07.168Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.9 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta9-published-rebaseline."
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (boundary: no \"-\" between the body and us6, where Mailchimp's fundamentals page says the data center is appended as key-dc; body and suffix unchanged) is scoped to mailchimp-api-key, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no mailchimp-api-key finding, so the twin's own assertion (no typed mailchimp-api-key finding) holds. redact-secret attributes [63,98) to generic-token instead — the value still sits in a credential slot (a credential-named assignment, an api-key header or query parameter), where generic-token reports a value no typed detector claims (the project's T3 contextual policy, never a provider-format claim). The twin method records this as coDetected, not as a twin failure. trufflehog reports no finding at all — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/twin-boundary-family-reassignment.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "0004f0f582100ba76b08e93ba5b48dd8f3b6c6692f788a5c8ec1b3f32f338c23": {
       "status": "not-assertable",

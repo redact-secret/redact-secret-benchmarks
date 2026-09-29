@@ -27,7 +27,7 @@ Okta issues Management API tokens from the Admin Console (Security, API, Tokens)
 
 ### `okta:api-token` — Management API token (SSWS)
 
-- **Shape:** literal `00` then 40 characters, 42 in total. Alphabet: TruffleHog and Nosey Parker use `[A-Za-z0-9_-]`; gitleaks and betterleaks also allow `=`. Of 52 distinct non-placeholder public candidates, 47 were 42 characters, none contained `=`, and `_` and `-` were both common. Okta's own migration guide shows an unelided value of `00` + 40 `[A-Za-z0-9]`.
+- **Shape:** literal `00` then 40 characters, 42 in total. Alphabet: TruffleHog and Nosey Parker use `[A-Za-z0-9_-]`; gitleaks and betterleaks also allow `=`. Of 52 distinct non-placeholder public candidates, 47 were 42 characters, none contained `=`, and `_` and `-` were both common. Okta's own migration guide shows an unelided value of `00` + 40 `[A-Za-z0-9]` (recorded in the benchmarks empirical observations, not in a core thread; the core threads show only the elided example).
 - **Sources:** T2. Provider docs show the `SSWS` scheme and the leading `00` only (no length, no alphabet); one 2019 community answer says "always 42"; a 2023 Okta team answer says "You should not assume a set structure for Okta's API tokens". GitGuardian records the detector as `Prefixed: False`, so `00` is not treated as a prefix. Okta does not appear in GitHub's secret-scanning partner list.
 - **Issuance:** UI only (the Okta API cannot create SSWS tokens); a free developer org works. The #694 hands-on checklist (total length, leading `00`, alphabet classes, header, checksum) has no recorded result.
 - **Collisions:** `00` is not a distinctive prefix; a value is claimed beside the `SSWS` scheme or a same-line `okta` keyword. TruffleHog gates on an Okta tenant domain.
@@ -46,4 +46,5 @@ Okta issues Management API tokens from the Admin Console (Security, API, Tokens)
 ## Research log
 
 - [redact-secret#694](https://github.com/redact-secret/redact-secret/issues/694) — T1 hunt: broad-discovery pass 2026-09-23; every shape-stating source agrees on `00` + 40; no provider-domain grammar. Hands-on check not recorded.
+- [redact-secret#582](https://github.com/redact-secret/redact-secret/issues/582#issuecomment-5799683784) — Beta.7 ranking put Okta in the committed set (T2, no provider source); the maintainer later said Okta stays medium/warn ([#702](https://github.com/redact-secret/redact-secret/issues/702#issuecomment-5823353741)).
 - [redact-secret#315](https://github.com/redact-secret/redact-secret/issues/315) — added the Okta API token detector (beta.7).

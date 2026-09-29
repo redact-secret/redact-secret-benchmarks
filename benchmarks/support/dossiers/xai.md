@@ -14,6 +14,7 @@ families:
       issues:
         - redact-secret/redact-secret-benchmarks#216
         - redact-secret/redact-secret#726
+        - redact-secret/redact-secret#727
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-24
     blockedBy: T1 on the prefix only; the 80-character length rests on one provider example plus tools and the body alphabet is unresolved (checklist in benchmarks#216).
@@ -66,5 +67,6 @@ the full value is returned once, at creation.
 
 - redact-secret-benchmarks#216 — broad-discovery pass (2026-09-24), including the
   right-boundary disagreement between peers.
+- redact-secret#727 — implementation of the committed AI inference credential families for Beta.8 (closed 2026-09-24).
 - redact-secret#726 — freeze of the Beta.8 contracts (this family: empirical route,
   alphabet provisional).

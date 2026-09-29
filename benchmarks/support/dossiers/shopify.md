@@ -43,7 +43,7 @@ No family in this dossier has a recorded research verdict. Whether and how core 
 
 ## Candidates that are not families yet
 
-None recorded.
+- **`shpca_`** (public storefront token). Core's Shopify module documentation deliberately excludes it. No taxonomy entry.
 
 ## Open questions
 

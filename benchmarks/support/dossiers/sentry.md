@@ -39,7 +39,7 @@ Sentry issues personal (user) auth tokens, organization auth tokens (used for CI
 
 ### `sentry:user-auth-token` — User auth token
 
-- **Shape:** `sntryu_` then 64 lowercase hex characters (32 random bytes hex-encoded; the database column allows 71). Sentry's docs call these "Personal Tokens", and GitHub's pattern is `sentry_personal_token`. Unprefixed pre-2024 user tokens (bare 64 hex) remain valid and fall outside this contract.
+- **Shape:** `sntryu_` then 64 lowercase hex characters (32 random bytes hex-encoded; the database column allows 71). Sentry's docs call these "Personal Tokens", and GitHub's pattern is `sentry_personal_token`. Unprefixed user tokens created before the prefix shipped (getsentry/sentry#68148, merged 2024-04-17; bare 64 hex) remain valid and fall outside this contract.
 - **Sources:** T2. `getsentry/sentry` `types/token.py` sets `USER = "sntryu_"` and `apitoken.py` builds the token as prefix plus `secrets.token_hex(nbytes=32)`; `sentry-cli` requires the body to hex-decode to exactly 32 bytes. Scanners: gitleaks, TruffleHog v2, CredSweeper, betterleaks. One placeholder `sntryu_...` on `skills.sentry.dev` (Sentry's agent-skill library) is the only provider-domain appearance and labels the token an org token, so it is contested as a T1 source.
 - **Issuance:** not attempted; 0 maintainer observations.
 - **Collisions:** `sntrys_`, `sntrya_` and `sntryi_` are sibling token types.

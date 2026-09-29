@@ -5,13 +5,15 @@ provider: slack
 families:
   - id: slack:bot-token
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
-      issues: []
-      evidence: null
-      researchedAt: null
-    blockedBy: null
+      verdict: ready
+      tier: T1
+      sources:
+        - https://docs.slack.dev/authentication/tokens
+      issues:
+        - redact-secret/redact-secret#371
+      evidence: https://github.com/redact-secret/redact-secret/blob/54c9ab35cb693e0cd3aedc8f858ca19ab77e4363/docs/decisions/2026-09-17-freeze-slack-bot-token-segment-grammar.md
+      researchedAt: 2026-09-17
+    blockedBy: "The prefix and dash-separated sections are provider-documented; the 10 to 13 digit section widths are tool agreement and the 18-byte secret floor is a support-policy choice."
   - id: slack:user-token
     research:
       verdict: ready
@@ -61,15 +63,15 @@ The provider's [tokens page](https://docs.slack.dev/authentication/tokens) lists
 the prefixes and gives no section widths or alphabet. Slack's 2016
 [token lengthening note](https://docs.slack.dev/changelog/2016/08/23/token-lengthening)
 tells integrators to expect up to 255 characters and not to rely on any
-semantics in the string. The user-token and app-level families are researched
-here; the bot-token and workflow-webhook families were not in the sources
-reviewed.
+semantics in the string. The user-token, app-level and bot-token families are researched
+here; the workflow-webhook family was not in the sources reviewed.
 
 ## Families
 
 ### `slack:bot-token` — Bot token
 
-- **Sources:** none reviewed in this batch. Unresearched.
+- **Shape:** `xoxb-` + 10 to 13 digits + `-` + 10 to 13 digits + `-` + at least 18 alphanumerics, as frozen by #371.
+- **Sources:** T1 for the prefix and the dash-separated sections (docs.slack.dev tokens page); section widths are tool agreement and the 18-byte floor is a policy choice.
 
 ### `slack:user-token` — User token
 
@@ -135,9 +137,8 @@ reviewed.
    secrets; hex-only or alphanumeric (checklists in #229 and #222).
 2. Is the second `xapp-` section the public app id? Scanner samples disagree.
 3. Have `xapp-` version digits other than `1` been issued?
-4. Should rotating `xoxe.xoxp-` tokens join `slack:user-token` or get their
-   own family? #229 raised it; no ruling was read here.
-5. `slack:bot-token` and `slack:workflow-webhook-token` need their own passes.
+4. Answered by #512 (its 2026-09-20 decision): rotating `xoxe.xoxp-` and `xoxe.xoxb-` tokens and refresh tokens are their own supported variants in core, T1 on a single-digit version section with an opaque body; #730 keeps an `xoxp-` inside `xoxe.xoxp-` with the rotation variant. Whether the taxonomy should get a family for them is open.
+5. `slack:workflow-webhook-token` needs its own pass; #512 deliberately did not promote it (bare `xwfp-` prefix only, no tool source).
 
 ## Research log
 
@@ -145,6 +146,7 @@ reviewed.
   closed 2026-09-24, routed to #211.
 - redact-secret-benchmarks#229 — `xoxp-` broad-discovery pass (30 sources);
   closed 2026-09-24, routed to #212.
+- redact-secret#371 — froze the bot-token grammar (decided 2026-09-17).
 - redact-secret#726 — freezes both contracts (app-level T2, user T1).
 - redact-secret#729 and #730 — implementation of the app-level and user-token
   contracts.

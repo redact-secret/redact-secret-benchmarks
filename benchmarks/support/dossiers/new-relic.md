@@ -26,6 +26,7 @@ families:
         - redact-secret/redact-secret#656
         - redact-secret/redact-secret#672
         - redact-secret/redact-secret#754
+        - redact-secret/redact-secret-benchmarks#160
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/656/README.md
       researchedAt: 2026-09-24
     blockedBy: "The NRAL suffix and total length 40 are T1; the hex body, the FFFF segment and the eu01xx region prefix are provider-code and tool corroborated, and the canonical API-keys page still says 40-character hexadecimal."
@@ -63,12 +64,13 @@ New Relic issues user API keys (`NRAK-` prefix, sent as `Api-Key`) and ingest li
 
 1. Should the T1 contract keep `FFFF` (detector, TruffleHog) or only `NRAL` (the provider source)?
 2. Is the 36-hex `NRAL` generation still issued?
-3. Which prefix set do EU and other regions use beyond `eu01xx`?
+3. Which prefix set do EU and other regions use beyond `eu01xx`? A real EU key was reported with a single `x` (`eu01x`), and New Relic staff say parsers read up to the first `x`, so a hard-coded `eu01xx` would miss it ([#656](https://github.com/redact-secret/redact-secret/issues/656#issuecomment-5785640607)); New Relic code also maps `us01`, `gov01` and `jp`.
 4. Two docs pages disagree (`hexadecimal`, `NRAK-`-prefixed license key); provider clarification would settle both.
 
 ## Research log
 
 - [redact-secret#642](https://github.com/redact-secret/redact-secret/issues/642) — first T1 re-tier batch; the `NRAK-` prefix was re-fetched live 2026-09-23.
+- [redact-secret-benchmarks#160](https://github.com/redact-secret/redact-secret-benchmarks/issues/160) — benchmarks promotion intake for the license key.
 - [redact-secret#656](https://github.com/redact-secret/redact-secret/issues/656) — license key T1 evidence: FOUND for suffix and total length (2026-09-23).
 - [redact-secret#672](https://github.com/redact-secret/redact-secret/issues/672) — product fix for the 32/`FFFFNRAL` shape (closed 2026-09-23).
 - [redact-secret#754](https://github.com/redact-secret/redact-secret/issues/754) — product fix: suffixed shapes no longer need a New Relic keyword on the line (closed 2026-09-24).

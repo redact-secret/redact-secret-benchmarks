@@ -13,6 +13,7 @@ families:
       issues:
         - redact-secret/redact-secret-benchmarks#220
         - redact-secret/redact-secret#726
+        - redact-secret/redact-secret#727
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-24
     blockedBy: null
@@ -87,5 +88,6 @@ keys but cannot call completion endpoints. Both are shown once at creation.
 
 - redact-secret-benchmarks#220 — broad-discovery pass (2026-09-24), including
   the management-key discussion.
+- redact-secret#727 — implementation of the committed AI inference credential families for Beta.8 (closed 2026-09-24).
 - redact-secret#726 — freeze of the Beta.8 contracts; management keys named as a
   separate, unclaimed secret family.

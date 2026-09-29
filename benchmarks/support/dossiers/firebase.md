@@ -21,14 +21,14 @@ families:
 
 # Firebase
 
-Firebase Cloud Messaging (FCM) issued legacy HTTP and XMPP server keys, sent as `Authorization: key=<key>`. Google stopped creating legacy server keys in March 2020 (`firebase.google.com/support/releases`) and shut the legacy API down from June to July 2024, so no new key can be issued. Historical leaks are the remaining exposure.
+Firebase Cloud Messaging (FCM) issued legacy HTTP and XMPP server keys, sent as `Authorization: key=<key>`. Google stopped creating the older AIza-style "legacy server key" in March 2020 (`firebase.google.com/support/releases`) and pointed users to the newer "Server key", which is this family; keys of this shape were still issued afterwards. The legacy FCM HTTP and XMPP API that both authenticated shut down from June to July 2024, so no new key can be issued. Historical leaks are the remaining exposure.
 
 ## Families
 
 ### `firebase:server-key` — Legacy FCM server key
 
 - **Shape:** literal `AAAA` plus 7 characters (an 11-character head that base64url-decodes to the 64-bit Firebase project number), a literal `:`, then a 140-character body from `[A-Za-z0-9_-]`. Every real key measured has `APA91b` right after the colon; the contract does not require it. Late-2016 keys have 162 to 183-character bodies (8 of 66 unique real keys measured); about 88% of keys from 2017 onward have 140.
-- **Sources:** T2, not T1. Google's only length statement (Firebase blog, 2017-01-31) is "a giant 175-character string", which the 140 contract does not match, and its only published `Authorization: key=` example is the older `AIza` form. Corroboration: a real key in the Firebase JS SDK's own integration test (measured 11 + `:` + 140), nuclei-templates, Burp BCheck, Nosey Parker/titus, a Laravel scrubber and PyRIT. All tool regexes copy one 2020 write-up.
+- **Sources:** T2, not T1. Google's only length statement (Firebase blog, 2017-01-31) is "a giant 175-character string", which the 140 contract does not match, and its only published `Authorization: key=` example is the older `AIza` form. Corroboration: a real key in the Firebase JS SDK's own integration test (measured 11 + `:` + 140), nuclei-templates, Burp BCheck, titus (ported from Nosey Parker rules; Nosey Parker itself has no Firebase rule), a Laravel scrubber and PyRIT. All tool regexes copy one 2020 write-up.
 - **Issuance:** impossible: the legacy API is closed.
 - **Collisions:** FCM registration tokens (the 2017 Firebase blog calls a 153-character one a string that looks a lot like a server key) look similar and use the same `APA91b` body start; the `AIza` Google API key form belongs to `google:generic-api-key`.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md); evidence [#649 record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/649/README.md). Core's detector comments call the prefix and lengths "documented"; no provider does.

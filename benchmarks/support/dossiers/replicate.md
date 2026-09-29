@@ -14,6 +14,7 @@ families:
         - redact-secret/redact-secret-benchmarks#215
         - redact-secret/redact-secret-benchmarks#217
         - redact-secret/redact-secret#726
+        - redact-secret/redact-secret#727
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
       researchedAt: 2026-09-24
     blockedBy: Body alphabet is not provider-stated (TruffleHog admits - and _, flare-redact does not); one issued token would settle it (checklist in benchmarks#217).
@@ -71,5 +72,6 @@ it is not recorded here.
   each family has its own research issue.
 - redact-secret-benchmarks#217 — broad-discovery pass (2026-09-24): provider
   docs, SDK sources, scanner rules; hands-on checklist left unexecuted.
+- redact-secret#727 — implementation of the committed AI inference credential families for Beta.8 (closed 2026-09-24).
 - redact-secret#726 — freeze of the 15 Beta.8 arrival contracts; records the
   provider length as T1 and the alphabet as tool-corroborated.

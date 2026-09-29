@@ -64,6 +64,6 @@ Shared grammar: role `sk` or `pk`, then `-helicone`, then optional `-eu` and the
 
 ## Research log
 
-- redact-secret#860 — epic (open); [research table #34](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852386967); [Tier A handoffs](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871361534); [rulings R1, R8](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275).
+- redact-secret#860 — epic (open); [research table #34](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852386967); [Tier A handoffs](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871361534); [ruling R1](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851), [ruling R8](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275).
 - redact-secret#907 — implementation issue for both key types (closed).
 - [Final disposition record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/disposition.md) lists it READY, 2026-09-28.

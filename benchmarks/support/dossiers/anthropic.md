@@ -27,8 +27,9 @@ families:
         - redact-secret/redact-secret#774
         - redact-secret/redact-secret#776
         - redact-secret/redact-secret#862
+        - redact-secret/redact-secret#882
       evidence: null
-      researchedAt: 2026-09-26
+      researchedAt: 2026-09-27
     blockedBy: Body length, alphabet and tail are unmeasured for this prefix; needs one issued Enterprise key (checklist in #776).
   - id: anthropic:admin-api-key
     research:
@@ -42,8 +43,9 @@ families:
         - redact-secret/redact-secret#774
         - redact-secret/redact-secret#775
         - redact-secret/redact-secret#862
+        - redact-secret/redact-secret#882
       evidence: null
-      researchedAt: 2026-09-26
+      researchedAt: 2026-09-27
     blockedBy: Body grammar is scanner-corroborated only (T2); confirming it needs one issued Console admin key (checklist in #775).
 ---
 
@@ -104,7 +106,10 @@ family is not recorded here.
   confusable in third-party integration guides, which reject the wrong type.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
   Whether the finding type should say "compliance" or "Enterprise" was a
-  product decision raised in #776 and settled in #862 and its follow-ups.
+  product decision raised in #776 and settled by #882: `sk-ant-api01-` keys
+  get their own type, `anthropic_enterprise_api_key`, named for the general
+  Enterprise scope and deliberately not "compliance"
+  ([#776 disposition](https://github.com/redact-secret/redact-secret/issues/776#issuecomment-5856725556)).
 
 ### `anthropic:admin-api-key` — Admin API key (sk-ant-admin01-)
 
@@ -152,10 +157,12 @@ family is not recorded here.
    fixtures should cover both.
 6. **Reddit and forum coverage.** The archive was rate-limited partway
    through, so absence of community posts on `api01` and `admin01` is weak.
-7. **Tier of the admin family.** #775 proposed T1 on the prefix with a T2 body
-   and asked for a maintainer ruling on that split. The family was later
-   implemented (#862), but no explicit ruling comment was read for this
-   dossier. Link it here once found.
+7. **Tier of the admin family.** Answered: the maintainer's
+   [#775 disposition](https://github.com/redact-secret/redact-secret/issues/775#issuecomment-5856725354)
+   records T1 on the `sk-ant-admin01-` prefix, and #862 says "T1 for the
+   prefixes only" with body length and alphabet at T2. No standalone ruling
+   comment exists, unlike #778, #779 and #788; #882 later gave admin keys
+   their own type, `anthropic_admin_api_key`.
 
 ## Research log
 
@@ -167,6 +174,8 @@ family is not recorded here.
   Reddit supplement and the issuance checklist.
 - redact-secret#862 — implementation issue for the `api01` and `admin01`
   prefixes; names redact-secret-benchmarks#384 as the benchmarks counterpart.
+- redact-secret#882 — split `anthropic_admin_api_key` and
+  `anthropic_enterprise_api_key` out of the shared type.
 - redact-secret#642 — T1 re-tier record for `anthropic:secret-api-key`,
   linked by permalink in the frontmatter.
 - redact-secret#783 was named for this pilot but researches

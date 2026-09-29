@@ -18,12 +18,23 @@ families:
     blockedBy: null
   - id: mailgun:public-validation-key
     research:
-      verdict: unresearched
+      verdict: rejected
       tier: null
-      sources: []
-      issues: []
-      evidence: null
-      researchedAt: null
+      sources:
+        - https://help.mailgun.com/hc/en-us/articles/360010523074-Email-Validations
+        - https://help.mailgun.com/hc/en-us/articles/203380100-Where-can-I-find-my-API-keys-and-SMTP-credentials
+        - https://github.com/mailgun/validator-demo/blob/2c0f9731d26c35ea9fd257979342fc77c5fd38e9/index.html
+        - https://devcenter.heroku.com/articles/mailgun-validations
+        - https://github.com/mailgun/mailgun-ruby/issues/145
+        - https://github.com/mailgun/mailgun-python/blob/ce47f6bb7c9035d2c8070a9cf2c2e1a57eb5b40a/mailgun/filters.py
+        - https://github.com/gitleaks/gitleaks/blob/b58d3f102cf3a2c84cb7f923d05c25c9b1aed84b/config/gitleaks.toml
+        - https://docs.gitlab.com/user/application_security/dast/browser/checks/798.73/
+      issues:
+        - redact-secret/redact-secret#314
+        - redact-secret/redact-secret#582
+        - redact-secret/redact-secret-benchmarks#473
+      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/582/README.md
+      researchedAt: 2026-09-29
     blockedBy: null
   - id: mailgun:legacy-signing-key-triplet
     research:
@@ -71,10 +82,17 @@ in #582.
 
 ### `mailgun:public-validation-key` — Public validation key (pubkey-)
 
-- **Sources:** none reviewed for a verdict. The taxonomy note calls it
-  documented as public, and the empirical record says Mailgun's Python SDK still
-  scrubs it from logs as a conservative choice. Left unresearched; see open
-  questions.
+Researched 2026-09-29 (broad pass; every source recorded, then classified). Verdict `rejected`: the provider documents this key as one for front-end use, which is the "documented as safe to expose" exclusion already in `docs/specs/taxonomy.md` (Stripe `pk_`, Supabase `sb_publishable_`).
+
+- **What it is:** the account's "Verifications Public Key" (or "Public Validation Key"), shown on the dashboard's API Security page beside the HTTP webhook signing key and the private API keys. It authenticated the public email-validation endpoint.
+- **Provider statements that it is public:**
+  - Mailgun help center, "Email Validations" (read 2026-09-29): "The public endpoint is meant to be used within front-end applications (and is only available on version 3 of the Validations API). To protect the public API Key it has an initial monthly limit that can be adjusted." The same page describes a "Public Verification Limit" account setting and says the private endpoint is for back-end code.
+  - Mailgun's own `validator-demo` repository (jQuery plugin, last commit 2019-02-06, pinned) puts the key in browser JavaScript ("replace this with your Mailgun public API key") and tells the reader to sign up "to receive your public API key".
+  - Mailgun's validation guide as reproduced by Heroku's Dev Center (last updated 2018-08-23): "Remember to use your public Mailgun API key in publicly accessible code." A 2018 Mailgun-ruby issue quotes the same two-key description: public key "suitable for use in client-side web applications", private key for back ends.
+  - Current Mailgun docs no longer show it: the validation API overview and the `mg-auth` page authenticate with `api:YOUR_API_KEY` only, and the v4 validation endpoint has no public variant. `POST /v1/keys/public` still regenerates it ("The account public key"), with no shape stated.
+- **Shape:** never stated by Mailgun. The prefix `pubkey-` comes from mailgun-python's log filter (`(key-|pubkey-)[\w\-]+`, described as scrubbing "Mailgun private and public key patterns"), mailgun-ruby's recorded regenerate-key response (a `pubkey-` placeholder) and a 2018 customer report. `pubkey-` + 32 lowercase hex comes from gitleaks (`mailgun-pub-key`, behind a `mailgun` keyword) and about thirty tools that copy it or its ancestors (betterleaks, Checkmarx 2ms, semgrep-rules, PEASS-ng, gitGraber, ScoutSuite). trufflehog, Nosey Parker, CredSweeper and detect-secrets have no `pubkey-` rule. The #582 measurement found 17 `pubkey-` + 32 candidates in public code, 16 of them hex-only.
+- **Counter-evidence, kept visible:** Mailgun's Python SDK and Ruby test suite still treat the value as sensitive to log (the Python README says "pubkeys" are scrubbed); the help center says exhausting the public verification limit disables the account, so an exposed key can cost the owner; GitLab's DAST check 798.73 rates a match High, calls the key deprecated and gives a rotation path. None of these says the key grants account access, and the two SDK behaviours are conservative log hygiene. The record does not settle whether a redactor should mask it; it settles that the provider does not present it as a secret.
+- **Consequence:** no grammar is frozen for it. It is a public-by-design value that should stay benign in the benchmark (a `mailgun-api-key` public-id control already records it, and gitleaks 8.30.1's rule still flags it). The taxonomy row stays for now and is not edited here, because a taxonomy edit changes the digest recorded in `fixture-index.json`; removing it or reclassifying it is a separate change.
 
 ### `mailgun:legacy-signing-key-triplet` — Prefix-less 32-8-8 hex key triplet
 
@@ -103,13 +121,12 @@ in #582.
 1. Which shape does a freshly issued private API key have: `key-` + 32 or the
    32-8-8 triplet? Which does a fresh signing key have (#701 checklist)?
 2. Is the triplet the current key, a superseded signing key, or both?
-3. `mailgun:public-validation-key`: is `pubkey-` documented as public by
-   Mailgun, and should the family be `rejected` as not a secret? The reviewed
-   sources do not settle it.
+3. Answered 2026-09-29: `mailgun:public-validation-key` is documented by Mailgun as a front-end key, so the verdict is `rejected`. Open follow-up: remove or reclassify the taxonomy row (see the family section).
 4. Case sensitivity of the `key-` body.
 
 ## Research log
 
+- redact-secret-benchmarks#473 — 2026-09-29 broad pass for `mailgun:public-validation-key`: Mailgun help center and docs, Mailgun-owned repositories, Heroku Dev Center, seven scanners plus GitLab DAST and the gitleaks lineage, Stack Overflow and Reddit (no relevant hits). Verdict `rejected`.
 - redact-secret#582 — Beta.7 ranking; provider documentation silent on format;
   Mailgun broad-discovery pass linked from the evidence record (2026-09-23).
 - redact-secret#701 — the triplet may be the current private API key while the

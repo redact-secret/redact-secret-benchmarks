@@ -20,12 +20,21 @@ families:
     blockedBy: null
   - id: atlassian:access-token
     research:
-      verdict: unresearched
-      tier: null
-      sources: []
-      issues: []
-      evidence: null
-      researchedAt: null
+      verdict: ready
+      tier: T2
+      sources:
+        - https://community.atlassian.com/forums/Bitbucket-questions/Can-we-confirm-BitBucket-s-token-prefixes/qaq-p/3093481
+        - https://support.atlassian.com/bitbucket-cloud/docs/using-access-tokens/
+        - https://github.com/trufflesecurity/trufflehog/blob/48b58d3bf3f02ba17bf23b87f095499bc80c6fd7/pkg/detectors/atlassian/v2/atlassian.go
+        - https://github.com/trufflesecurity/trufflehog/pull/3065
+        - https://github.com/Samsung/CredSweeper/blob/f21ab2f2553eea288a72273b9658cd297ab1d11f/credsweeper/rules/config.yaml
+        - https://github.com/praetorian-inc/trajan/blob/8d8d43a52eacafb0c262f1c7927050966465b381/pkg/bitbucket/bitbucket.go
+      issues:
+        - redact-secret/redact-secret#643
+        - redact-secret/redact-secret#741
+        - redact-secret/redact-secret-benchmarks#473
+      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/643/README.md
+      researchedAt: 2026-09-29
     blockedBy: null
 ---
 
@@ -49,21 +58,35 @@ Research ([redact-secret#643](https://github.com/redact-secret/redact-secret/iss
 
 ### `atlassian:access-token` — Access token
 
-Unresearched. The #643 evidence mentions `ATCT` only as a sibling prefix (same staff answer, same 192-character layout observed) and no research issue targets it.
+Researched 2026-09-29 (broad pass, evidence classified afterwards). Verdict `ready`, tier T2.
+
+- **Shape:** prefix `ATCT`. Observed tokens are 192 characters with the same layout as the API token: a fixed 12-character header (`ATCTT3xFfGN0`, the fourth and fifth characters differ from the `ATATT3xFfGF0` API-token header), a 171-character body from `[A-Za-z0-9_-]`, one literal `=`, then 8 uppercase hex characters. The trailing 8 are a CRC32 of everything before them, `=` included, in two independent readings (CredSweeper's filter and the measurement below). Auth scheme: Bearer, or `x-token-auth` as the Basic user name for git over HTTPS; the provider pages show `{repository_access_token}` and `{workspace_access_token}` placeholders and no shape.
+- **Sources (all classified after the search):**
+  - provider-example (class 4 in the empirical spec): the 2025-08-25 answer by the "Atlassian Team" account on community.atlassian.com states `ATCT` for workspace, project and repository access tokens. The asker's own observation of the 12-character header is not an Atlassian statement. Whether a forum answer is provider documentation is the same open ruling as for `atlassian:api-token`, so this family does not claim T1.
+  - peer-scanner-rule: trufflehog's `atlassian/v2` detector (pinned commit; `ATCTT3xFfG` + base64url-ish body + `=` + 8 alphanumerics, verified against the admin orgs endpoint with a Bearer header) and Samsung CredSweeper's "Bitbucket Repository Access Token" rule (`ATCTT3xFfGN0`, 80-800 body characters, `=` or its URL/JSON-escaped forms, 8 uppercase hex, CRC32 filter). Nosey Parker, gitleaks and detect-secrets have no `ATCT` rule (gitleaks keys on `ATATT3` only; Nosey Parker on `ATATT3xFfGF0`).
+  - independent-implementation: Praetorian's trajan chooses Bearer for `ATCTT3x` and Basic plus email for `ATATT3x`. pleno-dlp, openclaw's redaction list, caido data-grep and about a dozen other tools copy trufflehog's regex; they add no independent signal and are not counted.
+  - independent-research: a structure-only measurement of GitHub code search, 2026-09-29, query on the 10-character header stem. 80 distinct candidate values in 74 repositories: 73 are 192 characters (one each of 191, 193 and 199, four of 183), 79 carry the `ATCTT3xFfGN0` header, 74 have `=` at position 184 with 8 uppercase hex after it, and 72 pass the CRC32 check. Nothing was printed or stored; the values are unverified against Atlassian and some may be truncated or hand-edited, so this is a lower-bound shape count. Contexts in the results: most are Bitbucket (`x-token-auth`, `bitbucket.org`), some Jira, Confluence or Bearer use.
+  - A trufflehog contributor reported the same header and exactly 192 characters for organization admin API keys (PR 3065, 2024-07-15), so the `ATCT` header spans more than Bitbucket access tokens. Service-account API keys were not checked.
+- **Corroboration against the T2 route:** four dated references from four owners (Atlassian, trufflesecurity, Samsung, Praetorian) plus the measurement, across provider-example, peer-scanner-rule and independent-implementation. That meets the 3 references, 3 owners and 2 non-summary classes bar in `docs/specs/empirical-qualification.md`; no contradiction found beyond the caveats below.
+- **Issuance:** not attempted; a Bitbucket repository access token is free to mint and revoke, which would settle the prefix length question below (evidence checklist item 8 in the #643 record).
+- **Collisions:** shares the layout of `atlassian:api-token` (`ATAT`) and of the dead `ATBB` app passwords; the header differs, so an `ATAT`-anchored rule does not match it. Bitbucket Data Center HTTP access tokens (`BBDC-` prefix, from CredSweeper's rule list) and Jira/Confluence Data Center personal access tokens are different, unprefixed-by-`AT` credentials and are not this family.
+- **Current contract in core:** none. `atlassian-api-token` covers `ATAT` only; the taxonomy note records that the pinned TruffleHog detector targets this family.
+- **Open caveat:** the anchor length is unsettled (staff say `ATCT`, tools use 10 or 12 characters, and every observed value shares 12); the `=` plus 8 hex tail is empirical. A fresh token minted through each route (repository, project, workspace, admin key, service account) would confirm all routes share one header.
 
 ## Candidates that are not families yet
 
 - **`ATBB` app passwords.** Prefix staff-stated in the same answer; 36 characters (`ATBB` + 24 alphanumeric + 8 hex) from a tool and one sample. Stopped working 2026-06-09, so a live value should not exist. No taxonomy entry.
-- **Organization admin API keys with the `ATCTT3xFfGN0` header.** Reported by a TruffleHog contributor; no provider source read.
+- **Organization admin API keys with the `ATCTT3xFfGN0` header.** Reported by a TruffleHog contributor (PR 3065); no provider source read. They share the `atlassian:access-token` shape and are covered there until a route-level split is shown to matter.
 
 ## Open questions
 
 1. Does an "Atlassian Team" forum answer count as provider documentation for the `ATAT` prefix? Decides T1 versus T2.
 2. Is the trailing 8 hex a CRC32 on real keys? One fresh issued key answers it.
 3. Answered by #741 (closed 2026-09-24): the span covers the `=` and the 8-hex suffix.
-4. `atlassian:access-token` (`ATCT`) needs its own research issue.
+4. Answered 2026-09-29: `atlassian:access-token` (`ATCT`) is researched here under #473; do the repository, project, workspace, admin-key and service-account routes share the `ATCTT3xFfGN0` header?
 
 ## Research log
 
 - [redact-secret#643](https://github.com/redact-secret/redact-secret/issues/643) — T1 evidence hunt for `atlassian:api-token`. Four passes (all 2026-09-22), verdict: no provider-documentation source; one borderline staff forum answer awaiting a ruling. Family stays T2.
+- [redact-secret-benchmarks#473](https://github.com/redact-secret/redact-secret-benchmarks/issues/473) — 2026-09-29 broad pass for `atlassian:access-token`: community, Bitbucket and Atlassian docs, seven scanners, trufflehog and CredSweeper source, Stack Overflow and Reddit (nothing on either), GitHub code-search shape measurement. Verdict `ready`, T2.
 - [redact-secret#575](https://github.com/redact-secret/redact-secret/issues/575) — Epic A roll-up; left #643 out of the second batch for lack of a ruling.

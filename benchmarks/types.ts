@@ -17,6 +17,13 @@ export interface Fixture {
   arrivalTargets?: string[];
   /** Beta.8: the positive-context axis a positive or twin exercises (`POSITIVE_AXES` in benchmarks/lib/beta8/profiles.ts). */
   contextAxis?: string;
+  /** Independently authored default-policy outcome for a direct credential literal.
+   * This is fixture truth; scanner output must never populate or revise it. */
+  expectedAction?: 'warn' | 'redact' | 'block';
+  /** Marks the reviewed, public subset used by the policy-conformance gate. */
+  policyConformance?: boolean;
+  /** Explicit family identity required by the credential-policy holdout domain. */
+  policyFamily?: 'bearer-token' | 'connection-string' | 'otpauth-uri' | 'generic-token';
 }
 export interface Corpus { fixtures: Fixture[]; schemaVersion?: number; reviewStatus?: string; scope?: string; references?: unknown; milestoneReview?: unknown }
 /** `action` (#95, docs/decisions/2026-09-21-add-untargeted-benign-corpus.md Decision 3): the product
@@ -105,7 +112,7 @@ export interface FieldClaim {
 }
 /** A credential family measured ahead of (or without) a product detector. Its id is a case target, never a detector id. */
 export interface ArrivalFamily {
-  id: string; taxonomy: string; issue: number;
+  id: string; taxonomy: string; issue: number | string;
   /** Why no registry detector is targeted: none exists at the pinned product revision, or the taxonomy maps none to this family. */
   reason: string;
 }

@@ -56,7 +56,7 @@ const timings = summary.runs.filter(r => r.kind === 'performance').map(r => {
   }
   return {
     surface: r.surface, profileId: r.profileId, path: r.path,
-    environment: { os: prov.os ?? null, cpu: prov.cpu ?? null, runtime: prov.runtime ?? null, buildProfile: prov.buildProfile ?? null, artifactIdentity: prov.artifactIdentity ?? null },
+    environment: { os: prov.os ?? null, cpu: prov.cpu ?? null, runtime: prov.runtime ?? null, buildProfile: prov.buildProfile ?? null, artifactIdentity: prov.artifactIdentity ?? null, resolvedArtifact: prov.resolvedArtifact ?? null },
     initialization: dist(p.initialization), processing: dist(p.processing),
     throughput: { median: p.throughput.median, minimum: p.throughput.minimum, unit: p.throughput.unit },
     memory,

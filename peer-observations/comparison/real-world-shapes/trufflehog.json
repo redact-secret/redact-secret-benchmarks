@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-26T19:35:00.524Z",
+  "observedAt": "2026-09-28T18:15:41.542Z",
   "sourceRun": {
-    "runId": "2026-09-26T19:35:00.524Z-693bc3",
-    "benchmarkRevision": "ad2dd903ca05efa9de20b53f89a2f13cf1401377"
+    "runId": "2026-09-28T18:15:41.542Z-65aa0c",
+    "benchmarkRevision": "e8b38c33ceb744dcfc23a0005d89619cdfdcd2bd"
   },
   "input": {
     "surface": "comparison/real-world-shapes",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "a2aee870981b7e6436678af90b54ea6fcab3402baef6aee6c6dbb2cd9da59a57",
-    "fixtureCount": 15,
-    "fixturesDigest": "c4187ce8980366757c26e1b1ebd3bb89331087a22be09507d950aac0f7228902",
+    "corpusHash": "cee690b5dc0764c6b3b800ef0713d892ce11645d7bfc4bc9ac2af47fc39589f3",
+    "fixtureCount": 120,
+    "fixturesDigest": "688b84610b70d4186cc841c572d410f7ac687ee352edf3bb63eb0014e8841ed2",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
-      "fixtureCount": 2990
+      "digest": "e893fa62ccdf42d447218cdde2c178084d7163dfea6b51caa4dc5fd32b69220c",
+      "fixtureCount": 4768
     }
   },
   "peer": {
@@ -48,13 +48,19 @@
       "platform": "darwin-arm64",
       "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
     },
-    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+    "adapterDigest": "d86f286b1689f577b83e9685a822cb2f074a4fd2b0b9a813d579ab4f72a03266"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
     "count": 2,
     "agreed": true
   },
-  "findings": [],
-  "digest": "a16cfd4ae036523b65ed207b62f83fe1de9207481a4d921cf23b1b1d5999243a"
+  "findings": [
+    {
+      "path": "order-service/src/main/resources/application-prod.yml",
+      "start": 371,
+      "end": 439
+    }
+  ],
+  "digest": "95dcd2f62e85362496032cd106829c3b4cf3a3d6804daff485a8401379952bfd"
 }

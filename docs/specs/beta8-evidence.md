@@ -76,6 +76,11 @@ families graduated this way at the product pin dad7868 (redact-secret#727,
 #728), and four #212 families (Perplexity, Fireworks AI, Pinecone `pcsk_`,
 GitLab runner authentication token) at f2082ab (redact-secret#730).
 
+The seven #434 detector-id families (`doppler-token`, `trigger-dev-token`, `e2b-api-key`, `posthog-token`,
+`helicone-api-key`, `firecrawl-api-key`, `composio-api-key`) and the six #436 families graduated the same way when
+the registry was re-pinned to product main `1127bf9` (redact-secret PR #938 added the detectors, #903–#909 and
+#912–#917; PR #947 followed). Their eleven sibling types stay arrival families scored by finding type (below).
+
 #259 skipped the arrival stage: redact-secret#773 had merged before its
 evidence was authored, so the registry was pinned to 3144bb3 in the same
 change, and `travisci-api-token`, `neon-api-key` and
@@ -106,6 +111,11 @@ never from scanner output:
 | `stripe-token` | `stripe_webhook_signing_secret` | `stripe-webhook-signing-secret` |
 | `slack-token` | `slack_app_level_token` | `slack-app-level-token` |
 | `slack-token` | `slack_user_token` | `slack-user-token` |
+| `doppler-token` | `doppler_personal_token`, `doppler_cli_token`, `doppler_service_account_token`, `doppler_service_account_identity_token`, `doppler_scim_token`, `doppler_audit_token` | the six Doppler sibling families (#434) |
+| `trigger-dev-token` | `trigger_dev_personal_access_token` | `trigger-dev-personal-access-token` |
+| `posthog-token` | `posthog_project_secret_api_key` | `posthog-project-secret-api-key` |
+| `helicone-api-key` | `helicone_write_api_key` | `helicone-write-api-key` |
+| `composio-api-key` | `composio_org_api_key`, `composio_user_api_key` | `composio-org-api-key`, `composio-user-api-key` |
 
 A coarser type keeps the detector id. The published 0.1.0-beta.7 reports
 `whsec_` as `stripe_credential` and `xoxp-`/`xapp-` as `slack_token`, so its
@@ -151,6 +161,228 @@ shared detector's coarser label (#211, parts of #212), twin discrimination is
 therefore an upper bound: read it together with the co-detection count and the
 open ledger rows, never on its own. `validateBeta8` and `tests/beta8.test.mjs`
 enforce this.
+
+## Beta.10 slices (#384)
+
+The same layout carries the Beta.10 credential corpus
+([#384](https://github.com/redact-secret/redact-secret-benchmarks/issues/384),
+parent [#283](https://github.com/redact-secret/redact-secret-benchmarks/issues/283);
+product [redact-secret#774](https://github.com/redact-secret/redact-secret/issues/774)).
+The `beta8-` prefix is the shared per-issue corpus layout, not the milestone: the fixture
+index labels these corpora `beta.10`. One corpus key per product issue keeps each slice's
+source hash, and so its ledger rows, independent of the others.
+
+| Key | Category | Families (arrival ids) | Product issue |
+| --- | --- | --- | --- |
+| `384a` | `beta8-384a` | `anthropic-api01-key`, `anthropic-admin01-key`, `openai-admin-api-key` | [#862](https://github.com/redact-secret/redact-secret/issues/862), [#863](https://github.com/redact-secret/redact-secret/issues/863) |
+| `384b` | `beta8-384b` | `aws-bedrock-long-term-api-key`, `aws-bedrock-short-term-api-key` | [#864](https://github.com/redact-secret/redact-secret/issues/864) |
+| `384c` | `beta8-384c` | `elevenlabs-api-key` | [#865](https://github.com/redact-secret/redact-secret/issues/865) |
+| `384d` | `beta8-384d` | `together-ai-api-key`, `tavily-api-key` | [#867](https://github.com/redact-secret/redact-secret/issues/867) |
+| `384e` | `beta8-384e` | `mistral-api-key`, `cohere-api-key`, `deepgram-api-key`, `ai21-api-key`, `exa-api-key` | [#868](https://github.com/redact-secret/redact-secret/issues/868) |
+
+Nine of the thirteen graduated to registry detectors when the registry was re-pinned to product
+`cfe2aec` (redact-secret PR #869: #862-#868): `aws-bedrock-long-term-api-key`,
+`aws-bedrock-short-term-api-key`, `elevenlabs-api-key`, `tavily-api-key`, `mistral-api-key`,
+`cohere-api-key`, `deepgram-api-key`, `ai21-api-key`, and Together, whose arrival id `together-api-key`
+was renamed to the detector id `together-ai-api-key`. Their contracts moved to each module's
+`registryContracts`. Four stay arrival families: `anthropic-api01-key`, `anthropic-admin01-key` and
+`openai-admin-api-key`, because the product types them inside the shared `anthropic-token` and
+`openai-token` detectors under one finding type per detector (`anthropic_api_key`, `openai_api_key`)
+and so gives no per-family attribution, and `exa-api-key`, because the product registered no Exa
+detector. They stay unscored until the product gives each its own finding type or detector. Conventions
+specific to these slices:
+
+- **Maintainer rulings of 2026-09-27 (redact-secret#778, #779, #788).** Bedrock long-term (`ABSK`
+  prefix and standard Base64 with `={0,2}`), Bedrock short-term (`bedrock-api-key-`, the fixed
+  133-character head, standard padded Base64) and ElevenLabs (`sk_` and the `_residency_[a-z0-9]+`
+  suffix grammar) are T1 with a `providerSource` (`documented` route). Total lengths and the ElevenLabs
+  48-hex body stay T2 and are asserted by no fixture: the three ElevenLabs body twins are recorded in
+  `DISPUTED_PROPERTIES` and read unmeasured. The bullet below records the tiers as first authored.
+- **Tier follows the evidence, not the candidate.** `anthropic-api01-key` and
+  `anthropic-admin01-key` are T1 on the provider-documented prefix, with the body recorded as
+  tool-corroborated or unspecified, as `anthropic-token` already does for `sk-ant-api03-`. The
+  Bedrock and ElevenLabs contracts are T2 with a `candidateSource`: the AWS Security Blog pattern,
+  the AWS token-generator code and the ElevenLabs SDK code are the candidate T1 sources, and a
+  maintainer ruling records the promotion (a tier change plus a `providerSource`, no fixture
+  edit). Together and Tavily are T2 pending hands-on corroboration.
+- **Keyword-gated rows are context-gated arrival families** (`contextGated: true`): no
+  bare-value claim, positives score as project policy, and every positive has a context twin
+  that keeps the value byte-for-byte and removes the gate. `ai21-api-key` and `exa-api-key` carry
+  a pending (T0) contract because no provider or scanner source states a shape; `exa-api-key`
+  has no value grammar at all, so it measures the keyword gate and the SDK-call-argument forms
+  only.
+- **Disputed properties are not asserted.** Where the sources disagree or none decides (uppercase
+  ElevenLabs hex, the Deepgram hex-versus-base36 alphabet, a Tavily `tvly-prod-` prefix, a
+  Together `tgp_v2_`, a head-less Bedrock `ABSK` key, Anthropic `admin02`/`api02`/`oat01`), no
+  fixture asserts silence; each is a recorded `unresolved` field on the contract.
+- **A shape that only exists as another family's credential is a twin, never a control.** The
+  Stripe-shaped `sk_live_` value beside an ElevenLabs context and an `sk-ant-api03-` value beside
+  an `api01` context are prefix twins, scored as co-detection when another known family reports
+  them; a benign control that another detector would flag is a benchmark bug.
+- **Shared-detector reconciliation (done at the cfe2aec re-pin).** Four common-formats twins used
+  `sk-ant-api01-` and `sk-ant-admin01-` as negatives of `sk-ant-api03-`
+  (`anthropic-token-api03-{compliance,admin}-prefix-{plain,unicode-crlf}-twin`). With redact-secret#862 in
+  the pinned registry they are re-scoped in `DISPUTED_PROPERTIES` (`anthropic-sibling-prefixes`), and three
+  `beta8-384a` twins of `anthropic-token` on prefixes no source claims (underscore delimiters, another vendor
+  stem, a missing hyphen) keep the documented twin floor met.
+- **The detector-coverage minimum and ledger keys.** Each graduated detector carries the registry-wide
+  `detector-coverage` minimum (`tests/detector-coverage.test.mjs`). A ledger id hashes the whole corpus
+  file, so editing `detector-coverage`, `common-formats` or a `beta8-384*` corpus re-keys that category's
+  rows; they were carried to their new ids mechanically, and rows on changed fixtures were triaged under the
+  decided classes (`benchmarks/ledger-decisions.json`) or recorded open.
+
+The corpus also adds one authored calibration row pair per family to
+`corpora/development/shadow-scoring-authored.json` and lists the five categories as
+development-evaluation in `tuning/shadow-scoring-development-v1.json`, as the calibration
+partition requires for every family with a measurable positive.
+
+## Beta.11 slices (#434)
+
+The same layout carries the Beta.11 corpus for the seven READY #860 Tier A credential families
+([#434](https://github.com/redact-secret/redact-secret-benchmarks/issues/434), counterpart of
+[#376](https://github.com/redact-secret/redact-secret-benchmarks/issues/376); product
+[redact-secret#860](https://github.com/redact-secret/redact-secret/issues/860)). The fixture index
+labels these corpora `beta.11`. One corpus key per product issue:
+
+| Key | Category | Families (arrival ids) | Handoff | Product issue |
+| --- | --- | --- | --- | --- |
+| `434a` | `beta8-434a` | `doppler-token` (`dp.st.`), `doppler-personal-token`, `doppler-cli-token`, `doppler-service-account-token`, `doppler-service-account-identity-token`, `doppler-scim-token`, `doppler-audit-token` | [doppler.md](https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md) | [#903](https://github.com/redact-secret/redact-secret/issues/903) |
+| `434b` | `beta8-434b` | `trigger-dev-token`, `trigger-dev-personal-access-token` | [trigger-dev.md](https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/trigger-dev.md) | [#904](https://github.com/redact-secret/redact-secret/issues/904) |
+| `434c` | `beta8-434c` | `e2b-api-key` | [e2b.md](https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/e2b.md) | [#905](https://github.com/redact-secret/redact-secret/issues/905) |
+| `434d` | `beta8-434d` | `posthog-token` (`phx_`), `posthog-project-secret-api-key` | [posthog.md](https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/posthog.md) | [#906](https://github.com/redact-secret/redact-secret/issues/906) |
+| `434e` | `beta8-434e` | `helicone-api-key` (`sk-`), `helicone-write-api-key` | [helicone.md](https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/helicone.md) | [#907](https://github.com/redact-secret/redact-secret/issues/907) |
+| `434f` | `beta8-434f` | `firecrawl-api-key` | [firecrawl.md](https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/firecrawl.md) | [#908](https://github.com/redact-secret/redact-secret/issues/908) |
+| `434g` | `beta8-434g` | `composio-api-key` (`ak_`), `composio-org-api-key`, `composio-user-api-key` | [composio.md](https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/composio.md) | [#909](https://github.com/redact-secret/redact-secret/issues/909) |
+
+Conventions specific to these slices:
+
+- **Independent of the product code.** Contracts and fixtures come from the frozen step-3 handoffs
+  (product commit `270faf8`) and the provider sources they cite, never from the product detector
+  branch. `benchmarks/lib/beta8/434-sources.ts` holds the shared citations.
+- **Arrival ids follow the handoff's detector ids.** Each handoff names one new detector per
+  provider. The family that detector's id describes (`doppler-token` for `dp.st.`,
+  `trigger-dev-token` for the environment secret key, `posthog-token` for `phx_`,
+  `helicone-api-key` for `sk-`, `composio-api-key` for `ak_`, and the three single-type families)
+  takes it as its arrival id and graduates on the registry re-pin. The eleven sibling types
+  share that detector under their own finding type, so after the re-pin they stay arrival
+  families scored by finding type (the GitHub model above), once `arrivalFindingTypes` records
+  the product's documented types.
+- **All eighteen are T1** with a `providerSource` and a `documented-24` profile: the per-type
+  Doppler regex page, provider generator and validator code and tests (ruling R1), and for
+  Composio a dated provider-staff statement (ruling R3). Rulings R6 (a code comment is T2, so
+  `uak_` + 20 is a length twin) and R8 (no alphabet narrowing from a third-party library, so
+  Helicone's base32 is a generator hint only) are applied as the handoffs record them.
+- **The nine index contexts.** Every family has a positive in each context of the handoff
+  index probe (bare prose, `ENV=`, `export`, `Authorization: Bearer`, `X-API-Key`, JSON
+  `"token"`, JSON `"api_key"`, an SDK keyword argument and a chat sentence;
+  `fixtures/generated/beta8/434-shared.mjs`), plus the family-specific contexts its handoff
+  lists.
+- **Public siblings are controls; other credentials are twins.** The PostHog `phc_` project
+  token, the Trigger.dev `pk_<env>_` public key, the `dp.st…` preview, `fc-` placeholders, CSS
+  classes and snake_case `ak_` identifiers are benign controls, authored outside
+  credential-named assignments so no generic detector would flag them. The retired `sk_e2b_`
+  token, bkend.ai's `ak_` + 64 hex, the legacy bare Helicone `sk-` and `-cp-` keys, a `pk_`
+  public key or `phc_` token in a secret's position, and `oak_`/`uak_`/`cak_` around an `ak_`
+  body are twins, scored as co-detection when another known family reports them.
+- **Accepted false positives are not authored.** An exact-width placeholder made only of
+  alphabet bytes (for example Helicone's all-`x` key) is claimed by the contract, so it is
+  neither a positive nor a benign control.
+
+### Peer lag at the pinned peers
+
+Recorded in each contract's `peer-lag` field and read from the pinned rule sources
+(trufflehog 3.97.4, gitleaks 8.30.1); corroboration only, never used to narrow or widen a contract.
+`scanners/families.mjs` maps trufflehog `Doppler` to `doppler-token`, trufflehog `PosthogApp`
+to `posthog-token` and gitleaks `doppler-api-token` to `doppler-personal-token`.
+
+| Family | trufflehog 3.97.4 | gitleaks 8.30.1 |
+| --- | --- | --- |
+| Doppler | `dp.(ct\|pt\|st[.segment]\|sa\|scim\|audit).` + 40–44: no `said` (GitHub secret scanning lists no `said` either) | `doppler-api-token`: `dp.pt.` + 43 only, case-insensitive |
+| PostHog | `phx_` + 43–48 of `[a-zA-Z0-9_]`: misses 42- and 49-byte keys, admits `_`, no `phs_` | none |
+| Trigger.dev, E2B, Helicone, Firecrawl, Composio | none (the staff-authored Composio PR #5322 is still open) | none |
+
+### Graduation at the 1127bf9 re-pin
+
+`benchmarks/detectors.json` is pinned to product main `1127bf9`, whose registry carries the thirteen #860 detectors.
+Each slice module keeps its authored contracts in one object and splits them with `splitGraduated`
+(`434-sources.ts`): the detector-id family's contract moves to `registryContracts`, the sibling types' contracts stay
+in `contracts` with their arrival ids. The taxonomy row of every family maps to its own id (the registry detector, or
+the scored arrival id), `scanners/families.mjs` lists the thirteen detector ids and the eleven sibling finding types,
+and each detector has the registry-wide `detector-coverage` minimum. The peer mappings #434 recorded (trufflehog
+`Doppler` and `PosthogApp`, gitleaks `doppler-api-token`) are unchanged; #436's deferred ones are added at graduation:
+gitleaks `1password-service-account-token` → `onepassword-service-account-token`, trufflehog `Apify` →
+`apify-api-token` and trufflehog `WeightsAndBiases` → `wandb-api-key` (its v1 legacy 40-hex key reports under the same
+label, as ElevenLabs v1 does). The graduation changed the beta8-434/436 fixture objects (`detectors` instead of
+`arrivalTargets`), so their ledger rows were carried to their new ids by structural identity, and the open
+differential rows were re-triaged against candidate `1127bf9` under the established classes (see
+`evidence/860/1127bf9/README.md`).
+
+## Beta.11 Tier B slices (#436)
+
+The same layout carries the #860 Tier B READY credential families
+([#436](https://github.com/redact-secret/redact-secret-benchmarks/issues/436); product parent
+[redact-secret#860](https://github.com/redact-secret/redact-secret/issues/860)). The fixture index labels
+these corpora `beta.11`. One corpus key per product issue, one family per key. Each contract is authored
+from the step-3 handoff frozen at product `54fe385` and the provider sources it cites, never from product
+detector code; `benchmarks/lib/beta8/436-sources.ts` carries the shared citations and
+`fixtures/generated/beta8/436-shared.mjs` the shared contract guard and the nine re-rank probe contexts.
+
+| Key | Category | Family (arrival id) | Handoff | Product issue |
+| --- | --- | --- | --- | --- |
+| `436a` | `beta8-436a` | `convex-deployment-key` | [convex.md](https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/convex.md) | [#912](https://github.com/redact-secret/redact-secret/issues/912) |
+| `436b` | `beta8-436b` | `onepassword-service-account-token` | [onepassword.md](https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/onepassword.md) | [#913](https://github.com/redact-secret/redact-secret/issues/913) |
+| `436c` | `beta8-436c` | `inngest-signing-key` | [inngest.md](https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/inngest.md) | [#914](https://github.com/redact-secret/redact-secret/issues/914) |
+| `436d` | `beta8-436d` | `resend-api-key` | [resend.md](https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/resend.md) | [#915](https://github.com/redact-secret/redact-secret/issues/915) |
+| `436e` | `beta8-436e` | `apify-api-token` | [apify.md](https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/apify.md) | [#916](https://github.com/redact-secret/redact-secret/issues/916) |
+| `436f` | `beta8-436f` | `wandb-api-key` | [wandb.md](https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/wandb.md) | [#917](https://github.com/redact-secret/redact-secret/issues/917) |
+
+All six are T1 families declared `documented-24`, authored as arrival families and registry detectors since the
+`1127bf9` re-pin (graduated as above). Conventions specific to these slices:
+
+- **Every positive in every probe context.** Each family has a positive in the nine contexts of the Tier B
+  re-rank probe (bare prose, `ENV=`, `export`, Bearer, `X-API-Key`, JSON `"token"`, JSON `"api_key"`, an SDK
+  keyword argument, a chat sentence) plus the handoff's own contexts (Compose, CI, MCP `env`, CLI, `.netrc`).
+- **Policy is not provider fact.** A bound the handoff sets as project policy is not asserted where the
+  provider's own rule disagrees or is silent: the Apify 128-byte cap (the provider linter is open-ended), the
+  Resend mixed-case guard (a random one-case body), a Convex name or slug outside the bounded class and the
+  Convex cloud `eyJ2` body (issuance-gated, ruling R4). The 1Password 250-byte floor is asserted, because the
+  documented field set makes a shorter token impossible and the handoff decides it.
+- **W&B length (orchestrator decision on redact-secret#917).** The docs say "about 86"; the product matches a
+  bounded tolerant range around it. Positives carry totals 85, 86 and 87 (86 in most), and no fixture asserts
+  silence on any length. A `wandb_v2_` value is not authored either way.
+- **Spans.** Convex's span is the whole key, name included (the provider joins `{name}|{encrypted}` into
+  one credential string). 1Password's span includes `=`/`==` padding. W&B's on-prem `local-` host label sits
+  in an authored envelope, so a finding with or without it passes.
+- **Lexical separability (#84).** A twin whose broken part leaves a contract-valid remainder is not authored:
+  the Convex `prod;` and leading-glue twins (the untyped `<name>|01…` after the `;` or `:` still matches), and
+  a trailing glue byte after a full-length 1Password body. The `+`, `/` and `=` 1Password twins sit early in
+  the body instead.
+- **Another family's credential is a twin, never a control:** the 1Password Connect JWT and the Resend
+  `whsec_` webhook secret.
+
+The corpus adds one authored calibration row pair per family to
+`corpora/development/shadow-scoring-authored.json` and lists the six categories as development-evaluation
+in `tuning/shadow-scoring-development-v1.json`.
+
+## Beta.11 family evidence (#379)
+
+[#379](https://github.com/redact-secret/redact-secret-benchmarks/issues/379) (parent
+[#376](https://github.com/redact-secret/redact-secret-benchmarks/issues/376)) adds category
+`beta8-379` (`fixtures/generated/beta8/379.mjs`, no contract module: every family already has its
+contract and profile). The fixture index labels it `beta.11`. It follows #377's frozen family/axis
+ledger (`docs/reports/2026-09-28/beta-11-family-axis-ledger.json`) for fifteen existing families and
+adds no family, contract, tier, status or floor. Conventions beyond the ones above:
+
+- **Independence is checked, not claimed.** Every positive has a value and a value-masked skeleton
+  that no earlier fixture of its family uses (`tests/beta11-family-evidence.test.mjs`), so
+  `npm run audit:independence` counts it as a new sample.
+- **Positives author the action.** Each positive sets `expectedAction: "redact"`, the ledger's
+  stated action; a `warn` finding is detection, not sanitization.
+- **Per-case rationale and ledger revisions live in the generator.** `RATIONALE` records each case's
+  contract, axis, rationale, twin basis and seed provenance; `REVISIONS` records every departure
+  from the ledger with its reason (sibling-family secrets as non-twin controls, values a
+  context-gated contract admits beside its gate, twins that mutate no contract property or are not
+  lexically separable, and one disputed property).
 
 ## Per-field provenance
 

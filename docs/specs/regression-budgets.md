@@ -49,7 +49,7 @@ report combines them into a score.
 | `latency` | same-job paired run (`paired.json` from `performance-evaluation.yml`) | `linux-x64-release`, same job, in-job baseline = the budgets' baseline commit | processing median, candidate/baseline ratio, per surface × workload profile; the p95 ratio is the tail check |
 | `initialization` | the same paired run | the same | initialization median ratio per surface × workload profile; the p95 ratio is the tail check |
 | `memory` | core `CompleteAssessment` summary (`performance-evaluation.yml`) | `linux-x64-release` | largest observed sample per surface × profile × observable category |
-| `size` | `benchmarks/operational-evidence.json` (#141) | `release-artifacts` | compressed WebAssembly per profile, the quickstart browser bundle, npm tarballs, native addons, wheels, CLI binaries |
+| `size` | WebAssembly: `wasm-sizes.json`, and the quickstart bundle: `quickstart-bundle.json`, both measured from the candidate's own build in `performance-evaluation.yml` (redact-secret#929, #937); the other families: `benchmarks/operational-evidence.json` (#141) | `release-artifacts` | compressed WebAssembly per profile (plus the optional pii builds, baseline-pending), what the quickstart browser bundle fetches, npm tarballs, native addons, wheels, CLI binaries |
 | `adapter-overhead` | the `redact-secret-adapters` overhead harnesses | the measuring host (platform, arch, CPU model, runtime line) | adapter traversal per host × workload, scanner calls per event, scanned code units per event |
 
 **Timing is judged on same-job paired ratios** (#303). The hosted runner's
@@ -64,6 +64,53 @@ initialization compared with the frozen snapshot are still reported, under
 a verdict. Memory and size stay absolute: the six-run study moved memory by
 at most 5.2%, inside every memory threshold and its 1 MiB floor, and sizes do
 not depend on the machine.
+
+**Every performance run judges the WebAssembly size rows**
+([redact-secret#929](https://github.com/redact-secret/redact-secret/issues/929)).
+The beta.10 run judged neither `size/wasm/*/gzip` row, because no size source
+was passed, and a common-profile growth shipped without a verdict. The
+workflow now also builds the candidate's `common` profile
+(`npm run wasm:build:common`) and, after the assessment,
+`scripts/measure-wasm-sizes.mjs` measures both profiles' `.wasm` files in that
+same checkout: raw, gzip level 9 and brotli quality 11 (the #141 method), with
+each file's sha256 and the checkout's commit. Only gzip is budgeted. `evaluate`
+rejects sizes measured at another commit. With `--summary` (a performance
+run) the `size/wasm/` rows are required: without `--wasm-sizes` they are
+`invalid-measurement` (exit 2), never `not-evaluated`. A size source that
+covers only WebAssembly leaves the other size families (npm tarballs, addons,
+wheels, CLI binaries, the browser bundle) `not-evaluated`, visibly counted in
+the report; those are cross-platform release artifacts one Linux job does not
+build.
+
+**The quickstart bundle row is what a default quickstart fetches**
+([redact-secret#937](https://github.com/redact-secret/redact-secret/issues/937)).
+From #937 on, each WebAssembly profile has a `pii` build beside its default
+one, and `@redact-secret/core` imports it only when `initialize()` selects
+PII. A bundler therefore emits it as a second, lazily loaded asset that a
+default page never downloads. `scripts/measure-quickstart-bundle.mjs` packs
+the job's build with core's own `scripts/pack-npm-candidate.mjs`, builds the
+browser lane of core's `docs/quickstart.md` at that commit with the bundler
+version it names, serves the output, and loads it in Chromium. It checks the
+page against the documented expected text and records which emitted files
+the server was asked for. `size/browser-bundle/quickstart/gzip` is the gzip
+total of the fetched files. The total of every emitted asset is reported as
+the diagnostic `size/browser-bundle/quickstart/emitted-gzip`, so a lazily
+loaded asset is never hidden, but it is never budgeted. The beta.7 quickstart
+build behind the baseline value had no lazily loaded asset, so its all-files
+total is its fetched total and the baseline is unchanged. With `--summary`
+this row is required like the WebAssembly rows: without `--quickstart-bundle`
+it is `invalid-measurement` (exit 2).
+
+**The pii builds are optional rows, baseline-pending.** `measure-wasm-sizes.mjs`
+also measures `full-pii` and `common-pii` (`<outName>_pii_bg.wasm`) when the
+checkout built them, both or neither. A commit from before the split builds
+neither, and its evidence says `piiBuilds: absent`. Their rows,
+`size/wasm/full-pii/gzip` and `size/wasm/common-pii/gzip`, are `optional`
+like `common`. The baseline snapshot never measured them, so `derive` gives
+them no trigger and no budget is invented for them. The report lists them
+under "Measured rows with no baseline yet" as `baseline-pending`, with the
+measured value and no verdict. They get a trigger from `rules.size` only when
+a baseline snapshot that carries them is promoted.
 
 **Detection** is reported next to them, never budgeted. A detection change is
 the benefit side of a tradeoff, not a cost.
@@ -202,11 +249,17 @@ promotion is invalid.
 ## Commands
 
 ```sh
-# Judge a candidate (any subset of sources; unsupplied dimensions are not evaluated).
+# Judge a candidate (any subset of sources; unsupplied dimensions are not evaluated,
+# except the wasm and quickstart-bundle size rows, which --summary requires).
 # Timing needs --paired; --summary alone judges memory and reports timing as informational.
 npm run performance:budgets:evaluate -- --summary <summary.json> --paired <paired.json> \
-  --operational <operational-evidence.json> --adapter <overhead-v1 output or series> \
+  --wasm-sizes <wasm-sizes.json> --quickstart-bundle <quickstart-bundle.json> --operational <operational-evidence.json> --adapter <overhead-v1 output or series> \
   --source-commit <40-hex> --json-out r.json --markdown-out r.md
+
+# the candidate build's wasm sizes (in performance-evaluation.yml, after both wasm profiles are built)
+node scripts/measure-wasm-sizes.mjs --core <core checkout> --source-commit <40-hex> --out wasm-sizes.json [--markdown-out wasm-sizes.md]
+# what the documented browser quickstart fetches (needs the job's addon, js and wasm builds, and core's Playwright Chromium)
+node scripts/measure-quickstart-bundle.mjs --core <core checkout> --source-commit <40-hex> --out quickstart-bundle.json [--markdown-out f.md] [--work-dir <dir>]
 
 npm run performance:budgets:check      # ledger, baseline history, derivation drift (CI: validate.yml)
 npm run performance:budgets:derive     # rewrite triggers after a new baseline or new noise evidence
@@ -222,8 +275,11 @@ npm run performance:noise -- --core-repo <redact-secret checkout> --python <pyth
 the pin manifest's revision) and the paired baseline (default: the budgets'
 baseline commit) in one job, records the runner's CPU model in `runner.json`,
 runs the candidate's absolute assessment for the acceptance criteria and
-memory, then the interleaved paired rounds. It then runs `evaluate` with
-`--summary` and `--paired` and adds the verdict to the job summary. Dispatch
+memory, measures the candidate's WebAssembly profiles and what its
+quickstart fetches, then the interleaved paired rounds. It then runs
+`evaluate` with `--summary`, `--paired`, `--wasm-sizes` and
+`--quickstart-bundle` and adds the verdict and both size tables to the job
+summary. Dispatch
 inputs `baseline_revision`, `candidate_revision` and `rounds` select other
 pairs. The same commit on both sides is an A/A run.
 

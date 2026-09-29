@@ -1,0 +1,443 @@
+{
+  "schemaVersion": 1,
+  "id": "pii-profile-cost-v2",
+  "issue": 428,
+  "supportClaims": false,
+  "inputs": {
+    "benchmarkBaseCommit": "e4bb1dd90f480f713ed33bbd1bd108992fe10ef0",
+    "candidateProductCommit": "8f97f14d97d73b76602e5396eea35d0a5a4f0eb3",
+    "candidateRole": "final",
+    "contextVocabulary": "pii-context/v2",
+    "distributionBaselineProductCommit": "f26dee26a9c2aa3cfff3543d784c02de5054de09",
+    "candidateQualificationRun": 36553444981,
+    "distributionBaselineQualificationRun": 36317349914,
+    "candidateInventorySha256": "6118d148732992dcd45208ba5449fd47532bf7269adc3fc0c9a3240ed63a197e",
+    "distributionBaselineInventorySha256": "c41b05aeaca64d6f877d6bfd3c5caf07b358905aad51c8f182f9e4f9ed121683",
+    "regressionBudgetId": "regression-budgets-v1",
+    "regressionBudgetBaseline": "0.1.0-beta.8"
+  },
+  "baselineSemantics": [
+    {
+      "id": "activation",
+      "question": "What does enabling each PII selection cost inside the exact final artifact?",
+      "baseline": "same-artifact-pii-off",
+      "verdictScope": "runtime-and-memory"
+    },
+    {
+      "id": "distribution",
+      "question": "How much did the shipped artifacts grow from the last pre-PII source commit?",
+      "baseline": "pre-pii-product-commit",
+      "verdictScope": "artifact-size"
+    },
+    {
+      "id": "regression-budget",
+      "question": "How does the candidate map onto the already-reviewed beta.9 budget policy?",
+      "baseline": "regression-budgets-v1",
+      "verdictScope": "policy-binding-only"
+    }
+  ],
+  "credentialProfiles": [
+    "full",
+    "common"
+  ],
+  "piiProfiles": [
+    {
+      "id": "off",
+      "selectors": [],
+      "families": []
+    },
+    {
+      "id": "global",
+      "selectors": [
+        "pii:global"
+      ],
+      "families": [
+        "pii:global:email",
+        "pii:global:iban",
+        "pii:global:network-address",
+        "pii:global:payment-card",
+        "pii:global:phone"
+      ]
+    },
+    {
+      "id": "us-ssn-exact",
+      "selectors": [
+        "pii:family:us:ssn"
+      ],
+      "families": [
+        "pii:us:ssn"
+      ]
+    },
+    {
+      "id": "us-jurisdiction",
+      "selectors": [
+        "pii:us"
+      ],
+      "families": [
+        "pii:global:email",
+        "pii:global:iban",
+        "pii:global:network-address",
+        "pii:global:payment-card",
+        "pii:global:phone",
+        "pii:us:ssn"
+      ]
+    },
+    {
+      "id": "beta10-full",
+      "selectors": [
+        "pii:family:us:ssn",
+        "pii:global"
+      ],
+      "families": [
+        "pii:global:email",
+        "pii:global:iban",
+        "pii:global:network-address",
+        "pii:global:payment-card",
+        "pii:global:phone",
+        "pii:us:ssn"
+      ],
+      "equivalentProfileOf": "us-jurisdiction"
+    }
+  ],
+  "jurisdictionComparison": {
+    "status": "not-applicable",
+    "reasonCode": "no-second-registered-jurisdiction",
+    "registeredJurisdictions": [
+      "us"
+    ],
+    "policyIssue": "https://github.com/redact-secret/redact-secret/issues/795"
+  },
+  "workloads": {
+    "contract": "qualification/pii-profile-cost-workloads-v1.json",
+    "required": [
+      "validator-heavy",
+      "multilingual-context"
+    ],
+    "rawInputPlacement": "reviewed-plan-only",
+    "publicEvidence": "commitments-and-aggregate-metrics-only"
+  },
+  "surfaces": [
+    {
+      "id": "rust-native",
+      "credentialProfiles": [
+        "full",
+        "common"
+      ],
+      "execution": "exact-source-release-helper",
+      "memory": [
+        "processPeakRss",
+        "processRetainedRss"
+      ]
+    },
+    {
+      "id": "node-native",
+      "credentialProfiles": [
+        "full",
+        "common"
+      ],
+      "execution": "installed-candidate-native-addon",
+      "memory": [
+        "nodePeakRss",
+        "nodeRetainedRss",
+        "nodeRetainedHeap",
+        "nodeRetainedExternal"
+      ],
+      "unavailableMemory": [
+        {
+          "metric": "nodePeakHeap",
+          "status": "not-applicable",
+          "reasonCode": "runtime-exposes-no-continuous-heap-high-water-mark"
+        },
+        {
+          "metric": "nodePeakExternal",
+          "status": "not-applicable",
+          "reasonCode": "runtime-exposes-no-continuous-external-high-water-mark"
+        }
+      ]
+    },
+    {
+      "id": "node-wasm",
+      "credentialProfiles": [
+        "full",
+        "common"
+      ],
+      "execution": "installed-candidate-forced-wasm",
+      "memory": [
+        "nodePeakRss",
+        "nodeRetainedRss",
+        "nodeRetainedHeap",
+        "nodeRetainedExternal"
+      ],
+      "unavailableMemory": [
+        {
+          "metric": "nodePeakHeap",
+          "status": "not-applicable",
+          "reasonCode": "runtime-exposes-no-continuous-heap-high-water-mark"
+        },
+        {
+          "metric": "nodePeakExternal",
+          "status": "not-applicable",
+          "reasonCode": "runtime-exposes-no-continuous-external-high-water-mark"
+        }
+      ]
+    },
+    {
+      "id": "chromium-wasm",
+      "credentialProfiles": [
+        "full",
+        "common"
+      ],
+      "execution": "installed-candidate-browser-wasm",
+      "memory": [
+        "browserRetainedJsHeap"
+      ],
+      "unavailableMemory": [
+        {
+          "metric": "browserPeakJsHeap",
+          "status": "not-applicable",
+          "reasonCode": "cdp-checkpoints-do-not-prove-js-heap-peak"
+        },
+        {
+          "metric": "wasmLinearMemory",
+          "status": "not-applicable",
+          "reasonCode": "public-binding-does-not-expose-memory-handle"
+        }
+      ]
+    },
+    {
+      "id": "python",
+      "credentialProfiles": [
+        "full"
+      ],
+      "execution": "qualified-candidate-wheel",
+      "memory": [
+        "processPeakRss",
+        "processRetainedRss",
+        "pythonPeakHeap",
+        "pythonRetainedHeap"
+      ],
+      "unavailableCredentialProfiles": [
+        {
+          "profile": "common",
+          "status": "not-applicable",
+          "reasonCode": "binding-has-no-common-entrypoint"
+        }
+      ]
+    },
+    {
+      "id": "cli",
+      "credentialProfiles": [
+        "full"
+      ],
+      "execution": "qualified-candidate-cli-binary",
+      "memory": [
+        "processPeakRss"
+      ],
+      "unavailableCredentialProfiles": [
+        {
+          "profile": "common",
+          "status": "not-applicable",
+          "reasonCode": "surface-has-no-common-profile-option"
+        }
+      ],
+      "unavailableMetrics": [
+        {
+          "metric": "incremental",
+          "status": "not-applicable",
+          "reasonCode": "surface-has-no-incremental-api"
+        }
+      ],
+      "unavailableMemory": [
+        {
+          "metric": "processRetainedRss",
+          "status": "not-applicable",
+          "reasonCode": "one-shot-process-has-no-post-operation-retained-state"
+        }
+      ]
+    }
+  ],
+  "runtimeMetrics": [
+    "import",
+    "initialize",
+    "whole-input",
+    "incremental",
+    "throughput"
+  ],
+  "sampleProtocol": {
+    "environment": "github-hosted-ubuntu-24.04-x86_64-release",
+    "minimumSamplesPerSide": 12,
+    "warmupSamples": 2,
+    "processIsolation": "fresh-process-per-sample",
+    "pairing": "same-job",
+    "roundOrder": "ABBA",
+    "aaRunsRequiredBeforeCandidate": 3,
+    "cpuModelRequired": true,
+    "candidateBlockedUntilThresholdFreeze": true,
+    "transientRetryLimit": 2
+  },
+  "officialLinuxExecution": {
+    "runner": "github-hosted-ubuntu-24.04-x86_64",
+    "playwrightVersion": "1.55.0",
+    "chromiumRevision": 1187,
+    "artifactAcquisition": "qualification-run-artifact-digest-and-inventory-verified",
+    "runtimePreparation": [
+      "exact-source-rust-release-helper",
+      "qualified-node-native-install",
+      "qualified-node-forced-wasm-install",
+      "qualified-browser-full-and-common-wasm",
+      "qualified-python-manylinux-x86_64-wheel",
+      "qualified-cli-x86_64-linux-gnu"
+    ],
+    "phases": [
+      "reviewed-freeze-commit",
+      "three-distinct-full-matrix-aa-runs",
+      "threshold-freeze-from-aa-only",
+      "candidate-full-matrix-with-frozen-thresholds",
+      "distribution-size-collection",
+      "sanitized-evidence-validation"
+    ],
+    "phaseIsolation": "candidate-phase-cannot-write-thresholds",
+    "cpuIdentity": "recorded-per-run",
+    "rawInputs": "generated-in-memory-from-reviewed-workload-plan"
+  },
+  "thresholdPolicy": {
+    "source": "benchmarks/lib/regression-budgets.ts#RULES",
+    "latency": {
+      "medianRelative": "ceil5(max(0.10,2*largest-aa-median-deviation))",
+      "tailRelative": "ceil5(max(0.15,2*largest-aa-p95-deviation))",
+      "absoluteFloorMilliseconds": 1,
+      "minimumSamples": 10
+    },
+    "initialization": {
+      "medianRelative": "ceil5(max(0.25,2*largest-aa-median-deviation))",
+      "tailRelative": "ceil5(max(0.50,2*largest-aa-p95-deviation))",
+      "absoluteFloorMilliseconds": 2,
+      "minimumSamples": 10
+    },
+    "memory": {
+      "relative": "ceil5(max(0.10,2*max(ci-cross-run-spread,rerun-spread)))",
+      "absoluteFloorBytes": 1048576,
+      "minimumSamples": 5
+    },
+    "size": {
+      "relative": 0.05,
+      "compressedAndNpmFloorBytes": 4096,
+      "nativeFloorBytes": 16384,
+      "minimumSamples": 1
+    },
+    "throughput": {
+      "verdict": "informational",
+      "reasonCode": "regression-budget-v1-has-no-independent-throughput-trigger"
+    }
+  },
+  "artifactRoster": {
+    "qualificationFamilies": [
+      "browser",
+      "browser-common",
+      "cli",
+      "crate",
+      "node-addon",
+      "python-sdist",
+      "python-wheel"
+    ],
+    "npmPackages": [
+      "core",
+      "node",
+      "wasm"
+    ],
+    "browserBundle": [
+      "full",
+      "common"
+    ],
+    "wasmCompression": [
+      "raw",
+      "gzip-9",
+      "brotli-11"
+    ],
+    "requireExactBaselineCandidateRoster": true,
+    "candidateOnlyPiiArtifacts": "reported apart, without a pre-existing budget (redact-secret#937)"
+  },
+  "evidenceSafety": {
+    "forbiddenKeys": [
+      "candidate",
+      "content",
+      "fixture",
+      "input",
+      "raw",
+      "secret",
+      "value"
+    ],
+    "forbiddenText": [
+      "SYNTHETIC-PERSON-ID",
+      "890-62-6879",
+      "4111111111111111"
+    ],
+    "supportClaim": "none"
+  },
+  "implementationFreeze": {
+    "algorithm": "sha256-file-bytes",
+    "files": [
+      {
+        "path": ".github/workflows/pii-profile-cost-v2.yml",
+        "sha256": "bd117f73a4da02bfc0dc91ec00a5da1fb76bc1858660c0a6b79be20d00244064"
+      },
+      {
+        "path": "benchmarks/evaluation/domains/pii/profile-cost-v2.ts",
+        "sha256": "d18a89319d43b6a164b4ddb0e2910cc2c97aba63336d0ea1b90ecacfa453c2c2"
+      },
+      {
+        "path": "scripts/build-pii-profile-cost-browser-bundle-v2.mjs",
+        "sha256": "15e4f10867716f4ed22515b2776a8afd5287326622467a492c87048c60aa1adc"
+      },
+      {
+        "path": "scripts/collect-pii-profile-cost-sizes-v2.mjs",
+        "sha256": "2bcaec3c7bc85d99ae7178a2b5dc9b73d87f586388580ba3b04c881ff729e5c6"
+      },
+      {
+        "path": "scripts/freeze-pii-profile-cost-thresholds-v2.mjs",
+        "sha256": "9b7fe76e51f815dc94b34b84175d5efe1528bc26de15fc02458a86b302c3e9ba"
+      },
+      {
+        "path": "scripts/measure-pii-profile-cost-v2.mjs",
+        "sha256": "08bd74a42f7405ad8c6320eecd21515c96b67f2a297bbfca7503a0ba25dff7a7"
+      },
+      {
+        "path": "scripts/prepare-pii-profile-cost-linux-v2.mjs",
+        "sha256": "d88c7e1138b34ca696fed4161a14bea19f78c2efdcef8dce6e717396c1ea9e44"
+      },
+      {
+        "path": "scripts/prepare-pii-profile-cost-size-config-v2.mjs",
+        "sha256": "31d4a8bdd211584fe596c011b8c5710c48d814da460c38b38adcdaba7963220c"
+      },
+      {
+        "path": "scripts/pii-profile-cost/adapter-protocol.mjs",
+        "sha256": "a9ef1c30aa54fef6669c9762590199429ee45dddffa4dedb70cc5adb51313176"
+      },
+      {
+        "path": "scripts/pii-profile-cost/chromium-sample-v2.mjs",
+        "sha256": "1dd1f270d84898d23716f4e7fb45cc338a4c4344e024ff57b5cfd58fdb2c8373"
+      },
+      {
+        "path": "scripts/pii-profile-cost/cli-sample.mjs",
+        "sha256": "d20467fa05522e06643407a3955d7b66cb94f6b20ae1f83cdc081bc6554cdd9e"
+      },
+      {
+        "path": "scripts/pii-profile-cost/node-sample.mjs",
+        "sha256": "78466284f0378c4bf66c37887a55c5da2ffb4a8a3d25768cd6198e421ca6a482"
+      },
+      {
+        "path": "scripts/pii-profile-cost/python-sample.py",
+        "sha256": "5bdf8f2b528b5e6bbef9662176591ece69a65b72765e157b0d07dc8de370e5e1"
+      },
+      {
+        "path": "scripts/pii-profile-cost/rust-sample.rs",
+        "sha256": "4837989376ad704ab9aeb76c39acbb74ed7c0eb0ba2b691d1cd12d03e8fa9f60"
+      },
+      {
+        "path": "tests/pii-profile-cost-v2.test.mjs",
+        "sha256": "fe5d513f3875ff44ee80047c50e9a18d59b73bdb03120c55d14837793572c110"
+      }
+    ]
+  },
+  "contentCommitment": "96fc24b17e2bdd0b6fd2020409092a49edcebd1335bfc7ab0a0f5219cda5a612"
+}

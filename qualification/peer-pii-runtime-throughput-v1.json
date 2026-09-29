@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "id": "peer-pii-runtime-throughput-v1",
+  "issue": 429,
+  "supportClaims": false,
+  "purpose": "Informational-only peer comparison of runtime PII-redaction throughput (redact-secret vs. flare-redact vs. OpenRedaction) on identical synthetic PII workloads. Never a regression gate; never asserts a product ranking (AGENTS.md Boundary rule). Independent of qualification/pii-profile-cost-v1.json (#286), which is a self-referential redact-secret off/enabled A/B with a frozen regression gate.",
+  "workloadsRef": {
+    "id": "pii-profile-cost-workloads-v1",
+    "path": "qualification/pii-profile-cost-workloads-v1.json",
+    "contentCommitment": "4d3f64079cd0278b2aa042bdc1bdf3f3b5357099057a886f45a1747c64d284e9"
+  },
+  "safety": {
+    "realPersonOrAccountProvenance": false,
+    "rawInputPublication": "plan-only",
+    "evidenceProjection": "commitment-only"
+  },
+  "tools": [
+    {
+      "id": "redact-secret",
+      "package": "@redact-secret/core",
+      "provenance": "local-source-build",
+      "call": "scanAndRedact",
+      "async": false,
+      "piiSelectors": [
+        "pii:global"
+      ]
+    },
+    {
+      "id": "flare-redact",
+      "package": "flare-redact",
+      "provenance": "published-npm-package",
+      "call": "redact",
+      "async": false,
+      "options": {}
+    },
+    {
+      "id": "openredaction",
+      "package": "@openredaction/core",
+      "provenance": "published-npm-package",
+      "call": "detect",
+      "async": true,
+      "options": {}
+    }
+  ],
+  "sampleProtocol": {
+    "environment": "local-development-or-github-hosted-linux-x64",
+    "samplesPerCell": 12,
+    "warmupSamples": 2,
+    "processIsolation": "in-process-same-node-process",
+    "order": "round-robin-per-tool"
+  },
+  "thresholdPolicy": {
+    "verdict": "informational"
+  },
+  "implementationFreeze": {
+    "algorithm": "sha256-file-bytes",
+    "files": [
+      {
+        "path": "benchmarks/evaluation/domains/pii/peer-runtime-throughput.ts",
+        "sha256": "64a9d1c63904cc3744e590f744eb19359cce14a77a9591771da0ef3a75f164da"
+      },
+      {
+        "path": "scripts/measure-peer-pii-runtime-throughput.mjs",
+        "sha256": "32901ea489f974053a24f4aaced83fb46486407c05fccc56e51f5619c40e4560"
+      },
+      {
+        "path": "scripts/peer-pii-runtime-throughput/adapters.mjs",
+        "sha256": "75f39fa73d32f4987678fbccbbc5d5d903c47d98674ddd6d504cfec4b009bffa"
+      },
+      {
+        "path": "tests/peer-pii-runtime-throughput.test.mjs",
+        "sha256": "3cf44c6ca111f3ee1f6293008283abfcbdc04cad429211cb95ff354cfe799a12"
+      }
+    ]
+  },
+  "contentCommitment": "d1e14a01c355ec73c03cc7b3f6f5f8c298a7a6ee9614041e156d883d467456b5"
+}

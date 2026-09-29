@@ -4,6 +4,7 @@ import { taxonomy, type Family } from './taxonomy.ts';
 import { contracts } from '../lib/assessment.ts';
 import type { FixtureProfileReport } from './profiles.ts';
 import fixtureIndex from '../fixture-index.json';
+import type { PolicyBehaviorAggregate } from './policy-qualified.ts';
 
 /**
  * Support matrix (issue #509, A8). Projects A3's per-detector evidence
@@ -48,6 +49,7 @@ export interface SupportStatusFamilyResult {
     totalFixtures: number;
     contextTwinPairs: number;
     confusionAxes: number;
+    policyQualification: PolicyBehaviorAggregate | null;
   };
   fixtureProfile: FixtureProfileReport;
   unprobeable: { reason: string; observedAt: string } | null;
@@ -89,6 +91,7 @@ export interface SupportMatrixEntry {
   twinCoverage: { pairs: number; failures: number; unprobeable: { reason: string; observedAt: string } | null } | null;
   unresolvedCriticalItems: { metamorphic: number; mutation: number; differential: number } | null;
   empiricalEvidence: { observations: number; subjects: number; issuanceDates: number; corroborationReferences: number; corroborationOwners: number; corroborationClasses: string[]; contradictions: number; boundedContradictions: number; uncertainty: string | null; supportedContexts: string[]; mode: 'shape' | 'context-constrained' | null; supportsBareValues: boolean } | null;
+  policyQualification: PolicyBehaviorAggregate | null;
   fixtureProfile: { positiveCases: number; positiveAxes: number; benignCases: number; controlAxes: number; twinPairs: number; totalFixtures: number; contextTwinPairs: number; confusionAxes: number } | null;
   /** Registered detector(s) whose evidence decided this entry; empty when no detector exists. */
   detectors: string[];
@@ -109,9 +112,9 @@ function undetectedEntry(family: Family): SupportMatrixEntry {
   const reason = [family.note, provenance].filter(Boolean).join(' ');
   if (!reason) throw new Error(`Taxonomy family ${family.id} has no detector and no note or sources — refusing to default it to a friendly status.`);
   return {
-    provider: family.provider, family: family.id, familyName: family.name, status: 'unsupported',
+    provider: family.provider, family: family.id, familyName: family.name, status: family.supportStatus ?? 'unsupported',
     evidenceTier: null, evidenceBasis: 'none', qualificationProfile: null, providerSource: null, corroboratingScanners: [], twinCoverage: null,
-    unresolvedCriticalItems: null, empiricalEvidence: null, fixtureProfile: null, profileCoverage: null, detectors: [], reason,
+    unresolvedCriticalItems: null, empiricalEvidence: null, policyQualification: null, fixtureProfile: null, profileCoverage: null, detectors: [], reason,
   };
 }
 
@@ -139,6 +142,7 @@ function detectedEntry(family: Family, result: SupportStatusFamilyResult): Suppo
       supportedContexts: result.evidence.supportedContexts, mode: result.evidence.empiricalMode,
       supportsBareValues: result.evidence.supportsBareValues,
     },
+    policyQualification: result.evidence.policyQualification,
     fixtureProfile: {
       positiveCases: result.evidence.positiveCases, positiveAxes: result.evidence.positiveAxes,
       benignCases: result.evidence.benignCases, controlAxes: result.evidence.controlAxes,
@@ -156,6 +160,9 @@ function detectedEntry(family: Family, result: SupportStatusFamilyResult): Suppo
  * — a detector-bearing family missing from `statusReport`, one claimed by two
  * different detector results, or a zero-detector family with no recorded
  * reason — throws rather than defaulting to a friendly status (#509).
+ * A zero-detector taxonomy row is unsupported by default; an explicit
+ * `supportStatus: pending` records a blocked contract whose disposition is
+ * not yet an unsupported decision (#373).
  */
 export function buildSupportMatrix(statusReport: SupportStatusReport): SupportMatrix {
   if (statusReport.fixtureIndex?.digest !== fixtureIndex.identity.digest || statusReport.fixtureIndex?.fixtureCount !== fixtureIndex.identity.fixtureCount)
@@ -184,6 +191,7 @@ export function buildSupportMatrix(statusReport: SupportStatusReport): SupportMa
   const stableDistribution = {
     documented: families.filter(family => family.status === 'stable' && family.qualificationProfile === 'documented').length,
     empirical: families.filter(family => family.status === 'stable' && family.qualificationProfile === 'empirical').length,
+    'policy-qualified': families.filter(family => family.status === 'stable' && family.qualificationProfile === 'policy-qualified').length,
   };
   return { distribution, stableDistribution, families };
 }

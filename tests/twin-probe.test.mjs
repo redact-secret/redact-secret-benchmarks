@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
-import { contracts, classifyFixture, validateAssessment, validateContracts, MUTATION_KINDS, arrivalIds } from '../benchmarks/lib/assessment.ts';
+import { contracts, classifyFixture, validateAssessment, validateContracts, MUTATION_KINDS, arrivalIds, disputedProperty } from '../benchmarks/lib/assessment.ts';
 import { validateCorpus } from '../benchmarks/lib/scoring.ts';
 import { twinProbe } from '../benchmarks/lib/twin-probe.ts';
 
@@ -12,7 +12,8 @@ const generated = buildCorpora();
 const handwritten = { accuracy: await read('fixtures/accuracy/corpus.json'), 'token-contexts': await read('fixtures/token-contexts/corpus.json') };
 const fixtures = Object.entries({ ...generated, ...handwritten }).flatMap(([category, c]) => c.fixtures.map(f => ({ ...f, category })));
 // Registry-detector twins; arrival-family twins (#207–#212) carry no detector and are checked in tests/beta8.test.mjs.
-const twins = fixtures.filter(f => f.twinOf && f.detectors?.length);
+// A twin re-scoped off a disputed property (DISPUTED_PROPERTIES) asserts nothing, so it is not evidence for a dimension.
+const twins = fixtures.filter(f => f.twinOf && f.detectors?.length && !disputedProperty(f.category, f.id));
 const bytesOf = (f, r) => Buffer.from(f.content).subarray(r.start, r.end).toString();
 
 // The 22 families issue #36 found with no twin anywhere in the corpus.
@@ -61,7 +62,8 @@ test('a context twin keeps the value byte-for-byte, changes only its surrounding
   // #207: the context-gated families (no bare-value claim) gained context twins in beta8-207;
   // #213 (213d) added two for the context-gated legacy Datadog application key, and 213e eight more.
   // #259 added two for travisci-api-token (registry detector since the 3144bb3 pin).
-  assert.deepEqual([...new Set(context.map(t => t.detectors[0]))].sort(), ['bearer-token', 'confluent-cloud-api-secret-legacy', 'connection-string', 'datadog-application-key-legacy', 'generic-token', 'heroku-api-key-legacy', 'travisci-api-token', 'twilio-api-key-secret', 'twilio-auth-token']);
+  // #384: the four keyword-gated families (mistral, cohere, deepgram, ai21) graduated at the cfe2aec pin with their beta8-384e context twins.
+  assert.deepEqual([...new Set(context.map(t => t.detectors[0]))].sort(), ['ai21-api-key', 'bearer-token', 'cohere-api-key', 'confluent-cloud-api-secret-legacy', 'connection-string', 'datadog-application-key-legacy', 'deepgram-api-key', 'generic-token', 'heroku-api-key-legacy', 'mistral-api-key', 'travisci-api-token', 'twilio-api-key-secret', 'twilio-auth-token']);
   for (const t of context) {
     const positive = fixtures.find(f => f.category === t.category && f.id === t.twinOf);
     const value = bytesOf(positive, positive.expected[0]);
@@ -132,7 +134,8 @@ const T1_DIMENSIONS = {
   'gitlab-token': ['length', 'prefix'],
   'shopify-token': ['prefix', 'boundary'],
   'vault-token': ['length', 'prefix', 'boundary'],
-  'stripe-token': ['public-prefix', 'boundary'],
+  // #379 adds a prefix twin on the documented sk_live_ separator (sk-live-).
+  'stripe-token': ['public-prefix', 'boundary', 'prefix'],
   'slack-token': ['boundary', 'prefix'],
   // #107: docs.pypi.org/api/secrets documents the pypi- prefix, an {85,}
   // length floor and an [A-Za-z0-9-_] character class, backing length and
@@ -186,7 +189,8 @@ const T1_DIMENSIONS = {
   'docker-token': ['length', 'prefix'],
   'huggingface-token': ['length', 'prefix'],
   'microsoft-entra-client-secret': ['length', 'boundary'],
-  'new-relic-license-key': ['length', 'boundary'],
+  // #379 adds a prefix-kind twin on the provider-documented NRAL literal (FFFFNRAL -> FFFFNRAI).
+  'new-relic-license-key': ['length', 'boundary', 'prefix'],
   // Beta.8 #208 families, registry detectors since redact-secret#727 (graduated from arrival
   // families): Replicate states the r8_ prefix and 40-character total, OpenRouter the sk-or-v1-
   // prefix and 64-lowercase-hex body; their beta8-208 twins mutate those plus a non-word body
@@ -196,6 +200,32 @@ const T1_DIMENSIONS = {
   // Beta.8 #212 (registry detector since redact-secret#730): Fireworks documents only the fw_
   // prefix; its beta8-212 twins mutate that prefix and its underscore delimiter.
   'fireworks-ai-api-key': ['boundary', 'prefix'],
+  // Beta.10 #384 families, registry detectors since redact-secret#864/#865 (cfe2aec), T1 by the maintainer rulings of 2026-09-27
+  // (redact-secret#778, #779, #788) for the prefix and alphabet only. Bedrock long-term: ABSK prefix, standard-Base64 alphabet (a URL-safe
+  // body and a leading = are the alphabet twins), plus the embedded boundary. Bedrock short-term: the bedrock-api-key- prefix, the fixed
+  // 133-character head (a head one character off is a prefix twin) and the alphabet. ElevenLabs: only the sk_ prefix and its boundary;
+  // the 48-hex body twins are recorded in DISPUTED_PROPERTIES and excluded above.
+  'aws-bedrock-long-term-api-key': ['alphabet', 'boundary', 'prefix'],
+  // The short-term head-only twin (prefix and fixed head, empty body) is a length twin that rests only on the blog pattern's non-empty `+` body,
+  // not on any total length, which the ruling leaves T2.
+  'aws-bedrock-short-term-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'elevenlabs-api-key': ['boundary', 'prefix'],
+  // Beta.11 #434/#436 families, registry detectors since the 1127bf9 re-pin (redact-secret#903-#909, #912-#917). Each T1
+  // contract states a prefix, a width and an alphabet, and the handoff bounds a match on both sides, so its beta8-434*/436*
+  // twins mutate all four. W&B has no length twin: the documented length is "about 86" and no length is asserted (#917).
+  'doppler-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  'trigger-dev-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  'e2b-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'posthog-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  'helicone-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'firecrawl-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'composio-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'convex-deployment-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'onepassword-service-account-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  'inngest-signing-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'resend-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'apify-api-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  'wandb-api-key': ['alphabet', 'boundary', 'prefix'],
 };
 
 test('every T1 ("stable"-track) family has a twin for each structural dimension its provider source asserts', () => {
@@ -218,5 +248,5 @@ test('on the real corpus no family is left unrecorded', () => {
   const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: `${f.category}--${f.id}`, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), undefined, contracts);
   assert.equal(probe.counts.unrecorded, 0);
   assert.equal(probe.counts['un-probeable'], 1);
-  assert.equal(probe.counts['not-measured'], 69);
+  assert.equal(probe.counts['not-measured'], 91);
 });

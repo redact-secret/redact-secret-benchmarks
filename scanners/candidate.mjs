@@ -58,11 +58,28 @@ async function nodePackageName(tarball) {
 // `actions` carries the product policy action (#95) on each finding, as the
 // published adapter does; `bench` needs it for scoreRow's actionCounts. Off by
 // default so eval:candidate and eval:classify output is unchanged.
-export async function loadCandidate(installation, ruleset, { actions = false } = {}) {
+/**
+ * The PII identity of a product `pii-domain` finding. The product derives the
+ * type from the family id (`pii:global:network-address` → `pii_global_network_address`,
+ * `pii:us:ssn` → `pii_jurisdiction_us_ssn`) and family slugs never contain `_`,
+ * so the inverse is exact. A PII finding is the product's redaction decision,
+ * so it reads as a sensitive classification. Credential runs never activate PII,
+ * so this does not change their findings or the candidate configuration.
+ */
+export function piiFindingIdentity(type) {
+  const global = /^pii_global_([a-z0-9]+(?:_[a-z0-9]+)*)$/.exec(type);
+  if (global) return { family: `pii:global:${global[1].replaceAll('_', '-')}`, sensitive: true };
+  const local = /^pii_jurisdiction_([a-z]{2})_([a-z0-9]+(?:_[a-z0-9]+)*)$/.exec(type);
+  if (local) return { family: `pii:${local[1]}:${local[2].replaceAll('_', '-')}`, jurisdiction: local[1].toUpperCase(), sensitive: true };
+  return null;
+}
+
+export async function loadCandidate(installation, ruleset, { actions = false, pii = [] } = {}) {
   try {
     const module = await import(`${pathToFileURL(path.join(installation.root, 'node_modules/@redact-secret/core/dist/index.js')).href}?candidate=${Date.now()}`);
     if (typeof module.initialize !== 'function' || typeof module.scan !== 'function') throw new Error('api');
-    await module.initialize();
+    if (!Array.isArray(pii) || pii.some(selector => typeof selector !== 'string')) throw new Error('pii-selectors');
+    await module.initialize(pii.length ? { pii } : undefined);
     const options = ruleset ? { ruleset } : undefined;
     return {
       version: typeof module.VERSION === 'string' ? module.VERSION : installation.declaredVersion,
@@ -76,7 +93,8 @@ export async function loadCandidate(installation, ruleset, { actions = false } =
             path: fixture.path,
             start: Buffer.byteLength(text.slice(0, finding.start)),
             end: Buffer.byteLength(text.slice(0, finding.end)),
-            ...findingFamily('redact-secret', finding.detector, finding.type),
+            ...(finding.detector === 'pii-domain' && piiFindingIdentity(finding.type) ? piiFindingIdentity(finding.type) :
+              findingFamily('redact-secret', finding.detector, finding.type)),
             ...(actions && finding.action !== undefined ? { action: finding.action } : {}),
           });
         }

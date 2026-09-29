@@ -44,18 +44,38 @@ test('distribution sums to the taxonomy family count', () => {
   assert.equal(total, families.length);
 });
 
-test('a zero-detector taxonomy family is unsupported with a non-null reason and no evidence fields', () => {
+test('a zero-detector taxonomy family has its recorded disposition, a non-null reason and no evidence fields', () => {
   const { families } = buildSupportMatrix(fullStatusReport());
   const undetected = families.filter(f => f.detectors.length === 0);
   assert.ok(undetected.length > 0);
   for (const entry of undetected) {
-    assert.equal(entry.status, 'unsupported');
+    const family = taxonomy.families.find(candidate => candidate.id === entry.family);
+    assert.equal(entry.status, family.supportStatus ?? 'unsupported');
     assert.ok(entry.reason && entry.reason.trim().length > 0, `${entry.family} has no reason`);
     assert.equal(entry.evidenceTier, null);
     assert.equal(entry.providerSource, null);
     assert.equal(entry.twinCoverage, null);
     assert.equal(entry.unresolvedCriticalItems, null);
     assert.deepEqual(entry.corroboratingScanners, []);
+  }
+});
+
+test('#373: blocked Vercel families are pending and carry no aggregate evidence or profile', () => {
+  const { families } = buildSupportMatrix(fullStatusReport());
+  const modern = families.filter(entry => [
+    'vercel:personal-access-token',
+    'vercel:integration-token',
+    'vercel:app-access-token',
+    'vercel:app-refresh-token',
+    'vercel:api-key',
+  ].includes(entry.family));
+  assert.equal(modern.length, 5);
+  for (const entry of modern) {
+    assert.equal(entry.status, 'pending');
+    assert.deepEqual(entry.detectors, []);
+    assert.equal(entry.evidenceTier, null);
+    assert.equal(entry.fixtureProfile, null);
+    assert.equal(entry.profileCoverage, null);
   }
 });
 
@@ -97,7 +117,8 @@ test('throws rather than defaulting when support-status.json is stale relative t
 
 test('throws when two detector results claim the same taxonomy family', () => {
   const report = fullStatusReport();
-  const [a, b] = report.families;
+  // Arrival families (no registry detector, e.g. ai21-api-key from #384) carry no taxonomy family; pick two that do.
+  const [a, b] = report.families.filter(f => f.taxonomyFamilies.length);
   b.taxonomyFamilies = [...b.taxonomyFamilies, a.taxonomyFamilies[0]];
   assert.throws(() => buildSupportMatrix(report), /claimed by more than one detector result/);
 });

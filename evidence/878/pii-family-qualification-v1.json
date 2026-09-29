@@ -1,0 +1,627 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-family-qualification",
+  "supportClaims": false,
+  "family": "pii:global:iban",
+  "product": {
+    "repository": "redact-secret/redact-secret",
+    "sourceCommit": "c810623a3348da3b15cb06dc4e13bf5c39113154",
+    "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+    "candidateEvidenceCommitment": "83bda533b5657d1073d8f291f6d56228896d9541eae02e6082f9207b2bda3789"
+  },
+  "activationArtifactCommitment": "87bd16b4d7f3e1c072fc25e4ba7d9928f0faafc80f29a61defd3ea0badebc3c9",
+  "planCommitment": "9ead94bd2da5df320d8a7fa44a8838c6449769bfc6d4e9fad69732b2bb400f6e",
+  "profile": {
+    "id": "pii-v1",
+    "version": 1
+  },
+  "gates": [
+    {
+      "id": "exact-candidate-artifact",
+      "status": "met"
+    },
+    {
+      "id": "selector-global-closure",
+      "status": "met"
+    },
+    {
+      "id": "selector-exact-family",
+      "status": "met"
+    },
+    {
+      "id": "cross-surface-determinism",
+      "status": "met"
+    },
+    {
+      "id": "sensitive-public-findings",
+      "status": "met"
+    },
+    {
+      "id": "public-absence-controls",
+      "status": "met"
+    },
+    {
+      "id": "identity-only-classification",
+      "status": "unresolved"
+    },
+    {
+      "id": "exact-source-conformance",
+      "status": "met"
+    },
+    {
+      "id": "pii-off-invariance",
+      "status": "met"
+    },
+    {
+      "id": "diagnostic-population",
+      "status": "unresolved"
+    },
+    {
+      "id": "benign-heavy-population",
+      "status": "unresolved"
+    },
+    {
+      "id": "protected-partition",
+      "status": "unresolved"
+    },
+    {
+      "id": "class-identity-only-classification",
+      "status": "unresolved"
+    },
+    {
+      "id": "class-protected-partition",
+      "status": "unresolved"
+    }
+  ],
+  "classAccounting": [
+    {
+      "id": "validator-valid-sensitive",
+      "status": "measured",
+      "observations": 4
+    },
+    {
+      "id": "validator-checksum-invalid",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "country-length-invalid",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "unknown-country",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "checksum-valid-semantic-collision",
+      "status": "measured",
+      "observations": 2
+    },
+    {
+      "id": "documentation-example-public-absence",
+      "status": "measured",
+      "observations": 4
+    },
+    {
+      "id": "reference-syntax",
+      "status": "measured",
+      "observations": 6
+    },
+    {
+      "id": "unsupported-format",
+      "status": "measured",
+      "observations": 8
+    },
+    {
+      "id": "whole-candidate-boundary",
+      "status": "measured",
+      "observations": 12
+    },
+    {
+      "id": "identity-only-classification",
+      "status": "unresolved",
+      "observations": 0
+    },
+    {
+      "id": "protected-partition",
+      "status": "unresolved",
+      "observations": 0
+    }
+  ],
+  "installedArtifactConformance": {
+    "canonicalOffsetUnit": "utf8-byte",
+    "lanes": [
+      {
+        "id": "node-addon",
+        "status": "pass",
+        "nativeOffsetUnit": "utf16-code-unit",
+        "observations": [
+          {
+            "id": "compact-english-sensitive-context",
+            "publicFinding": true,
+            "type": "pii_global_iban",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 6,
+              "end": 28
+            },
+            "canonicalRange": {
+              "start": 6,
+              "end": 28
+            }
+          },
+          {
+            "id": "print-korean-astral-sensitive-context",
+            "publicFinding": true,
+            "type": "pii_global_iban",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 13,
+              "end": 40
+            },
+            "canonicalRange": {
+              "start": 27,
+              "end": 54
+            }
+          },
+          {
+            "id": "checksum-valid-neutral-context",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "checksum-valid-wrong-country-length",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "checksum-mismatch",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "unknown-country",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "documentation-context",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "korean-example-context",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "template-reference",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "environment-reference",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "angle-placeholder",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "lowercase-unsupported",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "hyphen-separator-unsupported",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "repeated-space-unsupported",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "tab-separator-unsupported",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "alnum-left-adjacency",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "underscore-right-adjacency",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "percent-right-adjacency",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "unicode-mark-right-adjacency",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "governed-invisible-inside",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "governed-invisible-right-adjacency",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          }
+        ]
+      },
+      {
+        "id": "node-wasm",
+        "status": "pass",
+        "nativeOffsetUnit": "utf16-code-unit",
+        "observations": [
+          {
+            "id": "compact-english-sensitive-context",
+            "publicFinding": true,
+            "type": "pii_global_iban",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 6,
+              "end": 28
+            },
+            "canonicalRange": {
+              "start": 6,
+              "end": 28
+            }
+          },
+          {
+            "id": "print-korean-astral-sensitive-context",
+            "publicFinding": true,
+            "type": "pii_global_iban",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 13,
+              "end": 40
+            },
+            "canonicalRange": {
+              "start": 27,
+              "end": 54
+            }
+          },
+          {
+            "id": "checksum-valid-neutral-context",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "checksum-valid-wrong-country-length",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "checksum-mismatch",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "unknown-country",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "documentation-context",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "korean-example-context",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "template-reference",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "environment-reference",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "angle-placeholder",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "lowercase-unsupported",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "hyphen-separator-unsupported",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "repeated-space-unsupported",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "tab-separator-unsupported",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "alnum-left-adjacency",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "underscore-right-adjacency",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "percent-right-adjacency",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "unicode-mark-right-adjacency",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "governed-invisible-inside",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "governed-invisible-right-adjacency",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          }
+        ]
+      }
+    ],
+    "artifactCommitment": "a098baedddfd50f3f0c44631084accc882835a81df360105ee5b391f254ad6f8"
+  },
+  "sourceConformance": {
+    "sourceCommit": "c810623a3348da3b15cb06dc4e13bf5c39113154",
+    "sourceState": "clean",
+    "lanes": [
+      {
+        "id": "rust-native-iban-conformance",
+        "status": "pass",
+        "fixture": "conformance/fixtures/pii-iban-v1.json",
+        "fixtureCommitment": "6071f67b89d3d1b34d6f09c853725ba87602579359d7bc09bfa90eb46063a39c",
+        "commandDefinitionCommitment": "fc8971c3046225c939d3acdebb999af7354dab59e020994c8c915cb8c7a774fa",
+        "toolchain": [
+          {
+            "executable": "rustc",
+            "version": "rustc 1.98.1 (48a229cea 2026-09-01)"
+          },
+          {
+            "executable": "cargo",
+            "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)"
+          }
+        ]
+      },
+      {
+        "id": "python-iban-conformance",
+        "status": "pass",
+        "fixture": "conformance/fixtures/pii-iban-v1.json",
+        "fixtureCommitment": "6071f67b89d3d1b34d6f09c853725ba87602579359d7bc09bfa90eb46063a39c",
+        "commandDefinitionCommitment": "bc5e1f37fea0c3229b4f48e04a72c8a114f44a8d4d82164874a5fb8b3243ba89",
+        "toolchain": [
+          {
+            "executable": "python3",
+            "version": "Python 3.14.7"
+          },
+          {
+            "executable": "maturin",
+            "version": "maturin 1.15.0"
+          },
+          {
+            "executable": "rustc",
+            "version": "rustc 1.98.1 (48a229cea 2026-09-01)"
+          }
+        ]
+      },
+      {
+        "id": "cli-iban-conformance",
+        "status": "pass",
+        "fixture": "conformance/fixtures/pii-iban-v1.json",
+        "fixtureCommitment": "6071f67b89d3d1b34d6f09c853725ba87602579359d7bc09bfa90eb46063a39c",
+        "commandDefinitionCommitment": "b4718a769e61879b31649b52de393ebc26663330faa517b0daea101739814681",
+        "toolchain": [
+          {
+            "executable": "rustc",
+            "version": "rustc 1.98.1 (48a229cea 2026-09-01)"
+          },
+          {
+            "executable": "cargo",
+            "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)"
+          }
+        ]
+      }
+    ],
+    "artifactCommitment": "facbc55cc3270c19ffb1501409cf12d9469fab1aa769d25970e30371438c8372"
+  },
+  "status": "not-qualified",
+  "reasonCodes": [
+    "benign-heavy-population",
+    "class-identity-only-classification",
+    "class-protected-partition",
+    "diagnostic-population",
+    "identity-only-classification",
+    "protected-partition"
+  ],
+  "artifactCommitment": "5c987f1acf75d0d3d70ef1b948a899a380811f144be9b69aaef4a7d85c493437"
+}

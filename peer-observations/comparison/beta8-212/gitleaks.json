@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-26T19:35:00.524Z",
+  "observedAt": "2026-09-28T18:15:41.542Z",
   "sourceRun": {
-    "runId": "2026-09-26T19:35:00.524Z-693bc3",
-    "benchmarkRevision": "ad2dd903ca05efa9de20b53f89a2f13cf1401377"
+    "runId": "2026-09-28T18:15:41.542Z-65aa0c",
+    "benchmarkRevision": "e8b38c33ceb744dcfc23a0005d89619cdfdcd2bd"
   },
   "input": {
     "surface": "comparison/beta8-212",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "2688a67f804eadc32c46fd22202cda9f7b0a384d7412988bcc306663e4ab792b",
-    "fixtureCount": 168,
-    "fixturesDigest": "532f8cfe2a0a4a06f42428e6ee4a1952e5dd4c19098277624d057b6cdd1c66a3",
+    "corpusHash": "cc1c553b07080fa1ac1abcfc86bf55c1c20b4f779bb5a8208b6f5797158417d1",
+    "fixtureCount": 171,
+    "fixturesDigest": "7131255e3f236a4d42f184ab2ec0fbf1aabb3af2a08e460b7d99f535708fcb1a",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "1e95492f1f0f3d1d6d1cb504b047e4ea910155885f72115d8e15a03b804135a7",
-      "fixtureCount": 2990
+      "digest": "e893fa62ccdf42d447218cdde2c178084d7163dfea6b51caa4dc5fd32b69220c",
+      "fixtureCount": 4768
     }
   },
   "peer": {
@@ -52,7 +52,7 @@
       "platform": "darwin-arm64",
       "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
     },
-    "adapterDigest": "ef28ae1d592501c30bc1d633b494268e36a11a240cd15e1f44f5e45a78190655"
+    "adapterDigest": "d86f286b1689f577b83e9685a822cb2f074a4fd2b0b9a813d579ab4f72a03266"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
@@ -476,6 +476,16 @@
       "end": 138
     },
     {
+      "path": "cases/slack-user-token-bolt-installation-store.json",
+      "start": 97,
+      "end": 173
+    },
+    {
+      "path": "cases/slack-user-token-curl-form-token.sh",
+      "start": 19,
+      "end": 93
+    },
+    {
       "path": "cases/slack-user-token-dotenv.env",
       "start": 17,
       "end": 93
@@ -509,6 +519,11 @@
       "end": 211
     },
     {
+      "path": "cases/slack-user-token-python-scim-client.py",
+      "start": 67,
+      "end": 142
+    },
+    {
       "path": "cases/slack-user-token-python-webclient.py",
       "start": 59,
       "end": 135
@@ -536,5 +551,5 @@
       "family": "generic-token"
     }
   ],
-  "digest": "ff5a0f0648d24c72343d2743f02b242d8bf024c1c6664a3ed71d098f32df5a08"
+  "digest": "e21e5ddd62d58e933f1c438c090d739295be61e6dad1565f1e1ff83cca94556b"
 }

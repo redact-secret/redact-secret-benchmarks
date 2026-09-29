@@ -34,8 +34,8 @@ test('all existing corpora bridge deterministically into five methods and all de
     'calibration-only rows never become public evaluation or support evidence');
   assert.deepEqual([...new Set(cases.map(c => c.method))].sort(), ['benign', 'differential', 'metamorphic', 'mutation', 'twin']);
   // Registry targets and the pre-Beta.8 twin count; beta8-<issue> corpora (#207–#212) are counted by npm run beta8:profiles.
-  assert.equal(new Set(cases.flatMap(c => c.targets).filter(t => !arrivalIds.has(t))).size, 70);
-  assert.equal(cases.filter(c => c.method === 'twin' && !c.source.category.startsWith('beta8-')).length, 398);
+  assert.equal(new Set(cases.flatMap(c => c.targets).filter(t => !arrivalIds.has(t))).size, 92);
+  assert.equal(cases.filter(c => c.method === 'twin' && !c.source.category.startsWith('beta8-')).length, 411);
   const before = hash(cases);
   const first = cases.map(c => generateCase(c, methods, operators).variants);
   const second = cases.map(c => generateCase(c, methods, operators).variants);
@@ -109,8 +109,9 @@ test('twin integrity rejects missing relation, unchanged input and mismatched fa
 test('a context twin keeps the value and edits one place outside it; anything else fails integrity', () => {
   const op = operators.get('authored.twin');
   const context = cases.filter(c => c.method === 'twin' && c.twin.mutationKind === 'context');
-  // Pre-Beta.8 corpora hold 24; beta8-<issue> corpora (#207–#212) add their own and must pass the same integrity check.
-  assert.equal(context.filter(c => !c.source.category.startsWith('beta8-')).length, 24);
+  // Pre-Beta.8 corpora plus the public policy-conformance sidecar hold 26;
+  // beta8-<issue> corpora (#207–#212) add their own and must pass the same integrity check.
+  assert.equal(context.filter(c => !c.source.category.startsWith('beta8-')).length, 26);
   for (const c of context) assert.equal(op.generate(c).integrity.property, 'context', c.id);
   const c = structuredClone(context.find(c => c.id.includes('connection-string-postgres-bare')));
   const value = Buffer.from(c.seed.content).subarray(c.seed.expected[0].start, c.seed.expected[0].end).toString();

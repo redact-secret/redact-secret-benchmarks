@@ -1,0 +1,83 @@
+{
+  "$id": "urn:redact-secret:pii-population-report:1",
+  "type": "object", "additionalProperties": false,
+  "required": ["schemaVersion", "reportType", "domain", "evaluationProfile", "domainAccountingVersion", "supportClaims", "population", "contractCommitment", "corpusCommitment", "baseRate", "weighting", "regressionPolicy", "denominator", "partitionPolicy", "calibration", "observation", "status", "strata", "diagnostics"],
+  "properties": {
+    "schemaVersion": { "const": 1 }, "reportType": { "const": "pii-population" }, "domain": { "const": "pii" },
+    "evaluationProfile": { "const": "pii-v1" }, "domainAccountingVersion": { "const": "pii-v1" }, "supportClaims": { "const": false },
+    "population": { "enum": ["diagnostic-balanced", "benign-heavy-stress"] }, "contractCommitment": { "$ref": "#/$defs/digest" }, "corpusCommitment": { "$ref": "#/$defs/digest" },
+    "baseRate": { "type": "object", "additionalProperties": false, "required": ["kind", "totalMass", "sensitiveMass", "nonSensitiveMass", "notEstablishedMass", "rationaleCode", "strata"], "properties": {
+      "kind": { "const": "declared-assumption" }, "totalMass": { "type": "integer", "minimum": 1 }, "sensitiveMass": { "type": "integer", "minimum": 0 }, "nonSensitiveMass": { "type": "integer", "minimum": 0 }, "notEstablishedMass": { "type": "integer", "minimum": 0 },
+      "rationaleCode": { "enum": ["diagnostic-behavior-balance", "benign-operational-stress"] }, "strata": { "type": "array", "items": { "$ref": "#/$defs/mass" } }
+    } },
+    "weighting": { "type": "object", "additionalProperties": false, "required": ["kind", "rationaleCode"], "properties": {
+      "kind": { "enum": ["equal-evidence-class", "authored-case-frequency"] }, "rationaleCode": { "enum": ["equal-authored-class-influence", "retain-authored-case-frequency"] }
+    } },
+    "regressionPolicy": { "type": "object", "additionalProperties": false, "required": ["metric", "maxAbsoluteIncrease", "locality"], "properties": {
+      "metric": { "const": "benign-false-alarm-rate" }, "maxAbsoluteIncrease": { "type": "number", "minimum": 0, "maximum": 1 }, "locality": { "const": "any-stratum" }
+    } },
+    "denominator": { "type": "object", "additionalProperties": false, "required": ["unit", "declared", "observed"], "properties": {
+      "unit": { "const": "authored-evidence-case" }, "declared": { "type": "integer", "minimum": 0 }, "observed": { "type": "integer", "minimum": 0 }
+    } },
+    "partitionPolicy": { "type": "object", "additionalProperties": false, "required": ["role", "tuningEligible", "protectedRows"], "properties": {
+      "role": { "enum": ["development-tuning", "evaluation-only"] }, "tuningEligible": { "type": "boolean" }, "protectedRows": { "const": "rejected" }
+    } },
+    "calibration": { "type": "object", "additionalProperties": false, "required": ["status", "reasonCode"], "properties": {
+      "status": { "enum": ["not-used", "not-measured"] }, "reasonCode": { "enum": ["evaluation-does-not-fit-thresholds", "empty-committed-population"] }
+    } },
+    "observation": { "type": "object", "additionalProperties": false, "required": ["kind", "candidateArtifactHash", "runId", "scanner", "accountingInputCommitment", "reportArtifactCommitment"], "properties": {
+      "kind": { "enum": ["none", "product-observation"] }, "candidateArtifactHash": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/digest" }] },
+      "runId": { "anyOf": [{ "type": "null" }, { "type": "string", "pattern": "^[a-f0-9-]{36}$" }] },
+      "scanner": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/scanner" }] },
+      "accountingInputCommitment": { "$ref": "#/$defs/digest" }, "reportArtifactCommitment": { "$ref": "#/$defs/digest" }
+    } },
+    "status": { "enum": ["measured", "partial", "not-measured"] },
+    "strata": { "type": "array", "items": { "$ref": "#/$defs/stratum" } },
+    "diagnostics": { "type": "object", "additionalProperties": false, "required": ["typeIdentity", "validatorCorrectness", "contextDiscrimination"], "properties": {
+      "typeIdentity": { "$ref": "#/$defs/diagnostic" }, "validatorCorrectness": { "$ref": "#/$defs/diagnostic" }, "contextDiscrimination": { "$ref": "#/$defs/diagnostic" }
+    } }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "family": { "type": "string", "pattern": "^pii:(?:global|[a-z]{2}):[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "scope": { "type": "string", "pattern": "^(?:global|jurisdiction:[A-Z]{2})$" },
+    "scanner": { "type": "object", "additionalProperties": false, "required": ["id", "version", "configurationHash"], "properties": {
+      "id": { "type": "string", "pattern": "^[a-z][a-z0-9.-]+$" }, "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(?:[-+][a-zA-Z0-9.-]+)?$" }, "configurationHash": { "$ref": "#/$defs/digest" }
+    } },
+    "mass": { "type": "object", "additionalProperties": false,
+      "required": ["family", "scope", "contextClass", "evidenceClass", "accountingAxis", "sensitivity", "validatorBacked", "contextDependent", "totalMass", "sensitiveMass", "nonSensitiveMass", "notEstablishedMass"], "properties": {
+        "family": { "$ref": "#/$defs/family" }, "scope": { "$ref": "#/$defs/scope" }, "contextClass": { "enum": ["sensitive", "neutral", "non-sensitive"] },
+        "evidenceClass": { "enum": ["reserved-documentation", "official-test", "public-identifier", "ordinary-reference-account", "near-miss", "placeholder", "context-negative", "cross-family-collision"] },
+        "accountingAxis": { "anyOf": [{ "type": "null" }, { "enum": ["reserved", "documentation", "test-value", "public-operational", "placeholder", "context-negative"] }] },
+        "sensitivity": { "enum": ["sensitive", "non-sensitive", "not-established"] }, "validatorBacked": { "type": "boolean" }, "contextDependent": { "type": "boolean" },
+        "totalMass": { "type": "integer", "minimum": 1 }, "sensitiveMass": { "type": "integer", "minimum": 0 }, "nonSensitiveMass": { "type": "integer", "minimum": 0 }, "notEstablishedMass": { "type": "integer", "minimum": 0 }
+      } },
+    "diagnostic": { "type": "object", "additionalProperties": false,
+      "required": ["axis", "eligible", "measured", "passed", "failed", "status", "passRate", "strata"], "properties": {
+        "axis": { "enum": ["type-identity", "validator-correctness", "context-discrimination"] },
+        "eligible": { "type": "integer", "minimum": 0 }, "measured": { "type": "integer", "minimum": 0 }, "passed": { "type": "integer", "minimum": 0 }, "failed": { "type": "integer", "minimum": 0 },
+        "status": { "enum": ["measured", "partial", "not-measured", "not-applicable"] }, "passRate": { "anyOf": [{ "type": "null" }, { "type": "number", "minimum": 0, "maximum": 1 }] },
+        "strata": { "type": "array", "items": { "$ref": "#/$defs/diagnosticStratum" } }
+      } },
+    "diagnosticStratum": { "type": "object", "additionalProperties": false,
+      "required": ["family", "scope", "contextClass", "evidenceClass", "accountingAxis", "sensitivity", "validatorBacked", "contextDependent", "eligible", "measured", "passed", "failed", "status", "passRate"], "properties": {
+        "family": { "$ref": "#/$defs/family" }, "scope": { "$ref": "#/$defs/scope" }, "contextClass": { "enum": ["sensitive", "neutral", "non-sensitive"] },
+        "evidenceClass": { "enum": ["reserved-documentation", "official-test", "public-identifier", "ordinary-reference-account", "near-miss", "placeholder", "context-negative", "cross-family-collision"] },
+        "accountingAxis": { "anyOf": [{ "type": "null" }, { "enum": ["reserved", "documentation", "test-value", "public-operational", "placeholder", "context-negative"] }] },
+        "sensitivity": { "enum": ["sensitive", "non-sensitive", "not-established"] }, "validatorBacked": { "type": "boolean" }, "contextDependent": { "type": "boolean" },
+        "eligible": { "type": "integer", "minimum": 1 }, "measured": { "type": "integer", "minimum": 0 }, "passed": { "type": "integer", "minimum": 0 }, "failed": { "type": "integer", "minimum": 0 },
+        "status": { "enum": ["measured", "partial", "not-measured", "not-applicable"] }, "passRate": { "anyOf": [{ "type": "null" }, { "type": "number", "minimum": 0, "maximum": 1 }] }
+      } },
+    "stratum": { "type": "object", "additionalProperties": false,
+      "required": ["family", "scope", "contextClass", "evidenceClass", "accountingAxis", "sensitivity", "validatorBacked", "contextDependent", "denominator", "assumedMass", "measured", "falseAlarms", "status", "falseAlarmRate"], "properties": {
+        "family": { "$ref": "#/$defs/family" }, "scope": { "$ref": "#/$defs/scope" }, "contextClass": { "enum": ["sensitive", "neutral", "non-sensitive"] },
+        "evidenceClass": { "enum": ["reserved-documentation", "official-test", "public-identifier", "ordinary-reference-account", "near-miss", "placeholder", "context-negative", "cross-family-collision"] },
+        "accountingAxis": { "anyOf": [{ "type": "null" }, { "enum": ["reserved", "documentation", "test-value", "public-operational", "placeholder", "context-negative"] }] },
+        "sensitivity": { "enum": ["sensitive", "non-sensitive", "not-established"] },
+        "validatorBacked": { "type": "boolean" }, "contextDependent": { "type": "boolean" },
+        "denominator": { "type": "integer", "minimum": 1 }, "assumedMass": { "type": "integer", "minimum": 1 }, "measured": { "type": "integer", "minimum": 0 }, "falseAlarms": { "type": "integer", "minimum": 0 },
+        "status": { "enum": ["measured", "partial", "not-measured", "not-applicable"] },
+        "falseAlarmRate": { "anyOf": [{ "type": "null" }, { "type": "number", "minimum": 0, "maximum": 1 }] }
+      } }
+  }
+}

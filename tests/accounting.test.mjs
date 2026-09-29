@@ -180,6 +180,8 @@ test('§9 with nothing unresolved, no T0, no overbroad twins and adequate n, eve
   const report = await runEvaluation({ cases: [sample('twin')], methods, operators, scanners: [exact] });
   assert.ok(Object.values(report.accountingDelta.groups).every(g => g.cause.length === 0 && g.v11['not-measured'] === 0 && g.v11.unresolved === 0));
   assert.deepEqual([report.schemaVersion, report.engineVersion, report.accountingVersion], [3, '1.1.0', '1.1']);
+  assert.deepEqual({ domain: report.domain, evaluationProfile: report.evaluationProfile, domainAccountingVersion: report.domainAccountingVersion },
+    { domain: 'credential', evaluationProfile: 'evaluation-v1', domainAccountingVersion: 'credential-v4' });
 });
 
 test('§10 a v1.0 baseline is not comparable with a v1.1 record unless an accountingDelta mapping is present', async () => {

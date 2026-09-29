@@ -16,6 +16,15 @@ const PINNED_DISTRIBUTION_FIELDS = ['unit', 'samples', 'minimum', 'median', 'p95
 const PINNED_MEMORY_METRIC_FIELDS = ['unit', 'samples', 'unavailableReason', 'samplingLimit'];
 const PINNED_PROVENANCE_FIELDS = ['commit', 'artifactIdentity', 'corpusVersion', 'corpusHash', 'os', 'cpu', 'runtime', 'command', 'buildProfile'];
 const PINNED_MEMORY_CATEGORIES = ['nodeHeap', 'nodeRss', 'nodeExternal', 'browserJsHeap', 'wasmLinearMemory', 'pythonHeap', 'processRss', 'streamingBuffer'];
+/**
+ * Fields this repository's pinned copy accepts on core's side without either
+ * requiring them yet or flagging their absence as drift (#405): the paired
+ * runner change that emits `AssessmentProvenance.resolvedArtifact` has not
+ * landed in core, so this stays a tolerated addition -- present or not,
+ * neither state is drift -- until core ships it and `completeAssessmentProblem`'s
+ * opt-in `requireResolvedArtifact` can be turned on unconditionally.
+ */
+const PINNED_OPTIONAL_FIELDS: Record<string, readonly string[]> = { AssessmentProvenance: ['resolvedArtifact'] };
 
 function interfaceFields(source: string, interfaceName: string): string[] | null {
   const match = source.match(new RegExp(`interface\\s+${interfaceName}\\b[^{]*\\{([^}]*)\\}`, 's'));
@@ -23,8 +32,9 @@ function interfaceFields(source: string, interfaceName: string): string[] | null
   return [...match[1].matchAll(/readonly\s+(\w+)\??:/g)].map(field => field[1]);
 }
 
-function sameSet(actual: string[], expected: string[]): boolean {
-  return actual.length === expected.length && expected.every(field => actual.includes(field));
+function sameSet(actual: string[], expected: string[], optional: readonly string[] = []): boolean {
+  const relevant = actual.filter(field => !optional.includes(field));
+  return relevant.length === expected.length && expected.every(field => relevant.includes(field));
 }
 
 /**
@@ -65,7 +75,7 @@ export function checkCoreSchemaDrift(completeSource: string, schemaSource: strin
       failures.push(`core assessment/schema.ts: could not find interface ${name} -- core schema drifted structurally`);
       continue;
     }
-    if (!sameSet(fields, [...expected])) {
+    if (!sameSet(fields, [...expected], PINNED_OPTIONAL_FIELDS[name] ?? [])) {
       failures.push(`core assessment/schema.ts ${name} fields are [${fields.join(', ')}], pinned copy (benchmarks/lib/performance-schema.ts) expects [${expected.join(', ')}]`);
     }
   }

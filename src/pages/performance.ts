@@ -18,13 +18,25 @@ const MEMORY_LABEL: Record<string, string> = {
   nodeHeap: 'Node heap', nodeRss: 'Node RSS', nodeExternal: 'Node external', browserJsHeap: 'Browser JS heap',
   wasmLinearMemory: 'WASM linear memory', pythonHeap: 'Python heap', processRss: 'Process RSS', streamingBuffer: 'Streaming buffer',
 };
+const ms = (value: number) => `${value.toLocaleString('en-US', { maximumFractionDigits: 2 })} ms`;
+const RESOLVED_ARTIFACT_LABEL: Record<string, string> = { 'node-addon': 'N-API addon', wasm: 'WebAssembly fallback' };
+
+/** Measured evidence (#141, #405), keyed the same way as the criteria this page reads. */
+const OPS = operational as any;
+const MEASURED = new Map<string, any>(OPS.measurements.timings.map((t: any) => [`${t.surface}/${t.profileId}`, t]));
 
 function row(criterion: PerformanceCriterion): string {
   const caps = Object.entries(criterion.memoryCapsBytes).map(([category, cap]) => `${MEMORY_LABEL[category] ?? category} ${mib(cap!)}`).join(', ') || '—';
-  return `<tr><td><code>${e(criterion.surface)}</code></td><td><code>${e(criterion.profileId)}</code></td><td>${n(criterion.maxInitializationP95Ms)} ms</td><td>${n(criterion.maxProcessingP95Ms)} ms</td><td>${n(criterion.minThroughputBytesPerSecond)} B/s</td><td>${e(caps)}</td></tr>`;
+  const measured = MEASURED.get(`${criterion.surface}/${criterion.profileId}`);
+  const processingMeasured = measured ? `${ms(measured.processing.median)} / ${ms(measured.processing.p95)}` : '<span class="st st-nm" data-status="not-measured">Not measured</span>';
+  const throughputMeasured = measured ? `${n(Math.round(measured.throughput.median))} B/s` : '<span class="st st-nm" data-status="not-measured">Not measured</span>';
+  const artifact = criterion.surface !== 'node' ? '—' : measured?.environment.resolvedArtifact
+    ? e(RESOLVED_ARTIFACT_LABEL[measured.environment.resolvedArtifact] ?? measured.environment.resolvedArtifact)
+    : '<span class="st st-nm" data-status="not-measured">Not recorded</span>';
+  return `<tr><td><code>${e(criterion.surface)}</code></td><td><code>${e(criterion.profileId)}</code></td><td>${n(criterion.maxInitializationP95Ms)} ms</td><td>${n(criterion.maxProcessingP95Ms)} ms</td><td>${n(criterion.minThroughputBytesPerSecond)} B/s</td><td>${e(caps)}</td><td>${processingMeasured}</td><td>${throughputMeasured}</td><td>${artifact}</td></tr>`;
 }
 
-/** Fixed RC performance/resource acceptance criteria this repository owns. No evaluation result is fetched: publishing a live run's verdict here is a follow-up, not this page's job. */
+/** Fixed RC performance/resource acceptance criteria this repository owns, with the currently accepted run's measurements shown beside each floor (#405): a floor is a regression tripwire, not what the product does. */
 export function performancePage(): string {
   return `<div class="page-head"><div><p class="eyebrow">REDACT-SECRET#603 (DS11) · #136</p><h1>Performance acceptance</h1><div class="meta"><span>Criteria <code>${e(DATA.criteriaId)}</code> · fixed ${e(DATA.fixedAt)} · environment <code>${e(DATA.environment.id)}</code></span></div></div></div>
   <section class="section prose"><h2 class="h2-compact">Ownership</h2><p>This repository owns performance results, acceptance criteria, recalibration, and publication for the product's cross-language assessment; core (<code>redact-secret/redact-secret</code>) keeps the per-surface runners, the result schema, the workload generator and profiles, and the accuracy corpus. <b class="strong">Linux x86_64 is the only official profile.</b> Full rationale: <code>docs/decisions/2026-09-22-own-performance-evaluation-recalibrate-linux-thresholds.md</code>. Protocol: <code>docs/specs/performance-acceptance.md</code>.</p></section>
@@ -36,14 +48,16 @@ export function performancePage(): string {
     <tr><th scope="row">Workload profiles</th><td>version ${e(DATA.baseline.workloadProfilesVersion)}, <code>${e(DATA.baseline.workloadProfilesHash)}</code></td></tr>
     <tr><th scope="row">Raw evidence</th><td><code>${e(DATA.baseline.summaryPath)}</code> — see <code>evidence/603/README.md</code></td></tr>
   </tbody></table></div></section>
-  <section class="section"><h2 class="h2-compact">Thresholds</h2><div class="tbl"><table><thead><tr><th scope="col">Surface</th><th scope="col">Profile</th><th scope="col">Init p95 ≤</th><th scope="col">Processing p95 ≤</th><th scope="col">Throughput ≥</th><th scope="col">Memory caps ≤</th></tr></thead><tbody>${DATA.performance.map(row).join('')}</tbody></table></div></section>
+  <section class="section"><h2 class="h2-compact">Thresholds</h2><p class="small">Measured columns are this project's pinned <code>benchmarks/operational-evidence.json</code> (product <code>${e(OPS.sourceCommit)}</code>, <code>${e(OPS.productVersion)}</code>, measured ${e(OPS.measuredAt)}) — read the same way the floors are, so it cannot drift from what CI accepted. A floor is half the observed minimum throughput, rounded down: a regression tripwire, not the product's speed.</p><div class="tbl"><table><thead><tr><th scope="col">Surface</th><th scope="col">Profile</th><th scope="col">Init p95 ≤</th><th scope="col">Processing p95 ≤</th><th scope="col">Throughput ≥</th><th scope="col">Memory caps ≤</th><th scope="col">Measured processing (median / p95)</th><th scope="col">Measured throughput (median)</th><th scope="col">Artifact</th></tr></thead><tbody>${DATA.performance.map(row).join('')}</tbody></table></div>
+  <p class="small">The <code>node</code> row's artifact is a recorded fact, not an inference from the run command: the Node loader may serve the N-API addon or fall back to the browser WebAssembly artifact (product decision-add-node-webassembly-fallback), and only the runner calling <code>artifact()</code> can tell which one actually ran. That call is not wired into the committed evidence yet (#405); until it is, this column reads Not recorded rather than assuming the addon.</p>
+  <p class="prose">At roughly 3–4 MB/s on one core (the <code>scale-logs-small-whole</code> medians above), scanning a single-digit-kilobyte AI-context or tool-result payload per request costs well under a millisecond — comfortably inline with a request. An inline high-volume log hot path does not fit that shape: at these rates, a sustained multi-megabyte-per-second stream would dominate request latency, so that workload needs sampling or an off-request-path placement instead of inline scanning.</p>
+  <p class="small">To see redact-secret next to flare-redact and OpenRedaction on the same PII inputs, go to <a href="/report#runtime-peers">Report → Runtime redaction libraries</a> (#444, informational).</p>
+  </section>
   <section class="section prose"><h2 class="h2-compact">Running an evaluation</h2><p>A fresh candidate run is evaluated against these criteria the same way <code>evidence/603/summary.json</code> — this baseline's own run — was: <code>npm run performance:evaluate -- --summary &lt;path&gt;/summary.json</code>. <code>.github/workflows/performance-evaluation.yml</code> runs this in CI against the exact commit <code>benchmarks/pin-manifest.json</code> pins.</p></section>
   ${operationalSection()}`;
 }
 
 /** Operational evidence (#141): measurements, then the separate verdict, then sizes and limitations. */
-const OPS = operational as any;
-const ms = (value: number) => `${value.toLocaleString('en-US', { maximumFractionDigits: 2 })} ms`;
 const kib = (bytes: number) => `${(bytes / 1024).toLocaleString('en-US', { maximumFractionDigits: 1 })} KiB`;
 const sizeRows = (list: { target: string; file: string; bytes: number }[]) =>
   list.map(a => `<tr><td><code>${e(a.target)}</code></td><td><code>${e(a.file)}</code></td><td>${kib(a.bytes)}</td></tr>`).join('');

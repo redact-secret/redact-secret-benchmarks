@@ -1,5 +1,5 @@
 {
-  "sourceRevision": "0af4cb83b571baa86d27a678a351ece2ebc1f3cb",
+  "sourceRevision": "8f97f14d97d73b76602e5396eea35d0a5a4f0eb3",
   "sourcePath": "crates/secret-scan-core/src/detectors/mod.rs",
   "detectors": [
     {
@@ -9,6 +9,14 @@
     {
       "id": "aws-access-key",
       "title": "AWS access keys"
+    },
+    {
+      "id": "aws-bedrock-long-term-api-key",
+      "title": "Amazon Bedrock long-term API keys"
+    },
+    {
+      "id": "aws-bedrock-short-term-api-key",
+      "title": "Amazon Bedrock short-term API keys"
     },
     {
       "id": "github-token",
@@ -207,6 +215,18 @@
       "title": "Fireworks AI API keys"
     },
     {
+      "id": "elevenlabs-api-key",
+      "title": "ElevenLabs API keys"
+    },
+    {
+      "id": "together-ai-api-key",
+      "title": "Together AI API keys"
+    },
+    {
+      "id": "tavily-api-key",
+      "title": "Tavily API keys"
+    },
+    {
       "id": "pinecone-api-key",
       "title": "Pinecone API keys"
     },
@@ -261,6 +281,74 @@
     {
       "id": "travisci-api-token",
       "title": "Travis CI API tokens"
+    },
+    {
+      "id": "mistral-api-key",
+      "title": "Mistral API keys"
+    },
+    {
+      "id": "cohere-api-key",
+      "title": "Cohere API keys"
+    },
+    {
+      "id": "ai21-api-key",
+      "title": "AI21 API keys"
+    },
+    {
+      "id": "deepgram-api-key",
+      "title": "Deepgram API keys"
+    },
+    {
+      "id": "doppler-token",
+      "title": "Doppler tokens"
+    },
+    {
+      "id": "trigger-dev-token",
+      "title": "Trigger.dev tokens"
+    },
+    {
+      "id": "e2b-api-key",
+      "title": "E2B API keys"
+    },
+    {
+      "id": "posthog-token",
+      "title": "PostHog tokens"
+    },
+    {
+      "id": "helicone-api-key",
+      "title": "Helicone API keys"
+    },
+    {
+      "id": "firecrawl-api-key",
+      "title": "Firecrawl API keys"
+    },
+    {
+      "id": "composio-api-key",
+      "title": "Composio API keys"
+    },
+    {
+      "id": "convex-deployment-key",
+      "title": "Convex deployment keys"
+    },
+    {
+      "id": "onepassword-service-account-token",
+      "title": "1Password service account tokens"
+    },
+    {
+      "id": "inngest-signing-key",
+      "title": "Inngest signing keys"
+    },
+    {
+      "id": "resend-api-key",
+      "title": "Resend API keys"
+    },
+    {
+      "id": "apify-api-token",
+      "title": "Apify API tokens"
+    },
+    {
+      "id": "wandb-api-key",
+      "title": "W&B API keys"
     },
     {
       "id": "jwt",

@@ -72,9 +72,9 @@ test('Report: every bound and n on the page is the accounting.ts result, per evi
   assert.ok(t1.indexOf('Provider-documented') < t1.indexOf('Tool-corroborated'), 'T1 is the first segment');
   assert.match(t1, /href="\/report"[^>]*aria-current="true"/);
   // #207: supabase-token's two sb_publishable_ public-prefix twins are provider-documented (T1) controls;
-  // #211 adds one more (stripe-webhook-signing-secret, pk_live_).
-  assert.equal(truth['must-not-flag/T1'].files, 9);
-  assert.match(t1, /<b>0 of 9<\/b> controls flagged <span class="st st-held"[^>]*>Few samples/, 'n = 9: the warning sits beside that number');
+  // #211 adds one more (stripe-webhook-signing-secret, pk_live_); #379 adds stripe-token's rk_live_ -> pk_live_ twin.
+  assert.equal(truth['must-not-flag/T1'].files, 10);
+  assert.match(t1, /<b>0 of 10<\/b> controls flagged <span class="st st-held"[^>]*>Few samples/, 'n = 10: the warning sits beside that number');
   assert.ok(!/class="(banner|notice)"/.test(t1), 'no page-level disclaimer banner');
 });
 
@@ -91,12 +91,39 @@ test('Report: a run that measured an unreleased candidate names it in the eyebro
 
 test('Report: reference scanners are muted rows in run order with no rank, and an absent scanner is Not measured, not zero', async () => {
   const { reportPage } = await load('/src/pages/report.ts');
-  const html = reportPage(data, 'T1', fixtures), peers = html.slice(html.indexOf('OTHER SCANNERS'), html.indexOf('id="rows"'));
+  const html = reportPage(data, 'T1', fixtures), peers = html.slice(html.indexOf('OTHER SCANNERS'), html.indexOf('id="runtime-peers"'));
   assert.ok(peers.indexOf('silent') < peers.indexOf('absent'), 'run order, never sorted by result');
   assert.ok(!/\b(rank|winner|best|worst|#1|leader|score)\b/i.test(text(peers).replace('Not a ranking', '')));
   assert.match(peers, /absent[\s\S]*data-status="not-measured">Not measured/);
   assert.ok(text(html).includes('absent was not found on PATH'), 'scanner-unavailable empty state');
   assert.ok(!text(peers).includes('redact-secret'), 'the product is not a row in the reference table');
+});
+
+test('Report: T3 hides its peer table by default (#404); the same query the caption links to reproduces it', async () => {
+  const { reportPage } = await load('/src/pages/report.ts');
+  const hidden = reportPage(data, 'T3', fixtures), hiddenPeers = hidden.slice(hidden.indexOf('OTHER SCANNERS'), hidden.indexOf('id="runtime-peers"'));
+  assert.ok(hiddenPeers.includes('OTHER SCANNERS'), 'the section itself still appears, with an explanation');
+  assert.ok(!/<table>/.test(hiddenPeers), 'no peer table renders by default at T3');
+  assert.match(hiddenPeers, /Hidden by default[\s\S]*Show anyway/);
+  const shown = reportPage(data, 'T3', fixtures, '?level=T3&peers=1');
+  const peers = shown.slice(shown.indexOf('OTHER SCANNERS'), shown.indexOf('id="runtime-peers"'));
+  assert.match(peers, /<table>/);
+  assert.ok(peers.includes('silent') && peers.includes('absent'), 'peer rows render once opted in');
+  assert.match(peers, /reflects scope, not accuracy/);
+  const t1 = reportPage(data, 'T1', fixtures);
+  assert.ok(/<table>/.test(t1.slice(t1.indexOf('OTHER SCANNERS'), t1.indexOf('id="runtime-peers"'))), 'T1 and T2 keep showing peers unconditionally');
+});
+
+test('Report: runtime redaction libraries (#444) sit between the peer table and the rows, identical at every evidence level', async () => {
+  const { reportPage } = await load('/src/pages/report.ts');
+  const section = html => html.slice(html.indexOf('<section class="section rt"'), html.indexOf('</section>', html.indexOf('id="runtime-peers"')) + '</section>'.length);
+  const pages = [reportPage(data, 'T1', fixtures), reportPage(data, 'T2', fixtures), reportPage(data, 'T3', fixtures), reportPage(data, 'T3', fixtures, '?level=T3&peers=1')];
+  for (const html of pages) {
+    assert.ok(html.indexOf('OTHER SCANNERS') < html.indexOf('id="runtime-peers"') && html.indexOf('id="runtime-peers"') < html.indexOf('id="rows"'), 'after the peer table, before the rows');
+    assert.equal(section(html), section(pages[0]), 'byte-identical at every level');
+  }
+  const none = reportPage({ hashes: {}, loaded: categories.map(category => ({ category, problem: 'Missing or unreadable report' })) }, 'T1', fixtures);
+  assert.equal(section(none), section(pages[0]), 'renders without accuracy results too');
 });
 
 test('Report: provider/family projection preserves the exact selected leaf set once', async () => {
@@ -162,9 +189,9 @@ test('Coverage: detectors by fixture count with the minimum sample size drawn on
   assert.ok(measured.includes(`${probe.counts.discriminated} discriminated · ${probe.counts['not-discriminated']} not discriminated · ${probe.counts['un-probeable']} un-probeable`), 'three separate lines');
   // #207 lifted seven un-probeable records (supabase, discord, telegram, both Sentry and both Twilio families); vercel-token remains.
   assert.equal(probe.counts['un-probeable'], 1);
-  assert.equal(probe.counts.discriminated + probe.counts['not-discriminated'], 69, 'the test product reports every secret exactly and nothing else');
+  assert.equal(probe.counts.discriminated + probe.counts['not-discriminated'], 91, 'the test product reports every secret exactly and nothing else');
   for (const entry of probe.entries.filter(x => x.status === 'un-probeable')) assert.ok(measured.replaceAll('&quot;', '"').replaceAll('&#39;', "'").includes(entry.reason), entry.id);
-  assert.ok(text(coveragePage(fixtures, 'all')).includes('69 not measured'), 'without a run nothing is claimed');
+  assert.ok(text(coveragePage(fixtures, 'all')).includes('91 not measured'), 'without a run nothing is claimed');
   assert.ok(!coveragePage(fixtures, 'thin', data).includes('id="twin-probe"'));
   assert.ok(text(detectorPage(data, fixtures, 'vercel-token')).includes('Un-probeable'));
   assert.ok(detectorPage(data, fixtures, 'bearer-token').includes('Twin source'));
@@ -293,6 +320,22 @@ test('Performance: page reads the committed criteria file, verbatim', async () =
   for (const criterion of criteria.performance) assert.ok(html.includes(criterion.surface) && html.includes(criterion.profileId));
 });
 
+test('Performance: the Thresholds table shows the pinned run\'s measured processing and throughput beside each floor (#405)', async () => {
+  const { performancePage } = await load('/src/pages/performance.ts');
+  const operational = await read('benchmarks/operational-evidence.json');
+  const html = performancePage(), thresholds = html.slice(html.indexOf('>Thresholds<'), html.indexOf('id="operational-evidence"'));
+  assert.match(thresholds, /Measured processing \(median \/ p95\)/);
+  assert.match(thresholds, /Measured throughput \(median\)/);
+  for (const t of operational.measurements.timings) {
+    assert.ok(thresholds.includes(`${t.processing.median.toLocaleString('en-US', { maximumFractionDigits: 2 })} ms`), `${t.surface}/${t.profileId} measured processing median`);
+    assert.ok(thresholds.includes(`${Math.round(t.throughput.median).toLocaleString('en-US')} B/s`), `${t.surface}/${t.profileId} measured throughput median`);
+  }
+  // #405: the node row names its resolved artifact as a recorded fact, or explicitly says it is not recorded -- never a silent assumption.
+  assert.match(thresholds, /Not recorded/, 'operational-evidence.json does not yet carry resolvedArtifact, pending the paired product change');
+  assert.ok(!/<td>N-API addon<\/td>|>N-API addon<\/span>/.test(thresholds), 'never renders the addon as the node row\'s artifact when it was not actually confirmed');
+  assert.match(html, /a sustained multi-megabyte-per-second stream would dominate request latency/, 'workload guidance paragraph is present and cites the measured figures');
+});
+
 test('boundary rule: pages measure and record; none asserts product quality or ranks a scanner', async () => {
   const { reportPage } = await load('/src/pages/report.ts');
   const { coveragePage, detectorPage } = await load('/src/pages/coverage.ts');
@@ -301,7 +344,7 @@ test('boundary rule: pages measure and record; none asserts product quality or r
   const { performancePage } = await load('/src/pages/performance.ts');
   const pages = [reportPage(data, 'T1', fixtures), coveragePage(fixtures, 'all'), detectorPage(data, fixtures, 'github-token'), suitePage(data, fixtures, 'accuracy'), howToRead(), performancePage()];
   for (const html of pages) {
-    const plain = text(html).replace(/Precision, recall and F1 are not exported[^.]*\./, '').replace(/not a product ranking|Not a ranking/g, '');
+    const plain = text(html).replace(/Precision, recall and F1 are not exported[^.]*\./, '').replace(/not a product ranking|Not a ranking|no ranking assertion/g, '');
     assert.ok(!/\b(precision|recall|F1)\b/i.test(plain), 'no rates outside the v4 headline metrics');
     assert.ok(!/\b(is safe|secure|best|winner|wins|outperforms|superior|top-ranked|ranking|grade [A-F])\b/i.test(plain), plain.match(/\b(is safe|secure|best|winner|wins|outperforms|superior|top-ranked|ranking|grade [A-F])\b/i)?.[0]);
     assert.ok(!html.includes('/benchmark') && !html.includes('/evaluation') && !html.includes('/methodology') && !html.includes('/pending'), 'no link to a pre-redesign path');

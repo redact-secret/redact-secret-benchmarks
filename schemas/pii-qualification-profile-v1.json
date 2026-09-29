@@ -1,0 +1,63 @@
+{
+  "$id": "urn:redact-secret:pii-qualification-profile:1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "version", "domain", "evaluationProfile", "domainAccountingVersion", "mechanics", "metrics", "gates"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "const": "pii-v1" },
+    "version": { "const": 1 },
+    "domain": { "const": "pii" },
+    "evaluationProfile": { "const": "pii-v1" },
+    "domainAccountingVersion": { "const": "pii-v1" },
+    "mechanics": {
+      "type": "object", "additionalProperties": false,
+      "required": ["minDenominator", "replays", "intervalZ", "intervalPrecision"],
+      "properties": {
+        "minDenominator": { "type": "integer", "minimum": 1 },
+        "replays": { "type": "integer", "minimum": 2 },
+        "intervalZ": { "type": "number", "exclusiveMinimum": 0 },
+        "intervalPrecision": { "type": "integer", "minimum": 1, "maximum": 12 }
+      }
+    },
+    "metrics": {
+      "type": "object", "additionalProperties": false,
+      "required": ["type-miss-rate", "wrong-family-rate", "wrong-jurisdiction-rate", "sensitive-miss-rate", "non-sensitive-flag-rate", "context-discrimination-rate", "benign-suppression-rate", "jurisdiction-collision-rate", "range-collateral-rate", "measurable-share"],
+      "properties": {
+        "type-miss-rate": { "$ref": "#/$defs/metric" },
+        "wrong-family-rate": { "$ref": "#/$defs/metric" },
+        "wrong-jurisdiction-rate": { "$ref": "#/$defs/metric" },
+        "sensitive-miss-rate": { "$ref": "#/$defs/metric" },
+        "non-sensitive-flag-rate": { "$ref": "#/$defs/metric" },
+        "context-discrimination-rate": { "$ref": "#/$defs/metric" },
+        "benign-suppression-rate": { "$ref": "#/$defs/metric" },
+        "jurisdiction-collision-rate": { "$ref": "#/$defs/metric" },
+        "range-collateral-rate": { "$ref": "#/$defs/metric" },
+        "measurable-share": { "$ref": "#/$defs/metric" }
+      }
+    },
+    "gates": {
+      "type": "object", "additionalProperties": false,
+      "required": ["requiredMethods", "minBenignCases", "minBenignAxes", "requireProtectedEvidence", "requireIndependentEvidence", "requireTrustedAccountingSource"],
+      "properties": {
+        "requiredMethods": { "const": ["type-validation", "context-discrimination", "pii-benign"] },
+        "minBenignCases": { "type": "integer", "minimum": 1 },
+        "minBenignAxes": { "type": "integer", "minimum": 1 },
+        "requireProtectedEvidence": { "const": true },
+        "requireIndependentEvidence": { "const": true },
+        "requireTrustedAccountingSource": { "const": true }
+      }
+    }
+  },
+  "$defs": {
+    "metric": {
+      "type": "object", "additionalProperties": false,
+      "required": ["direction", "threshold", "applicability"],
+      "properties": {
+        "direction": { "enum": ["upper", "lower"] },
+        "threshold": { "type": "number", "minimum": 0, "maximum": 1 },
+        "applicability": { "enum": ["required", "jurisdictional", "reported-spans"] }
+      }
+    }
+  }
+}

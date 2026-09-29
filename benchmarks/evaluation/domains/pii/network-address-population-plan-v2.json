@@ -1,0 +1,4244 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-family-population-plan",
+  "id": "pii-network-address-population-plan-v2",
+  "supportClaims": false,
+  "issue": "redact-secret/redact-secret-benchmarks#428",
+  "productIssue": "redact-secret/redact-secret#901",
+  "family": "pii:global:network-address",
+  "findingType": "pii_global_network_address",
+  "familyContractVersion": 1,
+  "contextVocabulary": "pii-context/v2",
+  "familyContract": {
+    "repository": "redact-secret/redact-secret",
+    "commit": "79c0a66119fb72931fda9adddbe2973a52bb4833",
+    "document": "docs/audits/evidence/875/README.md",
+    "sha256": "27baf25d94904acc08faf8e3956b800d79f12f873a6ecc364e2e2c415e7569d6",
+    "contextContractSha256": "669d8991ab6f94bd4a83a3351dffe98fb7f67f3707baf37af1ab4b0ef3c98e1f",
+    "amendments": [
+      {
+        "document": "docs/specs/detector-families.md",
+        "sha256": "051677ba140aac7b85751b61be687390982398e78a7a6098841aeb45cfd3f49e",
+        "rule": "redact-secret#925: one period directly after an address, at the end or before whitespace or a closing quote/bracket, is a right boundary outside the range."
+      }
+    ]
+  },
+  "ledger": {
+    "file": "evidence/901/pii-gap-ledger-v1.json",
+    "contentCommitment": "7fcbba702d93849ce1452ee5a9adf3d20e493179107ec0c6bbda36cb9e5fd116",
+    "axes": [
+      "network-public-global-positives",
+      "network-operational-log-config-context",
+      "network-reserved-documentation-benchmark",
+      "network-version-boundary-url-collisions",
+      "network-korean-field-context"
+    ]
+  },
+  "fixturePolicy": {
+    "plaintextPublication": "Evidence records carry commitments, case ids and outcome counts only, never candidate values, spans or sanitized text.",
+    "expectations": "Identity, sensitivity and action are authored from the family contract and pii-context/v2 at core 79c0a661 before any scan; detector output never edits them.",
+    "massAssumption": "Declared base-rate mass is an explicit assumption per stratum, not an operational prevalence claim; it is never renormalized.",
+    "sensitiveExamples": "Public/global positives are hand-picked arbitrary global-unicast values outside every IANA special-purpose block named by the contract, with no real-world provenance; private, CGNAT, ULA and link-local positives are safe synthetic inputs. None asserts that a host or person exists.",
+    "reservedControls": "Non-sensitive controls use only the contract v1 classes: RFC 5737, RFC 3849, RFC 2544, BMWG, RFC 9637, loopback, unspecified, broadcast, multicast and IPv4-mapped inheritance.",
+    "publicInfrastructure": "Public-infrastructure rows use widely published anycast resolver/NTP addresses as operational identifiers; they are never labelled sensitive by semantics, only by the contract context rule."
+  },
+  "derivedFrom": {
+    "id": "pii-network-address-population-plan-v1",
+    "file": "benchmarks/evaluation/domains/pii/network-address-population-plan-v1.json",
+    "fileSha256": "41d9c5ebb9999b7c54ae643f1b8d161e78b3428613a501e38d36975a61265928",
+    "planCommitment": "19fbd3894366b5e8d1bd0c7525c46f6bdc251e5be5b5a4398115a6e617a3d284",
+    "method": "Every predecessor case is kept with its id and input. The pre-registered pii-context/v2 revisions become native authored truth in a sensitive stratum on the same axis; population mass is re-declared under v2; new independent cases are appended. No case was added, removed or relabelled from a scan.",
+    "relabeled": [
+      {
+        "caseId": "net-l-uppercase-ip-address",
+        "fromStratum": "net-korean-unassociated",
+        "toStratum": "net-v2-korean-ascii-case-label",
+        "basis": "redact-secret/redact-secret#927:v2-ascii-case-folding-in-korean"
+      },
+      {
+        "caseId": "net-e-dense-space",
+        "fromStratum": "net-dense-equidistant",
+        "toStratum": "net-v2-forward-field-label",
+        "basis": "redact-secret/redact-secret#924:v2-forward-only-field-label-equidistance"
+      },
+      {
+        "caseId": "net-e-repeated-label",
+        "fromStratum": "net-dense-equidistant",
+        "toStratum": "net-v2-forward-field-label",
+        "basis": "redact-secret/redact-secret#924:v2-forward-only-field-label-equidistance"
+      },
+      {
+        "caseId": "net-e-email-then-ip",
+        "fromStratum": "net-dense-equidistant",
+        "toStratum": "net-v2-forward-field-label",
+        "basis": "redact-secret/redact-secret#924:v2-forward-only-field-label-equidistance"
+      },
+      {
+        "caseId": "net-p-trailing-period",
+        "fromStratum": "net-contract-silent",
+        "toStratum": "net-v2-trailing-period-boundary",
+        "basis": "redact-secret/redact-secret#925:network-trailing-period-right-boundary"
+      }
+    ],
+    "addedCases": [
+      "net-k-mixed-case-ip-address",
+      "net-l-upper-ip-address-example",
+      "net-k-upper-client-ip",
+      "net-d-space-second-value",
+      "net-d-comma-second-value",
+      "net-d-ko-second-value"
+    ],
+    "removedFromPopulationViews": [
+      {
+        "caseId": "net-p-port-suffix",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "basis": "The 875 contract and #925 decide only a trailing period after an address; detector-families.md mentions a :port suffix only as an analogy, and the #428 interim review recorded this case as contract-silent. It keeps no declared mass until the contract states the port rule."
+      }
+    ],
+    "retiredStrata": [
+      {
+        "stratum": "net-dense-equidistant",
+        "basis": "pii-context/v2 (#924) compares a field label only with the candidates that follow it, so no field-label equidistance remains; all three members are sensitive under v2 (net-v2-forward-field-label). Unassociated dense values are re-authored as net-dense-unassociated."
+      }
+    ]
+  },
+  "strata": [
+    {
+      "id": "net-public-global-labelled",
+      "axis": "network-public-global-positives",
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "benignAxis": null,
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "net-public-global-unlabelled",
+      "axis": "network-public-global-positives",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "benignAxis": "context-negative",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "net-operational-private-unlabelled",
+      "axis": "network-operational-log-config-context",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "benignAxis": "operational",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "net-operational-public-unlabelled",
+      "axis": "network-operational-log-config-context",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "benignAxis": "public-identifier",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "net-operational-labelled",
+      "axis": "network-operational-log-config-context",
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "benignAxis": null,
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "net-reserved-labelled",
+      "axis": "network-reserved-documentation-benchmark",
+      "identity": "valid",
+      "sensitivity": "non-sensitive",
+      "benignAxis": "reserved-documentation",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "net-reserved-unlabelled",
+      "axis": "network-reserved-documentation-benchmark",
+      "identity": "valid",
+      "sensitivity": "non-sensitive",
+      "benignAxis": "reserved-documentation",
+      "views": [
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "net-reserved-boundary-twin",
+      "axis": "network-reserved-documentation-benchmark",
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "benignAxis": null,
+      "views": [
+        "diagnostic-balanced"
+      ]
+    },
+    {
+      "id": "net-version-collision",
+      "axis": "network-version-boundary-url-collisions",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "benignAxis": "collision",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "net-boundary-rejected",
+      "axis": "network-version-boundary-url-collisions",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "benignAxis": "unsupported-syntax",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "net-invalid-spelling",
+      "axis": "network-version-boundary-url-collisions",
+      "identity": "invalid",
+      "sensitivity": "not-established",
+      "benignAxis": "unsupported-syntax",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "net-url-bracket-host",
+      "axis": "network-version-boundary-url-collisions",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "benignAxis": "collision",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "net-unlabelled-number-collision",
+      "axis": "network-version-boundary-url-collisions",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "benignAxis": "collision",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "net-contract-silent",
+      "axis": "network-version-boundary-url-collisions",
+      "identity": "not-established",
+      "sensitivity": "not-established",
+      "benignAxis": "contract-silent",
+      "views": [
+        "qualification-plan"
+      ]
+    },
+    {
+      "id": "net-korean-field",
+      "axis": "network-korean-field-context",
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "benignAxis": null,
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ]
+    },
+    {
+      "id": "net-korean-unassociated",
+      "axis": "network-korean-field-context",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "benignAxis": "context-negative",
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ]
+    },
+    {
+      "id": "net-v2-korean-ascii-case-label",
+      "axis": "network-korean-field-context",
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "benignAxis": null,
+      "views": [
+        "qualification-plan",
+        "diagnostic-balanced"
+      ]
+    },
+    {
+      "id": "net-v2-forward-field-label",
+      "axis": "network-operational-log-config-context",
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "benignAxis": null,
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "net-v2-trailing-period-boundary",
+      "axis": "network-version-boundary-url-collisions",
+      "identity": "valid",
+      "sensitivity": "sensitive",
+      "benignAxis": null,
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    },
+    {
+      "id": "net-dense-unassociated",
+      "axis": "network-operational-log-config-context",
+      "identity": "valid",
+      "sensitivity": "not-established",
+      "benignAxis": "context-negative",
+      "views": [
+        "diagnostic-balanced",
+        "benign-heavy-stress"
+      ]
+    }
+  ],
+  "plan": {
+    "family": "pii:global:network-address",
+    "findingType": "pii_global_network_address",
+    "familyContractVersion": 1,
+    "canonicalOffsetUnit": "utf8-byte",
+    "cases": [
+      {
+        "id": "net-a-ipv4-label",
+        "axis": "network-public-global-positives",
+        "stratum": "net-public-global-labelled",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "ip: 47.128.203.61",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 4,
+          "end": 17,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-a-client-ip",
+        "axis": "network-public-global-positives",
+        "stratum": "net-public-global-labelled",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "client ip: 91.214.7.188",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 11,
+          "end": 23,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-a-source-ip-snake",
+        "axis": "network-public-global-positives",
+        "stratum": "net-public-global-labelled",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "source_ip=146.70.33.19",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 10,
+          "end": 22,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-a-remote-address-title",
+        "axis": "network-public-global-positives",
+        "stratum": "net-public-global-labelled",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "Remote Address: 185.44.92.130",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 16,
+          "end": 29,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-a-ip-address-label",
+        "axis": "network-public-global-positives",
+        "stratum": "net-public-global-labelled",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "ip address: 62.113.201.8",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 12,
+          "end": 24,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-a-ipv6-compressed",
+        "axis": "network-public-global-positives",
+        "stratum": "net-public-global-labelled",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "ip: 2a02:c7c:5e11:9d00::4a",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 4,
+          "end": 26,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-a-ipv6-quoted",
+        "axis": "network-public-global-positives",
+        "stratum": "net-public-global-labelled",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "client_ip = \"2c0f:f7a8:9100::17\"",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 13,
+          "end": 31,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-a-mapped-public",
+        "axis": "network-public-global-positives",
+        "stratum": "net-public-global-labelled",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "source ip: ::ffff:81.23.144.9",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 11,
+          "end": 29,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-a-json-event",
+        "axis": "network-public-global-positives",
+        "stratum": "net-public-global-labelled",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "{\"event\":\"login\",\"client_ip\":\"73.162.48.201\",\"ok\":true}",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 30,
+          "end": 43,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-a-one-two-three-four",
+        "axis": "network-public-global-positives",
+        "stratum": "net-public-global-labelled",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "ip: 1.2.3.4",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 4,
+          "end": 11,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-a-ko-ip-address",
+        "axis": "network-public-global-positives",
+        "stratum": "net-public-global-labelled",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "ip 주소: 118.37.214.9",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 11,
+          "end": 23,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-a-ko-client-ipv6",
+        "axis": "network-public-global-positives",
+        "stratum": "net-public-global-labelled",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "클라이언트 ip: 2406:da14:81c::3b",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 20,
+          "end": 37,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-b-bare",
+        "axis": "network-public-global-positives",
+        "stratum": "net-public-global-unlabelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "net-a-ipv4-label",
+        "twinProperty": "context-label",
+        "input": "47.128.203.61",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-b-peer-prose",
+        "axis": "network-public-global-positives",
+        "stratum": "net-public-global-unlabelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "net-a-client-ip",
+        "twinProperty": "context-label",
+        "input": "peer 91.214.7.188 connected",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-b-address-only",
+        "axis": "network-public-global-positives",
+        "stratum": "net-public-global-unlabelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "net-a-remote-address-title",
+        "twinProperty": "context-label",
+        "input": "address: 185.44.92.130",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-b-ko-address-only",
+        "axis": "network-public-global-positives",
+        "stratum": "net-public-global-unlabelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "net-a-ko-ip-address",
+        "twinProperty": "context-label",
+        "input": "주소: 118.37.214.9",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-k-remote-address",
+        "axis": "network-korean-field-context",
+        "stratum": "net-korean-field",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "원격 주소: 10.31.4.8",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 15,
+          "end": 24,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-k-ip-address-ula",
+        "axis": "network-korean-field-context",
+        "stratum": "net-korean-field",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "ip 주소 = fd3c:9a1e:77::2",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 12,
+          "end": 27,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-k-client-ip-snake",
+        "axis": "network-korean-field-context",
+        "stratum": "net-korean-field",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "클라이언트_ip: 172.22.9.40",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 20,
+          "end": 31,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-k-log-cgnat",
+        "axis": "network-korean-field-context",
+        "stratum": "net-korean-field",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "접속 로그 원격 주소=100.70.12.5 상태=200",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 28,
+          "end": 39,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-k-user-ip",
+        "axis": "network-korean-field-context",
+        "stratum": "net-korean-field",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "사용자 ip: 192.168.44.7",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 14,
+          "end": 26,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-l-uppercase-ip-address",
+        "axis": "network-korean-field-context",
+        "stratum": "net-v2-korean-ascii-case-label",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "net-a-ko-ip-address",
+        "twinProperty": "letter-case",
+        "input": "IP 주소: 118.37.214.9",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 11,
+          "end": 23,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-l-ip-address-example",
+        "axis": "network-korean-field-context",
+        "stratum": "net-korean-unassociated",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "ip 주소 예시: 10.31.4.9",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-l-example-remote",
+        "axis": "network-korean-field-context",
+        "stratum": "net-korean-unassociated",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "net-k-remote-address",
+        "twinProperty": "context-negative",
+        "input": "예시 원격 주소: 10.31.4.8",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-l-remote-value",
+        "axis": "network-korean-field-context",
+        "stratum": "net-korean-unassociated",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "원격 주소 값: 10.31.4.10",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-o-access-log",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-private-unlabelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "input": "10.24.7.19 - - [28/Sep/2026 10h00] \"GET /health HTTP/1.1\" 200 2",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-o-listen-address",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-private-unlabelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "input": "listen_address = 172.20.14.3",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-o-upstream",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-private-unlabelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "input": "server 10.0.3.21 weight=5;",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-o-pod-ip",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-private-unlabelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "input": "podIP: 10.244.1.17",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-o-ko-restart",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-private-unlabelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "ko",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "input": "서버 10.31.4.8 재시작 완료",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-o-route",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-private-unlabelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "input": "route add default gw 192.168.0.1",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-o-tool-scan",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-private-unlabelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "input": "{\"tool\":\"net.scan\",\"hosts_up\":[\"10.9.0.4\"]}",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-q-nameserver",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-public-unlabelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "public-infrastructure",
+        "input": "nameserver 9.9.9.9",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-q-resolver",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-public-unlabelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "public-infrastructure",
+        "input": "resolver 1.1.1.1 valid=300s;",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-q-tool-dns",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-public-unlabelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "public-infrastructure",
+        "input": "{\"tool\":\"dns_lookup\",\"result\":{\"host\":\"api.q3v9k.synthetic\",\"a\":\"151.101.77.40\"}}",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-q-ntp-ipv6",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-public-unlabelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "public-infrastructure",
+        "input": "NTP server 2001:4860:4806:8:: reachable",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-q-ko-dns",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-public-unlabelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "ko",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "public-infrastructure",
+        "input": "DNS 서버 8.8.4.4 응답 없음",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-s-node-ip",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "input": "node_ip: 10.0.5.9",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 9,
+          "end": 17,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-s-logfmt",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "input": "ts=2026-09-28T12h00 level=info client_ip=10.8.0.14 path=/api status=200",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 41,
+          "end": 50,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-s-ko-logfmt",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "ko",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "input": "원격 주소=192.168.10.23 상태=정상",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 14,
+          "end": 27,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-s-forwarded",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "input": "X-Forwarded-For source ip: 100.64.12.7",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 27,
+          "end": 38,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-s-json-link-local",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "input": "{\"remote_address\":\"fe80::1c2b:3aff:fe4d:5e6f\",\"iface\":\"en0\"}",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 19,
+          "end": 44,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-s-dense-comma",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "lineCandidates": [
+          {
+            "start": 4,
+            "end": 12,
+            "domain": "network-address",
+            "sensitivity": "not-established"
+          },
+          {
+            "start": 17,
+            "end": 25,
+            "domain": "network-address",
+            "sensitivity": "not-established"
+          }
+        ],
+        "input": "src=10.1.1.5 dst=10.1.1.6, ip: 10.1.1.7",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 31,
+          "end": 39,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-s-from-ip",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "lineCandidates": [
+          {
+            "start": 5,
+            "end": 28,
+            "domain": "email",
+            "sensitivity": "not-established"
+          }
+        ],
+        "input": "user kim.ops@t4r8w.synthetic from ip: 10.40.2.9",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 38,
+          "end": 47,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-s-client-ip-plain",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-operational-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "input": "client ip: 10.1.2.3",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 11,
+          "end": 19,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-e-dense-space",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-v2-forward-field-label",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "twinOf": "net-s-dense-comma",
+        "twinProperty": "delimiter",
+        "lineCandidates": [
+          {
+            "start": 4,
+            "end": 12,
+            "domain": "network-address",
+            "sensitivity": "not-established"
+          },
+          {
+            "start": 17,
+            "end": 25,
+            "domain": "network-address",
+            "sensitivity": "not-established"
+          }
+        ],
+        "input": "src=10.1.1.5 dst=10.1.1.6 ip: 10.1.1.7",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 30,
+          "end": 38,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-e-repeated-label",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-v2-forward-field-label",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "lineCandidates": [
+          {
+            "start": 4,
+            "end": 14,
+            "domain": "network-address",
+            "sensitivity": "sensitive"
+          }
+        ],
+        "input": "ip: 172.16.8.1 ip: 172.16.8.2",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 19,
+          "end": 29,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-e-email-then-ip",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-v2-forward-field-label",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "twinOf": "net-s-from-ip",
+        "twinProperty": "candidate-adjacency",
+        "lineCandidates": [
+          {
+            "start": 5,
+            "end": 28,
+            "domain": "email",
+            "sensitivity": "not-established"
+          }
+        ],
+        "input": "user kim.ops@t4r8w.synthetic ip: 10.40.2.9",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 33,
+          "end": 42,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-r-doc-192",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "ip: 192.0.2.44",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-r-doc-198",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "client ip: 198.51.100.23",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-r-doc-203",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "source_ip=203.0.113.250",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-r-bench-end",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "ip: 198.19.255.1",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-r-doc-ipv6",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "ip: 2001:db8:85a3::8a2e:370:7334",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-r-bmwg-ipv6",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "remote address: 2001:2:0:1::9",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-r-rfc9637",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "ip: 3fff:12::1",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-r-loopback-other",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "ip: 127.4.5.6",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-r-broadcast",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "ip: 255.255.255.255",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-r-mdns",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "ip: 224.0.0.251",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-r-ssdp",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "client_ip=239.255.255.250",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-r-ipv6-unspecified",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "source_ip=::",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-r-ipv6-mdns",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "ip: ff02::fb",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-r-mapped-doc",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "ip: ::ffff:192.0.2.7",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-r-mapped-loopback",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-labelled",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "ip: ::ffff:127.0.0.9",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-u-access-log-doc",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-unlabelled",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "203.0.113.9 - - [28/Sep/2026 10h00] \"GET / HTTP/1.1\" 404 0",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-u-curl-loopback",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-unlabelled",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "curl -s http://127.0.0.2/metrics",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-u-mdns-prose",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-unlabelled",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "mdns responder joined 224.0.0.252",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-u-docs-ipv6",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-unlabelled",
+        "views": [
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "authority-reserved",
+        "tier": "public-development",
+        "semanticRole": "reserved",
+        "input": "lab gateway 2001:db8::10 for the workshop",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-t-doc-192-next",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-boundary-twin",
+        "views": [
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "net-r-doc-192",
+        "twinProperty": "reserved-range",
+        "input": "ip: 192.0.3.44",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 4,
+          "end": 14,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-t-doc-198-next",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-boundary-twin",
+        "views": [
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "net-r-doc-198",
+        "twinProperty": "reserved-range",
+        "input": "client ip: 198.51.101.23",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 11,
+          "end": 24,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-t-bench-next",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-boundary-twin",
+        "views": [
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "net-r-bench-end",
+        "twinProperty": "reserved-range",
+        "input": "ip: 198.20.255.1",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 4,
+          "end": 16,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-t-doc-ipv6-next",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-boundary-twin",
+        "views": [
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "net-r-doc-ipv6",
+        "twinProperty": "reserved-range",
+        "input": "ip: 2001:db9:85a3::8a2e:370:7334",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 4,
+          "end": 32,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-t-rfc9637-next",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-boundary-twin",
+        "views": [
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "net-r-rfc9637",
+        "twinProperty": "reserved-range",
+        "input": "ip: 3fff:1012::1",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 4,
+          "end": 16,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-t-mapped-private",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-boundary-twin",
+        "views": [
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "net-r-mapped-doc",
+        "twinProperty": "address-scope",
+        "input": "ip: ::ffff:10.0.0.7",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 4,
+          "end": 19,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-t-loopback-next",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-boundary-twin",
+        "views": [
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "net-r-loopback-other",
+        "twinProperty": "address-scope",
+        "input": "ip: 128.4.5.6",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 4,
+          "end": 13,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-t-class-e",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-boundary-twin",
+        "views": [
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "ip: 240.0.0.1",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 4,
+          "end": 13,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-t-6to4-relay",
+        "axis": "network-reserved-documentation-benchmark",
+        "stratum": "net-reserved-boundary-twin",
+        "views": [
+          "diagnostic-balanced"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "ip: 192.88.99.1",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 4,
+          "end": 15,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-v-version-prefix",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-version-collision",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "twinOf": "net-a-one-two-three-four",
+        "twinProperty": "version-prefix",
+        "input": "ip: v1.2.3.4",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-v-release-upper",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-version-collision",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "input": "release V10.2.3.4 shipped",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-v-label-version",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-version-collision",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "input": "ip: v2.10.0.1",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-w-five-octets",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-boundary-rejected",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "twinOf": "net-a-one-two-three-four",
+        "twinProperty": "boundary-character",
+        "input": "ip: 1.2.3.4.5",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-w-letter-suffix",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-boundary-rejected",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "input": "ip: 10.2.3.4x",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-w-letter-prefix",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-boundary-rejected",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "input": "ip: a10.2.3.4",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-i-leading-zero",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-invalid-spelling",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "twinOf": "net-a-one-two-three-four",
+        "twinProperty": "spelling",
+        "input": "ip: 01.2.3.4",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-i-octet-256",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-invalid-spelling",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "input": "ip: 256.10.2.3",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-i-zone-id",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-invalid-spelling",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "input": "ip: fe80::1c2b%en0",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-i-nine-groups",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-invalid-spelling",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "input": "ip: 1:2:3:4:5:6:7:8:9",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-i-double-compression",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-invalid-spelling",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "input": "ip: 2001:db8::1::2",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-h-url-label",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-url-bracket-host",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "twinOf": "net-s-client-ip-plain",
+        "twinProperty": "url-wrapping",
+        "input": "client ip: http://10.1.2.3/admin",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-h-url-port",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-url-bracket-host",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "input": "open https://192.168.1.20:8443/login",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-h-url-ipv6",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-url-bracket-host",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "input": "http://[fd00:ab::7]/status",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-h-bracket-label",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-url-bracket-host",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "input": "ip: [fd12:3456::5]",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-n-version-word",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-unlabelled-number-collision",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "input": "version 10.2.3.4 released",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-n-reference-number",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-unlabelled-number-collision",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "input": "see table 3.14.15.92 in the appendix",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-n-section-number",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-unlabelled-number-collision",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "collision",
+        "input": "section 2.1.1.1 of the handbook",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-p-port-suffix",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-contract-silent",
+        "views": [
+          "qualification-plan"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "input": "ip: 10.60.1.5:8080",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-p-trailing-period",
+        "axis": "network-version-boundary-url-collisions",
+        "stratum": "net-v2-trailing-period-boundary",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "malformed",
+        "input": "The client ip: 10.60.1.6.",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 15,
+          "end": 24,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-k-mixed-case-ip-address",
+        "axis": "network-korean-field-context",
+        "stratum": "net-v2-korean-ascii-case-label",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "Ip 주소: 10.77.3.21",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 11,
+          "end": 21,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-l-upper-ip-address-example",
+        "axis": "network-korean-field-context",
+        "stratum": "net-korean-unassociated",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "twinOf": "net-k-mixed-case-ip-address",
+        "twinProperty": "context-negative",
+        "input": "IP 주소 예시: 10.77.3.21",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-k-upper-client-ip",
+        "axis": "network-korean-field-context",
+        "stratum": "net-v2-korean-ascii-case-label",
+        "views": [
+          "qualification-plan",
+          "diagnostic-balanced"
+        ],
+        "language": "ko",
+        "source": "independent-synthetic",
+        "tier": "public-development",
+        "semanticRole": "synthetic-personal",
+        "input": "클라이언트 IP = 172.20.9.14",
+        "expected": {
+          "publicFinding": true,
+          "sensitive": true,
+          "start": 21,
+          "end": 32,
+          "action": "redact"
+        }
+      },
+      {
+        "id": "net-d-space-second-value",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-dense-unassociated",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "lineCandidates": [
+          {
+            "start": 4,
+            "end": 13,
+            "domain": "network-address",
+            "sensitivity": "sensitive"
+          }
+        ],
+        "input": "ip: 10.52.3.1 10.52.3.2",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-d-comma-second-value",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-dense-unassociated",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "en",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "lineCandidates": [
+          {
+            "start": 11,
+            "end": 20,
+            "domain": "network-address",
+            "sensitivity": "sensitive"
+          }
+        ],
+        "input": "client ip: 10.52.4.1, 10.52.4.2",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      },
+      {
+        "id": "net-d-ko-second-value",
+        "axis": "network-operational-log-config-context",
+        "stratum": "net-dense-unassociated",
+        "views": [
+          "diagnostic-balanced",
+          "benign-heavy-stress"
+        ],
+        "language": "ko",
+        "source": "synthetic-operational",
+        "tier": "public-development",
+        "semanticRole": "operational-endpoint",
+        "lineCandidates": [
+          {
+            "start": 15,
+            "end": 24,
+            "domain": "network-address",
+            "sensitivity": "sensitive"
+          }
+        ],
+        "input": "원격 주소: 10.52.5.1 10.52.5.2 연결됨",
+        "expected": {
+          "publicFinding": false,
+          "sensitive": false,
+          "action": "none"
+        }
+      }
+    ]
+  },
+  "oracle": {
+    "family": "pii:global:network-address",
+    "findingType": "pii_global_network_address",
+    "familyContractVersion": 1,
+    "plan": "benchmarks/evaluation/domains/pii/network-address-population-plan-v2.json#plan",
+    "planCommitment": "f820a0eabe14e56de09c0f85a06f4591e58e0fd8e35260405cb1ff4ae46510c8",
+    "referenceValidator": {
+      "id": "ip-address-syntax",
+      "version": 1
+    },
+    "labels": [
+      {
+        "caseId": "net-a-ipv4-label",
+        "candidate": {
+          "start": 4,
+          "end": 17
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-a-client-ip",
+        "candidate": {
+          "start": 11,
+          "end": 23
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-a-source-ip-snake",
+        "candidate": {
+          "start": 10,
+          "end": 22
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-a-remote-address-title",
+        "candidate": {
+          "start": 16,
+          "end": 29
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-a-ip-address-label",
+        "candidate": {
+          "start": 12,
+          "end": 24
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-a-ipv6-compressed",
+        "candidate": {
+          "start": 4,
+          "end": 26
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-a-ipv6-quoted",
+        "candidate": {
+          "start": 13,
+          "end": 31
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-a-mapped-public",
+        "candidate": {
+          "start": 11,
+          "end": 29
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-a-json-event",
+        "candidate": {
+          "start": 30,
+          "end": 43
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-a-one-two-three-four",
+        "candidate": {
+          "start": 4,
+          "end": 11
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-a-ko-ip-address",
+        "candidate": {
+          "start": 11,
+          "end": 23
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-a-ko-client-ipv6",
+        "candidate": {
+          "start": 20,
+          "end": 37
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-b-bare",
+        "candidate": {
+          "start": 0,
+          "end": 13
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-b-peer-prose",
+        "candidate": {
+          "start": 5,
+          "end": 17
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-b-address-only",
+        "candidate": {
+          "start": 9,
+          "end": 22
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-b-ko-address-only",
+        "candidate": {
+          "start": 8,
+          "end": 20
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-k-remote-address",
+        "candidate": {
+          "start": 15,
+          "end": 24
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-k-ip-address-ula",
+        "candidate": {
+          "start": 12,
+          "end": 27
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-k-client-ip-snake",
+        "candidate": {
+          "start": 20,
+          "end": 31
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-k-log-cgnat",
+        "candidate": {
+          "start": 28,
+          "end": 39
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-k-user-ip",
+        "candidate": {
+          "start": 14,
+          "end": 26
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-l-uppercase-ip-address",
+        "candidate": {
+          "start": 11,
+          "end": 23
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-l-ip-address-example",
+        "candidate": {
+          "start": 18,
+          "end": 27
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-l-example-remote",
+        "candidate": {
+          "start": 22,
+          "end": 31
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-l-remote-value",
+        "candidate": {
+          "start": 19,
+          "end": 29
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-o-access-log",
+        "candidate": {
+          "start": 0,
+          "end": 10
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-o-listen-address",
+        "candidate": {
+          "start": 17,
+          "end": 28
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-o-upstream",
+        "candidate": {
+          "start": 7,
+          "end": 16
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-o-pod-ip",
+        "candidate": {
+          "start": 7,
+          "end": 18
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-o-ko-restart",
+        "candidate": {
+          "start": 7,
+          "end": 16
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-o-route",
+        "candidate": {
+          "start": 21,
+          "end": 32
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-o-tool-scan",
+        "candidate": {
+          "start": 32,
+          "end": 40
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-q-nameserver",
+        "candidate": {
+          "start": 11,
+          "end": 18
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-q-resolver",
+        "candidate": {
+          "start": 9,
+          "end": 16
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-q-tool-dns",
+        "candidate": {
+          "start": 65,
+          "end": 78
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-q-ntp-ipv6",
+        "candidate": {
+          "start": 11,
+          "end": 29
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-q-ko-dns",
+        "candidate": {
+          "start": 11,
+          "end": 18
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-s-node-ip",
+        "candidate": {
+          "start": 9,
+          "end": 17
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-s-logfmt",
+        "candidate": {
+          "start": 41,
+          "end": 50
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-s-ko-logfmt",
+        "candidate": {
+          "start": 14,
+          "end": 27
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-s-forwarded",
+        "candidate": {
+          "start": 27,
+          "end": 38
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-s-json-link-local",
+        "candidate": {
+          "start": 19,
+          "end": 44
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-s-dense-comma",
+        "candidate": {
+          "start": 31,
+          "end": 39
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-s-from-ip",
+        "candidate": {
+          "start": 38,
+          "end": 47
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-s-client-ip-plain",
+        "candidate": {
+          "start": 11,
+          "end": 19
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-e-dense-space",
+        "candidate": {
+          "start": 30,
+          "end": 38
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-e-repeated-label",
+        "candidate": {
+          "start": 19,
+          "end": 29
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-e-email-then-ip",
+        "candidate": {
+          "start": 33,
+          "end": 42
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-r-doc-192",
+        "candidate": {
+          "start": 4,
+          "end": 14
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-r-doc-198",
+        "candidate": {
+          "start": 11,
+          "end": 24
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-r-doc-203",
+        "candidate": {
+          "start": 10,
+          "end": 23
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-r-bench-end",
+        "candidate": {
+          "start": 4,
+          "end": 16
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-r-doc-ipv6",
+        "candidate": {
+          "start": 4,
+          "end": 32
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-r-bmwg-ipv6",
+        "candidate": {
+          "start": 16,
+          "end": 29
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-r-rfc9637",
+        "candidate": {
+          "start": 4,
+          "end": 14
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-r-loopback-other",
+        "candidate": {
+          "start": 4,
+          "end": 13
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-r-broadcast",
+        "candidate": {
+          "start": 4,
+          "end": 19
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-r-mdns",
+        "candidate": {
+          "start": 4,
+          "end": 15
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-r-ssdp",
+        "candidate": {
+          "start": 10,
+          "end": 25
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-r-ipv6-unspecified",
+        "candidate": {
+          "start": 10,
+          "end": 12
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-r-ipv6-mdns",
+        "candidate": {
+          "start": 4,
+          "end": 12
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-r-mapped-doc",
+        "candidate": {
+          "start": 4,
+          "end": 20
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-r-mapped-loopback",
+        "candidate": {
+          "start": 4,
+          "end": 20
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-u-access-log-doc",
+        "candidate": {
+          "start": 0,
+          "end": 11
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-u-curl-loopback",
+        "candidate": {
+          "start": 15,
+          "end": 24
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-u-mdns-prose",
+        "candidate": {
+          "start": 22,
+          "end": 33
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-u-docs-ipv6",
+        "candidate": {
+          "start": 12,
+          "end": 24
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "non-sensitive",
+        "sensitivityBasis": [
+          "authority-reserved-value"
+        ]
+      },
+      {
+        "caseId": "net-t-doc-192-next",
+        "candidate": {
+          "start": 4,
+          "end": 14
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-t-doc-198-next",
+        "candidate": {
+          "start": 11,
+          "end": 24
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-t-bench-next",
+        "candidate": {
+          "start": 4,
+          "end": 16
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-t-doc-ipv6-next",
+        "candidate": {
+          "start": 4,
+          "end": 32
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-t-rfc9637-next",
+        "candidate": {
+          "start": 4,
+          "end": 16
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-t-mapped-private",
+        "candidate": {
+          "start": 4,
+          "end": 19
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-t-loopback-next",
+        "candidate": {
+          "start": 4,
+          "end": 13
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-t-class-e",
+        "candidate": {
+          "start": 4,
+          "end": 13
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-t-6to4-relay",
+        "candidate": {
+          "start": 4,
+          "end": 15
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-v-version-prefix",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-v-release-upper",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-v-label-version",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-w-five-octets",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-w-letter-suffix",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-w-letter-prefix",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-i-leading-zero",
+        "candidate": {
+          "start": 4,
+          "end": 12
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-i-octet-256",
+        "candidate": {
+          "start": 4,
+          "end": 14
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-i-zone-id",
+        "candidate": {
+          "start": 4,
+          "end": 18
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-i-nine-groups",
+        "candidate": {
+          "start": 4,
+          "end": 21
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-i-double-compression",
+        "candidate": {
+          "start": 4,
+          "end": 18
+        },
+        "identity": "invalid",
+        "identityBasis": [
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-h-url-label",
+        "candidate": {
+          "start": 18,
+          "end": 26
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-h-url-port",
+        "candidate": {
+          "start": 13,
+          "end": 25
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-h-url-ipv6",
+        "candidate": {
+          "start": 8,
+          "end": 18
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-h-bracket-label",
+        "candidate": {
+          "start": 5,
+          "end": 17
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-n-version-word",
+        "candidate": {
+          "start": 8,
+          "end": 16
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-n-reference-number",
+        "candidate": {
+          "start": 10,
+          "end": 20
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-n-section-number",
+        "candidate": {
+          "start": 8,
+          "end": 15
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-p-port-suffix",
+        "candidate": null,
+        "identity": "not-established",
+        "identityBasis": [],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-p-trailing-period",
+        "candidate": {
+          "start": 15,
+          "end": 24
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-k-mixed-case-ip-address",
+        "candidate": {
+          "start": 11,
+          "end": 21
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-l-upper-ip-address-example",
+        "candidate": {
+          "start": 18,
+          "end": 28
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-k-upper-client-ip",
+        "candidate": {
+          "start": 21,
+          "end": 32
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "sensitive",
+        "sensitivityBasis": [
+          "contract-context-rule"
+        ]
+      },
+      {
+        "caseId": "net-d-space-second-value",
+        "candidate": {
+          "start": 14,
+          "end": 23
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-d-comma-second-value",
+        "candidate": {
+          "start": 22,
+          "end": 31
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      },
+      {
+        "caseId": "net-d-ko-second-value",
+        "candidate": {
+          "start": 25,
+          "end": 34
+        },
+        "identity": "valid",
+        "identityBasis": [
+          "contract-grammar",
+          "reference-validator"
+        ],
+        "sensitivity": "not-established",
+        "sensitivityBasis": []
+      }
+    ]
+  },
+  "populations": [
+    {
+      "id": "diagnostic-balanced",
+      "role": "development-only",
+      "denominatorUnit": "declared-assumption-unit",
+      "totalMass": 10000,
+      "rationale": [
+        "equal-mass-per-present-stratum",
+        "assumption-not-prevalence",
+        "redeclared-under-pii-context-v2"
+      ],
+      "strata": [
+        {
+          "stratum": "net-boundary-rejected",
+          "mass": 556,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 556
+        },
+        {
+          "stratum": "net-dense-unassociated",
+          "mass": 556,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 556
+        },
+        {
+          "stratum": "net-invalid-spelling",
+          "mass": 556,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 556
+        },
+        {
+          "stratum": "net-korean-field",
+          "mass": 556,
+          "sensitiveMass": 556,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "net-korean-unassociated",
+          "mass": 556,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 556
+        },
+        {
+          "stratum": "net-operational-labelled",
+          "mass": 556,
+          "sensitiveMass": 556,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "net-operational-private-unlabelled",
+          "mass": 556,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 556
+        },
+        {
+          "stratum": "net-operational-public-unlabelled",
+          "mass": 556,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 556
+        },
+        {
+          "stratum": "net-public-global-labelled",
+          "mass": 556,
+          "sensitiveMass": 556,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "net-public-global-unlabelled",
+          "mass": 556,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 556
+        },
+        {
+          "stratum": "net-reserved-boundary-twin",
+          "mass": 555,
+          "sensitiveMass": 555,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "net-reserved-labelled",
+          "mass": 555,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 555,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "net-unlabelled-number-collision",
+          "mass": 555,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 555
+        },
+        {
+          "stratum": "net-url-bracket-host",
+          "mass": 555,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 555
+        },
+        {
+          "stratum": "net-v2-forward-field-label",
+          "mass": 555,
+          "sensitiveMass": 555,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "net-v2-korean-ascii-case-label",
+          "mass": 555,
+          "sensitiveMass": 555,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "net-v2-trailing-period-boundary",
+          "mass": 555,
+          "sensitiveMass": 555,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "net-version-collision",
+          "mass": 555,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 555
+        }
+      ]
+    },
+    {
+      "id": "benign-heavy-stress",
+      "role": "evaluation-only",
+      "denominatorUnit": "declared-assumption-unit",
+      "totalMass": 10000,
+      "rationale": [
+        "benign-dominant-stress-assumption",
+        "sensitive-mass-one-percent-per-sensitive-stratum",
+        "assumption-not-prevalence",
+        "redeclared-under-pii-context-v2"
+      ],
+      "strata": [
+        {
+          "stratum": "net-boundary-rejected",
+          "mass": 873,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 873
+        },
+        {
+          "stratum": "net-dense-unassociated",
+          "mass": 873,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 873
+        },
+        {
+          "stratum": "net-invalid-spelling",
+          "mass": 873,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 873
+        },
+        {
+          "stratum": "net-operational-labelled",
+          "mass": 100,
+          "sensitiveMass": 100,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "net-operational-private-unlabelled",
+          "mass": 873,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 873
+        },
+        {
+          "stratum": "net-operational-public-unlabelled",
+          "mass": 873,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 873
+        },
+        {
+          "stratum": "net-public-global-labelled",
+          "mass": 100,
+          "sensitiveMass": 100,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "net-public-global-unlabelled",
+          "mass": 873,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 873
+        },
+        {
+          "stratum": "net-reserved-labelled",
+          "mass": 873,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 873,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "net-reserved-unlabelled",
+          "mass": 873,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 873,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "net-unlabelled-number-collision",
+          "mass": 872,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 872
+        },
+        {
+          "stratum": "net-url-bracket-host",
+          "mass": 872,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 872
+        },
+        {
+          "stratum": "net-v2-forward-field-label",
+          "mass": 100,
+          "sensitiveMass": 100,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "net-v2-trailing-period-boundary",
+          "mass": 100,
+          "sensitiveMass": 100,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 0
+        },
+        {
+          "stratum": "net-version-collision",
+          "mass": 872,
+          "sensitiveMass": 0,
+          "nonSensitiveMass": 0,
+          "notEstablishedMass": 872
+        }
+      ]
+    }
+  ]
+}

@@ -20,7 +20,13 @@ SOURCES = {
 
 # A shared provider does not establish equal prefixes, formats, or verification.
 GITLEAKS_FAMILIES = {
-    "anthropic-": "anthropic-token", "aws-": "aws-access-key",
+    "anthropic-": "anthropic-token",
+    # #384: the two Bedrock rules are their own families (registry detectors since redact-secret#864);
+    # prefix lookup is first-match, so they must precede "aws-".
+    "aws-amazon-bedrock-api-key-long-lived": "aws-bedrock-long-term-api-key",
+    "aws-amazon-bedrock-api-key-short-lived": "aws-bedrock-short-term-api-key",
+    "aws-": "aws-access-key",
+    "cohere-": "cohere-api-key",
     "cloudflare-": "cloudflare-token", "digitalocean-": "digitalocean-token",
     "github-": "github-token",
     # prefix lookup is first-match: the runner rules must precede "gitlab-" (redact-secret#730).
@@ -47,6 +53,9 @@ GITLEAKS_FAMILIES = {
     "okta-": "okta-api-token",
     # Travis CI API token, registry detector since redact-secret#523 (pin 3144bb3).
     "travisci-": "travisci-api-token",
+    # #434/#436 families, registry detectors since redact-secret#903/#913 (registry pin 1127bf9). 1password-secret-key is
+    # the account Secret Key, another credential, and stays unmapped.
+    "doppler-": "doppler-token", "1password-service-account-token": "onepassword-service-account-token",
     "curl-auth-header": "bearer-token", "jwt": "jwt", "private-key": "private-key", "generic-api-key": "generic-token",
 }
 TRUFFLEHOG_FAMILIES = {
@@ -72,8 +81,14 @@ TRUFFLEHOG_FAMILIES = {
     "replicate": "replicate-api-token", "groq": "groq-api-key", "xai": "xai-api-key",
     "openrouter": "openrouter-api-key", "langsmith": "langsmith-api-key", "langfuse": "langfuse-secret-key",
     "pinecone": "pinecone-api-key",
+    # #384 families, registry detectors since redact-secret#865/#868 (registry pin cfe2aec).
+    "elevenlabs": "elevenlabs-api-key", "deepgram": "deepgram-api-key",
     # Travis CI API token, registry detector since redact-secret#523 (pin 3144bb3).
     "travisci": "travisci-api-token",
+    # #434/#436 families, registry detectors since redact-secret#903/#906/#916/#917 (registry pin 1127bf9).
+    # weightsandbiases/v1 is the legacy 40-hex key under the same label, as elevenlabs/v1 above.
+    "doppler": "doppler-token", "posthog": "posthog-token", "apify": "apify-api-token",
+    "weightsandbiases": "wandb-api-key",
     "jwt": "jwt", "privatekey": "private-key", "mongodb": "connection-string",
     "postgres": "connection-string", "redis": "connection-string",
     "azure_storage": "connection-string", "rabbitmq": "connection-string",

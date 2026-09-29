@@ -1,7 +1,8 @@
 import { readFile, mkdir, writeFile, rename } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { buildSupportMatrix, type SupportStatusReport } from './support/matrix.ts';
+import type { SupportStatusReport } from './support/matrix.ts';
+import { credentialDomain } from './evaluation/domains/credential/contract.ts';
 import { taxonomy } from './support/taxonomy.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -21,7 +22,7 @@ async function main() {
   } catch (error) {
     throw new Error(`Cannot read ${path.relative(root, inputPath)} — run \`npm run eval:classify\` first (A3, #504). ${error instanceof Error ? error.message : error}`);
   }
-  const { distribution, stableDistribution, families } = buildSupportMatrix(statusReport);
+  const { distribution, stableDistribution, families } = credentialDomain.qualification.buildSupportMatrix(statusReport);
   const output = {
     schemaVersion: 1 as const,
     taxonomySchemaVersion: taxonomy.schemaVersion,

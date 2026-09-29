@@ -1,0 +1,234 @@
+name: PII profile cost v2
+
+on:
+  workflow_dispatch:
+    inputs:
+      phase:
+        description: A/A calibration, threshold freeze, or candidate measurement.
+        type: choice
+        options: [aa, freeze, candidate, size]
+        required: true
+      aa_run_ids:
+        description: Three comma-separated successful A/A workflow run ids (freeze only).
+        required: false
+        default: ""
+      threshold_run_id:
+        description: Successful freeze workflow run id (candidate only).
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  runtime:
+    if: inputs.phase == 'aa' || inputs.phase == 'candidate'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with: { persist-credentials: false, path: benchmarks }
+      - name: Read the reviewed candidate inputs of the frozen v2 plan
+        id: plan
+        working-directory: benchmarks
+        run: |
+          set -euo pipefail
+          node -e 'const p = require("./qualification/pii-profile-cost-v2.json").inputs;
+            if (!/^[0-9a-f]{40}$/.test(p.candidateProductCommit) || !Number.isInteger(p.candidateQualificationRun)) throw new Error("invalid v2 plan inputs");
+            console.log(`candidate_commit=${p.candidateProductCommit}\ncandidate_run=${p.candidateQualificationRun}`);' >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with: { node-version: 22 }
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with: { python-version: "3.12" }
+      - uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # v1
+        with: { toolchain: stable }
+      - name: Mint read-only product token
+        id: product-token
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2.2.2
+        with:
+          app-id: ${{ vars.BENCHMARKS_DISPATCH_APP_ID }}
+          private-key: ${{ secrets.BENCHMARKS_DISPATCH_APP_PRIVATE_KEY }}
+          owner: redact-secret
+          repositories: redact-secret
+          permission-actions: read
+          permission-contents: read
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          repository: redact-secret/redact-secret
+          ref: ${{ steps.plan.outputs.candidate_commit }}
+          token: ${{ steps.product-token.outputs.token }}
+          persist-credentials: false
+          path: product
+      - name: Install benchmark dependencies
+        working-directory: benchmarks
+        run: npm ci
+      - name: Fetch and verify the exact qualified product artifacts
+        working-directory: benchmarks
+        env: { GH_TOKEN: "${{ steps.product-token.outputs.token }}" }
+        run: |
+          set -euo pipefail
+          node scripts/qualified-candidate.mjs fetch --repository redact-secret/redact-secret \
+            --sha '${{ steps.plan.outputs.candidate_commit }}' --run-id '${{ steps.plan.outputs.candidate_run }}' --product-ref main --dir "$RUNNER_TEMP/qualified"
+          gh run download '${{ steps.plan.outputs.candidate_run }}' -R redact-secret/redact-secret -n python-wheel-x86_64-unknown-linux-gnu -D "$RUNNER_TEMP/python-wheel"
+          gh run download '${{ steps.plan.outputs.candidate_run }}' -R redact-secret/redact-secret -n cli-x86_64-unknown-linux-gnu -D "$RUNNER_TEMP/cli"
+          # redact-secret#937: the `_pii` Wasm builds arrive inside wasm-web and wasm-web-common; the inventory binds them.
+      - name: Repack and install the qualified Node candidates
+        run: |
+          set -euo pipefail
+          npm --prefix product ci --ignore-scripts --no-audit --no-fund
+          npm --prefix product run js:build
+          node product/scripts/pack-npm-candidate.mjs \
+            --addon-dir "$RUNNER_TEMP/qualified/node-addon-x86_64-unknown-linux-gnu" \
+            --wasm-dir "$RUNNER_TEMP/qualified/wasm-web" --wasm-common-dir "$RUNNER_TEMP/qualified/wasm-web-common" \
+            --out-dir "$RUNNER_TEMP/candidate"
+          node benchmarks/scripts/qualified-candidate.mjs verify --dir "$RUNNER_TEMP/qualified" --packed "$RUNNER_TEMP/candidate"
+          mkdir -p "$RUNNER_TEMP/node-native" "$RUNNER_TEMP/node-wasm"
+          npm --prefix "$RUNNER_TEMP/node-native" init -y
+          npm --prefix "$RUNNER_TEMP/node-native" install --no-package-lock "$RUNNER_TEMP"/candidate/*.tgz
+          npm --prefix "$RUNNER_TEMP/node-wasm" init -y
+          npm --prefix "$RUNNER_TEMP/node-wasm" install --no-package-lock --omit=optional \
+            "$RUNNER_TEMP"/candidate/redact-secret-core-*.tgz "$RUNNER_TEMP"/candidate/redact-secret-wasm-*.tgz
+      - name: Install the qualified Python wheel, Chromium, and build the Rust helper
+        run: |
+          set -euo pipefail
+          python -m venv "$RUNNER_TEMP/python"
+          "$RUNNER_TEMP/python/bin/python" -m pip install --no-index --no-deps --only-binary :all: "$RUNNER_TEMP"/python-wheel/*.whl
+          npm install --prefix "$RUNNER_TEMP/playwright" --no-save playwright@1.55.0
+          "$RUNNER_TEMP/playwright/node_modules/.bin/playwright" install --with-deps chromium
+          cargo init --bin --name pii-profile-cost-rust-sample "$RUNNER_TEMP/rust-helper"
+          cp benchmarks/scripts/pii-profile-cost/rust-sample.rs "$RUNNER_TEMP/rust-helper/src/main.rs"
+          cargo add --manifest-path "$RUNNER_TEMP/rust-helper/Cargo.toml" base64@0.22 serde_json@1
+          cargo add --manifest-path "$RUNNER_TEMP/rust-helper/Cargo.toml" serde@1 --features derive
+          cargo add --manifest-path "$RUNNER_TEMP/rust-helper/Cargo.toml" --path "$GITHUB_WORKSPACE/product/crates/secret-scan-core" --rename redact-secret
+          cargo build --release --locked --manifest-path "$RUNNER_TEMP/rust-helper/Cargo.toml"
+          chmod +x "$RUNNER_TEMP"/cli/redact-secret
+      - name: Prepare the immutable adapter configuration
+        working-directory: benchmarks
+        run: |
+          node --import tsx scripts/prepare-pii-profile-cost-linux-v2.mjs \
+            --product="$GITHUB_WORKSPACE/product" --inventory="$RUNNER_TEMP/qualified/artifact-inventory/artifact-inventory.json" \
+            --node-native-root="$RUNNER_TEMP/node-native" --node-wasm-root="$RUNNER_TEMP/node-wasm" \
+            --browser-root="$RUNNER_TEMP/qualified/wasm-web" --browser-common-root="$RUNNER_TEMP/qualified/wasm-web-common" \
+            --python="$RUNNER_TEMP/python/bin/python" --python-wheel="$(find "$RUNNER_TEMP/python-wheel" -name '*.whl' -print -quit)" \
+            --cli="$RUNNER_TEMP/cli/redact-secret" --rust-helper="$RUNNER_TEMP/rust-helper/target/release/pii-profile-cost-rust-sample" \
+            --playwright="$RUNNER_TEMP/playwright/node_modules/playwright/index.mjs" --output="$RUNNER_TEMP/config.json"
+      - name: Download the pre-frozen thresholds
+        if: inputs.phase == 'candidate'
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: |
+          test '${{ inputs.threshold_run_id }}' != ''
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/${{ inputs.threshold_run_id }}" --jq \
+            'select(.conclusion == "success" and .event == "workflow_dispatch" and .path == ".github/workflows/pii-profile-cost-v2.yml" and .head_sha == env.GITHUB_SHA) | .id' | grep -qx '${{ inputs.threshold_run_id }}'
+          gh run download '${{ inputs.threshold_run_id }}' -R "$GITHUB_REPOSITORY" -n pii-profile-cost-v2-thresholds -D "$RUNNER_TEMP/thresholds"
+      - name: Provision pinned scanners before candidate mode
+        if: inputs.phase == 'candidate'
+        working-directory: benchmarks
+        run: npm run peers:provision -- --dir "$RUNNER_TEMP/scanner-bin"
+      - name: Verify TruffleHog 3.97.4 before candidate mode
+        if: inputs.phase == 'candidate'
+        run: |
+          test "$(command -v trufflehog)" = "$RUNNER_TEMP/scanner-bin/trufflehog"
+          test "$(trufflehog --version | awk '{print $2}')" = '3.97.4'
+      - name: Run the full matrix
+        working-directory: benchmarks
+        run: |
+          set -euo pipefail
+          threshold=()
+          if [ '${{ inputs.phase }}' = candidate ]; then threshold=(--thresholds="$RUNNER_TEMP/thresholds/thresholds.json"); fi
+          node --import tsx scripts/measure-pii-profile-cost-v2.mjs --mode='${{ inputs.phase }}' \
+            --config="$RUNNER_TEMP/config.json" --output="$RUNNER_TEMP/report.json" --run-id="$GITHUB_RUN_ID" "${threshold[@]}"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: pii-profile-cost-v2-${{ inputs.phase }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/report.json
+          if-no-files-found: error
+
+  freeze:
+    if: inputs.phase == 'freeze'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with: { node-version: 22 }
+      - run: npm ci
+      - name: Download exactly three A/A reports
+        env: { GH_TOKEN: "${{ github.token }}", RUN_IDS: "${{ inputs.aa_run_ids }}" }
+        run: |
+          set -euo pipefail
+          IFS=, read -ra ids <<< "$RUN_IDS"
+          test "${#ids[@]}" -eq 3
+          for id in "${ids[@]}"; do
+            gh api "repos/$GITHUB_REPOSITORY/actions/runs/$id" --jq \
+              'select(.conclusion == "success" and .event == "workflow_dispatch" and .path == ".github/workflows/pii-profile-cost-v2.yml" and .head_sha == env.GITHUB_SHA) | .id' | grep -qx "$id"
+            gh run download "$id" -n "pii-profile-cost-v2-aa-$id" -D "$RUNNER_TEMP/aa-$id"
+          done
+          files=("$RUNNER_TEMP"/aa-*/report.json)
+          node --import tsx scripts/freeze-pii-profile-cost-thresholds-v2.mjs \
+            --aa "${files[0]}" --aa "${files[1]}" --aa "${files[2]}" --output "$RUNNER_TEMP/thresholds.json"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with: { name: pii-profile-cost-v2-thresholds, path: "${{ runner.temp }}/thresholds.json", if-no-files-found: error }
+
+  size:
+    if: inputs.phase == 'size'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with: { persist-credentials: false, path: benchmarks }
+      - name: Read the reviewed candidate inputs of the frozen v2 plan
+        id: plan
+        working-directory: benchmarks
+        run: |
+          set -euo pipefail
+          node -e 'const p = require("./qualification/pii-profile-cost-v2.json").inputs;
+            if (!/^[0-9a-f]{40}$/.test(p.candidateProductCommit) || !Number.isInteger(p.candidateQualificationRun)) throw new Error("invalid v2 plan inputs");
+            console.log(`candidate_commit=${p.candidateProductCommit}\ncandidate_run=${p.candidateQualificationRun}`);' >> "$GITHUB_OUTPUT"
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with: { node-version: 22 }
+      - name: Mint read-only product token
+        id: product-token
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2.2.2
+        with:
+          app-id: ${{ vars.BENCHMARKS_DISPATCH_APP_ID }}
+          private-key: ${{ secrets.BENCHMARKS_DISPATCH_APP_PRIVATE_KEY }}
+          owner: redact-secret
+          repositories: redact-secret
+          permission-actions: read
+          permission-contents: read
+      - run: npm --prefix benchmarks ci
+      - name: Fetch, repack, and bundle both exact distribution sides
+        env: { GH_TOKEN: "${{ steps.product-token.outputs.token }}" }
+        run: |
+          set -euo pipefail
+          for spec in baseline:f26dee26a9c2aa3cfff3543d784c02de5054de09:36317349914 'candidate:${{ steps.plan.outputs.candidate_commit }}:${{ steps.plan.outputs.candidate_run }}'; do
+            IFS=: read -r side commit run <<< "$spec"
+            mkdir -p "$RUNNER_TEMP/$side"
+            git clone --quiet https://github.com/redact-secret/redact-secret.git "$RUNNER_TEMP/$side/product"
+            git -C "$RUNNER_TEMP/$side/product" checkout --quiet "$commit"
+            node benchmarks/scripts/qualified-candidate.mjs fetch --repository redact-secret/redact-secret \
+              --sha "$commit" --run-id "$run" --product-ref main --dir "$RUNNER_TEMP/$side/qualified"
+            npm --prefix "$RUNNER_TEMP/$side/product" ci --ignore-scripts --no-audit --no-fund
+            npm --prefix "$RUNNER_TEMP/$side/product" run js:build
+            node "$RUNNER_TEMP/$side/product/scripts/pack-npm-candidate.mjs" \
+              --addon-dir "$RUNNER_TEMP/$side/qualified/node-addon-x86_64-unknown-linux-gnu" \
+              --wasm-dir "$RUNNER_TEMP/$side/qualified/wasm-web" --wasm-common-dir "$RUNNER_TEMP/$side/qualified/wasm-web-common" \
+              --out-dir "$RUNNER_TEMP/$side/candidate"
+            node benchmarks/scripts/qualified-candidate.mjs verify --dir "$RUNNER_TEMP/$side/qualified" --packed "$RUNNER_TEMP/$side/candidate"
+            core="$(find "$RUNNER_TEMP/$side/candidate" -name 'redact-secret-core-*.tgz' -print -quit)"
+            wasm="$(find "$RUNNER_TEMP/$side/candidate" -name 'redact-secret-wasm-*.tgz' -print -quit)"
+            for profile in full common; do
+              node benchmarks/scripts/build-pii-profile-cost-browser-bundle-v2.mjs --profile="$profile" --core="$core" --wasm="$wasm" \
+                --work="$RUNNER_TEMP/$side/bundle-$profile" --output="$RUNNER_TEMP/$side/bundle-$profile.json"
+            done
+          done
+      - name: Collect the complete size matrix with pre-existing budgets
+        run: |
+          node benchmarks/scripts/prepare-pii-profile-cost-size-config-v2.mjs --baseline="$RUNNER_TEMP/baseline" \
+            --candidate="$RUNNER_TEMP/candidate" --output="$RUNNER_TEMP/size-config.json"
+          cd benchmarks
+          node --import tsx scripts/collect-pii-profile-cost-sizes-v2.mjs --config="$RUNNER_TEMP/size-config.json" \
+            --output="$RUNNER_TEMP/size-report.json"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with: { name: pii-profile-cost-v2-size, path: "${{ runner.temp }}/size-report.json", if-no-files-found: error }

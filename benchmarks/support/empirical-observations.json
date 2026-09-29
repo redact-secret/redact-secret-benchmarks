@@ -31,7 +31,7 @@
         {
           "class": "peer-scanner-rule",
           "owner": "praetorian-inc",
-          "reference": "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules/atlassian.yml#L3-L8",
+          "reference": "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36/crates/noseyparker/data/default/builtin/rules/atlassian.yml#L3-L8",
           "observedAt": "2026-09-24",
           "supports": "'Atlassian Cloud API Token' rule: ATATT3xFfGF0 + 20-200 [A-Za-z0-9_-] + '=' + [0-9A-F]{8}; the optional =<8 uppercase hex> suffix"
         },
@@ -1415,7 +1415,7 @@
         {
           "class": "peer-scanner-rule",
           "owner": "betterleaks",
-          "reference": "https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/sentry.go",
+          "reference": "https://github.com/betterleaks/betterleaks/blob/2a387a5bad42/cmd/generate/config/rules/sentry.go",
           "observedAt": "2026-09-24",
           "supports": "sentry-org-token rule: same sntrys_[base64_json]_[base64 43] structure; 42/44-char secrets as negatives"
         },
@@ -1520,7 +1520,7 @@
         {
           "class": "peer-scanner-rule",
           "owner": "betterleaks",
-          "reference": "https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/sentry.go",
+          "reference": "https://github.com/betterleaks/betterleaks/blob/2a387a5bad42/cmd/generate/config/rules/sentry.go",
           "observedAt": "2026-09-24",
           "supports": "sentry-user-token rule: sntryu_ + [a-f0-9]{64}; 63/65-length negatives"
         },
@@ -1991,6 +1991,232 @@
           "statement": "Only GitLab states the alphabet (uppercase); the product accepts either case.",
           "status": "bounded",
           "bound": "The contract freezes GitLab's uppercase body; no lowercase twin is authored."
+        }
+      ]
+    },
+    {
+      "family": "together-ai-api-key",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "No Together page, staff statement or SDK code states the tgp_v1_ prefix, a length or an alphabet. The shape rests on one scanner rule (betterleaks; Kingfisher aliases it, so it is one lineage, not two) and a four-sample maintainer observation (#783). No pinned scanner (trufflehog 3.97.4, gitleaks 8.30.1) has a Together rule. No provider-issued key has been captured through #205 intake. A 2026-09-27 re-check of the broad-discovery sources for #783 (Reddit, Stack Overflow, GitHub code and issue search, Hacker News, and the scanner repos trufflehog main, gitleaks master, GitGuardian ggshield, osv-scalibr, secretlint, pleno-dlp and two general leak-scanner projects) found no new source for the tgp_v1_ shape itself; betterleaks/Kingfisher and #783 remain the only two owners. It did find that pleno-dlp (github.com/plenoai/pleno-dlp, tag v0.66.4, commit b3cd17fa41953a98aaafaa61aa8ab3e05882bf66) ships a Together detector for a different, sibling shape (a bare 64-character lowercase-hex string, keyword-gated on 'together'), which the corroboration decision's own rule ('a rule for a sibling shape does not count') excludes from this family's corroboration count; it is recorded below as evidence toward the open legacy-key contradiction instead.",
+      "supportedContexts": [
+        "bare value (the tgp_v1_ prefix plus exactly 43 base64url characters is the only marker)",
+        "double-quoted assignment value",
+        "value on the line after an unrelated comment line (CRLF)"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "betterleaks",
+          "reference": "https://github.com/betterleaks/betterleaks/blob/2a387a5bad42/cmd/generate/config/rules/togetherai.go",
+          "observedAt": "2026-09-27",
+          "supports": "togetherai-api-key: tgp_v1_ + [A-Za-z0-9_-]{43}, entropy filter 3.0"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/783",
+          "observedAt": "2026-09-27",
+          "supports": "2026-09-26 broad-discovery pass: four full-length maintainer-observed bodies agree on 43 base64url characters; legacy keys and tgp_v2_ unresolved"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Whether a tgp_v2_ prefix or a legacy 64-hex key exists; no source states either.",
+          "status": "bounded",
+          "bound": "The contract freezes tgp_v1_ + 43 base64url characters; no fixture asserts silence on tgp_v2_ or a legacy key. 2026-09-27: pleno-dlp (v0.66.4, commit b3cd17fa41953a98aaafaa61aa8ab3e05882bf66) now names one candidate legacy shape -- a bare 64-character lowercase-hex string, keyword-gated -- but this is one tool's own inference (its source calls the hex string 'sha256-shaped', not a documented provider format) and it is not a provider or independent-implementation source, so the contradiction stays bounded rather than settled and no fixture is authored for it."
+        }
+      ]
+    },
+    {
+      "family": "tavily-api-key",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "Tavily's docs show the tvly- prefix only in a placeholder (Authorization: Bearer tvly-YOUR_API_KEY) and tvly-dev- in truncated samples, and state no length or alphabet. The 32-alphanumeric body rests on one scanner rule (Nosey Parker) and a three-sample maintainer observation (#786); GitGuardian's detector confirms only that the key is prefixed. No pinned scanner has a Tavily rule. No provider-issued key has been captured through #205 intake.",
+      "supportedContexts": [
+        "bare value (tvly- or tvly-dev- plus exactly 32 alphanumerics is the only marker)",
+        "double-quoted assignment value",
+        "value on the line after an unrelated comment line (CRLF)"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "praetorian",
+          "reference": "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36/crates/noseyparker/data/default/builtin/rules/tavily.yml",
+          "observedAt": "2026-09-27",
+          "supports": "np.tavily.1: tvly- + [a-zA-Z0-9]{32} (predates tvly-dev-)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitguardian",
+          "reference": "https://docs.gitguardian.com/secrets-detection/secrets-detection-engine/detectors/specifics/tavily_api_key",
+          "observedAt": "2026-09-27",
+          "supports": "Tavily API Key detector: Prefixed True, no length stated"
+        },
+        {
+          "class": "provider-example",
+          "owner": "tavily",
+          "reference": "https://docs.tavily.com/documentation/api-reference/introduction",
+          "observedAt": "2026-09-27",
+          "supports": "the tvly- prefix, by placeholder only (Authorization: Bearer tvly-YOUR_API_KEY); no length or alphabet"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/786",
+          "observedAt": "2026-09-27",
+          "supports": "2026-09-26 broad-discovery pass: three full-width maintainer-observed samples agree on 32 alphanumerics"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Whether a tvly-prod- prefix or a wider production or enterprise body exists.",
+          "status": "bounded",
+          "bound": "The contract freezes tvly- or tvly-dev- plus 32 alphanumerics; no fixture asserts silence on tvly-prod- or on another width."
+        }
+      ]
+    },
+    {
+      "family": "mistral-api-key",
+      "mode": "context-constrained",
+      "supportsBareValues": false,
+      "uncertainty": "No Mistral page or SDK code states a prefix, length or alphabet. Three tool rules (osv-scalibr, betterleaks, pleno-dlp) read as one assertion of 32 alphanumerics beside a Mistral name, and the value has no marker of its own, so it is claimed only beside a same-line Mistral name, host or constructor. No pinned scanner has a Mistral rule. No provider-issued key has been captured through #205 intake.",
+      "supportedContexts": [
+        "same line as the word mistral, e.g. MISTRAL_API_KEY=, api.mistral.ai, Mistral(api_key=...)",
+        "Authorization: Bearer on a line naming the Mistral API host"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "google",
+          "reference": "https://github.com/google/osv-scalibr/blob/6eb351350a6c/veles/secrets/mistralapikey/detector.go",
+          "observedAt": "2026-09-27",
+          "supports": "mistralapikey: \\b[A-Za-z0-9]{32}\\b beside a Mistral context indicator"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "betterleaks",
+          "reference": "https://github.com/betterleaks/betterleaks/blob/2a387a5bad42/cmd/generate/config/rules/mistral.go",
+          "observedAt": "2026-09-27",
+          "supports": "mistral-api-key: mistral keyword + [A-Z0-9]{32}, case-insensitive"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/781",
+          "observedAt": "2026-09-27",
+          "supports": "2026-09-26 broad-discovery pass: the SDK does no validation; the three rules are one assertion"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "The Codestral key and the realtime rt_ token are separate credentials of undecided shape.",
+          "status": "bounded",
+          "bound": "The contract covers the Studio API key only; no fixture asserts silence on a Codestral key or an rt_ token."
+        }
+      ]
+    },
+    {
+      "family": "cohere-api-key",
+      "mode": "context-constrained",
+      "supportsBareValues": false,
+      "uncertainty": "No Cohere page or SDK code states a prefix, length or alphabet; the 40-alphanumeric shape is one gitleaks rule's inference, and GitGuardian's detector reports the key as unprefixed with no length. The value has no marker, so it is claimed only beside a same-line cohere name or CO_API_KEY. A blog's co- prefix contradicts both scanner sources. No provider-issued key has been captured through #205 intake.",
+      "supportedContexts": [
+        "same line as the word cohere or CO_API_KEY, COHERE_API_KEY",
+        "cohere.ClientV2(api_key=...) and Authorization: Bearer on a line naming the Cohere API host"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitleaks",
+          "reference": "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "observedAt": "2026-09-27",
+          "supports": "cohere-api-token: cohere/CO_API_KEY keyword before an assignment, then [a-zA-Z0-9]{40}"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitguardian",
+          "reference": "https://docs.gitguardian.com/secrets-detection/secrets-detection-engine/detectors/specifics/cohere_apikey",
+          "observedAt": "2026-09-27",
+          "supports": "Cohere API Key detector: Prefixed False, no length stated"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "cohere",
+          "reference": "https://github.com/cohere-ai/cohere-python/blob/953f5a198de3/src/cohere/client.py",
+          "observedAt": "2026-09-27",
+          "supports": "the SDK reads CO_API_KEY (documented) and COHERE_API_KEY (accepted): the same-line name gate; no key shape"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/782",
+          "observedAt": "2026-09-27",
+          "supports": "2026-09-26 broad-discovery pass: no shape difference between trial and production keys; the co- prefix is one vendor blog"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "One vendor blog describes a co- prefix; gitleaks and GitGuardian describe an unprefixed key.",
+          "status": "bounded",
+          "bound": "The contract freezes the unprefixed 40-alphanumeric shape beside a Cohere name; no fixture uses or asserts silence on a co- prefix."
+        }
+      ]
+    },
+    {
+      "family": "deepgram-api-key",
+      "mode": "context-constrained",
+      "supportsBareValues": false,
+      "uncertainty": "No Deepgram page or SDK code states a prefix, length or alphabet, and the docs' 32-hex example is an ascending-digit placeholder. trufflehog admits [0-9a-z]{40} and betterleaks [a-f0-9]{40}; the contract keeps lowercase hex, which both admit. The value has no marker, so it is claimed only beside a same-line Deepgram name, host or constructor. No provider-issued key has been captured through #205 intake.",
+      "supportedContexts": [
+        "same line as the word deepgram, e.g. DEEPGRAM_API_KEY=, api.deepgram.com",
+        "DeepgramClient(api_key=...) and Authorization: Token on a line naming the Deepgram API host"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/deepgram/deepgram.go",
+          "observedAt": "2026-09-27",
+          "supports": "deepgram: deepgram keyword + \\b([0-9a-z]{40})\\b"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "betterleaks",
+          "reference": "https://github.com/betterleaks/betterleaks/blob/2a387a5bad42/cmd/generate/config/rules/deepgram.go",
+          "observedAt": "2026-09-27",
+          "supports": "deepgram-api-key: deepgram keyword + 40 lowercase hex, entropy filter"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "deepgram",
+          "reference": "https://github.com/deepgram/deepgram-python-sdk/blob/c7c1b3fac4be/src/deepgram/base_client.py",
+          "observedAt": "2026-09-27",
+          "supports": "the SDK reads DEEPGRAM_API_KEY and takes api_key: the same-line name and constructor gate; no key shape"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/789",
+          "observedAt": "2026-09-27",
+          "supports": "2026-09-26 broad-discovery pass: hex versus base36 alphabet undecided; the 32-hex docs example is a placeholder"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Alphabet: trufflehog admits base36 [0-9a-z], betterleaks only hex.",
+          "status": "bounded",
+          "bound": "The contract freezes lowercase hex, which both rules admit; no positive uses a non-hex letter and no fixture asserts silence on one."
+        },
+        {
+          "statement": "The documentation's 32-hex example suggests a 32-character key.",
+          "status": "bounded",
+          "bound": "The example is an ascending-digit placeholder; the contract freezes 40 and no fixture asserts silence on a 32-hex value."
         }
       ]
     }

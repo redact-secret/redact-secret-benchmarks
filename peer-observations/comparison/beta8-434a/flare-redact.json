@@ -1,0 +1,354 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T18:15:41.542Z",
+  "sourceRun": {
+    "runId": "2026-09-28T18:15:41.542Z-65aa0c",
+    "benchmarkRevision": "e8b38c33ceb744dcfc23a0005d89619cdfdcd2bd"
+  },
+  "input": {
+    "surface": "comparison/beta8-434a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "c3275dcfeef4fd14553e9afe2f7367761dfb88caa30a5d7864479bcb1f4ec5fa",
+    "fixtureCount": 260,
+    "fixturesDigest": "d3fc4449bc4ba1d697ac3770e068ac1878df7045f05a9d189a57424bad0cd6b7",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e893fa62ccdf42d447218cdde2c178084d7163dfea6b51caa4dc5fd32b69220c",
+      "fixtureCount": 4768
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "d86f286b1689f577b83e9685a822cb2f074a4fd2b0b9a813d579ab4f72a03266"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/doppler-audit-token-bearer-header.http",
+      "start": 61,
+      "end": 120,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-uppercase-prefix-twin.http",
+      "start": 61,
+      "end": 120,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-bare-prose.md",
+      "start": 61,
+      "end": 110
+    },
+    {
+      "path": "cases/doppler-cli-token-bearer-header.http",
+      "start": 61,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-chat-paste.txt",
+      "start": 23,
+      "end": 73
+    },
+    {
+      "path": "cases/doppler-cli-token-ci-log.log",
+      "start": 52,
+      "end": 102
+    },
+    {
+      "path": "cases/doppler-cli-token-code-fence.md",
+      "start": 45,
+      "end": 91
+    },
+    {
+      "path": "cases/doppler-cli-token-dotenv.env",
+      "start": 21,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-cli-token-export.sh",
+      "start": 22,
+      "end": 72
+    },
+    {
+      "path": "cases/doppler-cli-token-json-api-key.json",
+      "start": 16,
+      "end": 65
+    },
+    {
+      "path": "cases/doppler-cli-token-json-token.json",
+      "start": 14,
+      "end": 64
+    },
+    {
+      "path": "cases/doppler-cli-token-k8s-string-data.yml",
+      "start": 101,
+      "end": 150
+    },
+    {
+      "path": "cases/doppler-cli-token-sdk-kwarg.py",
+      "start": 29,
+      "end": 75
+    },
+    {
+      "path": "cases/doppler-cli-token-sentence-period.txt",
+      "start": 25,
+      "end": 71
+    },
+    {
+      "path": "cases/doppler-cli-token-uppercase-prefix-twin.http",
+      "start": 61,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-x-api-key-header.http",
+      "start": 56,
+      "end": 102
+    },
+    {
+      "path": "cases/doppler-cli-token-yaml.yml",
+      "start": 38,
+      "end": 87
+    },
+    {
+      "path": "cases/doppler-personal-token-bare-prose.md",
+      "start": 61,
+      "end": 110
+    },
+    {
+      "path": "cases/doppler-personal-token-bearer-header.http",
+      "start": 61,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-chat-paste.txt",
+      "start": 23,
+      "end": 73
+    },
+    {
+      "path": "cases/doppler-personal-token-ci-log.log",
+      "start": 52,
+      "end": 102
+    },
+    {
+      "path": "cases/doppler-personal-token-code-fence.md",
+      "start": 45,
+      "end": 91
+    },
+    {
+      "path": "cases/doppler-personal-token-dotenv.env",
+      "start": 21,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-personal-token-export.sh",
+      "start": 22,
+      "end": 72
+    },
+    {
+      "path": "cases/doppler-personal-token-json-api-key.json",
+      "start": 16,
+      "end": 65
+    },
+    {
+      "path": "cases/doppler-personal-token-json-token.json",
+      "start": 14,
+      "end": 64
+    },
+    {
+      "path": "cases/doppler-personal-token-k8s-string-data.yml",
+      "start": 101,
+      "end": 150
+    },
+    {
+      "path": "cases/doppler-personal-token-sdk-kwarg.py",
+      "start": 29,
+      "end": 75
+    },
+    {
+      "path": "cases/doppler-personal-token-sentence-period.txt",
+      "start": 25,
+      "end": 71
+    },
+    {
+      "path": "cases/doppler-personal-token-uppercase-prefix-twin.http",
+      "start": 61,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-x-api-key-header.http",
+      "start": 56,
+      "end": 102
+    },
+    {
+      "path": "cases/doppler-personal-token-yaml.yml",
+      "start": 38,
+      "end": 87
+    },
+    {
+      "path": "cases/doppler-scim-token-bearer-header.http",
+      "start": 61,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-uppercase-prefix-twin.http",
+      "start": 61,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-bearer-header.http",
+      "start": 61,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-uppercase-prefix-twin.http",
+      "start": 61,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-bearer-header.http",
+      "start": 61,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-uppercase-prefix-twin.http",
+      "start": 61,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-token-bare-prose.md",
+      "start": 61,
+      "end": 110
+    },
+    {
+      "path": "cases/doppler-token-bearer-header.http",
+      "start": 61,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-token-chat-paste.txt",
+      "start": 23,
+      "end": 73
+    },
+    {
+      "path": "cases/doppler-token-ci-log.log",
+      "start": 52,
+      "end": 102
+    },
+    {
+      "path": "cases/doppler-token-code-fence.md",
+      "start": 45,
+      "end": 91
+    },
+    {
+      "path": "cases/doppler-token-dotenv.env",
+      "start": 21,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-token-export.sh",
+      "start": 22,
+      "end": 72
+    },
+    {
+      "path": "cases/doppler-token-json-api-key.json",
+      "start": 16,
+      "end": 65
+    },
+    {
+      "path": "cases/doppler-token-json-token.json",
+      "start": 14,
+      "end": 64
+    },
+    {
+      "path": "cases/doppler-token-k8s-string-data.yml",
+      "start": 101,
+      "end": 150
+    },
+    {
+      "path": "cases/doppler-token-sdk-kwarg.py",
+      "start": 29,
+      "end": 75
+    },
+    {
+      "path": "cases/doppler-token-segment-2.env",
+      "start": 21,
+      "end": 73
+    },
+    {
+      "path": "cases/doppler-token-segment-35.sh",
+      "start": 22,
+      "end": 108
+    },
+    {
+      "path": "cases/doppler-token-segment-dash.json",
+      "start": 14,
+      "end": 70
+    },
+    {
+      "path": "cases/doppler-token-segment-underscore.txt",
+      "start": 23,
+      "end": 82
+    },
+    {
+      "path": "cases/doppler-token-sentence-period.txt",
+      "start": 25,
+      "end": 71
+    },
+    {
+      "path": "cases/doppler-token-uppercase-prefix-twin.http",
+      "start": 61,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-token-x-api-key-header.http",
+      "start": 56,
+      "end": 102
+    },
+    {
+      "path": "cases/doppler-token-yaml.yml",
+      "start": 38,
+      "end": 87
+    }
+  ],
+  "digest": "7fc37a10fa03650a6ebbb3502d12ac0ada1cce5c9d8f61e9206720868ec81bde"
+}

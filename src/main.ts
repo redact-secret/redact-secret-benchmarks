@@ -17,6 +17,9 @@ import type { Report, Run } from './types';
 import type { EvaluationReport } from './evaluation-types';
 import type { CandidateReport, ReviewLedgerFile } from './evaluation-model';
 import type { SupportMatrixFile } from './support-model';
+import { domainDescriptor, evaluationDomainsProblem, type EvaluationDomainId } from './evaluation-domains';
+import { domainDescriptorV2, evaluationDomainsV2Problem } from './evaluation-domains-v2';
+import { piiSupportMatrixProblem, type PiiSupportMatrixFile } from './pii-support-model';
 import './tokens.css';
 import './style.css';
 
@@ -44,6 +47,7 @@ const NAV: NavItem[] = [
   { href: '/report', label: 'Report', short: 'Report', current: under('/report') },
   { href: '/coverage', label: 'Coverage', short: 'Coverage', current: under('/coverage', '/scenarios', '/suites', '/fixture') },
   { href: '/support', label: 'Support', short: 'Support', current: under('/support') },
+  { href: '/evaluation/credentials', label: 'Evaluation', short: 'Eval', current: under('/evaluation') },
   { href: '/performance', label: 'Performance', short: 'Perf', current: under('/performance') },
   { href: '/workbench', label: 'Workbench', short: 'Workbench', current: under('/workbench') },
   { href: '/how-to-read', label: 'How to read', short: 'Read', current: under('/how-to-read') },
@@ -123,16 +127,51 @@ async function renderWorkbench(current: ReturnType<typeof route>, token: number,
 /** The support matrix is a generated artifact like the evaluation report: read, re-validated, then rendered. No status is held in the app. */
 async function renderSupport(token: number, path: string, force: boolean) {
   if (force) renderPage('<p role="status" class="small">Loading support matrix…</p>', 'Support');
-  const { supportPage, supportFilterOf } = await import('./pages/support');
-  const body = await text('/results/support-matrix-v1.json');
+  const { credentialSupportPage, piiSupportPage, piiSupportQueryProblem, supportQueryOf, supportDomainUnavailablePage } = await import('./pages/pii-support');
+  const query = supportQueryOf(location.search);
+  if (!query) { renderPage(supportDomainUnavailablePage('Invalid or unknown support query'), 'Support'); return; }
+  if (query.domain === 'pii') {
+    const indexText = await text('/results/evaluation-domains-v2.json');
+    if (token !== request || path !== location.pathname) return;
+    let problem = 'No evaluation-domain v2 index published', descriptor = null;
+    if (indexText) { try { const parsed = JSON.parse(indexText); problem = evaluationDomainsV2Problem(parsed) ?? ''; descriptor = domainDescriptorV2(parsed, 'pii'); } catch { problem = 'Evaluation-domain v2 index is unreadable'; } }
+    const matrixText = descriptor?.support.state === 'published' && descriptor.support.href ? await text(descriptor.support.href) : '';
+    if (token !== request || path !== location.pathname) return;
+    const payload = JSON.stringify([path, location.search, indexText, matrixText]);
+    if (!force && payload === lastPayload) return;
+    lastPayload = payload;
+    let matrix: PiiSupportMatrixFile | null = null;
+    if (descriptor?.support.state === 'published' && matrixText) { try { const parsed = JSON.parse(matrixText); problem = await piiSupportMatrixProblem(parsed, descriptor.support.artifactCommitment ?? undefined) ?? ''; if (!problem) matrix = parsed; } catch { problem = 'PII support matrix is unreadable'; } }
+    if (matrix) problem = piiSupportQueryProblem(query, matrix) ?? problem;
+    renderPage(descriptor && matrix && !problem ? piiSupportPage(descriptor, matrix, query) : supportDomainUnavailablePage(problem || 'PII support publication is unavailable'), 'PII support');
+    return;
+  }
+  const { supportPage } = await import('./pages/support');
+  const [body, indexText] = await Promise.all([text('/results/support-matrix-v1.json'), text('/results/evaluation-domains-v1.json')]);
   if (token !== request || path !== location.pathname) return;
-  const payload = JSON.stringify([path, location.search, body]);
+  const payload = JSON.stringify([path, location.search, body, indexText]);
   if (!force && payload === lastPayload) return;
   lastPayload = payload;
   let matrix: SupportMatrixFile | null = null, problem: string | null = 'No support matrix published';
   if (body) { try { const parsed = JSON.parse(body); problem = supportMatrixProblem(parsed); if (!problem) matrix = parsed; } catch { problem = 'Support matrix is unreadable'; } }
-  renderPage(supportPage(matrix, problem, supportFilterOf(location.search)), 'Support');
+  let indexProblem = 'No evaluation-domain index published', descriptor = null;
+  if (indexText) { try { const parsed = JSON.parse(indexText); indexProblem = evaluationDomainsProblem(parsed) ?? ''; descriptor = domainDescriptor(parsed, 'credential'); } catch { indexProblem = 'Evaluation-domain index is unreadable'; } }
+  renderPage(descriptor ? credentialSupportPage(supportPage(matrix, problem, query.status), descriptor) : supportDomainUnavailablePage(indexProblem || 'Credential domain is missing from the evaluation-domain index'), 'Support');
   restoreDetails();
+}
+
+async function renderEvaluationDomain(id: EvaluationDomainId, token: number, path: string, force: boolean) {
+  const { domainEvaluationPage, domainEvaluationUnavailablePage } = await import('./pages/domain-evaluation');
+  if (force) renderPage('<p role="status" class="small">Loading evaluation domain…</p>', 'Evaluation');
+  const body = await text('/results/evaluation-domains-v1.json');
+  if (token !== request || path !== location.pathname) return;
+  let problem = 'No evaluation-domain index published', descriptor = null;
+  if (body) { try { const parsed = JSON.parse(body); problem = evaluationDomainsProblem(parsed) ?? ''; descriptor = domainDescriptor(parsed, id); } catch { problem = 'Evaluation-domain index is unreadable'; } }
+  if (!descriptor) { renderPage(domainEvaluationUnavailablePage(id, problem || 'Domain is missing from the evaluation-domain index'), 'Evaluation'); return; }
+  if (id === 'pii' && descriptor.evaluation.state !== 'schema-only') {
+    renderPage(domainEvaluationUnavailablePage(id, 'PII evaluation is not a schema-only projection'), 'PII evaluation'); return;
+  }
+  renderPage(domainEvaluationPage(descriptor, !PUBLIC_ONLY), id === 'credential' ? 'Credential evaluation' : 'PII evaluation');
 }
 
 async function refresh(force = false): Promise<void> {
@@ -144,6 +183,7 @@ async function refresh(force = false): Promise<void> {
   if (current.kind === 'performance') { if (force) { const { performancePage } = await import('./pages/performance'); renderPage(performancePage(), 'Performance'); } return; }
   if (current.kind === 'workbench') return renderWorkbench(current, token, path, force);
   if (current.kind === 'support') return renderSupport(token, path, force);
+  if (current.kind === 'evaluation-domain') return renderEvaluationDomain(current.id as EvaluationDomainId, token, path, force);
 
   const fixture = current.kind === 'fixture' ? fixtures.find(f => f.slug === current.id) : undefined;
   const label = current.kind === 'report' ? 'Report' : current.kind === 'coverage' || current.kind === 'coverage-family' || current.kind === 'coverage-detector' ? 'Coverage' : current.kind === 'scenario' ? (scenarios.find(s => s.id === current.id)?.title ?? 'Scenario') : current.kind === 'suite' ? (categories.find(c => c.id === current.id)?.title ?? 'Suite') : (fixture?.id ?? 'Fixture');
@@ -158,7 +198,7 @@ async function refresh(force = false): Promise<void> {
     let matrix: SupportMatrixFile | null = null, matrixProblem: string | null = needsMatrix ? 'No support matrix published' : null;
     if (matrixText) { try { const parsed = JSON.parse(matrixText); matrixProblem = supportMatrixProblem(parsed); if (!matrixProblem) matrix = parsed; } catch { matrixProblem = 'Support matrix is unreadable'; } }
     let body: string;
-    if (current.kind === 'report') body = reportPage(data, levelOf(location.search), fixtures);
+    if (current.kind === 'report') body = reportPage(data, levelOf(location.search), fixtures, location.search);
     else if (current.kind === 'coverage') body = coveragePage(fixtures, coverageViewOf(location.search), data, matrix, matrixProblem, location.search);
     else if (current.kind === 'coverage-family') body = familyPage(data, fixtures, current.id, matrix, matrixProblem);
     else if (current.kind === 'coverage-detector') body = detectorPage(data, fixtures, current.id);

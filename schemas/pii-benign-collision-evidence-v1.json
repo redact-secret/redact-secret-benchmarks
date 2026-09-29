@@ -1,0 +1,65 @@
+{
+  "$id": "urn:redact-secret:pii-benign-collision-evidence:1", "type": "object", "additionalProperties": false,
+  "required": ["schemaVersion", "id", "version", "contentCommitment", "accountingProfile", "reporting", "classes", "families", "entries"],
+  "properties": {
+    "schemaVersion": { "const": 1 }, "id": { "const": "pii-benign-collision-v1" }, "version": { "const": 1 }, "contentCommitment": { "$ref": "#/$defs/digest" },
+    "accountingProfile": { "type": "object", "additionalProperties": false, "required": ["id", "version", "benignAxes"], "properties": {
+      "id": { "const": "pii-v1" }, "version": { "const": 1 }, "benignAxes": { "type": "array", "minItems": 6, "maxItems": 6, "uniqueItems": true, "items": { "$ref": "#/$defs/accountingClass" } } } },
+    "reporting": { "type": "object", "additionalProperties": false, "required": ["evidenceClasses", "validatorCorrectness", "familyDiscrimination", "jurisdictionDiscrimination", "sensitivity"], "properties": {
+      "evidenceClasses": { "const": "evidenceByClass" }, "validatorCorrectness": { "const": "evidence.validators" }, "familyDiscrimination": { "const": "metrics.wrong-family-rate" },
+      "jurisdictionDiscrimination": { "const": "metrics.wrong-jurisdiction-rate" }, "sensitivity": { "type": "array", "minItems": 2, "maxItems": 2, "uniqueItems": true,
+        "items": { "enum": ["metrics.sensitive-miss-rate", "metrics.non-sensitive-flag-rate"] } } } },
+    "classes": { "type": "array", "minItems": 8, "maxItems": 8, "items": { "$ref": "#/$defs/class" } },
+    "families": { "type": "array", "items": { "$ref": "#/$defs/familyDescriptor" } }, "entries": { "type": "array", "items": { "$ref": "#/$defs/entry" } }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,79}$" }, "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "family": { "type": "string", "pattern": "^pii:(?:global|[a-z]{2}):[a-z0-9]+(?:-[a-z0-9]+)*$" }, "scope": { "type": "string", "pattern": "^(?:global|jurisdiction:[A-Z]{2})$" },
+    "language": { "type": "string", "pattern": "^[a-z]{2,8}(?:-[a-z0-9]{2,8})*$" }, "identityDomain": { "enum": ["email", "payment-card", "network-address", "iban", "phone", "national-id"] },
+    "accountingClass": { "enum": ["reserved", "documentation", "test-value", "public-operational", "placeholder", "context-negative"] },
+    "evidenceClass": { "enum": ["reserved-documentation", "official-test", "public-identifier", "ordinary-reference-account", "near-miss", "placeholder", "context-negative", "cross-family-collision"] },
+    "class": { "type": "object", "additionalProperties": false, "required": ["id", "kind", "accountingClasses", "qualifies"], "properties": {
+      "id": { "$ref": "#/$defs/evidenceClass" }, "kind": { "enum": ["benign", "mechanical-control", "collision"] },
+      "accountingClasses": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/accountingClass" } },
+      "qualifies": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["type-identity", "validator", "sensitivity", "family-discrimination", "jurisdiction-discrimination"] } } } },
+    "validatorIdentity": { "type": "object", "additionalProperties": false, "required": ["id", "version"], "properties": {
+      "id": { "$ref": "#/$defs/slug" }, "version": { "type": "integer", "minimum": 1 } } },
+    "validatorExpectation": { "type": "object", "additionalProperties": false, "required": ["id", "version", "expected"], "properties": {
+      "id": { "$ref": "#/$defs/slug" }, "version": { "type": "integer", "minimum": 1 }, "expected": { "enum": ["valid", "invalid", "unavailable"] } } },
+    "authority": { "type": "object", "additionalProperties": false, "required": ["sourceKind", "sourceId", "locator", "revision", "supports"], "properties": {
+      "sourceKind": { "enum": ["standard", "public-authority"] }, "sourceId": { "$ref": "#/$defs/slug" }, "locator": { "type": "string", "minLength": 1 }, "revision": { "type": "string", "minLength": 1 },
+      "supports": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["lexical", "validation", "allocation", "reserved-control", "sensitivity"] } } } },
+    "familyDescriptor": { "type": "object", "additionalProperties": false, "required": ["family", "displayName", "identityDomain", "scope", "validator", "authority"], "properties": {
+      "family": { "$ref": "#/$defs/family" }, "displayName": { "type": "string", "minLength": 1, "maxLength": 80 }, "identityDomain": { "$ref": "#/$defs/identityDomain" }, "scope": { "$ref": "#/$defs/scope" },
+      "validator": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/validatorIdentity" }] }, "authority": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/authority" } } } },
+    "source": { "type": "object", "additionalProperties": false, "required": ["sourceKind", "sourceId", "locator", "revision"], "properties": {
+      "sourceKind": { "enum": ["standard", "public-authority", "product-decision"] }, "sourceId": { "$ref": "#/$defs/slug" }, "locator": { "type": "string", "pattern": "^https://" }, "revision": { "type": "string", "minLength": 1, "maxLength": 120 } } },
+    "provenance": { "oneOf": [
+      { "type": "object", "additionalProperties": false, "required": ["kind", "sources"], "properties": { "kind": { "const": "authoritative" }, "sources": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/source" } } } },
+      { "type": "object", "additionalProperties": false, "required": ["kind", "sources", "generator"], "properties": { "kind": { "const": "deterministic-synthetic" }, "sources": { "type": "array", "items": { "$ref": "#/$defs/source" } },
+        "generator": { "type": "object", "additionalProperties": false, "required": ["id", "version", "seedCommitment"], "properties": { "id": { "const": "sha256-pattern" }, "version": { "const": 1 }, "seedCommitment": { "$ref": "#/$defs/digest" } } } } }
+    ] },
+    "fixture": { "type": "object", "additionalProperties": false, "required": ["prefix", "suffix", "candidate"], "properties": {
+      "prefix": { "type": "string", "maxLength": 120 }, "suffix": { "type": "string", "maxLength": 120 }, "candidate": { "oneOf": [
+        { "type": "object", "additionalProperties": false, "required": ["kind", "value"], "properties": { "kind": { "const": "authoritative-reserved" }, "value": { "type": "string", "minLength": 1, "maxLength": 120 } } },
+        { "type": "object", "additionalProperties": false, "required": ["kind", "generator", "seed", "pattern"], "properties": { "kind": { "const": "deterministic-pattern" }, "generator": { "const": "sha256-pattern" },
+          "seed": { "type": "string", "pattern": "^[a-z][a-z0-9/-]{0,119}$" }, "pattern": { "type": "string", "pattern": "^(?=.*[DA])[DA ._-]{2,80}$" } } }
+      ] } } },
+    "collisionParty": { "type": "object", "additionalProperties": false, "required": ["family", "scope", "validator"], "properties": {
+      "family": { "$ref": "#/$defs/family" }, "scope": { "$ref": "#/$defs/scope" }, "validator": { "$ref": "#/$defs/validatorExpectation" } } },
+    "collision": { "type": "object", "additionalProperties": false, "required": ["target", "competitors", "expectedOutcomes"], "properties": {
+      "target": { "$ref": "#/$defs/collisionParty" }, "competitors": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/collisionParty" } },
+      "expectedOutcomes": { "type": "object", "additionalProperties": false, "required": ["family", "jurisdiction", "sensitivity"], "properties": {
+        "family": { "enum": ["correct", "wrong-family"] }, "jurisdiction": { "enum": ["correct", "wrong-jurisdiction"] }, "sensitivity": { "enum": ["sensitive", "non-sensitive", "not-established"] } } } } },
+    "entry": { "type": "object", "additionalProperties": false,
+      "required": ["id", "caseId", "evidenceClass", "accountingClass", "family", "scope", "identityDomain", "language", "candidateCommitment", "fixture", "typeExpectation", "sensitivityExpectation", "validator", "contextGroup", "context", "collision", "provenance"], "properties": {
+        "id": { "$ref": "#/$defs/slug" }, "caseId": { "$ref": "#/$defs/slug" }, "evidenceClass": { "$ref": "#/$defs/evidenceClass" }, "accountingClass": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/accountingClass" }] },
+        "family": { "$ref": "#/$defs/family" }, "scope": { "$ref": "#/$defs/scope" }, "identityDomain": { "$ref": "#/$defs/identityDomain" }, "language": { "$ref": "#/$defs/language" },
+        "candidateCommitment": { "$ref": "#/$defs/digest" }, "fixture": { "$ref": "#/$defs/fixture" }, "typeExpectation": { "enum": ["valid", "invalid"] },
+        "sensitivityExpectation": { "enum": ["sensitive", "non-sensitive", "not-established"] }, "validator": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/validatorExpectation" }] },
+        "contextGroup": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/slug" }] }, "context": { "type": "object", "additionalProperties": false, "required": ["obligation", "class"], "properties": {
+          "obligation": { "enum": ["none", "reinforcing", "required-for-sensitive-classification"] }, "class": { "enum": ["sensitive", "neutral", "non-sensitive"] } } },
+        "collision": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/collision" }] }, "provenance": { "$ref": "#/$defs/provenance" }
+      } }
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "$id": "urn:redact-secret:pii-context-evidence:1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "version", "upstream", "contentCommitment", "evidenceGroup", "languages", "normalization", "association", "precedence", "entries", "fixtures", "groups"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "const": "pii-context-v1" },
+    "version": { "const": 1 },
+    "upstream": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "revision", "contract", "contractSha256", "schemaSha256"],
+      "properties": {
+        "repository": { "const": "redact-secret/redact-secret" },
+        "revision": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+        "contract": { "const": "redact-secret/pii-context/v1" },
+        "contractSha256": { "$ref": "#/$defs/digest" },
+        "schemaSha256": { "$ref": "#/$defs/digest" }
+      }
+    },
+    "contentCommitment": { "$ref": "#/$defs/digest" },
+    "evidenceGroup": { "const": "contextual" },
+    "languages": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/language" }
+    },
+    "normalization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unicode", "removeGovernedInvisible", "englishCase", "koreanCase", "tokenSeparators"],
+      "properties": {
+        "unicode": { "const": "NFC" },
+        "removeGovernedInvisible": { "const": true },
+        "englishCase": { "const": "ascii-lower" },
+        "koreanCase": { "const": "none" },
+        "tokenSeparators": {
+          "type": "array",
+          "minItems": 5,
+          "uniqueItems": true,
+          "items": { "enum": ["whitespace", "underscore", "hyphen", "colon", "equals"] }
+        }
+      }
+    },
+    "association": {
+      "type": "object", "additionalProperties": false,
+      "required": ["unit", "sameLogicalLine", "maxDistance", "stopAtAnotherCandidate", "equidistant", "fieldLabel", "naturalLanguageLabel"],
+      "properties": {
+        "unit": { "const": "normalized-unicode-scalar" }, "sameLogicalLine": { "const": true }, "maxDistance": { "const": 64 },
+        "stopAtAnotherCandidate": { "const": true }, "equidistant": { "const": "unassociated" },
+        "fieldLabel": { "type": "object", "additionalProperties": false, "required": ["direction", "maxDistance", "gap"],
+          "properties": { "direction": { "const": "before" }, "maxDistance": { "const": 16 }, "gap": { "const": "separators-and-quotes-only" } } },
+        "naturalLanguageLabel": { "type": "object", "additionalProperties": false, "required": ["direction", "maxDistance"],
+          "properties": { "direction": { "const": "either" }, "maxDistance": { "const": 64 } } }
+      }
+    },
+    "precedence": { "type": "array", "minItems": 4, "maxItems": 4, "uniqueItems": true,
+      "items": { "enum": ["longest-token-span", "high-signal-first", "negative-positive-neutral", "entry-id-bytewise"] } },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/entry" }
+    },
+    "fixtures": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/fixture" } },
+    "groups": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/group" }
+    }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,79}$" },
+    "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "language": { "type": "string", "pattern": "^[a-z]{2,8}(?:-[a-z0-9]{2,8})*$" },
+    "identityDomain": { "enum": ["email", "payment-card", "network-address", "iban", "phone", "national-id"] },
+    "entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "language", "kind", "class", "strength", "identityDomains", "forms", "provenance"],
+      "properties": {
+        "id": { "$ref": "#/$defs/slug" },
+        "language": { "$ref": "#/$defs/language" },
+        "kind": { "enum": ["field-label", "natural-language-label"] },
+        "class": { "enum": ["positive", "neutral", "negative"] },
+        "strength": { "enum": ["high-signal", "ambiguous"] },
+        "identityDomains": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/identityDomain" } },
+        "forms": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1, "maxLength": 80 } },
+        "provenance": { "enum": ["product-contract", "benchmark-authored-control"] }
+      }
+    },
+    "frame": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "entry", "template", "contextClass", "sensitivity", "effect", "features"],
+      "properties": {
+        "id": { "$ref": "#/$defs/slug" },
+        "entry": { "$ref": "#/$defs/slug" },
+        "template": { "type": "string", "minLength": 15, "maxLength": 240 },
+        "contextClass": { "enum": ["sensitive", "neutral", "non-sensitive"] },
+        "sensitivity": { "enum": ["sensitive", "non-sensitive", "not-established"] },
+        "effect": { "enum": ["positive-evidence", "neutral-evidence", "negative-evidence", "not-established-without-identity"] },
+        "features": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "enum": ["ascii-case", "whitespace", "underscore", "hyphen", "colon", "equals", "hangul", "mixed-ascii-hangul", "nfc", "nfd", "governed-invisible", "ambiguous", "benign-prose"] }
+        }
+      }
+    },
+    "fixture": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "language", "template", "rules", "candidates", "expectedAssociations"],
+      "properties": {
+        "id": { "$ref": "#/$defs/slug" }, "language": { "$ref": "#/$defs/language" },
+        "template": { "type": "string", "minLength": 10, "maxLength": 300 },
+        "rules": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["positive", "neutral", "negative", "ambiguity", "normalization", "separator", "direction", "distance", "same-line", "stop-at-candidate", "tie", "domain", "precedence"] } },
+        "candidates": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "object", "additionalProperties": false,
+          "required": ["id", "domain", "identityEstablished"], "properties": { "id": { "$ref": "#/$defs/slug" }, "domain": { "$ref": "#/$defs/identityDomain" }, "identityEstablished": { "type": "boolean" } } } },
+        "expectedAssociations": { "type": "array", "minItems": 1, "items": { "type": "object", "additionalProperties": false,
+          "required": ["candidate", "matches", "effect"], "properties": { "candidate": { "$ref": "#/$defs/slug" },
+            "matches": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/slug" } },
+            "effect": { "enum": ["positive-evidence", "neutral-evidence", "negative-evidence", "not-established-without-identity", "no-evidence"] } } } }
+      }
+    },
+    "group": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "language", "identityDomain", "frames"],
+      "properties": {
+        "id": { "$ref": "#/$defs/slug" },
+        "language": { "$ref": "#/$defs/language" },
+        "identityDomain": { "$ref": "#/$defs/identityDomain" },
+        "frames": { "type": "array", "minItems": 3, "items": { "$ref": "#/$defs/frame" } }
+      }
+    }
+  }
+}

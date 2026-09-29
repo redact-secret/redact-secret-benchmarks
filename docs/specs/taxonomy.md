@@ -29,6 +29,7 @@ too. The unit this taxonomy fixes on is **provider x credential family**.
       "name": "Fine-grained personal access token",
       "description": "...",
       "detectors": [],
+      "supportStatus": "unsupported",
       "sources": ["https://docs.github.com/..."],
       "note": "why this family has no detector"
     }
@@ -47,9 +48,49 @@ too. The unit this taxonomy fixes on is **provider x credential family**.
 - **`families[].detectors: []`** is a family a provider offers that this
   project does not detect. This is deliberate and representable, not an
   omission: A8's `support-matrix.json` (#509) turns every such entry into an
-  `unsupported` status. A test enforces that every zero-detector family
-  carries `sources` and/or a `note` — an unsupported claim without a reason
+  `unsupported` status by default. `supportStatus: "pending"` is the narrow
+  exception for a reviewed but blocked contract whose final support
+  disposition is unresolved; it still carries no evidence tier or profile
+  measurement. A test enforces that every zero-detector family
+  carries `sources` and/or a `note` — a detectorless disposition without a reason
   is a bug in the taxonomy, not a fact about the provider.
+- **A compatibility aggregate is not split-family evidence.** Vercel's
+  `vercel:access-token` row temporarily preserves the existing
+  `vercel-token` detector and fixture routing while the runtime still reports
+  five implementation branches through one finding type. The five modern
+  semantic families are separate detectorless Pending rows until each has a
+  complete positive contract and independently attributable behavior. The aggregate's
+  T0 fixture cells must never be broadcast or copied into those rows (#858,
+  [benchmark #373](https://github.com/redact-secret/redact-secret-benchmarks/issues/373)).
+- **Beta.10 credential families (#384).** Thirteen zero-detector rows are measured
+  arrival families whose contracts and corpora live in
+  `benchmarks/lib/beta8/384a.ts`–`384e.ts` (see
+  [beta8-evidence.md](beta8-evidence.md)): `anthropic:compliance-access-key`,
+  `anthropic:admin-api-key`, `openai:admin-api-key`, the two `aws-bedrock:` keys,
+  `elevenlabs:api-key`, `together:api-key`, `tavily:api-key` and the five
+  keyword-gated `mistral:`, `cohere:`, `deepgram:`, `ai21:` and `exa:` rows. Three of
+  them (the two Anthropic prefixes and the OpenAI admin key) sit inside detectors the
+  product already ships or extends; their rows deliberately map no detector, so they
+  never borrow the status of `anthropic:secret-api-key` or `openai:secret-api-key`.
+  Two further rows, `mistral:realtime-client-token` and `voyage-ai:api-key`, record the
+  research dispositions that stay `pending` with no corpus (redact-secret#780, #785).
+- **Beta.11 #860 Tier A families (#434).** Eighteen zero-detector rows for seven new
+  providers are measured arrival families whose contracts and corpora live in
+  `benchmarks/lib/beta8/434a.ts`–`434g.ts` (see [beta8-evidence.md](beta8-evidence.md)):
+  the seven `doppler:` token types, `trigger-dev:secret-api-key` and
+  `:personal-access-token`, `e2b:api-key`, `posthog:personal-api-key` and
+  `:project-secret-api-key`, `helicone:api-key` and `:write-api-key`, `firecrawl:api-key`,
+  and `composio:project-api-key`, `:org-api-key` and `:user-api-key`. Every row is T1 and
+  maps no detector until the product detectors (redact-secret#903–#909) are in the pinned
+  registry; none carries a hand-edited status. The PostHog `phc_` project token and the
+  Trigger.dev `pk_<env>_` public key are public by design and get no row.
+- **Beta.11 #860 Tier B credential families (#436).** Six zero-detector rows are
+  measured arrival families whose contracts and corpora live in
+  `benchmarks/lib/beta8/436a.ts`–`436f.ts` (see [beta8-evidence.md](beta8-evidence.md)):
+  `convex:deployment-key` (hex body only), `onepassword:service-account-token`,
+  `inngest:signing-key`, `resend:api-key`, `apify:api-token` and `wandb:api-key`
+  (`wandb_v1_` only). Each maps no detector until the product detector
+  (redact-secret#912–#917) is in the pinned registry.
 - **`families[].provider: null`** marks a family that is not provider-specific
   at all: `private-key`, `jwt`, `bearer-token`, `connection-string`,
   `otpauth-uri` and `generic-token` are structural or protocol-level formats
@@ -86,14 +127,17 @@ reviewed; where the source is a lower-confidence inference (e.g. `npm`'s
 pre-2021 legacy token, inferred from the changelog announcing its
 replacement, or `vercel`'s single unconfirmed family, since its candidate
 prefixes are corpus-authored rather than provider-documented) the family's
-`note` says so plainly. Extending the taxonomy is a data change: add a
+`note` says so plainly. Vercel is now the explicit exception to that stale
+example: product #858 split five provider-named modern classes, while leaving
+all five positive grammars T0 and the prior aggregate bounded as compatibility
+history. Extending the taxonomy is a data change: add a
 `families[]` entry with a `sources`/`note` trail, never assert a family
 without one.
 
 ## Current counts
 
-79 families across 34 providers plus 6 non-provider-specific formats; 63
-carry at least one detector, 16 currently do not (counts as of 2026-09-21;
+152 families total: 146 across 76 providers plus 6 non-provider-specific
+formats; 103 carry at least one detector, 49 currently do not (counts as of 2026-09-28;
 `benchmarks/support/taxonomy.json` is the source of truth). This is a taxonomy, not a
 support claim — a family having a detector says nothing about that
 detector's evidence tier (T0-T3, see `benchmarks/lib/assessment.ts`) or

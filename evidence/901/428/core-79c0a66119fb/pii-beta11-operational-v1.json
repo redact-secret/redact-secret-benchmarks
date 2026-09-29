@@ -1,0 +1,343 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-beta11-operational",
+  "supportClaims": false,
+  "issue": "redact-secret/redact-secret-benchmarks#428",
+  "role": "interim",
+  "sourceCommit": "79c0a66119fb72931fda9adddbe2973a52bb4833",
+  "freezeCommitment": "dda7bd9ad5265366ab5191785a672f9ff639d17275b3c5f05ac9fa086855269f",
+  "contract": "qualification/pii-national-id-arrival-v1.json#operational",
+  "contractCommitment": "6355010b003998948153507ba81515db94f89a350f55211fbc65c9d0086b3311",
+  "workloadCommitment": "1dec3cb6542bec8f57014ecfb7c03d9555947bafbe13be88eefb402c99a8840d",
+  "runtime": {
+    "node": "v22.16.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "runtimeComparisons": [
+    {
+      "surface": "node-addon",
+      "profile": "credentials-only",
+      "samples": 10,
+      "metrics": {
+        "initialize": {
+          "baselineMedian": 1.3300839999999994,
+          "candidateMedian": 1.3650420000000025,
+          "delta": 0.03495800000000315,
+          "relative": 0.026282550575755494,
+          "pass": true
+        },
+        "wholeInput": {
+          "baselineMedian": 0.18099999999999739,
+          "candidateMedian": 0.18545800000000057,
+          "delta": 0.004458000000003182,
+          "relative": 0.02462983425416158,
+          "pass": true
+        },
+        "incrementalLineCalls": {
+          "baselineMedian": 0.11254100000000022,
+          "candidateMedian": 0.114374999999999,
+          "delta": 0.001833999999998781,
+          "relative": 0.016296283132358674,
+          "pass": true
+        }
+      }
+    },
+    {
+      "surface": "node-addon",
+      "profile": "pii-global",
+      "samples": 10,
+      "metrics": {
+        "initialize": {
+          "baselineMedian": 1.3197919999999996,
+          "candidateMedian": 1.3497500000000002,
+          "delta": 0.029958000000000595,
+          "relative": 0.022699031362518187,
+          "pass": true
+        },
+        "wholeInput": {
+          "baselineMedian": 0.1856250000000017,
+          "candidateMedian": 0.18554100000000062,
+          "delta": -0.00008400000000108321,
+          "relative": -0.00045252525253108383,
+          "pass": true
+        },
+        "incrementalLineCalls": {
+          "baselineMedian": 0.11395800000000023,
+          "candidateMedian": 0.11491699999999838,
+          "delta": 0.0009589999999981558,
+          "relative": 0.008415381105303304,
+          "pass": true
+        }
+      }
+    },
+    {
+      "surface": "node-addon",
+      "profile": "pii-family-us-ssn",
+      "samples": 10,
+      "metrics": {
+        "initialize": {
+          "baselineMedian": 1.2986249999999977,
+          "candidateMedian": 1.3329169999999984,
+          "delta": 0.034292000000000655,
+          "relative": 0.026406391375493863,
+          "pass": true
+        },
+        "wholeInput": {
+          "baselineMedian": 0.17937500000000028,
+          "candidateMedian": 0.2217919999999971,
+          "delta": 0.04241699999999682,
+          "relative": 0.23647108013935472,
+          "pass": true
+        },
+        "incrementalLineCalls": {
+          "baselineMedian": 0.11699999999999733,
+          "candidateMedian": 0.14458400000000182,
+          "delta": 0.027584000000004494,
+          "relative": 0.23576068376072756,
+          "pass": true
+        }
+      }
+    },
+    {
+      "surface": "node-addon",
+      "profile": "pii-us",
+      "samples": 10,
+      "metrics": {
+        "initialize": {
+          "baselineMedian": 1.298874999999999,
+          "candidateMedian": 1.3445840000000011,
+          "delta": 0.04570900000000222,
+          "relative": 0.035191223173902234,
+          "pass": true
+        },
+        "wholeInput": {
+          "baselineMedian": 0.1815409999999993,
+          "candidateMedian": 0.22820899999999966,
+          "delta": 0.046668000000000376,
+          "relative": 0.2570658969599185,
+          "pass": true
+        },
+        "incrementalLineCalls": {
+          "baselineMedian": 0.11229099999999903,
+          "candidateMedian": 0.14766699999999844,
+          "delta": 0.03537599999999941,
+          "relative": 0.31503860505294023,
+          "pass": true
+        }
+      }
+    },
+    {
+      "surface": "node-wasm",
+      "profile": "credentials-only",
+      "samples": 10,
+      "metrics": {
+        "initialize": {
+          "baselineMedian": 17.07525,
+          "candidateMedian": 17.343666,
+          "delta": 0.26841599999999843,
+          "relative": 0.01571959414942671,
+          "pass": true
+        },
+        "wholeInput": {
+          "baselineMedian": 6.366332999999997,
+          "candidateMedian": 6.327916999999999,
+          "delta": -0.03841599999999801,
+          "relative": -0.006034242946449396,
+          "pass": true
+        },
+        "incrementalLineCalls": {
+          "baselineMedian": 0.2496670000000023,
+          "candidateMedian": 0.25475000000000136,
+          "delta": 0.0050829999999990605,
+          "relative": 0.02035911834563244,
+          "pass": true
+        }
+      }
+    },
+    {
+      "surface": "node-wasm",
+      "profile": "pii-global",
+      "samples": 10,
+      "metrics": {
+        "initialize": {
+          "baselineMedian": 19.367666999999997,
+          "candidateMedian": 22.917125000000002,
+          "delta": 3.549458000000005,
+          "relative": 0.1832671947529873,
+          "pass": true
+        },
+        "wholeInput": {
+          "baselineMedian": 7.425207999999998,
+          "candidateMedian": 10.009749999999997,
+          "delta": 2.584541999999999,
+          "relative": 0.34807671381057603,
+          "pass": true
+        },
+        "incrementalLineCalls": {
+          "baselineMedian": 0.2977500000000006,
+          "candidateMedian": 0.3534999999999968,
+          "delta": 0.05574999999999619,
+          "relative": 0.18723761544918915,
+          "pass": true
+        }
+      }
+    },
+    {
+      "surface": "node-wasm",
+      "profile": "pii-family-us-ssn",
+      "samples": 10,
+      "metrics": {
+        "initialize": {
+          "baselineMedian": 17.5145,
+          "candidateMedian": 17.427124999999997,
+          "delta": -0.08737500000000509,
+          "relative": -0.00498872362899341,
+          "pass": true
+        },
+        "wholeInput": {
+          "baselineMedian": 7.619999999999997,
+          "candidateMedian": 8.382916999999999,
+          "delta": 0.7629170000000016,
+          "relative": 0.10012034120734933,
+          "pass": true
+        },
+        "incrementalLineCalls": {
+          "baselineMedian": 0.2731250000000003,
+          "candidateMedian": 0.35845799999999883,
+          "delta": 0.08533299999999855,
+          "relative": 0.3124320366132667,
+          "pass": true
+        }
+      }
+    },
+    {
+      "surface": "node-wasm",
+      "profile": "pii-us",
+      "samples": 10,
+      "metrics": {
+        "initialize": {
+          "baselineMedian": 17.891250000000003,
+          "candidateMedian": 18.07275,
+          "delta": 0.18149999999999622,
+          "relative": 0.010144623768601757,
+          "pass": true
+        },
+        "wholeInput": {
+          "baselineMedian": 7.575125,
+          "candidateMedian": 8.431166000000005,
+          "delta": 0.8560410000000047,
+          "relative": 0.11300684807181462,
+          "pass": true
+        },
+        "incrementalLineCalls": {
+          "baselineMedian": 0.26533299999999826,
+          "candidateMedian": 0.3612499999999983,
+          "delta": 0.09591700000000003,
+          "relative": 0.3614966852973458,
+          "pass": true
+        }
+      }
+    }
+  ],
+  "sizes": {
+    "baseline": {
+      "packed": {
+        "core": 40554,
+        "node": 589672,
+        "wasm": 559573
+      },
+      "wasmPayloads": [
+        {
+          "file": "redact_secret_wasm_bg.wasm",
+          "role": "default-full",
+          "sha256": "25b5c211a591d3a7ea997a748e1c741b35bbf9cba694dcb5731d70cb7c1bc23c",
+          "raw": 730002,
+          "gzip": 270899,
+          "brotli": 214552
+        },
+        {
+          "file": "redact_secret_wasm_common_bg.wasm",
+          "role": "default-common",
+          "sha256": "e46080bb280be665d3ba52759823a75beabeca4098ee5c1b8690a0db0c4d394a",
+          "raw": 730074,
+          "gzip": 270896,
+          "brotli": 214732
+        }
+      ]
+    },
+    "candidate": {
+      "packed": {
+        "core": 40560,
+        "node": 597883,
+        "wasm": 575112
+      },
+      "wasmPayloads": [
+        {
+          "file": "redact_secret_wasm_bg.wasm",
+          "role": "default-full",
+          "sha256": "e26a01394be047ea7a09e6a2e610cfeb623472f765f5da722bcb65d0695bee02",
+          "raw": 754269,
+          "gzip": 278806,
+          "brotli": 220241
+        },
+        {
+          "file": "redact_secret_wasm_common_bg.wasm",
+          "role": "default-common",
+          "sha256": "e97ca904640a5e04e50a5095107338bf3963ccd306b6b7757802159a9a85bae0",
+          "raw": 754397,
+          "gzip": 278833,
+          "brotli": 220083
+        }
+      ]
+    }
+  },
+  "sizeBudgetRows": [
+    {
+      "id": "size/wasm/full/gzip",
+      "source": "ci-qualification run 36446845486 wasm-web/redact_secret_wasm_bg.wasm gzip-9",
+      "baselineValue": 137639,
+      "candidateValue": 278785,
+      "allowedIncrease": 6882,
+      "delta": 141146,
+      "status": "regression"
+    },
+    {
+      "id": "size/wasm/common/gzip",
+      "source": "ci-qualification run 36446845486 wasm-web-common/redact_secret_wasm_common_bg.wasm gzip-9",
+      "baselineValue": 100058,
+      "candidateValue": 278818,
+      "allowedIncrease": 5003,
+      "delta": 178760,
+      "status": "regression"
+    },
+    {
+      "id": "size/npm/core/packed",
+      "source": "local npm pack",
+      "baselineValue": 39461,
+      "candidateValue": 40560,
+      "allowedIncrease": 4096,
+      "delta": 1099,
+      "status": "within"
+    },
+    {
+      "id": "size/npm/wasm/packed",
+      "source": "local npm pack",
+      "baselineValue": 254413,
+      "candidateValue": 575112,
+      "allowedIncrease": 12721,
+      "delta": 320699,
+      "status": "regression"
+    },
+    {
+      "id": "size/npm/node-darwin-arm64/packed",
+      "source": "local npm pack",
+      "baselineValue": 424514,
+      "candidateValue": 597883,
+      "allowedIncrease": 21226,
+      "delta": 173369,
+      "status": "regression"
+    }
+  ],
+  "artifactCommitment": "ae9f548f091747d79ebc7a9e3a1c620f57964319bdf100e531dcf2ab04be373b"
+}

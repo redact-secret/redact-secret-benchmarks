@@ -3,8 +3,8 @@
  * cross-repo parent redact-secret/redact-secret#767).
  *
  * For every reviewed fixture in the development and regression corpora this
- * module emits one row per candidate value: redact-secret's 27-integer
- * `evidence-features/v1` vector (randomness and lexical groups, defined once in
+ * module emits one row per candidate value: redact-secret's 30-integer
+ * `evidence-features/v2` vector (randomness and lexical groups, defined once in
  * ./evidence-features.ts from the core spec), plus two benchmark-only
  * categorical fields kept apart from it, a contextual evidence class and a
  * negative-evidence class, and the authored ground truth for stratification.
@@ -38,7 +38,7 @@ import { CORE_FEATURE_SCHEMA, FEATURE_NAMES, MAX_ANALYSED_SYMBOLS, extractEviden
 
 export const CANDIDATE_FEATURES_SCHEMA_VERSION = 1;
 /** Bump on any change to a feature formula, class vocabulary, candidate rule or row field. */
-export const FEATURE_EXTRACTION_VERSION = 'candidate-features/2';
+export const FEATURE_EXTRACTION_VERSION = 'candidate-features/3';
 /** Bounded local context, in Unicode scalar values, read before a candidate on its own line. */
 export const CONTEXT_WINDOW = 64;
 export const DATASET_TYPE = 'candidate-features' as const;
@@ -92,7 +92,7 @@ export interface CandidateRow {
   contextClass: ContextClass;
   /** Benchmark-only: not part of the core feature schema. */
   negativeClass: NegativeClass;
-  /** The core `evidence-features/v1` vector, in `featureSchema.names` order. */
+  /** The core `evidence-features/v2` vector, in `featureSchema.names` order. */
   features: number[];
 }
 

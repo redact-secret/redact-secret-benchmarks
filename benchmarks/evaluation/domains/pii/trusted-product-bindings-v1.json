@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 1,
+  "bindings": [
+    {
+      "product": {
+        "sourceCommit": "941053baecdc4b99f98e085429ac26bf24fe0bee",
+        "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+        "candidateEvidenceCommitment": "64b7e887bc8299fd3ad5f14e1033263508b7294c0bf07ab6b647d93438782d99"
+      },
+      "activationArtifactCommitment": "b893d6218e8e9b6632ad90825c34bc82e05d069b29cc3a5505b72231c6b81911",
+      "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:network-address;vocabulary=pii-context/v1",
+      "availableFamilies": ["pii:global:network-address"],
+      "qualifications": [
+        {
+          "family": "pii:global:network-address",
+          "planCommitment": "1700856f519f2921f39fe706abda9e4d0b15e2fdb67469ac397b77bfd02d746e",
+          "artifactCommitment": "a2cf4d57d96d4eec3d00f8158d7f05a99e8f22c3df3e62272ab9b71e1c89b05f",
+          "reasonCodes": [
+            "benign-heavy-population",
+            "class-public-global",
+            "diagnostic-population",
+            "identity-only-classification",
+            "protected-partition"
+          ]
+        }
+      ]
+    },
+    {
+      "product": {
+        "sourceCommit": "b73daade943f9dea5f86d90a91aa0332083f728a",
+        "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+        "candidateEvidenceCommitment": "0cdd435e4752b4e56b0afbf575a9beee05073edeee2c3a3195dbd6c0cb571532"
+      },
+      "activationArtifactCommitment": "1d0c41edccf198a68478a38a24292bc25502b9694c76952f9817627fff33e0b7",
+      "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:network-address;vocabulary=pii-context/v1",
+      "availableFamilies": ["pii:global:email", "pii:global:network-address"],
+      "qualifications": [
+        {
+          "family": "pii:global:email",
+          "planCommitment": "aa39f91d00e27d259a70fdb9d1331071f3f7e6556fe2d1d149c502073d239923",
+          "artifactCommitment": "084357c872e3e389beacc602b32adc9f112841ccb104fe77d3d243077cadbe41",
+          "sourceConformanceCommitment": "4e1d73accb5351e720f05b39a82af0c99fd35a3c67d0c94df896346914dafe9a",
+          "reasonCodes": [
+            "benign-heavy-population",
+            "class-identity-only-classification",
+            "class-protected-partition",
+            "diagnostic-population",
+            "identity-only-classification",
+            "protected-partition"
+          ]
+        }
+      ]
+    },
+    {
+      "product": {
+        "sourceCommit": "c810623a3348da3b15cb06dc4e13bf5c39113154",
+        "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+        "candidateEvidenceCommitment": "83bda533b5657d1073d8f291f6d56228896d9541eae02e6082f9207b2bda3789"
+      },
+      "activationArtifactCommitment": "87bd16b4d7f3e1c072fc25e4ba7d9928f0faafc80f29a61defd3ea0badebc3c9",
+      "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address;vocabulary=pii-context/v1",
+      "availableFamilies": ["pii:global:email", "pii:global:iban", "pii:global:network-address"],
+      "qualifications": [
+        {
+          "family": "pii:global:iban",
+          "planCommitment": "9ead94bd2da5df320d8a7fa44a8838c6449769bfc6d4e9fad69732b2bb400f6e",
+          "artifactCommitment": "5c987f1acf75d0d3d70ef1b948a899a380811f144be9b69aaef4a7d85c493437",
+          "sourceConformanceCommitment": "facbc55cc3270c19ffb1501409cf12d9469fab1aa769d25970e30371438c8372",
+          "reasonCodes": [
+            "benign-heavy-population",
+            "class-identity-only-classification",
+            "class-protected-partition",
+            "diagnostic-population",
+            "identity-only-classification",
+            "protected-partition"
+          ]
+        }
+      ]
+    },
+    {
+      "product": {
+        "sourceCommit": "bf3631b1989570fbf6fdd8836ff21acc35f7d678",
+        "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+        "candidateEvidenceCommitment": "a5f98be45c32883799e0af4baec4c133fcd32f9ae64fe9dcb960838a4817253a"
+      },
+      "activationArtifactCommitment": "c34e695f8b26827ffffb82e2e47a238f70f95c37b6775397e3d421d0c3c4c9e3",
+      "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card;vocabulary=pii-context/v1",
+      "availableFamilies": ["pii:global:email", "pii:global:iban", "pii:global:network-address", "pii:global:payment-card"],
+      "qualifications": [
+        {
+          "family": "pii:global:payment-card",
+          "planCommitment": "a56d0f7c35b7c6dfbb6eb0d2f7c6f4e857192d7be85866ef278f0f7b532a23f3",
+          "artifactCommitment": "b060032988d2ae263dd766d6a00fe804a8282261386fbca00010bedc73fcc874",
+          "sourceConformanceCommitment": "857bfc6532f9cc3f0b39f38335e620d9f6ae31117950edc916c476f88a75b50e",
+          "reasonCodes": [
+            "benign-heavy-population",
+            "class-identity-only-classification",
+            "class-protected-partition",
+            "diagnostic-population",
+            "identity-only-classification",
+            "protected-partition"
+          ]
+        }
+      ]
+    },
+    {
+      "product": {
+        "sourceCommit": "a0709d2a41b70217874da9afeffb40fb2a1a2596",
+        "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+        "candidateEvidenceCommitment": "abd77d4f53cbea579d184b0ee24304582aa6b78803481cab6e8117db95ceb939"
+      },
+      "activationArtifactCommitment": "c65eb0ba56a64cb46698c84a602c11760a196342f526b0884ae0c13ae53dc54e",
+      "activationIdentity": "credentials=full;selectors=pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:us:ssn;vocabulary=pii-context/v1",
+      "availableFamilies": [
+        "pii:global:email",
+        "pii:global:iban",
+        "pii:global:network-address",
+        "pii:global:payment-card",
+        "pii:us:ssn"
+      ],
+      "qualifications": [
+        {
+          "family": "pii:us:ssn",
+          "planCommitment": "1cb335d0fbd74581adb0dc89e7d928c0d6b399b6d7c6bdcd7f9e7cb4fd8652ba",
+          "artifactCommitment": "c6580491dca8b49348c429b25efdd9858cdc7b17e35659b203d067838d7e14f1",
+          "sourceConformanceCommitment": "7d5acc28136903bb2a1b794b0700204edaad8d359c1b2ad0ddc1c125b5169d62",
+          "reasonCodes": [
+            "population-no-regression",
+            "protected-partition",
+            "runtime-and-package-cost"
+          ],
+          "arrivalEvidenceCommitment": "608eb06a83d22de0b92de9c00198c2b0a030bcbef180373042ae1f06d84bd69b",
+          "protectedEvidenceCommitment": "512ee0f73796bafcac5113d3091e4177b1a90a6ceac5118df8bc7f63a54352a9"
+        }
+      ]
+    },
+    {
+      "product": {
+        "sourceCommit": "2e1bdcf0905f7a374c4c54b7caac41303cd7d88b",
+        "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+        "candidateEvidenceCommitment": "23c2ba74a93aa4091691572cbc99a3bd4cc23fa19b6a08111ca0d292d6bddc4e"
+      },
+      "activationArtifactCommitment": "8a0b0178905d6dc902b0097c254711a761c49d1fa00f8554c9ceeeef4e5f6583",
+      "activationIdentity": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone;vocabulary=pii-context/v1",
+      "availableFamilies": [
+        "pii:global:email",
+        "pii:global:iban",
+        "pii:global:network-address",
+        "pii:global:payment-card",
+        "pii:global:phone"
+      ],
+      "qualifications": [
+        {
+          "family": "pii:global:phone",
+          "planCommitment": "8e00a1029d2eef67fbbddc705362a7e4f61d8a8cca54bbba8436f9c00dbc5c18",
+          "artifactCommitment": "bc4566502c3eee964e421a451a7dfe225e9e3991ee239b568d1b528f2e6ec2f0",
+          "sourceConformanceCommitment": "4503dc44a094ec07b05e8387c6eccef6793378f46836a2d6d7bfe3c964e0d879",
+          "reasonCodes": [
+            "benign-heavy-population",
+            "class-identity-only-classification",
+            "class-protected-partition",
+            "diagnostic-population",
+            "identity-only-classification",
+            "population-no-regression",
+            "protected-partition",
+            "runtime-and-package-cost"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -10,15 +10,14 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { createOperators } from '../benchmarks/operators/index.ts';
-import { loadCases } from '../benchmarks/engine/cases.ts';
+import { credentialDomain } from '../benchmarks/evaluation/domains/credential/contract.ts';
 import { buildFixtureProfileCoverage, profileCriteriaTable, renderFixtureProfileCoverage } from '../benchmarks/support/profile-report.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const SPEC = 'docs/specs/support-status.md';
 const BEGIN = '<!-- fixture-profiles:begin -->', END = '<!-- fixture-profiles:end -->';
 
-const report = buildFixtureProfileCoverage(await loadCases(createOperators()));
+const report = buildFixtureProfileCoverage(await credentialDomain.loadCases(credentialDomain.createOperators()));
 const embedded = text => {
   const start = text.indexOf(BEGIN), end = text.indexOf(END);
   if (start < 0 || end < start) throw new Error(`${SPEC} must carry ${BEGIN} … ${END} around the generated criteria table`);

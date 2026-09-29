@@ -33,6 +33,16 @@ name: Performance evaluation
 # in this repository: no pull request or fork run can write a cache entry it
 # restores.
 #
+# The candidate's own WebAssembly build is also the size source for the
+# size/wasm/<profile>/gzip budgets (redact-secret#929): the job builds the
+# common profile next to full and measures both files in the candidate
+# checkout (scripts/measure-wasm-sizes.mjs). The budget step requires that
+# source; without it the wasm size rows are invalid-measurement, not skipped.
+# The pii variants (redact-secret#937) are measured beside them as optional,
+# baseline-pending rows. The quickstart bundle row is measured the same way:
+# what docs/quickstart.md's browser lane actually fetches when built from this
+# job's packed build (scripts/measure-quickstart-bundle.mjs).
+#
 # This does not check out core's own acceptance-criteria*.json (core is
 # retiring that ownership) and does not publish anything or gate a release.
 on:
@@ -156,7 +166,7 @@ jobs:
         run: |
           set -euo pipefail
           cargo install wasm-bindgen-cli --version "$WASM_BINDGEN_VERSION" --locked
-          python -m pip install 'maturin>=1.10,<2'
+          python -m pip install --require-hashes --no-deps -r benchmarks-repo/.github/ci-locks/requirements-maturin.txt
 
       - name: Compute the baseline build cache key (#307)
         id: build-cache
@@ -194,6 +204,12 @@ jobs:
 
       - name: Build core's native, browser, JavaScript, CLI, and Python artifacts (candidate)
         run: bash benchmarks-repo/scripts/build-core.sh core-repo
+
+      - name: Build the candidate's optional common WebAssembly profile (size source, redact-secret#929)
+        # Only for its size: the budgets judge size/wasm/common/gzip on this
+        # candidate's own build. Built separately so the baseline build (and its
+        # cache key) is unchanged.
+        run: npm --prefix core-repo run wasm:build:common
 
       - name: Provide the baseline build (cached, built, or shared with an A/A candidate), verified against its manifest
         env:
@@ -247,6 +263,30 @@ jobs:
           model="$(lscpu | sed -n 's/^Model name:[[:space:]]*//p' | head -1)"
           node benchmarks-repo/scripts/record-runner.mjs --cpu-model "$model" --out performance-output/runner.json
 
+      - name: Measure the candidate's WebAssembly artifact sizes from this job's build (redact-secret#929)
+        # The exact files the assessment above just loaded (full) and the
+        # common profile built from the same checkout. Without this source the
+        # budget step marks the wasm size rows invalid-measurement (exit 2).
+        env:
+          REVISION: ${{ steps.pin.outputs.revision }}
+        run: |
+          node benchmarks-repo/scripts/measure-wasm-sizes.mjs --core core-repo --source-commit "$REVISION" \
+            --out performance-output/wasm-sizes.json --markdown-out performance-output/wasm-sizes.md
+
+      - name: Measure what the candidate's documented browser quickstart fetches (redact-secret#937)
+        # Packs this job's build with core's own pack-npm-candidate.mjs, builds
+        # docs/quickstart.md's browser lane with the bundler it names, loads it
+        # in Chromium, and records which emitted assets were requested. The
+        # fetched total is the budget row; the emitted total (lazily loaded pii
+        # builds included) is a diagnostic. Without it the bundle row is
+        # invalid-measurement (exit 2).
+        env:
+          REVISION: ${{ steps.pin.outputs.revision }}
+        run: |
+          node benchmarks-repo/scripts/measure-quickstart-bundle.mjs --core core-repo --source-commit "$REVISION" \
+            --work-dir "$RUNNER_TEMP/quickstart-bundle" \
+            --out performance-output/quickstart-bundle.json --markdown-out performance-output/quickstart-bundle.md
+
       - name: Measure baseline and candidate interleaved on this runner (paired timing, #303)
         working-directory: benchmarks-repo
         env:
@@ -295,8 +335,12 @@ jobs:
           set +e
           paired=()
           if [ -f ../performance-output/paired.json ]; then paired=(--paired ../performance-output/paired.json); fi
+          # Never skipped silently: without wasm-sizes.json the wasm size rows are invalid-measurement.
+          sizes=()
+          if [ -f ../performance-output/wasm-sizes.json ]; then sizes=(--wasm-sizes ../performance-output/wasm-sizes.json); fi
+          if [ -f ../performance-output/quickstart-bundle.json ]; then sizes+=(--quickstart-bundle ../performance-output/quickstart-bundle.json); fi
           node --import tsx scripts/regression-budgets.mjs evaluate \
-            --summary ../performance-output/summary.json "${paired[@]}" \
+            --summary ../performance-output/summary.json "${paired[@]}" "${sizes[@]}" \
             --source-commit "$REVISION" \
             --json-out ../performance-output/regression-budgets.json \
             --markdown-out ../performance-output/regression-budgets.md
@@ -310,7 +354,10 @@ jobs:
 
       - name: Add the budget verdict to the workflow summary
         if: always() && hashFiles('performance-output/regression-budgets.md') != ''
-        run: sed -n '1,$p' performance-output/regression-budgets.md >> "$GITHUB_STEP_SUMMARY"
+        run: |
+          sed -n '1,$p' performance-output/regression-budgets.md >> "$GITHUB_STEP_SUMMARY"
+          if [ -f performance-output/wasm-sizes.md ]; then sed -n '1,$p' performance-output/wasm-sizes.md >> "$GITHUB_STEP_SUMMARY"; fi
+          if [ -f performance-output/quickstart-bundle.md ]; then sed -n '1,$p' performance-output/quickstart-bundle.md >> "$GITHUB_STEP_SUMMARY"; fi
 
       - name: Upload raw samples, results, and the acceptance verdict
         if: always()

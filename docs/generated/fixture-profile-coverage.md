@@ -24,89 +24,126 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 
 | Profile | Families | Of |
 | --- | ---: | ---: |
-| Arrival / provisional | 64 | 77 |
-| Stable / documented | 64 | 77 |
-| Stable / empirical | 24 | 77 |
-| Context-constrained empirical | 9 | 77 |
+| Arrival / provisional | 82 | 114 |
+| Stable / documented | 82 | 114 |
+| Stable / empirical | 29 | 114 |
+| Context-constrained empirical | 15 | 114 |
 
 ## Per family
 
 | Family | Tier | Target | Total fixtures | Positive/context cases | Non-twin benign controls | Twin pairs | Positive-context axes | Control axes | Confusion axes | Remaining debt |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| anthropic-token | T1 | stable-documented | 24 | 6 | 8 | 7 | 5 | 5 | 6 | none |
+| ai21-api-key | T0 | arrival-provisional | 36 | 3 | 15 | 10 | 8 | 5 | 7 | positive/context cases 3/6 |
+| anthropic-admin01-key | T1 | stable-documented | 39 | 7 | 16 | 8 | 15 | 6 | 8 | none |
+| anthropic-api01-key | T1 | stable-documented | 37 | 8 | 15 | 7 | 15 | 6 | 8 | none |
+| anthropic-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 8 | 5 | 6 | none |
+| apify-api-token | T1 | stable-documented | 38 | 9 | 15 | 7 | 10 | 5 | 9 | none |
 | atlassian-api-token | T2 | stable-empirical | 45 | 10 | 19 | 8 | 16 | 6 | 9 | none |
 | aws-access-key | T1 | stable-documented | 26 | 6 | 8 | 6 | 5 | 5 | 6 | none |
+| aws-bedrock-long-term-api-key | T1 | stable-documented | 44 | 12 | 20 | 6 | 16 | 6 | 9 | none |
+| aws-bedrock-short-term-api-key | T1 | stable-documented | 34 | 7 | 15 | 6 | 11 | 6 | 10 | none |
 | azure-devops-personal-access-token | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 7 | none |
-| bearer-token | T3 | arrival-provisional | 48 | 4 | 18 | 13 | 12 | 6 | 8 | positive/context cases 4/6 |
+| bearer-token | T3 | arrival-provisional | 52 | 5 | 19 | 14 | 12 | 6 | 9 | positive/context cases 5/6 |
 | cloudflare-token | T1 | stable-documented | 24 | 6 | 10 | 6 | 4 | 5 | 8 | none |
+| cohere-api-key | T2 | context-constrained-empirical | 71 | 3 | 31 | 20 | 15 | 6 | 8 | none |
+| composio-api-key | T1 | stable-documented | 45 | 3 | 15 | 14 | 8 | 6 | 10 | positive/context cases 3/6 |
+| composio-org-api-key | T1 | stable-documented | 33 | 3 | 10 | 10 | 7 | 6 | 10 | positive/context cases 3/6 |
+| composio-user-api-key | T1 | stable-documented | 33 | 3 | 10 | 10 | 7 | 6 | 10 | positive/context cases 3/6 |
 | confluent-cloud-api-secret | T1 | stable-documented | 31 | 6 | 8 | 10 | 11 | 5 | 9 | none |
-| confluent-cloud-api-secret-legacy | T2 | context-constrained-empirical | 48 | 1 | 19 | 15 | 12 | 6 | 9 | none |
-| connection-string | T3 | arrival-provisional | 54 | 9 | 15 | 15 | 4 | 3 | 4 | control axes 3/4 |
+| confluent-cloud-api-secret-legacy | T2 | context-constrained-empirical | 61 | 3 | 24 | 18 | 17 | 6 | 9 | none |
+| connection-string | T3 | arrival-provisional | 74 | 14 | 24 | 18 | 9 | 6 | 7 | none |
+| convex-deployment-key | T1 | stable-documented | 41 | 6 | 15 | 10 | 11 | 6 | 10 | none |
 | databricks-personal-access-token | T2 | stable-empirical | 40 | 12 | 15 | 9 | 14 | 6 | 9 | none |
 | datadog-api-key | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | datadog-application-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 6 | 8 | none |
 | datadog-application-key-legacy | T2 | context-constrained-empirical | 52 | 10 | 14 | 16 | 18 | 6 | 9 | none |
+| deepgram-api-key | T2 | context-constrained-empirical | 73 | 2 | 30 | 22 | 15 | 6 | 8 | none |
 | digitalocean-token | T1 | stable-documented | 39 | 15 | 10 | 8 | 4 | 4 | 6 | none |
 | discord-bot-token | T2 | stable-empirical | 47 | 18 | 15 | 8 | 14 | 6 | 9 | none |
 | docker-token | T1 | stable-documented | 40 | 6 | 8 | 16 | 4 | 4 | 6 | none |
+| doppler-audit-token | T1 | stable-documented | 36 | 2 | 10 | 12 | 9 | 6 | 10 | positive/context cases 2/6 |
+| doppler-cli-token | T1 | stable-documented | 36 | 2 | 10 | 12 | 9 | 6 | 10 | positive/context cases 2/6 |
+| doppler-personal-token | T1 | stable-documented | 36 | 2 | 10 | 12 | 9 | 6 | 10 | positive/context cases 2/6 |
+| doppler-scim-token | T1 | stable-documented | 36 | 2 | 10 | 12 | 9 | 6 | 10 | positive/context cases 2/6 |
+| doppler-service-account-identity-token | T1 | stable-documented | 36 | 2 | 10 | 12 | 9 | 6 | 10 | positive/context cases 2/6 |
+| doppler-service-account-token | T1 | stable-documented | 37 | 1 | 10 | 13 | 9 | 6 | 10 | positive/context cases 1/6 |
+| doppler-token | T1 | stable-documented | 51 | 6 | 15 | 15 | 10 | 6 | 10 | none |
+| e2b-api-key | T1 | stable-documented | 42 | 5 | 15 | 11 | 10 | 6 | 10 | positive/context cases 5/6 |
+| elevenlabs-api-key | T1 | stable-documented | 35 | 7 | 15 | 7 | 9 | 6 | 8 | none |
+| exa-api-key | T0 | arrival-provisional | 30 | 0 | 14 | 8 | 6 | 6 | 7 | positive/context cases 0/6 |
 | firebase-server-key | T2 | stable-empirical | 45 | 10 | 19 | 8 | 16 | 6 | 9 | none |
+| firecrawl-api-key | T1 | stable-documented | 45 | 3 | 15 | 14 | 10 | 6 | 10 | positive/context cases 3/6 |
 | fireworks-ai-api-key | T1 | stable-documented | 32 | 6 | 16 | 5 | 8 | 6 | 8 | none |
-| generic-token | T3 | arrival-provisional | 128 | 35 | 75 | 9 | 12 | 4 | 5 | none |
-| github-fine-grained-pat | T2 | arrival-provisional | 24 | 5 | 9 | 5 | 10 | 6 | 9 | positive/context cases 5/6 |
-| github-token | T1 | stable-documented | 117 | 27 | 8 | 42 | 21 | 5 | 7 | none |
+| generic-token | T3 | arrival-provisional | 132 | 36 | 76 | 10 | 12 | 4 | 5 | none |
+| github-fine-grained-pat | T2 | arrival-provisional | 25 | 6 | 9 | 5 | 11 | 6 | 9 | none |
+| github-token | T1 | stable-documented | 131 | 28 | 15 | 45 | 25 | 6 | 8 | none |
 | gitlab-runner-authentication-token | T2 | stable-empirical | 43 | 11 | 16 | 8 | 15 | 6 | 10 | none |
 | gitlab-token | T1 | stable-documented | 26 | 6 | 8 | 7 | 5 | 5 | 7 | none |
 | google-api-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 7 | none |
 | grafana-cloud-access-policy-token | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | grafana-service-account-token | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | groq-api-key | T2 | stable-empirical | 41 | 11 | 14 | 8 | 16 | 6 | 10 | none |
+| helicone-api-key | T1 | stable-documented | 43 | 4 | 15 | 14 | 7 | 6 | 10 | positive/context cases 4/6 |
+| helicone-write-api-key | T1 | stable-documented | 36 | 2 | 10 | 14 | 7 | 6 | 10 | positive/context cases 2/6 |
 | heroku-api-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 8 | none |
-| heroku-api-key-legacy | T2 | context-constrained-empirical | 49 | 3 | 20 | 13 | 13 | 6 | 8 | none |
+| heroku-api-key-legacy | T2 | context-constrained-empirical | 65 | 4 | 27 | 17 | 18 | 6 | 8 | none |
 | huggingface-token | T1 | stable-documented | 26 | 6 | 8 | 7 | 7 | 4 | 6 | none |
+| inngest-signing-key | T1 | stable-documented | 40 | 7 | 15 | 9 | 10 | 6 | 10 | none |
 | jwt | T1 | stable-documented | 26 | 6 | 8 | 7 | 7 | 6 | 8 | none |
 | langfuse-secret-key | T2 | stable-empirical | 42 | 10 | 16 | 8 | 16 | 6 | 10 | none |
 | langsmith-api-key | T2 | stable-empirical | 42 | 10 | 16 | 8 | 16 | 6 | 10 | none |
 | linear-token | T1 | stable-documented | 27 | 6 | 11 | 5 | 4 | 4 | 5 | none |
-| mailchimp-api-key | T2 | stable-empirical | 41 | 14 | 14 | 8 | 14 | 6 | 8 | none |
+| mailchimp-api-key | T2 | stable-empirical | 53 | 18 | 19 | 10 | 19 | 6 | 9 | none |
 | mailgun-api-key | T2 | stable-empirical | 40 | 12 | 16 | 8 | 11 | 6 | 9 | none |
 | mailgun-api-key-triplet | T2 | arrival-provisional | 50 | 0 | 24 | 14 | 10 | 6 | 9 | positive/context cases 0/6 |
 | microsoft-entra-client-secret | T1 | stable-documented | 45 | 6 | 8 | 17 | 13 | 4 | 6 | none |
+| mistral-api-key | T2 | context-constrained-empirical | 58 | 0 | 26 | 17 | 10 | 6 | 8 | positive/context cases 0/1 |
 | neon-api-key | T2 | stable-empirical | 42 | 10 | 16 | 8 | 16 | 6 | 10 | none |
 | netlify-token | T1 | stable-documented | 24 | 7 | 8 | 6 | 5 | 6 | 8 | none |
-| new-relic-license-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 7 | 6 | 8 | none |
+| new-relic-license-key | T1 | stable-documented | 42 | 8 | 11 | 13 | 13 | 6 | 9 | none |
 | new-relic-user-api-key | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | notion-integration-token | T2 | arrival-provisional | 24 | 5 | 9 | 5 | 10 | 5 | 8 | positive/context cases 5/6 |
 | notion-token | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 8 | none |
 | npm-token | T1 | stable-documented | 24 | 8 | 8 | 6 | 4 | 5 | 8 | none |
 | okta-api-token | T2 | stable-empirical | 40 | 10 | 15 | 9 | 11 | 6 | 9 | none |
+| onepassword-service-account-token | T1 | stable-documented | 39 | 7 | 14 | 9 | 11 | 6 | 10 | none |
+| openai-admin-api-key | T2 | arrival-provisional | 41 | 5 | 15 | 11 | 15 | 6 | 10 | positive/context cases 5/6 |
 | openai-token | T2 | stable-empirical | 45 | 15 | 15 | 8 | 8 | 6 | 10 | none |
 | openrouter-api-key | T1 | stable-documented | 32 | 6 | 14 | 6 | 9 | 6 | 10 | none |
-| otpauth-uri | T3 | arrival-provisional | 17 | 0 | 5 | 6 | 1 | 3 | 4 | total fixtures 17/24; positive/context cases 0/6; non-twin benign controls 5/8; positive-context axes 1/4; control axes 3/4 |
+| otpauth-uri | T3 | arrival-provisional | 24 | 2 | 8 | 7 | 1 | 3 | 4 | positive/context cases 2/6; positive-context axes 1/4; control axes 3/4 |
 | perplexity-api-key | T2 | stable-empirical | 41 | 10 | 15 | 8 | 15 | 6 | 10 | none |
 | pinecone-api-key | T2 | stable-empirical | 42 | 10 | 16 | 8 | 16 | 6 | 9 | none |
 | pinecone-api-key-legacy | T3 | arrival-provisional | 48 | 0 | 24 | 12 | 9 | 6 | 7 | positive/context cases 0/6 |
+| posthog-project-secret-api-key | T1 | stable-documented | 33 | 0 | 11 | 11 | 8 | 6 | 10 | positive/context cases 0/6 |
+| posthog-token | T1 | stable-documented | 41 | 3 | 16 | 11 | 9 | 6 | 10 | positive/context cases 3/6 |
 | postman-api-key | T2 | stable-empirical | 40 | 11 | 17 | 9 | 12 | 6 | 9 | none |
 | postman-collection-access-key | T2 | stable-empirical | 42 | 10 | 16 | 8 | 16 | 6 | 9 | none |
 | private-key | T1 | stable-documented | 36 | 18 | 8 | 5 | 4 | 6 | 8 | none |
 | pulumi-access-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 4 | 5 | 7 | none |
 | pypi-token | T1 | stable-documented | 26 | 6 | 8 | 9 | 7 | 6 | 9 | none |
 | replicate-api-token | T1 | stable-documented | 32 | 6 | 14 | 6 | 8 | 6 | 10 | none |
+| resend-api-key | T1 | stable-documented | 41 | 5 | 14 | 11 | 10 | 5 | 9 | positive/context cases 5/6 |
 | sendgrid-token | T1 | stable-documented | 68 | 22 | 12 | 18 | 8 | 4 | 6 | none |
 | sentry-org-auth-token | T2 | stable-empirical | 40 | 13 | 14 | 8 | 14 | 6 | 10 | none |
 | sentry-user-auth-token | T2 | stable-empirical | 40 | 12 | 14 | 8 | 14 | 6 | 10 | none |
 | shopify-token | T1 | stable-documented | 27 | 9 | 8 | 6 | 4 | 6 | 8 | none |
-| slack-app-level-token | T2 | arrival-provisional | 24 | 5 | 9 | 5 | 10 | 5 | 8 | positive/context cases 5/6 |
+| slack-app-level-token | T2 | arrival-provisional | 25 | 6 | 9 | 5 | 10 | 5 | 8 | none |
 | slack-token | T1 | stable-documented | 47 | 26 | 13 | 6 | 4 | 4 | 6 | none |
-| slack-user-token | T1 | stable-documented | 24 | 3 | 11 | 5 | 8 | 6 | 9 | positive/context cases 3/6 |
-| stripe-token | T1 | stable-documented | 39 | 21 | 8 | 6 | 4 | 6 | 8 | none |
-| stripe-webhook-signing-secret | T1 | stable-documented | 25 | 5 | 10 | 5 | 9 | 6 | 10 | positive/context cases 5/6 |
+| slack-user-token | T1 | stable-documented | 27 | 6 | 11 | 5 | 9 | 6 | 9 | none |
+| stripe-token | T1 | stable-documented | 54 | 25 | 15 | 8 | 10 | 6 | 9 | none |
+| stripe-webhook-signing-secret | T1 | stable-documented | 26 | 6 | 10 | 5 | 9 | 6 | 10 | none |
 | supabase-management-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 7 | 6 | 8 | none |
 | supabase-token | T1 | stable-documented | 30 | 6 | 14 | 5 | 9 | 6 | 9 | none |
+| tavily-api-key | T2 | stable-empirical | 45 | 10 | 19 | 8 | 13 | 6 | 10 | none |
 | telegram-bot-token | T2 | stable-empirical | 41 | 12 | 15 | 8 | 14 | 5 | 8 | none |
 | terraform-cloud-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 4 | 5 | 7 | none |
+| together-ai-api-key | T2 | stable-empirical | 56 | 12 | 24 | 10 | 17 | 6 | 10 | none |
 | travisci-api-token | T2 | context-constrained-empirical | 48 | 6 | 16 | 13 | 17 | 6 | 9 | none |
+| trigger-dev-personal-access-token | T1 | stable-documented | 28 | 2 | 10 | 8 | 7 | 6 | 10 | positive/context cases 2/6 |
+| trigger-dev-token | T1 | stable-documented | 47 | 3 | 16 | 16 | 9 | 6 | 10 | positive/context cases 3/6 |
 | twilio-api-key-secret | T2 | context-constrained-empirical | 49 | 13 | 16 | 10 | 18 | 6 | 7 | none |
-| twilio-auth-token | T2 | context-constrained-empirical | 49 | 12 | 17 | 10 | 18 | 6 | 7 | none |
+| twilio-auth-token | T2 | context-constrained-empirical | 62 | 16 | 22 | 12 | 24 | 6 | 7 | none |
 | vault-token | T1 | stable-documented | 28 | 12 | 8 | 6 | 4 | 6 | 9 | none |
 | vercel-token | T0 | arrival-provisional | 20 | 15 | 5 | 0 | 1 | 3 | 3 | total fixtures 20/24; non-twin benign controls 5/8; twin pairs 0/5; positive-context axes 1/4; control axes 3/4 |
+| wandb-api-key | T1 | stable-documented | 35 | 10 | 13 | 6 | 9 | 6 | 9 | none |
 | xai-api-key | T2 | stable-empirical | 41 | 11 | 14 | 8 | 16 | 6 | 10 | none |

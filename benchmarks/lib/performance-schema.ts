@@ -61,6 +61,8 @@ export interface AssessmentPerformanceMetrics {
   readonly memory: AssessmentMemoryMetrics;
 }
 
+export type ResolvedArtifact = 'node-addon' | 'wasm';
+
 export interface AssessmentProvenance {
   readonly commit: string;
   readonly artifactIdentity: string;
@@ -71,6 +73,16 @@ export interface AssessmentProvenance {
   readonly runtime: string;
   readonly command: string;
   readonly buildProfile?: 'debug' | 'release';
+  /**
+   * Which artifact actually served a `node`-surface run (#405): the loader may
+   * serve the N-API addon or fall back to the browser WebAssembly artifact
+   * (product decision-add-node-webassembly-fallback), and only the runner
+   * calling `artifact()` can tell — `--addon-dir` on the command is an input,
+   * not this outcome. Not yet emitted by core; pending the paired runner
+   * change (only `completeAssessmentProblem`'s opt-in `requireResolvedArtifact`
+   * enforces its presence, so the frozen pre-#405 evidence stays valid).
+   */
+  readonly resolvedArtifact?: ResolvedArtifact;
 }
 
 export interface AssessmentResult {
@@ -116,6 +128,18 @@ export interface CompleteAssessment {
   readonly validationFailures: readonly string[];
 }
 
+export interface CompleteAssessmentProblemOptions {
+  /**
+   * #405: fail a `node`-surface performance run whose provenance does not
+   * name the resolved artifact. Opt-in and off by default because the
+   * frozen `evidence/603/summary.json` baseline (and every historical
+   * baseline derived from it) predates the runner change that would emit
+   * this field — only a freshly submitted candidate run should be held to
+   * it (`benchmarks/evaluate-performance.ts`).
+   */
+  readonly requireResolvedArtifact?: boolean;
+}
+
 /**
  * Cheap structural + pin check, run before evaluation. Returns a diagnostic
  * string on the first problem found, or `null` when the summary matches the
@@ -124,7 +148,7 @@ export interface CompleteAssessment {
  * by a core whose schema shape moved incompatibly fails here instead of
  * silently mis-evaluating.
  */
-export function completeAssessmentProblem(value: unknown): string | null {
+export function completeAssessmentProblem(value: unknown, options: CompleteAssessmentProblemOptions = {}): string | null {
   try {
     const summary = value as CompleteAssessment;
     if (summary.schemaVersion !== PINNED_COMPLETE_ASSESSMENT_SCHEMA_VERSION) {
@@ -142,6 +166,9 @@ export function completeAssessmentProblem(value: unknown): string | null {
       if (typeof run.result.schemaVersion !== 'string') return `${run.surface}:${run.kind}:${run.profileId} result is missing schemaVersion`;
       if (run.result.provenance === undefined) return `${run.surface}:${run.kind}:${run.profileId} result is missing provenance`;
       if (run.kind === 'performance' && run.result.performance !== undefined) {
+        if (options.requireResolvedArtifact && run.surface === 'node' && run.result.provenance.resolvedArtifact === undefined) {
+          return `${run.surface}:${run.kind}:${run.profileId} provenance is missing resolvedArtifact -- #405 requires the runner to record which artifact (node-addon or wasm) served a node performance run`;
+        }
         const performance = run.result.performance;
         for (const key of ['initialization', 'processing', 'throughput'] as const) {
           const distribution = performance[key];

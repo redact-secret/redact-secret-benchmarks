@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "id": "pii-national-id-arrival-v1",
+  "version": 1,
+  "profile": { "id": "pii-v1", "version": 1 },
+  "baselinePolicy": "immediate-parent-of-candidate-product-merge",
+  "baselineEvidence": {
+    "sourceCommit": "63a834e0a2b44c11f307ece8c539b933dabb68f1",
+    "benchmarkCommit": "677bd3f16cbc09c812bb60e2d286cc33111ef37f",
+    "candidateEvidenceSha256": "0084a6e20e9ccb5fc5a2e87527d7dc292bf136380cac28e0b934ab93fbfbbb0a",
+    "components": {
+      "core": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+      "node": "65f426e018444a4b79fff7752ce769bc863b2e67da5c0b74e110271517596ee5",
+      "wasm": "9185b041b0e70afce45ab89c694d0cd3beb9ea43c4020c35fe881247eb04f126"
+    },
+    "artifactSetCommitment": "afb6419ea4e4b3f5f88f32f8bc418a3cec4f176aee9620a11a77082591f47a82"
+  },
+  "population": {
+    "requiredViews": ["diagnostic-balanced", "benign-heavy-stress"],
+    "comparisonVerdict": "no-regression",
+    "mechanics": { "minDenominator": 4, "interval": "wilson", "z": 1.96 },
+    "selectionComparison": {
+      "id": "us-ssn-family-addition-v1",
+      "logicalRequestedAddition": { "selector": "pii:family:us:ssn", "family": "pii:us:ssn" },
+      "baseline": {
+        "effectiveSelectors": ["pii:global"],
+        "selectionState": "baseline-global-reference",
+        "familyAvailability": "unavailable",
+        "expectedAvailableFamilies": [
+          "pii:global:email", "pii:global:iban", "pii:global:network-address", "pii:global:payment-card"
+        ]
+      },
+      "candidate": {
+        "effectiveSelectors": ["pii:us"],
+        "selectionState": "candidate-family-added",
+        "familyAvailability": "available",
+        "expectedAvailableFamilies": [
+          "pii:global:email", "pii:global:iban", "pii:global:network-address", "pii:global:payment-card", "pii:us:ssn"
+        ]
+      }
+    }
+  },
+  "identity": {
+    "requiredLanes": ["rust-private-identity", "rust-validator", "rust-native", "python", "cli"],
+    "publicAbsenceIsIdentityEvidence": false
+  },
+  "protected": {
+    "purpose": "protected",
+    "independence": "custodian-declared",
+    "attempts": 1,
+    "trustResolution": "reviewed",
+    "requiredAxes": ["typeIdentity", "sensitivityContext"],
+    "allowedUnresolved": 0
+  },
+  "operational": {
+    "profiles": ["credentials-only", "pii-global", "pii-family-us-ssn", "pii-us"],
+    "profileSelections": {
+      "credentials-only": {
+        "logicalRequestedAddition": false,
+        "baseline": { "effectiveSelectors": [], "selectionState": "pii-off" },
+        "candidate": { "effectiveSelectors": [], "selectionState": "pii-off" }
+      },
+      "pii-global": {
+        "logicalRequestedAddition": false,
+        "baseline": { "effectiveSelectors": ["pii:global"], "selectionState": "global-reference" },
+        "candidate": { "effectiveSelectors": ["pii:global"], "selectionState": "global-reference" }
+      },
+      "pii-family-us-ssn": {
+        "logicalRequestedAddition": true,
+        "baseline": { "effectiveSelectors": ["pii:global"], "selectionState": "baseline-global-reference" },
+        "candidate": { "effectiveSelectors": ["pii:us"], "selectionState": "candidate-family-added" }
+      },
+      "pii-us": {
+        "logicalRequestedAddition": true,
+        "baseline": { "effectiveSelectors": ["pii:global"], "selectionState": "baseline-global-reference" },
+        "candidate": { "effectiveSelectors": ["pii:us"], "selectionState": "candidate-family-added" }
+      }
+    },
+    "surfaces": ["node-addon", "node-wasm"],
+    "minimumPairedSamples": 10,
+    "sampleProtocol": {
+      "helper": "scripts/measure-pii-arrival-runtime-sample.mjs",
+      "helperSha256": "f6d593f275e63dd641ecda727ef6b416fd0afbb946e383d824dd281d3f60c169",
+      "argv": ["--module", "--selectors-base64", "--workload-base64"],
+      "environment": {
+        "inherit": ["PATH", "HOME", "TMPDIR", "SYSTEMROOT"],
+        "fixed": { "NO_COLOR": "1" }
+      },
+      "metricScope": "child-operation-only-after-module-import",
+      "order": "surface-profile-index-baseline-then-candidate",
+      "warmupSamples": 2,
+      "stdout": { "encoding": "utf8", "format": "single-json-line", "keys": ["initialize", "wholeInput", "incrementalLineCalls"] }
+    },
+    "runtime": {
+      "statistic": "paired-median",
+      "maximumRelativeIncrease": 0.5,
+      "maximumAbsoluteIncreaseMilliseconds": 5
+    },
+    "wasmPayloadPolicy": {
+      "accounting": "aggregate-named-payloads",
+      "members": {
+        "full": {
+          "fileName": "redact_secret_wasm_bg.wasm",
+          "maximumIncrease": { "raw": 65536, "gzip": 32768, "brotli": 32768 }
+        },
+        "common": {
+          "fileName": "redact_secret_wasm_common_bg.wasm",
+          "maximumIncrease": { "raw": 0, "gzip": 0, "brotli": 0 }
+        }
+      },
+      "aggregateMaximumIncrease": { "raw": 65536, "gzip": 32768, "brotli": 32768 }
+    },
+    "packageBytes": {
+      "corePackedMaximumIncrease": 32768,
+      "nodePackedMaximumIncrease": 32768,
+      "wasmPackedMaximumIncrease": 32768
+    }
+  }
+}

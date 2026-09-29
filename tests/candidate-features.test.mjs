@@ -35,22 +35,34 @@ test('log2_q16 and permille match the core reference values', () => {
   assert.equal(permille(5, 0), 0);
 });
 
-// The eight golden vectors of redact-secret docs/specs/engine.md "Shadow evidence feature schema" (evidence-features/v1).
+// The eight golden vectors of redact-secret docs/specs/engine.md "Shadow evidence feature schema" (features 0-26)
+// and "Shadow evidence residual features" (features 27-29): evidence-features/v2.
 const GOLDEN = [
-  ['', Array(27).fill(0).join(',')],
-  ['aaaaaaaaaaaaaaaa', '16,16,0,1,16,0,0,0,16,0,0,0,0,0,1,0,26,0,0,62,62,16,1000,933,1,1000,2'],
-  ['abcabcabcabcabcabc', '18,18,0,3,6,103872,103872,1869696,18,0,0,0,0,0,1,0,26,1000,337,166,70,1,0,823,3,1000,3'],
-  ['XXXX-XXXX-XXXX-XXXX', '19,19,0,2,16,41239,16248,783541,0,16,0,3,0,0,2,6,58,629,107,105,74,4,666,833,5,1000,5'],
-  ['Q7vK2mZp9LxR4tWb8NcY3hJd6FsG1eUa', '32,32,0,32,1,327680,327680,10485760,12,12,8,0,0,0,3,31,62,1000,839,1000,125,1,0,0,0,0,0'],
-  ['\u{1F600}a\u{1F603}b\u{1F600}a\u{1F603}b', '20,8,0,4,2,131072,131072,1048576,4,0,0,0,0,4,2,7,28,1000,416,500,31,1,0,428,4,1000,4'],
-  ['ab', '2,2,0,2,1,65536,65536,131072,2,0,0,0,0,0,1,0,26,1000,212,1000,7,1,0,0,0,0,0'],
-  ['aabc', '4,4,0,3,2,98304,65536,393216,4,0,0,0,0,0,1,0,26,946,319,750,15,2,333,0,0,0,0'],
+  ['', Array(30).fill(0).join(',')],
+  ['aaaaaaaaaaaaaaaa', '16,16,0,1,16,0,0,0,16,0,0,0,0,0,1,0,26,0,0,62,62,16,1000,933,1,1000,2,1,0,0'],
+  ['abcabcabcabcabcabc', '18,18,0,3,6,103872,103872,1869696,18,0,0,0,0,0,1,0,26,1000,337,166,70,1,0,823,3,1000,3,4,65536,65536'],
+  ['XXXX-XXXX-XXXX-XXXX', '19,19,0,2,16,41239,16248,783541,0,16,0,3,0,0,2,6,58,629,107,105,74,4,666,833,5,1000,5,2,65536,65536'],
+  ['Q7vK2mZp9LxR4tWb8NcY3hJd6FsG1eUa', '32,32,0,32,1,327680,327680,10485760,12,12,8,0,0,0,3,31,62,1000,839,1000,125,1,0,0,0,0,0,32,327680,327680'],
+  ['\u{1F600}a\u{1F603}b\u{1F600}a\u{1F603}b', '20,8,0,4,2,131072,131072,1048576,4,0,0,0,0,4,2,7,28,1000,416,500,31,1,0,428,4,1000,4,6,125718,103872'],
+  ['ab', '2,2,0,2,1,65536,65536,131072,2,0,0,0,0,0,1,0,26,1000,212,1000,7,1,0,0,0,0,0,2,65536,65536'],
+  ['aabc', '4,4,0,3,2,98304,65536,393216,4,0,0,0,0,0,1,0,26,946,319,750,15,2,333,0,0,0,0,2,65536,65536'],
 ];
 
-test('the evidence-features/v1 vector reproduces the core golden vectors', () => {
-  assert.equal(CORE_FEATURE_SCHEMA.id, 'evidence-features/v1');
-  assert.equal(FEATURE_NAMES.length, 27);
+test('the evidence-features/v2 vector reproduces the core golden vectors', () => {
+  assert.equal(CORE_FEATURE_SCHEMA.id, 'evidence-features/v2');
+  assert.equal(FEATURE_NAMES.length, 30);
   for (const [input, expected] of GOLDEN) assert.equal(extractEvidenceFeatures(input).join(','), expected, JSON.stringify(input));
+});
+
+test('the residual features follow the core residual predictor rules (redact-secret#829)', () => {
+  const residual = value => extractEvidenceFeatures(value).slice(27);
+  assert.equal(residual('aaaa')[0], 1, 'repeat');
+  assert.equal(residual('acegik')[0], 2, 'constant step');
+  assert.equal(residual('97531')[0], 2, 'descending constant step');
+  assert.equal(residual('aZbYcXdW')[0], 4, 'constant step at lag 2');
+  assert.equal(residual('Qv7-Qv7-')[0], 6, 'context copy');
+  assert.equal(residual('Qv7-k')[0], 5, 'no rule');
+  assert.equal(residual(String.fromCodePoint(...Array.from({ length: 16 }, (_, i) => 0x1f600 + i)))[0], 2, 'astral steps');
 });
 
 test('only the first 256 symbols are analysed; byte_len covers the whole value', () => {
@@ -117,7 +129,7 @@ test('the dataset matches its versioned schema and is deterministic', () => {
   const again = build();
   assert.deepEqual(again, dataset);
   assert.equal(dataset.extractor.version, FEATURE_EXTRACTION_VERSION);
-  assert.equal(dataset.featureSchema.id, 'evidence-features/v1');
+  assert.equal(dataset.featureSchema.id, 'evidence-features/v2');
   assert.deepEqual(dataset.featureSchema.names, [...FEATURE_NAMES]);
   assert.equal(dataset.featureSchema.sourceRevision, CORE_FEATURE_SCHEMA.sourceRevision);
   assert.equal(dataset.datasetHash, datasetHashOf(dataset));
@@ -138,12 +150,12 @@ test('the shadow-scoring corpus is static authored material, not copied generate
   const generatedValues = new Set(inputs.filter(input => input.corpusPath.startsWith('fixtures/generated/'))
     .flatMap(input => input.fixtures.flatMap(fixture => fixture.expected.filter(range => (range.role ?? 'secret') === 'secret').map(range => value(fixture, range)))));
   const positives = authored.fixtures.flatMap(fixture => fixture.expected.filter(range => (range.role ?? 'secret') === 'secret').map(range => value(fixture, range)));
-  assert.equal(positives.length, 76, '75 family fixtures plus the second AWS span');
+  assert.equal(positives.length, 113, '112 family fixtures plus the second AWS span');
   assert.equal((authoredSource.match(/\\u[0-9a-f]{4}/g) ?? []).length, positives.length,
     'one semantic-preserving source escape per positive span keeps synthetic detector shapes out of the Git blob');
   assert.ok(positives.every(candidate => !generatedValues.has(candidate)), 'no authored positive duplicates a generated candidate value');
   const rows = dataset.rows.filter(row => row.category === 'shadow-scoring-authored');
-  assert.equal(rows.length, 151);
+  assert.equal(rows.length, 225);
   assert.ok(rows.every(row => row.origin === 'authored' && row.originBasis === 'authored-corpus'));
 });
 
@@ -241,7 +253,7 @@ test('no row carries candidate bytes', () => {
         assert.ok(schema.definitions[key]?.enum?.includes(value) ?? schema.properties.rows.items.properties[key]?.enum?.includes(value), `${key} is not a closed vocabulary`);
       }
     }
-    assert.equal(r.features.length, 27);
+    assert.equal(r.features.length, 30);
     for (const value of r.features) assert.ok(Number.isInteger(value) && value >= 0);
   }
   assert.throws(() => assertNoCandidateBytes({ rows: [{ note: `x${RANDOMISH}` }] }, [RANDOMISH]), /refusing/);

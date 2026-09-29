@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "pii-v1",
+  "version": 1,
+  "domain": "pii",
+  "evaluationProfile": "pii-v1",
+  "domainAccountingVersion": "pii-v1",
+  "mechanics": {
+    "minDenominator": 4,
+    "replays": 2,
+    "intervalZ": 1.96,
+    "intervalPrecision": 6
+  },
+  "metrics": {
+    "type-miss-rate": { "direction": "upper", "threshold": 0.5, "applicability": "required" },
+    "wrong-family-rate": { "direction": "upper", "threshold": 0.5, "applicability": "required" },
+    "wrong-jurisdiction-rate": { "direction": "upper", "threshold": 0.5, "applicability": "jurisdictional" },
+    "sensitive-miss-rate": { "direction": "upper", "threshold": 0.5, "applicability": "required" },
+    "non-sensitive-flag-rate": { "direction": "upper", "threshold": 0.5, "applicability": "required" },
+    "context-discrimination-rate": { "direction": "lower", "threshold": 0.5, "applicability": "required" },
+    "benign-suppression-rate": { "direction": "lower", "threshold": 0.5, "applicability": "required" },
+    "jurisdiction-collision-rate": { "direction": "lower", "threshold": 0.5, "applicability": "jurisdictional" },
+    "range-collateral-rate": { "direction": "upper", "threshold": 0.5, "applicability": "reported-spans" },
+    "measurable-share": { "direction": "lower", "threshold": 0.5, "applicability": "required" }
+  },
+  "gates": {
+    "requiredMethods": ["type-validation", "context-discrimination", "pii-benign"],
+    "minBenignCases": 6,
+    "minBenignAxes": 3,
+    "requireProtectedEvidence": true,
+    "requireIndependentEvidence": true,
+    "requireTrustedAccountingSource": true
+  }
+}

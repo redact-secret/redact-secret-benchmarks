@@ -1,0 +1,618 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-family-qualification",
+  "supportClaims": false,
+  "family": "pii:global:email",
+  "product": {
+    "repository": "redact-secret/redact-secret",
+    "sourceCommit": "b73daade943f9dea5f86d90a91aa0332083f728a",
+    "artifactCommitment": "ff0e6f93a70158f34f9654eae22f12986da52454615230680073aa7d27c0d1b1",
+    "candidateEvidenceCommitment": "0cdd435e4752b4e56b0afbf575a9beee05073edeee2c3a3195dbd6c0cb571532"
+  },
+  "activationArtifactCommitment": "1d0c41edccf198a68478a38a24292bc25502b9694c76952f9817627fff33e0b7",
+  "planCommitment": "aa39f91d00e27d259a70fdb9d1331071f3f7e6556fe2d1d149c502073d239923",
+  "profile": {
+    "id": "pii-v1",
+    "version": 1
+  },
+  "gates": [
+    {
+      "id": "exact-candidate-artifact",
+      "status": "met"
+    },
+    {
+      "id": "selector-global-closure",
+      "status": "met"
+    },
+    {
+      "id": "selector-exact-family",
+      "status": "met"
+    },
+    {
+      "id": "cross-surface-determinism",
+      "status": "met"
+    },
+    {
+      "id": "sensitive-public-findings",
+      "status": "met"
+    },
+    {
+      "id": "public-absence-controls",
+      "status": "met"
+    },
+    {
+      "id": "identity-only-classification",
+      "status": "unresolved"
+    },
+    {
+      "id": "exact-source-conformance",
+      "status": "met"
+    },
+    {
+      "id": "pii-off-invariance",
+      "status": "met"
+    },
+    {
+      "id": "diagnostic-population",
+      "status": "unresolved"
+    },
+    {
+      "id": "benign-heavy-population",
+      "status": "unresolved"
+    },
+    {
+      "id": "protected-partition",
+      "status": "unresolved"
+    },
+    {
+      "id": "class-identity-only-classification",
+      "status": "unresolved"
+    },
+    {
+      "id": "class-protected-partition",
+      "status": "unresolved"
+    }
+  ],
+  "classAccounting": [
+    {
+      "id": "sensitive-positive",
+      "status": "measured",
+      "observations": 8
+    },
+    {
+      "id": "reserved-documentation-public-absence",
+      "status": "measured",
+      "observations": 6
+    },
+    {
+      "id": "context-negative-public-absence",
+      "status": "measured",
+      "observations": 6
+    },
+    {
+      "id": "semantic-collision",
+      "status": "measured",
+      "observations": 6
+    },
+    {
+      "id": "malformed-unsupported",
+      "status": "measured",
+      "observations": 6
+    },
+    {
+      "id": "whole-candidate-boundary",
+      "status": "measured",
+      "observations": 8
+    },
+    {
+      "id": "identity-only-classification",
+      "status": "unresolved",
+      "observations": 0
+    },
+    {
+      "id": "protected-partition",
+      "status": "unresolved",
+      "observations": 0
+    }
+  ],
+  "installedArtifactConformance": {
+    "canonicalOffsetUnit": "utf8-byte",
+    "lanes": [
+      {
+        "id": "node-addon",
+        "status": "pass",
+        "nativeOffsetUnit": "utf16-code-unit",
+        "observations": [
+          {
+            "id": "ascii-sensitive-context",
+            "publicFinding": true,
+            "type": "pii_global_email",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 7,
+              "end": 41
+            },
+            "canonicalRange": {
+              "start": 7,
+              "end": 41
+            }
+          },
+          {
+            "id": "smtputf8-local-sensitive-context",
+            "publicFinding": true,
+            "type": "pii_global_email",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 5,
+              "end": 29
+            },
+            "canonicalRange": {
+              "start": 11,
+              "end": 39
+            }
+          },
+          {
+            "id": "punycode-looking-domain",
+            "publicFinding": true,
+            "type": "pii_global_email",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 7,
+              "end": 45
+            },
+            "canonicalRange": {
+              "start": 7,
+              "end": 45
+            }
+          },
+          {
+            "id": "reserved-resemblance-does-not-suppress",
+            "publicFinding": true,
+            "type": "pii_global_email",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 7,
+              "end": 44
+            },
+            "canonicalRange": {
+              "start": 7,
+              "end": 44
+            }
+          },
+          {
+            "id": "neutral-context",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "ambiguous-contact-context",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "named-negative-context",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "reserved-example-domain",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "reserved-example-subdomain",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "reserved-invalid-namespace",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "uri-userinfo-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "credential-userinfo-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "source-route-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "placeholder-single-label-domain",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "quoted-local-unsupported",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "domain-literal-unsupported",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "unicode-domain-unsupported",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "combining-mark-domain-suffix",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "variation-selector-domain-suffix",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "adjacent-at-boundary",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          }
+        ]
+      },
+      {
+        "id": "node-wasm",
+        "status": "pass",
+        "nativeOffsetUnit": "utf16-code-unit",
+        "observations": [
+          {
+            "id": "ascii-sensitive-context",
+            "publicFinding": true,
+            "type": "pii_global_email",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 7,
+              "end": 41
+            },
+            "canonicalRange": {
+              "start": 7,
+              "end": 41
+            }
+          },
+          {
+            "id": "smtputf8-local-sensitive-context",
+            "publicFinding": true,
+            "type": "pii_global_email",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 5,
+              "end": 29
+            },
+            "canonicalRange": {
+              "start": 11,
+              "end": 39
+            }
+          },
+          {
+            "id": "punycode-looking-domain",
+            "publicFinding": true,
+            "type": "pii_global_email",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 7,
+              "end": 45
+            },
+            "canonicalRange": {
+              "start": 7,
+              "end": 45
+            }
+          },
+          {
+            "id": "reserved-resemblance-does-not-suppress",
+            "publicFinding": true,
+            "type": "pii_global_email",
+            "action": "redact",
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": {
+              "start": 7,
+              "end": 44
+            },
+            "canonicalRange": {
+              "start": 7,
+              "end": 44
+            }
+          },
+          {
+            "id": "neutral-context",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "ambiguous-contact-context",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "named-negative-context",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "reserved-example-domain",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "reserved-example-subdomain",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "reserved-invalid-namespace",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "uri-userinfo-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "credential-userinfo-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "source-route-collision",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "placeholder-single-label-domain",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "quoted-local-unsupported",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "domain-literal-unsupported",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "unicode-domain-unsupported",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "combining-mark-domain-suffix",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "variation-selector-domain-suffix",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          },
+          {
+            "id": "adjacent-at-boundary",
+            "publicFinding": false,
+            "type": null,
+            "action": null,
+            "nativeOffsetUnit": "utf16-code-unit",
+            "nativeRange": null,
+            "canonicalRange": null
+          }
+        ]
+      }
+    ],
+    "artifactCommitment": "2842b1424faca15ce9fbd28c6ef5490d3ee19fbfef9726cacf1cfdc15ca1445a"
+  },
+  "sourceConformance": {
+    "sourceCommit": "b73daade943f9dea5f86d90a91aa0332083f728a",
+    "sourceState": "clean",
+    "lanes": [
+      {
+        "id": "rust-native-email-conformance",
+        "status": "pass",
+        "fixture": "conformance/fixtures/pii-email-v1.json",
+        "fixtureCommitment": "76f2bb508319cfb3a4ab12cd6d2231950885b5bf05a018cb5bcaebf0551024ec",
+        "commandDefinitionCommitment": "7848a99dee70e9a8536c4d004ef48ea3a0f47d730bbe6ba2a023951a2374b022",
+        "toolchain": [
+          {
+            "executable": "rustc",
+            "version": "rustc 1.98.1 (48a229cea 2026-09-01)"
+          },
+          {
+            "executable": "cargo",
+            "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)"
+          }
+        ]
+      },
+      {
+        "id": "python-email-conformance",
+        "status": "pass",
+        "fixture": "conformance/fixtures/pii-email-v1.json",
+        "fixtureCommitment": "76f2bb508319cfb3a4ab12cd6d2231950885b5bf05a018cb5bcaebf0551024ec",
+        "commandDefinitionCommitment": "9582b6a82e670fd2be9bfce8a945ec4354cdfbb651755fdf98b36ec3a2017b08",
+        "toolchain": [
+          {
+            "executable": "python3",
+            "version": "Python 3.14.7"
+          },
+          {
+            "executable": "maturin",
+            "version": "maturin 1.15.0"
+          },
+          {
+            "executable": "rustc",
+            "version": "rustc 1.98.1 (48a229cea 2026-09-01)"
+          }
+        ]
+      },
+      {
+        "id": "cli-email-conformance",
+        "status": "pass",
+        "fixture": "conformance/fixtures/pii-email-v1.json",
+        "fixtureCommitment": "76f2bb508319cfb3a4ab12cd6d2231950885b5bf05a018cb5bcaebf0551024ec",
+        "commandDefinitionCommitment": "a630525ae847d66c2880b25b43ef52de86649fa1e5303c0df04bb7978148144d",
+        "toolchain": [
+          {
+            "executable": "rustc",
+            "version": "rustc 1.98.1 (48a229cea 2026-09-01)"
+          },
+          {
+            "executable": "cargo",
+            "version": "cargo 1.98.1 (797e8a9bc 2026-08-05)"
+          }
+        ]
+      }
+    ],
+    "artifactCommitment": "4e1d73accb5351e720f05b39a82af0c99fd35a3c67d0c94df896346914dafe9a"
+  },
+  "status": "not-qualified",
+  "reasonCodes": [
+    "benign-heavy-population",
+    "class-identity-only-classification",
+    "class-protected-partition",
+    "diagnostic-population",
+    "identity-only-classification",
+    "protected-partition"
+  ],
+  "artifactCommitment": "084357c872e3e389beacc602b32adc9f112841ccb104fe77d3d243077cadbe41"
+}

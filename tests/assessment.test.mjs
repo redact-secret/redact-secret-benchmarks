@@ -151,8 +151,13 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // (registry pin f2082ab) adds four more families the same way (+12/+12). The #259 re-pin (3144bb3)
   // adds neon-api-key and postman-collection-access-key (+6/+6); travisci-api-token is context-gated
   // and its coverage positive scores as policy.
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 425);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 431);
+  // #384 graduation: 15 more detector-coverage positives (key-shape × bare, quoted, unicode-crlf) for the five T1/T2 pattern-contracted families
+  // (aws-bedrock-long-term-api-key, aws-bedrock-short-term-api-key, elevenlabs-api-key, together-ai-api-key, tavily-api-key); the four keyword-gated
+  // families score policy or T0 and are not in this tally.
+  // #434/#436 graduation (registry pin 1127bf9): 39 more detector-coverage positives (key-shape × bare, quoted,
+  // unicode-crlf) for the thirteen new T1 registry detectors (doppler-token … wandb-api-key).
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 479);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 485);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -167,7 +172,8 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // documented layout, so they leave policy/T3 again (-3).
   // #259 (registry pin 3144bb3): travisci-api-token's keyword-gated coverage positive in its
   // three detector-coverage contexts (+3).
-  assert.deepEqual(tally['policy/T3'], { files: 208, spans: 208 });
+  // #384 graduation: the four keyword-gated families (mistral, cohere, deepgram, ai21) each carry a coverage positive in three contexts, scored as policy (+12).
+  assert.deepEqual(tally['policy/T3'], { files: 229, spans: 229 });
   assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
   const twins = all.filter(([category]) => !category.startsWith('beta8-')).flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
@@ -216,13 +222,21 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // datadog-application-key boundary twins are netted out via -twins.length.
   // The provider-undecided-properties decision re-scopes 11 twins (mailgun uppercase ×3, openai
   // svcacct 73/74 ×2, databricks two-digit suffix ×3, mailchimp -eu6 ×3) to must-not-flag/T0: they
-  // still net out via -twins.length but leave the T1/T2/T3 tally (-11).
-  assert.equal(tally['must-not-flag/T0'].files, 11);
+  // still net out via -twins.length but leave the T1/T2/T3 tally (-11). #384 re-scopes four more: the
+  // anthropic api03 twins that used sk-ant-api01- and sk-ant-admin01- as negatives (redact-secret#862, -4).
+  assert.equal(tally['must-not-flag/T0'].files, 15);
   // Beta.8 #208/#210 graduation: 30 new independent detector-coverage controls (prefix-only,
   // short-body, mask, reference and label-prose or public-id for each of six new registry detectors);
   // the #212 graduation adds 20 more for four further registry detectors, and the #259 re-pin
-  // (3144bb3) 15 more for travisci-api-token, neon-api-key and postman-collection-access-key.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 483);
+  // (3144bb3) 15 more for travisci-api-token, neon-api-key and postman-collection-access-key. The #384 re-pin (cfe2aec) adds 45 for nine
+  // registry detectors (five each) and takes four anthropic twins out of the tally (they are re-scoped to must-not-flag/T0, but still count in twins.length): +41.
+  // The beta.10 promotion follow-up (#384) replaces one independent must-not-flag control each for
+  // mistral-api-key, cohere-api-key and deepgram-api-key (detector-coverage's short-token, an
+  // absolute-silence claim on a genuine near-miss beside the credential name) with three negative
+  // length twins of key-shape each (netted out via -twins.length): -3.
+  // The #434/#436 re-pin (1127bf9) adds 65 for the thirteen new registry detectors (prefix-only, short-body, mask,
+  // reference, label-prose each).
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 592);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });
@@ -241,7 +255,8 @@ test('a fixture re-scoped off a provider-undecided property exists, reads T0 for
       assert.match(f.assessment.reason, /^Not asserted: disputed property/, key);
     }
     const record = empiricalObservations.families.find(r => r.family === family);
-    assert.equal(record.contradictions.filter(c => c.status === 'unresolved').length, 0, `${family}: a re-scoped property leaves no unresolved contradiction`);
+    // Only T2 families carry an empirical record; a T1 family (anthropic-token, elevenlabs-api-key) has no contradiction list to keep clean.
+    if (record) assert.equal(record.contradictions.filter(c => c.status === 'unresolved').length, 0, `${family}: a re-scoped property leaves no unresolved contradiction`);
   }
 });
 
@@ -271,7 +286,7 @@ test('envelopes are authored where v3 needed prose: URIs, OTP, Bearer, quoted ge
   for (const { f } of enveloped) for (const r of f.expected) {
     const bytes = Buffer.from(f.content);
     const whole = bytes.subarray(r.envelope.start, r.envelope.end).toString();
-    assert.ok(/^(?:[a-z]+:\/\/|otpauth:\/\/|Authorization: Bearer |[A-Za-z_]+(?:=|: )")/.test(whole), `${f.id}: ${whole}`);
+    assert.ok(/^(?:[a-z][a-z0-9+.-]*:\/\/|otpauth:\/\/|Authorization: Bearer |[A-Za-z_]+(?:=|: )")/.test(whole), `${f.id}: ${whole}`);
     assert.ok(r.envelope.start <= r.start && r.envelope.end >= r.end && r.envelope.reason.length > 20, f.id);
   }
   const postgres = get('connection-string-postgres-bare');

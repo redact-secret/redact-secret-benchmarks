@@ -16,10 +16,16 @@
  *   derive [--check]
  *       (Re)derives benchmarks/regression-budgets.json's triggers from the
  *       current baseline snapshot and the recorded noise; --check fails on drift.
- *   evaluate [--summary <f>] [--operational <f>] [--adapter <f>...] --source-commit <sha>
- *            [--json-out <f>] [--markdown-out <f>]
+ *   evaluate [--summary <f>] [--paired <f>] [--wasm-sizes <f>] [--quickstart-bundle <f>] [--operational <f>] [--adapter <f>...]
+ *            --source-commit <sha> [--json-out <f>] [--markdown-out <f>]
  *       Judges a candidate. Exit 0 accepted, 1 a measured regression,
- *       2 a measurement that cannot be judged (rerun it).
+ *       2 a measurement that cannot be judged (rerun it). With --summary (a
+ *       performance run) the WebAssembly and quickstart-bundle size rows are
+ *       required: without --wasm-sizes (scripts/measure-wasm-sizes.mjs) or
+ *       --quickstart-bundle (scripts/measure-quickstart-bundle.mjs) on the same
+ *       build they are invalid-measurement, never silently not evaluated
+ *       (redact-secret#929, #937). Measured size rows without a trigger (the
+ *       #937 pii builds) are reported baseline-pending, not judged.
  *   check
  *       Ledger validity, baseline immutability and history, and derive --check.
  */
@@ -29,7 +35,9 @@ import path from 'node:path';
 
 import {
   deriveTriggers, evaluateBudgets, exitCodeFor, historyProblems, ledgerProblems, metricsFromAdapterOverhead,
-  metricsFromOperational, metricsFromPaired, metricsFromSummary, ratioDeviation, renderReportMarkdown, RULES, sha256OfText,
+  metricsFromOperational, metricsFromPaired, metricsFromQuickstartBundle, metricsFromSummary, metricsFromWasmSizes,
+  PERFORMANCE_RUN_REQUIRED_TRIGGERS, quickstartBundleProblem, ratioDeviation, renderReportMarkdown, RULES, sha256OfText,
+  SIZE_COVERAGE_KEY, wasmSizesProblem,
 } from '../benchmarks/lib/regression-budgets.ts';
 import { completeAssessmentProblem } from '../benchmarks/lib/performance-schema.ts';
 
@@ -298,9 +306,11 @@ function evaluate(args) {
   const metrics = {}, profiles = {}, sources = [];
   let detection = null;
   const invalidSource = [];
+  let summaryCommit = null;
   if (args.summary) {
     sources.push(args.summary);
     const summary = readJson(args.summary);
+    summaryCommit = summary.sourceCommit ?? null;
     const problem = completeAssessmentProblem(summary);
     if (problem !== null) invalidSource.push(`summary: ${problem}`);
     else {
@@ -323,6 +333,38 @@ function evaluate(args) {
     for (const metric of metricsFromOperational(readJson(args.operational))) metrics[metric.id] = metric;
     profiles.size = {};
   }
+  // A partial size source names the families it measured; the operational evidence ({}) covers all of them.
+  const coverSize = family => {
+    if (profiles.size === undefined) profiles.size = { [SIZE_COVERAGE_KEY]: family };
+    else if (profiles.size[SIZE_COVERAGE_KEY] !== undefined) profiles.size[SIZE_COVERAGE_KEY] += `,${family}`;
+  };
+  if (args['wasm-sizes']) {
+    // The candidate build's own wasm, measured in the same job: it overrides any operational wasm rows.
+    sources.push(args['wasm-sizes']);
+    const evidence = readJson(args['wasm-sizes']);
+    const problem = wasmSizesProblem(evidence, args['source-commit'] ?? summaryCommit);
+    if (problem !== null) invalidSource.push(`wasm-sizes: ${problem}`);
+    else {
+      for (const metric of metricsFromWasmSizes(evidence)) metrics[metric.id] = metric;
+      coverSize('wasm');
+    }
+  }
+  const diagnostics = [];
+  if (args['quickstart-bundle']) {
+    // What the candidate's default quickstart fetches, built and loaded in this job (#937).
+    sources.push(args['quickstart-bundle']);
+    const evidence = readJson(args['quickstart-bundle']);
+    const problem = quickstartBundleProblem(evidence, args['source-commit'] ?? summaryCommit);
+    if (problem !== null) invalidSource.push(`quickstart-bundle: ${problem}`);
+    else {
+      const extracted = metricsFromQuickstartBundle(evidence);
+      for (const metric of extracted.metrics) metrics[metric.id] = metric;
+      diagnostics.push(...extracted.diagnostics);
+      coverSize('browser-bundle');
+    }
+  }
+  // A performance run builds the candidate's wasm, so its size rows are always judgeable.
+  const required = args.summary ? PERFORMANCE_RUN_REQUIRED_TRIGGERS : [];
   for (const file of [args.adapter ?? []].flat()) {
     sources.push(file);
     const extracted = metricsFromAdapterOverhead(adapterSeries(file));
@@ -330,7 +372,7 @@ function evaluate(args) {
     profiles['adapter-overhead'] = { ...(profiles['adapter-overhead'] ?? {}), ...extracted.profiles };
   }
   const report = evaluateBudgets(budgets, baseline,
-    { sourceCommit: args['source-commit'] ?? null, sources, metrics, profiles, detection }, readJson(LEDGER));
+    { sourceCommit: args['source-commit'] ?? null, sources, metrics, profiles, detection, required, diagnostics }, readJson(LEDGER));
   const final = invalidSource.length > 0 ? { ...report, status: 'invalid-measurement', sourceProblems: invalidSource } : report;
   if (args['json-out']) writeJson(args['json-out'], final);
   const markdown = renderReportMarkdown(final);

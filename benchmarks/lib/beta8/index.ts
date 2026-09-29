@@ -12,13 +12,31 @@ import * as i213e from './213e.ts';
 import * as i213f from './213f.ts';
 import * as i259 from './259.ts';
 import * as i263 from './263.ts';
+import * as i384a from './384a.ts';
+import * as i384b from './384b.ts';
+import * as i384c from './384c.ts';
+import * as i384d from './384d.ts';
+import * as i384e from './384e.ts';
+import * as i434a from './434a.ts';
+import * as i434b from './434b.ts';
+import * as i434c from './434c.ts';
+import * as i434d from './434d.ts';
+import * as i434e from './434e.ts';
+import * as i434f from './434f.ts';
+import * as i434g from './434g.ts';
+import * as i436a from './436a.ts';
+import * as i436b from './436b.ts';
+import * as i436c from './436c.ts';
+import * as i436d from './436d.ts';
+import * as i436e from './436e.ts';
+import * as i436f from './436f.ts';
 
 /**
- * Beta.8 evidence modules, one per consumer issue (#207–#212, #259, #263) or #213 corpus key (213b, 213c, 213d, 213e, 213f). Each owns its
+ * Beta.8 evidence modules, one per consumer issue (#207–#212, #259, #263), #213 corpus key (213b, 213c, 213d, 213e, 213f) Beta.10 #384 corpus key (384a–384e) Beta.11 #434 corpus key (434a–434g) or Beta.11 #436 corpus key (436a–436f). Each owns its
  * arrival families, their contracts and its profile declarations, so parallel
  * issue work never edits a shared table. See docs/specs/beta8-evidence.md.
  */
-export const BETA8_MODULES = [i207, i208, i209, i210, i211, i212, i213c, i213b, i213d, i213e, i213f, i259, i263];
+export const BETA8_MODULES = [i207, i208, i209, i210, i211, i212, i213c, i213b, i213d, i213e, i213f, i259, i263, i384a, i384b, i384c, i384d, i384e, i434a, i434b, i434c, i434d, i434e, i434f, i434g, i436a, i436b, i436c, i436d, i436e, i436f];
 export const arrivalFamilies: ArrivalFamily[] = BETA8_MODULES.flatMap(m => m.arrivalFamilies);
 export const arrivalIds = new Set(arrivalFamilies.map(f => f.id));
 export const arrivalContracts: Record<string, FormatContract> = {};

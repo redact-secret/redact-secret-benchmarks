@@ -72,7 +72,7 @@
   {
     "id": "real-world-shapes",
     "title": "Untargeted real-world shapes",
-    "description": "Real-world-shaped synthetic config, logs, lockfiles, source and docs, authored locally rather than ingested — this measures a global false-alarm rate, not any family's evidence, and moves no family's support status. A flag here is discovery evidence; never relabel the fixture, add a detector exception, or edit it to make it quiet.",
+    "description": "Real-world-shaped synthetic config, logs, lockfiles and manifests, source, docs and agent/tool output, authored locally rather than ingested — this measures a global false-alarm rate, not any family's evidence, and moves no family's support status. A flag here is discovery evidence; never relabel the fixture, add a detector exception, or edit it to make it quiet.",
     "kind": "accuracy",
     "corpus": "fixtures/real-world-shapes/corpus.json"
   },
@@ -173,6 +173,146 @@
     "description": "Independent positives and single-property twin pairs, authored against each family's existing registry contract, that bring gitlab-runner-authentication-token, groq-api-key, langfuse-secret-key, langsmith-api-key, neon-api-key, perplexity-api-key, pinecone-api-key, postman-collection-access-key and xai-api-key to the stable-empirical cells and travisci-api-token to the context-constrained-empirical cells (ten context-twin pairs). Values are synthetic, never provider-issued. Measures and records; moves no support status by itself.",
     "kind": "accuracy",
     "corpus": "fixtures/generated/beta8-263.json"
+  },
+  {
+    "id": "beta8-384a",
+    "title": "Beta.10 evidence for the Anthropic api01/admin01 prefixes and the OpenAI admin key (#384, slice a)",
+    "description": "Fixtures for anthropic-api01-key (sk-ant-api01-, research #776), anthropic-admin01-key (sk-ant-admin01-, research #775) and openai-admin-api-key (sk-admin-, research #777), arrival families inside the shared anthropic-token and openai-token detectors (product redact-secret#862, #863). Positives, single-property prefix, boundary and length twins, and independent benign controls. Values are synthetic, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-384a.json"
+  },
+  {
+    "id": "beta8-384b",
+    "title": "Beta.10 evidence for the Amazon Bedrock long-term and short-term API keys (#384, slice b)",
+    "description": "Fixtures for aws-bedrock-long-term-api-key (ABSK + standard Base64, research #778) and aws-bedrock-short-term-api-key (bedrock-api-key- + Base64 pre-signed URL, research #779), arrival families for product redact-secret#864. Positives across env, header, SDK, log and tool-call contexts, single-property twins and independent benign controls. Values are built from synthetic bytes, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-384b.json"
+  },
+  {
+    "id": "beta8-384c",
+    "title": "Beta.10 evidence for the ElevenLabs API key (#384, slice c)",
+    "description": "Fixtures for elevenlabs-api-key (sk_ + 48 lowercase hex with an optional _residency_ suffix, research #788), an arrival family for product redact-secret#865: positives, single-property twins including the Stripe-shaped sk_live_ lookalike, and independent benign controls. Values are synthetic, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-384c.json"
+  },
+  {
+    "id": "beta8-384d",
+    "title": "Beta.10 evidence for the Together AI and Tavily API keys (#384, slice d)",
+    "description": "Fixtures for together-ai-api-key (tgp_v1_ + 43 base64url, research #783) and tavily-api-key (tvly- + optional dev- + 32 alphanumerics, research #786), arrival families for product redact-secret#867: positives, single-property twins and independent benign controls. Values are synthetic, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-384d.json"
+  },
+  {
+    "id": "beta8-384e",
+    "title": "Beta.10 evidence for keyword-gated Mistral, Cohere, Deepgram, AI21 and Exa keys (#384, slice e)",
+    "description": "Fixtures for five context-gated arrival families with no documented key format (research #781, #782, #789, #784, #787; product redact-secret#868): positives beside a provider name, host or SDK constructor, context twins that keep the value and remove the gate, and independent benign controls. AI21 and Exa carry pending (T0) contracts. Values are synthetic, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-384e.json"
+  },
+  {
+    "id": "beta8-379",
+    "title": "Beta.11 independent family evidence for fifteen selected credential families (#379)",
+    "description": "Independently authored positives, non-twin benign controls and one-property twins for the fifteen families #377's frozen family/axis ledger selected (new-relic-license-key, mailchimp, deepgram, heroku-legacy, confluent-legacy, twilio-auth-token, anthropic admin01/api01, cohere, bedrock long-term, together, openai-admin, connection-string, stripe-token, github-token). Positives author the expected span and the redact action; ledger revisions are recorded in the generator. Values are synthetic, never provider-issued. Measures and records; moves no support status or profile floor.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-379.json"
+  },
+  {
+    "id": "beta8-436a",
+    "title": "Beta.11 evidence for Convex deployment and admin keys with a hex body (#436, slice a)",
+    "description": "Fixtures for convex-deployment-key (an optional prod:/dev:/preview:/project: lead, the name, one |, then 01 + an even 74–96 lowercase hex body; the whole key is the span), an arrival family for product redact-secret#912, authored from the #860 Tier B step-3 handoff https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/convex.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-436a.json"
+  },
+  {
+    "id": "beta8-436b",
+    "title": "Beta.11 evidence for the 1Password service-account token (#436, slice b)",
+    "description": "Fixtures for onepassword-service-account-token (ops_eyJ + at least 250 Base64url bytes, = padding inside the span), an arrival family for product redact-secret#913, authored from the #860 Tier B step-3 handoff https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/onepassword.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-436b.json"
+  },
+  {
+    "id": "beta8-436c",
+    "title": "Beta.11 evidence for the Inngest signing key (#436, slice c)",
+    "description": "Fixtures for inngest-signing-key (signkey-prod-/test-/branch- + 64 lowercase hex, raw and hashed wire form), an arrival family for product redact-secret#914, authored from the #860 Tier B step-3 handoff https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/inngest.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-436c.json"
+  },
+  {
+    "id": "beta8-436d",
+    "title": "Beta.11 evidence for the Resend API key (#436, slice d)",
+    "description": "Fixtures for resend-api-key (re_ + 8 + _ + 24 alphanumerics), an arrival family for product redact-secret#915, authored from the #860 Tier B step-3 handoff https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/resend.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-436d.json"
+  },
+  {
+    "id": "beta8-436e",
+    "title": "Beta.11 evidence for the Apify API token (#436, slice e)",
+    "description": "Fixtures for apify-api-token (apify_api_ + at least 20 alphanumerics, open-ended), an arrival family for product redact-secret#916, authored from the #860 Tier B step-3 handoff https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/apify.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-436e.json"
+  },
+  {
+    "id": "beta8-436f",
+    "title": "Beta.11 evidence for the Weights & Biases wandb_v1_ API key (#436, slice f)",
+    "description": "Fixtures for wandb-api-key (wandb_v1_ + [A-Za-z0-9_] to about 86 in all; positives at 85–87, no length asserted), an arrival family for product redact-secret#917, authored from the #860 Tier B step-3 handoff https://github.com/redact-secret/redact-secret/blob/54fe385f718c884d7e3dde6b9756e2d70999ca91/docs/audits/evidence/860/wandb.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-436f.json"
+  },
+  {
+    "id": "beta8-434a",
+    "title": "Beta.11 evidence for Doppler tokens (#434, slice a)",
+    "description": "Fixtures for the seven Doppler dp.<type>. token types (doppler-token for dp.st. and six sibling arrival families), arrival families for product redact-secret#903, authored from the #860 step-3 handoff https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/doppler.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-434a.json"
+  },
+  {
+    "id": "beta8-434b",
+    "title": "Beta.11 evidence for the Trigger.dev secret key and PAT (#434, slice b)",
+    "description": "Fixtures for trigger-dev-token (tr_<env>_ and tr_<env>_sk_) and trigger-dev-personal-access-token (tr_pat_), arrival families for product redact-secret#904, authored from the #860 step-3 handoff https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/trigger-dev.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-434b.json"
+  },
+  {
+    "id": "beta8-434c",
+    "title": "Beta.11 evidence for the E2B API key (#434, slice c)",
+    "description": "Fixtures for e2b-api-key (e2b_ + 40 lowercase hex), arrival families for product redact-secret#905, authored from the #860 step-3 handoff https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/e2b.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-434c.json"
+  },
+  {
+    "id": "beta8-434d",
+    "title": "Beta.11 evidence for the PostHog personal and project secret API keys (#434, slice d)",
+    "description": "Fixtures for posthog-token (phx_) and posthog-project-secret-api-key (phs_), with phc_ project tokens as benign controls, arrival families for product redact-secret#906, authored from the #860 step-3 handoff https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/posthog.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-434d.json"
+  },
+  {
+    "id": "beta8-434e",
+    "title": "Beta.11 evidence for the Helicone read-write and write-only keys (#434, slice e)",
+    "description": "Fixtures for helicone-api-key (sk-helicone-, including the proxy key) and helicone-write-api-key (pk-helicone-), arrival families for product redact-secret#907, authored from the #860 step-3 handoff https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/helicone.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-434e.json"
+  },
+  {
+    "id": "beta8-434f",
+    "title": "Beta.11 evidence for the Firecrawl API key (#434, slice f)",
+    "description": "Fixtures for firecrawl-api-key (fc- + a dashless UUIDv4), arrival families for product redact-secret#908, authored from the #860 step-3 handoff https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/firecrawl.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-434f.json"
+  },
+  {
+    "id": "beta8-434g",
+    "title": "Beta.11 evidence for the Composio project, org and user API keys (#434, slice g)",
+    "description": "Fixtures for composio-api-key (ak_), composio-org-api-key (oak_) and composio-user-api-key (uak_), arrival families for product redact-secret#909, authored from the #860 step-3 handoff https://github.com/redact-secret/redact-secret/blob/270faf84dc12f6a4a4cf61fe3ffab7aadc4f7262/docs/audits/evidence/860/composio.md: positives in every handoff context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-434g.json"
+  },
+  {
+    "id": "policy-qualified-credentials",
+    "title": "Public policy qualification controls for bounded T3 credentials (#365)",
+    "description": "Independent deterministic action, exact-span, benign and context-twin controls for bearer credentials, connection-string passwords, OTP seeds and supported assignment literals. These public rows exercise the frozen project-policy contracts and remain separate from protected holdout evidence and PII claims.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/policy-qualified-credentials.json"
   },
   {
     "id": "shadow-scoring-authored",

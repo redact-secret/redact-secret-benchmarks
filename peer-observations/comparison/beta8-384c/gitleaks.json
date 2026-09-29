@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T18:15:41.542Z",
+  "sourceRun": {
+    "runId": "2026-09-28T18:15:41.542Z-65aa0c",
+    "benchmarkRevision": "e8b38c33ceb744dcfc23a0005d89619cdfdcd2bd"
+  },
+  "input": {
+    "surface": "comparison/beta8-384c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "8b32f73aa47bb2f38a880bc610db25c16850fe7f6d30a75781e7a502325b5f2f",
+    "fixtureCount": 30,
+    "fixturesDigest": "6de8ac76b63ca0da9d3c7407e92ca0251cd0db95e3cad46c479a43ee5f33c877",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e893fa62ccdf42d447218cdde2c178084d7163dfea6b51caa4dc5fd32b69220c",
+      "fixtureCount": 4768
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "d86f286b1689f577b83e9685a822cb2f074a4fd2b0b9a813d579ab4f72a03266"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/elevenlabs-api-key-ak-prefix-twin.yml",
+      "start": 39,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-curl-xi-api-key.sh",
+      "start": 58,
+      "end": 109,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-dotenv.env",
+      "start": 26,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-embedded-leading-twin.ts",
+      "start": 110,
+      "end": 162,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-export-xi-api-key.sh",
+      "start": 19,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-hashed-key-encoded-value.json",
+      "start": 23,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-hyphen-prefix-twin.sh",
+      "start": 58,
+      "end": 109,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-js-client.ts",
+      "start": 110,
+      "end": 161,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-long-body-twin.sh",
+      "start": 19,
+      "end": 71,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-missing-underscore-twin.json",
+      "start": 103,
+      "end": 153,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-non-hex-body-twin.sh",
+      "start": 58,
+      "end": 109,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-pk-prefix-twin.env",
+      "start": 26,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-python-multi-line.py",
+      "start": 76,
+      "end": 127,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-python-single-line.py",
+      "start": 64,
+      "end": 115,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-short-body-twin.env",
+      "start": 26,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-stripe-shaped-twin.py",
+      "start": 64,
+      "end": 104,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-stripe-test-shaped-twin.ts",
+      "start": 110,
+      "end": 142,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-tool-call.json",
+      "start": 103,
+      "end": 154,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-yaml-config.yml",
+      "start": 39,
+      "end": 90,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "c01d3b0aace4cafe6bfdda1b75b0b4ee78723d029e7f5c915d0505a06b799eae"
+}

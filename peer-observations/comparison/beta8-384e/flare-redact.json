@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T18:15:41.542Z",
+  "sourceRun": {
+    "runId": "2026-09-28T18:15:41.542Z-65aa0c",
+    "benchmarkRevision": "e8b38c33ceb744dcfc23a0005d89619cdfdcd2bd"
+  },
+  "input": {
+    "surface": "comparison/beta8-384e",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "e1764aa9fd2a74e28098a2abb4aa41c2d1dc3ed8f47602aceb5d4110543cf089",
+    "fixtureCount": 202,
+    "fixturesDigest": "0c53ec025ca97d188944fc122cfae83c6ec92806e8f65ef20af72edf28d1c1d0",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e893fa62ccdf42d447218cdde2c178084d7163dfea6b51caa4dc5fd32b69220c",
+      "fixtureCount": 4768
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "d86f286b1689f577b83e9685a822cb2f074a4fd2b0b9a813d579ab4f72a03266"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/ai21-api-key-curl-header.sh",
+      "start": 58,
+      "end": 97,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/ai21-api-key-other-host-curl-twin.sh",
+      "start": 65,
+      "end": 104,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/cohere-api-key-curl-header.sh",
+      "start": 60,
+      "end": 107,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/cohere-api-key-other-host-curl-twin.sh",
+      "start": 65,
+      "end": 112,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/mistral-api-key-curl-header.sh",
+      "start": 60,
+      "end": 99,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/mistral-api-key-other-host-curl-twin.sh",
+      "start": 65,
+      "end": 104,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "51a91b847fbf6dacc3a568acb990061b6de9a0ac06927c17d771bcdba1bec4b5"
+}

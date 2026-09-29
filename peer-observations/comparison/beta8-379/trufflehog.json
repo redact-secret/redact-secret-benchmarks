@@ -1,0 +1,344 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T18:15:41.542Z",
+  "sourceRun": {
+    "runId": "2026-09-28T18:15:41.542Z-65aa0c",
+    "benchmarkRevision": "e8b38c33ceb744dcfc23a0005d89619cdfdcd2bd"
+  },
+  "input": {
+    "surface": "comparison/beta8-379",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "3e35b2818aad5845f57e0a479afbb65d603248759c2b51d306adaaaac3a7baf0",
+    "fixtureCount": 202,
+    "fixturesDigest": "dc7ccbce4e8af88fba2dab96fbf2857eb49ded6e9272c54cf378e5a92378e214",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e893fa62ccdf42d447218cdde2c178084d7163dfea6b51caa4dc5fd32b69220c",
+      "fixtureCount": 4768
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
+    },
+    "adapterDigest": "d86f286b1689f577b83e9685a822cb2f074a4fd2b0b9a813d579ab4f72a03266"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/anthropic-admin01-key-audit-stderr-headers.log",
+      "start": 54,
+      "end": 164,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-circleci-environment.yml",
+      "start": 116,
+      "end": 226,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-fish-set-gx.fish",
+      "start": 28,
+      "end": 138,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-httpie-admin-api.sh",
+      "start": 68,
+      "end": 178,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-org-admin-provider-block.tf",
+      "start": 47,
+      "end": 157,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-ts-fetch-literal.ts",
+      "start": 108,
+      "end": 218,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/connection-string-database-url-query.env",
+      "start": 13,
+      "end": 110
+    },
+    {
+      "path": "cases/connection-string-docs-uppercase-placeholder.md",
+      "start": 23,
+      "end": 55
+    },
+    {
+      "path": "cases/connection-string-jdbc-user-param-public-id.properties",
+      "start": 22,
+      "end": 78
+    },
+    {
+      "path": "cases/connection-string-psql-history.sh",
+      "start": 13,
+      "end": 112
+    },
+    {
+      "path": "cases/connection-string-rails-database-yml.yml",
+      "start": 41,
+      "end": 120
+    },
+    {
+      "path": "cases/deepgram-api-key-agent-stt-yaml.yml",
+      "start": 37,
+      "end": 77,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/deepgram-api-key-docker-run-env.sh",
+      "start": 36,
+      "end": 76,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/deepgram-api-key-gitlab-ci-variables.yml",
+      "start": 32,
+      "end": 72,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/deepgram-api-key-model-revision-field-twin.yml",
+      "start": 44,
+      "end": 84,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/deepgram-api-key-worker-json-log.log",
+      "start": 83,
+      "end": 123,
+      "family": "deepgram-api-key"
+    },
+    {
+      "path": "cases/github-token-gh-auth-status-token.txt",
+      "start": 143,
+      "end": 183,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-gh-login-herestring.sh",
+      "start": 53,
+      "end": 93,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-installation-clone-url.sh",
+      "start": 10,
+      "end": 84
+    },
+    {
+      "path": "cases/github-token-installation-clone-url.sh",
+      "start": 33,
+      "end": 73,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-npmrc-authtoken.npmrc",
+      "start": 82,
+      "end": 122,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-short-body-35-twin.sh",
+      "start": 10,
+      "end": 83
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-apps-info-json-public-id.json",
+      "start": 42,
+      "end": 78
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-ci-debug-echo.log",
+      "start": 55,
+      "end": 91
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-deploy-config-json.json",
+      "start": 50,
+      "end": 86
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-git-config-remote.txt",
+      "start": 29,
+      "end": 89
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-other-git-host-twin.txt",
+      "start": 29,
+      "end": 91
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-platform-api-ruby.rb",
+      "start": 60,
+      "end": 96
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-releases-path-near-miss.txt",
+      "start": 36,
+      "end": 72
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-router-request-id-public-id.log",
+      "start": 111,
+      "end": 147
+    },
+    {
+      "path": "cases/mailchimp-api-key-debug-request-headers.txt",
+      "start": 85,
+      "end": 122
+    },
+    {
+      "path": "cases/mailchimp-api-key-node-setconfig.js",
+      "start": 90,
+      "end": 126
+    },
+    {
+      "path": "cases/mailchimp-api-key-python-requests-auth.py",
+      "start": 110,
+      "end": 147
+    },
+    {
+      "path": "cases/mailchimp-api-key-ticket-paragraph.md",
+      "start": 75,
+      "end": 111
+    },
+    {
+      "path": "cases/mailchimp-api-key-userinfo-url.txt",
+      "start": 0,
+      "end": 78
+    },
+    {
+      "path": "cases/mailchimp-api-key-userinfo-url.txt",
+      "start": 18,
+      "end": 55
+    },
+    {
+      "path": "cases/new-relic-license-key-actions-step-env.yml",
+      "start": 132,
+      "end": 172
+    },
+    {
+      "path": "cases/new-relic-license-key-agent-startup-json.log",
+      "start": 124,
+      "end": 164
+    },
+    {
+      "path": "cases/new-relic-license-key-k8s-secret-stringdata.yml",
+      "start": 138,
+      "end": 178
+    },
+    {
+      "path": "cases/new-relic-license-key-otel-collector-api-key.yml",
+      "start": 99,
+      "end": 139
+    },
+    {
+      "path": "cases/new-relic-license-key-python-newrelic-ini.ini",
+      "start": 25,
+      "end": 65
+    },
+    {
+      "path": "cases/new-relic-license-key-terraform-tfvars-eu.tfvars",
+      "start": 104,
+      "end": 144
+    },
+    {
+      "path": "cases/openai-admin-api-key-actions-usage-export.yml",
+      "start": 82,
+      "end": 215
+    },
+    {
+      "path": "cases/openai-admin-api-key-requests-debug.log",
+      "start": 127,
+      "end": 260
+    },
+    {
+      "path": "cases/openai-admin-api-key-tfvars-admin-key.tfvars",
+      "start": 20,
+      "end": 153
+    },
+    {
+      "path": "cases/stripe-token-compose-restricted.yml",
+      "start": 112,
+      "end": 152,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-httpie-bearer.sh",
+      "start": 66,
+      "end": 106,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-rails-credentials.yml",
+      "start": 22,
+      "end": 62,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/twilio-auth-token-csharp-init.cs",
+      "start": 34,
+      "end": 68
+    },
+    {
+      "path": "cases/twilio-auth-token-incident-chat.md",
+      "start": 57,
+      "end": 91
+    },
+    {
+      "path": "cases/twilio-auth-token-serverless-yml.yml",
+      "start": 61,
+      "end": 95
+    },
+    {
+      "path": "cases/twilio-auth-token-userinfo-url.txt",
+      "start": 0,
+      "end": 90
+    },
+    {
+      "path": "cases/twilio-auth-token-userinfo-url.txt",
+      "start": 8,
+      "end": 42
+    }
+  ],
+  "digest": "99ea08bc2c78eaf691eb804765de7fe3b0514c60917e0e85d1a42abd6b20a333"
+}

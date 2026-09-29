@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "reviewedAt": "2026-09-22",
-  "redactSecretVersion": "0.1.0-beta.9",
-  "redactSecretRevision": "0af4cb83b571baa86d27a678a351ece2ebc1f3cb",
-  "redactSecretReleaseRevision": "f726f2ffb0fd854cc3eeb4c35798695fde3161d3",
-  "method": "Explicit provider-family mapping against the 70 registered beta.9 detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
+  "redactSecretVersion": "0.1.0-beta.10",
+  "redactSecretRevision": "8f97f14d97d73b76602e5396eea35d0a5a4f0eb3",
+  "redactSecretReleaseRevision": "af7f863f29f9fe482dd233c8b7bc5b77dc427314",
+  "method": "Explicit provider-family mapping against the 92 registered beta.10 detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
   "sources": {
     "gitleaks": {
       "version": "8.30.1",
@@ -690,8 +690,8 @@
       "id": "1password-service-account-token",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L79",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "onepassword-service-account-token",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -842,7 +842,7 @@
       "id": "aws-amazon-bedrock-api-key-long-lived",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L223",
       "activation": "default-rule",
-      "relatedDetector": "aws-access-key",
+      "relatedDetector": "aws-bedrock-long-term-api-key",
       "status": "related-family"
     },
     {
@@ -850,7 +850,7 @@
       "id": "aws-amazon-bedrock-api-key-short-lived",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L230",
       "activation": "default-rule",
-      "relatedDetector": "aws-access-key",
+      "relatedDetector": "aws-bedrock-short-term-api-key",
       "status": "related-family"
     },
     {
@@ -962,8 +962,8 @@
       "id": "cohere-api-token",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L325",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "cohere-api-key",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -1090,8 +1090,8 @@
       "id": "doppler-api-token",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L441",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "doppler-token",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -2765,8 +2765,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L943",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "apify-api-token",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -4430,8 +4430,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1134",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "deepgram-api-key",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -4646,8 +4646,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1158",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "doppler-token",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -4817,8 +4817,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1177",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "elevenlabs-api-key",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -4826,8 +4826,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1178",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "elevenlabs-api-key",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -7859,8 +7859,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1527",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "posthog-token",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -10199,8 +10199,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1793",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "wandb-api-key",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -10208,8 +10208,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1794",
       "activation": "feature-gated",
       "featureFlag": "WeightsAndBiasesV2DetectorEnabled",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "wandb-api-key",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",

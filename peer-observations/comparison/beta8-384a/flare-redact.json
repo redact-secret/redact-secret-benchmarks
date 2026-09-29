@@ -1,0 +1,259 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T18:15:41.542Z",
+  "sourceRun": {
+    "runId": "2026-09-28T18:15:41.542Z-65aa0c",
+    "benchmarkRevision": "e8b38c33ceb744dcfc23a0005d89619cdfdcd2bd"
+  },
+  "input": {
+    "surface": "comparison/beta8-384a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "7dec7c164af6dc72eceb7acdbd88d1d8aad79caf9f58c82b8fed55d23cf7bf1e",
+    "fixtureCount": 81,
+    "fixturesDigest": "eed46ec2a77ee325b2a87fefd3ebd05dbbb3fe55605005dd8cbb579bed0304c0",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e893fa62ccdf42d447218cdde2c178084d7163dfea6b51caa4dc5fd32b69220c",
+      "fixtureCount": 4768
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "d86f286b1689f577b83e9685a822cb2f074a4fd2b0b9a813d579ab4f72a03266"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/anthropic-admin01-key-api01-prefix-twin.sh",
+      "start": 28,
+      "end": 136,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-api03-prefix-twin.env",
+      "start": 31,
+      "end": 139,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-compose-env.yml",
+      "start": 116,
+      "end": 226,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-curl-x-api-key.sh",
+      "start": 75,
+      "end": 185,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-dotenv.env",
+      "start": 31,
+      "end": 141,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-export.sh",
+      "start": 28,
+      "end": 138,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-job-log.log",
+      "start": 41,
+      "end": 151,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-json-config.json",
+      "start": 22,
+      "end": 132,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-pasted-key.txt",
+      "start": 60,
+      "end": 170,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-python-sdk.py",
+      "start": 56,
+      "end": 166,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-tool-call.json",
+      "start": 118,
+      "end": 228,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-admin01-prefix-twin.sh",
+      "start": 26,
+      "end": 136,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-api03-prefix-twin.env",
+      "start": 39,
+      "end": 147,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-compose-env.yml",
+      "start": 142,
+      "end": 250,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-curl-x-api-key.sh",
+      "start": 74,
+      "end": 182,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-dotenv.env",
+      "start": 39,
+      "end": 147,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-export.sh",
+      "start": 26,
+      "end": 134,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-job-log.log",
+      "start": 50,
+      "end": 158,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-json-config.json",
+      "start": 28,
+      "end": 136,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-pasted-key.txt",
+      "start": 60,
+      "end": 168,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-python-sdk.py",
+      "start": 56,
+      "end": 164,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-tool-call.json",
+      "start": 117,
+      "end": 225,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-api03-curl-x-api-key.sh",
+      "start": 61,
+      "end": 169,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-api03-dotenv.env",
+      "start": 25,
+      "end": 133,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-api03-no-final-hyphen-prefix-twin.py",
+      "start": 56,
+      "end": 163,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-api03-python-sdk.py",
+      "start": 56,
+      "end": 164,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-api03-vendor-stem-prefix-twin.sh",
+      "start": 61,
+      "end": 121,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-compose-env.yml",
+      "start": 117,
+      "end": 173,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-curl-bearer.sh",
+      "start": 72,
+      "end": 212,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-lowercase-marker-twin.yml",
+      "start": 117,
+      "end": 173,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-prefix-only-near-miss.sh",
+      "start": 72,
+      "end": 88,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-short-second-segment-twin.sh",
+      "start": 72,
+      "end": 211,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-tool-call.json",
+      "start": 67,
+      "end": 119,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-usage-log.log",
+      "start": 45,
+      "end": 79,
+      "family": "openai-token"
+    }
+  ],
+  "digest": "6141516d720f7c1559272b86fddf7232b35e4b6e16e4a4aa681f7d24dd3b417d"
+}

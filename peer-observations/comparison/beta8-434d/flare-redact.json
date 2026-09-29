@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T18:15:41.542Z",
+  "sourceRun": {
+    "runId": "2026-09-28T18:15:41.542Z-65aa0c",
+    "benchmarkRevision": "e8b38c33ceb744dcfc23a0005d89619cdfdcd2bd"
+  },
+  "input": {
+    "surface": "comparison/beta8-434d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "abd7ba0d0f5247f9fe78b8666091e0fbfda3397d6c98a4bdb9c74b4ee9f8915f",
+    "fixtureCount": 66,
+    "fixturesDigest": "d482e1ddd1bb34f0729dc65545c13b872d4ab25fa4b26d9323692810b9dd59f9",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e893fa62ccdf42d447218cdde2c178084d7163dfea6b51caa4dc5fd32b69220c",
+      "fixtureCount": 4768
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "d86f286b1689f577b83e9685a822cb2f074a4fd2b0b9a813d579ab4f72a03266"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/posthog-project-secret-api-key-bearer-header.http",
+      "start": 60,
+      "end": 114,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-curl-projects.sh",
+      "start": 64,
+      "end": 118,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-hyphen-prefix-twin.http",
+      "start": 60,
+      "end": 114,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-mcp-config.json",
+      "start": 196,
+      "end": 249,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-project-token-prefix-twin.sh",
+      "start": 64,
+      "end": 118,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-unknown-role-prefix-twin.json",
+      "start": 196,
+      "end": 249,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-token-bearer-header.http",
+      "start": 60,
+      "end": 114,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-token-curl-projects.sh",
+      "start": 64,
+      "end": 118,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-token-hyphen-prefix-twin.http",
+      "start": 60,
+      "end": 114,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-token-mcp-config.json",
+      "start": 196,
+      "end": 249,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-token-project-token-prefix-twin.sh",
+      "start": 64,
+      "end": 118,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-token-unknown-role-prefix-twin.json",
+      "start": 196,
+      "end": 249,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "e85c021e73fe87733f3a9d2cc7683896d1e387ab88448321fea3d33febb62cdd"
+}

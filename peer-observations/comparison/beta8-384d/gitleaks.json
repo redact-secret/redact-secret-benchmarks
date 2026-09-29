@@ -1,0 +1,248 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T18:15:41.542Z",
+  "sourceRun": {
+    "runId": "2026-09-28T18:15:41.542Z-65aa0c",
+    "benchmarkRevision": "e8b38c33ceb744dcfc23a0005d89619cdfdcd2bd"
+  },
+  "input": {
+    "surface": "comparison/beta8-384d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "401a531c20d39e5d8e46ed331af004ff481203857bb94c31fcd692ad8c0686d4",
+    "fixtureCount": 74,
+    "fixturesDigest": "eba1a63bde5f1db6f986c83e2f6d2baf84e77796363e6c8e3dc8247368e24ebe",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e893fa62ccdf42d447218cdde2c178084d7163dfea6b51caa4dc5fd32b69220c",
+      "fixtureCount": 4768
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "d86f286b1689f577b83e9685a822cb2f074a4fd2b0b9a813d579ab4f72a03266"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/tavily-api-key-actions-env.yml",
+      "start": 76,
+      "end": 113,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/tavily-api-key-curl-bearer.sh",
+      "start": 72,
+      "end": 113
+    },
+    {
+      "path": "cases/tavily-api-key-docs-bearer-placeholder.sh",
+      "start": 72,
+      "end": 89
+    },
+    {
+      "path": "cases/tavily-api-key-embedded-leading-twin.ts",
+      "start": 73,
+      "end": 111,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/tavily-api-key-export-bare.sh",
+      "start": 23,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/tavily-api-key-hyphen-in-body-twin.json",
+      "start": 130,
+      "end": 167,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/tavily-api-key-js-client.ts",
+      "start": 73,
+      "end": 110,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/tavily-api-key-key-digest-encoded-value.txt",
+      "start": 37,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/tavily-api-key-langchain-kwarg.py",
+      "start": 131,
+      "end": 168,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/tavily-api-key-long-body-twin.sh",
+      "start": 23,
+      "end": 61,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/tavily-api-key-mcp-client-env.json",
+      "start": 130,
+      "end": 167,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/tavily-api-key-prefix-absent-twin.json",
+      "start": 108,
+      "end": 140
+    },
+    {
+      "path": "cases/tavily-api-key-tool-call.json",
+      "start": 108,
+      "end": 149
+    },
+    {
+      "path": "cases/tavily-api-key-uppercase-prefix-twin.sh",
+      "start": 72,
+      "end": 113
+    },
+    {
+      "path": "cases/together-ai-api-key-actions-env.yml",
+      "start": 74,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-compose-env.yml",
+      "start": 105,
+      "end": 155,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-curl-bearer.sh",
+      "start": 69,
+      "end": 119
+    },
+    {
+      "path": "cases/together-ai-api-key-docs-ellipsis-placeholder.md",
+      "start": 22,
+      "end": 49,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-dot-in-body-twin.json",
+      "start": 23,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-dotenv.env",
+      "start": 24,
+      "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-export.sh",
+      "start": 25,
+      "end": 75,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-hyphen-delimiters-twin.py",
+      "start": 58,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-js-client.ts",
+      "start": 78,
+      "end": 128,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-json-config.json",
+      "start": 23,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-long-body-twin.sh",
+      "start": 25,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-openai-sdk-base-url.py",
+      "start": 92,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-plus-in-body-twin.json",
+      "start": 122,
+      "end": 172
+    },
+    {
+      "path": "cases/together-ai-api-key-python-together.py",
+      "start": 58,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-short-body-twin.env",
+      "start": 24,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-tool-call.json",
+      "start": 122,
+      "end": 172
+    },
+    {
+      "path": "cases/together-ai-api-key-uppercase-prefix-twin.sh",
+      "start": 69,
+      "end": 119
+    },
+    {
+      "path": "cases/together-ai-api-key-yaml-config.yml",
+      "start": 37,
+      "end": 87,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "ac0ed9f3def8d8f3dc6c41614f165b685f6cbd9487188f5af7152c41e0cd2970"
+}

@@ -32,6 +32,8 @@ async function packages(mode = 'ok') {
       ? `export const VERSION='9.8.7-candidate.1'; export async function initialize(){} export function scan(){throw Error('unsafe fixture detail')}`
       : mode === 'ruleset-echo'
         ? `export const VERSION='9.8.7-candidate.1'; export async function initialize(){} export function scan(text, options){ return options && options.ruleset ? [{id:'finding-1', type:'ruleset-echo', detector:'ruleset-echo', confidence:'medium', obfuscation:'none', start:0, end:text.length}] : []; }`
+        : mode === 'action-scan'
+          ? `export const VERSION='9.8.7-candidate.1'; export async function initialize(){} export function scan(text){ return [{id:'finding-1', type:'bearer-token', detector:'bearer-token', confidence:'high', action:'redact', obfuscation:'none', start:0, end:text.length}]; }`
         : mode === 'sendgrid-token-scan'
           ? `export const VERSION='9.8.7-candidate.1'; export async function initialize(){} export function scan(text){ const m = /SG\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]+/.exec(text); return m ? [{id:'finding-1', type:'sendgrid-token', detector:'sendgrid-token', confidence:'high', obfuscation:'none', start:m.index, end:m.index+m[0].length}] : []; }`
           : `export const VERSION='9.8.7-candidate.1'; export async function initialize(){} export function scan(){return []}`;
@@ -116,6 +118,25 @@ test('loadCandidate forwards a supplied ruleset to every scan call', async () =>
       assert.equal(findings[0].end, 5);
     } finally { await rm(scratch, { recursive: true, force: true }); }
   } finally { await removeCandidate(installation); await rm(artifacts.root, { recursive: true, force: true }); }
+});
+
+test('loadCandidate preserves policy actions only when the caller opts in', async () => {
+  const artifacts = await packages('action-scan');
+  let installation;
+  const scratch = await mkdtemp(path.join(tmpdir(), 'candidate-action-fixture-'));
+  try {
+    installation = await installCandidate(artifacts);
+    await writeFile(path.join(scratch, 'sample.txt'), 'synthetic');
+    const fixtures = [{ path: 'sample.txt' }];
+    const compatible = await loadCandidate(installation);
+    const qualified = await loadCandidate(installation, undefined, { actions: true });
+    assert.equal((await compatible.scan(scratch, fixtures))[0].action, undefined);
+    assert.equal((await qualified.scan(scratch, fixtures))[0].action, 'redact');
+  } finally {
+    await removeCandidate(installation);
+    await rm(artifacts.root, { recursive: true, force: true });
+    await rm(scratch, { recursive: true, force: true });
+  }
 });
 
 test('candidate CLI records filter provenance without mutating the lockfile', async () => {

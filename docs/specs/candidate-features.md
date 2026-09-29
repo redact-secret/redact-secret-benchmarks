@@ -88,20 +88,24 @@ generated-heavy categories as `development-evaluation`
 
 ## 3. Feature definitions
 
-### Core vector (`evidence-features/v1`)
+### Core vector (`evidence-features/v2`)
 
 `features` is redact-secret's shadow evidence feature vector, schema
-**`evidence-features/v1`**: 27 unsigned integers in a fixed order. There is
-one definition, redact-secret's
-[`docs/specs/engine.md`, "Shadow evidence feature schema"](https://github.com/redact-secret/redact-secret/blob/d7733632bb05082710f71b6684ccf60c7a69377e/docs/specs/engine.md#shadow-evidence-feature-schema)
-(redact-secret#769), and
+**`evidence-features/v2`**: 30 unsigned integers in a fixed order. There is
+one definition, redact-secret's `docs/specs/engine.md`: features 0 to 26
+are the `v1` vector of
+["Shadow evidence feature schema"](https://github.com/redact-secret/redact-secret/blob/21509e903e540ece5966e4ed4d6d1a77a0a14ce8/docs/specs/engine.md#shadow-evidence-feature-schema)
+(redact-secret#769), and features 27 to 29 are the residual features of
+["Shadow evidence residual features"](https://github.com/redact-secret/redact-secret/blob/21509e903e540ece5966e4ed4d6d1a77a0a14ce8/docs/specs/engine.md#shadow-evidence-residual-features)
+(redact-secret#829).
 [`benchmarks/lib/evidence-features.ts`](../../benchmarks/lib/evidence-features.ts)
-reproduces it. The dataset records that identity in `featureSchema`: the
+reproduces both. The dataset records that identity in `featureSchema`: the
 schema id, the core source revision
-(`d7733632bb05082710f71b6684ccf60c7a69377e`), the SHA-256 of the core spec
-page and of `features.rs` and `fixed_point.rs` at that revision, the
-256-symbol bound and the 27 names in vector order. The tests reproduce the
-spec's eight golden vectors and its `log2_q16` reference values.
+(`21509e903e540ece5966e4ed4d6d1a77a0a14ce8`), the SHA-256 of the core spec
+page and of `features.rs`, `residual.rs` and `fixed_point.rs` at that
+revision, the 256-symbol bound and the 30 names in vector order. The tests
+reproduce the spec's eight golden vectors (features 0 to 26 and the
+residual features 27 to 29) and its `log2_q16` reference values.
 
 The core page is normative. In summary:
 
@@ -137,6 +141,9 @@ The core page is normative. In summary:
 | 24 | `smallest_period` | smallest `p ∈ [1, ⌊n/2⌋]` with `s[i] = s[i+p]` throughout, else 0 |
 | 25 | `max_autocorrelation_permille` | max over lags `k ∈ [2, min(32, ⌊n/2⌋)]` of `permille(#{s[i] = s[i+k]}, n − k)` |
 | 26 | `max_autocorrelation_lag` | smallest lag reaching feature 25, else 0 |
+| 27 | `residual_symbols` | `r`: symbols the core's residual predictor does not predict (a repeat, a constant code-point step at lag 1 or 2, or a trigram that already occurred) |
+| 28 | `residual_entropy_q16` | feature 5's formula over the residual symbol counts, `r` in place of `n` |
+| 29 | `residual_min_entropy_q16` | `log2_q16(r) ⊖ log2_q16(c'_max)` over the residual symbol counts |
 
 The features are measurements. They carry no weight, cap or threshold.
 Those belong to #255 and the product's scoring artifact (redact-secret#798).

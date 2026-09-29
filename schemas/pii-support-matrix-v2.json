@@ -1,0 +1,117 @@
+{
+  "$id": "urn:redact-secret:pii-support-matrix:2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "reportType", "supportClaims", "domain", "evaluationProfile", "domainAccountingVersion", "qualificationProfile", "registryCommitment", "activationContract", "populationReports", "populationComparisons", "distribution", "families", "artifactCommitment"],
+  "properties": {
+    "schemaVersion": { "const": 2 },
+    "reportType": { "const": "pii-support-matrix" },
+    "supportClaims": { "const": false },
+    "domain": { "const": "pii" },
+    "evaluationProfile": { "const": "pii-v1" },
+    "domainAccountingVersion": { "const": "pii-v1" },
+    "qualificationProfile": { "$ref": "#/$defs/profile" },
+    "registryCommitment": { "$ref": "#/$defs/digest" },
+    "activationContract": { "type": "object", "additionalProperties": false, "required": ["repository", "decision", "mergeCommit", "productArtifact", "productSourceCommit", "productArtifactCommitment", "candidateEvidenceCommitment", "activationArtifactCommitment"], "properties": {
+      "repository": { "const": "redact-secret/redact-secret" },
+      "decision": { "const": "decision-define-the-pii-domain-scope-arbitration-and-activation-contract" },
+      "mergeCommit": { "const": "eb22bdf587e0079e101fc3ab5aeefada58ba438d" },
+      "productArtifact": { "enum": ["not-measured", "trusted"] },
+      "productSourceCommit": { "anyOf": [{ "type": "null" }, { "type": "string", "pattern": "^[a-f0-9]{40}$" }] },
+      "productArtifactCommitment": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/digest" }] },
+      "candidateEvidenceCommitment": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/digest" }] },
+      "activationArtifactCommitment": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/digest" }] }
+    } },
+    "populationReports": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/population" } },
+    "populationComparisons": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/comparison" } },
+    "distribution": { "type": "object", "additionalProperties": false, "required": ["pending", "provisional", "stable", "unsupported"], "properties": {
+      "pending": { "type": "integer", "minimum": 0 }, "provisional": { "type": "integer", "minimum": 0 },
+      "stable": { "type": "integer", "minimum": 0 }, "unsupported": { "type": "integer", "minimum": 0 }
+    } },
+    "families": { "type": "array", "items": { "$ref": "#/$defs/familyRow" } },
+    "artifactCommitment": { "$ref": "#/$defs/digest" }
+  },
+  "$defs": {
+    "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "slug": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,79}$" },
+    "family": { "type": "string", "pattern": "^pii:(?:global|[a-z]{2}):[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "scope": { "type": "string", "pattern": "^(?:global|jurisdiction:[A-Z]{2})$" },
+    "profile": { "type": "object", "additionalProperties": false, "required": ["id", "version"], "properties": { "id": { "const": "pii-v1" }, "version": { "const": 1 } } },
+    "populationFamily": { "type": "object", "additionalProperties": false, "required": ["family", "status", "strata"], "properties": {
+      "family": { "$ref": "#/$defs/family" }, "status": { "enum": ["measured", "partial", "not-measured", "not-applicable"] },
+      "strata": { "type": "integer", "minimum": 0 }
+    } },
+    "population": { "type": "object", "additionalProperties": false, "required": ["id", "status", "contractCommitment", "corpusCommitment", "reportCommitment", "familyEvidence"], "properties": {
+      "id": { "enum": ["diagnostic-balanced", "benign-heavy-stress"] }, "status": { "enum": ["measured", "partial", "not-measured"] },
+      "contractCommitment": { "$ref": "#/$defs/digest" }, "corpusCommitment": { "$ref": "#/$defs/digest" }, "reportCommitment": { "$ref": "#/$defs/digest" },
+      "familyEvidence": { "type": "array", "items": { "$ref": "#/$defs/populationFamily" } }
+    } },
+    "comparisonIdentity": { "type": "object", "additionalProperties": false, "required": ["reportCommitment", "candidateArtifactHash"], "properties": {
+      "reportCommitment": { "$ref": "#/$defs/digest" }, "candidateArtifactHash": { "$ref": "#/$defs/digest" }
+    } },
+    "benignDelta": { "type": "object", "additionalProperties": false,
+      "required": ["family", "scope", "contextClass", "evidenceClass", "accountingAxis", "validatorBacked", "contextDependent", "baselineRate", "candidateRate", "delta", "limit", "regressed"], "properties": {
+        "family": { "$ref": "#/$defs/family" }, "scope": { "$ref": "#/$defs/scope" }, "contextClass": { "enum": ["sensitive", "neutral", "non-sensitive"] },
+        "evidenceClass": { "enum": ["reserved-documentation", "official-test", "public-identifier", "ordinary-reference-account", "near-miss", "placeholder", "context-negative", "cross-family-collision"] },
+        "accountingAxis": { "anyOf": [{ "type": "null" }, { "enum": ["reserved", "documentation", "test-value", "public-operational", "placeholder", "context-negative"] }] },
+        "validatorBacked": { "type": "boolean" }, "contextDependent": { "type": "boolean" },
+        "baselineRate": { "anyOf": [{ "type": "null" }, { "type": "number", "minimum": 0, "maximum": 1 }] },
+        "candidateRate": { "anyOf": [{ "type": "null" }, { "type": "number", "minimum": 0, "maximum": 1 }] },
+        "delta": { "anyOf": [{ "type": "null" }, { "type": "number", "minimum": -1, "maximum": 1 }] },
+        "limit": { "type": "number", "minimum": 0, "maximum": 1 }, "regressed": { "type": "boolean" }
+      } },
+    "diagnosticDelta": { "type": "object", "additionalProperties": false,
+      "required": ["axis", "applicable", "baselineRate", "candidateRate", "delta", "baselineFailed", "candidateFailed", "failedDelta", "regressed"], "properties": {
+        "axis": { "enum": ["type-identity", "validator-correctness", "context-discrimination"] }, "applicable": { "type": "boolean" },
+        "baselineRate": { "anyOf": [{ "type": "null" }, { "type": "number", "minimum": 0, "maximum": 1 }] },
+        "candidateRate": { "anyOf": [{ "type": "null" }, { "type": "number", "minimum": 0, "maximum": 1 }] },
+        "delta": { "anyOf": [{ "type": "null" }, { "type": "number", "minimum": -1, "maximum": 1 }] },
+        "baselineFailed": { "type": "integer", "minimum": 0 }, "candidateFailed": { "type": "integer", "minimum": 0 },
+        "failedDelta": { "type": "integer" }, "regressed": { "type": "boolean" }
+      } },
+    "comparison": { "type": "object", "additionalProperties": false,
+      "required": ["id", "status", "contractCommitment", "corpusCommitment", "baselineObservation", "candidateObservation", "verdict", "benignFalseAlarmDeltas", "diagnosticDeltas"], "properties": {
+        "id": { "enum": ["diagnostic-balanced", "benign-heavy-stress"] }, "status": { "enum": ["not-measured", "compared"] },
+        "contractCommitment": { "$ref": "#/$defs/digest" }, "corpusCommitment": { "$ref": "#/$defs/digest" },
+        "baselineObservation": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/comparisonIdentity" }] },
+        "candidateObservation": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/comparisonIdentity" }] },
+        "verdict": { "enum": ["not-measured", "no-regression", "regression"] },
+        "benignFalseAlarmDeltas": { "type": "array", "items": { "$ref": "#/$defs/benignDelta" } },
+        "diagnosticDeltas": { "type": "array", "items": { "$ref": "#/$defs/diagnosticDelta" } }
+      } },
+    "authority": { "type": "object", "additionalProperties": false, "required": ["sourceKind", "sourceId", "locator", "revision", "supports"], "properties": {
+      "sourceKind": { "enum": ["standard", "public-authority"] }, "sourceId": { "$ref": "#/$defs/slug" },
+      "locator": { "type": "string", "minLength": 1, "maxLength": 200 }, "revision": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,79}$" },
+      "supports": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["lexical", "validation", "allocation", "reserved-control", "sensitivity"] } }
+    } },
+    "activation": { "type": "object", "additionalProperties": false, "required": ["state", "selector", "activationIdentity", "productArtifactCommitment"], "properties": {
+      "state": { "enum": ["not-measured", "unavailable", "available", "explicitly-unsupported"] },
+      "selector": { "type": "string", "pattern": "^pii:family:(?:global|[a-z]{2}):[a-z0-9]+(?:-[a-z0-9]+)*$" },
+      "activationIdentity": { "type": ["string", "null"], "pattern": "^credentials=(?:full|common);selectors=[a-z0-9:,-]+;families=pii:[a-z0-9:,-]+;vocabulary=[a-z0-9@._/-]+$" },
+      "productArtifactCommitment": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/digest" }] }
+    } },
+    "familyPopulation": { "type": "object", "additionalProperties": false, "required": ["id", "reportStatus", "status", "strata", "reportCommitment"], "properties": {
+      "id": { "enum": ["diagnostic-balanced", "benign-heavy-stress"] }, "status": { "enum": ["measured", "partial", "not-measured", "not-applicable"] },
+      "reportStatus": { "enum": ["measured", "partial", "not-measured"] },
+      "strata": { "type": "integer", "minimum": 0 }, "reportCommitment": { "$ref": "#/$defs/digest" }
+    } },
+    "status": { "type": "object", "additionalProperties": false, "required": ["state", "profile", "reasonCodes"], "properties": {
+      "state": { "enum": ["pending", "provisional", "stable", "unsupported"] }, "profile": { "$ref": "#/$defs/profile" },
+      "reasonCodes": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,79}$" } }
+    } },
+    "familyRow": { "type": "object", "additionalProperties": false,
+      "required": ["family", "displayName", "identityDomain", "familyContractVersion", "scope", "jurisdiction", "qualificationProfile", "authority", "contextObligation", "validatorApplicable", "activation", "status", "populationEvidence", "qualificationArtifactCommitment"],
+      "properties": {
+        "family": { "$ref": "#/$defs/family" }, "displayName": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9 ()/.+-]{0,79}$" },
+        "identityDomain": { "enum": ["email", "payment-card", "network-address", "iban", "phone", "national-id"] },
+        "familyContractVersion": { "type": "integer", "minimum": 1 }, "scope": { "$ref": "#/$defs/scope" },
+        "jurisdiction": { "type": ["string", "null"], "pattern": "^[A-Z]{2}$" }, "qualificationProfile": { "$ref": "#/$defs/profile" },
+        "authority": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/authority" } },
+        "contextObligation": { "enum": ["none", "reinforcing", "required-for-sensitive-classification"] }, "validatorApplicable": { "type": "boolean" },
+        "activation": { "$ref": "#/$defs/activation" }, "status": { "$ref": "#/$defs/status" },
+        "populationEvidence": { "type": "array", "minItems": 2, "maxItems": 2, "items": { "$ref": "#/$defs/familyPopulation" } },
+        "qualificationArtifactCommitment": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/digest" }] }
+      }
+    }
+  }
+}

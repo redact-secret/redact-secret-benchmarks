@@ -3,10 +3,8 @@ import { lstat, open, readFile, writeFile, mkdir, rename, realpath } from 'node:
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { hash } from '../benchmarks/engine/model.ts';
-import { validateCorpus } from '../benchmarks/lib/scoring.ts';
-import { validateAssessment } from '../benchmarks/lib/assessment.ts';
-import { validateStructures } from '../benchmarks/lib/validate-structures.ts';
 import type { HoldoutCorpus, HoldoutManifest } from './types.ts';
+import type { ManifestEvaluationIdentity } from './types.ts';
 
 export class HoldoutError extends Error {
   constructor(public code: string) { super(`Holdout operation rejected: ${code}`); }
@@ -15,10 +13,12 @@ export const serialize = (value: unknown) => JSON.stringify(value, null, 2) + '\
 const digest = (x: unknown) => typeof x === 'string' && /^[a-f0-9]{64}$/.test(x);
 export function validateManifest(value: unknown): HoldoutManifest {
   const m = value as HoldoutManifest;
-  const fields = ['schemaVersion', 'id', 'revision', 'purpose', 'review', 'corpusHash', 'seedHash', 'dataDirectory', 'maxRuns', 'publicSeed'];
+  const fields = ['schemaVersion', 'id', 'revision', 'purpose', 'review', 'corpusHash', 'seedHash', 'dataDirectory', 'maxRuns', 'publicSeed', 'evaluation'];
   if (!m || Object.keys(m).some(k => !fields.includes(k)) || m.schemaVersion !== 1 || typeof m.id !== 'string' || !/^[a-z0-9-]{1,80}$/.test(m.id) ||
       !Number.isInteger(m.revision) || m.revision < 1 || !digest(m.corpusHash) || !digest(m.seedHash) ||
       !/^generated\/[a-z0-9-]+$/.test(m.dataDirectory) || !Number.isInteger(m.maxRuns) || m.maxRuns < 1 || m.maxRuns > 10 ||
+      (m.evaluation !== undefined && (!m.evaluation || m.evaluation.schemaVersion !== 1 ||
+        ![m.evaluation.domain, m.evaluation.evaluationProfile, m.evaluation.domainAccountingVersion].every(x => typeof x === 'string' && x.length))) ||
       (m.purpose === 'public-conformance' ? m.review !== 'conformance-only' || typeof m.publicSeed !== 'string' || hash(m.publicSeed) !== m.seedHash
         : m.purpose !== 'protected' || m.review !== 'reviewed' || m.publicSeed !== undefined))
     throw new HoldoutError('invalid-manifest');
@@ -47,18 +47,10 @@ export async function atomicPrivateWrite(file: string, value: unknown) {
   await writeFile(temporary, serialize(value), { mode: 0o600, flag: 'wx' });
   await rename(temporary, file);
 }
-export function validateHoldoutCorpus(value: unknown): HoldoutCorpus {
-  try {
-    const c = value as HoldoutCorpus;
-    if (c.schemaVersion !== 2 || typeof c.seed !== 'string' || !c.seed) throw new Error();
-    validateCorpus(c);
-    for (const f of c.fixtures) {
-      validateAssessment(f);
-      if (f.twinOf || f.assessment.tier === 'T0') throw new Error();
-    }
-    validateStructures(c.fixtures);
-    return c;
-  } catch { throw new HoldoutError('invalid-corpus'); }
+export interface HoldoutStorageAdapter<TCorpus extends HoldoutCorpus = HoldoutCorpus> {
+  evaluation: ManifestEvaluationIdentity;
+  validateCorpus(value: unknown): TCorpus;
+  serializeCorpus(corpus: TCorpus): string;
 }
 
 /** Raw inputs always live under generated/, whether inside or outside the repo. */
@@ -74,19 +66,21 @@ export async function storeDirectory(manifestFile: string, m: HoldoutManifest, c
   return directory;
 }
 
-export async function sealProtectedCorpus(manifestFile: string, sourceFile: string, review: string) {
+export async function sealProtectedCorpus<TCorpus extends HoldoutCorpus>(manifestFile: string, sourceFile: string, review: string, adapter: HoldoutStorageAdapter<TCorpus>) {
   if (review !== 'reviewed') throw new HoldoutError('review-declaration-required');
-  const text = await privateRead(sourceFile), corpus = validateHoldoutCorpus(JSON.parse(text));
+  const text = await privateRead(sourceFile), corpus = adapter.validateCorpus(JSON.parse(text));
+  const corpusText = adapter.serializeCorpus(corpus);
   const id = randomUUID();
   const manifest: HoldoutManifest = { schemaVersion: 1, id, revision: 1, purpose: 'protected', review: 'reviewed',
-    corpusHash: hash(serialize(corpus)), seedHash: hash(corpus.seed), dataDirectory: `generated/${hash(serialize(corpus))}`, maxRuns: 1 };
+    corpusHash: hash(corpusText), seedHash: hash(corpus.seed), dataDirectory: `generated/${hash(corpusText)}`, maxRuns: 1,
+    evaluation: structuredClone(adapter.evaluation) };
   let directory;
   try { directory = await storeDirectory(manifestFile, manifest, true); }
   catch (error) {
     if ((error as NodeJS.ErrnoException).code === 'EEXIST') throw new HoldoutError('corpus-already-sealed');
     throw error;
   }
-  await writeFile(path.join(directory, 'corpus.json'), serialize(corpus), { mode: 0o600, flag: 'wx' });
+  await writeFile(path.join(directory, 'corpus.json'), corpusText, { mode: 0o600, flag: 'wx' });
   await writeFile(path.join(directory, 'state.json'), serialize({ corpusHash: manifest.corpusHash, status: 'sealed', runs: [] }), { mode: 0o600, flag: 'wx' });
   // Never overwrite an existing epoch or silently reset its use budget.
   await writeFile(manifestFile, serialize(manifest), { mode: 0o644, flag: 'wx' });

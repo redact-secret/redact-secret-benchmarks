@@ -1,6 +1,6 @@
 import { validateAssessment } from '../benchmarks/lib/assessment.ts';
 import { groupKey, scoreRow, encodeOutcome, KINDS, TIERS } from '../benchmarks/lib/lattice.ts';
-import { ACCOUNTING_VERSION, accountGroups, accountingDelta, validateAccounting } from '../benchmarks/lib/accounting.ts';
+import { ACCOUNTING_VERSION, accountGroups, accountingDelta, validateAccounting, readCredentialAccountingIdentity } from '../benchmarks/lib/accounting.ts';
 
 /** Pure catalog and report projections shared by the UI and tests. */
 export const fixtureSlug = (category, id) => `${category}--${id}`;
@@ -40,7 +40,7 @@ function legacyRoute(path, suites) {
   if (path === '/methodology') return redirect('/how-to-read');
   // T0 fixtures are one class of the review queue now.
   if (path === '/pending') return redirect('/workbench/review/t0-fixtures');
-  if (path === '/evaluation' || path === '/evaluation/reviews' || path === '/evaluation/failures') return redirect('/workbench');
+  if (path === '/evaluation/reviews' || path === '/evaluation/failures') return redirect('/workbench');
   // Operator evidence sits with the method that generates operator variants.
   if (path === '/evaluation/operators') return redirect('/workbench/method/mutation');
   let match = new RegExp(`^/evaluation/method/(${ID})$`).exec(path);
@@ -64,6 +64,9 @@ export function parseRoute(pathname, { suites = [], publicOnly = false } = {}) {
   if (path === '/report') return at('report');
   if (path === '/coverage') return at('coverage');
   if (path === '/support') return at('support');
+  if (path === '/evaluation') return redirect('/evaluation/credentials');
+  if (path === '/evaluation/credentials') return at('evaluation-domain', 'credential');
+  if (path === '/evaluation/pii') return at('evaluation-domain', 'pii');
   if (path === '/performance') return at('performance');
   if (path === '/how-to-read') return at('how-to-read');
   let match = new RegExp(`^/coverage/detectors/(${ID})$`).exec(path);
@@ -104,6 +107,7 @@ export function reportProblem(report, category, hash, fixtures) {
   if (report?.schemaVersion < 5) return 'Legacy report: rerun npm run bench';
   // Reports are only comparable under one accounting version; the block is re-validated, never trusted.
   if (report?.accountingVersion !== ACCOUNTING_VERSION) return 'Report accounting version is not comparable';
+  try { readCredentialAccountingIdentity(report, 'measurement-v4'); } catch { return 'Report domain accounting identity is not comparable'; }
   try { validateAccounting(report.accounting); } catch { return 'Invalid accounting configuration'; }
   if (!report || report.schemaVersion !== 5 || report.category !== category || !Array.isArray(report.scanners)) return 'Missing or invalid report';
   if (typeof report.runId !== 'string' || !report.runId) return 'Report has no run id';

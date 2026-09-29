@@ -1,5 +1,10 @@
 # redact-secret-benchmarks
 
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/15001/badge)](https://www.bestpractices.dev/projects/15001)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/redact-secret/redact-secret-benchmarks/badge)](https://scorecard.dev/viewer/?uri=github.com/redact-secret/redact-secret-benchmarks)
+[![CI](https://github.com/redact-secret/redact-secret-benchmarks/actions/workflows/validate.yml/badge.svg?branch=main)](https://github.com/redact-secret/redact-secret-vault/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/github/license/redact-secret/redact-secret-benchmarks)](./LICENSE)
+
 Project-maintained, reproducible synthetic benchmarks comparing
 [redact-secret](https://github.com/redact-secret/redact-secret) against
 established secret-scanning tools on identical fixture sets.
@@ -183,7 +188,7 @@ not an independently reviewed, neutral sample, and not a basis for ranking
 tools. Only the npm binding is currently exercised for redact-secret; CLI and
 PyPI comparisons can be added as separate adapters.
 
-As of this checkout, the registered corpus totals **1,071 fixture files and
+As of this checkout, the registered corpus totals **1,176 fixture files and
 471 expected secret spans across 11 case suites**:
 
 | Case suite | Files | Secret spans |
@@ -198,7 +203,7 @@ As of this checkout, the registered corpus totals **1,071 fixture files and
 | Reference syntax (`reference-syntax`) | 26 | 6 |
 | Beta.3 regressions (`milestone-6-closed`) | 92 | 33 |
 | Detector coverage (`detector-coverage`) | 622 | 283 |
-| Real-world shapes (`real-world-shapes`) | 15 | 0 |
+| Real-world shapes (`real-world-shapes`) | 120 | 0 |
 
 These totals are summed from `benchmarks/categories.json`'s corpus files; open
 `/coverage` to see the live per-detector-family breakdown. Fixture counts

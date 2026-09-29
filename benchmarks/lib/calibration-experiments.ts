@@ -27,11 +27,11 @@
 import { createHash } from 'node:crypto';
 import { canonicalJson } from './adversarial-intake.ts';
 import type { CandidateFeatureDataset, CandidateRow, ContextClass, NegativeClass } from './candidate-features.ts';
-import { FEATURE_NAMES, permille } from './evidence-features.ts';
+import { CORE_FEATURE_SCHEMA, FEATURE_NAMES, permille } from './evidence-features.ts';
 
-export const CALIBRATION_EXPERIMENTS_VERSION = 'calibration-experiments/1';
+export const CALIBRATION_EXPERIMENTS_VERSION = 'calibration-experiments/2';
 export const AGGREGATION_CONTRACT_VERSION = 'grouped-halving/1';
-export const SELECTION_METHOD = 'calibration-experiments/1:dev-balanced-error-within-tolerance,fewest-parameters,loco-stability';
+export const SELECTION_METHOD = 'calibration-experiments/2:dev-balanced-error-within-tolerance,fewest-parameters,loco-stability';
 export const DEFAULT_OUTPUT = 'results-output/calibration/calibration-experiments-v1.json';
 export const DEFAULT_REPORT = 'results-output/calibration/calibration-experiments-v1.md';
 export const DEFAULT_PROJECTION = 'results-output/calibration/calibration-public-projection-v1.json';
@@ -58,7 +58,7 @@ const index = Object.fromEntries(FEATURE_NAMES.map((name, i) => [name, i])) as R
 const feature = (row: CandidateRow, name: string) => row.features[index[name]];
 
 // ---------------------------------------------------------------------------
-// Signals. Each is an integer measure computed from the evidence-features/v1
+// Signals. Each is an integer measure computed from the evidence-features/v2
 // vector (or, for context and negative evidence, from the dataset's
 // benchmark-only classes), oriented so that larger means more evidence of a
 // credential. Only integer operations are used, so each is expressible in the
@@ -66,6 +66,7 @@ const feature = (row: CandidateRow, name: string) => row.features[index[name]];
 
 export type SignalId =
   | 'shannon-entropy' | 'min-entropy' | 'class-balance' | 'non-repetition'
+  | 'residual-entropy' | 'residual-min-entropy'
   | 'length' | 'class-mix' | 'class-transitions';
 
 export const SIGNALS: Record<SignalId, { group: 'randomness' | 'lexical'; features: string[]; measure: (row: CandidateRow) => number; description: string }> = {
@@ -78,6 +79,14 @@ export const SIGNALS: Record<SignalId, { group: 'randomness' | 'lexical'; featur
     measure: r => (feature(r, 'smallest_period') > 0 ? 0
       : 1000 - Math.max(feature(r, 'adjacent_repeat_permille'), feature(r, 'repeated_bigram_permille'), feature(r, 'max_autocorrelation_permille'))),
     description: '1000 minus the strongest repetition measure; 0 when the value is periodic',
+  },
+  'residual-entropy': {
+    group: 'randomness', features: ['residual_entropy_q16'], measure: r => feature(r, 'residual_entropy_q16'),
+    description: 'Shannon entropy per symbol of the residual that no repeat, constant step or earlier copy predicts (Q16; redact-secret#829)',
+  },
+  'residual-min-entropy': {
+    group: 'randomness', features: ['residual_min_entropy_q16'], measure: r => feature(r, 'residual_min_entropy_q16'),
+    description: 'min-entropy per symbol of the same residual (Q16); compared, never selected',
   },
   length: { group: 'lexical', features: ['analysed_chars'], measure: r => feature(r, 'analysed_chars'), description: 'analysed length in symbols' },
   'class-mix': { group: 'lexical', features: ['class_count'], measure: r => feature(r, 'class_count'), description: 'character classes present' },
@@ -192,7 +201,7 @@ export function evaluate(config: FittedConfig, row: CandidateRow): Evaluated {
   groups.randomness = combineWithinGroup(spec.withinGroup, randomness, spec.caps.randomness);
   groups.lexical = combineWithinGroup(spec.withinGroup, lexical, spec.caps.lexical);
   groups.contextual = Math.min(spec.caps.contextual, contextual);
-  groups.validation = 0; // evidence-features/v1 and the dataset carry no validation signal yet (#770/#771).
+  groups.validation = 0; // evidence-features/v2 and the dataset carry no validation signal yet (#770/#771).
   const positive = groups.randomness + groups.lexical + groups.contextual + groups.validation;
   return { groups, score: Math.max(0, positive - groups.negative) };
 }
@@ -542,8 +551,20 @@ export function experimentSpecs(): ConfigSpec[] {
   add({ id: 'grouped-halving-negative-none', kind: 'grouped', withinGroup: 'halving', signals: { randomness: ALL_RANDOMNESS, lexical: ALL_LEXICAL }, caps: BASE_CAPS, context: true, negativeGate: 'none' });
   add({ id: 'lookup-2d', kind: 'lookup-2d', withinGroup: 'halving', signals: { randomness: [], lexical: ['class-mix', 'class-transitions'] }, caps: BASE_CAPS, context: true, negativeGate: 'strict' });
   add({ id: 'logistic-research', kind: 'logistic', withinGroup: 'linear', signals: { randomness: [], lexical: [] }, caps: BASE_CAPS, context: true, negativeGate: 'strict' });
-  // Signal-subset and cap grid for the contract's rule: the candidates the selection chooses from.
-  const randomnessSets: [string, SignalId[]][] = [['r4', ALL_RANDOMNESS], ['r2', ['shannon-entropy', 'non-repetition']], ['r1', ['shannon-entropy']]];
+  // Research comparisons for redact-secret#829, never selectable: the #300
+  // shape (Shannon entropy per symbol, randomness 30, contextual 50) and the
+  // min-entropy variant of the residual measure at the same caps.
+  for (const [name, signal] of [['shannon', 'shannon-entropy'], ['residual-min-entropy', 'residual-min-entropy']] as const) {
+    add({
+      id: `compare-${name}-r30-l0-c50`, kind: 'grouped', withinGroup: 'halving', signals: { randomness: [signal], lexical: [] },
+      caps: { randomness: 30, lexical: 0, contextual: 50, validation: 50, negative: 130 }, context: true, negativeGate: 'strict',
+    });
+  }
+  // Signal-subset and cap grid for the contract's rule: the candidates the
+  // selection chooses from. redact-secret#829 replaces Shannon entropy in the
+  // randomness group with the residual entropy rather than adding to it, so
+  // the residual entropy is the only randomness signal a candidate may use.
+  const randomnessSets: [string, SignalId[]][] = [['q1', ['residual-entropy']]];
   const lexicalSets: [string, SignalId[]][] = [['l3', ALL_LEXICAL], ['l1', ['length']], ['l0', []]];
   for (const [rn, randomness] of randomnessSets) for (const [ln, lexical] of lexicalSets) {
     for (const capR of CAP_GRID.randomness) for (const capL of lexical.length ? CAP_GRID.lexical : [0]) for (const capC of CAP_GRID.contextual) {
@@ -685,7 +706,7 @@ const sha256 = (text: string) => createHash('sha256').update(text).digest('hex')
 export function scoringComponents(config: FittedConfig) {
   const { spec } = config;
   const featureSet = {
-    schema: 'evidence-features/v1',
+    schema: CORE_FEATURE_SCHEMA.id,
     signals: config.ramps.map(r => ({ signal: r.signal, group: SIGNALS[r.signal].group, features: SIGNALS[r.signal].features })),
     contextual: spec.context ? CREDENTIAL_CONTEXTS : [],
     negative: spec.negativeGate === 'strict' ? STRICT_NEGATIVE_CLASSES : spec.negativeGate,

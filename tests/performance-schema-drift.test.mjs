@@ -106,3 +106,16 @@ test('checkCoreSchemaDrift flags a missing schema-version constant as structural
   assert.equal(failures.length, 1);
   assert.match(failures[0], /could not find COMPLETE_ASSESSMENT_SCHEMA_VERSION/);
 });
+
+test('checkCoreSchemaDrift does not flag core adding the pending resolvedArtifact field, before or after it lands (#405)', () => {
+  assert.deepEqual(checkCoreSchemaDrift(COMPLETE_SOURCE, SCHEMA_SOURCE), [], 'not present yet: no drift');
+  const paired = SCHEMA_SOURCE.replace('readonly buildProfile?: "debug" | "release";', 'readonly buildProfile?: "debug" | "release";\n  readonly resolvedArtifact?: "node-addon" | "wasm";');
+  assert.deepEqual(checkCoreSchemaDrift(COMPLETE_SOURCE, paired), [], 'the paired runner change landing is not drift');
+});
+
+test('checkCoreSchemaDrift still flags a genuinely renamed required provenance field alongside the pending optional one', () => {
+  const drifted = SCHEMA_SOURCE.replace('readonly commit: string;', 'readonly commitSha: string;\n  readonly resolvedArtifact?: "node-addon" | "wasm";');
+  const failures = checkCoreSchemaDrift(COMPLETE_SOURCE, drifted);
+  assert.equal(failures.length, 1);
+  assert.match(failures[0], /AssessmentProvenance/);
+});

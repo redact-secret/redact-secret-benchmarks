@@ -18,7 +18,7 @@ import { validateCorpus } from "./lib/scoring.ts";
 import { classifyFixture, validateAssessment, validateContracts } from './lib/assessment.ts';
 import { scoreReport } from './lib/reporting.ts';
 import { validateStructures } from './lib/validate-structures.ts';
-import { ACCOUNTING_VERSION, validateAccounting } from './lib/accounting.ts';
+import { ACCOUNTING_VERSION, validateAccounting, credentialAccountingIdentity } from './lib/accounting.ts';
 import { summarizeRun } from './lib/run-summary.ts';
 import { inputIdentity, makeSnapshot, observationSuiteIdentity, readSnapshot, repositoryPeerIdentity, semanticIndexIdentity, snapshotObservation,
   snapshotPath, writeSnapshot } from './lib/peer-observations.ts';
@@ -188,6 +188,7 @@ for (const category of registry.filter(
     const report = {
       schemaVersion: 5,
       accountingVersion: ACCOUNTING_VERSION,
+      ...credentialAccountingIdentity('measurement-v4'),
       accounting,
       runId,
       ...(candidate ? { candidate } : {}),
@@ -237,6 +238,7 @@ if (published.length) await write('summary', summarizeRun(published as Parameter
 await write("run", {
   schemaVersion: 5,
   accountingVersion: ACCOUNTING_VERSION,
+  ...credentialAccountingIdentity('measurement-v4'),
   runId,
   startedAt,
   finishedAt: new Date().toISOString(),

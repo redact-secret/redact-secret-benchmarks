@@ -1,0 +1,87 @@
+{
+  "$id": "urn:redact-secret:pii-validator-qualification:1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "reportType", "domain", "profile", "productContract", "status", "familySupportClaims", "familyQualification", "primitiveClasses", "evidenceTrust", "inputs", "registryContract", "primitives"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "reportType": { "const": "pii-validator-qualification" },
+    "domain": { "const": "pii" },
+    "profile": { "type": "object", "additionalProperties": false, "required": ["id", "version"], "properties": {
+      "id": { "const": "pii-validator-qualification" }, "version": { "const": 1 }
+    } },
+    "productContract": { "type": "object", "additionalProperties": false, "required": ["repository", "mergeCommit", "decision", "conformanceSurface"], "properties": {
+      "repository": { "const": "redact-secret/redact-secret" }, "mergeCommit": { "$ref": "#/$defs/digest40" },
+      "decision": { "const": "decision-define-the-bounded-built-in-structured-validator-registry" },
+      "conformanceSurface": { "const": "crate-private-pending" }
+    } },
+    "status": { "const": "not-measured" },
+    "familySupportClaims": { "const": false },
+    "familyQualification": { "const": "not-evaluated" },
+    "primitiveClasses": { "type": "array", "minItems": 7, "maxItems": 7, "uniqueItems": true, "items": { "$ref": "#/$defs/primitiveClass" } },
+    "evidenceTrust": { "enum": ["not-measured", "untrusted-simulation"] },
+    "inputs": { "type": "object", "additionalProperties": false, "required": ["observationCommitment", "consumerMapCommitment", "familyDescriptorsCommitment"], "properties": {
+      "observationCommitment": { "anyOf": [{ "type": "null" }, { "$ref": "#/$defs/digest64" }] },
+      "consumerMapCommitment": { "$ref": "#/$defs/digest64" }, "familyDescriptorsCommitment": { "$ref": "#/$defs/digest64" }
+    } },
+    "registryContract": { "type": "object", "additionalProperties": false, "required": ["status", "observations", "simulationMismatches"], "properties": {
+      "status": { "const": "not-measured" }, "observations": { "$ref": "#/$defs/observations" },
+      "simulationMismatches": { "type": "array", "items": { "$ref": "#/$defs/registryMismatch" } }
+    } },
+    "primitives": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/primitive" } }
+  },
+  "$defs": {
+    "slug": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,79}$" },
+    "digest40": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "digest64": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "family": { "type": "string", "pattern": "^pii:(?:global|[a-z]{2}):[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "primitiveClass": { "enum": ["luhn", "mod-97", "weighted-mod-10", "weighted-mod-11", "iso-7064", "verhoeff", "bounded-parser-classifier"] },
+    "source": { "type": "object", "additionalProperties": false, "required": ["sourceKind", "sourceId", "locator", "revision", "claim"], "properties": {
+      "sourceKind": { "enum": ["standard", "patent", "public-authority", "product-decision"] }, "sourceId": { "$ref": "#/$defs/slug" },
+      "locator": { "type": "string", "pattern": "^https://" }, "revision": { "type": "string", "minLength": 1, "maxLength": 80 },
+      "claim": { "enum": ["algorithm", "lexical-contract"] }
+    } },
+    "implementation": { "type": "object", "additionalProperties": false, "required": ["repository", "component", "identity", "version", "mergeCommit"], "properties": {
+      "repository": { "const": "redact-secret/redact-secret" }, "component": { "const": "secret-scan-core" }, "identity": { "$ref": "#/$defs/slug" },
+      "version": { "type": "integer", "minimum": 1 }, "mergeCommit": { "$ref": "#/$defs/digest40" }
+    } },
+    "counts": { "type": "object", "additionalProperties": false, "required": ["positive", "mechanical-invalid", "boundary", "maximum-length"], "properties": {
+      "positive": { "type": "integer", "minimum": 1 }, "mechanical-invalid": { "type": "integer", "minimum": 1 },
+      "boundary": { "type": "integer", "minimum": 1 }, "maximum-length": { "type": "integer", "minimum": 1 }
+    } },
+    "mismatch": { "type": "object", "additionalProperties": false, "required": ["target", "vectorId", "expected", "observed", "consumers"], "properties": {
+      "target": { "enum": ["native", "wasm"] }, "vectorId": { "$ref": "#/$defs/slug" },
+      "expected": { "enum": ["valid", "candidate-too-long", "malformed", "checksum-mismatch"] },
+      "observed": { "enum": ["valid", "candidate-too-long", "malformed", "checksum-mismatch", "unknown-validator", "unavailable"] },
+      "consumers": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/family" } }
+    } },
+    "registryMismatch": { "type": "object", "additionalProperties": false, "required": ["target", "vectorId", "expected", "observed"], "properties": {
+      "target": { "enum": ["native", "wasm"] }, "vectorId": { "$ref": "#/$defs/slug" },
+      "expected": { "const": "unknown-validator" },
+      "observed": { "enum": ["valid", "candidate-too-long", "malformed", "checksum-mismatch", "unknown-validator", "unavailable"] }
+    } },
+    "observations": { "type": "object", "additionalProperties": false, "required": ["expected", "measured"], "properties": {
+      "expected": { "type": "integer", "minimum": 0 }, "measured": { "type": "integer", "minimum": 0 }
+    } },
+    "primitive": { "type": "object", "additionalProperties": false,
+      "required": ["validator", "normativeSources", "implementation", "vectorSet", "consumers", "status", "parity", "observations", "simulationMismatches"], "properties": {
+        "validator": { "type": "object", "additionalProperties": false, "required": ["id", "version", "primitiveClass", "maxCandidateBytes"], "properties": {
+          "id": { "$ref": "#/$defs/slug" }, "version": { "type": "integer", "minimum": 1 }, "primitiveClass": { "$ref": "#/$defs/primitiveClass" },
+          "maxCandidateBytes": { "type": "integer", "minimum": 1 }
+        } },
+        "normativeSources": { "type": "array", "minItems": 2, "items": { "$ref": "#/$defs/source" } },
+        "implementation": { "$ref": "#/$defs/implementation" },
+        "vectorSet": { "type": "object", "additionalProperties": false, "required": ["id", "version", "counts"], "properties": {
+          "id": { "$ref": "#/$defs/slug" }, "version": { "const": 1 }, "counts": { "$ref": "#/$defs/counts" }
+        } },
+        "consumers": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/family" } },
+        "status": { "const": "not-measured" },
+        "parity": { "type": "object", "additionalProperties": false, "required": ["status", "agreement"], "properties": {
+          "status": { "enum": ["not-measured", "simulation"] }, "agreement": { "enum": ["not-measured", "matched", "divergent"] }
+        } },
+        "observations": { "$ref": "#/$defs/observations" },
+        "simulationMismatches": { "type": "array", "items": { "$ref": "#/$defs/mismatch" } }
+      }
+    }
+  }
+}

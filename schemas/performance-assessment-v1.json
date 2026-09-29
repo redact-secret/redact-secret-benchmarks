@@ -103,7 +103,8 @@
             "cpu": { "type": "string" },
             "runtime": { "type": "string" },
             "command": { "type": "string" },
-            "buildProfile": { "enum": ["debug", "release"] }
+            "buildProfile": { "enum": ["debug", "release"] },
+            "resolvedArtifact": { "enum": ["node-addon", "wasm"] }
           }
         }
       }

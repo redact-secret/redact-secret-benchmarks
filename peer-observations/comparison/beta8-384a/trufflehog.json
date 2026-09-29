@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-28T18:15:41.542Z",
+  "sourceRun": {
+    "runId": "2026-09-28T18:15:41.542Z-65aa0c",
+    "benchmarkRevision": "e8b38c33ceb744dcfc23a0005d89619cdfdcd2bd"
+  },
+  "input": {
+    "surface": "comparison/beta8-384a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "7dec7c164af6dc72eceb7acdbd88d1d8aad79caf9f58c82b8fed55d23cf7bf1e",
+    "fixtureCount": 81,
+    "fixturesDigest": "eed46ec2a77ee325b2a87fefd3ebd05dbbb3fe55605005dd8cbb579bed0304c0",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e893fa62ccdf42d447218cdde2c178084d7163dfea6b51caa4dc5fd32b69220c",
+      "fixtureCount": 4768
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
+    },
+    "adapterDigest": "d86f286b1689f577b83e9685a822cb2f074a4fd2b0b9a813d579ab4f72a03266"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/anthropic-admin01-key-api03-prefix-twin.env",
+      "start": 31,
+      "end": 139,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-compose-env.yml",
+      "start": 116,
+      "end": 226,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-curl-x-api-key.sh",
+      "start": 75,
+      "end": 185,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-dotenv.env",
+      "start": 31,
+      "end": 141,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-export.sh",
+      "start": 28,
+      "end": 138,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-job-log.log",
+      "start": 41,
+      "end": 151,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-json-config.json",
+      "start": 22,
+      "end": 132,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-pasted-key.txt",
+      "start": 60,
+      "end": 170,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-python-sdk.py",
+      "start": 56,
+      "end": 166,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-tool-call.json",
+      "start": 118,
+      "end": 228,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-admin01-prefix-twin.sh",
+      "start": 26,
+      "end": 136,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-api03-prefix-twin.env",
+      "start": 39,
+      "end": 147,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-api03-curl-x-api-key.sh",
+      "start": 61,
+      "end": 169,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-api03-dotenv.env",
+      "start": 25,
+      "end": 133,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/anthropic-token-api03-python-sdk.py",
+      "start": 56,
+      "end": 164,
+      "family": "anthropic-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-compose-env.yml",
+      "start": 117,
+      "end": 250
+    },
+    {
+      "path": "cases/openai-admin-api-key-curl-bearer.sh",
+      "start": 79,
+      "end": 212
+    },
+    {
+      "path": "cases/openai-admin-api-key-dotenv.env",
+      "start": 24,
+      "end": 157
+    },
+    {
+      "path": "cases/openai-admin-api-key-json-config.json",
+      "start": 22,
+      "end": 155
+    },
+    {
+      "path": "cases/openai-admin-api-key-python-sdk.py",
+      "start": 58,
+      "end": 191
+    },
+    {
+      "path": "cases/openai-admin-api-key-tool-call.json",
+      "start": 67,
+      "end": 200
+    },
+    {
+      "path": "cases/openai-admin-api-key-ts-client.ts",
+      "start": 72,
+      "end": 205
+    },
+    {
+      "path": "cases/openai-admin-api-key-usage-log.log",
+      "start": 45,
+      "end": 178
+    }
+  ],
+  "digest": "d793c0e090aeb70da8e7a3442ad1c34f6eb5abf3cf68dabac251c54216e661f8"
+}

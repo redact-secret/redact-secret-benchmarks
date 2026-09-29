@@ -1,6 +1,8 @@
 # #428 final public-gate record: core `8b6a5fde`
 
-**All six PII families stay `pending`. Detection outcomes are identical to `8f97f14d` and `ec9224d9`. `profile-cost` stays `not-met`: the bound official candidate run has 172 regression cells and 3 tail-only invalid cells (175 failing), against 162 at `8f97f14d` and 183 at `ec9224d9`.** Of the 23 cells that first failed at `ec9224d9`, 7 are within budget in both official candidate runs at this commit, 6 fail in one run, and 10 fail in both. Eleven cells still fail against `8f97f14d` in both official candidate runs at this commit: five Wasm incremental cells for the narrow `pii:family:us:ssn` selection, one Chromium `pii:global` incremental cell, two Chromium initialize cells and three Node-Wasm RSS cells. A diagnostic run on the CI runners supports the product's JIT warm-up explanation for the `us-ssn-exact` incremental cells. Nothing here is accepted: the remaining cells are listed for the maintainer's decision. The protected partition is unspent and not eligible.
+**All six PII families stay `pending`. Detection outcomes are identical to `8f97f14d` and `ec9224d9`. The report scores `profile-cost` `not-met`: the bound official candidate run has 172 regression cells and 3 tail-only invalid cells (175 failing), against 162 at `8f97f14d` and 183 at `ec9224d9`. On 2026-09-29 the maintainer accepted every failing cell and the 38 open size rows as a tradeoff ([below](#maintainer-acceptance-of-the-profile-cost-cells)). The Chromium diagnostic found no PII-on absolute-time regression against `8f97f14d`, so nothing is excluded from that acceptance. With it, every public gate of all six families counts as met, and each family is eligible for its protected run. The families stay `pending` until the custodian seals and runs the protected corpus.**
+
+Of the 23 cells that first failed at `ec9224d9`, 7 are within budget in both official candidate runs at this commit, 6 fail in one run, and 10 fail in both. The paired diagnostics on the CI runners, [Node-Wasm](#2-us-ssn-exact-wasm-incremental) and [Chromium](#chromium-diagnostic-diagnostic-only), place the remaining Wasm cells in V8 tier-up timing or the unchanged instantiate gap, not in slower product code.
 
 This record re-binds the #428 evidence to the Beta.11 candidate after redact-secret#996. It supersedes [`final-core-ec9224d9.md`](final-core-ec9224d9.md) (intermediate history, the #902 Wasm regression that #996 addresses) and [`final-core-8f97f14d.md`](final-core-8f97f14d.md) for the release decision. It makes no support claim. PII numerators and denominators are the only counts in it. Mode: candidate build (isolated tarballs from the commit, and qualified product run 36581019627 for the CI rows and the official workflow), not the published package.
 
@@ -28,11 +30,10 @@ Unchanged from `8f97f14d` and `ec9224d9`. With commits and hashes removed, every
 
 Failed or withheld gates, the same for all six:
 
-- `profile-cost` (not-met);
-- `protected-partition` (not-run);
-- `runtime-and-package-cost` and `size-regression-budget` (not-met). These two stay not-met until the `8b6a5fde` rows of `benchmarks/accepted-regressions.json` come from the credential re-bind. At `8f97f14d` they were met through that commit's rows.
+- `profile-cost` (not-met in the report; met by accepted tradeoff for the protected route, see below);
+- `protected-partition` (not-run).
 
-Every other gate is met, as at `8f97f14d`.
+`runtime-and-package-cost` and `size-regression-budget` are met through the `8b6a5fde` rows of `benchmarks/accepted-regressions.json` (credential re-bind, merged at `1925bd4`; rescored at `d5de27c`), as at `8f97f14d`. Every other gate is met.
 
 ## Package budget (#448)
 
@@ -119,7 +120,7 @@ The absolute PII-on median on EPYC 9V74 for `node-wasm/full/us-ssn-exact/validat
 
 With no whole-input scan first (cold) or on a warm second session, `8b6a5fde` is faster than `8f97f14d` for `us-ssn-exact`. A 10 ms pause removes most of the gap, leaving 3 to 11 percent. On the CI runners, then, the `us-ssn-exact` slowdown is tied to what runs in the process before the incremental session, not to slower incremental code, which matches the product's JIT warm-up analysis. The diagnostic covers Node-Wasm only. Chromium's `us-ssn-exact` cells move the same way in the official runs, but they were not diagnosed separately. The Chromium `pii:global` full validator-heavy incremental cell is not explained by this: in Node, `pii:global` is faster in every variant.
 
-### (3) Remaining cells for the maintainer's decision
+### (3) Remaining cells (accepted by the maintainer on 2026-09-29, see below)
 
 `profileCostGate` is not family-scoped, so today every one of the six families needs all 175 failing cells of the bound run (172 regression, 3 tail-only invalid) and the 41 regressing size rows accepted or fixed. Of those rows, 38 have no #143 trigger. The other 3 (wasm full and common gzip, wasm packed) could be covered by `8b6a5fde` ledger rows. By surface:
 
@@ -162,9 +163,82 @@ Largest remaining ratios (bound run, PII on / PII off):
 
 Whole-input ratios range from 1.12 to 30.3. At `8f97f14d` the largest was 173.9 (338.8 ms against 1.95 ms). On one EPYC 9V74 A/A pair, PII-on whole input is 0.05 to 0.17 of `8f97f14d` on every surface except the CLI (0.67 to 0.88).
 
-## Protected partition
+## Chromium diagnostic (diagnostic only)
 
-Not run. No custodian corpus is registered, and every epoch is 0/1 with reason `public-gates-failed`, always including `profile-cost`. The protected runner and [`holdout/PII-CUSTODIAN.md`](../../../holdout/PII-CUSTODIAN.md) now name this candidate. `run` refuses every family without spending budget while a public gate is `not-met`.
+This is not the official protocol and not evidence of record. No plan or workflow file changed. It ran on the orphan branch `diag/902-chromium` of this repository in two runs of three jobs each: [36587938904](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36587938904) (EPYC 9V45, Xeon 8573C, EPYC 9V45) and [36589203421](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36589203421) (EPYC 9V45, 9V45, 9V74). It pairs the CI-qualified `wasm-web` builds of `8f97f14d` (run 36553444981) and `8b6a5fde` (run 36581019627). Each job checks the four `.wasm` hashes against the #428 freezes before it starts. It uses Playwright 1.55.0 Chromium, the same as the official workflow, with one fresh browser per sample, both builds ABBA-interleaved on the same host, 20 rounds, 40 samples per side per cell, and the `full` profile. The workload is `validator-heavy`, and the in-page sequence and incremental limits are those of `chromium-sample-v2.mjs`.
+
+Each cell below is PII-on absolute time, `8b6a5fde` over `8f97f14d`: the ratio of medians with a 95 percent bootstrap interval, one line per host.
+
+**(a) Initialize.** This is `default()` (Wasm instantiate) plus `initialize(selectors)`, the official metric.
+
+| Selection | Host | `8f97f14d` ms | `8b6a5fde` ms | Ratio [95% CI] |
+| --- | --- | ---: | ---: | --- |
+| `pii:global` (PII on) | 9V45 / 8573C / 9V45 | 8.80 / 12.60 / 9.40 | 9.25 / 12.60 / 9.40 | 1.051 [0.972, 1.114] / 1.000 [0.937, 1.074] / 1.000 [0.922, 1.033] |
+| `pii:us` (PII on) | 9V45 / 8573C / 9V45 | 8.75 / 12.50 / 9.70 | 9.15 / 12.90 / 9.85 | 1.046 [0.957, 1.104] / 1.032 [0.976, 1.102] / 1.015 [0.910, 1.096] |
+| off (PII off) | 9V45 / 8573C / 9V45 | 6.90 / 10.20 / 7.20 | 6.90 / 10.35 / 7.60 | 1.000 [0.937, 1.097] / 1.015 [0.949, 1.080] / 1.056 [0.987, 1.113] |
+
+`initialize(selectors)` alone is 1.4 to 2.4 ms and unchanged (0.91 to 1.05). The on/off gap is the `_pii` build's larger instantiate: 7.2 against 5.8 ms on a 9V45. It is 1.28 at `8f97f14d` and 1.34 at `8b6a5fde` on the same host, so the official cells sit on the edge of their budget at both commits. **Verdict: noise.** PII-on absolute initialize is unchanged, and every interval contains 1.
+
+**(b) `pii:global` incremental, PII on.**
+
+| Variant | Ratio per host [95% CI] |
+| --- | --- |
+| official order (whole-input scan, then the session) | 1.196 [1.129, 1.317], 1.267 [1.216, 1.302], 1.281 [1.187, 1.332]; second run 1.190, 1.269, 1.194 |
+| 10 ms settle after the whole-input scan | 1.212 [1.129, 1.293], 1.171 [1.115, 1.199], 1.235 [1.177, 1.300] |
+| warm second session, immediately after | 1.013 [0.926, 1.094], 0.831 [0.780, 0.855], 0.982 [0.923, 1.106] |
+| cold (no whole-input scan first) | 0.707 [0.687, 0.747], 0.730 [0.706, 0.747], 0.710 [0.688, 0.739] |
+| steady (five more sessions, 100 ms apart; the last) | 0.606 [0.597, 0.617], 0.610 [0.604, 0.616], 0.614 [0.609, 0.617] |
+| TurboFan only (`--no-liftoff --no-wasm-lazy-compilation`) | 0.586 [0.580, 0.592], 0.594 [0.589, 0.598], 0.604 [0.599, 0.606] |
+| Liftoff only (`--liftoff-only --no-wasm-lazy-compilation`) | 0.634 [0.618, 0.646], 0.670 [0.660, 0.688], 0.694 [0.686, 0.707] |
+
+**(c) `pii:family:us:ssn` incremental, PII on.**
+
+| Variant | Ratio per host [95% CI] |
+| --- | --- |
+| official order | 1.283 [1.251, 1.377], 1.253 [1.211, 1.272], 1.343 [1.275, 1.429]; second run 1.329, 1.359, 1.292 |
+| 10 ms settle | 1.390 [1.342, 1.460], 1.215 [1.165, 1.262], 1.421 [1.341, 1.479] |
+| warm second session, immediately after | 1.663 [1.569, 1.776], 1.092 [1.019, 1.194], 1.560 [1.454, 1.665] |
+| cold | 0.842 [0.771, 0.871], 0.822 [0.804, 0.852], 0.848 [0.811, 0.882] |
+| steady | 0.782 [0.773, 0.791], 0.785 [0.775, 0.795], 0.788 [0.783, 0.793] |
+| TurboFan only | 0.776 [0.764, 0.785], 0.769 [0.756, 0.781], 0.783 [0.773, 0.785] |
+| Liftoff only | 0.822 [0.795, 0.845], 0.868 [0.849, 0.891], 0.824 [0.801, 0.861] |
+
+PII off is 0.95 to 1.02 in every variant, so the harness does not favour either build.
+
+**Verdict for (b) and (c): a JIT tier-up artifact of the measurement order, not a product regression.**
+
+- With the Wasm tier pinned to TurboFan or to Liftoff, where no tier-up happens, `8b6a5fde` is faster than `8f97f14d` (0.59 to 0.87).
+- It is also faster in steady state (0.61 and 0.78) and on a cold first session (0.71 to 0.85).
+- It is slower only when a session runs shortly after the whole-input scan. That scan now takes 7 to 65 ms instead of 97 to 470 ms, so hot functions are still being recompiled when the session starts. On these slower x64 hosts, a 10 ms pause and even one extra session are not enough; after five sessions 100 ms apart the build is 22 to 39 percent faster.
+- The whole-input scan and the following session together are still much faster: `pii:family:us:ssn` 33.4 + 39.8 ms against 97.5 + 30.0 ms, and `pii:global` 47.4 + 46.7 ms against 311 + 39.2 ms, on a 9V45.
+
+The Node-Wasm diagnostic shows the same shape. No product fix is indicated. Whether the official `incremental` metric should run in its own process or after a settle period is a protocol question for the maintainer.
+
+## Maintainer acceptance of the profile-cost cells
+
+The maintainer decided on 2026-09-29, relayed by the Beta.11 orchestrator, to accept the remaining Beta.11 PII profile-cost cells and size rows at `8b6a5fde` as a tradeoff:
+
+- PII is opt-in.
+- The cells compare PII on against PII off in the same artifact, so the cost is paid only when a caller enables PII.
+- PII-on absolute time fell to 0.05 to 0.17 of `8f97f14d` on every surface except the CLI.
+- The size rows are the accepted Beta.11 PII payload.
+
+The acceptance excludes any cell that the Chromium diagnostic shows to be a real PII-on absolute-time regression; the diagnostic above found none, so none is excluded.
+
+- **Mechanism.** The #143 ledger `benchmarks/accepted-regressions.json` accepts #143 budget triggers only, and profile-cost cells are not triggers. Its sibling [`benchmarks/accepted-pii-profile-cost.json`](../../../benchmarks/accepted-pii-profile-cost.json) follows the same conventions: one entry per candidate commit, the original measurement kept for every item, a rationale, a linked benefit, and `decidedAt`/`decidedBy`. It is validated and applied by [`profile-cost-acceptance.ts`](../../../benchmarks/evaluation/domains/pii/profile-cost-acceptance.ts), with tests in `tests/pii-profile-cost-acceptance.test.mjs`.
+- **Entry `beta11-8b6a5fd-pii-profile-cost`.** It binds commit `8b6a5fde`, plan `36d408ea…456f`, the bound candidate run 36584501052 with its report commitment, and size run 36582931734 with its report commitment. It records the second candidate run 36585713241 as not used. It lists all 175 failing cells (172 regression and 3 tail-only invalid, each with its original verdict and measurement) and all 38 open size rows (each with `deltaBytes`), and it excludes nothing.
+- **Rule.** The acceptance applies only when it covers every failing cell and open size row of exactly those runs, with identical measurements. A missing, excluded or changed cell, another run, or another commit leaves `profile-cost` not-met, and the tests check each of these.
+- **The frozen report is not rescored with it.** `beta11-disposition.ts` belongs to the #428 freeze, and changing scoring after an observation requires a new freeze. The report and disposition therefore keep the measured `profile-cost: not-met`. The protected route reads the acceptance: `b11ProtectedPublicGates` counts an accepted `profile-cost` as met and names the ledger entry.
+
+## Protected partition and six-family disposition after the acceptance
+
+The protected disposition is [`core-8b6a5fde52ec/pii-beta11-protected-disposition-v2.json`](core-8b6a5fde52ec/pii-beta11-protected-disposition-v2.json), written by `npm run pii:beta11:protected -- disposition --core-commit=8b6a5fde52ecb4dfce13f09c7a947062d21483c7` and re-derived byte for byte in the tests. It binds the report, the disposition and the acceptance.
+
+| Family | Status | Public gates | Accepted tradeoff | Protected |
+| --- | --- | --- | --- | --- |
+| network-address, email, payment-card, iban, us-ssn, phone | pending | all met | `profile-cost:beta11-8b6a5fd-pii-profile-cost` | unspent, 0/1, `no-sealed-corpus`: eligible |
+
+No custodian corpus is sealed, so no protected run has happened. A family can reach `provisional`, never `stable`, only through its one protected attempt with an accepted trust resolution. The runner and [`holdout/PII-CUSTODIAN.md`](../../../holdout/PII-CUSTODIAN.md) name this candidate, and `run` no longer refuses on `profile-cost` while the acceptance matches.
 
 ## Support projection and site copy
 

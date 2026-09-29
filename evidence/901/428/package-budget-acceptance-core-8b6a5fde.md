@@ -31,12 +31,7 @@ gzip-9 of the `_pii` builds: full 305,065 → 318,323 → 310,056; common 243,75
 
 ## Where it is recorded
 
-The mechanism is the #143 ledger `benchmarks/accepted-regressions.json`, where one row accepts one trigger against baseline `0.1.0-beta.8` for one candidate commit. The rows for this commit must come from the credential re-bind: `size/npm/wasm/packed` and `size/npm/node-darwin-arm64/packed`, and for `size-regression-budget` also `size/wasm/full/gzip` and `size/wasm/common/gzip`, each with `candidate.sourceCommit` `8b6a5fde52ecb4dfce13f09c7a947062d21483c7`. When this record was written, those rows did not exist, so the committed [report](core-8b6a5fde52ec/pii-beta11-report-v2.json) still reads `runtime-and-package-cost` and `size-regression-budget` as `not-met`. After the rows are merged, re-derive the report and disposition without measuring again:
-
-```sh
-npm run pii:beta11 -- --core-commit=8b6a5fde52ecb4dfce13f09c7a947062d21483c7 \
-  --core-repo=<absolute path to a redact-secret clone> --role=final --rescore=true
-```
+The mechanism is the #143 ledger `benchmarks/accepted-regressions.json`, where one row accepts one trigger against baseline `0.1.0-beta.8` for one candidate commit. The rows for this commit must come from the credential re-bind: `size/npm/wasm/packed` and `size/npm/node-darwin-arm64/packed`, and for `size-regression-budget` also `size/wasm/full/gzip` and `size/wasm/common/gzip`, each with `candidate.sourceCommit` `8b6a5fde52ecb4dfce13f09c7a947062d21483c7`. The rows are `beta11-8b6a5fd-npm-wasm-packed`, `beta11-8b6a5fd-npm-node-darwin-arm64-packed`, `beta11-8b6a5fd-wasm-full-gzip` and `beta11-8b6a5fd-wasm-common-gzip` (credential re-bind, merged at `1925bd4`). The committed [report](core-8b6a5fde52ec/pii-beta11-report-v2.json) was rescored with them at `d5de27c`, and `runtime-and-package-cost` and `size-regression-budget` read `met`.
 
 The 32,768 B budget is not relaxed, and no scoring code changed for this record.
 

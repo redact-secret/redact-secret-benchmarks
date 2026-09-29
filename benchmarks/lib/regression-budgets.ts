@@ -545,8 +545,17 @@ export function metricsFromQuickstartBundle(evidence: QuickstartBundleEvidence):
  * harness, and this repository's black-box MCP harness (#281), whose rows
  * have the same shape (modes host / adapter-identity / adapter-core and the
  * derived traversal) under the `mcp-javascript` language.
+ *
+ * `overhead-v2` (redact-secret-adapters#97, #472) only adds fields: per-mode
+ * latency and memory passes, `derived.adapterOverheadRatio` and
+ * `traversalAllocatedBytes`, and, under `--baseline`, a per-result
+ * `baseline` and `change` against the previous adapter release. Every field
+ * read here is unchanged, so v1 and v2 outputs yield the same metrics; the
+ * added fields are not budgeted yet.
  */
-export const ADAPTER_OVERHEAD_SCHEMAS: readonly string[] = ['redact-secret-adapters/overhead-v1', 'redact-secret-benchmarks/mcp-overhead-v1'];
+export const ADAPTER_OVERHEAD_SCHEMAS: readonly string[] = [
+  'redact-secret-adapters/overhead-v1', 'redact-secret-adapters/overhead-v2', 'redact-secret-benchmarks/mcp-overhead-v1',
+];
 
 export interface AdapterOverheadOutput {
   readonly schema: string;
@@ -573,7 +582,7 @@ export function adapterProfileId(output: AdapterOverheadOutput): string {
 }
 
 /**
- * Adapter-attributable metrics from one or more `redact-secret-adapters/overhead-v1`
+ * Adapter-attributable metrics from one or more `redact-secret-adapters/overhead-v1` or `-v2`
  * outputs of the same language and profile (one per process). Traversal is the
  * median over processes of each process's median-based traversal; scanner
  * calls and scanned code units per event are deterministic counts. The core's

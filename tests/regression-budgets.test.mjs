@@ -316,6 +316,37 @@ test('adapter overhead metrics exclude core scan time and keep deterministic cou
   assert.equal(metricsFromAdapterOverhead([output(1, true)]).profiles['javascript:quick'], 'true');
 });
 
+test('adapter overhead-v2 outputs yield the same metrics as v1, ignoring the added fields', () => {
+  // Trimmed from a real `measure-overhead.mjs --baseline` run (redact-secret-adapters#97): v2 adds
+  // per-mode latency and memory, two derived values, and a per-result baseline and change.
+  const mode = median => ({ unit: 'microseconds-per-event', samples: [median], median, p95: median, minimum: median, maximum: median, standardDeviation: 0,
+    latency: { unit: 'microseconds', count: 400, median, p95: median, p99: median, maximum: median },
+    memory: { basis: 'v8.GCProfiler', allocatedBytesPerEvent: 1024, peakBytes: null, gcCountPerEvent: 0, gcPauseMicrosecondsPerEvent: 0 } });
+  const row = (host, traversal) => ({
+    host, profileId: 'mask-payload', eventsPerRepetition: 400, scannerCallsPerEvent: 22, scannedCodeUnitsPerEvent: 3024.5,
+    modes: { host: mode(0.1), 'adapter-identity': mode(0.1 + traversal), 'adapter-core': mode(1500), 'core-direct': mode(1490) },
+    derived: { unit: 'microseconds-per-event', basis: 'difference of per-mode medians', traversal, coreScan: 1490, adapterOverhead: 1499.9,
+      unattributed: 9.9, traversalAllocatedBytes: 512, adapterOverheadRatio: null },
+    baseline: { comparable: true, scannerCallsPerEvent: 22, scannedCodeUnitsPerEvent: 3024.5, modes: {}, derived: { traversal: traversal + 1 } },
+    change: { traversal: { baseline: traversal + 1, current: traversal, difference: -1, relative: -1 / (traversal + 1) } },
+  });
+  const v2 = traversal => ({
+    schema: 'redact-secret-adapters/overhead-v2', language: 'javascript', workloads: { digest: 'd2' },
+    environment: { platform: 'linux', arch: 'arm64', cpuModel: null, runtime: 'node-22.23.3', containerImage: 'sha256:0' },
+    method: { quick: false, repetitions: 15, passes: ['batch', 'latency', 'memory'] },
+    baseline: { packages: { '@redact-secret/adapter': '0.1.2' } },
+    results: [row('mask-js', traversal), row('mcp-js', traversal + 10)],
+  });
+  const v1 = traversal => ({ ...v2(traversal), schema: 'redact-secret-adapters/overhead-v1',
+    results: v2(traversal).results.map(({ baseline, change, ...rest }) => rest) });
+  const fromV2 = metricsFromAdapterOverhead([v2(5.5), v2(5.7), v2(5.6)]);
+  const fromV1 = metricsFromAdapterOverhead([v1(5.5), v1(5.7), v1(5.6)]);
+  assert.deepEqual(fromV2, fromV1);
+  assert.equal(fromV2.metrics.find(m => m.id === 'adapter/mcp-js/mask-payload/traversal').value, 15.6);
+  assert.equal(fromV2.profiles.javascript, 'linux-arm64|unknown-cpu|node-22');
+  assert.equal(fromV2.profiles['javascript:workloadDigest'], 'd2');
+});
+
 test('size metrics mark the default bundle and optional profiles separately', () => {
   const metrics = metricsFromOperational(readJson('benchmarks/operational-evidence.json'));
   assert.equal(metrics.find(m => m.id === 'size/wasm/full/gzip').role, 'default');

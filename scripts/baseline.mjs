@@ -7,6 +7,7 @@ import path from 'node:path';
 import { encodeOutcome } from '../benchmarks/lib/lattice.ts';
 import { kinds, tiers } from '../benchmarks/lib/assessment.ts';
 import { assertComparable } from '../benchmarks/lib/accounting.ts';
+import { compareBaselineNames } from '../benchmarks/lib/baselines.ts';
 
 const PRODUCT = 'redact-secret';
 const root = fileURLToPath(new URL('../', import.meta.url));
@@ -50,7 +51,8 @@ if (save !== -1) {
 }
 
 if (report) {
-  const files = (await readdir(baselineDir)).filter(f => f.endsWith('.json')).sort();
+  // Release order, not string order: 0.1.0-beta.10 follows beta.9, not precedes beta.4.
+  const files = (await readdir(baselineDir)).filter(f => f.endsWith('.json')).sort(compareBaselineNames);
   const baselines = await Promise.all(files.map(f => readJson(path.join(baselineDir, f))));
   const registry = (await readJson(path.join(root, 'benchmarks/categories.json'))).filter(category => !category.calibrationOnly);
   const pct = v => (v == null ? '—' : `${(v * 100).toFixed(1)}%`);

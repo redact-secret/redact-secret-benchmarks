@@ -131836,46 +131836,50 @@
       "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "2daf2ef45af99c73444e542fcd8b7ca63b734da73b67b1128a5bfe7e1515717a": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "251faa2f-9f12-41c2-9fed-975da5de8109",
       "lastSeenRun": "251faa2f-9f12-41c2-9fed-975da5de8109",
       "lastSeenAt": "2026-09-27T04:45:00.000Z",
-      "note": "Differential observation on a Beta.10 arrival-family fixture (#384, target anthropic-admin01-key): redact-secret (published @redact-secret/core 0.1.0-beta.9) reports [75,185) (attributed to generic-token) while trufflehog reports no finding. The case targets anthropic-admin01-key, an unscored arrival family with no registry detector at the pinned revision (benchmarks/detectors.json sourceRevision 0af4cb8); the published 0.1.0-beta.9 package predates the product counterpart redact-secret/redact-secret#862, so this row cannot be adjudicated from the published baseline. It is recorded open so the measurement stays visible without asserting product or peer correctness; re-triage it against the product candidate that carries the detector. Not resolved here per the boundary rule (AGENTS.md: this repository measures and records). Class: differential-beta9-published-rebaseline."
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (boundary: underscores in place of the provider-documented hyphens (sk_ant_admin01_)) is scoped to anthropic-admin01-key, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no anthropic-admin01-key finding, so the twin's own assertion (no typed anthropic-admin01-key finding) holds. redact-secret attributes [75,185) to generic-token instead — the value still sits in a credential slot (a credential-named assignment, an api-key header or query parameter), where generic-token reports a value no typed detector claims (the project's T3 contextual policy, never a provider-format claim). The twin method records this as coDetected, not as a twin failure. trufflehog reports no finding at all — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/twin-boundary-family-reassignment.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "3fcb9e60dae480c5f4c57191d514a3c76d659620aec4f1b44b8092462f39d4c1": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "251faa2f-9f12-41c2-9fed-975da5de8109",
       "lastSeenRun": "251faa2f-9f12-41c2-9fed-975da5de8109",
       "lastSeenAt": "2026-09-27T04:45:00.000Z",
-      "note": "Differential observation on a Beta.10 arrival-family fixture (#384, target anthropic-admin01-key): redact-secret (published @redact-secret/core 0.1.0-beta.9) reports [22,132) (attributed to generic-token) while gitleaks reports no finding. The case targets anthropic-admin01-key, an unscored arrival family with no registry detector at the pinned revision (benchmarks/detectors.json sourceRevision 0af4cb8); the published 0.1.0-beta.9 package predates the product counterpart redact-secret/redact-secret#862, so this row cannot be adjudicated from the published baseline. It is recorded open so the measurement stays visible without asserting product or peer correctness; re-triage it against the product candidate that carries the detector. Not resolved here per the boundary rule (AGENTS.md: this repository measures and records). Class: differential-beta9-published-rebaseline."
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (prefix: the documented lowercase prefix upper-cased) is scoped to anthropic-admin01-key, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no anthropic-admin01-key finding, so the twin's own assertion (no typed anthropic-admin01-key finding) holds. redact-secret attributes [22,132) to generic-token instead — the value still sits in a credential slot (a credential-named assignment, an api-key header or query parameter), where generic-token reports a value no typed detector claims (the project's T3 contextual policy, never a provider-format claim). The twin method records this as coDetected, not as a twin failure. gitleaks reports no finding at all — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/twin-boundary-family-reassignment.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "0b3cef8ed2fc5a09a1424fcc73fdb25fb32e2e0527e263c87822e02698f99def": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "251faa2f-9f12-41c2-9fed-975da5de8109",
       "lastSeenRun": "251faa2f-9f12-41c2-9fed-975da5de8109",
       "lastSeenAt": "2026-09-27T04:45:00.000Z",
-      "note": "Differential observation on a Beta.10 arrival-family fixture (#384, target anthropic-admin01-key): redact-secret (published @redact-secret/core 0.1.0-beta.9) reports [22,132) (attributed to generic-token) while trufflehog reports no finding. The case targets anthropic-admin01-key, an unscored arrival family with no registry detector at the pinned revision (benchmarks/detectors.json sourceRevision 0af4cb8); the published 0.1.0-beta.9 package predates the product counterpart redact-secret/redact-secret#862, so this row cannot be adjudicated from the published baseline. It is recorded open so the measurement stays visible without asserting product or peer correctness; re-triage it against the product candidate that carries the detector. Not resolved here per the boundary rule (AGENTS.md: this repository measures and records). Class: differential-beta9-published-rebaseline."
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (prefix: the documented lowercase prefix upper-cased) is scoped to anthropic-admin01-key, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no anthropic-admin01-key finding, so the twin's own assertion (no typed anthropic-admin01-key finding) holds. redact-secret attributes [22,132) to generic-token instead — the value still sits in a credential slot (a credential-named assignment, an api-key header or query parameter), where generic-token reports a value no typed detector claims (the project's T3 contextual policy, never a provider-format claim). The twin method records this as coDetected, not as a twin failure. trufflehog reports no finding at all — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/twin-boundary-family-reassignment.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "e0774bfc08845962d575fce3251f585fb237a4b368bf2ec24a6b51339461c0e3": {
       "status": "open",
       "firstSeenRun": "251faa2f-9f12-41c2-9fed-975da5de8109",
       "lastSeenRun": "251faa2f-9f12-41c2-9fed-975da5de8109",
       "lastSeenAt": "2026-09-27T04:45:00.000Z",
-      "note": "Differential observation on a Beta.10 arrival-family fixture (#384, target anthropic-admin01-key): redact-secret (published @redact-secret/core 0.1.0-beta.9) reports [75,100) (attributed to generic-token) while gitleaks reports no finding. The case targets anthropic-admin01-key, an unscored arrival family with no registry detector at the pinned revision (benchmarks/detectors.json sourceRevision 0af4cb8); the published 0.1.0-beta.9 package predates the product counterpart redact-secret/redact-secret#862, so this row cannot be adjudicated from the published baseline. It is recorded open so the measurement stays visible without asserting product or peer correctness; re-triage it against the product candidate that carries the detector. Not resolved here per the boundary rule (AGENTS.md: this repository measures and records). Class: differential-beta9-published-rebaseline."
+      "note": "Product false alarm on a placeholder control on the canonical variant of beta8-384a/anthropic-admin01-key-angle-key-placeholder (control, must-not-flag/T3, target anthropic-admin01-key): redact-secret reports [75,100) as generic-token (high, redact) on the literal placeholder sk-ant-admin01-<your-key>, while gitleaks reports nothing and the authored expectation is silence. The same placeholder after sk-ant-api01- or sk-ant-api03- gives no finding, so this is a product placeholder-parity defect, filed as redact-secret/redact-secret#1015 (milestone v0.1.0.beta.12). Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Recorded open so the family stays provisional until a release carries the fix; the fixture expectation is unchanged. Class: benign-false-alarm-unconfirmed/generic-token."
     },
     "9a669445e39e42c356f80190fa61776e82c95a51701e4e5b48edae042d098e8c": {
       "status": "open",
       "firstSeenRun": "251faa2f-9f12-41c2-9fed-975da5de8109",
       "lastSeenRun": "251faa2f-9f12-41c2-9fed-975da5de8109",
       "lastSeenAt": "2026-09-27T04:45:00.000Z",
-      "note": "Differential observation on a Beta.10 arrival-family fixture (#384, target anthropic-admin01-key): redact-secret (published @redact-secret/core 0.1.0-beta.9) reports [75,100) (attributed to generic-token) while trufflehog reports no finding. The case targets anthropic-admin01-key, an unscored arrival family with no registry detector at the pinned revision (benchmarks/detectors.json sourceRevision 0af4cb8); the published 0.1.0-beta.9 package predates the product counterpart redact-secret/redact-secret#862, so this row cannot be adjudicated from the published baseline. It is recorded open so the measurement stays visible without asserting product or peer correctness; re-triage it against the product candidate that carries the detector. Not resolved here per the boundary rule (AGENTS.md: this repository measures and records). Class: differential-beta9-published-rebaseline."
+      "note": "Product false alarm on a placeholder control on the canonical variant of beta8-384a/anthropic-admin01-key-angle-key-placeholder (control, must-not-flag/T3, target anthropic-admin01-key): redact-secret reports [75,100) as generic-token (high, redact) on the literal placeholder sk-ant-admin01-<your-key>, while trufflehog reports nothing and the authored expectation is silence. The same placeholder after sk-ant-api01- or sk-ant-api03- gives no finding, so this is a product placeholder-parity defect, filed as redact-secret/redact-secret#1015 (milestone v0.1.0.beta.12). Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Recorded open so the family stays provisional until a release carries the fix; the fixture expectation is unchanged. Class: benign-false-alarm-unconfirmed/generic-token."
     },
     "d2026da0558e3eec14c2dad7570c3606a30feb1a306e95f47b8224c76a405a71": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "251faa2f-9f12-41c2-9fed-975da5de8109",
       "lastSeenRun": "251faa2f-9f12-41c2-9fed-975da5de8109",
       "lastSeenAt": "2026-09-27T04:45:00.000Z",
-      "note": "Differential observation on a Beta.10 arrival-family fixture (#384, target anthropic-admin01-key): redact-secret (published @redact-secret/core 0.1.0-beta.9) reports no finding while gitleaks reports [46,110) (attributed to generic-token). The case targets anthropic-admin01-key, an unscored arrival family with no registry detector at the pinned revision (benchmarks/detectors.json sourceRevision 0af4cb8); the published 0.1.0-beta.9 package predates the product counterpart redact-secret/redact-secret#862, so this row cannot be adjudicated from the published baseline. It is recorded open so the measurement stays visible without asserting product or peer correctness; re-triage it against the product candidate that carries the detector. Not resolved here per the boundary rule (AGENTS.md: this repository measures and records). Class: differential-coverage-gap/anthropic-admin01-key/gitleaks."
+      "note": "Resolved as authored-expectation-correct: redact-secret's silence (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) matches this corpus's authored must-not-flag expectation exactly (expected span(s): none) on the canonical variant of beta8-384a/anthropic-admin01-key-key-digest-encoded-value (control, must-not-flag/T2, target anthropic-admin01-key). The disagreement is fully explained by gitleaks flagging this input anyway ([46,110) as generic-token), from its own broader pattern matching a value this corpus does not assert as a secret of anthropic-admin01-key here (a SHA-256 digest of the key, not the key). Class: peer-only/gitleaks/range-matches-corpus.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "1bb200a3b2221698848a6022c98014029131b9b9b77a44a8d06094c98b50e64c": {
       "status": "open",
@@ -139123,81 +139127,92 @@
       "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "2b00a2f356b592496b80fcdd4d22164c6392a86582791e55d08f7d594868f6f8": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenAt": "2026-09-28T13:16:31.829Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.10 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta10-published-rebaseline."
+      "note": "redact-secret and trufflehog both report [31,141), the authored expected span, on the canonical variant of beta8-384a/anthropic-admin01-key-dotenv. redact-secret labels it anthropic-admin01-key (the fixture's assigned family); trufflehog labels it anthropic-token, its single Anthropic rule for every sk-ant- prefix. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "a49966cfe2f69768336639992ffd43ee10fb39e32c892fd8b368f69008fdd83a": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenAt": "2026-09-28T13:16:31.829Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.10 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta10-published-rebaseline."
+      "note": "redact-secret and trufflehog both report [28,138), the authored expected span, on the canonical variant of beta8-384a/anthropic-admin01-key-export. redact-secret labels it anthropic-admin01-key (the fixture's assigned family); trufflehog labels it anthropic-token, its single Anthropic rule for every sk-ant- prefix. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "81e02a7cd90e95bb6e56205b8abedf9dcd0220cf6d674515356c1e0b562bcceb": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenAt": "2026-09-28T13:16:31.829Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.10 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta10-published-rebaseline."
+      "note": "redact-secret and trufflehog both report [75,185), the authored expected span, on the canonical variant of beta8-384a/anthropic-admin01-key-curl-x-api-key. redact-secret labels it anthropic-admin01-key (the fixture's assigned family); trufflehog labels it anthropic-token, its single Anthropic rule for every sk-ant- prefix. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "81b55ba3d7108540bb561ce8987476becf98e6ac222f2580c516753b9faeafbc": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenAt": "2026-09-28T13:16:31.829Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.10 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta10-published-rebaseline."
+      "note": "redact-secret and trufflehog both report [22,132), the authored expected span, on the canonical variant of beta8-384a/anthropic-admin01-key-json-config. redact-secret labels it anthropic-admin01-key (the fixture's assigned family); trufflehog labels it anthropic-token, its single Anthropic rule for every sk-ant- prefix. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "673831e72e91a424ce8877980ba49cc23be7dd108b7e38a180fce7ed7bd9161d": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenAt": "2026-09-28T13:16:31.829Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.10 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta10-published-rebaseline."
+      "note": "redact-secret and trufflehog both report [56,166), the authored expected span, on the canonical variant of beta8-384a/anthropic-admin01-key-python-sdk. redact-secret labels it anthropic-admin01-key (the fixture's assigned family); trufflehog labels it anthropic-token, its single Anthropic rule for every sk-ant- prefix. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "0e0e7d518970d98c2fcbb2b1019684ab1d46c9759ce264c06cbecac6e915746f": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenAt": "2026-09-28T13:16:31.829Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.10 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta10-published-rebaseline."
+      "note": "redact-secret and trufflehog both report [116,226), the authored expected span, on the canonical variant of beta8-384a/anthropic-admin01-key-compose-env. redact-secret labels it anthropic-admin01-key (the fixture's assigned family); trufflehog labels it anthropic-token, its single Anthropic rule for every sk-ant- prefix. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "28150639e929dd3449960879cad0f974ed013dc0fbe3fc584d21ea36a4900dbf": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenAt": "2026-09-28T13:16:31.829Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.10 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta10-published-rebaseline."
+      "note": "redact-secret and trufflehog both report [118,228), the authored expected span, on the canonical variant of beta8-384a/anthropic-admin01-key-tool-call. redact-secret labels it anthropic-admin01-key (the fixture's assigned family); trufflehog labels it anthropic-token, its single Anthropic rule for every sk-ant- prefix. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "5b034d4bfad7e8a1fe84a9ca3291bbeceb0c3fdb2e982fb8556092de1fe7f5ad": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenAt": "2026-09-28T13:16:31.829Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.10 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta10-published-rebaseline."
+      "note": "redact-secret and trufflehog both report [41,151), the authored expected span, on the canonical variant of beta8-384a/anthropic-admin01-key-job-log. redact-secret labels it anthropic-admin01-key (the fixture's assigned family); trufflehog labels it anthropic-token, its single Anthropic rule for every sk-ant- prefix. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "579b582aa5b40f0590f178282f959fe1091362cdde77b350db31b1872c0ae796": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenAt": "2026-09-28T13:16:31.829Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.10 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta10-published-rebaseline."
+      "note": "redact-secret and trufflehog both report [60,170), the authored expected span, on the canonical variant of beta8-384a/anthropic-admin01-key-pasted-key. redact-secret labels it anthropic-admin01-key (the fixture's assigned family); trufflehog labels it anthropic-token, its single Anthropic rule for every sk-ant- prefix. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "9749bd4995172a54505fc5f1d25ee815088388b37ba1544d84d6325eed1ab309": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenAt": "2026-09-28T13:16:31.829Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.10 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta10-published-rebaseline."
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (prefix: sk-ant-api01- (the Claude Enterprise organization key class) in place of this class; same body) is scoped to anthropic-admin01-key, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no anthropic-admin01-key finding, so the twin's own assertion (no typed anthropic-admin01-key finding) holds. redact-secret attributes [28,136) to anthropic-api01-key instead — the value is a well-formed key of that other known family, which is exactly what this twin's mutation produced. The twin method records this as coDetected, not as a twin failure. gitleaks reports no finding at all — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/gitleaks/twin-boundary-family-reassignment.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "815857610e02707fc86085430d6540c10891b13611bbf1fb1004bbbfaf843305": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenRun": "a1b2c3d4-45425dfcde91",
       "lastSeenAt": "2026-09-28T13:16:31.829Z",
-      "note": "Observed while pinning the published @redact-secret/core 0.1.0-beta.10 release: this differential occurrence is review-required and has not been adjudicated. It is recorded open so the measurement remains visible without asserting product or peer correctness; a human review or promote-finding pass is still required. Class: differential-beta10-published-rebaseline."
+      "note": "Resolved as authored-expectation-correct for this twin's scope: this twin (prefix: sk-ant-api01- (the Claude Enterprise organization key class) in place of this class; same body) is scoped to anthropic-admin01-key, and redact-secret (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots)) reports no anthropic-admin01-key finding, so the twin's own assertion (no typed anthropic-admin01-key finding) holds. redact-secret attributes [28,136) to anthropic-api01-key instead — the value is a well-formed key of that other known family, which is exactly what this twin's mutation produced. The twin method records this as coDetected, not as a twin failure. trufflehog reports no finding at all — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/twin-boundary-family-reassignment.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "8e490fb0fa1329dc9214e847bdc4d3dff65a4aec728f567bfe2c9a4ea4ef75ac": {
       "status": "open",

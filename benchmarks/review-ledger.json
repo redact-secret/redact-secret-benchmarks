@@ -126950,14 +126950,16 @@
       "note": "Resolved as authored-expectation-correct: this twin's mutation (boundary: a letter glued directly before whsec_, so the prefix is no longer at a token boundary (the value itself is unchanged)) correctly falls outside the stripe-webhook-signing-secret contract, so its own target family is not asserted here. redact-secret's finding is attributed to generic-token instead, from the secret-named assignment this fixture keeps unchanged — a legitimate independent classification this corpus does not exclude, recorded by the scoped twin as co-detection. The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/twin-boundary-family-reassignment."
     },
     "28922d052db847e8780e25248e5a17d31e5107dc057ed2406ec1cf3f82a2e1a9": {
-      "status": "open",
+      "status": "not-assertable",
       "firstSeenRun": "5b00e881-6329-42e0-9478-04ec3b899f82",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This differential occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: differential-beta9-published-rebaseline."
+      "note": "redact-secret and gitleaks both report [232,270), the authored expected span, on the canonical variant of beta8-211/stripe-webhook-signing-secret-event-destination-create-response. redact-secret labels it stripe-webhook-signing-secret (the fixture's assigned family); gitleaks labels it generic-token, its catch-all rule, having no rule of its own for this family. Only the peer's label is coarser, so this is not a disagreement about what must be redacted or how redact-secret attributes it. Measured on published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots). Settled per docs/decisions/2026-09-24-settle-peer-coarser-classification-disagreements.md. Class: decision=differential.peer-coarser-classification.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "70aa1aae5b99acf6dccd785566bc59e0fe7bba12419732639e30e05439e304d3": {
-      "status": "open",
+      "status": "resolved",
       "firstSeenRun": "5b00e881-6329-42e0-9478-04ec3b899f82",
-      "note": "Observed on a deterministic synthetic fixture added for beta.10 fixture-debt work. This differential occurrence is review-required and has not been adjudicated; it remains open without asserting product or peer correctness. Class: differential-beta9-published-rebaseline."
+      "note": "Resolved as authored-expectation-correct: redact-secret's detection (published @redact-secret/core 0.1.0-beta.11 (benchmarks develop 5380aa3, gitleaks 8.30.1 / trufflehog 3.97.4 snapshots), [232,270) as stripe-webhook-signing-secret) matches this corpus's authored expected span(s) [232,270) on the canonical variant of beta8-211/stripe-webhook-signing-secret-event-destination-create-response (positive, policy/T3, target stripe-webhook-signing-secret). The disagreement is fully explained by trufflehog reporting no finding at all for this input — a peer rule-coverage gap, not a corpus or redact-secret defect. Class: redact-secret-only/trufflehog/range-matches-corpus.",
+      "resolvedRun": "triage-beta11-5380aa3-2026-09-29"
     },
     "d4dacc89e1dbdb548bb0e36fab39c55285c4e82954a98d5378dac8332c80e5d4": {
       "status": "resolved",

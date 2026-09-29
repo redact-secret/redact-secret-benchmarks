@@ -53,6 +53,8 @@
     "eval:matrix": "node --import tsx benchmarks/generate-support-matrix.ts",
     "eval:publish:matrix": "node --import tsx scripts/publish-support-matrix.ts",
     "eval:matrix:drift": "node --import tsx benchmarks/support-matrix-drift.ts",
+    "dossiers:scaffold": "node scripts/scaffold-dossiers.mjs",
+    "dossiers:check": "node scripts/scaffold-dossiers.mjs --check",
     "support:check:ui": "node --import tsx scripts/check-support-ui.mjs",
     "arrival:check": "node --import tsx scripts/check-evidence-arrival.mjs",
     "profiles:generate": "node --import tsx scripts/generate-fixture-profile-coverage.mjs",

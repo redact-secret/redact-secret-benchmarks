@@ -1,0 +1,223 @@
+{
+  "schemaVersion": 1,
+  "reportType": "blind-aggregate-carry-over",
+  "evidenceClass": "custodian-blind",
+  "includedInTotals": false,
+  "decision": {
+    "by": "maintainer",
+    "at": "2026-09-29",
+    "summary": "Carry the beta11-e1 blind aggregate over to the re-bound Beta.11 candidate ec9224d (after PR #994); no new epoch and no blind run against it.",
+    "departsFrom": "docs/specs/blind-evaluation.md section 2 rule 2 (a new product change needs a new candidate identity and a new run)"
+  },
+  "supersedes": "docs/reports/2026-09-29-beta11-142-blind-carry-over.json (carry-over to 8f97f14)",
+  "carriedAggregate": {
+    "file": "docs/reports/2026-09-28-beta11-142-blind-aggregate.json",
+    "runId": "1604909b-bd5f-4c2d-b3ab-3eb1bc7d0d61",
+    "epoch": "beta11-e1",
+    "measuredAt": {
+      "sourceCommit": "1db8ff38b16e50c51229eb27025452952bf621e1",
+      "coreArtifactSha256": "4681ad429ebe1b2c7ae9f5d72479ba996c75eb4a118049b6dbe4ea8dcfbd29a1"
+    },
+    "leakedSpans": {
+      "count": 3,
+      "of": 66,
+      "wilson95": [
+        0.0156,
+        0.1253
+      ]
+    },
+    "falseAlarms": {
+      "count": 0,
+      "of": 27,
+      "wilson95": [
+        0,
+        0.1246
+      ]
+    },
+    "unstable": {
+      "count": 0,
+      "of": 84
+    }
+  },
+  "carriedTo": {
+    "sourceCommit": "ec9224d9743066fe73d6e61e9843ef52bd853833",
+    "coreArtifactSha256": "467111e288a3677e0e13d11f907a33e358a3161bfb1109f6115f80b16c33f74c",
+    "measuredOnBlindFixtures": false
+  },
+  "privateFixturesAccessed": false,
+  "knownDifferences": [
+    {
+      "change": "redact-secret#948 (PR #994): a provider-named high-signal credential variable no longer disqualifies generic-token, so an off-grammar value under the provider own variable is reported at the generic floors (redact at 16 bytes and entropy 3.0, else warn)",
+      "effect": "a policy change the beta11-e1 epoch did not measure: blind fixtures that put an off-grammar or near-miss value under a provider credential variable read silent at 1db8ff3 and generic-token at ec9224d; the carried false-alarm count (0/27) was measured under the old policy and says nothing about such controls",
+      "productDecision": "https://github.com/redact-secret/redact-secret/blob/ec9224d9743066fe73d6e61e9843ef52bd853833/docs/decisions/2026-09-24-redact-provider-named-credential-assignments.md#amendment-a-provider-named-high-signal-name-falls-back-to-generic-token-948"
+    },
+    {
+      "change": "redact-secret#993 (PR #994): placeholders, masks, elided displays, Make-escaped references, documented public keys and the Confluent key id are silent under every contextual name",
+      "effect": "can only remove generic-token findings; the carried leaked-span count could move only if a blind positive is one of these shapes"
+    },
+    {
+      "change": "redact-secret#990 (PR #992) layout classes, carried from the 8f97f14 record",
+      "effect": "unchanged from the 8f97f14 carry-over"
+    }
+  ],
+  "basis": {
+    "productDiff": {
+      "range": "1db8ff38b16e50c51229eb27025452952bf621e1..ec9224d9743066fe73d6e61e9843ef52bd853833",
+      "merges": [
+        {
+          "pr": [
+            960,
+            961,
+            959,
+            966,
+            967,
+            969,
+            976
+          ],
+          "detectorSource": false,
+          "scope": "CI, manifests, issue forms, conformance records, docs"
+        },
+        {
+          "pr": 968,
+          "detectorSource": false,
+          "scope": "crate, package and binding READMEs"
+        },
+        {
+          "pr": 991,
+          "merge": "37a1dcd763b1c4bab52090defb28965154cad996",
+          "detectorSource": true,
+          "intendedOutputChange": false,
+          "scope": "#980 performance backlog (#981, #982, #983, #984, #985, #986, #989)"
+        },
+        {
+          "pr": 992,
+          "merge": "8f97f14d97d73b76602e5396eea35d0a5a4f0eb3",
+          "detectorSource": true,
+          "intendedOutputChange": true,
+          "scope": "#990 streaming equals whole-input"
+        },
+        {
+          "pr": 994,
+          "merge": "ec9224d9743066fe73d6e61e9843ef52bd853833",
+          "detectorSource": true,
+          "intendedOutputChange": true,
+          "scope": "#948 provider-named generic-token fallback, #993 non-secret value exclusions, #902 linear PII context association (output byte-identical), #896 scoped checks (scripts only)"
+        }
+      ],
+      "layoutClasses990": [
+        "generic-token streaming false negatives on name forms joined to an operator on a later line (incremental only)",
+        "bearer-token Proxy-Authorization with a 12-15 byte Bearer value on the next line (incremental only); X-Authorization: Bearer <16+ bytes> reported whole-input",
+        "lone CR as a line end for every line-reading detector (LF and CRLF unchanged), including the Twilio CLI table",
+        "PII phone ext marker at a line end is an empty extension (PII only)"
+      ]
+    },
+    "publicDifferential": {
+      "benchmarkRevision": "60aa5822e5d11630fcbe7523250227e761e69650",
+      "fixtures": 5001,
+      "categories": 47,
+      "scoredCorpusHash": "d88c19f7b57b61a484045851c28962b243c92e800b99fc49130fc4f6bb843e2f",
+      "surface": "@redact-secret/core default entry (Node addon), Node v22.16.0, darwin-arm64, default detectors and policy",
+      "sides": {
+        "1db8ff3": {
+          "candidateRun": "e56cd9b2-cedc-4e2f-ad93-70062bc3990d",
+          "core": "4681ad429ebe1b2c7ae9f5d72479ba996c75eb4a118049b6dbe4ea8dcfbd29a1",
+          "node": "63f98456a49dd96c7fc75b5e29080e757bd987dc516bda459696e48185b6ab60",
+          "wasm": "af0633663d713456a82d297f23023280cff05ad5f56489e9e72854601af2b1a1"
+        },
+        "8f97f14": {
+          "candidateRun": "74888ff3-48ed-4459-b2fe-32906a5a95cb",
+          "core": "467111e288a3677e0e13d11f907a33e358a3161bfb1109f6115f80b16c33f74c",
+          "node": "b32d462b2daec575834a7287bec74b679a09f93f28717a56956f0b2169b629f8",
+          "wasm": "b6819bfd95c911db056f93cb78b3341cba7bfb05a22262f8c44461c0c4e1b966"
+        },
+        "ec9224d": {
+          "candidateRun": "589527ab-8df1-4ae7-a517-26f7567ffb3b",
+          "core": "467111e288a3677e0e13d11f907a33e358a3161bfb1109f6115f80b16c33f74c",
+          "node": "9ceabe011fb58b259fe79bc9b25a0ba3b96b6cfc028d9257844207aaf0a083d6",
+          "wasm": "c3f5478881e3cac1d038543a331e5d4b3c47bceb076ab71d99f2c43f8d2c7d78"
+        }
+      },
+      "checks": [
+        "whole-input scanAndRedact",
+        "incremental one append per line",
+        "incremental 64-unit chunks",
+        "incremental 7-unit chunks"
+      ],
+      "incrementalLimits": {
+        "input": 1048576,
+        "buffered": 65536,
+        "token": 8192,
+        "multiline": 16384
+      },
+      "comparisons": {
+        "1db8ff3..8f97f14": {
+          "differingFixtures": 0
+        },
+        "1db8ff3..ec9224d": {
+          "differingFixtures": 178
+        },
+        "8f97f14..ec9224d": {
+          "differingFixtures": 178,
+          "sameSetAs1db8ff3": true
+        }
+      },
+      "differingFixtures": {
+        "total": 178,
+        "class948": {
+          "count": 177,
+          "twins": 152,
+          "relabelledNearMissControls": 25,
+          "note": "exactly the 177 must-not-flag fixtures the product rescan listed (docs/audits/evidence/948/README.md at ec9224d); every one gains one generic-token contextual_secret finding"
+        },
+        "class993": {
+          "count": 1,
+          "fixtures": [
+            "beta8-434b--trigger-dev-token-public-key-prefix-twin"
+          ],
+          "note": "its generic-token co-detection on the documented pk_ public key is gone"
+        },
+        "outside948And993Classes": 0,
+        "byCorpus": {
+          "token-contexts": 4,
+          "credential-formats": 6,
+          "context-edges": 42,
+          "sendgrid-regressions": 6,
+          "detector-coverage": 30,
+          "beta8-207": 28,
+          "beta8-209": 3,
+          "beta8-208": 11,
+          "beta8-210": 2,
+          "beta8-211": 6,
+          "beta8-212": 7,
+          "beta8-213d": 4,
+          "beta8-213f": 7,
+          "beta8-259": 10,
+          "beta8-263": 10,
+          "beta8-384a": 1,
+          "beta8-434b": 1
+        },
+        "partitions": "176 of the 177 #948 fixtures and the #993 fixture differ in whole-input and in all three incremental partitions; context-edges--long-prefix-twin differs whole-input only, because every incremental partition fails closed on the declared token limit on all three builds"
+      },
+      "digestFileSha256": {
+        "1db8ff3": "5e766ac15116c3f0a6494355a017c5c037a22635230945b2d1512ca197f59681",
+        "8f97f14": "5e766ac15116c3f0a6494355a017c5c037a22635230945b2d1512ca197f59681",
+        "ec9224d": "d18cccfbf763a5d49211980f0ec3c74e8ab7c901c359ad999db1da9affe0ee6e"
+      },
+      "incrementalNotEqualWhole": {
+        "1db8ff3": [
+          "context-edges--long-prefix",
+          "context-edges--long-prefix-twin"
+        ],
+        "8f97f14": [
+          "context-edges--long-prefix",
+          "context-edges--long-prefix-twin"
+        ],
+        "ec9224d": [
+          "context-edges--long-prefix",
+          "context-edges--long-prefix-twin"
+        ],
+        "reason": "TOKEN_LIMIT_EXCEEDED (declared token limit), every partition"
+      }
+    }
+  }
+}

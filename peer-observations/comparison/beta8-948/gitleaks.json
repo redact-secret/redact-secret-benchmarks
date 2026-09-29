@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-29T13:14:04.588Z",
+  "sourceRun": {
+    "runId": "2026-09-29T13:14:04.588Z-322d2f",
+    "benchmarkRevision": "af180a5abc28e64b456aa431455de66da016d061"
+  },
+  "input": {
+    "surface": "comparison/beta8-948",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "0763ebadffd50c0e6bd08c4146f6600a8aa426d80ba7cbb5f0752177ca63d356",
+    "fixtureCount": 9,
+    "fixturesDigest": "c2badd48f9a6b409fc557e595c8825eb362646c8ed102539360832f87d9c6d77",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "085358df1778e4a0f644036bf5157f1dd17f0c3a5c56447a4cf06d4bb8d5c29e",
+      "fixtureCount": 4777
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "d86f286b1689f577b83e9685a822cb2f074a4fd2b0b9a813d579ab4f72a03266"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [],
+  "digest": "8d19df0992ca198bf0008806656c45229234a36978843ea4c983fc9f3dcc89f5"
+}

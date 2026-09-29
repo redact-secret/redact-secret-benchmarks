@@ -1,5 +1,7 @@
 # Beta.11 custodian-held blind aggregate: carry-over to candidate 8f97f14
 
+> **Superseded** by the carry-over to `ec9224d`: [`2026-09-29-beta11-142-blind-carry-over-ec9224d.md`](2026-09-29-beta11-142-blind-carry-over-ec9224d.md). Kept as history.
+
 Issue: [#382](https://github.com/redact-secret/redact-secret-benchmarks/issues/382)
 (parent [#376](https://github.com/redact-secret/redact-secret-benchmarks/issues/376)).
 Machine-readable record: [`2026-09-29-beta11-142-blind-carry-over.json`](2026-09-29-beta11-142-blind-carry-over.json).

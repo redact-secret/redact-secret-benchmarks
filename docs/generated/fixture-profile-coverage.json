@@ -1086,9 +1086,9 @@
         "context-constrained-empirical"
       ],
       "cells": {
-        "totalFixtures": 61,
+        "totalFixtures": 60,
         "positiveCases": 3,
-        "benignControls": 24,
+        "benignControls": 23,
         "twinPairs": 18,
         "positiveContextAxes": 17,
         "controlAxes": 6,
@@ -1657,9 +1657,9 @@
         "stable-empirical"
       ],
       "cells": {
-        "totalFixtures": 47,
+        "totalFixtures": 46,
         "positiveCases": 18,
-        "benignControls": 15,
+        "benignControls": 14,
         "twinPairs": 8,
         "positiveContextAxes": 14,
         "controlAxes": 6,
@@ -2616,16 +2616,28 @@
         "stable-documented"
       ],
       "cells": {
-        "totalFixtures": 132,
-        "positiveCases": 36,
+        "totalFixtures": 157,
+        "positiveCases": 61,
         "benignControls": 76,
         "twinPairs": 10,
-        "positiveContextAxes": 12,
+        "positiveContextAxes": 29,
         "controlAxes": 4,
         "confusionAxes": 5,
         "positiveContextAxisIds": [
+          "#207 · confluent-cloud-api-secret-legacy · control · near-miss",
+          "#207 · discord-bot-token · control · near-miss",
+          "#207 · heroku-api-key-legacy · control · near-miss",
+          "#207 · sentry-org-auth-token · control · near-miss",
+          "#207 · sentry-user-auth-token · control · near-miss",
+          "#207 · telegram-bot-token · control · near-miss",
+          "#207 · twilio-api-key-secret · control · near-miss",
+          "#207 · twilio-auth-token · control · near-miss",
+          "#213d · mailchimp-api-key · control · near-miss",
+          "#213d · mailgun-api-key · control · near-miss",
+          "#213d · postman-api-key · control · near-miss",
           "#254 · AWS documentation literals",
           "#257 · Placeholder vocabulary",
+          "#259 · mailgun-api-key-triplet · control · near-miss",
           "#262 · Line boundaries",
           "#263 · Fully delimited templates",
           "#264 · Masked values",
@@ -2635,7 +2647,12 @@
           "#280 · Secret-manager grammars",
           "Generic fallback",
           "Literal-secret positive controls",
-          "generic-token"
+          "datadog-api-key",
+          "generic-token",
+          "heroku-api-key-legacy",
+          "mailchimp-api-key",
+          "mailgun-api-key",
+          "travisci-api-token"
         ],
         "controlAxisIds": [
           "near-miss",
@@ -3380,9 +3397,9 @@
         "context-constrained-empirical"
       ],
       "cells": {
-        "totalFixtures": 65,
+        "totalFixtures": 62,
         "positiveCases": 4,
-        "benignControls": 27,
+        "benignControls": 24,
         "twinPairs": 17,
         "positiveContextAxes": 18,
         "controlAxes": 6,
@@ -3815,9 +3832,9 @@
         "context-constrained-empirical"
       ],
       "cells": {
-        "totalFixtures": 53,
+        "totalFixtures": 50,
         "positiveCases": 18,
-        "benignControls": 19,
+        "benignControls": 16,
         "twinPairs": 10,
         "positiveContextAxes": 19,
         "controlAxes": 6,
@@ -3947,13 +3964,13 @@
       "target": "arrival-provisional",
       "cellsMet": [],
       "cells": {
-        "totalFixtures": 50,
+        "totalFixtures": 46,
         "positiveCases": 0,
-        "benignControls": 24,
+        "benignControls": 20,
         "twinPairs": 14,
         "positiveContextAxes": 10,
-        "controlAxes": 6,
-        "confusionAxes": 9,
+        "controlAxes": 5,
+        "confusionAxes": 8,
         "positiveContextAxisIds": [
           "#259 · mailgun-api-key-triplet · ci-config",
           "#259 · mailgun-api-key-triplet · cli",
@@ -3968,7 +3985,6 @@
         ],
         "controlAxisIds": [
           "encoded-value",
-          "near-miss",
           "ordinary-prose",
           "placeholder",
           "public-identifier",
@@ -3976,7 +3992,6 @@
         ],
         "confusionAxisIds": [
           "encoded-value",
-          "near-miss",
           "ordinary-prose",
           "placeholder",
           "public-identifier",
@@ -6447,9 +6462,9 @@
         "stable-empirical"
       ],
       "cells": {
-        "totalFixtures": 41,
+        "totalFixtures": 40,
         "positiveCases": 12,
-        "benignControls": 15,
+        "benignControls": 14,
         "twinPairs": 8,
         "positiveContextAxes": 14,
         "controlAxes": 5,
@@ -6837,9 +6852,9 @@
         "context-constrained-empirical"
       ],
       "cells": {
-        "totalFixtures": 49,
+        "totalFixtures": 48,
         "positiveCases": 13,
-        "benignControls": 16,
+        "benignControls": 15,
         "twinPairs": 10,
         "positiveContextAxes": 18,
         "controlAxes": 6,
@@ -6906,9 +6921,9 @@
         "context-constrained-empirical"
       ],
       "cells": {
-        "totalFixtures": 62,
+        "totalFixtures": 60,
         "positiveCases": 16,
-        "benignControls": 22,
+        "benignControls": 20,
         "twinPairs": 12,
         "positiveContextAxes": 24,
         "controlAxes": 6,

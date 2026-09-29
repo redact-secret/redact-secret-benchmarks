@@ -58,3 +58,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Report unit-safe TP/TN/FP/FN diagnostics and verify the actual sanitized output](2026-09-28-report-unit-safe-diagnostics-and-verified-output.md) (proposed; diagnostics beside the v4 headline, never instead of it)
 - [Score the IP port suffix outside the network-address span](2026-09-28-score-the-ip-port-suffix-outside-the-network-address-span.md)
 - [Fix the profile-cost v2 candidate-report validator's artifact roster and re-freeze the plan](2026-09-29-fix-pii-profile-cost-v2-candidate-artifact-roster.md)
+- [Relabel the provider-named near-miss controls that redact-secret#948 makes credentials](2026-09-29-relabel-provider-named-near-miss-controls-under-948.md) (twins keep their scoped expectation; 25 controls move to policy/T3 on generic-token; nine replacement controls in `beta8-948`)

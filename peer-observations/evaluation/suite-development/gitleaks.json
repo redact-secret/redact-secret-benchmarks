@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-28T18:18:12.179Z",
+  "observedAt": "2026-09-29T13:18:03.884Z",
   "sourceRun": {
-    "runId": "2fe8b506-e5af-47b0-b57b-9b75e7924079",
-    "benchmarkRevision": "e8b38c33ceb744dcfc23a0005d89619cdfdcd2bd"
+    "runId": "376cd663-9606-4e8a-aad1-22c62210c1a5",
+    "benchmarkRevision": "af180a5abc28e64b456aa431455de66da016d061"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "b579bf37fbe0f9a16fb3a37b2a7bc3326634d2390cac8f77a2febadb7ff45df4",
-    "fixtureCount": 38152,
-    "fixturesDigest": "3a1d24d512cad5484e3cbaf20ec0f97da245c0bb6437722f1f9df54ec6d740b8",
+    "corpusHash": "d835584b1b5654fd12fdf3bf4088ecc63cebef7adc69d627914fcb7c51536bfe",
+    "fixtureCount": 38190,
+    "fixturesDigest": "93449401007b48201611e42c92550a1df7cb6d4d2c50e2c8bb5b99e56e239c9f",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "e893fa62ccdf42d447218cdde2c178084d7163dfea6b51caa4dc5fd32b69220c",
-      "fixtureCount": 4768
+      "digest": "085358df1778e4a0f644036bf5157f1dd17f0c3a5c56447a4cf06d4bb8d5c29e",
+      "fixtureCount": 4777
     }
   },
   "peer": {
@@ -912,12 +912,6 @@
       "family": "generic-token"
     },
     {
-      "path": "cases/beta8-207--confluent-cloud-api-secret-legacy-overlong-value-near-miss--benign/canonical.txt",
-      "start": 27,
-      "end": 93,
-      "family": "generic-token"
-    },
-    {
       "path": "cases/beta8-207--confluent-cloud-api-secret-legacy-overlong-value-near-miss--differential/canonical.txt",
       "start": 27,
       "end": 93,
@@ -1373,12 +1367,6 @@
       "family": "generic-token"
     },
     {
-      "path": "cases/beta8-207--discord-bot-token-two-segments-near-miss--benign/canonical.txt",
-      "start": 14,
-      "end": 79,
-      "family": "generic-token"
-    },
-    {
       "path": "cases/beta8-207--discord-bot-token-two-segments-near-miss--differential/canonical.txt",
       "start": 14,
       "end": 79,
@@ -1752,12 +1740,6 @@
       "end": 51
     },
     {
-      "path": "cases/beta8-207--heroku-api-key-legacy-missing-group-near-miss--benign/canonical.txt",
-      "start": 15,
-      "end": 46,
-      "family": "generic-token"
-    },
-    {
       "path": "cases/beta8-207--heroku-api-key-legacy-missing-group-near-miss--differential/canonical.txt",
       "start": 15,
       "end": 46,
@@ -1791,12 +1773,6 @@
       "path": "cases/beta8-207--heroku-api-key-legacy-missing-group-near-miss--mutation/canonical.txt",
       "start": 15,
       "end": 46,
-      "family": "generic-token"
-    },
-    {
-      "path": "cases/beta8-207--heroku-api-key-legacy-non-hex-uuid-near-miss--benign/canonical.txt",
-      "start": 15,
-      "end": 51,
       "family": "generic-token"
     },
     {
@@ -2169,12 +2145,6 @@
       "path": "cases/beta8-207--sentry-org-auth-token-missing-delimiter-twin--twin/canonical.txt",
       "start": 24,
       "end": 248
-    },
-    {
-      "path": "cases/beta8-207--sentry-org-auth-token-missing-payload-near-miss--benign/canonical.txt",
-      "start": 18,
-      "end": 68,
-      "family": "generic-token"
     },
     {
       "path": "cases/beta8-207--sentry-org-auth-token-missing-payload-near-miss--differential/canonical.txt",
@@ -2683,12 +2653,6 @@
       "family": "generic-token"
     },
     {
-      "path": "cases/beta8-207--sentry-user-auth-token-half-body-near-miss--benign/canonical.txt",
-      "start": 18,
-      "end": 57,
-      "family": "generic-token"
-    },
-    {
       "path": "cases/beta8-207--sentry-user-auth-token-half-body-near-miss--differential/canonical.txt",
       "start": 18,
       "end": 57,
@@ -2762,12 +2726,6 @@
       "path": "cases/beta8-207--sentry-user-auth-token-non-hex-twin--twin/canonical.txt",
       "start": 38,
       "end": 109
-    },
-    {
-      "path": "cases/beta8-207--sentry-user-auth-token-org-prefix-hex-near-miss--benign/canonical.txt",
-      "start": 18,
-      "end": 89,
-      "family": "generic-token"
     },
     {
       "path": "cases/beta8-207--sentry-user-auth-token-org-prefix-hex-near-miss--differential/canonical.txt",
@@ -4151,12 +4109,6 @@
       "end": 67
     },
     {
-      "path": "cases/beta8-207--twilio-api-key-secret-short-value-near-miss--benign/canonical.txt",
-      "start": 18,
-      "end": 42,
-      "family": "generic-token"
-    },
-    {
       "path": "cases/beta8-207--twilio-api-key-secret-short-value-near-miss--differential/canonical.txt",
       "start": 18,
       "end": 42,
@@ -4630,12 +4582,6 @@
       "family": "generic-token"
     },
     {
-      "path": "cases/beta8-207--twilio-auth-token-long-value-near-miss--benign/canonical.txt",
-      "start": 18,
-      "end": 51,
-      "family": "generic-token"
-    },
-    {
       "path": "cases/beta8-207--twilio-auth-token-long-value-near-miss--differential/canonical.txt",
       "start": 18,
       "end": 51,
@@ -4667,12 +4613,6 @@
     },
     {
       "path": "cases/beta8-207--twilio-auth-token-long-value-near-miss--mutation/canonical.txt",
-      "start": 18,
-      "end": 51,
-      "family": "generic-token"
-    },
-    {
-      "path": "cases/beta8-207--twilio-auth-token-split-value-near-miss--benign/canonical.txt",
       "start": 18,
       "end": 51,
       "family": "generic-token"
@@ -23461,12 +23401,6 @@
       "family": "generic-token"
     },
     {
-      "path": "cases/beta8-213d--mailchimp-api-key-short-body-suffix-near-miss--benign/canonical.txt",
-      "start": 18,
-      "end": 46,
-      "family": "generic-token"
-    },
-    {
       "path": "cases/beta8-213d--mailchimp-api-key-short-body-suffix-near-miss--differential/canonical.txt",
       "start": 18,
       "end": 46,
@@ -24189,12 +24123,6 @@
       "path": "cases/beta8-213d--mailgun-api-key-shell-export--mutation/lexical.replace-last.txt",
       "start": 23,
       "end": 59,
-      "family": "generic-token"
-    },
-    {
-      "path": "cases/beta8-213d--mailgun-api-key-short-body-near-miss--benign/canonical.txt",
-      "start": 16,
-      "end": 36,
       "family": "generic-token"
     },
     {
@@ -25529,12 +25457,6 @@
       "path": "cases/beta8-213d--postman-api-key-shell-export--mutation/lexical.replace-last.txt",
       "start": 23,
       "end": 87
-    },
-    {
-      "path": "cases/beta8-213d--postman-api-key-short-key-near-miss--benign/canonical.txt",
-      "start": 16,
-      "end": 45,
-      "family": "generic-token"
     },
     {
       "path": "cases/beta8-213d--postman-api-key-short-key-near-miss--differential/canonical.txt",
@@ -26912,12 +26834,6 @@
       "family": "generic-token"
     },
     {
-      "path": "cases/beta8-259--mailgun-api-key-triplet-short-first-segment-near-miss--benign/canonical.txt",
-      "start": 16,
-      "end": 65,
-      "family": "generic-token"
-    },
-    {
       "path": "cases/beta8-259--mailgun-api-key-triplet-short-first-segment-near-miss--differential/canonical.txt",
       "start": 16,
       "end": 65,
@@ -26970,12 +26886,6 @@
       "start": 16,
       "end": 66,
       "family": "mailgun-api-key-triplet"
-    },
-    {
-      "path": "cases/beta8-259--mailgun-api-key-triplet-short-last-segment-near-miss--benign/canonical.txt",
-      "start": 16,
-      "end": 65,
-      "family": "generic-token"
     },
     {
       "path": "cases/beta8-259--mailgun-api-key-triplet-short-last-segment-near-miss--differential/canonical.txt",
@@ -27134,12 +27044,6 @@
       "family": "mailgun-api-key-triplet"
     },
     {
-      "path": "cases/beta8-259--mailgun-api-key-triplet-two-segments-near-miss--benign/canonical.txt",
-      "start": 16,
-      "end": 57,
-      "family": "generic-token"
-    },
-    {
       "path": "cases/beta8-259--mailgun-api-key-triplet-two-segments-near-miss--differential/canonical.txt",
       "start": 16,
       "end": 57,
@@ -27174,12 +27078,6 @@
       "start": 16,
       "end": 57,
       "family": "generic-token"
-    },
-    {
-      "path": "cases/beta8-259--mailgun-api-key-triplet-uppercase-hex-near-miss--benign/canonical.txt",
-      "start": 16,
-      "end": 66,
-      "family": "mailgun-api-key-triplet"
     },
     {
       "path": "cases/beta8-259--mailgun-api-key-triplet-uppercase-hex-near-miss--differential/canonical.txt",
@@ -75649,12 +75547,6 @@
       "end": 48
     },
     {
-      "path": "cases/detector-coverage--mailchimp-api-key-missing-marker--benign/canonical.txt",
-      "start": 18,
-      "end": 50,
-      "family": "generic-token"
-    },
-    {
       "path": "cases/detector-coverage--mailchimp-api-key-missing-marker--differential/canonical.txt",
       "start": 18,
       "end": 50,
@@ -75712,12 +75604,6 @@
       "path": "cases/detector-coverage--mailchimp-api-key-missing-marker--mutation/canonical.txt",
       "start": 18,
       "end": 50,
-      "family": "generic-token"
-    },
-    {
-      "path": "cases/detector-coverage--mailchimp-api-key-short-key--benign/canonical.txt",
-      "start": 18,
-      "end": 42,
       "family": "generic-token"
     },
     {
@@ -82465,12 +82351,6 @@
       "end": 111
     },
     {
-      "path": "cases/detector-coverage--travisci-api-token-short-token--benign/canonical.txt",
-      "start": 17,
-      "end": 38,
-      "family": "generic-token"
-    },
-    {
       "path": "cases/detector-coverage--travisci-api-token-short-token--differential/canonical.txt",
       "start": 17,
       "end": 38,
@@ -85945,5 +85825,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "f8cbeab0b4f5226cc67ec94cea03bedba17286ae9d9b1fae93b29cd51f37c06b"
+  "digest": "83ef9fb1e6bb5ddbbd8b7b2511a87aeacb3a8a14fd7468dd94e932e796711e25"
 }

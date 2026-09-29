@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-29T22:00:46.542Z",
+  "observedAt": "2026-09-29T23:14:56.038Z",
   "sourceRun": {
-    "runId": "2026-09-29T22:00:46.542Z-48ba53",
-    "benchmarkRevision": "5380aa3a421555883225a62358fa40f81dcd2baa"
+    "runId": "2026-09-29T23:14:56.038Z-3348b8",
+    "benchmarkRevision": "3c807e844004cf9010ec571e6bbb9744326961ab"
   },
   "input": {
     "surface": "comparison/beta8-211",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "e70dd2bc54b70a7b5ccb925a500ac6ee99d8b5729c5fb95f713ffc3fabe1a25a",
-    "fixtureCount": 100,
-    "fixturesDigest": "931e8b9336053d9fe3ab22f5b0abae8c7a871b76b4b37c69df2f4a1f5c2a142f",
+    "corpusHash": "ad69bc5b0d217a4421b2933f161bd2bb183ee460a1f18fcf9d21882c9d10beb1",
+    "fixtureCount": 130,
+    "fixturesDigest": "c100f9647ff084ea0aaab36d3749595d7ad5156e89966058595701bf1e86e065",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "6f66c4e499491ddb532f7cfe17236c043ac5796c43323d3f3e85e0eed9d820dd",
-      "fixtureCount": 5034
+      "digest": "914a4ae94fea88879ab559e63558266d5d88371447ef62980a0f65cae27a1e3e",
+      "fixtureCount": 5088
     }
   },
   "peer": {
@@ -48,7 +48,7 @@
       "platform": "darwin-arm64",
       "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
     },
-    "adapterDigest": "c33f4929e72d2715163765dca6af7e7f6e014fc0c671072ba94fb770c80cd2b4"
+    "adapterDigest": "edf76541038e3f60f153a3d13aa47bb7bdd9f6fdbf6d2df4a12d1675e9c90066"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
@@ -78,6 +78,12 @@
       "path": "cases/github-fine-grained-pat-composer-auth-json.json",
       "start": 41,
       "end": 134,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-curl-basic-auth.sh",
+      "start": 19,
+      "end": 112,
       "family": "github-token"
     },
     {
@@ -111,9 +117,39 @@
       "family": "github-token"
     },
     {
+      "path": "cases/github-fine-grained-pat-gitlab-ci-mirror.yml",
+      "start": 56,
+      "end": 149,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-go-oauth2-static.go",
+      "start": 59,
+      "end": 152,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-hub-config.yml",
+      "start": 43,
+      "end": 136,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-k8s-secret-stringdata.yml",
+      "start": 95,
+      "end": 188,
+      "family": "github-token"
+    },
+    {
       "path": "cases/github-fine-grained-pat-octokit-debug-log.log",
       "start": 111,
       "end": 204,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-pygithub-auth-token.py",
+      "start": 62,
+      "end": 155,
       "family": "github-token"
     },
     {
@@ -129,5 +165,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "9e0d407ce3b6435ba32602fd6d9a83877c853272c15ed89d8669e73cf6ca639d"
+  "digest": "91bc6adcb4b726865b077eb738fb8976e6c36cd7e94ee297701b9e834ca85bf7"
 }

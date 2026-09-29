@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-29T22:04:31.303Z",
+  "observedAt": "2026-09-29T23:23:56.951Z",
   "sourceRun": {
-    "runId": "18344190-8884-44cc-84ba-80bb674c5174",
-    "benchmarkRevision": "5380aa3a421555883225a62358fa40f81dcd2baa"
+    "runId": "0ae744d6-6227-42c6-ac1f-9628d22f842e",
+    "benchmarkRevision": "3c807e844004cf9010ec571e6bbb9744326961ab"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "ba741c0a6d0cead2ae9eff8fad80eaab93c0d1fe105144ee95990d5f6be99546",
-    "fixtureCount": 40394,
-    "fixturesDigest": "51889f8c8ba845bc1f7f11b9698ebd81a15df69188feb58b3c86d491c977aa28",
+    "corpusHash": "15c8ecc466cca8954efdd42691d8efb1294af46ce1f1abd7e5efbae25a59ba64",
+    "fixtureCount": 40817,
+    "fixturesDigest": "39c7f6967b30f7a6f0418288bf9feeef016acdb63f58d6d56d93e2f3397bbbca",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "6f66c4e499491ddb532f7cfe17236c043ac5796c43323d3f3e85e0eed9d820dd",
-      "fixtureCount": 5034
+      "digest": "914a4ae94fea88879ab559e63558266d5d88371447ef62980a0f65cae27a1e3e",
+      "fixtureCount": 5088
     }
   },
   "peer": {
@@ -52,7 +52,7 @@
       "platform": "darwin-arm64",
       "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
     },
-    "adapterDigest": "c33f4929e72d2715163765dca6af7e7f6e014fc0c671072ba94fb770c80cd2b4"
+    "adapterDigest": "edf76541038e3f60f153a3d13aa47bb7bdd9f6fdbf6d2df4a12d1675e9c90066"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
@@ -9706,6 +9706,11 @@
       "end": 187
     },
     {
+      "path": "cases/beta8-211--github-fine-grained-pat-bearer-header-plus-alphabet-twin--twin/canonical.txt",
+      "start": 94,
+      "end": 187
+    },
+    {
       "path": "cases/beta8-211--github-fine-grained-pat-compose-renovate--differential/canonical.txt",
       "start": 125,
       "end": 218
@@ -9791,6 +9796,101 @@
       "end": 134
     },
     {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--differential/canonical.txt",
+      "start": 11,
+      "end": 112
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--differential/canonical.txt",
+      "start": 19,
+      "end": 112
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--metamorphic/canonical.txt",
+      "start": 11,
+      "end": 112
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--metamorphic/canonical.txt",
+      "start": 19,
+      "end": 112
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--metamorphic/context.indent.txt",
+      "start": 15,
+      "end": 116
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--metamorphic/context.indent.txt",
+      "start": 23,
+      "end": 116
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--metamorphic/context.unicode-prefix.txt",
+      "start": 31,
+      "end": 132
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--metamorphic/context.unicode-prefix.txt",
+      "start": 39,
+      "end": 132
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--metamorphic/encoding.crlf.txt",
+      "start": 11,
+      "end": 112
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--metamorphic/encoding.crlf.txt",
+      "start": 19,
+      "end": 112
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--mutation/boundary.remove-delimiter.txt",
+      "start": 11,
+      "end": 111
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--mutation/canonical.txt",
+      "start": 11,
+      "end": 112
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--mutation/canonical.txt",
+      "start": 19,
+      "end": 112
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--mutation/lexical.length-minus-one.txt",
+      "start": 11,
+      "end": 111
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--mutation/lexical.length-plus-one.txt",
+      "start": 11,
+      "end": 113
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--mutation/lexical.length-plus-one.txt",
+      "start": 19,
+      "end": 112
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--mutation/lexical.prefix-change.txt",
+      "start": 11,
+      "end": 112
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--mutation/lexical.replace-last.txt",
+      "start": 11,
+      "end": 112
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-curl-basic-auth--mutation/lexical.replace-last.txt",
+      "start": 19,
+      "end": 112
+    },
+    {
       "path": "cases/beta8-211--github-fine-grained-pat-dotenv-gh-token--differential/canonical.txt",
       "start": 94,
       "end": 187
@@ -9827,6 +9927,11 @@
     },
     {
       "path": "cases/beta8-211--github-fine-grained-pat-dotenv-gh-token--mutation/lexical.replace-last.txt",
+      "start": 94,
+      "end": 187
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-dotenv-gh-token-hyphen-prefix-twin--twin/canonical.txt",
       "start": 94,
       "end": 187
     },
@@ -10016,6 +10121,166 @@
       "end": 134
     },
     {
+      "path": "cases/beta8-211--github-fine-grained-pat-gitlab-ci-mirror--differential/canonical.txt",
+      "start": 56,
+      "end": 149
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-gitlab-ci-mirror--metamorphic/canonical.txt",
+      "start": 56,
+      "end": 149
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-gitlab-ci-mirror--metamorphic/context.indent.txt",
+      "start": 60,
+      "end": 153
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-gitlab-ci-mirror--metamorphic/context.unicode-prefix.txt",
+      "start": 76,
+      "end": 169
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-gitlab-ci-mirror--metamorphic/encoding.crlf.txt",
+      "start": 59,
+      "end": 152
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-gitlab-ci-mirror--mutation/canonical.txt",
+      "start": 56,
+      "end": 149
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-gitlab-ci-mirror--mutation/lexical.length-plus-one.txt",
+      "start": 56,
+      "end": 149
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-gitlab-ci-mirror--mutation/lexical.replace-last.txt",
+      "start": 56,
+      "end": 149
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-go-oauth2-static--differential/canonical.txt",
+      "start": 59,
+      "end": 152
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-go-oauth2-static--metamorphic/canonical.txt",
+      "start": 59,
+      "end": 152
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-go-oauth2-static--metamorphic/context.indent.txt",
+      "start": 63,
+      "end": 156
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-go-oauth2-static--metamorphic/context.unicode-prefix.txt",
+      "start": 79,
+      "end": 172
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-go-oauth2-static--metamorphic/encoding.crlf.txt",
+      "start": 59,
+      "end": 152
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-go-oauth2-static--mutation/canonical.txt",
+      "start": 59,
+      "end": 152
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-go-oauth2-static--mutation/lexical.length-plus-one.txt",
+      "start": 59,
+      "end": 152
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-go-oauth2-static--mutation/lexical.replace-last.txt",
+      "start": 59,
+      "end": 152
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-hub-config--differential/canonical.txt",
+      "start": 43,
+      "end": 136
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-hub-config--metamorphic/canonical.txt",
+      "start": 43,
+      "end": 136
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-hub-config--metamorphic/context.indent.txt",
+      "start": 47,
+      "end": 140
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-hub-config--metamorphic/context.unicode-prefix.txt",
+      "start": 63,
+      "end": 156
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-hub-config--metamorphic/encoding.crlf.txt",
+      "start": 45,
+      "end": 138
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-hub-config--mutation/canonical.txt",
+      "start": 43,
+      "end": 136
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-hub-config--mutation/lexical.length-plus-one.txt",
+      "start": 43,
+      "end": 136
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-hub-config--mutation/lexical.replace-last.txt",
+      "start": 43,
+      "end": 136
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-k8s-secret-stringdata--differential/canonical.txt",
+      "start": 95,
+      "end": 188
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-k8s-secret-stringdata--metamorphic/canonical.txt",
+      "start": 95,
+      "end": 188
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-k8s-secret-stringdata--metamorphic/context.indent.txt",
+      "start": 99,
+      "end": 192
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-k8s-secret-stringdata--metamorphic/context.unicode-prefix.txt",
+      "start": 115,
+      "end": 208
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-k8s-secret-stringdata--metamorphic/encoding.crlf.txt",
+      "start": 101,
+      "end": 194
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-k8s-secret-stringdata--mutation/canonical.txt",
+      "start": 95,
+      "end": 188
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-k8s-secret-stringdata--mutation/lexical.length-plus-one.txt",
+      "start": 95,
+      "end": 188
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-k8s-secret-stringdata--mutation/lexical.replace-last.txt",
+      "start": 95,
+      "end": 188
+    },
+    {
       "path": "cases/beta8-211--github-fine-grained-pat-octokit-debug-log--differential/canonical.txt",
       "start": 111,
       "end": 204
@@ -10054,6 +10319,88 @@
       "path": "cases/beta8-211--github-fine-grained-pat-octokit-debug-log--mutation/lexical.replace-last.txt",
       "start": 111,
       "end": 204
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-pygithub-auth-token--differential/canonical.txt",
+      "start": 62,
+      "end": 155
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-pygithub-auth-token--metamorphic/canonical.txt",
+      "start": 62,
+      "end": 155
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-pygithub-auth-token--metamorphic/context.indent.txt",
+      "start": 66,
+      "end": 159
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-pygithub-auth-token--metamorphic/context.unicode-prefix.txt",
+      "start": 82,
+      "end": 175
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-pygithub-auth-token--metamorphic/encoding.crlf.txt",
+      "start": 64,
+      "end": 157
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-pygithub-auth-token--mutation/canonical.txt",
+      "start": 62,
+      "end": 155
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-pygithub-auth-token--mutation/lexical.length-plus-one.txt",
+      "start": 62,
+      "end": 155
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-pygithub-auth-token--mutation/lexical.replace-last.txt",
+      "start": 62,
+      "end": 155
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-revocation-fingerprint-log-encoded-value--benign/canonical.txt",
+      "start": 65,
+      "end": 129,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-revocation-fingerprint-log-encoded-value--differential/canonical.txt",
+      "start": 65,
+      "end": 129,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-revocation-fingerprint-log-encoded-value--metamorphic/canonical.txt",
+      "start": 65,
+      "end": 129,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-revocation-fingerprint-log-encoded-value--metamorphic/context.indent.txt",
+      "start": 69,
+      "end": 133,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-revocation-fingerprint-log-encoded-value--metamorphic/context.unicode-prefix.txt",
+      "start": 85,
+      "end": 149,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-revocation-fingerprint-log-encoded-value--metamorphic/encoding.crlf.txt",
+      "start": 65,
+      "end": 129,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-revocation-fingerprint-log-encoded-value--mutation/canonical.txt",
+      "start": 65,
+      "end": 129,
+      "family": "generic-token"
     },
     {
       "path": "cases/beta8-211--github-fine-grained-pat-terraform-provider--differential/canonical.txt",
@@ -10097,6 +10444,11 @@
     },
     {
       "path": "cases/beta8-211--github-fine-grained-pat-terraform-provider-alphabet-twin--twin/canonical.txt",
+      "start": 48,
+      "end": 141
+    },
+    {
+      "path": "cases/beta8-211--github-fine-grained-pat-terraform-provider-prefix-separator-twin--twin/canonical.txt",
       "start": 48,
       "end": 141
     },
@@ -10718,6 +11070,56 @@
       "end": 195
     },
     {
+      "path": "cases/beta8-211--slack-app-level-token-actions-socket-mode-env--differential/canonical.txt",
+      "start": 74,
+      "end": 171
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-actions-socket-mode-env--metamorphic/canonical.txt",
+      "start": 74,
+      "end": 171
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-actions-socket-mode-env--metamorphic/context.indent.txt",
+      "start": 78,
+      "end": 175
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-actions-socket-mode-env--metamorphic/context.unicode-prefix.txt",
+      "start": 94,
+      "end": 191
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-actions-socket-mode-env--metamorphic/encoding.crlf.txt",
+      "start": 78,
+      "end": 175
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-actions-socket-mode-env--mutation/canonical.txt",
+      "start": 74,
+      "end": 171
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-actions-socket-mode-env--mutation/lexical.invalid-alphabet.txt",
+      "start": 74,
+      "end": 170
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-actions-socket-mode-env--mutation/lexical.length-minus-one.txt",
+      "start": 74,
+      "end": 170
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-actions-socket-mode-env--mutation/lexical.length-plus-one.txt",
+      "start": 74,
+      "end": 172
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-actions-socket-mode-env--mutation/lexical.replace-last.txt",
+      "start": 74,
+      "end": 171
+    },
+    {
       "path": "cases/beta8-211--slack-app-level-token-agent-env-echo--differential/canonical.txt",
       "start": 66,
       "end": 163
@@ -10823,6 +11225,21 @@
       "end": 137
     },
     {
+      "path": "cases/beta8-211--slack-app-level-token-agent-yaml-boundary-twin--differential/canonical.txt",
+      "start": 41,
+      "end": 138
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-agent-yaml-boundary-twin--twin/authored.twin.txt",
+      "start": 41,
+      "end": 138
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-agent-yaml-boundary-twin--twin/canonical.txt",
+      "start": 40,
+      "end": 137
+    },
+    {
       "path": "cases/beta8-211--slack-app-level-token-bolt-js-app-token--differential/canonical.txt",
       "start": 109,
       "end": 206
@@ -10924,6 +11341,23 @@
     },
     {
       "path": "cases/beta8-211--slack-app-level-token-bolt-python-handler-separator-twin--twin/canonical.txt",
+      "start": 96,
+      "end": 193
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-bolt-python-handler-short-prefix-twin--differential/canonical.txt",
+      "start": 96,
+      "end": 192,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-bolt-python-handler-short-prefix-twin--twin/authored.twin.txt",
+      "start": 96,
+      "end": 192,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-bolt-python-handler-short-prefix-twin--twin/canonical.txt",
       "start": 96,
       "end": 193
     },
@@ -11331,6 +11765,11 @@
       "end": 113
     },
     {
+      "path": "cases/beta8-211--slack-app-level-token-dotenv-app-token-underscore-prefix-twin--twin/canonical.txt",
+      "start": 16,
+      "end": 113
+    },
+    {
       "path": "cases/beta8-211--slack-app-level-token-export-app-token--differential/canonical.txt",
       "start": 24,
       "end": 121
@@ -11385,6 +11824,256 @@
       "path": "cases/beta8-211--slack-app-level-token-export-app-token--mutation/lexical.replace-last.txt",
       "start": 24,
       "end": 121
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-fish-set--differential/canonical.txt",
+      "start": 24,
+      "end": 121
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-fish-set--metamorphic/canonical.txt",
+      "start": 24,
+      "end": 121
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-fish-set--metamorphic/context.indent.txt",
+      "start": 28,
+      "end": 125
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-fish-set--metamorphic/context.unicode-prefix.txt",
+      "start": 44,
+      "end": 141
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-fish-set--metamorphic/encoding.crlf.txt",
+      "start": 24,
+      "end": 121
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-fish-set--mutation/canonical.txt",
+      "start": 24,
+      "end": 121
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-fish-set--mutation/lexical.invalid-alphabet.txt",
+      "start": 24,
+      "end": 120
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-fish-set--mutation/lexical.length-minus-one.txt",
+      "start": 24,
+      "end": 120
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-fish-set--mutation/lexical.length-plus-one.txt",
+      "start": 24,
+      "end": 122
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-fish-set--mutation/lexical.replace-last.txt",
+      "start": 24,
+      "end": 121
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-helm-values--differential/canonical.txt",
+      "start": 39,
+      "end": 136
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-helm-values--metamorphic/canonical.txt",
+      "start": 39,
+      "end": 136
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-helm-values--metamorphic/context.indent.txt",
+      "start": 43,
+      "end": 140
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-helm-values--metamorphic/context.unicode-prefix.txt",
+      "start": 59,
+      "end": 156
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-helm-values--metamorphic/encoding.crlf.txt",
+      "start": 41,
+      "end": 138
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-helm-values--mutation/canonical.txt",
+      "start": 39,
+      "end": 136
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-helm-values--mutation/lexical.invalid-alphabet.txt",
+      "start": 39,
+      "end": 135
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-helm-values--mutation/lexical.length-minus-one.txt",
+      "start": 39,
+      "end": 135
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-helm-values--mutation/lexical.length-plus-one.txt",
+      "start": 39,
+      "end": 137
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-helm-values--mutation/lexical.replace-last.txt",
+      "start": 39,
+      "end": 136
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-java-socket-mode-app--differential/canonical.txt",
+      "start": 49,
+      "end": 146
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-java-socket-mode-app--metamorphic/canonical.txt",
+      "start": 49,
+      "end": 146
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-java-socket-mode-app--metamorphic/context.indent.txt",
+      "start": 53,
+      "end": 150
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-java-socket-mode-app--metamorphic/context.unicode-prefix.txt",
+      "start": 69,
+      "end": 166
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-java-socket-mode-app--metamorphic/encoding.crlf.txt",
+      "start": 49,
+      "end": 146
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-java-socket-mode-app--mutation/canonical.txt",
+      "start": 49,
+      "end": 146
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-java-socket-mode-app--mutation/lexical.invalid-alphabet.txt",
+      "start": 49,
+      "end": 145
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-java-socket-mode-app--mutation/lexical.length-minus-one.txt",
+      "start": 49,
+      "end": 145
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-java-socket-mode-app--mutation/lexical.length-plus-one.txt",
+      "start": 49,
+      "end": 147
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-java-socket-mode-app--mutation/lexical.replace-last.txt",
+      "start": 49,
+      "end": 146
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-printenv-grep--differential/canonical.txt",
+      "start": 41,
+      "end": 138
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-printenv-grep--metamorphic/canonical.txt",
+      "start": 41,
+      "end": 138
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-printenv-grep--metamorphic/context.indent.txt",
+      "start": 45,
+      "end": 142
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-printenv-grep--metamorphic/context.unicode-prefix.txt",
+      "start": 61,
+      "end": 158
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-printenv-grep--metamorphic/encoding.crlf.txt",
+      "start": 42,
+      "end": 139
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-printenv-grep--mutation/canonical.txt",
+      "start": 41,
+      "end": 138
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-printenv-grep--mutation/lexical.invalid-alphabet.txt",
+      "start": 41,
+      "end": 137
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-printenv-grep--mutation/lexical.length-minus-one.txt",
+      "start": 41,
+      "end": 137
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-printenv-grep--mutation/lexical.length-plus-one.txt",
+      "start": 41,
+      "end": 139
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-printenv-grep--mutation/lexical.replace-last.txt",
+      "start": 41,
+      "end": 138
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-socket-mode-debug--differential/canonical.txt",
+      "start": 89,
+      "end": 186
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-socket-mode-debug--metamorphic/canonical.txt",
+      "start": 89,
+      "end": 186
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-socket-mode-debug--metamorphic/context.indent.txt",
+      "start": 93,
+      "end": 190
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-socket-mode-debug--metamorphic/context.unicode-prefix.txt",
+      "start": 109,
+      "end": 206
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-socket-mode-debug--metamorphic/encoding.crlf.txt",
+      "start": 89,
+      "end": 186
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-socket-mode-debug--mutation/canonical.txt",
+      "start": 89,
+      "end": 186
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-socket-mode-debug--mutation/lexical.invalid-alphabet.txt",
+      "start": 89,
+      "end": 185
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-socket-mode-debug--mutation/lexical.length-minus-one.txt",
+      "start": 89,
+      "end": 185
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-socket-mode-debug--mutation/lexical.length-plus-one.txt",
+      "start": 89,
+      "end": 187
+    },
+    {
+      "path": "cases/beta8-211--slack-app-level-token-socket-mode-debug--mutation/lexical.replace-last.txt",
+      "start": 89,
+      "end": 186
     },
     {
       "path": "cases/beta8-211--stripe-webhook-signing-secret-actions-env--differential/canonical.txt",
@@ -34812,9 +35501,21 @@
       "family": "openai-token"
     },
     {
+      "path": "cases/beta8-379--openai-admin-api-key-admn-prefix-twin--differential/canonical.txt",
+      "start": 35,
+      "end": 167,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-379--openai-admin-api-key-admn-prefix-twin--twin/authored.twin.txt",
+      "start": 35,
+      "end": 167,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/beta8-379--openai-admin-api-key-admn-prefix-twin--twin/canonical.txt",
       "start": 35,
-      "end": 200,
+      "end": 168,
       "family": "openai-token"
     },
     {
@@ -34824,45 +35525,51 @@
       "family": "openai-token"
     },
     {
-      "path": "cases/beta8-379--openai-admin-api-key-go-const-74--differential/canonical.txt",
+      "path": "cases/beta8-379--openai-admin-api-key-go-const--differential/canonical.txt",
       "start": 35,
-      "end": 200,
+      "end": 168,
       "family": "openai-token"
     },
     {
-      "path": "cases/beta8-379--openai-admin-api-key-go-const-74--metamorphic/canonical.txt",
+      "path": "cases/beta8-379--openai-admin-api-key-go-const--metamorphic/canonical.txt",
       "start": 35,
-      "end": 200,
+      "end": 168,
       "family": "openai-token"
     },
     {
-      "path": "cases/beta8-379--openai-admin-api-key-go-const-74--metamorphic/context.indent.txt",
+      "path": "cases/beta8-379--openai-admin-api-key-go-const--metamorphic/context.indent.txt",
       "start": 39,
-      "end": 204,
+      "end": 172,
       "family": "openai-token"
     },
     {
-      "path": "cases/beta8-379--openai-admin-api-key-go-const-74--metamorphic/context.unicode-prefix.txt",
+      "path": "cases/beta8-379--openai-admin-api-key-go-const--metamorphic/context.unicode-prefix.txt",
       "start": 55,
-      "end": 220,
+      "end": 188,
       "family": "openai-token"
     },
     {
-      "path": "cases/beta8-379--openai-admin-api-key-go-const-74--metamorphic/encoding.crlf.txt",
+      "path": "cases/beta8-379--openai-admin-api-key-go-const--metamorphic/encoding.crlf.txt",
       "start": 37,
-      "end": 202,
+      "end": 170,
       "family": "openai-token"
     },
     {
-      "path": "cases/beta8-379--openai-admin-api-key-go-const-74--mutation/canonical.txt",
+      "path": "cases/beta8-379--openai-admin-api-key-go-const--mutation/authored.twin.txt",
       "start": 35,
-      "end": 200,
+      "end": 167,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-379--openai-admin-api-key-go-const--mutation/canonical.txt",
+      "start": 35,
+      "end": 168,
       "family": "openai-token"
     },
     {
-      "path": "cases/beta8-379--openai-admin-api-key-go-const-74--mutation/lexical.replace-last.txt",
+      "path": "cases/beta8-379--openai-admin-api-key-go-const--mutation/lexical.replace-last.txt",
       "start": 35,
-      "end": 200,
+      "end": 168,
       "family": "openai-token"
     },
     {
@@ -34874,85 +35581,85 @@
     {
       "path": "cases/beta8-379--openai-admin-api-key-oncall-handoff--differential/canonical.txt",
       "start": 54,
-      "end": 219,
+      "end": 187,
       "family": "openai-token"
     },
     {
       "path": "cases/beta8-379--openai-admin-api-key-oncall-handoff--metamorphic/canonical.txt",
       "start": 54,
-      "end": 219,
+      "end": 187,
       "family": "openai-token"
     },
     {
       "path": "cases/beta8-379--openai-admin-api-key-oncall-handoff--metamorphic/context.indent.txt",
       "start": 58,
-      "end": 223,
+      "end": 191,
       "family": "openai-token"
     },
     {
       "path": "cases/beta8-379--openai-admin-api-key-oncall-handoff--metamorphic/context.unicode-prefix.txt",
       "start": 74,
-      "end": 239,
+      "end": 207,
       "family": "openai-token"
     },
     {
       "path": "cases/beta8-379--openai-admin-api-key-oncall-handoff--metamorphic/encoding.crlf.txt",
       "start": 54,
-      "end": 219,
+      "end": 187,
       "family": "openai-token"
     },
     {
       "path": "cases/beta8-379--openai-admin-api-key-oncall-handoff--mutation/canonical.txt",
       "start": 54,
-      "end": 219,
+      "end": 187,
       "family": "openai-token"
     },
     {
       "path": "cases/beta8-379--openai-admin-api-key-oncall-handoff--mutation/lexical.replace-last.txt",
       "start": 54,
-      "end": 219,
+      "end": 187,
       "family": "openai-token"
     },
     {
       "path": "cases/beta8-379--openai-admin-api-key-powershell-env--differential/canonical.txt",
       "start": 25,
-      "end": 190,
+      "end": 158,
       "family": "openai-token"
     },
     {
       "path": "cases/beta8-379--openai-admin-api-key-powershell-env--metamorphic/canonical.txt",
       "start": 25,
-      "end": 190,
+      "end": 158,
       "family": "openai-token"
     },
     {
       "path": "cases/beta8-379--openai-admin-api-key-powershell-env--metamorphic/context.indent.txt",
       "start": 29,
-      "end": 194,
+      "end": 162,
       "family": "openai-token"
     },
     {
       "path": "cases/beta8-379--openai-admin-api-key-powershell-env--metamorphic/context.unicode-prefix.txt",
       "start": 45,
-      "end": 210,
+      "end": 178,
       "family": "openai-token"
     },
     {
       "path": "cases/beta8-379--openai-admin-api-key-powershell-env--metamorphic/encoding.crlf.txt",
       "start": 25,
-      "end": 190,
+      "end": 158,
       "family": "openai-token"
     },
     {
       "path": "cases/beta8-379--openai-admin-api-key-powershell-env--mutation/canonical.txt",
       "start": 25,
-      "end": 190,
+      "end": 158,
       "family": "openai-token"
     },
     {
       "path": "cases/beta8-379--openai-admin-api-key-powershell-env--mutation/lexical.replace-last.txt",
       "start": 25,
-      "end": 190,
+      "end": 158,
       "family": "openai-token"
     },
     {
@@ -36799,6 +37506,48 @@
       "family": "openai-token"
     },
     {
+      "path": "cases/beta8-384a--openai-admin-api-key-config-toml--differential/canonical.txt",
+      "start": 48,
+      "end": 181,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-config-toml--metamorphic/canonical.txt",
+      "start": 48,
+      "end": 181,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-config-toml--metamorphic/context.indent.txt",
+      "start": 52,
+      "end": 185,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-config-toml--metamorphic/context.unicode-prefix.txt",
+      "start": 68,
+      "end": 201,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-config-toml--metamorphic/encoding.crlf.txt",
+      "start": 50,
+      "end": 183,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-config-toml--mutation/canonical.txt",
+      "start": 48,
+      "end": 181,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-config-toml--mutation/lexical.replace-last.txt",
+      "start": 48,
+      "end": 181,
+      "family": "openai-token"
+    },
+    {
       "path": "cases/beta8-384a--openai-admin-api-key-curl-bearer--differential/canonical.txt",
       "start": 79,
       "end": 212
@@ -36949,45 +37698,51 @@
       "family": "openai-token"
     },
     {
-      "path": "cases/beta8-384a--openai-admin-api-key-export-74--differential/canonical.txt",
+      "path": "cases/beta8-384a--openai-admin-api-key-export--mutation/lexical.replace-last.txt",
       "start": 25,
-      "end": 190,
+      "end": 158,
       "family": "openai-token"
     },
     {
-      "path": "cases/beta8-384a--openai-admin-api-key-export-74--metamorphic/canonical.txt",
-      "start": 25,
-      "end": 190,
+      "path": "cases/beta8-384a--openai-admin-api-key-gitlab-ci-variables--differential/canonical.txt",
+      "start": 32,
+      "end": 165,
       "family": "openai-token"
     },
     {
-      "path": "cases/beta8-384a--openai-admin-api-key-export-74--metamorphic/context.indent.txt",
-      "start": 29,
-      "end": 194,
+      "path": "cases/beta8-384a--openai-admin-api-key-gitlab-ci-variables--metamorphic/canonical.txt",
+      "start": 32,
+      "end": 165,
       "family": "openai-token"
     },
     {
-      "path": "cases/beta8-384a--openai-admin-api-key-export-74--metamorphic/context.unicode-prefix.txt",
-      "start": 45,
-      "end": 210,
+      "path": "cases/beta8-384a--openai-admin-api-key-gitlab-ci-variables--metamorphic/context.indent.txt",
+      "start": 36,
+      "end": 169,
       "family": "openai-token"
     },
     {
-      "path": "cases/beta8-384a--openai-admin-api-key-export-74--metamorphic/encoding.crlf.txt",
-      "start": 25,
-      "end": 190,
+      "path": "cases/beta8-384a--openai-admin-api-key-gitlab-ci-variables--metamorphic/context.unicode-prefix.txt",
+      "start": 52,
+      "end": 185,
       "family": "openai-token"
     },
     {
-      "path": "cases/beta8-384a--openai-admin-api-key-export-74--mutation/canonical.txt",
-      "start": 25,
-      "end": 190,
+      "path": "cases/beta8-384a--openai-admin-api-key-gitlab-ci-variables--metamorphic/encoding.crlf.txt",
+      "start": 33,
+      "end": 166,
       "family": "openai-token"
     },
     {
-      "path": "cases/beta8-384a--openai-admin-api-key-export-74--mutation/lexical.replace-last.txt",
-      "start": 25,
-      "end": 190,
+      "path": "cases/beta8-384a--openai-admin-api-key-gitlab-ci-variables--mutation/canonical.txt",
+      "start": 32,
+      "end": 165,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-gitlab-ci-variables--mutation/lexical.replace-last.txt",
+      "start": 32,
+      "end": 165,
       "family": "openai-token"
     },
     {
@@ -37122,6 +37877,48 @@
       "end": 88
     },
     {
+      "path": "cases/beta8-384a--openai-admin-api-key-python-requests-headers--differential/canonical.txt",
+      "start": 53,
+      "end": 186,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-python-requests-headers--metamorphic/canonical.txt",
+      "start": 53,
+      "end": 186,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-python-requests-headers--metamorphic/context.indent.txt",
+      "start": 57,
+      "end": 190,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-python-requests-headers--metamorphic/context.unicode-prefix.txt",
+      "start": 73,
+      "end": 206,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-python-requests-headers--metamorphic/encoding.crlf.txt",
+      "start": 55,
+      "end": 188,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-python-requests-headers--mutation/canonical.txt",
+      "start": 53,
+      "end": 186,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-python-requests-headers--mutation/lexical.replace-last.txt",
+      "start": 53,
+      "end": 186,
+      "family": "openai-token"
+    },
+    {
       "path": "cases/beta8-384a--openai-admin-api-key-python-sdk--differential/canonical.txt",
       "start": 58,
       "end": 191,
@@ -37164,21 +37961,9 @@
       "family": "openai-token"
     },
     {
-      "path": "cases/beta8-384a--openai-admin-api-key-short-first-segment-74-twin--twin/canonical.txt",
-      "start": 25,
-      "end": 190,
-      "family": "openai-token"
-    },
-    {
       "path": "cases/beta8-384a--openai-admin-api-key-short-first-segment-twin--twin/canonical.txt",
       "start": 24,
       "end": 157,
-      "family": "openai-token"
-    },
-    {
-      "path": "cases/beta8-384a--openai-admin-api-key-short-second-segment-74-twin--twin/canonical.txt",
-      "start": 25,
-      "end": 190,
       "family": "openai-token"
     },
     {
@@ -37290,6 +38075,48 @@
       "path": "cases/beta8-384a--openai-admin-api-key-underscore-delimiter-twin--twin/canonical.txt",
       "start": 58,
       "end": 191,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-usage-cli-flag--differential/canonical.txt",
+      "start": 49,
+      "end": 182,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-usage-cli-flag--metamorphic/canonical.txt",
+      "start": 49,
+      "end": 182,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-usage-cli-flag--metamorphic/context.indent.txt",
+      "start": 53,
+      "end": 186,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-usage-cli-flag--metamorphic/context.unicode-prefix.txt",
+      "start": 69,
+      "end": 202,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-usage-cli-flag--metamorphic/encoding.crlf.txt",
+      "start": 49,
+      "end": 182,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-usage-cli-flag--mutation/canonical.txt",
+      "start": 49,
+      "end": 182,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/beta8-384a--openai-admin-api-key-usage-cli-flag--mutation/lexical.replace-last.txt",
+      "start": 49,
+      "end": 182,
       "family": "openai-token"
     },
     {
@@ -41331,6 +42158,84 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/beta8-384e--ai21-api-key-actions-env-literal--differential/canonical.txt",
+      "start": 69,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-actions-env-literal--metamorphic/canonical.txt",
+      "start": 69,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-actions-env-literal--metamorphic/context.indent.txt",
+      "start": 73,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-actions-env-literal--metamorphic/context.unicode-prefix.txt",
+      "start": 89,
+      "end": 121,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-actions-env-literal--metamorphic/encoding.crlf.txt",
+      "start": 73,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-actions-env-literal--mutation/canonical.txt",
+      "start": 69,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-compose-env--differential/canonical.txt",
+      "start": 95,
+      "end": 127,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-compose-env--metamorphic/canonical.txt",
+      "start": 95,
+      "end": 127,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-compose-env--metamorphic/context.indent.txt",
+      "start": 99,
+      "end": 131,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-compose-env--metamorphic/context.unicode-prefix.txt",
+      "start": 115,
+      "end": 147,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-compose-env--metamorphic/encoding.crlf.txt",
+      "start": 99,
+      "end": 131,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-compose-env--mutation/authored.twin.txt",
+      "start": 96,
+      "end": 128,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-compose-env--mutation/canonical.txt",
+      "start": 95,
+      "end": 127,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/beta8-384e--ai21-api-key-curl-header--differential/canonical.txt",
       "start": 65,
       "end": 97
@@ -41364,6 +42269,42 @@
       "path": "cases/beta8-384e--ai21-api-key-curl-header--mutation/canonical.txt",
       "start": 65,
       "end": 97
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-docker-run-env--differential/canonical.txt",
+      "start": 32,
+      "end": 64,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-docker-run-env--metamorphic/canonical.txt",
+      "start": 32,
+      "end": 64,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-docker-run-env--metamorphic/context.indent.txt",
+      "start": 36,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-docker-run-env--metamorphic/context.unicode-prefix.txt",
+      "start": 52,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-docker-run-env--metamorphic/encoding.crlf.txt",
+      "start": 32,
+      "end": 64,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-docker-run-env--mutation/canonical.txt",
+      "start": 32,
+      "end": 64,
+      "family": "generic-token"
     },
     {
       "path": "cases/beta8-384e--ai21-api-key-dotenv--differential/canonical.txt",
@@ -41408,6 +42349,42 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/beta8-384e--ai21-api-key-dotenv-alt--differential/canonical.txt",
+      "start": 13,
+      "end": 45,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-dotenv-alt--metamorphic/canonical.txt",
+      "start": 13,
+      "end": 45,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-dotenv-alt--metamorphic/context.indent.txt",
+      "start": 17,
+      "end": 49,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-dotenv-alt--metamorphic/context.unicode-prefix.txt",
+      "start": 33,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-dotenv-alt--metamorphic/encoding.crlf.txt",
+      "start": 13,
+      "end": 45,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-dotenv-alt--mutation/canonical.txt",
+      "start": 13,
+      "end": 45,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/beta8-384e--ai21-api-key-export--differential/canonical.txt",
       "start": 21,
       "end": 53,
@@ -41447,6 +42424,30 @@
       "path": "cases/beta8-384e--ai21-api-key-export--mutation/canonical.txt",
       "start": 21,
       "end": 53,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-id-named-compose-twin--differential/canonical.txt",
+      "start": 96,
+      "end": 128,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-id-named-compose-twin--twin/authored.twin.txt",
+      "start": 96,
+      "end": 128,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-id-named-compose-twin--twin/canonical.txt",
+      "start": 95,
+      "end": 127,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-id-named-env-alt-twin--twin/canonical.txt",
+      "start": 13,
+      "end": 45,
       "family": "generic-token"
     },
     {
@@ -41588,21 +42589,63 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/beta8-384e--ai21-api-key-litellm-yaml--differential/canonical.txt",
+      "start": 103,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-litellm-yaml--metamorphic/canonical.txt",
+      "start": 103,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-litellm-yaml--metamorphic/context.indent.txt",
+      "start": 107,
+      "end": 139,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-litellm-yaml--metamorphic/context.unicode-prefix.txt",
+      "start": 123,
+      "end": 155,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-litellm-yaml--metamorphic/encoding.crlf.txt",
+      "start": 107,
+      "end": 139,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-litellm-yaml--mutation/authored.twin.txt",
+      "start": 110,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-litellm-yaml--mutation/canonical.txt",
+      "start": 103,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/beta8-384e--ai21-api-key-long-value-twin--differential/canonical.txt",
-      "start": 58,
-      "end": 91,
+      "start": 21,
+      "end": 54,
       "family": "generic-token"
     },
     {
       "path": "cases/beta8-384e--ai21-api-key-long-value-twin--twin/authored.twin.txt",
-      "start": 58,
-      "end": 91,
+      "start": 21,
+      "end": 54,
       "family": "generic-token"
     },
     {
       "path": "cases/beta8-384e--ai21-api-key-long-value-twin--twin/canonical.txt",
-      "start": 58,
-      "end": 90,
+      "start": 21,
+      "end": 53,
       "family": "generic-token"
     },
     {
@@ -41619,6 +42662,84 @@
       "path": "cases/beta8-384e--ai21-api-key-other-host-curl-twin--twin/canonical.txt",
       "start": 65,
       "end": 97
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-other-host-log-twin--differential/canonical.txt",
+      "start": 62,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-other-host-log-twin--twin/authored.twin.txt",
+      "start": 62,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-other-host-log-twin--twin/canonical.txt",
+      "start": 55,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-other-provider-model-twin--differential/canonical.txt",
+      "start": 110,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-other-provider-model-twin--twin/authored.twin.txt",
+      "start": 110,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-other-provider-model-twin--twin/canonical.txt",
+      "start": 103,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-proxy-log--differential/canonical.txt",
+      "start": 55,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-proxy-log--metamorphic/canonical.txt",
+      "start": 55,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-proxy-log--metamorphic/context.indent.txt",
+      "start": 59,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-proxy-log--metamorphic/context.unicode-prefix.txt",
+      "start": 75,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-proxy-log--metamorphic/encoding.crlf.txt",
+      "start": 55,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-proxy-log--mutation/authored.twin.txt",
+      "start": 62,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-384e--ai21-api-key-proxy-log--mutation/canonical.txt",
+      "start": 55,
+      "end": 87,
+      "family": "generic-token"
     },
     {
       "path": "cases/beta8-384e--ai21-api-key-python-ctor--differential/canonical.txt",
@@ -93607,5 +94728,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "cecd9fd85e18e01c9ee1be400e1168f3ce45f8c1b724c4836be99ab7d21433f3"
+  "digest": "9c09f695823f0e6d0e68f333552ef22c78d28a1bacc532a86767884114abb486"
 }

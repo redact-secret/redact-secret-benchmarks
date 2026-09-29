@@ -7,7 +7,7 @@
     "node": ">=22.12.0 <23 || >=24 <25"
   },
   "scripts": {
-    "promote": "bash scripts/promote.sh",
+    "go-production": "bash scripts/go-production.sh",
     "prepare": "node --import tsx scripts/generate-fixtures.mjs --ensure",
     "prebench": "node --import tsx scripts/generate-fixtures.mjs --ensure",
     "predev": "node --import tsx scripts/generate-fixtures.mjs --ensure",

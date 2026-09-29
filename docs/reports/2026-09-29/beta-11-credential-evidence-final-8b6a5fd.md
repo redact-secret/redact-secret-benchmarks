@@ -1,13 +1,13 @@
-# Beta.11 credential validation evidence: final report at the re-bound candidate ec9224d (#376)
+# Beta.11 credential validation evidence: final report at the re-bound candidate 8b6a5fd (#376)
 
-> **Superseded** by [`beta-11-credential-evidence-final-8b6a5fd.md`](beta-11-credential-evidence-final-8b6a5fd.md): the candidate moved to product main `8b6a5fd` (PR #996); every outcome is equal there. Kept as history.
-
-> This report supersedes [`beta-11-credential-evidence-final.md`](beta-11-credential-evidence-final.md) (candidate
-> `8f97f14`), which stays as history. The Beta.11 candidate moved from `8f97f14` to product main `ec9224d` after PR #994,
-> which the maintainer decided ships in Beta.11. PR #994 carries #948 (the provider-named `generic-token` fallback, an
-> intended output change), #993 (non-secret value exclusions), #902 (linear PII context, output byte-identical) and
-> #896 (scripts). Every credential measurement below was repeated at `ec9224d`, except the #382 blind aggregate, which
-> is carried over by maintainer decision (§5).
+> This report supersedes [`beta-11-credential-evidence-final-ec9224d.md`](beta-11-credential-evidence-final-ec9224d.md)
+> (candidate `ec9224d`) and [`beta-11-credential-evidence-final.md`](beta-11-credential-evidence-final.md) (candidate
+> `8f97f14`), which stay as history. The Beta.11 candidate moved from `8f97f14` to `ec9224d` (PR #994: #948 provider-named
+> `generic-token` fallback, #993 non-secret value exclusions, #902 linear PII context, #896 scripts) and then to product
+> main `8b6a5fd` (PR #996, the #902 Wasm follow-up: PII-only code, output byte-identical). The maintainer decided both
+> ship in Beta.11. Every credential measurement below was repeated at `8b6a5fd`, except the #382 blind aggregate,
+> which is carried over by maintainer decision (§5). At `8b6a5fd` every fixture outcome, family record, parity outcome
+> and diagnostics row equals `ec9224d`; only artifact identities and sizes differ.
 >
 > #948 changes 177 `must-not-flag` fixtures by design. The corpus records that contract change in
 > [`docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md`](../../decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md):
@@ -27,10 +27,10 @@ merged through PRs [#439](https://github.com/redact-secret/redact-secret-benchma
 [#452](https://github.com/redact-secret/redact-secret-benchmarks/pull/452),
 [#453](https://github.com/redact-secret/redact-secret-benchmarks/pull/453) and
 [#454](https://github.com/redact-secret/redact-secret-benchmarks/pull/454).
-Machine-readable summary: [`beta-11-credential-evidence-final-ec9224d.json`](beta-11-credential-evidence-final-ec9224d.json).
+Machine-readable summary: [`beta-11-credential-evidence-final-8b6a5fd.json`](beta-11-credential-evidence-final-8b6a5fd.json).
 
 **Result.** On the current pinned credential corpus, the Beta.11 candidate (product
-`ec9224d9743066fe73d6e61e9843ef52bd853833`, re-bound from `8f97f14`) leaks no `must-redact` span at T1 or T2 under v4
+`8b6a5fde52ecb4dfce13f09c7a947062d21483c7`, re-bound from `8f97f14` via `ec9224d`) leaks no `must-redact` span at T1 or T2 under v4
 (0/947 and 0/465). Every T1/T2 twin pair is discriminated (632/632 and 217/217). v4 false-alarm rates are 0/10 (T1),
 1/1,673 (T2) and 4/1,158 (T3). The published `@redact-secret/core@0.1.0-beta.10` leaks 151/947 T1 spans, almost all of
 them (150 misses) in the 24 #860 families that the release predates. It also misses the 25 relabelled #948 policy
@@ -55,18 +55,18 @@ detection or false-alarm rate (see [Limitations](#limitations)).
 
 | | Published | Candidate |
 | --- | --- | --- |
-| Product | `@redact-secret/core@0.1.0-beta.10` (npm, package-lock SHA-256 `14dbaa9e…3939`) | `redact-secret` [`ec9224d9743066fe73d6e61e9843ef52bd853833`](https://github.com/redact-secret/redact-secret/commit/ec9224d9743066fe73d6e61e9843ef52bd853833), declared `0.1.0-beta.10`, built by product `npm run benchmark:candidate` |
-| Artifacts (SHA-256) | npm registry | core `467111e288a3677e0e13d11f907a33e358a3161bfb1109f6115f80b16c33f74c`, node-darwin-arm64 `9ceabe011fb58b259fe79bc9b25a0ba3b96b6cfc028d9257844207aaf0a083d6`, wasm `c3f5478881e3cac1d038543a331e5d4b3c47bceb076ab71d99f2c43f8d2c7d78` |
-| Benchmark revision | diagnostics `b3bdc50cbfd4e8dd2f981e3937efad1cbf182e7b`; classification `5b03068ae5f1d34ae52549cf05d13c97aaf4ed0f` | suite run and classification `5b03068ae5f1d34ae52549cf05d13c97aaf4ed0f` (the #948 relabel); diagnostics `b3bdc50cbfd4e8dd2f981e3937efad1cbf182e7b`; both on branch `beta11/rebind-ec9224d-credentials`, clean |
+| Product | `@redact-secret/core@0.1.0-beta.10` (npm, package-lock SHA-256 `14dbaa9e…3939`) | `redact-secret` [`8b6a5fde52ecb4dfce13f09c7a947062d21483c7`](https://github.com/redact-secret/redact-secret/commit/8b6a5fde52ecb4dfce13f09c7a947062d21483c7), declared `0.1.0-beta.10`, built by product `npm run benchmark:candidate` |
+| Artifacts (SHA-256) | npm registry | core `467111e288a3677e0e13d11f907a33e358a3161bfb1109f6115f80b16c33f74c`, node-darwin-arm64 `19f41652389a9234c2648b058d3a05f60a305114a016c656e93fa35f23ee05ea`, wasm `61d135ba611a154433be9a9a56a38bf4a5fc8747a6b9d5fdf6e4dd6891666f2d` |
+| Benchmark revision | diagnostics `b3bdc50cbfd4e8dd2f981e3937efad1cbf182e7b` (re-run at `405892a5`: identical digest); classification `405892a5ba40b6eeef919d2fb818470ee495092c` | suite run, classification and diagnostics `405892a5ba40b6eeef919d2fb818470ee495092c` (the 8b6a5fd re-pin, on top of the #948 relabel `5b03068a`); branch `beta11/rebind-ec9224d-credentials`, clean |
 | Credential corpus | identity `e050384933a3fe0abc1d2aaad0d4fb9a61c3fed5d5f44cf575d495a0f19e811f`, 46 categories, 4,777 fixtures, pinned by `benchmarks/pin-manifest.json` | same |
-| Candidate suite run | n/a | `589527ab-8df1-4ae7-a517-26f7567ffb3b`, complete 4,777/4,777, corpus `d88c19f7…3e2f`, `eval:validate` passed |
-| Unit diagnostics (schema v1) | digest `868315e2574e55ada10d8e051064963e192d0111c9f96b9672980cc39b70db7f`, rows `56ea4c86…2175` | digest `e3fd073aa724b882d2e587818f7e0dcc31f17ff0e33da8b2f9d96a7f7c0b13b1`, rows `e319bdf7…8a5a` |
-| Support classification | run `3cef0f0c-0b23-4612-9b69-13dde0e38501` (published mode, clean) | run `aced36e8-2bb6-434c-84a2-ef2a84444a22` (candidate mode, clean) |
+| Candidate suite run | n/a | `e795030e-478e-4d21-9775-57456d832143`, complete 4,777/4,777, corpus `d88c19f7…3e2f`, `eval:validate` passed |
+| Unit diagnostics (schema v1) | digest `868315e2574e55ada10d8e051064963e192d0111c9f96b9672980cc39b70db7f`, rows `56ea4c86…2175` | digest `a15f99fcd2fe64cb15f689209d2473bcae089aac8335d714aff1fcd4357193a7`, rows `e319bdf7…8a5a` (the same rows digest as at ec9224d) |
+| Support classification | run `ad05c435-212b-4dab-9ed1-3aa137f0e29e` (published mode, clean) | run `556b1d9f-ff6b-42ed-812b-57ddb41216c2` (candidate mode, clean) |
 | Fixture index / taxonomy | `085358df…c29e` / `86380e35…60dc` | same |
 | Peers | gitleaks 8.30.1, trufflehog 3.97.4 (`npm run peers:provision`, checksum-verified `.peer-bin` first on `PATH`); snapshots refreshed for the changed corpus | same |
 | Runtime | Node v22.16.0, darwin/arm64 | same |
 
-Compared with the 8f97f14 report:
+Compared with the ec9224d report, nothing but identities and sizes changed: all 4,777 fixture outcomes, every family record in both modes (byte-identical), every diagnostics row and every parity outcome are equal. Compared with the 8f97f14 report:
 
 - **Fixture outcomes.** The only per-fixture changes in the full-suite candidate run are the 177 #948 fixtures and the
   one #993 twin. The per-family detail is in [`evidence/860/ec9224d/README.md`](../../../evidence/860/ec9224d/README.md).
@@ -79,8 +79,8 @@ Compared with the 8f97f14 report:
 Diagnostics reports:
 [published JSON](beta-11-unit-diagnostics-published-ec9224d.json) ·
 [published Markdown](beta-11-unit-diagnostics-published-ec9224d.md) ·
-[candidate JSON](beta-11-unit-diagnostics-candidate-ec9224d.json) ·
-[candidate Markdown](beta-11-unit-diagnostics-candidate-ec9224d.md).
+[candidate JSON](beta-11-unit-diagnostics-candidate-8b6a5fd.json) ·
+[candidate Markdown](beta-11-unit-diagnostics-candidate-8b6a5fd.md).
 Both pass `npm run eval:diagnostics:validate`, which recomputes every row.
 
 ## v4 headline (authoritative, unchanged in meaning)
@@ -255,7 +255,7 @@ Met in #439.
   (7 gating, 1 warn-only). The 7 gating files were recorded as product-911.
 - Per-family `benignCases`, `benignAxes`, `benignFalseAlarms` and statuses did not move.
 - Current state (tables above): published beta.10 gates on 7 of the 216 global
-  untargeted T3 files and warns on 1. Candidate ec9224d gates on 0 and warns on 2, the same as 8f97f14 and 1db8ff3.
+  untargeted T3 files and warns on 1. Candidate 8b6a5fd gates on 0 and warns on 2, the same as ec9224d, 8f97f14 and 1db8ff3.
 
 ### 3. Selected families have independent positive and benign evidence plus reviewed one-property twins; improvements and regressions both visible (#379)
 
@@ -286,11 +286,11 @@ Met in [#442](https://github.com/redact-secret/redact-secret-benchmarks/pull/442
   All of them were `verified` in
   [#454](https://github.com/redact-secret/redact-secret-benchmarks/pull/454) (rerun
   `009a85fa…`; product conformance from redact-secret#961), and product-911 in #457. At
-  8f97f14 (run `74888ff3…`) and again at ec9224d (run `589527ab…`; product conformance
-  from Artifact qualification run
-  [36570726765](https://github.com/redact-secret/redact-secret/actions/runs/36570726765)) all seven records give the
+  8f97f14 (run `74888ff3…`), at ec9224d (run `589527ab…`) and again at 8b6a5fd (run `e795030e…`; product
+  conformance from Artifact qualification run
+  [36581019627](https://github.com/redact-secret/redact-secret/actions/runs/36581019627)) all seven records give the
   same outcomes and stay `verified`:
-  [`evidence/931/README.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/364e418cf3e390bccc79de58fd45f80de4029e78/evidence/931/README.md)
+  [`evidence/931/README.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/754be29dedfe72632b77cf3112b443c161084b64/evidence/931/README.md)
   and its siblings.
 - **Still open.** product-936 remains `policy-decision`. The LiteLLM `masked_` Cohere
   line stays unreported by product policy, and its expectation is unchanged. It is now
@@ -333,11 +333,12 @@ Met.
     targets are redacted exactly. The exceptions are the New Relic `warn` (#936) and the Cohere LiteLLM `masked_`
     line (#932 policy).
   - At 8f97f14 the outcomes equal 1db8ff3.
-  - **Re-run at ec9224d** (core `467111e2…`, wasm `c3f54788…`, node `9edf22a5…`, wheel `3a720848…`, CLI
-    `8e0bfe0f…`, harness `af180a5a`):
-    [`evidence/860/381/README.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/ddc5cd1629ea095a023f7f39cfd6f723b1ab2ed1/evidence/860/381/README.md).
+  - At ec9224d (harness `af180a5a`) the outcomes equal 8f97f14.
+  - **Re-run at 8b6a5fd** (core `467111e2…`, wasm `61d135ba…`, node `9b8cd3e2…`, wheel `71dff43d…`, CLI
+    `5437647d…`, harness `405892a5`):
+    [`evidence/860/381/README.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/9b2eece7d0769c8f0c82caee6ee054ceef0b851c/evidence/860/381/README.md).
     Cross-surface, partition and stream divergences are 0 on all six surfaces. Only the declared token limit fails
-    closed, with no leak before it. The outcomes equal 8f97f14: 70/71 and 11/12, with the same two exceptions.
+    closed, with no leak before it. The outcomes equal ec9224d and 8f97f14: 70/71 and 11/12, with the same two exceptions.
 
 ### 5. New blind aggregate recorded under its independence label, outside public and regression totals (#382)
 
@@ -358,16 +359,17 @@ Met in [#453](https://github.com/redact-secret/redact-secret-benchmarks/pull/453
 - These numbers are **not** added to any table above, to public qualification or to
   support status. A product change made in response needs a new candidate identity and
   a new epoch.
-- **Carried over to ec9224d, not re-measured.** By maintainer decision the `beta11-e1` aggregate is carried to the
-  re-bound candidate without a new epoch, as it was to 8f97f14. This departs from the blind-evaluation spec's
+- **Carried over to 8b6a5fd, not re-measured.** By maintainer decision the `beta11-e1` aggregate is carried to the
+  re-bound candidate without a new epoch, as it was to 8f97f14 and ec9224d. This departs from the blind-evaluation spec's
   one-run-per-candidate rule. The private fixtures were not read or run.
-  - **Basis:** a whole-input and incremental differential of the 1db8ff3, 8f97f14 and ec9224d builds over all 5,001
-    public fixtures. 1db8ff3 and 8f97f14 give byte-identical digests. ec9224d differs on 178 fixtures, exactly the 177
-    #948 fixtures and the one #993 twin, and on nothing outside those classes.
+  - **Basis:** a whole-input and incremental differential of the 1db8ff3, 8f97f14, ec9224d and 8b6a5fd builds over
+    all 5,001 public fixtures. 1db8ff3 and 8f97f14 give byte-identical digests, and so do ec9224d and 8b6a5fd.
+    ec9224d and 8b6a5fd differ from 8f97f14 on 178 fixtures, exactly the 177 #948 fixtures and the one #993 twin, and
+    on nothing outside those classes.
   - **Known difference:** #948 is a policy change the blind epoch did not measure. A blind near-miss control under a
-    provider credential variable would read silent in the carried aggregate and reported at ec9224d.
+    provider credential variable would read silent in the carried aggregate and reported at 8b6a5fd.
   - Record:
-    [`2026-09-29-beta11-142-blind-carry-over-ec9224d.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/de3d817857e723971d097a21a62f76bb6619d742/docs/reports/2026-09-29-beta11-142-blind-carry-over-ec9224d.md).
+    [`2026-09-29-beta11-142-blind-carry-over-8b6a5fd.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/71abe6ea92865b476bd8f92d47822e2ac93c1a74/docs/reports/2026-09-29-beta11-142-blind-carry-over-8b6a5fd.md).
 
 ### 6. Final report states unit-labelled TP/TN/FP/FN diagnostics and retains the v4 headline; no unsupported real-world accuracy claim
 
@@ -377,12 +379,13 @@ Met by this report.
 
 - **#860 family graduation.** [#434](https://github.com/redact-secret/redact-secret-benchmarks/issues/434)
   and [#436](https://github.com/redact-secret/redact-secret-benchmarks/issues/436) were
-  graduated in #452 at 1db8ff3. Evidence at ec9224d:
-  [`evidence/860/ec9224d/README.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/ddc5cd1629ea095a023f7f39cfd6f723b1ab2ed1/evidence/860/ec9224d/README.md).
-  `eval:classify` ran at benchmarks `5b03068a` with the pinned peers (trufflehog 3.97.4,
+  graduated in #452 at 1db8ff3. Evidence at 8b6a5fd:
+  [`evidence/860/8b6a5fd/README.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/9b2eece7d0769c8f0c82caee6ee054ceef0b851c/evidence/860/8b6a5fd/README.md)
+  (the #948 analysis stays in [`evidence/860/ec9224d/README.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/9b2eece7d0769c8f0c82caee6ee054ceef0b851c/evidence/860/ec9224d/README.md)).
+  `eval:classify` ran at benchmarks `405892a5` with the pinned peers (trufflehog 3.97.4,
   gitleaks 8.30.1) and the candidate tarballs above:
-  - **Candidate mode (ec9224d):** 88/110 stable (documented 63, empirical 25), 20
-    provisional, 2 pending. All 24 #860 families are documented-stable. The same families are stable as at 8f97f14.
+  - **Candidate mode (8b6a5fd):** 88/110 stable (documented 63, empirical 25), 20
+    provisional, 2 pending. All 24 #860 families are documented-stable. The same families are stable as at 8f97f14, and every record is byte-identical to ec9224d.
   - **Published mode (0.1.0-beta.10):** 61/110 stable (documented 38, empirical 23), 47
     provisional, 2 pending. The 24 new families are provisional because the release
     predates their detectors.
@@ -390,37 +393,36 @@ Met by this report.
     eight families whose relabelled controls were not replaced, and generic-token, whose 25 new policy positives read
     68/68 exact in candidate mode and 25 misses in published mode (it stays provisional in both).
   - **With the labels unchanged** (benchmarks `af180a5`), candidate mode read 55/110 (documented 50, empirical 5).
-- **Performance at ec9224d.** `performance-evaluation.yml` run
-  [36578221354](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36578221354)
+- **Performance at 8b6a5fd.** `performance-evaluation.yml` run
+  [36582915511](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36582915511)
   concludes ACCEPTED against baseline 0.1.0-beta.8, with the size rows below applied as accepted tradeoffs. Latency
-  (10 rows), initialization (10) and memory (16) are all within budget. Median processing ratios are 0.237–0.269 on
-  the medium workloads and 0.223–0.839 on the small ones. Two earlier runs are kept with their roles in the evidence
-  README:
-  - 36570952406 ran before the size rows were accepted and also breached the browser-wasm small-whole initialization
-    ratio (1.263).
-  - 36577599714 breached that ratio alone (1.597).
+  (10 rows), initialization (10) and memory (16) are all within budget. Median processing ratios are 0.244–0.283 on
+  the medium workloads and 0.227–0.759 on the small ones. The earlier run 36581089488, before the rows were accepted,
+  failed on the 3 size rows alone; its size files are the ones the rows cite.
+  - **Browser-wasm small-whole initialization.** Both 8b6a5fd runs read this row within budget (1.189 and 1.180
+    against 1.25 allowed), so no paired check was needed. At ec9224d the same row breached twice (1.263, 1.597).
+    Paired runs there found no shift from 8f97f14. They also found that both commits sit at about 1.1–1.25 against
+    beta.8 ([`browser-init-paired.md`](https://github.com/redact-secret/redact-secret-benchmarks/blob/cbaf7e3ff3fc8cca308438389dc28ba1ccb6f0e1/evidence/860/ec9224d-verified/browser-init-paired.md)).
+    The headroom stays thin.
 
-  Paired 8f97f14 → ec9224d runs and A/A runs at 40 samples a side show no shift (pooled 0.992, A/A −4.7% to +2.7%).
-  Against beta.8, however, both 8f97f14 and ec9224d sit at about 1.1–1.25 on that row, against 1.25 allowed. The
-  12-sample official runs breach whenever their sample falls high, which happened in 2 of 3 runs at ec9224d and 1 of 2
-  at 8f97f14. This is not recorded as an accepted tradeoff, and the thin headroom needs a maintainer decision. Reports:
-  [`evidence/860/ec9224d-verified/`](https://github.com/redact-secret/redact-secret-benchmarks/tree/cbaf7e3ff3fc8cca308438389dc28ba1ccb6f0e1/evidence/860/ec9224d-verified).
+  Reports: [`evidence/860/8b6a5fd-verified/`](https://github.com/redact-secret/redact-secret-benchmarks/tree/9b2eece7d0769c8f0c82caee6ee054ceef0b851c/evidence/860/8b6a5fd-verified).
 - **Accepted size tradeoffs.** These rows are recorded in `benchmarks/accepted-regressions.json`
-  for candidate ec9224d only. They carry the maintainer decisions of 2026-09-28 and 2026-09-29, plus the acceptance
-  of the Beta.11 WASM and package growth with PR #994 shipping in Beta.11.
+  for candidate 8b6a5fd only. They carry the maintainer decisions of 2026-09-28 and 2026-09-29, plus the acceptance
+  of the Beta.11 WASM and package growth with PRs #994 and #996 shipping in Beta.11.
 
-  | Trigger | At 8f97f14 | At ec9224d |
-  | --- | ---: | ---: |
-  | `size/wasm/full/gzip` | 184,422 | 187,248 (+1.5%) |
-  | `size/wasm/common/gzip` | 125,295 | 127,661 (+1.9%) |
-  | `size/browser-bundle/quickstart/gzip` | 191,801 fetched | 194,628 fetched (+1.5%) |
-  | `size/npm/wasm/packed` | 887,249 | 917,465 (+3.4%) |
-  | `size/npm/node-darwin-arm64/packed` | 635,892 | 655,692 (+3.1%) |
-  | `size/node-addon/aarch64-apple-darwin` | 1,422,800 | 1,460,896 (+2.7%) |
+  | Trigger | At 8f97f14 | At ec9224d | At 8b6a5fd |
+  | --- | ---: | ---: | ---: |
+  | `size/wasm/full/gzip` | 184,422 | 187,248 | 187,246 |
+  | `size/wasm/common/gzip` | 125,295 | 127,661 | 127,655 |
+  | `size/browser-bundle/quickstart/gzip` | 191,801 fetched | 194,628 fetched | 194,626 fetched |
+  | `size/npm/wasm/packed` | 887,249 | 917,465 | 900,829 |
+  | `size/npm/node-darwin-arm64/packed` | 635,892 | 655,692 | 649,386 |
+  | `size/node-addon/aarch64-apple-darwin` | 1,422,800 | 1,460,896 | 1,442,736 |
 
   The base cause is the Beta.9–Beta.11 detector additions. Name-section stripping was rejected to keep debuggability.
-  The increment over 8f97f14 is PR #994, whose only core source changes are `generic_token.rs`, `text.rs` (#948, #993)
-  and `pii.rs` (#902).
+  PR #994 grew every row. PR #996 shrinks the PII builds: tarball `_pii` gzip full 314,806 → 306,971 and common
+  253,442 → 245,057. The packed WASM and native rows therefore drop, and the default WASM builds stay within a few
+  bytes.
 
 ## Limitations
 
@@ -441,12 +443,12 @@ Met by this report.
   detectors, default `<SECRET_n>` placeholder, Node runtime. Other bindings are covered
   only by the #381 parity set.
 - **Blind epoch.** `beta11-e1` has procedural separation only. With 66 spans and 27
-  controls its intervals are wide. It was measured at 1db8ff3 and is carried to ec9224d
+  controls its intervals are wide. It was measured at 1db8ff3 and is carried to 8b6a5fd
   by maintainer decision, not re-measured. A blind fixture in one of the #990 layouts, or
   an off-grammar value under a provider credential variable (#948), could read
-  differently at ec9224d.
+  differently at 8b6a5fd.
 - **Unmeasured targets.** Native addon, wheel and CLI size rows for targets other than
-  darwin-arm64 were not measured at ec9224d.
+  darwin-arm64 were not measured at 8b6a5fd.
 - **#948 relabel.** The 25 relabelled controls now measure the generic policy, not provider
   discrimination; the twins and the nine `beta8-948` controls carry the discrimination.
 - **Scope.** PII is a separate domain and is not measured here.
@@ -455,19 +457,19 @@ Met by this report.
 
 ```sh
 npm ci && npm run peers:provision && export PATH="$PWD/.peer-bin:$PATH"   # trufflehog --version → 3.97.4
-# product worktree at ec9224d9743066fe73d6e61e9843ef52bd853833 (clean):
-npm run benchmark:candidate -- --benchmark-ref 5b03068ae5f1d34ae52549cf05d13c97aaf4ed0f \
+# product worktree at 8b6a5fde52ecb4dfce13f09c7a947062d21483c7 (clean):
+npm run benchmark:candidate -- --benchmark-ref 405892a5ba40b6eeef919d2fb818470ee495092c \
   --benchmark-repo <redact-secret-benchmarks clone> --output-dir <dir>
-# benchmarks worktree at b3bdc50c (clean); write outside the tree, then copy .json/.md in:
+# benchmarks worktree at 405892a5 (clean); write outside the tree, then copy .json/.md in:
 npm run eval:diagnostics -- --out=<scratch>/beta-11-unit-diagnostics-published
 npm run eval:diagnostics -- --out=<scratch>/beta-11-unit-diagnostics-candidate \
   --candidate-package=<dir>/artifacts/redact-secret-core-0.1.0-beta.10.tgz \
   --candidate-node-package=<dir>/artifacts/redact-secret-node-darwin-arm64-0.1.0-beta.10.tgz \
   --candidate-wasm-package=<dir>/artifacts/redact-secret-wasm-0.1.0-beta.10.tgz \
-  --candidate-source-commit=ec9224d9743066fe73d6e61e9843ef52bd853833
+  --candidate-source-commit=8b6a5fde52ecb4dfce13f09c7a947062d21483c7
 npm run eval:diagnostics:validate -- <scratch>/beta-11-unit-diagnostics-{published,candidate}.json
 npm run eval:classify -- --candidate-package=… --candidate-node-package=… --candidate-wasm-package=… \
-  --candidate-source-commit=ec9224d9743066fe73d6e61e9843ef52bd853833 --output=<scratch>/support-status-candidate.json
+  --candidate-source-commit=8b6a5fde52ecb4dfce13f09c7a947062d21483c7 --output=<scratch>/support-status-candidate.json
 npm run eval:classify -- --output=<scratch>/support-status-published.json
 ```
 

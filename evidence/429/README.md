@@ -7,25 +7,26 @@ inputs" (#444). Informational only: no verdict, no ranking.
 
 ## Source identities
 
-- Benchmark source: clean `redact-secret/redact-secret-benchmarks` commit
-  `e8b38c33ceb744dcfc23a0005d89619cdfdcd2bd` (`develop`).
+- Benchmark source: `redact-secret/redact-secret-benchmarks` `develop` commit
+  `c4009ea2bf97d9e81417d7a1a8379fab7f15892a`, run by the `peer-pii-runtime-throughput`
+  workflow (Actions run 36621123928).
 - Benchmark lockfile SHA-256:
-  `14dbaa9e370ff0320c719110922cf72e916ce833442533842bf62570ee6e3939`
+  `06a6ba659e9ae2d42ee49f0f11e13d682ed242539c89b6bb455c29cdb089c51f`
   (flare-redact 1.6.1, `@openredaction/core` 1.1.5).
-- redact-secret: clean `redact-secret/redact-secret` `main` commit
-  `1127bf91323797be89b4413c8051f9a9a85da43b`, `bindings/node` built with
-  `npm run build` (`napi build --platform --release`), reporting version
-  `0.1.0-beta.10`. Addon `redact-secret.linux-x64-gnu.node` SHA-256:
-  `dd73861c47760bc6e700d1ccc3a74f886943ac3c3b05a863b0c344601f2042b6`.
+- redact-secret: `redact-secret/redact-secret` commit
+  `94fc18a974f659ea882c89120dbf1adb3acf2f28` (`pin-manifest.json` `redactSecretRevision`),
+  `bindings/node` built with `napi build --platform --release` inside the pinned Docker image,
+  reporting version `0.1.0-beta.11`. Image ID:
+  `sha256:3486ba72b1d0c9e8d1908992dbcd3125a3062d800376bc952dc43cc08a31a937`.
 - Report `artifactCommitment`:
-  `cce306785224baa1e8016bd94c2b4ad6dbbcc387149b77eb646f86c3134b0c20`.
+  `5adf379858ca2cf4140ca3419f09ab3df5e2b4b360e127b0d1b107442fc063c0`.
 
 ## Environment
 
-A Claude Code cloud container: linux x64, 4 vCPU (Intel Xeon 2.10GHz),
-Node v22.22.2. The container is shared infrastructure, so absolute numbers
-carry more noise than a dedicated runner. All three libraries ran in one Node
-process, interleaved round-robin, so that noise affects them equally.
+GitHub Actions `ubuntu-24.04`, native linux x64 (not emulated), AMD EPYC 9V74,
+container limited to 4 CPUs, Node v22.22.2. The runner is shared infrastructure, so
+absolute numbers carry noise. All three libraries ran in one Node process,
+interleaved round-robin, so that noise affects them equally.
 
 ## Reproduce
 
@@ -33,8 +34,7 @@ process, interleaved round-robin, so that noise affects them equally.
 scripts/run-peer-pii-runtime-throughput-docker.sh --out=evidence/429/peer-pii-runtime-throughput.json
 ```
 
-Run on a native amd64 host. This snapshot is `schemaVersion: 1` and predates the Docker run (#513): it records no
-product commit or image digest in the report. The next regeneration replaces it with a `schemaVersion: 2` report.
+Run on a native amd64 host, or dispatch the `peer-pii-runtime-throughput` workflow and copy its artifact here.
 
 `tests/peer-runtime-section.test.mjs` validates this file with
 `validatePeerRuntimeThroughputReport`. A workload, plan or summary change that

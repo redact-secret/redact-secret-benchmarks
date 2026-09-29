@@ -99,7 +99,8 @@ validates with plain `exact()`/type checks today, matching how
 helpers ship without an Ajv schema and add one only when a report crosses a
 process boundary as JSON). That remains follow-up work under #287.
 
-`scripts/produce-beta10-release-record.mjs` (added 2026-09-28) is the
+`scripts/produce-beta10-release-record.mjs` (added 2026-09-28; schema 2 and
+`scripts/produce-release-record.mjs` added by the amendment below) is the
 gathering script: it reads already-produced evidence files (credential
 `candidate`/`qualification` evidence, a PII `PiiQualificationReport`, a
 `PiiTrustedProductBinding`, a performance-`BudgetReport`) named as CLI
@@ -119,6 +120,50 @@ and shape-rejection behavior that is reachable without a real sanctioned
 candidate, and the happy path is exercised for the first time by whichever
 script (the follow-up above) assembles a record for an actual accepted
 release candidate.
+
+## Amendment (2026-09-29, #449): schema 2, a PII route, and a reviewed source equivalence
+
+Beta.11 PII evidence is qualified at one commit (`8b6a5fd`, benchmarks #428),
+so the single-commit binding #287 lacked is available. It is not reachable
+through the v1 trusted product binding, though: `trusted-product-bindings-v1.json`
+accepts only `pii:qualify:candidate` output, whose frozen per-family plans pin
+`vocabulary=pii-context/v1`, and Beta.11 reports `pii-context/v2`. Rewriting
+those plans after the fact would re-author frozen truth. The Beta.11 disposition
+already reaches publication through the reviewed v2 protected-support route
+(`protected-support-bindings-v1.json`, checked by `bindPiiProtectedSupport`).
+The published source `94fc18a` differs from `8b6a5fd` only in version strings,
+READMEs, docs and product scripts.
+
+Decision:
+
+- Schema 1 (`beta10-release-record`, `assembleReleaseRecord`) is unchanged and
+  stays the beta.10 path, produced by `scripts/produce-beta10-release-record.mjs`.
+- Schema 2 (`reportType: 'release-record'`, `assembleReleaseRecordV2` /
+  `validateReleaseRecordV2`) adds `release: { version, sourceCommit }`. The
+  credential candidate run must be a clean full-suite run of that commit that
+  declares that version, and the performance report must name the same commit.
+- Its `pii` section carries a `route`: `trusted-product-binding` (the v1 binding,
+  as in schema 1) or `pii-b11-protected-v1` (a reviewed protected-support entry
+  plus the committed protected disposition it names). Either way the section
+  names its `evidenceSourceCommit`. The route never projects `stable`, and its
+  counts stay PII-only.
+- When `evidenceSourceCommit` differs from the release commit, the record must
+  carry a `sourceEquivalence` that is, byte for byte, an entry of the reviewed
+  ledger `benchmarks/evaluation/release-source-equivalences-v1.json`. An entry
+  lists the changed product build inputs and names two full-suite credential
+  candidate runs, one of each commit at one benchmark revision.
+  `verifyReleaseRecordEvidence` (`release-record-evidence.ts`) re-derives the
+  protected route from committed evidence and re-derives the parity (same
+  fixtures, same outcome and finding count on every fixture) from the two runs.
+  An entry is added by review, like the protected-support bindings. It is never
+  inferred from output.
+- `scripts/produce-release-record.mjs --release-version --source-commit
+  --pii-route ...` produces schema 2 for any release.
+
+The first schema 2 record is Beta.11, frozen at
+[`evidence/449/`](../../evidence/449/README.md). It supersedes #287's beta.10
+record, which was never produced: beta.10 PII evidence is per-family at six
+commits, and the per-family evidence under `evidence/875`–`880` stays as it is.
 
 ## Consequences
 

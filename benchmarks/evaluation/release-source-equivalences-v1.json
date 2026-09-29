@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "equivalences": [
+    {
+      "id": "beta11-8b6a5fd-to-94fc18a",
+      "fromCommit": "8b6a5fde52ecb4dfce13f09c7a947062d21483c7",
+      "toCommit": "94fc18a974f659ea882c89120dbf1adb3acf2f28",
+      "record": "evidence/449/README.md",
+      "productDiff": {
+        "changedFiles": 54,
+        "changedBuildInputs": [
+          "Cargo.lock",
+          "Cargo.toml",
+          "bindings/node/npm/darwin-arm64/package.json",
+          "bindings/node/npm/darwin-x64/package.json",
+          "bindings/node/npm/linux-arm64-gnu/package.json",
+          "bindings/node/npm/linux-arm64-musl/package.json",
+          "bindings/node/npm/linux-x64-gnu/package.json",
+          "bindings/node/npm/linux-x64-musl/package.json",
+          "bindings/node/npm/win32-arm64-msvc/package.json",
+          "bindings/node/npm/win32-x64-msvc/package.json",
+          "bindings/node/package-lock.json",
+          "bindings/node/package.json",
+          "bindings/wasm/npm/package.json",
+          "packages/javascript/package.json",
+          "packages/javascript/src/version.ts"
+        ],
+        "note": "Every changed build input changes only the version string 0.1.0-beta.10 -> 0.1.0-beta.11. No crates/**/*.rs, binding source or package source changed; the other changed files are READMEs, docs, product-side support-matrix data and scripts."
+      },
+      "credentialParity": {
+        "benchmarkRevision": "c82a15ab797452fe200fc74674604ae9cd03cac3",
+        "fixtures": 4827,
+        "differingFixtures": 0,
+        "from": {
+          "evidence": "evidence/449/credential-candidate-8b6a5fd-v1.json",
+          "candidateEvidenceCommitment": "c749cca6330d1dea25dd3e36ac2e919940aa6bd46f30588da588712e1fe27ddf"
+        },
+        "to": {
+          "evidence": "evidence/449/credential-candidate-94fc18a-v1.json",
+          "candidateEvidenceCommitment": "082ff71eb61ef0fae6d2b94ed6ddae401d3e02a6c29d7cea644516f7d13e649a"
+        }
+      }
+    }
+  ]
+}

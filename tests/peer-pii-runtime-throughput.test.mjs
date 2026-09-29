@@ -5,6 +5,7 @@ import {
   peerRuntimeThroughputCommitment,
   peerRuntimeThroughputPlan,
   renderWorkloadText,
+  snapshotWriteRefusal,
   summarizeSamples,
   validatePeerRuntimeThroughputPlan,
   validatePeerRuntimeThroughputReport,
@@ -87,4 +88,41 @@ test('report validator rejects a report missing the async/sync methodology cavea
   ] };
   const withCaveats = { ...withoutArtifactCommitment, artifactCommitment: peerRuntimeThroughputCommitment(withoutArtifactCommitment) };
   assert.doesNotThrow(() => validatePeerRuntimeThroughputReport(withCaveats));
+});
+
+function v2Report(mutate = report => report) {
+  const plan = validatePeerRuntimeThroughputPlan();
+  const observations = plan.tools.flatMap(tool => piiProfileCostWorkloads.workloads.map(workload => {
+    const text = renderWorkloadText(workload.id);
+    const samples = Array.from({ length: plan.sampleProtocol.samplesPerCell }, () => ({ redactMs: 1, bytesPerSecond: 1000 }));
+    return { tool: tool.id, workload: workload.id, workloadBytes: Buffer.byteLength(text), workloadCommitment: hash(text), samples, summary: summarizeSamples(samples) };
+  }));
+  const report = mutate({
+    schemaVersion: 2, reportType: 'peer-pii-runtime-throughput', supportClaims: false, planCommitment: plan.contentCommitment,
+    generatedAt: new Date().toISOString(),
+    runner: { platform: 'linux', arch: 'x64', node: process.version, cpuModel: 'test-cpu', cpuLimit: 4, emulated: false, imageDigest: `sha256:${'a'.repeat(64)}` },
+    tools: plan.tools.map(t => ({ id: t.id, version: '0.0.0-test', provenance: t.id === 'redact-secret' ? { kind: t.provenance, commit: 'b'.repeat(40) } : { kind: t.provenance } })),
+    methodologyNotes: ['OpenRedaction is asynchronous (a Promise-returning detect()).', 'redact-secret is measured from a local-source-build, not a published npm release.'],
+    observations,
+  });
+  return { ...report, artifactCommitment: peerRuntimeThroughputCommitment(report) };
+}
+
+test('schemaVersion 2 report validates only with product commit, image digest and runner details', () => {
+  assert.doesNotThrow(() => validatePeerRuntimeThroughputReport(v2Report()));
+  const message = /product commit, image digest and runner details/;
+  assert.throws(() => validatePeerRuntimeThroughputReport(v2Report(r => { delete r.tools[0].provenance.commit; return r; })), message);
+  assert.throws(() => validatePeerRuntimeThroughputReport(v2Report(r => { r.tools[0].provenance.commit = 'main'; return r; })), message);
+  assert.throws(() => validatePeerRuntimeThroughputReport(v2Report(r => { r.runner.imageDigest = 'latest'; return r; })), message);
+  assert.throws(() => validatePeerRuntimeThroughputReport(v2Report(r => { r.runner.emulated = 'no'; return r; })), message);
+  assert.throws(() => validatePeerRuntimeThroughputReport(v2Report(r => { delete r.runner.cpuLimit; return r; })), /identity or commitment/);
+});
+
+test('committed snapshot directory is written only for the pinned ref on a non-emulated run', () => {
+  const root = '/repo/';
+  const ok = { ref: 'a'.repeat(40), pinRef: 'a'.repeat(40), emulated: false, root };
+  assert.equal(snapshotWriteRefusal({ ...ok, outPath: '/repo/evidence/429/peer-pii-runtime-throughput.json' }), null);
+  assert.match(snapshotWriteRefusal({ ...ok, ref: 'c'.repeat(40), outPath: '/repo/evidence/429/x.json' }), /differs from pin-manifest/);
+  assert.match(snapshotWriteRefusal({ ...ok, emulated: true, outPath: '/repo/evidence/429/x.json' }), /emulated/);
+  assert.equal(snapshotWriteRefusal({ ...ok, emulated: true, ref: 'c'.repeat(40), outPath: '/repo/public/results/x.json' }), null);
 });

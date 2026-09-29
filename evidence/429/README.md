@@ -30,12 +30,11 @@ process, interleaved round-robin, so that noise affects them equally.
 ## Reproduce
 
 ```sh
-cd <redact-secret checkout>/bindings/node && npm install && npm run build
-cd <benchmarks checkout>
-npm run peer-pii-runtime-throughput -- \
-  --redact-secret-addon=<redact-secret checkout>/bindings/node/redact-secret.linux-x64-gnu.node \
-  --out=evidence/429/peer-pii-runtime-throughput.json
+scripts/run-peer-pii-runtime-throughput-docker.sh --out=evidence/429/peer-pii-runtime-throughput.json
 ```
+
+Run on a native amd64 host. This snapshot is `schemaVersion: 1` and predates the Docker run (#513): it records no
+product commit or image digest in the report. The next regeneration replaces it with a `schemaVersion: 2` report.
 
 `tests/peer-runtime-section.test.mjs` validates this file with
 `validatePeerRuntimeThroughputReport`. A workload, plan or summary change that

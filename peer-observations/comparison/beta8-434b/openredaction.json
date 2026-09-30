@@ -1,0 +1,1143 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-434b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "06fc33e89425363bd9cc32b941b3dff89fe77d2c21bf772bd3000dac53e4179f",
+    "fixtureCount": 70,
+    "fixturesDigest": "bd52fc7d7432a3ca36b23720dde3183012cb851741c1e8f7df26bebe2acda513",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/trigger-dev-personal-access-token-actions-env.yml",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-actions-env.yml",
+      "start": 8,
+      "end": 14
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-actions-env.yml",
+      "start": 20,
+      "end": 23
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-actions-env.yml",
+      "start": 31,
+      "end": 51
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-actions-env.yml",
+      "start": 105,
+      "end": 110
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-actions-env.yml",
+      "start": 120,
+      "end": 123
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-actions-env.yml",
+      "start": 125,
+      "end": 128
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-actions-env.yml",
+      "start": 129,
+      "end": 140
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-actions-env.yml",
+      "start": 148,
+      "end": 154
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-actions-env.yml",
+      "start": 157,
+      "end": 160
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-actions-env.yml",
+      "start": 161,
+      "end": 165
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-actions-secret-reference.yml",
+      "start": 6,
+      "end": 26
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-actions-secret-reference.yml",
+      "start": 32,
+      "end": 60
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-bare-prose.md",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-bare-prose.md",
+      "start": 24,
+      "end": 34
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-bare-prose.md",
+      "start": 35,
+      "end": 39
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-bare-prose.md",
+      "start": 40,
+      "end": 47
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-bearer-header.http",
+      "start": 8,
+      "end": 14
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-bearer-header.http",
+      "start": 20,
+      "end": 23
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-bearer-header.http",
+      "start": 24,
+      "end": 28
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-bearer-header.http",
+      "start": 30,
+      "end": 45
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-bearer-header.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-bearer-header.http",
+      "start": 68,
+      "end": 115,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-body-41-twin.sh",
+      "start": 7,
+      "end": 27
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-chat-paste.txt",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-chat-paste.txt",
+      "start": 11,
+      "end": 22
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-chat-paste.txt",
+      "start": 23,
+      "end": 26
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-ellipsis-placeholder.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-ellipsis-placeholder.md",
+      "start": 12,
+      "end": 17
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-ellipsis-placeholder.md",
+      "start": 18,
+      "end": 24
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-ellipsis-placeholder.md",
+      "start": 38,
+      "end": 43
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-ellipsis-placeholder.md",
+      "start": 50,
+      "end": 56
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-ellipsis-placeholder.md",
+      "start": 65,
+      "end": 71
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-ellipsis-placeholder.md",
+      "start": 72,
+      "end": 76
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-ellipsis-placeholder.md",
+      "start": 77,
+      "end": 81
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-env-reference-reference.sh",
+      "start": 0,
+      "end": 3
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-env-reference-reference.sh",
+      "start": 4,
+      "end": 15
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-env-reference-reference.sh",
+      "start": 23,
+      "end": 29
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-env-reference-reference.sh",
+      "start": 32,
+      "end": 35
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-env-reference-reference.sh",
+      "start": 36,
+      "end": 40
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-env-reference-reference.sh",
+      "start": 43,
+      "end": 48
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-env-reference-reference.sh",
+      "start": 50,
+      "end": 70
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-export.sh",
+      "start": 7,
+      "end": 27
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-l-in-body-twin.http",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-l-in-body-twin.http",
+      "start": 9,
+      "end": 13
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-l-in-body-twin.http",
+      "start": 14,
+      "end": 18
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-l-in-body-twin.http",
+      "start": 19,
+      "end": 22
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-l-in-body-twin.http",
+      "start": 23,
+      "end": 27
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-l-in-body-twin.http",
+      "start": 29,
+      "end": 44
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-l-in-body-twin.http",
+      "start": 47,
+      "end": 50
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-l-in-body-twin.http",
+      "start": 56,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-leading-glue-twin.py",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-leading-glue-twin.py",
+      "start": 9,
+      "end": 22
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-leading-glue-twin.py",
+      "start": 23,
+      "end": 30
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-pat-guidance-prose.md",
+      "start": 41,
+      "end": 47
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-pat-guidance-prose.md",
+      "start": 66,
+      "end": 72
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-run-id-public-id.json",
+      "start": 41,
+      "end": 47
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-run-id-public-id.json",
+      "start": 51,
+      "end": 60
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-run-id-public-id.json",
+      "start": 64,
+      "end": 78
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-run-id-public-id.json",
+      "start": 82,
+      "end": 86
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-run-id-public-id.json",
+      "start": 87,
+      "end": 93
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-sdk-kwarg.py",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-sdk-kwarg.py",
+      "start": 9,
+      "end": 22
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-sdk-kwarg.py",
+      "start": 23,
+      "end": 30
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-trailing-glue-twin.txt",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-trailing-glue-twin.txt",
+      "start": 11,
+      "end": 22
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-trailing-glue-twin.txt",
+      "start": 23,
+      "end": 26
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-x-api-key-header.http",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-x-api-key-header.http",
+      "start": 9,
+      "end": 13
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-x-api-key-header.http",
+      "start": 14,
+      "end": 18
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-x-api-key-header.http",
+      "start": 19,
+      "end": 22
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-x-api-key-header.http",
+      "start": 23,
+      "end": 27
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-x-api-key-header.http",
+      "start": 29,
+      "end": 44
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-x-api-key-header.http",
+      "start": 47,
+      "end": 50
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-x-api-key-header.http",
+      "start": 56,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-x-run-placeholder.md",
+      "start": 90,
+      "end": 100
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-zero-in-body-twin.http",
+      "start": 8,
+      "end": 14
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-zero-in-body-twin.http",
+      "start": 20,
+      "end": 23
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-zero-in-body-twin.http",
+      "start": 24,
+      "end": 28
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-zero-in-body-twin.http",
+      "start": 30,
+      "end": 45
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-zero-in-body-twin.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/trigger-dev-personal-access-token-zero-in-body-twin.http",
+      "start": 68,
+      "end": 115,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-actions-env.yml",
+      "start": 8,
+      "end": 14
+    },
+    {
+      "path": "cases/trigger-dev-token-actions-env.yml",
+      "start": 20,
+      "end": 24
+    },
+    {
+      "path": "cases/trigger-dev-token-actions-env.yml",
+      "start": 29,
+      "end": 35
+    },
+    {
+      "path": "cases/trigger-dev-token-actions-env.yml",
+      "start": 47,
+      "end": 50
+    },
+    {
+      "path": "cases/trigger-dev-token-actions-env.yml",
+      "start": 58,
+      "end": 76
+    },
+    {
+      "path": "cases/trigger-dev-token-actions-env.yml",
+      "start": 118,
+      "end": 123
+    },
+    {
+      "path": "cases/trigger-dev-token-actions-env.yml",
+      "start": 133,
+      "end": 136
+    },
+    {
+      "path": "cases/trigger-dev-token-actions-env.yml",
+      "start": 138,
+      "end": 141
+    },
+    {
+      "path": "cases/trigger-dev-token-actions-env.yml",
+      "start": 142,
+      "end": 153
+    },
+    {
+      "path": "cases/trigger-dev-token-actions-env.yml",
+      "start": 161,
+      "end": 167
+    },
+    {
+      "path": "cases/trigger-dev-token-actions-secret-reference.yml",
+      "start": 6,
+      "end": 24
+    },
+    {
+      "path": "cases/trigger-dev-token-actions-secret-reference.yml",
+      "start": 30,
+      "end": 56
+    },
+    {
+      "path": "cases/trigger-dev-token-additional-body-23-twin.md",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/trigger-dev-token-additional-body-23-twin.md",
+      "start": 24,
+      "end": 34
+    },
+    {
+      "path": "cases/trigger-dev-token-additional-body-23-twin.md",
+      "start": 35,
+      "end": 39
+    },
+    {
+      "path": "cases/trigger-dev-token-additional-body-23-twin.md",
+      "start": 40,
+      "end": 47
+    },
+    {
+      "path": "cases/trigger-dev-token-additional-body-25-twin.http",
+      "start": 8,
+      "end": 14
+    },
+    {
+      "path": "cases/trigger-dev-token-additional-body-25-twin.http",
+      "start": 20,
+      "end": 23
+    },
+    {
+      "path": "cases/trigger-dev-token-additional-body-25-twin.http",
+      "start": 24,
+      "end": 28
+    },
+    {
+      "path": "cases/trigger-dev-token-additional-body-25-twin.http",
+      "start": 30,
+      "end": 45
+    },
+    {
+      "path": "cases/trigger-dev-token-additional-body-25-twin.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/trigger-dev-token-additional-body-25-twin.http",
+      "start": 68,
+      "end": 103,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-bare-prose.md",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/trigger-dev-token-bare-prose.md",
+      "start": 24,
+      "end": 34
+    },
+    {
+      "path": "cases/trigger-dev-token-bare-prose.md",
+      "start": 35,
+      "end": 39
+    },
+    {
+      "path": "cases/trigger-dev-token-bare-prose.md",
+      "start": 40,
+      "end": 47
+    },
+    {
+      "path": "cases/trigger-dev-token-bearer-header.http",
+      "start": 8,
+      "end": 14
+    },
+    {
+      "path": "cases/trigger-dev-token-bearer-header.http",
+      "start": 20,
+      "end": 23
+    },
+    {
+      "path": "cases/trigger-dev-token-bearer-header.http",
+      "start": 24,
+      "end": 28
+    },
+    {
+      "path": "cases/trigger-dev-token-bearer-header.http",
+      "start": 30,
+      "end": 45
+    },
+    {
+      "path": "cases/trigger-dev-token-bearer-header.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/trigger-dev-token-bearer-header.http",
+      "start": 68,
+      "end": 102,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-chat-paste.txt",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/trigger-dev-token-chat-paste.txt",
+      "start": 11,
+      "end": 22
+    },
+    {
+      "path": "cases/trigger-dev-token-chat-paste.txt",
+      "start": 23,
+      "end": 26
+    },
+    {
+      "path": "cases/trigger-dev-token-compose-env.yml",
+      "start": 53,
+      "end": 59
+    },
+    {
+      "path": "cases/trigger-dev-token-compose-env.yml",
+      "start": 66,
+      "end": 77
+    },
+    {
+      "path": "cases/trigger-dev-token-compose-env.yml",
+      "start": 85,
+      "end": 103
+    },
+    {
+      "path": "cases/trigger-dev-token-configure-sdk.ts",
+      "start": 9,
+      "end": 18
+    },
+    {
+      "path": "cases/trigger-dev-token-configure-sdk.ts",
+      "start": 28,
+      "end": 39
+    },
+    {
+      "path": "cases/trigger-dev-token-configure-sdk.ts",
+      "start": 40,
+      "end": 43
+    },
+    {
+      "path": "cases/trigger-dev-token-configure-sdk.ts",
+      "start": 47,
+      "end": 56
+    },
+    {
+      "path": "cases/trigger-dev-token-configure-sdk.ts",
+      "start": 59,
+      "end": 68
+    },
+    {
+      "path": "cases/trigger-dev-token-curl-trigger-task.sh",
+      "start": 78,
+      "end": 91
+    },
+    {
+      "path": "cases/trigger-dev-token-curl-trigger-task.sh",
+      "start": 93,
+      "end": 99
+    },
+    {
+      "path": "cases/trigger-dev-token-curl-trigger-task.sh",
+      "start": 100,
+      "end": 131,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-dotenv.env",
+      "start": 58,
+      "end": 67
+    },
+    {
+      "path": "cases/trigger-dev-token-ellipsis-placeholder.md",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/trigger-dev-token-env-reference-reference.ts",
+      "start": 6,
+      "end": 12
+    },
+    {
+      "path": "cases/trigger-dev-token-env-reference-reference.ts",
+      "start": 15,
+      "end": 24
+    },
+    {
+      "path": "cases/trigger-dev-token-env-reference-reference.ts",
+      "start": 27,
+      "end": 36
+    },
+    {
+      "path": "cases/trigger-dev-token-env-reference-reference.ts",
+      "start": 38,
+      "end": 68
+    },
+    {
+      "path": "cases/trigger-dev-token-export.sh",
+      "start": 7,
+      "end": 25
+    },
+    {
+      "path": "cases/trigger-dev-token-export.sh",
+      "start": 27,
+      "end": 54
+    },
+    {
+      "path": "cases/trigger-dev-token-hyphen-in-body-twin.ts",
+      "start": 9,
+      "end": 18
+    },
+    {
+      "path": "cases/trigger-dev-token-hyphen-in-body-twin.ts",
+      "start": 28,
+      "end": 39
+    },
+    {
+      "path": "cases/trigger-dev-token-hyphen-in-body-twin.ts",
+      "start": 40,
+      "end": 43
+    },
+    {
+      "path": "cases/trigger-dev-token-hyphen-in-body-twin.ts",
+      "start": 47,
+      "end": 56
+    },
+    {
+      "path": "cases/trigger-dev-token-hyphen-in-body-twin.ts",
+      "start": 59,
+      "end": 68
+    },
+    {
+      "path": "cases/trigger-dev-token-hyphen-in-body-twin.ts",
+      "start": 71,
+      "end": 95
+    },
+    {
+      "path": "cases/trigger-dev-token-hyphen-in-body-twin.ts",
+      "start": 96,
+      "end": 109
+    },
+    {
+      "path": "cases/trigger-dev-token-k8s-secret.yml",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/trigger-dev-token-k8s-secret.yml",
+      "start": 15,
+      "end": 19
+    },
+    {
+      "path": "cases/trigger-dev-token-k8s-secret.yml",
+      "start": 21,
+      "end": 27
+    },
+    {
+      "path": "cases/trigger-dev-token-k8s-secret.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-k8s-secret.yml",
+      "start": 40,
+      "end": 44
+    },
+    {
+      "path": "cases/trigger-dev-token-k8s-secret.yml",
+      "start": 46,
+      "end": 53
+    },
+    {
+      "path": "cases/trigger-dev-token-k8s-secret.yml",
+      "start": 54,
+      "end": 57
+    },
+    {
+      "path": "cases/trigger-dev-token-k8s-secret.yml",
+      "start": 58,
+      "end": 68
+    },
+    {
+      "path": "cases/trigger-dev-token-k8s-secret.yml",
+      "start": 72,
+      "end": 90
+    },
+    {
+      "path": "cases/trigger-dev-token-k8s-secret.yml",
+      "start": 92,
+      "end": 119
+    },
+    {
+      "path": "cases/trigger-dev-token-key-guidance-prose.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/trigger-dev-token-leading-glue-s-twin.md",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/trigger-dev-token-leading-glue-s-twin.md",
+      "start": 24,
+      "end": 34
+    },
+    {
+      "path": "cases/trigger-dev-token-leading-glue-s-twin.md",
+      "start": 35,
+      "end": 39
+    },
+    {
+      "path": "cases/trigger-dev-token-leading-glue-s-twin.md",
+      "start": 40,
+      "end": 47
+    },
+    {
+      "path": "cases/trigger-dev-token-leading-glue-x-twin.env",
+      "start": 59,
+      "end": 68
+    },
+    {
+      "path": "cases/trigger-dev-token-project-ref-public-id.ts",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/trigger-dev-token-project-ref-public-id.ts",
+      "start": 19,
+      "end": 26
+    },
+    {
+      "path": "cases/trigger-dev-token-project-ref-public-id.ts",
+      "start": 29,
+      "end": 54
+    },
+    {
+      "path": "cases/trigger-dev-token-public-key-html-public-id.html",
+      "start": 1,
+      "end": 7
+    },
+    {
+      "path": "cases/trigger-dev-token-public-key-html-public-id.html",
+      "start": 11,
+      "end": 36
+    },
+    {
+      "path": "cases/trigger-dev-token-public-key-html-public-id.html",
+      "start": 40,
+      "end": 68
+    },
+    {
+      "path": "cases/trigger-dev-token-public-key-prefix-twin.ts",
+      "start": 9,
+      "end": 18
+    },
+    {
+      "path": "cases/trigger-dev-token-public-key-prefix-twin.ts",
+      "start": 28,
+      "end": 39
+    },
+    {
+      "path": "cases/trigger-dev-token-public-key-prefix-twin.ts",
+      "start": 40,
+      "end": 43
+    },
+    {
+      "path": "cases/trigger-dev-token-public-key-prefix-twin.ts",
+      "start": 47,
+      "end": 56
+    },
+    {
+      "path": "cases/trigger-dev-token-public-key-prefix-twin.ts",
+      "start": 59,
+      "end": 68
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-19-twin.sh",
+      "start": 7,
+      "end": 25
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-19-twin.sh",
+      "start": 27,
+      "end": 53
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-22-twin.py",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-22-twin.py",
+      "start": 9,
+      "end": 22
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-22-twin.py",
+      "start": 23,
+      "end": 30
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-23-twin.env",
+      "start": 57,
+      "end": 66
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-25-twin.http",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-25-twin.http",
+      "start": 9,
+      "end": 13
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-25-twin.http",
+      "start": 14,
+      "end": 18
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-25-twin.http",
+      "start": 19,
+      "end": 22
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-25-twin.http",
+      "start": 23,
+      "end": 27
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-25-twin.http",
+      "start": 29,
+      "end": 44
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-25-twin.http",
+      "start": 47,
+      "end": 50
+    },
+    {
+      "path": "cases/trigger-dev-token-root-body-25-twin.http",
+      "start": 56,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-sdk-kwarg.py",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/trigger-dev-token-sdk-kwarg.py",
+      "start": 9,
+      "end": 22
+    },
+    {
+      "path": "cases/trigger-dev-token-sdk-kwarg.py",
+      "start": 23,
+      "end": 30
+    },
+    {
+      "path": "cases/trigger-dev-token-trailing-glue-twin.sh",
+      "start": 7,
+      "end": 25
+    },
+    {
+      "path": "cases/trigger-dev-token-trailing-glue-twin.sh",
+      "start": 27,
+      "end": 57
+    },
+    {
+      "path": "cases/trigger-dev-token-underscore-in-body-twin.yml",
+      "start": 8,
+      "end": 14
+    },
+    {
+      "path": "cases/trigger-dev-token-underscore-in-body-twin.yml",
+      "start": 20,
+      "end": 24
+    },
+    {
+      "path": "cases/trigger-dev-token-underscore-in-body-twin.yml",
+      "start": 29,
+      "end": 35
+    },
+    {
+      "path": "cases/trigger-dev-token-underscore-in-body-twin.yml",
+      "start": 47,
+      "end": 50
+    },
+    {
+      "path": "cases/trigger-dev-token-underscore-in-body-twin.yml",
+      "start": 58,
+      "end": 76
+    },
+    {
+      "path": "cases/trigger-dev-token-underscore-in-body-twin.yml",
+      "start": 118,
+      "end": 123
+    },
+    {
+      "path": "cases/trigger-dev-token-underscore-in-body-twin.yml",
+      "start": 133,
+      "end": 136
+    },
+    {
+      "path": "cases/trigger-dev-token-underscore-in-body-twin.yml",
+      "start": 138,
+      "end": 141
+    },
+    {
+      "path": "cases/trigger-dev-token-underscore-in-body-twin.yml",
+      "start": 142,
+      "end": 153
+    },
+    {
+      "path": "cases/trigger-dev-token-underscore-in-body-twin.yml",
+      "start": 161,
+      "end": 167
+    },
+    {
+      "path": "cases/trigger-dev-token-unknown-env-twin.txt",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/trigger-dev-token-unknown-env-twin.txt",
+      "start": 11,
+      "end": 22
+    },
+    {
+      "path": "cases/trigger-dev-token-unknown-env-twin.txt",
+      "start": 23,
+      "end": 26
+    },
+    {
+      "path": "cases/trigger-dev-token-x-api-key-header.http",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/trigger-dev-token-x-api-key-header.http",
+      "start": 9,
+      "end": 13
+    },
+    {
+      "path": "cases/trigger-dev-token-x-api-key-header.http",
+      "start": 14,
+      "end": 18
+    },
+    {
+      "path": "cases/trigger-dev-token-x-api-key-header.http",
+      "start": 19,
+      "end": 22
+    },
+    {
+      "path": "cases/trigger-dev-token-x-api-key-header.http",
+      "start": 23,
+      "end": 27
+    },
+    {
+      "path": "cases/trigger-dev-token-x-api-key-header.http",
+      "start": 29,
+      "end": 44
+    },
+    {
+      "path": "cases/trigger-dev-token-x-api-key-header.http",
+      "start": 47,
+      "end": 50
+    },
+    {
+      "path": "cases/trigger-dev-token-x-api-key-header.http",
+      "start": 56,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/trigger-dev-token-x-run-placeholder.md",
+      "start": 0,
+      "end": 3
+    },
+    {
+      "path": "cases/trigger-dev-token-x-run-placeholder.md",
+      "start": 4,
+      "end": 22
+    },
+    {
+      "path": "cases/trigger-dev-token-x-run-placeholder.md",
+      "start": 26,
+      "end": 30
+    },
+    {
+      "path": "cases/trigger-dev-token-x-run-placeholder.md",
+      "start": 31,
+      "end": 34
+    },
+    {
+      "path": "cases/trigger-dev-token-x-run-placeholder.md",
+      "start": 39,
+      "end": 44
+    },
+    {
+      "path": "cases/trigger-dev-token-x-run-placeholder.md",
+      "start": 45,
+      "end": 49
+    },
+    {
+      "path": "cases/trigger-dev-token-x-run-placeholder.md",
+      "start": 50,
+      "end": 70
+    }
+  ],
+  "digest": "7c25990a8492d82d7073cdda2b5e4aa6de3362de97207f6f15b75f1782bf377e"
+}

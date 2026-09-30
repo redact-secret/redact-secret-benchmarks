@@ -1,0 +1,513 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-259",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "44087a8927e1a5dfe40b30b61f75266f9b00c63cc2ee66d5c30ecc2604f2a069",
+    "fixtureCount": 122,
+    "fixturesDigest": "4a610db5dc1f744955ae956e43cabad4314773b8929fa2e75029c84c5237337b",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/mailgun-api-key-triplet-key-id-note-prose.md",
+      "start": 0,
+      "end": 22
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-key-types-prose.md",
+      "start": 0,
+      "end": 26
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-key-types-prose.md",
+      "start": 42,
+      "end": 50
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-key-types-prose.md",
+      "start": 52,
+      "end": 58
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-key-types-prose.md",
+      "start": 67,
+      "end": 71
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-key-types-prose.md",
+      "start": 85,
+      "end": 92
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-key-types-prose.md",
+      "start": 93,
+      "end": 100
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-key-types-prose.md",
+      "start": 101,
+      "end": 104
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-legacy-note-prose.md",
+      "start": 42,
+      "end": 50
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-message-id-public-id.log",
+      "start": 24,
+      "end": 38
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-node-client-context-twin.js",
+      "start": 11,
+      "end": 24
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-node-client-context-twin.js",
+      "start": 38,
+      "end": 41
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-node-client.js",
+      "start": 11,
+      "end": 25
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-node-client.js",
+      "start": 39,
+      "end": 42
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-python-client-context-twin.py",
+      "start": 20,
+      "end": 26
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-python-client-context-twin.py",
+      "start": 35,
+      "end": 41
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-python-client.py",
+      "start": 20,
+      "end": 26
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-python-client.py",
+      "start": 35,
+      "end": 41
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-rotation-prose.md",
+      "start": 0,
+      "end": 26
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-sha256-template-encoded-value.txt",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-sha256-template-encoded-value.txt",
+      "start": 8,
+      "end": 16
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-sha256-template-encoded-value.txt",
+      "start": 17,
+      "end": 23
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-signing-key.env",
+      "start": 0,
+      "end": 27
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-signing-key.env",
+      "start": 61,
+      "end": 69
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-two-segments-near-miss.env",
+      "start": 49,
+      "end": 57
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-uppercase-hex-near-miss.env",
+      "start": 58,
+      "end": 66
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-webhook-event-id-public-id.json",
+      "start": 49,
+      "end": 54
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-webhook-event-id-public-id.json",
+      "start": 58,
+      "end": 67
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-webhook-event-id-public-id.json",
+      "start": 72,
+      "end": 79
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-webhook-event-id-public-id.json",
+      "start": 82,
+      "end": 86
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-webhook-signature-encoded-value.log",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-webhook-signature-encoded-value.log",
+      "start": 8,
+      "end": 15
+    },
+    {
+      "path": "cases/mailgun-api-key-triplet-webhook-signature-encoded-value.log",
+      "start": 16,
+      "end": 25
+    },
+    {
+      "path": "cases/neon-api-key-bearer-curl.sh",
+      "start": 66,
+      "end": 72
+    },
+    {
+      "path": "cases/neon-api-key-bearer-curl.sh",
+      "start": 73,
+      "end": 142,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/neon-api-key-create-branch-action.yml",
+      "start": 127,
+      "end": 196,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/neon-api-key-key-guidance-prose.md",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/neon-api-key-key-guidance-prose.md",
+      "start": 59,
+      "end": 65
+    },
+    {
+      "path": "cases/neon-api-key-key-guidance-prose.md",
+      "start": 90,
+      "end": 103
+    },
+    {
+      "path": "cases/neon-api-key-masked-display-placeholder.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/neon-api-key-neonctl-flag.sh",
+      "start": 37,
+      "end": 77,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/neon-api-key-project-digest-encoded-value.yml",
+      "start": 0,
+      "end": 14
+    },
+    {
+      "path": "cases/neon-api-key-uppercase-prefix-twin.sh",
+      "start": 37,
+      "end": 77,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/postman-collection-access-key-actions-newman.yml",
+      "start": 125,
+      "end": 133
+    },
+    {
+      "path": "cases/postman-collection-access-key-api-key-prefix-twin.sh",
+      "start": 51,
+      "end": 59
+    },
+    {
+      "path": "cases/postman-collection-access-key-chat-share.md",
+      "start": 90,
+      "end": 98
+    },
+    {
+      "path": "cases/postman-collection-access-key-collection-uid-public-id.env",
+      "start": 15,
+      "end": 23
+    },
+    {
+      "path": "cases/postman-collection-access-key-curl-collection-json.sh",
+      "start": 45,
+      "end": 53
+    },
+    {
+      "path": "cases/postman-collection-access-key-document-code-near-miss.md",
+      "start": 0,
+      "end": 8
+    },
+    {
+      "path": "cases/postman-collection-access-key-env-reference-reference.sh",
+      "start": 51,
+      "end": 59
+    },
+    {
+      "path": "cases/postman-collection-access-key-key-guidance-prose.md",
+      "start": 67,
+      "end": 89
+    },
+    {
+      "path": "cases/postman-collection-access-key-masked-key-list-placeholder.txt",
+      "start": 0,
+      "end": 31
+    },
+    {
+      "path": "cases/postman-collection-access-key-newman-run.sh",
+      "start": 51,
+      "end": 59
+    },
+    {
+      "path": "cases/postman-collection-access-key-public-share-link-public-id.txt",
+      "start": 31,
+      "end": 38
+    },
+    {
+      "path": "cases/postman-collection-access-key-public-share-link-public-id.txt",
+      "start": 61,
+      "end": 69
+    },
+    {
+      "path": "cases/postman-collection-access-key-share-config.json",
+      "start": 19,
+      "end": 27
+    },
+    {
+      "path": "cases/postman-collection-access-key-share-via-api.txt",
+      "start": 74,
+      "end": 82
+    },
+    {
+      "path": "cases/postman-collection-access-key-short-body-twin.sh",
+      "start": 45,
+      "end": 53
+    },
+    {
+      "path": "cases/postman-collection-access-key-underscore-delimiter-twin.txt",
+      "start": 74,
+      "end": 82
+    },
+    {
+      "path": "cases/travisci-api-token-actions-env.yml",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/travisci-api-token-actions-env.yml",
+      "start": 8,
+      "end": 15
+    },
+    {
+      "path": "cases/travisci-api-token-actions-env.yml",
+      "start": 21,
+      "end": 25
+    },
+    {
+      "path": "cases/travisci-api-token-actions-env.yml",
+      "start": 30,
+      "end": 36
+    },
+    {
+      "path": "cases/travisci-api-token-actions-env.yml",
+      "start": 48,
+      "end": 51
+    },
+    {
+      "path": "cases/travisci-api-token-actions-env.yml",
+      "start": 59,
+      "end": 75
+    },
+    {
+      "path": "cases/travisci-api-token-actions-env.yml",
+      "start": 77,
+      "end": 99
+    },
+    {
+      "path": "cases/travisci-api-token-actions-env.yml",
+      "start": 104,
+      "end": 109
+    },
+    {
+      "path": "cases/travisci-api-token-actions-env.yml",
+      "start": 119,
+      "end": 122
+    },
+    {
+      "path": "cases/travisci-api-token-actions-env.yml",
+      "start": 126,
+      "end": 133
+    },
+    {
+      "path": "cases/travisci-api-token-actions-env.yml",
+      "start": 134,
+      "end": 141
+    },
+    {
+      "path": "cases/travisci-api-token-actions-env.yml",
+      "start": 142,
+      "end": 151
+    },
+    {
+      "path": "cases/travisci-api-token-build-env-public-id.env",
+      "start": 16,
+      "end": 25
+    },
+    {
+      "path": "cases/travisci-api-token-curl-authorization.sh",
+      "start": 43,
+      "end": 52
+    },
+    {
+      "path": "cases/travisci-api-token-docs-token-placeholder.sh",
+      "start": 40,
+      "end": 49
+    },
+    {
+      "path": "cases/travisci-api-token-identifier-key-twin.yml",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/travisci-api-token-identifier-key-twin.yml",
+      "start": 8,
+      "end": 15
+    },
+    {
+      "path": "cases/travisci-api-token-identifier-key-twin.yml",
+      "start": 21,
+      "end": 25
+    },
+    {
+      "path": "cases/travisci-api-token-identifier-key-twin.yml",
+      "start": 30,
+      "end": 36
+    },
+    {
+      "path": "cases/travisci-api-token-identifier-key-twin.yml",
+      "start": 48,
+      "end": 51
+    },
+    {
+      "path": "cases/travisci-api-token-identifier-key-twin.yml",
+      "start": 59,
+      "end": 74
+    },
+    {
+      "path": "cases/travisci-api-token-identifier-key-twin.yml",
+      "start": 76,
+      "end": 98
+    },
+    {
+      "path": "cases/travisci-api-token-identifier-key-twin.yml",
+      "start": 103,
+      "end": 108
+    },
+    {
+      "path": "cases/travisci-api-token-identifier-key-twin.yml",
+      "start": 118,
+      "end": 121
+    },
+    {
+      "path": "cases/travisci-api-token-identifier-key-twin.yml",
+      "start": 125,
+      "end": 132
+    },
+    {
+      "path": "cases/travisci-api-token-identifier-key-twin.yml",
+      "start": 133,
+      "end": 140
+    },
+    {
+      "path": "cases/travisci-api-token-identifier-key-twin.yml",
+      "start": 141,
+      "end": 150
+    },
+    {
+      "path": "cases/travisci-api-token-no-travis-context-twin.sh",
+      "start": 10,
+      "end": 16
+    },
+    {
+      "path": "cases/travisci-api-token-sync-log.log",
+      "start": 40,
+      "end": 49
+    },
+    {
+      "path": "cases/travisci-api-token-sync-log.log",
+      "start": 50,
+      "end": 72,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/travisci-api-token-token-guidance-prose.md",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/travisci-api-token-token-guidance-prose.md",
+      "start": 69,
+      "end": 78
+    },
+    {
+      "path": "cases/travisci-api-token-underscore-body-twin.sh",
+      "start": 43,
+      "end": 52
+    }
+  ],
+  "digest": "3d659c4aad053cf1b799e13ff4e8fb4dd45cbe44fd7b498611549b09c4d5c9bf"
+}

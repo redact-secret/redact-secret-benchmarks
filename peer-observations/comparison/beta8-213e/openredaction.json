@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-213e",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "055b9b5b63313c024552993d5f099bca072fbb62f3ace4efaf7a60ee87ccf558",
+    "fixtureCount": 12,
+    "fixturesDigest": "0cbcd78541d3727d0cb80d6d9cdda0c957c50b457e8154f0d42dd84c3fc68cf9",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/datadog-application-key-legacy-http-request.http",
+      "start": 82,
+      "end": 93
+    }
+  ],
+  "digest": "07eecb3df79cf61f7eae6eba9604ebeb7b6a8fcc63b35bf02cb6832c7dd01404"
+}

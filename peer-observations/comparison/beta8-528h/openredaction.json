@@ -1,0 +1,407 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-528h",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "af82a43fe0e42dfb83abada698d623b8555039d2c3dd2f543d7ec586defbb56d",
+    "fixtureCount": 33,
+    "fixturesDigest": "166fd81201612d2c7bcfc1d9e87e8e76bd4043892fe9067942f70924f9b3f5f5",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/paddle-api-key-bare-prose.md",
+      "start": 12,
+      "end": 19
+    },
+    {
+      "path": "cases/paddle-api-key-bare-prose.md",
+      "start": 19,
+      "end": 34
+    },
+    {
+      "path": "cases/paddle-api-key-bare-prose.md",
+      "start": 35,
+      "end": 42
+    },
+    {
+      "path": "cases/paddle-api-key-bare-prose.md",
+      "start": 44,
+      "end": 59
+    },
+    {
+      "path": "cases/paddle-api-key-bearer-header.http",
+      "start": 24,
+      "end": 28
+    },
+    {
+      "path": "cases/paddle-api-key-bearer-header.http",
+      "start": 30,
+      "end": 33
+    },
+    {
+      "path": "cases/paddle-api-key-bearer-header.http",
+      "start": 34,
+      "end": 40
+    },
+    {
+      "path": "cases/paddle-api-key-bearer-header.http",
+      "start": 41,
+      "end": 44
+    },
+    {
+      "path": "cases/paddle-api-key-bearer-header.http",
+      "start": 45,
+      "end": 58
+    },
+    {
+      "path": "cases/paddle-api-key-bearer-header.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/paddle-api-key-bearer-header.http",
+      "start": 67,
+      "end": 136,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/paddle-api-key-chat-paste.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/paddle-api-key-docs-regex-placeholder.md",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/paddle-api-key-docs-regex-placeholder.md",
+      "start": 22,
+      "end": 26
+    },
+    {
+      "path": "cases/paddle-api-key-docs-regex-placeholder.md",
+      "start": 27,
+      "end": 31
+    },
+    {
+      "path": "cases/paddle-api-key-dotenv.env",
+      "start": 3,
+      "end": 6
+    },
+    {
+      "path": "cases/paddle-api-key-id-25-twin.env",
+      "start": 3,
+      "end": 6
+    },
+    {
+      "path": "cases/paddle-api-key-key-guidance-prose.md",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/paddle-api-key-key-guidance-prose.md",
+      "start": 16,
+      "end": 27
+    },
+    {
+      "path": "cases/paddle-api-key-key-guidance-prose.md",
+      "start": 44,
+      "end": 47
+    },
+    {
+      "path": "cases/paddle-api-key-key-guidance-prose.md",
+      "start": 65,
+      "end": 69
+    },
+    {
+      "path": "cases/paddle-api-key-key-guidance-prose.md",
+      "start": 77,
+      "end": 92
+    },
+    {
+      "path": "cases/paddle-api-key-leading-glue-twin.md",
+      "start": 12,
+      "end": 19
+    },
+    {
+      "path": "cases/paddle-api-key-leading-glue-twin.md",
+      "start": 19,
+      "end": 34
+    },
+    {
+      "path": "cases/paddle-api-key-leading-glue-twin.md",
+      "start": 35,
+      "end": 42
+    },
+    {
+      "path": "cases/paddle-api-key-leading-glue-twin.md",
+      "start": 44,
+      "end": 59
+    },
+    {
+      "path": "cases/paddle-api-key-missing-apikey-twin.py",
+      "start": 20,
+      "end": 33
+    },
+    {
+      "path": "cases/paddle-api-key-missing-apikey-twin.py",
+      "start": 35,
+      "end": 41
+    },
+    {
+      "path": "cases/paddle-api-key-missing-apikey-twin.py",
+      "start": 44,
+      "end": 50
+    },
+    {
+      "path": "cases/paddle-api-key-node-sdk-constructor.ts",
+      "start": 45,
+      "end": 51
+    },
+    {
+      "path": "cases/paddle-api-key-node-sdk-constructor.ts",
+      "start": 52,
+      "end": 56
+    },
+    {
+      "path": "cases/paddle-api-key-node-sdk-constructor.ts",
+      "start": 57,
+      "end": 60
+    },
+    {
+      "path": "cases/paddle-api-key-node-sdk-constructor.ts",
+      "start": 64,
+      "end": 76
+    },
+    {
+      "path": "cases/paddle-api-key-node-sdk-constructor.ts",
+      "start": 79,
+      "end": 89
+    },
+    {
+      "path": "cases/paddle-api-key-node-sdk-constructor.ts",
+      "start": 194,
+      "end": 200
+    },
+    {
+      "path": "cases/paddle-api-key-python-sdk-client.py",
+      "start": 20,
+      "end": 33
+    },
+    {
+      "path": "cases/paddle-api-key-python-sdk-client.py",
+      "start": 35,
+      "end": 41
+    },
+    {
+      "path": "cases/paddle-api-key-python-sdk-client.py",
+      "start": 44,
+      "end": 50
+    },
+    {
+      "path": "cases/paddle-api-key-sdk-kwarg.py",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/paddle-api-key-sdk-kwarg.py",
+      "start": 9,
+      "end": 15
+    },
+    {
+      "path": "cases/paddle-api-key-secret-23-twin.http",
+      "start": 24,
+      "end": 28
+    },
+    {
+      "path": "cases/paddle-api-key-secret-23-twin.http",
+      "start": 30,
+      "end": 33
+    },
+    {
+      "path": "cases/paddle-api-key-secret-23-twin.http",
+      "start": 34,
+      "end": 40
+    },
+    {
+      "path": "cases/paddle-api-key-secret-23-twin.http",
+      "start": 41,
+      "end": 44
+    },
+    {
+      "path": "cases/paddle-api-key-secret-23-twin.http",
+      "start": 45,
+      "end": 58
+    },
+    {
+      "path": "cases/paddle-api-key-secret-23-twin.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/paddle-api-key-secret-23-twin.http",
+      "start": 67,
+      "end": 137,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/paddle-api-key-suffix-2-twin.http",
+      "start": 9,
+      "end": 18
+    },
+    {
+      "path": "cases/paddle-api-key-suffix-2-twin.http",
+      "start": 23,
+      "end": 27
+    },
+    {
+      "path": "cases/paddle-api-key-suffix-2-twin.http",
+      "start": 29,
+      "end": 32
+    },
+    {
+      "path": "cases/paddle-api-key-suffix-2-twin.http",
+      "start": 33,
+      "end": 39
+    },
+    {
+      "path": "cases/paddle-api-key-suffix-2-twin.http",
+      "start": 40,
+      "end": 43
+    },
+    {
+      "path": "cases/paddle-api-key-suffix-2-twin.http",
+      "start": 46,
+      "end": 49
+    },
+    {
+      "path": "cases/paddle-api-key-suffix-2-twin.http",
+      "start": 50,
+      "end": 53
+    },
+    {
+      "path": "cases/paddle-api-key-suffix-2-twin.http",
+      "start": 55,
+      "end": 123,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/paddle-api-key-suffix-4-twin.py",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/paddle-api-key-suffix-4-twin.py",
+      "start": 9,
+      "end": 15
+    },
+    {
+      "path": "cases/paddle-api-key-test-environment-twin.ts",
+      "start": 194,
+      "end": 200
+    },
+    {
+      "path": "cases/paddle-api-key-trailing-glue-twin.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/paddle-api-key-truncated-near-miss.log",
+      "start": 21,
+      "end": 28
+    },
+    {
+      "path": "cases/paddle-api-key-truncated-near-miss.log",
+      "start": 30,
+      "end": 39
+    },
+    {
+      "path": "cases/paddle-api-key-truncated-near-miss.log",
+      "start": 39,
+      "end": 53
+    },
+    {
+      "path": "cases/paddle-api-key-webhook-key-id-public-id.json",
+      "start": 109,
+      "end": 119
+    },
+    {
+      "path": "cases/paddle-api-key-x-api-key-header.http",
+      "start": 9,
+      "end": 18
+    },
+    {
+      "path": "cases/paddle-api-key-x-api-key-header.http",
+      "start": 23,
+      "end": 27
+    },
+    {
+      "path": "cases/paddle-api-key-x-api-key-header.http",
+      "start": 29,
+      "end": 32
+    },
+    {
+      "path": "cases/paddle-api-key-x-api-key-header.http",
+      "start": 33,
+      "end": 39
+    },
+    {
+      "path": "cases/paddle-api-key-x-api-key-header.http",
+      "start": 40,
+      "end": 43
+    },
+    {
+      "path": "cases/paddle-api-key-x-api-key-header.http",
+      "start": 46,
+      "end": 49
+    },
+    {
+      "path": "cases/paddle-api-key-x-api-key-header.http",
+      "start": 50,
+      "end": 53
+    },
+    {
+      "path": "cases/paddle-api-key-x-api-key-header.http",
+      "start": 55,
+      "end": 124,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "504dff103b03bd578bfbf4342fb8275b3bf2c37764d075dbd3f5d7b4dc6fbe3a"
+}

@@ -73,7 +73,7 @@ test("a claim map disambiguates the same value repeated on one line across calls
   const single = new Map();
   assert.equal(locate([sameLine], "/tmp/bench", fixture.path, "abc", 1, single).start, 0);
 });
-for (const id of ["redact-secret", "flare-redact"]) {
+for (const id of ["redact-secret", "flare-redact", "openredaction"]) {
   test(`${id}: published npm adapter converts UTF-16 offsets and never exports matched values`, async () => {
     const corpus = validateCorpus(
       JSON.parse(
@@ -101,8 +101,9 @@ for (const id of ["redact-secret", "flare-redact"]) {
       // such concept (docs/decisions/2026-09-21-add-untargeted-benign-corpus.md, Decision 3).
       const expectedKeys = id === "redact-secret" ? ["action", "end", "family", "path", "start"] : ["end", "family", "path", "start"];
       for (const r of results) {
-        assert.deepEqual(Object.keys(r).sort(), expectedKeys);
-        assert.match(r.family, /^[a-z][a-z0-9-]+$/);
+        // openredaction runs with PII enabled, and its unmapped PII labels carry no family (families.mjs).
+        assert.deepEqual(Object.keys(r).sort(), id === "openredaction" && r.family === undefined ? expectedKeys.filter(k => k !== "family") : expectedKeys);
+        if (r.family !== undefined || id !== "openredaction") assert.match(r.family, /^[a-z][a-z0-9-]+$/);
         if (id === "redact-secret") assert.match(r.action, /^(redact|warn|block|allow)$/);
       }
       assert.doesNotThrow(() => score(corpus.fixtures, results));
@@ -140,6 +141,48 @@ test("flare-redact runs secrets-only: an ordinary email address in a must-not-fl
   try {
     await writeFile(path.join(dir, negative.path), negative.content, { mode: 0o600 });
     assert.deepEqual(await scanners.find((s) => s.id === "flare-redact").scan(dir, [negative]), []);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test("openredaction converts UTF-16 offsets to exact UTF-8 byte ranges across the existing Unicode and CRLF fixtures", async () => {
+  const { buildCorpora } = await import("../fixtures/generated/build.mjs");
+  const selected = buildCorpora()["common-formats"].fixtures.filter((f) =>
+    /^(?:github-token-ghp|aws-access-key-pair)-unicode-crlf$/.test(f.id),
+  );
+  assert.equal(selected.length, 2);
+  const dir = await mkdtemp(path.join(tmpdir(), "openredaction-unicode-crlf-"));
+  try {
+    await mkdir(path.join(dir, "cases"));
+    for (const f of selected) await writeFile(path.join(dir, f.path), f.content, { mode: 0o600 });
+    const actual = await scanners.find((s) => s.id === "openredaction").scan(dir, selected.map((f) => ({ ...f, expected: [] })));
+    // Every reported range must cover exactly the bytes of a value the scanner matched: a wrong UTF-16 -> UTF-8
+    // conversion would slice a different (or partial) string out of the fixture bytes.
+    const github = selected.find((f) => f.id.startsWith("github-token"));
+    const bytes = Buffer.from(github.content, "utf8");
+    const hit = actual.find((r) => r.path === github.path && r.family === "github-token");
+    assert.ok(hit, "the GitHub token is reported and mapped to its family");
+    assert.match(bytes.subarray(hit.start, hit.end).toString("utf8"), /^ghp_[A-Za-z0-9]{36,}$/);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test("openredaction reports the exact-pinned @openredaction/core version", async () => {
+  const pin = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8")).dependencies["@openredaction/core"];
+  assert.match(pin, /^\d+\.\d+\.\d+$/);
+  assert.equal(await scanners.find((s) => s.id === "openredaction").version(), pin);
+});
+
+test("openredaction runs with PII enabled: a personal email address is reported, unmapped, unlike the secrets-only flare-redact adapter", async () => {
+  const dir = await mkdtemp(path.join(tmpdir(), "openredaction-pii-"));
+  const positive = { id: "email", path: "email.txt", content: "Email: john.smith@company.com\n", expected: [] };
+  try {
+    await writeFile(path.join(dir, positive.path), positive.content, { mode: 0o600 });
+    const actual = await scanners.find((s) => s.id === "openredaction").scan(dir, [positive]);
+    assert.deepEqual(actual, [{ path: "email.txt", start: 7, end: 29 }]);
+    assert.deepEqual(await scanners.find((s) => s.id === "flare-redact").scan(dir, [positive]), []);
   } finally {
     await rm(dir, { recursive: true, force: true });
   }

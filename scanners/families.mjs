@@ -225,7 +225,23 @@ export const arrivalFindingTypes = Object.freeze({
 // other arrival id stays unscored.
 export const scoredArrivalFamilies = Object.freeze(
   [...new Set(Object.values(arrivalFindingTypes).flatMap(types => Object.values(types)))].sort());
-const nativeTables = { gitleaks, trufflehog, 'flare-redact': flareRedact };
+// OpenRedaction (@openredaction/core 1.1.5) pattern types. As with flare-redact, only types whose matched format is the
+// same credential a family already scores are mapped; the package's PII types (email, phone, names, national ids,
+// cards, ...) and providers with no family in this corpus stay unmapped rather than guessed. `GOOGLE_API_KEY` and
+// `FIREBASE_API_KEY` share one AIza pattern, `HEROKU_API_KEY` is a bare UUID and `OAUTH_TOKEN` is keyword-gated
+// over an arbitrary body, so all four stay unmapped. `GENERIC_SECRET` and `GENERIC_API_KEY` are keyword-before-value
+// catch-alls, the same shape as flare-redact's `generic_assignment`. `SLACK_WEBHOOK` is a webhook URL, not the
+// `xox*` token family, so it stays unmapped. `URL_WITH_AUTH` (an http/ftp URL's embedded user:pass) and
+// `DATABASE_CONNECTION` (a database URI's embedded user:pass) are the `connection-string` artifact.
+const openRedaction = {
+  GITHUB_TOKEN: 'github-token', SLACK_TOKEN: 'slack-token', NPM_TOKEN: 'npm-token', PYPI_TOKEN: 'pypi-token',
+  SENDGRID_API_KEY: 'sendgrid-token', OPENAI_API_KEY: 'openai-token', STRIPE_API_KEY: 'stripe-token',
+  AWS_ACCESS_KEY: 'aws-access-key', AWS_SECRET_KEY: 'aws-secret-access-key',
+  PRIVATE_KEY: 'private-key', SSH_PRIVATE_KEY: 'private-key', JWT_TOKEN: 'jwt', BEARER_TOKEN: 'bearer-token',
+  URL_WITH_AUTH: 'connection-string', DATABASE_CONNECTION: 'connection-string',
+  MAILGUN_API_KEY: 'mailgun-api-key', GENERIC_SECRET: 'generic-token', GENERIC_API_KEY: 'generic-token',
+};
+const nativeTables = { gitleaks, trufflehog, 'flare-redact': flareRedact, openredaction: openRedaction };
 /**
  * The benchmark family of one scanner finding. `label` is the scanner's native
  * rule label (the product detector id for redact-secret); `findingType` is the

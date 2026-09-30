@@ -1,0 +1,528 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-1012a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "7ed7c0278a1d5ce43851ccb88eef2530eb2eebec9356d43f1dba74236ee74cff",
+    "fixtureCount": 51,
+    "fixturesDigest": "d71fc2a39f83688f9180b8b5d678fe917c34252cf805764de2cb2caa24e1451a",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/aws-secret-access-key-actions-env.yml",
+      "start": 80,
+      "end": 120,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-aida-akia-next-line-twin.txt",
+      "start": 0,
+      "end": 23
+    },
+    {
+      "path": "cases/aws-secret-access-key-aida-akia-same-line-twin.log",
+      "start": 82,
+      "end": 88
+    },
+    {
+      "path": "cases/aws-secret-access-key-akia-next-line.txt",
+      "start": 0,
+      "end": 23
+    },
+    {
+      "path": "cases/aws-secret-access-key-akia-next-line.txt",
+      "start": 100,
+      "end": 120,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-akia-same-line.log",
+      "start": 82,
+      "end": 88
+    },
+    {
+      "path": "cases/aws-secret-access-key-akia-same-line.log",
+      "start": 94,
+      "end": 114,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-artifact-digest-actions-twin.yml",
+      "start": 20,
+      "end": 24
+    },
+    {
+      "path": "cases/aws-secret-access-key-artifact-digest-actions-twin.yml",
+      "start": 29,
+      "end": 35
+    },
+    {
+      "path": "cases/aws-secret-access-key-artifact-digest-actions-twin.yml",
+      "start": 36,
+      "end": 41
+    },
+    {
+      "path": "cases/aws-secret-access-key-artifact-digest-actions-twin.yml",
+      "start": 46,
+      "end": 49
+    },
+    {
+      "path": "cases/aws-secret-access-key-artifact-digest-actions-twin.yml",
+      "start": 57,
+      "end": 76
+    },
+    {
+      "path": "cases/aws-secret-access-key-artifact-digest-actions-twin.yml",
+      "start": 78,
+      "end": 118,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-bare-in-prose-near-miss.md",
+      "start": 0,
+      "end": 24
+    },
+    {
+      "path": "cases/aws-secret-access-key-boto3-kwarg.py",
+      "start": 61,
+      "end": 101,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-build-digest-chat-twin.txt",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/aws-secret-access-key-build-digest-chat-twin.txt",
+      "start": 18,
+      "end": 24
+    },
+    {
+      "path": "cases/aws-secret-access-key-build-digest-chat-twin.txt",
+      "start": 41,
+      "end": 45
+    },
+    {
+      "path": "cases/aws-secret-access-key-build-digest-chat-twin.txt",
+      "start": 51,
+      "end": 75
+    },
+    {
+      "path": "cases/aws-secret-access-key-chat-phrase.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/aws-secret-access-key-chat-phrase.txt",
+      "start": 52,
+      "end": 92,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-compose-env.yml",
+      "start": 110,
+      "end": 150,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-configure-list-placeholder.txt",
+      "start": 178,
+      "end": 182
+    },
+    {
+      "path": "cases/aws-secret-access-key-configure-list-placeholder.txt",
+      "start": 222,
+      "end": 250
+    },
+    {
+      "path": "cases/aws-secret-access-key-configure-list-placeholder.txt",
+      "start": 282,
+      "end": 310
+    },
+    {
+      "path": "cases/aws-secret-access-key-create-access-key-yaml.yml",
+      "start": 0,
+      "end": 9
+    },
+    {
+      "path": "cases/aws-secret-access-key-create-access-key-yaml.yml",
+      "start": 13,
+      "end": 21
+    },
+    {
+      "path": "cases/aws-secret-access-key-create-access-key-yaml.yml",
+      "start": 23,
+      "end": 34
+    },
+    {
+      "path": "cases/aws-secret-access-key-create-access-key-yaml.yml",
+      "start": 37,
+      "end": 43
+    },
+    {
+      "path": "cases/aws-secret-access-key-create-access-key-yaml.yml",
+      "start": 45,
+      "end": 51
+    },
+    {
+      "path": "cases/aws-secret-access-key-create-access-key-yaml.yml",
+      "start": 54,
+      "end": 69
+    },
+    {
+      "path": "cases/aws-secret-access-key-create-access-key-yaml.yml",
+      "start": 71,
+      "end": 111,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-credentials-file-named-profile.ini",
+      "start": 36,
+      "end": 76,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-credentials-file.ini",
+      "start": 53,
+      "end": 93,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-docs-note-prose.md",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/aws-secret-access-key-docs-note-prose.md",
+      "start": 39,
+      "end": 42
+    },
+    {
+      "path": "cases/aws-secret-access-key-docs-note-prose.md",
+      "start": 43,
+      "end": 49
+    },
+    {
+      "path": "cases/aws-secret-access-key-docs-note-prose.md",
+      "start": 59,
+      "end": 65
+    },
+    {
+      "path": "cases/aws-secret-access-key-docs-note-prose.md",
+      "start": 66,
+      "end": 69
+    },
+    {
+      "path": "cases/aws-secret-access-key-docs-note-prose.md",
+      "start": 75,
+      "end": 79
+    },
+    {
+      "path": "cases/aws-secret-access-key-docs-note-prose.md",
+      "start": 80,
+      "end": 84
+    },
+    {
+      "path": "cases/aws-secret-access-key-docs-note-prose.md",
+      "start": 88,
+      "end": 92
+    },
+    {
+      "path": "cases/aws-secret-access-key-docs-note-prose.md",
+      "start": 93,
+      "end": 101
+    },
+    {
+      "path": "cases/aws-secret-access-key-dotenv.env",
+      "start": 50,
+      "end": 90,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-equals-inside-twin.json",
+      "start": 5,
+      "end": 13
+    },
+    {
+      "path": "cases/aws-secret-access-key-equals-inside-twin.json",
+      "start": 20,
+      "end": 28
+    },
+    {
+      "path": "cases/aws-secret-access-key-equals-inside-twin.json",
+      "start": 34,
+      "end": 40
+    },
+    {
+      "path": "cases/aws-secret-access-key-equals-inside-twin.json",
+      "start": 44,
+      "end": 50
+    },
+    {
+      "path": "cases/aws-secret-access-key-equals-inside-twin.json",
+      "start": 75,
+      "end": 115,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-export.sh",
+      "start": 30,
+      "end": 70,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-iam-user-id-public-id.json",
+      "start": 5,
+      "end": 13
+    },
+    {
+      "path": "cases/aws-secret-access-key-iam-user-id-public-id.json",
+      "start": 34,
+      "end": 40
+    },
+    {
+      "path": "cases/aws-secret-access-key-iam-user-id-public-id.json",
+      "start": 44,
+      "end": 64
+    },
+    {
+      "path": "cases/aws-secret-access-key-iam-user-id-public-id.json",
+      "start": 77,
+      "end": 119
+    },
+    {
+      "path": "cases/aws-secret-access-key-js-credentials.ts",
+      "start": 125,
+      "end": 165,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-json-member.json",
+      "start": 5,
+      "end": 13
+    },
+    {
+      "path": "cases/aws-secret-access-key-json-member.json",
+      "start": 20,
+      "end": 28
+    },
+    {
+      "path": "cases/aws-secret-access-key-json-member.json",
+      "start": 34,
+      "end": 40
+    },
+    {
+      "path": "cases/aws-secret-access-key-json-member.json",
+      "start": 44,
+      "end": 50
+    },
+    {
+      "path": "cases/aws-secret-access-key-json-member.json",
+      "start": 75,
+      "end": 115,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-kms-alias-export-twin.sh",
+      "start": 26,
+      "end": 66,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-policy-digest-yaml-twin.yml",
+      "start": 0,
+      "end": 9
+    },
+    {
+      "path": "cases/aws-secret-access-key-policy-digest-yaml-twin.yml",
+      "start": 13,
+      "end": 21
+    },
+    {
+      "path": "cases/aws-secret-access-key-policy-digest-yaml-twin.yml",
+      "start": 23,
+      "end": 34
+    },
+    {
+      "path": "cases/aws-secret-access-key-policy-digest-yaml-twin.yml",
+      "start": 37,
+      "end": 43
+    },
+    {
+      "path": "cases/aws-secret-access-key-policy-digest-yaml-twin.yml",
+      "start": 45,
+      "end": 51
+    },
+    {
+      "path": "cases/aws-secret-access-key-policy-digest-yaml-twin.yml",
+      "start": 54,
+      "end": 66
+    },
+    {
+      "path": "cases/aws-secret-access-key-policy-digest-yaml-twin.yml",
+      "start": 68,
+      "end": 95
+    },
+    {
+      "path": "cases/aws-secret-access-key-policy-digest-yaml-twin.yml",
+      "start": 101,
+      "end": 108
+    },
+    {
+      "path": "cases/aws-secret-access-key-policy-digest-yaml-twin.yml",
+      "start": 111,
+      "end": 121
+    },
+    {
+      "path": "cases/aws-secret-access-key-python-environ-reference.py",
+      "start": 20,
+      "end": 30,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-role-arn-public-id.env",
+      "start": 13,
+      "end": 65
+    },
+    {
+      "path": "cases/aws-secret-access-key-rotation-guidance-prose.md",
+      "start": 0,
+      "end": 24
+    },
+    {
+      "path": "cases/aws-secret-access-key-rotation-guidance-prose.md",
+      "start": 38,
+      "end": 53
+    },
+    {
+      "path": "cases/aws-secret-access-key-rotation-guidance-prose.md",
+      "start": 53,
+      "end": 62
+    },
+    {
+      "path": "cases/aws-secret-access-key-rotation-guidance-prose.md",
+      "start": 64,
+      "end": 75
+    },
+    {
+      "path": "cases/aws-secret-access-key-rotation-guidance-prose.md",
+      "start": 75,
+      "end": 90
+    },
+    {
+      "path": "cases/aws-secret-access-key-rotation-guidance-prose.md",
+      "start": 91,
+      "end": 97
+    },
+    {
+      "path": "cases/aws-secret-access-key-rotation-guidance-prose.md",
+      "start": 97,
+      "end": 108
+    },
+    {
+      "path": "cases/aws-secret-access-key-session-name-compose-twin.yml",
+      "start": 110,
+      "end": 150,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-session-name-credentials-file-twin.ini",
+      "start": 53,
+      "end": 93,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-session-name-dotenv-twin.env",
+      "start": 50,
+      "end": 90,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-session-name-js-twin.ts",
+      "start": 121,
+      "end": 161,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-session-name-json-twin.json",
+      "start": 5,
+      "end": 13
+    },
+    {
+      "path": "cases/aws-secret-access-key-session-name-json-twin.json",
+      "start": 20,
+      "end": 28
+    },
+    {
+      "path": "cases/aws-secret-access-key-session-name-json-twin.json",
+      "start": 34,
+      "end": 40
+    },
+    {
+      "path": "cases/aws-secret-access-key-session-name-json-twin.json",
+      "start": 44,
+      "end": 50
+    },
+    {
+      "path": "cases/aws-secret-access-key-session-name-tfvars-twin.tfvars",
+      "start": 41,
+      "end": 81,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-tfvars.tfvars",
+      "start": 39,
+      "end": 79,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-value-39-twin.env",
+      "start": 49,
+      "end": 89,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-value-41-twin.sh",
+      "start": 30,
+      "end": 70,
+      "family": "aws-secret-access-key"
+    }
+  ],
+  "digest": "3dcffca760934eba4437e6704b6d9495d0b81f6b5e43a7a501f61fb600b9ea13"
+}

@@ -1,0 +1,169 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-464e",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "e6f65087d462ebd5994702dca7ba5bff307606ef0d273e509bc280a551dfed56",
+    "fixtureCount": 40,
+    "fixturesDigest": "93c17bacd6ae506c1d576c06b41d716e03f5ab92b2769f18c33bf66f96ea2339",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/cerebras-api-key-bare-prose-underscore.md",
+      "start": 0,
+      "end": 31
+    },
+    {
+      "path": "cases/cerebras-api-key-bare-prose.md",
+      "start": 0,
+      "end": 31
+    },
+    {
+      "path": "cases/cerebras-api-key-bearer-header-underscore.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/cerebras-api-key-bearer-header-underscore.http",
+      "start": 68,
+      "end": 120,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/cerebras-api-key-bearer-header.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/cerebras-api-key-bearer-header.http",
+      "start": 68,
+      "end": 120,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/cerebras-api-key-chat-paste-underscore.txt",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/cerebras-api-key-chat-paste.txt",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/cerebras-api-key-key-guidance-prose.md",
+      "start": 45,
+      "end": 69
+    },
+    {
+      "path": "cases/cerebras-api-key-leading-glue-twin.md",
+      "start": 0,
+      "end": 31
+    },
+    {
+      "path": "cases/cerebras-api-key-leading-underscore-twin.txt",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/cerebras-api-key-pinecone-hyphen-glue-twin.http",
+      "start": 56,
+      "end": 109,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/cerebras-api-key-pinecone-underscore-glue-twin.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/cerebras-api-key-pinecone-underscore-glue-twin.http",
+      "start": 68,
+      "end": 121,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/cerebras-api-key-python-sdk.py",
+      "start": 31,
+      "end": 47
+    },
+    {
+      "path": "cases/cerebras-api-key-snake-case-name-public-id.py",
+      "start": 5,
+      "end": 20
+    },
+    {
+      "path": "cases/cerebras-api-key-snake-case-name-public-id.py",
+      "start": 28,
+      "end": 47
+    },
+    {
+      "path": "cases/cerebras-api-key-snake-case-name-public-id.py",
+      "start": 49,
+      "end": 73
+    },
+    {
+      "path": "cases/cerebras-api-key-x-api-key-header-underscore.http",
+      "start": 29,
+      "end": 44
+    },
+    {
+      "path": "cases/cerebras-api-key-x-api-key-header-underscore.http",
+      "start": 47,
+      "end": 50
+    },
+    {
+      "path": "cases/cerebras-api-key-x-api-key-header-underscore.http",
+      "start": 56,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/cerebras-api-key-x-api-key-header-underscore.http",
+      "start": 123,
+      "end": 134
+    },
+    {
+      "path": "cases/cerebras-api-key-x-api-key-header.http",
+      "start": 56,
+      "end": 108,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "f53bda247bb48d84d43528f6818db9dd50eba8fc1864d1390eb5ba59f90546f2"
+}

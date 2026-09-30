@@ -1,0 +1,494 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-384e",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "dd461f869162466d15560369b73d3285ffb2edd73687f6ea23e395294516cf57",
+    "fixtureCount": 249,
+    "fixturesDigest": "3248b1a4b95b403f64b4db95b079dfbf0422c7e9477d70ee0eecc76e34ec074d",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/ai21-api-key-actions-env-literal.yml",
+      "start": 27,
+      "end": 33
+    },
+    {
+      "path": "cases/ai21-api-key-actions-env-literal.yml",
+      "start": 34,
+      "end": 39
+    },
+    {
+      "path": "cases/ai21-api-key-actions-env-literal.yml",
+      "start": 44,
+      "end": 47
+    },
+    {
+      "path": "cases/ai21-api-key-actions-env-literal.yml",
+      "start": 55,
+      "end": 67
+    },
+    {
+      "path": "cases/ai21-api-key-actions-env-literal.yml",
+      "start": 106,
+      "end": 111
+    },
+    {
+      "path": "cases/ai21-api-key-actions-env-literal.yml",
+      "start": 121,
+      "end": 124
+    },
+    {
+      "path": "cases/ai21-api-key-bare-in-prose-near-miss.md",
+      "start": 10,
+      "end": 18
+    },
+    {
+      "path": "cases/ai21-api-key-bare-in-prose-near-miss.md",
+      "start": 19,
+      "end": 23
+    },
+    {
+      "path": "cases/ai21-api-key-bare-in-prose-near-miss.md",
+      "start": 24,
+      "end": 30
+    },
+    {
+      "path": "cases/ai21-api-key-bare-in-prose-near-miss.md",
+      "start": 71,
+      "end": 79
+    },
+    {
+      "path": "cases/ai21-api-key-base64-text-encoded-value.yml",
+      "start": 0,
+      "end": 14
+    },
+    {
+      "path": "cases/ai21-api-key-curl-header.sh",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "path": "cases/ai21-api-key-curl-header.sh",
+      "start": 65,
+      "end": 97,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/ai21-api-key-key-guidance-prose.md",
+      "start": 120,
+      "end": 127
+    },
+    {
+      "path": "cases/ai21-api-key-litellm-yaml.yml",
+      "start": 103,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-model-notes-prose.md",
+      "start": 0,
+      "end": 31
+    },
+    {
+      "path": "cases/ai21-api-key-other-host-curl-twin.sh",
+      "start": 65,
+      "end": 71
+    },
+    {
+      "path": "cases/ai21-api-key-other-host-curl-twin.sh",
+      "start": 72,
+      "end": 104,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/cohere-api-key-bare-in-prose-near-miss.md",
+      "start": 10,
+      "end": 18
+    },
+    {
+      "path": "cases/cohere-api-key-bare-in-prose-near-miss.md",
+      "start": 24,
+      "end": 30
+    },
+    {
+      "path": "cases/cohere-api-key-base64-text-encoded-value.yml",
+      "start": 0,
+      "end": 14
+    },
+    {
+      "path": "cases/cohere-api-key-curl-header.sh",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/cohere-api-key-curl-header.sh",
+      "start": 67,
+      "end": 107,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/cohere-api-key-http-request-header.http",
+      "start": 59,
+      "end": 65
+    },
+    {
+      "path": "cases/cohere-api-key-http-request-header.http",
+      "start": 66,
+      "end": 106,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/cohere-api-key-key-guidance-prose.md",
+      "start": 0,
+      "end": 23
+    },
+    {
+      "path": "cases/cohere-api-key-key-guidance-prose.md",
+      "start": 122,
+      "end": 129
+    },
+    {
+      "path": "cases/cohere-api-key-litellm-yaml.yml",
+      "start": 113,
+      "end": 153,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/cohere-api-key-model-notes-prose.md",
+      "start": 0,
+      "end": 35
+    },
+    {
+      "path": "cases/cohere-api-key-other-host-curl-twin.sh",
+      "start": 65,
+      "end": 71
+    },
+    {
+      "path": "cases/cohere-api-key-other-host-curl-twin.sh",
+      "start": 72,
+      "end": 112,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-auth-failure-log.log",
+      "start": 51,
+      "end": 57
+    },
+    {
+      "path": "cases/deepgram-api-key-bare-in-prose-near-miss.md",
+      "start": 10,
+      "end": 18
+    },
+    {
+      "path": "cases/deepgram-api-key-bare-in-prose-near-miss.md",
+      "start": 24,
+      "end": 30
+    },
+    {
+      "path": "cases/deepgram-api-key-base64-text-encoded-value.yml",
+      "start": 0,
+      "end": 14
+    },
+    {
+      "path": "cases/deepgram-api-key-curl-header.sh",
+      "start": 51,
+      "end": 60
+    },
+    {
+      "path": "cases/deepgram-api-key-http-request-header.http",
+      "start": 50,
+      "end": 59
+    },
+    {
+      "path": "cases/deepgram-api-key-json-header-token.json",
+      "start": 63,
+      "end": 72
+    },
+    {
+      "path": "cases/deepgram-api-key-key-guidance-prose.md",
+      "start": 0,
+      "end": 25
+    },
+    {
+      "path": "cases/deepgram-api-key-key-guidance-prose.md",
+      "start": 124,
+      "end": 131
+    },
+    {
+      "path": "cases/deepgram-api-key-model-notes-prose.md",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/deepgram-api-key-other-host-curl-twin.sh",
+      "start": 54,
+      "end": 63
+    },
+    {
+      "path": "cases/deepgram-api-key-other-host-json-header-twin.json",
+      "start": 66,
+      "end": 75
+    },
+    {
+      "path": "cases/exa-api-key-api-key-id-export-twin.sh",
+      "start": 23,
+      "end": 59
+    },
+    {
+      "path": "cases/exa-api-key-bare-in-prose-near-miss.md",
+      "start": 10,
+      "end": 18
+    },
+    {
+      "path": "cases/exa-api-key-bare-in-prose-near-miss.md",
+      "start": 19,
+      "end": 23
+    },
+    {
+      "path": "cases/exa-api-key-bare-in-prose-near-miss.md",
+      "start": 24,
+      "end": 30
+    },
+    {
+      "path": "cases/exa-api-key-bare-in-prose-near-miss.md",
+      "start": 31,
+      "end": 39
+    },
+    {
+      "path": "cases/exa-api-key-bare-in-prose-near-miss.md",
+      "start": 40,
+      "end": 44
+    },
+    {
+      "path": "cases/exa-api-key-bare-in-prose-near-miss.md",
+      "start": 45,
+      "end": 49
+    },
+    {
+      "path": "cases/exa-api-key-bare-in-prose-near-miss.md",
+      "start": 50,
+      "end": 54
+    },
+    {
+      "path": "cases/exa-api-key-bare-in-prose-near-miss.md",
+      "start": 55,
+      "end": 67
+    },
+    {
+      "path": "cases/exa-api-key-bare-in-prose-near-miss.md",
+      "start": 75,
+      "end": 83
+    },
+    {
+      "path": "cases/exa-api-key-bearer-docs-prose.md",
+      "start": 31,
+      "end": 37
+    },
+    {
+      "path": "cases/exa-api-key-curl-x-api-key.sh",
+      "start": 49,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/exa-api-key-dotenv.env",
+      "start": 19,
+      "end": 55
+    },
+    {
+      "path": "cases/exa-api-key-export.sh",
+      "start": 20,
+      "end": 56
+    },
+    {
+      "path": "cases/exa-api-key-hosted-mcp-query.json",
+      "start": 68,
+      "end": 104
+    },
+    {
+      "path": "cases/exa-api-key-js-positional.ts",
+      "start": 7,
+      "end": 15
+    },
+    {
+      "path": "cases/exa-api-key-langchain-kwarg.py",
+      "start": 37,
+      "end": 73
+    },
+    {
+      "path": "cases/exa-api-key-other-host-twin.sh",
+      "start": 58,
+      "end": 94
+    },
+    {
+      "path": "cases/exa-api-key-python-kwarg.py",
+      "start": 19,
+      "end": 27
+    },
+    {
+      "path": "cases/exa-api-key-python-kwarg.py",
+      "start": 43,
+      "end": 79
+    },
+    {
+      "path": "cases/exa-api-key-python-positional.py",
+      "start": 19,
+      "end": 27
+    },
+    {
+      "path": "cases/exa-api-key-request-id-query-twin.json",
+      "start": 68,
+      "end": 104
+    },
+    {
+      "path": "cases/exa-api-key-team-management-ids-public-id.json",
+      "start": 108,
+      "end": 116
+    },
+    {
+      "path": "cases/exa-api-key-unrelated-js-positional-twin.ts",
+      "start": 7,
+      "end": 15
+    },
+    {
+      "path": "cases/exa-api-key-unrelated-python-ctor-twin.py",
+      "start": 19,
+      "end": 27
+    },
+    {
+      "path": "cases/exa-api-key-unrelated-python-ctor-twin.py",
+      "start": 46,
+      "end": 82
+    },
+    {
+      "path": "cases/exa-api-key-unrelated-python-positional-twin.py",
+      "start": 19,
+      "end": 27
+    },
+    {
+      "path": "cases/mistral-api-key-auth-failure-log.log",
+      "start": 51,
+      "end": 57
+    },
+    {
+      "path": "cases/mistral-api-key-bare-in-prose-near-miss.md",
+      "start": 10,
+      "end": 18
+    },
+    {
+      "path": "cases/mistral-api-key-bare-in-prose-near-miss.md",
+      "start": 19,
+      "end": 23
+    },
+    {
+      "path": "cases/mistral-api-key-bare-in-prose-near-miss.md",
+      "start": 24,
+      "end": 30
+    },
+    {
+      "path": "cases/mistral-api-key-bare-in-prose-near-miss.md",
+      "start": 71,
+      "end": 79
+    },
+    {
+      "path": "cases/mistral-api-key-base64-text-encoded-value.yml",
+      "start": 0,
+      "end": 14
+    },
+    {
+      "path": "cases/mistral-api-key-curl-header.sh",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/mistral-api-key-curl-header.sh",
+      "start": 67,
+      "end": 99,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/mistral-api-key-embedded-run-near-miss.txt",
+      "start": 0,
+      "end": 8
+    },
+    {
+      "path": "cases/mistral-api-key-http-request-header.http",
+      "start": 59,
+      "end": 65
+    },
+    {
+      "path": "cases/mistral-api-key-http-request-header.http",
+      "start": 66,
+      "end": 98,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/mistral-api-key-key-guidance-prose.md",
+      "start": 0,
+      "end": 24
+    },
+    {
+      "path": "cases/mistral-api-key-key-guidance-prose.md",
+      "start": 123,
+      "end": 130
+    },
+    {
+      "path": "cases/mistral-api-key-other-host-curl-twin.sh",
+      "start": 65,
+      "end": 71
+    },
+    {
+      "path": "cases/mistral-api-key-other-host-curl-twin.sh",
+      "start": 72,
+      "end": 104,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/mistral-api-key-python-ctor.py",
+      "start": 22,
+      "end": 37
+    },
+    {
+      "path": "cases/mistral-api-key-unrelated-python-ctor-twin.py",
+      "start": 22,
+      "end": 37
+    }
+  ],
+  "digest": "4e09433a28292001dded95440c0504edaf06a20c136a3b80d59cfb68209f68fb"
+}

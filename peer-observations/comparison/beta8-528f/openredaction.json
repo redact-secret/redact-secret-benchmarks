@@ -1,0 +1,280 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-528f",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "efbf590e274781633d7cafc993419a9a3bff49de79009ca279fa76894a44bed8",
+    "fixtureCount": 58,
+    "fixturesDigest": "54de7e4f1d316ee6765afd1bd88d7f143b74c89fb15d529488f4e4bf7070bf53",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/crates-io-token-bare-prose.md",
+      "start": 0,
+      "end": 32
+    },
+    {
+      "path": "cases/crates-io-token-bearer-header.http",
+      "start": 55,
+      "end": 61
+    },
+    {
+      "path": "cases/crates-io-token-bearer-header.http",
+      "start": 62,
+      "end": 97,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/crates-io-token-cargo-login.txt",
+      "start": 63,
+      "end": 68
+    },
+    {
+      "path": "cases/crates-io-token-chat-paste.txt",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/crates-io-token-cio-words-prose.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/crates-io-token-cio-words-prose.md",
+      "start": 29,
+      "end": 36
+    },
+    {
+      "path": "cases/crates-io-token-credentials-toml.toml",
+      "start": 32,
+      "end": 37
+    },
+    {
+      "path": "cases/crates-io-token-ellipsis-placeholder.md",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/crates-io-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 32
+    },
+    {
+      "path": "cases/crates-io-token-leading-underscore-twin.txt",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/crates-io-token-uppercase-prefix-twin.http",
+      "start": 55,
+      "end": 61
+    },
+    {
+      "path": "cases/crates-io-token-uppercase-prefix-twin.http",
+      "start": 62,
+      "end": 97,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/crates-io-token-x-api-key-header.http",
+      "start": 50,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-actions-log.log",
+      "start": 38,
+      "end": 55
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-bare-prose.md",
+      "start": 0,
+      "end": 40
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-bare-prose.md",
+      "start": 41,
+      "end": 51
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-bearer-header.http",
+      "start": 55,
+      "end": 61
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-bearer-header.http",
+      "start": 62,
+      "end": 101,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-body-33-twin.sh",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-chat-paste.txt",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-ellipsis-placeholder.md",
+      "start": 9,
+      "end": 15
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-ellipsis-placeholder.md",
+      "start": 16,
+      "end": 30
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-ellipsis-placeholder.md",
+      "start": 30,
+      "end": 45
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-ellipsis-placeholder.md",
+      "start": 45,
+      "end": 52
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-ellipsis-placeholder.md",
+      "start": 53,
+      "end": 64
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-ellipsis-placeholder.md",
+      "start": 78,
+      "end": 92
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-export.sh",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-github-env-export.yml",
+      "start": 44,
+      "end": 50
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-hyphen-separator-twin.http",
+      "start": 50,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 40
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-leading-glue-twin.md",
+      "start": 41,
+      "end": 51
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-trailing-hyphen-twin.txt",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-uppercase-prefix-twin.http",
+      "start": 55,
+      "end": 61
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-uppercase-prefix-twin.http",
+      "start": 62,
+      "end": 101,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-workflow-name-public-id.md",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-workflow-name-public-id.md",
+      "start": 8,
+      "end": 18
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-workflow-name-public-id.md",
+      "start": 22,
+      "end": 32
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-workflow-name-public-id.md",
+      "start": 37,
+      "end": 42
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-workflow-name-public-id.md",
+      "start": 43,
+      "end": 47
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-workflow-name-public-id.md",
+      "start": 48,
+      "end": 52
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-workflow-name-public-id.md",
+      "start": 53,
+      "end": 57
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-workflow-name-public-id.md",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-workflow-name-public-id.md",
+      "start": 67,
+      "end": 78
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-x-api-key-header.http",
+      "start": 50,
+      "end": 89,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "4cfd69c203b0b5a4160d1493cba90e5a59b5745da446cd8bbffa71562fc9016b"
+}

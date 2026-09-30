@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/credential-formats",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "b4b8020b10444bed179beb153964a254e15ebf3759c09d997497dfef43b7acf2",
+    "fixtureCount": 42,
+    "fixturesDigest": "83b7be6025481733db9a96e6ca6ac6f03765dafacde815c20f0a5a691edcce20",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/gho-1.env",
+      "start": 10,
+      "end": 50,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/gho-2.env",
+      "start": 10,
+      "end": 50,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/gho-3.env",
+      "start": 10,
+      "end": 50,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/ghp-1.env",
+      "start": 10,
+      "end": 50,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/ghp-2.env",
+      "start": 10,
+      "end": 50,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/ghp-3.env",
+      "start": 10,
+      "end": 50,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/ghr-1.env",
+      "start": 10,
+      "end": 50,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/ghr-2.env",
+      "start": 10,
+      "end": 50,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/ghr-3.env",
+      "start": 10,
+      "end": 50,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/ghs-1.env",
+      "start": 10,
+      "end": 50,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/ghs-2.env",
+      "start": 0,
+      "end": 9
+    },
+    {
+      "path": "cases/ghs-2.env",
+      "start": 10,
+      "end": 50,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/ghs-3.env",
+      "start": 10,
+      "end": 50,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/ghu-1.env",
+      "start": 10,
+      "end": 50,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/ghu-2.env",
+      "start": 10,
+      "end": 50,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/ghu-3.env",
+      "start": 10,
+      "end": 50,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/npm-1.env",
+      "start": 10,
+      "end": 50,
+      "family": "npm-token"
+    },
+    {
+      "path": "cases/npm-2.env",
+      "start": 10,
+      "end": 50,
+      "family": "npm-token"
+    },
+    {
+      "path": "cases/npm-3.env",
+      "start": 10,
+      "end": 50,
+      "family": "npm-token"
+    },
+    {
+      "path": "cases/sendgrid-1.env",
+      "start": 15,
+      "end": 84,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/sendgrid-2.env",
+      "start": 15,
+      "end": 84,
+      "family": "sendgrid-token"
+    },
+    {
+      "path": "cases/sendgrid-3-twin.env",
+      "start": 41,
+      "end": 83
+    },
+    {
+      "path": "cases/sendgrid-3.env",
+      "start": 41,
+      "end": 84
+    },
+    {
+      "path": "cases/slack-1.env",
+      "start": 12,
+      "end": 67,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-2.env",
+      "start": 12,
+      "end": 67,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-3.env",
+      "start": 12,
+      "end": 67,
+      "family": "slack-token"
+    }
+  ],
+  "digest": "4859ff57376b69b9ce89b870a6d4ace6af5802deaba689148fcaba2a2dc7f4e2"
+}

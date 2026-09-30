@@ -4,7 +4,7 @@ import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import {
-  digest, executionIdentity, inputIdentity, makeSnapshot, readSnapshot, snapshotObservation,
+  digest, executionIdentity, repositoryPeerIdentity, inputIdentity, makeSnapshot, readSnapshot, snapshotObservation,
   observationSuiteIdentity, validateSnapshot, writeSnapshot,
 } from '../benchmarks/lib/peer-observations.ts';
 import { createMethods } from '../benchmarks/methods/index.ts';
@@ -125,4 +125,15 @@ test('explicit refresh and live-reproduction workflow pins TruffleHog and expose
   assert.match(workflow, /npm run peers:snapshots:live/);
   assert.match(workflow, /git diff --binary -- peer-observations/);
   assert.match(workflow, /peer executions: 150 comparison \+ 4 suite-development/);
+});
+
+test('an npm peer whose scanner id differs from its package resolves its pinned version through configuration.package', async () => {
+  const root = new URL('..', import.meta.url).pathname;
+  const { scanners } = await import('../scanners/index.mjs');
+  const scanner = scanners.find(s => s.id === 'openredaction');
+  const pin = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8')).dependencies['@openredaction/core'];
+  const identity = await repositoryPeerIdentity(scanner, root);
+  assert.equal(identity.id, 'openredaction');
+  assert.equal(identity.version, pin);
+  assert.equal(identity.observedArtifact.platform, 'npm-lock');
 });

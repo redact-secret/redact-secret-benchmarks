@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/reference-syntax",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "8a930729c83d782d859c1a9229943c164e7b8507780ddf53c89be848e8aead95",
+    "fixtureCount": 26,
+    "fixturesDigest": "74c10ab04d9325b0122c9649333d7378be1bfeb5ff2cd77da471ebc633f25ef6",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/api-key.txt",
+      "start": 8,
+      "end": 48,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-reference.txt",
+      "start": 8,
+      "end": 70
+    },
+    {
+      "path": "cases/azure-keyvault.txt",
+      "start": 0,
+      "end": 8
+    },
+    {
+      "path": "cases/azure-keyvault.txt",
+      "start": 11,
+      "end": 20
+    },
+    {
+      "path": "cases/azure-keyvault.txt",
+      "start": 21,
+      "end": 29
+    },
+    {
+      "path": "cases/azure-keyvault.txt",
+      "start": 30,
+      "end": 39
+    },
+    {
+      "path": "cases/azure-keyvault.txt",
+      "start": 40,
+      "end": 45
+    },
+    {
+      "path": "cases/azure-keyvault.txt",
+      "start": 48,
+      "end": 55
+    },
+    {
+      "path": "cases/azure-keyvault.txt",
+      "start": 56,
+      "end": 63
+    },
+    {
+      "path": "cases/client-secret.txt",
+      "start": 14,
+      "end": 54,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/dotted-password.txt",
+      "start": 9,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/gcp-resource.txt",
+      "start": 8,
+      "end": 16,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/password.txt",
+      "start": 9,
+      "end": 41,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/typescript-config.txt",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/typescript-config.txt",
+      "start": 8,
+      "end": 30
+    },
+    {
+      "path": "cases/unicode-crlf.txt",
+      "start": 14,
+      "end": 54,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/vault-reference.txt",
+      "start": 10,
+      "end": 19,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "80f91fc03d5857d27c1c80c797aedb899e2d5750963001c0fb6ce9295c0e6f1f"
+}

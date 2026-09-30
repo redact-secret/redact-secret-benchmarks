@@ -1,0 +1,224 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-210",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "b492e4b278038ea8051bd18e56de4104fc486922b03c7d22a575d5e8be4f178c",
+    "fixtureCount": 48,
+    "fixturesDigest": "bc784b0a0d59f7b56893392ff5a05e8e8766c5d3c83a5038705ad9fba068cee0",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/langfuse-secret-key-compose-init.yml",
+      "start": 111,
+      "end": 119
+    },
+    {
+      "path": "cases/langfuse-secret-key-dotenv.env",
+      "start": 33,
+      "end": 41
+    },
+    {
+      "path": "cases/langfuse-secret-key-error-log-team-settings.log",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/langfuse-secret-key-gateway-bearer.http",
+      "start": 86,
+      "end": 92
+    },
+    {
+      "path": "cases/langfuse-secret-key-gateway-bearer.http",
+      "start": 93,
+      "end": 135,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/langfuse-secret-key-hashed-key-row-encoded-value.sql",
+      "start": 58,
+      "end": 65
+    },
+    {
+      "path": "cases/langfuse-secret-key-hashed-key-row-encoded-value.sql",
+      "start": 66,
+      "end": 70
+    },
+    {
+      "path": "cases/langfuse-secret-key-hashed-key-row-encoded-value.sql",
+      "start": 71,
+      "end": 75
+    },
+    {
+      "path": "cases/langfuse-secret-key-hashed-key-row-encoded-value.sql",
+      "start": 77,
+      "end": 87
+    },
+    {
+      "path": "cases/langfuse-secret-key-hashed-key-row-encoded-value.sql",
+      "start": 182,
+      "end": 222,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/langfuse-secret-key-key-pair-doc-prose.md",
+      "start": 57,
+      "end": 75
+    },
+    {
+      "path": "cases/langfuse-secret-key-masked-display-placeholder.txt",
+      "start": 0,
+      "end": 21
+    },
+    {
+      "path": "cases/langfuse-secret-key-masked-display-placeholder.txt",
+      "start": 30,
+      "end": 66
+    },
+    {
+      "path": "cases/langfuse-secret-key-public-key-twin.txt",
+      "start": 33,
+      "end": 41
+    },
+    {
+      "path": "cases/langsmith-api-key-env-example-placeholder.env",
+      "start": 107,
+      "end": 122
+    },
+    {
+      "path": "cases/langsmith-api-key-merged-segments-twin.txt",
+      "start": 30,
+      "end": 36
+    },
+    {
+      "path": "cases/langsmith-api-key-missing-tail-near-miss.txt",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/langsmith-api-key-non-hex-body-twin.txt",
+      "start": 198,
+      "end": 249,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langsmith-api-key-pat-otlp-header-list.yml",
+      "start": 198,
+      "end": 249,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langsmith-api-key-pat-profile-json.json",
+      "start": 5,
+      "end": 20
+    },
+    {
+      "path": "cases/langsmith-api-key-pat-profile-json.json",
+      "start": 24,
+      "end": 28
+    },
+    {
+      "path": "cases/langsmith-api-key-pat-profile-json.json",
+      "start": 136,
+      "end": 172
+    },
+    {
+      "path": "cases/langsmith-api-key-python-env-lookup-reference.py",
+      "start": 40,
+      "end": 46
+    },
+    {
+      "path": "cases/langsmith-api-key-requirements-hash-encoded-value.txt",
+      "start": 11,
+      "end": 17
+    },
+    {
+      "path": "cases/langsmith-api-key-service-key-legacy-export.sh",
+      "start": 92,
+      "end": 112
+    },
+    {
+      "path": "cases/langsmith-api-key-service-key-legacy-export.sh",
+      "start": 125,
+      "end": 142
+    },
+    {
+      "path": "cases/langsmith-api-key-service-key-legacy-export.sh",
+      "start": 164,
+      "end": 181
+    },
+    {
+      "path": "cases/langsmith-api-key-service-key-python-client.py",
+      "start": 30,
+      "end": 36
+    },
+    {
+      "path": "cases/langsmith-api-key-service-key-x-api-key.sh",
+      "start": 23,
+      "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langsmith-api-key-short-tail-twin.txt",
+      "start": 23,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langsmith-api-key-unknown-role-code-twin.txt",
+      "start": 5,
+      "end": 20
+    },
+    {
+      "path": "cases/langsmith-api-key-unknown-role-code-twin.txt",
+      "start": 24,
+      "end": 28
+    },
+    {
+      "path": "cases/langsmith-api-key-unknown-role-code-twin.txt",
+      "start": 136,
+      "end": 172
+    },
+    {
+      "path": "cases/langsmith-api-key-workspace-ids-env-public-id.env",
+      "start": 14,
+      "end": 21
+    }
+  ],
+  "digest": "262f02c266319f6634fa8c0e4bdf633603077bc676e3fde08259a3a4d7d7bc2e"
+}

@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-436d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "337d02e69da6f9b179d9ec12f8c91469638b7a9cf45b986fc8a2b0826633295f",
+    "fixtureCount": 34,
+    "fixturesDigest": "e76b87c54c2f654b54217960af472f64225bb1b44e98cf97d55684e346dc5682",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/resend-api-key-bearer-header.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/resend-api-key-bearer-header.http",
+      "start": 67,
+      "end": 103,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/resend-api-key-curl-bearer.sh",
+      "start": 65,
+      "end": 71
+    },
+    {
+      "path": "cases/resend-api-key-curl-bearer.sh",
+      "start": 72,
+      "end": 108,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/resend-api-key-hyphen-separator-twin.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/resend-api-key-hyphen-separator-twin.http",
+      "start": 67,
+      "end": 103,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/resend-api-key-masked-placeholder.md",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/resend-api-key-masked-placeholder.md",
+      "start": 21,
+      "end": 27
+    },
+    {
+      "path": "cases/resend-api-key-second-underscore-twin.http",
+      "start": 55,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/resend-api-key-trailing-glue-twin.sh",
+      "start": 65,
+      "end": 71
+    },
+    {
+      "path": "cases/resend-api-key-trailing-glue-twin.sh",
+      "start": 72,
+      "end": 110,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/resend-api-key-x-api-key-header.http",
+      "start": 55,
+      "end": 91,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "69f52a291d509c3960fad3d31ea92ee7286beb8ef2437dd9258a35e15e0dc884"
+}

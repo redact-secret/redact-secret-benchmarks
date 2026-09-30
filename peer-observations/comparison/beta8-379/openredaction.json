@@ -1,0 +1,1969 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-379",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "1b96aa96c402710e81a2560ffba8c20684a54ea17b403d388a0ad3081973ae62",
+    "fixtureCount": 202,
+    "fixturesDigest": "8f89d2e91b7530a0bcd77e6dac5be5d12db6cc41a8635d720cfb70bf966386e3",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/anthropic-admin01-key-audit-stderr-headers.log",
+      "start": 14,
+      "end": 22
+    },
+    {
+      "path": "cases/anthropic-admin01-key-httpie-admin-api.sh",
+      "start": 68,
+      "end": 178,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-masked-console-public-id.txt",
+      "start": 0,
+      "end": 37
+    },
+    {
+      "path": "cases/anthropic-admin01-key-rotation-policy-prose.md",
+      "start": 30,
+      "end": 37
+    },
+    {
+      "path": "cases/anthropic-admin01-key-underscore-after-version-twin.sh",
+      "start": 68,
+      "end": 178,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-activity-feed-public-id.json",
+      "start": 106,
+      "end": 142
+    },
+    {
+      "path": "cases/anthropic-api01-key-buildkite-env.yml",
+      "start": 107,
+      "end": 158,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-go-const-long.go",
+      "start": 8,
+      "end": 18
+    },
+    {
+      "path": "cases/anthropic-api01-key-go-const-long.go",
+      "start": 26,
+      "end": 39
+    },
+    {
+      "path": "cases/anthropic-api01-key-go-const-long.go",
+      "start": 50,
+      "end": 55
+    },
+    {
+      "path": "cases/anthropic-api01-key-masked-display-placeholder.txt",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/anthropic-api01-key-secretsmanager-get.json",
+      "start": 20,
+      "end": 34
+    },
+    {
+      "path": "cases/anthropic-api01-key-secretsmanager-get.json",
+      "start": 65,
+      "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-secretsmanager-get.json",
+      "start": 163,
+      "end": 176
+    },
+    {
+      "path": "cases/anthropic-api01-key-secretsmanager-get.json",
+      "start": 177,
+      "end": 217,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/anthropic-api01-key-ticket-paren.md",
+      "start": 126,
+      "end": 149
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-access-log-authorization.log",
+      "start": 3,
+      "end": 9
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-access-log-authorization.log",
+      "start": 108,
+      "end": 117
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-access-log-authorization.log",
+      "start": 126,
+      "end": 257,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-inference-profile-output-public-id.yml",
+      "start": 70,
+      "end": 75
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-inference-profile-output-public-id.yml",
+      "start": 76,
+      "end": 92
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-inference-profile-output-public-id.yml",
+      "start": 93,
+      "end": 98
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-inference-profile-output-public-id.yml",
+      "start": 105,
+      "end": 123
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-inference-profile-output-public-id.yml",
+      "start": 129,
+      "end": 134
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-inference-profile-output-public-id.yml",
+      "start": 136,
+      "end": 155
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-inference-profile-output-public-id.yml",
+      "start": 156,
+      "end": 161
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-inline-assignment.sh",
+      "start": 23,
+      "end": 63,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-inline-assignment.sh",
+      "start": 103,
+      "end": 143,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-java-httpclient.java",
+      "start": 116,
+      "end": 125
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-java-httpclient.java",
+      "start": 136,
+      "end": 267,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-k8s-secret-bearer.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-k8s-secret-bearer.yml",
+      "start": 114,
+      "end": 154,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-kubeconfig-ca-data-encoded-value.yml",
+      "start": 47,
+      "end": 54
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-kubeconfig-ca-data-encoded-value.yml",
+      "start": 55,
+      "end": 64
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-litellm-model-list.yml",
+      "start": 139,
+      "end": 179,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-litellm-model-list.yml",
+      "start": 219,
+      "end": 259,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-service-credential-listing-public-id.json",
+      "start": 2,
+      "end": 28
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-service-credential-listing-public-id.json",
+      "start": 34,
+      "end": 42
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-service-credential-listing-public-id.json",
+      "start": 46,
+      "end": 59
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-service-credential-listing-public-id.json",
+      "start": 60,
+      "end": 64
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-service-credential-listing-public-id.json",
+      "start": 68,
+      "end": 74
+    },
+    {
+      "path": "cases/aws-bedrock-long-term-api-key-service-credential-listing-public-id.json",
+      "start": 78,
+      "end": 84
+    },
+    {
+      "path": "cases/cohere-api-key-finetune-listing-public-id.txt",
+      "start": 77,
+      "end": 100
+    },
+    {
+      "path": "cases/cohere-api-key-java-builder-token.java",
+      "start": 0,
+      "end": 13
+    },
+    {
+      "path": "cases/cohere-api-key-length-39-twin.py",
+      "start": 20,
+      "end": 30
+    },
+    {
+      "path": "cases/cohere-api-key-llamaindex-rerank.py",
+      "start": 20,
+      "end": 30
+    },
+    {
+      "path": "cases/cohere-api-key-mcp-config-print.txt",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/cohere-api-key-mcp-config-print.txt",
+      "start": 11,
+      "end": 17
+    },
+    {
+      "path": "cases/cohere-api-key-mcp-config-print.txt",
+      "start": 18,
+      "end": 24
+    },
+    {
+      "path": "cases/cohere-api-key-mcp-config-print.txt",
+      "start": 31,
+      "end": 41
+    },
+    {
+      "path": "cases/cohere-api-key-mcp-config-print.txt",
+      "start": 51,
+      "end": 57
+    },
+    {
+      "path": "cases/cohere-api-key-mcp-config-print.txt",
+      "start": 69,
+      "end": 76
+    },
+    {
+      "path": "cases/cohere-api-key-model-field-twin.py",
+      "start": 20,
+      "end": 30
+    },
+    {
+      "path": "cases/cohere-api-key-trial-vs-production-prose.md",
+      "start": 21,
+      "end": 27
+    },
+    {
+      "path": "cases/cohere-api-key-voyage-keyword-twin.txt",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/cohere-api-key-voyage-keyword-twin.txt",
+      "start": 11,
+      "end": 17
+    },
+    {
+      "path": "cases/cohere-api-key-voyage-keyword-twin.txt",
+      "start": 18,
+      "end": 24
+    },
+    {
+      "path": "cases/cohere-api-key-voyage-keyword-twin.txt",
+      "start": 31,
+      "end": 41
+    },
+    {
+      "path": "cases/cohere-api-key-voyage-keyword-twin.txt",
+      "start": 51,
+      "end": 57
+    },
+    {
+      "path": "cases/cohere-api-key-voyage-keyword-twin.txt",
+      "start": 69,
+      "end": 76
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-config-create.sh",
+      "start": 2,
+      "end": 11
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-config-create.sh",
+      "start": 12,
+      "end": 17
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-config-create.sh",
+      "start": 25,
+      "end": 31
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-config-create.sh",
+      "start": 32,
+      "end": 38
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-config-create.sh",
+      "start": 46,
+      "end": 49
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-config-create.sh",
+      "start": 73,
+      "end": 76
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-config-create.sh",
+      "start": 103,
+      "end": 143,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-compose-jaas.yml",
+      "start": 136,
+      "end": 157
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-compose-jaas.yml",
+      "start": 158,
+      "end": 162
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-compose-jaas.yml",
+      "start": 169,
+      "end": 193
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-compose-jaas.yml",
+      "start": 195,
+      "end": 219
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-compose-jaas.yml",
+      "start": 219,
+      "end": 234
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-compose-jaas.yml",
+      "start": 234,
+      "end": 250
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-compose-jaas.yml",
+      "start": 251,
+      "end": 259
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-compose-jaas.yml",
+      "start": 260,
+      "end": 268
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-compose-jaas.yml",
+      "start": 270,
+      "end": 286
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-compose-jaas.yml",
+      "start": 288,
+      "end": 296
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-compose-jaas.yml",
+      "start": 298,
+      "end": 306
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-compose-jaas.yml",
+      "start": 307,
+      "end": 321
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-config-provider-reference.properties",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-config-provider-reference.properties",
+      "start": 17,
+      "end": 21
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-config-provider-reference.properties",
+      "start": 22,
+      "end": 49
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 1,
+      "end": 5
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 21,
+      "end": 24
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 26,
+      "end": 30
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 31,
+      "end": 45
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 46,
+      "end": 52
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 55,
+      "end": 72
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 76,
+      "end": 79
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 80,
+      "end": 88
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 89,
+      "end": 93
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 94,
+      "end": 115
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 116,
+      "end": 120
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 123,
+      "end": 139
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 142,
+      "end": 166
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 166,
+      "end": 181
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 181,
+      "end": 197
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 198,
+      "end": 206
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 207,
+      "end": 215
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 217,
+      "end": 233
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 235,
+      "end": 243
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-connect-worker-config.log",
+      "start": 245,
+      "end": 274
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-jaas-template-placeholder.properties",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-jaas-template-placeholder.properties",
+      "start": 17,
+      "end": 41
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-jaas-template-placeholder.properties",
+      "start": 41,
+      "end": 56
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-jaas-template-placeholder.properties",
+      "start": 56,
+      "end": 72
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-jaas-template-placeholder.properties",
+      "start": 73,
+      "end": 81
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-jaas-template-placeholder.properties",
+      "start": 82,
+      "end": 90
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-jaas-template-placeholder.properties",
+      "start": 95,
+      "end": 110
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-jaas-template-placeholder.properties",
+      "start": 115,
+      "end": 123
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-jaas-template-placeholder.properties",
+      "start": 128,
+      "end": 146
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-java-client-properties.properties",
+      "start": 62,
+      "end": 79
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-java-client-properties.properties",
+      "start": 80,
+      "end": 88
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-java-client-properties.properties",
+      "start": 89,
+      "end": 103
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-java-client-properties.properties",
+      "start": 104,
+      "end": 109
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-java-client-properties.properties",
+      "start": 110,
+      "end": 126
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-java-client-properties.properties",
+      "start": 127,
+      "end": 151
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-java-client-properties.properties",
+      "start": 151,
+      "end": 166
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-java-client-properties.properties",
+      "start": 166,
+      "end": 182
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-java-client-properties.properties",
+      "start": 183,
+      "end": 191
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-java-client-properties.properties",
+      "start": 192,
+      "end": 200
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-java-client-properties.properties",
+      "start": 202,
+      "end": 218
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-java-client-properties.properties",
+      "start": 220,
+      "end": 228
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-java-client-properties.properties",
+      "start": 230,
+      "end": 240
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-java-client-properties.properties",
+      "start": 241,
+      "end": 248
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-length-63-twin.yml",
+      "start": 136,
+      "end": 157
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-length-63-twin.yml",
+      "start": 158,
+      "end": 162
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-length-63-twin.yml",
+      "start": 169,
+      "end": 193
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-length-63-twin.yml",
+      "start": 195,
+      "end": 219
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-length-63-twin.yml",
+      "start": 219,
+      "end": 234
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-length-63-twin.yml",
+      "start": 234,
+      "end": 250
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-length-63-twin.yml",
+      "start": 251,
+      "end": 259
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-length-63-twin.yml",
+      "start": 260,
+      "end": 268
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-length-63-twin.yml",
+      "start": 270,
+      "end": 286
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-length-63-twin.yml",
+      "start": 288,
+      "end": 296
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-length-63-twin.yml",
+      "start": 298,
+      "end": 306
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-length-63-twin.yml",
+      "start": 307,
+      "end": 321
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-bootstrap-twin.properties",
+      "start": 52,
+      "end": 69
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-bootstrap-twin.properties",
+      "start": 70,
+      "end": 78
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-bootstrap-twin.properties",
+      "start": 79,
+      "end": 93
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-bootstrap-twin.properties",
+      "start": 94,
+      "end": 99
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-bootstrap-twin.properties",
+      "start": 100,
+      "end": 116
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-bootstrap-twin.properties",
+      "start": 117,
+      "end": 141
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-bootstrap-twin.properties",
+      "start": 141,
+      "end": 156
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-bootstrap-twin.properties",
+      "start": 156,
+      "end": 172
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-bootstrap-twin.properties",
+      "start": 173,
+      "end": 181
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-bootstrap-twin.properties",
+      "start": 182,
+      "end": 190
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-bootstrap-twin.properties",
+      "start": 192,
+      "end": 208
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-bootstrap-twin.properties",
+      "start": 210,
+      "end": 218
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-bootstrap-twin.properties",
+      "start": 220,
+      "end": 230
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-bootstrap-twin.properties",
+      "start": 231,
+      "end": 238
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 1,
+      "end": 5
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 21,
+      "end": 24
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 26,
+      "end": 30
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 31,
+      "end": 45
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 46,
+      "end": 52
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 55,
+      "end": 72
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 76,
+      "end": 81
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 106,
+      "end": 110
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 113,
+      "end": 129
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 132,
+      "end": 156
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 156,
+      "end": 171
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 171,
+      "end": 187
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 188,
+      "end": 196
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 197,
+      "end": 205
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 207,
+      "end": 223
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 225,
+      "end": 233
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-self-hosted-log-twin.log",
+      "start": 235,
+      "end": 264
+    },
+    {
+      "path": "cases/connection-string-at-to-slash-twin.yml",
+      "start": 14,
+      "end": 21
+    },
+    {
+      "path": "cases/connection-string-at-to-slash-twin.yml",
+      "start": 26,
+      "end": 33
+    },
+    {
+      "path": "cases/connection-string-colon-removed-twin.sh",
+      "start": 16,
+      "end": 23
+    },
+    {
+      "path": "cases/connection-string-database-url-query.env",
+      "start": 16,
+      "end": 23
+    },
+    {
+      "path": "cases/connection-string-docs-uppercase-placeholder.md",
+      "start": 23,
+      "end": 57,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/connection-string-git-ssh-remote-public-id.txt",
+      "start": 0,
+      "end": 3
+    },
+    {
+      "path": "cases/connection-string-git-ssh-remote-public-id.txt",
+      "start": 4,
+      "end": 10
+    },
+    {
+      "path": "cases/connection-string-git-ssh-remote-public-id.txt",
+      "start": 11,
+      "end": 14
+    },
+    {
+      "path": "cases/connection-string-git-ssh-remote-public-id.txt",
+      "start": 15,
+      "end": 21
+    },
+    {
+      "path": "cases/connection-string-git-ssh-remote-public-id.txt",
+      "start": 22,
+      "end": 36
+    },
+    {
+      "path": "cases/connection-string-git-ssh-remote-public-id.txt",
+      "start": 45,
+      "end": 48
+    },
+    {
+      "path": "cases/connection-string-git-ssh-remote-public-id.txt",
+      "start": 49,
+      "end": 63
+    },
+    {
+      "path": "cases/connection-string-interpolated-password-reference.env",
+      "start": 16,
+      "end": 23
+    },
+    {
+      "path": "cases/connection-string-jdbc-user-param-public-id.properties",
+      "start": 30,
+      "end": 37
+    },
+    {
+      "path": "cases/connection-string-orm-connection-error.log",
+      "start": 60,
+      "end": 124,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/connection-string-percent-template-encoded-value.py",
+      "start": 19,
+      "end": 26
+    },
+    {
+      "path": "cases/connection-string-psql-history.sh",
+      "start": 16,
+      "end": 23
+    },
+    {
+      "path": "cases/connection-string-rails-database-yml.yml",
+      "start": 14,
+      "end": 21
+    },
+    {
+      "path": "cases/connection-string-rails-database-yml.yml",
+      "start": 26,
+      "end": 33
+    },
+    {
+      "path": "cases/connection-string-rails-database-yml.yml",
+      "start": 41,
+      "end": 120,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/connection-string-sqlalchemy-ipv6.py",
+      "start": 27,
+      "end": 34
+    },
+    {
+      "path": "cases/connection-string-user-only-uri-public-id.env",
+      "start": 16,
+      "end": 23
+    },
+    {
+      "path": "cases/deepgram-api-key-agent-stt-yaml.yml",
+      "start": 37,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-bearer-scheme-twin.sh",
+      "start": 84,
+      "end": 90
+    },
+    {
+      "path": "cases/deepgram-api-key-bearer-scheme-twin.sh",
+      "start": 91,
+      "end": 131,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/deepgram-api-key-go-client-literal.go",
+      "start": 8,
+      "end": 18
+    },
+    {
+      "path": "cases/deepgram-api-key-httpie-token.sh",
+      "start": 74,
+      "end": 83
+    },
+    {
+      "path": "cases/deepgram-api-key-key-scopes-readme-prose.md",
+      "start": 0,
+      "end": 26
+    },
+    {
+      "path": "cases/deepgram-api-key-key-scopes-readme-prose.md",
+      "start": 67,
+      "end": 73
+    },
+    {
+      "path": "cases/deepgram-api-key-key-scopes-readme-prose.md",
+      "start": 91,
+      "end": 99
+    },
+    {
+      "path": "cases/deepgram-api-key-length-39-twin.go",
+      "start": 8,
+      "end": 18
+    },
+    {
+      "path": "cases/deepgram-api-key-other-host-twin.sh",
+      "start": 81,
+      "end": 90
+    },
+    {
+      "path": "cases/deepgram-api-key-worker-json-log.log",
+      "start": 83,
+      "end": 123
+    },
+    {
+      "path": "cases/github-token-app-manifest-ids-public-id.yml",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/github-token-app-manifest-ids-public-id.yml",
+      "start": 8,
+      "end": 14
+    },
+    {
+      "path": "cases/github-token-app-manifest-ids-public-id.yml",
+      "start": 15,
+      "end": 30
+    },
+    {
+      "path": "cases/github-token-app-manifest-ids-public-id.yml",
+      "start": 32,
+      "end": 40
+    },
+    {
+      "path": "cases/github-token-app-manifest-ids-public-id.yml",
+      "start": 41,
+      "end": 50
+    },
+    {
+      "path": "cases/github-token-app-manifest-ids-public-id.yml",
+      "start": 52,
+      "end": 72
+    },
+    {
+      "path": "cases/github-token-gh-auth-status-token.txt",
+      "start": 17,
+      "end": 40
+    },
+    {
+      "path": "cases/github-token-gh-auth-status-token.txt",
+      "start": 101,
+      "end": 124
+    },
+    {
+      "path": "cases/github-token-gh-auth-status-token.txt",
+      "start": 143,
+      "end": 183,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-gh-auth-status-token.txt",
+      "start": 188,
+      "end": 200
+    },
+    {
+      "path": "cases/github-token-gh-login-herestring.sh",
+      "start": 14,
+      "end": 24
+    },
+    {
+      "path": "cases/github-token-gh-login-herestring.sh",
+      "start": 53,
+      "end": 93,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-hyphen-separator-twin.sh",
+      "start": 14,
+      "end": 24
+    },
+    {
+      "path": "cases/github-token-installation-clone-url.sh",
+      "start": 10,
+      "end": 114,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/github-token-masked-commit-message-near-miss.txt",
+      "start": 21,
+      "end": 40
+    },
+    {
+      "path": "cases/github-token-npmrc-authtoken.npmrc",
+      "start": 82,
+      "end": 122,
+      "family": "github-token"
+    },
+    {
+      "path": "cases/github-token-short-body-35-twin.sh",
+      "start": 10,
+      "end": 113,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/github-token-x-body-placeholder.env",
+      "start": 12,
+      "end": 18
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-apps-info-json-public-id.json",
+      "start": 42,
+      "end": 78
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-apps-info-json-public-id.json",
+      "start": 121,
+      "end": 157
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-authorizations-info.txt",
+      "start": 13,
+      "end": 23
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-authorizations-info.txt",
+      "start": 151,
+      "end": 161
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-ci-debug-echo.log",
+      "start": 55,
+      "end": 91
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-client-id-row-twin.txt",
+      "start": 13,
+      "end": 23
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-deploy-config-json.json",
+      "start": 50,
+      "end": 86
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-git-config-remote.txt",
+      "start": 13,
+      "end": 19
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-git-config-remote.txt",
+      "start": 38,
+      "end": 74
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-git-config-remote.txt",
+      "start": 146,
+      "end": 152
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-hrku-migration-note-prose.md",
+      "start": 0,
+      "end": 21
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-hrku-migration-note-prose.md",
+      "start": 57,
+      "end": 67
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-hrku-migration-note-prose.md",
+      "start": 105,
+      "end": 111
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-other-git-host-twin.txt",
+      "start": 13,
+      "end": 19
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-other-git-host-twin.txt",
+      "start": 148,
+      "end": 154
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-platform-api-ruby.rb",
+      "start": 60,
+      "end": 96
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-releases-path-near-miss.txt",
+      "start": 36,
+      "end": 72
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-router-request-id-public-id.log",
+      "start": 111,
+      "end": 147
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-sentry-keyword-twin.log",
+      "start": 82,
+      "end": 94
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-zero-uuid-placeholder.env",
+      "start": 43,
+      "end": 79
+    },
+    {
+      "path": "cases/mailchimp-api-key-debug-request-headers.txt",
+      "start": 7,
+      "end": 10
+    },
+    {
+      "path": "cases/mailchimp-api-key-debug-request-headers.txt",
+      "start": 11,
+      "end": 20
+    },
+    {
+      "path": "cases/mailchimp-api-key-debug-request-headers.txt",
+      "start": 32,
+      "end": 36
+    },
+    {
+      "path": "cases/mailchimp-api-key-debug-request-headers.txt",
+      "start": 38,
+      "end": 60
+    },
+    {
+      "path": "cases/mailchimp-api-key-debug-request-headers.txt",
+      "start": 63,
+      "end": 76
+    },
+    {
+      "path": "cases/mailchimp-api-key-debug-request-headers.txt",
+      "start": 78,
+      "end": 84
+    },
+    {
+      "path": "cases/mailchimp-api-key-debug-request-headers.txt",
+      "start": 85,
+      "end": 122,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-node-setconfig.js",
+      "start": 24,
+      "end": 33
+    },
+    {
+      "path": "cases/mailchimp-api-key-node-setconfig.js",
+      "start": 34,
+      "end": 53
+    },
+    {
+      "path": "cases/mailchimp-api-key-node-setconfig.js",
+      "start": 57,
+      "end": 76
+    },
+    {
+      "path": "cases/mailchimp-api-key-node-setconfig.js",
+      "start": 81,
+      "end": 87
+    },
+    {
+      "path": "cases/mailchimp-api-key-node-setconfig.js",
+      "start": 123,
+      "end": 126
+    },
+    {
+      "path": "cases/mailchimp-api-key-ticket-paragraph.md",
+      "start": 19,
+      "end": 24
+    },
+    {
+      "path": "cases/mailchimp-api-key-ticket-paragraph.md",
+      "start": 25,
+      "end": 30
+    },
+    {
+      "path": "cases/mailchimp-api-key-ticket-paragraph.md",
+      "start": 49,
+      "end": 63
+    },
+    {
+      "path": "cases/mailchimp-api-key-ticket-paragraph.md",
+      "start": 75,
+      "end": 107
+    },
+    {
+      "path": "cases/mailchimp-api-key-ticket-paragraph.md",
+      "start": 113,
+      "end": 135
+    },
+    {
+      "path": "cases/mailchimp-api-key-userinfo-url.txt",
+      "start": 0,
+      "end": 82,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/new-relic-license-key-agent-startup-json.log",
+      "start": 18,
+      "end": 27
+    },
+    {
+      "path": "cases/new-relic-license-key-agent-startup-json.log",
+      "start": 30,
+      "end": 38
+    },
+    {
+      "path": "cases/new-relic-license-key-agent-startup-json.log",
+      "start": 39,
+      "end": 44
+    },
+    {
+      "path": "cases/new-relic-license-key-agent-startup-json.log",
+      "start": 53,
+      "end": 62
+    },
+    {
+      "path": "cases/new-relic-license-key-agent-startup-json.log",
+      "start": 63,
+      "end": 76
+    },
+    {
+      "path": "cases/new-relic-license-key-agent-startup-json.log",
+      "start": 79,
+      "end": 85
+    },
+    {
+      "path": "cases/new-relic-license-key-agent-startup-json.log",
+      "start": 89,
+      "end": 97
+    },
+    {
+      "path": "cases/new-relic-license-key-agent-startup-json.log",
+      "start": 100,
+      "end": 107
+    },
+    {
+      "path": "cases/new-relic-license-key-agent-startup-json.log",
+      "start": 110,
+      "end": 121
+    },
+    {
+      "path": "cases/new-relic-license-key-dashboard-permalink-public-id.md",
+      "start": 103,
+      "end": 110
+    },
+    {
+      "path": "cases/new-relic-license-key-helm-values-indirection-reference.yml",
+      "start": 34,
+      "end": 37
+    },
+    {
+      "path": "cases/new-relic-license-key-helm-values-indirection-reference.yml",
+      "start": 64,
+      "end": 67
+    },
+    {
+      "path": "cases/new-relic-license-key-k8s-secret-stringdata.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/new-relic-license-key-length-39-eu-twin.tfvars",
+      "start": 54,
+      "end": 61
+    },
+    {
+      "path": "cases/new-relic-license-key-length-39-eu-twin.tfvars",
+      "start": 69,
+      "end": 72
+    },
+    {
+      "path": "cases/new-relic-license-key-length-41-twin.yml",
+      "start": 99,
+      "end": 140,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/new-relic-license-key-otel-collector-api-key.yml",
+      "start": 99,
+      "end": 139,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/new-relic-license-key-terraform-tfvars-eu.tfvars",
+      "start": 54,
+      "end": 61
+    },
+    {
+      "path": "cases/new-relic-license-key-terraform-tfvars-eu.tfvars",
+      "start": 69,
+      "end": 72
+    },
+    {
+      "path": "cases/new-relic-license-key-trailing-identifier-twin.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-console-mask-placeholder.txt",
+      "start": 0,
+      "end": 9
+    },
+    {
+      "path": "cases/openai-admin-api-key-permissions-paragraph-prose.md",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/openai-admin-api-key-powershell-env.ps1",
+      "start": 1,
+      "end": 4
+    },
+    {
+      "path": "cases/openai-admin-api-key-powershell-env.ps1",
+      "start": 5,
+      "end": 21
+    },
+    {
+      "path": "cases/openai-admin-api-key-powershell-env.ps1",
+      "start": 28,
+      "end": 33
+    },
+    {
+      "path": "cases/openai-admin-api-key-powershell-env.ps1",
+      "start": 34,
+      "end": 59
+    },
+    {
+      "path": "cases/openai-admin-api-key-requests-debug.log",
+      "start": 127,
+      "end": 260,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-secrets-manager-arn-reference.env",
+      "start": 21,
+      "end": 97
+    },
+    {
+      "path": "cases/stripe-token-compose-restricted.yml",
+      "start": 77,
+      "end": 88
+    },
+    {
+      "path": "cases/stripe-token-dashboard-last-four-near-miss.md",
+      "start": 0,
+      "end": 9
+    },
+    {
+      "path": "cases/stripe-token-dashboard-last-four-near-miss.md",
+      "start": 9,
+      "end": 17
+    },
+    {
+      "path": "cases/stripe-token-dashboard-last-four-near-miss.md",
+      "start": 20,
+      "end": 32
+    },
+    {
+      "path": "cases/stripe-token-dashboard-last-four-near-miss.md",
+      "start": 32,
+      "end": 39
+    },
+    {
+      "path": "cases/stripe-token-dashboard-last-four-near-miss.md",
+      "start": 50,
+      "end": 54
+    },
+    {
+      "path": "cases/stripe-token-dashboard-last-four-near-miss.md",
+      "start": 56,
+      "end": 70
+    },
+    {
+      "path": "cases/stripe-token-dashboard-last-four-near-miss.md",
+      "start": 70,
+      "end": 83
+    },
+    {
+      "path": "cases/stripe-token-dashboard-last-four-near-miss.md",
+      "start": 83,
+      "end": 96
+    },
+    {
+      "path": "cases/stripe-token-docs-x-body-placeholder.env",
+      "start": 19,
+      "end": 34
+    },
+    {
+      "path": "cases/stripe-token-docs-x-body-placeholder.env",
+      "start": 46,
+      "end": 78,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-env-with-publishable.env",
+      "start": 66,
+      "end": 106,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-env-with-publishable.env",
+      "start": 125,
+      "end": 165,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-httpie-bearer.sh",
+      "start": 22,
+      "end": 28
+    },
+    {
+      "path": "cases/stripe-token-httpie-bearer.sh",
+      "start": 29,
+      "end": 32
+    },
+    {
+      "path": "cases/stripe-token-httpie-bearer.sh",
+      "start": 36,
+      "end": 43
+    },
+    {
+      "path": "cases/stripe-token-httpie-bearer.sh",
+      "start": 45,
+      "end": 58
+    },
+    {
+      "path": "cases/stripe-token-httpie-bearer.sh",
+      "start": 59,
+      "end": 65
+    },
+    {
+      "path": "cases/stripe-token-httpie-bearer.sh",
+      "start": 66,
+      "end": 106,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-hyphen-separators-twin.sh",
+      "start": 22,
+      "end": 28
+    },
+    {
+      "path": "cases/stripe-token-hyphen-separators-twin.sh",
+      "start": 29,
+      "end": 32
+    },
+    {
+      "path": "cases/stripe-token-hyphen-separators-twin.sh",
+      "start": 36,
+      "end": 43
+    },
+    {
+      "path": "cases/stripe-token-hyphen-separators-twin.sh",
+      "start": 45,
+      "end": 58
+    },
+    {
+      "path": "cases/stripe-token-hyphen-separators-twin.sh",
+      "start": 59,
+      "end": 65
+    },
+    {
+      "path": "cases/stripe-token-hyphen-separators-twin.sh",
+      "start": 66,
+      "end": 106,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/stripe-token-publishable-frontend-public-id.js",
+      "start": 0,
+      "end": 12
+    },
+    {
+      "path": "cases/stripe-token-publishable-frontend-public-id.js",
+      "start": 15,
+      "end": 21
+    },
+    {
+      "path": "cases/stripe-token-publishable-frontend-public-id.js",
+      "start": 23,
+      "end": 63,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-publishable-prefix-twin.yml",
+      "start": 77,
+      "end": 88
+    },
+    {
+      "path": "cases/stripe-token-publishable-prefix-twin.yml",
+      "start": 112,
+      "end": 152,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-rails-credentials.yml",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/stripe-token-rails-credentials.yml",
+      "start": 22,
+      "end": 62,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-signature-header-encoded-value.txt",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/stripe-token-signature-header-encoded-value.txt",
+      "start": 7,
+      "end": 16
+    },
+    {
+      "path": "cases/stripe-token-signature-header-encoded-value.txt",
+      "start": 20,
+      "end": 30
+    },
+    {
+      "path": "cases/stripe-token-stripe-config-list.txt",
+      "start": 88,
+      "end": 128,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-stripe-node-debug.log",
+      "start": 61,
+      "end": 70
+    },
+    {
+      "path": "cases/stripe-token-stripe-node-debug.log",
+      "start": 73,
+      "end": 79
+    },
+    {
+      "path": "cases/stripe-token-stripe-node-debug.log",
+      "start": 80,
+      "end": 120,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-stripe-node-debug.log",
+      "start": 123,
+      "end": 129
+    },
+    {
+      "path": "cases/stripe-token-stripe-node-debug.log",
+      "start": 130,
+      "end": 137
+    },
+    {
+      "path": "cases/stripe-token-stripe-node-debug.log",
+      "start": 140,
+      "end": 144
+    },
+    {
+      "path": "cases/stripe-token-test-vs-live-prose.md",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/stripe-token-test-vs-live-prose.md",
+      "start": 5,
+      "end": 20
+    },
+    {
+      "path": "cases/stripe-token-test-vs-live-prose.md",
+      "start": 20,
+      "end": 35
+    },
+    {
+      "path": "cases/stripe-token-test-vs-live-prose.md",
+      "start": 37,
+      "end": 41
+    },
+    {
+      "path": "cases/stripe-token-test-vs-live-prose.md",
+      "start": 42,
+      "end": 57
+    },
+    {
+      "path": "cases/stripe-token-test-vs-live-prose.md",
+      "start": 57,
+      "end": 67
+    },
+    {
+      "path": "cases/stripe-token-test-vs-live-prose.md",
+      "start": 72,
+      "end": 80
+    },
+    {
+      "path": "cases/stripe-token-test-vs-live-prose.md",
+      "start": 81,
+      "end": 95
+    },
+    {
+      "path": "cases/stripe-token-test-vs-live-prose.md",
+      "start": 114,
+      "end": 121
+    },
+    {
+      "path": "cases/stripe-token-webhook-payload-ids-public-id.json",
+      "start": 108,
+      "end": 126
+    },
+    {
+      "path": "cases/together-ai-api-key-base-url-readme-prose.md",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/together-ai-api-key-base-url-readme-prose.md",
+      "start": 69,
+      "end": 78
+    },
+    {
+      "path": "cases/together-ai-api-key-doppler-ref-reference.yml",
+      "start": 75,
+      "end": 81
+    },
+    {
+      "path": "cases/together-ai-api-key-doppler-ref-reference.yml",
+      "start": 82,
+      "end": 89
+    },
+    {
+      "path": "cases/together-ai-api-key-doppler-ref-reference.yml",
+      "start": 91,
+      "end": 96
+    },
+    {
+      "path": "cases/together-ai-api-key-doppler-ref-reference.yml",
+      "start": 100,
+      "end": 107
+    },
+    {
+      "path": "cases/together-ai-api-key-doppler-ref-reference.yml",
+      "start": 109,
+      "end": 113
+    },
+    {
+      "path": "cases/together-ai-api-key-doppler-ref-reference.yml",
+      "start": 116,
+      "end": 122
+    },
+    {
+      "path": "cases/together-ai-api-key-doppler-ref-reference.yml",
+      "start": 124,
+      "end": 127
+    },
+    {
+      "path": "cases/together-ai-api-key-files-upload-history.sh",
+      "start": 39,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-hyphen-separators-twin.sh",
+      "start": 39,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-truncated-dashboard-near-miss.txt",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/together-ai-api-key-truncated-dashboard-near-miss.txt",
+      "start": 9,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/twilio-auth-token-account-sid-column-twin.txt",
+      "start": 72,
+      "end": 104
+    },
+    {
+      "path": "cases/twilio-auth-token-api-key-sid-masked-public-id.txt",
+      "start": 86,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/twilio-auth-token-etag-keyword-twin.log",
+      "start": 21,
+      "end": 37
+    },
+    {
+      "path": "cases/twilio-auth-token-functions-context-reference.js",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/twilio-auth-token-functions-context-reference.js",
+      "start": 19,
+      "end": 26
+    },
+    {
+      "path": "cases/twilio-auth-token-functions-context-reference.js",
+      "start": 28,
+      "end": 33
+    },
+    {
+      "path": "cases/twilio-auth-token-functions-context-reference.js",
+      "start": 35,
+      "end": 43
+    },
+    {
+      "path": "cases/twilio-auth-token-functions-context-reference.js",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "path": "cases/twilio-auth-token-incident-chat.md",
+      "start": 102,
+      "end": 134
+    },
+    {
+      "path": "cases/twilio-auth-token-message-resource-public-id.json",
+      "start": 109,
+      "end": 120
+    },
+    {
+      "path": "cases/twilio-auth-token-message-resource-public-id.json",
+      "start": 131,
+      "end": 142
+    },
+    {
+      "path": "cases/twilio-auth-token-message-resource-public-id.json",
+      "start": 146,
+      "end": 152
+    },
+    {
+      "path": "cases/twilio-auth-token-message-resource-public-id.json",
+      "start": 156,
+      "end": 165
+    },
+    {
+      "path": "cases/twilio-auth-token-serverless-yml.yml",
+      "start": 24,
+      "end": 35
+    },
+    {
+      "path": "cases/twilio-auth-token-signature-header-near-miss.txt",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/twilio-auth-token-signature-header-near-miss.txt",
+      "start": 6,
+      "end": 9
+    },
+    {
+      "path": "cases/twilio-auth-token-signature-header-near-miss.txt",
+      "start": 10,
+      "end": 17
+    },
+    {
+      "path": "cases/twilio-auth-token-signature-header-near-miss.txt",
+      "start": 18,
+      "end": 22
+    },
+    {
+      "path": "cases/twilio-auth-token-signature-header-near-miss.txt",
+      "start": 23,
+      "end": 26
+    },
+    {
+      "path": "cases/twilio-auth-token-signature-header-near-miss.txt",
+      "start": 29,
+      "end": 35
+    },
+    {
+      "path": "cases/twilio-auth-token-signature-header-near-miss.txt",
+      "start": 36,
+      "end": 45
+    },
+    {
+      "path": "cases/twilio-auth-token-signature-header-near-miss.txt",
+      "start": 47,
+      "end": 74
+    },
+    {
+      "path": "cases/twilio-auth-token-signature-header-near-miss.txt",
+      "start": 90,
+      "end": 101
+    },
+    {
+      "path": "cases/twilio-auth-token-userinfo-url.txt",
+      "start": 0,
+      "end": 115,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/twilio-auth-token-validator-debug.log",
+      "start": 21,
+      "end": 33
+    }
+  ],
+  "digest": "f4307d749d9dfa7c0a49d349fc8ad7ed1476d329aab599b938bb431e34d30bfe"
+}

@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-464f",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "e91b7d2b3f3069299136d7f4c96ab9456a297fc5e4ec00512d94e087096c240d",
+    "fixtureCount": 30,
+    "fixturesDigest": "5ec10bd5b37e06322172fa8cfdcaf8bc17c4b16b318677e3a80f6aa97c248374",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/runpod-api-key-bare-prose.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/runpod-api-key-bearer-header.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/runpod-api-key-bearer-header.http",
+      "start": 67,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/runpod-api-key-bearer-header.http",
+      "start": 118,
+      "end": 124
+    },
+    {
+      "path": "cases/runpod-api-key-bearer-header.http",
+      "start": 126,
+      "end": 137
+    },
+    {
+      "path": "cases/runpod-api-key-bearer-header.http",
+      "start": 138,
+      "end": 142
+    },
+    {
+      "path": "cases/runpod-api-key-chat-paste.txt",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/runpod-api-key-curl-graphql-bearer.sh",
+      "start": 57,
+      "end": 63
+    },
+    {
+      "path": "cases/runpod-api-key-curl-graphql-bearer.sh",
+      "start": 64,
+      "end": 114,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/runpod-api-key-ellipsis-placeholder.md",
+      "start": 57,
+      "end": 65
+    },
+    {
+      "path": "cases/runpod-api-key-hyphen-prefix-twin.http",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/runpod-api-key-key-guidance-prose.md",
+      "start": 7,
+      "end": 26
+    },
+    {
+      "path": "cases/runpod-api-key-leading-glue-twin.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/runpod-api-key-leading-underscore-twin.txt",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/runpod-api-key-runpodctl-config.sh",
+      "start": 0,
+      "end": 9
+    },
+    {
+      "path": "cases/runpod-api-key-runpodctl-config.sh",
+      "start": 10,
+      "end": 16
+    },
+    {
+      "path": "cases/runpod-api-key-runpodctl-config.sh",
+      "start": 19,
+      "end": 25
+    },
+    {
+      "path": "cases/runpod-api-key-runpodctl-config.sh",
+      "start": 26,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/runpod-api-key-s3-secret-rps-near-miss.env",
+      "start": 29,
+      "end": 69,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/runpod-api-key-uppercase-prefix-twin.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/runpod-api-key-uppercase-prefix-twin.http",
+      "start": 67,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/runpod-api-key-uppercase-prefix-twin.http",
+      "start": 118,
+      "end": 124
+    },
+    {
+      "path": "cases/runpod-api-key-uppercase-prefix-twin.http",
+      "start": 126,
+      "end": 137
+    },
+    {
+      "path": "cases/runpod-api-key-uppercase-prefix-twin.http",
+      "start": 138,
+      "end": 142
+    },
+    {
+      "path": "cases/runpod-api-key-x-api-key-header.http",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "8bf70127d990e593680c5f63a0b1db02b7a9f98305ab287a8031a43b6783041c"
+}

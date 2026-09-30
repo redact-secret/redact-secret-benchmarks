@@ -1,0 +1,1533 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-207",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "1bea9ca75f594741a36a123e9cf4294ad582027bb8125b52c6e439349ef19d88",
+    "fixtureCount": 348,
+    "fixturesDigest": "98af6014722e2354960a0975d5152420d05875a48102d57129e92796b9bf87af",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/atlassian-api-token-account-id-public-id.json",
+      "start": 77,
+      "end": 94
+    },
+    {
+      "path": "cases/atlassian-api-token-acli-login.sh",
+      "start": 221,
+      "end": 227
+    },
+    {
+      "path": "cases/atlassian-api-token-alphabet-twin.log",
+      "start": 79,
+      "end": 103
+    },
+    {
+      "path": "cases/atlassian-api-token-compose-env.yml",
+      "start": 138,
+      "end": 151
+    },
+    {
+      "path": "cases/atlassian-api-token-creation-note-prose.md",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/atlassian-api-token-netrc-variable-reference.netrc",
+      "start": 46,
+      "end": 53
+    },
+    {
+      "path": "cases/atlassian-api-token-netrc-variable-reference.netrc",
+      "start": 79,
+      "end": 95,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/atlassian-api-token-pipelines-variable.yml",
+      "start": 194,
+      "end": 200
+    },
+    {
+      "path": "cases/atlassian-api-token-pipelines-variable.yml",
+      "start": 273,
+      "end": 281
+    },
+    {
+      "path": "cases/atlassian-api-token-prefix-ci-twin.yml",
+      "start": 194,
+      "end": 200
+    },
+    {
+      "path": "cases/atlassian-api-token-prefix-ci-twin.yml",
+      "start": 273,
+      "end": 281
+    },
+    {
+      "path": "cases/atlassian-api-token-settings-json.json",
+      "start": 210,
+      "end": 215
+    },
+    {
+      "path": "cases/atlassian-api-token-settings-json.json",
+      "start": 216,
+      "end": 245
+    },
+    {
+      "path": "cases/atlassian-api-token-settings-json.json",
+      "start": 246,
+      "end": 254
+    },
+    {
+      "path": "cases/atlassian-api-token-ticket-paste.md",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/atlassian-api-token-ticket-paste.md",
+      "start": 20,
+      "end": 41
+    },
+    {
+      "path": "cases/atlassian-api-token-ticket-paste.md",
+      "start": 216,
+      "end": 237
+    },
+    {
+      "path": "cases/atlassian-api-token-ticket-paste.md",
+      "start": 247,
+      "end": 253
+    },
+    {
+      "path": "cases/atlassian-api-token-ticket-paste.md",
+      "start": 254,
+      "end": 260
+    },
+    {
+      "path": "cases/atlassian-api-token-ticket-paste.md",
+      "start": 264,
+      "end": 269
+    },
+    {
+      "path": "cases/bearer-token-angle-token-placeholder.http",
+      "start": 15,
+      "end": 21
+    },
+    {
+      "path": "cases/bearer-token-challenge-near-miss.http",
+      "start": 8,
+      "end": 16
+    },
+    {
+      "path": "cases/bearer-token-client-yaml.yml",
+      "start": 67,
+      "end": 76
+    },
+    {
+      "path": "cases/bearer-token-client-yaml.yml",
+      "start": 86,
+      "end": 107,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-command-substitution-reference.sh",
+      "start": 24,
+      "end": 30
+    },
+    {
+      "path": "cases/bearer-token-curl.sh",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/bearer-token-curl.sh",
+      "start": 68,
+      "end": 103,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-fetch.js",
+      "start": 34,
+      "end": 43
+    },
+    {
+      "path": "cases/bearer-token-fetch.js",
+      "start": 53,
+      "end": 93,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-har-entry.json",
+      "start": 39,
+      "end": 48
+    },
+    {
+      "path": "cases/bearer-token-har-entry.json",
+      "start": 68,
+      "end": 108,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-httpie-verbose.txt",
+      "start": 50,
+      "end": 56
+    },
+    {
+      "path": "cases/bearer-token-lowercase-scheme.http",
+      "start": 15,
+      "end": 21
+    },
+    {
+      "path": "cases/bearer-token-postman-variable-reference.json",
+      "start": 13,
+      "end": 22
+    },
+    {
+      "path": "cases/bearer-token-raw-request.http",
+      "start": 64,
+      "end": 70
+    },
+    {
+      "path": "cases/bearer-token-raw-request.http",
+      "start": 71,
+      "end": 111,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-redacted-placeholder.http",
+      "start": 15,
+      "end": 21
+    },
+    {
+      "path": "cases/bearer-token-request-log-context-twin.log",
+      "start": 21,
+      "end": 50
+    },
+    {
+      "path": "cases/bearer-token-request-log.log",
+      "start": 21,
+      "end": 50
+    },
+    {
+      "path": "cases/bearer-token-request-log.log",
+      "start": 57,
+      "end": 66
+    },
+    {
+      "path": "cases/bearer-token-request-log.log",
+      "start": 76,
+      "end": 116,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-rfc-note-prose.md",
+      "start": 0,
+      "end": 22
+    },
+    {
+      "path": "cases/bearer-token-rfc-note-prose.md",
+      "start": 44,
+      "end": 50
+    },
+    {
+      "path": "cases/bearer-token-runbook.md",
+      "start": 31,
+      "end": 37
+    },
+    {
+      "path": "cases/bearer-token-runbook.md",
+      "start": 38,
+      "end": 78,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-workflow-step.yml",
+      "start": 42,
+      "end": 48
+    },
+    {
+      "path": "cases/bearer-token-workflow-step.yml",
+      "start": 49,
+      "end": 89,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bearer-token-your-access-token-placeholder.sh",
+      "start": 24,
+      "end": 30
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-actions-context-twin.yml",
+      "start": 43,
+      "end": 83,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-actions-env.yml",
+      "start": 53,
+      "end": 93,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-log.log",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-log.log",
+      "start": 8,
+      "end": 13
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-log.log",
+      "start": 17,
+      "end": 20
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-log.log",
+      "start": 21,
+      "end": 30
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-log.log",
+      "start": 31,
+      "end": 37
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-log.log",
+      "start": 38,
+      "end": 48
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-log.log",
+      "start": 49,
+      "end": 53
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-log.log",
+      "start": 54,
+      "end": 60
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-log.log",
+      "start": 61,
+      "end": 70
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-client-log.log",
+      "start": 80,
+      "end": 120,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-config-provider-reference.properties",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-current-generation-tfvars-twin.tfvars",
+      "start": 46,
+      "end": 86,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-current-generation-twin.env",
+      "start": 46,
+      "end": 86,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-env-context-twin.env",
+      "start": 36,
+      "end": 76,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-env.env",
+      "start": 46,
+      "end": 86,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-export-context-twin.sh",
+      "start": 7,
+      "end": 20
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-export-context-twin.sh",
+      "start": 22,
+      "end": 44
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-export-context-twin.sh",
+      "start": 45,
+      "end": 50
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-export-context-twin.sh",
+      "start": 51,
+      "end": 55
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-export-context-twin.sh",
+      "start": 56,
+      "end": 86
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-export.sh",
+      "start": 7,
+      "end": 33
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-export.sh",
+      "start": 53,
+      "end": 93,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-global-key-id-public-id.txt",
+      "start": 0,
+      "end": 9
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-global-key-id-public-id.txt",
+      "start": 10,
+      "end": 13
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-global-key-id-public-id.txt",
+      "start": 26,
+      "end": 44
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-js-constant-context-twin.js",
+      "start": 40,
+      "end": 80,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-js-constant.js",
+      "start": 44,
+      "end": 84,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-k8s-secret-context-twin.yml",
+      "start": 28,
+      "end": 38,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-k8s-secret-context-twin.yml",
+      "start": 78,
+      "end": 118,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-k8s-secret.yml",
+      "start": 28,
+      "end": 38,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-k8s-secret.yml",
+      "start": 82,
+      "end": 122,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-librdkafka-dict-context-twin.py",
+      "start": 9,
+      "end": 26
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-librdkafka-dict-context-twin.py",
+      "start": 53,
+      "end": 57
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-librdkafka-dict-context-twin.py",
+      "start": 61,
+      "end": 74
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-librdkafka-dict-context-twin.py",
+      "start": 78,
+      "end": 81
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-librdkafka-dict-context-twin.py",
+      "start": 85,
+      "end": 98
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-librdkafka-dict-context-twin.py",
+      "start": 143,
+      "end": 166
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-librdkafka-dict.py",
+      "start": 34,
+      "end": 42
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-librdkafka-dict.py",
+      "start": 43,
+      "end": 47
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-librdkafka-dict.py",
+      "start": 48,
+      "end": 69
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-librdkafka-dict.py",
+      "start": 70,
+      "end": 74
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-librdkafka-dict.py",
+      "start": 78,
+      "end": 91
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-librdkafka-dict.py",
+      "start": 95,
+      "end": 98
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-librdkafka-dict.py",
+      "start": 102,
+      "end": 115
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-librdkafka-dict.py",
+      "start": 160,
+      "end": 183
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-masked-table-placeholder.txt",
+      "start": 2,
+      "end": 9
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-masked-table-placeholder.txt",
+      "start": 36,
+      "end": 46
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-one-time-note-prose.md",
+      "start": 0,
+      "end": 22
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-overlong-value-near-miss.env",
+      "start": 46,
+      "end": 86,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-schema-registry-url-context-twin.properties",
+      "start": 20,
+      "end": 134,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-schema-registry-url.properties",
+      "start": 45,
+      "end": 85,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-service-account-public-id.txt",
+      "start": 78,
+      "end": 103
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-tfvars-context-twin.tfvars",
+      "start": 36,
+      "end": 76,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-legacy-tfvars.tfvars",
+      "start": 46,
+      "end": 86,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/discord-bot-token-application-id-public-id.env",
+      "start": 23,
+      "end": 42
+    },
+    {
+      "path": "cases/discord-bot-token-bot-authorization.sh",
+      "start": 51,
+      "end": 60
+    },
+    {
+      "path": "cases/discord-bot-token-plus-timestamp-twin.sh",
+      "start": 51,
+      "end": 60
+    },
+    {
+      "path": "cases/discord-bot-token-reset-note-prose.md",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/discord-bot-token-reset-note-prose.md",
+      "start": 26,
+      "end": 42
+    },
+    {
+      "path": "cases/discord-bot-token-reset-note-prose.md",
+      "start": 50,
+      "end": 71
+    },
+    {
+      "path": "cases/discord-bot-token-short-hmac-twin.sh",
+      "start": 51,
+      "end": 60
+    },
+    {
+      "path": "cases/discord-bot-token-user-mention-public-id.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/discord-bot-token-user-mention-public-id.md",
+      "start": 14,
+      "end": 33
+    },
+    {
+      "path": "cases/discord-bot-token-user-mention-public-id.md",
+      "start": 40,
+      "end": 59
+    },
+    {
+      "path": "cases/firebase-server-key-curl-send.sh",
+      "start": 49,
+      "end": 58
+    },
+    {
+      "path": "cases/firebase-server-key-docs-ellipsis-placeholder.sh",
+      "start": 13,
+      "end": 22
+    },
+    {
+      "path": "cases/firebase-server-key-dotted-body-cli-twin.sh",
+      "start": 49,
+      "end": 58
+    },
+    {
+      "path": "cases/firebase-server-key-dotted-body-twin.http",
+      "start": 84,
+      "end": 93
+    },
+    {
+      "path": "cases/firebase-server-key-handoff-note.md",
+      "start": 0,
+      "end": 21
+    },
+    {
+      "path": "cases/firebase-server-key-handoff-note.md",
+      "start": 39,
+      "end": 46
+    },
+    {
+      "path": "cases/firebase-server-key-handoff-note.md",
+      "start": 47,
+      "end": 50
+    },
+    {
+      "path": "cases/firebase-server-key-handoff-note.md",
+      "start": 52,
+      "end": 63
+    },
+    {
+      "path": "cases/firebase-server-key-java-constant.java",
+      "start": 7,
+      "end": 12
+    },
+    {
+      "path": "cases/firebase-server-key-java-constant.java",
+      "start": 54,
+      "end": 64
+    },
+    {
+      "path": "cases/firebase-server-key-java-constant.java",
+      "start": 68,
+      "end": 79
+    },
+    {
+      "path": "cases/firebase-server-key-long-head-twin.java",
+      "start": 7,
+      "end": 12
+    },
+    {
+      "path": "cases/firebase-server-key-long-head-twin.java",
+      "start": 54,
+      "end": 64
+    },
+    {
+      "path": "cases/firebase-server-key-long-head-twin.java",
+      "start": 68,
+      "end": 80
+    },
+    {
+      "path": "cases/firebase-server-key-migration-note-prose.md",
+      "start": 0,
+      "end": 21
+    },
+    {
+      "path": "cases/firebase-server-key-migration-note-prose.md",
+      "start": 42,
+      "end": 46
+    },
+    {
+      "path": "cases/firebase-server-key-migration-note-prose.md",
+      "start": 47,
+      "end": 53
+    },
+    {
+      "path": "cases/firebase-server-key-migration-note-prose.md",
+      "start": 54,
+      "end": 58
+    },
+    {
+      "path": "cases/firebase-server-key-migration-note-prose.md",
+      "start": 59,
+      "end": 63
+    },
+    {
+      "path": "cases/firebase-server-key-migration-note-prose.md",
+      "start": 80,
+      "end": 83
+    },
+    {
+      "path": "cases/firebase-server-key-migration-note-prose.md",
+      "start": 96,
+      "end": 100
+    },
+    {
+      "path": "cases/firebase-server-key-migration-note-prose.md",
+      "start": 104,
+      "end": 108
+    },
+    {
+      "path": "cases/firebase-server-key-migration-note-prose.md",
+      "start": 109,
+      "end": 114
+    },
+    {
+      "path": "cases/firebase-server-key-raw-request.http",
+      "start": 84,
+      "end": 93
+    },
+    {
+      "path": "cases/firebase-server-key-registration-log-public-id.log",
+      "start": 28,
+      "end": 51
+    },
+    {
+      "path": "cases/firebase-server-key-registration-token-public-id.json",
+      "start": 201,
+      "end": 215
+    },
+    {
+      "path": "cases/firebase-server-key-request-log.log",
+      "start": 74,
+      "end": 87
+    },
+    {
+      "path": "cases/firebase-server-key-sender-id-public-id.js",
+      "start": 6,
+      "end": 20
+    },
+    {
+      "path": "cases/firebase-server-key-sender-id-public-id.js",
+      "start": 25,
+      "end": 34
+    },
+    {
+      "path": "cases/firebase-server-key-sender-id-public-id.js",
+      "start": 37,
+      "end": 46
+    },
+    {
+      "path": "cases/firebase-server-key-sender-id-public-id.js",
+      "start": 47,
+      "end": 54
+    },
+    {
+      "path": "cases/firebase-server-key-sender-id-public-id.js",
+      "start": 57,
+      "end": 74
+    },
+    {
+      "path": "cases/firebase-server-key-settings-json.json",
+      "start": 84,
+      "end": 124,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/firebase-server-key-settings-json.json",
+      "start": 124,
+      "end": 164,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/firebase-server-key-short-body-json-twin.json",
+      "start": 84,
+      "end": 124,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/firebase-server-key-short-body-json-twin.json",
+      "start": 124,
+      "end": 164,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/firebase-server-key-your-server-key-placeholder.http",
+      "start": 4,
+      "end": 13
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-app-url-path-public-id.log",
+      "start": 32,
+      "end": 68
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-app-uuid-json-public-id.json",
+      "start": 19,
+      "end": 55
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-auth-token-output.txt",
+      "start": 20,
+      "end": 56
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-authorizations-list-public-id.txt",
+      "start": 13,
+      "end": 23
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-authorizations-list-public-id.txt",
+      "start": 48,
+      "end": 84
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-compose-env.yml",
+      "start": 61,
+      "end": 97
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-deploy-action-context-twin.yml",
+      "start": 14,
+      "end": 47
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-deploy-action.yml",
+      "start": 14,
+      "end": 47
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-deploy-action.yml",
+      "start": 88,
+      "end": 124
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-deploy-log-context-twin.log",
+      "start": 45,
+      "end": 81
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-deploy-log.log",
+      "start": 52,
+      "end": 88
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-env.env",
+      "start": 15,
+      "end": 51
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-export.sh",
+      "start": 22,
+      "end": 58
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-git-remote.sh",
+      "start": 31,
+      "end": 67
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-handoff-note-context-twin.md",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-handoff-note.md",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-handoff-note.md",
+      "start": 37,
+      "end": 73
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-inline-env.sh",
+      "start": 15,
+      "end": 23
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-netrc-multi-line.netrc",
+      "start": 31,
+      "end": 38
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-netrc-multi-line.netrc",
+      "start": 66,
+      "end": 102,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-netrc-multi-line.netrc",
+      "start": 134,
+      "end": 141
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-netrc-multi-line.netrc",
+      "start": 169,
+      "end": 185,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-netrc-single-line-context-twin.netrc",
+      "start": 34,
+      "end": 41
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-netrc-single-line-context-twin.netrc",
+      "start": 67,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-netrc-single-line.netrc",
+      "start": 29,
+      "end": 36
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-netrc-single-line.netrc",
+      "start": 62,
+      "end": 98,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-oauth-client-id-public-id.env",
+      "start": 16,
+      "end": 24
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-platform-api-context-twin.sh",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-platform-api-context-twin.sh",
+      "start": 67,
+      "end": 103,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-platform-api.sh",
+      "start": 55,
+      "end": 61
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-platform-api.sh",
+      "start": 62,
+      "end": 98,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-prefix-note-prose.md",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-release-id-public-id.env",
+      "start": 18,
+      "end": 54
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-router-request-id-public-id.log",
+      "start": 112,
+      "end": 148
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-terraform-provider-context-twin.tf",
+      "start": 32,
+      "end": 68
+    },
+    {
+      "path": "cases/heroku-api-key-legacy-terraform-provider.tf",
+      "start": 31,
+      "end": 67
+    },
+    {
+      "path": "cases/sentry-org-auth-token-decoded-facts-encoded-value.txt",
+      "start": 53,
+      "end": 93,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/sentry-org-auth-token-dockerfile-env.dockerfile",
+      "start": 0,
+      "end": 9
+    },
+    {
+      "path": "cases/sentry-org-auth-token-dsn-public-id.env",
+      "start": 80,
+      "end": 87
+    },
+    {
+      "path": "cases/sentry-org-auth-token-next-config.js",
+      "start": 0,
+      "end": 14
+    },
+    {
+      "path": "cases/sentry-org-auth-token-next-config.js",
+      "start": 17,
+      "end": 33
+    },
+    {
+      "path": "cases/sentry-org-auth-token-next-config.js",
+      "start": 34,
+      "end": 44
+    },
+    {
+      "path": "cases/sentry-org-auth-token-next-config.js",
+      "start": 50,
+      "end": 53
+    },
+    {
+      "path": "cases/sentry-org-auth-token-next-config.js",
+      "start": 56,
+      "end": 65
+    },
+    {
+      "path": "cases/sentry-org-auth-token-next-config.js",
+      "start": 70,
+      "end": 79
+    },
+    {
+      "path": "cases/sentry-org-auth-token-urlsafe-payload-twin.js",
+      "start": 0,
+      "end": 14
+    },
+    {
+      "path": "cases/sentry-org-auth-token-urlsafe-payload-twin.js",
+      "start": 17,
+      "end": 33
+    },
+    {
+      "path": "cases/sentry-org-auth-token-urlsafe-payload-twin.js",
+      "start": 34,
+      "end": 44
+    },
+    {
+      "path": "cases/sentry-org-auth-token-urlsafe-payload-twin.js",
+      "start": 50,
+      "end": 53
+    },
+    {
+      "path": "cases/sentry-org-auth-token-urlsafe-payload-twin.js",
+      "start": 56,
+      "end": 65
+    },
+    {
+      "path": "cases/sentry-org-auth-token-urlsafe-payload-twin.js",
+      "start": 70,
+      "end": 79
+    },
+    {
+      "path": "cases/sentry-org-auth-token-urlsafe-payload-twin.js",
+      "start": 82,
+      "end": 102
+    },
+    {
+      "path": "cases/sentry-user-auth-token-api-curl.sh",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "path": "cases/sentry-user-auth-token-api-curl.sh",
+      "start": 65,
+      "end": 136,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/sentry-user-auth-token-dsn-public-id.env",
+      "start": 80,
+      "end": 87
+    },
+    {
+      "path": "cases/sentry-user-auth-token-naming-note-prose.md",
+      "start": 31,
+      "end": 35
+    },
+    {
+      "path": "cases/sentry-user-auth-token-naming-note-prose.md",
+      "start": 36,
+      "end": 42
+    },
+    {
+      "path": "cases/sentry-user-auth-token-prefix-twin.sh",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "path": "cases/sentry-user-auth-token-prefix-twin.sh",
+      "start": 65,
+      "end": 136,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/supabase-token-actions-env.yml",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/supabase-token-actions-env.yml",
+      "start": 8,
+      "end": 15
+    },
+    {
+      "path": "cases/supabase-token-actions-env.yml",
+      "start": 21,
+      "end": 25
+    },
+    {
+      "path": "cases/supabase-token-actions-env.yml",
+      "start": 30,
+      "end": 36
+    },
+    {
+      "path": "cases/supabase-token-actions-env.yml",
+      "start": 48,
+      "end": 51
+    },
+    {
+      "path": "cases/supabase-token-actions-env.yml",
+      "start": 59,
+      "end": 78
+    },
+    {
+      "path": "cases/supabase-token-apikey-header.sh",
+      "start": 83,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/supabase-token-create-client.js",
+      "start": 31,
+      "end": 39
+    },
+    {
+      "path": "cases/supabase-token-key-hash-encoded-value.json",
+      "start": 52,
+      "end": 92,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/supabase-token-logged-six-characters-placeholder.log",
+      "start": 82,
+      "end": 107
+    },
+    {
+      "path": "cases/supabase-token-long-checksum-twin.sh",
+      "start": 83,
+      "end": 125,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/supabase-token-publishable-prefix-sdk-twin.js",
+      "start": 31,
+      "end": 39
+    },
+    {
+      "path": "cases/supabase-token-rotation-note-prose.md",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/supabase-token-rotation-note-prose.md",
+      "start": 53,
+      "end": 70
+    },
+    {
+      "path": "cases/supabase-token-short-random-twin.txt",
+      "start": 51,
+      "end": 56
+    },
+    {
+      "path": "cases/supabase-token-status-env.txt",
+      "start": 51,
+      "end": 56
+    },
+    {
+      "path": "cases/supabase-token-unprefixed-body-near-miss.yml",
+      "start": 13,
+      "end": 44
+    },
+    {
+      "path": "cases/telegram-bot-token-actions-env.yml",
+      "start": 23,
+      "end": 33
+    },
+    {
+      "path": "cases/telegram-bot-token-bot-username-public-id.env",
+      "start": 0,
+      "end": 21
+    },
+    {
+      "path": "cases/telegram-bot-token-bot-username-public-id.env",
+      "start": 22,
+      "end": 43
+    },
+    {
+      "path": "cases/telegram-bot-token-bot-yaml.yml",
+      "start": 23,
+      "end": 33
+    },
+    {
+      "path": "cases/telegram-bot-token-botfather-reply.txt",
+      "start": 6,
+      "end": 33
+    },
+    {
+      "path": "cases/telegram-bot-token-botfather-reply.txt",
+      "start": 78,
+      "end": 88
+    },
+    {
+      "path": "cases/telegram-bot-token-compose-env.yml",
+      "start": 52,
+      "end": 62
+    },
+    {
+      "path": "cases/telegram-bot-token-env.env",
+      "start": 19,
+      "end": 29
+    },
+    {
+      "path": "cases/telegram-bot-token-masked-placeholder.env",
+      "start": 19,
+      "end": 29
+    },
+    {
+      "path": "cases/telegram-bot-token-plus-body-twin.yml",
+      "start": 23,
+      "end": 33
+    },
+    {
+      "path": "cases/telegram-bot-token-short-body-docs-width-twin.txt",
+      "start": 6,
+      "end": 33
+    },
+    {
+      "path": "cases/telegram-bot-token-short-body-docs-width-twin.txt",
+      "start": 78,
+      "end": 88
+    },
+    {
+      "path": "cases/telegram-bot-token-short-body-twin.env",
+      "start": 19,
+      "end": 29
+    },
+    {
+      "path": "cases/telegram-bot-token-short-body-yaml-twin.yml",
+      "start": 23,
+      "end": 33
+    },
+    {
+      "path": "cases/telegram-bot-token-short-secret-near-miss.env",
+      "start": 19,
+      "end": 29
+    },
+    {
+      "path": "cases/telegram-bot-token-slash-body-env-twin.env",
+      "start": 19,
+      "end": 29
+    },
+    {
+      "path": "cases/telegram-bot-token-slash-body-twin.yml",
+      "start": 52,
+      "end": 62
+    },
+    {
+      "path": "cases/telegram-bot-token-timestamp-colon-near-miss.log",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/telegram-bot-token-timestamp-colon-near-miss.log",
+      "start": 29,
+      "end": 40
+    },
+    {
+      "path": "cases/telegram-bot-token-timestamp-colon-near-miss.log",
+      "start": 41,
+      "end": 65
+    },
+    {
+      "path": "cases/telegram-bot-token-update-json-public-id.json",
+      "start": 14,
+      "end": 23
+    },
+    {
+      "path": "cases/telegram-bot-token-update-json-public-id.json",
+      "start": 70,
+      "end": 80
+    },
+    {
+      "path": "cases/telegram-bot-token-update-json-public-id.json",
+      "start": 91,
+      "end": 101
+    },
+    {
+      "path": "cases/twilio-api-key-secret-api-key-sid-public-id.env",
+      "start": 15,
+      "end": 49
+    },
+    {
+      "path": "cases/twilio-api-key-secret-cli-hidden-placeholder.txt",
+      "start": 2,
+      "end": 21
+    },
+    {
+      "path": "cases/twilio-api-key-secret-compose-context-twin.yml",
+      "start": 44,
+      "end": 57
+    },
+    {
+      "path": "cases/twilio-api-key-secret-compose-env.yml",
+      "start": 44,
+      "end": 61
+    },
+    {
+      "path": "cases/twilio-api-key-secret-curl-basic.sh",
+      "start": 56,
+      "end": 90
+    },
+    {
+      "path": "cases/twilio-api-key-secret-handoff-note-context-twin.md",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/twilio-api-key-secret-handoff-note.md",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/twilio-api-key-secret-one-time-note-prose.md",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/twilio-api-key-secret-profile-create.sh",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/twilio-api-key-secret-profile-create.sh",
+      "start": 7,
+      "end": 15
+    },
+    {
+      "path": "cases/twilio-api-key-secret-profile-create.sh",
+      "start": 16,
+      "end": 22
+    },
+    {
+      "path": "cases/twilio-api-key-secret-profile-create.sh",
+      "start": 25,
+      "end": 28
+    },
+    {
+      "path": "cases/twilio-api-key-secret-profile-create.sh",
+      "start": 29,
+      "end": 32
+    },
+    {
+      "path": "cases/twilio-api-key-secret-profile-create.sh",
+      "start": 33,
+      "end": 67
+    },
+    {
+      "path": "cases/twilio-api-key-secret-profile-create.sh",
+      "start": 81,
+      "end": 113,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/twilio-api-key-secret-request-signature-encoded-value.http",
+      "start": 2,
+      "end": 8
+    },
+    {
+      "path": "cases/twilio-api-key-secret-request-signature-encoded-value.http",
+      "start": 9,
+      "end": 18
+    },
+    {
+      "path": "cases/twilio-api-key-secret-request-signature-encoded-value.http",
+      "start": 20,
+      "end": 35
+    },
+    {
+      "path": "cases/twilio-api-key-secret-request-signature-encoded-value.http",
+      "start": 36,
+      "end": 47
+    },
+    {
+      "path": "cases/twilio-api-key-secret-wrong-companion-near-miss.txt",
+      "start": 20,
+      "end": 54
+    },
+    {
+      "path": "cases/twilio-auth-token-cli-hidden-placeholder.txt",
+      "start": 2,
+      "end": 20
+    },
+    {
+      "path": "cases/twilio-auth-token-client-sid-context-twin.py",
+      "start": 30,
+      "end": 62
+    },
+    {
+      "path": "cases/twilio-auth-token-config-set-context-twin.sh",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/twilio-auth-token-config-set-context-twin.sh",
+      "start": 14,
+      "end": 17
+    },
+    {
+      "path": "cases/twilio-auth-token-config-set-context-twin.sh",
+      "start": 18,
+      "end": 27
+    },
+    {
+      "path": "cases/twilio-auth-token-config-set.sh",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/twilio-auth-token-config-set.sh",
+      "start": 7,
+      "end": 13
+    },
+    {
+      "path": "cases/twilio-auth-token-config-set.sh",
+      "start": 14,
+      "end": 17
+    },
+    {
+      "path": "cases/twilio-auth-token-config-set.sh",
+      "start": 18,
+      "end": 35
+    },
+    {
+      "path": "cases/twilio-auth-token-env-context-twin.env",
+      "start": 0,
+      "end": 12
+    },
+    {
+      "path": "cases/twilio-auth-token-masked-console-placeholder.txt",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/twilio-auth-token-phone-number-public-id.env",
+      "start": 21,
+      "end": 32
+    },
+    {
+      "path": "cases/twilio-auth-token-rotation-note-prose.md",
+      "start": 0,
+      "end": 22
+    },
+    {
+      "path": "cases/twilio-auth-token-support-note-context-twin.md",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/twilio-auth-token-support-note.md",
+      "start": 0,
+      "end": 22
+    },
+    {
+      "path": "cases/twilio-auth-token-yaml-context-twin.yml",
+      "start": 0,
+      "end": 12
+    },
+    {
+      "path": "cases/twilio-auth-token-yaml-context-twin.yml",
+      "start": 14,
+      "end": 46
+    },
+    {
+      "path": "cases/twilio-auth-token-yaml.yml",
+      "start": 19,
+      "end": 51
+    }
+  ],
+  "digest": "78262debb438c0eaa72b75f90ede8138e701caff33a16d26f994ee429905fb1d"
+}

@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-1012c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "52725241b40d19213f25b5643eede72af20b923065d59bd5e87a9092c1f118b4",
+    "fixtureCount": 31,
+    "fixturesDigest": "fcbeecf28396e1dd9eac554e6296f8d0b808009f2d70fe8cbeb97c02e1dd4e4e",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/gitlab-routable-personal-access-token-bare-prose.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-bearer-header.http",
+      "start": 56,
+      "end": 62
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-bearer-header.http",
+      "start": 63,
+      "end": 124,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-chat-paste.txt",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-chat-paste.txt",
+      "start": 11,
+      "end": 17
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-chat-paste.txt",
+      "start": 22,
+      "end": 27
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-chat-paste.txt",
+      "start": 92,
+      "end": 97
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-git-remote-url.txt",
+      "start": 25,
+      "end": 128,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-python-gitlab.py",
+      "start": 119,
+      "end": 132
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-trailing-glue-twin.txt",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-trailing-glue-twin.txt",
+      "start": 11,
+      "end": 17
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-trailing-glue-twin.txt",
+      "start": 22,
+      "end": 27
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-trailing-glue-twin.txt",
+      "start": 93,
+      "end": 98
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-x-api-key-header.http",
+      "start": 51,
+      "end": 99,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "178420986dae8db5ae8e2f29717f3b6fce00301c672272beebcdc04a18c6c075"
+}

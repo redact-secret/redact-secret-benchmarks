@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-434f",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "5f31e88e0dc335c6c14b4290a187979e2b13392d7cacdae061cda09ff57e91fc",
+    "fixtureCount": 40,
+    "fixturesDigest": "f2afda94bd23dfb0b7a5a3fcbdfb21300f47e340ad24d45d8e44d3b82d17d60f",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/firecrawl-api-key-bare-prose.md",
+      "start": 0,
+      "end": 32
+    },
+    {
+      "path": "cases/firecrawl-api-key-bearer-header.http",
+      "start": 63,
+      "end": 69
+    },
+    {
+      "path": "cases/firecrawl-api-key-bearer-header.http",
+      "start": 70,
+      "end": 105,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-chat-paste.txt",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/firecrawl-api-key-css-classes-near-miss.html",
+      "start": 11,
+      "end": 21
+    },
+    {
+      "path": "cases/firecrawl-api-key-css-classes-near-miss.html",
+      "start": 50,
+      "end": 58
+    },
+    {
+      "path": "cases/firecrawl-api-key-css-classes-near-miss.html",
+      "start": 59,
+      "end": 67
+    },
+    {
+      "path": "cases/firecrawl-api-key-curl-bearer.sh",
+      "start": 71,
+      "end": 77
+    },
+    {
+      "path": "cases/firecrawl-api-key-curl-bearer.sh",
+      "start": 78,
+      "end": 113,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-dashed-uuid-twin.json",
+      "start": 146,
+      "end": 182
+    },
+    {
+      "path": "cases/firecrawl-api-key-docs-ctor-placeholder.py",
+      "start": 28,
+      "end": 35
+    },
+    {
+      "path": "cases/firecrawl-api-key-g-in-body-twin.ts",
+      "start": 7,
+      "end": 21
+    },
+    {
+      "path": "cases/firecrawl-api-key-go-http.go",
+      "start": 99,
+      "end": 108
+    },
+    {
+      "path": "cases/firecrawl-api-key-go-http.go",
+      "start": 119,
+      "end": 154,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-js-client.ts",
+      "start": 7,
+      "end": 21
+    },
+    {
+      "path": "cases/firecrawl-api-key-key-guidance-prose.md",
+      "start": 0,
+      "end": 25
+    },
+    {
+      "path": "cases/firecrawl-api-key-leading-glue-twin.md",
+      "start": 0,
+      "end": 32
+    },
+    {
+      "path": "cases/firecrawl-api-key-mcp-env.json",
+      "start": 146,
+      "end": 178
+    },
+    {
+      "path": "cases/firecrawl-api-key-short-samples-placeholder.md",
+      "start": 27,
+      "end": 34
+    },
+    {
+      "path": "cases/firecrawl-api-key-underscore-prefix-twin.txt",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/firecrawl-api-key-uppercase-prefix-twin.sh",
+      "start": 71,
+      "end": 77
+    },
+    {
+      "path": "cases/firecrawl-api-key-uppercase-prefix-twin.sh",
+      "start": 78,
+      "end": 113,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-version-1-twin.http",
+      "start": 63,
+      "end": 69
+    },
+    {
+      "path": "cases/firecrawl-api-key-version-1-twin.http",
+      "start": 70,
+      "end": 105,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-version-7-twin.http",
+      "start": 58,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-x-api-key-header.http",
+      "start": 58,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/firecrawl-api-key-your-api-key-placeholder.env",
+      "start": 18,
+      "end": 25
+    }
+  ],
+  "digest": "4a2bd3b4130752d76cded7364cb7258f87d16fd57eb85f7ab8ed315244438764"
+}

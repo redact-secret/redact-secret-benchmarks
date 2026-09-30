@@ -1,0 +1,260 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-528a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "7522df47455b0ceec895bc6c42650f84f70a3b0b0cc99b454e0d726f9a7d4734",
+    "fixtureCount": 38,
+    "fixturesDigest": "8797af2f9b6ae14d8aaede2fc119719cfd4c9e9dd497a6e9886fca98dc704e5e",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-actions-with-access-token.yml",
+      "start": 102,
+      "end": 171
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-angle-brackets-placeholder.env",
+      "start": 45,
+      "end": 51
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-bare-prose.md",
+      "start": 0,
+      "end": 29
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-bare-prose.md",
+      "start": 30,
+      "end": 61
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-bearer-header.http",
+      "start": 63,
+      "end": 69
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-bearer-header.http",
+      "start": 70,
+      "end": 139,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-bws-cli-flag.sh",
+      "start": 31,
+      "end": 100
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-chat-paste.txt",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-colon-as-dot-twin.yml",
+      "start": 102,
+      "end": 179
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-hyphen-in-secret-twin.json",
+      "start": 16,
+      "end": 52
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-json-api-key.json",
+      "start": 16,
+      "end": 26
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-json-api-key.json",
+      "start": 27,
+      "end": 31
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-json-api-key.json",
+      "start": 32,
+      "end": 36
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-json-api-key.json",
+      "start": 37,
+      "end": 41
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-json-api-key.json",
+      "start": 42,
+      "end": 55
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-json-api-key.json",
+      "start": 55,
+      "end": 85
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-json-api-key.json",
+      "start": 86,
+      "end": 100
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-json-api-key.json",
+      "start": 101,
+      "end": 108
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-json-api-key.json",
+      "start": 116,
+      "end": 123
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-json-token.json",
+      "start": 16,
+      "end": 52
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-key-21-twin.http",
+      "start": 63,
+      "end": 69
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-key-21-twin.http",
+      "start": 70,
+      "end": 139,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-key-23-twin.http",
+      "start": 60,
+      "end": 96
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-leading-digit-glue-twin.md",
+      "start": 0,
+      "end": 29
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-leading-digit-glue-twin.md",
+      "start": 30,
+      "end": 61
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-leading-v-glue-twin.json",
+      "start": 16,
+      "end": 27
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-leading-v-glue-twin.json",
+      "start": 28,
+      "end": 32
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-leading-v-glue-twin.json",
+      "start": 33,
+      "end": 37
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-leading-v-glue-twin.json",
+      "start": 38,
+      "end": 42
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-leading-v-glue-twin.json",
+      "start": 43,
+      "end": 56
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-leading-v-glue-twin.json",
+      "start": 56,
+      "end": 86
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-leading-v-glue-twin.json",
+      "start": 87,
+      "end": 101
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-leading-v-glue-twin.json",
+      "start": 102,
+      "end": 109
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-leading-v-glue-twin.json",
+      "start": 117,
+      "end": 124
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-sdk-kwarg.py",
+      "start": 36,
+      "end": 72
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-secret-without-key-near-miss.log",
+      "start": 120,
+      "end": 130
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-single-padding-twin.py",
+      "start": 36,
+      "end": 72
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-token-guidance-prose.md",
+      "start": 65,
+      "end": 71
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-trailing-glue-twin.txt",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-unpadded-key-twin.txt",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-version-1-twin.sh",
+      "start": 31,
+      "end": 100
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-x-api-key-header.http",
+      "start": 60,
+      "end": 96
+    }
+  ],
+  "digest": "7fc42b51006fe7713603f58b9c1085f607ef56b64be8424ade84197ee3fcc947"
+}

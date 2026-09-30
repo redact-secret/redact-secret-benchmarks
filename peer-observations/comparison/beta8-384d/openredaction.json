@@ -1,0 +1,280 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-384d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "401a531c20d39e5d8e46ed331af004ff481203857bb94c31fcd692ad8c0686d4",
+    "fixtureCount": 74,
+    "fixturesDigest": "eba1a63bde5f1db6f986c83e2f6d2baf84e77796363e6c8e3dc8247368e24ebe",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/tavily-api-key-cli-and-prefix-prose.md",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/tavily-api-key-cli-and-prefix-prose.md",
+      "start": 17,
+      "end": 20
+    },
+    {
+      "path": "cases/tavily-api-key-cli-and-prefix-prose.md",
+      "start": 22,
+      "end": 26
+    },
+    {
+      "path": "cases/tavily-api-key-cli-and-prefix-prose.md",
+      "start": 36,
+      "end": 42
+    },
+    {
+      "path": "cases/tavily-api-key-cli-and-prefix-prose.md",
+      "start": 44,
+      "end": 48
+    },
+    {
+      "path": "cases/tavily-api-key-cli-and-prefix-prose.md",
+      "start": 49,
+      "end": 55
+    },
+    {
+      "path": "cases/tavily-api-key-cli-flag.sh",
+      "start": 11,
+      "end": 20
+    },
+    {
+      "path": "cases/tavily-api-key-cli-flag.sh",
+      "start": 21,
+      "end": 62,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/tavily-api-key-cli-login-reference-reference.sh",
+      "start": 11,
+      "end": 20
+    },
+    {
+      "path": "cases/tavily-api-key-curl-bearer.sh",
+      "start": 65,
+      "end": 71
+    },
+    {
+      "path": "cases/tavily-api-key-curl-bearer.sh",
+      "start": 72,
+      "end": 113,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/tavily-api-key-docs-bearer-placeholder.sh",
+      "start": 65,
+      "end": 71
+    },
+    {
+      "path": "cases/tavily-api-key-prefix-absent-twin.json",
+      "start": 101,
+      "end": 107
+    },
+    {
+      "path": "cases/tavily-api-key-prefix-absent-twin.json",
+      "start": 108,
+      "end": 140,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/tavily-api-key-request-id-public-id.json",
+      "start": 70,
+      "end": 80
+    },
+    {
+      "path": "cases/tavily-api-key-tool-call.json",
+      "start": 101,
+      "end": 107
+    },
+    {
+      "path": "cases/tavily-api-key-tool-call.json",
+      "start": 108,
+      "end": 149,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/tavily-api-key-uppercase-prefix-twin.sh",
+      "start": 65,
+      "end": 71
+    },
+    {
+      "path": "cases/tavily-api-key-uppercase-prefix-twin.sh",
+      "start": 72,
+      "end": 113,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/tavily-api-key-yaml-config.yml",
+      "start": 10,
+      "end": 18
+    },
+    {
+      "path": "cases/tavily-api-key-yaml-config.yml",
+      "start": 38,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-cli-flag.sh",
+      "start": 19,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-curl-bearer.sh",
+      "start": 62,
+      "end": 68
+    },
+    {
+      "path": "cases/together-ai-api-key-curl-bearer.sh",
+      "start": 69,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-hyphen-delimiters-twin.py",
+      "start": 21,
+      "end": 37
+    },
+    {
+      "path": "cases/together-ai-api-key-plus-in-body-twin.json",
+      "start": 115,
+      "end": 121
+    },
+    {
+      "path": "cases/together-ai-api-key-plus-in-body-twin.json",
+      "start": 122,
+      "end": 147,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-prefix-guidance-prose.md",
+      "start": 0,
+      "end": 22
+    },
+    {
+      "path": "cases/together-ai-api-key-prefix-guidance-prose.md",
+      "start": 101,
+      "end": 108
+    },
+    {
+      "path": "cases/together-ai-api-key-prefix-only-near-miss.txt",
+      "start": 15,
+      "end": 21
+    },
+    {
+      "path": "cases/together-ai-api-key-python-together.py",
+      "start": 21,
+      "end": 37
+    },
+    {
+      "path": "cases/together-ai-api-key-tool-call.json",
+      "start": 115,
+      "end": 121
+    },
+    {
+      "path": "cases/together-ai-api-key-tool-call.json",
+      "start": 122,
+      "end": 172,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-uppercase-prefix-twin.sh",
+      "start": 62,
+      "end": 68
+    },
+    {
+      "path": "cases/together-ai-api-key-uppercase-prefix-twin.sh",
+      "start": 69,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-yaml-config.yml",
+      "start": 28,
+      "end": 35
+    },
+    {
+      "path": "cases/together-ai-api-key-yaml-config.yml",
+      "start": 37,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/together-ai-api-key-yaml-config.yml",
+      "start": 90,
+      "end": 95
+    },
+    {
+      "path": "cases/together-ai-api-key-yaml-config.yml",
+      "start": 97,
+      "end": 101
+    },
+    {
+      "path": "cases/together-ai-api-key-yaml-config.yml",
+      "start": 102,
+      "end": 107
+    },
+    {
+      "path": "cases/together-ai-api-key-yaml-config.yml",
+      "start": 108,
+      "end": 113
+    },
+    {
+      "path": "cases/together-ai-api-key-yaml-config.yml",
+      "start": 114,
+      "end": 117
+    },
+    {
+      "path": "cases/together-ai-api-key-yaml-config.yml",
+      "start": 118,
+      "end": 121
+    },
+    {
+      "path": "cases/together-ai-api-key-yaml-config.yml",
+      "start": 122,
+      "end": 130
+    }
+  ],
+  "digest": "7a92d9227203c1d1c71631b6a6aa507f7d0bd8f77b97d495b24f1a81e95e85d2"
+}

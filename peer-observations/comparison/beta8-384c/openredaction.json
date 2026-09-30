@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-384c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "8b32f73aa47bb2f38a880bc610db25c16850fe7f6d30a75781e7a502325b5f2f",
+    "fixtureCount": 30,
+    "fixturesDigest": "6de8ac76b63ca0da9d3c7407e92ca0251cd0db95e3cad46c479a43ee5f33c877",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/elevenlabs-api-key-ak-prefix-twin.yml",
+      "start": 39,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-curl-xi-api-key.sh",
+      "start": 58,
+      "end": 109,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-hyphen-prefix-twin.sh",
+      "start": 58,
+      "end": 109,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-missing-underscore-twin.json",
+      "start": 103,
+      "end": 153,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-non-hex-body-twin.sh",
+      "start": 58,
+      "end": 109,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-python-multi-line.py",
+      "start": 23,
+      "end": 29
+    },
+    {
+      "path": "cases/elevenlabs-api-key-residency-hosts-prose.md",
+      "start": 38,
+      "end": 49
+    },
+    {
+      "path": "cases/elevenlabs-api-key-residency-hosts-prose.md",
+      "start": 62,
+      "end": 69
+    },
+    {
+      "path": "cases/elevenlabs-api-key-stripe-shaped-twin.py",
+      "start": 16,
+      "end": 23
+    },
+    {
+      "path": "cases/elevenlabs-api-key-stripe-shaped-twin.py",
+      "start": 23,
+      "end": 33
+    },
+    {
+      "path": "cases/elevenlabs-api-key-stripe-shaped-twin.py",
+      "start": 35,
+      "end": 41
+    },
+    {
+      "path": "cases/elevenlabs-api-key-stripe-shaped-twin.py",
+      "start": 44,
+      "end": 54
+    },
+    {
+      "path": "cases/elevenlabs-api-key-stripe-shaped-twin.py",
+      "start": 64,
+      "end": 104,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-stripe-test-shaped-twin.ts",
+      "start": 110,
+      "end": 142,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-tool-call.json",
+      "start": 103,
+      "end": 154,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/elevenlabs-api-key-voice-id-public-id.yml",
+      "start": 0,
+      "end": 8
+    },
+    {
+      "path": "cases/elevenlabs-api-key-voice-id-public-id.yml",
+      "start": 10,
+      "end": 30
+    },
+    {
+      "path": "cases/elevenlabs-api-key-voice-id-public-id.yml",
+      "start": 31,
+      "end": 39
+    },
+    {
+      "path": "cases/elevenlabs-api-key-voice-id-public-id.yml",
+      "start": 41,
+      "end": 63
+    },
+    {
+      "path": "cases/elevenlabs-api-key-yaml-config.yml",
+      "start": 39,
+      "end": 90,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "112916cdcadb42e3f078e5fe0d4c8e3be0e7fde982f2303305a1c06e9595805c"
+}

@@ -1,0 +1,1021 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-211",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "1cd4ecce7ac3c224b889260082c0008a3f85195ebe96a0e62105ca789da39970",
+    "fixtureCount": 130,
+    "fixturesDigest": "87c65fe4a21b6d3ce5c25b3710bc8ea07594fd41dcbf6dbe42dc17eed0643481",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/github-fine-grained-pat-audit-log-token-id-public-id.json",
+      "start": 91,
+      "end": 99
+    },
+    {
+      "path": "cases/github-fine-grained-pat-bearer-header-case-twin.http",
+      "start": 87,
+      "end": 93
+    },
+    {
+      "path": "cases/github-fine-grained-pat-bearer-header-case-twin.http",
+      "start": 94,
+      "end": 187,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-bearer-header-plus-alphabet-twin.http",
+      "start": 87,
+      "end": 93
+    },
+    {
+      "path": "cases/github-fine-grained-pat-bearer-header.http",
+      "start": 87,
+      "end": 93
+    },
+    {
+      "path": "cases/github-fine-grained-pat-bearer-header.http",
+      "start": 94,
+      "end": 187,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-docs-sentence-prose.md",
+      "start": 94,
+      "end": 112
+    },
+    {
+      "path": "cases/github-fine-grained-pat-gh-auth-login.sh",
+      "start": 119,
+      "end": 129
+    },
+    {
+      "path": "cases/github-fine-grained-pat-git-credential-fill.txt",
+      "start": 53,
+      "end": 63
+    },
+    {
+      "path": "cases/github-fine-grained-pat-git-credential-fill.txt",
+      "start": 64,
+      "end": 68
+    },
+    {
+      "path": "cases/github-fine-grained-pat-git-credential-fill.txt",
+      "start": 69,
+      "end": 77
+    },
+    {
+      "path": "cases/github-fine-grained-pat-git-credential-fill.txt",
+      "start": 78,
+      "end": 83
+    },
+    {
+      "path": "cases/github-fine-grained-pat-git-credential-fill.txt",
+      "start": 84,
+      "end": 88
+    },
+    {
+      "path": "cases/github-fine-grained-pat-git-credential-fill.txt",
+      "start": 89,
+      "end": 99
+    },
+    {
+      "path": "cases/github-fine-grained-pat-git-credential-fill.txt",
+      "start": 100,
+      "end": 108
+    },
+    {
+      "path": "cases/github-fine-grained-pat-git-credential-fill.txt",
+      "start": 109,
+      "end": 116
+    },
+    {
+      "path": "cases/github-fine-grained-pat-git-credential-fill.txt",
+      "start": 117,
+      "end": 125
+    },
+    {
+      "path": "cases/github-fine-grained-pat-git-credential-fill.txt",
+      "start": 126,
+      "end": 219,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-git-remote-userinfo-boundary-twin.gitconfig",
+      "start": 25,
+      "end": 163,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-git-remote-userinfo.gitconfig",
+      "start": 25,
+      "end": 162,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-gitlab-ci-mirror.yml",
+      "start": 41,
+      "end": 53
+    },
+    {
+      "path": "cases/github-fine-grained-pat-hub-config.yml",
+      "start": 20,
+      "end": 27
+    },
+    {
+      "path": "cases/github-fine-grained-pat-hub-config.yml",
+      "start": 43,
+      "end": 136
+    },
+    {
+      "path": "cases/github-fine-grained-pat-k8s-secret-stringdata.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/github-fine-grained-pat-masked-list-entry-placeholder.txt",
+      "start": 52,
+      "end": 62
+    },
+    {
+      "path": "cases/github-fine-grained-pat-octokit-debug-log.log",
+      "start": 93,
+      "end": 102
+    },
+    {
+      "path": "cases/github-fine-grained-pat-pygithub-auth-token.py",
+      "start": 25,
+      "end": 35
+    },
+    {
+      "path": "cases/github-fine-grained-pat-request-id-header-public-id.http",
+      "start": 13,
+      "end": 28
+    },
+    {
+      "path": "cases/github-fine-grained-pat-rotation-policy-prose.md",
+      "start": 0,
+      "end": 32
+    },
+    {
+      "path": "cases/notion-integration-token-bearer-header-separator-twin.http",
+      "start": 70,
+      "end": 76
+    },
+    {
+      "path": "cases/notion-integration-token-bearer-header-separator-twin.http",
+      "start": 77,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/notion-integration-token-bearer-header.http",
+      "start": 70,
+      "end": 76
+    },
+    {
+      "path": "cases/notion-integration-token-bearer-header.http",
+      "start": 77,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/notion-integration-token-curl-users-me.sh",
+      "start": 59,
+      "end": 65
+    },
+    {
+      "path": "cases/notion-integration-token-curl-users-me.sh",
+      "start": 66,
+      "end": 116,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/notion-integration-token-docs-sentence-prose.md",
+      "start": 0,
+      "end": 8
+    },
+    {
+      "path": "cases/notion-integration-token-docs-sentence-prose.md",
+      "start": 9,
+      "end": 20
+    },
+    {
+      "path": "cases/notion-integration-token-docs-sentence-prose.md",
+      "start": 25,
+      "end": 33
+    },
+    {
+      "path": "cases/notion-integration-token-docs-sentence-prose.md",
+      "start": 34,
+      "end": 38
+    },
+    {
+      "path": "cases/notion-integration-token-docs-sentence-prose.md",
+      "start": 56,
+      "end": 62
+    },
+    {
+      "path": "cases/notion-integration-token-docs-sentence-prose.md",
+      "start": 63,
+      "end": 68
+    },
+    {
+      "path": "cases/notion-integration-token-docs-sentence-prose.md",
+      "start": 92,
+      "end": 95
+    },
+    {
+      "path": "cases/notion-integration-token-docs-sentence-prose.md",
+      "start": 97,
+      "end": 102
+    },
+    {
+      "path": "cases/notion-integration-token-docs-sentence-prose.md",
+      "start": 103,
+      "end": 112
+    },
+    {
+      "path": "cases/notion-integration-token-docs-sentence-prose.md",
+      "start": 113,
+      "end": 119
+    },
+    {
+      "path": "cases/notion-integration-token-docs-sentence-prose.md",
+      "start": 120,
+      "end": 125
+    },
+    {
+      "path": "cases/notion-integration-token-docs-sentence-prose.md",
+      "start": 126,
+      "end": 130
+    },
+    {
+      "path": "cases/notion-integration-token-docs-sentence-prose.md",
+      "start": 131,
+      "end": 135
+    },
+    {
+      "path": "cases/notion-integration-token-escaped-openapi-headers.json",
+      "start": 48,
+      "end": 57
+    },
+    {
+      "path": "cases/notion-integration-token-escaped-openapi-headers.json",
+      "start": 70,
+      "end": 120,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/notion-integration-token-process-env-reference.js",
+      "start": 34,
+      "end": 41
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-js-app-token.mjs",
+      "start": 128,
+      "end": 141
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-js-app-token.mjs",
+      "start": 213,
+      "end": 221
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler-separator-twin.py",
+      "start": 5,
+      "end": 35
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler-separator-twin.py",
+      "start": 45,
+      "end": 60
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler-separator-twin.py",
+      "start": 64,
+      "end": 79
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler-separator-twin.py",
+      "start": 80,
+      "end": 83
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler-separator-twin.py",
+      "start": 85,
+      "end": 94
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler-separator-twin.py",
+      "start": 96,
+      "end": 100
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler-separator-twin.py",
+      "start": 103,
+      "end": 128
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler-short-prefix-twin.py",
+      "start": 5,
+      "end": 35
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler-short-prefix-twin.py",
+      "start": 45,
+      "end": 60
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler-short-prefix-twin.py",
+      "start": 64,
+      "end": 79
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler-short-prefix-twin.py",
+      "start": 80,
+      "end": 83
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler-short-prefix-twin.py",
+      "start": 85,
+      "end": 94
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler-short-prefix-twin.py",
+      "start": 96,
+      "end": 99
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler-short-prefix-twin.py",
+      "start": 102,
+      "end": 113
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler-short-prefix-twin.py",
+      "start": 114,
+      "end": 127
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler.py",
+      "start": 5,
+      "end": 35
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler.py",
+      "start": 45,
+      "end": 60
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler.py",
+      "start": 64,
+      "end": 79
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler.py",
+      "start": 80,
+      "end": 83
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler.py",
+      "start": 85,
+      "end": 94
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler.py",
+      "start": 96,
+      "end": 100
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler.py",
+      "start": 103,
+      "end": 114
+    },
+    {
+      "path": "cases/slack-app-level-token-bolt-python-handler.py",
+      "start": 115,
+      "end": 128
+    },
+    {
+      "path": "cases/slack-app-level-token-chat-message.txt",
+      "start": 1,
+      "end": 8
+    },
+    {
+      "path": "cases/slack-app-level-token-connections-open-header-boundary-twin.http",
+      "start": 72,
+      "end": 78
+    },
+    {
+      "path": "cases/slack-app-level-token-connections-open-header-boundary-twin.http",
+      "start": 79,
+      "end": 177,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/slack-app-level-token-connections-open-header.http",
+      "start": 72,
+      "end": 78
+    },
+    {
+      "path": "cases/slack-app-level-token-connections-open-header.http",
+      "start": 79,
+      "end": 176,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/slack-app-level-token-curl-connections-open.sh",
+      "start": 79,
+      "end": 85
+    },
+    {
+      "path": "cases/slack-app-level-token-curl-connections-open.sh",
+      "start": 86,
+      "end": 183,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/slack-app-level-token-dockerfile-env.dockerfile",
+      "start": 0,
+      "end": 9
+    },
+    {
+      "path": "cases/slack-app-level-token-docs-sentence-prose.md",
+      "start": 0,
+      "end": 27
+    },
+    {
+      "path": "cases/slack-app-level-token-docs-sentence-prose.md",
+      "start": 83,
+      "end": 104
+    },
+    {
+      "path": "cases/slack-app-level-token-environ-lookup-reference.py",
+      "start": 2,
+      "end": 17
+    },
+    {
+      "path": "cases/slack-app-level-token-environ-lookup-reference.py",
+      "start": 18,
+      "end": 21
+    },
+    {
+      "path": "cases/slack-app-level-token-environ-lookup-reference.py",
+      "start": 23,
+      "end": 33
+    },
+    {
+      "path": "cases/slack-app-level-token-environ-lookup-reference.py",
+      "start": 35,
+      "end": 50
+    },
+    {
+      "path": "cases/slack-app-level-token-environ-lookup-reference.py",
+      "start": 54,
+      "end": 59
+    },
+    {
+      "path": "cases/slack-app-level-token-helm-values.yml",
+      "start": 11,
+      "end": 19
+    },
+    {
+      "path": "cases/slack-app-level-token-java-socket-mode-app.java",
+      "start": 2,
+      "end": 13
+    },
+    {
+      "path": "cases/slack-app-level-token-java-socket-mode-app.java",
+      "start": 16,
+      "end": 27
+    },
+    {
+      "path": "cases/slack-app-level-token-java-socket-mode-app.java",
+      "start": 36,
+      "end": 47
+    },
+    {
+      "path": "cases/slack-app-level-token-java-socket-mode-app.java",
+      "start": 68,
+      "end": 81
+    },
+    {
+      "path": "cases/slack-app-level-token-java-socket-mode-app.java",
+      "start": 157,
+      "end": 168
+    },
+    {
+      "path": "cases/slack-app-level-token-package-name-near-miss.sh",
+      "start": 0,
+      "end": 3
+    },
+    {
+      "path": "cases/slack-app-level-token-package-name-near-miss.sh",
+      "start": 4,
+      "end": 11
+    },
+    {
+      "path": "cases/slack-app-level-token-package-name-near-miss.sh",
+      "start": 14,
+      "end": 18
+    },
+    {
+      "path": "cases/slack-app-level-token-package-name-near-miss.sh",
+      "start": 19,
+      "end": 42
+    },
+    {
+      "path": "cases/slack-app-level-token-scopes-paragraph-prose.md",
+      "start": 17,
+      "end": 20
+    },
+    {
+      "path": "cases/slack-app-level-token-scopes-paragraph-prose.md",
+      "start": 33,
+      "end": 39
+    },
+    {
+      "path": "cases/slack-app-level-token-scopes-paragraph-prose.md",
+      "start": 40,
+      "end": 45
+    },
+    {
+      "path": "cases/slack-app-level-token-scopes-paragraph-prose.md",
+      "start": 48,
+      "end": 55
+    },
+    {
+      "path": "cases/slack-app-level-token-scopes-paragraph-prose.md",
+      "start": 62,
+      "end": 71
+    },
+    {
+      "path": "cases/slack-app-level-token-scopes-paragraph-prose.md",
+      "start": 76,
+      "end": 81
+    },
+    {
+      "path": "cases/slack-app-level-token-scopes-paragraph-prose.md",
+      "start": 99,
+      "end": 104
+    },
+    {
+      "path": "cases/slack-app-level-token-scopes-paragraph-prose.md",
+      "start": 109,
+      "end": 115
+    },
+    {
+      "path": "cases/slack-app-level-token-scopes-variable-near-miss.env",
+      "start": 45,
+      "end": 55
+    },
+    {
+      "path": "cases/slack-app-level-token-socket-mode-debug.log",
+      "start": 44,
+      "end": 51
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-compose-webhook-secret.yml",
+      "start": 81,
+      "end": 121,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-docs-sentence-prose.md",
+      "start": 5,
+      "end": 12
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-docs-sentence-prose.md",
+      "start": 55,
+      "end": 61
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-docs-sentence-prose.md",
+      "start": 72,
+      "end": 76
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-docs-sentence-prose.md",
+      "start": 89,
+      "end": 95
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-docs-sentence-prose.md",
+      "start": 96,
+      "end": 100
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-docs-sentence-prose.md",
+      "start": 101,
+      "end": 107
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-docs-sentence-prose.md",
+      "start": 108,
+      "end": 112
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-docs-sentence-prose.md",
+      "start": 113,
+      "end": 119
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-dotenv-webhook-secret-public-prefix-twin.env",
+      "start": 61,
+      "end": 101,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-event-destination-log-public-id.log",
+      "start": 21,
+      "end": 36
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-event-destination-log-public-id.log",
+      "start": 65,
+      "end": 74
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-event-destination-log-public-id.log",
+      "start": 74,
+      "end": 86
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-fill-in-placeholder.env",
+      "start": 0,
+      "end": 21
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-fill-in-placeholder.env",
+      "start": 22,
+      "end": 47
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-masked-placeholder.py",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-masked-placeholder.py",
+      "start": 19,
+      "end": 25
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-masked-placeholder.py",
+      "start": 38,
+      "end": 44
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-masked-placeholder.py",
+      "start": 45,
+      "end": 52
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-masked-placeholder.py",
+      "start": 53,
+      "end": 60
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-masked-placeholder.py",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-node-construct-event-wide.js",
+      "start": 14,
+      "end": 44
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-node-construct-event-wide.js",
+      "start": 45,
+      "end": 53
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-node-construct-event-wide.js",
+      "start": 55,
+      "end": 66
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-node-construct-event-wide.js",
+      "start": 68,
+      "end": 74
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-node-construct-event-wide.js",
+      "start": 75,
+      "end": 84
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-publishable-key-public-id.env",
+      "start": 23,
+      "end": 130,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event-separator-twin.py",
+      "start": 62,
+      "end": 68
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event-separator-twin.py",
+      "start": 69,
+      "end": 76
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event-separator-twin.py",
+      "start": 77,
+      "end": 84
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event-separator-twin.py",
+      "start": 85,
+      "end": 91
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event-separator-twin.py",
+      "start": 92,
+      "end": 97
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event-separator-twin.py",
+      "start": 100,
+      "end": 130
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event-separator-twin.py",
+      "start": 131,
+      "end": 138
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event-separator-twin.py",
+      "start": 140,
+      "end": 150
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event-separator-twin.py",
+      "start": 152,
+      "end": 167
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event.py",
+      "start": 62,
+      "end": 68
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event.py",
+      "start": 69,
+      "end": 76
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event.py",
+      "start": 77,
+      "end": 84
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event.py",
+      "start": 85,
+      "end": 91
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event.py",
+      "start": 92,
+      "end": 97
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event.py",
+      "start": 100,
+      "end": 130
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event.py",
+      "start": 131,
+      "end": 138
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event.py",
+      "start": 140,
+      "end": 150
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-python-construct-event.py",
+      "start": 152,
+      "end": 167
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-rails-credentials-rolling.yml",
+      "start": 10,
+      "end": 21
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-rails-credentials-rolling.yml",
+      "start": 27,
+      "end": 30
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-rails-credentials-rolling.yml",
+      "start": 32,
+      "end": 49
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-rails-credentials-rolling.yml",
+      "start": 57,
+      "end": 71
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-stripe-listen-ready.txt",
+      "start": 29,
+      "end": 38
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-stripe-listen-ready.txt",
+      "start": 39,
+      "end": 43
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-stripe-listen-ready.txt",
+      "start": 44,
+      "end": 51
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-stripe-listen-ready.txt",
+      "start": 54,
+      "end": 59
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-stripe-listen-ready.txt",
+      "start": 61,
+      "end": 65
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-stripe-listen-ready.txt",
+      "start": 74,
+      "end": 81
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-stripe-listen-ready.txt",
+      "start": 82,
+      "end": 88
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-stripe-signature-header-encoded-value.http",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-stripe-signature-header-encoded-value.http",
+      "start": 6,
+      "end": 12
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-stripe-signature-header-encoded-value.http",
+      "start": 13,
+      "end": 20
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-stripe-signature-header-encoded-value.http",
+      "start": 21,
+      "end": 25
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-stripe-signature-header-encoded-value.http",
+      "start": 26,
+      "end": 29
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-stripe-signature-header-encoded-value.http",
+      "start": 30,
+      "end": 36
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-stripe-signature-header-encoded-value.http",
+      "start": 37,
+      "end": 46
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-stripe-signature-header-encoded-value.http",
+      "start": 50,
+      "end": 60
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log-alphabet-twin.log",
+      "start": 21,
+      "end": 41
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log-alphabet-twin.log",
+      "start": 43,
+      "end": 52
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log-alphabet-twin.log",
+      "start": 53,
+      "end": 59
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log-alphabet-twin.log",
+      "start": 64,
+      "end": 91
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log-alphabet-twin.log",
+      "start": 92,
+      "end": 96
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log-alphabet-twin.log",
+      "start": 97,
+      "end": 104
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log-alphabet-twin.log",
+      "start": 105,
+      "end": 111
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log-alphabet-twin.log",
+      "start": 112,
+      "end": 150,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log.log",
+      "start": 21,
+      "end": 41
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log.log",
+      "start": 43,
+      "end": 52
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log.log",
+      "start": 53,
+      "end": 59
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log.log",
+      "start": 64,
+      "end": 91
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log.log",
+      "start": 92,
+      "end": 96
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log.log",
+      "start": 97,
+      "end": 104
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log.log",
+      "start": 105,
+      "end": 111
+    },
+    {
+      "path": "cases/stripe-webhook-signing-secret-webhook-verifier-log.log",
+      "start": 112,
+      "end": 150,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "d64f1659355ca7c95cf814f0850b8e4c3447fa60be43ec8913deb30237282dfd"
+}

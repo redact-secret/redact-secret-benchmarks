@@ -1,0 +1,263 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-528j",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "9a6ceb5d591330adffa2931d1068af855067026357b12de221f649461a6ea730",
+    "fixtureCount": 54,
+    "fixturesDigest": "35ed9a5d930c80498d44cf6f7f8bc0e749d2d037b48764df841f42bc3cf333cc",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/axiom-personal-token-bearer-header.http",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "path": "cases/axiom-personal-token-bearer-header.http",
+      "start": 65,
+      "end": 106,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/axiom-personal-token-chat-paste.txt",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/axiom-personal-token-ellipsis-placeholder.md",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/axiom-personal-token-ellipsis-placeholder.md",
+      "start": 18,
+      "end": 24
+    },
+    {
+      "path": "cases/axiom-personal-token-ellipsis-placeholder.md",
+      "start": 25,
+      "end": 30
+    },
+    {
+      "path": "cases/axiom-personal-token-ellipsis-placeholder.md",
+      "start": 32,
+      "end": 36
+    },
+    {
+      "path": "cases/axiom-personal-token-ellipsis-placeholder.md",
+      "start": 42,
+      "end": 47
+    },
+    {
+      "path": "cases/axiom-personal-token-ellipsis-placeholder.md",
+      "start": 48,
+      "end": 55
+    },
+    {
+      "path": "cases/axiom-personal-token-ellipsis-placeholder.md",
+      "start": 60,
+      "end": 64
+    },
+    {
+      "path": "cases/axiom-personal-token-ellipsis-placeholder.md",
+      "start": 68,
+      "end": 72
+    },
+    {
+      "path": "cases/axiom-personal-token-ellipsis-placeholder.md",
+      "start": 73,
+      "end": 77
+    },
+    {
+      "path": "cases/axiom-personal-token-ellipsis-placeholder.md",
+      "start": 78,
+      "end": 81
+    },
+    {
+      "path": "cases/axiom-personal-token-json-api-key.json",
+      "start": 21,
+      "end": 57
+    },
+    {
+      "path": "cases/axiom-personal-token-sdk-kwarg.py",
+      "start": 29,
+      "end": 65
+    },
+    {
+      "path": "cases/axiom-personal-token-trace-id-uuid-public-id.json",
+      "start": 40,
+      "end": 50
+    },
+    {
+      "path": "cases/axiom-personal-token-trailing-hyphen-twin.txt",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/axiom-personal-token-underscore-separator-twin.http",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "path": "cases/axiom-personal-token-underscore-separator-twin.http",
+      "start": 65,
+      "end": 106,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/axiom-personal-token-x-api-key-header.http",
+      "start": 53,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/axiom-token-bare-prose.md",
+      "start": 0,
+      "end": 28
+    },
+    {
+      "path": "cases/axiom-token-bearer-header.http",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "path": "cases/axiom-token-bearer-header.http",
+      "start": 65,
+      "end": 106,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/axiom-token-chat-paste.txt",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/axiom-token-fluent-bit-output.conf",
+      "start": 13,
+      "end": 39
+    },
+    {
+      "path": "cases/axiom-token-fluent-bit-output.conf",
+      "start": 147,
+      "end": 153
+    },
+    {
+      "path": "cases/axiom-token-fluent-bit-output.conf",
+      "start": 154,
+      "end": 195,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/axiom-token-grafana-password.yml",
+      "start": 84,
+      "end": 99
+    },
+    {
+      "path": "cases/axiom-token-grafana-password.yml",
+      "start": 136,
+      "end": 177,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/axiom-token-json-api-key.json",
+      "start": 21,
+      "end": 57
+    },
+    {
+      "path": "cases/axiom-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 28
+    },
+    {
+      "path": "cases/axiom-token-otel-env-bearer.env",
+      "start": 80,
+      "end": 89
+    },
+    {
+      "path": "cases/axiom-token-otel-env-bearer.env",
+      "start": 97,
+      "end": 138,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/axiom-token-sdk-kwarg.py",
+      "start": 29,
+      "end": 65
+    },
+    {
+      "path": "cases/axiom-token-token-guidance-prose.md",
+      "start": 0,
+      "end": 22
+    },
+    {
+      "path": "cases/axiom-token-token-guidance-prose.md",
+      "start": 80,
+      "end": 91
+    },
+    {
+      "path": "cases/axiom-token-trailing-underscore-twin.txt",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/axiom-token-underscore-separator-twin.http",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "path": "cases/axiom-token-underscore-separator-twin.http",
+      "start": 65,
+      "end": 106,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/axiom-token-unknown-prefix-twin.http",
+      "start": 53,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/axiom-token-x-api-key-header.http",
+      "start": 53,
+      "end": 94,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "d03a090b94b86532566d3a05375c46c2d7dc955837759ea5833d0f88d0499b52"
+}

@@ -1,0 +1,1819 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-434a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "c3275dcfeef4fd14553e9afe2f7367761dfb88caa30a5d7864479bcb1f4ec5fa",
+    "fixtureCount": 260,
+    "fixturesDigest": "d3fc4449bc4ba1d697ac3770e068ac1878df7045f05a9d189a57424bad0cd6b7",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/doppler-audit-token-bare-prose.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/doppler-audit-token-bearer-header.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-audit-token-bearer-header.http",
+      "start": 68,
+      "end": 120,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-chat-paste.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/doppler-audit-token-cli-preview-public-id.txt",
+      "start": 2,
+      "end": 9
+    },
+    {
+      "path": "cases/doppler-audit-token-cli-preview-public-id.txt",
+      "start": 10,
+      "end": 17
+    },
+    {
+      "path": "cases/doppler-audit-token-cli-preview-public-id.txt",
+      "start": 18,
+      "end": 24
+    },
+    {
+      "path": "cases/doppler-audit-token-cli-preview-public-id.txt",
+      "start": 25,
+      "end": 29
+    },
+    {
+      "path": "cases/doppler-audit-token-cli-preview-public-id.txt",
+      "start": 35,
+      "end": 39
+    },
+    {
+      "path": "cases/doppler-audit-token-code-fence.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-audit-token-code-fence.md",
+      "start": 25,
+      "end": 32
+    },
+    {
+      "path": "cases/doppler-audit-token-code-fence.md",
+      "start": 33,
+      "end": 36
+    },
+    {
+      "path": "cases/doppler-audit-token-code-fence.md",
+      "start": 39,
+      "end": 44
+    },
+    {
+      "path": "cases/doppler-audit-token-code-fence.md",
+      "start": 45,
+      "end": 54
+    },
+    {
+      "path": "cases/doppler-audit-token-code-fence.md",
+      "start": 98,
+      "end": 101
+    },
+    {
+      "path": "cases/doppler-audit-token-code-fence.md",
+      "start": 102,
+      "end": 107
+    },
+    {
+      "path": "cases/doppler-audit-token-config-wildcard-placeholder.md",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/doppler-audit-token-k8s-string-data.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/doppler-audit-token-leading-underscore-twin.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/doppler-audit-token-missing-first-dot-twin.py",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/doppler-audit-token-missing-first-dot-twin.py",
+      "start": 9,
+      "end": 19
+    },
+    {
+      "path": "cases/doppler-audit-token-missing-first-dot-twin.py",
+      "start": 20,
+      "end": 27
+    },
+    {
+      "path": "cases/doppler-audit-token-missing-type-dot-twin.yml",
+      "start": 41,
+      "end": 81,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/doppler-audit-token-prefix-only-near-miss.log",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/doppler-audit-token-sdk-kwarg.py",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/doppler-audit-token-sdk-kwarg.py",
+      "start": 9,
+      "end": 19
+    },
+    {
+      "path": "cases/doppler-audit-token-sdk-kwarg.py",
+      "start": 20,
+      "end": 27
+    },
+    {
+      "path": "cases/doppler-audit-token-sentence-period.txt",
+      "start": 0,
+      "end": 21
+    },
+    {
+      "path": "cases/doppler-audit-token-token-slug-public-id.sh",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/doppler-audit-token-token-slug-public-id.sh",
+      "start": 8,
+      "end": 15
+    },
+    {
+      "path": "cases/doppler-audit-token-token-slug-public-id.sh",
+      "start": 16,
+      "end": 22
+    },
+    {
+      "path": "cases/doppler-audit-token-token-slug-public-id.sh",
+      "start": 23,
+      "end": 29
+    },
+    {
+      "path": "cases/doppler-audit-token-token-slug-public-id.sh",
+      "start": 30,
+      "end": 38
+    },
+    {
+      "path": "cases/doppler-audit-token-token-slug-public-id.sh",
+      "start": 39,
+      "end": 43
+    },
+    {
+      "path": "cases/doppler-audit-token-token-slug-public-id.sh",
+      "start": 44,
+      "end": 48
+    },
+    {
+      "path": "cases/doppler-audit-token-token-slug-public-id.sh",
+      "start": 49,
+      "end": 53
+    },
+    {
+      "path": "cases/doppler-audit-token-token-slug-public-id.sh",
+      "start": 54,
+      "end": 66
+    },
+    {
+      "path": "cases/doppler-audit-token-token-slug-public-id.sh",
+      "start": 69,
+      "end": 76
+    },
+    {
+      "path": "cases/doppler-audit-token-token-slug-public-id.sh",
+      "start": 77,
+      "end": 84
+    },
+    {
+      "path": "cases/doppler-audit-token-token-slug-public-id.sh",
+      "start": 87,
+      "end": 93
+    },
+    {
+      "path": "cases/doppler-audit-token-token-slug-public-id.sh",
+      "start": 94,
+      "end": 97
+    },
+    {
+      "path": "cases/doppler-audit-token-truncated-near-miss.log",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/doppler-audit-token-unknown-type-twin.md",
+      "start": 12,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-audit-token-unknown-type-twin.md",
+      "start": 25,
+      "end": 32
+    },
+    {
+      "path": "cases/doppler-audit-token-unknown-type-twin.md",
+      "start": 33,
+      "end": 36
+    },
+    {
+      "path": "cases/doppler-audit-token-unknown-type-twin.md",
+      "start": 39,
+      "end": 44
+    },
+    {
+      "path": "cases/doppler-audit-token-unknown-type-twin.md",
+      "start": 45,
+      "end": 51
+    },
+    {
+      "path": "cases/doppler-audit-token-unknown-type-twin.md",
+      "start": 95,
+      "end": 98
+    },
+    {
+      "path": "cases/doppler-audit-token-unknown-type-twin.md",
+      "start": 99,
+      "end": 104
+    },
+    {
+      "path": "cases/doppler-audit-token-uppercase-prefix-twin.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-audit-token-uppercase-prefix-twin.http",
+      "start": 68,
+      "end": 120,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-audit-token-x-run-placeholder.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-audit-token-yaml.yml",
+      "start": 47,
+      "end": 87,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/doppler-cli-token-bare-prose.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/doppler-cli-token-bearer-header.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-cli-token-bearer-header.http",
+      "start": 68,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-bearer-header.http",
+      "start": 118,
+      "end": 124
+    },
+    {
+      "path": "cases/doppler-cli-token-chat-paste.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/doppler-cli-token-cli-commands-prose.md",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/doppler-cli-token-cli-commands-prose.md",
+      "start": 39,
+      "end": 48
+    },
+    {
+      "path": "cases/doppler-cli-token-cli-preview-public-id.txt",
+      "start": 2,
+      "end": 9
+    },
+    {
+      "path": "cases/doppler-cli-token-cli-preview-public-id.txt",
+      "start": 10,
+      "end": 17
+    },
+    {
+      "path": "cases/doppler-cli-token-cli-preview-public-id.txt",
+      "start": 18,
+      "end": 24
+    },
+    {
+      "path": "cases/doppler-cli-token-cli-preview-public-id.txt",
+      "start": 25,
+      "end": 29
+    },
+    {
+      "path": "cases/doppler-cli-token-cli-preview-public-id.txt",
+      "start": 35,
+      "end": 39
+    },
+    {
+      "path": "cases/doppler-cli-token-code-fence.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-cli-token-config-wildcard-placeholder.md",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/doppler-cli-token-k8s-string-data.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/doppler-cli-token-leading-underscore-twin.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/doppler-cli-token-missing-type-dot-twin.yml",
+      "start": 41,
+      "end": 81,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/doppler-cli-token-prefix-only-near-miss.log",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/doppler-cli-token-sentence-period.txt",
+      "start": 0,
+      "end": 21
+    },
+    {
+      "path": "cases/doppler-cli-token-token-slug-public-id.sh",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/doppler-cli-token-token-slug-public-id.sh",
+      "start": 8,
+      "end": 15
+    },
+    {
+      "path": "cases/doppler-cli-token-token-slug-public-id.sh",
+      "start": 16,
+      "end": 22
+    },
+    {
+      "path": "cases/doppler-cli-token-token-slug-public-id.sh",
+      "start": 23,
+      "end": 29
+    },
+    {
+      "path": "cases/doppler-cli-token-token-slug-public-id.sh",
+      "start": 30,
+      "end": 38
+    },
+    {
+      "path": "cases/doppler-cli-token-token-slug-public-id.sh",
+      "start": 39,
+      "end": 43
+    },
+    {
+      "path": "cases/doppler-cli-token-token-slug-public-id.sh",
+      "start": 44,
+      "end": 48
+    },
+    {
+      "path": "cases/doppler-cli-token-token-slug-public-id.sh",
+      "start": 49,
+      "end": 53
+    },
+    {
+      "path": "cases/doppler-cli-token-token-slug-public-id.sh",
+      "start": 54,
+      "end": 66
+    },
+    {
+      "path": "cases/doppler-cli-token-token-slug-public-id.sh",
+      "start": 69,
+      "end": 76
+    },
+    {
+      "path": "cases/doppler-cli-token-token-slug-public-id.sh",
+      "start": 77,
+      "end": 84
+    },
+    {
+      "path": "cases/doppler-cli-token-token-slug-public-id.sh",
+      "start": 87,
+      "end": 93
+    },
+    {
+      "path": "cases/doppler-cli-token-token-slug-public-id.sh",
+      "start": 94,
+      "end": 97
+    },
+    {
+      "path": "cases/doppler-cli-token-truncated-near-miss.log",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/doppler-cli-token-unknown-type-twin.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-cli-token-uppercase-prefix-twin.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-cli-token-uppercase-prefix-twin.http",
+      "start": 68,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-cli-token-uppercase-prefix-twin.http",
+      "start": 118,
+      "end": 124
+    },
+    {
+      "path": "cases/doppler-cli-token-x-run-placeholder.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-cli-token-yaml.yml",
+      "start": 44,
+      "end": 84,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/doppler-personal-token-bare-prose.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/doppler-personal-token-bare-prose.md",
+      "start": 31,
+      "end": 35
+    },
+    {
+      "path": "cases/doppler-personal-token-bare-prose.md",
+      "start": 36,
+      "end": 43
+    },
+    {
+      "path": "cases/doppler-personal-token-bare-prose.md",
+      "start": 45,
+      "end": 48
+    },
+    {
+      "path": "cases/doppler-personal-token-bare-prose.md",
+      "start": 49,
+      "end": 52
+    },
+    {
+      "path": "cases/doppler-personal-token-bare-prose.md",
+      "start": 53,
+      "end": 56
+    },
+    {
+      "path": "cases/doppler-personal-token-bare-prose.md",
+      "start": 57,
+      "end": 60
+    },
+    {
+      "path": "cases/doppler-personal-token-bare-prose.md",
+      "start": 111,
+      "end": 114
+    },
+    {
+      "path": "cases/doppler-personal-token-bare-prose.md",
+      "start": 121,
+      "end": 128
+    },
+    {
+      "path": "cases/doppler-personal-token-bearer-header.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-personal-token-bearer-header.http",
+      "start": 68,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-chat-paste.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/doppler-personal-token-cli-commands-prose.md",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/doppler-personal-token-cli-preview-public-id.txt",
+      "start": 2,
+      "end": 9
+    },
+    {
+      "path": "cases/doppler-personal-token-cli-preview-public-id.txt",
+      "start": 10,
+      "end": 17
+    },
+    {
+      "path": "cases/doppler-personal-token-cli-preview-public-id.txt",
+      "start": 18,
+      "end": 24
+    },
+    {
+      "path": "cases/doppler-personal-token-cli-preview-public-id.txt",
+      "start": 25,
+      "end": 29
+    },
+    {
+      "path": "cases/doppler-personal-token-cli-preview-public-id.txt",
+      "start": 35,
+      "end": 39
+    },
+    {
+      "path": "cases/doppler-personal-token-cli-preview-public-id.txt",
+      "start": 90,
+      "end": 98
+    },
+    {
+      "path": "cases/doppler-personal-token-cli-preview-public-id.txt",
+      "start": 99,
+      "end": 103
+    },
+    {
+      "path": "cases/doppler-personal-token-cli-preview-public-id.txt",
+      "start": 104,
+      "end": 108
+    },
+    {
+      "path": "cases/doppler-personal-token-cli-preview-public-id.txt",
+      "start": 109,
+      "end": 113
+    },
+    {
+      "path": "cases/doppler-personal-token-cli-preview-public-id.txt",
+      "start": 114,
+      "end": 126
+    },
+    {
+      "path": "cases/doppler-personal-token-cli-preview-public-id.txt",
+      "start": 129,
+      "end": 134
+    },
+    {
+      "path": "cases/doppler-personal-token-cli-preview-public-id.txt",
+      "start": 137,
+      "end": 143
+    },
+    {
+      "path": "cases/doppler-personal-token-code-fence.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-personal-token-config-wildcard-placeholder.md",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/doppler-personal-token-k8s-string-data.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/doppler-personal-token-leading-glue-twin.md",
+      "start": 31,
+      "end": 35
+    },
+    {
+      "path": "cases/doppler-personal-token-leading-glue-twin.md",
+      "start": 36,
+      "end": 43
+    },
+    {
+      "path": "cases/doppler-personal-token-leading-glue-twin.md",
+      "start": 45,
+      "end": 48
+    },
+    {
+      "path": "cases/doppler-personal-token-leading-glue-twin.md",
+      "start": 49,
+      "end": 52
+    },
+    {
+      "path": "cases/doppler-personal-token-leading-glue-twin.md",
+      "start": 53,
+      "end": 56
+    },
+    {
+      "path": "cases/doppler-personal-token-leading-glue-twin.md",
+      "start": 57,
+      "end": 60
+    },
+    {
+      "path": "cases/doppler-personal-token-leading-glue-twin.md",
+      "start": 61,
+      "end": 64
+    },
+    {
+      "path": "cases/doppler-personal-token-leading-glue-twin.md",
+      "start": 112,
+      "end": 115
+    },
+    {
+      "path": "cases/doppler-personal-token-leading-glue-twin.md",
+      "start": 122,
+      "end": 129
+    },
+    {
+      "path": "cases/doppler-personal-token-leading-underscore-twin.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/doppler-personal-token-missing-type-dot-twin.yml",
+      "start": 41,
+      "end": 81,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/doppler-personal-token-prefix-only-near-miss.log",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/doppler-personal-token-sentence-period.txt",
+      "start": 0,
+      "end": 21
+    },
+    {
+      "path": "cases/doppler-personal-token-token-slug-public-id.sh",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/doppler-personal-token-token-slug-public-id.sh",
+      "start": 8,
+      "end": 15
+    },
+    {
+      "path": "cases/doppler-personal-token-token-slug-public-id.sh",
+      "start": 16,
+      "end": 22
+    },
+    {
+      "path": "cases/doppler-personal-token-token-slug-public-id.sh",
+      "start": 23,
+      "end": 29
+    },
+    {
+      "path": "cases/doppler-personal-token-token-slug-public-id.sh",
+      "start": 30,
+      "end": 38
+    },
+    {
+      "path": "cases/doppler-personal-token-token-slug-public-id.sh",
+      "start": 39,
+      "end": 43
+    },
+    {
+      "path": "cases/doppler-personal-token-token-slug-public-id.sh",
+      "start": 44,
+      "end": 48
+    },
+    {
+      "path": "cases/doppler-personal-token-token-slug-public-id.sh",
+      "start": 49,
+      "end": 53
+    },
+    {
+      "path": "cases/doppler-personal-token-token-slug-public-id.sh",
+      "start": 54,
+      "end": 66
+    },
+    {
+      "path": "cases/doppler-personal-token-token-slug-public-id.sh",
+      "start": 69,
+      "end": 76
+    },
+    {
+      "path": "cases/doppler-personal-token-token-slug-public-id.sh",
+      "start": 77,
+      "end": 84
+    },
+    {
+      "path": "cases/doppler-personal-token-token-slug-public-id.sh",
+      "start": 87,
+      "end": 93
+    },
+    {
+      "path": "cases/doppler-personal-token-token-slug-public-id.sh",
+      "start": 94,
+      "end": 97
+    },
+    {
+      "path": "cases/doppler-personal-token-truncated-near-miss.log",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/doppler-personal-token-unknown-type-twin.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-personal-token-uppercase-prefix-twin.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-personal-token-uppercase-prefix-twin.http",
+      "start": 68,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-personal-token-x-run-placeholder.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-personal-token-yaml.yml",
+      "start": 44,
+      "end": 84,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/doppler-scim-token-bare-prose.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/doppler-scim-token-bearer-header.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-scim-token-bearer-header.http",
+      "start": 68,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-chat-paste.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/doppler-scim-token-ci-log.log",
+      "start": 38,
+      "end": 51
+    },
+    {
+      "path": "cases/doppler-scim-token-ci-log.log",
+      "start": 52,
+      "end": 60
+    },
+    {
+      "path": "cases/doppler-scim-token-ci-log.log",
+      "start": 105,
+      "end": 120
+    },
+    {
+      "path": "cases/doppler-scim-token-ci-log.log",
+      "start": 121,
+      "end": 128
+    },
+    {
+      "path": "cases/doppler-scim-token-cli-commands-prose.md",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/doppler-scim-token-cli-commands-prose.md",
+      "start": 39,
+      "end": 61
+    },
+    {
+      "path": "cases/doppler-scim-token-cli-preview-public-id.txt",
+      "start": 2,
+      "end": 9
+    },
+    {
+      "path": "cases/doppler-scim-token-cli-preview-public-id.txt",
+      "start": 10,
+      "end": 17
+    },
+    {
+      "path": "cases/doppler-scim-token-cli-preview-public-id.txt",
+      "start": 18,
+      "end": 24
+    },
+    {
+      "path": "cases/doppler-scim-token-cli-preview-public-id.txt",
+      "start": 25,
+      "end": 29
+    },
+    {
+      "path": "cases/doppler-scim-token-cli-preview-public-id.txt",
+      "start": 35,
+      "end": 39
+    },
+    {
+      "path": "cases/doppler-scim-token-code-fence.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-scim-token-config-wildcard-placeholder.md",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/doppler-scim-token-k8s-string-data.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/doppler-scim-token-leading-underscore-twin.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/doppler-scim-token-missing-type-dot-twin.yml",
+      "start": 41,
+      "end": 81,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/doppler-scim-token-prefix-only-near-miss.log",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/doppler-scim-token-sentence-period.txt",
+      "start": 0,
+      "end": 21
+    },
+    {
+      "path": "cases/doppler-scim-token-token-slug-public-id.sh",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/doppler-scim-token-token-slug-public-id.sh",
+      "start": 8,
+      "end": 15
+    },
+    {
+      "path": "cases/doppler-scim-token-token-slug-public-id.sh",
+      "start": 16,
+      "end": 22
+    },
+    {
+      "path": "cases/doppler-scim-token-token-slug-public-id.sh",
+      "start": 23,
+      "end": 29
+    },
+    {
+      "path": "cases/doppler-scim-token-token-slug-public-id.sh",
+      "start": 30,
+      "end": 38
+    },
+    {
+      "path": "cases/doppler-scim-token-token-slug-public-id.sh",
+      "start": 39,
+      "end": 43
+    },
+    {
+      "path": "cases/doppler-scim-token-token-slug-public-id.sh",
+      "start": 44,
+      "end": 48
+    },
+    {
+      "path": "cases/doppler-scim-token-token-slug-public-id.sh",
+      "start": 49,
+      "end": 53
+    },
+    {
+      "path": "cases/doppler-scim-token-token-slug-public-id.sh",
+      "start": 54,
+      "end": 66
+    },
+    {
+      "path": "cases/doppler-scim-token-token-slug-public-id.sh",
+      "start": 69,
+      "end": 76
+    },
+    {
+      "path": "cases/doppler-scim-token-token-slug-public-id.sh",
+      "start": 77,
+      "end": 84
+    },
+    {
+      "path": "cases/doppler-scim-token-token-slug-public-id.sh",
+      "start": 87,
+      "end": 93
+    },
+    {
+      "path": "cases/doppler-scim-token-token-slug-public-id.sh",
+      "start": 94,
+      "end": 97
+    },
+    {
+      "path": "cases/doppler-scim-token-trailing-glue-twin.log",
+      "start": 38,
+      "end": 51
+    },
+    {
+      "path": "cases/doppler-scim-token-trailing-glue-twin.log",
+      "start": 52,
+      "end": 60
+    },
+    {
+      "path": "cases/doppler-scim-token-trailing-glue-twin.log",
+      "start": 107,
+      "end": 122
+    },
+    {
+      "path": "cases/doppler-scim-token-trailing-glue-twin.log",
+      "start": 123,
+      "end": 130
+    },
+    {
+      "path": "cases/doppler-scim-token-truncated-near-miss.log",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/doppler-scim-token-unknown-type-twin.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-scim-token-uppercase-prefix-twin.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-scim-token-uppercase-prefix-twin.http",
+      "start": 68,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-scim-token-x-run-placeholder.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-scim-token-yaml.yml",
+      "start": 46,
+      "end": 86,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-bare-prose.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-bearer-header.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-bearer-header.http",
+      "start": 68,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-chat-paste.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-cli-commands-prose.md",
+      "start": 0,
+      "end": 12
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-cli-commands-prose.md",
+      "start": 12,
+      "end": 17
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-cli-commands-prose.md",
+      "start": 19,
+      "end": 32
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-cli-commands-prose.md",
+      "start": 32,
+      "end": 37
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-cli-commands-prose.md",
+      "start": 39,
+      "end": 44
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-cli-commands-prose.md",
+      "start": 45,
+      "end": 59
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-cli-commands-prose.md",
+      "start": 59,
+      "end": 88
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-cli-commands-prose.md",
+      "start": 92,
+      "end": 117
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-cli-preview-public-id.txt",
+      "start": 2,
+      "end": 9
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-cli-preview-public-id.txt",
+      "start": 10,
+      "end": 17
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-cli-preview-public-id.txt",
+      "start": 18,
+      "end": 24
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-cli-preview-public-id.txt",
+      "start": 25,
+      "end": 29
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-cli-preview-public-id.txt",
+      "start": 35,
+      "end": 39
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-code-fence.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-code-fence.md",
+      "start": 25,
+      "end": 32
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-code-fence.md",
+      "start": 33,
+      "end": 36
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-code-fence.md",
+      "start": 39,
+      "end": 44
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-code-fence.md",
+      "start": 45,
+      "end": 53
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-code-fence.md",
+      "start": 97,
+      "end": 100
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-code-fence.md",
+      "start": 101,
+      "end": 106
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-config-wildcard-placeholder.md",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-k8s-string-data.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-leading-underscore-twin.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-missing-type-dot-twin.yml",
+      "start": 41,
+      "end": 81,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-prefix-only-near-miss.log",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-sentence-period.txt",
+      "start": 0,
+      "end": 21
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-token-slug-public-id.sh",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-token-slug-public-id.sh",
+      "start": 8,
+      "end": 15
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-token-slug-public-id.sh",
+      "start": 16,
+      "end": 22
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-token-slug-public-id.sh",
+      "start": 23,
+      "end": 29
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-token-slug-public-id.sh",
+      "start": 30,
+      "end": 38
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-token-slug-public-id.sh",
+      "start": 39,
+      "end": 43
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-token-slug-public-id.sh",
+      "start": 44,
+      "end": 48
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-token-slug-public-id.sh",
+      "start": 49,
+      "end": 53
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-token-slug-public-id.sh",
+      "start": 54,
+      "end": 66
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-token-slug-public-id.sh",
+      "start": 69,
+      "end": 76
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-token-slug-public-id.sh",
+      "start": 77,
+      "end": 84
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-token-slug-public-id.sh",
+      "start": 87,
+      "end": 93
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-token-slug-public-id.sh",
+      "start": 94,
+      "end": 97
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-truncated-near-miss.log",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-unknown-type-twin.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-unknown-type-twin.md",
+      "start": 25,
+      "end": 32
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-unknown-type-twin.md",
+      "start": 33,
+      "end": 36
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-unknown-type-twin.md",
+      "start": 39,
+      "end": 44
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-unknown-type-twin.md",
+      "start": 45,
+      "end": 51
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-unknown-type-twin.md",
+      "start": 95,
+      "end": 98
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-unknown-type-twin.md",
+      "start": 99,
+      "end": 104
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-uppercase-prefix-twin.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-uppercase-prefix-twin.http",
+      "start": 68,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-x-run-placeholder.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-service-account-identity-token-yaml.yml",
+      "start": 46,
+      "end": 86,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/doppler-service-account-token-bare-prose.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/doppler-service-account-token-bearer-header.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-service-account-token-bearer-header.http",
+      "start": 68,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-body-39-twin.env",
+      "start": 67,
+      "end": 76
+    },
+    {
+      "path": "cases/doppler-service-account-token-body-39-twin.env",
+      "start": 77,
+      "end": 81
+    },
+    {
+      "path": "cases/doppler-service-account-token-chat-paste.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/doppler-service-account-token-cli-commands-prose.md",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/doppler-service-account-token-cli-commands-prose.md",
+      "start": 47,
+      "end": 72
+    },
+    {
+      "path": "cases/doppler-service-account-token-cli-preview-public-id.txt",
+      "start": 2,
+      "end": 9
+    },
+    {
+      "path": "cases/doppler-service-account-token-cli-preview-public-id.txt",
+      "start": 10,
+      "end": 17
+    },
+    {
+      "path": "cases/doppler-service-account-token-cli-preview-public-id.txt",
+      "start": 18,
+      "end": 24
+    },
+    {
+      "path": "cases/doppler-service-account-token-cli-preview-public-id.txt",
+      "start": 25,
+      "end": 29
+    },
+    {
+      "path": "cases/doppler-service-account-token-cli-preview-public-id.txt",
+      "start": 35,
+      "end": 39
+    },
+    {
+      "path": "cases/doppler-service-account-token-code-fence.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-service-account-token-config-wildcard-placeholder.md",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/doppler-service-account-token-k8s-string-data.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/doppler-service-account-token-leading-underscore-twin.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/doppler-service-account-token-missing-type-dot-twin.yml",
+      "start": 41,
+      "end": 81,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/doppler-service-account-token-prefix-only-near-miss.log",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/doppler-service-account-token-sa-then-id-dot-twin.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-sentence-period.txt",
+      "start": 0,
+      "end": 21
+    },
+    {
+      "path": "cases/doppler-service-account-token-token-slug-public-id.sh",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/doppler-service-account-token-token-slug-public-id.sh",
+      "start": 8,
+      "end": 15
+    },
+    {
+      "path": "cases/doppler-service-account-token-token-slug-public-id.sh",
+      "start": 16,
+      "end": 22
+    },
+    {
+      "path": "cases/doppler-service-account-token-token-slug-public-id.sh",
+      "start": 23,
+      "end": 29
+    },
+    {
+      "path": "cases/doppler-service-account-token-token-slug-public-id.sh",
+      "start": 30,
+      "end": 38
+    },
+    {
+      "path": "cases/doppler-service-account-token-token-slug-public-id.sh",
+      "start": 39,
+      "end": 43
+    },
+    {
+      "path": "cases/doppler-service-account-token-token-slug-public-id.sh",
+      "start": 44,
+      "end": 48
+    },
+    {
+      "path": "cases/doppler-service-account-token-token-slug-public-id.sh",
+      "start": 49,
+      "end": 53
+    },
+    {
+      "path": "cases/doppler-service-account-token-token-slug-public-id.sh",
+      "start": 54,
+      "end": 66
+    },
+    {
+      "path": "cases/doppler-service-account-token-token-slug-public-id.sh",
+      "start": 69,
+      "end": 76
+    },
+    {
+      "path": "cases/doppler-service-account-token-token-slug-public-id.sh",
+      "start": 77,
+      "end": 84
+    },
+    {
+      "path": "cases/doppler-service-account-token-token-slug-public-id.sh",
+      "start": 87,
+      "end": 93
+    },
+    {
+      "path": "cases/doppler-service-account-token-token-slug-public-id.sh",
+      "start": 94,
+      "end": 97
+    },
+    {
+      "path": "cases/doppler-service-account-token-truncated-near-miss.log",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/doppler-service-account-token-unknown-type-twin.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-service-account-token-uppercase-prefix-twin.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-service-account-token-uppercase-prefix-twin.http",
+      "start": 68,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-service-account-token-x-run-placeholder.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-service-account-token-yaml.yml",
+      "start": 44,
+      "end": 84,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/doppler-token-bare-prose.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/doppler-token-bearer-header.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-token-bearer-header.http",
+      "start": 68,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-token-chat-paste.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/doppler-token-cli-commands-prose.md",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/doppler-token-cli-commands-prose.md",
+      "start": 19,
+      "end": 23
+    },
+    {
+      "path": "cases/doppler-token-cli-commands-prose.md",
+      "start": 24,
+      "end": 31
+    },
+    {
+      "path": "cases/doppler-token-cli-commands-prose.md",
+      "start": 32,
+      "end": 37
+    },
+    {
+      "path": "cases/doppler-token-cli-commands-prose.md",
+      "start": 47,
+      "end": 52
+    },
+    {
+      "path": "cases/doppler-token-cli-commands-prose.md",
+      "start": 54,
+      "end": 59
+    },
+    {
+      "path": "cases/doppler-token-cli-commands-prose.md",
+      "start": 64,
+      "end": 70
+    },
+    {
+      "path": "cases/doppler-token-cli-commands-prose.md",
+      "start": 73,
+      "end": 78
+    },
+    {
+      "path": "cases/doppler-token-cli-commands-prose.md",
+      "start": 79,
+      "end": 83
+    },
+    {
+      "path": "cases/doppler-token-cli-commands-prose.md",
+      "start": 84,
+      "end": 89
+    },
+    {
+      "path": "cases/doppler-token-cli-commands-prose.md",
+      "start": 99,
+      "end": 104
+    },
+    {
+      "path": "cases/doppler-token-cli-commands-prose.md",
+      "start": 105,
+      "end": 109
+    },
+    {
+      "path": "cases/doppler-token-cli-preview-public-id.txt",
+      "start": 2,
+      "end": 9
+    },
+    {
+      "path": "cases/doppler-token-cli-preview-public-id.txt",
+      "start": 10,
+      "end": 17
+    },
+    {
+      "path": "cases/doppler-token-cli-preview-public-id.txt",
+      "start": 18,
+      "end": 24
+    },
+    {
+      "path": "cases/doppler-token-cli-preview-public-id.txt",
+      "start": 25,
+      "end": 29
+    },
+    {
+      "path": "cases/doppler-token-cli-preview-public-id.txt",
+      "start": 35,
+      "end": 39
+    },
+    {
+      "path": "cases/doppler-token-code-fence.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-token-config-wildcard-placeholder.md",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/doppler-token-k8s-string-data.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/doppler-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/doppler-token-leading-underscore-twin.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/doppler-token-missing-type-dot-twin.yml",
+      "start": 41,
+      "end": 81,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/doppler-token-prefix-only-near-miss.log",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/doppler-token-segment-underscore.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/doppler-token-sentence-period.txt",
+      "start": 0,
+      "end": 21
+    },
+    {
+      "path": "cases/doppler-token-token-slug-public-id.sh",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/doppler-token-token-slug-public-id.sh",
+      "start": 8,
+      "end": 15
+    },
+    {
+      "path": "cases/doppler-token-token-slug-public-id.sh",
+      "start": 16,
+      "end": 22
+    },
+    {
+      "path": "cases/doppler-token-token-slug-public-id.sh",
+      "start": 23,
+      "end": 29
+    },
+    {
+      "path": "cases/doppler-token-token-slug-public-id.sh",
+      "start": 30,
+      "end": 38
+    },
+    {
+      "path": "cases/doppler-token-token-slug-public-id.sh",
+      "start": 39,
+      "end": 43
+    },
+    {
+      "path": "cases/doppler-token-token-slug-public-id.sh",
+      "start": 44,
+      "end": 48
+    },
+    {
+      "path": "cases/doppler-token-token-slug-public-id.sh",
+      "start": 49,
+      "end": 53
+    },
+    {
+      "path": "cases/doppler-token-token-slug-public-id.sh",
+      "start": 54,
+      "end": 66
+    },
+    {
+      "path": "cases/doppler-token-token-slug-public-id.sh",
+      "start": 69,
+      "end": 76
+    },
+    {
+      "path": "cases/doppler-token-token-slug-public-id.sh",
+      "start": 77,
+      "end": 84
+    },
+    {
+      "path": "cases/doppler-token-token-slug-public-id.sh",
+      "start": 87,
+      "end": 93
+    },
+    {
+      "path": "cases/doppler-token-token-slug-public-id.sh",
+      "start": 94,
+      "end": 97
+    },
+    {
+      "path": "cases/doppler-token-truncated-near-miss.log",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/doppler-token-unknown-type-twin.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-token-uppercase-prefix-twin.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/doppler-token-uppercase-prefix-twin.http",
+      "start": 68,
+      "end": 117,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/doppler-token-x-run-placeholder.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/doppler-token-yaml.yml",
+      "start": 44,
+      "end": 84,
+      "family": "aws-secret-access-key"
+    }
+  ],
+  "digest": "0e1a226fa25cf0b3e19243e05816416b18324c0d125e5d58556213b9e97767aa"
+}

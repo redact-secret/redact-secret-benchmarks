@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/token-contexts",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "a782a0428c3729dbe6bc4945866e74c5a541bd981d0240684b47069cf94f1f7b",
+    "fixtureCount": 10,
+    "fixturesDigest": "46c5566ab040417386080b7a2b36eeef1aecaf95a3443a1f78e14748c203d213",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "crlf.txt",
+      "start": 37,
+      "end": 77,
+      "family": "github-token"
+    },
+    {
+      "path": "env.txt",
+      "start": 13,
+      "end": 53,
+      "family": "github-token"
+    },
+    {
+      "path": "json.txt",
+      "start": 17,
+      "end": 57,
+      "family": "github-token"
+    },
+    {
+      "path": "ordinary-text.txt",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "ordinary-text.txt",
+      "start": 5,
+      "end": 13
+    },
+    {
+      "path": "ordinary-text.txt",
+      "start": 14,
+      "end": 23
+    },
+    {
+      "path": "ordinary-text.txt",
+      "start": 31,
+      "end": 40
+    },
+    {
+      "path": "ordinary-text.txt",
+      "start": 41,
+      "end": 47
+    },
+    {
+      "path": "ordinary-text.txt",
+      "start": 48,
+      "end": 54
+    },
+    {
+      "path": "unicode.txt",
+      "start": 19,
+      "end": 59,
+      "family": "github-token"
+    }
+  ],
+  "digest": "2d0fb3283fbf37c3388a979cf7d55a3c156729b0e2af7f48b5331dd92216b25d"
+}

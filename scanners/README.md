@@ -64,7 +64,7 @@ compatibility with every binary release.
 The local comparison has been exercised with Gitleaks **8.30.1**,
 TruffleHog **3.97.4**, `@redact-secret/core` **0.1.0-beta.4**, and
 `flare-redact` **1.6.1** on macOS arm64. `@openredaction/core` **1.1.5**
-is used only by the informational runtime-throughput comparison (#429), not as an accuracy adapter. Install the external tools using
+is measured by the informational runtime-throughput comparison and by the `openredaction` pattern-coverage adapter (#429). Install the external tools using
 `brew install gitleaks trufflehog`. Other systems can use the upstream
 installation instructions above.
 
@@ -216,15 +216,29 @@ remains an explicit normalization failure.
 Unit tests cover mismatched/unsupported output and missing source lines; a
 real-binary integration check covers the encoded and decoded PEM path.
 
-## OpenRedaction (runtime-throughput peer only)
+## OpenRedaction (throughput peer and pattern-coverage adapter)
 
 `@openredaction/core` is pinned to an exact version in `package.json`
 (not the `openredaction` umbrella package, which pulls in unused react and
-server peers). It is measured for wall-clock redaction latency and throughput
-on the shared synthetic PII workloads by
-`scripts/measure-peer-pii-runtime-throughput.mjs`, through its async
-`OpenRedaction#detect(text)` call, alongside flare-redact's synchronous
-`redact()` and redact-secret's `scan()`. The async-versus-sync difference is
-stated in the report. It has no adapter in `index.mjs`, so it takes no part in
-the accuracy comparison. Informational only: no verdict, no ranking. See
-`docs/specs/peer-pii-runtime-throughput.md`.
+server peers). It is measured two ways, both informational (no verdict, no
+ranking):
+
+- **Runtime throughput.** Wall-clock redaction latency and throughput on the
+  shared synthetic PII workloads by
+  `scripts/measure-peer-pii-runtime-throughput.mjs`, through its async
+  `OpenRedaction#detect(text)` call, alongside flare-redact's synchronous
+  `redact()` and redact-secret's `scan()`. The async-versus-sync difference is
+  stated in the report. See `docs/specs/peer-pii-runtime-throughput.md`.
+- **Pattern coverage.** The `openredaction` adapter in `index.mjs` runs
+  `new OpenRedaction()` at its constructor defaults over each fixture and
+  converts each detection's `position` (UTF-16 offsets) to UTF-8 byte ranges.
+  It is the opposite of the secrets-only flare-redact adapter: every built-in
+  pattern category is enabled, PII included, and no tuning is applied. Only the
+  text `detect()` path is used; the package's document, CSV, XLSX and OCR
+  processors are not. `families.mjs` maps only the credential pattern types that
+  name a credential an existing family already scores (for example
+  `GITHUB_TOKEN`, `AWS_SECRET_KEY`, `DATABASE_CONNECTION`). PII types and
+  credential types with a shared or keyword-gated shape are reported without a
+  family, so on the secrets corpora they appear as unclassified findings rather
+  than being guessed into a family. The package is not in `qualification/suite-v1.json`;
+  like flare-redact it is pinned by `package.json` and the lockfile.

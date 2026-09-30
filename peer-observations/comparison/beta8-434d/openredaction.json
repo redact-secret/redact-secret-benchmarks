@@ -1,0 +1,355 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-434d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "752af0ff059f44fb2795bf24f3e4932fcd4a00ea1f6fbaa9f4226bbf1444b590",
+    "fixtureCount": 72,
+    "fixturesDigest": "bb0000be802420cbc5caeb59a6e2871d02e3f46ed46955df27b3117f1e61903c",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/posthog-project-secret-api-key-actions-env.yml",
+      "start": 99,
+      "end": 139,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-bare-prose.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-bearer-header.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-bearer-header.http",
+      "start": 67,
+      "end": 114,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-body-41-twin.env",
+      "start": 43,
+      "end": 83,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-body-50-twin.sh",
+      "start": 49,
+      "end": 89,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-chat-paste.txt",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-compose-env.yml",
+      "start": 121,
+      "end": 161,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-curl-projects.sh",
+      "start": 64,
+      "end": 70
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-curl-projects.sh",
+      "start": 71,
+      "end": 118,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-dotenv.env",
+      "start": 49,
+      "end": 89,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-ellipsis-placeholder.md",
+      "start": 17,
+      "end": 23
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-ellipsis-placeholder.md",
+      "start": 24,
+      "end": 43
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-event-uuid-encoded-value.json",
+      "start": 32,
+      "end": 68
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-export.sh",
+      "start": 7,
+      "end": 37
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-export.sh",
+      "start": 45,
+      "end": 85,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-hyphen-prefix-twin.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-hyphen-prefix-twin.http",
+      "start": 67,
+      "end": 114,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-key-guidance-prose.md",
+      "start": 8,
+      "end": 14
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-key-guidance-prose.md",
+      "start": 71,
+      "end": 77
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-leading-glue-twin.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-mcp-config.json",
+      "start": 151,
+      "end": 160
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-mcp-config.json",
+      "start": 203,
+      "end": 249,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-project-token-bare-public-id.md",
+      "start": 20,
+      "end": 25
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-project-token-init-public-id.html",
+      "start": 156,
+      "end": 162
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-project-token-prefix-twin.sh",
+      "start": 64,
+      "end": 70
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-project-token-prefix-twin.sh",
+      "start": 71,
+      "end": 118,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-trailing-glue-twin.txt",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-unknown-role-prefix-twin.json",
+      "start": 151,
+      "end": 160
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-unknown-role-prefix-twin.json",
+      "start": 203,
+      "end": 249,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-uppercase-prefix-twin.http",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-project-secret-api-key-x-api-key-header.http",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-bare-prose.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/posthog-token-bearer-header.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/posthog-token-bearer-header.http",
+      "start": 67,
+      "end": 114,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-token-chat-paste.txt",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/posthog-token-compose-env.yml",
+      "start": 79,
+      "end": 103
+    },
+    {
+      "path": "cases/posthog-token-curl-projects.sh",
+      "start": 64,
+      "end": 70
+    },
+    {
+      "path": "cases/posthog-token-curl-projects.sh",
+      "start": 71,
+      "end": 118,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-token-dotenv.env",
+      "start": 86,
+      "end": 95
+    },
+    {
+      "path": "cases/posthog-token-event-uuid-encoded-value.json",
+      "start": 32,
+      "end": 68
+    },
+    {
+      "path": "cases/posthog-token-hyphen-prefix-twin.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/posthog-token-hyphen-prefix-twin.http",
+      "start": 67,
+      "end": 114,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-token-key-guidance-prose.md",
+      "start": 8,
+      "end": 14
+    },
+    {
+      "path": "cases/posthog-token-key-guidance-prose.md",
+      "start": 71,
+      "end": 77
+    },
+    {
+      "path": "cases/posthog-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/posthog-token-mcp-config.json",
+      "start": 151,
+      "end": 160
+    },
+    {
+      "path": "cases/posthog-token-mcp-config.json",
+      "start": 203,
+      "end": 249,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-token-project-token-bare-public-id.md",
+      "start": 20,
+      "end": 25
+    },
+    {
+      "path": "cases/posthog-token-project-token-init-public-id.html",
+      "start": 156,
+      "end": 162
+    },
+    {
+      "path": "cases/posthog-token-project-token-prefix-twin.sh",
+      "start": 64,
+      "end": 70
+    },
+    {
+      "path": "cases/posthog-token-project-token-prefix-twin.sh",
+      "start": 71,
+      "end": 118,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-token-trailing-glue-twin.txt",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/posthog-token-unknown-role-prefix-twin.json",
+      "start": 151,
+      "end": 160
+    },
+    {
+      "path": "cases/posthog-token-unknown-role-prefix-twin.json",
+      "start": 203,
+      "end": 249,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/posthog-token-uppercase-prefix-twin.http",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/posthog-token-x-api-key-header.http",
+      "start": 55,
+      "end": 105,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "19808cf552eaee77dea87d43a5c7dfa12aa3dd666242361d124287bd069abc68"
+}

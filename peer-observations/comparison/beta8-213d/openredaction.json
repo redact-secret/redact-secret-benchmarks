@@ -1,0 +1,760 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-213d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "04e14b6203a372e264bc1650dae36b13a0a48c9e1aa64b9103deae04fac78a51",
+    "fixtureCount": 149,
+    "fixturesDigest": "b2d227f4f41f4466d24aa9d2d70e73a87c08e0bbad5008aaa03af7a5969242f0",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/atlassian-api-token-netrc.netrc",
+      "start": 48,
+      "end": 55
+    },
+    {
+      "path": "cases/atlassian-api-token-netrc.netrc",
+      "start": 83,
+      "end": 275,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/atlassian-api-token-op-item-get.txt",
+      "start": 15,
+      "end": 29
+    },
+    {
+      "path": "cases/databricks-personal-access-token-jdbc-url.properties",
+      "start": 99,
+      "end": 107
+    },
+    {
+      "path": "cases/databricks-personal-access-token-jdbc-url.properties",
+      "start": 162,
+      "end": 173
+    },
+    {
+      "path": "cases/databricks-personal-access-token-jdbc-url.properties",
+      "start": 208,
+      "end": 244,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/databricks-personal-access-token-job-run-url-public-id.log",
+      "start": 4,
+      "end": 9
+    },
+    {
+      "path": "cases/databricks-personal-access-token-job-run-url-public-id.log",
+      "start": 106,
+      "end": 111
+    },
+    {
+      "path": "cases/databricks-personal-access-token-job-run-url-public-id.log",
+      "start": 121,
+      "end": 132
+    },
+    {
+      "path": "cases/databricks-personal-access-token-oauth-note-prose.md",
+      "start": 133,
+      "end": 141
+    },
+    {
+      "path": "cases/databricks-personal-access-token-rest-bearer.http",
+      "start": 100,
+      "end": 106
+    },
+    {
+      "path": "cases/databricks-personal-access-token-rest-bearer.http",
+      "start": 107,
+      "end": 143,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/databricks-personal-access-token-workspace-ids-public-id.env",
+      "start": 132,
+      "end": 148
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-curl-validate.sh",
+      "start": 90,
+      "end": 101
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-debug-log.log",
+      "start": 8,
+      "end": 13
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-debug-log.log",
+      "start": 17,
+      "end": 20
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-debug-log.log",
+      "start": 21,
+      "end": 26
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-debug-log.log",
+      "start": 27,
+      "end": 34
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-debug-log.log",
+      "start": 35,
+      "end": 39
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-debug-log.log",
+      "start": 40,
+      "end": 47
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-debug-log.log",
+      "start": 55,
+      "end": 65
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-debug-log.log",
+      "start": 66,
+      "end": 73
+    },
+    {
+      "path": "cases/datadog-application-key-legacy-short-hex-near-miss.env",
+      "start": 19,
+      "end": 51
+    },
+    {
+      "path": "cases/firebase-server-key-functions-config-get.txt",
+      "start": 64,
+      "end": 70
+    },
+    {
+      "path": "cases/firebase-server-key-functions-config-get.txt",
+      "start": 71,
+      "end": 75
+    },
+    {
+      "path": "cases/firebase-server-key-k8s-secret.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-alphabet-twin.sh",
+      "start": 69,
+      "end": 75
+    },
+    {
+      "path": "cases/mailchimp-api-key-alphabet-twin.sh",
+      "start": 76,
+      "end": 113,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-audience-and-campaign-public-id.env",
+      "start": 29,
+      "end": 50
+    },
+    {
+      "path": "cases/mailchimp-api-key-audience-and-campaign-public-id.env",
+      "start": 51,
+      "end": 61
+    },
+    {
+      "path": "cases/mailchimp-api-key-audience-and-campaign-public-id.env",
+      "start": 62,
+      "end": 83
+    },
+    {
+      "path": "cases/mailchimp-api-key-audience-and-campaign-public-id.env",
+      "start": 84,
+      "end": 94
+    },
+    {
+      "path": "cases/mailchimp-api-key-client-log.log",
+      "start": 21,
+      "end": 47
+    },
+    {
+      "path": "cases/mailchimp-api-key-client-log.log",
+      "start": 56,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-curl-bearer.sh",
+      "start": 69,
+      "end": 75
+    },
+    {
+      "path": "cases/mailchimp-api-key-curl-bearer.sh",
+      "start": 76,
+      "end": 113,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-datacenter-note-prose.md",
+      "start": 0,
+      "end": 22
+    },
+    {
+      "path": "cases/mailchimp-api-key-datacenter-note-prose.md",
+      "start": 99,
+      "end": 122
+    },
+    {
+      "path": "cases/mailchimp-api-key-docs-template-placeholder.js",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/mailchimp-api-key-docs-template-placeholder.js",
+      "start": 22,
+      "end": 28
+    },
+    {
+      "path": "cases/mailchimp-api-key-docs-template-placeholder.js",
+      "start": 31,
+      "end": 43
+    },
+    {
+      "path": "cases/mailchimp-api-key-docs-template-placeholder.js",
+      "start": 46,
+      "end": 52
+    },
+    {
+      "path": "cases/mailchimp-api-key-docs-template-placeholder.js",
+      "start": 55,
+      "end": 73
+    },
+    {
+      "path": "cases/mailchimp-api-key-handoff-note.md",
+      "start": 0,
+      "end": 9
+    },
+    {
+      "path": "cases/mailchimp-api-key-handoff-note.md",
+      "start": 10,
+      "end": 13
+    },
+    {
+      "path": "cases/mailchimp-api-key-handoff-note.md",
+      "start": 29,
+      "end": 35
+    },
+    {
+      "path": "cases/mailchimp-api-key-handoff-note.md",
+      "start": 36,
+      "end": 39
+    },
+    {
+      "path": "cases/mailchimp-api-key-handoff-note.md",
+      "start": 74,
+      "end": 78
+    },
+    {
+      "path": "cases/mailchimp-api-key-heroku-config.txt",
+      "start": 2,
+      "end": 8
+    },
+    {
+      "path": "cases/mailchimp-api-key-heroku-config.txt",
+      "start": 9,
+      "end": 15
+    },
+    {
+      "path": "cases/mailchimp-api-key-heroku-config.txt",
+      "start": 18,
+      "end": 21
+    },
+    {
+      "path": "cases/mailchimp-api-key-heroku-config.txt",
+      "start": 22,
+      "end": 32
+    },
+    {
+      "path": "cases/mailchimp-api-key-heroku-config.txt",
+      "start": 33,
+      "end": 39
+    },
+    {
+      "path": "cases/mailchimp-api-key-heroku-config.txt",
+      "start": 42,
+      "end": 46
+    },
+    {
+      "path": "cases/mailchimp-api-key-heroku-config.txt",
+      "start": 47,
+      "end": 56
+    },
+    {
+      "path": "cases/mailchimp-api-key-heroku-config.txt",
+      "start": 57,
+      "end": 74
+    },
+    {
+      "path": "cases/mailchimp-api-key-heroku-config.txt",
+      "start": 83,
+      "end": 115
+    },
+    {
+      "path": "cases/mailchimp-api-key-marketing-client.js",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/mailchimp-api-key-marketing-client.js",
+      "start": 22,
+      "end": 28
+    },
+    {
+      "path": "cases/mailchimp-api-key-marketing-client.js",
+      "start": 64,
+      "end": 68
+    },
+    {
+      "path": "cases/mailchimp-api-key-process-env-reference.js",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/mailchimp-api-key-process-env-reference.js",
+      "start": 22,
+      "end": 28
+    },
+    {
+      "path": "cases/mailchimp-api-key-process-env-reference.js",
+      "start": 30,
+      "end": 59
+    },
+    {
+      "path": "cases/mailchimp-api-key-process-env-reference.js",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/mailchimp-api-key-separator-twin.log",
+      "start": 21,
+      "end": 47
+    },
+    {
+      "path": "cases/mailchimp-api-key-separator-twin.log",
+      "start": 56,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailgun-api-key-actions-env.yml",
+      "start": 75,
+      "end": 111,
+      "family": "mailgun-api-key"
+    },
+    {
+      "path": "cases/mailgun-api-key-anymail-settings.py",
+      "start": 31,
+      "end": 67,
+      "family": "mailgun-api-key"
+    },
+    {
+      "path": "cases/mailgun-api-key-curl-user.sh",
+      "start": 20,
+      "end": 56,
+      "family": "mailgun-api-key"
+    },
+    {
+      "path": "cases/mailgun-api-key-debug-log.log",
+      "start": 21,
+      "end": 50
+    },
+    {
+      "path": "cases/mailgun-api-key-debug-log.log",
+      "start": 59,
+      "end": 95,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailgun-api-key-domain-and-message-id-public-id.env",
+      "start": 67,
+      "end": 81
+    },
+    {
+      "path": "cases/mailgun-api-key-env.env",
+      "start": 50,
+      "end": 86,
+      "family": "mailgun-api-key"
+    },
+    {
+      "path": "cases/mailgun-api-key-heroku-config.txt",
+      "start": 2,
+      "end": 8
+    },
+    {
+      "path": "cases/mailgun-api-key-heroku-config.txt",
+      "start": 9,
+      "end": 15
+    },
+    {
+      "path": "cases/mailgun-api-key-heroku-config.txt",
+      "start": 18,
+      "end": 21
+    },
+    {
+      "path": "cases/mailgun-api-key-heroku-config.txt",
+      "start": 22,
+      "end": 28
+    },
+    {
+      "path": "cases/mailgun-api-key-heroku-config.txt",
+      "start": 29,
+      "end": 35
+    },
+    {
+      "path": "cases/mailgun-api-key-heroku-config.txt",
+      "start": 38,
+      "end": 42
+    },
+    {
+      "path": "cases/mailgun-api-key-heroku-config.txt",
+      "start": 43,
+      "end": 50
+    },
+    {
+      "path": "cases/mailgun-api-key-heroku-config.txt",
+      "start": 51,
+      "end": 66
+    },
+    {
+      "path": "cases/mailgun-api-key-heroku-config.txt",
+      "start": 69,
+      "end": 105,
+      "family": "mailgun-api-key"
+    },
+    {
+      "path": "cases/mailgun-api-key-key-types-note-prose.md",
+      "start": 15,
+      "end": 22
+    },
+    {
+      "path": "cases/mailgun-api-key-key-types-note-prose.md",
+      "start": 33,
+      "end": 39
+    },
+    {
+      "path": "cases/mailgun-api-key-key-types-note-prose.md",
+      "start": 48,
+      "end": 52
+    },
+    {
+      "path": "cases/mailgun-api-key-key-types-note-prose.md",
+      "start": 67,
+      "end": 74
+    },
+    {
+      "path": "cases/mailgun-api-key-key-types-note-prose.md",
+      "start": 75,
+      "end": 78
+    },
+    {
+      "path": "cases/mailgun-api-key-key-types-note-prose.md",
+      "start": 80,
+      "end": 85
+    },
+    {
+      "path": "cases/mailgun-api-key-key-types-note-prose.md",
+      "start": 86,
+      "end": 90
+    },
+    {
+      "path": "cases/mailgun-api-key-key-types-note-prose.md",
+      "start": 105,
+      "end": 112
+    },
+    {
+      "path": "cases/mailgun-api-key-key-types-note-prose.md",
+      "start": 117,
+      "end": 123
+    },
+    {
+      "path": "cases/mailgun-api-key-masked-dashboard-placeholder.md",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/mailgun-api-key-node-client.js",
+      "start": 11,
+      "end": 25
+    },
+    {
+      "path": "cases/mailgun-api-key-node-client.js",
+      "start": 39,
+      "end": 42
+    },
+    {
+      "path": "cases/mailgun-api-key-node-client.js",
+      "start": 51,
+      "end": 87,
+      "family": "mailgun-api-key"
+    },
+    {
+      "path": "cases/mailgun-api-key-settings-json.json",
+      "start": 22,
+      "end": 58,
+      "family": "mailgun-api-key"
+    },
+    {
+      "path": "cases/mailgun-api-key-shell-export.sh",
+      "start": 23,
+      "end": 59,
+      "family": "mailgun-api-key"
+    },
+    {
+      "path": "cases/okta-api-token-api-token-listing-public-id.txt",
+      "start": 23,
+      "end": 75
+    },
+    {
+      "path": "cases/okta-api-token-api-token-listing-public-id.txt",
+      "start": 116,
+      "end": 124
+    },
+    {
+      "path": "cases/okta-api-token-curl-ssws.sh",
+      "start": 90,
+      "end": 99
+    },
+    {
+      "path": "cases/okta-api-token-docs-template-placeholder.sh",
+      "start": 59,
+      "end": 68
+    },
+    {
+      "path": "cases/okta-api-token-env.env",
+      "start": 25,
+      "end": 33
+    },
+    {
+      "path": "cases/okta-api-token-node-client.js",
+      "start": 54,
+      "end": 62
+    },
+    {
+      "path": "cases/okta-api-token-postman-variable-reference.http",
+      "start": 4,
+      "end": 13
+    },
+    {
+      "path": "cases/okta-api-token-raw-request.http",
+      "start": 93,
+      "end": 102
+    },
+    {
+      "path": "cases/okta-api-token-request-log.log",
+      "start": 21,
+      "end": 52
+    },
+    {
+      "path": "cases/okta-api-token-request-log.log",
+      "start": 59,
+      "end": 68
+    },
+    {
+      "path": "cases/okta-api-token-rotation-note-prose.md",
+      "start": 0,
+      "end": 23
+    },
+    {
+      "path": "cases/okta-api-token-short-token-near-miss.http",
+      "start": 4,
+      "end": 13
+    },
+    {
+      "path": "cases/okta-api-token-user-and-group-ids-public-id.json",
+      "start": 8,
+      "end": 28
+    },
+    {
+      "path": "cases/okta-api-token-user-and-group-ids-public-id.json",
+      "start": 32,
+      "end": 38
+    },
+    {
+      "path": "cases/okta-api-token-user-and-group-ids-public-id.json",
+      "start": 42,
+      "end": 48
+    },
+    {
+      "path": "cases/okta-api-token-user-and-group-ids-public-id.json",
+      "start": 52,
+      "end": 58
+    },
+    {
+      "path": "cases/okta-api-token-user-and-group-ids-public-id.json",
+      "start": 63,
+      "end": 83
+    },
+    {
+      "path": "cases/openai-token-actions-env.yml",
+      "start": 73,
+      "end": 124,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-env.env",
+      "start": 15,
+      "end": 179,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-mcp-server-env.json",
+      "start": 93,
+      "end": 257,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-prefix-twin.http",
+      "start": 95,
+      "end": 101
+    },
+    {
+      "path": "cases/openai-token-prefix-twin.http",
+      "start": 102,
+      "end": 266,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/openai-token-project-keys-note-prose.md",
+      "start": 15,
+      "end": 19
+    },
+    {
+      "path": "cases/openai-token-project-keys-note-prose.md",
+      "start": 64,
+      "end": 82
+    },
+    {
+      "path": "cases/openai-token-raw-request.http",
+      "start": 95,
+      "end": 101
+    },
+    {
+      "path": "cases/openai-token-raw-request.http",
+      "start": 102,
+      "end": 266,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-response-ids-public-id.http",
+      "start": 13,
+      "end": 28
+    },
+    {
+      "path": "cases/openai-token-shell-export.sh",
+      "start": 22,
+      "end": 186,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-token-truncated-log-near-miss.log",
+      "start": 21,
+      "end": 43
+    },
+    {
+      "path": "cases/postman-api-key-actions-secret-reference.yml",
+      "start": 21,
+      "end": 35
+    },
+    {
+      "path": "cases/postman-api-key-apikey-query.sh",
+      "start": 38,
+      "end": 46
+    },
+    {
+      "path": "cases/postman-api-key-apikey-query.sh",
+      "start": 54,
+      "end": 118,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/postman-api-key-collection-and-workspace-public-id.env",
+      "start": 23,
+      "end": 31
+    },
+    {
+      "path": "cases/postman-api-key-debug-log.log",
+      "start": 97,
+      "end": 161,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/postman-api-key-postman-login.sh",
+      "start": 16,
+      "end": 30
+    },
+    {
+      "path": "cases/postman-api-key-postman-login.sh",
+      "start": 31,
+      "end": 95,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/postman-api-key-raw-request.http",
+      "start": 62,
+      "end": 126,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/postman-api-key-settings-json.json",
+      "start": 8,
+      "end": 18
+    },
+    {
+      "path": "cases/postman-api-key-vault-note-prose.md",
+      "start": 43,
+      "end": 51
+    },
+    {
+      "path": "cases/postman-api-key-vault-note-prose.md",
+      "start": 69,
+      "end": 89
+    }
+  ],
+  "digest": "ea3bcde853bfafa254b382006aa2870efe8617cf201fc0673b0f7e1a041ecc75"
+}

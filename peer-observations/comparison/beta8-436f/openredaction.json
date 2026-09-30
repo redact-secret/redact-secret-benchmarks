@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-436f",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "6461281d16dd0825604834fa3384a47e6a93666eb88472e02e04952e3715a286",
+    "fixtureCount": 27,
+    "fixturesDigest": "c15f98d0a464fc7dd6d68a5b5a66fee45b8a29ebb2cd16d5a523dc6c1748bf2a",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/wandb-api-key-bare-prose.md",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/wandb-api-key-bare-prose.md",
+      "start": 22,
+      "end": 28
+    },
+    {
+      "path": "cases/wandb-api-key-bare-prose.md",
+      "start": 29,
+      "end": 39
+    },
+    {
+      "path": "cases/wandb-api-key-bare-prose.md",
+      "start": 40,
+      "end": 44
+    },
+    {
+      "path": "cases/wandb-api-key-bare-prose.md",
+      "start": 45,
+      "end": 52
+    },
+    {
+      "path": "cases/wandb-api-key-bearer-header.http",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "path": "cases/wandb-api-key-bearer-header.http",
+      "start": 65,
+      "end": 151,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/wandb-api-key-chat-paste.txt",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/wandb-api-key-chat-paste.txt",
+      "start": 11,
+      "end": 18
+    },
+    {
+      "path": "cases/wandb-api-key-chat-paste.txt",
+      "start": 21,
+      "end": 27
+    },
+    {
+      "path": "cases/wandb-api-key-chat-paste.txt",
+      "start": 28,
+      "end": 31
+    },
+    {
+      "path": "cases/wandb-api-key-hyphen-prefix-twin.http",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "path": "cases/wandb-api-key-hyphen-prefix-twin.http",
+      "start": 65,
+      "end": 151,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/wandb-api-key-key-guidance-prose.md",
+      "start": 22,
+      "end": 41
+    },
+    {
+      "path": "cases/wandb-api-key-leading-glue-twin.md",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/wandb-api-key-leading-glue-twin.md",
+      "start": 22,
+      "end": 28
+    },
+    {
+      "path": "cases/wandb-api-key-leading-glue-twin.md",
+      "start": 29,
+      "end": 39
+    },
+    {
+      "path": "cases/wandb-api-key-leading-glue-twin.md",
+      "start": 40,
+      "end": 44
+    },
+    {
+      "path": "cases/wandb-api-key-leading-glue-twin.md",
+      "start": 45,
+      "end": 52
+    },
+    {
+      "path": "cases/wandb-api-key-leading-underscore-twin.txt",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/wandb-api-key-leading-underscore-twin.txt",
+      "start": 11,
+      "end": 18
+    },
+    {
+      "path": "cases/wandb-api-key-leading-underscore-twin.txt",
+      "start": 21,
+      "end": 27
+    },
+    {
+      "path": "cases/wandb-api-key-leading-underscore-twin.txt",
+      "start": 28,
+      "end": 31
+    },
+    {
+      "path": "cases/wandb-api-key-netrc-password.netrc",
+      "start": 56,
+      "end": 143,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/wandb-api-key-test-constant-shape-placeholder.ts",
+      "start": 6,
+      "end": 14
+    },
+    {
+      "path": "cases/wandb-api-key-version-identifiers-public-id.py",
+      "start": 63,
+      "end": 76
+    },
+    {
+      "path": "cases/wandb-api-key-x-api-key-header.http",
+      "start": 53,
+      "end": 139,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "003c6f5591d22e1142e31093ad661f0ecd08c62bf9f34fd36fd8e9008a3ad45f"
+}

@@ -1,0 +1,334 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-1012e",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "bbbffca090dd0b4e73ef7655a67889c4ded33e60f8d6b928cd824ce3d467015c",
+    "fixtureCount": 120,
+    "fixturesDigest": "a33a536613b32cc832a55324ba3efe0d5ea140bba39013f48cbc90213dcd1b47",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/vercel-app-access-token-bare-prose.md",
+      "start": 0,
+      "end": 22
+    },
+    {
+      "path": "cases/vercel-app-access-token-bearer-header.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/vercel-app-access-token-bearer-header.http",
+      "start": 67,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/vercel-app-access-token-chat-paste.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/vercel-app-access-token-chat-paste.txt",
+      "start": 18,
+      "end": 25
+    },
+    {
+      "path": "cases/vercel-app-access-token-ellipsis-placeholder.md",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/vercel-app-access-token-fetch-header.ts",
+      "start": 75,
+      "end": 84
+    },
+    {
+      "path": "cases/vercel-app-access-token-fetch-header.ts",
+      "start": 94,
+      "end": 154,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/vercel-app-access-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 22
+    },
+    {
+      "path": "cases/vercel-app-access-token-prefix-table-prose.md",
+      "start": 42,
+      "end": 58
+    },
+    {
+      "path": "cases/vercel-app-access-token-python-requests.py",
+      "start": 68,
+      "end": 77
+    },
+    {
+      "path": "cases/vercel-app-access-token-python-requests.py",
+      "start": 88,
+      "end": 148,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/vercel-app-access-token-suffix-mismatch-log.log",
+      "start": 41,
+      "end": 101
+    },
+    {
+      "path": "cases/vercel-app-access-token-truncated-near-miss.log",
+      "start": 27,
+      "end": 36
+    },
+    {
+      "path": "cases/vercel-app-access-token-uppercase-prefix-twin.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/vercel-app-access-token-uppercase-prefix-twin.http",
+      "start": 67,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/vercel-app-access-token-x-api-key-header.http",
+      "start": 55,
+      "end": 115,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-bare-prose.md",
+      "start": 0,
+      "end": 22
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-bearer-header.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-bearer-header.http",
+      "start": 67,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-chat-paste.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-chat-paste.txt",
+      "start": 18,
+      "end": 25
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-debug-log.log",
+      "start": 119,
+      "end": 123
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-ellipsis-placeholder.md",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 22
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-prefix-table-prose.md",
+      "start": 42,
+      "end": 58
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-refresh-body.ts",
+      "start": 35,
+      "end": 45
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-refresh-body.ts",
+      "start": 48,
+      "end": 61
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-refresh-body.ts",
+      "start": 64,
+      "end": 77
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-team-and-project-ids-public-id.env",
+      "start": 14,
+      "end": 43
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-team-and-project-ids-public-id.env",
+      "start": 44,
+      "end": 61
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-truncated-near-miss.log",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-truncated-near-miss.log",
+      "start": 8,
+      "end": 13
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-truncated-near-miss.log",
+      "start": 17,
+      "end": 20
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-truncated-near-miss.log",
+      "start": 21,
+      "end": 25
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-truncated-near-miss.log",
+      "start": 27,
+      "end": 36
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-truncated-near-miss.log",
+      "start": 37,
+      "end": 42
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-truncated-near-miss.log",
+      "start": 43,
+      "end": 59
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-uppercase-prefix-twin.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-uppercase-prefix-twin.http",
+      "start": 67,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-x-api-key-header.http",
+      "start": 55,
+      "end": 115,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/vercel-personal-access-token-bare-prose.md",
+      "start": 0,
+      "end": 29
+    },
+    {
+      "path": "cases/vercel-personal-access-token-bearer-header.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/vercel-personal-access-token-bearer-header.http",
+      "start": 67,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/vercel-personal-access-token-chat-paste.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/vercel-personal-access-token-ellipsis-placeholder.md",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/vercel-personal-access-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 29
+    },
+    {
+      "path": "cases/vercel-personal-access-token-prefix-table-prose.md",
+      "start": 42,
+      "end": 54
+    },
+    {
+      "path": "cases/vercel-personal-access-token-truncated-near-miss.log",
+      "start": 27,
+      "end": 36
+    },
+    {
+      "path": "cases/vercel-personal-access-token-turbo-token.env",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/vercel-personal-access-token-turbo-token.env",
+      "start": 11,
+      "end": 15
+    },
+    {
+      "path": "cases/vercel-personal-access-token-turbo-token.env",
+      "start": 16,
+      "end": 27
+    },
+    {
+      "path": "cases/vercel-personal-access-token-uppercase-prefix-twin.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/vercel-personal-access-token-uppercase-prefix-twin.http",
+      "start": 67,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/vercel-personal-access-token-x-api-key-header.http",
+      "start": 55,
+      "end": 115,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "12c3794f412f10746d2fc9f482e2f0c2c3cefab9d83504b0154ef66d9fb4fc00"
+}

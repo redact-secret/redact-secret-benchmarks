@@ -6,12 +6,12 @@
  * called better; a value that was not recorded resolves to a stated "not
  * measured" state, never to a zero or a guess.
  */
-import type { ComparisonQuestion, FeatureFilter, Principle, RunLine, RuntimeColumn, RuntimeFactRow, RuntimeQuestion, RuntimeTiming, RuntimeView, ToolKind } from '../components/comparison/types';
+import type { ComparisonQuestion, FeatureFilter, Principle, RunLine, RuntimeColumn, RuntimeFactRow, RuntimeLegendItem, RuntimeOutcome, RuntimeQuestion, RuntimeTiming, RuntimeValueRow, RuntimeView, ToolKind } from '../components/comparison/types';
 import type { ComparisonHubProps } from '../components/comparison/ComparisonHub';
 import type { FeatureComparisonProps } from '../components/comparison/FeatureComparison';
 import type { RuntimeComparisonProps } from '../components/comparison/RuntimeComparison';
 import type { FeatureClaims, FeatureClaimsLoad } from '../services/features';
-import type { PeerRuntime, RuntimeTool, RuntimeWorkload } from '../services/runtime';
+import type { ComparisonRun, ComparisonSetting, ComparisonWorkload, PeerRuntime, RuntimeComparison, RuntimeTool, RuntimeWorkload } from '../services/runtime';
 import type { RunLoad } from '../services/run';
 import { count, int, isoDate } from './format';
 import { levelLinks, modeText } from './report';
@@ -39,8 +39,18 @@ const featureRows = (claims: FeatureClaims) => claims.groups.flatMap(g => g.rows
 
 export interface HubInput { runtime: PeerRuntime; features: FeatureClaimsLoad; run: RunLoad }
 
+/** The newest runtime run the pages show: the v2 comparison when a setting was measured, else the frozen v1 snapshot. */
+function runtimeRunInfo(runtime: PeerRuntime): { generatedAt: string; tests: number; outcomes: boolean } | undefined {
+  const runs = (runtime.comparison?.settings ?? []).flatMap(s => (s.run.state === 'measured' ? [s.run] : []));
+  if (runs.length) {
+    const tests = new Set(runs.flatMap(r => r.observations.map(o => o.workload)));
+    return { generatedAt: runs.map(r => r.generatedAt).sort()[runs.length - 1], tests: tests.size, outcomes: true };
+  }
+  return runtime.measurement.state === 'measured' ? { generatedAt: runtime.measurement.generatedAt, tests: runtime.workloads.length, outcomes: false } : undefined;
+}
+
 export function resolveHub({ runtime, features, run }: HubInput): ComparisonHubProps {
-  const measured = runtime.measurement.state === 'measured';
+  const info = runtimeRunInfo(runtime);
   const tools = runtime.tools.map(t => toolName(t.id));
   const claims = features.state === 'recorded' ? features.claims : undefined;
   const rows = claims ? featureRows(claims) : [];
@@ -49,10 +59,10 @@ export function resolveHub({ runtime, features, run }: HubInput): ComparisonHubP
   const questions: ComparisonQuestion[] = [
     {
       href: RUNTIME, label: 'Runtime', title: 'How fast is each one, and what does it hide?',
-      description: 'Time on the same text for each library. What each one hid is not recorded yet.',
+      description: info?.outcomes ? 'Time on the same text for each library, and what each one did to each value in it.' : 'Time on the same text for each library. What each one hid is not recorded yet.',
       tools,
-      fact: measured ? `${count(runtime.workloads.length, 'test text')}` : 'Not measured yet',
-      factNote: measured ? 'personal data, made up' : 'no snapshot committed',
+      fact: info ? `${count(info.tests, 'test text')}` : 'Not measured yet',
+      factNote: info ? (info.outcomes ? 'personal data and credentials, made up' : 'personal data, made up') : 'no snapshot committed',
       action: 'Runtime comparison →',
     },
     {
@@ -98,7 +108,7 @@ export function resolveHub({ runtime, features, run }: HubInput): ComparisonHubP
   const runs: RunLine[] = [
     {
       label: 'Runtime',
-      detail: runtime.measurement.state === 'measured' ? `${isoDate(runtime.measurement.generatedAt)} · ${versionsOf(runtime.tools)}` : 'not measured yet',
+      detail: info ? `${isoDate(info.generatedAt)} · ${versionsOf(runtime.tools)}` : 'not measured yet',
     },
     {
       label: 'Features',
@@ -284,7 +294,7 @@ export function activeFamilies(piiActivation: string | undefined): string[] {
   return list ? list.split(',').map(f => f.replace(/^pii:[^:]+:/, '').replace(/-/g, ' ')).filter(Boolean) : [];
 }
 
-export function resolveRuntimePanels(runtime: PeerRuntime): RuntimePanel[] {
+function legacyRuntimePanels(runtime: PeerRuntime): RuntimePanel[] {
   const { measurement } = runtime;
   const measured = measurement.state === 'measured' ? measurement : undefined;
   const externalNote = measurement.state === 'invalid' ? measurement.reason : measurement.state === 'not-published' ? NOT_MEASURED.notPublished : undefined;
@@ -376,4 +386,195 @@ export function resolveRuntimePanels(runtime: PeerRuntime): RuntimePanel[] {
     });
   }
   return panels;
+}
+
+// ---- Runtime, with recorded outcomes (#562, #563) --------------------------------------
+//
+// Only when `runtime.comparison` holds at least one measured setting. Every cell is a recorded outcome, a recorded time
+// or a stated "not measured": nothing is guessed, ranked or graded. "Switch off" is the one word not read from an
+// outcome: it says the setting did not switch on the PII family the value needs (from the add-on's own activation
+// identity in the report), and only when the call also left the line unchanged.
+
+const OUTCOME_WORDS: Record<RuntimeOutcome['outcome'], string> = { replaced: 'Hidden', partial: 'Partly hidden', unchanged: 'Left as is', 'not-applicable': 'Switch off' };
+export const OUTCOME_LEGEND: RuntimeLegendItem[] = [
+  { outcome: 'replaced', label: 'Hidden' },
+  { outcome: 'partial', label: 'Partly' },
+  { outcome: 'unchanged', label: 'Left as is' },
+  { outcome: 'not-applicable', label: 'Switch off' },
+];
+
+/** The credential texts carry a secret on every line, which no other page of the site measures. */
+const DENSE_NOTE = 'Every line of these credential texts carries a secret, so each call finds and replaces thousands of them. The times are for text that dense, so they are not comparable with the speeds on the Performance page, which times a different text.';
+
+const HOW_LIMIT = 32;
+const how = (replacement: string): string | undefined => {
+  if (!replacement) return undefined;
+  return `shown as ${replacement.length > HOW_LIMIT ? `${replacement.slice(0, HOW_LIMIT - 1)}…` : replacement}`;
+};
+
+interface Column { id: string; name: string; sub?: string; tool: string; setting: ComparisonSetting }
+
+const runOf = (setting: ComparisonSetting | undefined): ComparisonRun | undefined => (setting?.run.state === 'measured' ? setting.run : undefined);
+
+/** What one call did to one line, as the report recorded it. `null` when the run has no record of it. */
+function outcomeFor(run: ComparisonRun | undefined, tool: string, workload: ComparisonWorkload, index: number): RuntimeOutcome | null {
+  const recorded = run?.outcomes[`${tool}/${workload.id}`]?.[index];
+  if (!run || !recorded) return null;
+  const line = workload.lines[index];
+  if (!recorded.changed && tool === 'redact-secret' && line.values.every(v => v.family !== undefined && !run.families.includes(v.family)))
+    return { outcome: 'not-applicable', word: OUTCOME_WORDS['not-applicable'] };
+  const outcome: RuntimeOutcome['outcome'] = recorded.valuesHidden === line.values.length ? 'replaced' : recorded.valuesHidden > 0 || recorded.changed ? 'partial' : 'unchanged';
+  const detail = how(recorded.replacement);
+  return { outcome, word: OUTCOME_WORDS[outcome], ...(detail ? { how: detail } : {}) };
+}
+
+function hiddenFor(run: ComparisonRun | undefined, tool: string, workload: ComparisonWorkload): RuntimeQuestion['hidden'][string] {
+  const lines = run?.outcomes[`${tool}/${workload.id}`];
+  if (!lines) return null;
+  const total = workload.lines.reduce((n, l) => n + l.values.length, 0);
+  const hidden = lines.reduce((n, l) => n + l.valuesHidden, 0);
+  return { percent: `${Math.round((hidden / total) * 100)}%`, count: `${int(hidden)} of ${int(total)}` };
+}
+
+function comparisonTiming(run: ComparisonRun | undefined, tool: string, workload: string): RuntimeTiming | null {
+  const o = run?.observations.find(x => x.tool === tool && x.workload === workload);
+  return o ? { medianMs: milliseconds(o.medianMs), throughput: megabytesPerSecond(o.medianBytesPerSecond) } : null;
+}
+
+function comparisonQuestions(cmp: RuntimeComparison, key: string, domain: Domain, columns: Column[]): RuntimeQuestion[] {
+  const workloads = cmp.workloads.filter(w => w.domain === domain);
+  const reasons = [...new Set(columns.map(c => c.setting.run).filter(r => r.state !== 'measured').map(r => (r as { reason: string }).reason))];
+  return workloads.map((w, i) => {
+    const runs = columns.map(c => runOf(c.setting));
+    const size = runs.flatMap(r => r?.observations.filter(o => o.workload === w.id).map(o => o.workloadBytes) ?? [])[0];
+    const rows: RuntimeValueRow[] = w.lines.map((line, index) => ({
+      label: line.label,
+      cells: Object.fromEntries(columns.map(c => [c.id, outcomeFor(runOf(c.setting), c.tool, w, index)])),
+    }));
+    return {
+      id: `${key}-${w.id}`,
+      position: `${i + 1} / ${workloads.length}`,
+      question: w.question,
+      description: w.description,
+      workload: w.id,
+      ...(size !== undefined ? { size: kibibytes(size) } : {}),
+      repeat: repeatText({ id: w.id, purpose: '', distinctLines: w.lines.length, lineCount: cmp.lineCount }),
+      ...(!runs.some(Boolean) ? { notMeasured: reasons.join(' ') } : {}),
+      outcomesRecorded: true,
+      rows,
+      hidden: Object.fromEntries(columns.map(c => [c.id, hiddenFor(runOf(c.setting), c.tool, w)])),
+      timing: Object.fromEntries(columns.map(c => [c.id, comparisonTiming(runOf(c.setting), c.tool, w.id)])),
+    };
+  });
+}
+
+/** How far the unchanged libraries' own times moved between the settings' runs: the machine's variation, recorded. */
+export function stabilityNote(cmp: RuntimeComparison): string | undefined {
+  const runs = cmp.settings.map(s => runOf(s)).filter((r): r is ComparisonRun => r !== undefined);
+  if (runs.length < 2) return undefined;
+  let worst: { spread: number; tool: string; workload: string } | undefined;
+  for (const tool of ['flare-redact', 'openredaction']) {
+    for (const w of cmp.workloads) {
+      const times = runs.map(r => r.observations.find(o => o.tool === tool && o.workload === w.id)?.medianMs).filter((t): t is number => t !== undefined && t > 0);
+      if (times.length < 2) continue;
+      const spread = (Math.max(...times) - Math.min(...times)) / Math.min(...times);
+      if (!worst || spread > worst.spread) worst = { spread, tool, workload: w.id };
+    }
+  }
+  if (!worst) return undefined;
+  return `Between the ${count(runs.length, 'run')} the same ${toolName('flare-redact')} and ${toolName('openredaction')} calls on the same text moved by up to ${Math.round(worst.spread * 100)}% (most on ${worst.workload}, ${toolName(worst.tool)}). Read a difference in time smaller than that as noise, not as a result.`;
+}
+
+const runText = (run: ComparisonRun): string => `${run.runner.platform} ${run.runner.arch} · Node ${run.runner.node} · ${run.runner.cpuModel} · ${count(run.runner.cpuLimit, 'CPU')}`;
+
+function comparisonRunMeta(runtime: PeerRuntime, columns: Column[]): RuntimeComparisonProps['run'] {
+  const runs = [...new Map(columns.map(c => [c.setting.id, runOf(c.setting)] as const).filter(([, r]) => r)).values()] as ComparisonRun[];
+  if (!runs.length) return undefined;
+  const dates = [...new Set(runs.map(r => isoDate(r.generatedAt)))].join(', ');
+  return [
+    { label: 'Run', value: dates },
+    { value: runText(runs[0]) },
+    { value: `Each time is the middle of ${int(Math.min(...runs.map(r => r.samplesPerCell)))} runs` },
+    ...(runtime.tools.some(t => t.buildKind === 'local-source-build')
+      ? [{ label: 'Build', value: `${runtime.tools.filter(t => t.buildKind === 'local-source-build').map(t => toolName(t.id)).join(', ')} from a local build of main, unreleased; the others from npm` }] : []),
+  ];
+}
+
+const settingColumn = (cmp: RuntimeComparison, settingId: string, tool: string, sub?: string): Column => {
+  const setting = cmp.settings.find(s => s.id === settingId)!;
+  return { id: tool, name: toolName(tool), ...(sub ? { sub } : {}), tool, setting };
+};
+
+function comparisonPanels(runtime: PeerRuntime, cmp: RuntimeComparison): RuntimePanel[] {
+  const head = (analysis: Analysis, domain: Domain): Pick<RuntimeComparisonProps, 'breadcrumb' | 'eyebrow' | 'title' | 'lede' | 'switches'> => ({
+    breadcrumb: [{ label: 'Comparison', href: COMPARISON }, { label: 'Runtime' }],
+    eyebrow: 'Comparison',
+    title: 'Runtime comparison',
+    lede: 'What each library did to each value in the same made-up text, and how long one redact call took. Outcomes and times are recorded, not graded. Nothing here is ranked.',
+    switches: switches(analysis, domain),
+  });
+  const stability = stabilityNote(cmp);
+  const notesOf = (columns: Column[], domain: Domain): string[] | undefined => {
+    const first = runOf(columns.find(c => runOf(c.setting))?.setting);
+    const notes = [...(first?.methodologyNotes ?? []), ...(domain === 'credentials' ? [DENSE_NOTE] : []), ...(stability ? [stability] : [])];
+    return notes.length ? notes : undefined;
+  };
+  const named = (columns: Column[]): RuntimeColumn[] => columns.map(({ id, name, sub }) => ({ id, name, ...(sub ? { sub } : {}) }));
+
+  const panels: RuntimePanel[] = [];
+  const add = (analysis: Analysis, domain: Domain, columns: Column[], columnKind: string, factsTitle: string, facts: RuntimeFactRow[]) => {
+    const keyOf = (view: RuntimeView | null) => `${analysis}-${domain}${view ? `-${view}` : ''}`;
+    const questions = comparisonQuestions(cmp, keyOf(null), domain, columns);
+    const measured = questions.some(q => !q.notMeasured);
+    const props = (view: RuntimeView | null): RuntimeComparisonProps => ({
+      ...head(analysis, domain),
+      ...(measured && view ? {
+        toolbar: {
+          views: VIEWS.map(v => ({ label: v === 'all' ? 'All' : v === 'speed' ? 'Speed' : 'Accuracy', href: hrefFor(analysis, domain, v) })),
+          currentHref: hrefFor(analysis, domain, view),
+          view,
+          legend: OUTCOME_LEGEND,
+        },
+      } : {}),
+      columns: named(columns),
+      columnKind,
+      questions: questions.map(q => ({ ...q, id: `${keyOf(view)}-${q.workload}` })),
+      factsTitle,
+      factColumns: named(columns),
+      facts,
+      run: comparisonRunMeta(runtime, columns),
+      notes: notesOf(columns, domain),
+    });
+    if (measured) for (const view of VIEWS) panels.push({ key: keyOf(view), analysis, domain, view, props: props(view) });
+    else panels.push({ key: keyOf(null), analysis, domain, view: null, props: props(null) });
+  };
+
+  const libraries = (settingId: string): Column[] => {
+    const sub = cmp.settings.find(s => s.id === settingId)?.sub ?? '';
+    return [settingColumn(cmp, settingId, 'redact-secret', sub), settingColumn(cmp, settingId, 'flare-redact'), settingColumn(cmp, settingId, 'openredaction')];
+  };
+  const settings: Column[] = cmp.settings.map(s => ({ id: s.id, name: s.label, sub: s.sub, tool: 'redact-secret', setting: s }));
+  const settingFacts: RuntimeFactRow[] = [
+    { label: 'Selectors', cells: Object.fromEntries(cmp.settings.map(s => [s.id, { text: s.selectors.length ? s.selectors.join(', ') : 'none' }])) },
+    {
+      label: 'Turns on',
+      cells: Object.fromEntries(cmp.settings.map(s => {
+        const run = runOf(s);
+        return [s.id, run ? { text: run.families.length ? activeFamilies(`families=${run.families.join(',')}`).join(', ') : 'no PII family' } : null];
+      })),
+    },
+  ];
+
+  // PII: redact-secret at pii:global beside the peers. Credentials: at Default, where no PII is switched on.
+  add('external', 'pii', libraries('pii-global'), 'library', 'About the libraries', libraryFacts(runtime));
+  add('internal', 'pii', settings, 'redact-secret setting', 'About the settings', settingFacts);
+  add('internal', 'credentials', settings, 'redact-secret setting', 'About the settings', settingFacts);
+  add('external', 'credentials', libraries('default'), 'library', 'About the libraries', libraryFacts(runtime));
+  return panels;
+}
+
+export function resolveRuntimePanels(runtime: PeerRuntime): RuntimePanel[] {
+  const cmp = runtime.comparison;
+  if (cmp && cmp.settings.some(s => s.run.state === 'measured')) return comparisonPanels(runtime, cmp);
+  return legacyRuntimePanels(runtime);
 }

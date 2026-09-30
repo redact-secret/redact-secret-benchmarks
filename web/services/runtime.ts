@@ -12,9 +12,12 @@
  * Nothing is derived here beyond joining the plan to the snapshot in plan order.
  */
 import { validatePeerRuntimeThroughputReport } from '../../benchmarks/evaluation/domains/pii/peer-runtime-throughput';
+import { runtimeComparisonPlan, validateRuntimeComparisonPlan } from '../../benchmarks/evaluation/domains/pii/runtime-comparison';
 import { once, readJson, readJsonIfPresent } from './repo';
 
 export const RUNTIME_SNAPSHOT = 'evidence/429/peer-pii-runtime-throughput.json';
+/** #562/#563: one report per redact-secret setting, from `qualification/runtime-comparison-v2.json`. */
+export const COMPARISON_SNAPSHOT = (settingId: string): string => `evidence/562/runtime-comparison-${settingId}.json`;
 
 interface PlanTool { id: string; package: string; provenance: string; call: string; async: boolean; piiSelectors?: string[] }
 interface Plan { tools: PlanTool[]; sampleProtocol: { samplesPerCell: number; warmupSamples: number } }
@@ -72,10 +75,69 @@ export interface RuntimeMeasurement {
   path: string;
 }
 
+/** A line of a comparison workload: what the plan says it carries. The text itself is never read here. */
+export interface ComparisonLine {
+  label: string;
+  /** One entry per value the line carries, with the PII family that has to be on for it (absent for a credential). */
+  values: { kind: string; family?: string }[];
+}
+
+export interface ComparisonWorkload {
+  id: string;
+  domain: 'pii' | 'credentials';
+  question: string;
+  description: string;
+  lines: ComparisonLine[];
+}
+
+export interface ComparisonOutcome {
+  changed: boolean;
+  valuesHidden: number;
+  replacement: string;
+}
+
+/** One measured setting's report, reduced to what the page shows. */
+export interface ComparisonRun {
+  generatedAt: string;
+  runner: { platform: string; arch: string; node: string; cpuModel: string; cpuLimit: number };
+  tools: { id: string; version: string; buildKind: string }[];
+  /** PII families the setting switched on, as the add-on reported them. */
+  families: string[];
+  activation: string;
+  methodologyNotes: string[];
+  observations: RuntimeObservation[];
+  /** Keyed `tool/workload`, one entry per plan line in plan order. */
+  outcomes: Record<string, ComparisonOutcome[]>;
+  samplesPerCell: number;
+  commitment: string;
+  path: string;
+}
+
+export interface ComparisonSetting {
+  id: string;
+  label: string;
+  sub: string;
+  selectors: string[];
+  run:
+    | ({ state: 'measured' } & ComparisonRun)
+    | { state: 'not-published'; reason: string }
+    | { state: 'invalid'; reason: string };
+}
+
+export interface RuntimeComparison {
+  planId: string;
+  /** Number of lines each workload's text is cycled to. */
+  lineCount: number;
+  workloads: ComparisonWorkload[];
+  settings: ComparisonSetting[];
+}
+
 export interface PeerRuntime {
   tools: RuntimeTool[];
   workloads: RuntimeWorkload[];
   warmupSamples: number;
+  /** Absent only for a `PeerRuntime` built without the v2 plan (a unit test's synthetic data). */
+  comparison?: RuntimeComparison;
   measurement:
     | ({ state: 'measured' } & RuntimeMeasurement)
     | { state: 'not-published'; reason: string }
@@ -116,13 +178,73 @@ export function loadPeerRuntime(): Promise<PeerRuntime> {
       }
     }
 
+    const comparison = await loadComparison();
+    // The v2 run is the newer of the two on the same pins: prefer its versions, keep v1's for a page that has no v2 run.
+    const newest = comparison.settings.find(s => s.id === 'pii-global' && s.run.state === 'measured')?.run as ({ state: 'measured' } & ComparisonRun) | undefined;
     const tools: RuntimeTool[] = plan.tools.map(t => {
+      const fresh = newest?.tools.find(s => s.id === t.id);
+      if (fresh) return { id: t.id, package: t.package, call: t.call, async: t.async, piiSelectors: t.piiSelectors ?? [], version: fresh.version, buildKind: fresh.buildKind, ...(t.id === 'redact-secret' ? { piiActivation: newest!.activation } : {}) };
       const seen = valid?.tools.find(s => s.id === t.id);
       return {
         id: t.id, package: t.package, call: t.call, async: t.async, piiSelectors: t.piiSelectors ?? [],
         ...(seen ? { version: seen.version, buildKind: seen.provenance.kind, ...(seen.provenance.piiActivation ? { piiActivation: seen.provenance.piiActivation } : {}) } : {}),
       };
     });
-    return { tools, workloads, warmupSamples: plan.sampleProtocol.warmupSamples, measurement };
+    return { tools, workloads, warmupSamples: plan.sampleProtocol.warmupSamples, comparison, measurement };
   });
+}
+
+interface ComparisonReport {
+  generatedAt: string;
+  runner: { platform: string; arch: string; node: string; cpuModel: string; cpuLimit: number };
+  setting: { families: string[]; activation: string };
+  tools: { id: string; version: string; provenance: { kind: string } }[];
+  methodologyNotes: string[];
+  observations: { tool: string; workload: string; workloadBytes: number; samples: unknown[]; summary: { medianMs: number; p95Ms: number; medianBytesPerSecond: number } }[];
+  outcomes: { tool: string; workload: string; lines: ComparisonOutcome[] }[];
+  artifactCommitment: string;
+}
+
+/** The v2 plan and each setting's report. A report that fails validation is never read; the panel says so. */
+async function loadComparison(): Promise<RuntimeComparison> {
+  const plan = validateRuntimeComparisonPlan(runtimeComparisonPlan);
+  const settings: ComparisonSetting[] = [];
+  for (const s of plan.settings as { id: string; label: string; sub: string; selectors: string[] }[]) {
+    const path = COMPARISON_SNAPSHOT(s.id);
+    const found = await readJsonIfPresent<unknown>(path);
+    let run: ComparisonSetting['run'];
+    if (!found) {
+      run = { state: 'not-published', reason: `${path} is absent: this setting has not been measured.` };
+    } else {
+      try {
+        const report = validatePeerRuntimeThroughputReport(found) as ComparisonReport;
+        run = {
+          state: 'measured',
+          generatedAt: report.generatedAt,
+          runner: { platform: report.runner.platform, arch: report.runner.arch, node: report.runner.node, cpuModel: report.runner.cpuModel, cpuLimit: report.runner.cpuLimit },
+          tools: report.tools.map(t => ({ id: t.id, version: t.version, buildKind: t.provenance.kind })),
+          families: report.setting.families,
+          activation: report.setting.activation,
+          methodologyNotes: report.methodologyNotes,
+          observations: report.observations.map(o => ({ tool: o.tool, workload: o.workload, workloadBytes: o.workloadBytes, ...o.summary })),
+          outcomes: Object.fromEntries(report.outcomes.map(o => [`${o.tool}/${o.workload}`, o.lines])),
+          samplesPerCell: Math.min(...report.observations.map(o => o.samples.length)),
+          commitment: report.artifactCommitment,
+          path,
+        };
+      } catch (error) {
+        run = { state: 'invalid', reason: `${path} did not validate: ${(error as Error).message}.` };
+      }
+    }
+    settings.push({ id: s.id, label: s.label, sub: s.sub, selectors: s.selectors, run });
+  }
+  return {
+    planId: plan.id,
+    lineCount: plan.generator.lineCount,
+    workloads: (plan.workloads as { id: string; domain: 'pii' | 'credentials'; question: string; description: string; lines: { label: string; values: { kind: string; family?: string }[] }[] }[]).map(w => ({
+      id: w.id, domain: w.domain, question: w.question, description: w.description,
+      lines: w.lines.map(l => ({ label: l.label, values: l.values.map(v => ({ kind: v.kind, ...(v.family ? { family: v.family } : {}) })) })),
+    })),
+    settings,
+  };
 }

@@ -57,7 +57,8 @@ for await (const file of walk(path.join(out, '_next', 'static'))) {
 // ---- The report pages carry the ledger's numbers (#556) ----------------------------------
 // Expected values are read here, from the committed taxonomy and fixture index and from the
 // run files, independently of web/services and web/resolvers.
-const text = html => html.replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ').replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#x27;/g, "'").replace(/\s+/g, ' ');
+// Readable text of a page, for substring checks. Entities stay as written; every string checked here has none.
+const text = html => html.replace(/<(script|style)\b[\s\S]*?<\/\1[^>]*>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
 const int = n => n.toLocaleString('en-US');
 const taxonomy = await readJson('benchmarks/support/taxonomy.json');
 const index = await readJson('benchmarks/fixture-index.json');

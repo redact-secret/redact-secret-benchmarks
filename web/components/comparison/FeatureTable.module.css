@@ -1,0 +1,40 @@
+@layer components {
+  .table {
+    min-width: 0;
+  }
+
+  .version {
+    display: block;
+    font: var(--text-mono-small);
+    color: var(--ink-muted);
+    font-weight: 400;
+  }
+
+  .cell {
+    color: var(--ink);
+  }
+
+  .no {
+    color: var(--ink-muted);
+  }
+
+  .literal {
+    font: var(--text-mono-small);
+  }
+
+  .tested {
+    color: var(--ink);
+    border-color: var(--ink);
+    margin-left: var(--space-1);
+    padding-block: 0;
+  }
+
+  .hidden {
+    position: absolute;
+    width: var(--hairline);
+    height: var(--hairline);
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

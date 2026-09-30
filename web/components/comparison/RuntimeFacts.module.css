@@ -1,0 +1,23 @@
+@layer components {
+  .facts {
+    margin-top: 0;
+  }
+
+  .note {
+    display: block;
+    margin-top: var(--rule-strong);
+    font: var(--text-mono-small);
+    color: var(--ink-muted);
+  }
+
+  .none {
+    color: var(--ink-muted);
+  }
+
+  .text {
+    margin: 0;
+    max-width: var(--measure);
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+}

@@ -1,0 +1,27 @@
+@layer components {
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-6);
+    padding: var(--space-3) 0;
+    background: var(--surface);
+    border-bottom: var(--hairline) solid var(--ink);
+  }
+
+  .note {
+    margin: 0;
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .tested {
+    color: var(--ink);
+    border-color: var(--ink);
+    padding-block: 0;
+  }
+}

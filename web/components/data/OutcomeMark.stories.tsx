@@ -15,6 +15,7 @@ export const ReplacedWithDetail: Story = { args: { detail: 'labelled IBAN' } };
 export const Partial: Story = { args: { outcome: 'partial', label: 'Partly', detail: '3 of 8 lines' } };
 export const Unchanged: Story = { args: { outcome: 'unchanged', label: 'Left as is' } };
 export const NotApplicable: Story = { args: { outcome: 'not-applicable', label: 'Switch off' } };
+export const IconOnly: Story = { args: { display: 'icon', detail: 'labelled IBAN' } };
 export const LongDetail: Story = { args: { detail: 'labelled TWITTER_ID with a long trailing description that has to wrap' } };
 
 export const WithLegend: Story = {

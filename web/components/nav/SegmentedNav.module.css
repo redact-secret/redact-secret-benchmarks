@@ -19,8 +19,10 @@
     border-left: var(--hairline) solid var(--ink-muted);
   }
 
-  .seg a:hover {
-    color: var(--ink);
+  @media (hover: hover) and (pointer: fine) {
+    .seg a:hover {
+      color: var(--ink);
+    }
   }
 
   .seg a[aria-current] {
@@ -47,6 +49,32 @@
 
     .narrow {
       display: inline;
+    }
+  }
+
+  .seg a {
+    display: inline-flex;
+    align-items: center;
+    transition: transform 160ms var(--ease-out), color 160ms var(--ease-out);
+  }
+
+  .seg a:active {
+    transform: scale(var(--press));
+  }
+
+  @media (pointer: coarse) {
+    .seg a {
+      min-height: var(--touch);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .seg a {
+      transition: none;
+    }
+
+    .seg a:active {
+      transform: none;
     }
   }
 }

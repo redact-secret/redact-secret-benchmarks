@@ -32,8 +32,10 @@
     color: var(--status-danger);
   }
 
-  .link:hover {
-    text-decoration: underline;
+  @media (hover: hover) and (pointer: fine) {
+    .link:hover {
+      text-decoration: underline;
+    }
   }
 
   .list {

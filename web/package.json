@@ -12,7 +12,9 @@
     "typecheck": "tsc --noEmit",
     "check:no-sx": "node scripts/check-no-sx.mjs",
     "check:routes": "node scripts/check-export.mjs",
-    "check": "npm run check:no-sx && npm run typecheck && npm run build && npm run check:routes && npm run build-storybook",
+    "check:header": "node scripts/check-header.mjs",
+    "check:layout": "node scripts/check-layout.mjs",
+    "check": "npm run check:no-sx && npm run check:header && npm run typecheck && npm run build && npm run check:routes && npm run build-storybook && npm run check:layout",
     "storybook": "storybook dev --port 6006",
     "build-storybook": "storybook build --quiet"
   },
@@ -32,6 +34,7 @@
     "@types/node": "22.20.3",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "playwright": "1.63.0",
     "storybook": "10.6.1",
     "typescript": "7.0.2"
   }

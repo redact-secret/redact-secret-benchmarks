@@ -54,6 +54,16 @@ Components are pure render: props in, elements out.
 - Breakpoints (CSS cannot use variables in `@media`): phone `max-width: 720px`,
   tablet `860px`, wide `1080px`. Every layout works at 360px with no sideways page
   scroll; wide tables scroll inside their own focusable region.
+- Never `overflow-wrap: anywhere` (it lets a table squeeze cells to a word per
+  line); use `break-word`. A table that does not fit scrolls in its region; on a
+  phone `DataTable` stacks each row by default.
+- Motion: name the properties, `var(--ease-out)`, 160ms, press is
+  `scale(var(--press))` on small controls, hover rules sit in
+  `@media (hover: hover) and (pointer: fine)`, `prefers-reduced-motion` removes
+  transitions and press movement, and controls are `var(--touch)` tall on
+  `(pointer: coarse)`.
+- The header shows the canonical logo files in `public/` (hash-pinned in
+  `scripts/check-header.mjs`); never redraw or recolour the mark.
 - Colour is never the only cue. A status has its word and a shape (hatched,
   dashed, solid). "Not measured" is dashed and muted, never a colour.
 - `tests/web-tokens.test.mjs` is the drift test: undefined variables, colour
@@ -80,5 +90,6 @@ neutral: state what the ledger records, never that a product is good or bad
 1. Check the inventory (PR body of #544, or `components/*/index.ts`); extend a
    variant before adding a component.
 2. Add the four files, keep props minimal and serialisable (text, numbers, nodes).
-3. `cd web && npm run check` (rules, typecheck, build, export check, Storybook
-   build) and `node --import tsx --test tests/web-tokens.test.mjs` from the root.
+3. `cd web && npm run check` (rules, header, typecheck, build, export check,
+   Storybook build, and the Playwright layout check: `PW_CHANNEL=chrome` uses an
+   installed Chrome, otherwise `npx playwright install chromium`) and `node --import tsx --test tests/web-tokens.test.mjs` from the root.

@@ -10,14 +10,18 @@
     text-decoration: none;
   }
 
-  .row:hover {
-    text-decoration: none;
+  @media (hover: hover) and (pointer: fine) {
+    .row:hover {
+      text-decoration: none;
+    }
   }
 
-  .row:hover .title {
-    text-decoration: underline;
-    text-decoration-thickness: var(--rule-strong);
-    text-underline-offset: var(--space-1);
+  @media (hover: hover) and (pointer: fine) {
+    .row:hover .title {
+      text-decoration: underline;
+      text-decoration-thickness: var(--rule-strong);
+      text-underline-offset: var(--space-1);
+    }
   }
 
   .main {

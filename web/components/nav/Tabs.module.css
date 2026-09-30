@@ -15,8 +15,10 @@
     text-transform: none;
   }
 
-  .tab:hover {
-    color: var(--ink);
+  @media (hover: hover) and (pointer: fine) {
+    .tab:hover {
+      color: var(--ink);
+    }
   }
 
   .tab:global(.Mui-selected) {
@@ -45,5 +47,29 @@
 
   .panel[hidden] {
     display: none;
+  }
+
+  .tab {
+    transition: transform 160ms var(--ease-out), color 160ms var(--ease-out);
+  }
+
+  .tab:active {
+    transform: scale(var(--press));
+  }
+
+  @media (pointer: coarse) {
+    .tab {
+      min-height: var(--touch);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tab {
+      transition: none;
+    }
+
+    .tab:active {
+      transform: none;
+    }
   }
 }

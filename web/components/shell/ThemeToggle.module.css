@@ -12,6 +12,7 @@
     border-radius: 0;
     padding: var(--space-1) var(--space-3);
     text-transform: none;
+    transition: transform 160ms var(--ease-out), color 160ms var(--ease-out), background-color 160ms var(--ease-out);
   }
 
   .option:first-child {
@@ -22,6 +23,16 @@
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   }
 
+  .option:active {
+    transform: scale(var(--press));
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .option:hover {
+      color: var(--ink);
+    }
+  }
+
   .option:global(.Mui-selected) {
     background: var(--ink);
     color: var(--surface);
@@ -30,5 +41,22 @@
   .option:focus-visible {
     outline: var(--rule-strong) solid var(--focus);
     outline-offset: var(--rule-strong);
+  }
+
+  /* Touch: each option is at least a finger tall. */
+  @media (pointer: coarse) {
+    .option {
+      min-height: var(--touch);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .option {
+      transition: none;
+    }
+
+    .option:active {
+      transform: none;
+    }
   }
 }

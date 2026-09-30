@@ -14,6 +14,11 @@
     overflow-wrap: break-word;
   }
 
+  /* A flex or grid item never grows past its container because of one long word or address; the text wraps (or breaks, for an unbroken token) instead. Zero specificity, so any component rule wins. */
+  :where(body *) {
+    min-width: 0;
+  }
+
   a {
     color: var(--link);
   }

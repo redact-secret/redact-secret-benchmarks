@@ -5,7 +5,8 @@
     padding: var(--rule-strong) var(--pad-tight);
     border: var(--hairline) solid transparent;
     border-radius: var(--radius-sm);
-    white-space: nowrap;
+    max-width: 100%;
+    overflow-wrap: break-word;
     vertical-align: baseline;
   }
 

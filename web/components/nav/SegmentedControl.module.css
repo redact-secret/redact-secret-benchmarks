@@ -23,9 +23,11 @@
     border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   }
 
-  .option:hover {
-    color: var(--ink);
-    background: transparent;
+  @media (hover: hover) and (pointer: fine) {
+    .option:hover {
+      color: var(--ink);
+      background: transparent;
+    }
   }
 
   .option:global(.Mui-selected),
@@ -37,5 +39,29 @@
   .option:focus-visible {
     outline: var(--rule-strong) solid var(--focus);
     outline-offset: var(--rule-strong);
+  }
+
+  .option {
+    transition: transform 160ms var(--ease-out), color 160ms var(--ease-out), background-color 160ms var(--ease-out);
+  }
+
+  .option:active {
+    transform: scale(var(--press));
+  }
+
+  @media (pointer: coarse) {
+    .option {
+      min-height: var(--touch);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .option {
+      transition: none;
+    }
+
+    .option:active {
+      transform: none;
+    }
   }
 }

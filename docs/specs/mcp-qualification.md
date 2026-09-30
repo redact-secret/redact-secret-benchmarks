@@ -19,6 +19,9 @@ Report schema: `schemas/mcp-qualification-v1.json`. Tests: `tests/mcp-qualificat
 First run: [`evidence/612/`](../../evidence/612/README.md), reported in
 [`docs/reports/2026-09-25-beta9-281-mcp-qualification.md`](../reports/2026-09-25-beta9-281-mcp-qualification.md).
 
+How this relates to the adapters' own qualification and to the detector
+results: [adapter evidence map](adapter-evidence-map.md).
+
 ## What it answers
 
 > When the declared MCP adapter is used at its supported boundary, does

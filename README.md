@@ -74,6 +74,12 @@ synthetic value reaches the host's model context, log, store, audit trail or
 error text, and what that costs per call, for `tools/call` and
 `resources/read` ([spec](docs/specs/mcp-qualification.md), #281, #321).
 
+Those results, and the detector comparison, say nothing about whether Pino,
+OpenTelemetry or Python logging integrations are installed correctly: see the
+[adapter evidence map](docs/specs/adapter-evidence-map.md) for what each result
+establishes, which repository qualifies each adapter boundary, and the version
+provenance. New contributors: [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Non-goals
 
 - This repository does not assert product output; it measures and records.

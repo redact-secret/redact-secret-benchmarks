@@ -28,8 +28,9 @@ families:
         - redact-secret/redact-secret-benchmarks#253
         - redact-secret/redact-secret#726
         - redact-secret/redact-secret#702
-      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/726/README.md
-      researchedAt: 2026-09-25
+        - redact-secret/redact-secret#1012
+      evidence: https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/confirm-only.md
+      researchedAt: 2026-09-29
     blockedBy: null
 ---
 
@@ -82,6 +83,7 @@ Admin API bearer token.
   assigned to a Pinecone API-key name on the same line (accepted 2026-09-24
   decision, linked from [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md));
   a bare UUID stays unclaimed. Issue #702 raised the question for this family.
+- **Confirmed in #1012 (2026-09-29):** OWNED-ELSEWHERE by `pinecone-api-key` (type `pinecone_api_key`). Since #702 the product claims the UUID only under Pinecone API-key names, high; a bare UUID stays unclaimed, as the ADR of 2026-09-24 records. No new contract is proposed.
 - **Open caveat:** No provider source states the UUID shape (unpinned tools only) and no new legacy key can be issued; it is claimable only beside a Pinecone API-key name, never as a bare value.
 
 ## Candidates that are not families yet
@@ -99,6 +101,8 @@ Admin API bearer token.
 
 ## Research log
 
+- redact-secret#1012 — 2026-09-29 confirm-only pass ([evidence](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/confirm-only.md)):
+  `pinecone:legacy-api-key` OWNED-ELSEWHERE (`pinecone-api-key`).
 - redact-secret-benchmarks#228 — broad-discovery pass (2026-09-24).
 - redact-secret#726 — freeze of the Beta.8 contracts; legacy UUID named as a
   separate context-only candidate.

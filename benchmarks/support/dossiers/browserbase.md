@@ -14,6 +14,7 @@ families:
         - redact-secret/redact-secret#860
         - redact-secret/redact-secret#973
         - redact-secret/redact-secret-benchmarks#464
+        - redact-secret/redact-secret#1012
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/browserbase.md
       researchedAt: 2026-09-28
     blockedBy: null
@@ -40,10 +41,13 @@ Browserbase runs headless browser sessions for agents. An API key (`BROWSERBASE_
 
 ## Open questions
 
-1. Can a `bb_test_` key be created, and does it share the `bb_live_` body grammar?
+1. Can a `bb_test_` key be created, and does it share the `bb_live_` body grammar? The redact-secret#1012 re-research (2026-09-29, BLOCKED) found Browserbase's docs have no test-key, sandbox or test-mode concept, and the only new length source is a Kingfisher rule (`bb_(live|test)_` + exactly 27 of `[A-Za-z0-9_-]`) that existed from 2026-07-10 to 2026-08-21 and was deleted; provider code gives a floor of 5 for `bb_test_` (stagehand redactor), the cookbook CI gate covers `bb_live_` only, and a cookbook example comment says "bb_live_" or "bb_test_" followed by "a unique string". Only a dashboard check settles it: if a test key can be created, record prefix, body length and whether `_` or `-` occurs, then revoke; if it cannot, drop the `bb_test_` shape from scope. `bb_live_` is unaffected.
 
 ## Research log
 
+- redact-secret#1012 — 2026-09-29 re-research of `bb_test_`
+  ([evidence](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/browserbase-bb-test.md)):
+  BLOCKED on whether customers are issued `bb_test_` keys at all, then on the floor; no new provider source. `bb_test_` stays excluded from the family and has no taxonomy row of its own.
 - redact-secret#860 — epic (open); [issuance-gate research and rulings R9–R10](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337); [final disposition record](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/disposition.md) lists it READY, 2026-09-28.
 - redact-secret#973 — Beta.12 implementation issue (open; no detector code merges to `main` until 0.1.0-beta.11 is released).
 - redact-secret-benchmarks#464 — Beta.12 contracts and synthetic corpus for the #860 issuance-research READY families. Corpus work only, no change to the research verdict.

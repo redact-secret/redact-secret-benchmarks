@@ -34,8 +34,9 @@ families:
         - redact-secret/redact-secret#780
         - redact-secret/redact-secret#774
         - redact-secret/redact-secret-benchmarks#384
-      evidence: null
-      researchedAt: 2026-09-27
+        - redact-secret/redact-secret#1013
+      evidence: https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/mistral-realtime-client-token.md
+      researchedAt: 2026-09-29
     blockedBy: T1 covers the rt_ prefix and carriers only; no source states body length, alphabet or checksum. Needs hands-on minting via POST /v1/client/sessions (checklist in #780).
 ---
 
@@ -134,6 +135,11 @@ table uses the research name and names detector `mistral-api-key`.
 
 ## Research log
 
+- redact-secret#1013 — 2026-09-29 record for the realtime token
+  ([evidence](https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/mistral-realtime-client-token.md)):
+  STILL-BLOCKED, issuance only; no public source can state the length, alphabet or separators. Check: mint two or more
+  tokens via `POST /v1/client/sessions`, record total length and whether it is constant, the body alphabet (hex,
+  base62 or base64url), any `_`, `-` or `.`, and whether `Bearer rt_...` is accepted; then revoke.
 - redact-secret#1013 — 2026-09-29 T1/T2 pass ([evidence](https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/mistral-api-key.md)): Studio key
   READY-T2 (provider example + independent validators); realtime token still
   issuance-only.

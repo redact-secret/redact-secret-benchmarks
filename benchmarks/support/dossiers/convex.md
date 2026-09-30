@@ -14,6 +14,7 @@ families:
         - redact-secret/redact-secret#860
         - redact-secret/redact-secret#912
         - redact-secret/redact-secret-benchmarks#436
+        - redact-secret/redact-secret#1012
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/convex.md
       researchedAt: 2026-09-28
     blockedBy: null
@@ -44,11 +45,14 @@ The disposition for this candidate is a split: READY for hex-body keys, ISSUANCE
 
 ## Open questions
 
-1. What are the alphabet (standard or URL-safe Base64), padding and length of the cloud `eyJ2` body, and does scope change the length? Needs one issued key checked for structure only.
+1. What are the alphabet (standard or URL-safe Base64), padding and length of the cloud `eyJ2` body, and does scope change the length? Needs one issued key checked for structure only. The redact-secret#1012 re-research (2026-09-29, BLOCKED) found nothing new: the docs examples are truncated (`eyJ2...` ending `0=`), the dashboard code shows the new key verbatim with no format, and no peer scanner has a Convex rule. The check: issue one production and one preview deploy key and record body length, alphabet classes (`+`, `/`, `-`, `_`), trailing `=` count and whether the two lengths differ; then revoke. Cloud deploy keys are redacted today only in named and header contexts.
 2. Team and project slug grammar for `preview:` and `project:` keys: no source states it; the handoff uses a bounded policy class (the issuance research also found a wider `preview:<branch-name>|` form, see Collisions).
 
 ## Research log
 
+- redact-secret#1012 — 2026-09-29 re-research of the cloud `eyJ2` body
+  ([evidence](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/convex-cloud-body.md)):
+  BLOCKED, unchanged; the hex-body family verdict is unaffected.
 - redact-secret#860 — epic (open); [research table #48](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852387196); [Tier B re-rank](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871765611) (split verdict); [R9-R10 issuance research](https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337) (cloud body still gated).
 - redact-secret#912 — implementation issue for the hex-body detector (closed).
 - [Issuance research for the cloud body](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/issuance-research/convex.md).

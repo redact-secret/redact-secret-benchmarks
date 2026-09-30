@@ -292,8 +292,11 @@ What T2 does **not** freeze, and the core contract should not lean on:
   sibling identifiers; an unprefixed 24-character value is not a valid positive
   or negative on width alone. Team- and project-scoped `vcp_` tokens exist next
   to full-account ones, so the marker does not imply scope.
-- **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md)
-  (pending, T0). This verdict does not change core; it unblocks a contract.
+- **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+  Since product #1036 (PR #1039, merged to main, unreleased) `vcp_` + exactly 56
+  `[A-Za-z0-9]` is reported as its own finding type at T2, and #1042 (PR #1045)
+  exempts the listed one-character-run placeholders. `vci_` and `vck_` stay under the
+  unqualified `vercel_token` compatibility type until ruling Q-VC.
 
 ### `vercel:integration-token` — Integration token
 
@@ -394,6 +397,9 @@ hedge (`{20,}`, `{24}`, `{40,80}`) were read and not counted as observations.
 
 ## Research log
 
+- redact-secret#1036 and #1042 (2026-09-30 status comment on #1013) — product changes that followed this
+  record: the per-class split for `vcp_`, `vca_` and `vcr_` (#1039) and the placeholder exemption (#1045),
+  merged to main and unreleased.
 - redact-secret#858 — splits the five classes and records them pending, T0;
   corrects #516 in three places (inferred `vci_`, a "conservative" 20-character
   floor, and a resolved unprefixed 24-character surface). Closed 2026-09-27.

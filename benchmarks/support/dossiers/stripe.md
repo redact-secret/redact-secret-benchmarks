@@ -49,18 +49,24 @@ families:
     blockedBy: null
   - id: stripe:organization-api-key
     research:
-      verdict: ready
+      verdict: issuance-gated
       tier: T1
       sources:
         - https://docs.stripe.com/keys
         - https://docs.stripe.com/keys/organization-api-keys
+        - https://github.com/stripe/stripe-cli/blob/1090068baae4c3d732fd500a9d3dbe4b94bc91a0/pkg/cmd/listen.go#L193-L196
+        - https://github.com/koki-develop/mask-go/blob/1b861d7ac421b392a5bb962207fd1886b28e013e/builtin_stripe_secret_key.go#L100-L113
+        - https://github.com/lazyluke16-dotcom/richmond-rapid-connect/blob/5c057a98ccc24602917441f6c78f3a6aa15dc740/src/lib/stripe.server.ts#L12-L18
+        - https://github.com/baristaze/tadas/blob/b55571cd85ec5a7fe16bc463537980909f87ee4f/integrations/src/tadas/integrations/settings.py#L94-L114
       issues:
         - redact-secret/redact-secret-benchmarks#45
         - redact-secret/redact-secret-benchmarks#127
         - redact-secret/redact-secret#513
-      evidence: null
+        - redact-secret/redact-secret#1012
+        - redact-secret/redact-secret#1030
+      evidence: https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/stripe-organization-api-key.md
       researchedAt: 2026-09-29
-    blockedBy: null
+    blockedBy: Whether a live_ or test_ segment follows sk_org_, and the body length and alphabet; needs one organization API key measured (structure only). Product gap redact-secret#1030 is filed.
   - id: stripe:webhook-signing-secret
     research:
       verdict: ready
@@ -115,10 +121,25 @@ Provider documentation: [API keys](https://docs.stripe.com/keys).
 ### `stripe:organization-api-key` — Organization API key
 
 - **Shape:** prefix `sk_org_`, named on Stripe's key-types page and its organization
-  keys page. No page gives a body length or alphabet. Core adopted the shape on the
-  documented prefix alone (#513); the corpus keeps it pending because it asserts no
-  ground truth without a documented body grammar (benchmarks#127).
-- **Sources:** `ready`, T1 on the provider-documented prefix `sk_org_` and nothing else, as Anthropic (docs/specs/beta8-evidence.md, "Tier follows the evidence"). The body grammar is undecided, and per decision `2026-09-24-stop-asserting-provider-undecided-format-properties` a pending fixture never asserts an undecided body. Benchmarks#127 keeping the corpus fixtures pending reflects only the missing body grammar, not the prefix verdict; core #513 contracts the shape on the prefix.
+  keys page, which says the keys "support sandboxes and live mode" and have no `rk_org_`
+  sibling. No Stripe page, SDK, mock or peer scanner rule gives a literal key, a body
+  length or an alphabet. Two independent applications branch on `sk_org_live_` and
+  `sk_org_test_`, so a mode segment after the prefix is plausible but unconfirmed.
+- **Verdict (#1012, 2026-09-29):** `issuance-gated`, T1 on the provider-documented prefix
+  `sk_org_` and nothing else. This supersedes the earlier `ready` entry, which rested on the
+  prefix alone with the body undecided; the 1012 record reads the gap as blocking a
+  contract. Per decision `2026-09-24-stop-asserting-provider-undecided-format-properties`
+  a pending fixture never asserts an undecided body (benchmarks#127).
+- **Sources:**
+  - provider docs (T1, prefix): the keys page and the organization API keys page.
+  - provider code (R6, substring only): stripe-cli `listen.go` tests for the substring `sk_org`, no grammar.
+  - independent implementations (one class): mask-go accepts `sk_org_live_`, `sk_org_test_` and bare `sk_org_`; richmond-rapid-connect branches on `sk_org_test_` and `sk_org_live_`; tadas lists both and also `rk_org_`, which Stripe says does not exist.
+  - Not evidence: three committed `sk_org_live_`-shaped values in unrelated repositories, withheld; they are a lead that the `live_` segment occurs.
+  - Searched with nothing further: eleven Stripe docs pages, nine Stripe SDK and mock repositories, and the rules of gitleaks, trufflehog, betterleaks, CredSweeper, noseyparker and GitLab. GitHub's partner list has no organization row.
+- **Issuance:** needs a Stripe organization. Create one organization API key in a sandbox (and read a live one if available) and record only the bytes after `sk_org_` (`test_`, `live_` or none), the body length, whether the body is only `[A-Za-z0-9]` and the total length; then roll or delete the key.
+- **Collisions:** none worth naming for the prefix, which is unique to Stripe organization keys. `rk_org_` does not exist per Stripe and must stay excluded; `sk_live_`/`sk_test_` are the account-scoped siblings.
+- **Current contract in core:** core claims `sk_org_` + at least 20 `[A-Za-z0-9]`, and since product PR [#1101](https://github.com/redact-secret/redact-secret/pull/1101) (merge `bfc608cce75f79f6a5cab037d7e558ba629777f6`, closing [#1030](https://github.com/redact-secret/redact-secret/issues/1030)) also `sk_org_live_` and `sk_org_test_` + at least 20 alphanumerics, as the same `stripe` finding as `sk_org_`. This is the support-policy floor: it follows the optional mode segment that two independent applications branch on, not a provider-stated grammar, and no issued key has been observed. The benchmarks side has not followed: no fixture, contract row or measured status covers the mode-segment forms yet. Living spec: [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Open caveat:** nothing beyond the `sk_org` prefix is provider-stated; an interim rule is a policy floor, not a grammar.
 
 ### `stripe:webhook-signing-secret` — Webhook signing secret
 
@@ -152,7 +173,7 @@ Provider documentation: [API keys](https://docs.stripe.com/keys).
 ## Open questions
 
 1. Body length and alphabet of the `sk_`/`rk_` keys and of `sk_org_`: no Stripe page states them (benchmarks#33, #45, #127); the 32-character body is tool-corroborated only.
-2. `stripe:organization-api-key`: body grammar undecided; benchmarks#127 stays pending on that alone.
+2. `stripe:organization-api-key`: does `live_` or `test_` follow `sk_org_`, and what are the body length and alphabet? Only a structure-only measurement from a Stripe organization closes it (redact-secret#1012; core claims the segment at the policy floor since #1030 / PR #1101); benchmarks#127 stays pending on that alone.
 3. Do Dashboard, API, v2 event destination, Connect and CLI secrets share width and
    alphabet? Do real secrets ever contain `+`, `/` or `=`?
 4. Is a 64-character variant real, or an artifact of placeholders and hex digests?
@@ -162,6 +183,15 @@ Provider documentation: [API keys](https://docs.stripe.com/keys).
 
 ## Research log
 
+- redact-secret#1012 — 2026-09-29 contract research for `stripe:organization-api-key`
+  ([evidence](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/stripe-organization-api-key.md)):
+  BLOCKED on the mode segment and body; the prefix is the only T1 fact. Status
+  comment 2026-09-30 files the product gap as #1030.
+- redact-secret#1030 — 2026-09-30 core claims `sk_org_live_`/`sk_org_test_` + at
+  least 20 alphanumerics as the same `stripe` finding as `sk_org_`, at the
+  support-policy floor (PR #1101, merge `bfc608cce75f79f6a5cab037d7e558ba629777f6`).
+  The verdict stays `issuance-gated`: no issued key observed, body length and
+  alphabet after the segment still unknown.
 - redact-secret-benchmarks#224 — broad-discovery pass for the webhook secret
   (2026-09-24).
 - redact-secret#726 — freeze of the Beta.8 contracts (documented, context-constrained).

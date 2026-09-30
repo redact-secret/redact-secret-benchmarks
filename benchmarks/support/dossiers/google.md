@@ -18,16 +18,23 @@ families:
     blockedBy: null
   - id: google:oauth2-credential
     research:
-      verdict: not-found
+      verdict: issuance-gated
       tier: T0
       sources:
         - https://developers.google.com/identity/protocols/oauth2
+        - https://developers.google.com/identity/protocols/oauth2/web-server
+        - https://docs.cloud.google.com/iam/docs/create-short-lived-credentials-direct
+        - https://docs.cloud.google.com/docs/authentication/token-types
+        - https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/gcpoauth2access/detector.go#L28-L42
+        - https://github.com/trufflesecurity/trufflehog/blob/48b58d3bf3f02ba17bf23b87f095499bc80c6fd7/pkg/detectors/googleoauth2/googleoauth2_access_token.go#L34
+        - https://github.com/Samsung/CredSweeper/blob/f21ab2f2553eea288a72273b9658cd297ab1d11f/credsweeper/rules/config.yaml#L477-L503
       issues:
         - redact-secret/redact-secret#487
         - redact-secret/redact-secret#519
-      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/519/README.md
-      researchedAt: 2026-09-21
-    blockedBy: null
+        - redact-secret/redact-secret#1012
+      evidence: https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/google-oauth2-credential.md
+      researchedAt: 2026-09-29
+    blockedBy: ya29. alphabet (Google's own example has an interior .) and floor, and the 1// lead byte and length (Google example 1// + 43 vs peer 1//0 + 80 or more); needs one access token and one refresh token measured.
   - id: google:oauth-client-secret
     research:
       verdict: ready
@@ -94,10 +101,18 @@ family is not recorded here.
 
 ### `google:oauth2-credential` — OAuth2 access and refresh tokens
 
-- **Status (#1012):** the `GOCSPX-` client secret is split out above. The
-  `ya29.` access token and the `1//` refresh token stay BLOCKED: Google's
-  `ya29.c.` example has an interior `.` every rule excludes, and its `1//`
-  example (43 after the prefix) contradicts the only peer rule (`1//0` + 80 or more).
+- **Status (#1012, 2026-09-29):** the `GOCSPX-` client secret is split out above. The
+  `ya29.` access token and the `1//` refresh token stay BLOCKED (`issuance-gated`, T0,
+  refining the earlier `not-found`): Google's `ya29.c.` example has an interior `.` that
+  every rule excludes, and its `1//` example (43 after the prefix) contradicts the only peer
+  rule (`1//0` + 80 or more).
+- **Sources (#1012):**
+  - provider docs (T1, ceilings only): OAuth 2.0 "Token size" says access tokens up to 2048 bytes, refresh tokens up to 512 bytes, and "your application must support variable token sizes"; the token-types page calls access tokens "opaque".
+  - provider docs examples (R5): the web-server flow shows a refresh token `1//` + 43 `[A-Za-z0-9-]` with a letter first; Cloud IAM short-lived credentials shows an `accessToken` beginning `ya29.c.` followed by a Base64url-like run with a further `.`, elided.
+  - provider-authored scanner rule (R2 candidate): osv-scalibr `gcpoauth2access`, `ya29.` + `[a-zA-Z0-9_-]{10,500}`, commenting that the bounds are undocumented and the 500 cap is an assumption.
+  - peer rules (T2): trufflehog `ya29.` + at least 10 of `[a-z0-9_-]`; noseyparker `ya29.` + 20 to 1024; CredSweeper `ya29.` + 22 to 8000 and refresh `1//0` + 80 to 8000 (weak confidence). gitleaks, betterleaks and Kingfisher have no rule.
+  - Consequence: a `1//` + open run matches integer floor division in code, so a floor is needed before any rule; access tokens are short-lived and `Bearer` contexts are already redacted.
+- **Issuance:** `gcloud auth print-access-token` and `generateAccessToken` for access tokens (record total length, whether a `.` follows `ya29.`, whether `_` or `-` occur); one installed-app flow for the refresh token (total length, whether it starts `1//0`, classes); revoke the grant.
 - **Shape (as first researched):** three formats with literal prefixes: `GOCSPX-` (client
   secret), `1//` (refresh token) and `ya29.` (access token). No body length or
   alphabet is established for any of them.
@@ -120,15 +135,19 @@ family is not recorded here.
 
 ## Open questions
 
-1. **`GOCSPX-`, `1//`, `ya29.` bodies.** No length or alphabet source. One issued
-   credential of each kind would settle them; the three could then become
-   separate families.
+1. **`1//`, `ya29.` bodies.** Sources conflict or are open-ended (see the family above).
+   One issued credential of each kind would settle them; they could then become
+   separate families (`GOCSPX-` already is, as `google:oauth-client-secret`).
+1a. **R2 for Google-authored rules** (asked in redact-secret#1012, no question id): osv-scalibr's `gcpoauth2client` rule (2025, `@google.com` authors, narrowed to exactly 28 in Google's own commit) would move `GOCSPX-` from T2 to T1 if accepted as a provider statement; `GOCSPX-` is already backed at T2 and not blocked on it.
 2. **`AQ.` format.** Does the prefix exist, and what does Google say about it?
 3. **AIza body.** Only one provider example exists; an issued key would confirm
    the 35-character alphabet.
 
 ## Research log
 
+- redact-secret#1012 — 2026-09-29 contract research
+  ([evidence](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/google-oauth2-credential.md)):
+  `GOCSPX-` READY-T2 (product #1029, merged to main, unreleased); `ya29.` and `1//` BLOCKED.
 - redact-secret#296 (2026-09-16) — added dedicated Google Cloud and Gemini API
   key detection.
 - redact-secret#487 (2026-09-20) — evaluated the three OAuth formats; no source

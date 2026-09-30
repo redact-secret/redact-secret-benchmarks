@@ -48,6 +48,8 @@ const NOISE_FILES = {
   ciDispersion: `${EVIDENCE}/ci-dispersion.json`,
   rerun: `${EVIDENCE}/rerun-noise-darwin-arm64.json`,
   adapter: `${EVIDENCE}/adapter-overhead-darwin-arm64.json`,
+  // A/A runs of the adapter harness (the current build against a copy of itself, `--baseline`): the noise of the same-session change (#472).
+  adapterAA: `${EVIDENCE}/adapter-aa-darwin-arm64.json`,
   // Same-job A/A paired runs on the official Linux runner: the timing noise term (#303).
   pairedAA: `${EVIDENCE}/paired-aa-linux-x64.json`,
 };
@@ -248,8 +250,29 @@ function noiseInputs() {
     const standardDeviation = Math.sqrt(values.reduce((s, v) => s + (v - mean) ** 2, 0) / values.length);
     return [key, { spread: (Math.max(...values) - Math.min(...values)) / Math.abs(nearestRankMedian(values)), standardDeviation }];
   }));
+  // Largest deviation of the same-session change ratios over the A/A processes, per row (ADR 2026-09-29).
+  const adapterChange = {};
+  const deviation = (row, ...names) => {
+    for (const name of names) {
+      const value = row.change?.[name];
+      if (value !== undefined && value.baseline > 0 && value.current !== null) return ratioDeviation(value.current / value.baseline);
+    }
+    return undefined;
+  };
+  for (const output of existsSync(NOISE_FILES.adapterAA) ? adapterSeries(NOISE_FILES.adapterAA) : []) {
+    for (const result of output.results) {
+      const entry = (adapterChange[`${result.host}/${result.profileId}`] ??= { traversal: 0, p95Latency: 0 });
+      entry.traversal = Math.max(entry.traversal, deviation(result, 'traversal') ?? 0);
+      entry.p95Latency = Math.max(entry.p95Latency, deviation(result, 'adapterCoreLatencyP95') ?? 0);
+      const allocated = deviation(result, 'adapterCoreAllocatedBytesPerEvent');
+      const peak = deviation(result, 'adapterCorePeakBytes');
+      if (allocated !== undefined) entry.allocatedBytes = Math.max(entry.allocatedBytes ?? 0, allocated);
+      if (peak !== undefined) entry.peakBytes = Math.max(entry.peakBytes ?? 0, peak);
+    }
+  }
   return {
     paired: pairedNoise(),
+    adapterChange,
     ciMemorySpread: Object.fromEntries(Object.entries(memoryValues).map(([key, values]) => [key, spread(values)])),
     rerunMemorySpread: rerunMemory,
     adapterTraversal: adapter,
@@ -281,6 +304,7 @@ function derive(args) {
         rerunMemorySpread: round(noise.rerunMemorySpread),
         ciRuns: readJson(NOISE_FILES.ciDispersion).runs.length,
         adapterProcesses: adapterSeries(NOISE_FILES.adapter).length,
+        adapterAAProcesses: existsSync(NOISE_FILES.adapterAA) ? adapterSeries(NOISE_FILES.adapterAA).length : 0,
       },
     },
     rules: RULES,

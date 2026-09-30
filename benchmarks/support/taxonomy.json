@@ -391,9 +391,10 @@
       "description": "Short-lived access key ID issued by AWS STS, prefixed ASIA; requires an accompanying session token.",
       "detectors": [],
       "sources": [
-        "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-prefixes"
+        "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-prefixes",
+        "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/aws-sts-temporary-access-key.md"
       ],
-      "note": "aws-access-key's pattern is anchored to AKIA only (benchmarks/lib/assessment.ts contract), so ASIA values are not matched. classifyFixture already special-cases a bare AWS positive as policy, not must-redact, because \"some legacy ASIA values also use digits outside the base32 alphabet\"."
+      "note": "Measured as the Beta.12 unscored arrival family aws-sts-temporary-access-key (benchmarks/lib/beta8/1012d.ts; #1012 research, T2: ASIA + exactly 16 [A-Z0-9]). The product claims ASIA inside aws-access-key under the shared aws_access_key_id finding type (redact-secret#1027), so its findings carry no family evidence of their own and no detector is mapped here; the registry aws-access-key contract stays AKIA-only. A bare ASIA id is an identifier and scores as project policy."
     },
     {
       "id": "aws:sts-service-bearer-token",
@@ -422,8 +423,15 @@
       "provider": "aws",
       "name": "IAM user secret access key",
       "description": "The 40-character secret paired with an IAM user access key ID. Has no distinguishing prefix or lexical marker.",
-      "detectors": [],
-      "note": "The aws-access-key contract's companion field states a separate 40-character secret access key is required alongside the access key ID; this project has no dedicated detector for the secret half, which carries no stable prefix to anchor on."
+      "detectors": [
+        "aws-secret-access-key"
+      ],
+      "note": "Registry detector aws-secret-access-key since redact-secret#1028 (registry pin 4fb7882). Contract in benchmarks/lib/beta8/1012a.ts from the #1012 research record: T2, context-constrained (exactly 40 [A-Za-z0-9/+] only under an AWS secret key name or next to an AKIA access key id); the value has no prefix, so no bare-value claim is made.",
+      "sources": [
+        "https://docs.aws.amazon.com/STS/latest/APIReference/API_GetAccessKeyInfo.html",
+        "https://docs.aws.amazon.com/macie/latest/user/mdis-reference-credentials.html",
+        "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/aws-iam-user-secret-access-key.md"
+      ]
     },
     {
       "id": "github:classic-personal-access-token",
@@ -514,12 +522,13 @@
       "id": "gitlab:routable-personal-access-token",
       "provider": "gitlab",
       "name": "Routable personal access token",
-      "description": "Newer routable PAT format described on the same token-prefix page.",
+      "description": "glpat- + an unpadded base64url payload of 27-300 + . + a 2-character base36 version + . + a 2-character base36 payload length + a 7-character base36 CRC32 (GitLab routable_token.rb).",
       "detectors": [],
       "sources": [
-        "https://docs.gitlab.com/security/tokens/"
+        "https://gitlab.com/gitlab-org/gitlab/-/blob/fa2faf332129a1fd9130b052f42b85f0fa346b65/lib/authn/token_field/generator/routable_token.rb#L7-L86",
+        "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/gitlab-routable-personal-access-token.md"
       ],
-      "note": "gitlab-token's contract review states explicitly that routable tokens are not covered by the 20-character-body pattern."
+      "note": "Measured as the Beta.12 unscored arrival family gitlab-routable-personal-access-token (benchmarks/lib/beta8/1012c.ts; #1012 research, T1 provider code; the length holder and CRC are enforced as provider offline checks). The product reports it whole inside gitlab-token under the shared gitlab_token finding type (redact-secret#1022), so its findings carry no family evidence of their own and no detector is mapped here; the registry gitlab-token contract stays the legacy 20-byte body."
     },
     {
       "id": "openai:secret-api-key",
@@ -825,14 +834,16 @@
       "provider": "vercel",
       "name": "Personal access token",
       "description": "Modern personal access token identified by the provider-documented vcp_ marker.",
-      "detectors": [],
-      "supportStatus": "pending",
+      "detectors": [
+        "vercel-personal-access-token"
+      ],
       "sources": [
         "https://vercel.com/changelog/new-token-formats-and-secret-scanning",
         "https://vercel.com/docs/accounts/access-tokens",
-        "https://vercel.com/docs/rest-api/authentication/create-an-auth-token"
+        "https://vercel.com/docs/rest-api/authentication/create-an-auth-token",
+        "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/vercel.md"
       ],
-      "note": "Product #858 records this semantic contract as pending/T0. The class and vcp_ marker are provider-backed, but no reviewed source establishes a complete body grammar or boundary. The REST response's unprefixed bearerToken example beside prefix metadata remains unresolved. No scored fixture/profile cells exist, and the aggregate vercel-token detector is not attributed to this family."
+      "note": "Beta.12 arrival family vercel-personal-access-token scored by finding type (benchmarks/lib/beta8/1012e.ts; #1013 record, T2: vcp_ + exactly 56 [A-Za-z0-9]). Product redact-secret#1036 types it inside the shared vercel-token detector under its own finding type, recorded in scanners/families.mjs arrivalFindingTypes. The base62 CRC-32 suffix is unresolved and never enforced; the vercel:access-token aggregate measurement is not attributed to this family."
     },
     {
       "id": "vercel:integration-token",
@@ -852,26 +863,30 @@
       "provider": "vercel",
       "name": "App access token",
       "description": "Modern Vercel App access token identified by the provider-documented vca_ marker.",
-      "detectors": [],
-      "supportStatus": "pending",
+      "detectors": [
+        "vercel-app-access-token"
+      ],
       "sources": [
         "https://vercel.com/changelog/new-token-formats-and-secret-scanning",
-        "https://vercel.com/docs/sign-in-with-vercel/tokens"
+        "https://vercel.com/docs/sign-in-with-vercel/tokens",
+        "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/vercel.md"
       ],
-      "note": "Product #858 records this semantic contract as pending/T0. The class and vca_ marker are provider-backed, but one opaque example does not establish a universal body grammar or boundary. No scored fixture/profile cells exist, and the aggregate vercel-token detector is not attributed to this family."
+      "note": "Beta.12 arrival family vercel-app-access-token scored by finding type (benchmarks/lib/beta8/1012e.ts; #1013 record, T2: vca_ + exactly 56 [A-Za-z0-9]). Product redact-secret#1036 types it inside the shared vercel-token detector under its own finding type, recorded in scanners/families.mjs arrivalFindingTypes. The base62 CRC-32 suffix is unresolved and never enforced; the vercel:access-token aggregate measurement is not attributed to this family."
     },
     {
       "id": "vercel:app-refresh-token",
       "provider": "vercel",
       "name": "App refresh token",
       "description": "Modern Vercel App refresh token identified by the provider-documented vcr_ marker.",
-      "detectors": [],
-      "supportStatus": "pending",
+      "detectors": [
+        "vercel-app-refresh-token"
+      ],
       "sources": [
         "https://vercel.com/changelog/new-token-formats-and-secret-scanning",
-        "https://vercel.com/docs/sign-in-with-vercel/tokens"
+        "https://vercel.com/docs/sign-in-with-vercel/tokens",
+        "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/vercel.md"
       ],
-      "note": "Product #858 records this semantic contract as pending/T0. The class and vcr_ marker are provider-backed, but the documentation reuses the app-access example body and establishes no universal body grammar or boundary. No scored fixture/profile cells exist, and the aggregate vercel-token detector is not attributed to this family."
+      "note": "Beta.12 arrival family vercel-app-refresh-token scored by finding type (benchmarks/lib/beta8/1012e.ts; #1013 record, T2: vcr_ + exactly 56 [A-Za-z0-9]). Product redact-secret#1036 types it inside the shared vercel-token detector under its own finding type, recorded in scanners/families.mjs arrivalFindingTypes. The base62 CRC-32 suffix is unresolved and never enforced; the vercel:access-token aggregate measurement is not attributed to this family."
     },
     {
       "id": "vercel:api-key",
@@ -922,10 +937,28 @@
     {
       "id": "google:oauth2-credential",
       "provider": "google",
-      "name": "OAuth2 credential",
-      "description": "OAuth2 client secret, access token or refresh token.",
+      "name": "OAuth2 access and refresh tokens",
+      "description": "OAuth2 access token (ya29.) or refresh token (1//); the client secret is google:oauth-client-secret.",
       "detectors": [],
-      "note": "google-api-key's contract review notes the pinned TruffleHog detectors separately cover Gemini and OAuth2 credentials, not this generic AIza API-key shape."
+      "note": "BLOCKED in the #1012 research record: the ya29. alphabet and floor and the 1// lead byte and length are unsettled, so no contract is authored. The GOCSPX- client secret is split out as google:oauth-client-secret.",
+      "sources": [
+        "https://developers.google.com/identity/protocols/oauth2",
+        "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/google-oauth2-credential.md"
+      ]
+    },
+    {
+      "id": "google:oauth-client-secret",
+      "provider": "google",
+      "name": "OAuth client secret",
+      "description": "GOCSPX- + exactly 28 [A-Za-z0-9_-]: the client secret of a Google OAuth client.",
+      "detectors": [
+        "google-oauth-client-secret"
+      ],
+      "sources": [
+        "https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/gcpoauth2client/detector.go#L51-L58",
+        "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/google-oauth2-credential.md"
+      ],
+      "note": "Registry detector google-oauth-client-secret since redact-secret#1029 (registry pin 4fb7882). Contract in benchmarks/lib/beta8/1012b.ts from the #1012 research record: T2 (Google-authored osv-scalibr rule, noseyparker and CredSweeper; Google documents no format)."
     },
     {
       "id": "sendgrid:api-key",
@@ -2149,240 +2182,280 @@
       "provider": "daytona",
       "name": "API key (dtn_)",
       "description": "dtn_ + exactly 64 lowercase hex, T1 as of v0.190.0 (2026-06-23) under ruling R9; the same generator mints region proxy, SSH-gateway and runner keys, which are lexically identical.",
-      "detectors": [],
+      "detectors": [
+        "daytona-api-key"
+      ],
       "sources": [
         "https://github.com/daytonaio/daytona/blob/01c502bb1f1ff8f2885d0cd490e043736083dca8/apps/api/src/common/utils/api-key.ts#L8-L18",
         "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/daytona.md"
       ],
-      "note": "Beta.12 arrival family daytona-api-key (#464, product redact-secret#970), contract in benchmarks/lib/beta8/464a.ts from the #860 handoff daytona.md. T1 as of v0.190.0 (R9, dated provider code); provider code went private after that release. Neither pinned scanner has a Daytona rule."
+      "note": "Beta.12 arrival family daytona-api-key (#464, product redact-secret#970), contract in benchmarks/lib/beta8/464a.ts from the #860 handoff daytona.md. T1 as of v0.190.0 (R9, dated provider code); provider code went private after that release. Neither pinned scanner has a Daytona rule. Since the 4fb7882 re-pin the product detector is in the pinned registry, so the row maps to it."
     },
     {
       "id": "clickhouse-cloud:api-key",
       "provider": "clickhouse-cloud",
       "name": "API key secret (4b1d)",
       "description": "4b1d + exactly 38 [A-Za-z0-9] (42 in all), T1 as of 2025-04-16 (R3, provider staff); the key ID (Basic-auth username) is not claimed. The at-least-one-uppercase guard is product policy, not a provider fact.",
-      "detectors": [],
+      "detectors": [
+        "clickhouse-cloud-api-secret"
+      ],
       "sources": [
         "https://github.com/gitleaks/gitleaks/pull/1826",
         "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/clickhouse-cloud.md"
       ],
-      "note": "Beta.12 arrival family clickhouse-cloud-api-secret (#464, product redact-secret#971), contract in benchmarks/lib/beta8/464b.ts from the #860 handoff clickhouse-cloud.md. T1 as of 2025-04-16; gitleaks 8.30.1 clickhouse-cloud-api-secret-key (entropy 3) is mapped to this family, trufflehog 3.97.4 has no rule."
+      "note": "Beta.12 arrival family clickhouse-cloud-api-secret (#464, product redact-secret#971), contract in benchmarks/lib/beta8/464b.ts from the #860 handoff clickhouse-cloud.md. T1 as of 2025-04-16; gitleaks 8.30.1 clickhouse-cloud-api-secret-key (entropy 3) is mapped to this family, trufflehog 3.97.4 has no rule. Since the 4fb7882 re-pin the product detector is in the pinned registry, so the row maps to it."
     },
     {
       "id": "nvidia:ngc-api-key",
       "provider": "nvidia",
       "name": "API key (nvapi-)",
       "description": "nvapi- + at least 60 [A-Za-z0-9_-], open-ended (provider-authored floor, R2); the 128-byte cap is product policy. NGC Personal, NGC Service and build.nvidia.com keys share the prefix.",
-      "detectors": [],
+      "detectors": [
+        "nvidia-api-key"
+      ],
       "sources": [
         "https://github.com/NVIDIA-NeMo/nemo-helix/blob/689f7852611b0151cee2748ca2b68e8e163e3b65/plugins/nemo-agents/src/nemo_agents_plugin/skills/agents-secure/resources/pii_scan.py#L229-L232",
         "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/nvidia.md"
       ],
-      "note": "Beta.12 arrival family nvidia-api-key (#464, product redact-secret#972), contract in benchmarks/lib/beta8/464c.ts from the #860 handoff nvidia.md. T1 on the prefix, alphabet and floor; the cap is policy. trufflehog 3.97.4 NVAPI (exact 64) is mapped to this family and lags on every other width; gitleaks 8.30.1 has no rule."
+      "note": "Beta.12 arrival family nvidia-api-key (#464, product redact-secret#972), contract in benchmarks/lib/beta8/464c.ts from the #860 handoff nvidia.md. T1 on the prefix, alphabet and floor; the cap is policy. trufflehog 3.97.4 NVAPI (exact 64) is mapped to this family and lags on every other width; gitleaks 8.30.1 has no rule. Since the 4fb7882 re-pin the product detector is in the pinned registry, so the row maps to it."
     },
     {
       "id": "browserbase:api-key",
       "provider": "browserbase",
       "name": "API key (bb_live_)",
       "description": "bb_live_ + at least 20 [A-Za-z0-9], open-ended (provider CI gate, R2); the 128-byte cap is product policy; bb_test_ is issuance-gated and excluded.",
-      "detectors": [],
+      "detectors": [
+        "browserbase-api-key"
+      ],
       "sources": [
         "https://github.com/browserbase/cookbook/blob/eff9eca8e61e16ea1635e9e75e043c7a765c5f88/scripts/verify.py#L383",
         "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/browserbase.md"
       ],
-      "note": "Beta.12 arrival family browserbase-api-key (#464, product redact-secret#973), contract in benchmarks/lib/beta8/464d.ts from the #860 handoff browserbase.md. T1 on the prefix, alphabet and floor; the cap is policy. Neither pinned scanner has a Browserbase rule."
+      "note": "Beta.12 arrival family browserbase-api-key (#464, product redact-secret#973), contract in benchmarks/lib/beta8/464d.ts from the #860 handoff browserbase.md. T1 on the prefix, alphabet and floor; the cap is policy. Neither pinned scanner has a Browserbase rule. Since the 4fb7882 re-pin the product detector is in the pinned registry, so the row maps to it."
     },
     {
       "id": "cerebras:inference-api-key",
       "provider": "cerebras",
       "name": "Inference API key (csk-)",
       "description": "csk- or csk_ + exactly 48 body bytes (52 in all): the length is the provider validator (R1) and the prefixes a dated staff statement (R3); the [A-Za-z0-9_-] alphabet is project policy under R10. Management API keys are a separate credential of unknown shape.",
-      "detectors": [],
+      "detectors": [
+        "cerebras-api-key"
+      ],
       "sources": [
         "https://github.com/Cerebras/vscode-cerebras-chat/blob/e03602fa96f3ddfc8122ea2655bfa39424a5d157/src/provider.ts#L113",
         "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/cerebras.md"
       ],
-      "note": "Beta.12 arrival family cerebras-api-key (#464, product redact-secret#975), contract in benchmarks/lib/beta8/464e.ts from the #860 handoff cerebras.md. T1 on length and prefixes; the alphabet is policy (R10). Neither pinned scanner has a Cerebras rule; unpinned tool rules use [a-z0-9]. The leading boundary keeps Pinecone pcsk_ out."
+      "note": "Beta.12 arrival family cerebras-api-key (#464, product redact-secret#975), contract in benchmarks/lib/beta8/464e.ts from the #860 handoff cerebras.md. T1 on length and prefixes; the alphabet is policy (R10). Neither pinned scanner has a Cerebras rule; unpinned tool rules use [a-z0-9]. The leading boundary keeps Pinecone pcsk_ out. Since the 4fb7882 re-pin the product detector is in the pinned registry, so the row maps to it."
     },
     {
       "id": "runpod:api-key",
       "provider": "runpod",
       "name": "API key (rpa_)",
       "description": "rpa_ + at least 31 [A-Za-z0-9], open-ended: the provider scrubber's floor is 16 (R2), the floor of 31 is policy under R10 (it excludes Redirect.pizza rpa_ + 30), and the 128-byte cap is product policy.",
-      "detectors": [],
+      "detectors": [
+        "runpod-api-key"
+      ],
       "sources": [
         "https://github.com/runpod/runpod-mcp/blob/09a565a6adef8932f044dfa65243e7bc41cbdf2d/src/alp/scrub.ts#L36",
         "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/runpod.md"
       ],
-      "note": "Beta.12 arrival family runpod-api-key (#464, product redact-secret#974), contract in benchmarks/lib/beta8/464f.ts from the #860 handoff runpod.md. T1 on the prefix and alphabet; the floor and cap are policy. Neither pinned scanner has a RunPod rule; unpinned betterleaks uses a narrower 46-byte layout."
+      "note": "Beta.12 arrival family runpod-api-key (#464, product redact-secret#974), contract in benchmarks/lib/beta8/464f.ts from the #860 handoff runpod.md. T1 on the prefix and alphabet; the floor and cap are policy. Neither pinned scanner has a RunPod rule; unpinned betterleaks uses a narrower 46-byte layout. Since the 4fb7882 re-pin the product detector is in the pinned registry, so the row maps to it."
     },
     {
       "id": "bitwarden:secrets-manager-access-token",
       "provider": "bitwarden",
       "name": "Secrets Manager access token (0. + UUID layout)",
       "description": "0. + UUID + . + exactly 30 [A-Za-z0-9] + : + 22 standard Base64 + == (94 in all); unpadded keys, other versions and Password Manager user./organization. API keys are not claimed.",
-      "detectors": [],
+      "detectors": [
+        "bitwarden-secrets-manager-access-token"
+      ],
       "sources": [
         "https://github.com/bitwarden/sdk-internal/blob/824c1cf06636daa2778d53435cdbf354ab58eff2/crates/bitwarden-core/src/auth/access_token.rs#L47-L85",
         "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/bitwarden.md"
       ],
-      "note": "Beta.12 arrival family bitwarden-secrets-manager-access-token (#528, product redact-secret#1019), contract in benchmarks/lib/beta8/528a.ts from the #1014 handoff bitwarden.md. T1 on every part (provider SDK parser, server generator, docs example). Neither pinned scanner has a Bitwarden rule."
+      "note": "Beta.12 arrival family bitwarden-secrets-manager-access-token (#528, product redact-secret#1019), contract in benchmarks/lib/beta8/528a.ts from the #1014 handoff bitwarden.md. T1 on every part (provider SDK parser, server generator, docs example). Neither pinned scanner has a Bitwarden rule. Since the 4fb7882 re-pin the product detector is in the pinned registry, so the row maps to it."
     },
     {
       "id": "polar:organization-access-token",
       "provider": "polar",
       "name": "Organization access token (polar_oat_)",
       "description": "polar_oat_ + exactly 43 [A-Za-z0-9] (37 random + a 6-character base62 CRC32); the checksum corroborates only and never rejects (policy).",
-      "detectors": [],
+      "detectors": [
+        "polar-token"
+      ],
       "sources": [
         "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/kit/crypto.py#L11-L32",
         "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/polar.md"
       ],
-      "note": "Beta.12 arrival family polar-token (#528, product redact-secret#1020), contract in benchmarks/lib/beta8/528b.ts from the #1014 handoff polar.md. T1 (provider server code, R1/R9). whsec_ webhook secrets stay with stripe-token; polar_ci_ is public. Neither pinned scanner has a Polar rule."
+      "note": "Beta.12 arrival family polar-token (#528, product redact-secret#1020), contract in benchmarks/lib/beta8/528b.ts from the #1014 handoff polar.md. T1 (provider server code, R1/R9). whsec_ webhook secrets stay with stripe-token; polar_ci_ is public. Neither pinned scanner has a Polar rule. Since the 4fb7882 re-pin the product detector is in the pinned registry, so the row maps to it."
     },
     {
       "id": "polar:api-credential",
       "provider": "polar",
       "name": "API credentials (polar_pat_, polar_at_, polar_rt_, polar_cs_, polar_crt_)",
       "description": "One of seven role prefixes + exactly 43 [A-Za-z0-9_-], the union of the pre-2025-01-02 URL-safe era and the alphanumeric-plus-checksum era.",
-      "detectors": [],
+      "detectors": [
+        "polar-api-credential"
+      ],
       "sources": [
         "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/oauth2/constants.py#L5-L16",
         "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/polar.md"
       ],
-      "note": "Beta.12 arrival family polar-api-credential (#528, product redact-secret#1020), contract in benchmarks/lib/beta8/528b.ts from the #1014 handoff polar.md. T1 (provider server code, R1/R9). Shares the polar-token detector (finding type polar_api_credential). Neither pinned scanner has a Polar rule."
+      "note": "Beta.12 arrival family polar-api-credential (#528, product redact-secret#1020), contract in benchmarks/lib/beta8/528b.ts from the #1014 handoff polar.md. T1 (provider server code, R1/R9). Shares the polar-token detector (finding type polar_api_credential). Neither pinned scanner has a Polar rule. Since the 4fb7882 re-pin (product PR #1039) it is an arrival family scored by that finding type (scanners/families.mjs arrivalFindingTypes), so the row maps to its own id."
     },
     {
       "id": "sonarqube:user-token",
       "provider": "sonarqube",
       "name": "User token (squ_)",
       "description": "squ_ + exactly 40 lowercase hex (44 in all); unprefixed legacy tokens, sqb_ badge tokens and SonarQube Cloud sqco_ are not claimed.",
-      "detectors": [],
+      "detectors": [
+        "sonarqube-token"
+      ],
       "sources": [
         "https://github.com/SonarSource/sonarqube/blob/9ec5e86425011f6c1ffa0eb2db08880e3b347271/server/sonar-webserver-auth/src/main/java/org/sonar/server/usertoken/TokenGeneratorImpl.java#L29-L46",
         "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/sonarqube.md"
       ],
-      "note": "Beta.12 arrival family sonarqube-token (#528, product redact-secret#1021), contract in benchmarks/lib/beta8/528c.ts from the #1014 handoff sonarqube.md. T1 (provider generator, R1). gitleaks 8.30.1 sonar-api-token (keyword-gated) is mapped to this family; trufflehog 3.97.4 SonarCloud reads legacy and sqco_ shapes only."
+      "note": "Beta.12 arrival family sonarqube-token (#528, product redact-secret#1021), contract in benchmarks/lib/beta8/528c.ts from the #1014 handoff sonarqube.md. T1 (provider generator, R1). gitleaks 8.30.1 sonar-api-token (keyword-gated) is mapped to this family; trufflehog 3.97.4 SonarCloud reads legacy and sqco_ shapes only. Since the 4fb7882 re-pin the product detector is in the pinned registry, so the row maps to it."
     },
     {
       "id": "sonarqube:analysis-token",
       "provider": "sonarqube",
       "name": "Analysis tokens (sqa_, sqp_)",
       "description": "sqa_ (global) or sqp_ (project) + exactly 40 lowercase hex (44 in all).",
-      "detectors": [],
+      "detectors": [
+        "sonarqube-analysis-token"
+      ],
       "sources": [
         "https://github.com/SonarSource/sonarqube/blob/9ec5e86425011f6c1ffa0eb2db08880e3b347271/server/sonar-db-dao/src/main/java/org/sonar/db/user/TokenType.java#L24-L27",
         "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/sonarqube.md"
       ],
-      "note": "Beta.12 arrival family sonarqube-analysis-token (#528, product redact-secret#1021), contract in benchmarks/lib/beta8/528c.ts from the #1014 handoff sonarqube.md. T1 (provider generator, R1). Shares the sonarqube-token detector (finding type sonarqube_analysis_token); a gitleaks sonar-api-token finding reads as co-detection."
+      "note": "Beta.12 arrival family sonarqube-analysis-token (#528, product redact-secret#1021), contract in benchmarks/lib/beta8/528c.ts from the #1014 handoff sonarqube.md. T1 (provider generator, R1). Shares the sonarqube-token detector (finding type sonarqube_analysis_token); a gitleaks sonar-api-token finding reads as co-detection. Since the 4fb7882 re-pin (product PR #1039) it is an arrival family scored by that finding type (scanners/families.mjs arrivalFindingTypes), so the row maps to its own id."
     },
     {
       "id": "rubygems:api-key",
       "provider": "rubygems",
       "name": "API key (rubygems_)",
       "description": "rubygems_ + exactly 48 lowercase hex (57 in all); OIDC-exchanged keys share the generator.",
-      "detectors": [],
+      "detectors": [
+        "rubygems-api-key"
+      ],
       "sources": [
         "https://github.com/rubygems/rubygems.org/blob/d4cfcc961d08cb5f661f2e5dc0081736233b97ec/app/controllers/concerns/api_keyable.rb#L19-L21",
         "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/rubygems.md"
       ],
-      "note": "Beta.12 arrival family rubygems-api-key (#528, product redact-secret#1023), contract in benchmarks/lib/beta8/528d.ts from the #1014 handoff rubygems.md. T1 (provider generator, R1). gitleaks 8.30.1 rubygems-api-token and trufflehog 3.97.4 RubyGems are mapped to this family."
+      "note": "Beta.12 arrival family rubygems-api-key (#528, product redact-secret#1023), contract in benchmarks/lib/beta8/528d.ts from the #1014 handoff rubygems.md. T1 (provider generator, R1). gitleaks 8.30.1 rubygems-api-token and trufflehog 3.97.4 RubyGems are mapped to this family. Since the 4fb7882 re-pin the product detector is in the pinned registry, so the row maps to it."
     },
     {
       "id": "clojars:deploy-token",
       "provider": "clojars",
       "name": "Deploy token (CLOJARS_)",
       "description": "CLOJARS_ + exactly 60 lowercase hex (68 in all), exactly the server validator; the prefix is case-sensitive.",
-      "detectors": [],
+      "detectors": [
+        "clojars-deploy-token"
+      ],
       "sources": [
         "https://github.com/clojars/clojars-web/blob/442eb895e7ab3449161848d8c368d4783c5f0067/src/clojars/db.clj#L799-L853",
         "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/clojars.md"
       ],
-      "note": "Beta.12 arrival family clojars-deploy-token (#528, product redact-secret#1025), contract in benchmarks/lib/beta8/528e.ts from the #1014 handoff clojars.md. T1 (provider generator and validator, R1). gitleaks 8.30.1 clojars-api-token (case-insensitive, wider) is mapped to this family; trufflehog 3.97.4 has no rule."
+      "note": "Beta.12 arrival family clojars-deploy-token (#528, product redact-secret#1025), contract in benchmarks/lib/beta8/528e.ts from the #1014 handoff clojars.md. T1 (provider generator and validator, R1). gitleaks 8.30.1 clojars-api-token (case-insensitive, wider) is mapped to this family; trufflehog 3.97.4 has no rule. Since the 4fb7882 re-pin the product detector is in the pinned registry, so the row maps to it."
     },
     {
       "id": "crates-io:api-token",
       "provider": "crates-io",
       "name": "API token (cio)",
       "description": "cio + exactly 32 [A-Za-z0-9] (35 in all); the exact body and both identifier boundaries carry the precision of the three-letter prefix.",
-      "detectors": [],
+      "detectors": [
+        "crates-io-token"
+      ],
       "sources": [
         "https://github.com/rust-lang/crates.io/blob/7b2475e26337856ab054844c9078bb23c11b2f19/crates/crates_io_database/src/utils/token.rs#L10-L91",
         "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/crates-io.md"
       ],
-      "note": "Beta.12 arrival family crates-io-token (#528, product redact-secret#1031), contract in benchmarks/lib/beta8/528f.ts from the #1014 handoff crates-io.md. T1 (provider server code, R1). Neither pinned scanner has a crates.io rule."
+      "note": "Beta.12 arrival family crates-io-token (#528, product redact-secret#1031), contract in benchmarks/lib/beta8/528f.ts from the #1014 handoff crates-io.md. T1 (provider server code, R1). Neither pinned scanner has a crates.io rule. Since the 4fb7882 re-pin the product detector is in the pinned registry, so the row maps to it."
     },
     {
       "id": "crates-io:trusted-publishing-token",
       "provider": "crates-io",
       "name": "Trusted-publishing token (cio_tp_)",
       "description": "cio_tp_ + exactly 32 [A-Za-z0-9] (31 + one check character, 39 in all); the check character corroborates only and never rejects (policy).",
-      "detectors": [],
+      "detectors": [
+        "crates-io-trusted-publishing-token"
+      ],
       "sources": [
         "https://github.com/rust-lang/crates.io/blob/f937ab051067e793ed647c7b587a5419db85949b/crates/crates_io_trustpub/src/access_token.rs#L21-L102",
         "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/crates-io.md"
       ],
-      "note": "Beta.12 arrival family crates-io-trusted-publishing-token (#528, product redact-secret#1031), contract in benchmarks/lib/beta8/528f.ts from the #1014 handoff crates-io.md. T1 (provider server code, R1). Shares the crates-io-token detector (finding type crates_io_trusted_publishing_token). No scanner covers cio_tp_."
+      "note": "Beta.12 arrival family crates-io-trusted-publishing-token (#528, product redact-secret#1031), contract in benchmarks/lib/beta8/528f.ts from the #1014 handoff crates-io.md. T1 (provider server code, R1). Shares the crates-io-token detector (finding type crates_io_trusted_publishing_token). No scanner covers cio_tp_. Since the 4fb7882 re-pin (product PR #1039) it is an arrival family scored by that finding type (scanners/families.mjs arrivalFindingTypes), so the row maps to its own id."
     },
     {
       "id": "dynatrace:api-token",
       "provider": "dynatrace",
       "name": "Access and platform token (dt0c01, dt0s..)",
       "description": "dt0 + c|s + 2 digits + . + 24 [A-Z2-7] + . + 64 [A-Z2-7] (96 in all); the token identifier alone is documented as safe to log and is not claimed.",
-      "detectors": [],
+      "detectors": [
+        "dynatrace-token"
+      ],
       "sources": [
         "https://docs.dynatrace.com/docs/dynatrace-api/basics/dynatrace-api-authentication",
         "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/dynatrace.md"
       ],
-      "note": "Beta.12 arrival family dynatrace-token (#528, product redact-secret#1032), contract in benchmarks/lib/beta8/528g.ts from the #1014 handoff dynatrace.md. T1 (provider docs; alphabet from the provider operator generator, R1). gitleaks 8.30.1 dynatrace-api-token (dt0c01 only) is mapped to this family; trufflehog 3.97.4 has no rule."
+      "note": "Beta.12 arrival family dynatrace-token (#528, product redact-secret#1032), contract in benchmarks/lib/beta8/528g.ts from the #1014 handoff dynatrace.md. T1 (provider docs; alphabet from the provider operator generator, R1). gitleaks 8.30.1 dynatrace-api-token (dt0c01 only) is mapped to this family; trufflehog 3.97.4 has no rule. Since the 4fb7882 re-pin the product detector is in the pinned registry, so the row maps to it."
     },
     {
       "id": "paddle:api-key",
       "provider": "paddle",
       "name": "Billing API key (pdl_live_/pdl_sdbx_apikey_)",
       "description": "pdl_(live|sdbx)_apikey_ + 26 [a-z0-9] + _ + 22 [A-Za-z0-9] + _ + 3 [A-Za-z0-9] (69 in all), the provider-published regex; key ids and legacy 50-character keys are not claimed.",
-      "detectors": [],
+      "detectors": [
+        "paddle-api-key"
+      ],
       "sources": [
         "https://developer.paddle.com/api-reference/about/api-keys",
         "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/paddle.md"
       ],
-      "note": "Beta.12 arrival family paddle-api-key (#528, product redact-secret#1033), contract in benchmarks/lib/beta8/528h.ts from the #1014 handoff paddle.md. T1 (provider docs regex and length). Neither pinned scanner has a Paddle rule."
+      "note": "Beta.12 arrival family paddle-api-key (#528, product redact-secret#1033), contract in benchmarks/lib/beta8/528h.ts from the #1014 handoff paddle.md. T1 (provider docs regex and length). Neither pinned scanner has a Paddle rule. Since the 4fb7882 re-pin the product detector is in the pinned registry, so the row maps to it."
     },
     {
       "id": "honeycomb:ingest-key",
       "provider": "honeycomb",
       "name": "Ingest key (hcXik_, hcXic_)",
       "description": "hc + one [a-z] + ik_ or ic_ + exactly 58 [a-z0-9] (64 in all: key id and secret concatenated); key ids, configuration and classic keys are not claimed, and the management key stays issuance-gated.",
-      "detectors": [],
+      "detectors": [
+        "honeycomb-api-key"
+      ],
       "sources": [
         "https://docs.honeycomb.io/api/authentication",
         "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/honeycomb.md"
       ],
-      "note": "Beta.12 arrival family honeycomb-api-key (#528, product redact-secret#1034), contract in benchmarks/lib/beta8/528i.ts from the #1014 handoff honeycomb.md. T1 (docs, provider SDK regex, length gate and fixtures; R1, R5). trufflehog 3.97.4 Honeycomb reads classic and configuration keys only and is unmapped; gitleaks 8.30.1 has no rule."
+      "note": "Beta.12 arrival family honeycomb-api-key (#528, product redact-secret#1034), contract in benchmarks/lib/beta8/528i.ts from the #1014 handoff honeycomb.md. T1 (docs, provider SDK regex, length gate and fixtures; R1, R5). trufflehog 3.97.4 Honeycomb reads classic and configuration keys only and is unmapped; gitleaks 8.30.1 has no rule. Since the 4fb7882 re-pin the product detector is in the pinned registry, so the row maps to it."
     },
     {
       "id": "axiom:api-token",
       "provider": "axiom",
       "name": "API token (xaat-)",
       "description": "xaat- + a lowercase-hex UUID (41 in all); placeholders and bare UUIDs are not claimed.",
-      "detectors": [],
+      "detectors": [
+        "axiom-token"
+      ],
       "sources": [
         "https://github.com/axiomhq/axiom-go/blob/ae983c9447003f74f00e55a2ca64ea119b558fb8/internal/config/token.go#L7-L18",
         "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/axiom.md"
       ],
-      "note": "Beta.12 arrival family axiom-token (#528, product redact-secret#1035), contract in benchmarks/lib/beta8/528j.ts from the #1014 handoff axiom.md. T1 (SDK runtime check R6; docs example plus SDK fixtures R5); a structure-only issuance check is recommended. Neither pinned scanner has an Axiom rule."
+      "note": "Beta.12 arrival family axiom-token (#528, product redact-secret#1035), contract in benchmarks/lib/beta8/528j.ts from the #1014 handoff axiom.md. T1 (SDK runtime check R6; docs example plus SDK fixtures R5); a structure-only issuance check is recommended. Neither pinned scanner has an Axiom rule. Since the 4fb7882 re-pin the product detector is in the pinned registry, so the row maps to it."
     },
     {
       "id": "axiom:personal-token",
       "provider": "axiom",
       "name": "Personal access token (xapt-)",
       "description": "xapt- + a lowercase-hex UUID (41 in all), used with an org id; full console and API access.",
-      "detectors": [],
+      "detectors": [
+        "axiom-personal-token"
+      ],
       "sources": [
         "https://github.com/axiomhq/axiom-go/blob/ae983c9447003f74f00e55a2ca64ea119b558fb8/internal/config/token.go#L7-L18",
         "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/axiom.md"
       ],
-      "note": "Beta.12 arrival family axiom-personal-token (#528, product redact-secret#1035), contract in benchmarks/lib/beta8/528j.ts from the #1014 handoff axiom.md. T1 (SDK runtime check R6; R5 layout). Shares the axiom-token detector (finding type axiom_personal_token). Neither pinned scanner has an Axiom rule."
+      "note": "Beta.12 arrival family axiom-personal-token (#528, product redact-secret#1035), contract in benchmarks/lib/beta8/528j.ts from the #1014 handoff axiom.md. T1 (SDK runtime check R6; R5 layout). Shares the axiom-token detector (finding type axiom_personal_token). Neither pinned scanner has an Axiom rule. Since the 4fb7882 re-pin (product PR #1039) it is an arrival family scored by that finding type (scanners/families.mjs arrivalFindingTypes), so the row maps to its own id."
     }
   ]
 }

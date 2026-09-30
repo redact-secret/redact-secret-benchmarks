@@ -50,16 +50,18 @@ test('github-token serves five families; the fine-grained PAT is scored as its o
 });
 
 test('#373: Vercel modern classes are separate and do not inherit the compatibility aggregate measurement', () => {
-  const modern = [
-    'vercel:personal-access-token',
-    'vercel:integration-token',
-    'vercel:app-access-token',
-    'vercel:app-refresh-token',
-    'vercel:api-key',
-  ].map(id => familyById(id));
-  assert.ok(modern.every(Boolean));
-  assert.ok(modern.every(family => family.detectors.length === 0));
-  assert.ok(modern.every(family => family.supportStatus === 'pending'));
+  // #1012/#1013: the three READY classes are scored arrival families under their own finding types (redact-secret#1036);
+  // vci_ and vck_ stay blocked (ruling Q-VC) and pending.
+  const scored = { 'vercel:personal-access-token': 'vercel-personal-access-token', 'vercel:app-access-token': 'vercel-app-access-token', 'vercel:app-refresh-token': 'vercel-app-refresh-token' };
+  for (const [id, arrival] of Object.entries(scored)) {
+    const family = familyById(id);
+    assert.deepEqual(family.detectors, [arrival], id);
+    assert.equal(family.supportStatus, undefined, `${id}: no hand-edited support status`);
+  }
+  const blocked = ['vercel:integration-token', 'vercel:api-key'].map(id => familyById(id));
+  assert.ok(blocked.every(Boolean));
+  assert.ok(blocked.every(family => family.detectors.length === 0));
+  assert.ok(blocked.every(family => family.supportStatus === 'pending'));
   assert.deepEqual(familiesForDetector('vercel-token').map(family => family.id), ['vercel:access-token']);
 });
 

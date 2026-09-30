@@ -211,6 +211,13 @@ export const arrivalFindingTypes = Object.freeze({
   'sonarqube-token': Object.freeze({ sonarqube_analysis_token: 'sonarqube-analysis-token' }),
   'crates-io-token': Object.freeze({ crates_io_trusted_publishing_token: 'crates-io-trusted-publishing-token' }),
   'axiom-token': Object.freeze({ axiom_personal_token: 'axiom-personal-token' }),
+  // #1012/#1013: product PR #1039 (redact-secret#1036) splits vercel-token per credential class and types the three READY
+  // classes (vcp_/vca_/vcr_ + exactly 56 [A-Za-z0-9]) as their own finding types; vci_, vck_ and off-width values keep the
+  // aggregate vercel_token (benchmarks/lib/beta8/1012e.ts).
+  'vercel-token': Object.freeze({
+    vercel_personal_access_token: 'vercel-personal-access-token', vercel_app_access_token: 'vercel-app-access-token',
+    vercel_app_refresh_token: 'vercel-app-refresh-token',
+  }),
 });
 // The arrival families with a recorded finding-type mapping. eval:classify scores
 // these like registry families, each on its own contract, profile and ledger rows

@@ -104,8 +104,18 @@ too. The unit this taxonomy fixes on is **provider x credential family**.
   `sonarqube:user-token`, `sonarqube:analysis-token`, `rubygems:api-key`, `clojars:deploy-token`,
   `crates-io:api-token`, `crates-io:trusted-publishing-token`, `dynatrace:api-token`, `paddle:api-key`,
   `honeycomb:ingest-key` (the management key stays issuance-gated), `axiom:api-token` and
-  `axiom:personal-token`. Each maps no detector until the product detector (redact-secret#1019–#1035) is in
-  the pinned registry.
+  `axiom:personal-token`. Each mapped no detector until the product detector (redact-secret#1019–#1035) was in
+  the pinned registry; since the 4fb7882 re-pin each detector-id row maps to its detector and each sibling row
+  (`polar:api-credential`, `sonarqube:analysis-token`, `crates-io:trusted-publishing-token`,
+  `axiom:personal-token`) to its own scored arrival id. The #464 rows likewise map to their detectors since that pin.
+- **Beta.12 first-measured variants (#1012, #528).** Contracts and corpora in `benchmarks/lib/beta8/1012a.ts`–`1012e.ts`
+  (see [beta8-evidence.md](beta8-evidence.md)): `aws:iam-user-secret-access-key` maps to the registry detector
+  `aws-secret-access-key` (redact-secret#1028); the new row `google:oauth-client-secret` maps to
+  `google-oauth-client-secret` (redact-secret#1029), and `google:oauth2-credential` keeps the BLOCKED `ya29.` and
+  `1//` tokens; `vercel:personal-access-token`, `vercel:app-access-token` and `vercel:app-refresh-token` map to their
+  scored arrival ids (redact-secret#1036). `gitlab:routable-personal-access-token` and `aws:sts-temporary-access-key`
+  are measured as unscored arrival families (their findings share the owning detector's finding type) and map no
+  detector. `vercel:integration-token` and `vercel:api-key` stay pending (ruling Q-VC).
 - **`families[].provider: null`** marks a family that is not provider-specific
   at all: `private-key`, `jwt`, `bearer-token`, `connection-string`,
   `otpauth-uri` and `generic-token` are structural or protocol-level formats
@@ -151,8 +161,8 @@ without one.
 
 ## Current counts
 
-172 families total: 166 across 92 providers plus 6 non-provider-specific
-formats; 127 carry at least one detector, 45 currently do not (counts as of 2026-09-29;
+173 families total: 167 across 92 providers plus 6 non-provider-specific
+formats; 152 carry at least one detector, 21 currently do not (counts as of 2026-09-29;
 `benchmarks/support/taxonomy.json` is the source of truth). This is a taxonomy, not a
 support claim — a family having a detector says nothing about that
 detector's evidence tier (T0-T3, see `benchmarks/lib/assessment.ts`) or

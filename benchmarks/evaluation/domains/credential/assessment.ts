@@ -747,6 +747,9 @@ export function classifyFixture(category: string, f: Fixture): Assessment {
     if (['bearer-token', 'connection-string', 'otpauth-uri', 'generic-token'].includes(family) || (family === 'azure-devops-personal-access-token' && category === 'detector-coverage') || isContextGated(family))
       return policy(contracts[family ?? ''].review!, family);
     if (family === 'aws-access-key') return policy('Standalone access-key ID without secret key/session token. Some legacy ASIA values also use digits outside the base32 alphabet.', family);
+    // #1012 (aws-sts-temporary-access-key, benchmarks/lib/beta8/1012d.ts): the same bare-identifier policy, on the
+    // provider's own statement rather than the unsourced legacy-digit reason above.
+    if (family === 'aws-sts-temporary-access-key') return policy('Standalone STS temporary access key ID: AWS documents ASIA IDs as unique only in combination with the secret access key and the session token, so a bare ID is redacted by project policy, not as a standalone credential.', family);
     if (family === 'shopify-token') return policy('Token shape is plausible, but the shop domain the contract requires is absent.', family);
     if (family === 'vault-token' && matches(family, value)) return policy('Token shape meets the provider’s prefix and minimum-length documentation, but the Vault endpoint the contract requires is absent.', family);
     if (family === 'private-key' || family === 'jwt') return policy(contracts[family ?? ''].review!, family);

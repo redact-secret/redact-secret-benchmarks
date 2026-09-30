@@ -320,20 +320,30 @@ test('Performance: page reads the committed criteria file, verbatim', async () =
   for (const criterion of criteria.performance) assert.ok(html.includes(criterion.surface) && html.includes(criterion.profileId));
 });
 
-test('Performance: the Thresholds table shows the pinned run\'s measured processing and throughput beside each floor (#405)', async () => {
+test('Performance: the Thresholds table shows the accepted run\'s measured processing and throughput beside each floor (#405)', async () => {
   const { performancePage } = await load('/src/pages/performance.ts');
-  const operational = await read('benchmarks/operational-evidence.json');
-  const html = performancePage(), thresholds = html.slice(html.indexOf('>Thresholds<'), html.indexOf('id="operational-evidence"'));
+  const criteria = await read('benchmarks/performance-criteria.json');
+  const summaryPath = criteria.baseline.verificationPath.replace(/\/[^/]+$/, '/summary.json');
+  const summary = await read(summaryPath);
+  assert.equal(summary.sourceCommit, criteria.baseline.verifiedCommit, 'the pinned summary is the accepted commit\'s own run');
+  const html = performancePage(), thresholds = html.slice(html.indexOf('>Thresholds<'), html.indexOf('Running an evaluation'));
   assert.match(thresholds, /Measured processing \(median \/ p95\)/);
   assert.match(thresholds, /Measured throughput \(median\)/);
-  for (const t of operational.measurements.timings) {
-    assert.ok(thresholds.includes(`${t.processing.median.toLocaleString('en-US', { maximumFractionDigits: 2 })} ms`), `${t.surface}/${t.profileId} measured processing median`);
-    assert.ok(thresholds.includes(`${Math.round(t.throughput.median).toLocaleString('en-US')} B/s`), `${t.surface}/${t.profileId} measured throughput median`);
+  assert.ok(thresholds.includes(summaryPath) && thresholds.includes(summary.sourceCommit), 'source path and commit are shown');
+  const performanceRuns = summary.runs.filter(r => r.kind === 'performance');
+  assert.equal(performanceRuns.length, criteria.performance.length);
+  for (const r of performanceRuns) {
+    const p = r.result.performance, fmt = v => v.toLocaleString('en-US', { maximumFractionDigits: 2 });
+    assert.ok(thresholds.includes(`${fmt(p.processing.median)} ms / ${fmt(p.processing.p95)} ms`), `${r.surface}/${r.profileId} measured processing`);
+    assert.ok(thresholds.includes(`${Math.round(p.throughput.median).toLocaleString('en-US')} B/s`), `${r.surface}/${r.profileId} measured throughput`);
+    assert.ok(thresholds.includes(r.result.provenance.artifactIdentity), `${r.surface} artifact identity`);
   }
-  // #405: the node row names its resolved artifact as a recorded fact, or explicitly says it is not recorded -- never a silent assumption.
-  assert.match(thresholds, /Not recorded/, 'operational-evidence.json does not yet carry resolvedArtifact, pending the paired product change');
-  assert.ok(!/<td>N-API addon<\/td>|>N-API addon<\/span>/.test(thresholds), 'never renders the addon as the node row\'s artifact when it was not actually confirmed');
-  assert.match(html, /a sustained multi-megabyte-per-second stream would dominate request latency/, 'workload guidance paragraph is present and cites the measured figures');
+  const node = summary.runs.find(r => r.surface === 'node' && r.kind === 'performance');
+  assert.equal(node.result.provenance.resolvedArtifact, 'node-addon');
+  assert.match(thresholds, />N-API addon</, 'the node row names the artifact the runner recorded');
+  assert.match(thresholds, /Workload guidance/);
+  assert.match(thresholds, /sampling or an off-request-path placement/);
+  assert.match(thresholds, /Dispatch model \(#450\)/);
 });
 
 test('boundary rule: pages measure and record; none asserts product quality or ranks a scanner', async () => {

@@ -8,18 +8,19 @@ inputs" (#444). Informational only: no verdict, no ranking.
 ## Source identities
 
 - Benchmark source: `redact-secret/redact-secret-benchmarks` `develop` commit
-  `c4009ea2bf97d9e81417d7a1a8379fab7f15892a`, run by the `peer-pii-runtime-throughput`
-  workflow (Actions run 36621123928).
+  `39a566c51593739792d1533ea992420d0c0473ed`, run by the `peer-pii-runtime-throughput`
+  workflow (Actions run 36701748609).
 - Benchmark lockfile SHA-256:
   `06a6ba659e9ae2d42ee49f0f11e13d682ed242539c89b6bb455c29cdb089c51f`
   (flare-redact 1.6.1, `@openredaction/core` 1.1.5).
 - redact-secret: `redact-secret/redact-secret` commit
-  `94fc18a974f659ea882c89120dbf1adb3acf2f28` (`pin-manifest.json` `redactSecretRevision`),
+  `da69ebf5090e0fb9519eb07829ff46001ede0de2` (`pin-manifest.json` `redactSecretRevision`),
   `bindings/node` built with `napi build --platform --release` inside the pinned Docker image,
   reporting version `0.1.0-beta.11`. Image ID:
-  `sha256:3486ba72b1d0c9e8d1908992dbcd3125a3062d800376bc952dc43cc08a31a937`.
+  `sha256:dab0ed34b08082aa34370e5cbe4c8849c2ebfb3cc4df73762c5a7043643fc650`.
 - Report `artifactCommitment`:
-  `5adf379858ca2cf4140ca3419f09ab3df5e2b4b360e127b0d1b107442fc063c0`.
+  `8c204fc187485559d5d0c5a5fe35673d0c72f09353789bf0eddfa7d564d088f6`.
+- Replaces the run 36621123928 snapshot, which described `94fc18a` (the release source, not the pin).
 
 ## Environment
 

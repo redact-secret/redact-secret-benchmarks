@@ -6504,6 +6504,946 @@
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/464"
         ]
       }
+    },
+    {
+      "id": "bitwarden-secrets-manager-access-token-positive",
+      "path": "bitwarden-secrets-manager-access-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "BWS_ACCESS_TOKEN=0\u002e5e1f0a2b-3c4d-4e5f-8a9b-0c1d2e3f4a5b.REVIEWALPHA7BETA9REVIEWALPHA7B:UkVWSUVXQUxQSEE3QkVUQQ==\n",
+      "expected": [
+        {
+          "start": 17,
+          "end": 111,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "bitwarden-secrets-manager-access-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "bitwarden-secrets-manager-access-token",
+        "sources": [
+          "https://github.com/bitwarden/sdk-internal/blob/824c1cf06636daa2778d53435cdbf354ab58eff2/crates/bitwarden-core/src/auth/access_token.rs#L47-L85",
+          "https://github.com/bitwarden/sdk-internal/blob/824c1cf06636daa2778d53435cdbf354ab58eff2/crates/bitwarden-core/src/auth/access_token.rs#L47-L85",
+          "https://github.com/bitwarden/server/blob/bb3a9daf9883353fa942a17ba5d8c2b1f642960b/bitwarden_license/src/Commercial.Core/SecretsManager/Commands/AccessTokens/CreateAccessTokenCommand.cs#L14-L29",
+          "https://github.com/bitwarden/server/blob/de7104b7134f51de34cb081c192ecb172020d508/src/Core/Utilities/CoreHelpers.cs#L205-L209",
+          "https://bitwarden.com/help/access-tokens/",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/bitwarden.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/1019",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "bitwarden-secrets-manager-access-token-negative",
+      "path": "bitwarden-secrets-manager-access-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "BWS_ACCESS_TOKEN=${BWS_ACCESS_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "bitwarden-secrets-manager-access-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "bitwarden-secrets-manager-access-token",
+        "sources": [
+          "https://github.com/bitwarden/sdk-internal/blob/824c1cf06636daa2778d53435cdbf354ab58eff2/crates/bitwarden-core/src/auth/access_token.rs#L47-L85",
+          "https://github.com/bitwarden/sdk-internal/blob/824c1cf06636daa2778d53435cdbf354ab58eff2/crates/bitwarden-core/src/auth/access_token.rs#L47-L85",
+          "https://github.com/bitwarden/server/blob/bb3a9daf9883353fa942a17ba5d8c2b1f642960b/bitwarden_license/src/Commercial.Core/SecretsManager/Commands/AccessTokens/CreateAccessTokenCommand.cs#L14-L29",
+          "https://github.com/bitwarden/server/blob/de7104b7134f51de34cb081c192ecb172020d508/src/Core/Utilities/CoreHelpers.cs#L205-L209",
+          "https://bitwarden.com/help/access-tokens/",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/bitwarden.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/1019",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "polar-token-positive",
+      "path": "polar-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "POLAR_ACCESS_TOKEN=\u0070olar_oat_REVIEWALPHA7BETA9REVIEWALPHA7BETA9REV3co7mm\n",
+      "expected": [
+        {
+          "start": 19,
+          "end": 72,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "polar-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "polar-token",
+        "sources": [
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/kit/crypto.py#L11-L32",
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/kit/crypto.py#L11-L32",
+          "https://github.com/polarsource/polar/commit/80fae7fc98",
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/organization_access_token/service.py#L42",
+          "https://github.com/polarsource/polar/commit/4639cb7efd",
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/personal_access_token/service.py",
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/oauth2/constants.py#L5-L16",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/polar.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/1020",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "polar-token-negative",
+      "path": "polar-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "POLAR_ACCESS_TOKEN=${POLAR_ACCESS_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "polar-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "polar-token",
+        "sources": [
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/kit/crypto.py#L11-L32",
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/kit/crypto.py#L11-L32",
+          "https://github.com/polarsource/polar/commit/80fae7fc98",
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/organization_access_token/service.py#L42",
+          "https://github.com/polarsource/polar/commit/4639cb7efd",
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/personal_access_token/service.py",
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/oauth2/constants.py#L5-L16",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/polar.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/1020",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "polar-api-credential-positive",
+      "path": "polar-api-credential/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "POLAR_OAUTH_TOKEN=\u0070olar_pat_REVIEW-ALPHA7_BETA9-REVIEW-ALPHA7_BETA9-REV\n",
+      "expected": [
+        {
+          "start": 18,
+          "end": 71,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "polar-api-credential"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "polar-api-credential",
+        "sources": [
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/kit/crypto.py#L11-L32",
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/kit/crypto.py#L11-L32",
+          "https://github.com/polarsource/polar/commit/80fae7fc98",
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/organization_access_token/service.py#L42",
+          "https://github.com/polarsource/polar/commit/4639cb7efd",
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/personal_access_token/service.py",
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/oauth2/constants.py#L5-L16",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/polar.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/1020",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "polar-api-credential-negative",
+      "path": "polar-api-credential/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "POLAR_OAUTH_TOKEN=${POLAR_OAUTH_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "polar-api-credential"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "polar-api-credential",
+        "sources": [
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/kit/crypto.py#L11-L32",
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/kit/crypto.py#L11-L32",
+          "https://github.com/polarsource/polar/commit/80fae7fc98",
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/organization_access_token/service.py#L42",
+          "https://github.com/polarsource/polar/commit/4639cb7efd",
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/personal_access_token/service.py",
+          "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/oauth2/constants.py#L5-L16",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/polar.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/1020",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "sonarqube-token-positive",
+      "path": "sonarqube-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SONAR_TOKEN=\u0073qu_a1b2c3d4e5f60718293aa1b2c3d4e5f60718293a\n",
+      "expected": [
+        {
+          "start": 12,
+          "end": 56,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "sonarqube-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "sonarqube-token",
+        "sources": [
+          "https://github.com/SonarSource/sonarqube/blob/9ec5e86425011f6c1ffa0eb2db08880e3b347271/server/sonar-webserver-auth/src/main/java/org/sonar/server/usertoken/TokenGeneratorImpl.java#L29-L46",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/SonarSource/sonarqube/blob/9ec5e86425011f6c1ffa0eb2db08880e3b347271/server/sonar-webserver-auth/src/main/java/org/sonar/server/usertoken/TokenGeneratorImpl.java#L29-L46",
+          "https://github.com/SonarSource/sonarqube/blob/9ec5e86425011f6c1ffa0eb2db08880e3b347271/server/sonar-db-dao/src/main/java/org/sonar/db/user/TokenType.java#L24-L27",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/sonarqube.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/1021",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "sonarqube-token-negative",
+      "path": "sonarqube-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SONAR_TOKEN=${SONAR_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "sonarqube-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "sonarqube-token",
+        "sources": [
+          "https://github.com/SonarSource/sonarqube/blob/9ec5e86425011f6c1ffa0eb2db08880e3b347271/server/sonar-webserver-auth/src/main/java/org/sonar/server/usertoken/TokenGeneratorImpl.java#L29-L46",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/SonarSource/sonarqube/blob/9ec5e86425011f6c1ffa0eb2db08880e3b347271/server/sonar-webserver-auth/src/main/java/org/sonar/server/usertoken/TokenGeneratorImpl.java#L29-L46",
+          "https://github.com/SonarSource/sonarqube/blob/9ec5e86425011f6c1ffa0eb2db08880e3b347271/server/sonar-db-dao/src/main/java/org/sonar/db/user/TokenType.java#L24-L27",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/sonarqube.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/1021",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "sonarqube-analysis-token-positive",
+      "path": "sonarqube-analysis-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SONAR_TOKEN=\u0073qp_f0e1d2c3b4a596877869f0e1d2c3b4a596877869\n",
+      "expected": [
+        {
+          "start": 12,
+          "end": 56,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "sonarqube-analysis-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "sonarqube-analysis-token",
+        "sources": [
+          "https://github.com/SonarSource/sonarqube/blob/9ec5e86425011f6c1ffa0eb2db08880e3b347271/server/sonar-webserver-auth/src/main/java/org/sonar/server/usertoken/TokenGeneratorImpl.java#L29-L46",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/SonarSource/sonarqube/blob/9ec5e86425011f6c1ffa0eb2db08880e3b347271/server/sonar-webserver-auth/src/main/java/org/sonar/server/usertoken/TokenGeneratorImpl.java#L29-L46",
+          "https://github.com/SonarSource/sonarqube/blob/9ec5e86425011f6c1ffa0eb2db08880e3b347271/server/sonar-db-dao/src/main/java/org/sonar/db/user/TokenType.java#L24-L27",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/sonarqube.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/1021",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "sonarqube-analysis-token-negative",
+      "path": "sonarqube-analysis-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SONAR_TOKEN=${SONAR_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "sonarqube-analysis-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "sonarqube-analysis-token",
+        "sources": [
+          "https://github.com/SonarSource/sonarqube/blob/9ec5e86425011f6c1ffa0eb2db08880e3b347271/server/sonar-webserver-auth/src/main/java/org/sonar/server/usertoken/TokenGeneratorImpl.java#L29-L46",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/SonarSource/sonarqube/blob/9ec5e86425011f6c1ffa0eb2db08880e3b347271/server/sonar-webserver-auth/src/main/java/org/sonar/server/usertoken/TokenGeneratorImpl.java#L29-L46",
+          "https://github.com/SonarSource/sonarqube/blob/9ec5e86425011f6c1ffa0eb2db08880e3b347271/server/sonar-db-dao/src/main/java/org/sonar/db/user/TokenType.java#L24-L27",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/sonarqube.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/1021",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "rubygems-api-key-positive",
+      "path": "rubygems-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GEM_HOST_API_KEY=\u0072ubygems_a1b2c3d4e5f60718293aa1b2c3d4e5f60718293aa1b2c3d4\n",
+      "expected": [
+        {
+          "start": 17,
+          "end": 74,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "rubygems-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "rubygems-api-key",
+        "sources": [
+          "https://github.com/rubygems/rubygems.org/blob/d4cfcc961d08cb5f661f2e5dc0081736233b97ec/app/controllers/concerns/api_keyable.rb#L19-L21",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/rubygems/rubygems.go",
+          "https://github.com/rubygems/rubygems.org/blob/d4cfcc961d08cb5f661f2e5dc0081736233b97ec/app/controllers/concerns/api_keyable.rb#L19-L21",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/rubygems.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/1023",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "rubygems-api-key-negative",
+      "path": "rubygems-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GEM_HOST_API_KEY=${GEM_HOST_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "rubygems-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "rubygems-api-key",
+        "sources": [
+          "https://github.com/rubygems/rubygems.org/blob/d4cfcc961d08cb5f661f2e5dc0081736233b97ec/app/controllers/concerns/api_keyable.rb#L19-L21",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/rubygems/rubygems.go",
+          "https://github.com/rubygems/rubygems.org/blob/d4cfcc961d08cb5f661f2e5dc0081736233b97ec/app/controllers/concerns/api_keyable.rb#L19-L21",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/rubygems.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/1023",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "clojars-deploy-token-positive",
+      "path": "clojars-deploy-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CLOJARS_PASSWORD=\u0043LOJARS_a1b2c3d4e5f60718293aa1b2c3d4e5f60718293aa1b2c3d4e5f60718293a\n",
+      "expected": [
+        {
+          "start": 17,
+          "end": 85,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "clojars-deploy-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "clojars-deploy-token",
+        "sources": [
+          "https://github.com/clojars/clojars-web/blob/442eb895e7ab3449161848d8c368d4783c5f0067/src/clojars/db.clj#L799-L853",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/clojars/clojars-web/blob/442eb895e7ab3449161848d8c368d4783c5f0067/src/clojars/db.clj#L799-L853",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/clojars.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/1025",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "clojars-deploy-token-negative",
+      "path": "clojars-deploy-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CLOJARS_PASSWORD=${CLOJARS_PASSWORD_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "clojars-deploy-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "clojars-deploy-token",
+        "sources": [
+          "https://github.com/clojars/clojars-web/blob/442eb895e7ab3449161848d8c368d4783c5f0067/src/clojars/db.clj#L799-L853",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/clojars/clojars-web/blob/442eb895e7ab3449161848d8c368d4783c5f0067/src/clojars/db.clj#L799-L853",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/clojars.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/1025",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "crates-io-token-positive",
+      "path": "crates-io-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CARGO_REGISTRY_TOKEN=\u0063ioREVIEWALPHA7BETA9REVIEWALPHA7BET\n",
+      "expected": [
+        {
+          "start": 21,
+          "end": 56,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "crates-io-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "crates-io-token",
+        "sources": [
+          "https://github.com/rust-lang/crates.io/blob/7b2475e26337856ab054844c9078bb23c11b2f19/crates/crates_io_database/src/utils/token.rs#L10-L91",
+          "https://github.com/rust-lang/crates.io/blob/7b2475e26337856ab054844c9078bb23c11b2f19/crates/crates_io_database/src/utils/token.rs#L10-L91",
+          "https://github.com/rust-lang/crates.io/blob/f937ab051067e793ed647c7b587a5419db85949b/crates/crates_io_trustpub/src/access_token.rs#L21-L102",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/crates-io.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/1031",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "crates-io-token-negative",
+      "path": "crates-io-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CARGO_REGISTRY_TOKEN=${CARGO_REGISTRY_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "crates-io-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "crates-io-token",
+        "sources": [
+          "https://github.com/rust-lang/crates.io/blob/7b2475e26337856ab054844c9078bb23c11b2f19/crates/crates_io_database/src/utils/token.rs#L10-L91",
+          "https://github.com/rust-lang/crates.io/blob/7b2475e26337856ab054844c9078bb23c11b2f19/crates/crates_io_database/src/utils/token.rs#L10-L91",
+          "https://github.com/rust-lang/crates.io/blob/f937ab051067e793ed647c7b587a5419db85949b/crates/crates_io_trustpub/src/access_token.rs#L21-L102",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/crates-io.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/1031",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "crates-io-trusted-publishing-token-positive",
+      "path": "crates-io-trusted-publishing-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CARGO_REGISTRY_TOKEN=\u0063io_tp_REVIEWALPHA7BETA9REVIEWALPHA7BEs\n",
+      "expected": [
+        {
+          "start": 21,
+          "end": 60,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "crates-io-trusted-publishing-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "crates-io-trusted-publishing-token",
+        "sources": [
+          "https://github.com/rust-lang/crates.io/blob/f937ab051067e793ed647c7b587a5419db85949b/crates/crates_io_trustpub/src/access_token.rs#L21-L102",
+          "https://github.com/rust-lang/crates.io/blob/7b2475e26337856ab054844c9078bb23c11b2f19/crates/crates_io_database/src/utils/token.rs#L10-L91",
+          "https://github.com/rust-lang/crates.io/blob/f937ab051067e793ed647c7b587a5419db85949b/crates/crates_io_trustpub/src/access_token.rs#L21-L102",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/crates-io.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/1031",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "crates-io-trusted-publishing-token-negative",
+      "path": "crates-io-trusted-publishing-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "CARGO_REGISTRY_TOKEN=${CARGO_REGISTRY_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "crates-io-trusted-publishing-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "crates-io-trusted-publishing-token",
+        "sources": [
+          "https://github.com/rust-lang/crates.io/blob/f937ab051067e793ed647c7b587a5419db85949b/crates/crates_io_trustpub/src/access_token.rs#L21-L102",
+          "https://github.com/rust-lang/crates.io/blob/7b2475e26337856ab054844c9078bb23c11b2f19/crates/crates_io_database/src/utils/token.rs#L10-L91",
+          "https://github.com/rust-lang/crates.io/blob/f937ab051067e793ed647c7b587a5419db85949b/crates/crates_io_trustpub/src/access_token.rs#L21-L102",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/crates-io.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/1031",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "dynatrace-token-positive",
+      "path": "dynatrace-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DT_API_TOKEN=\u0064t0c01.REVIEWALPHASEVENBETANINE.REVIEWALPHASEVENBETANINEREVIEWALPHASEVENBETANINEREVIEWALPHASEVEN\n",
+      "expected": [
+        {
+          "start": 13,
+          "end": 109,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "dynatrace-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "dynatrace-token",
+        "sources": [
+          "https://docs.dynatrace.com/docs/dynatrace-api/basics/dynatrace-api-authentication",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.dynatrace.com/docs/dynatrace-api/basics/dynatrace-api-authentication",
+          "https://github.com/Dynatrace/dynatrace-operator/blob/2a39d88a0ee1fbb61e2d22db02520b3dc92ffc80/pkg/util/dttoken/token.go#L14-L58",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/dynatrace.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1032",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "dynatrace-token-negative",
+      "path": "dynatrace-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "DT_API_TOKEN=${DT_API_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "dynatrace-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "dynatrace-token",
+        "sources": [
+          "https://docs.dynatrace.com/docs/dynatrace-api/basics/dynatrace-api-authentication",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.dynatrace.com/docs/dynatrace-api/basics/dynatrace-api-authentication",
+          "https://github.com/Dynatrace/dynatrace-operator/blob/2a39d88a0ee1fbb61e2d22db02520b3dc92ffc80/pkg/util/dttoken/token.go#L14-L58",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/dynatrace.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1032",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "paddle-api-key-positive",
+      "path": "paddle-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "PADDLE_API_KEY=\u0070dl_sdbx_apikey_reviewalpha7beta9reviewalp_REVIEWALPHA7BETA9REVIE_Ab7\n",
+      "expected": [
+        {
+          "start": 15,
+          "end": 84,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "paddle-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "paddle-api-key",
+        "sources": [
+          "https://developer.paddle.com/api-reference/about/api-keys",
+          "https://developer.paddle.com/api-reference/about/api-keys",
+          "https://github.com/PaddleHQ/paddle-node-sdk/blob/651261beddfc65ba5f861729dca17044cbeffb5f/src/__tests__/mocks/notifications/api-key-created.mock.ts",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/paddle.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/1033",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "paddle-api-key-negative",
+      "path": "paddle-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "PADDLE_API_KEY=${PADDLE_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "paddle-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "paddle-api-key",
+        "sources": [
+          "https://developer.paddle.com/api-reference/about/api-keys",
+          "https://developer.paddle.com/api-reference/about/api-keys",
+          "https://github.com/PaddleHQ/paddle-node-sdk/blob/651261beddfc65ba5f861729dca17044cbeffb5f/src/__tests__/mocks/notifications/api-key-created.mock.ts",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/paddle.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/1033",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "honeycomb-api-key-positive",
+      "path": "honeycomb-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "HONEYCOMB_API_KEY=\u0068cxik_reviewalpha7beta9reviewalpha7beta9reviewalpha7beta9reviewa\n",
+      "expected": [
+        {
+          "start": 18,
+          "end": 82,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "honeycomb-api-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "honeycomb-api-key",
+        "sources": [
+          "https://docs.honeycomb.io/api/authentication",
+          "https://docs.honeycomb.io/api/authentication",
+          "https://github.com/honeycombio/libhoney-go/blob/02e9dbf361012fafbe8698f429b65630500dc10a/libhoney.go#L74-L178",
+          "https://github.com/honeycombio/libhoney-go/blob/02e9dbf361012fafbe8698f429b65630500dc10a/libhoney_test.go#L1225-L1250",
+          "https://github.com/honeycombio/libhoney-py/blob/11b59417c1df1d97384dc5e870f2ea462da02b80/libhoney/client.py#L11-L18",
+          "https://github.com/honeycombio/terraform-provider-honeycombio/blob/b74d528db4fd6d01503e1b46a13b2146a38b45c3/internal/provider/api_key_resource.go#L417-L420",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/honeycomb.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1034",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "honeycomb-api-key-negative",
+      "path": "honeycomb-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "HONEYCOMB_API_KEY=${HONEYCOMB_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "honeycomb-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "honeycomb-api-key",
+        "sources": [
+          "https://docs.honeycomb.io/api/authentication",
+          "https://docs.honeycomb.io/api/authentication",
+          "https://github.com/honeycombio/libhoney-go/blob/02e9dbf361012fafbe8698f429b65630500dc10a/libhoney.go#L74-L178",
+          "https://github.com/honeycombio/libhoney-go/blob/02e9dbf361012fafbe8698f429b65630500dc10a/libhoney_test.go#L1225-L1250",
+          "https://github.com/honeycombio/libhoney-py/blob/11b59417c1df1d97384dc5e870f2ea462da02b80/libhoney/client.py#L11-L18",
+          "https://github.com/honeycombio/terraform-provider-honeycombio/blob/b74d528db4fd6d01503e1b46a13b2146a38b45c3/internal/provider/api_key_resource.go#L417-L420",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/honeycomb.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1034",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "axiom-token-positive",
+      "path": "axiom-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AXIOM_TOKEN=\u0078aat-7f3e9a1c-2b4d-4e6f-8a0b-1c2d3e4f5a6b\n",
+      "expected": [
+        {
+          "start": 12,
+          "end": 53,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "axiom-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "axiom-token",
+        "sources": [
+          "https://github.com/axiomhq/axiom-go/blob/ae983c9447003f74f00e55a2ca64ea119b558fb8/internal/config/token.go#L7-L18",
+          "https://github.com/axiomhq/axiom-go/blob/ae983c9447003f74f00e55a2ca64ea119b558fb8/internal/config/token.go#L7-L18",
+          "https://github.com/axiomhq/axiom-go/blob/ae983c9447003f74f00e55a2ca64ea119b558fb8/axiom/client_test.go",
+          "https://axiom.co/docs/llms-full.txt",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/axiom.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1035",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "axiom-token-negative",
+      "path": "axiom-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AXIOM_TOKEN=${AXIOM_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "axiom-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "axiom-token",
+        "sources": [
+          "https://github.com/axiomhq/axiom-go/blob/ae983c9447003f74f00e55a2ca64ea119b558fb8/internal/config/token.go#L7-L18",
+          "https://github.com/axiomhq/axiom-go/blob/ae983c9447003f74f00e55a2ca64ea119b558fb8/internal/config/token.go#L7-L18",
+          "https://github.com/axiomhq/axiom-go/blob/ae983c9447003f74f00e55a2ca64ea119b558fb8/axiom/client_test.go",
+          "https://axiom.co/docs/llms-full.txt",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/axiom.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1035",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "axiom-personal-token-positive",
+      "path": "axiom-personal-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AXIOM_TOKEN=\u0078apt-0b1c2d3e-4f5a-4b6c-9d7e-8f9a0b1c2d3e\n",
+      "expected": [
+        {
+          "start": 12,
+          "end": 53,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "axiom-personal-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "axiom-personal-token",
+        "sources": [
+          "https://github.com/axiomhq/axiom-go/blob/ae983c9447003f74f00e55a2ca64ea119b558fb8/internal/config/token.go#L7-L18",
+          "https://github.com/axiomhq/axiom-go/blob/ae983c9447003f74f00e55a2ca64ea119b558fb8/internal/config/token.go#L7-L18",
+          "https://github.com/axiomhq/axiom-go/blob/ae983c9447003f74f00e55a2ca64ea119b558fb8/axiom/client_test.go",
+          "https://axiom.co/docs/llms-full.txt",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/axiom.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1035",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "axiom-personal-token-negative",
+      "path": "axiom-personal-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AXIOM_TOKEN=${AXIOM_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "axiom-personal-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "axiom-personal-token",
+        "sources": [
+          "https://github.com/axiomhq/axiom-go/blob/ae983c9447003f74f00e55a2ca64ea119b558fb8/internal/config/token.go#L7-L18",
+          "https://github.com/axiomhq/axiom-go/blob/ae983c9447003f74f00e55a2ca64ea119b558fb8/internal/config/token.go#L7-L18",
+          "https://github.com/axiomhq/axiom-go/blob/ae983c9447003f74f00e55a2ca64ea119b558fb8/axiom/client_test.go",
+          "https://axiom.co/docs/llms-full.txt",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/axiom.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540",
+          "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1035",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
     }
   ]
 }

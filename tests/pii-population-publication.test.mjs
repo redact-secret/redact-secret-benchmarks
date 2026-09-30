@@ -52,6 +52,22 @@ test('a candidate that is the released lockfile package writes no population bun
     const { stdout } = await promisify(execFile)(process.execPath, ['--import', 'tsx', 'scripts/observe-pii-populations.mjs',
       `--candidate-core=${released.core}`, `--candidate-node=${released.node}`, `--candidate-wasm=${released.wasm}`, `--output=${output}`]);
     assert.match(stdout, /no unreleased candidate/);
+    assert.match(stdout, /candidate equals the published release; no comparison/);
     await assert.rejects(access(output));
+  } finally { await rm(scratch, { recursive: true, force: true }); }
+});
+
+test('equal baseline and candidate artifact sets are detected offline, and the direct comparison still refuses them', async () => {
+  const { mkdtemp, rm, writeFile } = await import('node:fs/promises'), { tmpdir } = await import('node:os'), path = await import('node:path');
+  const { sameArtifacts, observePiiPopulations, CANDIDATE_EQUALS_RELEASE_LABEL } = await import('../scripts/observe-pii-populations.mjs');
+  const scratch = await mkdtemp(path.join(tmpdir(), 'pii-population-equal-'));
+  try {
+    const make = async (dir, tag) => Object.fromEntries(await Promise.all(['core', 'node', 'wasm'].map(async role => {
+      const file = path.join(scratch, `${dir}-${role}.tgz`); await writeFile(file, `${role}:${tag}`); return [role, file]; })));
+    const a = await make('a', 'x'), b = await make('b', 'x'), c = await make('c', 'y');
+    assert.equal(await sameArtifacts(a, b), true);
+    assert.equal(await sameArtifacts(a, c), false);
+    await assert.rejects(observePiiPopulations({ baseline: a, candidate: b }), /same artifacts/);
+    assert.equal(CANDIDATE_EQUALS_RELEASE_LABEL, 'candidate equals the published release; no comparison');
   } finally { await rm(scratch, { recursive: true, force: true }); }
 });

@@ -156,8 +156,11 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // families score policy or T0 and are not in this tally.
   // #434/#436 graduation (registry pin 1127bf9): 39 more detector-coverage positives (key-shape × bare, quoted,
   // unicode-crlf) for the thirteen new T1 registry detectors (doppler-token … wandb-api-key).
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 479);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 485);
+  // #464/#528 graduation and #1012 (registry pin 4fb7882): 51 more detector-coverage positives (key-shape × bare, quoted,
+  // unicode-crlf) for the sixteen new T1 registry detectors (daytona-api-key … axiom-token) and the T2
+  // google-oauth-client-secret; aws-secret-access-key is context-gated and its coverage positive scores as policy.
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 530);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 536);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -176,7 +179,8 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // redact-secret#948 (docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md): six
   // detector-coverage near-miss controls under the provider's own credential variable move from must-not-flag/T2
   // to policy/T3 on generic-token (+6 files/+6 spans).
-  assert.deepEqual(tally['policy/T3'], { files: 235, spans: 235 });
+  // #1012 (registry pin 4fb7882): aws-secret-access-key's context-gated coverage positive in three contexts (+3).
+  assert.deepEqual(tally['policy/T3'], { files: 238, spans: 238 });
   assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
   const twins = all.filter(([category]) => !category.startsWith('beta8-')).flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
@@ -243,7 +247,10 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // variable to policy/T3 on generic-token (docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md): -6.
   // redact-secret#1013 promotes ai21-api-key to T2 and scopes its detector-coverage short-token near-miss as three
   // negative length twins of key-shape, as #384 did for mistral, cohere and deepgram (netted out via -twins.length): -1.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 585);
+  // The #464/#528 graduation and #1012 (registry pin 4fb7882) add 89: prefix-only, short-body, mask, reference and label-prose for
+  // the sixteen new registry detectors and google-oauth-client-secret (85), and missing-keyword, mask, reference and label-prose
+  // for the context-gated aws-secret-access-key (4; its 39-character near-miss is a length twin).
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 674);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

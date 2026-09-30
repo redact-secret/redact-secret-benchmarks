@@ -1043,7 +1043,19 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     ["paddle-api-key", `pdl_live_apikey_${synthetic("coverage:paddle:api-key:id", 26, LOWER_ALNUM)}_${synthetic("coverage:paddle:api-key:secret", 22, AI_ALNUM)}_${synthetic("coverage:paddle:api-key:suffix", 3, AI_ALNUM)}`, "pdl_live_apikey_", "PADDLE_API_KEY", "Paddle Billing API key (pdl_live_apikey_ prefix)"],
     ["honeycomb-api-key", `hcaik_${synthetic("coverage:honeycomb:ingest-key:body", 58, LOWER_ALNUM)}`, "hcaik_", "HONEYCOMB_API_KEY", "Honeycomb ingest key (hcaik_ prefix)"],
     ["axiom-token", `xaat-${uuidHex("coverage:axiom:api-token")}`, "xaat-", "AXIOM_TOKEN", "Axiom API token (xaat- prefix)"],
+    // #1012 (redact-secret#1029, product PR #1039): contract in benchmarks/lib/beta8/1012b.ts.
+    ["google-oauth-client-secret", `GOCSPX-${synthetic("coverage:google:oauth-client-secret:body", 28, `${AI_ALNUM}_-`)}`, "GOCSPX-", "GOOGLE_CLIENT_SECRET", "Google OAuth client secret (GOCSPX- prefix)"],
   ];
+  // #1012 (redact-secret#1028, product PR #1039): aws-secret-access-key is context-gated (contract in
+  // benchmarks/lib/beta8/1012a.ts), so, as for mistral-api-key above, the positive carries its key name, the bare value
+  // is a missing-keyword control and a 39-character near-miss beside the same name is a negative twin.
+  const awsSecret = synthetic("coverage:aws:secret-access-key:value", 40, `${AI_ALNUM}/+`);
+  positive("aws-secret-access-key", "key-shape", ["AWS_SECRET_ACCESS_KEY=", { secret: awsSecret }]);
+  add("aws-secret-access-key", "missing-keyword", [awsSecret]);
+  addTwin("aws-secret-access-key", "key-shape", [`AWS_SECRET_ACCESS_KEY=${awsSecret.slice(0, 39)}`], "length: 39 vs contracted 40");
+  add("aws-secret-access-key", "mask", [`AWS_SECRET_ACCESS_KEY=${"*".repeat(40)}`]);
+  add("aws-secret-access-key", "reference", ["AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}\n"]);
+  add("aws-secret-access-key", "label-prose", ["Documentation mentions an AWS secret access key without embedding the key value."]);
   for (const [detector, value, prefix, env, label] of beta12) {
     positive(detector, "key-shape", [{ secret: value }]);
     add(detector, "prefix-only", [prefix]);

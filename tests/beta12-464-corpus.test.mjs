@@ -6,7 +6,7 @@ import { contracts } from '../benchmarks/lib/assessment.ts';
 import { BETA8_MODULES, arrivalIds } from '../benchmarks/lib/beta8/index.ts';
 import { HANDOFF_REVISION } from '../benchmarks/lib/beta8/464-sources.ts';
 import { beta8ProfileCounts } from '../scripts/report-beta8-profiles.mjs';
-import { findingFamily } from '../scanners/families.mjs';
+import { findingFamily, scoredArrivalFamilies } from '../scanners/families.mjs';
 
 // Beta.12 #860 issuance-research contracts and corpus (#464): the conventions tests/beta8.test.mjs cannot see
 // because they are specific to these six slices.
@@ -32,16 +32,18 @@ const valuesOf = (corpus, target) => positivesOf(corpus, target).map(f => valueO
 const widths = (values, prefix) => [...new Set(values.map(v => v.length - prefix))].sort((a, b) => a - b);
 const policyFields = id => contracts[id].fields.filter(f => f.field.startsWith('policy-'));
 
-test('the six #464 families are T1 unscored arrival families, one slice each, with a taxonomy row, a contract and a profile', async () => {
+test('the six #464 families graduated to registry detectors at the 4fb7882 re-pin, one slice each, with a taxonomy row, a contract and a profile', async () => {
   const taxonomy = await read('benchmarks/support/taxonomy.json');
   const registry = new Set((await read('benchmarks/detectors.json')).detectors.map(d => d.id));
-  assert.deepEqual(modules.map(m => m.arrivalFamilies.length), [1, 1, 1, 1, 1, 1]);
-  assert.deepEqual(modules.flatMap(m => m.arrivalFamilies.map(f => f.id)).sort(), Object.keys(families).sort());
+  const graduated = modules.flatMap(m => Object.keys(m.registryContracts ?? {})).sort();
+  const siblings = modules.flatMap(m => m.arrivalFamilies.map(f => f.id)).sort();
+  assert.deepEqual([...graduated, ...siblings].sort(), Object.keys(families).sort());
+  assert.ok(graduated.every(id => registry.has(id) && !arrivalIds.has(id)), 'graduated ids are registry detectors, never arrival ids');
+  assert.ok(siblings.every(id => arrivalIds.has(id) && !registry.has(id) && scoredArrivalFamilies.includes(id)), 'sibling types stay arrival families scored by finding type');
   for (const [id, [taxonomyId]] of Object.entries(families)) {
-    assert.ok(arrivalIds.has(id) && !registry.has(id), `${id}: an arrival family until the product detector is in the pinned registry`);
     const row = taxonomy.families.find(f => f.id === taxonomyId);
     assert.ok(row, `${id}: taxonomy row ${taxonomyId}`);
-    assert.deepEqual(row.detectors, [], `${id}: no detector mapped yet`);
+    assert.deepEqual(row.detectors, [id], `${id}: the taxonomy row maps to the family's own id`);
     assert.equal(row.supportStatus, undefined, `${id}: no hand-edited support status`);
     const contract = contracts[id];
     assert.equal(contract.tier, 'T1', id);

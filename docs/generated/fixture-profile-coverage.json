@@ -576,9 +576,9 @@
       "family": "aws-secret-access-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "context-constrained-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "context-constrained-empirical",
       "cellsMet": [],
       "cells": {
         "totalFixtures": 60,
@@ -622,20 +622,19 @@
         ]
       },
       "requiredCells": {
-        "totalFixtures": 24,
-        "positiveCases": 6,
-        "benignControls": 8,
-        "twinPairs": 5,
-        "positiveContextAxes": 4,
-        "controlAxes": 4
+        "totalFixtures": 48,
+        "positiveCases": 1,
+        "benignControls": 1,
+        "twinPairs": 10,
+        "confusionAxes": 6
       },
       "requiredButEmptyAxisIds": [],
       "debt": [
         {
           "cell": "positiveCases",
           "actual": 0,
-          "required": 6,
-          "shortfall": 6
+          "required": 1,
+          "shortfall": 1
         }
       ]
     },
@@ -3874,9 +3873,9 @@
       "family": "google-oauth-client-secret",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented"
@@ -3920,15 +3919,34 @@
         ]
       },
       "requiredCells": {
-        "totalFixtures": 24,
-        "positiveCases": 6,
-        "benignControls": 8,
-        "twinPairs": 5,
-        "positiveContextAxes": 4,
-        "controlAxes": 4
+        "totalFixtures": 40,
+        "positiveCases": 10,
+        "benignControls": 14,
+        "twinPairs": 8,
+        "positiveContextAxes": 6,
+        "controlAxes": 5
       },
       "requiredButEmptyAxisIds": [],
-      "debt": []
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 35,
+          "required": 40,
+          "shortfall": 5
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 9,
+          "required": 10,
+          "shortfall": 1
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 6,
+          "required": 8,
+          "shortfall": 2
+        }
+      ]
     },
     {
       "family": "grafana-cloud-access-policy-token",
@@ -8519,9 +8537,9 @@
       "family": "vercel-app-access-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented"
@@ -8565,23 +8583,48 @@
         ]
       },
       "requiredCells": {
-        "totalFixtures": 24,
-        "positiveCases": 6,
-        "benignControls": 8,
-        "twinPairs": 5,
-        "positiveContextAxes": 4,
-        "controlAxes": 4
+        "totalFixtures": 40,
+        "positiveCases": 10,
+        "benignControls": 14,
+        "twinPairs": 8,
+        "positiveContextAxes": 6,
+        "controlAxes": 5
       },
       "requiredButEmptyAxisIds": [],
-      "debt": []
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 29,
+          "required": 40,
+          "shortfall": 11
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 6,
+          "required": 10,
+          "shortfall": 4
+        },
+        {
+          "cell": "benignControls",
+          "actual": 9,
+          "required": 14,
+          "shortfall": 5
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 7,
+          "required": 8,
+          "shortfall": 1
+        }
+      ]
     },
     {
       "family": "vercel-app-refresh-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented"
@@ -8625,23 +8668,48 @@
         ]
       },
       "requiredCells": {
-        "totalFixtures": 24,
-        "positiveCases": 6,
-        "benignControls": 8,
-        "twinPairs": 5,
-        "positiveContextAxes": 4,
-        "controlAxes": 4
+        "totalFixtures": 40,
+        "positiveCases": 10,
+        "benignControls": 14,
+        "twinPairs": 8,
+        "positiveContextAxes": 6,
+        "controlAxes": 5
       },
       "requiredButEmptyAxisIds": [],
-      "debt": []
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 29,
+          "required": 40,
+          "shortfall": 11
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 6,
+          "required": 10,
+          "shortfall": 4
+        },
+        {
+          "cell": "benignControls",
+          "actual": 9,
+          "required": 14,
+          "shortfall": 5
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 7,
+          "required": 8,
+          "shortfall": 1
+        }
+      ]
     },
     {
       "family": "vercel-personal-access-token",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
         "stable-documented"
@@ -8685,15 +8753,40 @@
         ]
       },
       "requiredCells": {
-        "totalFixtures": 24,
-        "positiveCases": 6,
-        "benignControls": 8,
-        "twinPairs": 5,
-        "positiveContextAxes": 4,
-        "controlAxes": 4
+        "totalFixtures": 40,
+        "positiveCases": 10,
+        "benignControls": 14,
+        "twinPairs": 8,
+        "positiveContextAxes": 6,
+        "controlAxes": 5
       },
       "requiredButEmptyAxisIds": [],
-      "debt": []
+      "debt": [
+        {
+          "cell": "totalFixtures",
+          "actual": 29,
+          "required": 40,
+          "shortfall": 11
+        },
+        {
+          "cell": "positiveCases",
+          "actual": 6,
+          "required": 10,
+          "shortfall": 4
+        },
+        {
+          "cell": "benignControls",
+          "actual": 9,
+          "required": 14,
+          "shortfall": 5
+        },
+        {
+          "cell": "twinPairs",
+          "actual": 7,
+          "required": 8,
+          "shortfall": 1
+        }
+      ]
     },
     {
       "family": "vercel-token",

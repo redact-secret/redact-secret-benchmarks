@@ -42,7 +42,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | aws-access-key | T1 | stable-documented | 26 | 6 | 8 | 6 | 5 | 5 | 6 | none |
 | aws-bedrock-long-term-api-key | T1 | stable-documented | 44 | 12 | 20 | 6 | 16 | 6 | 9 | none |
 | aws-bedrock-short-term-api-key | T1 | stable-documented | 34 | 7 | 15 | 6 | 11 | 6 | 10 | none |
-| aws-secret-access-key | T2 | arrival-provisional | 60 | 0 | 24 | 20 | 11 | 6 | 9 | positive/context cases 0/6 |
+| aws-secret-access-key | T2 | context-constrained-empirical | 60 | 0 | 24 | 20 | 11 | 6 | 9 | positive/context cases 0/1 |
 | aws-sts-temporary-access-key | T2 | arrival-provisional | 29 | 6 | 11 | 6 | 8 | 5 | 9 | none |
 | axiom-personal-token | T1 | stable-documented | 25 | 5 | 8 | 6 | 6 | 5 | 9 | positive/context cases 5/6 |
 | axiom-token | T1 | stable-documented | 37 | 8 | 13 | 8 | 8 | 5 | 9 | none |
@@ -94,7 +94,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | gitlab-runner-authentication-token | T2 | stable-empirical | 43 | 11 | 16 | 8 | 15 | 6 | 10 | none |
 | gitlab-token | T1 | stable-documented | 26 | 6 | 8 | 7 | 5 | 5 | 7 | none |
 | google-api-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 7 | none |
-| google-oauth-client-secret | T2 | arrival-provisional | 35 | 9 | 14 | 6 | 9 | 5 | 9 | none |
+| google-oauth-client-secret | T2 | stable-empirical | 35 | 9 | 14 | 6 | 9 | 5 | 9 | total fixtures 35/40; positive/context cases 9/10; twin pairs 6/8 |
 | grafana-cloud-access-policy-token | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | grafana-service-account-token | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | groq-api-key | T2 | stable-empirical | 41 | 11 | 14 | 8 | 16 | 6 | 10 | none |
@@ -168,9 +168,9 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | twilio-api-key-secret | T2 | context-constrained-empirical | 48 | 13 | 15 | 10 | 18 | 6 | 7 | none |
 | twilio-auth-token | T2 | context-constrained-empirical | 60 | 16 | 20 | 12 | 24 | 6 | 7 | none |
 | vault-token | T1 | stable-documented | 28 | 12 | 8 | 6 | 4 | 6 | 9 | none |
-| vercel-app-access-token | T2 | arrival-provisional | 29 | 6 | 9 | 7 | 9 | 5 | 9 | none |
-| vercel-app-refresh-token | T2 | arrival-provisional | 29 | 6 | 9 | 7 | 9 | 5 | 9 | none |
-| vercel-personal-access-token | T2 | arrival-provisional | 29 | 6 | 9 | 7 | 9 | 5 | 9 | none |
+| vercel-app-access-token | T2 | stable-empirical | 29 | 6 | 9 | 7 | 9 | 5 | 9 | total fixtures 29/40; positive/context cases 6/10; non-twin benign controls 9/14; twin pairs 7/8 |
+| vercel-app-refresh-token | T2 | stable-empirical | 29 | 6 | 9 | 7 | 9 | 5 | 9 | total fixtures 29/40; positive/context cases 6/10; non-twin benign controls 9/14; twin pairs 7/8 |
+| vercel-personal-access-token | T2 | stable-empirical | 29 | 6 | 9 | 7 | 9 | 5 | 9 | total fixtures 29/40; positive/context cases 6/10; non-twin benign controls 9/14; twin pairs 7/8 |
 | vercel-token | T0 | arrival-provisional | 20 | 15 | 5 | 0 | 1 | 3 | 3 | total fixtures 20/24; non-twin benign controls 5/8; twin pairs 0/5; positive-context axes 1/4; control axes 3/4 |
 | wandb-api-key | T1 | stable-documented | 35 | 10 | 13 | 6 | 9 | 6 | 9 | none |
 | xai-api-key | T2 | stable-empirical | 41 | 11 | 14 | 8 | 16 | 6 | 10 | none |

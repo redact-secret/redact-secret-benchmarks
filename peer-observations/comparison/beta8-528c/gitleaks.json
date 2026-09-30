@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T02:26:04.524Z",
+  "sourceRun": {
+    "runId": "2026-09-30T02:26:04.524Z-acd115",
+    "benchmarkRevision": "48471709384974971eb9b114b31034a011ac74a9"
+  },
+  "input": {
+    "surface": "comparison/beta8-528c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "332dea8e65006d221ecb6187019cb4f44fa0919d6b48f4036926e1f468149b35",
+    "fixtureCount": 60,
+    "fixturesDigest": "09b0f3ab18c1bdd8de5f796add94a44bf877afbe431f71c7f5f7ff5034975190",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "44fc8a6f994f3bedc2eea2bb8ddc78017d25a4e787c869a0ff0c6f663a4e82f6",
+      "fixtureCount": 5460
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "b19cc793f60cd86e3b0bae88d6d7586c137d3016fbf9c691d04ac8ba8fed9c68"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/sonarqube-analysis-token-actions-env.yml",
+      "start": 113,
+      "end": 157,
+      "family": "sonarqube-token"
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-body-39-twin.env",
+      "start": 19,
+      "end": 62,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-body-41-twin.sh",
+      "start": 20,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-dotenv.env",
+      "start": 19,
+      "end": 63,
+      "family": "sonarqube-token"
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-export.sh",
+      "start": 20,
+      "end": 64,
+      "family": "sonarqube-token"
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-hyphen-separator-twin.http",
+      "start": 63,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-json-api-key.json",
+      "start": 16,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-json-token.json",
+      "start": 14,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-project-properties.properties",
+      "start": 65,
+      "end": 109,
+      "family": "sonarqube-token"
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-scanner-token-flag.sh",
+      "start": 104,
+      "end": 148,
+      "family": "sonarqube-token"
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-sdk-kwarg.py",
+      "start": 34,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-uppercase-hex-byte-twin.json",
+      "start": 14,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-x-api-key-header.http",
+      "start": 63,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-token-actions-env.yml",
+      "start": 113,
+      "end": 157,
+      "family": "sonarqube-token"
+    },
+    {
+      "path": "cases/sonarqube-token-body-39-twin.env",
+      "start": 19,
+      "end": 62,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-token-body-41-twin.sh",
+      "start": 20,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-token-dotenv.env",
+      "start": 19,
+      "end": 63,
+      "family": "sonarqube-token"
+    },
+    {
+      "path": "cases/sonarqube-token-export.sh",
+      "start": 20,
+      "end": 64,
+      "family": "sonarqube-token"
+    },
+    {
+      "path": "cases/sonarqube-token-gradle-system-prop.properties",
+      "start": 100,
+      "end": 144,
+      "family": "sonarqube-token"
+    },
+    {
+      "path": "cases/sonarqube-token-json-api-key.json",
+      "start": 16,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-token-json-token.json",
+      "start": 14,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-token-non-hex-letter-twin.json",
+      "start": 16,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-token-project-properties.properties",
+      "start": 65,
+      "end": 109,
+      "family": "sonarqube-token"
+    },
+    {
+      "path": "cases/sonarqube-token-scanner-login-flag.sh",
+      "start": 104,
+      "end": 148,
+      "family": "sonarqube-token"
+    },
+    {
+      "path": "cases/sonarqube-token-scanner-token-flag.sh",
+      "start": 104,
+      "end": 148,
+      "family": "sonarqube-token"
+    },
+    {
+      "path": "cases/sonarqube-token-sdk-kwarg.py",
+      "start": 34,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-token-trailing-underscore-twin.py",
+      "start": 34,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-token-uppercase-hex-byte-twin.json",
+      "start": 14,
+      "end": 58,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-token-uppercase-prefix-twin.http",
+      "start": 63,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-token-x-api-key-header.http",
+      "start": 63,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sonarqube-token-x-run-placeholder.properties",
+      "start": 12,
+      "end": 56,
+      "family": "sonarqube-token"
+    }
+  ],
+  "digest": "a532f480fd0b4bbef6eeba24d41114759b605f868bb40b7b4f9dd814de03832a"
+}

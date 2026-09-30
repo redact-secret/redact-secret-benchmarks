@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T02:26:04.524Z",
+  "sourceRun": {
+    "runId": "2026-09-30T02:26:04.524Z-acd115",
+    "benchmarkRevision": "48471709384974971eb9b114b31034a011ac74a9"
+  },
+  "input": {
+    "surface": "comparison/beta8-528a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "23a23cb39315c710769fa889a46d0dc0436171ee3196a49605cb029edb8fe7a2",
+    "fixtureCount": 38,
+    "fixturesDigest": "8797af2f9b6ae14d8aaede2fc119719cfd4c9e9dd497a6e9886fca98dc704e5e",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "44fc8a6f994f3bedc2eea2bb8ddc78017d25a4e787c869a0ff0c6f663a4e82f6",
+      "fixtureCount": 5460
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
+    },
+    "adapterDigest": "b19cc793f60cd86e3b0bae88d6d7586c137d3016fbf9c691d04ac8ba8fed9c68"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-docker-env-flag.sh",
+      "start": 38,
+      "end": 74
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-non-hex-in-uuid-twin.sh",
+      "start": 38,
+      "end": 74
+    }
+  ],
+  "digest": "d7f0252c0e2989dd1b41ff2f56e328343705f29cd445781d5c689646f963914e"
+}

@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T02:26:04.524Z",
+  "sourceRun": {
+    "runId": "2026-09-30T02:26:04.524Z-acd115",
+    "benchmarkRevision": "48471709384974971eb9b114b31034a011ac74a9"
+  },
+  "input": {
+    "surface": "comparison/beta8-528a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "23a23cb39315c710769fa889a46d0dc0436171ee3196a49605cb029edb8fe7a2",
+    "fixtureCount": 38,
+    "fixturesDigest": "8797af2f9b6ae14d8aaede2fc119719cfd4c9e9dd497a6e9886fca98dc704e5e",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "44fc8a6f994f3bedc2eea2bb8ddc78017d25a4e787c869a0ff0c6f663a4e82f6",
+      "fixtureCount": 5460
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "b19cc793f60cd86e3b0bae88d6d7586c137d3016fbf9c691d04ac8ba8fed9c68"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-bearer-header.http",
+      "start": 63,
+      "end": 139,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/bitwarden-secrets-manager-access-token-key-21-twin.http",
+      "start": 63,
+      "end": 139,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "bfe08180c6c54caa3819ecd8001829446ba0852b98ea148ea311d931709c03b0"
+}

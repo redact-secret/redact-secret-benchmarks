@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T02:26:04.524Z",
+  "sourceRun": {
+    "runId": "2026-09-30T02:26:04.524Z-acd115",
+    "benchmarkRevision": "48471709384974971eb9b114b31034a011ac74a9"
+  },
+  "input": {
+    "surface": "comparison/beta8-528h",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "9948f760933e354187de22bd4cf2b5f779d6264ae44aabcb749ab0623da15593",
+    "fixtureCount": 33,
+    "fixturesDigest": "166fd81201612d2c7bcfc1d9e87e8e76bd4043892fe9067942f70924f9b3f5f5",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "44fc8a6f994f3bedc2eea2bb8ddc78017d25a4e787c869a0ff0c6f663a4e82f6",
+      "fixtureCount": 5460
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "b19cc793f60cd86e3b0bae88d6d7586c137d3016fbf9c691d04ac8ba8fed9c68"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/paddle-api-key-dotenv.env",
+      "start": 22,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/paddle-api-key-export.sh",
+      "start": 23,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/paddle-api-key-hyphen-separator-twin.env",
+      "start": 55,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/paddle-api-key-id-25-twin.env",
+      "start": 22,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/paddle-api-key-id-27-twin.sh",
+      "start": 23,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/paddle-api-key-json-api-key.json",
+      "start": 16,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/paddle-api-key-json-token.json",
+      "start": 14,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/paddle-api-key-sandbox-dotenv.env",
+      "start": 55,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/paddle-api-key-sdk-kwarg.py",
+      "start": 25,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/paddle-api-key-secret-21-twin.json",
+      "start": 16,
+      "end": 84,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/paddle-api-key-suffix-2-twin.http",
+      "start": 55,
+      "end": 123,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/paddle-api-key-suffix-4-twin.py",
+      "start": 25,
+      "end": 95,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/paddle-api-key-uppercase-in-id-twin.json",
+      "start": 14,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/paddle-api-key-x-api-key-header.http",
+      "start": 55,
+      "end": 124,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "05af8b17f3b3eea070b39b37aa1365cd65bb464eb77bea0f29656cccb170b2f1"
+}

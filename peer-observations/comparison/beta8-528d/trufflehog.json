@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T02:26:04.524Z",
+  "sourceRun": {
+    "runId": "2026-09-30T02:26:04.524Z-acd115",
+    "benchmarkRevision": "48471709384974971eb9b114b31034a011ac74a9"
+  },
+  "input": {
+    "surface": "comparison/beta8-528d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "6fd954966c7cdfaf0876c515999e2a738332f80ff00281836825b76a96dbf39e",
+    "fixtureCount": 31,
+    "fixturesDigest": "a87e2770aed4682f9de0ef412c1c4dfad011683a9d3e05db0f2d0f09914a55a6",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "44fc8a6f994f3bedc2eea2bb8ddc78017d25a4e787c869a0ff0c6f663a4e82f6",
+      "fixtureCount": 5460
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
+    },
+    "adapterDigest": "b19cc793f60cd86e3b0bae88d6d7586c137d3016fbf9c691d04ac8ba8fed9c68"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/rubygems-api-key-actions-env.yml",
+      "start": 110,
+      "end": 167,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-authorization-no-scheme.http",
+      "start": 61,
+      "end": 118,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-bare-prose.md",
+      "start": 62,
+      "end": 119,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-bearer-header.http",
+      "start": 65,
+      "end": 122,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-chat-paste.txt",
+      "start": 24,
+      "end": 81,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-dotenv.env",
+      "start": 24,
+      "end": 81,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-export.sh",
+      "start": 25,
+      "end": 82,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-gem-credentials-yaml.yml",
+      "start": 44,
+      "end": 101,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-gem-push-env.sh",
+      "start": 17,
+      "end": 74,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-json-api-key.json",
+      "start": 16,
+      "end": 73,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-json-token.json",
+      "start": 14,
+      "end": 71,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-non-hex-letter-twin.json",
+      "start": 16,
+      "end": 73,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-sdk-kwarg.py",
+      "start": 35,
+      "end": 92,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-x-api-key-header.http",
+      "start": 53,
+      "end": 110,
+      "family": "rubygems-api-key"
+    }
+  ],
+  "digest": "d18a10feb78369847eca8b7b95bf30a39b65d05a6da6462905dee39cfe3fabe6"
+}

@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-29T22:04:31.303Z",
+  "observedAt": "2026-09-30T02:34:47.369Z",
   "sourceRun": {
-    "runId": "18344190-8884-44cc-84ba-80bb674c5174",
-    "benchmarkRevision": "5380aa3a421555883225a62358fa40f81dcd2baa"
+    "runId": "482a7187-7c4e-4082-9548-52918d746c80",
+    "benchmarkRevision": "48471709384974971eb9b114b31034a011ac74a9"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "ba741c0a6d0cead2ae9eff8fad80eaab93c0d1fe105144ee95990d5f6be99546",
-    "fixtureCount": 40394,
-    "fixturesDigest": "51889f8c8ba845bc1f7f11b9698ebd81a15df69188feb58b3c86d491c977aa28",
+    "corpusHash": "8ee1e6ef6b4ffe8d73f972b5579953a543e936a7c77d6172e5aea80ba6fe96b6",
+    "fixtureCount": 43883,
+    "fixturesDigest": "c2381444461f770cda2dcf5b770fd646aa95b3fc4d4ae80e95ee4f22001c7e38",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "6f66c4e499491ddb532f7cfe17236c043ac5796c43323d3f3e85e0eed9d820dd",
-      "fixtureCount": 5034
+      "digest": "44fc8a6f994f3bedc2eea2bb8ddc78017d25a4e787c869a0ff0c6f663a4e82f6",
+      "fixtureCount": 5460
     }
   },
   "peer": {
@@ -48,7 +48,7 @@
       "platform": "darwin-arm64",
       "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
     },
-    "adapterDigest": "c33f4929e72d2715163765dca6af7e7f6e014fc0c671072ba94fb770c80cd2b4"
+    "adapterDigest": "b19cc793f60cd86e3b0bae88d6d7586c137d3016fbf9c691d04ac8ba8fed9c68"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
@@ -25624,6 +25624,714 @@
       "family": "pinecone-api-key"
     },
     {
+      "path": "cases/beta8-528a--bitwarden-secrets-manager-access-token-docker-env-flag--differential/canonical.txt",
+      "start": 38,
+      "end": 74
+    },
+    {
+      "path": "cases/beta8-528a--bitwarden-secrets-manager-access-token-docker-env-flag--metamorphic/canonical.txt",
+      "start": 38,
+      "end": 74
+    },
+    {
+      "path": "cases/beta8-528a--bitwarden-secrets-manager-access-token-docker-env-flag--metamorphic/context.indent.txt",
+      "start": 42,
+      "end": 78
+    },
+    {
+      "path": "cases/beta8-528a--bitwarden-secrets-manager-access-token-docker-env-flag--metamorphic/context.unicode-prefix.txt",
+      "start": 58,
+      "end": 94
+    },
+    {
+      "path": "cases/beta8-528a--bitwarden-secrets-manager-access-token-docker-env-flag--metamorphic/encoding.crlf.txt",
+      "start": 38,
+      "end": 74
+    },
+    {
+      "path": "cases/beta8-528a--bitwarden-secrets-manager-access-token-docker-env-flag--mutation/authored.twin.txt",
+      "start": 38,
+      "end": 74
+    },
+    {
+      "path": "cases/beta8-528a--bitwarden-secrets-manager-access-token-docker-env-flag--mutation/canonical.txt",
+      "start": 38,
+      "end": 74
+    },
+    {
+      "path": "cases/beta8-528a--bitwarden-secrets-manager-access-token-docker-env-flag--mutation/lexical.invalid-alphabet.txt",
+      "start": 38,
+      "end": 74
+    },
+    {
+      "path": "cases/beta8-528a--bitwarden-secrets-manager-access-token-docker-env-flag--mutation/lexical.length-minus-one.txt",
+      "start": 38,
+      "end": 74
+    },
+    {
+      "path": "cases/beta8-528a--bitwarden-secrets-manager-access-token-docker-env-flag--mutation/lexical.length-plus-one.txt",
+      "start": 38,
+      "end": 74
+    },
+    {
+      "path": "cases/beta8-528a--bitwarden-secrets-manager-access-token-docker-env-flag--mutation/lexical.prefix-change.txt",
+      "start": 38,
+      "end": 74
+    },
+    {
+      "path": "cases/beta8-528a--bitwarden-secrets-manager-access-token-docker-env-flag--mutation/lexical.replace-last.txt",
+      "start": 38,
+      "end": 74
+    },
+    {
+      "path": "cases/beta8-528a--bitwarden-secrets-manager-access-token-non-hex-in-uuid-twin--differential/canonical.txt",
+      "start": 38,
+      "end": 74
+    },
+    {
+      "path": "cases/beta8-528a--bitwarden-secrets-manager-access-token-non-hex-in-uuid-twin--twin/authored.twin.txt",
+      "start": 38,
+      "end": 74
+    },
+    {
+      "path": "cases/beta8-528a--bitwarden-secrets-manager-access-token-non-hex-in-uuid-twin--twin/canonical.txt",
+      "start": 38,
+      "end": 74
+    },
+    {
+      "path": "cases/beta8-528c--sonarqube-analysis-token-hyphen-separator-twin--differential/canonical.txt",
+      "start": 67,
+      "end": 107
+    },
+    {
+      "path": "cases/beta8-528c--sonarqube-analysis-token-hyphen-separator-twin--twin/authored.twin.txt",
+      "start": 67,
+      "end": 107
+    },
+    {
+      "path": "cases/beta8-528c--sonarqube-analysis-token-x-api-key-header--mutation/authored.twin.txt",
+      "start": 67,
+      "end": 107
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-actions-env--differential/canonical.txt",
+      "start": 110,
+      "end": 167,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-actions-env--metamorphic/canonical.txt",
+      "start": 110,
+      "end": 167,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-actions-env--metamorphic/context.indent.txt",
+      "start": 114,
+      "end": 171,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-actions-env--metamorphic/context.unicode-prefix.txt",
+      "start": 130,
+      "end": 187,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-actions-env--metamorphic/encoding.crlf.txt",
+      "start": 115,
+      "end": 172,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-actions-env--mutation/canonical.txt",
+      "start": 110,
+      "end": 167,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-actions-env--mutation/lexical.replace-last.txt",
+      "start": 110,
+      "end": 167,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-authorization-no-scheme--differential/canonical.txt",
+      "start": 61,
+      "end": 118,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-authorization-no-scheme--metamorphic/canonical.txt",
+      "start": 61,
+      "end": 118,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-authorization-no-scheme--metamorphic/context.indent.txt",
+      "start": 65,
+      "end": 122,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-authorization-no-scheme--metamorphic/context.unicode-prefix.txt",
+      "start": 81,
+      "end": 138,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-authorization-no-scheme--metamorphic/encoding.crlf.txt",
+      "start": 63,
+      "end": 120,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-authorization-no-scheme--mutation/canonical.txt",
+      "start": 61,
+      "end": 118,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-authorization-no-scheme--mutation/lexical.replace-last.txt",
+      "start": 61,
+      "end": 118,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-bare-prose--differential/canonical.txt",
+      "start": 62,
+      "end": 119,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-bare-prose--metamorphic/canonical.txt",
+      "start": 62,
+      "end": 119,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-bare-prose--metamorphic/context.indent.txt",
+      "start": 66,
+      "end": 123,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-bare-prose--metamorphic/context.unicode-prefix.txt",
+      "start": 82,
+      "end": 139,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-bare-prose--metamorphic/encoding.crlf.txt",
+      "start": 62,
+      "end": 119,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-bare-prose--mutation/canonical.txt",
+      "start": 62,
+      "end": 119,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-bare-prose--mutation/lexical.replace-last.txt",
+      "start": 62,
+      "end": 119,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-bearer-header--differential/canonical.txt",
+      "start": 65,
+      "end": 122,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-bearer-header--metamorphic/canonical.txt",
+      "start": 65,
+      "end": 122,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-bearer-header--metamorphic/context.indent.txt",
+      "start": 69,
+      "end": 126,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-bearer-header--metamorphic/context.unicode-prefix.txt",
+      "start": 85,
+      "end": 142,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-bearer-header--metamorphic/encoding.crlf.txt",
+      "start": 67,
+      "end": 124,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-bearer-header--mutation/canonical.txt",
+      "start": 65,
+      "end": 122,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-bearer-header--mutation/lexical.replace-last.txt",
+      "start": 65,
+      "end": 122,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-body-47-twin--twin/canonical.txt",
+      "start": 24,
+      "end": 81,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-body-49-twin--twin/canonical.txt",
+      "start": 25,
+      "end": 82,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-chat-paste--differential/canonical.txt",
+      "start": 24,
+      "end": 81,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-chat-paste--metamorphic/canonical.txt",
+      "start": 24,
+      "end": 81,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-chat-paste--metamorphic/context.indent.txt",
+      "start": 28,
+      "end": 85,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-chat-paste--metamorphic/context.unicode-prefix.txt",
+      "start": 44,
+      "end": 101,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-chat-paste--metamorphic/encoding.crlf.txt",
+      "start": 24,
+      "end": 81,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-chat-paste--mutation/canonical.txt",
+      "start": 24,
+      "end": 81,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-chat-paste--mutation/lexical.replace-last.txt",
+      "start": 24,
+      "end": 81,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-dotenv--differential/canonical.txt",
+      "start": 24,
+      "end": 81,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-dotenv--metamorphic/canonical.txt",
+      "start": 24,
+      "end": 81,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-dotenv--metamorphic/context.indent.txt",
+      "start": 28,
+      "end": 85,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 44,
+      "end": 101,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 25,
+      "end": 82,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-dotenv--mutation/canonical.txt",
+      "start": 24,
+      "end": 81,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-dotenv--mutation/lexical.replace-last.txt",
+      "start": 24,
+      "end": 81,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-export--differential/canonical.txt",
+      "start": 25,
+      "end": 82,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-export--metamorphic/canonical.txt",
+      "start": 25,
+      "end": 82,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-export--metamorphic/context.indent.txt",
+      "start": 29,
+      "end": 86,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-export--metamorphic/context.unicode-prefix.txt",
+      "start": 45,
+      "end": 102,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-export--metamorphic/encoding.crlf.txt",
+      "start": 25,
+      "end": 82,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-export--mutation/canonical.txt",
+      "start": 25,
+      "end": 82,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-export--mutation/lexical.replace-last.txt",
+      "start": 25,
+      "end": 82,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-gem-credentials-yaml--differential/canonical.txt",
+      "start": 44,
+      "end": 101,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-gem-credentials-yaml--metamorphic/canonical.txt",
+      "start": 44,
+      "end": 101,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-gem-credentials-yaml--metamorphic/context.indent.txt",
+      "start": 48,
+      "end": 105,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-gem-credentials-yaml--metamorphic/context.unicode-prefix.txt",
+      "start": 64,
+      "end": 121,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-gem-credentials-yaml--metamorphic/encoding.crlf.txt",
+      "start": 46,
+      "end": 103,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-gem-credentials-yaml--mutation/canonical.txt",
+      "start": 44,
+      "end": 101,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-gem-credentials-yaml--mutation/lexical.replace-last.txt",
+      "start": 44,
+      "end": 101,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-gem-push-env--differential/canonical.txt",
+      "start": 17,
+      "end": 74,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-gem-push-env--metamorphic/canonical.txt",
+      "start": 17,
+      "end": 74,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-gem-push-env--metamorphic/context.indent.txt",
+      "start": 21,
+      "end": 78,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-gem-push-env--metamorphic/context.unicode-prefix.txt",
+      "start": 37,
+      "end": 94,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-gem-push-env--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 74,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-gem-push-env--mutation/canonical.txt",
+      "start": 17,
+      "end": 74,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-gem-push-env--mutation/lexical.replace-last.txt",
+      "start": 17,
+      "end": 74,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-hyphen-separator-twin--twin/canonical.txt",
+      "start": 53,
+      "end": 110,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 73,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 73,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 77,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 93,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 74,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-json-api-key--mutation/authored.twin.txt",
+      "start": 16,
+      "end": 73,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 73,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-json-api-key--mutation/lexical.replace-last.txt",
+      "start": 16,
+      "end": 73,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-json-token--differential/canonical.txt",
+      "start": 14,
+      "end": 71,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-json-token--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 71,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-json-token--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 75,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-json-token--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 91,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-json-token--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 72,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-json-token--mutation/canonical.txt",
+      "start": 14,
+      "end": 71,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-json-token--mutation/lexical.replace-last.txt",
+      "start": 14,
+      "end": 71,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-leading-glue-twin--twin/canonical.txt",
+      "start": 62,
+      "end": 119,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-non-hex-letter-twin--differential/canonical.txt",
+      "start": 16,
+      "end": 73,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-non-hex-letter-twin--twin/authored.twin.txt",
+      "start": 16,
+      "end": 73,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-non-hex-letter-twin--twin/canonical.txt",
+      "start": 16,
+      "end": 73,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-sdk-kwarg--differential/canonical.txt",
+      "start": 35,
+      "end": 92,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-sdk-kwarg--metamorphic/canonical.txt",
+      "start": 35,
+      "end": 92,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-sdk-kwarg--metamorphic/context.indent.txt",
+      "start": 39,
+      "end": 96,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-sdk-kwarg--metamorphic/context.unicode-prefix.txt",
+      "start": 55,
+      "end": 112,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-sdk-kwarg--metamorphic/encoding.crlf.txt",
+      "start": 35,
+      "end": 92,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-sdk-kwarg--mutation/canonical.txt",
+      "start": 35,
+      "end": 92,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-sdk-kwarg--mutation/lexical.replace-last.txt",
+      "start": 35,
+      "end": 92,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-trailing-letter-twin--twin/canonical.txt",
+      "start": 35,
+      "end": 92,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-trailing-underscore-twin--twin/canonical.txt",
+      "start": 24,
+      "end": 81,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-uppercase-hex-byte-twin--twin/canonical.txt",
+      "start": 14,
+      "end": 71,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-uppercase-prefix-twin--twin/canonical.txt",
+      "start": 65,
+      "end": 122,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-x-api-key-header--differential/canonical.txt",
+      "start": 53,
+      "end": 110,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-x-api-key-header--metamorphic/canonical.txt",
+      "start": 53,
+      "end": 110,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 57,
+      "end": 114,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 73,
+      "end": 130,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 55,
+      "end": 112,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-x-api-key-header--mutation/canonical.txt",
+      "start": 53,
+      "end": 110,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/beta8-528d--rubygems-api-key-x-api-key-header--mutation/lexical.replace-last.txt",
+      "start": 53,
+      "end": 110,
+      "family": "rubygems-api-key"
+    },
+    {
       "path": "cases/common-formats--anthropic-token-api03-admin-prefix-plain-twin--differential/canonical.txt",
       "start": 0,
       "end": 110,
@@ -44276,5 +44984,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "08851a62dd153cbb64aed9b04264bbf80c29b18c54357a39b557dd9219b1e03a"
+  "digest": "891f7615675cd52c4978f10e1486a9db1a20708b4e459c50fc1fe0dd4bef953d"
 }

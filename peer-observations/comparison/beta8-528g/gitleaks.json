@@ -1,0 +1,196 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T02:26:04.524Z",
+  "sourceRun": {
+    "runId": "2026-09-30T02:26:04.524Z-acd115",
+    "benchmarkRevision": "48471709384974971eb9b114b31034a011ac74a9"
+  },
+  "input": {
+    "surface": "comparison/beta8-528g",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "e8d3eb1d03b9345bb6ab64c27ce8aac6cbe82fa965666c7342b1e55f345d8a4e",
+    "fixtureCount": 33,
+    "fixturesDigest": "63d2cdd636cc124ec492f18fede5113ef65211bc303d04980646bdead0d0c210",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "44fc8a6f994f3bedc2eea2bb8ddc78017d25a4e787c869a0ff0c6f663a4e82f6",
+      "fixtureCount": 5460
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "b19cc793f60cd86e3b0bae88d6d7586c137d3016fbf9c691d04ac8ba8fed9c68"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/dynatrace-token-api-token-header.http",
+      "start": 88,
+      "end": 184,
+      "family": "dynatrace-token"
+    },
+    {
+      "path": "cases/dynatrace-token-bare-prose.md",
+      "start": 63,
+      "end": 159,
+      "family": "dynatrace-token"
+    },
+    {
+      "path": "cases/dynatrace-token-bearer-header.http",
+      "start": 80,
+      "end": 176,
+      "family": "dynatrace-token"
+    },
+    {
+      "path": "cases/dynatrace-token-chat-paste.txt",
+      "start": 25,
+      "end": 121,
+      "family": "dynatrace-token"
+    },
+    {
+      "path": "cases/dynatrace-token-collector-headers.yml",
+      "start": 130,
+      "end": 226,
+      "family": "dynatrace-token"
+    },
+    {
+      "path": "cases/dynatrace-token-digit-outside-base32-twin.json",
+      "start": 16,
+      "end": 112,
+      "family": "dynatrace-token"
+    },
+    {
+      "path": "cases/dynatrace-token-docs-placeholder-placeholder.sh",
+      "start": 34,
+      "end": 68
+    },
+    {
+      "path": "cases/dynatrace-token-dotenv.env",
+      "start": 20,
+      "end": 116,
+      "family": "dynatrace-token"
+    },
+    {
+      "path": "cases/dynatrace-token-dynakube-secret.yml",
+      "start": 115,
+      "end": 211,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/dynatrace-token-export.sh",
+      "start": 21,
+      "end": 117,
+      "family": "dynatrace-token"
+    },
+    {
+      "path": "cases/dynatrace-token-json-api-key.json",
+      "start": 16,
+      "end": 112,
+      "family": "dynatrace-token"
+    },
+    {
+      "path": "cases/dynatrace-token-json-token.json",
+      "start": 14,
+      "end": 110,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/dynatrace-token-leading-glue-twin.md",
+      "start": 64,
+      "end": 160,
+      "family": "dynatrace-token"
+    },
+    {
+      "path": "cases/dynatrace-token-lowercase-byte-twin.json",
+      "start": 14,
+      "end": 110,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/dynatrace-token-public-23-twin.env",
+      "start": 20,
+      "end": 115,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/dynatrace-token-public-25-twin.sh",
+      "start": 21,
+      "end": 118,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/dynatrace-token-sdk-kwarg.py",
+      "start": 34,
+      "end": 130,
+      "family": "dynatrace-token"
+    },
+    {
+      "path": "cases/dynatrace-token-secret-65-twin.http",
+      "start": 88,
+      "end": 184,
+      "family": "dynatrace-token"
+    },
+    {
+      "path": "cases/dynatrace-token-trailing-underscore-twin.txt",
+      "start": 25,
+      "end": 121,
+      "family": "dynatrace-token"
+    },
+    {
+      "path": "cases/dynatrace-token-unknown-type-letter-twin.py",
+      "start": 34,
+      "end": 130,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/dynatrace-token-version-1-twin.http",
+      "start": 68,
+      "end": 164,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/dynatrace-token-x-api-key-header.http",
+      "start": 68,
+      "end": 164,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "1aeb929cb9ab38a5bb8e85b972bbcf55b8f5d03d3944972935b3f9014d3b3f36"
+}

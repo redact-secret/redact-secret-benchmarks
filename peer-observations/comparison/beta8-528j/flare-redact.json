@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T02:26:04.524Z",
+  "sourceRun": {
+    "runId": "2026-09-30T02:26:04.524Z-acd115",
+    "benchmarkRevision": "48471709384974971eb9b114b31034a011ac74a9"
+  },
+  "input": {
+    "surface": "comparison/beta8-528j",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "05969db9b2daf129dad4132e7a8a3446822509d9190c38fec860923959ff654a",
+    "fixtureCount": 54,
+    "fixturesDigest": "35ed9a5d930c80498d44cf6f7f8bc0e749d2d037b48764df841f42bc3cf333cc",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "44fc8a6f994f3bedc2eea2bb8ddc78017d25a4e787c869a0ff0c6f663a4e82f6",
+      "fixtureCount": 5460
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "b19cc793f60cd86e3b0bae88d6d7586c137d3016fbf9c691d04ac8ba8fed9c68"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/axiom-personal-token-bearer-header.http",
+      "start": 58,
+      "end": 106,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/axiom-personal-token-underscore-separator-twin.http",
+      "start": 58,
+      "end": 106,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/axiom-token-bearer-header.http",
+      "start": 58,
+      "end": 106,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/axiom-token-fluent-bit-output.conf",
+      "start": 147,
+      "end": 195,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/axiom-token-otel-env-bearer.env",
+      "start": 90,
+      "end": 138,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/axiom-token-underscore-separator-twin.http",
+      "start": 58,
+      "end": 106,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "39b6155d46ddacd8ac16859eedbcee80bbd2d6567f6dbd79955a8b6bbb3744ed"
+}

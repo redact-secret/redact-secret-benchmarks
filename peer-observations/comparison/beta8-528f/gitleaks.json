@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T02:26:04.524Z",
+  "sourceRun": {
+    "runId": "2026-09-30T02:26:04.524Z-acd115",
+    "benchmarkRevision": "48471709384974971eb9b114b31034a011ac74a9"
+  },
+  "input": {
+    "surface": "comparison/beta8-528f",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "f298384c0e408a5413ccf3374be08ebed12a796a9c0f968122f7569a244e1b3c",
+    "fixtureCount": 58,
+    "fixturesDigest": "54de7e4f1d316ee6765afd1bd88d7f143b74c89fb15d529488f4e4bf7070bf53",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "44fc8a6f994f3bedc2eea2bb8ddc78017d25a4e787c869a0ff0c6f663a4e82f6",
+      "fixtureCount": 5460
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "b19cc793f60cd86e3b0bae88d6d7586c137d3016fbf9c691d04ac8ba8fed9c68"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/crates-io-token-actions-env.yml",
+      "start": 109,
+      "end": 144,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-token-body-31-twin.env",
+      "start": 28,
+      "end": 62,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-token-body-33-twin.sh",
+      "start": 29,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-token-credentials-toml.toml",
+      "start": 48,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-token-dotenv.env",
+      "start": 28,
+      "end": 63,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-token-export.sh",
+      "start": 29,
+      "end": 64,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-token-hyphen-in-body-twin.json",
+      "start": 14,
+      "end": 49,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-token-json-api-key.json",
+      "start": 16,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-token-json-token.json",
+      "start": 14,
+      "end": 49,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-token-sdk-kwarg.py",
+      "start": 33,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-token-trailing-underscore-twin.py",
+      "start": 33,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-token-underscore-in-body-twin.json",
+      "start": 16,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-token-x-api-key-header.http",
+      "start": 50,
+      "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-actions-log.log",
+      "start": 143,
+      "end": 182,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-body-31-twin.env",
+      "start": 28,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-body-33-twin.sh",
+      "start": 29,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-check-mismatch-env.env",
+      "start": 51,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-dotenv.env",
+      "start": 28,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-export.sh",
+      "start": 29,
+      "end": 68,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-github-env-export.yml",
+      "start": 88,
+      "end": 127,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-hyphen-in-body-twin.json",
+      "start": 14,
+      "end": 53,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-hyphen-separator-twin.http",
+      "start": 50,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-json-api-key.json",
+      "start": 16,
+      "end": 55,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-json-token.json",
+      "start": 14,
+      "end": 53,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-sdk-kwarg.py",
+      "start": 33,
+      "end": 72,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/crates-io-trusted-publishing-token-x-api-key-header.http",
+      "start": 50,
+      "end": 89,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "da8ea8926ac85615d17b1d46ab1e8afab9a57cc515a3bf947f899aeeeef1df80"
+}

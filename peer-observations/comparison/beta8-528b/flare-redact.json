@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T02:26:04.524Z",
+  "sourceRun": {
+    "runId": "2026-09-30T02:26:04.524Z-acd115",
+    "benchmarkRevision": "48471709384974971eb9b114b31034a011ac74a9"
+  },
+  "input": {
+    "surface": "comparison/beta8-528b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "f656681f01d716257d2cbedf95146804638a016b22a197fd9e2d53b36d42706c",
+    "fixtureCount": 59,
+    "fixturesDigest": "17b9c0cbff0d8e93b429423f25e45fe606e5a7623dd85a14ec789d7a0afb0fd7",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "44fc8a6f994f3bedc2eea2bb8ddc78017d25a4e787c869a0ff0c6f663a4e82f6",
+      "fixtureCount": 5460
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "b19cc793f60cd86e3b0bae88d6d7586c137d3016fbf9c691d04ac8ba8fed9c68"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/polar-api-credential-bearer-header.http",
+      "start": 58,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/polar-api-credential-unknown-role-twin.http",
+      "start": 58,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/polar-token-bearer-header.http",
+      "start": 58,
+      "end": 118,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/polar-token-uppercase-prefix-twin.http",
+      "start": 58,
+      "end": 118,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "bcae2a9348b63fdea5c2382bf7296ebb538bd5a9f6a3b005ba7c464b13d1e85a"
+}

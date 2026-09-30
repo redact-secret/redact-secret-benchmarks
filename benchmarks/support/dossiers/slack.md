@@ -50,17 +50,20 @@ families:
     blockedBy: null
   - id: slack:workflow-webhook-token
     research:
-      verdict: ready
+      verdict: issuance-gated
       tier: T1
       sources:
         - https://docs.slack.dev/authentication/tokens
+        - https://docs.slack.dev/reference/interaction-payloads/block_suggestion-payload
+        - https://github.com/slackapi/python-slack-sdk/blob/1fe0b8e708251fb4d2dc9617a774f64635098e21/slack_sdk/socket_mode/logger/messages.py#L4-L6
       issues:
         - redact-secret/redact-secret-benchmarks#45
         - redact-secret/redact-secret-benchmarks#127
         - redact-secret/redact-secret#512
-      evidence: null
+        - redact-secret/redact-secret#1012
+      evidence: https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/slack-workflow-webhook-token.md
       researchedAt: 2026-09-29
-    blockedBy: null
+    blockedBy: Section count and widths rest on one Slack docs example (one owner, so no T2); needs an R5 exception for that example or one custom-function step measured (structure only, self-revokes in 15 minutes).
 ---
 
 # Slack
@@ -145,7 +148,18 @@ here; the workflow-webhook family is recorded on the tokens-page prefix alone (s
 
 ### `slack:workflow-webhook-token` — Workflow webhook token
 
-- **Sources:** `ready`, T1 on the provider-documented prefix `xwfp-` and nothing else (docs/specs/beta8-evidence.md, "Tier follows the evidence": a documented prefix is T1 with the body unspecified, as Anthropic). The tokens page states workflow tokens begin `xwfp-` and gives no section widths or alphabet; the shipped `slack-token` contract cites the same page for the prefix (re-checked 2026-09-20, benchmarks#45). The body grammar is undecided, and per decision `2026-09-24-stop-asserting-provider-undecided-format-properties` a pending fixture never asserts an undecided body. Benchmarks#127 (2026-09-22) keeping the corpus fixtures pending reflects only the missing body grammar, not the prefix verdict; core [#512](https://github.com/redact-secret/redact-secret/issues/512) shipped an open-floor rule for it.
+- **Shape:** prefix `xwfp-`, then sections separated by `-`. The one full-width provider example has the `xoxp-` layout: three digit sections of 13 and a final 32-character lowercase-hex section (79 in total). Slack's own SDK log redactor uses an alphabet without `_`. Section count and widths for issued tokens are unconfirmed. Slack calls this a *workflow token*, the short-lived bot token handed to a custom function step (`bot_access_token`), not a workflow webhook (those are `hooks.slack.com/workflows/...` URLs); the 1012 record suggests the name `slack:workflow-token`, but the taxonomy id is unchanged here.
+- **Verdict (#1012, 2026-09-29):** `issuance-gated`, T1 on the provider-documented prefix and lifetime only. This supersedes the earlier `ready` entry, which rested on the prefix alone; per decision `2026-09-24-stop-asserting-provider-undecided-format-properties` a pending fixture never asserts an undecided body (benchmarks#127).
+- **Sources:**
+  - provider docs (T1): the tokens page states workflow tokens expire after 15 minutes or when the function step ends, and "begin with `xwfp-`".
+  - provider docs example (R5, shape only): the `block_suggestion` payload reference, present by 2023-10-07 (Wayback snapshot), carries the single full-width example described above.
+  - provider log redactor (R2 = T1 for what it states): python-slack-sdk's socket-mode message masker matches `xwfp-` followed by `[A-Za-z0-9-]+`, with no `_`.
+  - provider test placeholders (R4): short `xwfp-` values in bolt-js, bolt-python, java-slack-sdk and python-slack-sdk give no length or sections.
+  - Both the example and the redactor come from one owner, so the T2 route fails. Nothing in slack-cli, the Deno SDKs, gitleaks, trufflehog, CredSweeper, noseyparker, betterleaks or GitLab's rules. No leaked value was found, as expected for a token that dies within 15 minutes.
+- **Issuance:** cheap but manual: run one Slack custom-function step (a Bolt `function_executed` handler or a Deno workflow app) and log only the shape of `bot_access_token`: number of `-` sections, width of each digit section, whether the last section is exactly 32 `[0-9a-f]`, whether any `_` or uppercase appears. The token revokes itself within 15 minutes.
+- **Collisions:** shares the `xox*-` digit-section layout with `slack:user-token` and the `xapp-` dash layout of `slack:app-level-token`; the prefix separates them.
+- **Current contract in core:** an interim guard in `slack-token`: `xwfp-` + at least 20 `[A-Za-z0-9_-]` (#512); a value in the docs example's layout is found in full. The `_` is wider than any provider evidence, and dropping it is supported by provider code and the example. Living spec: [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Open caveat:** ruling R5-exception: may Slack's docs example set the grammar? A yes would make this READY-T1-by-example; otherwise one issuance closes it.
 
 ## Candidates that are not families yet
 
@@ -165,10 +179,13 @@ here; the workflow-webhook family is recorded on the tokens-page prefix alone (s
 2. Is the second `xapp-` section the public app id? Scanner samples disagree.
 3. Have `xapp-` version digits other than `1` been issued?
 4. Answered by #512 (its 2026-09-20 decision): rotating `xoxe.xoxp-` and `xoxe.xoxb-` tokens and refresh tokens are their own supported variants in core, T1 on a single-digit version section with an opaque body; #730 keeps an `xoxp-` inside `xoxe.xoxp-` with the rotation variant. Whether the taxonomy should get a family for them is open.
-5. `slack:workflow-webhook-token`: body grammar undecided; #512 deliberately did not promote it beyond the bare `xwfp-` prefix, and benchmarks#127 stays pending on the body alone.
+5. `slack:workflow-webhook-token`: section count and widths are undecided; #512 deliberately did not promote it beyond the bare `xwfp-` prefix, and benchmarks#127 stays pending on the body alone. The redact-secret#1012 record asks for an R5 exception for the docs example (pending, no question id), or one custom-function step measured. Should the taxonomy id be renamed to `slack:workflow-token`, since the credential is not a webhook?
 
 ## Research log
 
+- redact-secret#1012 — 2026-09-29 contract research for `slack:workflow-webhook-token`
+  ([evidence](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/slack-workflow-webhook-token.md)):
+  BLOCKED on section count and widths; naming correction (workflow token, not webhook).
 - redact-secret#1013 — 2026-09-29 T1/T2 pass for `xapp-` ([evidence](https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/slack-app-level-token.md)):
   READY-T2 conditional on Q-SL; gitleaks width reading corrected.
 - redact-secret-benchmarks#222 — `xapp-` broad-discovery pass (23 sources);

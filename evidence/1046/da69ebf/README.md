@@ -47,3 +47,22 @@ Still provisional (7): `bearer-token`, `connection-string`, `generic-token` and 
 holdout has not run on a frozen candidate), `okta-api-token` (4 unresolved contradictions, ruling Q-OK), and
 `slack-app-level-token` and `together-ai-api-key` (corroboration short; rulings Q-SL and Q-TG). `vercel-token` stays
 pending (T0 aggregate).
+
+## Performance at the pin
+
+Run [36696368348](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36696368348) (reports in
+[`perf-36696368348/`](perf-36696368348/)) was dispatched on this branch with `candidate_revision` `da69ebf`. Latency
+(10), initialization (10) and memory (16) are within budget, and the RC acceptance criteria read ACCEPTED. The same
+three size rows that were accepted at `99c8c2b` read REGRESSION again. That acceptance
+(`benchmarks/accepted-regressions.json`) covers `99c8c2b` only and says that a breach at a different source commit
+is judged afresh:
+
+| Trigger | Baseline (0.1.0-beta.8) | Accepted at 99c8c2b | Measured at da69ebf | Change from 99c8c2b | Verdict |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `size/wasm/full/gzip` | 137,639 | 203,748 | 203,957 | +209 | regression (not accepted) |
+| `size/wasm/common/gzip` | 100,058 | 137,650 | 137,879 | +229 | regression (not accepted) |
+| `size/browser-bundle/quickstart/gzip` | 144,501 | 211,130 | 211,335 | +205 | regression (not accepted) |
+
+No tradeoff is recorded here, because that is a maintainer decision. So `performance-criteria.json`
+`baseline.verifiedCommit` stays at `99c8c2b`, and `pins:check` reports that single mismatch until a maintainer
+accepts these rows for `da69ebf` and an accepted run is recorded.

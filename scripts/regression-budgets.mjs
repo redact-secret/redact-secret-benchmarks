@@ -287,7 +287,7 @@ function derive(args) {
   const next = {
     ...budgets,
     noise: {
-      sources: NOISE_FILES,
+      sources: Object.fromEntries(Object.entries(NOISE_FILES).filter(([key, file]) => key !== 'adapterAA' || existsSync(file))),
       summary: {
         pairedAA: {
           runs: readJson(NOISE_FILES.pairedAA).runs.length,
@@ -304,7 +304,7 @@ function derive(args) {
         rerunMemorySpread: round(noise.rerunMemorySpread),
         ciRuns: readJson(NOISE_FILES.ciDispersion).runs.length,
         adapterProcesses: adapterSeries(NOISE_FILES.adapter).length,
-        adapterAAProcesses: existsSync(NOISE_FILES.adapterAA) ? adapterSeries(NOISE_FILES.adapterAA).length : 0,
+        ...(existsSync(NOISE_FILES.adapterAA) ? { adapterAAProcesses: adapterSeries(NOISE_FILES.adapterAA).length } : {}),
       },
     },
     rules: RULES,

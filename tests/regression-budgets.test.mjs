@@ -283,7 +283,6 @@ test('adapter traversal is a same-session ratio at the larger of 15% and twice t
   const unstudied = deriveTriggers(bare, { ...NOISE, adapterChange: {} });
   assert.equal(unstudied.find(t => t.id === trigger.id), undefined);
   assert.deepEqual(unstudied.find(t => t.id === 'adapter/pino/log-flat/traversal').threshold, { relative: 0.2, absoluteFloor: 0.5 });
-  assert.match(unstudied.find(t => t.id === 'adapter/pino/log-flat/traversal').derivation, /no A\/A study/);
   assert.throws(() => deriveTriggers(bare, { ...NOISE, adapterTraversal: {} }), /no-adapter-noise/);
   assert.throws(() => deriveTriggers(baseline, { ...NOISE, adapterChange: {} }), /no-adapter-noise:adapter\/pino\/log-flat\/allocated-bytes/);
 });

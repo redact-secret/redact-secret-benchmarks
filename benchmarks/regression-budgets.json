@@ -19,7 +19,6 @@
       "ciDispersion": "benchmarks/regression-evidence/ci-dispersion.json",
       "rerun": "benchmarks/regression-evidence/rerun-noise-darwin-arm64.json",
       "adapter": "benchmarks/regression-evidence/adapter-overhead-darwin-arm64.json",
-      "adapterAA": "benchmarks/regression-evidence/adapter-aa-darwin-arm64.json",
       "pairedAA": "benchmarks/regression-evidence/paired-aa-linux-x64.json"
     },
     "summary": {
@@ -42,8 +41,7 @@
       },
       "rerunMemorySpread": 0.0197,
       "ciRuns": 8,
-      "adapterProcesses": 10,
-      "adapterAAProcesses": 0
+      "adapterProcesses": 10
     }
   },
   "rules": {
@@ -51,7 +49,7 @@
     "initialization": "judged on the same-job paired ratio, like latency: a regression is an initialization median ratio above 1 + ceil5%(max(25%, 2 x the row's largest A/A median ratio deviation)) that also rises by more than 2 ms; a p95 ratio above 1 + ceil5%(max(50%, 2 x the row's largest A/A p95 ratio deviation)) and 2 ms with the median inside is tail-only (invalid-measurement, rerun); at least 10 samples per side",
     "memory": "the largest observed sample must rise by more than ceil5%(max(10%, 2 x the larger of the CI cross-run spread and the rerun spread)) and 1 MiB; at least 5 samples",
     "size": "sizes are deterministic (16 bytes observed between two platforms' builds of one wasm), so the threshold is review policy anchored to release history: 5% (the median of the last releases' 4.0-10.3% per-release growth), with floors of 4 KiB for compressed WebAssembly and bundles, 4 KiB for npm tarballs, and 16 KiB for native addons, wheels and CLI binaries; the default bundle and optional profiles are separate triggers",
-    "adapter-overhead": "traversal (host+adapter over a finds-nothing scanner, minus host) is judged on the harness's same-session change against the previous adapter release (median over processes of the current/previous ratio): a regression is a ratio above 1 + ceil5%(max(15%, 2 x the row's largest A/A ratio deviation)) that also rises by more than ceil(3 x its between-process standard deviation, at least 0.5 microseconds) of the in-process previous-release traversal; it applies only when both builds make the same scanner calls per event (otherwise not-evaluated), a previous release the harness could not compare is invalid-measurement, and an adapter-core p95 latency ratio above 1 + ceil5%(max(15%, 2 x its A/A deviation)) with the median inside is tail-only (invalid-measurement, rerun); adapter-core allocation (JavaScript bytes allocated per event, Python peak traced bytes) must rise by more than ceil5%(max(10%, 2 x its A/A deviation)) and 1 KiB against the snapshot; p99 latency and GC count are recorded, not budgeted; a row with no A/A study yet keeps the absolute traversal trigger against the snapshot; scanner calls and scanned code units per event are deterministic and trigger on any increase; the candidate must match the baseline profile (platform, arch, CPU model, runtime line, workload digest) and have at least 15 repetitions"
+    "adapter-overhead": "traversal (host+adapter over a finds-nothing scanner, minus host) must rise by more than ceil5%(max(15%, 2 x its between-process spread)) and ceil(3 x its between-process standard deviation, at least 0.5 microseconds); scanner calls and scanned code units per event are deterministic and trigger on any increase; the candidate must match the baseline profile (platform, arch, CPU model, runtime line, workload digest) and have at least 15 repetitions"
   },
   "triggers": [
     {
@@ -97,7 +95,7 @@
         "relative": 0.15,
         "absoluteFloor": 0.5
       },
-      "derivation": "between-process spread 2.2%, standard deviation 0.038 microseconds; no A/A study for this row, so judged against the snapshot"
+      "derivation": "between-process spread 2.2%, standard deviation 0.038 microseconds"
     },
     {
       "id": "adapter/mask-python/mask-payload/scanned-code-units",
@@ -142,7 +140,7 @@
         "relative": 0.15,
         "absoluteFloor": 0.5
       },
-      "derivation": "between-process spread 2.0%, standard deviation 0.108 microseconds; no A/A study for this row, so judged against the snapshot"
+      "derivation": "between-process spread 2.0%, standard deviation 0.108 microseconds"
     },
     {
       "id": "adapter/otel-js/span-attributes/scanned-code-units",
@@ -187,7 +185,7 @@
         "relative": 5.75,
         "absoluteFloor": 3.5
       },
-      "derivation": "between-process spread 286.6%, standard deviation 1.157 microseconds; no A/A study for this row, so judged against the snapshot"
+      "derivation": "between-process spread 286.6%, standard deviation 1.157 microseconds"
     },
     {
       "id": "adapter/otel-python/span-attributes/scanned-code-units",
@@ -232,7 +230,7 @@
         "relative": 0.15,
         "absoluteFloor": 0.5
       },
-      "derivation": "between-process spread 2.3%, standard deviation 0.165 microseconds; no A/A study for this row, so judged against the snapshot"
+      "derivation": "between-process spread 2.3%, standard deviation 0.165 microseconds"
     },
     {
       "id": "adapter/pino-streamwrite/log-flat/scanned-code-units",
@@ -277,7 +275,7 @@
         "relative": 0.15,
         "absoluteFloor": 0.5
       },
-      "derivation": "between-process spread 4.9%, standard deviation 0.062 microseconds; no A/A study for this row, so judged against the snapshot"
+      "derivation": "between-process spread 4.9%, standard deviation 0.062 microseconds"
     },
     {
       "id": "adapter/pino-streamwrite/log-nested/scanned-code-units",
@@ -322,7 +320,7 @@
         "relative": 0.15,
         "absoluteFloor": 0.5
       },
-      "derivation": "between-process spread 3.8%, standard deviation 0.105 microseconds; no A/A study for this row, so judged against the snapshot"
+      "derivation": "between-process spread 3.8%, standard deviation 0.105 microseconds"
     },
     {
       "id": "adapter/pino/log-flat/scanned-code-units",
@@ -367,7 +365,7 @@
         "relative": 0.15,
         "absoluteFloor": 0.5
       },
-      "derivation": "between-process spread 6.8%, standard deviation 0.045 microseconds; no A/A study for this row, so judged against the snapshot"
+      "derivation": "between-process spread 6.8%, standard deviation 0.045 microseconds"
     },
     {
       "id": "adapter/pino/log-nested/scanned-code-units",
@@ -412,7 +410,7 @@
         "relative": 0.15,
         "absoluteFloor": 0.5
       },
-      "derivation": "between-process spread 3.1%, standard deviation 0.034 microseconds; no A/A study for this row, so judged against the snapshot"
+      "derivation": "between-process spread 3.1%, standard deviation 0.034 microseconds"
     },
     {
       "id": "adapter/python-logging/log-flat/scanned-code-units",
@@ -457,7 +455,7 @@
         "relative": 0.15,
         "absoluteFloor": 0.5
       },
-      "derivation": "between-process spread 3.4%, standard deviation 0.049 microseconds; no A/A study for this row, so judged against the snapshot"
+      "derivation": "between-process spread 3.4%, standard deviation 0.049 microseconds"
     },
     {
       "id": "adapter/python-logging/log-nested/scanned-code-units",
@@ -502,7 +500,7 @@
         "relative": 0.15,
         "absoluteFloor": 0.5
       },
-      "derivation": "between-process spread 2.3%, standard deviation 0.095 microseconds; no A/A study for this row, so judged against the snapshot"
+      "derivation": "between-process spread 2.3%, standard deviation 0.095 microseconds"
     },
     {
       "id": "initialization/browser-wasm/scale-logs-medium-fixed4096/initialization-ratio",

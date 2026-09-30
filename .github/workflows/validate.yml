@@ -130,7 +130,7 @@ jobs:
         run: |
           npm ci
           npm run bench
-      - name: No sx prop, no styled(), no client fetch, CSS Modules layered (#547)
+      - name: No sx prop, no styled(), fetch only of build-emitted data through one helper, CSS Modules layered (#547, #573)
         run: npm run check:no-sx
         working-directory: web
       - name: Header uses the canonical logo files and tokens only (#554)
@@ -149,7 +149,7 @@ jobs:
       - name: Chromium for the layout check (#554)
         run: npx playwright install --with-deps chromium
         working-directory: web
-      - name: No page overflow and no mid-word breaks at 320, 375 and 768px in any story or page (#554)
+      - name: No page overflow, no mid-word breaks and no shift when data loads, at 320, 375 and 768px in any story, page or loading or error state (#554, #573)
         run: npm run check:layout
         working-directory: web
 

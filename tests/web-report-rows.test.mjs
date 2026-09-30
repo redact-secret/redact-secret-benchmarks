@@ -8,8 +8,10 @@ import path from 'node:path';
 import { agreesWithSummary, inputsAt, sliceInputs } from '../web/resolvers/peers.ts';
 import { resolvePeers, resolveAnswers, resolveHubTiles } from '../web/resolvers/report.ts';
 import { resolveFamilyList } from '../web/resolvers/families.ts';
-import { FLAG, expandRows, fixtureHref, resolveRowsData, rowFacts } from '../web/resolvers/rows.ts';
-import { filterRows, rowsQueryOf, rowsQueryString } from '../web/resolvers/filters.ts';
+import { FLAG, expandRows, fixtureHref, resolveRowsData, rowFacts, rowsSource } from '../web/resolvers/rows.ts';
+import { isRowsData } from '../web/resolvers/rowdata.ts';
+import { BUILD_DATA_PATH, recordsDataPath, rowsDataPath } from '../web/lib/data-paths.ts';
+import { PAGE_SIZE, filterRows, rowsQueryOf, rowsQueryString } from '../web/resolvers/filters.ts';
 import { boundText, resolveDetector, resolveDetectorList } from '../web/resolvers/detectors.ts';
 import { milestoneLabel, resolveFindingsInventory, resolveSuiteRows } from '../web/resolvers/inventory.ts';
 import { buildSuiteRecords, byteLines, packRow, resolveFixtureDetail, resolveFixtureRecord, segment, unpackRow, verdictsOf } from '../web/resolvers/fixtures.ts';
@@ -214,6 +216,36 @@ test('a row packs into a short string and back without loss', () => {
     { flagged: false, actual: [] },
     { spanOutcomes: [], actual: [] },
   ]) assert.deepEqual(unpackRow(packRow(row)), { actual: [], ...row });
+});
+
+test('a table that fits a page ships whole; a larger one ships its first page and the path of the file with every row', () => {
+  const many = Array.from({ length: 120 }, (_, i) => fx(`r${i}`, 'must-redact', 'T1', ['x:one']));
+  const rows = new Map(many.map((f, i) => [f.slug, { spanOutcomes: [i < 60 ? 'MISS' : 'EXACT'] }]));
+  const scanners = [{ id: 'redact-secret', name: 'redact-secret', rows }];
+  const full = resolveRowsData(many, scanners);
+  const big = rowsSource(full, rowsDataPath('suite', 's'));
+  assert.equal(big.total, 120);
+  assert.equal(big.src, 'rows/suite/s/rows.json');
+  assert.equal(big.head.items.length, PAGE_SIZE);
+  assert.deepEqual(expandRows(big.head, big.head.items), expandRows(full, full.items.slice(0, PAGE_SIZE)), 'the first page is the file\'s first page, row for row');
+  assert.deepEqual(big.head.statuses.map(s => s.label), ['Left readable'], 'the head holds only the outcome words its rows use');
+  assert.deepEqual(full.statuses.map(s => s.label).sort(), ['Left readable', 'Redacted']);
+  assert.ok(big.head.dictionary.length <= full.dictionary.length);
+  const small = rowsSource(resolveRowsData(many.slice(0, PAGE_SIZE), scanners), 'rows/suite/s/rows.json');
+  assert.equal(small.src, undefined, 'a table that fits one page needs no file');
+  assert.equal(small.head.items.length, PAGE_SIZE);
+  assert.ok(isRowsData(JSON.parse(JSON.stringify(full))), 'the file round-trips as JSON');
+  assert.ok(!isRowsData({ items: [] }) && !isRowsData(null), 'a file of another shape is refused');
+});
+
+test('the browser may request only the build-emitted rows and records files', () => {
+  assert.ok(BUILD_DATA_PATH.test(rowsDataPath('level', 'T1')));
+  assert.ok(BUILD_DATA_PATH.test(rowsDataPath('family', 'aws--iam-user-secret-access-key')));
+  assert.ok(BUILD_DATA_PATH.test(rowsDataPath('detector', 'confluent-cloud-api-secret-legacy')));
+  assert.ok(BUILD_DATA_PATH.test(recordsDataPath('detector-coverage')));
+  for (const bad of ['https://example.com/x.json', '//example.com/rows/level/T1/rows.json', '/rows/level/T1/rows.json', 'rows/level/../x/rows.json', 'rows/level/T1/rows.json?x=1', 'rows/other/T1/rows.json', 'rows/level/T1/rows.txt', 'results/summary.json', 'fixtures/a/b/records.json', 'rows/level/T1/rows.json/']) {
+    assert.ok(!BUILD_DATA_PATH.test(bad), bad);
+  }
 });
 
 test('a suite page ships compact records and rebuilds the same fixture page in the browser', () => {

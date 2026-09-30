@@ -9,6 +9,14 @@
  *    land on two lines. Squeezed table cells are the usual cause. Longer tokens
  *    (a hash, a path) may break, because nothing else could hold them.
  *
+ * The states of a page that fetches its data (#543 fetch decision) are checked too, each at the
+ * three widths, by holding or failing the request for the build-emitted file:
+ *
+ *  - loading: the request is held; the page must already show its frame and be free of overflow,
+ *    and once the request is released the table region must not have moved (no layout shift);
+ *  - loaded: the same page after the file arrives;
+ *  - error: the request fails; the retry note and the rows already drawn must fit.
+ *
  * On the exported pages it also checks the header: both canonical logo images
  * load, the visible one has the size the `--logo-w` token gives, and the header
  * carries no inline drawing of the mark.
@@ -58,6 +66,17 @@ try {
   const big = corpus.fixtures.reduce((a, b) => (b.content.length > a.content.length ? b : a));
   ROUTES.push(`report/fixtures/context-edges/?fixture=${big.id}`);
 } catch { /* the generated corpus is materialised by npm ci */ }
+// States of the pages that fetch build-emitted data (rows tables, fixture pages), by how the request to /data/ is treated.
+const firstFixture = firstOf.get(smallSuite.id);
+const STATES = [
+  { name: 'rows loading', route: 'report/rows/T1/?show=leaked&page=2', gate: true, wait: '[aria-busy="true"]', loaded: () => !document.querySelector('[aria-busy="true"]'), anchor: 'main [role="region"]' },
+  { name: 'rows error', route: 'report/rows/T1/?show=leaked', abort: true, wait: 'main div[role="alert"]' },
+  ...(largest ? [{ name: 'family rows loading', route: `report/families/${slugOf(largest)}/?scanners=all`, gate: true, wait: '[aria-busy="true"]', loaded: () => !document.querySelector('[aria-busy="true"]'), anchor: 'main [role="region"]' }] : []),
+  ...(firstFixture ? [
+    { name: 'fixture loading', route: `report/fixtures/${smallSuite.id}/?fixture=${firstFixture}`, gate: true, wait: '[data-fixture-state="loading"]', loaded: () => !!document.querySelector('[data-fixture-ready]'), anchor: '[data-fixture-state] h1' },
+    { name: 'fixture error', route: `report/fixtures/${smallSuite.id}/?fixture=${firstFixture}`, abort: true, wait: '[data-fixture-state="error"]' },
+  ] : []),
+];
 const PAGE_ONLY = ['404.html'];
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.png': 'image/png', '.txt': 'text/plain' };
 
@@ -171,6 +190,7 @@ async function main() {
     ...stories.map(id => ({ name: `story ${id}`, url: `${origin}/iframe.html?id=${id}&viewMode=story`, ready: 'body.sb-show-main', header: false })),
     ...ROUTES.map(r => ({ name: `page /${r}`, url: `${origin}${basePath}/${r.includes('?') ? r.replace('?', '/?').replace('//', '/') : `${r}/`}`, ready: /[?&]fixture=/.test(r) ? '[data-fixture-ready]' : 'main', header: true })),
     ...PAGE_ONLY.map(r => ({ name: `page /${r}`, url: `${origin}${basePath}/${r}`, ready: 'main', header: true })),
+    ...STATES.map(state => ({ ...state, name: `page /${state.route} (${state.name})`, url: `${origin}${basePath}/${state.route.replace('?', '/?').replace('//', '/')}`, header: true })),
   ];
 
   const failures = [];
@@ -184,17 +204,37 @@ async function main() {
         await page.setViewportSize({ width, height: 900 });
         // One retry: a cold browser under load occasionally misses the render signal.
         for (let attempt = 1; attempt <= 2; attempt++) {
+          // A state target holds (gate) or fails (abort) every request for build-emitted data while the page is inspected.
+          let release = () => {};
+          if (target.gate || target.abort) {
+            const gate = new Promise(resolve => { release = resolve; });
+            await page.route('**/data/**', async route => { if (target.abort) return route.abort('failed'); await gate; return route.continue().catch(() => {}); });
+          }
           try {
             await page.goto(target.url, { waitUntil: 'domcontentloaded' });
-            await page.waitForSelector(target.ready, { timeout: 20000 });
+            await page.waitForSelector(target.ready ?? target.wait, { timeout: 20000 });
             await page.evaluate(() => document.fonts.ready).catch(() => {});
             await page.waitForTimeout(50);
             const found = await page.evaluate(inspect, { maxWord: MAX_WORD });
             if (target.header) found.push(...(await page.evaluate(inspectHeader)));
             for (const problem of found) failures.push(`${target.name} @${width}: ${problem}`);
+            if (target.gate) {
+              // Let the file arrive: the loaded state must fit too, and what sits above the rows must not have moved.
+              const before = await page.evaluate(anchor => document.querySelector(anchor)?.getBoundingClientRect().top + window.scrollY, target.anchor);
+              release();
+              await page.waitForFunction(target.loaded, null, { timeout: 20000 });
+              await page.waitForTimeout(100);
+              const after = await page.evaluate(anchor => document.querySelector(anchor)?.getBoundingClientRect().top + window.scrollY, target.anchor);
+              if (process.env.LAYOUT_DEBUG) console.log(`${target.name} @${width}: ${target.anchor} top ${before} -> ${after}`);
+              if (before === undefined || after === undefined || Math.abs(before - after) > 1) failures.push(`${target.name} @${width}: ${target.anchor} moved from ${before} to ${after} when the data arrived (layout shift)`);
+              for (const problem of await page.evaluate(inspect, { maxWord: MAX_WORD })) failures.push(`${target.name.replace(/loading/, 'loaded')} @${width}: ${problem}`);
+            }
             break;
           } catch (error) {
             if (attempt === 2) failures.push(`${target.name} @${width}: did not render (${String(error.message).split('\n')[0]})`);
+          } finally {
+            release();
+            await page.unroute('**/data/**').catch(() => {});
           }
         }
       }
@@ -209,7 +249,7 @@ async function main() {
     console.error(`${failures.length} layout problem(s):\n${failures.sort().map(f => `  ${f}`).join('\n')}`);
     process.exitCode = 1;
   } else {
-    console.log(`layout ok: ${targets.length} stories and pages at ${WIDTHS.join('/')}px, no page overflow, no mid-word breaks`);
+    console.log(`layout ok: ${targets.length} stories and pages (${STATES.length} of them loading, loaded and error states) at ${WIDTHS.join('/')}px, no page overflow, no mid-word breaks, no shift when data arrives`);
   }
 }
 

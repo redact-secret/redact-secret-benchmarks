@@ -1,0 +1,327 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-528c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "5648e8bfabdf08e925f502607f929720cddf376e3c1f3bd3fad201979cbcc79b",
+    "fixtureCount": 60,
+    "fixturesDigest": "09b0f3ab18c1bdd8de5f796add94a44bf877afbe431f71c7f5f7ff5034975190",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/sonarqube-analysis-token-actions-env.yml",
+      "start": 42,
+      "end": 51
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-actions-env.yml",
+      "start": 54,
+      "end": 61
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-actions-env.yml",
+      "start": 194,
+      "end": 201
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-badge-token-markdown-public-id.md",
+      "start": 22,
+      "end": 29
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-bare-prose.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-bare-prose.md",
+      "start": 14,
+      "end": 21
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-bearer-header.http",
+      "start": 32,
+      "end": 39
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-bearer-header.http",
+      "start": 68,
+      "end": 74
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-bearer-header.http",
+      "start": 75,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-chat-paste.txt",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-chat-paste.txt",
+      "start": 13,
+      "end": 20
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-ellipsis-placeholder.md",
+      "start": 14,
+      "end": 22
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-hyphen-separator-twin.http",
+      "start": 31,
+      "end": 38
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-leading-glue-twin.md",
+      "start": 14,
+      "end": 21
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-scanner-token-flag.sh",
+      "start": 69,
+      "end": 76
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-sdk-kwarg.py",
+      "start": 11,
+      "end": 24
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-token-guidance-prose.md",
+      "start": 2,
+      "end": 9
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-trailing-hyphen-twin.txt",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-trailing-hyphen-twin.txt",
+      "start": 13,
+      "end": 20
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-uppercase-prefix-twin.http",
+      "start": 32,
+      "end": 39
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-uppercase-prefix-twin.http",
+      "start": 68,
+      "end": 74
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-uppercase-prefix-twin.http",
+      "start": 75,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-x-api-key-header.http",
+      "start": 31,
+      "end": 38
+    },
+    {
+      "path": "cases/sonarqube-token-actions-env.yml",
+      "start": 42,
+      "end": 51
+    },
+    {
+      "path": "cases/sonarqube-token-actions-env.yml",
+      "start": 54,
+      "end": 61
+    },
+    {
+      "path": "cases/sonarqube-token-actions-env.yml",
+      "start": 194,
+      "end": 201
+    },
+    {
+      "path": "cases/sonarqube-token-badge-token-url-public-id.md",
+      "start": 27,
+      "end": 34
+    },
+    {
+      "path": "cases/sonarqube-token-badge-token-url-public-id.md",
+      "start": 175,
+      "end": 182
+    },
+    {
+      "path": "cases/sonarqube-token-bare-prose.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/sonarqube-token-bare-prose.md",
+      "start": 14,
+      "end": 21
+    },
+    {
+      "path": "cases/sonarqube-token-bearer-header.http",
+      "start": 32,
+      "end": 39
+    },
+    {
+      "path": "cases/sonarqube-token-bearer-header.http",
+      "start": 68,
+      "end": 74
+    },
+    {
+      "path": "cases/sonarqube-token-bearer-header.http",
+      "start": 75,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/sonarqube-token-chat-paste.txt",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/sonarqube-token-chat-paste.txt",
+      "start": 13,
+      "end": 20
+    },
+    {
+      "path": "cases/sonarqube-token-ellipsis-placeholder.md",
+      "start": 16,
+      "end": 21
+    },
+    {
+      "path": "cases/sonarqube-token-ellipsis-placeholder.md",
+      "start": 51,
+      "end": 67
+    },
+    {
+      "path": "cases/sonarqube-token-gradle-system-prop.properties",
+      "start": 56,
+      "end": 63
+    },
+    {
+      "path": "cases/sonarqube-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/sonarqube-token-leading-glue-twin.md",
+      "start": 14,
+      "end": 21
+    },
+    {
+      "path": "cases/sonarqube-token-leading-underscore-twin.txt",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/sonarqube-token-leading-underscore-twin.txt",
+      "start": 13,
+      "end": 20
+    },
+    {
+      "path": "cases/sonarqube-token-scanner-login-flag.sh",
+      "start": 69,
+      "end": 76
+    },
+    {
+      "path": "cases/sonarqube-token-scanner-token-flag.sh",
+      "start": 69,
+      "end": 76
+    },
+    {
+      "path": "cases/sonarqube-token-sdk-kwarg.py",
+      "start": 11,
+      "end": 24
+    },
+    {
+      "path": "cases/sonarqube-token-token-guidance-prose.md",
+      "start": 2,
+      "end": 9
+    },
+    {
+      "path": "cases/sonarqube-token-token-guidance-prose.md",
+      "start": 15,
+      "end": 21
+    },
+    {
+      "path": "cases/sonarqube-token-token-guidance-prose.md",
+      "start": 47,
+      "end": 52
+    },
+    {
+      "path": "cases/sonarqube-token-trailing-underscore-twin.py",
+      "start": 11,
+      "end": 24
+    },
+    {
+      "path": "cases/sonarqube-token-unknown-type-letter-twin.http",
+      "start": 32,
+      "end": 39
+    },
+    {
+      "path": "cases/sonarqube-token-unknown-type-letter-twin.http",
+      "start": 68,
+      "end": 74
+    },
+    {
+      "path": "cases/sonarqube-token-unknown-type-letter-twin.http",
+      "start": 75,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/sonarqube-token-uppercase-prefix-twin.http",
+      "start": 31,
+      "end": 38
+    },
+    {
+      "path": "cases/sonarqube-token-x-api-key-header.http",
+      "start": 31,
+      "end": 38
+    }
+  ],
+  "digest": "fc03084916409e4c27bd1be9893d34b78e80990d4342cba6c370aff1db581fd1"
+}

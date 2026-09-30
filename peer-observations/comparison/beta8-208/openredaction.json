@@ -1,0 +1,458 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-208",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "fa534b350bf9b85bd409603dc9de8ba52a81da3ff35c5b0d19664b43a9c0eba4",
+    "fixtureCount": 96,
+    "fixturesDigest": "a2b691d9bee1b203ec760e5b6e5862b93a540435933c276869561efc487afe90",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/groq-api-key-base64-config-encoded-value.env",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/groq-api-key-bearer-header.sh",
+      "start": 72,
+      "end": 78
+    },
+    {
+      "path": "cases/groq-api-key-bearer-header.sh",
+      "start": 79,
+      "end": 135,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/groq-api-key-bearer-long-body-twin.sh",
+      "start": 72,
+      "end": 78
+    },
+    {
+      "path": "cases/groq-api-key-bearer-long-body-twin.sh",
+      "start": 79,
+      "end": 136,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/groq-api-key-chat-paste.md",
+      "start": 0,
+      "end": 12
+    },
+    {
+      "path": "cases/groq-api-key-chat-paste.md",
+      "start": 32,
+      "end": 36
+    },
+    {
+      "path": "cases/groq-api-key-chat-paste.md",
+      "start": 50,
+      "end": 59
+    },
+    {
+      "path": "cases/groq-api-key-docs-prose.md",
+      "start": 16,
+      "end": 35
+    },
+    {
+      "path": "cases/groq-api-key-docs-prose.md",
+      "start": 95,
+      "end": 112
+    },
+    {
+      "path": "cases/groq-api-key-env-lookup-reference.py",
+      "start": 27,
+      "end": 39
+    },
+    {
+      "path": "cases/groq-api-key-masked-console-placeholder.txt",
+      "start": 0,
+      "end": 8
+    },
+    {
+      "path": "cases/groq-api-key-python-dash-body-twin.py",
+      "start": 17,
+      "end": 29
+    },
+    {
+      "path": "cases/groq-api-key-python-sdk.py",
+      "start": 17,
+      "end": 29
+    },
+    {
+      "path": "cases/groq-api-key-truncated-near-miss.log",
+      "start": 20,
+      "end": 30
+    },
+    {
+      "path": "cases/openrouter-api-key-base64-config-encoded-value.env",
+      "start": 0,
+      "end": 24
+    },
+    {
+      "path": "cases/openrouter-api-key-bearer-header.sh",
+      "start": 70,
+      "end": 76
+    },
+    {
+      "path": "cases/openrouter-api-key-bearer-header.sh",
+      "start": 77,
+      "end": 150,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/openrouter-api-key-bearer-long-body-twin.sh",
+      "start": 70,
+      "end": 76
+    },
+    {
+      "path": "cases/openrouter-api-key-bearer-long-body-twin.sh",
+      "start": 77,
+      "end": 151,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/openrouter-api-key-chat-paste.md",
+      "start": 25,
+      "end": 36
+    },
+    {
+      "path": "cases/openrouter-api-key-chat-paste.md",
+      "start": 48,
+      "end": 66
+    },
+    {
+      "path": "cases/openrouter-api-key-chat-paste.md",
+      "start": 149,
+      "end": 157
+    },
+    {
+      "path": "cases/openrouter-api-key-docs-prose.md",
+      "start": 80,
+      "end": 96
+    },
+    {
+      "path": "cases/openrouter-api-key-guardrail-marker-placeholder.txt",
+      "start": 24,
+      "end": 42,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/replicate-api-token-actions-literal.yml",
+      "start": 178,
+      "end": 181
+    },
+    {
+      "path": "cases/replicate-api-token-actions-literal.yml",
+      "start": 183,
+      "end": 186
+    },
+    {
+      "path": "cases/replicate-api-token-actions-literal.yml",
+      "start": 187,
+      "end": 194
+    },
+    {
+      "path": "cases/replicate-api-token-actions-literal.yml",
+      "start": 198,
+      "end": 204
+    },
+    {
+      "path": "cases/replicate-api-token-base64-input-encoded-value.json",
+      "start": 91,
+      "end": 102
+    },
+    {
+      "path": "cases/replicate-api-token-base64-input-encoded-value.json",
+      "start": 106,
+      "end": 110
+    },
+    {
+      "path": "cases/replicate-api-token-base64-input-encoded-value.json",
+      "start": 111,
+      "end": 115
+    },
+    {
+      "path": "cases/replicate-api-token-base64-input-encoded-value.json",
+      "start": 116,
+      "end": 121
+    },
+    {
+      "path": "cases/replicate-api-token-base64-input-encoded-value.json",
+      "start": 122,
+      "end": 128
+    },
+    {
+      "path": "cases/replicate-api-token-bearer-header.sh",
+      "start": 64,
+      "end": 70
+    },
+    {
+      "path": "cases/replicate-api-token-bearer-header.sh",
+      "start": 71,
+      "end": 111,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/replicate-api-token-bearer-long-body-twin.sh",
+      "start": 64,
+      "end": 70
+    },
+    {
+      "path": "cases/replicate-api-token-bearer-long-body-twin.sh",
+      "start": 71,
+      "end": 112,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/replicate-api-token-chat-paste.md",
+      "start": 0,
+      "end": 28
+    },
+    {
+      "path": "cases/replicate-api-token-chat-paste.md",
+      "start": 41,
+      "end": 60
+    },
+    {
+      "path": "cases/replicate-api-token-docs-prose.md",
+      "start": 0,
+      "end": 24
+    },
+    {
+      "path": "cases/replicate-api-token-docs-prose.md",
+      "start": 67,
+      "end": 84
+    },
+    {
+      "path": "cases/replicate-api-token-legacy-token-header.http",
+      "start": 57,
+      "end": 66
+    },
+    {
+      "path": "cases/replicate-api-token-masked-docs-placeholder.sh",
+      "start": 76,
+      "end": 82
+    },
+    {
+      "path": "cases/replicate-api-token-model-version-public-id.py",
+      "start": 9,
+      "end": 22
+    },
+    {
+      "path": "cases/replicate-api-token-model-version-public-id.py",
+      "start": 29,
+      "end": 33
+    },
+    {
+      "path": "cases/replicate-api-token-model-version-public-id.py",
+      "start": 34,
+      "end": 44
+    },
+    {
+      "path": "cases/replicate-api-token-model-version-public-id.py",
+      "start": 45,
+      "end": 54
+    },
+    {
+      "path": "cases/replicate-api-token-model-version-public-id.py",
+      "start": 126,
+      "end": 131
+    },
+    {
+      "path": "cases/replicate-api-token-model-version-public-id.py",
+      "start": 134,
+      "end": 140
+    },
+    {
+      "path": "cases/replicate-api-token-model-version-public-id.py",
+      "start": 160,
+      "end": 164
+    },
+    {
+      "path": "cases/replicate-api-token-python-dot-body-twin.py",
+      "start": 119,
+      "end": 123
+    },
+    {
+      "path": "cases/replicate-api-token-python-dot-body-twin.py",
+      "start": 155,
+      "end": 161
+    },
+    {
+      "path": "cases/replicate-api-token-python-sdk.py",
+      "start": 119,
+      "end": 123
+    },
+    {
+      "path": "cases/replicate-api-token-python-sdk.py",
+      "start": 155,
+      "end": 161
+    },
+    {
+      "path": "cases/replicate-api-token-registry-image-public-id.txt",
+      "start": 2,
+      "end": 5
+    },
+    {
+      "path": "cases/replicate-api-token-registry-image-public-id.txt",
+      "start": 6,
+      "end": 10
+    },
+    {
+      "path": "cases/replicate-api-token-registry-image-public-id.txt",
+      "start": 11,
+      "end": 16
+    },
+    {
+      "path": "cases/replicate-api-token-registry-image-public-id.txt",
+      "start": 17,
+      "end": 21
+    },
+    {
+      "path": "cases/replicate-api-token-registry-image-public-id.txt",
+      "start": 22,
+      "end": 32
+    },
+    {
+      "path": "cases/replicate-api-token-registry-image-public-id.txt",
+      "start": 33,
+      "end": 42
+    },
+    {
+      "path": "cases/replicate-api-token-registry-image-public-id.txt",
+      "start": 43,
+      "end": 48
+    },
+    {
+      "path": "cases/replicate-api-token-registry-image-public-id.txt",
+      "start": 50,
+      "end": 55
+    },
+    {
+      "path": "cases/replicate-api-token-registry-image-public-id.txt",
+      "start": 56,
+      "end": 60
+    },
+    {
+      "path": "cases/replicate-api-token-registry-image-public-id.txt",
+      "start": 61,
+      "end": 71
+    },
+    {
+      "path": "cases/replicate-api-token-registry-image-public-id.txt",
+      "start": 72,
+      "end": 81
+    },
+    {
+      "path": "cases/replicate-api-token-registry-image-public-id.txt",
+      "start": 82,
+      "end": 88
+    },
+    {
+      "path": "cases/replicate-api-token-truncated-near-miss.log",
+      "start": 21,
+      "end": 35
+    },
+    {
+      "path": "cases/xai-api-key-base64-config-encoded-value.env",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/xai-api-key-bearer-header.sh",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/xai-api-key-bearer-header.sh",
+      "start": 68,
+      "end": 152,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/xai-api-key-bearer-long-body-twin.sh",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/xai-api-key-bearer-long-body-twin.sh",
+      "start": 68,
+      "end": 153,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/xai-api-key-chat-paste.md",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/xai-api-key-chat-paste.md",
+      "start": 26,
+      "end": 40
+    },
+    {
+      "path": "cases/xai-api-key-docs-prose.md",
+      "start": 86,
+      "end": 98
+    },
+    {
+      "path": "cases/xai-api-key-http-debug.log",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/xai-api-key-http-debug.log",
+      "start": 55,
+      "end": 64
+    },
+    {
+      "path": "cases/xai-api-key-http-debug.log",
+      "start": 75,
+      "end": 159,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/xai-api-key-key-metadata-public-id.json",
+      "start": 69,
+      "end": 105
+    }
+  ],
+  "digest": "e7c6f5cb78981d3a116e09ccdebba4db9eb44f72e1e4e5e7bc2fcafc20cbb3d1"
+}

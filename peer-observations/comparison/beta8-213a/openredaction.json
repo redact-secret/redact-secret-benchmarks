@@ -1,0 +1,480 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-213a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "58a2495b2e6796b10927365f1ac9ac495e7c00c4eaa9c3ee5504f2ed9f2d2583",
+    "fixtureCount": 33,
+    "fixturesDigest": "bc037ae36e2cf2ec4f170d7fa4371c4d903ae12b1f9956bce4652f07a2c35a5a",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/aws-access-key-boto3-client.py",
+      "start": 76,
+      "end": 96,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-access-key-configure-credentials-action.yml",
+      "start": 47,
+      "end": 52
+    },
+    {
+      "path": "cases/aws-access-key-configure-credentials-action.yml",
+      "start": 62,
+      "end": 66
+    },
+    {
+      "path": "cases/aws-access-key-configure-credentials-action.yml",
+      "start": 68,
+      "end": 71
+    },
+    {
+      "path": "cases/aws-access-key-configure-credentials-action.yml",
+      "start": 72,
+      "end": 79
+    },
+    {
+      "path": "cases/aws-access-key-configure-credentials-action.yml",
+      "start": 80,
+      "end": 89
+    },
+    {
+      "path": "cases/aws-access-key-configure-credentials-action.yml",
+      "start": 90,
+      "end": 93
+    },
+    {
+      "path": "cases/aws-access-key-configure-credentials-action.yml",
+      "start": 94,
+      "end": 105
+    },
+    {
+      "path": "cases/aws-access-key-configure-credentials-action.yml",
+      "start": 117,
+      "end": 121
+    },
+    {
+      "path": "cases/aws-access-key-configure-credentials-action.yml",
+      "start": 133,
+      "end": 136
+    },
+    {
+      "path": "cases/aws-access-key-configure-credentials-action.yml",
+      "start": 152,
+      "end": 172,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-access-key-iam-user-identity-public-id.txt",
+      "start": 14,
+      "end": 18
+    },
+    {
+      "path": "cases/aws-access-key-iam-user-identity-public-id.txt",
+      "start": 19,
+      "end": 30
+    },
+    {
+      "path": "cases/aws-access-key-iam-user-identity-public-id.txt",
+      "start": 34,
+      "end": 40
+    },
+    {
+      "path": "cases/aws-access-key-iam-user-identity-public-id.txt",
+      "start": 60,
+      "end": 68
+    },
+    {
+      "path": "cases/aws-access-key-iam-user-identity-public-id.txt",
+      "start": 75,
+      "end": 81
+    },
+    {
+      "path": "cases/aws-access-key-iam-user-identity-public-id.txt",
+      "start": 89,
+      "end": 95
+    },
+    {
+      "path": "cases/aws-access-key-iam-user-identity-public-id.txt",
+      "start": 99,
+      "end": 120
+    },
+    {
+      "path": "cases/aws-access-key-iam-user-identity-public-id.txt",
+      "start": 135,
+      "end": 175
+    },
+    {
+      "path": "cases/aws-access-key-rotation-note-prose.txt",
+      "start": 16,
+      "end": 22
+    },
+    {
+      "path": "cases/aws-access-key-rotation-note-prose.txt",
+      "start": 31,
+      "end": 46
+    },
+    {
+      "path": "cases/aws-access-key-rotation-note-prose.txt",
+      "start": 46,
+      "end": 50
+    },
+    {
+      "path": "cases/aws-access-key-rotation-note-prose.txt",
+      "start": 52,
+      "end": 63
+    },
+    {
+      "path": "cases/aws-access-key-rotation-note-prose.txt",
+      "start": 63,
+      "end": 68
+    },
+    {
+      "path": "cases/aws-access-key-rotation-note-prose.txt",
+      "start": 69,
+      "end": 80
+    },
+    {
+      "path": "cases/aws-access-key-rotation-note-prose.txt",
+      "start": 80,
+      "end": 92
+    },
+    {
+      "path": "cases/aws-access-key-rotation-note-prose.txt",
+      "start": 92,
+      "end": 101
+    },
+    {
+      "path": "cases/aws-access-key-rotation-note-prose.txt",
+      "start": 101,
+      "end": 116
+    },
+    {
+      "path": "cases/aws-access-key-rotation-note-prose.txt",
+      "start": 117,
+      "end": 130
+    },
+    {
+      "path": "cases/digitalocean-token-doctl-auth-init.sh",
+      "start": 51,
+      "end": 122
+    },
+    {
+      "path": "cases/digitalocean-token-droplet-and-project-ids-public-id.env",
+      "start": 65,
+      "end": 74
+    },
+    {
+      "path": "cases/digitalocean-token-env-access-token.env",
+      "start": 0,
+      "end": 25
+    },
+    {
+      "path": "cases/digitalocean-token-oauth-bearer-header.http",
+      "start": 8,
+      "end": 15
+    },
+    {
+      "path": "cases/digitalocean-token-oauth-bearer-header.http",
+      "start": 21,
+      "end": 24
+    },
+    {
+      "path": "cases/digitalocean-token-oauth-bearer-header.http",
+      "start": 25,
+      "end": 29
+    },
+    {
+      "path": "cases/digitalocean-token-oauth-bearer-header.http",
+      "start": 31,
+      "end": 51
+    },
+    {
+      "path": "cases/digitalocean-token-oauth-bearer-header.http",
+      "start": 67,
+      "end": 73
+    },
+    {
+      "path": "cases/digitalocean-token-oauth-bearer-header.http",
+      "start": 74,
+      "end": 145,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/docker-token-access-token-listing-public-id.json",
+      "start": 13,
+      "end": 49
+    },
+    {
+      "path": "cases/docker-token-ci-login-log.log",
+      "start": 275,
+      "end": 284
+    },
+    {
+      "path": "cases/docker-token-docker-login-stdin.sh",
+      "start": 7,
+      "end": 28
+    },
+    {
+      "path": "cases/docker-token-docker-login-stdin.sh",
+      "start": 30,
+      "end": 43
+    },
+    {
+      "path": "cases/docker-token-docker-login-stdin.sh",
+      "start": 46,
+      "end": 52
+    },
+    {
+      "path": "cases/docker-token-docker-login-stdin.sh",
+      "start": 53,
+      "end": 58
+    },
+    {
+      "path": "cases/docker-token-docker-login-stdin.sh",
+      "start": 59,
+      "end": 69
+    },
+    {
+      "path": "cases/docker-token-docker-login-stdin.sh",
+      "start": 70,
+      "end": 77
+    },
+    {
+      "path": "cases/docker-token-docker-login-stdin.sh",
+      "start": 84,
+      "end": 92
+    },
+    {
+      "path": "cases/docker-token-docker-login-stdin.sh",
+      "start": 93,
+      "end": 98
+    },
+    {
+      "path": "cases/docker-token-docker-login-stdin.sh",
+      "start": 99,
+      "end": 104
+    },
+    {
+      "path": "cases/docker-token-docker-login-stdin.sh",
+      "start": 105,
+      "end": 114
+    },
+    {
+      "path": "cases/github-token-github-app-identifiers-public-id.env",
+      "start": 21,
+      "end": 41
+    },
+    {
+      "path": "cases/github-token-github-app-identifiers-public-id.env",
+      "start": 42,
+      "end": 62
+    },
+    {
+      "path": "cases/github-token-github-app-identifiers-public-id.env",
+      "start": 63,
+      "end": 89
+    },
+    {
+      "path": "cases/github-token-github-app-identifiers-public-id.env",
+      "start": 90,
+      "end": 98
+    },
+    {
+      "path": "cases/github-token-token-expiry-note-prose.txt",
+      "start": 86,
+      "end": 108
+    },
+    {
+      "path": "cases/github-token-token-expiry-note-prose.txt",
+      "start": 120,
+      "end": 133
+    },
+    {
+      "path": "cases/linear-token-graphql-authorization-header.http",
+      "start": 79,
+      "end": 88
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-appsettings-azuread.json",
+      "start": 5,
+      "end": 12
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-appsettings-azuread.json",
+      "start": 22,
+      "end": 30
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-appsettings-azuread.json",
+      "start": 34,
+      "end": 39
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-appsettings-azuread.json",
+      "start": 42,
+      "end": 47
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-appsettings-azuread.json",
+      "start": 48,
+      "end": 63
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-appsettings-azuread.json",
+      "start": 64,
+      "end": 67
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-appsettings-azuread.json",
+      "start": 76,
+      "end": 84
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-appsettings-azuread.json",
+      "start": 88,
+      "end": 96
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-appsettings-azuread.json",
+      "start": 194,
+      "end": 200
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-az-login-service-principal.sh",
+      "start": 5,
+      "end": 10
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-az-login-service-principal.sh",
+      "start": 11,
+      "end": 30
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-az-login-service-principal.sh",
+      "start": 33,
+      "end": 41
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-az-login-service-principal.sh",
+      "start": 42,
+      "end": 61
+    },
+    {
+      "path": "cases/microsoft-entra-client-secret-az-login-service-principal.sh",
+      "start": 66,
+      "end": 78
+    },
+    {
+      "path": "cases/npm-token-granular-token-note-prose.txt",
+      "start": 0,
+      "end": 26
+    },
+    {
+      "path": "cases/npm-token-granular-token-note-prose.txt",
+      "start": 108,
+      "end": 114
+    },
+    {
+      "path": "cases/npm-token-granular-token-note-prose.txt",
+      "start": 140,
+      "end": 146
+    },
+    {
+      "path": "cases/npm-token-npmrc-auth-token.npmrc",
+      "start": 70,
+      "end": 110,
+      "family": "npm-token"
+    },
+    {
+      "path": "cases/npm-token-publish-workflow-env.yml",
+      "start": 94,
+      "end": 134,
+      "family": "npm-token"
+    },
+    {
+      "path": "cases/sendgrid-token-template-and-sender-ids-public-id.env",
+      "start": 23,
+      "end": 55
+    },
+    {
+      "path": "cases/sendgrid-token-template-and-sender-ids-public-id.env",
+      "start": 75,
+      "end": 82
+    },
+    {
+      "path": "cases/slack-token-bearer-header.http",
+      "start": 113,
+      "end": 119
+    },
+    {
+      "path": "cases/slack-token-bearer-header.http",
+      "start": 120,
+      "end": 175,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-token-bolt-app-python.py",
+      "start": 23,
+      "end": 31
+    },
+    {
+      "path": "cases/slack-token-bolt-app-python.py",
+      "start": 50,
+      "end": 105,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-token-bolt-app-python.py",
+      "start": 112,
+      "end": 126
+    },
+    {
+      "path": "cases/slack-token-bolt-app-python.py",
+      "start": 127,
+      "end": 137
+    },
+    {
+      "path": "cases/slack-token-bolt-app-python.py",
+      "start": 139,
+      "end": 159
+    }
+  ],
+  "digest": "550bf3e90373e17a556531690762c2f9c768471633eff9126765419f00688668"
+}

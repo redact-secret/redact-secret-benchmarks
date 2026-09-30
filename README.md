@@ -224,9 +224,9 @@ in that repository's own frozen-evidence archive — see
 [the evidence decision record](docs/decisions/2026-09-22-store-benchmark-evidence-per-core-issue.md).
 
 `npm run test:coverage` measures code coverage of the scoring/validation and
-scanner-adapter modules only, and requires all four tools (Gitleaks and
-TruffleHog as binaries on `PATH`; redact-secret and flare-redact as pinned npm
-packages). It does not imply UI coverage, runner coverage, or real-world
+scanner-adapter modules only, and requires all five tools (Gitleaks and
+TruffleHog as binaries on `PATH`; redact-secret, flare-redact and OpenRedaction
+as pinned npm packages). It does not imply UI coverage, runner coverage, or real-world
 credential coverage. The published npm redaction tests run `scan`, `redact`,
 and `scanAndRedact` over all registered fixtures, verifying pipeline
 agreement and default placeholder substitution — an npm consumer check, not a

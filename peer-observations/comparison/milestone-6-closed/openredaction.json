@@ -1,0 +1,425 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/milestone-6-closed",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "ac2659e94ce8f0d10029b6a1a63ad2ad73453156a0d053a3edb909759e3d2763",
+    "fixtureCount": 92,
+    "fixturesDigest": "8d0ac1cab8b55847dbd7a3f8686749c7a899568c817eb245123b873ec23b3a5e",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/issue-254-changed-id.txt",
+      "start": 18,
+      "end": 38,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/issue-254-changed-secret.txt",
+      "start": 23,
+      "end": 63,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/issue-254-id-bare.txt",
+      "start": 0,
+      "end": 20,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/issue-254-id-env.txt",
+      "start": 18,
+      "end": 38,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/issue-254-secret-json.txt",
+      "start": 26,
+      "end": 66,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/issue-254-secret-quoted.txt",
+      "start": 8,
+      "end": 48,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/issue-255-mongodb-default.txt",
+      "start": 0,
+      "end": 53,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-255-mongodb-literal.txt",
+      "start": 0,
+      "end": 77,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-255-mysql-default.txt",
+      "start": 0,
+      "end": 59,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-255-mysql-literal.txt",
+      "start": 0,
+      "end": 75,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-255-postgres-default.txt",
+      "start": 0,
+      "end": 62,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-255-postgres-literal.txt",
+      "start": 0,
+      "end": 78,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-255-redis-default.txt",
+      "start": 0,
+      "end": 62,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-255-redis-literal.txt",
+      "start": 0,
+      "end": 75,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-embedded-word.txt",
+      "start": 0,
+      "end": 84,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-filler-near-miss.txt",
+      "start": 0,
+      "end": 58,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-placeholder-1.txt",
+      "start": 0,
+      "end": 64,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-placeholder-2.txt",
+      "start": 0,
+      "end": 66,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-placeholder-3.txt",
+      "start": 0,
+      "end": 65,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-placeholder-4.txt",
+      "start": 0,
+      "end": 63,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-placeholder-5.txt",
+      "start": 0,
+      "end": 64,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-placeholder-6.txt",
+      "start": 0,
+      "end": 58,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-placeholder-7.txt",
+      "start": 0,
+      "end": 57,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-256-unrelated-suffix.txt",
+      "start": 0,
+      "end": 87,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-257-embedded-word.txt",
+      "start": 15,
+      "end": 55,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/issue-257-url-digit.txt",
+      "start": 0,
+      "end": 55,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/issue-257-url-embedded.txt",
+      "start": 19,
+      "end": 59,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/issue-262-horizontal-tab.txt",
+      "start": 10,
+      "end": 42,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/issue-262-prompt.txt",
+      "start": 10,
+      "end": 20,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/issue-262-same-line.txt",
+      "start": 10,
+      "end": 42,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/issue-263-go-template.txt",
+      "start": 26,
+      "end": 35
+    },
+    {
+      "path": "cases/issue-263-helm.txt",
+      "start": 25,
+      "end": 32
+    },
+    {
+      "path": "cases/issue-265-auth.txt",
+      "start": 8,
+      "end": 16
+    },
+    {
+      "path": "cases/issue-265-auth.txt",
+      "start": 18,
+      "end": 50,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/issue-265-database.txt",
+      "start": 22,
+      "end": 54,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/issue-265-deep.txt",
+      "start": 18,
+      "end": 26
+    },
+    {
+      "path": "cases/issue-265-deep.txt",
+      "start": 28,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/issue-265-properties.txt",
+      "start": 28,
+      "end": 37,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/issue-265-secret-key-ref.txt",
+      "start": 18,
+      "end": 26
+    },
+    {
+      "path": "cases/issue-266-array.txt",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/issue-266-array.txt",
+      "start": 8,
+      "end": 24,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/issue-266-array.txt",
+      "start": 26,
+      "end": 42
+    },
+    {
+      "path": "cases/issue-266-block-literal.txt",
+      "start": 8,
+      "end": 40,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/issue-278-config.txt",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/issue-278-config.txt",
+      "start": 8,
+      "end": 30
+    },
+    {
+      "path": "cases/issue-278-dotted-literal.txt",
+      "start": 10,
+      "end": 41,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/issue-278-root-near-miss.txt",
+      "start": 10,
+      "end": 52,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/issue-278-underscored-literal.txt",
+      "start": 10,
+      "end": 41,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/issue-280-arn-account.txt",
+      "start": 16,
+      "end": 30
+    },
+    {
+      "path": "cases/issue-280-arn-account.txt",
+      "start": 63,
+      "end": 95,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/issue-280-aws.txt",
+      "start": 16,
+      "end": 30
+    },
+    {
+      "path": "cases/issue-280-aws.txt",
+      "start": 61,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/issue-280-azure-fields.txt",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/issue-280-azure-fields.txt",
+      "start": 9,
+      "end": 18
+    },
+    {
+      "path": "cases/issue-280-azure-fields.txt",
+      "start": 19,
+      "end": 27
+    },
+    {
+      "path": "cases/issue-280-azure-fields.txt",
+      "start": 28,
+      "end": 37
+    },
+    {
+      "path": "cases/issue-280-azure-fields.txt",
+      "start": 38,
+      "end": 47
+    },
+    {
+      "path": "cases/issue-280-azure-fields.txt",
+      "start": 48,
+      "end": 58
+    },
+    {
+      "path": "cases/issue-280-azure-fields.txt",
+      "start": 59,
+      "end": 66
+    },
+    {
+      "path": "cases/issue-280-azure-uri.txt",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/issue-280-azure-uri.txt",
+      "start": 9,
+      "end": 18
+    },
+    {
+      "path": "cases/issue-280-azure-uri.txt",
+      "start": 19,
+      "end": 27
+    },
+    {
+      "path": "cases/issue-280-azure-uri.txt",
+      "start": 28,
+      "end": 37
+    },
+    {
+      "path": "cases/issue-280-azure-uri.txt",
+      "start": 38,
+      "end": 43
+    },
+    {
+      "path": "cases/issue-280-azure-uri.txt",
+      "start": 46,
+      "end": 55
+    },
+    {
+      "path": "cases/issue-280-azure-uri.txt",
+      "start": 56,
+      "end": 61
+    },
+    {
+      "path": "cases/issue-280-litellm-identifier.txt",
+      "start": 11,
+      "end": 51,
+      "family": "aws-secret-access-key"
+    }
+  ],
+  "digest": "64c2df730bd7bd546ce22a542416cfb088b7b1cf24ef42c3e2a5cfc90977aa0b"
+}

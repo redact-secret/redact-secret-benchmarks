@@ -1,0 +1,230 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-464a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "bc4b70ac1021076de95c3052156127dfab6c7c23eec1653ee3d188ea54ed63b4",
+    "fixtureCount": 38,
+    "fixturesDigest": "0004f884fceb4d15ddd4841021e526d1d948aac60389929fc6f9936f05250f17",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/daytona-api-key-artifact-marker-near-miss.log",
+      "start": 77,
+      "end": 84
+    },
+    {
+      "path": "cases/daytona-api-key-bare-prose.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/daytona-api-key-bearer-header.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/daytona-api-key-bearer-header.http",
+      "start": 67,
+      "end": 135,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/daytona-api-key-chat-paste.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/daytona-api-key-curl-bearer.sh",
+      "start": 62,
+      "end": 68
+    },
+    {
+      "path": "cases/daytona-api-key-curl-bearer.sh",
+      "start": 69,
+      "end": 137,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/daytona-api-key-hyphen-separator-twin.http",
+      "start": 55,
+      "end": 123,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/daytona-api-key-key-guidance-prose.md",
+      "start": 0,
+      "end": 22
+    },
+    {
+      "path": "cases/daytona-api-key-key-guidance-prose.md",
+      "start": 54,
+      "end": 62
+    },
+    {
+      "path": "cases/daytona-api-key-key-guidance-prose.md",
+      "start": 78,
+      "end": 85
+    },
+    {
+      "path": "cases/daytona-api-key-key-guidance-prose.md",
+      "start": 98,
+      "end": 101
+    },
+    {
+      "path": "cases/daytona-api-key-leading-glue-twin.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/daytona-api-key-leading-underscore-twin.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/daytona-api-key-python-config.py",
+      "start": 5,
+      "end": 12
+    },
+    {
+      "path": "cases/daytona-api-key-python-config.py",
+      "start": 20,
+      "end": 27
+    },
+    {
+      "path": "cases/daytona-api-key-python-config.py",
+      "start": 29,
+      "end": 42
+    },
+    {
+      "path": "cases/daytona-api-key-python-config.py",
+      "start": 44,
+      "end": 50
+    },
+    {
+      "path": "cases/daytona-api-key-python-config.py",
+      "start": 53,
+      "end": 66
+    },
+    {
+      "path": "cases/daytona-api-key-python-config.py",
+      "start": 67,
+      "end": 74
+    },
+    {
+      "path": "cases/daytona-api-key-python-config.py",
+      "start": 147,
+      "end": 154
+    },
+    {
+      "path": "cases/daytona-api-key-python-config.py",
+      "start": 157,
+      "end": 164
+    },
+    {
+      "path": "cases/daytona-api-key-python-config.py",
+      "start": 165,
+      "end": 171
+    },
+    {
+      "path": "cases/daytona-api-key-python-config.py",
+      "start": 173,
+      "end": 180
+    },
+    {
+      "path": "cases/daytona-api-key-python-config.py",
+      "start": 183,
+      "end": 197
+    },
+    {
+      "path": "cases/daytona-api-key-secret-placeholder-near-miss.txt",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/daytona-api-key-secret-placeholder-near-miss.txt",
+      "start": 7,
+      "end": 13
+    },
+    {
+      "path": "cases/daytona-api-key-secret-placeholder-near-miss.txt",
+      "start": 14,
+      "end": 22
+    },
+    {
+      "path": "cases/daytona-api-key-secret-placeholder-near-miss.txt",
+      "start": 23,
+      "end": 27
+    },
+    {
+      "path": "cases/daytona-api-key-secret-then-hex-near-miss.env",
+      "start": 34,
+      "end": 74,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/daytona-api-key-trailing-underscore-twin.sh",
+      "start": 62,
+      "end": 68
+    },
+    {
+      "path": "cases/daytona-api-key-trailing-underscore-twin.sh",
+      "start": 69,
+      "end": 139,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/daytona-api-key-uppercase-prefix-twin.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/daytona-api-key-uppercase-prefix-twin.http",
+      "start": 67,
+      "end": 135,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/daytona-api-key-x-api-key-header.http",
+      "start": 55,
+      "end": 123,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "064c12a0fb4b76325411e46f939b117cf44e91a2f095fbe41124fa0e881275dc"
+}

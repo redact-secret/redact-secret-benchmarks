@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/accuracy",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "f9c07d079707b3c53b8cee4a22f00c4db632a4a65a5c48ca6eed72b6eaf23dc3",
+    "fixtureCount": 10,
+    "fixturesDigest": "626767b41788a572cf0a0b8c4e437fd12f4891c07de9ee77c0980558ad3c28f0",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "aws-id.txt",
+      "start": 18,
+      "end": 38,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "bearer-header.txt",
+      "start": 15,
+      "end": 21
+    },
+    {
+      "path": "bearer-header.txt",
+      "start": 22,
+      "end": 56,
+      "family": "bearer-token"
+    },
+    {
+      "path": "documentation.txt",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "github-token.txt",
+      "start": 13,
+      "end": 53,
+      "family": "github-token"
+    },
+    {
+      "path": "ordinary-text.txt",
+      "start": 18,
+      "end": 37
+    },
+    {
+      "path": "quoted-token.txt",
+      "start": 15,
+      "end": 55,
+      "family": "github-token"
+    },
+    {
+      "path": "unicode-prefix.txt",
+      "start": 18,
+      "end": 58,
+      "family": "github-token"
+    }
+  ],
+  "digest": "9b5ef02572eff060e70ab467a42b9512319597790cd3fe6349141ba6216ac5fc"
+}

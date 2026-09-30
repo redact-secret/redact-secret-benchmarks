@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-434c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "d98355e4bf4acadf9b01905fe729ba8f9f0b6a9c65d86f562cb531f10482677f",
+    "fixtureCount": 35,
+    "fixturesDigest": "34401ac8134494454af98badeef11e52de5f3125ede7038d1853b83b15556991",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/e2b-api-key-bare-prose.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/e2b-api-key-bearer-header.http",
+      "start": 57,
+      "end": 63
+    },
+    {
+      "path": "cases/e2b-api-key-bearer-header.http",
+      "start": 64,
+      "end": 108,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/e2b-api-key-chat-paste.txt",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/e2b-api-key-curl-x-api-key.sh",
+      "start": 53,
+      "end": 97,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-hyphen-separator-twin.http",
+      "start": 52,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-leading-glue-twin.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/e2b-api-key-leading-underscore-twin.txt",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/e2b-api-key-module-names-public-id.sh",
+      "start": 0,
+      "end": 3
+    },
+    {
+      "path": "cases/e2b-api-key-module-names-public-id.sh",
+      "start": 33,
+      "end": 44
+    },
+    {
+      "path": "cases/e2b-api-key-module-names-public-id.sh",
+      "start": 48,
+      "end": 52
+    },
+    {
+      "path": "cases/e2b-api-key-package-import-public-id.py",
+      "start": 33,
+      "end": 45
+    },
+    {
+      "path": "cases/e2b-api-key-package-import-public-id.py",
+      "start": 65,
+      "end": 83
+    },
+    {
+      "path": "cases/e2b-api-key-python-sandbox.py",
+      "start": 33,
+      "end": 45
+    },
+    {
+      "path": "cases/e2b-api-key-retired-user-token-twin.py",
+      "start": 33,
+      "end": 45
+    },
+    {
+      "path": "cases/e2b-api-key-template-digest-encoded-value.txt",
+      "start": 0,
+      "end": 8
+    },
+    {
+      "path": "cases/e2b-api-key-template-digest-encoded-value.txt",
+      "start": 9,
+      "end": 14
+    },
+    {
+      "path": "cases/e2b-api-key-template-digest-encoded-value.txt",
+      "start": 15,
+      "end": 21
+    },
+    {
+      "path": "cases/e2b-api-key-template-digest-encoded-value.txt",
+      "start": 23,
+      "end": 29
+    },
+    {
+      "path": "cases/e2b-api-key-trailing-glue-twin.sh",
+      "start": 53,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/e2b-api-key-truncated-near-miss.log",
+      "start": 75,
+      "end": 86
+    },
+    {
+      "path": "cases/e2b-api-key-uppercase-prefix-twin.http",
+      "start": 57,
+      "end": 63
+    },
+    {
+      "path": "cases/e2b-api-key-uppercase-prefix-twin.http",
+      "start": 64,
+      "end": 108,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/e2b-api-key-x-api-key-header.http",
+      "start": 52,
+      "end": 96,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "38276f99b182e6bda55a979155ab3acf819550744444b0a44bd0d3eae69416a9"
+}

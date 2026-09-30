@@ -1,0 +1,799 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-212",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "cc1c553b07080fa1ac1abcfc86bf55c1c20b4f779bb5a8208b6f5797158417d1",
+    "fixtureCount": 171,
+    "fixturesDigest": "7131255e3f236a4d42f184ab2ec0fbf1aabb3af2a08e460b7d99f535708fcb1a",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/fireworks-ai-api-key-bearer-curl.sh",
+      "start": 79,
+      "end": 85
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-bearer-curl.sh",
+      "start": 86,
+      "end": 111,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-console-prefix-placeholder.txt",
+      "start": 0,
+      "end": 32
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-firectl-flag.sh",
+      "start": 30,
+      "end": 55,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-firmware-version-near-miss.conf",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-firmware-version-near-miss.conf",
+      "start": 11,
+      "end": 17
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-firmware-version-near-miss.conf",
+      "start": 18,
+      "end": 21
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-firmware-version-near-miss.conf",
+      "start": 22,
+      "end": 28
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-firmware-version-near-miss.conf",
+      "start": 30,
+      "end": 33
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-firmware-version-near-miss.conf",
+      "start": 34,
+      "end": 47
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-key-guidance-prose.md",
+      "start": 0,
+      "end": 24
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-key-guidance-prose.md",
+      "start": 67,
+      "end": 85
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-key-guidance-prose.md",
+      "start": 106,
+      "end": 118
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-letter-prefix-twin.sh",
+      "start": 79,
+      "end": 85
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-letter-prefix-twin.sh",
+      "start": 86,
+      "end": 111,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-litellm-yaml.yml",
+      "start": 144,
+      "end": 169,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-missing-delimiter-twin.py",
+      "start": 22,
+      "end": 39
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-python-client.py",
+      "start": 22,
+      "end": 39
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-service-account-public-id.sh",
+      "start": 41,
+      "end": 71
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-transposed-prefix-twin.sh",
+      "start": 30,
+      "end": 55,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-workflow-ids-near-miss.py",
+      "start": 27,
+      "end": 33
+    },
+    {
+      "path": "cases/fireworks-ai-api-key-x-fireworks-header.env",
+      "start": 47,
+      "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-angle-placeholder-placeholder.sh",
+      "start": 77,
+      "end": 87
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-docker-register.sh",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-docker-register.sh",
+      "start": 7,
+      "end": 10
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-docker-register.sh",
+      "start": 20,
+      "end": 23
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-docker-register.sh",
+      "start": 24,
+      "end": 30
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-docker-register.sh",
+      "start": 31,
+      "end": 37
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-docker-register.sh",
+      "start": 38,
+      "end": 44
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-docker-register.sh",
+      "start": 46,
+      "end": 49
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-k8s-secret.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-k8s-secret.yml",
+      "start": 104,
+      "end": 113
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-k8s-secret.yml",
+      "start": 114,
+      "end": 119
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-migration-note-prose.md",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-migration-note-prose.md",
+      "start": 72,
+      "end": 82
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-migration-note-prose.md",
+      "start": 105,
+      "end": 114
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-migration-note-prose.md",
+      "start": 115,
+      "end": 120
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-migration-note-prose.md",
+      "start": 135,
+      "end": 141
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-prefix-only-near-miss.env",
+      "start": 11,
+      "end": 21
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-prefix-only-near-miss.env",
+      "start": 72,
+      "end": 79
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-prefix-only-near-miss.env",
+      "start": 90,
+      "end": 99
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-prefix-only-near-miss.env",
+      "start": 100,
+      "end": 105
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-short-sha-public-id.log",
+      "start": 0,
+      "end": 26
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-stem-prefix-twin.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-stem-prefix-twin.yml",
+      "start": 104,
+      "end": 113
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-stem-prefix-twin.yml",
+      "start": 114,
+      "end": 119
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-system-id-public-id.txt",
+      "start": 23,
+      "end": 51
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-underscore-delimiter-twin.sh",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-underscore-delimiter-twin.sh",
+      "start": 7,
+      "end": 10
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-underscore-delimiter-twin.sh",
+      "start": 20,
+      "end": 23
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-underscore-delimiter-twin.sh",
+      "start": 24,
+      "end": 30
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-underscore-delimiter-twin.sh",
+      "start": 31,
+      "end": 37
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-underscore-delimiter-twin.sh",
+      "start": 38,
+      "end": 44
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-underscore-delimiter-twin.sh",
+      "start": 46,
+      "end": 49
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-user-runners-response.txt",
+      "start": 24,
+      "end": 30
+    },
+    {
+      "path": "cases/perplexity-api-key-bearer-curl.sh",
+      "start": 67,
+      "end": 73
+    },
+    {
+      "path": "cases/perplexity-api-key-bearer-curl.sh",
+      "start": 74,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/perplexity-api-key-key-guidance-prose.md",
+      "start": 0,
+      "end": 25
+    },
+    {
+      "path": "cases/perplexity-api-key-long-body-twin.sh",
+      "start": 67,
+      "end": 73
+    },
+    {
+      "path": "cases/perplexity-api-key-long-body-twin.sh",
+      "start": 74,
+      "end": 128,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/perplexity-api-key-masked-display-placeholder.txt",
+      "start": 14,
+      "end": 21
+    },
+    {
+      "path": "cases/perplexity-api-key-mcp-config.json",
+      "start": 110,
+      "end": 119
+    },
+    {
+      "path": "cases/perplexity-api-key-mcp-config.json",
+      "start": 130,
+      "end": 183,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/perplexity-api-key-missing-dash-twin.py",
+      "start": 23,
+      "end": 41
+    },
+    {
+      "path": "cases/perplexity-api-key-package-name-near-miss.sh",
+      "start": 0,
+      "end": 3
+    },
+    {
+      "path": "cases/perplexity-api-key-package-name-near-miss.sh",
+      "start": 4,
+      "end": 11
+    },
+    {
+      "path": "cases/perplexity-api-key-package-name-near-miss.sh",
+      "start": 17,
+      "end": 21
+    },
+    {
+      "path": "cases/perplexity-api-key-package-name-near-miss.sh",
+      "start": 22,
+      "end": 25
+    },
+    {
+      "path": "cases/perplexity-api-key-package-name-near-miss.sh",
+      "start": 26,
+      "end": 30
+    },
+    {
+      "path": "cases/perplexity-api-key-package-name-near-miss.sh",
+      "start": 31,
+      "end": 35
+    },
+    {
+      "path": "cases/perplexity-api-key-python-client.py",
+      "start": 23,
+      "end": 41
+    },
+    {
+      "path": "cases/pinecone-api-key-api-key-header.sh",
+      "start": 50,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pinecone-api-key-api-key-header.sh",
+      "start": 132,
+      "end": 140
+    },
+    {
+      "path": "cases/pinecone-api-key-api-key-header.sh",
+      "start": 141,
+      "end": 144
+    },
+    {
+      "path": "cases/pinecone-api-key-cli-mask-placeholder.txt",
+      "start": 10,
+      "end": 16
+    },
+    {
+      "path": "cases/pinecone-api-key-ellipsis-placeholder.sh",
+      "start": 3,
+      "end": 9
+    },
+    {
+      "path": "cases/pinecone-api-key-ellipsis-placeholder.sh",
+      "start": 10,
+      "end": 13
+    },
+    {
+      "path": "cases/pinecone-api-key-ellipsis-placeholder.sh",
+      "start": 14,
+      "end": 17
+    },
+    {
+      "path": "cases/pinecone-api-key-key-guidance-prose.md",
+      "start": 0,
+      "end": 14
+    },
+    {
+      "path": "cases/pinecone-api-key-key-guidance-prose.md",
+      "start": 21,
+      "end": 36
+    },
+    {
+      "path": "cases/pinecone-api-key-legacy-actions-env.yml",
+      "start": 49,
+      "end": 85
+    },
+    {
+      "path": "cases/pinecone-api-key-legacy-api-key-header.sh",
+      "start": 82,
+      "end": 118,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pinecone-api-key-legacy-compose-env.yml",
+      "start": 65,
+      "end": 101
+    },
+    {
+      "path": "cases/pinecone-api-key-legacy-dotenv.env",
+      "start": 17,
+      "end": 53
+    },
+    {
+      "path": "cases/pinecone-api-key-legacy-export.sh",
+      "start": 25,
+      "end": 61
+    },
+    {
+      "path": "cases/pinecone-api-key-legacy-header-note-prose.md",
+      "start": 0,
+      "end": 27
+    },
+    {
+      "path": "cases/pinecone-api-key-legacy-langchain.py",
+      "start": 71,
+      "end": 107
+    },
+    {
+      "path": "cases/pinecone-api-key-legacy-legacy-init.py",
+      "start": 40,
+      "end": 76
+    },
+    {
+      "path": "cases/pinecone-api-key-legacy-rotation-note-prose.md",
+      "start": 0,
+      "end": 23
+    },
+    {
+      "path": "cases/pinecone-api-key-legacy-sha256-index-name-encoded-value.yml",
+      "start": 0,
+      "end": 12
+    },
+    {
+      "path": "cases/pinecone-api-key-legacy-shell-key-identifier-twin.sh",
+      "start": 21,
+      "end": 57
+    },
+    {
+      "path": "cases/pinecone-api-key-legacy-terraform-output.txt",
+      "start": 39,
+      "end": 75
+    },
+    {
+      "path": "cases/pinecone-api-key-legacy-uuid-note-prose.md",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/pinecone-api-key-legacy-yaml-config.yml",
+      "start": 33,
+      "end": 69
+    },
+    {
+      "path": "cases/pinecone-api-key-legacy-zero-uuid-placeholder.env",
+      "start": 17,
+      "end": 53
+    },
+    {
+      "path": "cases/pinecone-api-key-long-secret-twin.py",
+      "start": 21,
+      "end": 33
+    },
+    {
+      "path": "cases/pinecone-api-key-pc-config.sh",
+      "start": 3,
+      "end": 9
+    },
+    {
+      "path": "cases/pinecone-api-key-pc-config.sh",
+      "start": 10,
+      "end": 13
+    },
+    {
+      "path": "cases/pinecone-api-key-pc-config.sh",
+      "start": 14,
+      "end": 17
+    },
+    {
+      "path": "cases/pinecone-api-key-pc-config.sh",
+      "start": 22,
+      "end": 97,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pinecone-api-key-python-client.py",
+      "start": 21,
+      "end": 33
+    },
+    {
+      "path": "cases/pinecone-api-key-short-secret-twin.sh",
+      "start": 50,
+      "end": 123,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pinecone-api-key-short-secret-twin.sh",
+      "start": 131,
+      "end": 139
+    },
+    {
+      "path": "cases/pinecone-api-key-short-secret-twin.sh",
+      "start": 140,
+      "end": 143
+    },
+    {
+      "path": "cases/slack-user-token-audit-env.yml",
+      "start": 76,
+      "end": 152,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-bearer-curl.sh",
+      "start": 59,
+      "end": 65
+    },
+    {
+      "path": "cases/slack-user-token-bearer-curl.sh",
+      "start": 66,
+      "end": 138,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-bolt-installation-store.json",
+      "start": 5,
+      "end": 17
+    },
+    {
+      "path": "cases/slack-user-token-bolt-installation-store.json",
+      "start": 27,
+      "end": 34
+    },
+    {
+      "path": "cases/slack-user-token-bolt-installation-store.json",
+      "start": 38,
+      "end": 47
+    },
+    {
+      "path": "cases/slack-user-token-bolt-installation-store.json",
+      "start": 55,
+      "end": 62
+    },
+    {
+      "path": "cases/slack-user-token-bolt-installation-store.json",
+      "start": 97,
+      "end": 173,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-channel-ids-public-id.env",
+      "start": 71,
+      "end": 80
+    },
+    {
+      "path": "cases/slack-user-token-curl-form-token.sh",
+      "start": 19,
+      "end": 93,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-docs-placeholder-placeholder.env",
+      "start": 17,
+      "end": 37,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-dotenv.env",
+      "start": 17,
+      "end": 93,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-dotted-sections-twin.json",
+      "start": 132,
+      "end": 150,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-legacy-query-token.txt",
+      "start": 48,
+      "end": 124,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-legacy-short-secret.sh",
+      "start": 77,
+      "end": 128,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-masked-log-placeholder.log",
+      "start": 18,
+      "end": 23
+    },
+    {
+      "path": "cases/slack-user-token-masked-sections-placeholder.env",
+      "start": 17,
+      "end": 93,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-missing-secret-twin.yml",
+      "start": 76,
+      "end": 119,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-oauth-v2-access.json",
+      "start": 132,
+      "end": 211,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-python-scim-client.py",
+      "start": 67,
+      "end": 142,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-python-webclient.py",
+      "start": 59,
+      "end": 135,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-slack-login.sh",
+      "start": 12,
+      "end": 19
+    },
+    {
+      "path": "cases/slack-user-token-slack-login.sh",
+      "start": 20,
+      "end": 95,
+      "family": "slack-token"
+    },
+    {
+      "path": "cases/slack-user-token-token-guidance-prose.md",
+      "start": 0,
+      "end": 5
+    },
+    {
+      "path": "cases/slack-user-token-token-guidance-prose.md",
+      "start": 6,
+      "end": 10
+    },
+    {
+      "path": "cases/slack-user-token-token-guidance-prose.md",
+      "start": 11,
+      "end": 17
+    },
+    {
+      "path": "cases/slack-user-token-token-guidance-prose.md",
+      "start": 18,
+      "end": 23
+    },
+    {
+      "path": "cases/slack-user-token-token-guidance-prose.md",
+      "start": 29,
+      "end": 33
+    },
+    {
+      "path": "cases/slack-user-token-token-guidance-prose.md",
+      "start": 39,
+      "end": 42
+    },
+    {
+      "path": "cases/slack-user-token-token-guidance-prose.md",
+      "start": 61,
+      "end": 65
+    },
+    {
+      "path": "cases/slack-user-token-token-guidance-prose.md",
+      "start": 67,
+      "end": 70
+    },
+    {
+      "path": "cases/slack-user-token-token-guidance-prose.md",
+      "start": 71,
+      "end": 77
+    },
+    {
+      "path": "cases/slack-user-token-token-guidance-prose.md",
+      "start": 78,
+      "end": 83
+    },
+    {
+      "path": "cases/slack-user-token-token-guidance-prose.md",
+      "start": 84,
+      "end": 88
+    },
+    {
+      "path": "cases/slack-user-token-token-guidance-prose.md",
+      "start": 89,
+      "end": 93
+    },
+    {
+      "path": "cases/slack-user-token-token-guidance-prose.md",
+      "start": 96,
+      "end": 103
+    },
+    {
+      "path": "cases/slack-user-token-token-guidance-prose.md",
+      "start": 118,
+      "end": 124
+    },
+    {
+      "path": "cases/slack-user-token-underscore-delimiter-twin.sh",
+      "start": 59,
+      "end": 65
+    },
+    {
+      "path": "cases/slack-user-token-underscore-delimiter-twin.sh",
+      "start": 66,
+      "end": 138,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/slack-user-token-uppercase-prefix-twin.py",
+      "start": 90,
+      "end": 102
+    }
+  ],
+  "digest": "98c638bc38d9ca4eb78eba31d97933baa9475e8fe426ab0c4a9051e0a75ccc66"
+}

@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-464c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "610b57923b1f4ad3024e3c2a92c1f264252c199e7d5616f642381be4c3935aa9",
+    "fixtureCount": 31,
+    "fixturesDigest": "061fe6b489020570f27b79512a5c3d995ec6b68c658141c7e221b85f25d9400a",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/nvidia-api-key-bare-prose.md",
+      "start": 0,
+      "end": 29
+    },
+    {
+      "path": "cases/nvidia-api-key-bearer-header.http",
+      "start": 70,
+      "end": 76
+    },
+    {
+      "path": "cases/nvidia-api-key-bearer-header.http",
+      "start": 77,
+      "end": 147,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/nvidia-api-key-chat-paste.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/nvidia-api-key-curl-bearer.sh",
+      "start": 80,
+      "end": 86
+    },
+    {
+      "path": "cases/nvidia-api-key-curl-bearer.sh",
+      "start": 87,
+      "end": 221,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/nvidia-api-key-docker-login-stdin.sh",
+      "start": 80,
+      "end": 86
+    },
+    {
+      "path": "cases/nvidia-api-key-docker-login-stdin.sh",
+      "start": 87,
+      "end": 92
+    },
+    {
+      "path": "cases/nvidia-api-key-docker-login-stdin.sh",
+      "start": 93,
+      "end": 97
+    },
+    {
+      "path": "cases/nvidia-api-key-docker-login-stdin.sh",
+      "start": 103,
+      "end": 111
+    },
+    {
+      "path": "cases/nvidia-api-key-docker-login-stdin.sh",
+      "start": 114,
+      "end": 124
+    },
+    {
+      "path": "cases/nvidia-api-key-docker-login-stdin.sh",
+      "start": 128,
+      "end": 136
+    },
+    {
+      "path": "cases/nvidia-api-key-docker-login-stdin.sh",
+      "start": 137,
+      "end": 142
+    },
+    {
+      "path": "cases/nvidia-api-key-key-guidance-prose.md",
+      "start": 0,
+      "end": 25
+    },
+    {
+      "path": "cases/nvidia-api-key-key-guidance-prose.md",
+      "start": 88,
+      "end": 96
+    },
+    {
+      "path": "cases/nvidia-api-key-leading-glue-twin.md",
+      "start": 0,
+      "end": 29
+    },
+    {
+      "path": "cases/nvidia-api-key-leading-underscore-twin.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/nvidia-api-key-sdk-package-name-public-id.sh",
+      "start": 0,
+      "end": 3
+    },
+    {
+      "path": "cases/nvidia-api-key-sdk-package-name-public-id.sh",
+      "start": 4,
+      "end": 11
+    },
+    {
+      "path": "cases/nvidia-api-key-sdk-package-name-public-id.sh",
+      "start": 12,
+      "end": 17
+    },
+    {
+      "path": "cases/nvidia-api-key-sdk-package-name-public-id.sh",
+      "start": 18,
+      "end": 21
+    },
+    {
+      "path": "cases/nvidia-api-key-sdk-package-name-public-id.sh",
+      "start": 22,
+      "end": 30
+    },
+    {
+      "path": "cases/nvidia-api-key-sdk-package-name-public-id.sh",
+      "start": 31,
+      "end": 36
+    },
+    {
+      "path": "cases/nvidia-api-key-sdk-package-name-public-id.sh",
+      "start": 37,
+      "end": 44
+    },
+    {
+      "path": "cases/nvidia-api-key-underscore-prefix-twin.http",
+      "start": 65,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/nvidia-api-key-uppercase-prefix-twin.http",
+      "start": 70,
+      "end": 76
+    },
+    {
+      "path": "cases/nvidia-api-key-uppercase-prefix-twin.http",
+      "start": 77,
+      "end": 147,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/nvidia-api-key-x-api-key-header.http",
+      "start": 65,
+      "end": 135,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "77c9ebbda99f94d3edff1d0f41c7f5234d9a69373c58cc084436f089c96c008b"
+}

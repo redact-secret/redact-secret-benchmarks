@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/negative-controls",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "940819438179b0ba047e427a1d3d9b565c605f4f983957c900b743c3d0466341",
+    "fixtureCount": 24,
+    "fixturesDigest": "f68c70e35890a5b54fa1c612089a10f5084713fcb3c200d1bd3e5c0310d33819",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/pem-label-only.txt",
+      "start": 8,
+      "end": 13
+    },
+    {
+      "path": "cases/pem-label-only.txt",
+      "start": 17,
+      "end": 22
+    },
+    {
+      "path": "cases/pem-label-only.txt",
+      "start": 31,
+      "end": 34
+    },
+    {
+      "path": "cases/pem-label-only.txt",
+      "start": 39,
+      "end": 42
+    },
+    {
+      "path": "cases/pem-label-only.txt",
+      "start": 43,
+      "end": 51
+    },
+    {
+      "path": "cases/pem-label-only.txt",
+      "start": 52,
+      "end": 59
+    },
+    {
+      "path": "cases/public-url.txt",
+      "start": 41,
+      "end": 51
+    },
+    {
+      "path": "cases/short-slack.txt",
+      "start": 12,
+      "end": 28,
+      "family": "slack-token"
+    }
+  ],
+  "digest": "dd309bf15d0686854508773f1404458e1650b7d896c60c8a690c9709ad6609fd"
+}

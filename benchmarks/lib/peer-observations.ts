@@ -131,7 +131,9 @@ export async function repositoryPeerIdentity(scanner: Scanner, root: string): Pr
     const platformKey = `${platform()}-${arch() === 'x64' ? 'x64' : arch() === 'arm64' ? 'arm64' : arch()}`;
     observedArtifact = { platform: platformKey, digest: entry.assets?.[platformKey]?.sha256 };
   } else {
-    const entry = lock.packages?.[`node_modules/${scanner.id}`];
+    // An npm peer's lockfile entry is keyed by its package name, which is the scanner id except where the adapter says
+    // otherwise (`openredaction` is the `@openredaction/core` package).
+    const entry = lock.packages?.[`node_modules/${scanner.configuration?.package ?? scanner.id}`];
     version = entry?.version; artifactDigest = digest({ version, resolved: entry?.resolved, integrity: entry?.integrity });
     observedArtifact = { platform: 'npm-lock', digest: artifactDigest };
   }

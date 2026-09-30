@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-528b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "6be3e7c9095378c240eeda0e4334826f5ecfd53635bf53c11311a289b77336e9",
+    "fixtureCount": 59,
+    "fixturesDigest": "17b9c0cbff0d8e93b429423f25e45fe606e5a7623dd85a14ec789d7a0afb0fd7",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/polar-api-credential-access-token-without-subtype-twin.env",
+      "start": 78,
+      "end": 87
+    },
+    {
+      "path": "cases/polar-api-credential-access-token-without-subtype-twin.env",
+      "start": 88,
+      "end": 92
+    },
+    {
+      "path": "cases/polar-api-credential-bare-prose.md",
+      "start": 0,
+      "end": 28
+    },
+    {
+      "path": "cases/polar-api-credential-bearer-header.http",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "path": "cases/polar-api-credential-bearer-header.http",
+      "start": 65,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/polar-api-credential-body-42-twin.md",
+      "start": 0,
+      "end": 28
+    },
+    {
+      "path": "cases/polar-api-credential-body-44-twin.py",
+      "start": 22,
+      "end": 34
+    },
+    {
+      "path": "cases/polar-api-credential-chat-paste.txt",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/polar-api-credential-dotenv.env",
+      "start": 80,
+      "end": 89
+    },
+    {
+      "path": "cases/polar-api-credential-dotenv.env",
+      "start": 90,
+      "end": 94
+    },
+    {
+      "path": "cases/polar-api-credential-ellipsis-placeholder.md",
+      "start": 0,
+      "end": 26
+    },
+    {
+      "path": "cases/polar-api-credential-leading-glue-twin.txt",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/polar-api-credential-python-sdk.py",
+      "start": 22,
+      "end": 34
+    },
+    {
+      "path": "cases/polar-api-credential-unknown-role-twin.http",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "path": "cases/polar-api-credential-unknown-role-twin.http",
+      "start": 65,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/polar-api-credential-x-api-key-header.http",
+      "start": 53,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-token-bare-prose.md",
+      "start": 0,
+      "end": 28
+    },
+    {
+      "path": "cases/polar-token-bearer-header.http",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "path": "cases/polar-token-bearer-header.http",
+      "start": 65,
+      "end": 118,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/polar-token-chat-paste.txt",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/polar-token-checkout-client-secret-public-id.html",
+      "start": 30,
+      "end": 36
+    },
+    {
+      "path": "cases/polar-token-checkout-client-secret-public-id.html",
+      "start": 50,
+      "end": 90,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/polar-token-checksum-mismatch-dotenv.env",
+      "start": 11,
+      "end": 17
+    },
+    {
+      "path": "cases/polar-token-checksum-mismatch-dotenv.env",
+      "start": 108,
+      "end": 114
+    },
+    {
+      "path": "cases/polar-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 28
+    },
+    {
+      "path": "cases/polar-token-python-sdk.py",
+      "start": 22,
+      "end": 39
+    },
+    {
+      "path": "cases/polar-token-trailing-underscore-twin.txt",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/polar-token-uppercase-prefix-twin.http",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "path": "cases/polar-token-uppercase-prefix-twin.http",
+      "start": 65,
+      "end": 118,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/polar-token-x-api-key-header.http",
+      "start": 53,
+      "end": 106,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "ecda27bda3dbcc37ab2fc644be0da2d7b796f959e040a89acad605d107a3cfba"
+}

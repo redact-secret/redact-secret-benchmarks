@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-528e",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "8cfc645d22901ec7d462efaa70e82fd49bf5773ab8346b40761d82d637dff960",
+    "fixtureCount": 29,
+    "fixturesDigest": "abd9347e38004e74727f7ec83892bd74e06e6f6912443b8ed52ed10b3ff276e3",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/clojars-deploy-token-actions-env.yml",
+      "start": 45,
+      "end": 51
+    },
+    {
+      "path": "cases/clojars-deploy-token-actions-env.yml",
+      "start": 52,
+      "end": 59
+    },
+    {
+      "path": "cases/clojars-deploy-token-actions-env.yml",
+      "start": 68,
+      "end": 71
+    },
+    {
+      "path": "cases/clojars-deploy-token-actions-env.yml",
+      "start": 83,
+      "end": 99
+    },
+    {
+      "path": "cases/clojars-deploy-token-actions-env.yml",
+      "start": 101,
+      "end": 105
+    },
+    {
+      "path": "cases/clojars-deploy-token-actions-env.yml",
+      "start": 119,
+      "end": 135
+    },
+    {
+      "path": "cases/clojars-deploy-token-bare-60-hex-encoded-value.yml",
+      "start": 0,
+      "end": 8
+    },
+    {
+      "path": "cases/clojars-deploy-token-bare-60-hex-encoded-value.yml",
+      "start": 9,
+      "end": 15
+    },
+    {
+      "path": "cases/clojars-deploy-token-bare-prose.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/clojars-deploy-token-bearer-header.http",
+      "start": 57,
+      "end": 63
+    },
+    {
+      "path": "cases/clojars-deploy-token-bearer-header.http",
+      "start": 64,
+      "end": 132,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/clojars-deploy-token-chat-paste.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/clojars-deploy-token-env-name-list-public-id.md",
+      "start": 0,
+      "end": 8
+    },
+    {
+      "path": "cases/clojars-deploy-token-env-name-list-public-id.md",
+      "start": 9,
+      "end": 16
+    },
+    {
+      "path": "cases/clojars-deploy-token-env-name-list-public-id.md",
+      "start": 18,
+      "end": 34
+    },
+    {
+      "path": "cases/clojars-deploy-token-env-name-list-public-id.md",
+      "start": 63,
+      "end": 68
+    },
+    {
+      "path": "cases/clojars-deploy-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/clojars-deploy-token-lowercase-prefix-twin.http",
+      "start": 57,
+      "end": 63
+    },
+    {
+      "path": "cases/clojars-deploy-token-lowercase-prefix-twin.http",
+      "start": 64,
+      "end": 132,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/clojars-deploy-token-maven-settings.xml",
+      "start": 28,
+      "end": 34
+    },
+    {
+      "path": "cases/clojars-deploy-token-maven-settings.xml",
+      "start": 46,
+      "end": 53
+    },
+    {
+      "path": "cases/clojars-deploy-token-maven-settings.xml",
+      "start": 66,
+      "end": 74
+    },
+    {
+      "path": "cases/clojars-deploy-token-maven-settings.xml",
+      "start": 101,
+      "end": 109
+    },
+    {
+      "path": "cases/clojars-deploy-token-trailing-hyphen-twin.http",
+      "start": 52,
+      "end": 122,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/clojars-deploy-token-trailing-underscore-twin.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/clojars-deploy-token-username-env-public-id.env",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/clojars-deploy-token-username-env-public-id.env",
+      "start": 17,
+      "end": 21
+    },
+    {
+      "path": "cases/clojars-deploy-token-username-env-public-id.env",
+      "start": 25,
+      "end": 44
+    },
+    {
+      "path": "cases/clojars-deploy-token-username-env-public-id.env",
+      "start": 49,
+      "end": 55
+    },
+    {
+      "path": "cases/clojars-deploy-token-x-api-key-header.http",
+      "start": 52,
+      "end": 120,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "8efc335091f35f56744cebbbbb4f69ef4db17bdaf1a856078c78e254506d59ad"
+}

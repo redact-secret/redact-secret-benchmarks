@@ -211,6 +211,18 @@ test('#251: every finding-type target is an arrival family whose recorded reason
     }
 });
 
+test('openredaction family labels map only credential types a family already scores and fail closed on the rest', () => {
+  assert.deepEqual(findingFamily('openredaction', 'GITHUB_TOKEN'), { family: 'github-token' });
+  assert.deepEqual(findingFamily('openredaction', 'AWS_ACCESS_KEY'), { family: 'aws-access-key' });
+  assert.deepEqual(findingFamily('openredaction', 'AWS_SECRET_KEY'), { family: 'aws-secret-access-key' });
+  assert.deepEqual(findingFamily('openredaction', 'SSH_PRIVATE_KEY'), { family: 'private-key' });
+  assert.deepEqual(findingFamily('openredaction', 'DATABASE_CONNECTION'), { family: 'connection-string' });
+  assert.deepEqual(findingFamily('openredaction', 'URL_WITH_AUTH'), { family: 'connection-string' });
+  // PII types, shared-shape and keyword-gated credential types stay unmapped.
+  for (const label of ['EMAIL', 'PHONE_UK', 'SSN', 'GOOGLE_API_KEY', 'FIREBASE_API_KEY', 'HEROKU_API_KEY', 'OAUTH_TOKEN', 'SLACK_WEBHOOK', 'toString'])
+    assert.deepEqual(findingFamily('openredaction', label), {}, label);
+});
+
 test('flare-redact family labels map only explicitly recognized ids and fail closed on the rest', () => {
   assert.deepEqual(findingFamily('flare-redact', 'github_token'), { family: 'github-token' });
   assert.deepEqual(findingFamily('flare-redact', 'aws_access_key'), { family: 'aws-access-key' });

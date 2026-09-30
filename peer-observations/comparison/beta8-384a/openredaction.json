@@ -1,0 +1,272 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-384a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "3b12e7b28985dd546ce1880f93ded95f52b90a5c00f1ec49134f30d2fb14f7ed",
+    "fixtureCount": 83,
+    "fixturesDigest": "8c1cfb318b8195e2aa8783486d3b2e2147bfc4891c3b26ae0159255e23397bf7",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/anthropic-admin01-key-body-only-twin.txt",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/anthropic-admin01-key-body-only-twin.txt",
+      "start": 38,
+      "end": 44
+    },
+    {
+      "path": "cases/anthropic-admin01-key-body-only-twin.txt",
+      "start": 48,
+      "end": 58
+    },
+    {
+      "path": "cases/anthropic-admin01-key-body-only-twin.txt",
+      "start": 127,
+      "end": 142
+    },
+    {
+      "path": "cases/anthropic-admin01-key-curl-x-api-key.sh",
+      "start": 75,
+      "end": 185,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-pasted-key.txt",
+      "start": 48,
+      "end": 58
+    },
+    {
+      "path": "cases/anthropic-admin01-key-pasted-key.txt",
+      "start": 63,
+      "end": 66
+    },
+    {
+      "path": "cases/anthropic-admin01-key-pasted-key.txt",
+      "start": 67,
+      "end": 74
+    },
+    {
+      "path": "cases/anthropic-admin01-key-pasted-key.txt",
+      "start": 142,
+      "end": 157
+    },
+    {
+      "path": "cases/anthropic-admin01-key-prefix-guidance-prose.md",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/anthropic-admin01-key-tool-call.json",
+      "start": 118,
+      "end": 228,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/anthropic-admin01-key-underscore-delimiters-twin.sh",
+      "start": 75,
+      "end": 185,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-api03-prefix-twin.env",
+      "start": 52,
+      "end": 92,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/anthropic-api01-key-body-only-twin.txt",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/anthropic-api01-key-body-only-twin.txt",
+      "start": 48,
+      "end": 58
+    },
+    {
+      "path": "cases/anthropic-api01-key-body-only-twin.txt",
+      "start": 60,
+      "end": 81
+    },
+    {
+      "path": "cases/anthropic-api01-key-body-only-twin.txt",
+      "start": 82,
+      "end": 87
+    },
+    {
+      "path": "cases/anthropic-api01-key-compose-env.yml",
+      "start": 155,
+      "end": 195,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/anthropic-api01-key-curl-x-api-key.sh",
+      "start": 74,
+      "end": 182,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-dotenv.env",
+      "start": 52,
+      "end": 92,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/anthropic-api01-key-key-digest-encoded-value.txt",
+      "start": 47,
+      "end": 87,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/anthropic-api01-key-pasted-key.txt",
+      "start": 67,
+      "end": 72
+    },
+    {
+      "path": "cases/anthropic-api01-key-pasted-key.txt",
+      "start": 73,
+      "end": 94
+    },
+    {
+      "path": "cases/anthropic-api01-key-pasted-key.txt",
+      "start": 95,
+      "end": 100
+    },
+    {
+      "path": "cases/anthropic-api01-key-tool-call.json",
+      "start": 117,
+      "end": 171,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/anthropic-api01-key-underscore-delimiters-twin.sh",
+      "start": 74,
+      "end": 182,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/anthropic-token-api03-curl-x-api-key.sh",
+      "start": 61,
+      "end": 169,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/anthropic-token-api03-vendor-stem-prefix-twin.sh",
+      "start": 61,
+      "end": 169,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-compose-env.yml",
+      "start": 117,
+      "end": 172,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-curl-bearer.sh",
+      "start": 72,
+      "end": 78
+    },
+    {
+      "path": "cases/openai-admin-api-key-curl-bearer.sh",
+      "start": 79,
+      "end": 212,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-export.sh",
+      "start": 7,
+      "end": 23
+    },
+    {
+      "path": "cases/openai-admin-api-key-export.sh",
+      "start": 28,
+      "end": 33
+    },
+    {
+      "path": "cases/openai-admin-api-key-gitlab-ci-variables.yml",
+      "start": 32,
+      "end": 83,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-lowercase-marker-twin.yml",
+      "start": 117,
+      "end": 172,
+      "family": "openai-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-prefix-only-near-miss.sh",
+      "start": 72,
+      "end": 78
+    },
+    {
+      "path": "cases/openai-admin-api-key-python-requests-headers.py",
+      "start": 33,
+      "end": 42
+    },
+    {
+      "path": "cases/openai-admin-api-key-python-requests-headers.py",
+      "start": 53,
+      "end": 186,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-short-second-segment-twin.sh",
+      "start": 72,
+      "end": 78
+    },
+    {
+      "path": "cases/openai-admin-api-key-short-second-segment-twin.sh",
+      "start": 79,
+      "end": 211,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/openai-admin-api-key-tool-call.json",
+      "start": 67,
+      "end": 119,
+      "family": "openai-token"
+    }
+  ],
+  "digest": "68c1a1cbaa0ad4cfeabe6a638c0dda1c9ce47b03a24c2246a2bffae1ef69d25f"
+}

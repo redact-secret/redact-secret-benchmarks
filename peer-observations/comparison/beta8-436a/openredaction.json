@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-436a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "60b1b8e40aee9ef3104a906b4a5af54984690627275431acd7f502df6c218a9b",
+    "fixtureCount": 33,
+    "fixturesDigest": "b6c05483f46f2687332c3ded77a260e7a7942dba87edf358fa02ee810b69c1d0",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/convex-deployment-key-bare-prose.md",
+      "start": 0,
+      "end": 29
+    },
+    {
+      "path": "cases/convex-deployment-key-bearer-header.http",
+      "start": 60,
+      "end": 66
+    },
+    {
+      "path": "cases/convex-deployment-key-chat-paste.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/convex-deployment-key-compose-self-hosted.yml",
+      "start": 51,
+      "end": 57
+    },
+    {
+      "path": "cases/convex-deployment-key-compose-self-hosted.yml",
+      "start": 58,
+      "end": 65
+    },
+    {
+      "path": "cases/convex-deployment-key-compose-self-hosted.yml",
+      "start": 77,
+      "end": 88
+    },
+    {
+      "path": "cases/convex-deployment-key-compose-self-hosted.yml",
+      "start": 98,
+      "end": 111
+    },
+    {
+      "path": "cases/convex-deployment-key-compose-self-hosted.yml",
+      "start": 112,
+      "end": 118
+    },
+    {
+      "path": "cases/convex-deployment-key-compose-self-hosted.yml",
+      "start": 119,
+      "end": 123
+    },
+    {
+      "path": "cases/convex-deployment-key-compose-self-hosted.yml",
+      "start": 124,
+      "end": 130
+    },
+    {
+      "path": "cases/convex-deployment-key-compose-self-hosted.yml",
+      "start": 139,
+      "end": 167
+    },
+    {
+      "path": "cases/convex-deployment-key-curl-authorization-convex.sh",
+      "start": 80,
+      "end": 86
+    },
+    {
+      "path": "cases/convex-deployment-key-key-guidance-prose.md",
+      "start": 0,
+      "end": 23
+    },
+    {
+      "path": "cases/convex-deployment-key-space-before-separator-twin.md",
+      "start": 0,
+      "end": 29
+    },
+    {
+      "path": "cases/convex-deployment-key-trailing-glue-twin.sh",
+      "start": 80,
+      "end": 86
+    },
+    {
+      "path": "cases/convex-deployment-key-underscore-name-twin.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/convex-deployment-key-version-02-twin.http",
+      "start": 60,
+      "end": 66
+    }
+  ],
+  "digest": "10bb32a4785241564b4cb2d4df6cfc402725dc47672e2203a453c99ba57d62ac"
+}

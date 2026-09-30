@@ -1,0 +1,593 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-464d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "2b1a986ffa055eb3e55454ee4967622a1e135b696c7069136df956ff2bbf028c",
+    "fixtureCount": 31,
+    "fixturesDigest": "5bc44960995f11bfb3e01a5ba63dd741ba19370935fd9c54e82c3335dc2b9291",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/browserbase-api-key-bare-prose.md",
+      "start": 12,
+      "end": 24
+    },
+    {
+      "path": "cases/browserbase-api-key-bare-prose.md",
+      "start": 24,
+      "end": 39
+    },
+    {
+      "path": "cases/browserbase-api-key-bare-prose.md",
+      "start": 40,
+      "end": 47
+    },
+    {
+      "path": "cases/browserbase-api-key-bare-prose.md",
+      "start": 49,
+      "end": 64
+    },
+    {
+      "path": "cases/browserbase-api-key-bare-prose.md",
+      "start": 106,
+      "end": 116
+    },
+    {
+      "path": "cases/browserbase-api-key-bare-prose.md",
+      "start": 116,
+      "end": 127
+    },
+    {
+      "path": "cases/browserbase-api-key-bearer-header.http",
+      "start": 30,
+      "end": 33
+    },
+    {
+      "path": "cases/browserbase-api-key-bearer-header.http",
+      "start": 34,
+      "end": 45
+    },
+    {
+      "path": "cases/browserbase-api-key-bearer-header.http",
+      "start": 46,
+      "end": 49
+    },
+    {
+      "path": "cases/browserbase-api-key-bearer-header.http",
+      "start": 50,
+      "end": 63
+    },
+    {
+      "path": "cases/browserbase-api-key-bearer-header.http",
+      "start": 65,
+      "end": 71
+    },
+    {
+      "path": "cases/browserbase-api-key-bearer-header.http",
+      "start": 72,
+      "end": 112,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-bearer-header.http",
+      "start": 113,
+      "end": 119
+    },
+    {
+      "path": "cases/browserbase-api-key-bearer-header.http",
+      "start": 121,
+      "end": 132
+    },
+    {
+      "path": "cases/browserbase-api-key-body-19-twin.json",
+      "start": 5,
+      "end": 10
+    },
+    {
+      "path": "cases/browserbase-api-key-body-19-twin.json",
+      "start": 47,
+      "end": 53
+    },
+    {
+      "path": "cases/browserbase-api-key-chat-paste.txt",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/browserbase-api-key-chat-paste.txt",
+      "start": 11,
+      "end": 26
+    },
+    {
+      "path": "cases/browserbase-api-key-chat-paste.txt",
+      "start": 68,
+      "end": 82
+    },
+    {
+      "path": "cases/browserbase-api-key-dotenv.env",
+      "start": 3,
+      "end": 6
+    },
+    {
+      "path": "cases/browserbase-api-key-dotenv.env",
+      "start": 68,
+      "end": 77
+    },
+    {
+      "path": "cases/browserbase-api-key-dotenv.env",
+      "start": 78,
+      "end": 82
+    },
+    {
+      "path": "cases/browserbase-api-key-ellipsis-placeholder.md",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/browserbase-api-key-ellipsis-placeholder.md",
+      "start": 24,
+      "end": 35
+    },
+    {
+      "path": "cases/browserbase-api-key-ellipsis-placeholder.md",
+      "start": 50,
+      "end": 59
+    },
+    {
+      "path": "cases/browserbase-api-key-ellipsis-placeholder.md",
+      "start": 59,
+      "end": 68
+    },
+    {
+      "path": "cases/browserbase-api-key-export.sh",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/browserbase-api-key-hyphen-prefix-twin.http",
+      "start": 9,
+      "end": 18
+    },
+    {
+      "path": "cases/browserbase-api-key-hyphen-prefix-twin.http",
+      "start": 23,
+      "end": 27
+    },
+    {
+      "path": "cases/browserbase-api-key-hyphen-prefix-twin.http",
+      "start": 29,
+      "end": 32
+    },
+    {
+      "path": "cases/browserbase-api-key-hyphen-prefix-twin.http",
+      "start": 33,
+      "end": 44
+    },
+    {
+      "path": "cases/browserbase-api-key-hyphen-prefix-twin.http",
+      "start": 45,
+      "end": 48
+    },
+    {
+      "path": "cases/browserbase-api-key-hyphen-prefix-twin.http",
+      "start": 51,
+      "end": 54
+    },
+    {
+      "path": "cases/browserbase-api-key-hyphen-prefix-twin.http",
+      "start": 55,
+      "end": 58
+    },
+    {
+      "path": "cases/browserbase-api-key-hyphen-prefix-twin.http",
+      "start": 60,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-hyphen-prefix-twin.http",
+      "start": 101,
+      "end": 108
+    },
+    {
+      "path": "cases/browserbase-api-key-hyphen-prefix-twin.http",
+      "start": 109,
+      "end": 113
+    },
+    {
+      "path": "cases/browserbase-api-key-json-api-key.json",
+      "start": 62,
+      "end": 69
+    },
+    {
+      "path": "cases/browserbase-api-key-json-token.json",
+      "start": 5,
+      "end": 10
+    },
+    {
+      "path": "cases/browserbase-api-key-json-token.json",
+      "start": 48,
+      "end": 54
+    },
+    {
+      "path": "cases/browserbase-api-key-key-guidance-prose.md",
+      "start": 0,
+      "end": 15
+    },
+    {
+      "path": "cases/browserbase-api-key-key-guidance-prose.md",
+      "start": 16,
+      "end": 31
+    },
+    {
+      "path": "cases/browserbase-api-key-key-guidance-prose.md",
+      "start": 41,
+      "end": 56
+    },
+    {
+      "path": "cases/browserbase-api-key-key-guidance-prose.md",
+      "start": 57,
+      "end": 62
+    },
+    {
+      "path": "cases/browserbase-api-key-key-guidance-prose.md",
+      "start": 66,
+      "end": 69
+    },
+    {
+      "path": "cases/browserbase-api-key-key-guidance-prose.md",
+      "start": 70,
+      "end": 80
+    },
+    {
+      "path": "cases/browserbase-api-key-leading-glue-twin.md",
+      "start": 12,
+      "end": 24
+    },
+    {
+      "path": "cases/browserbase-api-key-leading-glue-twin.md",
+      "start": 24,
+      "end": 39
+    },
+    {
+      "path": "cases/browserbase-api-key-leading-glue-twin.md",
+      "start": 40,
+      "end": 47
+    },
+    {
+      "path": "cases/browserbase-api-key-leading-glue-twin.md",
+      "start": 49,
+      "end": 64
+    },
+    {
+      "path": "cases/browserbase-api-key-leading-glue-twin.md",
+      "start": 107,
+      "end": 117
+    },
+    {
+      "path": "cases/browserbase-api-key-leading-glue-twin.md",
+      "start": 117,
+      "end": 128
+    },
+    {
+      "path": "cases/browserbase-api-key-leading-underscore-twin.txt",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/browserbase-api-key-leading-underscore-twin.txt",
+      "start": 11,
+      "end": 26
+    },
+    {
+      "path": "cases/browserbase-api-key-leading-underscore-twin.txt",
+      "start": 69,
+      "end": 83
+    },
+    {
+      "path": "cases/browserbase-api-key-live-session-identifier-near-miss.log",
+      "start": 21,
+      "end": 32
+    },
+    {
+      "path": "cases/browserbase-api-key-live-session-identifier-near-miss.log",
+      "start": 34,
+      "end": 43
+    },
+    {
+      "path": "cases/browserbase-api-key-live-session-identifier-near-miss.log",
+      "start": 84,
+      "end": 94
+    },
+    {
+      "path": "cases/browserbase-api-key-mcp-env.json",
+      "start": 113,
+      "end": 124
+    },
+    {
+      "path": "cases/browserbase-api-key-mcp-env.json",
+      "start": 135,
+      "end": 138
+    },
+    {
+      "path": "cases/browserbase-api-key-prefix-at-eol-near-miss.log",
+      "start": 21,
+      "end": 32
+    },
+    {
+      "path": "cases/browserbase-api-key-prefix-at-eol-near-miss.log",
+      "start": 34,
+      "end": 49
+    },
+    {
+      "path": "cases/browserbase-api-key-prefix-at-eol-near-miss.log",
+      "start": 49,
+      "end": 61
+    },
+    {
+      "path": "cases/browserbase-api-key-prefix-at-eol-near-miss.log",
+      "start": 61,
+      "end": 66
+    },
+    {
+      "path": "cases/browserbase-api-key-python-sdk.py",
+      "start": 17,
+      "end": 24
+    },
+    {
+      "path": "cases/browserbase-api-key-python-sdk.py",
+      "start": 24,
+      "end": 35
+    },
+    {
+      "path": "cases/browserbase-api-key-python-sdk.py",
+      "start": 42,
+      "end": 53
+    },
+    {
+      "path": "cases/browserbase-api-key-python-sdk.py",
+      "start": 106,
+      "end": 113
+    },
+    {
+      "path": "cases/browserbase-api-key-sdk-kwarg.py",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/browserbase-api-key-sdk-kwarg.py",
+      "start": 9,
+      "end": 20
+    },
+    {
+      "path": "cases/browserbase-api-key-stagehand-ts.ts",
+      "start": 28,
+      "end": 41
+    },
+    {
+      "path": "cases/browserbase-api-key-stagehand-ts.ts",
+      "start": 73,
+      "end": 86
+    },
+    {
+      "path": "cases/browserbase-api-key-stagehand-ts.ts",
+      "start": 89,
+      "end": 92
+    },
+    {
+      "path": "cases/browserbase-api-key-stagehand-ts.ts",
+      "start": 95,
+      "end": 106
+    },
+    {
+      "path": "cases/browserbase-api-key-stagehand-ts.ts",
+      "start": 109,
+      "end": 115
+    },
+    {
+      "path": "cases/browserbase-api-key-stagehand-ts.ts",
+      "start": 161,
+      "end": 170
+    },
+    {
+      "path": "cases/browserbase-api-key-trailing-hyphen-twin.sh",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/browserbase-api-key-trailing-underscore-twin.env",
+      "start": 3,
+      "end": 6
+    },
+    {
+      "path": "cases/browserbase-api-key-trailing-underscore-twin.env",
+      "start": 70,
+      "end": 79
+    },
+    {
+      "path": "cases/browserbase-api-key-trailing-underscore-twin.env",
+      "start": 80,
+      "end": 84
+    },
+    {
+      "path": "cases/browserbase-api-key-uppercase-prefix-twin.http",
+      "start": 30,
+      "end": 33
+    },
+    {
+      "path": "cases/browserbase-api-key-uppercase-prefix-twin.http",
+      "start": 34,
+      "end": 45
+    },
+    {
+      "path": "cases/browserbase-api-key-uppercase-prefix-twin.http",
+      "start": 46,
+      "end": 49
+    },
+    {
+      "path": "cases/browserbase-api-key-uppercase-prefix-twin.http",
+      "start": 50,
+      "end": 63
+    },
+    {
+      "path": "cases/browserbase-api-key-uppercase-prefix-twin.http",
+      "start": 65,
+      "end": 71
+    },
+    {
+      "path": "cases/browserbase-api-key-uppercase-prefix-twin.http",
+      "start": 72,
+      "end": 112,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-uppercase-prefix-twin.http",
+      "start": 113,
+      "end": 119
+    },
+    {
+      "path": "cases/browserbase-api-key-uppercase-prefix-twin.http",
+      "start": 121,
+      "end": 132
+    },
+    {
+      "path": "cases/browserbase-api-key-x-api-key-header.http",
+      "start": 9,
+      "end": 18
+    },
+    {
+      "path": "cases/browserbase-api-key-x-api-key-header.http",
+      "start": 23,
+      "end": 27
+    },
+    {
+      "path": "cases/browserbase-api-key-x-api-key-header.http",
+      "start": 29,
+      "end": 32
+    },
+    {
+      "path": "cases/browserbase-api-key-x-api-key-header.http",
+      "start": 33,
+      "end": 44
+    },
+    {
+      "path": "cases/browserbase-api-key-x-api-key-header.http",
+      "start": 45,
+      "end": 48
+    },
+    {
+      "path": "cases/browserbase-api-key-x-api-key-header.http",
+      "start": 51,
+      "end": 54
+    },
+    {
+      "path": "cases/browserbase-api-key-x-api-key-header.http",
+      "start": 55,
+      "end": 58
+    },
+    {
+      "path": "cases/browserbase-api-key-x-api-key-header.http",
+      "start": 60,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-x-api-key-header.http",
+      "start": 101,
+      "end": 108
+    },
+    {
+      "path": "cases/browserbase-api-key-x-api-key-header.http",
+      "start": 109,
+      "end": 113
+    },
+    {
+      "path": "cases/browserbase-api-key-x-bb-api-key-header.http",
+      "start": 27,
+      "end": 31
+    },
+    {
+      "path": "cases/browserbase-api-key-x-bb-api-key-header.http",
+      "start": 33,
+      "end": 36
+    },
+    {
+      "path": "cases/browserbase-api-key-x-bb-api-key-header.http",
+      "start": 37,
+      "end": 48
+    },
+    {
+      "path": "cases/browserbase-api-key-x-bb-api-key-header.http",
+      "start": 49,
+      "end": 52
+    },
+    {
+      "path": "cases/browserbase-api-key-x-bb-api-key-header.http",
+      "start": 58,
+      "end": 61
+    },
+    {
+      "path": "cases/browserbase-api-key-x-bb-api-key-header.http",
+      "start": 62,
+      "end": 65
+    },
+    {
+      "path": "cases/browserbase-api-key-x-bb-api-key-header.http",
+      "start": 67,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/browserbase-api-key-x-bb-api-key-header.http",
+      "start": 108,
+      "end": 115
+    },
+    {
+      "path": "cases/browserbase-api-key-x-bb-api-key-header.http",
+      "start": 116,
+      "end": 120
+    },
+    {
+      "path": "cases/browserbase-api-key-x-run-placeholder.ts",
+      "start": 0,
+      "end": 6
+    }
+  ],
+  "digest": "fb1cd0bea038c9cd4e98a7fcea2d307834b059ba9dbcf8b715c42af32ef18c7a"
+}

@@ -1,0 +1,366 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-263",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "95413f67fa190e58d01c51963465f48ca3ba396aad07b6e895d7c4baa0cff9b7",
+    "fixtureCount": 104,
+    "fixturesDigest": "ccf02279aecb48890c8be54f3d9401c6b660304c74d2e043ffc14c725b33d46c",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/gitlab-runner-authentication-token-handover.md",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-register-output.txt",
+      "start": 0,
+      "end": 37
+    },
+    {
+      "path": "cases/gitlab-runner-authentication-token-register-output.txt",
+      "start": 46,
+      "end": 64
+    },
+    {
+      "path": "cases/groq-api-key-curl-models.sh",
+      "start": 62,
+      "end": 68
+    },
+    {
+      "path": "cases/groq-api-key-curl-models.sh",
+      "start": 69,
+      "end": 125,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/groq-api-key-prefix-separator-twin.py",
+      "start": 17,
+      "end": 29
+    },
+    {
+      "path": "cases/groq-api-key-secrets-list.txt",
+      "start": 47,
+      "end": 87,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/groq-api-key-startup-log.log",
+      "start": 21,
+      "end": 29
+    },
+    {
+      "path": "cases/groq-api-key-twin-base-python.py",
+      "start": 17,
+      "end": 29
+    },
+    {
+      "path": "cases/langfuse-secret-key-secret-get.txt",
+      "start": 49,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langsmith-api-key-langgraph-cli.sh",
+      "start": 27,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/langsmith-api-key-runbook.md",
+      "start": 0,
+      "end": 22
+    },
+    {
+      "path": "cases/langsmith-api-key-runbook.md",
+      "start": 44,
+      "end": 54
+    },
+    {
+      "path": "cases/neon-api-key-compose-env.yml",
+      "start": 0,
+      "end": 8
+    },
+    {
+      "path": "cases/neon-api-key-compose-env.yml",
+      "start": 12,
+      "end": 19
+    },
+    {
+      "path": "cases/neon-api-key-compose-env.yml",
+      "start": 25,
+      "end": 30
+    },
+    {
+      "path": "cases/neon-api-key-compose-env.yml",
+      "start": 54,
+      "end": 61
+    },
+    {
+      "path": "cases/neon-api-key-compose-env.yml",
+      "start": 62,
+      "end": 65
+    },
+    {
+      "path": "cases/neon-api-key-compose-env.yml",
+      "start": 70,
+      "end": 81
+    },
+    {
+      "path": "cases/neon-api-key-compose-env.yml",
+      "start": 89,
+      "end": 101
+    },
+    {
+      "path": "cases/neon-api-key-dash-in-body-twin.http",
+      "start": 69,
+      "end": 75
+    },
+    {
+      "path": "cases/neon-api-key-dash-in-body-twin.http",
+      "start": 76,
+      "end": 145,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/neon-api-key-secret-print.txt",
+      "start": 6,
+      "end": 20
+    },
+    {
+      "path": "cases/neon-api-key-secret-print.txt",
+      "start": 95,
+      "end": 135,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/neon-api-key-terraform-vars.tfvars",
+      "start": 21,
+      "end": 61,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/neon-api-key-twin-base-header.http",
+      "start": 69,
+      "end": 75
+    },
+    {
+      "path": "cases/neon-api-key-twin-base-header.http",
+      "start": 76,
+      "end": 145,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/perplexity-api-key-compose-env.yml",
+      "start": 24,
+      "end": 35
+    },
+    {
+      "path": "cases/perplexity-api-key-curl-chat.sh",
+      "start": 67,
+      "end": 73
+    },
+    {
+      "path": "cases/perplexity-api-key-curl-chat.sh",
+      "start": 74,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/perplexity-api-key-debug-log.log",
+      "start": 0,
+      "end": 23
+    },
+    {
+      "path": "cases/pinecone-api-key-error-log.log",
+      "start": 0,
+      "end": 28
+    },
+    {
+      "path": "cases/pinecone-api-key-error-log.log",
+      "start": 113,
+      "end": 116
+    },
+    {
+      "path": "cases/pinecone-api-key-error-log.log",
+      "start": 117,
+      "end": 126
+    },
+    {
+      "path": "cases/pinecone-api-key-prefix-letter-twin.py",
+      "start": 21,
+      "end": 33
+    },
+    {
+      "path": "cases/pinecone-api-key-prefix-letter-twin.py",
+      "start": 36,
+      "end": 44
+    },
+    {
+      "path": "cases/pinecone-api-key-prefix-letter-twin.py",
+      "start": 45,
+      "end": 52
+    },
+    {
+      "path": "cases/pinecone-api-key-secret-print.txt",
+      "start": 60,
+      "end": 100,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/pinecone-api-key-twin-base-python.py",
+      "start": 21,
+      "end": 33
+    },
+    {
+      "path": "cases/pinecone-api-key-twin-base-python.py",
+      "start": 36,
+      "end": 44
+    },
+    {
+      "path": "cases/pinecone-api-key-twin-base-python.py",
+      "start": 45,
+      "end": 52
+    },
+    {
+      "path": "cases/postman-collection-access-key-share-output.txt",
+      "start": 0,
+      "end": 13
+    },
+    {
+      "path": "cases/postman-collection-access-key-share-output.txt",
+      "start": 34,
+      "end": 43
+    },
+    {
+      "path": "cases/postman-collection-access-key-share-output.txt",
+      "start": 49,
+      "end": 55
+    },
+    {
+      "path": "cases/postman-collection-access-key-share-output.txt",
+      "start": 60,
+      "end": 64
+    },
+    {
+      "path": "cases/postman-collection-access-key-share-output.txt",
+      "start": 65,
+      "end": 91
+    },
+    {
+      "path": "cases/travisci-api-token-context-3-twin.sh",
+      "start": 9,
+      "end": 14
+    },
+    {
+      "path": "cases/travisci-api-token-context-4-twin.sh",
+      "start": 44,
+      "end": 53
+    },
+    {
+      "path": "cases/travisci-api-token-context-7-twin.log",
+      "start": 0,
+      "end": 21
+    },
+    {
+      "path": "cases/travisci-api-token-context-8-twin.sh",
+      "start": 7,
+      "end": 24
+    },
+    {
+      "path": "cases/travisci-api-token-context-8-twin.sh",
+      "start": 25,
+      "end": 47
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-3.sh",
+      "start": 13,
+      "end": 18
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-4.sh",
+      "start": 45,
+      "end": 54
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-7.log",
+      "start": 0,
+      "end": 22
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-8.sh",
+      "start": 7,
+      "end": 23
+    },
+    {
+      "path": "cases/travisci-api-token-context-base-8.sh",
+      "start": 24,
+      "end": 46
+    },
+    {
+      "path": "cases/xai-api-key-curl-chat.sh",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/xai-api-key-curl-chat.sh",
+      "start": 68,
+      "end": 152,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/xai-api-key-k8s-secret.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/xai-api-key-retry-log.log",
+      "start": 16,
+      "end": 24
+    },
+    {
+      "path": "cases/xai-api-key-vault-read.txt",
+      "start": 45,
+      "end": 85,
+      "family": "aws-secret-access-key"
+    }
+  ],
+  "digest": "de7044660adfb0fc52413ed527d0a6ee4ef997d1861e303609b8454bffa3e04a"
+}

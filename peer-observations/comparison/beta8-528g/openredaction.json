@@ -1,0 +1,601 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-528g",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "4a52427ee3c8c780b40c9688e336e516ed2dbc47965180027af4cea41bcf8dea",
+    "fixtureCount": 33,
+    "fixturesDigest": "63d2cdd636cc124ec492f18fede5113ef65211bc303d04980646bdead0d0c210",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/dynatrace-token-api-token-header.http",
+      "start": 0,
+      "end": 3
+    },
+    {
+      "path": "cases/dynatrace-token-api-token-header.http",
+      "start": 5,
+      "end": 8
+    },
+    {
+      "path": "cases/dynatrace-token-api-token-header.http",
+      "start": 12,
+      "end": 24
+    },
+    {
+      "path": "cases/dynatrace-token-api-token-header.http",
+      "start": 29,
+      "end": 33
+    },
+    {
+      "path": "cases/dynatrace-token-api-token-header.http",
+      "start": 35,
+      "end": 43
+    },
+    {
+      "path": "cases/dynatrace-token-api-token-header.http",
+      "start": 44,
+      "end": 48
+    },
+    {
+      "path": "cases/dynatrace-token-api-token-header.http",
+      "start": 49,
+      "end": 58
+    },
+    {
+      "path": "cases/dynatrace-token-api-token-header.http",
+      "start": 59,
+      "end": 62
+    },
+    {
+      "path": "cases/dynatrace-token-api-token-header.http",
+      "start": 67,
+      "end": 76
+    },
+    {
+      "path": "cases/dynatrace-token-api-token-header.http",
+      "start": 78,
+      "end": 81
+    },
+    {
+      "path": "cases/dynatrace-token-api-token-header.http",
+      "start": 82,
+      "end": 94
+    },
+    {
+      "path": "cases/dynatrace-token-bare-prose.md",
+      "start": 0,
+      "end": 32
+    },
+    {
+      "path": "cases/dynatrace-token-bearer-header.http",
+      "start": 0,
+      "end": 3
+    },
+    {
+      "path": "cases/dynatrace-token-bearer-header.http",
+      "start": 8,
+      "end": 19
+    },
+    {
+      "path": "cases/dynatrace-token-bearer-header.http",
+      "start": 24,
+      "end": 28
+    },
+    {
+      "path": "cases/dynatrace-token-bearer-header.http",
+      "start": 30,
+      "end": 38
+    },
+    {
+      "path": "cases/dynatrace-token-bearer-header.http",
+      "start": 39,
+      "end": 43
+    },
+    {
+      "path": "cases/dynatrace-token-bearer-header.http",
+      "start": 44,
+      "end": 53
+    },
+    {
+      "path": "cases/dynatrace-token-bearer-header.http",
+      "start": 54,
+      "end": 57
+    },
+    {
+      "path": "cases/dynatrace-token-bearer-header.http",
+      "start": 58,
+      "end": 71
+    },
+    {
+      "path": "cases/dynatrace-token-bearer-header.http",
+      "start": 73,
+      "end": 79
+    },
+    {
+      "path": "cases/dynatrace-token-bearer-header.http",
+      "start": 80,
+      "end": 176,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/dynatrace-token-chat-paste.txt",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/dynatrace-token-collector-headers.yml",
+      "start": 0,
+      "end": 9
+    },
+    {
+      "path": "cases/dynatrace-token-collector-headers.yml",
+      "start": 13,
+      "end": 21
+    },
+    {
+      "path": "cases/dynatrace-token-collector-headers.yml",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/dynatrace-token-collector-headers.yml",
+      "start": 37,
+      "end": 42
+    },
+    {
+      "path": "cases/dynatrace-token-collector-headers.yml",
+      "start": 45,
+      "end": 53
+    },
+    {
+      "path": "cases/dynatrace-token-collector-headers.yml",
+      "start": 54,
+      "end": 58
+    },
+    {
+      "path": "cases/dynatrace-token-collector-headers.yml",
+      "start": 59,
+      "end": 68
+    },
+    {
+      "path": "cases/dynatrace-token-collector-headers.yml",
+      "start": 69,
+      "end": 72
+    },
+    {
+      "path": "cases/dynatrace-token-collector-headers.yml",
+      "start": 73,
+      "end": 76
+    },
+    {
+      "path": "cases/dynatrace-token-collector-headers.yml",
+      "start": 80,
+      "end": 84
+    },
+    {
+      "path": "cases/dynatrace-token-collector-headers.yml",
+      "start": 89,
+      "end": 96
+    },
+    {
+      "path": "cases/dynatrace-token-collector-headers.yml",
+      "start": 108,
+      "end": 117
+    },
+    {
+      "path": "cases/dynatrace-token-docs-placeholder-placeholder.sh",
+      "start": 13,
+      "end": 22
+    },
+    {
+      "path": "cases/dynatrace-token-docs-placeholder-placeholder.sh",
+      "start": 70,
+      "end": 75
+    },
+    {
+      "path": "cases/dynatrace-token-docs-placeholder-placeholder.sh",
+      "start": 79,
+      "end": 83
+    },
+    {
+      "path": "cases/dynatrace-token-docs-placeholder-placeholder.sh",
+      "start": 84,
+      "end": 95
+    },
+    {
+      "path": "cases/dynatrace-token-docs-placeholder-placeholder.sh",
+      "start": 100,
+      "end": 104
+    },
+    {
+      "path": "cases/dynatrace-token-docs-placeholder-placeholder.sh",
+      "start": 105,
+      "end": 114
+    },
+    {
+      "path": "cases/dynatrace-token-docs-placeholder-placeholder.sh",
+      "start": 115,
+      "end": 118
+    },
+    {
+      "path": "cases/dynatrace-token-docs-placeholder-placeholder.sh",
+      "start": 119,
+      "end": 122
+    },
+    {
+      "path": "cases/dynatrace-token-docs-placeholder-placeholder.sh",
+      "start": 126,
+      "end": 133
+    },
+    {
+      "path": "cases/dynatrace-token-dynakube-secret.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/dynatrace-token-hyphen-separator-twin.yml",
+      "start": 0,
+      "end": 9
+    },
+    {
+      "path": "cases/dynatrace-token-hyphen-separator-twin.yml",
+      "start": 13,
+      "end": 21
+    },
+    {
+      "path": "cases/dynatrace-token-hyphen-separator-twin.yml",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/dynatrace-token-hyphen-separator-twin.yml",
+      "start": 37,
+      "end": 42
+    },
+    {
+      "path": "cases/dynatrace-token-hyphen-separator-twin.yml",
+      "start": 45,
+      "end": 53
+    },
+    {
+      "path": "cases/dynatrace-token-hyphen-separator-twin.yml",
+      "start": 54,
+      "end": 58
+    },
+    {
+      "path": "cases/dynatrace-token-hyphen-separator-twin.yml",
+      "start": 59,
+      "end": 68
+    },
+    {
+      "path": "cases/dynatrace-token-hyphen-separator-twin.yml",
+      "start": 69,
+      "end": 72
+    },
+    {
+      "path": "cases/dynatrace-token-hyphen-separator-twin.yml",
+      "start": 73,
+      "end": 76
+    },
+    {
+      "path": "cases/dynatrace-token-hyphen-separator-twin.yml",
+      "start": 80,
+      "end": 84
+    },
+    {
+      "path": "cases/dynatrace-token-hyphen-separator-twin.yml",
+      "start": 89,
+      "end": 96
+    },
+    {
+      "path": "cases/dynatrace-token-hyphen-separator-twin.yml",
+      "start": 108,
+      "end": 117
+    },
+    {
+      "path": "cases/dynatrace-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 32
+    },
+    {
+      "path": "cases/dynatrace-token-otel-env-header.env",
+      "start": 28,
+      "end": 33
+    },
+    {
+      "path": "cases/dynatrace-token-otel-env-header.env",
+      "start": 36,
+      "end": 44
+    },
+    {
+      "path": "cases/dynatrace-token-otel-env-header.env",
+      "start": 45,
+      "end": 49
+    },
+    {
+      "path": "cases/dynatrace-token-otel-env-header.env",
+      "start": 50,
+      "end": 59
+    },
+    {
+      "path": "cases/dynatrace-token-otel-env-header.env",
+      "start": 60,
+      "end": 63
+    },
+    {
+      "path": "cases/dynatrace-token-otel-env-header.env",
+      "start": 64,
+      "end": 67
+    },
+    {
+      "path": "cases/dynatrace-token-otel-env-header.env",
+      "start": 71,
+      "end": 75
+    },
+    {
+      "path": "cases/dynatrace-token-otel-env-header.env",
+      "start": 107,
+      "end": 116
+    },
+    {
+      "path": "cases/dynatrace-token-sdk-kwarg.py",
+      "start": 9,
+      "end": 24
+    },
+    {
+      "path": "cases/dynatrace-token-secret-63-twin.http",
+      "start": 0,
+      "end": 3
+    },
+    {
+      "path": "cases/dynatrace-token-secret-63-twin.http",
+      "start": 8,
+      "end": 19
+    },
+    {
+      "path": "cases/dynatrace-token-secret-63-twin.http",
+      "start": 24,
+      "end": 28
+    },
+    {
+      "path": "cases/dynatrace-token-secret-63-twin.http",
+      "start": 30,
+      "end": 38
+    },
+    {
+      "path": "cases/dynatrace-token-secret-63-twin.http",
+      "start": 39,
+      "end": 43
+    },
+    {
+      "path": "cases/dynatrace-token-secret-63-twin.http",
+      "start": 44,
+      "end": 53
+    },
+    {
+      "path": "cases/dynatrace-token-secret-63-twin.http",
+      "start": 54,
+      "end": 57
+    },
+    {
+      "path": "cases/dynatrace-token-secret-63-twin.http",
+      "start": 58,
+      "end": 71
+    },
+    {
+      "path": "cases/dynatrace-token-secret-63-twin.http",
+      "start": 73,
+      "end": 79
+    },
+    {
+      "path": "cases/dynatrace-token-secret-63-twin.http",
+      "start": 80,
+      "end": 175,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/dynatrace-token-secret-65-twin.http",
+      "start": 0,
+      "end": 3
+    },
+    {
+      "path": "cases/dynatrace-token-secret-65-twin.http",
+      "start": 5,
+      "end": 8
+    },
+    {
+      "path": "cases/dynatrace-token-secret-65-twin.http",
+      "start": 12,
+      "end": 24
+    },
+    {
+      "path": "cases/dynatrace-token-secret-65-twin.http",
+      "start": 29,
+      "end": 33
+    },
+    {
+      "path": "cases/dynatrace-token-secret-65-twin.http",
+      "start": 35,
+      "end": 43
+    },
+    {
+      "path": "cases/dynatrace-token-secret-65-twin.http",
+      "start": 44,
+      "end": 48
+    },
+    {
+      "path": "cases/dynatrace-token-secret-65-twin.http",
+      "start": 49,
+      "end": 58
+    },
+    {
+      "path": "cases/dynatrace-token-secret-65-twin.http",
+      "start": 59,
+      "end": 62
+    },
+    {
+      "path": "cases/dynatrace-token-secret-65-twin.http",
+      "start": 67,
+      "end": 76
+    },
+    {
+      "path": "cases/dynatrace-token-secret-65-twin.http",
+      "start": 78,
+      "end": 81
+    },
+    {
+      "path": "cases/dynatrace-token-secret-65-twin.http",
+      "start": 82,
+      "end": 94
+    },
+    {
+      "path": "cases/dynatrace-token-trailing-underscore-twin.txt",
+      "start": 0,
+      "end": 20
+    },
+    {
+      "path": "cases/dynatrace-token-unknown-type-letter-twin.py",
+      "start": 9,
+      "end": 24
+    },
+    {
+      "path": "cases/dynatrace-token-version-1-twin.http",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/dynatrace-token-version-1-twin.http",
+      "start": 9,
+      "end": 18
+    },
+    {
+      "path": "cases/dynatrace-token-version-1-twin.http",
+      "start": 23,
+      "end": 27
+    },
+    {
+      "path": "cases/dynatrace-token-version-1-twin.http",
+      "start": 29,
+      "end": 37
+    },
+    {
+      "path": "cases/dynatrace-token-version-1-twin.http",
+      "start": 38,
+      "end": 42
+    },
+    {
+      "path": "cases/dynatrace-token-version-1-twin.http",
+      "start": 43,
+      "end": 52
+    },
+    {
+      "path": "cases/dynatrace-token-version-1-twin.http",
+      "start": 53,
+      "end": 56
+    },
+    {
+      "path": "cases/dynatrace-token-version-1-twin.http",
+      "start": 59,
+      "end": 62
+    },
+    {
+      "path": "cases/dynatrace-token-version-1-twin.http",
+      "start": 63,
+      "end": 66
+    },
+    {
+      "path": "cases/dynatrace-token-version-1-twin.http",
+      "start": 68,
+      "end": 74
+    },
+    {
+      "path": "cases/dynatrace-token-x-api-key-header.http",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/dynatrace-token-x-api-key-header.http",
+      "start": 9,
+      "end": 18
+    },
+    {
+      "path": "cases/dynatrace-token-x-api-key-header.http",
+      "start": 23,
+      "end": 27
+    },
+    {
+      "path": "cases/dynatrace-token-x-api-key-header.http",
+      "start": 29,
+      "end": 37
+    },
+    {
+      "path": "cases/dynatrace-token-x-api-key-header.http",
+      "start": 38,
+      "end": 42
+    },
+    {
+      "path": "cases/dynatrace-token-x-api-key-header.http",
+      "start": 43,
+      "end": 52
+    },
+    {
+      "path": "cases/dynatrace-token-x-api-key-header.http",
+      "start": 53,
+      "end": 56
+    },
+    {
+      "path": "cases/dynatrace-token-x-api-key-header.http",
+      "start": 59,
+      "end": 62
+    },
+    {
+      "path": "cases/dynatrace-token-x-api-key-header.http",
+      "start": 63,
+      "end": 66
+    },
+    {
+      "path": "cases/dynatrace-token-x-api-key-header.http",
+      "start": 68,
+      "end": 74
+    }
+  ],
+  "digest": "206cdd7eec4166671ab516a8719655c5bf2997457df8f9a658ccf515591e75ef"
+}

@@ -1,0 +1,555 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-213b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "28e77558adb6c54a79c144ea2762043f541f28b0ffb7dc894b9044c22061e354",
+    "fixtureCount": 59,
+    "fixturesDigest": "99afb6e5fc6feac3feceb505fb0a21e6f0cd09705d4562085a7e44cb0c6b374c",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/cloudflare-token-account-and-zone-ids-public-id.env",
+      "start": 22,
+      "end": 54
+    },
+    {
+      "path": "cases/cloudflare-token-token-scope-note-prose.txt",
+      "start": 0,
+      "end": 25
+    },
+    {
+      "path": "cases/cloudflare-token-token-scope-note-prose.txt",
+      "start": 34,
+      "end": 54
+    },
+    {
+      "path": "cases/cloudflare-token-verify-bearer-header.http",
+      "start": 83,
+      "end": 89
+    },
+    {
+      "path": "cases/cloudflare-token-verify-bearer-header.http",
+      "start": 90,
+      "end": 143,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/datadog-api-key-actions-env.yml",
+      "start": 17,
+      "end": 25
+    },
+    {
+      "path": "cases/datadog-api-key-actions-env.yml",
+      "start": 164,
+      "end": 172
+    },
+    {
+      "path": "cases/datadog-api-key-agent-note-prose.txt",
+      "start": 41,
+      "end": 57
+    },
+    {
+      "path": "cases/datadog-api-key-api-key-listing-public-id.txt",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/datadog-api-key-api-key-listing-public-id.txt",
+      "start": 32,
+      "end": 68
+    },
+    {
+      "path": "cases/datadog-api-key-dd-api-key-header.http",
+      "start": 96,
+      "end": 128,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/gitlab-token-ci-predefined-ids-public-id.env",
+      "start": 34,
+      "end": 44
+    },
+    {
+      "path": "cases/gitlab-token-expiry-note-prose.txt",
+      "start": 63,
+      "end": 83
+    },
+    {
+      "path": "cases/gitlab-token-glab-auth-login.sh",
+      "start": 18,
+      "end": 28
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-actions-env.yml",
+      "start": 211,
+      "end": 217
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-alloy-remote-write.alloy",
+      "start": 158,
+      "end": 166
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-alloy-remote-write.alloy",
+      "start": 170,
+      "end": 177
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-alloy-remote-write.alloy",
+      "start": 185,
+      "end": 193
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-alloy-remote-write.alloy",
+      "start": 197,
+      "end": 203
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-cloud-api-bearer.http",
+      "start": 5,
+      "end": 8
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-cloud-api-bearer.http",
+      "start": 24,
+      "end": 27
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-cloud-api-bearer.http",
+      "start": 28,
+      "end": 32
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-cloud-api-bearer.http",
+      "start": 34,
+      "end": 45
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-cloud-api-bearer.http",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-cloud-api-bearer.http",
+      "start": 68,
+      "end": 136,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-compose-otel-env.yml",
+      "start": 76,
+      "end": 83
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-compose-otel-env.yml",
+      "start": 88,
+      "end": 99
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-compose-otel-env.yml",
+      "start": 107,
+      "end": 132
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-compose-otel-env.yml",
+      "start": 135,
+      "end": 142
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-compose-otel-env.yml",
+      "start": 150,
+      "end": 171
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-scope-note-prose.txt",
+      "start": 18,
+      "end": 45
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-stack-identifiers-public-id.env",
+      "start": 0,
+      "end": 19
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-stack-identifiers-public-id.env",
+      "start": 20,
+      "end": 24
+    },
+    {
+      "path": "cases/grafana-cloud-access-policy-token-stack-identifiers-public-id.env",
+      "start": 25,
+      "end": 38
+    },
+    {
+      "path": "cases/huggingface-token-hf-auth-login.sh",
+      "start": 16,
+      "end": 23
+    },
+    {
+      "path": "cases/huggingface-token-inference-bearer-header.http",
+      "start": 78,
+      "end": 84
+    },
+    {
+      "path": "cases/huggingface-token-inference-bearer-header.http",
+      "start": 85,
+      "end": 122,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/private-key-k8s-tls-secret.yaml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/private-key-k8s-tls-secret.yaml",
+      "start": 111,
+      "end": 237,
+      "family": "private-key"
+    },
+    {
+      "path": "cases/private-key-openssl-genpkey-stdout.txt",
+      "start": 37,
+      "end": 155,
+      "family": "private-key"
+    },
+    {
+      "path": "cases/private-key-python-signing-key-literal.py",
+      "start": 5,
+      "end": 35
+    },
+    {
+      "path": "cases/private-key-python-signing-key-literal.py",
+      "start": 43,
+      "end": 56
+    },
+    {
+      "path": "cases/private-key-python-signing-key-literal.py",
+      "start": 58,
+      "end": 73
+    },
+    {
+      "path": "cases/private-key-python-signing-key-literal.py",
+      "start": 80,
+      "end": 198,
+      "family": "private-key"
+    },
+    {
+      "path": "cases/private-key-python-signing-key-literal.py",
+      "start": 261,
+      "end": 269
+    },
+    {
+      "path": "cases/private-key-python-signing-key-literal.py",
+      "start": 270,
+      "end": 274
+    },
+    {
+      "path": "cases/pypi-token-gitlab-ci-variables.yml",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/pypi-token-gitlab-ci-variables.yml",
+      "start": 11,
+      "end": 16
+    },
+    {
+      "path": "cases/pypi-token-gitlab-ci-variables.yml",
+      "start": 18,
+      "end": 24
+    },
+    {
+      "path": "cases/pypi-token-gitlab-ci-variables.yml",
+      "start": 27,
+      "end": 36
+    },
+    {
+      "path": "cases/pypi-token-gitlab-ci-variables.yml",
+      "start": 42,
+      "end": 56
+    },
+    {
+      "path": "cases/pypi-token-gitlab-ci-variables.yml",
+      "start": 58,
+      "end": 67
+    },
+    {
+      "path": "cases/pypi-token-gitlab-ci-variables.yml",
+      "start": 72,
+      "end": 86
+    },
+    {
+      "path": "cases/pypi-token-gitlab-ci-variables.yml",
+      "start": 88,
+      "end": 261,
+      "family": "pypi-token"
+    },
+    {
+      "path": "cases/pypi-token-noxfile-publish.py",
+      "start": 81,
+      "end": 92
+    },
+    {
+      "path": "cases/pypi-token-noxfile-publish.py",
+      "start": 94,
+      "end": 99
+    },
+    {
+      "path": "cases/pypi-token-noxfile-publish.py",
+      "start": 103,
+      "end": 109
+    },
+    {
+      "path": "cases/pypi-token-noxfile-publish.py",
+      "start": 138,
+      "end": 311,
+      "family": "pypi-token"
+    },
+    {
+      "path": "cases/pypi-token-pypirc.pypirc",
+      "start": 1,
+      "end": 10
+    },
+    {
+      "path": "cases/pypi-token-pypirc.pypirc",
+      "start": 12,
+      "end": 17
+    },
+    {
+      "path": "cases/pypi-token-pypirc.pypirc",
+      "start": 18,
+      "end": 25
+    },
+    {
+      "path": "cases/pypi-token-pypirc.pypirc",
+      "start": 32,
+      "end": 36
+    },
+    {
+      "path": "cases/pypi-token-pypirc.pypirc",
+      "start": 39,
+      "end": 43
+    },
+    {
+      "path": "cases/pypi-token-pypirc.pypirc",
+      "start": 45,
+      "end": 53
+    },
+    {
+      "path": "cases/pypi-token-pypirc.pypirc",
+      "start": 56,
+      "end": 65
+    },
+    {
+      "path": "cases/pypi-token-pypirc.pypirc",
+      "start": 66,
+      "end": 74
+    },
+    {
+      "path": "cases/pypi-token-pypirc.pypirc",
+      "start": 77,
+      "end": 250,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pypi-token-twine-env.env",
+      "start": 0,
+      "end": 14
+    },
+    {
+      "path": "cases/pypi-token-twine-env.env",
+      "start": 15,
+      "end": 24
+    },
+    {
+      "path": "cases/pypi-token-twine-env.env",
+      "start": 25,
+      "end": 39
+    },
+    {
+      "path": "cases/pypi-token-twine-env.env",
+      "start": 40,
+      "end": 213,
+      "family": "pypi-token"
+    },
+    {
+      "path": "cases/pypi-token-twine-upload-flag.sh",
+      "start": 2,
+      "end": 7
+    },
+    {
+      "path": "cases/pypi-token-twine-upload-flag.sh",
+      "start": 8,
+      "end": 14
+    },
+    {
+      "path": "cases/pypi-token-twine-upload-flag.sh",
+      "start": 17,
+      "end": 25
+    },
+    {
+      "path": "cases/pypi-token-twine-upload-flag.sh",
+      "start": 26,
+      "end": 35
+    },
+    {
+      "path": "cases/pypi-token-twine-upload-flag.sh",
+      "start": 38,
+      "end": 46
+    },
+    {
+      "path": "cases/pypi-token-twine-upload-flag.sh",
+      "start": 47,
+      "end": 220,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pypi-token-uv-publish-token.sh",
+      "start": 24,
+      "end": 197,
+      "family": "pypi-token"
+    },
+    {
+      "path": "cases/pypi-token-uv-publish-token.sh",
+      "start": 201,
+      "end": 208
+    },
+    {
+      "path": "cases/shopify-token-admin-graphql-header.http",
+      "start": 143,
+      "end": 181
+    },
+    {
+      "path": "cases/shopify-token-reinstall-note-prose.txt",
+      "start": 13,
+      "end": 18
+    },
+    {
+      "path": "cases/shopify-token-reinstall-note-prose.txt",
+      "start": 19,
+      "end": 29
+    },
+    {
+      "path": "cases/shopify-token-reinstall-note-prose.txt",
+      "start": 43,
+      "end": 48
+    },
+    {
+      "path": "cases/shopify-token-reinstall-note-prose.txt",
+      "start": 66,
+      "end": 71
+    },
+    {
+      "path": "cases/shopify-token-reinstall-note-prose.txt",
+      "start": 72,
+      "end": 79
+    },
+    {
+      "path": "cases/shopify-token-reinstall-note-prose.txt",
+      "start": 81,
+      "end": 93
+    },
+    {
+      "path": "cases/shopify-token-reinstall-note-prose.txt",
+      "start": 94,
+      "end": 100
+    },
+    {
+      "path": "cases/stripe-token-curl-basic-user.sh",
+      "start": 46,
+      "end": 86,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-publishable-key-and-account-public-id.env",
+      "start": 23,
+      "end": 63,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-ruby-api-key.rb",
+      "start": 0,
+      "end": 7
+    },
+    {
+      "path": "cases/stripe-token-ruby-api-key.rb",
+      "start": 9,
+      "end": 15
+    },
+    {
+      "path": "cases/stripe-token-ruby-api-key.rb",
+      "start": 18,
+      "end": 24
+    },
+    {
+      "path": "cases/stripe-token-ruby-api-key.rb",
+      "start": 36,
+      "end": 76,
+      "family": "stripe-token"
+    },
+    {
+      "path": "cases/stripe-token-signature-header-encoded-value.http",
+      "start": 0,
+      "end": 6
+    },
+    {
+      "path": "cases/stripe-token-signature-header-encoded-value.http",
+      "start": 7,
+      "end": 16
+    },
+    {
+      "path": "cases/stripe-token-signature-header-encoded-value.http",
+      "start": 20,
+      "end": 30
+    },
+    {
+      "path": "cases/stripe-token-stripe-cli-config.toml",
+      "start": 60,
+      "end": 68
+    },
+    {
+      "path": "cases/stripe-token-stripe-cli-config.toml",
+      "start": 72,
+      "end": 89
+    }
+  ],
+  "digest": "c94a51a78a32e577ccc38056dcb6f944d74cb1081f958ff41d66ed7593d41988"
+}

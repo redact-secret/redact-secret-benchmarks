@@ -1,0 +1,157 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-528d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "f87ae0154458de5698597723ebe339f9a082ba06428e7e57245e4c91af35ca2c",
+    "fixtureCount": 31,
+    "fixturesDigest": "a87e2770aed4682f9de0ef412c1c4dfad011683a9d3e05db0f2d0f09914a55a6",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/rubygems-api-key-authorization-no-scheme.http",
+      "start": 50,
+      "end": 59
+    },
+    {
+      "path": "cases/rubygems-api-key-bare-prose.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/rubygems-api-key-bearer-header.http",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "path": "cases/rubygems-api-key-bearer-header.http",
+      "start": 65,
+      "end": 122,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/rubygems-api-key-chat-paste.txt",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/rubygems-api-key-ellipsis-placeholder.md",
+      "start": 16,
+      "end": 19
+    },
+    {
+      "path": "cases/rubygems-api-key-ellipsis-placeholder.md",
+      "start": 25,
+      "end": 34
+    },
+    {
+      "path": "cases/rubygems-api-key-ellipsis-placeholder.md",
+      "start": 42,
+      "end": 54
+    },
+    {
+      "path": "cases/rubygems-api-key-ellipsis-placeholder.md",
+      "start": 55,
+      "end": 62
+    },
+    {
+      "path": "cases/rubygems-api-key-ellipsis-placeholder.md",
+      "start": 63,
+      "end": 71
+    },
+    {
+      "path": "cases/rubygems-api-key-ellipsis-placeholder.md",
+      "start": 76,
+      "end": 79
+    },
+    {
+      "path": "cases/rubygems-api-key-ellipsis-placeholder.md",
+      "start": 80,
+      "end": 96
+    },
+    {
+      "path": "cases/rubygems-api-key-gemspec-metadata-public-id.rb",
+      "start": 5,
+      "end": 25
+    },
+    {
+      "path": "cases/rubygems-api-key-hyphen-separator-twin.http",
+      "start": 53,
+      "end": 110,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/rubygems-api-key-key-guidance-prose.md",
+      "start": 13,
+      "end": 32
+    },
+    {
+      "path": "cases/rubygems-api-key-leading-glue-twin.md",
+      "start": 0,
+      "end": 11
+    },
+    {
+      "path": "cases/rubygems-api-key-lockfile-version-public-id.lock",
+      "start": 74,
+      "end": 80
+    },
+    {
+      "path": "cases/rubygems-api-key-trailing-underscore-twin.txt",
+      "start": 0,
+      "end": 10
+    },
+    {
+      "path": "cases/rubygems-api-key-uppercase-prefix-twin.http",
+      "start": 58,
+      "end": 64
+    },
+    {
+      "path": "cases/rubygems-api-key-uppercase-prefix-twin.http",
+      "start": 65,
+      "end": 122,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/rubygems-api-key-x-api-key-header.http",
+      "start": 53,
+      "end": 110,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "d7df5f5e256b18658a85b6152c5140f461370ec2f5435ce672c9627bf812f5a5"
+}

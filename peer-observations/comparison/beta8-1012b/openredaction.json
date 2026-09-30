@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-1012b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "9eaee113324306ce18708e90cb084c1ba76009190051693948f1495a89a74b6b",
+    "fixtureCount": 32,
+    "fixturesDigest": "42a7fe092752baeb21e7aadb4fa862a8e3ff1e085a65cf87152a5dbf6ccea7a9",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/google-oauth-client-secret-angle-placeholder.env",
+      "start": 41,
+      "end": 47
+    },
+    {
+      "path": "cases/google-oauth-client-secret-bare-prose.md",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/google-oauth-client-secret-bearer-header.http",
+      "start": 67,
+      "end": 73
+    },
+    {
+      "path": "cases/google-oauth-client-secret-bearer-header.http",
+      "start": 74,
+      "end": 109,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/google-oauth-client-secret-chat-paste.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/google-oauth-client-secret-console-guidance-prose.md",
+      "start": 20,
+      "end": 27
+    },
+    {
+      "path": "cases/google-oauth-client-secret-flask-config.py",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/google-oauth-client-secret-flask-config.py",
+      "start": 23,
+      "end": 39
+    },
+    {
+      "path": "cases/google-oauth-client-secret-flask-config.py",
+      "start": 41,
+      "end": 53
+    },
+    {
+      "path": "cases/google-oauth-client-secret-flask-config.py",
+      "start": 120,
+      "end": 140
+    },
+    {
+      "path": "cases/google-oauth-client-secret-flask-config.py",
+      "start": 142,
+      "end": 148
+    },
+    {
+      "path": "cases/google-oauth-client-secret-flask-config.py",
+      "start": 149,
+      "end": 163
+    },
+    {
+      "path": "cases/google-oauth-client-secret-flask-config.py",
+      "start": 164,
+      "end": 177
+    },
+    {
+      "path": "cases/google-oauth-client-secret-json-client-file.json",
+      "start": 2,
+      "end": 11
+    },
+    {
+      "path": "cases/google-oauth-client-secret-json-client-file.json",
+      "start": 27,
+      "end": 39
+    },
+    {
+      "path": "cases/google-oauth-client-secret-leading-glue-twin.md",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/google-oauth-client-secret-prefix-without-hyphen-twin.env",
+      "start": 21,
+      "end": 61,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/google-oauth-client-secret-token-curl.sh",
+      "start": 147,
+      "end": 182
+    },
+    {
+      "path": "cases/google-oauth-client-secret-truncated-near-miss.log",
+      "start": 27,
+      "end": 35
+    },
+    {
+      "path": "cases/google-oauth-client-secret-truncated-near-miss.log",
+      "start": 43,
+      "end": 49
+    },
+    {
+      "path": "cases/google-oauth-client-secret-truncated-near-miss.log",
+      "start": 50,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-oauth-client-secret-x-api-key-header.http",
+      "start": 62,
+      "end": 97,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "0ecc04f68705ae2b4de3b7cff22ed2210f80838a3ebd8c3604afc7e5c915bc93"
+}

@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-213f",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "9d395b1e54cd000f91ac6a6b4d145f8269c1d3913c93166ae4ff597c732ad401",
+    "fixtureCount": 18,
+    "fixturesDigest": "965a67b2aaff4e645befb4509406a4d14b6ca992f953d054125f8a6ef0d5f697",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/databricks-personal-access-token-debug-log.log",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/databricks-personal-access-token-debug-log.log",
+      "start": 8,
+      "end": 13
+    },
+    {
+      "path": "cases/databricks-personal-access-token-debug-log.log",
+      "start": 17,
+      "end": 20
+    },
+    {
+      "path": "cases/databricks-personal-access-token-debug-log.log",
+      "start": 21,
+      "end": 26
+    },
+    {
+      "path": "cases/databricks-personal-access-token-debug-log.log",
+      "start": 27,
+      "end": 37
+    },
+    {
+      "path": "cases/databricks-personal-access-token-debug-log.log",
+      "start": 49,
+      "end": 57
+    },
+    {
+      "path": "cases/databricks-personal-access-token-debug-log.log",
+      "start": 58,
+      "end": 67
+    },
+    {
+      "path": "cases/mailchimp-api-key-long-twin.sh",
+      "start": 63,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-no-separator-twin.sh",
+      "start": 63,
+      "end": 98,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-sha1-width-twin.sh",
+      "start": 63,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-short-twin.sh",
+      "start": 63,
+      "end": 97,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailchimp-api-key-v1-apikey-query.sh",
+      "start": 63,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/mailgun-api-key-compose-env.yml",
+      "start": 105,
+      "end": 141,
+      "family": "mailgun-api-key"
+    },
+    {
+      "path": "cases/openai-token-compose-env.yml",
+      "start": 66,
+      "end": 117,
+      "family": "openai-token"
+    }
+  ],
+  "digest": "bd1eccc45ed08c0e64526ded0b2a4791493e8d493cf80726a4f9b9b406a4c525"
+}

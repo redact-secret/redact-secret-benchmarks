@@ -1,0 +1,631 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-213c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "44b66a8eb0e11f775a1b446a600df2c38d53c3e972344edafd6297eb541aea9b",
+    "fixtureCount": 98,
+    "fixturesDigest": "d800951366a1bc6394fabd71a33aa940149f985f9cb717aa99c3cf03678dbf5f",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/azure-devops-personal-access-token-python-sdk-connection.py",
+      "start": 63,
+      "end": 73
+    },
+    {
+      "path": "cases/azure-devops-personal-access-token-shell-export-ext-pat.sh",
+      "start": 131,
+      "end": 135
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-confluent-api-key-store.sh",
+      "start": 130,
+      "end": 151
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-curl-basic-auth.sh",
+      "start": 137,
+      "end": 145
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-github-actions-connector-deploy.yml",
+      "start": 156,
+      "end": 196,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-github-actions-connector-deploy.yml",
+      "start": 207,
+      "end": 212
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-github-actions-connector-deploy.yml",
+      "start": 222,
+      "end": 225
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-github-actions-connector-deploy.yml",
+      "start": 227,
+      "end": 236
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-github-actions-connector-deploy.yml",
+      "start": 237,
+      "end": 242
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-github-actions-connector-deploy.yml",
+      "start": 244,
+      "end": 248
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-github-actions-connector-deploy.yml",
+      "start": 249,
+      "end": 256
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-k8s-secret-stringdata.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-k8s-secret-stringdata.yml",
+      "start": 65,
+      "end": 71
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-k8s-secret-stringdata.yml",
+      "start": 126,
+      "end": 145
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-python-producer-config.py",
+      "start": 28,
+      "end": 46
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-python-producer-config.py",
+      "start": 175,
+      "end": 190
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-python-producer-config.py",
+      "start": 194,
+      "end": 199
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-python-producer-config.py",
+      "start": 207,
+      "end": 220
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-python-producer-config.py",
+      "start": 224,
+      "end": 240
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-python-producer-config.py",
+      "start": 248,
+      "end": 261
+    },
+    {
+      "path": "cases/confluent-cloud-api-secret-shell-export-secret.sh",
+      "start": 101,
+      "end": 141,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/datadog-application-key-gitlab-ci-variables.yml",
+      "start": 28,
+      "end": 37
+    },
+    {
+      "path": "cases/google-api-key-curl-generate-content.sh",
+      "start": 30,
+      "end": 69
+    },
+    {
+      "path": "cases/google-api-key-env-maps-key.env",
+      "start": 20,
+      "end": 59
+    },
+    {
+      "path": "cases/google-api-key-github-actions-places.yml",
+      "start": 75,
+      "end": 114
+    },
+    {
+      "path": "cases/google-api-key-k8s-secret-stringdata.yml",
+      "start": 28,
+      "end": 36,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-api-key-k8s-secret-stringdata.yml",
+      "start": 98,
+      "end": 137
+    },
+    {
+      "path": "cases/google-api-key-shell-export-gemini.sh",
+      "start": 22,
+      "end": 61
+    },
+    {
+      "path": "cases/grafana-service-account-token-audit-token-hash-encoded-value.log",
+      "start": 68,
+      "end": 89
+    },
+    {
+      "path": "cases/grafana-service-account-token-audit-token-hash-encoded-value.log",
+      "start": 98,
+      "end": 107
+    },
+    {
+      "path": "cases/grafana-service-account-token-http-api-bearer.http",
+      "start": 84,
+      "end": 90
+    },
+    {
+      "path": "cases/grafana-service-account-token-http-api-bearer.http",
+      "start": 91,
+      "end": 137,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/grafana-service-account-token-python-requests-client.py",
+      "start": 67,
+      "end": 76
+    },
+    {
+      "path": "cases/grafana-service-account-token-python-requests-client.py",
+      "start": 89,
+      "end": 135,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/grafana-service-account-token-rotation-note-prose.txt",
+      "start": 16,
+      "end": 41
+    },
+    {
+      "path": "cases/grafana-service-account-token-rotation-note-prose.txt",
+      "start": 86,
+      "end": 108
+    },
+    {
+      "path": "cases/jwt-api-bearer-header.http",
+      "start": 65,
+      "end": 71
+    },
+    {
+      "path": "cases/jwt-api-bearer-header.http",
+      "start": 72,
+      "end": 376,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/jwt-debug-request-log.log",
+      "start": 43,
+      "end": 51
+    },
+    {
+      "path": "cases/jwt-debug-request-log.log",
+      "start": 91,
+      "end": 399,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/jwt-env-id-token.env",
+      "start": 17,
+      "end": 322,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/jwt-jwks-key-ids-public-id.json",
+      "start": 2,
+      "end": 6
+    },
+    {
+      "path": "cases/jwt-jwks-key-ids-public-id.json",
+      "start": 11,
+      "end": 14
+    },
+    {
+      "path": "cases/jwt-jwks-key-ids-public-id.json",
+      "start": 17,
+      "end": 20
+    },
+    {
+      "path": "cases/jwt-jwks-key-ids-public-id.json",
+      "start": 29,
+      "end": 32
+    },
+    {
+      "path": "cases/jwt-jwks-key-ids-public-id.json",
+      "start": 35,
+      "end": 38
+    },
+    {
+      "path": "cases/jwt-kubectl-create-token.txt",
+      "start": 63,
+      "end": 392,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/jwt-token-response-json.json",
+      "start": 21,
+      "end": 328,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/jwt-websocket-query-token.txt",
+      "start": 54,
+      "end": 329,
+      "family": "jwt"
+    },
+    {
+      "path": "cases/netlify-token-api-bearer-header.http",
+      "start": 64,
+      "end": 70
+    },
+    {
+      "path": "cases/netlify-token-api-bearer-header.http",
+      "start": 71,
+      "end": 111,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/netlify-token-netlify-deploy-auth-flag.sh",
+      "start": 42,
+      "end": 78
+    },
+    {
+      "path": "cases/netlify-token-token-format-note-prose.txt",
+      "start": 48,
+      "end": 70
+    },
+    {
+      "path": "cases/netlify-token-token-format-note-prose.txt",
+      "start": 79,
+      "end": 87
+    },
+    {
+      "path": "cases/new-relic-license-key-account-and-app-ids-public-id.env",
+      "start": 46,
+      "end": 56
+    },
+    {
+      "path": "cases/new-relic-license-key-helm-bundle-values.yml",
+      "start": 38,
+      "end": 41
+    },
+    {
+      "path": "cases/new-relic-license-key-ingest-note-prose.txt",
+      "start": 19,
+      "end": 22
+    },
+    {
+      "path": "cases/new-relic-license-key-ingest-note-prose.txt",
+      "start": 36,
+      "end": 45
+    },
+    {
+      "path": "cases/new-relic-license-key-ingest-note-prose.txt",
+      "start": 63,
+      "end": 76
+    },
+    {
+      "path": "cases/new-relic-license-key-ingest-note-prose.txt",
+      "start": 93,
+      "end": 99
+    },
+    {
+      "path": "cases/new-relic-license-key-log-api-license-header.http",
+      "start": 90,
+      "end": 93
+    },
+    {
+      "path": "cases/new-relic-license-key-newrelic-js-config.js",
+      "start": 5,
+      "end": 11
+    },
+    {
+      "path": "cases/new-relic-license-key-newrelic-js-config.js",
+      "start": 14,
+      "end": 28
+    },
+    {
+      "path": "cases/new-relic-license-key-newrelic-js-config.js",
+      "start": 35,
+      "end": 43
+    },
+    {
+      "path": "cases/new-relic-license-key-newrelic-js-config.js",
+      "start": 47,
+      "end": 55
+    },
+    {
+      "path": "cases/new-relic-license-key-newrelic-js-config.js",
+      "start": 56,
+      "end": 59
+    },
+    {
+      "path": "cases/new-relic-user-api-key-key-fingerprint-encoded-value.log",
+      "start": 53,
+      "end": 57
+    },
+    {
+      "path": "cases/new-relic-user-api-key-key-types-note-prose.txt",
+      "start": 15,
+      "end": 19
+    },
+    {
+      "path": "cases/new-relic-user-api-key-key-types-note-prose.txt",
+      "start": 57,
+      "end": 60
+    },
+    {
+      "path": "cases/new-relic-user-api-key-key-types-note-prose.txt",
+      "start": 89,
+      "end": 92
+    },
+    {
+      "path": "cases/new-relic-user-api-key-key-types-note-prose.txt",
+      "start": 123,
+      "end": 126
+    },
+    {
+      "path": "cases/new-relic-user-api-key-nerdgraph-api-key-header.http",
+      "start": 86,
+      "end": 118,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/new-relic-user-api-key-newrelic-profiles-add.sh",
+      "start": 2,
+      "end": 10
+    },
+    {
+      "path": "cases/new-relic-user-api-key-newrelic-profiles-add.sh",
+      "start": 11,
+      "end": 19
+    },
+    {
+      "path": "cases/new-relic-user-api-key-newrelic-profiles-add.sh",
+      "start": 20,
+      "end": 23
+    },
+    {
+      "path": "cases/new-relic-user-api-key-newrelic-profiles-add.sh",
+      "start": 26,
+      "end": 33
+    },
+    {
+      "path": "cases/new-relic-user-api-key-newrelic-profiles-add.sh",
+      "start": 34,
+      "end": 37
+    },
+    {
+      "path": "cases/new-relic-user-api-key-newrelic-profiles-add.sh",
+      "start": 40,
+      "end": 46
+    },
+    {
+      "path": "cases/new-relic-user-api-key-newrelic-profiles-add.sh",
+      "start": 52,
+      "end": 58
+    },
+    {
+      "path": "cases/new-relic-user-api-key-newrelic-profiles-add.sh",
+      "start": 59,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/notion-token-compose-env.yml",
+      "start": 129,
+      "end": 169,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/notion-token-curl-bearer.sh",
+      "start": 61,
+      "end": 67
+    },
+    {
+      "path": "cases/notion-token-curl-bearer.sh",
+      "start": 78,
+      "end": 118,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/notion-token-debug-client-log.log",
+      "start": 41,
+      "end": 48
+    },
+    {
+      "path": "cases/notion-token-debug-client-log.log",
+      "start": 79,
+      "end": 119,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/notion-token-mcp-server-env.json",
+      "start": 155,
+      "end": 195,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/notion-token-shell-export-token.sh",
+      "start": 30,
+      "end": 70,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/pulumi-access-token-rest-api-token-header.http",
+      "start": 88,
+      "end": 97
+    },
+    {
+      "path": "cases/supabase-management-token-github-actions-db-push.yml",
+      "start": 0,
+      "end": 4
+    },
+    {
+      "path": "cases/supabase-management-token-github-actions-db-push.yml",
+      "start": 8,
+      "end": 15
+    },
+    {
+      "path": "cases/supabase-management-token-github-actions-db-push.yml",
+      "start": 21,
+      "end": 25
+    },
+    {
+      "path": "cases/supabase-management-token-github-actions-db-push.yml",
+      "start": 30,
+      "end": 36
+    },
+    {
+      "path": "cases/supabase-management-token-github-actions-db-push.yml",
+      "start": 48,
+      "end": 51
+    },
+    {
+      "path": "cases/supabase-management-token-github-actions-db-push.yml",
+      "start": 59,
+      "end": 80
+    },
+    {
+      "path": "cases/supabase-management-token-management-api-bearer.http",
+      "start": 64,
+      "end": 70
+    },
+    {
+      "path": "cases/supabase-management-token-management-api-bearer.http",
+      "start": 71,
+      "end": 115,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/supabase-management-token-migration-checksum-encoded-value.log",
+      "start": 0,
+      "end": 8
+    },
+    {
+      "path": "cases/supabase-management-token-migration-checksum-encoded-value.log",
+      "start": 9,
+      "end": 18
+    },
+    {
+      "path": "cases/supabase-management-token-migration-checksum-encoded-value.log",
+      "start": 19,
+      "end": 44
+    },
+    {
+      "path": "cases/supabase-management-token-migration-checksum-encoded-value.log",
+      "start": 45,
+      "end": 53
+    },
+    {
+      "path": "cases/supabase-management-token-supabase-login-token.sh",
+      "start": 17,
+      "end": 24
+    },
+    {
+      "path": "cases/supabase-management-token-supabase-login-token.sh",
+      "start": 70,
+      "end": 88
+    },
+    {
+      "path": "cases/supabase-management-token-supabase-login-token.sh",
+      "start": 93,
+      "end": 105
+    },
+    {
+      "path": "cases/supabase-management-token-ts-management-client.ts",
+      "start": 83,
+      "end": 92
+    },
+    {
+      "path": "cases/supabase-management-token-ts-management-client.ts",
+      "start": 102,
+      "end": 146,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/terraform-cloud-token-api-v2-bearer.http",
+      "start": 33,
+      "end": 41
+    },
+    {
+      "path": "cases/terraform-cloud-token-api-v2-bearer.http",
+      "start": 128,
+      "end": 134
+    },
+    {
+      "path": "cases/terraform-cloud-token-api-v2-bearer.http",
+      "start": 135,
+      "end": 225,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/terraform-cloud-token-token-kinds-note-prose.txt",
+      "start": 107,
+      "end": 113
+    },
+    {
+      "path": "cases/vault-token-token-types-note-prose.txt",
+      "start": 14,
+      "end": 35
+    },
+    {
+      "path": "cases/vault-token-token-types-note-prose.txt",
+      "start": 44,
+      "end": 50
+    },
+    {
+      "path": "cases/vault-token-vault-login.sh",
+      "start": 111,
+      "end": 120
+    }
+  ],
+  "digest": "7e61abbf6987cc4331a5b60ac34be098fdf116373d9f3b07a82178528c459a97"
+}

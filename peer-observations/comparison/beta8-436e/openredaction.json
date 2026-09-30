@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-436e",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "ef3611f2c0c5d4baa8ca45a92d5c22f66180a1648a14a30e8de19da100775177",
+    "fixtureCount": 30,
+    "fixturesDigest": "5600bd62dbd6a55ce9f190e7c18bf5cc802d752587d3d4e023e67806f9617e36",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/apify-api-token-bare-prose.md",
+      "start": 0,
+      "end": 28
+    },
+    {
+      "path": "cases/apify-api-token-bearer-header.http",
+      "start": 59,
+      "end": 65
+    },
+    {
+      "path": "cases/apify-api-token-bearer-header.http",
+      "start": 66,
+      "end": 112,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/apify-api-token-chat-paste.txt",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/apify-api-token-chat-paste.txt",
+      "start": 21,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/apify-api-token-curl-bearer.sh",
+      "start": 82,
+      "end": 88
+    },
+    {
+      "path": "cases/apify-api-token-curl-bearer.sh",
+      "start": 89,
+      "end": 135,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/apify-api-token-ellipsis-placeholder.md",
+      "start": 24,
+      "end": 33
+    },
+    {
+      "path": "cases/apify-api-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 28
+    },
+    {
+      "path": "cases/apify-api-token-token-guidance-prose.md",
+      "start": 0,
+      "end": 22
+    },
+    {
+      "path": "cases/apify-api-token-token-guidance-prose.md",
+      "start": 96,
+      "end": 106
+    },
+    {
+      "path": "cases/apify-api-token-trailing-hyphen-twin.txt",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/apify-api-token-trailing-hyphen-twin.txt",
+      "start": 21,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/apify-api-token-trailing-underscore-twin.http",
+      "start": 59,
+      "end": 65
+    },
+    {
+      "path": "cases/apify-api-token-trailing-underscore-twin.http",
+      "start": 66,
+      "end": 114,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/apify-api-token-x-api-key-header.http",
+      "start": 54,
+      "end": 100,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "19a2af8f88848dee7c2dca07ec4beece1b5ef3226a81b1b8e678516fc243ec7a"
+}

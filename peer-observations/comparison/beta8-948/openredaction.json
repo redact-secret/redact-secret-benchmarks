@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T11:07:31.729Z",
+  "sourceRun": {
+    "runId": "2026-09-30T11:07:31.729Z-78060b",
+    "benchmarkRevision": "1ed658f459d8296b48d831a4204821fbf2b4deae"
+  },
+  "input": {
+    "surface": "comparison/beta8-948",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "0763ebadffd50c0e6bd08c4146f6600a8aa426d80ba7cbb5f0752177ca63d356",
+    "fixtureCount": 9,
+    "fixturesDigest": "c2badd48f9a6b409fc557e595c8825eb362646c8ed102539360832f87d9c6d77",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "3472260b8ad5b29c28fcc05eae86c967c3ca7d5a1a7271a9dc2b8953284bf8f9"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/datadog-api-key-truncated-in-prose-near-miss.md",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/mailgun-api-key-short-body-in-log-near-miss.log",
+      "start": 21,
+      "end": 32
+    },
+    {
+      "path": "cases/mailgun-api-key-short-body-in-prose-near-miss.md",
+      "start": 0,
+      "end": 27
+    },
+    {
+      "path": "cases/postman-api-key-short-tail-in-prose-near-miss.md",
+      "start": 0,
+      "end": 23
+    },
+    {
+      "path": "cases/sentry-org-auth-token-missing-payload-in-prose-near-miss.md",
+      "start": 94,
+      "end": 100
+    },
+    {
+      "path": "cases/sentry-org-auth-token-missing-secret-in-log-near-miss.log",
+      "start": 17,
+      "end": 20
+    },
+    {
+      "path": "cases/sentry-org-auth-token-missing-secret-in-log-near-miss.log",
+      "start": 21,
+      "end": 25
+    },
+    {
+      "path": "cases/sentry-org-auth-token-missing-secret-in-log-near-miss.log",
+      "start": 33,
+      "end": 36
+    },
+    {
+      "path": "cases/sentry-org-auth-token-missing-secret-in-log-near-miss.log",
+      "start": 38,
+      "end": 45
+    },
+    {
+      "path": "cases/sentry-org-auth-token-missing-secret-in-log-near-miss.log",
+      "start": 60,
+      "end": 65
+    },
+    {
+      "path": "cases/sentry-org-auth-token-missing-secret-in-log-near-miss.log",
+      "start": 153,
+      "end": 193,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/sentry-user-auth-token-half-body-in-prose-near-miss.md",
+      "start": 0,
+      "end": 16
+    },
+    {
+      "path": "cases/sentry-user-auth-token-org-prefix-hex-in-log-near-miss.log",
+      "start": 21,
+      "end": 36
+    },
+    {
+      "path": "cases/sentry-user-auth-token-org-prefix-hex-in-log-near-miss.log",
+      "start": 140,
+      "end": 144
+    },
+    {
+      "path": "cases/sentry-user-auth-token-org-prefix-hex-in-log-near-miss.log",
+      "start": 156,
+      "end": 159
+    },
+    {
+      "path": "cases/sentry-user-auth-token-org-prefix-hex-in-log-near-miss.log",
+      "start": 160,
+      "end": 164
+    },
+    {
+      "path": "cases/sentry-user-auth-token-org-prefix-hex-in-log-near-miss.log",
+      "start": 166,
+      "end": 173
+    }
+  ],
+  "digest": "fdf0780562871558d0cee4da9752a23ca190929b954c68c515193994666b43b3"
+}

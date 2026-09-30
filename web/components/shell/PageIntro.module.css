@@ -29,9 +29,9 @@
 
   .facts {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(var(--col-fact), 1fr));
     margin: var(--space-4) 0 0;
-    border-top: 2px solid var(--ink);
+    border-top: var(--rule-strong) solid var(--ink);
     max-width: none;
   }
 
@@ -46,7 +46,7 @@
 
   .value {
     margin: 0;
-    font: 800 28px/36px var(--font-montserrat);
+    font: var(--text-figure-facts);
     font-variant-numeric: tabular-nums;
     overflow-wrap: anywhere;
   }
@@ -58,7 +58,7 @@
   }
 
   .placeholder {
-    border: 1px solid var(--line);
+    border: var(--hairline) solid var(--line);
     border-left: var(--space-1) solid var(--status-info);
     background: var(--status-info-fill);
     padding: var(--space-4) var(--space-6);

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import InitColorSchemeScript from '@mui/material/InitColorSchemeScript';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
 import '../theme/layers.css';
+import '../theme/measures.css';
 import { THEME_ATTRIBUTE, THEME_STORAGE_KEY } from '../theme/theme';
 import { ThemeRoot } from '../theme/ThemeRoot';
 import { AppChrome } from './AppChrome';

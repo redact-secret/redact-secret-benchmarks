@@ -56,6 +56,10 @@ GITLEAKS_FAMILIES = {
     # #434/#436 families, registry detectors since redact-secret#903/#913 (registry pin 1127bf9). 1password-secret-key is
     # the account Secret Key, another credential, and stays unmapped.
     "doppler-": "doppler-token", "1password-service-account-token": "onepassword-service-account-token",
+    # #464/#528 families, registry detectors since redact-secret#971/#1021/#1023/#1025/#1032 (registry pin 4fb7882), the
+    # same peer rules scanners/families.mjs maps. sonar-api-token reads squ_/sqa_/sqp_ under one label.
+    "clickhouse-cloud-api-secret-key": "clickhouse-cloud-api-secret", "rubygems-": "rubygems-api-key",
+    "clojars-": "clojars-deploy-token", "dynatrace-": "dynatrace-token", "sonar-api-token": "sonarqube-token",
     "curl-auth-header": "bearer-token", "jwt": "jwt", "private-key": "private-key", "generic-api-key": "generic-token",
 }
 TRUFFLEHOG_FAMILIES = {
@@ -89,6 +93,8 @@ TRUFFLEHOG_FAMILIES = {
     # weightsandbiases/v1 is the legacy 40-hex key under the same label, as elevenlabs/v1 above.
     "doppler": "doppler-token", "posthog": "posthog-token", "apify": "apify-api-token",
     "weightsandbiases": "wandb-api-key",
+    # #464/#528 families, registry detectors since redact-secret#972/#1023 (registry pin 4fb7882).
+    "nvapi": "nvidia-api-key", "rubygems": "rubygems-api-key",
     "jwt": "jwt", "privatekey": "private-key", "mongodb": "connection-string",
     "postgres": "connection-string", "redis": "connection-string",
     "azure_storage": "connection-string", "rabbitmq": "connection-string",

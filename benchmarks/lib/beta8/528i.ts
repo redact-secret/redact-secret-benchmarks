@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field, th } from '../contract-sources.ts';
-import { handoff, researchTable, HANDOFF_INDEX, R1014, RULINGS_R1_R3, RULINGS_R2_R8, B528, product, at, src, reason, GRADUATES, GITLEAKS_CONFIG } from './528-sources.ts';
+import { handoff, researchTable, HANDOFF_INDEX, R1014, RULINGS_R1_R3, RULINGS_R2_R8, B528, product, at, src, GITLEAKS_CONFIG, splitGraduated } from './528-sources.ts';
 
 // Issue #528, slice i: Beta.12 contract for Honeycomb ingest keys (#1014 rank 9, READY for ingest keys; handoff
 // docs/audits/evidence/1014/honeycomb.md; product redact-secret#1034). Owned by this slice only; see
@@ -21,13 +21,11 @@ const TERRAFORM = 'https://github.com/honeycombio/terraform-provider-honeycombio
 const HANDOFF = handoff('honeycomb.md');
 const RESEARCH = researchTable('5900447540');
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'honeycomb-api-key', taxonomy: 'honeycomb:ingest-key', issue, reason: reason('honeycomb-api-key', 'honeycomb_ingest_key', 1034, `${GRADUATES} The management key (honeycomb_management_key) stays issuance-gated and is not a family here.`) },
-];
+/** No arrival family remains: the family graduated to a registry detector at the 4fb7882 re-pin (redact-secret PR #1039). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'honeycomb-api-key': {
     tier: 'T1',
     pattern: '^hc[a-z]i[kc]_[a-z0-9]{58}$',
@@ -47,6 +45,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['honeycomb-api-key']);
+/** Contracts for this slice's detector-id family, a registry detector since the 4fb7882 re-pin (redact-secret PR #1039). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'honeycomb-api-key': 'documented-24' };

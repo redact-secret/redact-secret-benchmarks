@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field } from '../contract-sources.ts';
-import { handoff, research, HANDOFF_INDEX, R860, RULINGS_R1_R3, RULINGS_R9_R10, B464, product, at, src, reason, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG } from './464-sources.ts';
+import { handoff, research, HANDOFF_INDEX, R860, RULINGS_R1_R3, RULINGS_R9_R10, B464, product, at, src, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG, splitGraduated } from './464-sources.ts';
 
 // Issue #464, slice a: Beta.12 contract for the Daytona API key (#860, READY by ruling R9; handoff
 // docs/audits/evidence/860/daytona.md; product redact-secret#970). Owned by this slice only; see
@@ -19,13 +19,11 @@ const RESEARCH = research('daytona.md');
 
 export const DAYTONA_PATTERN = '^dtn_[0-9a-f]{64}$';
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'daytona-api-key', taxonomy: 'daytona:api-key', issue, reason: reason('daytona-api-key', 'daytona_api_key', 970, 'The detector id is also this family\'s arrival id, so it graduates when the registry is re-pinned.') },
-];
+/** No arrival family remains: the family graduated to a registry detector at the 4fb7882 re-pin (redact-secret PR #1037). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'daytona-api-key': {
     tier: 'T1',
     pattern: DAYTONA_PATTERN,
@@ -44,6 +42,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['daytona-api-key']);
+/** Contracts for this slice's detector-id family, a registry detector since the 4fb7882 re-pin (redact-secret PR #1037). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'daytona-api-key': 'documented-24' };

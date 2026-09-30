@@ -21,7 +21,16 @@ const families = ['github-token', 'gitlab-token', 'npm-token', 'sendgrid-token',
   // are labelled by finding type (arrivalFindingTypes below).
   'doppler-token', 'trigger-dev-token', 'e2b-api-key', 'posthog-token', 'helicone-api-key', 'firecrawl-api-key',
   'composio-api-key', 'convex-deployment-key', 'onepassword-service-account-token', 'inngest-signing-key',
-  'resend-api-key', 'apify-api-token', 'wandb-api-key'];
+  'resend-api-key', 'apify-api-token', 'wandb-api-key',
+  // #464/#528: registry detectors since redact-secret#970-#975 (product PR #1037) and #1019-#1035 (product PR #1039),
+  // registry pin 4fb7882; each was measured as an arrival family (benchmarks/lib/beta8/464a-464f, 528a-528j) under the
+  // same id. Their sibling types are labelled by finding type (arrivalFindingTypes below).
+  'daytona-api-key', 'clickhouse-cloud-api-secret', 'nvidia-api-key', 'browserbase-api-key', 'runpod-api-key',
+  'cerebras-api-key', 'bitwarden-secrets-manager-access-token', 'polar-token', 'sonarqube-token', 'rubygems-api-key',
+  'clojars-deploy-token', 'crates-io-token', 'dynatrace-token', 'paddle-api-key', 'honeycomb-api-key', 'axiom-token',
+  // #1012 READY-T2 families, registry detectors since redact-secret#1028 and #1029 (product PR #1039, registry pin
+  // 4fb7882); first measured at that pin (benchmarks/lib/beta8/1012a.ts, 1012b.ts).
+  'aws-secret-access-key', 'google-oauth-client-secret'];
 const gitleaks = {
   'github-pat': 'github-token', 'github-oauth': 'github-token',
   'github-app-token': 'github-token', 'github-refresh-token': 'github-token',
@@ -195,6 +204,13 @@ export const arrivalFindingTypes = Object.freeze({
   'posthog-token': Object.freeze({ posthog_project_secret_api_key: 'posthog-project-secret-api-key' }),
   'helicone-api-key': Object.freeze({ helicone_write_api_key: 'helicone-write-api-key' }),
   'composio-api-key': Object.freeze({ composio_org_api_key: 'composio-org-api-key', composio_user_api_key: 'composio-user-api-key' }),
+  // #528: product PR #1039 (redact-secret#1020, #1021, #1031, #1035) gives each sibling type its own finding type inside
+  // the new shared detector (redact-secret docs/reference/detection.md at 4fb7882); the detector-id family keeps the
+  // detector id (polar_organization_access_token, sonarqube_user_token, crates_io_api_token, axiom_api_token).
+  'polar-token': Object.freeze({ polar_api_credential: 'polar-api-credential' }),
+  'sonarqube-token': Object.freeze({ sonarqube_analysis_token: 'sonarqube-analysis-token' }),
+  'crates-io-token': Object.freeze({ crates_io_trusted_publishing_token: 'crates-io-trusted-publishing-token' }),
+  'axiom-token': Object.freeze({ axiom_personal_token: 'axiom-personal-token' }),
 });
 // The arrival families with a recorded finding-type mapping. eval:classify scores
 // these like registry families, each on its own contract, profile and ledger rows

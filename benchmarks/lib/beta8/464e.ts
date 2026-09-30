@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field } from '../contract-sources.ts';
-import { handoff, research, RERANK, HANDOFF_INDEX, R860, RULINGS_R1_R3, RULINGS_R2_R8, RULINGS_R9_R10, B464, product, at, src, reason, BETTERLEAKS, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG } from './464-sources.ts';
+import { handoff, research, RERANK, HANDOFF_INDEX, R860, RULINGS_R1_R3, RULINGS_R2_R8, RULINGS_R9_R10, B464, product, at, src, BETTERLEAKS, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG, splitGraduated } from './464-sources.ts';
 
 // Issue #464, slice e: Beta.12 contract for the Cerebras inference API key (#860, READY by ruling R10; handoff
 // docs/audits/evidence/860/cerebras.md; product redact-secret#975). Owned by this slice only; see
@@ -23,13 +23,11 @@ const RESEARCH = research('cerebras.md');
 
 export const CEREBRAS_PATTERN = '^csk[-_][A-Za-z0-9_-]{48}$';
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'cerebras-api-key', taxonomy: 'cerebras:inference-api-key', issue, reason: reason('cerebras-api-key', 'cerebras_api_key', 975, 'The detector id is also this family\'s arrival id, so it graduates when the registry is re-pinned. The Management API key is another credential of unknown shape and is unclaimed.') },
-];
+/** No arrival family remains: the family graduated to a registry detector at the 4fb7882 re-pin (redact-secret PR #1037). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'cerebras-api-key': {
     tier: 'T1',
     pattern: CEREBRAS_PATTERN,
@@ -49,6 +47,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['cerebras-api-key']);
+/** Contracts for this slice's detector-id family, a registry detector since the 4fb7882 re-pin (redact-secret PR #1037). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'cerebras-api-key': 'documented-24' };

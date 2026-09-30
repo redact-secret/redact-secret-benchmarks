@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field } from '../contract-sources.ts';
-import { handoff, research, RERANK, HANDOFF_INDEX, R860, RULINGS_R2_R8, RULINGS_R9_R10, B464, product, at, src, reason, BETTERLEAKS, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG } from './464-sources.ts';
+import { handoff, research, RERANK, HANDOFF_INDEX, R860, RULINGS_R2_R8, RULINGS_R9_R10, B464, product, at, src, BETTERLEAKS, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG, splitGraduated } from './464-sources.ts';
 
 // Issue #464, slice f: Beta.12 contract for the RunPod API key (#860, READY with an open-ended body by ruling R10;
 // handoff docs/audits/evidence/860/runpod.md; product redact-secret#974). Owned by this slice only; see
@@ -23,13 +23,11 @@ const RESEARCH = research('runpod.md');
 
 export const RUNPOD_PATTERN = '^rpa_[A-Za-z0-9]{31,}$';
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'runpod-api-key', taxonomy: 'runpod:api-key', issue, reason: reason('runpod-api-key', 'runpod_api_key', 974, 'The detector id is also this family\'s arrival id, so it graduates when the registry is re-pinned.') },
-];
+/** No arrival family remains: the family graduated to a registry detector at the 4fb7882 re-pin (redact-secret PR #1037). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'runpod-api-key': {
     tier: 'T1',
     pattern: RUNPOD_PATTERN,
@@ -51,6 +49,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['runpod-api-key']);
+/** Contracts for this slice's detector-id family, a registry detector since the 4fb7882 re-pin (redact-secret PR #1037). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'runpod-api-key': 'documented-24' };

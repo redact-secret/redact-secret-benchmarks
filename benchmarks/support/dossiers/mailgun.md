@@ -33,7 +33,8 @@ families:
         - redact-secret/redact-secret#314
         - redact-secret/redact-secret#582
         - redact-secret/redact-secret-benchmarks#473
-      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/582/README.md
+        - redact-secret/redact-secret#1012
+      evidence: https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/confirm-only.md
       researchedAt: 2026-09-29
     blockedBy: null
   - id: mailgun:legacy-signing-key-triplet
@@ -45,8 +46,9 @@ families:
         - redact-secret/redact-secret#582
         - redact-secret/redact-secret#701
         - redact-secret/redact-secret-benchmarks#259
-      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/582/README.md
-      researchedAt: 2026-09-25
+        - redact-secret/redact-secret#1012
+      evidence: https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/confirm-only.md
+      researchedAt: 2026-09-29
     blockedBy: null
 ---
 
@@ -92,6 +94,7 @@ Researched 2026-09-29 (broad pass; every source recorded, then classified). Verd
   - Current Mailgun docs no longer show it: the validation API overview and the `mg-auth` page authenticate with `api:YOUR_API_KEY` only, and the v4 validation endpoint has no public variant. `POST /v1/keys/public` still regenerates it ("The account public key"), with no shape stated.
 - **Shape:** never stated by Mailgun. The prefix `pubkey-` comes from mailgun-python's log filter (`(key-|pubkey-)[\w\-]+`, described as scrubbing "Mailgun private and public key patterns"), mailgun-ruby's recorded regenerate-key response (a `pubkey-` placeholder) and a 2018 customer report. `pubkey-` + 32 lowercase hex comes from gitleaks (`mailgun-pub-key`, behind a `mailgun` keyword) and about thirty tools that copy it or its ancestors (betterleaks, Checkmarx 2ms, semgrep-rules, PEASS-ng, gitGraber, ScoutSuite). trufflehog, Nosey Parker, CredSweeper and detect-secrets have no `pubkey-` rule. The #582 measurement found 17 `pubkey-` + 32 candidates in public code, 16 of them hex-only.
 - **Counter-evidence, kept visible:** Mailgun's Python SDK and Ruby test suite still treat the value as sensitive to log (the Python README says "pubkeys" are scrubbed); the help center says exhausting the public verification limit disables the account, so an exposed key can cost the owner; GitLab's DAST check 798.73 rates a match High, calls the key deprecated and gives a rotation path. None of these says the key grants account access, and the two SDK behaviours are conservative log hygiene. The record does not settle whether a redactor should mask it; it settles that the provider does not present it as a secret.
+- **Confirmed in #1012 (2026-09-29):** NOT-A-SECRET. Mailgun's validation docs (archived 2019-04-28) say "Do not use your Mailgun private API key on publicly accessible code. Instead, use your Mailgun public key"; the help center "Email Validations" page (updated 2026-05-17) calls the public endpoint one "meant to be used within front-end applications"; and "Where can I find my API keys" (updated 2025-08-12) lists the Verifications Public Key apart from the API keys. The product `mailgun-api-key` detector excludes `pubkey-` by construction.
 - **Consequence:** no grammar is frozen for it. It is a public-by-design value that should stay benign in the benchmark (a `mailgun-api-key` public-id control already records it, and gitleaks 8.30.1's rule still flags it). The taxonomy row stays for now and is not edited here, because a taxonomy edit changes the digest recorded in `fixture-index.json`; removing it or reclassifying it is a separate change.
 
 ### `mailgun:legacy-signing-key-triplet` — Prefix-less 32-8-8 hex key triplet
@@ -109,6 +112,7 @@ Researched 2026-09-29 (broad pass; every source recorded, then classified). Verd
 - **Current contract in core:** #701 made the product's `mailgun_api_key`
   detector also report this shape, inside the shared detector; see
   [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+  The #1012 confirm-only pass records it OWNED-ELSEWHERE (`mailgun-api-key`, type `mailgun_api_key`): medium when `mailgun` appears on the same line, high under a Mailgun-named key. No new contract is proposed.
 - **Open caveat:** No provider source shows the 32-8-8 shape and its role is unresolved (current private API key or superseded signing key); two scanner rules and three prose sources describe it. Needs one issued key.
 
 ## Candidates that are not families yet
@@ -126,6 +130,8 @@ Researched 2026-09-29 (broad pass; every source recorded, then classified). Verd
 
 ## Research log
 
+- redact-secret#1012 — 2026-09-29 confirm-only pass ([evidence](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/confirm-only.md)):
+  `mailgun:public-validation-key` NOT-A-SECRET; `mailgun:legacy-signing-key-triplet` OWNED-ELSEWHERE.
 - redact-secret-benchmarks#473 — 2026-09-29 broad pass for `mailgun:public-validation-key`: Mailgun help center and docs, Mailgun-owned repositories, Heroku Dev Center, seven scanners plus GitLab DAST and the gitleaks lineage, Stack Overflow and Reddit (no relevant hits). Verdict `rejected`.
 - redact-secret#582 — Beta.7 ranking; provider documentation silent on format;
   Mailgun broad-discovery pass linked from the evidence record (2026-09-23).

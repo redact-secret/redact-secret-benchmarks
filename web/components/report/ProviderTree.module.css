@@ -1,0 +1,55 @@
+@layer components {
+  .tree {
+    border-top: var(--rule-strong) solid var(--ink);
+    min-width: 0;
+  }
+
+  .families {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-left: var(--rule-strong) solid var(--ink);
+    background: var(--surface);
+  }
+
+  .family {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1) var(--space-4);
+    align-items: baseline;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: var(--hairline) solid var(--line);
+  }
+
+  .family:last-child {
+    border-bottom: 0;
+  }
+
+  .name {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .name small {
+    display: block;
+    color: var(--ink-muted);
+  }
+
+  .n {
+    font: var(--text-small);
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .footnote {
+    margin: var(--space-6) 0 0;
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  @media (min-width: 761px) {
+    .family {
+      grid-template-columns: minmax(0, 1fr) calc(var(--space-16) * 1.5) minmax(0, 1.4fr);
+    }
+  }
+}

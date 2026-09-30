@@ -109,10 +109,11 @@ test('list filters: search, needs a look, no fixtures, and the URL contract', ()
   assert.equal(p.resultText, '1 provider · 1 family');
   assert.equal(p.items[0].group.families.length, 1);
   assert.equal(filterProviders(list.providers, { q: 'zzz', show: 'all' }).items.length, 0);
-  assert.deepEqual(listQueryOf(new URLSearchParams('q=%20a%20&show=signal')), { q: 'a', show: 'signal' });
-  assert.deepEqual(listQueryOf(new URLSearchParams('show=bogus')), { q: '', show: 'all' });
-  assert.equal(listQueryString({ q: '', show: 'all' }), '');
-  assert.equal(listQueryString({ q: 'aws', show: 'empty' }), '?q=aws&show=empty');
+  assert.deepEqual(listQueryOf(new URLSearchParams('q=%20a%20&show=signal')), { q: 'a', show: 'signal', level: 'all' });
+  assert.deepEqual(listQueryOf(new URLSearchParams('show=bogus&level=T2')), { q: '', show: 'all', level: 'T2' });
+  assert.deepEqual(listQueryOf(new URLSearchParams('level=T9')), { q: '', show: 'all', level: 'all' });
+  assert.equal(listQueryString({ q: '', show: 'all', level: 'all' }), '');
+  assert.equal(listQueryString({ q: 'aws', show: 'empty', level: 'T3' }), '?q=aws&show=empty&level=T3');
   assert.equal(pageOf('9', 3), 3);
   assert.equal(pageOf('x', 3), 1);
 });

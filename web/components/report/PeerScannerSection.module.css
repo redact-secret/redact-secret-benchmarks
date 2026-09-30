@@ -21,6 +21,12 @@
     font: var(--text-small);
   }
 
+  /* The scanner's description reads as a sentence, so its column keeps a readable width instead of a word per line. */
+  .scanner {
+    display: block;
+    min-inline-size: var(--col-name);
+  }
+
   .source {
     margin: 0;
     font: var(--text-small);

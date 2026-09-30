@@ -77,7 +77,7 @@ export function resolveDetector(catalog: Catalog, id: string, run: MeasuredRun |
   const suiteIds = [...new Set(fixtures.map(f => f.category))];
   const byScanner = (run?.summary.byDetector as Record<string, Record<string, Record<string, unknown>>> | undefined)?.[id];
   const mine = byScanner?.['redact-secret'];
-  const others = (run?.summary.scanners ?? []).filter(s => s.id !== 'redact-secret');
+  const others = (run?.scanners ?? []).filter(s => s.id !== 'redact-secret');
 
   const groups: DetectorGroupRowData[] = !mine ? [] : Object.keys(mine)
     .sort((a, b) => (pending(a) ? 1 : pending(b) ? -1 : a.localeCompare(b)))

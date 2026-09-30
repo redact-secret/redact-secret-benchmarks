@@ -93,7 +93,10 @@ the browser).
   `services/catalog.ts` reads the corpora and calls the same `buildCatalog`.
 - Data the ledger does not hold yet is a stated gap, not a guess: no per-fixture peer
   rows, no rule-to-family map for peers, no detector or findings pages in the new
-  site. Each has a follow-up issue linked to #543.
+  site. Each has a follow-up issue linked to #543. Since settled: the peer rule map
+  (`2026-09-30-map-peer-scanner-rules-to-families-by-review.md`, #558), per-fixture peer rows and
+  the detector, fixture and findings pages (`2026-09-30-add-rows-fixture-detector-and-findings-pages.md`,
+  #559) and the counting rule (`2026-09-30-count-a-fixture-in-every-family-it-is-related-to.md`, #560).
 - A fixture counts in every family it is related to; at provider level it counts
   once; a global fixture (no family) is in no row and is counted in a footnote. This
   differs from the existing report tree, which puts multi-family fixtures in one

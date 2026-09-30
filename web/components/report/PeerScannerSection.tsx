@@ -30,11 +30,11 @@ const scannerColumn: DataTableColumn<PeerScannerRow> = {
     header: 'Scanner',
     rowHeader: true,
     cell: r => (
-      <>
+      <span className={styles.scanner}>
         <b>{r.name} {r.version}</b>
         <small>{r.role}</small>
         {r.blurb && <small>{r.blurb}</small>}
-      </>
+      </span>
     ),
 };
 const targetedColumns: DataTableColumn<PeerScannerRow>[] = [

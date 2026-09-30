@@ -124,7 +124,7 @@ if (run) {
       peerCells++;
       if (!row.test(reportText)) fail(`/report/ does not state, for ${name} at ${level}, ${split.hit.n} of ${inputs.length} inputs targeted, ${split.hit.leaked} of ${split.hit.spans} spans left readable there and ${split.other.leaked} of ${split.other.spans} elsewhere`);
     }
-    if (!reportText.includes(`${int(Object.keys(set.rules).length)} of its ${int(set.ruleCount)} rules map to a family`)) fail(`/report/ does not state ${Object.keys(set.rules).length} of ${set.ruleCount} rules for ${peerId}`);
+    if (!reportText.includes(`${int(Object.keys(set.rules).length)} of its ${int(set.ruleCount)} rules target a credential family`)) fail(`/report/ does not state ${Object.keys(set.rules).length} of ${set.ruleCount} rules for ${peerId}`);
     if (!reportText.includes(registry.scanners[peerId].description)) fail(`/report/ does not state the registry description of ${peerId}`);
   }
   if (!reportText.includes('Inputs its rules target')) fail('/report/ does not show the "Inputs its rules target" column');
@@ -157,10 +157,10 @@ if (run) {
   const multi = taxonomy.families.find(f => ['T1', 'T2', 'T3'].filter(l => (perLevel(l).get(f.id) ?? 0) > 0).length >= 2);
   if (multi) {
     const html = text(await readHtml(`report/families/${slugOf(multi.id)}`));
-    if (!html.includes(`All levels · ${int(all.get(multi.id))} row`)) fail(`family page ${multi.id} does not offer "All levels · ${all.get(multi.id)} rows"`);
+    if (!html.includes(`All levels (${int(all.get(multi.id))})`)) fail(`family page ${multi.id} does not offer "All levels (${all.get(multi.id)})"`);
     for (const level of ['T1', 'T2', 'T3']) {
       const n = perLevel(level).get(multi.id) ?? 0;
-      if (n > 0 && !html.includes(`${labels[level]} · ${int(n)} row`)) fail(`family page ${multi.id} does not offer ${labels[level]} with ${n} rows`);
+      if (n > 0 && !html.includes(`${labels[level]} (${int(n)})`)) fail(`family page ${multi.id} does not offer ${labels[level]} with ${n} rows`);
     }
   }
 }

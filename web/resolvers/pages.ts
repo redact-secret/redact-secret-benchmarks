@@ -168,10 +168,10 @@ export async function resolveFamilyPage(slug: string): Promise<FamilyPageData | 
   const fixtures = catalog.fixturesByFamily.get(family.id) ?? [];
   const scanners = rowScanners(measured);
   const levels = [
-    { value: 'all', label: `All levels · ${count(fixtures.length, 'row')}` },
+    { value: 'all', label: `All levels (${int(fixtures.length)})` },
     ...LIST_LEVELS.filter(l => l.level !== 'all').flatMap(l => {
       const n = fixtures.filter(f => f.tier === l.level).length;
-      return n > 0 ? [{ value: l.level, label: `${l.label} · ${count(n, 'row')}` }] : [];
+      return n > 0 ? [{ value: l.level, label: `${l.label} (${int(n)})` }] : [];
     }),
   ];
   return {

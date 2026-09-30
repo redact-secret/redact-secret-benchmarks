@@ -273,7 +273,7 @@ function targetingOf(run: MeasuredRun, peer: RunScanner, level: Level, context: 
   const mine = sliceInputs(inputs, mineRows, profile.families);
   const { targeted, elsewhere } = slices;
   return {
-    targeted: { count: int(targeted.inputs), of: int(inputs.length), note: `${int(profile.mappedRules)} of its ${int(profile.ruleCount)} rules map to a family in this corpus` },
+    targeted: { count: int(targeted.inputs), of: int(inputs.length), note: `${int(profile.mappedRules)} of its ${int(profile.ruleCount)} rules target a credential family` },
     leftReadable: {
       count: int(targeted.leaked), of: int(targeted.spans), unit: 'spans',
       ...(mine ? { note: `${PRODUCT}, same inputs: ${int(mine.targeted.leaked)} of ${int(mine.targeted.spans)}` } : {}),

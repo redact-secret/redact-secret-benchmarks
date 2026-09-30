@@ -25,8 +25,9 @@ the barrel: `import { StatTile } from '../components/data'`.
 
 Components are pure render: props in, elements out.
 
-- No fetching, no `services`, `resolvers` or `app/` imports, no effects, no browser storage.
-  `tests/web-tokens.test.mjs` fails on these.
+- No fetching, no `services`, `resolvers`, `app/` or `lib/build-data` imports, no effects, no browser storage.
+  `tests/web-tokens.test.mjs` and `check:no-sx` fail on these. A block shows a loading or failed state from props
+  (`Skeleton`, `RetryNote`); the page-level client wrapper that loaded the data decides which.
 - Numbers and words are passed in already formatted. A component never derives a
   count, rate or status from other props. The ledger says it; the UI displays it.
 - Interactive components are **controlled** (`value` + `onChange`). The parent owns
@@ -105,7 +106,7 @@ web/components/ (blocks): imports none of the three
 
 - **Services** (`web/services/`) load at build time: read repository files, validate
   with the validators that already exist, return typed raw data, memoise with `once()`.
-  No `fetch`, no network, nothing imported by a client component.
+  No `fetch`, no network, nothing imported by a client component. The ledger files are never fetched by the browser.
 - **Resolvers** (`web/resolvers/`) are pure: raw data in, block props out. All number,
   interval, count and date formatting lives in `resolvers/format.ts` and the resolver
   that uses it. No filesystem, no service import, except `resolvers/pages.ts`, the one
@@ -127,16 +128,41 @@ web/components/ (blocks): imports none of the three
   keeps its row filter in `?rows=` with a client island, as the lists do. The feature
   claims (`benchmarks/feature-claims.json`) and per-value runtime outcomes do not exist yet:
   those pages render "not recorded" / "not measured yet", never a placeholder value.
-- **Rows tables** (level, family, suite and detector pages) ship their data compact
+- **Rows tables** (level, family, suite and detector pages) ship the first page of their default view in the
+  page and, when there are more rows than one page, every row as a build-emitted file
   (`resolvers/rows.ts`: a dictionary of shared strings, a table of outcome words, one small record per
-  row) and keep find, show, level, scanner scope and page in the URL (`app/report/RowsView.tsx`,
+  row; `rowsSource()`). Find, show, level, scanner scope and page stay in the URL (`app/report/RowsView.tsx`,
   `useRowsQuery.ts`, `resolvers/filters.ts`). A client island may import the pure resolvers
   `filters.ts`, `rows.ts`, `rowdata.ts` and `fixtures.ts` (no `node:`, services only as types), never
-  `resolvers/pages.ts`. Decision: `docs/decisions/2026-09-30-add-rows-fixture-detector-and-findings-pages.md`.
+  `resolvers/pages.ts`. Decisions: `docs/decisions/2026-09-30-add-rows-fixture-detector-and-findings-pages.md`
+  and `docs/decisions/2026-09-30-allow-same-origin-fetch-of-build-emitted-data.md`.
+
+### Fetching build-emitted data
+
+The browser may make exactly one kind of request: a same-origin `GET` of a JSON file the build emitted under
+`<basePath>/data/`. Decision: `docs/decisions/2026-09-30-allow-same-origin-fetch-of-build-emitted-data.md`.
+
+- The only `fetch` is in `lib/build-data.ts`, called as `fetch(dataUrl(path), { method: 'GET', credentials: 'omit',
+  mode: 'same-origin' })`. `dataUrl()` accepts only `BUILD_DATA_PATH` (`lib/data-paths.ts`). No other origin, no
+  runtime ledger or API call, no secret, no user data. `check:no-sx` fails anything else, including a route
+  handler outside `app/data/` and an import of the helper from a block, service or resolver.
+- A file is written by a `force-static` route handler in `app/data/`, from the same page resolver the page uses
+  (`resolveRowsFile`, `resolveSuiteRecordsFile`), so its shape is the UI's props. A table that fits one page ships
+  whole in its page and gets no file. A new kind of file changes `BUILD_DATA_PATH`, `check-export-rows.mjs` (a test keeps
+  the two patterns equal) and the decision record.
+- A client wrapper uses `useBuildData(path, check, 'idle' | 'now')`. It returns `idle | loading | ready | error`, `data`,
+  a `failure` (`offline`, `unavailable`, `invalid`) and `retry`; a file already loaded this session is `ready` on the
+  first render. `check` is the shape guard (and a count the page knows, so a file from another build is refused).
+- Loading must not move the page. Keep what is drawn while the next view loads (dim it after a delay, mark it
+  `aria-busy`, keep the controls' values), size a skeleton like the content it stands for, say why a load failed and
+  offer `RetryNote`, keep the state in the URL, and leave the first page of rows in the HTML for a reader without script.
+  `check:layout` holds and fails the request and asserts the table does not move when the data arrives.
 - **A fixture's page is `?fixture=<id>` on its suite page** (`/report/fixtures/<suite>/`): the suite page
-  pre-renders the rows and ships compact records; the detail is built in the browser for the one fixture
-  named (`FixtureSync` and an inline script set `data-fixture`, as `?level=` does). 67 pages, not 5,925.
-  `check:routes` fails the export above 200 MB or 6,000 files.
+  pre-renders the first page of rows; the suite's records are one build-emitted file, fetched when a fixture is
+  opened, and the detail is built in the browser for the one fixture named (`FixtureSync` and an inline script
+  set `data-fixture`, as `?level=` does; `FixtureView` shows the title and a skeleton until the file is in).
+  67 pages, not 5,925. `check:routes` holds the export to budgets (`check-export-rows.mjs`: MB, files, `data/`,
+  the largest page, the largest table page).
 - **Peer scanners** get their kind, description and the families their rules target from
   `scanners/peer-registry.json` and `scanners/peer-rule-families.json` (validated by
   `npm run peer-rules:check` and again by `services/peers.ts`); the peer columns state what a scanner's

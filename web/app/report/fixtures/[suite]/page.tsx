@@ -10,7 +10,7 @@ import { RowsView } from '../../RowsView';
 import { LEVEL_ROW_SHOW } from '../../rowShowOptions';
 import { FIXTURE_SCRIPT } from './fixture-script';
 import { FixtureSync } from './FixtureSync';
-import { FixtureView } from './FixtureView';
+import { FixtureSkeleton, FixtureView } from './FixtureView';
 import styles from './Suite.module.css';
 
 /** Every suite is a page, so a static host serves each and 404s the rest. */
@@ -29,7 +29,8 @@ export async function generateMetadata({ params }: { params: Promise<{ suite: st
  * One suite: its rows with every scanner's outcome, and, when the address names `?fixture=<id>`,
  * that fixture's page: the exact bytes, what was expected and what each scanner reported. One
  * page per suite keeps the export workable (a page per fixture would be 5,925 pages); the fixture
- * view is built in the browser from a compact record, and the rows are pre-rendered.
+ * view is built in the browser from the suite's records file (fetched when a fixture is opened), and
+ * the first page of rows is pre-rendered, the rest fetched as one file.
  */
 export default async function Page({ params }: { params: Promise<{ suite: string }> }) {
   const data = await resolveSuitePage((await params).suite);
@@ -56,7 +57,8 @@ export default async function Page({ params }: { params: Promise<{ suite: string
             title="Fixtures in this suite"
             description={data.description}
             facts={data.facts}
-            data={data.rows}
+            rows={data.rows}
+            warm={data.recordsSrc}
             defaultScanners="all"
             showOptions={LEVEL_ROW_SHOW}
             emptyTitle="No fixtures in this suite"
@@ -65,8 +67,8 @@ export default async function Page({ params }: { params: Promise<{ suite: string
         </Stack>
       </div>
       {/* The fallback is what a direct visit to ?fixture= shows until the page has hydrated; it is hidden when no fixture is named. */}
-      <Suspense fallback={<div className={styles.fixtureView}><p className={styles.loading}>Loading the fixture…</p></div>}>
-        <FixtureView records={data.records} shared={data.shared} suiteHref={suiteHref} />
+      <Suspense fallback={<div className={styles.fixtureView}><FixtureSkeleton suiteTitle={data.title} suiteHref={suiteHref} /></div>}>
+        <FixtureView suiteTitle={data.title} suiteHref={suiteHref} src={data.recordsSrc} fixtureCount={data.fixtureCount} />
       </Suspense>
     </>
   );

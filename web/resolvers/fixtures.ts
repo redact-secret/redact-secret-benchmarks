@@ -153,6 +153,15 @@ export interface SuiteShared {
   runProblem?: string;
 }
 
+/** What `data/fixtures/<suite>/records.json` holds: the records and the shared text they refer to. */
+export interface SuiteRecordsFile { records: FixtureRecord[]; shared: SuiteShared }
+
+/** Shape guard for a loaded records file: the parts `resolveFixtureRecord` reads exist. */
+export const isSuiteRecordsFile = (value: unknown): value is SuiteRecordsFile => {
+  const v = value as Partial<SuiteRecordsFile> | null;
+  return !!v && Array.isArray(v.records) && !!v.shared && Array.isArray(v.shared.scanners) && Array.isArray(v.shared.assessments) && typeof v.shared.category === 'string';
+};
+
 export interface SuiteBuild {
   suite: CatalogSuite;
   fixtures: CatalogFixture[];

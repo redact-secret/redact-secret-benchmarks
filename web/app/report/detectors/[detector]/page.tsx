@@ -84,7 +84,7 @@ export default async function Page({ params }: { params: Promise<{ detector: str
             title="Fixtures for this detector"
             description={`${detector.fixtureCount} fixtures. Choose "Every scanner" to see each scanner's outcome for the same rows.`}
             facts={data.facts}
-            data={data.rows}
+            rows={data.rows}
             defaultScanners="product"
             showOptions={ROW_SHOW}
           />

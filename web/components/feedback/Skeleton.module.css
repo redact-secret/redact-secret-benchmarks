@@ -1,0 +1,73 @@
+@layer components {
+  .skeleton {
+    position: relative;
+    min-width: 0;
+  }
+
+  .label {
+    position: absolute;
+    width: var(--hairline);
+    height: var(--hairline);
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .shapes {
+    display: grid;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+
+  .block {
+    display: block;
+    background: var(--line);
+    opacity: 0.6;
+    animation: skeleton-fade 1600ms ease-in-out infinite alternate;
+  }
+
+  .line {
+    height: var(--space-4);
+  }
+
+  .heading {
+    height: var(--space-8);
+  }
+
+  .panel {
+    height: calc(var(--space-16) * 3);
+  }
+
+  .full {
+    width: 100%;
+  }
+
+  .wide {
+    width: 75%;
+  }
+
+  .half {
+    width: 50%;
+  }
+
+  .narrow {
+    width: 25%;
+  }
+
+  @keyframes skeleton-fade {
+    from {
+      opacity: 0.35;
+    }
+
+    to {
+      opacity: 0.7;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .block {
+      animation: none;
+      opacity: 0.5;
+    }
+  }
+}

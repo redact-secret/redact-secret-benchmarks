@@ -12,7 +12,12 @@
  *  - the rows, suite, detector and findings pages (#559): every route exists, states its
  *    counts, and every figure links to its rows;
  *  - every link on those pages stays inside the app (the export is served under /next/):
- *    none points at the existing site.
+ *    none points at the existing site;
+ *  - the build-emitted data files (web/app/data/): exactly the files the pages ask for, each
+ *    holding the rows or records the ledger has (ids, scanner columns, outcome words, flags, levels,
+ *    corpus bytes and expected spans), and the first page in each table's HTML is the first page of
+ *    its file (docs/decisions/2026-09-30-allow-same-origin-fetch-of-build-emitted-data.md);
+ *  - the size budgets of the export (bytes, files, data, the largest page and the largest table page).
  */
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
@@ -189,27 +194,138 @@ for (const issue of gaps.issues) for (const slug of issue.fixtures) {
   if (!known.has(slug) && linked) fail(`/report/findings/ links ${slug}, which the corpus does not hold`);
 }
 
-// ---- Suite pages carry every fixture of the suite (#559) -----------------------------------------
-const bySuite = new Map();
-for (const f of index.fixtures) { const [category, ...rest] = f.slug.split('--'); (bySuite.get(category) ?? bySuite.set(category, []).get(category)).push(rest.join('--')); }
-for (const c of categories) {
-  const ids = bySuite.get(c.id) ?? [];
-  const html = await readHtml(`report/fixtures/${c.id}`);
-  if (!text(html).includes(`${int(ids.length)} fixture`)) fail(`/report/fixtures/${c.id}/ does not state ${ids.length} fixtures`);
-  const missing = ids.filter(id => !html.includes(`\\"id\\":\\"${id}\\"`) && !html.includes(`"id":"${id}"`));
-  if (missing.length) fail(`/report/fixtures/${c.id}/ ships no record for ${missing.length} fixtures, e.g. ${missing[0]}`);
+// ---- The build-emitted data files match the ledger (fetch decision) -------------------------------
+// A table with more rows than one page ships its first page in the page and every row in
+// data/rows/<kind>/<id>/rows.json; a suite ships data/fixtures/<suite>/records.json. The expected
+// tables and records are recomputed here from the index, the assignments, the corpora and the run,
+// never through web/resolvers, and compared with the files and with the first page in the HTML.
+import assert from 'node:assert/strict';
+
+const PAGE = 50; // resolvers/filters.ts PAGE_SIZE
+// The same pattern as web/lib/data-paths.ts (tests/web-conventions.test.mjs keeps the two equal).
+const DATA_PATH = /^(?:rows\/(?:level|family|suite|detector)\/[a-z0-9][a-z0-9._-]*\/rows|fixtures\/[a-z0-9][a-z0-9._-]*\/records)\.json$/i;
+const dataRoot = path.join(out, 'data');
+const emitted = new Set();
+try {
+  for await (const file of walk(dataRoot)) emitted.add(path.relative(dataRoot, file).split(path.sep).join('/'));
+} catch { fail('the export has no data/ folder: rows and records files are missing'); }
+for (const file of emitted) if (!DATA_PATH.test(file)) fail(`data/${file} is not a path the browser may request (lib/data-paths.ts)`);
+
+const summaryForData = run ? await readJson('public/results/summary.json') : undefined;
+const scannerIds = summaryForData ? summaryForData.scanners.map(s => s.id) : ['redact-secret'];
+const scannerNames = summaryForData ? summaryForData.scanners.map(s => s.name) : ['redact-secret'];
+const slugsOfSuite = new Map();
+for (const f of index.fixtures) (slugsOfSuite.get(f.source.categoryId) ?? slugsOfSuite.set(f.source.categoryId, []).get(f.source.categoryId)).push(f.slug);
+
+/** Every rows table of the site: where its page is, its data path and the fixtures it must hold. */
+const tables = [];
+for (const f of taxonomy.families) tables.push({ kind: 'family', id: slugOf(f.id), page: `report/families/${slugOf(f.id)}`, slugs: index.fixtures.filter(x => x.familyIds.includes(f.id)).map(x => x.slug) });
+for (const c of categories) tables.push({ kind: 'suite', id: c.id, page: `report/fixtures/${c.id}`, slugs: slugsOfSuite.get(c.id) ?? [] });
+for (const d of detectors.detectors) tables.push({ kind: 'detector', id: d.id, page: `report/detectors/${d.id}`, slugs: Object.entries(assignments).filter(([, ids]) => ids.includes(d.id)).map(([slug]) => slug) });
+if (run) for (const level of ['T1', 'T2', 'T3']) tables.push({ kind: 'level', id: level, page: `report/rows/${level}`, slugs: [...tierOf.entries()].filter(([, v]) => v.tier === level).map(([slug]) => slug) });
+
+const wanted = new Set([...tables.filter(t => t.slugs.length > PAGE).map(t => `rows/${t.kind}/${t.id}/rows.json`), ...categories.map(c => `fixtures/${c.id}/records.json`)]);
+for (const file of wanted) if (!emitted.has(file)) fail(`data/${file} is missing from the export`);
+for (const file of emitted) if (!wanted.has(file)) fail(`data/${file} is emitted but no page asks for it (a table that fits one page ships whole)`);
+
+const labelOf = row => (!row ? 'Not measured'
+  : row.spanOutcomes ? (row.spanOutcomes.some(o => o === 'PARTIAL' || o === 'MISS') ? 'Left readable' : row.spanOutcomes.includes('OVERBROAD') ? 'Too much' : 'Redacted')
+  : row.flagged != null ? (row.flagged ? 'Flagged' : 'Quiet') : 'Unscored');
+/** The fixtures linked from a page's rows table, in order: "suite--id". */
+const linkedRows = html => {
+  const caption = /<caption[^>]*>Fixtures in [^<]*<\/caption>/.exec(html);
+  if (!caption) return null;
+  const start = html.indexOf('<tbody', caption.index);
+  const body = html.slice(start, html.indexOf('</tbody>', start));
+  return [...body.matchAll(/href="[^"]*\/report\/fixtures\/([^/"]+)\/\?fixture=([^"]+)"/g)].map(m => `${m[1]}--${decodeURIComponent(m[2])}`);
+};
+
+let dataRows = 0, dataFiles = 0;
+for (const table of tables) {
+  const where = `/${table.page}/`;
+  const html = await readHtml(table.page);
+  const linked = linkedRows(html);
+  if (table.slugs.length === 0) continue;
+  if (!linked) { fail(`${where} shows no rows table for its ${table.slugs.length} fixtures`); continue; }
+  if (table.slugs.length <= PAGE) {
+    if (linked.length !== table.slugs.length || !table.slugs.every(s => linked.includes(s))) fail(`${where} must list all ${table.slugs.length} of its fixtures in its page (it ships whole), it links ${linked.length}`);
+    if (html.includes('rows.json')) fail(`${where} names a rows file but fits one page`);
+    continue;
+  }
+  const file = `rows/${table.kind}/${table.id}/rows.json`;
+  if (!html.includes(file)) fail(`${where} does not name its rows file ${file}`);
+  let data;
+  try { data = JSON.parse(await readFile(path.join(dataRoot, file), 'utf8')); } catch { fail(`data/${file} is not readable JSON`); continue; }
+  dataFiles++;
+  if (!Array.isArray(data.items) || !Array.isArray(data.statuses) || !Array.isArray(data.dictionary) || !Array.isArray(data.scanners)) { fail(`data/${file} is not a rows table`); continue; }
+  dataRows += data.items.length;
+  const held = data.items.map(item => `${item.c}--${item.i}`);
+  if (held.length !== table.slugs.length || new Set(held).size !== held.length || !table.slugs.every(s => held.includes(s))) fail(`data/${file} holds ${held.length} rows, the ledger has ${table.slugs.length} fixtures for it`);
+  if (JSON.stringify(data.scanners.map(s => s.id)) !== JSON.stringify(scannerIds) || JSON.stringify(data.scanners.map(s => s.name)) !== JSON.stringify(scannerNames)) fail(`data/${file} has scanner columns ${data.scanners.map(s => s.id)}, the run lists ${scannerIds}`);
+  if (JSON.stringify(linked) !== JSON.stringify(held.slice(0, PAGE))) fail(`${where} first page is not the first ${PAGE} rows of data/${file}`);
+  // Each outcome word and the flags the filters read are recomputed from the run's rows.
+  let wrong = 0;
+  for (const item of data.items) {
+    const slug = `${item.c}--${item.i}`;
+    if (item.o.length !== data.scanners.length) { wrong++; continue; }
+    data.scanners.forEach((s, k) => { if (data.statuses[item.o[k]]?.label !== labelOf(rowsByScanner.get(s.id)?.get(slug))) wrong++; });
+    const mine = rowsByScanner.get('redact-secret')?.get(slug);
+    const leaked = !!mine?.spanOutcomes?.some(o => o === 'PARTIAL' || o === 'MISS');
+    if (((item.f & 2) !== 0) !== leaked || ((item.f & 4) !== 0) !== (mine?.flagged === true)) wrong++;
+    if (tierOf.has(slug) && item.l !== tierOf.get(slug).tier) wrong++;
+  }
+  if (wrong) fail(`data/${file}: ${wrong} outcome words, flags or levels disagree with the run`);
 }
 
-// ---- Size of the export ---------------------------------------------------------------------------
-let files = 0, bytes = 0;
+// A suite's records: every fixture with the corpus bytes and expected spans, one packed row per scanner.
+const corpora = new Map();
+for (const c of categories) {
+  const slugs = slugsOfSuite.get(c.id) ?? [];
+  const where = `data/fixtures/${c.id}/records.json`;
+  let file;
+  try { file = JSON.parse(await readFile(path.join(dataRoot, `fixtures/${c.id}/records.json`), 'utf8')); } catch { continue; }
+  dataFiles++;
+  if (!Array.isArray(file.records) || !file.shared) { fail(`${where} is not a records file`); continue; }
+  const ids = file.records.map(r => `${c.id}--${r.id}`);
+  if (ids.length !== slugs.length || !slugs.every(s => ids.includes(s))) fail(`${where} holds ${ids.length} records, the suite has ${slugs.length} fixtures`);
+  if (JSON.stringify(file.shared.scanners.map(s => s.id)) !== JSON.stringify(run ? scannerIds : [])) fail(`${where} has scanners ${file.shared.scanners.map(s => s.id)}, the run lists ${run ? scannerIds : []}`);
+  const corpusPath = index.fixtures.find(f => f.source.categoryId === c.id)?.source.corpus;
+  if (corpusPath && !corpora.has(corpusPath)) corpora.set(corpusPath, new Map((await readJson(corpusPath)).fixtures.map(f => [f.id, f])));
+  let differs = 0;
+  for (const record of file.records) {
+    const source = corpora.get(corpusPath)?.get(record.id);
+    try { assert.deepStrictEqual({ content: record.content, expected: record.expected }, { content: source?.content, expected: source?.expected }); } catch { differs++; }
+    if (record.rows.length !== (run ? scannerIds.length : 0)) differs++;
+    else if (run) record.rows.forEach((packed, k) => { if ((packed === null) !== !rowsByScanner.get(scannerIds[k])?.get(`${c.id}--${record.id}`)) differs++; });
+  }
+  if (differs) fail(`${where}: ${differs} records differ from the corpus bytes, expected spans or the run's rows`);
+  const html = await readHtml(`report/fixtures/${c.id}`);
+  if (!text(html).includes(`${int(slugs.length)} fixture`)) fail(`/report/fixtures/${c.id}/ does not state ${slugs.length} fixtures`);
+  if (!html.includes(`fixtures/${c.id}/records.json`)) fail(`/report/fixtures/${c.id}/ does not name its records file`);
+  if (html.includes('followUps')) fail(`/report/fixtures/${c.id}/ embeds fixture records; they belong in data/fixtures/${c.id}/records.json`);
+}
+
+// ---- Size of the export: budgets set from the slimmed export, with headroom -------------------------
+let files = 0, bytes = 0, dataBytes = 0, largestPage = { bytes: 0, file: '' }, largestData = { bytes: 0, file: '' }, largestTablePage = { bytes: 0, file: '' };
 async function* walk(dir) { for (const entry of await readdir(dir, { withFileTypes: true })) { const full = path.join(dir, entry.name); if (entry.isDirectory()) yield* walk(full); else yield full; } }
-for await (const file of walk(out)) { files++; bytes += (await readFile(file)).length; }
-const MAX_BYTES = 200 * 1024 * 1024, MAX_FILES = 6000;
-if (bytes > MAX_BYTES) fail(`the export is ${(bytes / 1048576).toFixed(0)} MB, over the ${MAX_BYTES / 1048576} MB the static host is sized for; shard or paginate the largest pages`);
-if (files > MAX_FILES) fail(`the export is ${files} files, over ${MAX_FILES}; shard or paginate the largest pages`);
+for await (const file of walk(out)) {
+  const size = (await readFile(file)).length, rel = path.relative(out, file).split(path.sep).join('/');
+  files++; bytes += size;
+  if (rel.startsWith('data/')) { dataBytes += size; if (size > largestData.bytes) largestData = { bytes: size, file: rel }; }
+  if (rel.endsWith('.html') && size > largestPage.bytes) largestPage = { bytes: size, file: rel };
+  if (/^report\/(?:rows|fixtures|families|detectors)\/[^/]+(?:\/[^/]+)?\/index\.html$/.test(rel) && size > largestTablePage.bytes) largestTablePage = { bytes: size, file: rel };
+}
+const MB = 1048576;
+const BUDGET = { bytes: 100 * MB, files: 2300, dataBytes: 14 * MB, dataFile: 2 * MB, page: 1.5 * MB, tablePage: 320 * 1024 };
+if (bytes > BUDGET.bytes) fail(`the export is ${(bytes / MB).toFixed(1)} MB, over the ${BUDGET.bytes / MB} MB budget; move the largest data into build-emitted files`);
+if (files > BUDGET.files) fail(`the export is ${files} files, over the ${BUDGET.files} budget`);
+if (dataBytes > BUDGET.dataBytes) fail(`data/ is ${(dataBytes / MB).toFixed(1)} MB, over the ${BUDGET.dataBytes / MB} MB budget`);
+if (largestData.bytes > BUDGET.dataFile) fail(`${largestData.file} is ${(largestData.bytes / MB).toFixed(1)} MB, over the ${BUDGET.dataFile / MB} MB a single fetch may cost`);
+if (largestPage.bytes > BUDGET.page) fail(`${largestPage.file} is ${(largestPage.bytes / MB).toFixed(2)} MB, over the ${BUDGET.page / MB} MB page budget`);
+if (largestTablePage.bytes > BUDGET.tablePage) fail(`${largestTablePage.file} is ${(largestTablePage.bytes / 1024).toFixed(0)} KB, over the ${BUDGET.tablePage / 1024} KB a rows page may weigh: its rows belong in a data file`);
 
 if (problems.length) {
   for (const p of problems) console.error(p);
   process.exit(1);
 }
-console.log(`report row pages ok: ${detectors.detectors.length} detector pages, ${categories.length} suite pages, ${gaps.issues.length} findings, ${peerCells} peer-by-level target cells and the per-level counts match the ledger, links stay under ${basePath}/, export ${(bytes / 1048576).toFixed(0)} MB in ${files} files`);
+console.log(`report row pages ok: ${detectors.detectors.length} detector pages, ${categories.length} suite pages, ${gaps.issues.length} findings, ${peerCells} peer-by-level target cells and the per-level counts match the ledger, ${dataFiles} data files (${dataRows.toLocaleString('en-US')} rows) match the run and the corpora, links stay under ${basePath}/, export ${(bytes / MB).toFixed(1)} MB in ${files} files (data ${(dataBytes / MB).toFixed(1)} MB, largest page ${(largestPage.bytes / 1024).toFixed(0)} KB, largest table page ${(largestTablePage.bytes / 1024).toFixed(0)} KB)`);

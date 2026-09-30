@@ -8,7 +8,7 @@
  *  - the CSS layer order is fixed first: the first stylesheet on every page
  *    contains the `@layer` order statement, and no other stylesheet precedes it;
  *  - MUI styles are emitted inside `@layer mui`;
- *  - no ledger file name or client fetch of results reaches the shipped scripts.
+ *  - no ledger file name reaches the shipped scripts (the only browser fetch is of data/, see check-no-sx.mjs).
  */
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';

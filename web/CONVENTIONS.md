@@ -25,7 +25,7 @@ the barrel: `import { StatTile } from '../components/data'`.
 
 Components are pure render: props in, elements out.
 
-- No fetching, no `lib/ledger` or `app/` imports, no effects, no browser storage.
+- No fetching, no `services`, `resolvers` or `app/` imports, no effects, no browser storage.
   `tests/web-tokens.test.mjs` fails on these.
 - Numbers and words are passed in already formatted. A component never derives a
   count, rate or status from other props. The ledger says it; the UI displays it.
@@ -120,6 +120,13 @@ web/components/ (blocks): imports none of the three
   (one page per family), pre-render the default view and every level, then let a client
   island read `?q=`, `?show=`, `?page=` and `?level=` after hydration and rewrite them
   with `history` (`app/report/useListQuery.ts`, `LevelSync.tsx`).
+- `/comparison/runtime` uses the same panel technique as `?level=`: every reachable
+  combination of `?analysis=`, `?domain=` and `?view=` is a pre-rendered panel, and
+  `data-analysis`, `data-domain` and `data-view` on the root element (inline script plus
+  `RuntimeSync`) pick one; the default panel shows without script. `/comparison/feature`
+  keeps its row filter in `?rows=` with a client island, as the lists do. The feature
+  claims (`benchmarks/feature-claims.json`) and per-value runtime outcomes do not exist yet:
+  those pages render "not recorded" / "not measured yet", never a placeholder value.
 - Resolver tests live in `tests/web-resolvers.test.mjs` (synthetic data only) and also
   enforce the import direction. `check:routes` compares the built pages with the
   ledger, read independently; CI sets `WEB_REQUIRE_RUN=1` and runs `npm run bench` first.

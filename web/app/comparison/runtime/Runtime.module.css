@@ -1,0 +1,30 @@
+@layer components {
+  /*
+   * Every combination of the page's switches is pre-rendered as its own panel.
+   * Which one shows is decided by `data-analysis`, `data-domain` and `data-view`
+   * on the root element (RuntimeSync and the inline script in the page), so a static
+   * export serves every combination from one page and the URL stays
+   * `/comparison/runtime/?analysis=internal&domain=pii`. Without script the default
+   * panel (external, PII, all) shows. A panel with nothing to switch between shows at every view.
+   */
+  .panel {
+    display: none;
+  }
+
+  .panel[data-default] {
+    display: block;
+  }
+
+  :global(:root[data-analysis]) .panel[data-default] {
+    display: none;
+  }
+
+  :global(:root[data-analysis='external'][data-domain='pii'][data-view='all']) .panel[data-key='external-pii-all'],
+  :global(:root[data-analysis='external'][data-domain='pii'][data-view='speed']) .panel[data-key='external-pii-speed'],
+  :global(:root[data-analysis='external'][data-domain='pii'][data-view='accuracy']) .panel[data-key='external-pii-accuracy'],
+  :global(:root[data-analysis='internal'][data-domain='pii']) .panel[data-key='internal-pii'],
+  :global(:root[data-analysis='external'][data-domain='credentials']) .panel[data-key='external-credentials'],
+  :global(:root[data-analysis='internal'][data-domain='credentials']) .panel[data-key='internal-credentials'] {
+    display: block;
+  }
+}

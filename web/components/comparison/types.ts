@@ -138,12 +138,12 @@ export interface RuntimeQuestion {
   position: string;
   question: string;
   description: string;
-  /** The workload id, shown small: `validator-heavy`. */
-  workload: string;
-  /** "116.5 KiB". */
-  size: string;
-  /** "each line repeated 512 times". */
-  repeat: string;
+  /** The workload id, shown small: `validator-heavy`. Omitted for a question no workload exists for yet. */
+  workload?: string;
+  /** "116.5 KiB". Omitted with the workload. */
+  size?: string;
+  /** "each line repeated 512 times". Omitted with the workload. */
+  repeat?: string;
   /** No credential or PII text has been timed for this question yet. */
   notMeasured?: string;
   /** An older snapshot recorded times but not outcomes: value rows read "Not recorded". */

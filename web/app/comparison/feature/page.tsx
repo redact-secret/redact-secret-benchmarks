@@ -1,9 +1,27 @@
 import type { Metadata } from 'next';
-import { RoutePage, routeEntry } from '../../RoutePage';
+import Link from 'next/link';
+import { EmptyState } from '../../../components/feedback';
+import { Stack } from '../../../components/layout';
+import { Breadcrumb, PageHead } from '../../../components/page';
+import { resolveFeatureComparisonPage } from '../../../resolvers/pages';
+import { FeatureView } from './FeatureView';
 
-const HREF = '/comparison/feature/';
-export const metadata: Metadata = { title: routeEntry(HREF).title };
+export const metadata: Metadata = { title: 'Feature comparison' };
 
-export default function Page() {
-  return <RoutePage href={HREF} pick={s => [{ label: 'redact-secret release', value: s.version }]} />;
+/**
+ * `/comparison/feature`: what each library's own documentation says it can do.
+ * Until `benchmarks/feature-claims.json` exists the page says nothing is recorded
+ * and shows no table. The row filter is a client island (`FeatureView`).
+ */
+export default async function Page() {
+  const page = await resolveFeatureComparisonPage();
+  if (page.state === 'recorded') return <FeatureView {...page.view} />;
+  return (
+    <Stack gap="lg">
+      <PageHead before={<Breadcrumb items={page.breadcrumb} />} eyebrow={page.eyebrow} title={page.title} lede={page.lede} />
+      <EmptyState title={page.notice.title} action={<Link href={page.runtime.href}>{page.runtime.label}</Link>}>
+        {page.notice.text}
+      </EmptyState>
+    </Stack>
+  );
 }

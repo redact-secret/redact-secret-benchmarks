@@ -7,7 +7,7 @@
  *                 class names from CSS Modules, not inline style objects.
  *  no-styled      `styled()` (MUI or emotion) is banned in feature code.
  *  no-client-fetch  nothing in web/ fetches: ledger data is read at build time
- *                 (lib/ledger.ts), never in the browser.
+ *                 (web/services), never in the browser.
  *  css-layer      every CSS Module rule sits in `@layer components`, so it
  *                 outranks MUI's `@layer mui` by layer order.
  *  layers-first   layers.css is the first stylesheet imported by the app layout
@@ -28,7 +28,7 @@ function stripComments(source) {
 const CODE_RULES = [
   ['no-sx', /(?<![\w$.])sx\s*=\s*\{|(?<![\w$.])sx\s*:(?!:)/, 'the `sx` prop is not allowed; use a class from a CSS Module'],
   ['no-styled', /\bimport\b[^;]*\bstyled\b[^;]*\bfrom\b|from\s+['"]@emotion\/styled['"]|from\s+['"]@mui\/system['"]|\bstyled\s*\(/, '`styled()` is not allowed in feature code; use a CSS Module'],
-  ['no-client-fetch', /(?<![\w$.])fetch\s*\(|\bXMLHttpRequest\b|\buseSWR\b|\baxios\b/, 'no fetching in web/: ledger data is loaded at build time by lib/ledger.ts'],
+  ['no-client-fetch', /(?<![\w$.])fetch\s*\(|\bXMLHttpRequest\b|\buseSWR\b|\baxios\b/, 'no fetching in web/: ledger data is loaded at build time by web/services'],
 ];
 
 /** Violations in one source file. `file` selects which rules apply. */

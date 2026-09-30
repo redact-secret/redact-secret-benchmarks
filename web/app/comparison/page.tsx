@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
-import { RoutePage, routeEntry } from '../RoutePage';
+import { ComparisonHub } from '../../components/comparison';
+import { resolveComparisonHubPage } from '../../resolvers/pages';
 
-const HREF = '/comparison/';
-export const metadata: Metadata = { title: routeEntry(HREF).title };
+export const metadata: Metadata = { title: 'Comparison' };
 
-export default function Page() {
-  return <RoutePage href={HREF} pick={s => [{ label: 'redact-secret release', value: s.version }]} />;
+/** `/comparison`: three questions and how the pages compare. A server component: it runs during `next build` and ships HTML. */
+export default async function Page() {
+  return <ComparisonHub {...await resolveComparisonHubPage()} />;
 }

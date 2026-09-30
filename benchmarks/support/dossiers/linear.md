@@ -18,16 +18,19 @@ families:
     blockedBy: null
   - id: linear:oauth-access-token
     research:
-      verdict: not-found
-      tier: T0
+      verdict: issuance-gated
+      tier: T1
       sources:
         - https://linear.app/changelog/2021-08-19-github-secret-scanning
+        - https://linear.app/developers/oauth-2-0-authentication
+        - https://github.com/linear/linear-solutions/blob/4529f1e807d19e25f3c3889737f5b4bf90c242fe/integration_guides/README.md#L11-L12
       issues:
         - redact-secret/redact-secret#367
         - redact-secret/redact-secret#642
-      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/642/README.md
-      researchedAt: 2026-09-23
-    blockedBy: null
+        - redact-secret/redact-secret#1012
+      evidence: https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/linear-oauth-access-token.md
+      researchedAt: 2026-09-29
+    blockedBy: No source of any class states the body length or alphabet, and Linear's own OAuth examples are unprefixed; needs one OAuth app issuing an access token (structure only).
 ---
 
 # Linear
@@ -57,15 +60,24 @@ family is not recorded here.
 
 ### `linear:oauth-access-token` — OAuth access token
 
-- **Shape:** prefix `lin_oauth_`; no body grammar is established.
-- **Sources:** the 2021 changelog names the prefix, which shows it exists but
-  gives no length or alphabet. No gitleaks or trufflehog rule covers it. GitHub
-  lists a Linear OAuth access token type without a grammar. The 40-character
-  API-key length must not be reused.
+- **Shape:** prefix `lin_oauth_`; no body grammar is established. Untested hypothesis,
+  not evidence: `lin_oauth_` + 64 lowercase hex, since Linear's unprefixed
+  authorization-code example is 64 hex.
+- **Verdict (#1012, 2026-09-29):** `issuance-gated`, T1 on the prefix only. This refines the
+  earlier `not-found`, T0 entry: the prefix is now also stated by a provider docs repository,
+  but nothing states a body, so a contract needs one issued token.
+- **Sources:**
+  - provider changelog (T1, prefix): 2021-08-19, "OAuth access tokens ... lin_api_ and lin_oauth_".
+  - provider docs placeholder (R4, prefix): the linear-solutions integration guides write `lin_oauth_...` and say the token "starts with `lin_oauth_` (not `lin_api_`)".
+  - provider docs examples (R5): the OAuth 2.0 page shows three example tokens, all unprefixed and 64 characters (the authorization-code access token is lowercase hex; the refresh and client-credentials tokens are `[a-z0-9]`). No `lin_` string appears on that page or on the actor-authorization, app-manifest, GraphQL and agents pages. The prefixed format and the unprefixed examples are an unresolved contradiction that only a prefixed provider example or issuance settles.
+  - Not evidence: 29 third-party redactor rules disagree on the length (`{40}`, `{40,}`, `{32,}`, `{30,}` with `_-`, `{20,}`, `{10,}`) and cite no sample; koki-develop/mask-go#147 finds no source and declines to ship a rule.
+  - Searched with nothing further: gitleaks, betterleaks, trufflehog (`linearapi` only), noseyparker, Kingfisher, CredSweeper, secretlint and osv-scalibr have no `lin_oauth_` rule; the `linear/linear` SDK monorepo has no `lin_oauth` or `lin_api` string. GitHub's list names the type without a regex.
+- **Issuance:** create an OAuth app in a free workspace; run the authorization-code flow once and the `client_credentials` (actor=app) flow once. For each access token record whether it starts `lin_oauth_`, the body length, whether the body is only `[0-9a-f]`, and whether the refresh token carries a prefix; then revoke.
 - **Collisions:** the provider's OAuth example is a bare 64-character hex string
   with no prefix, which is not distinguishable from ordinary hex.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
-  The #367 contract lists this variant as an interim guard at T0.
+  The #367 contract lists this variant as an interim guard at T0, capped per #551; any rule
+  written before issuance would be a guess.
 
 ## Candidates that are not families yet
 
@@ -75,13 +87,17 @@ family is not recorded here.
 
 ## Open questions
 
-1. **`lin_oauth_` body.** Length and alphabet are unknown. One issued OAuth
-   access token would settle it.
+1. **`lin_oauth_` body.** Length and alphabet are unknown, and the prefixed
+   format contradicts Linear's unprefixed 64-character examples. One issued OAuth
+   access token would settle both (redact-secret#1012 checklist).
 2. **Prefix coverage.** Does the unprefixed hex token still get issued alongside
    the prefixed one?
 
 ## Research log
 
+- redact-secret#1012 — 2026-09-29 contract research for `lin_oauth_`
+  ([evidence](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/linear-oauth-access-token.md)):
+  BLOCKED on the body; no source of any class, prefix newly corroborated in a docs repository.
 - redact-secret#367 (2026-09-17) — froze `lin_api_` plus 40 alphanumeric at T2
   and left the OAuth variant as an interim T0 guard.
 - redact-secret#374 (2026-09-18) — validated the API-key length independently

@@ -1,0 +1,849 @@
+{
+  "schemaVersion": 1,
+  "id": "runtime-comparison-v2",
+  "issues": [
+    562,
+    563
+  ],
+  "supportClaims": false,
+  "purpose": "Informational-only runtime comparison behind /comparison/runtime: what each library and each redact-secret setting did to each value in the text, and how long one call took, on three PII and three credential workloads. Extends peer-pii-runtime-throughput-v1 (#429) without editing it. Never a gate, never a ranking (AGENTS.md Boundary rule).",
+  "extends": {
+    "id": "peer-pii-runtime-throughput-v1",
+    "path": "qualification/peer-pii-runtime-throughput-v1.json",
+    "contentCommitment": "d1e14a01c355ec73c03cc7b3f6f5f8c298a7a6ee9614041e156d883d467456b5"
+  },
+  "safety": {
+    "realPersonOrAccountProvenance": false,
+    "credentialInputs": "generated-at-run-time",
+    "evidenceProjection": "outcome-with-values-replaced-by-index"
+  },
+  "settings": [
+    {
+      "id": "default",
+      "label": "Default",
+      "sub": "no PII",
+      "selectors": []
+    },
+    {
+      "id": "pii-global",
+      "label": "PII",
+      "sub": "pii:global",
+      "selectors": [
+        "pii:global"
+      ]
+    },
+    {
+      "id": "pii-global-us",
+      "label": "PII + US",
+      "sub": "adds pii:us",
+      "selectors": [
+        "pii:global",
+        "pii:us"
+      ]
+    }
+  ],
+  "tools": [
+    {
+      "id": "redact-secret",
+      "package": "@redact-secret/core",
+      "call": "scanAndRedact",
+      "async": false
+    },
+    {
+      "id": "flare-redact",
+      "package": "flare-redact",
+      "call": "redact",
+      "async": false
+    },
+    {
+      "id": "openredaction",
+      "package": "@openredaction/core",
+      "call": "detect",
+      "async": true
+    }
+  ],
+  "sampleProtocol": {
+    "samplesPerCell": 12,
+    "warmupSamples": 2,
+    "processIsolation": "one-process-per-setting-tools-in-process",
+    "order": "round-robin-per-tool"
+  },
+  "generator": {
+    "algorithm": "repeat-lines-v1",
+    "lineCount": 4096,
+    "lineSeparator": "LF"
+  },
+  "outcomeDefinition": {
+    "changed": "true when the call returned text different from the line it was given.",
+    "valuesHidden": "how many of the values the line carries no longer appear verbatim in the returned text. A line that changed but still shows every value is recorded as 0.",
+    "replacement": "the text that took the place of what changed, with any value of the line replaced by its index in braces, cut to 64 characters. Empty when nothing changed."
+  },
+  "workloads": [
+    {
+      "id": "real-looking-values",
+      "domain": "pii",
+      "question": "Does it catch real sensitive values?",
+      "description": "Made-up emails, card numbers, bank accounts and phone numbers that look like the real thing.",
+      "lines": [
+        {
+          "label": "IP address",
+          "template": "client_ip={0}",
+          "values": [
+            {
+              "kind": "ip-address",
+              "family": "pii:global:network-address",
+              "literal": "84.201.33.17"
+            }
+          ]
+        },
+        {
+          "label": "Email",
+          "template": "email={0}",
+          "values": [
+            {
+              "kind": "email",
+              "family": "pii:global:email",
+              "literal": "maria.okafor@quillfeather-analytics.com"
+            }
+          ]
+        },
+        {
+          "label": "Card number",
+          "template": "payment_card={0}",
+          "values": [
+            {
+              "kind": "payment-card",
+              "family": "pii:global:payment-card",
+              "literal": "4539148803436467"
+            }
+          ]
+        },
+        {
+          "label": "Bank account",
+          "template": "iban={0}",
+          "values": [
+            {
+              "kind": "iban",
+              "family": "pii:global:iban",
+              "literal": "GB55FRTC40117752871936"
+            }
+          ]
+        },
+        {
+          "label": "US Social Security no.",
+          "template": "ssn={0}",
+          "values": [
+            {
+              "kind": "us-ssn",
+              "family": "pii:us:ssn",
+              "literal": "812-44-7305"
+            }
+          ]
+        },
+        {
+          "label": "US phone number",
+          "template": "phone={0}",
+          "values": [
+            {
+              "kind": "phone",
+              "family": "pii:global:phone",
+              "literal": "+1 617 302 4418"
+            }
+          ]
+        },
+        {
+          "label": "Email, Korean label",
+          "template": "고객 이메일={0}",
+          "values": [
+            {
+              "kind": "email",
+              "family": "pii:global:email",
+              "literal": "ji.woo.han@quillfeather-analytics.com"
+            }
+          ]
+        },
+        {
+          "label": "Phone, Korean label",
+          "template": "고객 전화번호={0}",
+          "values": [
+            {
+              "kind": "phone",
+              "family": "pii:global:phone",
+              "literal": "+1 617 302 4418"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "validator-heavy",
+      "domain": "pii",
+      "reuses": "validator-heavy",
+      "question": "Does it redact fake values?",
+      "description": "Values made for examples and testing, like example.com emails and test card numbers, plus look-alikes that fail a basic check.",
+      "lines": [
+        {
+          "label": "Example IP address",
+          "template": "client_ip={0}",
+          "values": [
+            {
+              "kind": "ip-address",
+              "family": "pii:global:network-address",
+              "literal": "192.0.2.1"
+            }
+          ]
+        },
+        {
+          "label": "example.com email",
+          "template": "email={0}",
+          "values": [
+            {
+              "kind": "email",
+              "family": "pii:global:email",
+              "literal": "test@example.com"
+            }
+          ]
+        },
+        {
+          "label": "Test card number",
+          "template": "payment_card={0}",
+          "values": [
+            {
+              "kind": "payment-card",
+              "family": "pii:global:payment-card",
+              "literal": "4111111111111111"
+            }
+          ]
+        },
+        {
+          "label": "Textbook bank account",
+          "template": "iban={0}",
+          "values": [
+            {
+              "kind": "iban",
+              "family": "pii:global:iban",
+              "literal": "GB82WEST12345698765432"
+            }
+          ]
+        },
+        {
+          "label": "Social Security no.",
+          "template": "ssn={0}",
+          "values": [
+            {
+              "kind": "us-ssn",
+              "family": "pii:us:ssn",
+              "literal": "890-62-6879"
+            }
+          ]
+        },
+        {
+          "label": "555 phone number",
+          "template": "phone={0}",
+          "values": [
+            {
+              "kind": "phone",
+              "family": "pii:global:phone",
+              "literal": "+1 202-555-0142"
+            }
+          ]
+        },
+        {
+          "label": "Card no., wrong check digit",
+          "template": "payment_card={0}",
+          "values": [
+            {
+              "kind": "payment-card",
+              "family": "pii:global:payment-card",
+              "literal": "4111111111111112"
+            }
+          ]
+        },
+        {
+          "label": "SSN starting 000",
+          "template": "ssn={0}",
+          "values": [
+            {
+              "kind": "us-ssn",
+              "family": "pii:us:ssn",
+              "literal": "000-00-0000"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "multilingual-context",
+      "domain": "pii",
+      "reuses": "multilingual-context",
+      "question": "Does it understand context?",
+      "description": "The same kind of fake values, now next to English and Korean labels, and next to words like “example” that say it is not real.",
+      "lines": [
+        {
+          "label": "Email, English label",
+          "template": "customer email={0}",
+          "values": [
+            {
+              "kind": "email",
+              "family": "pii:global:email",
+              "literal": "test@example.com"
+            }
+          ]
+        },
+        {
+          "label": "Email, Korean label",
+          "template": "고객 이메일={0}",
+          "values": [
+            {
+              "kind": "email",
+              "family": "pii:global:email",
+              "literal": "test@example.com"
+            }
+          ]
+        },
+        {
+          "label": "Email, Korean label, decomposed form",
+          "template": "고객 이메일={0}",
+          "values": [
+            {
+              "kind": "email",
+              "family": "pii:global:email",
+              "literal": "test@example.com"
+            }
+          ]
+        },
+        {
+          "label": "Phone, English label",
+          "template": "client phone={0}",
+          "values": [
+            {
+              "kind": "phone",
+              "family": "pii:global:phone",
+              "literal": "+1 202-555-0142"
+            }
+          ]
+        },
+        {
+          "label": "Phone, Korean label",
+          "template": "고객 전화번호={0}",
+          "values": [
+            {
+              "kind": "phone",
+              "family": "pii:global:phone",
+              "literal": "+1 202-555-0142"
+            }
+          ]
+        },
+        {
+          "label": "Email and phone, one line",
+          "template": "contact details: {0} {1}",
+          "values": [
+            {
+              "kind": "email",
+              "family": "pii:global:email",
+              "literal": "test@example.com"
+            },
+            {
+              "kind": "phone",
+              "family": "pii:global:phone",
+              "literal": "+1 202-555-0142"
+            }
+          ]
+        },
+        {
+          "label": "SSN after “example”",
+          "template": "example ssn={0}",
+          "values": [
+            {
+              "kind": "us-ssn",
+              "family": "pii:us:ssn",
+              "literal": "890-62-6879"
+            }
+          ]
+        },
+        {
+          "label": "IP after “documentation”",
+          "template": "documentation client_ip={0}",
+          "values": [
+            {
+              "kind": "ip-address",
+              "family": "pii:global:network-address",
+              "literal": "192.0.2.1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "credentials-real",
+      "domain": "credentials",
+      "question": "Does it catch real secrets?",
+      "description": "Made-up API keys and tokens in the places people paste them: a .env file, a command line, an HTTP header.",
+      "lines": [
+        {
+          "label": ".env, AWS access key",
+          "template": "AWS_ACCESS_KEY_ID={0}",
+          "values": [
+            {
+              "kind": "aws-access-key",
+              "segments": [
+                {
+                  "literal": "AKIA"
+                },
+                {
+                  "alphabet": "upper-alnum",
+                  "length": 16
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": ".env, GitHub token",
+          "template": "GITHUB_TOKEN={0}",
+          "values": [
+            {
+              "kind": "github-token",
+              "segments": [
+                {
+                  "literal": "ghp_"
+                },
+                {
+                  "alphabet": "alnum",
+                  "length": 36
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Command line, Slack token",
+          "template": "slack-cli post --token {0} --channel ops",
+          "values": [
+            {
+              "kind": "slack-token",
+              "segments": [
+                {
+                  "literal": "xoxb-"
+                },
+                {
+                  "alphabet": "digits",
+                  "length": 12
+                },
+                {
+                  "literal": "-"
+                },
+                {
+                  "alphabet": "digits",
+                  "length": 12
+                },
+                {
+                  "literal": "-"
+                },
+                {
+                  "alphabet": "alnum",
+                  "length": 24
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "HTTP header, bearer JWT",
+          "template": "Authorization: Bearer {0}",
+          "values": [
+            {
+              "kind": "jwt",
+              "segments": [
+                {
+                  "literal": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzeW50aGV0aWMtdXNlciJ9."
+                },
+                {
+                  "alphabet": "base64url",
+                  "length": 43
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "HTTP header, API key",
+          "template": "X-Api-Key: {0}",
+          "values": [
+            {
+              "kind": "api-key",
+              "segments": [
+                {
+                  "alphabet": "hex",
+                  "length": 32
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": ".env, Stripe secret key",
+          "template": "STRIPE_SECRET_KEY={0}",
+          "values": [
+            {
+              "kind": "stripe-secret-key",
+              "segments": [
+                {
+                  "literal": "sk_live_"
+                },
+                {
+                  "alphabet": "alnum",
+                  "length": 24
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Connection string",
+          "template": "DATABASE_URL=postgres://app:{0}@db.internal:5432/app",
+          "values": [
+            {
+              "kind": "connection-string-password",
+              "segments": [
+                {
+                  "alphabet": "alnum",
+                  "length": 20
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Command line, npm token",
+          "template": "npm publish --//registry.npmjs.org/:_authToken={0}",
+          "values": [
+            {
+              "kind": "npm-token",
+              "segments": [
+                {
+                  "literal": "npm_"
+                },
+                {
+                  "alphabet": "alnum",
+                  "length": 36
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "credentials-fake",
+      "domain": "credentials",
+      "question": "Does it redact fake secrets?",
+      "description": "Placeholders like YOUR_TOKEN_HERE, keys that are public by design, and look-alikes that are too short or use the wrong letters.",
+      "lines": [
+        {
+          "label": "Placeholder",
+          "template": "API_KEY={0}",
+          "values": [
+            {
+              "kind": "placeholder",
+              "segments": [
+                {
+                  "literal": "YOUR_API_KEY_HERE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Angle-bracket placeholder",
+          "template": "GITHUB_TOKEN={0}",
+          "values": [
+            {
+              "kind": "placeholder",
+              "segments": [
+                {
+                  "literal": "<your-token>"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "AWS documentation key",
+          "template": "AWS_ACCESS_KEY_ID={0}",
+          "values": [
+            {
+              "kind": "documented-example-key",
+              "segments": [
+                {
+                  "literal": "AKIA"
+                },
+                {
+                  "literal": "IOSFODNN7EXAMPLE"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Public by design, Stripe publishable key",
+          "template": "STRIPE_PUBLISHABLE_KEY={0}",
+          "values": [
+            {
+              "kind": "publishable-key",
+              "segments": [
+                {
+                  "literal": "pk_live_"
+                },
+                {
+                  "alphabet": "alnum",
+                  "length": 24
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Too short GitHub token",
+          "template": "GITHUB_TOKEN={0}",
+          "values": [
+            {
+              "kind": "too-short-token",
+              "segments": [
+                {
+                  "literal": "ghp_"
+                },
+                {
+                  "alphabet": "alnum",
+                  "length": 8
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Wrong letters, AWS-style key",
+          "template": "AWS_ACCESS_KEY_ID={0}",
+          "values": [
+            {
+              "kind": "wrong-alphabet-key",
+              "segments": [
+                {
+                  "literal": "akia"
+                },
+                {
+                  "alphabet": "lower-alnum",
+                  "length": 16
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Repeated character",
+          "template": "SECRET_KEY={0}",
+          "values": [
+            {
+              "kind": "filler",
+              "segments": [
+                {
+                  "literal": "xxxxxxxxxxxxxxxx"
+                },
+                {
+                  "literal": "xxxxxxxxxxxxxxxx"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Hash, not a secret",
+          "template": "sha256={0}",
+          "values": [
+            {
+              "kind": "checksum",
+              "segments": [
+                {
+                  "alphabet": "hex",
+                  "length": 64
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "credentials-context",
+      "domain": "credentials",
+      "question": "Does it understand context?",
+      "description": "Real secrets inside sentences, logs and code, next to look-alikes whose surroundings say they are not secrets.",
+      "lines": [
+        {
+          "label": "Sentence",
+          "template": "Set GITHUB_TOKEN to {0} before you run the deploy.",
+          "values": [
+            {
+              "kind": "github-token",
+              "segments": [
+                {
+                  "literal": "ghp_"
+                },
+                {
+                  "alphabet": "alnum",
+                  "length": 36
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Log line",
+          "template": "2026-09-30T10:21:28Z INFO auth ok token={0} user=synthetic",
+          "values": [
+            {
+              "kind": "github-token",
+              "segments": [
+                {
+                  "literal": "ghp_"
+                },
+                {
+                  "alphabet": "alnum",
+                  "length": 36
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Code",
+          "template": "const awsKey = \"{0}\";",
+          "values": [
+            {
+              "kind": "aws-access-key",
+              "segments": [
+                {
+                  "literal": "AKIA"
+                },
+                {
+                  "alphabet": "upper-alnum",
+                  "length": 16
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "JSON body",
+          "template": "{\"apiKey\": \"{0}\", \"region\": \"eu-west-1\"}",
+          "values": [
+            {
+              "kind": "api-key",
+              "segments": [
+                {
+                  "alphabet": "hex",
+                  "length": 32
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Example in a comment",
+          "template": "# example only, not a real key: GITHUB_TOKEN={0}",
+          "values": [
+            {
+              "kind": "github-token-in-example-context",
+              "segments": [
+                {
+                  "literal": "ghp_"
+                },
+                {
+                  "alphabet": "alnum",
+                  "length": 36
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Test fixture comment",
+          "template": "// test fixture, never issued: apiKey=\"{0}\"",
+          "values": [
+            {
+              "kind": "api-key-in-test-context",
+              "segments": [
+                {
+                  "alphabet": "hex",
+                  "length": 32
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Commit hash",
+          "template": "commit {0} fixes the token cache",
+          "values": [
+            {
+              "kind": "commit-hash",
+              "segments": [
+                {
+                  "alphabet": "hex",
+                  "length": 40
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "label": "Request id",
+          "template": "request_id={0}",
+          "values": [
+            {
+              "kind": "identifier",
+              "segments": [
+                {
+                  "alphabet": "hex",
+                  "length": 8
+                },
+                {
+                  "literal": "-"
+                },
+                {
+                  "alphabet": "hex",
+                  "length": 4
+                },
+                {
+                  "literal": "-"
+                },
+                {
+                  "alphabet": "hex",
+                  "length": 4
+                },
+                {
+                  "literal": "-"
+                },
+                {
+                  "alphabet": "hex",
+                  "length": 4
+                },
+                {
+                  "literal": "-"
+                },
+                {
+                  "alphabet": "hex",
+                  "length": 12
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "thresholdPolicy": {
+    "verdict": "informational"
+  },
+  "contentCommitment": "522434d8ed797641d1070e2fec5db6cfb8e7afc4290c101b77b2d5db4e75a4eb"
+}

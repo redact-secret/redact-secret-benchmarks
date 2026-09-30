@@ -9,6 +9,7 @@
 import planData from '../../../../qualification/peer-pii-runtime-throughput-v1.json' with { type: 'json' };
 import { piiProfileCostWorkloads, validatePiiProfileCostWorkloads } from './profile-cost.ts';
 import { hash } from '../../substrate/hash.ts';
+import { validateRuntimeComparisonReport } from './runtime-comparison.ts';
 
 const canonical = (value: unknown): unknown => Array.isArray(value) ? value.map(canonical) : value && typeof value === 'object' ?
   Object.fromEntries(Object.entries(value).filter(([, child]) => child !== undefined).sort(([a], [b]) => a.localeCompare(b))
@@ -108,6 +109,8 @@ export function summarizeSamples(samples: readonly { redactMs: number; bytesPerS
 const WORKLOAD_IDS = (piiProfileCostWorkloads.workloads as any[]).map(row => row.id).sort();
 
 export function validatePeerRuntimeThroughputReport(value: unknown) {
+  // #562/#563: runtime-comparison-v2 reports (evidence/562) are a different report type with their own plan; v1 reports are untouched.
+  if ((value as { reportType?: unknown } | null)?.reportType === 'runtime-comparison') return validateRuntimeComparisonReport(value);
   const plan = validatePeerRuntimeThroughputPlan();
   const report = structuredClone(value) as any;
   // schemaVersion 1 is the frozen pre-Docker snapshot (evidence/429, #429); it stays valid until that snapshot is regenerated

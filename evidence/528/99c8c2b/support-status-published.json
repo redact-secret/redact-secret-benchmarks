@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-30T08:04:25.235Z",
-  "runId": "7bf18be8-2920-472b-98cc-f8d04ec656ab",
-  "revision": "3870c5fdd429ed50d32cbaf2007b33c68961da76",
+  "generatedAt": "2026-09-30T08:57:15.031Z",
+  "runId": "db9efb67-82b4-4aa1-abab-1ec5a2f2af80",
+  "revision": "96fe6cf2c3863771c60210ebbb0d91fddce468f7",
   "dirty": false,
   "criteriaSchemaVersion": 1,
   "fixtureProfilesVersion": 1,
   "fixtureIndex": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "ad9fbac3f043ef15cac361615935a3a778284e13cf86a2468df0be5e7f4c6d07",
-    "fixtureCount": 5886
+    "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+    "fixtureCount": 5925
   },
   "taxonomyDigest": "246aa1f00409f148073bbdd0796b137d57db132e273d0bf60c84155c7de2ffc8",
   "product": null,
@@ -26,26 +26,26 @@
   "scannerObservations": {
     "redact-secret": {
       "source": "fresh",
-      "observedAt": "2026-09-30T08:03:26.831Z",
-      "sourceRunId": "7bf18be8-2920-472b-98cc-f8d04ec656ab"
+      "observedAt": "2026-09-30T08:56:54.247Z",
+      "sourceRunId": "db9efb67-82b4-4aa1-abab-1ec5a2f2af80"
     },
     "gitleaks": {
       "source": "snapshot",
-      "observedAt": "2026-09-30T07:40:43.955Z",
-      "sourceRunId": "17ed2726-6797-4ecb-bace-3ab5b9a25c43",
-      "snapshotDigest": "f79853737339fce3d7abb8502d49f4683f0f7c1d6857efc917d013cf7d0bd29f",
-      "inputDigest": "22bed2537ee7e87805d54e0693cacaa47f59cc7731ba21fdc31fc6eb404051a6"
+      "observedAt": "2026-09-30T08:52:16.372Z",
+      "sourceRunId": "dc5fbaa7-4dae-4230-bc20-f86fab9306e1",
+      "snapshotDigest": "c96ea40e1e3be850492615f02962090bc72c1707dddf0c6548f75d508d91b1dc",
+      "inputDigest": "0bca0dac30c053c8631debbe59ea39497c596501d758017726a08bc25a1ca9b6"
     },
     "trufflehog": {
       "source": "snapshot",
-      "observedAt": "2026-09-30T07:40:43.955Z",
-      "sourceRunId": "17ed2726-6797-4ecb-bace-3ab5b9a25c43",
-      "snapshotDigest": "d919e3af27630b74f59c86f59eedf573ccc5f3ee7588a5739875328c18b10a53",
-      "inputDigest": "22bed2537ee7e87805d54e0693cacaa47f59cc7731ba21fdc31fc6eb404051a6"
+      "observedAt": "2026-09-30T08:52:16.372Z",
+      "sourceRunId": "dc5fbaa7-4dae-4230-bc20-f86fab9306e1",
+      "snapshotDigest": "6f428561cd47fa28be2bf4f4b453d7a6837db37ebac1ae6231d15eea13b4c34c",
+      "inputDigest": "0bca0dac30c053c8631debbe59ea39497c596501d758017726a08bc25a1ca9b6"
     }
   },
-  "caseCount": 18364,
-  "variantCount": 47590,
+  "caseCount": 18488,
+  "variantCount": 47917,
   "familyCount": 135,
   "distribution": {
     "stable": 98,
@@ -1133,19 +1133,10 @@
       "family": "aws-secret-access-key",
       "status": "provisional",
       "reasons": [
-        "empirical.corroborated.minimumReferences: 2 < 3 — Corroborated route (#177 amendment, 2026-09-24): at least three verified, dated references, each corroborating the shape the contract freezes. One rule or one example is a single point of failure. (corroborated route)",
-        "empirical.corroborated.minimumOwners: 2 < 3 — The references must come from at least three distinct owners (a scanner vendor, the provider, a third party, this project's research). Two rules from one vendor, or a provider's docs page and its SDK, are one voice. (corroborated route)",
-        "empirical.corroborated.minimumClasses: 1 < 2 — At least two corroboration classes other than a summary class. Peer scanner rules copy one another (#215 found tool shapes 'possibly copied from one source'), so scanner rules alone never qualify: one reference must be provider-owned code, a provider example or an independent implementation. (corroborated route)",
-        "empirical.minimumObservations: 0 < 5 — Observed route (#205): five safe provider-issued observations are the minimum empirical sample. Since the 2026-09-24 amendment of #177 this route is optional: meeting it strengthens a T2 family's evidence basis to empirically-observed, and the corroborated route qualifies without any observation. (observed route, optional)",
-        "empirical.minimumSubjects: 0 < 2 — Observed route: observations must span at least two pseudonymous accounts or projects. (observed route, optional)",
-        "empirical.minimumIssuanceDates: 0 < 2 — Observed route: observations must span at least two issuance dates. (observed route, optional)",
-        "empirical.minimumCorroborationClasses: 1 < 2 — Observed route: two corroboration classes, summary classes excluded, must agree with the observed structure. (observed route, optional)",
         "twinFailures: 7 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample.",
-        "benign.falseAlarms: 1 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none.",
-        "metamorphic.criticalFailures: 49 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run.",
-        "mutation.unresolvedCritical: 13 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
-        "differential.unresolvedContractDisagreements: 7 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
-        "fixtureProfile context-constrained-empirical: 0 positive/context cases < 1 (1 short)"
+        "metamorphic.criticalFailures: 42 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run.",
+        "mutation.unresolvedCritical: 12 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
+        "differential.unresolvedContractDisagreements: 5 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled."
       ],
       "qualificationProfile": null,
       "evidenceTier": "T2",
@@ -1163,15 +1154,17 @@
         "observationCount": 0,
         "observationSubjects": 0,
         "observationIssuanceDates": 0,
-        "corroborationReferences": 2,
-        "corroborationOwners": 2,
+        "corroborationReferences": 5,
+        "corroborationOwners": 4,
         "corroborationClasses": [
           "independent-research",
-          "provider-example"
+          "peer-scanner-rule",
+          "provider-example",
+          "provider-owned-code"
         ],
         "unresolvedContradictions": 0,
         "boundedContradictions": 1,
-        "uncertainty": "AWS states no length or alphabet for the secret access key in prose (IAM AccessKey and STS Credentials type it as String). The 40-character [A-Za-z0-9/+] shape rests on the STS GetAccessKeyInfo documentation example and on AWS-owned scanner rules (git-secrets, ferret-scan), which R2 has not been applied to, plus independent peer rules. The value has no prefix, so the family is claimed only under an AWS secret-key name or next to an AKIA/ASIA ID; AWS Macie also requires a keyword. The temporary (ASIA-paired) secret example is 41 characters and is scoped out. Research: redact-secret docs/audits/evidence/1012/aws-iam-user-secret-access-key.md at product main 4fb7882. The AWS-owned git-secrets and ferret-scan rules and the trufflehog, noseyparker and osv-scalibr rules (research #5-#10) are not recorded here: every GitHub permalink to them contains a 40-character [A-Za-z0-9/] path run that this record's credential-shape guard rejects, so the corroborated route is not met from this record alone and the family stays provisional until that is settled.",
+        "uncertainty": "AWS states no length or alphabet for the secret access key in prose (IAM AccessKey and STS Credentials type it as String). The 40-character [A-Za-z0-9/+] shape rests on the STS GetAccessKeyInfo documentation example and on AWS-owned scanner rules (git-secrets, ferret-scan), which R2 has not been applied to, plus independent peer rules. The value has no prefix, so the family is claimed only under an AWS secret-key name or next to an AKIA/ASIA ID; AWS Macie also requires a keyword. The temporary (ASIA-paired) secret example is 41 characters and is scoped out. Research: redact-secret docs/audits/evidence/1012/aws-iam-user-secret-access-key.md at product main 4fb7882. Peer and AWS-owned rules are cited at tag or short-commit permalinks whose paths carry no 40-character [A-Za-z0-9/] run, so the record passes its own credential-shape guard.",
         "supportedContexts": [
           "\"SecretAccessKey\": \"...\" JSON and CloudFormation/SDK responses",
           "AWS_SECRET_ACCESS_KEY= / aws_secret_access_key = assignments in env, INI credentials files and shell",
@@ -1180,7 +1173,7 @@
         "empiricalMode": "context-constrained",
         "supportsBareValues": false,
         "evidenceBasis": "independently-corroborated",
-        "positiveCases": 16,
+        "positiveCases": 17,
         "positiveAxes": 11,
         "controlAxes": 6,
         "totalFixtures": 60,
@@ -1188,8 +1181,8 @@
         "confusionAxes": 9,
         "twinPairs": 20,
         "twinFailures": 7,
-        "benignCases": 24,
-        "benignFalseAlarms": 1,
+        "benignCases": 23,
+        "benignFalseAlarms": 0,
         "benignAxes": 6,
         "benignAxisIds": [
           "encoded-value",
@@ -1199,9 +1192,9 @@
           "public-identifier",
           "reference"
         ],
-        "metamorphicCriticalFailures": 49,
-        "mutationUnresolvedCritical": 13,
-        "differentialUnresolvedContractDisagreements": 7,
+        "metamorphicCriticalFailures": 42,
+        "mutationUnresolvedCritical": 12,
+        "differentialUnresolvedContractDisagreements": 5,
         "policyQualification": null
       },
       "unprobeable": null,
@@ -1210,11 +1203,13 @@
         "claimed": "context-constrained-empirical",
         "explicit": false,
         "target": "context-constrained-empirical",
-        "cellsMet": [],
+        "cellsMet": [
+          "context-constrained-empirical"
+        ],
         "cells": {
           "totalFixtures": 60,
-          "positiveCases": 0,
-          "benignControls": 24,
+          "positiveCases": 1,
+          "benignControls": 23,
           "twinPairs": 20,
           "positiveContextAxes": 11,
           "controlAxes": 6,
@@ -1260,14 +1255,7 @@
           "confusionAxes": 6
         },
         "requiredButEmptyAxisIds": [],
-        "debt": [
-          {
-            "cell": "positiveCases",
-            "actual": 0,
-            "required": 1,
-            "shortfall": 1
-          }
-        ]
+        "debt": []
       }
     },
     {
@@ -2041,10 +2029,9 @@
       "status": "provisional",
       "reasons": [
         "twinFailures: 3 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample.",
-        "benign.falseAlarms: 2 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none.",
-        "metamorphic.criticalFailures: 90 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run.",
-        "mutation.unresolvedCritical: 35 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
-        "differential.unresolvedContractDisagreements: 4 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled."
+        "metamorphic.criticalFailures: 69 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run.",
+        "mutation.unresolvedCritical: 30 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
+        "differential.unresolvedContractDisagreements: 3 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled."
       ],
       "qualificationProfile": null,
       "evidenceTier": "T1",
@@ -2075,13 +2062,13 @@
         "positiveCases": 24,
         "positiveAxes": 7,
         "controlAxes": 5,
-        "totalFixtures": 48,
+        "totalFixtures": 46,
         "contextTwinPairs": 0,
         "confusionAxes": 8,
         "twinPairs": 8,
         "twinFailures": 3,
-        "benignCases": 16,
-        "benignFalseAlarms": 2,
+        "benignCases": 14,
+        "benignFalseAlarms": 0,
         "benignAxes": 5,
         "benignAxisIds": [
           "near-miss",
@@ -2090,9 +2077,9 @@
           "public-identifier",
           "reference"
         ],
-        "metamorphicCriticalFailures": 90,
-        "mutationUnresolvedCritical": 35,
-        "differentialUnresolvedContractDisagreements": 4,
+        "metamorphicCriticalFailures": 69,
+        "mutationUnresolvedCritical": 30,
+        "differentialUnresolvedContractDisagreements": 3,
         "policyQualification": null
       },
       "unprobeable": null,
@@ -2107,9 +2094,9 @@
           "stable-empirical"
         ],
         "cells": {
-          "totalFixtures": 48,
+          "totalFixtures": 46,
           "positiveCases": 16,
-          "benignControls": 16,
+          "benignControls": 14,
           "twinPairs": 8,
           "positiveContextAxes": 7,
           "controlAxes": 5,
@@ -4258,10 +4245,9 @@
       "status": "provisional",
       "reasons": [
         "twinFailures: 3 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample.",
-        "benign.falseAlarms: 1 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none.",
-        "metamorphic.criticalFailures: 55 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run.",
-        "mutation.unresolvedCritical: 10 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
-        "differential.unresolvedContractDisagreements: 2 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled."
+        "metamorphic.criticalFailures: 48 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run.",
+        "mutation.unresolvedCritical: 9 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
+        "differential.unresolvedContractDisagreements: 1 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled."
       ],
       "qualificationProfile": null,
       "evidenceTier": "T1",
@@ -4292,13 +4278,13 @@
         "positiveCases": 19,
         "positiveAxes": 12,
         "controlAxes": 5,
-        "totalFixtures": 45,
+        "totalFixtures": 44,
         "contextTwinPairs": 0,
         "confusionAxes": 9,
         "twinPairs": 10,
         "twinFailures": 3,
-        "benignCases": 16,
-        "benignFalseAlarms": 1,
+        "benignCases": 15,
+        "benignFalseAlarms": 0,
         "benignAxes": 5,
         "benignAxisIds": [
           "encoded-value",
@@ -4307,9 +4293,9 @@
           "placeholder",
           "reference"
         ],
-        "metamorphicCriticalFailures": 55,
-        "mutationUnresolvedCritical": 10,
-        "differentialUnresolvedContractDisagreements": 2,
+        "metamorphicCriticalFailures": 48,
+        "mutationUnresolvedCritical": 9,
+        "differentialUnresolvedContractDisagreements": 1,
         "policyQualification": null
       },
       "unprobeable": null,
@@ -4323,9 +4309,9 @@
           "stable-documented"
         ],
         "cells": {
-          "totalFixtures": 45,
+          "totalFixtures": 44,
           "positiveCases": 9,
-          "benignControls": 16,
+          "benignControls": 15,
           "twinPairs": 10,
           "positiveContextAxes": 12,
           "controlAxes": 5,
@@ -6441,10 +6427,10 @@
         "empiricalMode": null,
         "supportsBareValues": false,
         "evidenceBasis": "project-policy",
-        "positiveCases": 75,
-        "positiveAxes": 33,
+        "positiveCases": 79,
+        "positiveAxes": 36,
         "controlAxes": 4,
-        "totalFixtures": 161,
+        "totalFixtures": 165,
         "contextTwinPairs": 10,
         "confusionAxes": 5,
         "twinPairs": 10,
@@ -6465,14 +6451,14 @@
           "profileId": "credential-policy-v1",
           "contractVersion": 1,
           "contractBounded": true,
-          "positiveCases": 72,
-          "positiveAxes": 33,
+          "positiveCases": 76,
+          "positiveAxes": 36,
           "benignCases": 76,
           "benignAxes": 18,
           "twinPairs": 10,
-          "spans": 72,
+          "spans": 76,
           "outcomes": {
-            "EXACT": 72,
+            "EXACT": 76,
             "COVERED": 0,
             "OVERBROAD": 0,
             "PARTIAL": 0,
@@ -6483,8 +6469,8 @@
           "overbroadSpans": 0,
           "collateralBytes": 0,
           "positiveActions": {
-            "warn": 6,
-            "redact": 66,
+            "warn": 7,
+            "redact": 69,
             "block": 0,
             "allow": 0
           },
@@ -6521,14 +6507,15 @@
           "stable-documented"
         ],
         "cells": {
-          "totalFixtures": 161,
-          "positiveCases": 65,
+          "totalFixtures": 165,
+          "positiveCases": 69,
           "benignControls": 76,
           "twinPairs": 10,
-          "positiveContextAxes": 32,
+          "positiveContextAxes": 35,
           "controlAxes": 4,
           "confusionAxes": 5,
           "positiveContextAxisIds": [
+            "#1012a · aws-secret-access-key · control · near-miss",
             "#207 · confluent-cloud-api-secret-legacy · control · near-miss",
             "#207 · discord-bot-token · control · near-miss",
             "#207 · heroku-api-key-legacy · control · near-miss",
@@ -6552,7 +6539,9 @@
             "#280 · Secret-manager grammars",
             "#464a · daytona-api-key · control · encoded-value",
             "#464d · browserbase-api-key · control · near-miss",
+            "#464e · cerebras-api-key · control · near-miss",
             "#464f · runpod-api-key · control · near-miss",
+            "#528b · polar-token · control · public-id",
             "Generic fallback",
             "Literal-secret positive controls",
             "datadog-api-key",
@@ -7212,14 +7201,10 @@
       "family": "google-oauth-client-secret",
       "status": "provisional",
       "reasons": [
-        "empirical.minimumTwinPairs: 6 < 8 — Eight independently authored twin pairs complete the 40-fixture empirical profile.",
-        "twinFailures: 2 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample.",
+        "twinFailures: 3 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample.",
         "metamorphic.criticalFailures: 48 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run.",
         "mutation.unresolvedCritical: 20 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
-        "differential.unresolvedContractDisagreements: 1 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
-        "fixtureProfile stable-empirical: 35 total fixtures < 40 (5 short)",
-        "fixtureProfile stable-empirical: 9 positive/context cases < 10 (1 short)",
-        "fixtureProfile stable-empirical: 6 twin pairs < 8 (2 short)"
+        "differential.unresolvedContractDisagreements: 1 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled."
       ],
       "qualificationProfile": null,
       "evidenceTier": "T2",
@@ -7255,15 +7240,15 @@
         "empiricalMode": "shape",
         "supportsBareValues": true,
         "evidenceBasis": "independently-corroborated",
-        "positiveCases": 15,
+        "positiveCases": 16,
         "positiveAxes": 9,
         "controlAxes": 5,
-        "totalFixtures": 35,
+        "totalFixtures": 40,
         "contextTwinPairs": 0,
         "confusionAxes": 9,
-        "twinPairs": 6,
-        "twinFailures": 2,
-        "benignCases": 14,
+        "twinPairs": 8,
+        "twinFailures": 3,
+        "benignCases": 16,
         "benignFalseAlarms": 0,
         "benignAxes": 5,
         "benignAxisIds": [
@@ -7286,13 +7271,14 @@
         "target": "stable-empirical",
         "cellsMet": [
           "arrival-provisional",
-          "stable-documented"
+          "stable-documented",
+          "stable-empirical"
         ],
         "cells": {
-          "totalFixtures": 35,
-          "positiveCases": 9,
-          "benignControls": 14,
-          "twinPairs": 6,
+          "totalFixtures": 40,
+          "positiveCases": 10,
+          "benignControls": 16,
+          "twinPairs": 8,
           "positiveContextAxes": 9,
           "controlAxes": 5,
           "confusionAxes": 9,
@@ -7335,26 +7321,7 @@
           "controlAxes": 5
         },
         "requiredButEmptyAxisIds": [],
-        "debt": [
-          {
-            "cell": "totalFixtures",
-            "actual": 35,
-            "required": 40,
-            "shortfall": 5
-          },
-          {
-            "cell": "positiveCases",
-            "actual": 9,
-            "required": 10,
-            "shortfall": 1
-          },
-          {
-            "cell": "twinPairs",
-            "actual": 6,
-            "required": 8,
-            "shortfall": 2
-          }
-        ]
+        "debt": []
       }
     },
     {
@@ -11420,10 +11387,10 @@
         "empiricalMode": "shape",
         "supportsBareValues": true,
         "evidenceBasis": "independently-corroborated",
-        "positiveCases": 18,
-        "positiveAxes": 16,
+        "positiveCases": 19,
+        "positiveAxes": 17,
         "controlAxes": 6,
-        "totalFixtures": 42,
+        "totalFixtures": 43,
         "contextTwinPairs": 0,
         "confusionAxes": 9,
         "twinPairs": 8,
@@ -11456,11 +11423,11 @@
           "stable-empirical"
         ],
         "cells": {
-          "totalFixtures": 42,
-          "positiveCases": 10,
+          "totalFixtures": 43,
+          "positiveCases": 11,
           "benignControls": 16,
           "twinPairs": 8,
-          "positiveContextAxes": 16,
+          "positiveContextAxes": 17,
           "controlAxes": 6,
           "confusionAxes": 9,
           "positiveContextAxisIds": [
@@ -11479,6 +11446,7 @@
             "#263 · pinecone-api-key · shell-export",
             "#263 · pinecone-api-key · structured-file",
             "#263 · pinecone-api-key · tool-output",
+            "#464e · cerebras-api-key · control · near-miss",
             "pinecone-api-key"
           ],
           "controlAxisIds": [
@@ -11638,10 +11606,9 @@
       "status": "provisional",
       "reasons": [
         "twinFailures: 3 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample.",
-        "benign.falseAlarms: 1 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none.",
-        "metamorphic.criticalFailures: 62 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run.",
-        "mutation.unresolvedCritical: 25 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
-        "differential.unresolvedContractDisagreements: 2 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled."
+        "metamorphic.criticalFailures: 55 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run.",
+        "mutation.unresolvedCritical: 24 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
+        "differential.unresolvedContractDisagreements: 1 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled."
       ],
       "qualificationProfile": null,
       "evidenceTier": "T1",
@@ -11672,13 +11639,13 @@
         "positiveCases": 17,
         "positiveAxes": 10,
         "controlAxes": 5,
-        "totalFixtures": 39,
+        "totalFixtures": 38,
         "contextTwinPairs": 0,
         "confusionAxes": 9,
         "twinPairs": 8,
         "twinFailures": 3,
-        "benignCases": 14,
-        "benignFalseAlarms": 1,
+        "benignCases": 13,
+        "benignFalseAlarms": 0,
         "benignAxes": 5,
         "benignAxisIds": [
           "near-miss",
@@ -11687,9 +11654,9 @@
           "public-identifier",
           "reference"
         ],
-        "metamorphicCriticalFailures": 62,
-        "mutationUnresolvedCritical": 25,
-        "differentialUnresolvedContractDisagreements": 2,
+        "metamorphicCriticalFailures": 55,
+        "mutationUnresolvedCritical": 24,
+        "differentialUnresolvedContractDisagreements": 1,
         "policyQualification": null
       },
       "unprobeable": null,
@@ -11703,9 +11670,9 @@
           "stable-documented"
         ],
         "cells": {
-          "totalFixtures": 39,
+          "totalFixtures": 38,
           "positiveCases": 9,
-          "benignControls": 14,
+          "benignControls": 13,
           "twinPairs": 8,
           "positiveContextAxes": 10,
           "controlAxes": 5,
@@ -15837,16 +15804,10 @@
       "family": "vercel-app-access-token",
       "status": "provisional",
       "reasons": [
-        "empirical.minimumBenignCases: 9 < 14 — The empirical fixture profile requires fourteen non-twin benign controls.",
-        "empirical.minimumTwinPairs: 7 < 8 — Eight independently authored twin pairs complete the 40-fixture empirical profile.",
         "benign.falseAlarms: 1 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none.",
         "metamorphic.criticalFailures: 7 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run.",
         "mutation.unresolvedCritical: 1 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
-        "differential.unresolvedContractDisagreements: 2 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
-        "fixtureProfile stable-empirical: 29 total fixtures < 40 (11 short)",
-        "fixtureProfile stable-empirical: 6 positive/context cases < 10 (4 short)",
-        "fixtureProfile stable-empirical: 9 non-twin benign controls < 14 (5 short)",
-        "fixtureProfile stable-empirical: 7 twin pairs < 8 (1 short)"
+        "differential.unresolvedContractDisagreements: 2 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled."
       ],
       "qualificationProfile": null,
       "evidenceTier": "T2",
@@ -15882,15 +15843,15 @@
         "empiricalMode": "shape",
         "supportsBareValues": true,
         "evidenceBasis": "independently-corroborated",
-        "positiveCases": 13,
-        "positiveAxes": 9,
+        "positiveCases": 18,
+        "positiveAxes": 11,
         "controlAxes": 5,
-        "totalFixtures": 29,
+        "totalFixtures": 40,
         "contextTwinPairs": 0,
         "confusionAxes": 9,
-        "twinPairs": 7,
+        "twinPairs": 8,
         "twinFailures": 0,
-        "benignCases": 9,
+        "benignCases": 14,
         "benignFalseAlarms": 1,
         "benignAxes": 5,
         "benignAxisIds": [
@@ -15913,17 +15874,20 @@
         "target": "stable-empirical",
         "cellsMet": [
           "arrival-provisional",
-          "stable-documented"
+          "stable-documented",
+          "stable-empirical"
         ],
         "cells": {
-          "totalFixtures": 29,
-          "positiveCases": 6,
-          "benignControls": 9,
-          "twinPairs": 7,
-          "positiveContextAxes": 9,
+          "totalFixtures": 40,
+          "positiveCases": 11,
+          "benignControls": 14,
+          "twinPairs": 8,
+          "positiveContextAxes": 11,
           "controlAxes": 5,
           "confusionAxes": 9,
           "positiveContextAxisIds": [
+            "#1012e · vercel-app-access-token · ci-config",
+            "#1012e · vercel-app-access-token · cli",
             "#1012e · vercel-app-access-token · env",
             "#1012e · vercel-app-access-token · header",
             "#1012e · vercel-app-access-token · log",
@@ -15962,48 +15926,17 @@
           "controlAxes": 5
         },
         "requiredButEmptyAxisIds": [],
-        "debt": [
-          {
-            "cell": "totalFixtures",
-            "actual": 29,
-            "required": 40,
-            "shortfall": 11
-          },
-          {
-            "cell": "positiveCases",
-            "actual": 6,
-            "required": 10,
-            "shortfall": 4
-          },
-          {
-            "cell": "benignControls",
-            "actual": 9,
-            "required": 14,
-            "shortfall": 5
-          },
-          {
-            "cell": "twinPairs",
-            "actual": 7,
-            "required": 8,
-            "shortfall": 1
-          }
-        ]
+        "debt": []
       }
     },
     {
       "family": "vercel-app-refresh-token",
       "status": "provisional",
       "reasons": [
-        "empirical.minimumBenignCases: 9 < 14 — The empirical fixture profile requires fourteen non-twin benign controls.",
-        "empirical.minimumTwinPairs: 7 < 8 — Eight independently authored twin pairs complete the 40-fixture empirical profile.",
         "benign.falseAlarms: 1 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none.",
         "metamorphic.criticalFailures: 7 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run.",
         "mutation.unresolvedCritical: 1 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
-        "differential.unresolvedContractDisagreements: 2 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
-        "fixtureProfile stable-empirical: 29 total fixtures < 40 (11 short)",
-        "fixtureProfile stable-empirical: 6 positive/context cases < 10 (4 short)",
-        "fixtureProfile stable-empirical: 9 non-twin benign controls < 14 (5 short)",
-        "fixtureProfile stable-empirical: 7 twin pairs < 8 (1 short)"
+        "differential.unresolvedContractDisagreements: 2 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled."
       ],
       "qualificationProfile": null,
       "evidenceTier": "T2",
@@ -16038,15 +15971,15 @@
         "empiricalMode": "shape",
         "supportsBareValues": true,
         "evidenceBasis": "independently-corroborated",
-        "positiveCases": 13,
-        "positiveAxes": 9,
+        "positiveCases": 18,
+        "positiveAxes": 10,
         "controlAxes": 5,
-        "totalFixtures": 29,
+        "totalFixtures": 40,
         "contextTwinPairs": 0,
         "confusionAxes": 9,
-        "twinPairs": 7,
+        "twinPairs": 8,
         "twinFailures": 0,
-        "benignCases": 9,
+        "benignCases": 14,
         "benignFalseAlarms": 1,
         "benignAxes": 5,
         "benignAxisIds": [
@@ -16069,17 +16002,19 @@
         "target": "stable-empirical",
         "cellsMet": [
           "arrival-provisional",
-          "stable-documented"
+          "stable-documented",
+          "stable-empirical"
         ],
         "cells": {
-          "totalFixtures": 29,
-          "positiveCases": 6,
-          "benignControls": 9,
-          "twinPairs": 7,
-          "positiveContextAxes": 9,
+          "totalFixtures": 40,
+          "positiveCases": 11,
+          "benignControls": 14,
+          "twinPairs": 8,
+          "positiveContextAxes": 10,
           "controlAxes": 5,
           "confusionAxes": 9,
           "positiveContextAxisIds": [
+            "#1012e · vercel-app-refresh-token · cli",
             "#1012e · vercel-app-refresh-token · env",
             "#1012e · vercel-app-refresh-token · header",
             "#1012e · vercel-app-refresh-token · log",
@@ -16118,48 +16053,17 @@
           "controlAxes": 5
         },
         "requiredButEmptyAxisIds": [],
-        "debt": [
-          {
-            "cell": "totalFixtures",
-            "actual": 29,
-            "required": 40,
-            "shortfall": 11
-          },
-          {
-            "cell": "positiveCases",
-            "actual": 6,
-            "required": 10,
-            "shortfall": 4
-          },
-          {
-            "cell": "benignControls",
-            "actual": 9,
-            "required": 14,
-            "shortfall": 5
-          },
-          {
-            "cell": "twinPairs",
-            "actual": 7,
-            "required": 8,
-            "shortfall": 1
-          }
-        ]
+        "debt": []
       }
     },
     {
       "family": "vercel-personal-access-token",
       "status": "provisional",
       "reasons": [
-        "empirical.minimumBenignCases: 9 < 14 — The empirical fixture profile requires fourteen non-twin benign controls.",
-        "empirical.minimumTwinPairs: 7 < 8 — Eight independently authored twin pairs complete the 40-fixture empirical profile.",
         "benign.falseAlarms: 1 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none.",
         "metamorphic.criticalFailures: 7 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run.",
         "mutation.unresolvedCritical: 1 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
-        "differential.unresolvedContractDisagreements: 2 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
-        "fixtureProfile stable-empirical: 29 total fixtures < 40 (11 short)",
-        "fixtureProfile stable-empirical: 6 positive/context cases < 10 (4 short)",
-        "fixtureProfile stable-empirical: 9 non-twin benign controls < 14 (5 short)",
-        "fixtureProfile stable-empirical: 7 twin pairs < 8 (1 short)"
+        "differential.unresolvedContractDisagreements: 2 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled."
       ],
       "qualificationProfile": null,
       "evidenceTier": "T2",
@@ -16194,15 +16098,15 @@
         "empiricalMode": "shape",
         "supportsBareValues": true,
         "evidenceBasis": "independently-corroborated",
-        "positiveCases": 13,
+        "positiveCases": 18,
         "positiveAxes": 9,
         "controlAxes": 5,
-        "totalFixtures": 29,
+        "totalFixtures": 40,
         "contextTwinPairs": 0,
         "confusionAxes": 9,
-        "twinPairs": 7,
+        "twinPairs": 8,
         "twinFailures": 0,
-        "benignCases": 9,
+        "benignCases": 14,
         "benignFalseAlarms": 1,
         "benignAxes": 5,
         "benignAxisIds": [
@@ -16225,13 +16129,14 @@
         "target": "stable-empirical",
         "cellsMet": [
           "arrival-provisional",
-          "stable-documented"
+          "stable-documented",
+          "stable-empirical"
         ],
         "cells": {
-          "totalFixtures": 29,
-          "positiveCases": 6,
-          "benignControls": 9,
-          "twinPairs": 7,
+          "totalFixtures": 40,
+          "positiveCases": 11,
+          "benignControls": 14,
+          "twinPairs": 8,
           "positiveContextAxes": 9,
           "controlAxes": 5,
           "confusionAxes": 9,
@@ -16274,32 +16179,7 @@
           "controlAxes": 5
         },
         "requiredButEmptyAxisIds": [],
-        "debt": [
-          {
-            "cell": "totalFixtures",
-            "actual": 29,
-            "required": 40,
-            "shortfall": 11
-          },
-          {
-            "cell": "positiveCases",
-            "actual": 6,
-            "required": 10,
-            "shortfall": 4
-          },
-          {
-            "cell": "benignControls",
-            "actual": 9,
-            "required": 14,
-            "shortfall": 5
-          },
-          {
-            "cell": "twinPairs",
-            "actual": 7,
-            "required": 8,
-            "shortfall": 1
-          }
-        ]
+        "debt": []
       }
     },
     {

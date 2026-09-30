@@ -1041,5 +1041,83 @@
     },
     "decidedAt": "2026-09-30",
     "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-30, option A, originally recorded at 99c8c2b, applied to da69ebf's same rows; relayed by the Beta.12 orchestrator)"
+  },
+  {
+    "id": "beta12-bfc608c-wasm-full-gzip",
+    "triggerId": "size/wasm/full/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "bfc608cce75f79f6a5cab037d7e558ba629777f6"
+    },
+    "measured": {
+      "baseline": 137639,
+      "candidate": 205068,
+      "unit": "bytes"
+    },
+    "rationale": "Full-profile WASM gzip is 205,068 bytes against the 0.1.0-beta.8 baseline of 137,639 at redact-secret bfc608c (main after PR #1101), measured by performance-evaluation.yml run 36785533474. That is +1,111 bytes (+0.54%) over the 203,957 bytes accepted at da69ebf (entry beta12-da69ebf-wasm-full-gzip). Unlike the da69ebf step, which added only the #1046 detector widening, this growth comes from the Beta.12 performance work (redact-secret#1073-#1077 and #1091-#1096, merged in PRs #1081, #1098 and #1100) and the #1078 sanitize API, not from detector additions. Known per-change contributions, from the measurements reported in those PRs: the #1081 wave added a few KB to the common profile before #1084 cut most of it; the #1096 incremental UTF-16 index adds about 3 KB raw; #1093 adds 977 B raw; #1092 adds about 2.9 KB raw on full and 23 B on common; #1094 (Cow names) shrank both profiles. At the maintainer's instruction on 2026-09-30 this extends the scope of the 2026-09-30 option A decision (first recorded at 99c8c2b, applied at da69ebf in commit 7502f76c) from Beta.12 detector additions to also cover size growth from the Beta.12 performance work and the #1078 sanitize API. The paired latency, initialization and memory rows are within budget in the same run and the RC acceptance is ACCEPTED. It does not cover any further growth: a later breach of this trigger at a different source commit, including any growth beyond the measured value here, needs its own entry and is judged afresh. The budget definition is unchanged.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "The #1078 sanitize API (a golden-path sanitizer that keeps redaction the default) and the Beta.12 performance work (#1073-#1077, #1091-#1096), with latency, initialization and memory inside budget in run 36785533474.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1081",
+        "https://github.com/redact-secret/redact-secret/pull/1098",
+        "https://github.com/redact-secret/redact-secret/pull/1100",
+        "https://github.com/redact-secret/redact-secret/pull/1101"
+      ]
+    },
+    "decidedAt": "2026-09-30",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-30, option A extended to the Beta.12 performance work and the #1078 sanitize API; relayed by the Beta.12 orchestrator)"
+  },
+  {
+    "id": "beta12-bfc608c-wasm-common-gzip",
+    "triggerId": "size/wasm/common/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "bfc608cce75f79f6a5cab037d7e558ba629777f6"
+    },
+    "measured": {
+      "baseline": 100058,
+      "candidate": 142525,
+      "unit": "bytes"
+    },
+    "rationale": "Common-profile WASM gzip is 142,525 bytes against the 0.1.0-beta.8 baseline of 100,058 at redact-secret bfc608c (main after PR #1101), measured by performance-evaluation.yml run 36785533474. That is +4,646 bytes (+3.37%) over the 137,879 bytes accepted at da69ebf (entry beta12-da69ebf-wasm-common-gzip). Unlike the da69ebf step, which added only the #1046 detector widening, this growth comes from the Beta.12 performance work (redact-secret#1073-#1077 and #1091-#1096, merged in PRs #1081, #1098 and #1100) and the #1078 sanitize API, not from detector additions. Known per-change contributions, from the measurements reported in those PRs: the #1081 wave added a few KB to the common profile before #1084 cut most of it; the #1096 incremental UTF-16 index adds about 3 KB raw; #1093 adds 977 B raw; #1092 adds about 2.9 KB raw on full and 23 B on common; #1094 (Cow names) shrank both profiles. At the maintainer's instruction on 2026-09-30 this extends the scope of the 2026-09-30 option A decision (first recorded at 99c8c2b, applied at da69ebf in commit 7502f76c) from Beta.12 detector additions to also cover size growth from the Beta.12 performance work and the #1078 sanitize API. The paired latency, initialization and memory rows are within budget in the same run and the RC acceptance is ACCEPTED. It does not cover any further growth: a later breach of this trigger at a different source commit, including any growth beyond the measured value here, needs its own entry and is judged afresh. The budget definition is unchanged.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "The #1078 sanitize API (a golden-path sanitizer that keeps redaction the default) and the Beta.12 performance work (#1073-#1077, #1091-#1096), with latency, initialization and memory inside budget in run 36785533474.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1081",
+        "https://github.com/redact-secret/redact-secret/pull/1098",
+        "https://github.com/redact-secret/redact-secret/pull/1100",
+        "https://github.com/redact-secret/redact-secret/pull/1101"
+      ]
+    },
+    "decidedAt": "2026-09-30",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-30, option A extended to the Beta.12 performance work and the #1078 sanitize API; relayed by the Beta.12 orchestrator)"
+  },
+  {
+    "id": "beta12-bfc608c-quickstart-bundle-gzip",
+    "triggerId": "size/browser-bundle/quickstart/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "bfc608cce75f79f6a5cab037d7e558ba629777f6"
+    },
+    "measured": {
+      "baseline": 144501,
+      "candidate": 212515,
+      "unit": "bytes"
+    },
+    "rationale": "The quickstart browser bundle a default initialize() fetches is 212,515 bytes against the 0.1.0-beta.8 baseline of 144,501 at redact-secret bfc608c (main after PR #1101), measured by performance-evaluation.yml run 36785533474. That is +1,180 bytes (+0.56%) over the 211,335 bytes accepted at da69ebf (entry beta12-da69ebf-quickstart-bundle-gzip). Unlike the da69ebf step, which added only the #1046 detector widening, this growth comes from the Beta.12 performance work (redact-secret#1073-#1077 and #1091-#1096, merged in PRs #1081, #1098 and #1100) and the #1078 sanitize API, not from detector additions. Known per-change contributions, from the measurements reported in those PRs: the #1081 wave added a few KB to the common profile before #1084 cut most of it; the #1096 incremental UTF-16 index adds about 3 KB raw; #1093 adds 977 B raw; #1092 adds about 2.9 KB raw on full and 23 B on common; #1094 (Cow names) shrank both profiles. At the maintainer's instruction on 2026-09-30 this extends the scope of the 2026-09-30 option A decision (first recorded at 99c8c2b, applied at da69ebf in commit 7502f76c) from Beta.12 detector additions to also cover size growth from the Beta.12 performance work and the #1078 sanitize API. The paired latency, initialization and memory rows are within budget in the same run and the RC acceptance is ACCEPTED. It does not cover any further growth: a later breach of this trigger at a different source commit, including any growth beyond the measured value here, needs its own entry and is judged afresh. The budget definition is unchanged.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "The #1078 sanitize API (a golden-path sanitizer that keeps redaction the default) and the Beta.12 performance work (#1073-#1077, #1091-#1096), with latency, initialization and memory inside budget in run 36785533474.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1081",
+        "https://github.com/redact-secret/redact-secret/pull/1098",
+        "https://github.com/redact-secret/redact-secret/pull/1100",
+        "https://github.com/redact-secret/redact-secret/pull/1101"
+      ]
+    },
+    "decidedAt": "2026-09-30",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-30, option A extended to the Beta.12 performance work and the #1078 sanitize API; relayed by the Beta.12 orchestrator)"
   }
 ]

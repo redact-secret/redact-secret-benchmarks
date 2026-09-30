@@ -1,12 +1,14 @@
 ---
 decision_id: decision-judge-adapter-traversal-on-same-session-change
-status: proposed
+status: accepted
 scope: benchmarks
 title: Judge adapter traversal on the harness's same-session change, and budget adapter allocation
-decided_at: 2026-09-29
+decided_at: 2026-09-30
 ---
 
 # Judge adapter traversal on the harness's same-session change, and budget adapter allocation
+
+Status: **accepted** (2026-09-30, #472). Proposed 2026-09-29; accepted under the repository's decide-don't-defer policy with the refinements marked below.
 
 ## Context
 
@@ -54,13 +56,18 @@ JavaScript traversal is a few microseconds per event and moved by up to about
 3. **Budget the single-run p99 as a tail trigger.** The A/A spread (max 134%)
    would force thresholds too wide to catch anything.
 
-## Decision (proposed)
+## Decision
 
-Option 2 is the default until a maintainer rules otherwise:
+Option 2 is adopted:
 
 - Adapter traversal is judged on `change.traversal`: `relative` against
   `ceil5%(max(15%, 2 × A/A spread))`, with the absolute floor
-  `max(0.5 µs, 3 × between-process SD)` unchanged. It applies only when
+  `max(0.5 µs, 3 × between-process SD)` unchanged. The A/A run moved JavaScript
+  traversal by up to about 3 µs and 58% relative on microsecond-scale rows, so
+  a single process is never judged: the verdict uses the median `change` over
+  at least five processes per language, as the snapshot already does for
+  absolute rows, and a row must breach both the relative threshold and the
+  absolute floor. It applies only when
   `change.scannerCallsPerEvent.difference` is 0. A candidate whose scanner
   calls moved does different work, so its timing is not like-for-like, and the
   calls trigger already reports the change.
@@ -72,6 +79,9 @@ Option 2 is the default until a maintainer rules otherwise:
   `ceil5%(max(10%, 2 × A/A spread))` with a 1 KiB floor.
 - Adapter p95 latency is reported as a tail check in the #303 sense: a
   tail-only breach is `invalid-measurement`. p99 is reported, not budgeted.
+- A row whose `scannerCallsPerEvent` differs between the two builds is
+  reported as a work change and never as a timing regression, in either
+  direction.
 - Thresholds come from at least three A/A runs on the adapter profile, as for
   every other dimension. The single run above sets none of them.
 
@@ -86,3 +96,14 @@ Option 2 is the default until a maintainer rules otherwise:
 - The limit-boundary workloads (`limit-*-over`) get traversal and allocation
   triggers like any other row, so a slower fail-closed path shows up as a
   regression.
+
+## Re-baseline
+
+The adapter-overhead baseline at the v2 workload digest (`eb6d56…`) is not
+taken by this decision. It follows "Promoting a new baseline" in
+`docs/specs/regression-budgets.md` (five harness processes per language, a
+history record, ledger acceptances and at least three A/A runs), and the
+budget rules above have to exist in `deriveTriggers` first, so that the new
+rows are derived under the rules they will be judged by. Until then v2 output
+is ingested by `metricsFromAdapterOverhead` and a candidate at the new digest
+is `invalid-measurement` on the profile check.

@@ -10,8 +10,10 @@ reference and is linked from the section for that path.
 | I want to... | Path | Start here | Minimum reading |
 | --- | --- | --- | --- |
 | Report a wrong result or missing support I saw in the product | [Reporter](#reporter) | the product's issue forms | none |
-| Suggest a provider or family to research | [Reporter](#reporter) | the "Research a provider or family" issue form | none |
-| Find provider-authored evidence for a family | [Researcher](#researcher) | `npm run family:status -- <provider>` | the provider's dossier |
+| Suggest a provider or credential to research (beginner) | [Reporter](#reporter) | the [`suggest-research.yml`](.github/ISSUE_TEMPLATE/suggest-research.yml) form | none |
+| Find provider-authored evidence for a family | [Researcher](#researcher) | `npm run family:status -- <provider>` | the provider's dossier, [research intake](docs/research-intake.md) |
+| Check what a dossier, fixture or evidence contribution still needs | [Researcher](#researcher) | `npm run contribution:readiness` | none |
+| Understand how work moves between core and benchmarks | [Maintainer](#maintainer) | [handoff states](docs/specs/contribution-handoff-states.md#shared-vocabulary) | that section |
 | Add one synthetic edge case | [Fixture contributor](#fixture-contributor) | an issue or PR with the case described in words | [CONVENTIONS.md](CONVENTIONS.md) |
 | Contribute an independently authored adversarial pack | [Adversarial-pack contributor](#adversarial-pack-contributor) | [`adversarial/README.md`](adversarial/README.md) | that README |
 | Add a scanner, measurement type or corpus, or change a verdict, tier or promotion | [Maintainer](#maintainer) | the sections under [Maintainer reference](#maintainer-reference) | [ARCHITECTURE.md](ARCHITECTURE.md), [CONVENTIONS.md](CONVENTIONS.md) |
@@ -30,20 +32,68 @@ File it against the product, not here, using its issue forms (the detector
 request, missed-detection and false-positive forms in
 [redact-secret](https://github.com/redact-secret/redact-secret/issues/new/choose)).
 To ask that a provider's format be researched for the benchmark, open the
-"Research a provider or family" issue form in this repository and describe the
-credential shape in words or as a grammar. You do not need to know the taxonomy,
-tiers or dossier schema; a maintainer or researcher takes it from there.
+"Suggest a provider or credential to research" form
+([`suggest-research.yml`](.github/ISSUE_TEMPLATE/suggest-research.yml)) in this
+repository: a provider name and a reason are enough, described in words or as a
+grammar. You do not need to know the taxonomy, tiers or dossier schema; a
+maintainer triages it and a researcher takes it from there
+([research intake routing](docs/research-intake.md)).
 
 ## Researcher
 
 You can find authoritative, provider-authored evidence (the provider's own
 documentation for a token format, its issuance rules, a revocation or
-scanning-partner list). The work lands in a validated dossier; see
-[Adding or researching a provider](#adding-or-researching-a-provider) for the
-commands (`family:status` to find work, `family:new` to add a family,
-`dossiers:check` to validate) and the link and verdict rules. Iterative
-findings stay in the research issue's comments; the dossier links them by
-permalink.
+scanning-partner list). The work lands in a validated dossier. If you are new
+and only have a provider name and a reason, use the simpler suggestion form
+under [Reporter](#reporter) instead. The advanced path is the "Research a
+provider or family" form
+([`research-family.yml`](.github/ISSUE_TEMPLATE/research-family.yml)), then a
+dossier PR. Iterative findings stay in the research issue's comments; the
+dossier links them by permalink.
+
+### Adding or researching a provider
+
+Every provider in `benchmarks/support/taxonomy.json` has one dossier at
+`benchmarks/support/dossiers/<provider>.md` (`generic.md` for provider-less
+families). Open it first: it shows each family's research verdict, tier, sources,
+blocker and open questions, so you can pick up the next piece of work. Schema, tier and permalink rules
+are in [`benchmarks/support/dossiers/README.md`](benchmarks/support/dossiers/README.md)
+and the
+[decision](docs/decisions/2026-09-29-keep-provider-research-in-validated-dossiers.md).
+
+0. Finding work: `npm run family:status -- <provider>[:<family>]` is offline
+   and prints each family's dossier verdict, detector mapping, fixture
+   shortfall against `status-criteria.json` and one next step (counts only,
+   never fixture values).
+1. New provider or family: `npm run family:new -- <provider> <family>` adds the
+   `taxonomy.json` draft, the dossier entry and an inert fixture stub, prints
+   the seven-item evidence checklist, and refuses to overwrite anything. (By
+   hand: edit `taxonomy.json`, then run `npm run dossiers:scaffold`.)
+2. Researching: hand-write only the provider facts (verdict, tier, `sources`,
+   `issues`, `evidence`, `researchedAt`, `blockedBy`, prose). Status, fixture
+   counts and detector presence are derived and have no field. Verdicts are
+   `unresearched`, `ready`, `issuance-gated`, `date-gated`, `not-found` and
+   `rejected`. `anthropic.md` is the worked example.
+3. Links: a past state is a 40-hex commit permalink, a living `redact-secret`
+   doc may use `main`, and branch links are rejected. Never write a real, live
+   or new secret-shaped value: describe a shape in words or as a grammar.
+4. Open research with the "Research a provider or family" issue form. A
+   research issue closes only via a dossier PR's `Closes #N`, including a
+   `not-found` or `rejected` verdict; never close it by hand. Iterative findings
+   stay in issue comments and the dossier links them by permalink.
+5. Run `npm run dossiers:check` (schema, taxonomy ids, permalinks, coverage).
+6. Before opening the dossier PR, run `npm run contribution:readiness -- <provider>[:<family>]`
+   ([`scripts/contribution-readiness.mjs`](scripts/contribution-readiness.mjs)). It
+   aggregates `dossiers:check`, `family:status` and `arrival:check` into one
+   advisory next-action list that separates *evidence missing* (author it) from
+   *support gate failed* (fix what is there). It prints ids, counts, paths and
+   commands only, exits 0 unless `--strict` is passed, and is never a support
+   decision: those validators stay authoritative and `eval:classify` still
+   measures support.
+
+The dossier schema is [`schemas/dossier-v1.json`](schemas/dossier-v1.json); suggestion-to-dossier
+routing is in [`docs/research-intake.md`](docs/research-intake.md). A maintainer owns
+taxonomy normalization and the final verdict and tier call on review.
 
 ## Fixture contributor
 
@@ -72,12 +122,23 @@ required reading for the other paths.
 
 ### How work moves between the product and this repository
 
-The public vocabulary is the same on both sides: an **intake** (an issue or a
-suggestion) becomes **research** (a dossier verdict here), then an
-**observation** in this repository, **reviewed**, and **promoted** to a product
-issue that carries the handoff; the product fixes it and this repository
-re-measures at a pinned commit (**fixed**, **verified**). The authoritative
-lifecycle is
+Work items carry one of five shared states, defined once for both repositories in
+[`docs/specs/contribution-handoff-states.md`](docs/specs/contribution-handoff-states.md#shared-vocabulary):
+`intake`, `research-needed`, `implementation-ready`, `verification-needed` and
+`complete`. They label an issue, never a family's support status. The spec also
+covers how dossier verdicts map to states
+([relation to dossier verdicts](docs/specs/contribution-handoff-states.md#relation-to-dossier-verdicts)),
+the [conditions for `implementation-ready`](docs/specs/contribution-handoff-states.md#conditions-for-implementation-ready),
+the [data the core issue receives](docs/specs/contribution-handoff-states.md#data-the-core-issue-receives),
+the [reverse handoff](docs/specs/contribution-handoff-states.md#reverse-handoff-verification-needed),
+that [product implementation does not imply promotion](docs/specs/contribution-handoff-states.md#product-implementation-does-not-imply-promotion),
+the [no inference rule](docs/specs/contribution-handoff-states.md#no-inference-rule) and
+[termination and deferral](docs/specs/contribution-handoff-states.md#termination-and-deferral).
+
+Separately, a measured product gap moves through the promotion lifecycle: an
+**observation** here, **reviewed**, and **promoted** to a product issue that
+carries the handoff; the product fixes it and this repository re-measures at a
+pinned commit (**fixed**, **verified**). The authoritative lifecycle is
 [`docs/decisions/2026-09-18-govern-benchmark-promotion.md`](docs/decisions/2026-09-18-govern-benchmark-promotion.md),
 driven by the `promote-finding` skill. Contributors never coordinate both
 repositories by hand: the product issue and the `evidence/<issue>/` record link
@@ -130,38 +191,6 @@ safety review and an immutable first run. `npm run adversarial:check`
 validates every pack; `npm run evidence:query -- --class=<class>` lists
 public adversarial, protected holdout and maintainer regression evidence
 separately. Project-authored evidence is never described as independent.
-
-### Adding or researching a provider
-
-Every provider in `benchmarks/support/taxonomy.json` has one dossier at
-`benchmarks/support/dossiers/<provider>.md` (`generic.md` for provider-less
-families). Open it first: it shows each family's research verdict, tier, sources,
-blocker and open questions, so you can pick up the next piece of work. Rules are
-in [`benchmarks/support/dossiers/README.md`](benchmarks/support/dossiers/README.md)
-and the
-[decision](docs/decisions/2026-09-29-keep-provider-research-in-validated-dossiers.md).
-
-0. Finding work: `npm run family:status -- <provider>[:<family>]` is offline
-   and prints each family's dossier verdict, detector mapping, fixture
-   shortfall against `status-criteria.json` and one next step (counts only,
-   never fixture values).
-1. New provider or family: `npm run family:new -- <provider> <family>` adds the
-   `taxonomy.json` draft, the dossier entry and an inert fixture stub, prints
-   the seven-item evidence checklist, and refuses to overwrite anything. (By
-   hand: edit `taxonomy.json`, then run `npm run dossiers:scaffold`.)
-2. Researching: hand-write only the provider facts (verdict, tier, `sources`,
-   `issues`, `evidence`, `researchedAt`, `blockedBy`, prose). Status, fixture
-   counts and detector presence are derived and have no field. Verdicts are
-   `unresearched`, `ready`, `issuance-gated`, `date-gated`, `not-found` and
-   `rejected`. `anthropic.md` is the worked example.
-3. Links: a past state is a 40-hex commit permalink, a living `redact-secret`
-   doc may use `main`, and branch links are rejected. Never write a real, live
-   or new secret-shaped value: describe a shape in words or as a grammar.
-4. Open research with the "Research a provider or family" issue form. A
-   research issue closes only via a dossier PR's `Closes #N`, including a
-   `not-found` or `rejected` verdict; never close it by hand. Iterative findings
-   stay in issue comments and the dossier links them by permalink.
-5. Run `npm run dossiers:check` (schema, taxonomy ids, permalinks, coverage).
 
 ### Recording a decision
 

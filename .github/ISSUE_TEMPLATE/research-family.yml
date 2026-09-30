@@ -6,6 +6,20 @@ body:
   - type: markdown
     attributes:
       value: |
+        **Who this form is for.** Experienced research contributors, maintainer-created research
+        tasks, and dossier-ready work, where you can fill the dossier fields below. New to this,
+        or only know that a provider or credential exists? Use "Suggest a provider or credential
+        to research" instead; a maintainer will triage it and open this form's issue when
+        warranted (routing in `docs/research-intake.md`).
+
+        **Synthetic only, no live credentials.** Never paste a real, live, unrevoked or newly
+        generated secret. Describe shapes in words or as a grammar; examples must be synthetic.
+
+        **Tooling.** Scaffold the taxonomy entry, dossier entry and inert fixture stub with
+        `npm run family:new -- <provider> <family>` and check progress with
+        `npm run family:status`. The dossier schema is
+        [`schemas/dossier-v1.json`](https://github.com/redact-secret/redact-secret-benchmarks/blob/develop/schemas/dossier-v1.json).
+
         **Completion rule.** This issue is closed only by a pull request that adds or updates
         `benchmarks/support/dossiers/<provider>.md` and carries `Closes #N` for this issue. That
         includes a `not-found` or `rejected` verdict. Do not close it by hand. Iterative findings

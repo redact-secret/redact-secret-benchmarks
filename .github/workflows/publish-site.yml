@@ -325,6 +325,8 @@ jobs:
           if [ -s "$population_bundle" ]; then
             npm run eval:publish:pii-support -- "${product_args[@]}" --population-bundle="$population_bundle"
           else
+            # No bundle: measured PII populations were skipped (for example, #515: core main equals the published release).
+            echo "::notice::PII populations not measured for this publish: no comparison bundle was written (candidate equals the published release; no comparison)."
             npm run eval:publish:pii-support -- "${product_args[@]}" --population-mode=not-measured
           fi
 

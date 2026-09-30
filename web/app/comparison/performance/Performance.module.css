@@ -1,0 +1,28 @@
+@layer components {
+  /*
+   * Every pair and setting is pre-rendered as its own panel (two libraries, three settings). Which one
+   * shows is decided by `data-peer` and `data-setting` on the root element (PerformanceSync and the inline
+   * script in the page), so a static export serves every combination from one page and the URL stays
+   * `/comparison/performance/?with=openredaction&setting=default`. Without script the default panel shows.
+   */
+  .panel {
+    display: none;
+  }
+
+  .panel[data-default] {
+    display: block;
+  }
+
+  :global(:root[data-peer]) .panel[data-default] {
+    display: none;
+  }
+
+  :global(:root[data-peer='flare-redact'][data-setting='default']) .panel[data-peer='flare-redact'][data-setting='default'],
+  :global(:root[data-peer='flare-redact'][data-setting='pii-global']) .panel[data-peer='flare-redact'][data-setting='pii-global'],
+  :global(:root[data-peer='flare-redact'][data-setting='pii-global-us']) .panel[data-peer='flare-redact'][data-setting='pii-global-us'],
+  :global(:root[data-peer='openredaction'][data-setting='default']) .panel[data-peer='openredaction'][data-setting='default'],
+  :global(:root[data-peer='openredaction'][data-setting='pii-global']) .panel[data-peer='openredaction'][data-setting='pii-global'],
+  :global(:root[data-peer='openredaction'][data-setting='pii-global-us']) .panel[data-peer='openredaction'][data-setting='pii-global-us'] {
+    display: block;
+  }
+}

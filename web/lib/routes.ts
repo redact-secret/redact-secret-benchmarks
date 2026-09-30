@@ -29,6 +29,7 @@ export const SECTIONS: Section[] = [
       { href: '/comparison/', label: 'Overview', title: 'How does redact-secret compare?', summary: 'Pick the question you came with.' },
       { href: '/comparison/feature/', label: 'Features', title: 'Feature comparison', summary: 'What each project says it can do, from its own documentation.' },
       { href: '/comparison/runtime/', label: 'Runtime', title: 'Runtime comparison', summary: 'Time and output on the same text, with what each one hid.' },
+      { href: '/comparison/performance/', label: 'Performance', title: 'Performance pair comparison', summary: 'How long redact-secret and one other library take, text by text, on one scale.' },
     ],
   },
 ];

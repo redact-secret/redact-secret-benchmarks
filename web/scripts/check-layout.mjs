@@ -58,6 +58,8 @@ try {
   const big = corpus.fixtures.reduce((a, b) => (b.content.length > a.content.length ? b : a));
   ROUTES.push(`report/fixtures/context-edges/?fixture=${big.id}`);
 } catch { /* the generated corpus is materialised by npm ci */ }
+// The performance pair page (#569): the default pair, the other library, and the setting that changes what redact-secret did.
+ROUTES.push('comparison/performance', 'comparison/performance/?with=openredaction&setting=default', 'comparison/performance/?with=openredaction&setting=pii-global');
 const PAGE_ONLY = ['404.html'];
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.png': 'image/png', '.txt': 'text/plain' };
 

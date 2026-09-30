@@ -1,0 +1,69 @@
+name: Suggest a provider or credential to research
+description: Beginner-friendly. Tell us a provider or credential type you think is worth covering. No schema or taxonomy knowledge needed.
+title: "suggest(<provider>): <credential, if known>"
+labels: ["research-suggestion"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Never paste a real credential
+        **Do not paste any real, live, unrevoked or newly generated secret, token or key, not even
+        "just an example".** Describe a credential in words ("starts with `abc_` followed by
+        random letters") or link to public documentation. Synthetic, clearly fake values only.
+        A suggestion that contains a live credential will be edited or closed, and the credential
+        should be revoked.
+
+        ## What happens next
+        You only need a provider name and whatever public context you have. A maintainer reads
+        every suggestion and decides:
+
+        ```text
+        suggestion (this form)
+          -> maintainer triage
+          -> taxonomy/dossier scaffold, when warranted
+          -> advanced research issue (research-family form)
+          -> dossier PR (closes the research issue, whatever the verdict)
+        ```
+
+        A suggestion may instead be closed as a duplicate, as covered by an existing family,
+        for insufficient evidence, or as out of scope. That is a normal outcome and does not
+        create research work. See `docs/research-intake.md` for details.
+
+        Already an experienced researcher, or have a dossier-ready finding? Use
+        "Research a provider or family" instead.
+  - type: input
+    id: provider
+    attributes:
+      label: Provider name
+      description: The company, product or service that issues the credential (for example, "Acme Cloud").
+    validations:
+      required: true
+  - type: input
+    id: credential
+    attributes:
+      label: Credential or family name, if you know it
+      description: What the provider calls it (for example, "API key", "personal access token", "webhook signing secret"). Leave empty if unsure.
+  - type: input
+    id: docs-url
+    attributes:
+      label: Official documentation or source URL, if you know it
+      description: A public https link to the provider's own docs, SDK or announcement. Leave empty if you do not have one.
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it matters or where it appears
+      description: For example, "widely used for X", "keeps showing up in leaked config files", "no scanner seems to cover it".
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything else (optional)
+      description: Prose only. No real token values.
+  - type: checkboxes
+    id: credential-attestation
+    attributes:
+      label: No real credential
+      options:
+        - label: I did not paste any real, live or unrevoked credential, and I understand only synthetic examples are allowed
+          required: true

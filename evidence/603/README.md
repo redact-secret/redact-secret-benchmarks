@@ -58,6 +58,37 @@ and the `41fc366` run (35868842776) are superseded here; its verdict is still re
 above and in the decision records.
 
 
+### Verified at `bfc608c`, not re-derived (Beta.12 performance work)
+
+Product `main` `bfc608cce75f79f6a5cab037d7e558ba629777f6` follows `da69ebf`
+with the Beta.12 performance work (the `*_in` lookback retention hints,
+redact-secret#1060 and #1074). Its `detectors/mod.rs` changed only re-exports
+and lookback helpers; the registry list is unchanged, so `detectors.json` is
+not regenerated.
+[Run 36788351912](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36788351912)
+(`performance-evaluation.yml` dispatched on `docs/dossiers-1012-1013-1014`,
+candidate `bfc608c`) reads **ACCEPTED** on both verdicts: RC acceptance
+ACCEPTED against the unchanged criteria, and the regression budgets read
+latency 10/10, initialization 10/10, memory 16/16 within budget, with three
+accepted tradeoffs, no regression and no invalid measurement.
+
+The three size rows are accepted under the maintainer's 2026-09-30 option A
+decision, extended to the Beta.12 performance work, through the
+`beta12-bfc608c-*` entries in `benchmarks/accepted-regressions.json`
+(commit `c2871006`, bound to `bfc608c` only):
+
+| Trigger | Baseline (0.1.0-beta.8) | Measured at bfc608c | Change | Entry |
+| --- | ---: | ---: | ---: | --- |
+| `size/wasm/full/gzip` | 137,639 | 205,068 | +49.0% | `beta12-bfc608c-wasm-full-gzip` |
+| `size/wasm/common/gzip` | 100,058 | 142,525 | +42.4% | `beta12-bfc608c-wasm-common-gzip` |
+| `size/browser-bundle/quickstart/gzip` | 144,501 | 212,515 | +47.1% | `beta12-bfc608c-quickstart-bundle-gzip` |
+
+The thresholds are not re-derived. The run is frozen in
+[`verified-bfc608c/`](verified-bfc608c/) and advances only
+`baseline.verifiedCommit`. Its `acceptance.json`/`.md` name the workflow's
+fixed summary label; the summary it evaluated is
+`verified-bfc608c/summary.json`.
+
 ### Verified at `0af4cb8`, not re-derived (redact-secret#846)
 
 Product `main` `0af4cb83b571baa86d27a678a351ece2ebc1f3cb` carries

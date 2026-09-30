@@ -11,7 +11,7 @@
  *       Reduces several performance-evaluation.yml runs at one pinned core
  *       commit (their downloaded summary.json plus run provenance) into
  *       same-artifact rerun noise on the official GitHub-hosted Linux runner.
- *   snapshot --id <id> --product-version <v> --summary <f> --operational <f> --adapter <series> --out <f>
+ *   snapshot --id <id> --product-version <v> --summary <f> --operational <f> --adapter <series> [--continues <id>] --out <f>
  *       Writes an immutable baseline snapshot of every budgeted metric.
  *   derive [--check]
  *       (Re)derives benchmarks/regression-budgets.json's triggers from the
@@ -47,7 +47,7 @@ const EVIDENCE = 'benchmarks/regression-evidence';
 const NOISE_FILES = {
   ciDispersion: `${EVIDENCE}/ci-dispersion.json`,
   rerun: `${EVIDENCE}/rerun-noise-darwin-arm64.json`,
-  adapter: `${EVIDENCE}/adapter-overhead-darwin-arm64.json`,
+  adapter: `${EVIDENCE}/adapter-overhead-v2-darwin-arm64.json`,
   // A/A runs of the adapter harness (the current build against a copy of itself, `--baseline`): the noise of the same-session change (#472).
   adapterAA: `${EVIDENCE}/adapter-aa-darwin-arm64.json`,
   // Same-job A/A paired runs on the official Linux runner: the timing noise term (#303).
@@ -200,6 +200,7 @@ function snapshot(args) {
   writeJson(args.out, {
     schemaVersion: '1', id: args.id, productVersion: args['product-version'], sourceCommit: summary.sourceCommit,
     takenAt: args['taken-at'] ?? new Date().toISOString().slice(0, 10),
+    ...(args.continues ? { continues: args.continues } : {}),
     sources: {
       performanceSummary: { path: args.summary, sha256: sha256OfText(summaryText), repetitions: summary.repetitions },
       operationalEvidence: { path: args.operational, sha256: sha256OfText(operationalText), measuredAt: operational.measuredAt },

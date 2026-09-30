@@ -125,6 +125,10 @@ test('a public-finding disagreement between the seam and the artifact fails clos
   assert.throws(() => buildB11Report({ freeze: syntheticFreeze(), observation, operational: syntheticOperational(true), parity: null }));
 });
 
+// sha256 of the size triggers of benchmarks/regression-budgets.json exactly as every committed freeze froze them: the
+// whole-file sha256 of that budgets file at the freezes was 3f4c777c15d7c273ad29f22680ca86e47485a8184b407052429e294e0ab58c79.
+const SIZE_TRIGGERS_SHA256 = 'bc6ef025a4327c78f0391254619aad0e3d786463200fcd65f02262c09da19906';
+
 // Every committed record, for every population plan set: `pii-beta11-*-<file version>.json` next to its freeze.
 const records = candidateDirs.flatMap(directory => Object.values(B11_PLAN_SETS).map(row => row.fileVersion)
   .filter(version => existsSync(new URL(`evidence/901/428/${directory}/pii-beta11-freeze-${version}.json`, root))).map(version => ({ directory, version })));
@@ -135,7 +139,13 @@ for (const { directory, version } of records) {
     assert.equal(freeze.freezeCommitment, b11Commitment({ ...freeze, freezeCommitment: undefined }));
     assert.equal(B11_PLAN_SETS[b11PlanSetOf(freeze)].fileVersion, version);
     assert.deepEqual(freeze.frozenInputs.map(row => row.path), b11FreezeFiles(b11PlanSetOf(freeze)).benchmarkInputs);
-    for (const row of freeze.frozenInputs) assert.equal(sha256(readFileSync(new URL(row.path, root))), row.sha256, row.path);
+    for (const row of freeze.frozenInputs) {
+      // The budgets file is re-derived when the adapter-overhead baseline is re-taken (#472). The freezes read only its
+      // size triggers (b11SizeBudgetRows), so those are bound by their own digest; the rest of the file may evolve.
+      if (row.path === 'benchmarks/regression-budgets.json') {
+        assert.equal(sha256(Buffer.from(JSON.stringify(json(row.path).triggers.filter(trigger => trigger.dimension === 'size')))), SIZE_TRIGGERS_SHA256, row.path);
+      } else assert.equal(sha256(readFileSync(new URL(row.path, root))), row.sha256, row.path);
+    }
   });
   if (!existsSync(new URL(`${base}pii-beta11-observation-${version}.json`, root))) continue;
   test(`${directory} (${version}): report and disposition re-score byte for byte and carry no case text`, () => {

@@ -1,4 +1,5 @@
 import { cx } from '../../lib/cx';
+import type { CSSProperties } from 'react';
 import { OutcomeMark } from '../data';
 import { EmptyState, StatusBadge } from '../feedback';
 import type { RuntimeColumn, RuntimeQuestion, RuntimeView } from './types';
@@ -38,7 +39,7 @@ export function RuntimeQuestionTable({ question, columns, view = 'all', columnKi
         <EmptyState title="Not measured yet">{question.notMeasured}</EmptyState>
       ) : (
         <div className={styles.region} role="region" aria-label={`${question.question} What each ${columnKind} hid, and how long it took. Not a ranking.`} tabIndex={0}>
-          <table className={cx(styles.table, cols > 4 && styles.many)}>
+          <table className={styles.table} style={{ '--cols': cols } as CSSProperties}>
             <caption className={styles.hidden}>{question.question} What each {columnKind} hid, and how long it took. Not a ranking.</caption>
             <thead>
               <tr>

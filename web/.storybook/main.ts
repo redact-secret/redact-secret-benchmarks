@@ -6,6 +6,8 @@ import type { StorybookConfig } from '@storybook/nextjs-vite';
 const config: StorybookConfig = {
   framework: '@storybook/nextjs-vite',
   stories: ['../components/**/*.stories.@(ts|tsx)'],
+  // The canonical logo files the header renders.
+  staticDirs: ['../public'],
   addons: ['@storybook/addon-a11y'],
   typescript: { check: false },
 };

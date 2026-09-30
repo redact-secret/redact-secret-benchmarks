@@ -11,10 +11,16 @@
     text-decoration: none;
   }
 
-  .tile:hover,
   .tile:focus-visible {
     text-decoration: none;
     border-top-color: var(--brand-green);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .tile:hover {
+      text-decoration: none;
+      border-top-color: var(--brand-green);
+    }
   }
 
   .label {
@@ -54,7 +60,19 @@
     color: var(--link);
   }
 
-  .tile:hover .action {
-    text-decoration: underline;
+  @media (hover: hover) and (pointer: fine) {
+    .tile:hover .action {
+      text-decoration: underline;
+    }
+  }
+
+  .tile {
+    transition: border-top-color 160ms var(--ease-out);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tile {
+      transition: none;
+    }
   }
 }

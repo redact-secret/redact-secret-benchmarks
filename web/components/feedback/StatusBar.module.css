@@ -27,8 +27,10 @@
     text-decoration: none;
   }
 
-  a.inner:hover .value {
-    text-decoration: underline;
+  @media (hover: hover) and (pointer: fine) {
+    a.inner:hover .value {
+      text-decoration: underline;
+    }
   }
 
   .label {

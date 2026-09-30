@@ -31,7 +31,12 @@ interface Base<Row> {
   empty?: ReactNode;
   /** `wide` gives the table a minimum width so it scrolls inside its own box instead of squashing. */
   wide?: boolean;
-  /** Below the phone breakpoint each row becomes a labelled block; no sideways scroll. */
+  /**
+   * On a phone each row becomes a labelled block, so no cell is squeezed to a
+   * word per line and nothing scrolls sideways. On by default; pass `false` for a
+   * table whose columns only read side by side, which then scrolls inside its own
+   * region at its natural width.
+   */
   stackOnPhone?: boolean;
   className?: string;
 }
@@ -40,11 +45,12 @@ export type DataTableProps<Row> = Base<Row> & ({ rows: Row[]; groups?: never } |
 
 /**
  * A table of recorded values. Rows are plain data the caller shaped from the
- * ledger; the table only lays them out. It scrolls horizontally inside its own
- * focusable region, never the page. Sorting and filtering are the caller's, so
+ * ledger; the table only lays them out. A word is never broken to make a column
+ * narrower: a table that does not fit scrolls horizontally inside its own
+ * focusable region, never the page, and on a phone it stacks (`stackOnPhone`). Sorting and filtering are the caller's, so
  * order is always the order given.
  */
-export function DataTable<Row>({ columns, getRowKey, caption, showCaption = false, empty, wide = false, stackOnPhone = false, className, ...data }: DataTableProps<Row>) {
+export function DataTable<Row>({ columns, getRowKey, caption, showCaption = false, empty, wide = false, stackOnPhone = true, className, ...data }: DataTableProps<Row>) {
   const groups: DataTableGroup<Row>[] | null = data.groups ?? null;
   const flat = data.rows ?? [];
   const isEmpty = groups ? groups.every(g => g.rows.length === 0) : flat.length === 0;
@@ -57,7 +63,10 @@ export function DataTable<Row>({ columns, getRowKey, caption, showCaption = fals
         return col.rowHeader ? (
           <th key={col.key} scope="row" className={cx(styles.cell, col.numeric && styles.num)}>{content}</th>
         ) : (
-          <td key={col.key} className={cx(styles.cell, col.numeric && styles.num)} data-label={stackOnPhone ? label : undefined}>{content}</td>
+          <td key={col.key} className={cx(styles.cell, col.numeric && styles.num)} data-label={stackOnPhone ? label : undefined}>
+            {/* One box for the value, so a stacked row is label + value however many inline parts the cell has. */}
+            <span className={styles.value}>{content}</span>
+          </td>
         );
       })}
     </tr>

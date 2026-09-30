@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import type { Section } from '../../lib/routes';
 import { ThemeToggle } from './ThemeToggle';
@@ -10,15 +11,16 @@ export interface SiteHeaderProps {
   currentPath: string;
 }
 
-/** Brand, the global entrances and the theme choice. Pure render: the caller supplies the path. */
+/** The logo, the global entrances and the theme choice. Pure render: the caller supplies the path. */
 export function SiteHeader({ sections, currentPath }: SiteHeaderProps) {
   return (
     <header className={styles.header}>
       <a className={styles.skip} href="#content">Skip to content</a>
       <div className={styles.inner}>
-        <Link className={styles.brand} href="/">
-          <span className={styles.mark} aria-hidden="true" />
-          redact-secret <span className={styles.sub}>benchmarks</span>
+        <Link className={styles.brand} href="/" aria-label="Redact Secret benchmarks, home">
+          {/* The canonical lockup, unchanged: public/logo-light.svg and logo-dark.svg differ only in wordmark ink. The theme picks which one shows. */}
+          <Image className={styles.logoLight} src="/logo-light.svg" alt="" width={944} height={817} priority unoptimized />
+          <Image className={styles.logoDark} src="/logo-dark.svg" alt="" width={944} height={817} priority unoptimized />
         </Link>
         <nav className={styles.nav} aria-label="Primary">
           <ul className={styles.list}>

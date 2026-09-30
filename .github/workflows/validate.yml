@@ -125,6 +125,9 @@ jobs:
       - name: No sx prop, no styled(), no client fetch, CSS Modules layered (#547)
         run: npm run check:no-sx
         working-directory: web
+      - name: Header uses the canonical logo files and tokens only (#554)
+        run: npm run check:header
+        working-directory: web
       - run: npm run typecheck
         working-directory: web
       - name: Static export builds and contains the six routes (#547)
@@ -132,6 +135,12 @@ jobs:
         working-directory: web
       - name: Storybook builds on the Next.js framework (#547)
         run: npm run build-storybook
+        working-directory: web
+      - name: Chromium for the layout check (#554)
+        run: npx playwright install --with-deps chromium
+        working-directory: web
+      - name: No page overflow and no mid-word breaks at 320, 375 and 768px in any story or page (#554)
+        run: npm run check:layout
         working-directory: web
 
   pin-drift:

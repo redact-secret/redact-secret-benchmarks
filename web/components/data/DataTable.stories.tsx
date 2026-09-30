@@ -40,7 +40,20 @@ export const VisibleCaption: Story = { args: { showCaption: true } };
 export const Wide: Story = { args: { wide: true } };
 export const Empty: Story = { args: { rows: [], empty: 'No scanners recorded for this run.' } };
 export const EmptyDefaultText: Story = { args: { rows: [] } };
-export const StackedOnPhone: Story = { args: { stackOnPhone: true }, parameters: { viewport: { defaultViewport: 'mobile1' } } };
+const phone = { viewport: { defaultViewport: 'mobile1' } };
+
+// Hard case: a table on a phone. Two ways to read it, both without squeezed cells.
+// Stacked (the default) gives each row a labelled block; scrolling keeps the
+// columns side by side at their natural width inside the table's own region.
+export const StackedOnPhone: Story = { parameters: { ...phone } };
+export const ScrollingOnPhone: Story = { args: { stackOnPhone: false }, parameters: { ...phone } };
+export const WideStackedOnPhone: Story = { args: { wide: true }, parameters: { ...phone } };
+export const NarrowPhoneLongContent: Story = {
+  args: {
+    rows: [{ ...scanners[0], name: 'Repository-history-scanner-with-a-long-hyphenated-name 8.30.1', note: 'a-long-unbroken-token-'.repeat(8) }],
+  },
+  parameters: { viewport: { defaultViewport: 'mobile1' } },
+};
 
 export const LongContent: Story = {
   args: {

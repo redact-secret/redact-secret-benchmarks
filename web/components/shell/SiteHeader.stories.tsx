@@ -14,4 +14,7 @@ type Story = StoryObj<typeof meta>;
 
 export const ReportCurrent: Story = {};
 export const ComparisonCurrent: Story = { args: { currentPath: '/comparison/runtime/' } };
-export const Narrow: Story = { parameters: { viewport: { defaultViewport: 'mobile1' } } };
+export const Phone: Story = { parameters: { viewport: { defaultViewport: 'mobile1' } } };
+export const PhoneSmall: Story = { parameters: { viewport: { defaultViewport: 'mobile1' } }, args: { currentPath: '/comparison/' } };
+export const Tablet: Story = { parameters: { viewport: { defaultViewport: 'tablet' } } };
+export const DarkTheme: Story = { globals: { theme: 'dark' } };

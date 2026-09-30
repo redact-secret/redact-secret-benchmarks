@@ -1,6 +1,7 @@
 @layer components {
   .block {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-3);
     min-width: 0;
   }
@@ -30,7 +31,9 @@
     color: var(--ink-muted);
   }
 
+  /* `position: relative` makes the region the containing block of the visually hidden labels inside it, so they scroll with it instead of widening the page. */
   .region {
+    position: relative;
     overflow-x: auto;
     border-top: var(--hairline) solid var(--ink);
     max-width: 100%;
@@ -43,8 +46,9 @@
     font: var(--text-small);
   }
 
-  .many {
-    min-width: calc(var(--space-16) * 8);
+  /* Each tool column keeps room for its name (176px, of the 64% left after the first column); when they do not all fit, the region scrolls instead of squeezing a name across lines. */
+  .table {
+    min-width: calc(var(--cols) * var(--space-16) * 2.75);
   }
 
   .table thead th,
@@ -62,7 +66,7 @@
     text-align: center;
     vertical-align: bottom;
     font: var(--text-small-strong);
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
   }
 
   .col small,

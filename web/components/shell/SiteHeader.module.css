@@ -7,64 +7,91 @@
     border-bottom: var(--hairline) solid var(--line);
   }
 
+  /* Logo, entrances, theme: one row from tablet up. On a phone the entrances take a row of their own under the logo. */
   .inner {
     max-width: var(--page-max);
     margin: 0 auto;
     min-height: var(--header-h);
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--space-2) var(--space-6);
-    padding: var(--space-2) clamp(var(--space-4), 4vw, var(--space-16));
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: 'brand nav tools';
+    align-items: stretch;
+    column-gap: var(--space-6);
+    padding-inline: clamp(var(--space-4), 4vw, var(--space-16));
   }
 
   .brand {
+    grid-area: brand;
     display: flex;
     align-items: center;
-    gap: var(--space-2);
-    font: 700 calc(var(--space-3) + var(--rule-strong)) / 1 var(--font-montserrat);
+    padding-block: var(--space-2);
     color: var(--ink);
-    text-decoration: none;
-    white-space: nowrap;
+    transition: transform 160ms var(--ease-out);
   }
 
-  .mark {
-    width: 0;
-    height: 0;
-    border-left: calc(var(--space-2) - var(--hairline)) solid transparent;
-    border-right: calc(var(--space-2) - var(--hairline)) solid transparent;
-    border-bottom: var(--space-3) solid var(--brand-green);
+  .brand:active {
+    transform: scale(var(--press));
   }
 
-  .sub {
-    color: var(--ink-muted);
-    font-weight: 400;
+  .logoLight,
+  .logoDark {
+    width: var(--logo-w);
+    height: auto;
+    display: block;
+    flex: none;
+  }
+
+  /* The light lockup is the default; the dark one shows when the theme is dark, by choice or by the OS. */
+  .logoDark {
+    display: none;
+  }
+
+  :global([data-theme='dark']) .logoLight {
+    display: none;
+  }
+
+  :global([data-theme='dark']) .logoDark {
+    display: block;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .logoLight {
+      display: none;
+    }
+
+    :global(:root:not([data-theme='light'])) .logoDark {
+      display: block;
+    }
   }
 
   .nav {
-    flex: 1 1 auto;
+    grid-area: nav;
+    min-width: 0;
   }
 
   .list {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-1) var(--space-6);
+    gap: var(--space-6);
+    height: 100%;
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  .link {
-    display: block;
-    padding: var(--space-2) 0;
-    font: var(--text-body-strong);
-    color: var(--ink-muted);
-    text-decoration: none;
-    border-bottom: var(--rule-strong) solid transparent;
+  .list > li {
+    display: flex;
   }
 
-  .link:hover {
-    color: var(--ink);
+  /* The only green in the chrome: a rule under the current place. The current item also turns from muted to ink, so green is never the sole cue. */
+  .link {
+    display: flex;
+    align-items: center;
+    padding-top: var(--mark);
+    border-bottom: var(--mark) solid transparent;
+    font: var(--text-small-strong);
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color 160ms var(--ease-out);
   }
 
   .link[aria-current='page'] {
@@ -72,28 +99,71 @@
     border-bottom-color: var(--brand-green);
   }
 
+  @media (hover: hover) and (pointer: fine) {
+    .link:hover {
+      color: var(--ink);
+    }
+  }
+
   .link:focus-visible,
   .brand:focus-visible {
     outline: var(--rule-strong) solid var(--focus);
-    outline-offset: var(--rule-strong);
+    outline-offset: calc(var(--rule-strong) * -1);
   }
 
   .tools {
-    margin-left: auto;
+    grid-area: tools;
+    display: flex;
+    align-items: center;
   }
 
   .skip {
     position: absolute;
     left: var(--space-4);
-    top: 0;
-    transform: translateY(-120%);
+    top: var(--space-2);
+    transform: translateY(-200%);
     background: var(--surface);
     color: var(--ink);
-    padding: var(--space-2) var(--space-3);
-    border: var(--rule-strong) solid var(--focus);
+    padding: var(--space-2) var(--space-4);
+    border: var(--hairline) solid var(--ink-muted);
+    border-radius: var(--radius-sm);
   }
 
   .skip:focus {
     transform: none;
+  }
+
+  @media (max-width: 720px) {
+    .header {
+      position: static;
+    }
+
+    .inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas:
+        'brand tools'
+        'nav nav';
+      column-gap: var(--space-4);
+    }
+
+    .nav {
+      border-top: var(--hairline) solid var(--line);
+    }
+
+    .link {
+      min-height: var(--touch);
+      padding-top: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand,
+    .link {
+      transition: none;
+    }
+
+    .brand:active {
+      transform: none;
+    }
   }
 }

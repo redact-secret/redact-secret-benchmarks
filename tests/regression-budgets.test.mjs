@@ -25,6 +25,8 @@ function snapshot(id, sourceCommit, overrides = {}) {
     'size/wasm/common/gzip': { id: 'size/wasm/common/gzip', dimension: 'size', profile: 'release-artifacts', unit: 'bytes', value: 80_000, samples: 1, role: 'optional' },
     'adapter/pino/log-flat/traversal': { id: 'adapter/pino/log-flat/traversal', dimension: 'adapter-overhead', profile: 'darwin-arm64|M|node-22', unit: 'microseconds-per-event', value: 2, samples: 75 },
     'adapter/pino/log-flat/scanner-calls': { id: 'adapter/pino/log-flat/scanner-calls', dimension: 'adapter-overhead', profile: 'darwin-arm64|M|node-22', unit: 'calls-per-event', value: 9, samples: 5 },
+    'adapter/pino/log-flat/allocated-bytes': { id: 'adapter/pino/log-flat/allocated-bytes', dimension: 'adapter-overhead', profile: 'darwin-arm64|M|node-22', unit: 'bytes-per-event', value: 50_000, samples: 5 },
+    'adapter/pino/log-flat/gc-count': { id: 'adapter/pino/log-flat/gc-count', dimension: 'adapter-overhead', profile: 'darwin-arm64|M|node-22', unit: 'collections-per-event', value: 0.01, samples: 5 },
     ...overrides,
   };
   return {
@@ -39,6 +41,7 @@ const NOISE = {
   ciMemorySpread: { 'node/p/nodeRss': 0.03 },
   rerunMemorySpread: 0.02,
   adapterTraversal: { 'pino/log-flat': { spread: 0.1, standardDeviation: 0.05 } },
+  adapterChange: { 'pino/log-flat': { traversal: 0.08, p95Latency: 0.2, allocatedBytes: 0.02 } },
 };
 
 function withValues(base, values) {
@@ -57,9 +60,16 @@ function ratio(p95, median, extra = {}) {
 }
 const PAIRED_PROFILE = { ...LATENCY_PROFILE, sameJob: 'true', baselineRevision: COMMIT_A, cpuModel: 'test CPU' };
 
+/** A same-session adapter traversal change: the previous release's in-process traversal is 2 microseconds and its p95 latency 100. */
+function traversalChange(value, extra = {}) {
+  return { id: 'adapter/pino/log-flat/traversal-change', dimension: 'adapter-overhead', profile: 'darwin-arm64|M|node-22', unit: 'ratio', value, samples: 45,
+    pairedBaseline: 2, tail: { statistic: 'adapter-core single-event p95 latency ratio', value: 1, pairedBaseline: 100 }, ...extra };
+}
+
 function candidate(metrics, sourceCommit = COMMIT_B) {
   return {
-    sourceCommit, sources: ['test'], metrics: { 'latency/node/p/processing-ratio': ratio(1, 1), ...metrics },
+    sourceCommit, sources: ['test'],
+    metrics: { 'latency/node/p/processing-ratio': ratio(1, 1), 'adapter/pino/log-flat/traversal-change': traversalChange(1), ...metrics },
     profiles: { latency: PAIRED_PROFILE, memory: LATENCY_PROFILE, size: {}, 'adapter-overhead': { javascript: 'darwin-arm64|M|node-22', 'javascript:workloadDigest': 'd', 'javascript:quick': 'false' } },
   };
 }
@@ -111,8 +121,8 @@ test('memory, size and adapter triggers follow their rules', () => {
   assert.deepEqual(byId('size/wasm/full/gzip').threshold, { relative: 0.05, absoluteFloor: 4096 });
   assert.equal(byId('size/wasm/full/gzip').role, 'default');
   assert.equal(byId('size/wasm/common/gzip').role, 'optional');
-  assert.deepEqual(byId('adapter/pino/log-flat/traversal').threshold, { relative: 0.2, absoluteFloor: 0.5 });
-  assert.equal(byId('adapter/pino/log-flat/traversal').minimumSamples, 15);
+  assert.equal(byId('adapter/pino/log-flat/traversal'), undefined, 'the absolute traversal is reported, not judged');
+  assert.equal(byId('adapter/pino/log-flat/gc-count'), undefined, 'GC count is recorded, not budgeted');
   assert.deepEqual(byId('adapter/pino/log-flat/scanner-calls').threshold, { relative: 0, absoluteFloor: 0 });
   assert.equal(allowedChange(100, { relative: 0.05, absoluteFloor: 16 }), 16);
 });
@@ -123,7 +133,7 @@ test('a change inside every budget is accepted, and every dimension is counted s
   assert.equal(exitCodeFor(report), 0);
   assert.equal(report.dimensions.latency['within-budget'], 1);
   assert.equal(report.dimensions.size['within-budget'], 2);
-  assert.equal(report.dimensions['adapter-overhead']['within-budget'], 2);
+  assert.equal(report.dimensions['adapter-overhead']['within-budget'], 3);
   assert.equal(report.dimensions.initialization['within-budget'], 0);
   assert.ok(!('score' in report));
 });
@@ -200,8 +210,8 @@ test('a wrong profile, a missing metric, or too few samples is an invalid measur
   delete missing['memory/node/p/nodeRss'];
   assert.equal(verdictOf(evaluateBudgets(budgets, baseline, candidate(missing), []), 'memory/node/p/nodeRss'), 'invalid-measurement');
 
-  const thin = withValues(baseline, { 'adapter/pino/log-flat/traversal': { samples: 3 } });
-  assert.equal(verdictOf(evaluateBudgets(budgets, baseline, candidate(thin), []), 'adapter/pino/log-flat/traversal'), 'invalid-measurement');
+  const thin = { ...withValues(baseline, {}), 'adapter/pino/log-flat/traversal-change': traversalChange(1, { samples: 3 }) };
+  assert.equal(verdictOf(evaluateBudgets(budgets, baseline, candidate(thin), []), 'adapter/pino/log-flat/traversal-change'), 'invalid-measurement');
 
   const quick = candidate(withValues(baseline, {}));
   quick.profiles['adapter-overhead'] = { ...quick.profiles['adapter-overhead'], 'javascript:quick': 'true' };
@@ -252,6 +262,172 @@ test('paired ratios are recomputed from interleaved samples, and rounds are coun
 test('adapter scanner calls are deterministic: any increase is a trigger', () => {
   const report = evaluateBudgets(budgets, baseline, candidate(withValues(baseline, { 'adapter/pino/log-flat/scanner-calls': 10 })), []);
   assert.equal(verdictOf(report, 'adapter/pino/log-flat/scanner-calls'), 'regression');
+});
+
+test('adapter traversal is a same-session ratio at the larger of 15% and twice the row\'s A/A deviation, with a microsecond floor and a p95 tail check', () => {
+  const trigger = byId('adapter/pino/log-flat/traversal-change');
+  assert.equal(trigger.unit, 'ratio');
+  assert.equal(trigger.baselineValue, 1);
+  assert.equal(trigger.pairedFloorMicroseconds, 0.5);
+  assert.equal(trigger.pairedFloorMilliseconds, undefined);
+  assert.equal(trigger.minimumSamples, 15);
+  assert.deepEqual(trigger.threshold, { relative: 0.2, absoluteFloor: 0 });
+  assert.deepEqual(trigger.tail.threshold, { relative: 0.4, absoluteFloor: 0 });
+  const quiet = deriveTriggers(baseline, { ...NOISE, adapterChange: { 'pino/log-flat': { traversal: 0.01, p95Latency: 0.02, allocatedBytes: 0.02 } } });
+  assert.equal(quiet.find(t => t.id === trigger.id).threshold.relative, 0.15);
+  assert.equal(quiet.find(t => t.id === trigger.id).tail.threshold.relative, 0.15);
+  const noisy = deriveTriggers(baseline, { ...NOISE, adapterTraversal: { 'pino/log-flat': { spread: 0.1, standardDeviation: 0.31 } } });
+  assert.equal(noisy.find(t => t.id === trigger.id).pairedFloorMicroseconds, 1);
+  const bare = snapshot('bare', COMMIT_A);
+  delete bare.metrics['adapter/pino/log-flat/allocated-bytes'];
+  const unstudied = deriveTriggers(bare, { ...NOISE, adapterChange: {} });
+  assert.equal(unstudied.find(t => t.id === trigger.id), undefined);
+  assert.deepEqual(unstudied.find(t => t.id === 'adapter/pino/log-flat/traversal').threshold, { relative: 0.2, absoluteFloor: 0.5 });
+  assert.throws(() => deriveTriggers(bare, { ...NOISE, adapterTraversal: {} }), /no-adapter-noise/);
+  assert.throws(() => deriveTriggers(baseline, { ...NOISE, adapterChange: {} }), /no-adapter-noise:adapter\/pino\/log-flat\/allocated-bytes/);
+});
+
+test('a same-session traversal ratio above its threshold and microsecond floor is a regression; the floor scales with the in-process baseline', () => {
+  const judged = value => verdictOf(evaluateBudgets(budgets, baseline, candidate({ ...withValues(baseline, {}), 'adapter/pino/log-flat/traversal-change': value }), []), 'adapter/pino/log-flat/traversal-change');
+  assert.equal(judged(traversalChange(1.15)), 'within-budget');
+  assert.equal(judged(traversalChange(1.4)), 'regression');
+  // 0.5 us of a 2 us baseline is 0.25 of the ratio: 1.24 exceeds the 20% threshold and stays inside the floor; 1.3 exceeds both.
+  assert.equal(judged(traversalChange(1.24)), 'within-budget');
+  assert.equal(judged(traversalChange(1.3)), 'regression');
+  // A 40 us in-process baseline turns the same floor into 1.25% of the ratio, so the relative threshold decides.
+  assert.equal(judged(traversalChange(1.21, { pairedBaseline: 40 })), 'regression');
+  const report = evaluateBudgets(budgets, baseline, candidate({ ...withValues(baseline, {}), 'adapter/pino/log-flat/traversal-change': traversalChange(1.3) }), []);
+  assert.equal(report.triggers.find(t => t.id === 'adapter/pino/log-flat/traversal-change').allowedChange, 0.25);
+});
+
+test('a p95 latency tail breach with the traversal median inside is invalid-measurement, not a regression', () => {
+  const tail = value => traversalChange(1.05, { tail: { statistic: 'adapter-core single-event p95 latency ratio', value, pairedBaseline: 100 } });
+  const judged = value => evaluateBudgets(budgets, baseline, candidate({ ...withValues(baseline, {}), 'adapter/pino/log-flat/traversal-change': tail(value) }), []);
+  assert.equal(verdictOf(judged(1.3), 'adapter/pino/log-flat/traversal-change'), 'within-budget');
+  const breached = judged(1.6);
+  assert.equal(verdictOf(breached, 'adapter/pino/log-flat/traversal-change'), 'invalid-measurement');
+  assert.equal(breached.status, 'invalid-measurement');
+  assert.match(breached.triggers.find(t => t.id === 'adapter/pino/log-flat/traversal-change').reason, /tail-only/);
+});
+
+test('an incomparable previous release is invalid-measurement and a moved scanner-call count is not evaluated', () => {
+  const judged = extra => evaluateBudgets(budgets, baseline, candidate({ ...withValues(baseline, {}), 'adapter/pino/log-flat/traversal-change': traversalChange(3, extra) }), []);
+  const invalid = judged({ invalid: 'the previous adapter release is not comparable: nothing published below 0.1.0' });
+  assert.equal(verdictOf(invalid, 'adapter/pino/log-flat/traversal-change'), 'invalid-measurement');
+  assert.equal(invalid.status, 'invalid-measurement');
+  const moved = judged({ notComparable: 'scanner calls per event moved from 1 to 9' });
+  assert.equal(verdictOf(moved, 'adapter/pino/log-flat/traversal-change'), 'not-evaluated');
+  assert.equal(moved.status, 'accepted');
+  // The calls trigger still reports the moved count on its own.
+  const calls = evaluateBudgets(budgets, baseline, candidate({ ...withValues(baseline, { 'adapter/pino/log-flat/scanner-calls': 18 }),
+    'adapter/pino/log-flat/traversal-change': traversalChange(3, { notComparable: 'scanner calls per event moved from 9 to 18' }) }), []);
+  assert.equal(verdictOf(calls, 'adapter/pino/log-flat/scanner-calls'), 'regression');
+});
+
+test('adapter allocation is budgeted absolutely at the larger of 10% and twice the A/A deviation, with a 1 KiB floor', () => {
+  const trigger = byId('adapter/pino/log-flat/allocated-bytes');
+  assert.deepEqual(trigger.threshold, { relative: 0.1, absoluteFloor: 1024 });
+  assert.equal(trigger.baselineValue, 50_000);
+  const wide = deriveTriggers(baseline, { ...NOISE, adapterChange: { 'pino/log-flat': { traversal: 0.08, p95Latency: 0.2, allocatedBytes: 0.09 } } });
+  assert.equal(wide.find(t => t.id === trigger.id).threshold.relative, 0.2);
+  const judged = value => verdictOf(evaluateBudgets(budgets, baseline, candidate(withValues(baseline, { 'adapter/pino/log-flat/allocated-bytes': value })), []), trigger.id);
+  assert.equal(judged(54_900), 'within-budget');
+  assert.equal(judged(55_100), 'regression');
+  const python = snapshot('py', COMMIT_A, { 'adapter/pino/log-flat/peak-bytes': { id: 'adapter/pino/log-flat/peak-bytes', dimension: 'adapter-overhead',
+    profile: 'darwin-arm64|M|node-22', unit: 'bytes', value: 8_000, samples: 5 } });
+  const peak = deriveTriggers(python, { ...NOISE, adapterChange: { 'pino/log-flat': { traversal: 0.08, p95Latency: 0.2, allocatedBytes: 0.02, peakBytes: 0 } } });
+  assert.deepEqual(peak.find(t => t.id === 'adapter/pino/log-flat/peak-bytes').threshold, { relative: 0.1, absoluteFloor: 1024 });
+  assert.throws(() => deriveTriggers(python, NOISE), /no-adapter-noise/);
+});
+
+test('a snapshot compared with itself has a traversal change of exactly 1', () => {
+  const self = candidateFromSnapshot(baseline);
+  assert.equal(self.metrics['adapter/pino/log-flat/traversal-change'].value, 1);
+  assert.equal(evaluateBudgets(budgets, baseline, self, []).status, 'accepted');
+});
+
+test('a baseline promotion at a new adapter workload digest is compared row by row', () => {
+  const older = snapshot('older', COMMIT_A);
+  const newer = snapshot('newer', COMMIT_A);
+  newer.profiles['adapter-overhead'] = { ...newer.profiles['adapter-overhead'], 'javascript:workloadDigest': 'd2' };
+  newer.metrics['adapter/pino/log-flat/scanner-calls'] = { ...newer.metrics['adapter/pino/log-flat/scanner-calls'], value: 12 };
+  const files = { 'older.json': JSON.stringify(older), 'newer.json': JSON.stringify(newer) };
+  const chain = {
+    budgetsId: 'test', baseline: 'newer', triggers,
+    baselines: [
+      { id: 'older', file: 'older.json', sha256: sha256OfText(files['older.json']), sourceCommit: COMMIT_A, promotedAt: '2026-09-25', supersedes: null },
+      { id: 'newer', file: 'newer.json', sha256: sha256OfText(files['newer.json']), sourceCommit: COMMIT_A, promotedAt: '2026-09-30', supersedes: 'older' },
+    ],
+  };
+  const problems = historyProblems(chain, file => files[file], []);
+  assert.equal(problems.length, 1, problems.join('; '));
+  assert.match(problems[0], /replaced older over an unaccepted breach of adapter\/pino\/log-flat\/scanner-calls/);
+});
+
+/** A trimmed `measure-overhead.mjs --baseline` output, one process: change values are current against the previous release. */
+function v2Process({ traversal = 6, previous = 5, calls = 22, previousCalls = 22, comparable = true, allocated = 4096, peak = null, tail = [300, 200] } = {}) {
+  const memory = { basis: 'test', allocatedBytesPerEvent: allocated, peakBytes: peak, gcCountPerEvent: 0.02, gcPauseMicrosecondsPerEvent: 0 };
+  const mode = { unit: 'microseconds-per-event', samples: [1], median: 1, latency: { median: 1, p95: tail[0], p99: 1 }, memory };
+  return {
+    schema: 'redact-secret-adapters/overhead-v2', language: 'javascript', workloads: { digest: 'd2' },
+    environment: { platform: 'darwin', arch: 'arm64', cpuModel: 'M', runtime: 'node-22.16.0' },
+    method: { quick: false, repetitions: 15 },
+    results: [{
+      host: 'mask-js', profileId: 'mask-payload', scannerCallsPerEvent: calls, scannedCodeUnitsPerEvent: 3000,
+      modes: { 'adapter-core': mode, host: { ...mode, memory: { ...memory, allocatedBytesPerEvent: 1 } } },
+      derived: { traversal, coreScan: 1000, adapterOverhead: 1001 },
+      baseline: comparable ? { comparable: true } : { comparable: false, reason: 'no adapter release below 0.1.0 is published' },
+      ...(comparable ? { change: {
+        traversal: { baseline: previous, current: traversal, difference: traversal - previous, relative: traversal / previous - 1 },
+        adapterCoreLatencyP95: { baseline: tail[1], current: tail[0], difference: tail[0] - tail[1], relative: tail[0] / tail[1] - 1 },
+        scannerCallsPerEvent: { baseline: previousCalls, current: calls, difference: calls - previousCalls, relative: calls / previousCalls - 1 },
+      } } : {}),
+    }],
+  };
+}
+
+test('v2 outputs yield a same-session traversal ratio, its tail, and adapter-core allocation', () => {
+  const { metrics } = metricsFromAdapterOverhead([6, 7, 5, 6, 8].map(traversal => v2Process({ traversal, previous: 5 })));
+  const byMetric = id => metrics.find(m => m.id === `adapter/mask-js/mask-payload/${id}`);
+  const change = byMetric('traversal-change');
+  assert.equal(change.unit, 'ratio');
+  assert.equal(change.value, 6 / 5);
+  assert.equal(change.pairedBaseline, 5);
+  assert.equal(change.samples, 75);
+  assert.equal(change.tail.value, 1.5);
+  assert.equal(change.tail.pairedBaseline, 200);
+  assert.equal(change.invalid, undefined);
+  assert.equal(change.notComparable, undefined);
+  assert.equal(byMetric('allocated-bytes').value, 4096, 'the adapter-core mode, not the host');
+  assert.equal(byMetric('gc-count').value, 0.02);
+  assert.equal(byMetric('peak-bytes'), undefined, 'JavaScript reports no peak');
+  assert.equal(byMetric('traversal').value, 6, 'the absolute traversal is still recorded');
+  const python = metricsFromAdapterOverhead([v2Process({ allocated: null, peak: 7578 })]).metrics;
+  assert.equal(python.find(m => m.id.endsWith('/peak-bytes')).value, 7578);
+  assert.equal(python.find(m => m.id.endsWith('/allocated-bytes')), undefined);
+});
+
+test('v2 outputs without a previous release carry no traversal change, and a v1 output carries no allocation', () => {
+  const plain = v2Process();
+  delete plain.results[0].baseline;
+  delete plain.results[0].change;
+  assert.equal(metricsFromAdapterOverhead([plain]).metrics.find(m => m.id.endsWith('/traversal-change')), undefined);
+  const v1 = { ...v2Process(), schema: 'redact-secret-adapters/overhead-v1' };
+  delete v1.results[0].modes;
+  const ids = metricsFromAdapterOverhead([v1]).metrics.map(m => m.id);
+  assert.ok(!ids.some(id => /allocated-bytes|peak-bytes|gc-count/.test(id)));
+});
+
+test('a previous release the harness could not compare is invalid; a moved scanner-call count makes timing not applicable', () => {
+  const five = extra => [...Array(4).fill(v2Process()), v2Process(extra)];
+  const incomparable = metricsFromAdapterOverhead(five({ comparable: false })).metrics.find(m => m.id.endsWith('/traversal-change'));
+  assert.match(incomparable.invalid, /not comparable: no adapter release below 0.1.0 is published/);
+  const moved = metricsFromAdapterOverhead(five({ calls: 9, previousCalls: 1 })).metrics.find(m => m.id.endsWith('/traversal-change'));
+  assert.match(moved.notComparable, /moved from 1 to 9/);
+  assert.equal(moved.invalid, undefined);
+  const single = metricsFromAdapterOverhead([v2Process()]).metrics.find(m => m.id.endsWith('/traversal-change'));
+  assert.match(single.invalid, /at least 5 required: a single process is never judged/);
+  assert.equal(metricsFromAdapterOverhead(five({})).metrics.find(m => m.id.endsWith('/traversal-change')).invalid, undefined);
 });
 
 test('the ledger requires a rationale, a linked detection or safety benefit, and the original measurement', () => {
@@ -316,7 +492,7 @@ test('adapter overhead metrics exclude core scan time and keep deterministic cou
   assert.equal(metricsFromAdapterOverhead([output(1, true)]).profiles['javascript:quick'], 'true');
 });
 
-test('adapter overhead-v2 outputs yield the same metrics as v1, ignoring the added fields', () => {
+test('adapter overhead-v2 outputs yield every v1 metric unchanged, plus the v2 metrics', () => {
   // Trimmed from a real `measure-overhead.mjs --baseline` run (redact-secret-adapters#97): v2 adds
   // per-mode latency and memory, two derived values, and a per-result baseline and change.
   const mode = median => ({ unit: 'microseconds-per-event', samples: [median], median, p95: median, minimum: median, maximum: median, standardDeviation: 0,
@@ -338,10 +514,13 @@ test('adapter overhead-v2 outputs yield the same metrics as v1, ignoring the add
     results: [row('mask-js', traversal), row('mcp-js', traversal + 10)],
   });
   const v1 = traversal => ({ ...v2(traversal), schema: 'redact-secret-adapters/overhead-v1',
-    results: v2(traversal).results.map(({ baseline, change, ...rest }) => rest) });
+    results: v2(traversal).results.map(({ baseline, change, modes, ...rest }) => rest) });
   const fromV2 = metricsFromAdapterOverhead([v2(5.5), v2(5.7), v2(5.6)]);
   const fromV1 = metricsFromAdapterOverhead([v1(5.5), v1(5.7), v1(5.6)]);
-  assert.deepEqual(fromV2, fromV1);
+  const v1Ids = /\/(traversal|scanner-calls|scanned-code-units)$/;
+  assert.deepEqual({ ...fromV2, metrics: fromV2.metrics.filter(m => v1Ids.test(m.id)) }, fromV1);
+  assert.ok(fromV2.metrics.some(m => m.id.endsWith('/allocated-bytes')) && fromV2.metrics.some(m => m.id.endsWith('/traversal-change')));
+  assert.ok(!fromV1.metrics.some(m => !v1Ids.test(m.id)));
   assert.equal(fromV2.metrics.find(m => m.id === 'adapter/mcp-js/mask-payload/traversal').value, 15.6);
   assert.equal(fromV2.profiles.javascript, 'linux-arm64|unknown-cpu|node-22');
   assert.equal(fromV2.profiles['javascript:workloadDigest'], 'd2');
@@ -638,7 +817,7 @@ test('the committed budgets cover every dimension from the committed baseline, a
   for (const trigger of committed.triggers) {
     if (trigger.unit === 'ratio') {
       assert.equal(trigger.baselineValue, 1, trigger.id);
-      const source = trigger.id.replace(/\/(processing|initialization)-ratio$/, '/$1-p95');
+      const source = trigger.id.replace(/\/(processing|initialization)-ratio$/, '/$1-p95').replace(/\/traversal-change$/, '/traversal');
       assert.ok(current.metrics[source], `${trigger.id} derives from ${source}`);
     } else assert.equal(trigger.baselineValue, current.metrics[trigger.id].value, trigger.id);
   }

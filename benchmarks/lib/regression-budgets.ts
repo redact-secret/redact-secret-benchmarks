@@ -51,6 +51,10 @@ export interface Metric {
   readonly tail?: { readonly statistic: string; readonly value: number; readonly pairedBaseline: number };
   /** Size only: whether the artifact ships in the default bundle or only in an optional module/profile. */
   readonly role?: 'default' | 'optional';
+  /** The measurement exists but is not a valid one (e.g. the previous release is not comparable): the verdict is invalid-measurement with this reason. */
+  readonly invalid?: string;
+  /** The statistic does not apply to this candidate (e.g. the builds do different work): the verdict is not-evaluated with this reason. */
+  readonly notComparable?: string;
 }
 
 export interface Snapshot {
@@ -88,6 +92,8 @@ export interface Trigger {
    * rise by more than this floor divided by the in-job baseline statistic.
    */
   readonly pairedFloorMilliseconds?: number;
+  /** Same, for a paired ratio whose in-job statistic is in microseconds (adapter traversal, #472). */
+  readonly pairedFloorMicroseconds?: number;
   /**
    * Paired ratio triggers only: when the judged median ratio stays inside its
    * budget but the p95 ratio breaches this threshold, the change is tail-only
@@ -296,7 +302,8 @@ export function ratioDeviation(ratio: number): number {
  */
 export function informationalTiming(baseline: Snapshot, metrics: Record<string, Metric>): InformationalTiming[] {
   return Object.values(metrics)
-    .filter(metric => (metric.dimension === 'latency' || metric.dimension === 'initialization') && metric.unit === 'milliseconds')
+    .filter(metric => ((metric.dimension === 'latency' || metric.dimension === 'initialization') && metric.unit === 'milliseconds')
+      || (metric.dimension === 'adapter-overhead' && metric.id.endsWith('/traversal')))
     .flatMap(metric => {
       const before = baseline.metrics[metric.id];
       if (before === undefined || before.value === 0) return [];
@@ -557,6 +564,9 @@ export const ADAPTER_OVERHEAD_SCHEMAS: readonly string[] = [
   'redact-secret-adapters/overhead-v1', 'redact-secret-adapters/overhead-v2', 'redact-secret-benchmarks/mcp-overhead-v1',
 ];
 
+/** One value the harness compared between the previous release and the current build, in the same process. */
+interface AdapterChangeValue { readonly baseline: number | null; readonly current: number | null; readonly difference: number | null; readonly relative: number | null }
+
 export interface AdapterOverheadOutput {
   readonly schema: string;
   readonly language: 'javascript' | 'python' | 'mcp-javascript';
@@ -567,6 +577,14 @@ export interface AdapterOverheadOutput {
     readonly host: string; readonly profileId: string;
     readonly scannerCallsPerEvent: number; readonly scannedCodeUnitsPerEvent: number;
     readonly derived: { readonly traversal: number; readonly coreScan: number; readonly adapterOverhead: number };
+    /** v2: per-mode single-event latency and allocation; only the adapter-core memory pass is read (#472). */
+    readonly modes?: Record<string, {
+      readonly memory?: { readonly allocatedBytesPerEvent: number | null; readonly peakBytes: number | null; readonly gcCountPerEvent: number | null };
+    }>;
+    /** v2 under `--baseline`: the previous release's measurement, or why it is not comparable. */
+    readonly baseline?: { readonly comparable: boolean; readonly reason?: string };
+    /** v2 under `--baseline`: baseline to current per value, both timed in this process. */
+    readonly change?: Partial<Record<'traversal' | 'adapterCoreLatencyP95' | 'scannerCallsPerEvent', AdapterChangeValue>>;
   }[];
 }
 
@@ -579,6 +597,77 @@ function runtimeLine(runtime: string): string {
 export function adapterProfileId(output: AdapterOverheadOutput): string {
   const { platform, arch, cpuModel, runtime } = output.environment;
   return `${platform}-${arch}|${cpuModel ?? 'unknown-cpu'}|${runtimeLine(runtime)}`;
+}
+
+type AdapterRow = AdapterOverheadOutput['results'][number];
+
+/** The ADR's minimum: the verdict uses the median same-session change over at least this many processes per language. */
+export const MINIMUM_ADAPTER_CHANGE_PROCESSES = 5;
+type AdapterMemory = NonNullable<NonNullable<AdapterRow['modes']>[string]['memory']>;
+
+/**
+ * Allocation of the adapter-core mode (v2), deterministic enough to budget
+ * absolutely like `memory` (#472): JavaScript bytes allocated per event
+ * (`v8.GCProfiler`) or Python's tracemalloc peak, median over processes. The
+ * GC count is recorded with them and not budgeted.
+ */
+function adapterMemoryMetrics(key: string, profile: string, rows: readonly AdapterRow[]): Metric[] {
+  const out: Metric[] = [];
+  const fields: readonly [string, string, (memory: AdapterMemory) => number | null][] = [
+    ['allocated-bytes', 'bytes-per-event', memory => memory.allocatedBytesPerEvent],
+    ['peak-bytes', 'bytes', memory => memory.peakBytes],
+    ['gc-count', 'collections-per-event', memory => memory.gcCountPerEvent],
+  ];
+  for (const [suffix, unit, pick] of fields) {
+    const values = rows.flatMap(row => {
+      const memory = row.modes?.['adapter-core']?.memory;
+      const value = memory === undefined ? null : pick(memory);
+      return typeof value === 'number' ? [value] : [];
+    });
+    if (values.length > 0) out.push({ id: `${key}/${suffix}`, dimension: 'adapter-overhead', profile, unit, value: median(values), samples: values.length });
+  }
+  return out;
+}
+
+/**
+ * Traversal judged on the harness's same-session change (#472, ADR
+ * 2026-09-29): the previous adapter release and the current build were timed
+ * in one process over the same core and hosts, so the machine cancels out.
+ * The value is the current/previous ratio, median over processes. It is not
+ * applied when the two builds make different numbers of scanner calls (they
+ * do different work; the calls trigger reports that), and a previous release
+ * the harness could not compare is an invalid measurement. Absent when no
+ * process ran under `--baseline`, and invalid below five processes.
+ */
+function adapterChangeMetric(key: string, profile: string, rows: readonly AdapterRow[], repetitions: number): Metric | null {
+  if (!rows.some(row => row.change !== undefined || row.baseline !== undefined)) return null;
+  const base = { id: `${key}/traversal-change`, dimension: 'adapter-overhead' as const, profile, unit: 'ratio', value: 1, samples: repetitions };
+  const uncomparable = rows.find(row => row.baseline === undefined || row.baseline.comparable !== true || row.change?.traversal === undefined);
+  if (uncomparable !== undefined) {
+    const reason = uncomparable.baseline === undefined ? 'a process ran without --baseline'
+      : uncomparable.baseline.comparable !== true ? uncomparable.baseline.reason ?? 'no reason recorded' : 'the previous release did not report a traversal';
+    return { ...base, invalid: `the previous adapter release is not comparable: ${reason}` };
+  }
+  const moved = rows.map(row => row.change!.scannerCallsPerEvent).find(value => value === undefined || value.difference !== 0);
+  if (moved !== undefined || rows.some(row => row.change!.scannerCallsPerEvent === undefined)) {
+    const what = moved === undefined ? 'was not reported' : `moved from ${moved.baseline} to ${moved.current}`;
+    return { ...base, notComparable: `scanner calls per event ${what}: the builds do different work, so timing is not like-for-like (the scanner-calls trigger reports the change)` };
+  }
+  if (rows.length < MINIMUM_ADAPTER_CHANGE_PROCESSES) {
+    return { ...base, invalid: `${rows.length} process(es) measured this row, at least ${MINIMUM_ADAPTER_CHANGE_PROCESSES} required: a single process is never judged (JavaScript traversal moves by microseconds between A/A processes)` };
+  }
+  const traversals = rows.map(row => row.change!.traversal!);
+  if (traversals.some(t => t.baseline === null || t.current === null || t.baseline <= 0)) {
+    return { ...base, invalid: 'the previous release\'s traversal is not a positive measurement' };
+  }
+  const tails = rows.map(row => row.change!.adapterCoreLatencyP95)
+    .filter((t): t is AdapterChangeValue => t !== undefined && t.baseline !== null && t.current !== null && t.baseline > 0);
+  return {
+    ...base, value: median(traversals.map(t => t.current! / t.baseline!)), pairedBaseline: median(traversals.map(t => t.baseline!)),
+    ...(tails.length === rows.length ? { tail: {
+      statistic: 'adapter-core single-event p95 latency ratio', value: median(tails.map(t => t.current! / t.baseline!)),
+      pairedBaseline: median(tails.map(t => t.baseline!)) } } : {}),
+  };
 }
 
 /**
@@ -617,6 +706,9 @@ export function metricsFromAdapterOverhead(outputs: readonly AdapterOverheadOutp
         value: first.scannerCallsPerEvent, samples: rows.length });
       metrics.push({ id: `${key}/scanned-code-units`, dimension: 'adapter-overhead', profile, unit: 'code-units-per-event',
         value: first.scannedCodeUnitsPerEvent, samples: rows.length });
+      metrics.push(...adapterMemoryMetrics(key, profile, rows));
+      const change = adapterChangeMetric(key, profile, rows, repetitions);
+      if (change !== null) metrics.push(change);
     }
   }
   return { metrics, profiles };
@@ -647,6 +739,12 @@ export interface NoiseInputs {
   readonly rerunMemorySpread: number;
   /** Between-process spread and absolute standard deviation of adapter traversal, per `host/profileId`. */
   readonly adapterTraversal: Record<string, { readonly spread: number; readonly standardDeviation: number }>;
+  /**
+   * Largest A/A ratio deviation, max(r, 1/r) - 1, of the same-session change values (the current build against a
+   * copy of itself, harness `--baseline`), per `host/profileId`. `allocatedBytes` (JavaScript) and `peakBytes`
+   * (Python) exist only where the language reports them.
+   */
+  readonly adapterChange: Record<string, { readonly traversal: number; readonly p95Latency: number; readonly allocatedBytes?: number; readonly peakBytes?: number }>;
 }
 
 /** The policy constants the derivation applies; recorded in the budgets file verbatim. */
@@ -707,23 +805,49 @@ export function deriveTriggers(snapshot: Snapshot, noiseInputs: NoiseInputs): Tr
       triggers.push({ ...base, metric: 'artifact bytes', minimumSamples: 1, threshold: sizeThreshold(metric.id),
         derivation: 'deterministic; release-history policy (see rules.size)' });
     } else {
-      const exact = !metric.id.endsWith('/traversal');
-      if (exact) {
+      const key = metric.id.split('/').slice(1, 3).join('/');
+      if (metric.id.endsWith('/scanner-calls') || metric.id.endsWith('/scanned-code-units')) {
         triggers.push({ ...base, metric: metric.id.endsWith('/scanner-calls') ? 'scanner calls per event' : 'scanned code units per event',
           minimumSamples: 1, threshold: { relative: 0, absoluteFloor: 0 }, derivation: 'deterministic count: any increase is a trigger' });
-      } else {
-        const key = metric.id.split('/').slice(1, 3).join('/');
+      } else if (metric.id.endsWith('/traversal')) {
+        // Judged on the same-session change against the previous adapter release (#472), not on this
+        // absolute value: the snapshot's traversal is reported, and its between-process SD sets the floor.
         const observed = noiseInputs.adapterTraversal[key];
+        const aa = noiseInputs.adapterChange[key];
         if (observed === undefined) throw new Error(`regression-budgets:no-adapter-noise:${metric.id}`);
+        if (aa === undefined) {
+          // Transitional: a row with no A/A evidence yet cannot get a same-session threshold, so it keeps the
+          // absolute trigger against the snapshot until a baseline promoted with an A/A study replaces it.
+          triggers.push({
+            ...base, metric: 'adapter traversal, median over processes of per-process median difference', minimumSamples: 15,
+            threshold: {
+              relative: ceilToFivePercent(Math.max(0.15, 2 * observed.spread)),
+              absoluteFloor: Math.max(0.5, Math.ceil(3 * observed.standardDeviation * 10) / 10),
+            },
+            derivation: `between-process spread ${(observed.spread * 100).toFixed(1)}%, standard deviation ${observed.standardDeviation.toFixed(3)} microseconds`,
+          });
+          continue;
+        }
         triggers.push({
-          ...base, metric: 'adapter traversal, median over processes of per-process median difference', minimumSamples: 15,
-          threshold: {
-            relative: ceilToFivePercent(Math.max(0.15, 2 * observed.spread)),
-            absoluteFloor: Math.max(0.5, Math.ceil(3 * observed.standardDeviation * 10) / 10),
-          },
-          derivation: `between-process spread ${(observed.spread * 100).toFixed(1)}%, standard deviation ${observed.standardDeviation.toFixed(3)} microseconds`,
+          id: `${metric.id}-change`, dimension: metric.dimension, profile: metric.profile, unit: 'ratio', direction: 'increase', baselineValue: 1,
+          metric: 'adapter traversal, current/previous-release ratio timed in one process, median over processes',
+          threshold: { relative: ceilToFivePercent(Math.max(0.15, 2 * aa.traversal)), absoluteFloor: 0 },
+          tail: { statistic: 'adapter-core p95 latency ratio', threshold: { relative: ceilToFivePercent(Math.max(0.15, 2 * aa.p95Latency)), absoluteFloor: 0 } },
+          pairedFloorMicroseconds: Math.max(0.5, Math.ceil(3 * observed.standardDeviation * 10) / 10),
+          minimumSamples: 15,
+          derivation: `A/A traversal ratio deviation ${(aa.traversal * 100).toFixed(1)}%, p95 latency ratio deviation ${(aa.p95Latency * 100).toFixed(1)}%; floor from the between-process standard deviation ${observed.standardDeviation.toFixed(3)} microseconds`,
+        });
+      } else if (metric.id.endsWith('/allocated-bytes') || metric.id.endsWith('/peak-bytes')) {
+        const aa = noiseInputs.adapterChange[key];
+        const spread = aa?.[metric.id.endsWith('/allocated-bytes') ? 'allocatedBytes' : 'peakBytes'];
+        if (spread === undefined) throw new Error(`regression-budgets:no-adapter-noise:${metric.id}`);
+        triggers.push({
+          ...base, metric: metric.id.endsWith('/allocated-bytes') ? 'adapter-core bytes allocated per event, median over processes' : 'adapter-core peak traced bytes, median over processes',
+          minimumSamples: 1, threshold: { relative: ceilToFivePercent(Math.max(0.10, 2 * spread)), absoluteFloor: KIBIBYTE },
+          derivation: `A/A deviation ${(spread * 100).toFixed(1)}%`,
         });
       }
+      // gc-count is recorded in the snapshot and not budgeted (ADR 2026-09-29).
     }
   }
   return triggers;
@@ -806,9 +930,10 @@ export function evaluateBudgets(
   for (const trigger of budgets.triggers) {
     const baselineMetric = baseline.metrics[trigger.id];
     // A paired ratio trigger's baseline is 1: the in-job baseline, not a stored value.
-    const baselineValue = trigger.pairedFloorMilliseconds !== undefined ? trigger.baselineValue : baselineMetric?.value ?? trigger.baselineValue;
+    const pairedFloor = trigger.pairedFloorMilliseconds ?? trigger.pairedFloorMicroseconds;
+    const baselineValue = pairedFloor !== undefined ? trigger.baselineValue : baselineMetric?.value ?? trigger.baselineValue;
     const floorAsRatio = (inJob: number | undefined) =>
-      trigger.pairedFloorMilliseconds === undefined || inJob === undefined || inJob <= 0 ? 0 : trigger.pairedFloorMilliseconds / inJob;
+      pairedFloor === undefined || inJob === undefined || inJob <= 0 ? 0 : pairedFloor / inJob;
     const measuredMetric = candidate.metrics[trigger.id];
     const allowed = Math.max(allowedChange(baselineValue, trigger.threshold), floorAsRatio(measuredMetric?.pairedBaseline));
     const common = { id: trigger.id, dimension: trigger.dimension, profile: trigger.profile, baseline: baselineValue, unit: trigger.unit,
@@ -824,6 +949,14 @@ export function evaluateBudgets(
     }
     const problem = profileProblem(trigger.dimension, baseline, candidate, trigger);
     const metric = candidate.metrics[trigger.id];
+    if (problem === null && metric?.notComparable !== undefined) {
+      results.push({ ...common, ...empty, candidate: metric.value, verdict: 'not-evaluated', reason: metric.notComparable });
+      continue;
+    }
+    if (problem === null && metric?.invalid !== undefined) {
+      results.push({ ...common, ...empty, candidate: metric.value, verdict: 'invalid-measurement', reason: metric.invalid });
+      continue;
+    }
     if (problem !== null || metric === undefined || metric.samples < trigger.minimumSamples) {
       const reason = problem ?? (metric === undefined ? 'metric missing from the candidate' : `${metric.samples} samples, at least ${trigger.minimumSamples} required`);
       results.push({ ...common, ...empty, candidate: metric?.value ?? null, verdict: 'invalid-measurement', reason });
@@ -842,7 +975,7 @@ export function evaluateBudgets(
     }
     if (trigger.corroboration !== undefined) {
       const corroborating = metric.corroboration?.value;
-      const corroborationBaseline = trigger.pairedFloorMilliseconds !== undefined ? trigger.corroboration.baselineValue
+      const corroborationBaseline = pairedFloor !== undefined ? trigger.corroboration.baselineValue
         : baselineMetric?.corroboration?.value ?? trigger.corroboration.baselineValue;
       const corroborated = corroborating !== undefined &&
         corroborating - corroborationBaseline > Math.max(allowedChange(corroborationBaseline, trigger.corroboration.threshold),
@@ -978,7 +1111,15 @@ export function candidateFromSnapshot(snapshot: Snapshot): CandidateMeasurement 
     profiles[dimension] = dimension === 'size' ? {} : dimension === 'adapter-overhead'
       ? snapshot.profiles['adapter-overhead']! : snapshot.profiles.latency!;
   }
-  return { sourceCommit: snapshot.sourceCommit, sources: [`baseline ${snapshot.id}`], metrics: snapshot.metrics, profiles, detection: snapshot.detection ?? null };
+  // A snapshot carries no same-session pair of adapter releases: against itself the change is exactly 1, so
+  // adapter traversal between two baselines, like core timing, is judged by a paired run and not from stored absolutes.
+  const metrics: Record<string, Metric> = { ...snapshot.metrics };
+  for (const metric of Object.values(snapshot.metrics)) {
+    if (metric.dimension !== 'adapter-overhead' || !metric.id.endsWith('/traversal')) continue;
+    metrics[`${metric.id}-change`] = { id: `${metric.id}-change`, dimension: metric.dimension, profile: metric.profile, unit: 'ratio', value: 1,
+      samples: metric.samples, pairedBaseline: metric.value };
+  }
+  return { sourceCommit: snapshot.sourceCommit, sources: [`baseline ${snapshot.id}`], metrics, profiles, detection: snapshot.detection ?? null };
 }
 
 /**
@@ -1011,7 +1152,16 @@ export function historyProblems(
       problems.push(`baseline ${record.id}: supersedes unknown baseline ${record.supersedes}`);
       continue;
     }
-    const report = evaluateBudgets(budgets, previous, candidateFromSnapshot(snapshots.get(record.id)!), ledger);
+    const promoted = candidateFromSnapshot(snapshots.get(record.id)!);
+    // A promotion may re-take the adapter series at a new workload digest (#472). The digest changes because
+    // workloads were added, not because a row changed, so the promotion is compared row by row: rows both
+    // baselines carry are judged, new rows have no counterpart, and the digest itself is not a breach.
+    const adapterProfile = promoted.profiles['adapter-overhead'];
+    const previousAdapterProfile = previous.profiles['adapter-overhead'];
+    const comparable: CandidateMeasurement = adapterProfile === undefined || previousAdapterProfile === undefined ? promoted
+      : { ...promoted, profiles: { ...promoted.profiles, 'adapter-overhead': Object.fromEntries(Object.entries(adapterProfile)
+        .map(([key, value]) => [key, key.endsWith(':workloadDigest') ? previousAdapterProfile[key] ?? value : value])) } };
+    const report = evaluateBudgets(budgets, previous, comparable, ledger);
     for (const result of report.triggers) {
       if (result.verdict === 'regression') {
         problems.push(`baseline ${record.id} replaced ${record.supersedes} over an unaccepted breach of ${result.id} (${result.baseline} -> ${result.candidate} ${result.unit})`);

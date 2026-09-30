@@ -50,7 +50,7 @@ report combines them into a score.
 | `initialization` | the same paired run | the same | initialization median ratio per surface × workload profile; the p95 ratio is the tail check |
 | `memory` | core `CompleteAssessment` summary (`performance-evaluation.yml`) | `linux-x64-release` | largest observed sample per surface × profile × observable category |
 | `size` | WebAssembly: `wasm-sizes.json`, and the quickstart bundle: `quickstart-bundle.json`, both measured from the candidate's own build in `performance-evaluation.yml` (redact-secret#929, #937); the other families: `benchmarks/operational-evidence.json` (#141) | `release-artifacts` | compressed WebAssembly per profile (plus the optional pii builds, baseline-pending), what the quickstart browser bundle fetches, npm tarballs, native addons, wheels, CLI binaries |
-| `adapter-overhead` | the `redact-secret-adapters` overhead harnesses | the measuring host (platform, arch, CPU model, runtime line) | adapter traversal per host × workload, scanner calls per event, scanned code units per event |
+| `adapter-overhead` | the `redact-secret-adapters` overhead harnesses | the measuring host (platform, arch, CPU model, runtime line) | adapter traversal per host × workload (as a same-session ratio against the previous adapter release), adapter-core allocation, scanner calls per event, scanned code units per event |
 
 **Timing is judged on same-job paired ratios** (#303). The hosted runner's
 machine class varies from job to job: six runs at one pin measured up to 45%
@@ -138,13 +138,33 @@ The dimension reads `redact-secret-adapters/overhead-v1` and `-v2` outputs
 alike (#472). v2 only adds fields: per-mode single-event latency and
 allocation, `derived.adapterOverheadRatio`, and, under the harness's
 `--baseline`, a per-result `baseline` and `change` against the previous
-adapter release measured in the same process. Either version yields the same
-three metrics. The added fields are not budgeted yet; the accepted rules for
-them are in
-[`2026-09-29-judge-adapter-traversal-on-same-session-change.md`](../decisions/2026-09-29-judge-adapter-traversal-on-same-session-change.md).
+adapter release measured in the same process. The v2 fields are budgeted by
+the rules in
+[`2026-09-29-judge-adapter-traversal-on-same-session-change.md`](../decisions/2026-09-29-judge-adapter-traversal-on-same-session-change.md):
+
+- **Traversal** is judged on `change.traversal`, as the current/previous
+  ratio, median over at least five processes per language (a single process is
+  `invalid-measurement`). It is a same-job paired ratio like core timing, with
+  the floor in microseconds of the in-process previous-release traversal. The
+  snapshot's absolute traversal is reported, not judged.
+- **The work gate.** When `change.scannerCallsPerEvent.difference` is not 0 the
+  two builds do different work: the traversal trigger is `not-evaluated`, in
+  either direction, and the scanner-calls trigger reports the change. A result
+  with `baseline.comparable: false` is `invalid-measurement`.
+- **Tail.** A p95 ratio of the adapter-core single-event latency above its own
+  threshold while the traversal median is inside is tail-only
+  (`invalid-measurement`, rerun). p99 is reported, not budgeted.
+- **Allocation** is absolute against the snapshot: JavaScript
+  `allocatedBytesPerEvent` and Python `peakBytes` of `adapter-core`. The GC
+  count is recorded in the snapshot, not budgeted.
+
+A v1 output, or a v2 output without `--baseline`, carries no traversal change
+or allocation: those triggers are `invalid-measurement` (missing metric).
 The v2 harnesses also add workloads, which changes the workload digest, so a
-v2 candidate is `invalid-measurement` against a v1-digest baseline until the
-adapter baseline is promoted at the new digest.
+candidate at the new digest is `invalid-measurement` against a baseline at an
+older digest. A baseline promotion that changes the digest is compared row by
+row against the previous baseline: rows both carry are judged, and the digest
+itself is not a breach.
 
 ## How thresholds are derived
 
@@ -164,7 +184,8 @@ both sides.
 | initialization (paired median ratio) | `ceil5%(max(25%, 2 × row's largest A/A median ratio deviation))` | 2 ms | tail check at `ceil5%(max(50%, 2 × row's largest A/A p95 ratio deviation))` and 2 ms | 10 per side |
 | memory | `ceil5%(max(10%, 2 × max(CI cross-run spread, rerun spread)))` | 1 MiB | — | 5 |
 | size | 5% | 4 KiB (compressed wasm, bundle, npm), 16 KiB (addons, wheels, CLI) | — | 1 |
-| adapter traversal | `ceil5%(max(15%, 2 × between-process spread))` | `max(0.5 µs, 3 × between-process SD)` | — | 15 repetitions |
+| adapter traversal (same-session ratio, median over ≥5 processes) | `ceil5%(max(15%, 2 × row's largest A/A ratio deviation))` | `max(0.5 µs, 3 × between-process SD)` of the in-process previous-release traversal | tail check: an adapter-core p95 latency ratio above `ceil5%(max(15%, 2 × row's largest A/A p95 ratio deviation))` with the median inside is `invalid-measurement` | 15 repetitions |
+| adapter allocation (JavaScript bytes per event, Python peak bytes) | `ceil5%(max(10%, 2 × row's largest A/A ratio deviation))` | 1 KiB | — | 1 |
 | adapter calls / code units | any increase | 0 | — | 1 |
 
 The noise inputs are committed under `benchmarks/regression-evidence/`:
@@ -197,6 +218,12 @@ The noise inputs are committed under `benchmarks/regression-evidence/`:
 - `adapter-overhead-darwin-arm64.json` holds five independent processes per
   language of the adapter harnesses. Each trigger's between-process spread and
   standard deviation come from it.
+- `adapter-aa-darwin-arm64.json` (once a baseline is promoted with it; a row
+  with no A/A study keeps the absolute traversal trigger against the snapshot
+  until then) holds A/A runs of the adapter harness on the
+  same host: the current build timed against a copy of itself with
+  `--baseline`. The largest ratio deviation of each row's traversal, p95
+  latency and allocation sets the adapter thresholds above.
 
 ### Why timing is judged on the median ratio, with the p95 ratio as a tail check
 
@@ -265,7 +292,7 @@ promotion is invalid.
 # except the wasm and quickstart-bundle size rows, which --summary requires).
 # Timing needs --paired; --summary alone judges memory and reports timing as informational.
 npm run performance:budgets:evaluate -- --summary <summary.json> --paired <paired.json> \
-  --wasm-sizes <wasm-sizes.json> --quickstart-bundle <quickstart-bundle.json> --operational <operational-evidence.json> --adapter <overhead-v1 output or series> \
+  --wasm-sizes <wasm-sizes.json> --quickstart-bundle <quickstart-bundle.json> --operational <operational-evidence.json> --adapter <overhead-v2 series, five processes run with --baseline> \
   --source-commit <40-hex> --json-out r.json --markdown-out r.md
 
 # the candidate build's wasm sizes (in performance-evaluation.yml, after both wasm profiles are built)

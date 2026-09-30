@@ -64,4 +64,6 @@ export const AccuracyView: Story = { args: { toolbar: { views, currentHref: view
 export const CredentialsNotMeasured: Story = {
   args: { switches: runtimeSwitches('external', 'credentials'), toolbar: undefined, questions: credentialQuestions },
 };
+/** With the link to the pair page, which sets two libraries side by side across many texts. */
+export const WithPairLink: Story = { args: { pairLink: { href: '/comparison/performance/', label: 'Compare two across many texts →' } } };
 export const Phone: Story = { parameters: { viewport: { defaultViewport: 'mobile1' } } };

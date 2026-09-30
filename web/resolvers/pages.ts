@@ -14,6 +14,7 @@ import { loadAccountingFloors } from '../services/floors';
 import { loadFeatureClaims } from '../services/features';
 import { loadFindings } from '../services/findings';
 import { loadPeerProfiles } from '../services/peers';
+import { loadOwnPerformance } from '../services/performance';
 import { loadPeerRuntime } from '../services/runtime';
 import { loadRun, type MeasuredRun } from '../services/run';
 import {
@@ -26,6 +27,7 @@ import {
 import { count, int } from './format';
 import { LIST_LEVELS } from './filters';
 import { buildSuiteRecords, type SuiteRecordsFile } from './fixtures';
+import { resolvePerformancePanels, type PerformancePanel } from './performance';
 import { resolveDetector, resolveDetectorList, type DetectorDetail } from './detectors';
 import { milestoneLabel, resolveFindingsInventory, resolveSuiteRows, type FindingsInventory } from './inventory';
 import { resolveRowsData, rowFacts, rowsHref, rowsSource, type RowScanner, type RowsData, type RowsSource } from './rows';
@@ -38,7 +40,7 @@ import { resolveRunState, type RunState } from './run';
 import type { EvidenceLevelLink, HubTileData } from '../components/report/types';
 import type { MetaItem } from '../components/page/MetaList';
 
-export type { FeaturePage, RuntimePanel, ComparisonHubProps };
+export type { FeaturePage, RuntimePanel, ComparisonHubProps, PerformancePanel };
 export type { FamilyDetail, FamilyList, FindingsBlock, LevelAnswers, PeersBlock, RunState };
 
 async function context() {
@@ -447,4 +449,11 @@ export async function resolveFeatureComparisonPage(): Promise<FeaturePage> {
 export async function resolveRuntimeComparisonPage(): Promise<RuntimePanel[]> {
   const [runtime, features] = await Promise.all([loadPeerRuntime(), loadFeatureClaims()]);
   return resolveRuntimePanels(runtime, features);
+}
+
+// ---- /comparison/performance ---------------------------------------------------------
+
+export async function resolvePerformancePairPage(): Promise<PerformancePanel[]> {
+  const [runtime, own] = await Promise.all([loadPeerRuntime(), loadOwnPerformance()]);
+  return resolvePerformancePanels(runtime, own);
 }

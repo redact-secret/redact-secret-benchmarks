@@ -66,6 +66,8 @@ try {
   const big = corpus.fixtures.reduce((a, b) => (b.content.length > a.content.length ? b : a));
   ROUTES.push(`report/fixtures/context-edges/?fixture=${big.id}`);
 } catch { /* the generated corpus is materialised by npm ci */ }
+// The performance pair page (#569): the default pair, the other library, and the setting that changes what redact-secret did.
+ROUTES.push('comparison/performance', 'comparison/performance/?with=openredaction&setting=default', 'comparison/performance/?with=openredaction&setting=pii-global');
 // States of the pages that fetch build-emitted data (rows tables, fixture pages), by how the request to /data/ is treated.
 const firstFixture = firstOf.get(smallSuite.id);
 const STATES = [

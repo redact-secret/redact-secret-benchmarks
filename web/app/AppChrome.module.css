@@ -1,0 +1,24 @@
+@layer components {
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding-inline: clamp(var(--space-4), 4vw, var(--space-16));
+  }
+
+  .main {
+    padding-bottom: var(--space-16);
+    min-width: 0;
+  }
+
+  .footer {
+    border-top: 1px solid var(--line);
+    padding: var(--space-8) clamp(var(--space-4), 4vw, var(--space-16));
+  }
+
+  .note {
+    margin: 0 auto;
+    max-width: 1280px;
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+}

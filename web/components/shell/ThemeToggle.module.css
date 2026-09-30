@@ -1,0 +1,34 @@
+/* Rules live in `@layer components`, which is declared after `mui` (theme/layers.ts),
+   so these override MUI's generated styles by layer order, not specificity. */
+@layer components {
+  .group {
+    border-radius: var(--radius-sm);
+  }
+
+  .option {
+    font: var(--text-small);
+    color: var(--ink-muted);
+    border: 1px solid var(--ink-muted);
+    border-radius: 0;
+    padding: var(--space-1) var(--space-3);
+    text-transform: none;
+  }
+
+  .option:first-child {
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  }
+
+  .option:last-child {
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  .option:global(.Mui-selected) {
+    background: var(--ink);
+    color: var(--surface);
+  }
+
+  .option:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+}

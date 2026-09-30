@@ -1,0 +1,15 @@
+/*
+ * CSS layer order, declared once and imported first by app/layout.tsx and
+ * .storybook/preview.tsx.
+ *
+ * MUI's emotion styles are emitted inside `@layer mui` (AppRouterCacheProvider
+ * enableCssLayer; StyledEngineProvider enableCssLayer in Storybook). Our CSS
+ * Modules put their rules inside `@layer components`. Later layers win
+ * regardless of selector specificity, so a class in a module overrides MUI with
+ * no `!important` and no specificity hacks.
+ *
+ * Layer order is fixed by the first appearance of each name, so this statement
+ * has to reach the browser before any stylesheet that names a layer.
+ * scripts/check-export.mjs verifies that on the built pages.
+ */
+@layer theme, base, mui, components, utilities;

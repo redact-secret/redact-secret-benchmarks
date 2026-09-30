@@ -45,7 +45,7 @@ export default async function Page({ params }: { params: Promise<{ family: strin
         description={data.description}
         facts={family.facts}
         factsByLevel={data.factsByLevel}
-        data={data.rows}
+        rows={data.rows}
         levels={data.levels.length ? data.levels : undefined}
         defaultScanners="product"
         showOptions={ROW_SHOW}

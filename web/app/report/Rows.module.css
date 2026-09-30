@@ -1,0 +1,31 @@
+@layer components {
+  /*
+   * The table region of a rows view. While the rest of the rows is on its way the rows already
+   * drawn stay in place and dim after a short delay (a load under a quarter of a second never
+   * visibly changes anything), so the layout never moves and nothing flashes.
+   */
+  .body {
+    display: grid;
+    gap: var(--space-4);
+    min-width: 0;
+    transition: opacity 160ms var(--ease-out);
+  }
+
+  .pending {
+    opacity: 0.5;
+    pointer-events: none;
+    transition-delay: 240ms;
+  }
+
+  .noscript {
+    margin: 0;
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .body {
+      transition: none;
+    }
+  }
+}

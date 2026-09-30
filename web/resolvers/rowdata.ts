@@ -50,3 +50,23 @@ export interface RowsData {
 /** The text a row's search matches: what the table shows for the fixture. */
 export const rowSearchText = (data: Pick<RowsData, 'dictionary'>, item: CompactRow): string =>
   `${item.i} ${data.dictionary[item.g]} ${data.dictionary[item.k]} ${data.dictionary[item.e]}`.toLowerCase();
+
+/**
+ * A rows table as a page ships it: the first page of its default view, which paints with the
+ * page, and the path of the build-emitted file that holds every row when there are more than
+ * fit that page. `head` is a complete `RowsData` (its own dictionary and statuses), so the
+ * same code draws it and the loaded file. No `src` means `head` holds every row.
+ */
+export interface RowsSource {
+  head: RowsData;
+  /** Rows in the whole table, for the count and the pager before the rest has loaded. */
+  total: number;
+  /** A path for `lib/data-paths.ts`; present only when `head` is not every row. */
+  src?: string;
+}
+
+/** Shape guard for a loaded rows file: the parts `expandRows` and the filters read exist. */
+export const isRowsData = (value: unknown): value is RowsData => {
+  const v = value as Partial<RowsData> | null;
+  return !!v && Array.isArray(v.scanners) && Array.isArray(v.statuses) && Array.isArray(v.dictionary) && Array.isArray(v.items);
+};

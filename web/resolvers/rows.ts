@@ -21,7 +21,8 @@ import type { RowResult } from '../services/run';
 import type { FixtureCounts, FixtureRowData, ScannerColumnData, StatusLabel } from '../components/report/types';
 import { KIND_TITLE, TIER_TITLE, countsOf, isLeft, isTooMuch, outcomeOf, rowClean, tally } from './families';
 import { count, int } from './format';
-import { FLAG, type CompactRow, type RowsData } from './rowdata';
+import { FLAG, type CompactRow, type RowsData, type RowsSource } from './rowdata';
+import { PAGE_SIZE } from './filters';
 
 export const PRODUCT = 'redact-secret';
 
@@ -35,7 +36,7 @@ export const rowsHref = (level: string): string => `/report/rows/${level}/`;
 export interface RowScanner { id: string; name: string; rows: Map<string, RowResult> | undefined }
 
 export { FLAG, rowSearchText } from './rowdata';
-export type { CompactRow, RowsData } from './rowdata';
+export type { CompactRow, RowsData, RowsSource } from './rowdata';
 
 const problem = (row: RowResult | undefined): boolean => !rowClean(row) || (!!row && isTooMuch(row));
 
@@ -78,6 +79,36 @@ export function resolveRowsData(fixtures: CatalogFixture[], scanners: RowScanner
   });
   ranked.sort((a, b) => a.rank - b.rank || a.index - b.index);
   return { scanners: scanners.map(s => ({ id: s.id, name: s.name })), statuses, dictionary, items: ranked.map(r => r.item) };
+}
+
+/** The first `n` rows with only the dictionary entries and statuses they use, so a page that ships a few rows ships a few words. */
+export function takeRows(data: RowsData, n: number): RowsData {
+  const statuses: StatusLabel[] = [];
+  const statusIndex = new Map<number, number>();
+  const dictionary: string[] = [];
+  const dictionaryIndex = new Map<number, number>();
+  const word = (i: number): number => {
+    let at = dictionaryIndex.get(i);
+    if (at === undefined) { at = dictionary.length; dictionary.push(data.dictionary[i]); dictionaryIndex.set(i, at); }
+    return at;
+  };
+  const status = (i: number): number => {
+    let at = statusIndex.get(i);
+    if (at === undefined) { at = statuses.length; statuses.push(data.statuses[i]); statusIndex.set(i, at); }
+    return at;
+  };
+  const items = data.items.slice(0, n).map((item): CompactRow => ({ ...item, g: word(item.g), k: word(item.k), e: word(item.e), o: item.o.map(status) }));
+  return { scanners: data.scanners, statuses, dictionary, items };
+}
+
+/**
+ * What a page ships for a rows table: the first page of the default view, and `src` (the file
+ * holding every row) only when the table has more rows than one page. A table that fits one page
+ * ships whole and never makes a request.
+ */
+export function rowsSource(data: RowsData, src: string): RowsSource {
+  const total = data.items.length;
+  return total > PAGE_SIZE ? { head: takeRows(data, PAGE_SIZE), total, src } : { head: data, total };
 }
 
 /** Turn compact rows into the block's rows. Only the rows drawn need expanding. */

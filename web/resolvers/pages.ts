@@ -20,15 +20,17 @@ import {
   resolveFamily, resolveFamilyList, familySlug, type FamilyDetail, type FamilyList, type LevelList,
 } from './families';
 import {
-  LEVELS, LEVEL_SHORT as SHORT_LABEL, LEVEL_TITLE as TIER_LABEL, answerMeta, levelHref, levelLinks, resolveAnswers, resolveFindings, resolveHubTiles, resolvePeers, runEyebrow, runFacts,
+  LEVELS, isLevel, LEVEL_SHORT as SHORT_LABEL, LEVEL_TITLE as TIER_LABEL, answerMeta, levelHref, levelLinks, resolveAnswers, resolveFindings, resolveHubTiles, resolvePeers, runEyebrow, runFacts,
   type FindingsBlock, type LevelAnswers, type Level, type PeersBlock,
 } from './report';
 import { count, int } from './format';
 import { LIST_LEVELS } from './filters';
-import { buildSuiteRecords, type FixtureRecord, type SuiteShared } from './fixtures';
+import { buildSuiteRecords, type SuiteRecordsFile } from './fixtures';
 import { resolveDetector, resolveDetectorList, type DetectorDetail } from './detectors';
 import { milestoneLabel, resolveFindingsInventory, resolveSuiteRows, type FindingsInventory } from './inventory';
-import { resolveRowsData, rowFacts, rowsHref, type RowScanner, type RowsData } from './rows';
+import { resolveRowsData, rowFacts, rowsHref, rowsSource, type RowScanner, type RowsData, type RowsSource } from './rows';
+import { PAGE_SIZE } from './filters';
+import { ROWS_KINDS, recordsDataPath, rowsDataPath, type RowsKind } from '../lib/data-paths';
 import type { DetectorRowData, FindingRowData, SuiteRowData } from '../components/report/types';
 import { resolveFeaturePage, resolveHub, resolveRuntimePanels, type FeaturePage, type RuntimePanel } from './comparison';
 import type { ComparisonHubProps } from '../components/comparison/ComparisonHub';
@@ -133,6 +135,72 @@ async function listPage(title: 'Providers' | 'Families'): Promise<ListPageData> 
 export const resolveProvidersPage = () => listPage('Providers');
 export const resolveFamiliesPage = () => listPage('Families');
 
+// ---- Rows and records files: what the browser fetches ------------------------------------
+//
+// A rows table ships its first page with the page and the rest as one build-emitted file
+// (`lib/data-paths.ts`), written by the route handlers in `app/data/` from the same resolvers
+// that shape the page, so the file and the page can never disagree about a row.
+
+const rowsCache = new Map<string, Promise<RowsData | undefined>>();
+
+async function buildRows(kind: RowsKind, id: string): Promise<RowsData | undefined> {
+  const { catalog, measured } = await context();
+  const scanners = rowScanners(measured);
+  if (kind === 'level') return isLevel(id) ? resolveRowsData(catalog.fixtures.filter(f => f.tier === id), scanners) : undefined;
+  if (kind === 'family') {
+    const family = catalog.taxonomy.families.find(f => familySlug(f.id) === id);
+    return family ? resolveRowsData(catalog.fixturesByFamily.get(family.id) ?? [], scanners) : undefined;
+  }
+  if (kind === 'suite') return catalog.suites.some(s => s.id === id) ? resolveRowsData(catalog.fixturesBySuite.get(id) ?? [], scanners) : undefined;
+  return catalog.detectors.some(d => d.id === id) ? resolveRowsData(catalog.fixturesByDetector.get(id) ?? [], scanners) : undefined;
+}
+
+/** Every row of one table, memoised per build (the page and its file ask for the same rows). */
+export function resolveRowsFile(kind: string, id: string): Promise<RowsData | undefined> {
+  if (!(ROWS_KINDS as readonly string[]).includes(kind)) return Promise.resolve(undefined);
+  const key = `${kind}/${id}`;
+  let rows = rowsCache.get(key);
+  if (!rows) { rows = buildRows(kind as RowsKind, id); rowsCache.set(key, rows); }
+  return rows;
+}
+
+/** What a page ships for its table: the first page, and the file's path when the table has more rows than that. */
+async function rowsFor(kind: RowsKind, id: string): Promise<RowsSource> {
+  return rowsSource((await resolveRowsFile(kind, id))!, rowsDataPath(kind, id));
+}
+
+/** Every rows file the export emits: one per table with more rows than a page. */
+export async function resolveRowsFileParams(): Promise<{ kind: RowsKind; id: string }[]> {
+  const catalog = await loadCatalog();
+  const candidates: { kind: RowsKind; id: string }[] = [
+    ...LEVELS.map(id => ({ kind: 'level' as const, id })),
+    ...catalog.taxonomy.families.map(f => ({ kind: 'family' as const, id: familySlug(f.id) })),
+    ...catalog.suites.map(s => ({ kind: 'suite' as const, id: s.id })),
+    ...catalog.detectors.map(d => ({ kind: 'detector' as const, id: d.id })),
+  ];
+  const sized = await Promise.all(candidates.map(async c => ({ c, n: (await resolveRowsFile(c.kind, c.id))?.items.length ?? 0 })));
+  return sized.filter(x => x.n > PAGE_SIZE).map(x => x.c);
+}
+
+/** A suite's fixture records and shared text: what `?fixture=<id>` builds one fixture's page from. */
+export async function resolveSuiteRecordsFile(id: string): Promise<SuiteRecordsFile | undefined> {
+  const [{ catalog, run, measured }, bytes, gaps] = await Promise.all([context(), loadFixtureBytes(), loadFindings()]);
+  const suite = catalog.suites.find(s => s.id === id);
+  if (!suite) return undefined;
+  const runProblem = run.state !== 'measured'
+    ? 'No benchmark run is published for this checkout.'
+    : run.excludedSuites.find(s => s.id === id)?.problem ? `The report for these bytes is left out: ${run.excludedSuites.find(s => s.id === id)!.problem}. The expectation stands on its own; lanes appear once a report re-validates against these bytes.`
+    : run.staleSuites.includes(id) ? 'The report for these bytes is from an older run and is left out.' : undefined;
+  return buildSuiteRecords({
+    suite, fixtures: catalog.fixturesBySuite.get(id) ?? [], bytes,
+    scanners: measured ? measured.scanners : [],
+    ...(runProblem ? { runProblem } : {}),
+    findings: gaps.issues.map(i => ({ number: i.number, url: i.url, milestone: milestoneLabel(gaps.milestone), fixtures: i.fixtures })),
+    detectorTitles: new Map(catalog.detectors.map(d => [d.id, d.title])),
+    familyNames: new Map(catalog.taxonomy.families.map(f => [f.id, f.name])),
+  });
+}
+
 // ---- /report/families/[family] ---------------------------------------------------
 
 export interface FamilyPageData {
@@ -140,8 +208,8 @@ export interface FamilyPageData {
   runState: RunState;
   meta: MetaItem[];
   description: string;
-  /** The family's rows with one outcome per scanner; the page opens on redact-secret's column alone. */
-  rows: RowsData;
+  /** The family's rows with one outcome per scanner (the first page, and the file with the rest); the page opens on redact-secret's column alone. */
+  rows: RowsSource;
   /** The evidence levels the family has rows at, each with its row count, `all` first. */
   levels: { value: string; label: string }[];
   /** The headline counts at each of those levels, so the counts above the rows match the level chosen. */
@@ -166,7 +234,6 @@ export async function resolveFamilyPage(slug: string): Promise<FamilyPageData | 
   const family = id ? resolveFamily(catalog, id, rows) : undefined;
   if (!family) return undefined;
   const fixtures = catalog.fixturesByFamily.get(family.id) ?? [];
-  const scanners = rowScanners(measured);
   const levels = [
     { value: 'all', label: `All levels (${int(fixtures.length)})` },
     ...LIST_LEVELS.filter(l => l.level !== 'all').flatMap(l => {
@@ -183,7 +250,7 @@ export async function resolveFamilyPage(slug: string): Promise<FamilyPageData | 
       ...(measured ? runFacts(measured) : []),
     ],
     description: `${int(family.fixtureCount)} rows, redact-secret's outcome on each. Rows that need a look come first (${int(family.needsLookCount)}), then the rest in corpus order. Choose "Every scanner" to see each scanner's outcome for the same rows.`,
-    rows: resolveRowsData(fixtures, scanners),
+    rows: await rowsFor('family', slug),
     levels: levels.length > 2 ? levels : [],
     factsByLevel: Object.fromEntries(LIST_LEVELS.filter(l => l.level !== 'all').map(l => [l.level, rowFacts(fixtures.filter(f => f.tier === l.level), rows, 'Fixtures')])),
   };
@@ -198,7 +265,7 @@ export interface LevelRowsPageData {
   /** The three levels as links to their rows, and the current one. */
   levels: EvidenceLevelLink[];
   currentHref: string;
-  rows: RowsData;
+  rows: RowsSource;
   facts: { term: string; value: string }[];
   description: string;
   /** The hub page's own level: where the three answers for these rows are. */
@@ -211,7 +278,6 @@ export const resolveLevelSlugs = (): Level[] => LEVELS;
 export async function resolveLevelRowsPage(level: Level): Promise<LevelRowsPageData> {
   const { catalog, run, measured, rows } = await context();
   const fixtures = catalog.fixtures.filter(f => f.tier === level);
-  const scanners = rowScanners(measured);
   const t = TIER_LABEL[level];
   return {
     level,
@@ -224,7 +290,7 @@ export async function resolveLevelRowsPage(level: Level): Promise<LevelRowsPageD
     runState: resolveRunState(run),
     levels: LEVELS.map(l => ({ label: TIER_LABEL[l], shortLabel: SHORT_LABEL[l], href: rowsHref(l) })),
     currentHref: rowsHref(level),
-    rows: resolveRowsData(fixtures, scanners),
+    rows: await rowsFor('level', level),
     facts: rowFacts(fixtures, rows, 'Rows'),
     description: `${int(fixtures.length)} rows at this level. Counts above are redact-secret's; each scanner's outcome for a row is a column. A scanner with no row for a fixture shows "Not measured", never a pass.`,
     answersHref: levelHref(level),
@@ -254,12 +320,12 @@ export interface SuitePageData {
   title: string;
   head: HeadData;
   runState: RunState;
-  rows: RowsData;
+  rows: RowsSource;
   facts: { term: string; value: string }[];
   description: string;
-  /** The compact fixture records and shared text the page builds a fixture's detail from in the browser. */
-  records: FixtureRecord[];
-  shared: SuiteShared;
+  /** The fixture records (`SuiteRecordsFile`) the browser fetches for `?fixture=<id>`, by path, and how many there are. */
+  recordsSrc: string;
+  fixtureCount: number;
 }
 
 export async function resolveSuiteSlugs(): Promise<string[]> {
@@ -267,23 +333,10 @@ export async function resolveSuiteSlugs(): Promise<string[]> {
 }
 
 export async function resolveSuitePage(id: string): Promise<SuitePageData | undefined> {
-  const [{ catalog, run, measured, rows }, bytes, gaps] = await Promise.all([context(), loadFixtureBytes(), loadFindings()]);
+  const { catalog, run, measured, rows } = await context();
   const suite = catalog.suites.find(s => s.id === id);
   if (!suite) return undefined;
   const fixtures = catalog.fixturesBySuite.get(id) ?? [];
-  const scanners = rowScanners(measured);
-  const runProblem = run.state !== 'measured'
-    ? 'No benchmark run is published for this checkout.'
-    : run.excludedSuites.find(s => s.id === id)?.problem ? `The report for these bytes is left out: ${run.excludedSuites.find(s => s.id === id)!.problem}. The expectation stands on its own; lanes appear once a report re-validates against these bytes.`
-    : run.staleSuites.includes(id) ? 'The report for these bytes is from an older run and is left out.' : undefined;
-  const { records, shared } = buildSuiteRecords({
-    suite, fixtures, bytes,
-    scanners: measured ? measured.scanners : [],
-    ...(runProblem ? { runProblem } : {}),
-    findings: gaps.issues.map(i => ({ number: i.number, url: i.url, milestone: milestoneLabel(gaps.milestone), fixtures: i.fixtures })),
-    detectorTitles: new Map(catalog.detectors.map(d => [d.id, d.title])),
-    familyNames: new Map(catalog.taxonomy.families.map(f => [f.id, f.name])),
-  });
   return {
     id, title: suite.title,
     head: {
@@ -293,10 +346,11 @@ export async function resolveSuitePage(id: string): Promise<SuitePageData | unde
       meta: [{ value: count(fixtures.length, 'fixture') }, ...(measured ? runFacts(measured) : [])],
     },
     runState: resolveRunState(run),
-    rows: resolveRowsData(fixtures, scanners),
+    rows: await rowsFor('suite', id),
     facts: rowFacts(fixtures, rows, 'Fixtures'),
     description: `${int(fixtures.length)} fixtures in this suite. Open a fixture for its bytes, expected spans and what each scanner reported.`,
-    records, shared,
+    recordsSrc: recordsDataPath(id),
+    fixtureCount: fixtures.length,
   };
 }
 
@@ -325,7 +379,7 @@ export interface DetectorPageData {
   detector: DetectorDetail;
   head: HeadData;
   runState: RunState;
-  rows: RowsData;
+  rows: RowsSource;
   facts: { term: string; value: string }[];
   findings: FindingRowData[];
   note: string;
@@ -339,7 +393,6 @@ export async function resolveDetectorPage(id: string): Promise<DetectorPageData 
   const [{ catalog, run, measured, rows }, floors, contracts, gaps] = await Promise.all([context(), loadAccountingFloors(), loadDetectorContracts(), loadFindings()]);
   const detector = resolveDetector(catalog, id, measured, contracts.get(id), floors.minDenominator);
   if (!detector) return undefined;
-  const scanners = rowScanners(measured);
   const slugs = new Set(detector.fixtures.map(f => f.slug));
   const inventory = resolveFindingsInventory({ ...gaps, issues: gaps.issues.filter(i => i.fixtures.some(s => slugs.has(s))) }, catalog);
   return {
@@ -355,7 +408,7 @@ export async function resolveDetectorPage(id: string): Promise<DetectorPageData 
       ],
     },
     runState: resolveRunState(run),
-    rows: resolveRowsData(detector.fixtures, scanners),
+    rows: await rowsFor('detector', id),
     facts: rowFacts(detector.fixtures, rows, 'Fixtures'),
     findings: inventory.rows,
     note: 'Detector views overlap, so their groups are never summed across detectors. Other scanners are reference values on the same inputs, in run order.',

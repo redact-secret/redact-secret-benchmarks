@@ -48,7 +48,7 @@ export default async function Page({ params }: { params: Promise<{ level: string
         title="Rows at this evidence level"
         description={data.description}
         facts={data.facts}
-        data={data.rows}
+        rows={data.rows}
         defaultScanners="all"
         showOptions={LEVEL_ROW_SHOW}
         emptyTitle="No rows at this level"

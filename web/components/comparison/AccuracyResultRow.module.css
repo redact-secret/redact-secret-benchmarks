@@ -1,0 +1,105 @@
+@layer components {
+  .row {
+    display: grid;
+    grid-template-columns: minmax(var(--col-label), 0.9fr) minmax(calc(var(--space-16) * 2), 0.8fr) minmax(0, 2.4fr);
+    gap: var(--space-2) var(--space-6);
+    align-items: center;
+    padding: var(--space-4) 0;
+    border-bottom: var(--hairline) solid var(--line);
+  }
+
+  .name {
+    font: var(--text-small-strong);
+    overflow-wrap: break-word;
+  }
+
+  .name small {
+    display: block;
+    font: var(--text-mono-small);
+    font-weight: 400;
+    color: var(--ink-muted);
+  }
+
+  .value {
+    display: grid;
+    gap: calc(var(--space-1) / 2);
+  }
+
+  .value b {
+    font: var(--text-figure-compact);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .value span {
+    font: var(--text-mono-small);
+    color: var(--ink-muted);
+  }
+
+  .bar {
+    display: grid;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+
+  .bar > div {
+    border: var(--hairline) solid var(--ink);
+  }
+
+  .parts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .parts li {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    white-space: nowrap;
+  }
+
+  .parts b {
+    color: var(--ink);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .swatch {
+    display: inline-block;
+    width: var(--space-3);
+    height: var(--space-3);
+    border: var(--hairline) solid var(--ink);
+  }
+
+  .fill {
+    background: var(--ink);
+  }
+
+  .hatch {
+    background: repeating-linear-gradient(135deg, var(--ink) 0 var(--rule-strong), transparent var(--rule-strong) calc(var(--space-1) + var(--hairline)));
+  }
+
+  .outline {
+    background: transparent;
+  }
+
+  /* A phone: name and figure on one line, the strip and its counts under them. */
+  @media (max-width: 720px) {
+    .row {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .bar {
+      grid-column: 1 / -1;
+    }
+
+    .value {
+      text-align: right;
+    }
+  }
+}

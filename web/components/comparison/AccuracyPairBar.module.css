@@ -1,0 +1,59 @@
+@layer components {
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    display: grid;
+    gap: var(--space-3);
+    padding: var(--space-3) 0;
+    background: var(--surface);
+    border-top: var(--hairline) solid var(--ink);
+    border-bottom: var(--hairline) solid var(--ink);
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-6);
+    min-width: 0;
+  }
+
+  .label {
+    min-width: calc(var(--space-16) * 2);
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .label small {
+    display: block;
+    font: var(--text-mono-small);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  /* A phone stacks each row (label over switch) and lets the switch use the full width. */
+  @media (max-width: 720px) {
+    .bar {
+      position: static;
+      gap: var(--space-2);
+    }
+
+    .row {
+      display: grid;
+      gap: var(--space-1);
+    }
+
+    .row > nav {
+      width: 100%;
+    }
+
+    .row > nav > a {
+      flex: 1 1 0;
+      justify-content: center;
+      padding-inline: var(--space-2);
+    }
+  }
+}

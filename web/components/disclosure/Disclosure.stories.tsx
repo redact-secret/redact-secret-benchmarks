@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { Disclosure } from './Disclosure';
 
@@ -20,6 +21,19 @@ type Story = StoryObj<typeof meta>;
 export const Closed: Story = {};
 export const Open: Story = { args: { defaultOpen: true } };
 export const Plain: Story = { args: { variant: 'plain', summary: 'Peer observations', defaultOpen: true } };
+
+/** `onToggle` reports the new state, so a parent can draw a long body only while it is open. */
+export const ReportsToggle: Story = {
+  args: { variant: 'plain', summary: 'Show the files with different results' },
+  render: args => {
+    const [open, setOpen] = useState(false);
+    return (
+      <Disclosure {...args} onToggle={setOpen}>
+        {open ? <p>Drawn now that it is open.</p> : null}
+      </Disclosure>
+    );
+  },
+};
 
 export const Nested: Story = {
   render: () => (

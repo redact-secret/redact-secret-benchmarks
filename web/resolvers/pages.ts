@@ -32,9 +32,10 @@ import { resolveDetector, resolveDetectorList, type DetectorDetail } from './det
 import { milestoneLabel, resolveFindingsInventory, resolveSuiteRows, type FindingsInventory } from './inventory';
 import { resolveRowsData, rowFacts, rowsHref, rowsSource, type RowScanner, type RowsData, type RowsSource } from './rows';
 import { PAGE_SIZE } from './filters';
-import { ROWS_KINDS, recordsDataPath, rowsDataPath, type RowsKind } from '../lib/data-paths';
+import { ACCURACY_DIFFERENCES_PATH, ROWS_KINDS, recordsDataPath, rowsDataPath, type RowsKind } from '../lib/data-paths';
 import type { DetectorRowData, FindingRowData, SuiteRowData } from '../components/report/types';
-import { resolveFeaturePage, resolveHub, resolveRuntimePanels, type FeaturePage, type RuntimePanel } from './comparison';
+import { resolveFeaturePage, resolveHub, resolveRuntimePanels, toolName, type FeaturePage, type RuntimePanel } from './comparison';
+import { diffFileOf, resolveAccuracyPage, type AccuracyPage, type DiffFile, type DiffSource } from './accuracy';
 import type { ComparisonHubProps } from '../components/comparison/ComparisonHub';
 import { resolveRunState, type RunState } from './run';
 import type { EvidenceLevelLink, HubTileData } from '../components/report/types';
@@ -456,4 +457,31 @@ export async function resolveRuntimeComparisonPage(): Promise<RuntimePanel[]> {
 export async function resolvePerformancePairPage(): Promise<PerformancePanel[]> {
   const [runtime, own] = await Promise.all([loadPeerRuntime(), loadOwnPerformance()]);
   return resolvePerformancePanels(runtime, own);
+}
+
+// ---- /comparison/accuracy ---------------------------------------------------------------
+
+export interface AccuracyPairPageData extends Omit<AccuracyPage, 'diff'> {
+  runState: RunState;
+  /** Where the lists of differing files are fetched from, and what the page expects the file to be. Absent without a run. */
+  source?: DiffSource;
+}
+
+async function accuracyPage() {
+  const [{ catalog, run, measured }, profiles, runtime] = await Promise.all([context(), loadPeerProfiles(), loadPeerRuntime()]);
+  return { run, measured, page: resolveAccuracyPage({ catalog, run: measured, profiles, runtime: runtime.comparison, toolNames: { 'flare-redact': toolName('flare-redact'), openredaction: toolName('openredaction') } }) };
+}
+
+/** The accuracy pair page: every reachable pair, level and scope as a panel. The lists of differing files are a build-emitted file. */
+export async function resolveAccuracyPairPage(): Promise<AccuracyPairPageData> {
+  const { run, measured, page } = await accuracyPage();
+  const { diff, ...rest } = page;
+  return { ...rest, runState: resolveRunState(run), ...(diff && measured ? { source: { src: ACCURACY_DIFFERENCES_PATH, runId: measured.runId, fixtures: diff.fixtures.length } } : {}) };
+}
+
+/** The file behind `data/comparison/accuracy/differences.json`: what the lists of differing files are built from. */
+export async function resolveAccuracyDifferencesFile(): Promise<DiffFile> {
+  const { measured, page } = await accuracyPage();
+  // Without a run there is nothing to list (the page asks for no file); the export still gets a valid, empty one.
+  return page.diff && measured ? diffFileOf(page.diff, measured.runId) : diffFileOf({ providers: [], fixtures: [], peers: {} }, '');
 }

@@ -11,7 +11,7 @@
     "build": "next build",
     "typecheck": "tsc --noEmit",
     "check:no-sx": "node scripts/check-no-sx.mjs",
-    "check:routes": "node scripts/check-export.mjs && node scripts/check-export-rows.mjs && node scripts/check-export-performance.mjs",
+    "check:routes": "node scripts/check-export.mjs && node scripts/check-export-rows.mjs && node scripts/check-export-performance.mjs && node scripts/check-export-accuracy.mjs",
     "check:header": "node scripts/check-header.mjs",
     "check:layout": "node scripts/check-layout.mjs",
     "check": "npm run check:no-sx && npm run check:header && npm run typecheck && npm run build && npm run check:routes && npm run build-storybook && npm run check:layout",

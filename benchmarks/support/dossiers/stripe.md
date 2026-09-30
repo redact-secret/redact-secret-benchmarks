@@ -138,7 +138,7 @@ Provider documentation: [API keys](https://docs.stripe.com/keys).
   - Searched with nothing further: eleven Stripe docs pages, nine Stripe SDK and mock repositories, and the rules of gitleaks, trufflehog, betterleaks, CredSweeper, noseyparker and GitLab. GitHub's partner list has no organization row.
 - **Issuance:** needs a Stripe organization. Create one organization API key in a sandbox (and read a live one if available) and record only the bytes after `sk_org_` (`test_`, `live_` or none), the body length, whether the body is only `[A-Za-z0-9]` and the total length; then roll or delete the key.
 - **Collisions:** none worth naming for the prefix, which is unique to Stripe organization keys. `rk_org_` does not exist per Stripe and must stay excluded; `sk_live_`/`sk_test_` are the account-scoped siblings.
-- **Current contract in core:** the shipped `stripe-token` rule claims `sk_org_` + at least 20 `[A-Za-z0-9]` on the docs alone (#513), so an `sk_org_live_` or `sk_org_test_` value, if that segment is real, is not claimed by it; organization keys are then redacted only in named and header contexts. The 1012 record proposes widening the interim rule to `sk_org_(live|test)_`, filed as product gap [#1030](https://github.com/redact-secret/redact-secret/issues/1030) (open, awaiting an organization to measure). Living spec: [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Current contract in core:** core claims `sk_org_` + at least 20 `[A-Za-z0-9]`, and since product PR [#1101](https://github.com/redact-secret/redact-secret/pull/1101) (merge `bfc608cce75f79f6a5cab037d7e558ba629777f6`, closing [#1030](https://github.com/redact-secret/redact-secret/issues/1030)) also `sk_org_live_` and `sk_org_test_` + at least 20 alphanumerics, as the same `stripe` finding as `sk_org_`. This is the support-policy floor: it follows the optional mode segment that two independent applications branch on, not a provider-stated grammar, and no issued key has been observed. The benchmarks side has not followed: no fixture, contract row or measured status covers the mode-segment forms yet. Living spec: [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
 - **Open caveat:** nothing beyond the `sk_org` prefix is provider-stated; an interim rule is a policy floor, not a grammar.
 
 ### `stripe:webhook-signing-secret` — Webhook signing secret
@@ -173,7 +173,7 @@ Provider documentation: [API keys](https://docs.stripe.com/keys).
 ## Open questions
 
 1. Body length and alphabet of the `sk_`/`rk_` keys and of `sk_org_`: no Stripe page states them (benchmarks#33, #45, #127); the 32-character body is tool-corroborated only.
-2. `stripe:organization-api-key`: does `live_` or `test_` follow `sk_org_`, and what are the body length and alphabet? Only a structure-only measurement from a Stripe organization closes it (redact-secret#1012, product gap #1030); benchmarks#127 stays pending on that alone.
+2. `stripe:organization-api-key`: does `live_` or `test_` follow `sk_org_`, and what are the body length and alphabet? Only a structure-only measurement from a Stripe organization closes it (redact-secret#1012; core claims the segment at the policy floor since #1030 / PR #1101); benchmarks#127 stays pending on that alone.
 3. Do Dashboard, API, v2 event destination, Connect and CLI secrets share width and
    alphabet? Do real secrets ever contain `+`, `/` or `=`?
 4. Is a 64-character variant real, or an artifact of placeholders and hex digests?
@@ -187,6 +187,11 @@ Provider documentation: [API keys](https://docs.stripe.com/keys).
   ([evidence](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/stripe-organization-api-key.md)):
   BLOCKED on the mode segment and body; the prefix is the only T1 fact. Status
   comment 2026-09-30 files the product gap as #1030.
+- redact-secret#1030 — 2026-09-30 core claims `sk_org_live_`/`sk_org_test_` + at
+  least 20 alphanumerics as the same `stripe` finding as `sk_org_`, at the
+  support-policy floor (PR #1101, merge `bfc608cce75f79f6a5cab037d7e558ba629777f6`).
+  The verdict stays `issuance-gated`: no issued key observed, body length and
+  alphabet after the segment still unknown.
 - redact-secret-benchmarks#224 — broad-discovery pass for the webhook secret
   (2026-09-24).
 - redact-secret#726 — freeze of the Beta.8 contracts (documented, context-constrained).

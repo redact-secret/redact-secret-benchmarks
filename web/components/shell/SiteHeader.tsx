@@ -4,6 +4,8 @@ import type { Section } from '../../lib/routes';
 import { ThemeToggle } from './ThemeToggle';
 import styles from './SiteHeader.module.css';
 
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
+
 export interface SiteHeaderProps {
   /** The global entrances, in order. */
   sections: Section[];
@@ -19,8 +21,8 @@ export function SiteHeader({ sections, currentPath }: SiteHeaderProps) {
       <div className={styles.inner}>
         <Link className={styles.brand} href="/" aria-label="Redact Secret benchmarks, home">
           {/* The canonical lockup, unchanged: public/logo-light.svg and logo-dark.svg differ only in wordmark ink. The theme picks which one shows. */}
-          <Image className={styles.logoLight} src="/logo-light.svg" alt="" width={944} height={817} priority unoptimized />
-          <Image className={styles.logoDark} src="/logo-dark.svg" alt="" width={944} height={817} priority unoptimized />
+          <Image className={styles.logoLight} src={`${BASE}/logo-light.svg`} alt="" width={944} height={817} priority unoptimized />
+          <Image className={styles.logoDark} src={`${BASE}/logo-dark.svg`} alt="" width={944} height={817} priority unoptimized />
         </Link>
         <nav className={styles.nav} aria-label="Primary">
           <ul className={styles.list}>
@@ -36,6 +38,15 @@ export function SiteHeader({ sections, currentPath }: SiteHeaderProps) {
         </nav>
         <div className={styles.tools}><ThemeToggle /></div>
       </div>
+      <nav className={styles.tabs} aria-label="Primary, bottom bar">
+        <ul className={styles.tabList}>
+          {sections.map(s => (
+            <li key={s.href}>
+              <Link className={styles.tab} href={s.href} aria-current={currentPath.startsWith(s.href) ? 'page' : undefined}>{s.label}</Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </header>
   );
 }

@@ -89,10 +89,17 @@ export interface PeerScannerRow {
   version: string;
   /** "Repository scanner · Directory scan". */
   role: string;
-  blurb: string;
+  /** One plain sentence about what the scanner is built for. Omit when the ledger holds none. */
+  blurb?: string;
   targeted: Ratio | null;
   leftReadable: Ratio | null;
   elsewhere: Ratio | null;
+  /**
+   * Spans it left readable across every input at this level, no matter which its
+   * rules target. Present when the run records it; the three targeted columns
+   * are hidden while no row has them.
+   */
+  allInputs?: Ratio | null;
   safeFlagged: Ratio | null;
 }
 

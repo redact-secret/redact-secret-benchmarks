@@ -6,6 +6,7 @@
   }
 
   .main {
+    padding-top: var(--space-6);
     padding-bottom: var(--space-16);
     min-width: 0;
   }
@@ -13,6 +14,13 @@
   .footer {
     border-top: var(--hairline) solid var(--line);
     padding: var(--space-8) clamp(var(--space-4), 4vw, var(--space-16));
+  }
+
+  /* Room for the fixed tab bar on a phone, so the last line is never under it. */
+  @media (max-width: 720px) {
+    .footer {
+      padding-bottom: calc(var(--space-8) + var(--tabs-h) + env(safe-area-inset-bottom, 0));
+    }
   }
 
   .note {

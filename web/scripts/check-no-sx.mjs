@@ -18,7 +18,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const CODE = /\.(?:[cm]?[jt]sx?)$/;
-const SCAN_DIRS = ['app', 'components', 'lib', 'theme', '.storybook'];
+const SCAN_DIRS = ['app', 'components', 'lib', 'services', 'resolvers', 'theme', '.storybook'];
 
 /** Remove comments; leaves strings alone, which is enough for these patterns. */
 function stripComments(source) {

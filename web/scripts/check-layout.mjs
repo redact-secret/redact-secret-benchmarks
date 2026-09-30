@@ -27,7 +27,20 @@ const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const basePath = process.env.BASE_PATH ?? '/next';
 const WIDTHS = [320, 375, 768];
 const MAX_WORD = 24;
-const ROUTES = ['report', 'report/providers', 'report/families', 'comparison', 'comparison/feature', 'comparison/runtime'];
+const ROUTES = ['report', 'report/?level=T2', 'report/?level=T3&peers=1', 'report/providers', 'report/providers/?q=github&show=signal', 'report/families', 'report/families/?show=empty', 'comparison', 'comparison/feature', 'comparison/runtime'];
+// The real family pages (#556): the family with the most fixtures (paged rows), one with a few, and one with none.
+const repoRoot = path.resolve(webRoot, '..');
+const taxonomy = JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/support/taxonomy.json'), 'utf8'));
+const index = JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/fixture-index.json'), 'utf8'));
+const perFamily = new Map();
+for (const f of index.fixtures) for (const id of f.familyIds) perFamily.set(id, (perFamily.get(id) ?? 0) + 1);
+const slugOf = id => id.replace(':', '--');
+const largest = [...perFamily.entries()].sort((a, b) => b[1] - a[1])[0]?.[0];
+const small = [...perFamily.entries()].find(([, n]) => n > 0 && n <= 10)?.[0];
+const none = taxonomy.families.find(f => !perFamily.has(f.id))?.id;
+for (const id of [largest, small, none]) if (id) ROUTES.push(`report/families/${slugOf(id)}`);
+if (largest) ROUTES.push(`report/families/${slugOf(largest)}/?page=2`);
+const PAGE_ONLY = ['404.html'];
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.png': 'image/png', '.txt': 'text/plain' };
 
 /** Serves storybook-static at `/` and the static export at BASE_PATH. */
@@ -45,7 +58,7 @@ function serve() {
         const body = await readFile(file);
         res.writeHead(200, { 'content-type': TYPES[path.extname(file)] ?? 'application/octet-stream' });
         return res.end(body);
-      } catch { /* try the next root */ }
+      } catch { if (prefix !== '/') break; /* a missing file under the export never falls back to Storybook */ }
     }
     res.writeHead(404).end('not found');
   });
@@ -138,7 +151,8 @@ async function main() {
 
   const targets = [
     ...stories.map(id => ({ name: `story ${id}`, url: `${origin}/iframe.html?id=${id}&viewMode=story`, ready: 'body.sb-show-main', header: false })),
-    ...ROUTES.map(r => ({ name: `page /${r}/`, url: `${origin}${basePath}/${r}/`, ready: 'main', header: true })),
+    ...ROUTES.map(r => ({ name: `page /${r}`, url: `${origin}${basePath}/${r.includes('?') ? r.replace('?', '/?').replace('//', '/') : `${r}/`}`, ready: 'main', header: true })),
+    ...PAGE_ONLY.map(r => ({ name: `page /${r}`, url: `${origin}${basePath}/${r}`, ready: 'main', header: true })),
   ];
 
   const failures = [];

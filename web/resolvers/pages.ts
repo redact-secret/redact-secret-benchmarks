@@ -154,5 +154,6 @@ export async function resolveFeatureComparisonPage(): Promise<FeaturePage> {
 }
 
 export async function resolveRuntimeComparisonPage(): Promise<RuntimePanel[]> {
-  return resolveRuntimePanels(await loadPeerRuntime());
+  const [runtime, features] = await Promise.all([loadPeerRuntime(), loadFeatureClaims()]);
+  return resolveRuntimePanels(runtime, features);
 }

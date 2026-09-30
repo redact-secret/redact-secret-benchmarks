@@ -21,6 +21,18 @@ export function FeatureSources({ title, sources, className }: FeatureSourcesProp
           {sources.map(s => (
             <li key={s.name}>
               <b>{s.name}</b> {s.detail}
+              {s.links && s.links.length > 0 && (
+                <>
+                  {' '}
+                  {s.links.map((l, i) => (
+                    <span key={l.href}>
+                      {i > 0 && ', '}
+                      <a className={styles.link} href={l.href} rel="noopener noreferrer">{l.label}</a>
+                    </span>
+                  ))}
+                  .
+                </>
+              )}
             </li>
           ))}
         </ul>

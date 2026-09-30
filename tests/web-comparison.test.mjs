@@ -86,25 +86,37 @@ test('activeFamilies reads the recorded activation string and nothing else', () 
   assert.deepEqual(activeFamilies(undefined), []);
 });
 
+const source = { kind: 'doc', ref: 'https://example.invalid/readme' };
+const facts = {
+  runsIn: 'Node.js 20', dependencies: 'None',
+  install: { measuredOn: '2026-01-02', method: 'npm pack', note: 'one package', packages: [{ name: 'a', version: '1', packedBytes: 2048, unpackedBytes: 10240 }] },
+  sources: ['https://example.invalid/package.json'],
+};
 const claims = {
   schemaVersion: 1, readOn: '2026-01-02',
-  libraries: [{ id: 'a', name: 'A', version: '1' }, { id: 'b', name: 'B', version: '2' }],
+  libraries: [{ id: 'a', name: 'A', version: '1', facts }, { id: 'b', name: 'B', version: '2' }],
   groups: [{ label: 'Where', rows: [
-    { id: 'r1', label: 'Node', cells: { a: { mark: 'yes', tested: true }, b: { mark: 'yes' } } },
-    { id: 'r2', label: 'Browser', cells: { a: { mark: 'yes' }, b: { mark: 'no' } } },
-    { id: 'r3', label: 'Unlisted', cells: { a: { mark: 'yes' } } },
+    { id: 'r1', label: 'Node', cells: { a: { mark: 'yes', tested: true, test: 'r1.a', source }, b: { mark: 'yes', source } } },
+    { id: 'r2', label: 'Browser', cells: { a: { mark: 'yes', source }, b: { mark: 'no', source } } },
+    { id: 'r3', label: 'Unlisted', cells: { a: { mark: 'yes', source } } },
+    { id: 'r4', label: 'Looks', cells: { a: { mark: 'yes', note: '<X>', literal: true, source }, b: { mark: 'yes', note: '<X>', literal: true, source } } },
   ] }],
-  sources: [{ name: 'A', detail: 'its README' }],
+  sources: [{ name: 'A', detail: 'its README', links: [{ label: 'README', href: 'https://example.invalid/readme' }] }],
 };
 
 test('feature claims: validated, "same" is derived from recorded marks, absence is stated', () => {
   assert.equal(featureClaimsProblem(claims), null);
   assert.match(featureClaimsProblem({ ...claims, libraries: [] }), /libraries/);
-  assert.match(featureClaimsProblem({ ...claims, groups: [{ label: 'g', rows: [{ id: 'x', label: 'x', cells: { zz: { mark: 'yes' } } }] }] }), /unknown library/);
-  assert.match(featureClaimsProblem({ ...claims, groups: [{ label: 'g', rows: [{ id: 'x', label: 'x', cells: { a: { mark: 'great' } } }] }] }), /mark/);
+  assert.match(featureClaimsProblem({ ...claims, groups: [{ label: 'g', rows: [{ id: 'x', label: 'x', cells: { zz: { mark: 'yes', source } } }] }] }), /unknown library/);
+  assert.match(featureClaimsProblem({ ...claims, groups: [{ label: 'g', rows: [{ id: 'x', label: 'x', cells: { a: { mark: 'great', source } } }] }] }), /mark/);
+  assert.match(featureClaimsProblem({ ...claims, groups: [{ label: 'g', rows: [{ id: 'x', label: 'x', cells: { a: { mark: 'yes' } } }] }] }), /needs a source/);
+  assert.match(featureClaimsProblem({ ...claims, groups: [{ label: 'g', rows: [{ id: 'x', label: 'x', cells: { a: { mark: 'yes', tested: true, source } } }] }] }), /name its test/);
+  assert.match(featureClaimsProblem({ ...claims, libraries: [{ id: 'a', name: 'A', version: '1', facts: { ...facts, sources: [] } }, claims.libraries[1]] }), /facts need/);
   const page = resolveFeaturePage({ state: 'recorded', claims });
   assert.equal(page.state, 'recorded');
-  assert.deepEqual(page.view.groups[0].rows.map(r => r.same), [true, false, false], 'a library with no cell is a difference, never "same"');
+  assert.deepEqual(page.view.groups[0].rows.map(r => r.same), [true, false, false, false], 'a library with no cell, or a literal value, is a difference, never "same"');
+  assert.deepEqual(page.view.groups[0].rows[0].cells.a, { mark: 'yes', tested: true }, 'source and test names stay in the ledger; the block gets display fields only');
+  assert.deepEqual(page.view.sources[0].links, [{ label: 'README', href: 'https://example.invalid/readme' }]);
   const empty = resolveFeaturePage({ state: 'not-recorded', reason: 'file absent.' });
   assert.equal(empty.state, 'empty');
   assert.match(empty.notice.text, /file absent\./);
@@ -121,8 +133,20 @@ test('hub: facts count what pages contain, state not-recorded, and state the acc
   assert.deepEqual(hub.runs.map(r => r.detail), ['2026-01-02 · redact-secret 9.9.9 (local build, unreleased), flare-redact 1.0.0, OpenRedaction 2.0.0', 'not recorded yet', 'no benchmark run for this checkout']);
   const later = resolveHub({ runtime: { ...runtime, measurement: notRun }, features: { state: 'recorded', claims }, run });
   assert.equal(later.questions[0].fact, 'Not measured yet');
-  assert.equal(later.questions[1].fact, '3 features');
+  assert.equal(later.questions[1].fact, '4 features');
   assert.equal(later.questions[1].factNote, '1 checked by us');
+});
+
+test('runtime facts: package-metadata rows come from the claims file, a library it does not describe reads as a dash', () => {
+  const rows = resolveRuntimePanels(runtime, { state: 'recorded', claims })[0].props.facts;
+  assert.deepEqual(rows.map(r => r.label), ['Version', 'Package', 'Call timed', 'Runs in', 'Install size', 'Dependencies']);
+  const size = rows.find(r => r.label === 'Install size');
+  assert.equal(size.cells['redact-secret'], null, 'no library id "redact-secret" in this file');
+  const own = resolveRuntimePanels(runtime, { state: 'recorded', claims: { ...claims, libraries: [{ ...claims.libraries[0], id: 'flare-redact' }, claims.libraries[1]] } })[0].props.facts;
+  assert.deepEqual(own.find(r => r.label === 'Install size').cells['flare-redact'], { text: '2.0 KiB packed', note: '10.0 KiB unpacked: one package' });
+  assert.equal(own.find(r => r.label === 'Runs in').cells['flare-redact'].text, 'Node.js 20');
+  assert.deepEqual(resolveRuntimePanels(runtime, { state: 'not-recorded', reason: 'x' })[0].props.facts.map(r => r.label), ['Version', 'Package', 'Call timed']);
+  assert.deepEqual(resolveRuntimePanels(runtime)[0].props.facts.map(r => r.label), ['Version', 'Package', 'Call timed']);
 });
 
 test('comparison query contract: unknown values fall back to the defaults', () => {

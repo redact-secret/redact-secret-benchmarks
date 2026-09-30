@@ -1,0 +1,34 @@
+@layer components {
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--space-3) var(--space-4);
+    margin-block: var(--space-4);
+  }
+
+  .field {
+    display: grid;
+    gap: var(--space-1);
+    min-width: min(100%, calc(var(--space-16) * 2));
+    flex: 1 1 calc(var(--space-16) * 3);
+    max-width: calc(var(--space-16) * 6);
+    font: var(--text-label);
+    color: var(--ink-muted);
+  }
+
+  .control {
+    width: 100%;
+    background: var(--surface);
+    border: var(--hairline) solid var(--ink-muted);
+    border-radius: var(--radius-sm);
+    padding: var(--pad-tight) var(--space-3);
+    font: var(--text-small);
+    color: var(--ink);
+  }
+
+  .control::placeholder {
+    color: var(--ink-muted);
+    opacity: 1;
+  }
+}

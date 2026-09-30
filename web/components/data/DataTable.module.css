@@ -1,0 +1,135 @@
+@layer components {
+  .region {
+    overflow-x: auto;
+    border-top: var(--hairline) solid var(--ink);
+    max-width: 100%;
+  }
+
+  .table {
+    border-collapse: collapse;
+    width: 100%;
+    font: var(--text-small);
+  }
+
+  .wide {
+    min-width: calc(var(--space-16) * 11);
+  }
+
+  .caption {
+    text-align: left;
+    font: var(--text-small);
+    color: var(--ink-muted);
+    padding: var(--space-2) 0;
+  }
+
+  .hidden {
+    position: absolute;
+    width: var(--hairline);
+    height: var(--hairline);
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .head {
+    text-align: left;
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    color: var(--ink);
+    padding: var(--space-3) var(--space-4) var(--space-3) 0;
+    border-bottom: var(--hairline) solid var(--line);
+    white-space: nowrap;
+    vertical-align: bottom;
+  }
+
+  .cell {
+    padding: var(--space-3) var(--space-4) var(--space-3) 0;
+    border-bottom: var(--hairline) solid var(--line);
+    vertical-align: top;
+    text-align: left;
+    font: var(--text-small);
+    overflow-wrap: anywhere;
+  }
+
+  th.cell {
+    font: var(--text-small-strong);
+  }
+
+  .cell small {
+    display: block;
+    color: var(--ink-muted);
+  }
+
+  .num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .group th {
+    padding: var(--space-8) 0 var(--space-2);
+    border-bottom: var(--rule-strong) solid var(--ink);
+    text-align: left;
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    color: var(--ink);
+  }
+
+  .empty {
+    padding: var(--space-6) 0;
+    color: var(--ink-muted);
+    border-bottom: var(--hairline) solid var(--line);
+  }
+
+  @media (max-width: 560px) {
+    .stack {
+      min-width: 0;
+      display: block;
+    }
+
+    .stack thead {
+      display: none;
+    }
+
+    .stack tbody,
+    .stack tr {
+      display: block;
+    }
+
+    .stack tr {
+      padding: var(--space-3) 0;
+      border-bottom: var(--hairline) solid var(--line);
+    }
+
+    .stack .cell {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-2);
+      padding: var(--space-1) 0;
+      border: 0;
+      text-align: left;
+    }
+
+    .stack td[data-label]::before {
+      content: attr(data-label);
+      color: var(--ink-muted);
+      flex: none;
+    }
+
+    .stack th.cell {
+      display: block;
+      padding-bottom: var(--space-2);
+    }
+
+    .stack .group {
+      border-bottom: 0;
+    }
+
+    .stack .group th {
+      display: block;
+    }
+
+    .stack .empty {
+      display: block;
+    }
+  }
+}

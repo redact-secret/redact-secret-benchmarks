@@ -1,0 +1,59 @@
+@layer components {
+  .wrap {
+    display: grid;
+    gap: 0;
+  }
+
+  .iv {
+    position: relative;
+    height: var(--space-8);
+    margin-top: var(--space-2);
+  }
+
+  .axis {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: var(--space-3);
+    height: var(--hairline);
+    background: var(--line);
+  }
+
+  .range {
+    position: absolute;
+    left: var(--from);
+    width: var(--span);
+    top: calc(var(--space-3) - var(--rule-strong));
+    height: calc(var(--space-1) + var(--hairline));
+    background: var(--ink-muted);
+  }
+
+  .tick {
+    position: absolute;
+    left: var(--bound);
+    top: var(--rule-strong);
+    width: var(--rule-strong);
+    height: calc(var(--space-4) + var(--space-1));
+    background: var(--ink);
+    transform: translateX(-50%);
+  }
+
+  .tri {
+    position: absolute;
+    left: var(--observed);
+    top: calc(var(--space-4) + var(--hairline));
+    width: 0;
+    height: 0;
+    border-left: var(--pad-tight) solid transparent;
+    border-right: var(--pad-tight) solid transparent;
+    border-bottom: calc(var(--space-2) + var(--rule-strong)) solid var(--ink);
+    transform: translateX(-50%);
+  }
+
+  .scale {
+    display: flex;
+    justify-content: space-between;
+    font: var(--text-mono-small);
+    color: var(--ink-muted);
+  }
+}

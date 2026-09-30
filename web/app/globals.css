@@ -2,7 +2,7 @@
    are imported first by layout.tsx; rules here sit in `base`, below MUI and components. */
 @layer base {
   html {
-    scroll-padding-top: calc(56px + var(--space-8));
+    scroll-padding-top: calc(var(--header-h) + var(--space-8));
   }
 
   body {
@@ -19,8 +19,8 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--focus);
-    outline-offset: 2px;
+    outline: var(--rule-strong) solid var(--focus);
+    outline-offset: var(--rule-strong);
   }
 
   ::selection {

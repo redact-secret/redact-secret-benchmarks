@@ -1,0 +1,36 @@
+/*
+ * Measures the primitives share, derived from the design system's 4px grid.
+ * Nothing here is a new design decision: each value is a token or arithmetic on
+ * tokens, so a change in tokens.css moves it. The one raw length is the device
+ * hairline, which CSS cannot express through a token.
+ *
+ * Imported second (after layers.css) by app/layout.tsx and .storybook/preview.tsx.
+ * tests/web-tokens.test.mjs fails if a module uses a custom property that is
+ * defined nowhere, a raw colour or a raw length. The type roles the design
+ * system leaves to the app match what the existing site defines in src/style.css.
+ */
+@layer theme {
+  :root {
+    --hairline: 1px;
+    --rule-strong: calc(var(--space-1) / 2);
+    --mark: var(--space-1);
+    --pad-tight: calc(var(--space-3) / 2);
+    --header-h: calc(var(--space-12) + var(--space-2));
+    --page-max: calc(var(--space-16) * 20);
+    --measure: 72ch;
+    --col-name: calc(var(--space-16) * 4);
+    --col-label: calc(var(--space-16) * 2.5);
+    --col-fact: calc(var(--space-16) * 2.5);
+    --lane-h: calc(var(--space-3) + var(--rule-strong));
+    --track-eyebrow: 0.12em;
+    --text-figure: 800 var(--space-12) / calc(var(--space-12) + var(--space-1)) var(--font-montserrat);
+    --text-figure-compact: 800 var(--space-6) / var(--space-8) var(--font-montserrat);
+    --text-figure-facts: 800 calc(var(--space-6) + var(--space-1)) / calc(var(--space-8) + var(--space-1)) var(--font-montserrat);
+    --text-h1-narrow: 800 var(--space-8) / 1.2 var(--font-montserrat);
+    --text-h2-narrow: 700 var(--space-6) / var(--space-8) var(--font-merriweather);
+    --text-small-strong: 600 calc(var(--space-3) + var(--rule-strong)) / calc(var(--space-4) + var(--space-1)) var(--font-roboto);
+    --text-label: 600 var(--space-3) / var(--space-4) var(--font-roboto);
+    --text-mono: 400 var(--space-4) / var(--space-6) var(--font-mono);
+    --text-mono-small: 400 var(--space-3) / var(--space-4) var(--font-mono);
+  }
+}

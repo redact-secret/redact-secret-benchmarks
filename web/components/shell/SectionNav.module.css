@@ -1,6 +1,6 @@
 @layer components {
   .nav {
-    border-bottom: 1px solid var(--line);
+    border-bottom: var(--hairline) solid var(--line);
   }
 
   .list {
@@ -18,7 +18,7 @@
     font: var(--text-small);
     color: var(--ink-muted);
     text-decoration: none;
-    border-bottom: 2px solid transparent;
+    border-bottom: var(--rule-strong) solid transparent;
   }
 
   .link:hover {
@@ -32,7 +32,7 @@
   }
 
   .link:focus-visible {
-    outline: 2px solid var(--focus);
-    outline-offset: 2px;
+    outline: var(--rule-strong) solid var(--focus);
+    outline-offset: var(--rule-strong);
   }
 }

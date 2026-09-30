@@ -1,0 +1,99 @@
+@layer components {
+  .row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2) var(--space-8);
+    align-items: start;
+    padding: var(--space-6) 0;
+    border-bottom: var(--hairline) solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .row:hover {
+    text-decoration: none;
+  }
+
+  .row:hover .title {
+    text-decoration: underline;
+    text-decoration-thickness: var(--rule-strong);
+    text-underline-offset: var(--space-1);
+  }
+
+  .main {
+    display: grid;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+
+  .label {
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .title {
+    font: var(--text-h2-narrow);
+    font-family: var(--font-montserrat);
+    font-weight: 800;
+    text-wrap: balance;
+  }
+
+  .description {
+    font: var(--text-small);
+    color: var(--ink-muted);
+    max-width: calc(var(--measure) - var(--space-12));
+  }
+
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-2);
+  }
+
+  .tools span {
+    font: var(--text-mono-small);
+    border: var(--hairline) solid var(--ink-muted);
+    border-radius: var(--radius-sm);
+    padding: var(--rule-strong) var(--space-2);
+    color: var(--ink);
+  }
+
+  .side {
+    display: grid;
+    gap: var(--space-1);
+    min-width: 0;
+  }
+
+  .fact {
+    font: 700 calc(var(--space-3) + var(--rule-strong) + var(--hairline)) / var(--space-6) var(--font-montserrat);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fact small {
+    display: block;
+    font: var(--text-small);
+    color: var(--ink-muted);
+    font-weight: 400;
+  }
+
+  .go {
+    margin-top: var(--space-2);
+    font: var(--text-small-strong);
+    color: var(--link);
+    white-space: nowrap;
+  }
+
+  @media (min-width: 721px) {
+    .row {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+
+    .side {
+      justify-items: end;
+      text-align: right;
+      min-width: calc(var(--space-16) * 3);
+    }
+  }
+}

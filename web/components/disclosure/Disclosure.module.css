@@ -1,0 +1,67 @@
+@layer components {
+  .details {
+    min-width: 0;
+  }
+
+  .summary {
+    cursor: pointer;
+    list-style-position: inside;
+    font: var(--text-small-strong);
+    padding: var(--space-2) 0;
+  }
+
+  .summary small {
+    display: block;
+    color: var(--ink-muted);
+    font-weight: 400;
+  }
+
+  .body {
+    padding-bottom: var(--space-4);
+  }
+
+  .row {
+    border-bottom: var(--hairline) solid var(--line);
+  }
+
+  .row > .summary {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2) var(--space-4);
+    align-items: start;
+    padding: var(--space-4) 0;
+    font: var(--text-small);
+  }
+
+  .row > .body {
+    background: var(--line);
+    padding: var(--space-2) var(--space-4) var(--space-4);
+  }
+
+  .nested {
+    border-left: var(--rule-strong) solid var(--ink);
+    border-bottom: var(--hairline) solid var(--line);
+  }
+
+  .nested > .summary {
+    padding: var(--space-3) var(--space-4);
+    font: var(--text-small);
+  }
+
+  .nested > .body {
+    background: var(--surface);
+    padding: var(--space-2) var(--space-4) var(--space-4);
+  }
+
+  @media (min-width: 761px) {
+    .row > .summary {
+      grid-template-columns: minmax(var(--col-name), 1fr) minmax(0, 2fr);
+    }
+
+    .nested > .summary {
+      grid-template-columns: minmax(var(--col-name), 1fr) minmax(0, 2fr);
+      display: grid;
+      gap: var(--space-4);
+    }
+  }
+}

@@ -1,0 +1,47 @@
+@layer components {
+  .chip {
+    display: inline-block;
+    font: var(--text-mono-small);
+    border: var(--hairline) solid var(--ink-muted);
+    border-radius: var(--radius-sm);
+    padding: var(--rule-strong) var(--space-2);
+    color: var(--ink-muted);
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+  }
+
+  .sans {
+    font: var(--text-label);
+  }
+
+  .dashed {
+    border-style: dashed;
+  }
+
+  .on {
+    border-color: var(--status-success);
+    color: var(--status-success);
+    background: var(--status-success-fill);
+  }
+
+  .void {
+    border-color: var(--status-danger);
+    color: var(--status-danger);
+  }
+
+  .link:hover {
+    text-decoration: underline;
+  }
+
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}

@@ -1,0 +1,51 @@
+@layer components {
+  .badge {
+    display: inline-block;
+    font: var(--text-label);
+    padding: var(--rule-strong) var(--pad-tight);
+    border: var(--hairline) solid transparent;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+    vertical-align: baseline;
+  }
+
+  .fail {
+    background: var(--status-danger-fill);
+    color: var(--status-danger);
+    border-color: var(--status-danger);
+  }
+
+  .unstable {
+    background: repeating-linear-gradient(135deg, var(--status-warning-fill) 0 var(--space-1), transparent var(--space-1) var(--pad-tight));
+    color: var(--status-warning);
+    border-color: var(--status-warning);
+  }
+
+  .review,
+  .withheld {
+    background: var(--status-warning-fill);
+    color: var(--status-warning);
+  }
+
+  .pass {
+    background: var(--status-success-fill);
+    color: var(--status-success);
+  }
+
+  .info {
+    background: var(--status-info-fill);
+    color: var(--status-info);
+  }
+
+  /* Not measured is not a status colour: dashed, muted. */
+  .not-measured {
+    border: var(--hairline) dashed var(--ink-muted);
+    color: var(--ink-muted);
+  }
+
+  /* A structural absence: neutral and solid. */
+  .none {
+    border: var(--hairline) solid var(--ink-muted);
+    color: var(--ink-muted);
+  }
+}

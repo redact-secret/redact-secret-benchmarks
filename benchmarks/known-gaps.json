@@ -6224,12 +6224,13 @@
         "canonicalFixtureIds": []
       },
       "disposition": {
-        "reason": "Documented policy, not a defect: the value sits under a masked_-led key, and decision-redact-provider-named-credential-assignments section 2 says a prefix whose first segment says the value is not the secret (redacted_, masked_, hashed_, ...) does not make a high-signal name, so generic-token does not report it and the Cohere detector has no keyword on the line. The #932 fix (127260c) left it unreported by design, and product manifest record benchmark-gap-932 records it as a policy note. Split out of product-932 so that record is verified on the three forms the fix covers; the fixture expectation is unchanged. Candidate 1db8ff3 (run 009a85fa-e810-4ab8-85a5-a264dba30536) still misses it. A changed policy is a new observation, not an edit of this record.",
+        "reason": "Documented policy, not a defect: the value sits under a masked_-led key, and decision-redact-provider-named-credential-assignments section 2 says a prefix whose first segment says the value is not the secret (redacted_, masked_, hashed_, ...) does not make a high-signal name, so generic-token does not report it and the Cohere detector has no keyword on the line. The #932 fix (127260c) left it unreported by design, and product manifest record benchmark-gap-932 records it as a policy note. Split out of product-932 so that record is verified on the three forms the fix covers; the fixture expectation is unchanged. Candidate 1db8ff3 (run 009a85fa-e810-4ab8-85a5-a264dba30536) still misses it. A changed policy is a new observation, not an edit of this record. Reopened as a proposal on 2026-09-29 by redact-secret#1018 (security-first: report a complete, unmasked key under a masked_-led name, keep genuinely masked values silent); a fix is in progress on the product branch beta12/provisional-fixes. Until a release changes the policy this record stands; when it does, the fixture moves to a new product-1018 record.",
         "evidence": [
           "https://github.com/redact-secret/redact-secret/blob/ca208625f6811206e6211a29bb2cdf2a6b12ccc5/docs/decisions/2026-09-24-redact-provider-named-credential-assignments.md",
           "https://github.com/redact-secret/redact-secret/blob/ca208625f6811206e6211a29bb2cdf2a6b12ccc5/conformance/benchmark-regressions.json",
           "https://github.com/redact-secret/redact-secret/issues/932",
-          "https://github.com/redact-secret/redact-secret-benchmarks/blob/cbd7a22dbbd38a0f3615d540da989dc8bb16096b/evidence/932/README.md"
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/cbd7a22dbbd38a0f3615d540da989dc8bb16096b/evidence/932/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1018"
         ]
       },
       "evidence": [
@@ -7022,6 +7023,231 @@
           "https://github.com/redact-secret/redact-secret-benchmarks/blob/754be29dedfe72632b77cf3112b443c161084b64/evidence/949/candidate-rerun-8b6a5fd.json"
         ]
       }
+    },
+    {
+      "id": "product-1015",
+      "title": "generic-token redacts the sk-ant-admin01-<your-key> placeholder that it leaves alone for sk-ant-api01-/sk-ant-api03-",
+      "url": "https://github.com/redact-secret/redact-secret/issues/1015",
+      "number": 1015,
+      "fixtures": [
+        "beta8-384a--anthropic-admin01-key-angle-key-placeholder"
+      ],
+      "kind": "false-positive",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.11",
+        "lockHash": "06a6ba659e9ae2d42ee49f0f11e13d682ed242539c89b6bb455c29cdb089c51f",
+        "sourceCommit": "94fc18a974f659ea882c89120dbf1adb3acf2f28"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/5380aa3a421555883225a62358fa40f81dcd2baa/fixtures/generated/beta8/384a.mjs",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/5380aa3a421555883225a62358fa40f81dcd2baa/benchmarks/fixture-detectors.json",
+          "https://github.com/redact-secret/redact-secret/blob/b9e90915f4139a79ca1527a79c93cf951fc0927d/docs/specs/detector-families.md"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-29",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/commit/09f216bb692900a1d53d18567f69c9edac5e4bea",
+            "https://github.com/redact-secret/redact-secret/issues/1015"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-29",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/5380aa3a421555883225a62358fa40f81dcd2baa/fixtures/generated/beta8/384a.mjs",
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/5380aa3a421555883225a62358fa40f81dcd2baa/benchmarks/fixture-detectors.json",
+            "https://github.com/redact-secret/redact-secret/blob/b9e90915f4139a79ca1527a79c93cf951fc0927d/docs/specs/detector-families.md"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-29",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/1015"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/1015",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-1015",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-384a--anthropic-admin01-key-angle-key-placeholder",
+          "corpusHash": "900fdce11ecc6ff3ec01093865dbccb87d7c970360ed6f1e235e9b993574670e",
+          "expected": [],
+          "actual": [
+            {
+              "start": 75,
+              "end": 100,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "product-1016",
+      "title": "Kubernetes env name:/value: pairs are never read as an assignment: credential values under DEEPGRAM_API_KEY, CO_API_KEY, API_TOKEN are missed",
+      "url": "https://github.com/redact-secret/redact-secret/issues/1016",
+      "number": 1016,
+      "fixtures": [
+        "beta8-384e--deepgram-api-key-k8s-env-value",
+        "beta8-384e--cohere-api-key-k8s-env-value"
+      ],
+      "kind": "false-negative",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.11",
+        "lockHash": "06a6ba659e9ae2d42ee49f0f11e13d682ed242539c89b6bb455c29cdb089c51f",
+        "sourceCommit": "94fc18a974f659ea882c89120dbf1adb3acf2f28"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/5380aa3a421555883225a62358fa40f81dcd2baa/fixtures/generated/beta8/384e.mjs",
+          "https://github.com/redact-secret/redact-secret/blob/b9e90915f4139a79ca1527a79c93cf951fc0927d/docs/specs/detector-families.md"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-29",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/commit/a78809b89b867d17858591529f2be6c62982c132",
+            "https://github.com/redact-secret/redact-secret-benchmarks/commit/5f1327b49edeb71c60a47c89e5722c7b8b108d73",
+            "https://github.com/redact-secret/redact-secret/issues/1016"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-29",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/5380aa3a421555883225a62358fa40f81dcd2baa/fixtures/generated/beta8/384e.mjs",
+            "https://github.com/redact-secret/redact-secret/blob/b9e90915f4139a79ca1527a79c93cf951fc0927d/docs/specs/detector-families.md"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-29",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/1016"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/1016",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-1016",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-384e--deepgram-api-key-k8s-env-value",
+          "corpusHash": "c84626ad5de260532ee29833fe610103218da6bfe138ea1cea7d6f7caec98797",
+          "expected": [
+            {
+              "start": 44,
+              "end": 84
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-384e--cohere-api-key-k8s-env-value",
+          "corpusHash": "c84626ad5de260532ee29833fe610103218da6bfe138ea1cea7d6f7caec98797",
+          "expected": [
+            {
+              "start": 38,
+              "end": 78
+            }
+          ],
+          "actual": []
+        }
+      ]
+    },
+    {
+      "id": "product-1017",
+      "title": "deepgram-api-key misses the JS SDK createClient(\"<key>\") and the WebSocket token subprotocol, and types adjacent-line Deepgram context as generic-token",
+      "url": "https://github.com/redact-secret/redact-secret/issues/1017",
+      "number": 1017,
+      "fixtures": [
+        "beta8-384e--deepgram-api-key-create-client",
+        "beta8-384e--deepgram-api-key-websocket-subprotocol"
+      ],
+      "kind": "false-negative",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.11",
+        "lockHash": "06a6ba659e9ae2d42ee49f0f11e13d682ed242539c89b6bb455c29cdb089c51f",
+        "sourceCommit": "94fc18a974f659ea882c89120dbf1adb3acf2f28"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/5380aa3a421555883225a62358fa40f81dcd2baa/fixtures/generated/beta8/384e.mjs",
+          "https://github.com/redact-secret/redact-secret/blob/b9e90915f4139a79ca1527a79c93cf951fc0927d/docs/specs/detector-families.md"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-09-29",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/commit/5f1327b49edeb71c60a47c89e5722c7b8b108d73",
+            "https://github.com/redact-secret/redact-secret/issues/1017"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-09-29",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/5380aa3a421555883225a62358fa40f81dcd2baa/fixtures/generated/beta8/384e.mjs",
+            "https://github.com/redact-secret/redact-secret/blob/b9e90915f4139a79ca1527a79c93cf951fc0927d/docs/specs/detector-families.md"
+          ]
+        },
+        "promoted": {
+          "at": "2026-09-29",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/1017"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/1017",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-1017",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-384e--deepgram-api-key-create-client",
+          "corpusHash": "c84626ad5de260532ee29833fe610103218da6bfe138ea1cea7d6f7caec98797",
+          "expected": [
+            {
+              "start": 78,
+              "end": 118
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-384e--deepgram-api-key-websocket-subprotocol",
+          "corpusHash": "c84626ad5de260532ee29833fe610103218da6bfe138ea1cea7d6f7caec98797",
+          "expected": [
+            {
+              "start": 77,
+              "end": 117
+            }
+          ],
+          "actual": []
+        }
+      ]
     }
   ]
 }

@@ -1,7 +1,10 @@
 import { escapeHtml as e } from '../components';
 import criteria from '../../benchmarks/performance-criteria.json';
 import operational from '../../benchmarks/operational-evidence.json';
+import accepted from '../../evidence/1046/da69ebf-verified/summary.json';
 import type { AcceptanceCriteria, PerformanceCriterion } from '../../benchmarks/lib/performance-acceptance.ts';
+import type { CompleteAssessment } from '../../benchmarks/lib/performance-schema.ts';
+import { measuredRows, workloadGuidance, type MeasuredRow } from '../../benchmarks/lib/measured-performance.ts';
 
 /**
  * Performance acceptance criteria (issue #136, paired with redact-secret#603
@@ -21,19 +24,40 @@ const MEMORY_LABEL: Record<string, string> = {
 const ms = (value: number) => `${value.toLocaleString('en-US', { maximumFractionDigits: 2 })} ms`;
 const RESOLVED_ARTIFACT_LABEL: Record<string, string> = { 'node-addon': 'N-API addon', wasm: 'WebAssembly fallback' };
 
-/** Measured evidence (#141, #405), keyed the same way as the criteria this page reads. */
+/**
+ * Measured columns (#405): the currently accepted run's own summary, pinned in the same directory as the acceptance
+ * verdict `benchmarks/performance-criteria.json` `baseline.verificationPath` names. A test keeps the two in step.
+ */
+const ACCEPTED = accepted as unknown as CompleteAssessment;
+const MEASURED = new Map<string, MeasuredRow>(measuredRows(ACCEPTED).map(r => [`${r.surface}/${r.profileId}`, r]));
+const notMeasured = '<span class="st st-nm" data-status="not-measured">Not measured</span>';
+const mbps = (bytesPerSecond: number) => `${(bytesPerSecond / 1e6).toLocaleString('en-US', { maximumFractionDigits: 1 })} MB/s`;
+
+/** Operational evidence (#141), the beta.7 baseline: its own section, never mixed into the accepted-run columns. */
 const OPS = operational as any;
-const MEASURED = new Map<string, any>(OPS.measurements.timings.map((t: any) => [`${t.surface}/${t.profileId}`, t]));
 
 function row(criterion: PerformanceCriterion): string {
   const caps = Object.entries(criterion.memoryCapsBytes).map(([category, cap]) => `${MEMORY_LABEL[category] ?? category} ${mib(cap!)}`).join(', ') || '—';
   const measured = MEASURED.get(`${criterion.surface}/${criterion.profileId}`);
-  const processingMeasured = measured ? `${ms(measured.processing.median)} / ${ms(measured.processing.p95)}` : '<span class="st st-nm" data-status="not-measured">Not measured</span>';
-  const throughputMeasured = measured ? `${n(Math.round(measured.throughput.median))} B/s` : '<span class="st st-nm" data-status="not-measured">Not measured</span>';
-  const artifact = criterion.surface !== 'node' ? '—' : measured?.environment.resolvedArtifact
-    ? e(RESOLVED_ARTIFACT_LABEL[measured.environment.resolvedArtifact] ?? measured.environment.resolvedArtifact)
+  const processingMeasured = measured ? `${ms(measured.processingMedianMs)} / ${ms(measured.processingP95Ms)}` : notMeasured;
+  const throughputMeasured = measured ? `${n(Math.round(measured.throughputMedianBytesPerSecond))} B/s` : notMeasured;
+  const dispatch = measured ? `<span title="${e(measured.dispatch.detail)}">${e(measured.dispatch.label)}</span>` : '—';
+  const artifact = criterion.surface !== 'node' ? '—' : measured?.resolvedArtifact
+    ? e(RESOLVED_ARTIFACT_LABEL[measured.resolvedArtifact] ?? measured.resolvedArtifact)
     : '<span class="st st-nm" data-status="not-measured">Not recorded</span>';
-  return `<tr><td><code>${e(criterion.surface)}</code></td><td><code>${e(criterion.profileId)}</code></td><td>${n(criterion.maxInitializationP95Ms)} ms</td><td>${n(criterion.maxProcessingP95Ms)} ms</td><td>${n(criterion.minThroughputBytesPerSecond)} B/s</td><td>${e(caps)}</td><td>${processingMeasured}</td><td>${throughputMeasured}</td><td>${artifact}</td></tr>`;
+  return `<tr><td><code>${e(criterion.surface)}</code></td><td><code>${e(criterion.profileId)}</code></td><td>${dispatch}</td><td>${n(criterion.maxInitializationP95Ms)} ms</td><td>${n(criterion.maxProcessingP95Ms)} ms</td><td>${n(criterion.minThroughputBytesPerSecond)} B/s</td><td>${e(caps)}</td><td>${processingMeasured}</td><td>${throughputMeasured}</td><td>${artifact}</td></tr>`;
+}
+
+/** The measured source line and the workload guidance, both derived from the pinned accepted run (#405). */
+function measuredSource(): string {
+  const identities = [...new Set([...MEASURED.values()].map(r => `${r.surface} ${r.artifactIdentity}`))].sort();
+  return `Measured columns are the accepted run's own summary (<code>evidence/1046/da69ebf-verified/summary.json</code>): product commit <code>${e(ACCEPTED.sourceCommit ?? '')}</code>, ${n(ACCEPTED.repetitions)} repetitions, environment <code>${e(DATA.environment.id)}</code>, artifacts ${identities.map(i => `<code>${e(i)}</code>`).join(', ')} — read the same way the floors are, so it cannot drift from what CI accepted. A floor is half the observed minimum throughput of the run it was derived from, rounded down: a regression tripwire, not the product's speed.`;
+}
+
+function guidance(): string {
+  const g = workloadGuidance([...MEASURED.values()]);
+  const smallWhole = [...MEASURED.values()].filter(r => r.profileId === 'scale-logs-small-whole').map(r => r.throughputMedianBytesPerSecond);
+  return `<p class="prose"><b class="strong">Workload guidance.</b> On the one-shot rows above, one core scans ${mbps(g.slowestBytesPerSecond)} to ${mbps(g.fastestBytesPerSecond)} (median; the <code>scale-logs-small-whole</code> profile ranges ${mbps(Math.min(...smallWhole))} to ${mbps(Math.max(...smallWhole))} across surfaces). At those rates, scanning a single-digit-kilobyte AI-context or tool-result payload per request (9 KiB here) costs ${g.smallPayloadMsFastest.toLocaleString('en-US', { maximumFractionDigits: 2 })} to ${g.smallPayloadMsSlowest.toLocaleString('en-US', { maximumFractionDigits: 2 })} ms of processing, which fits inline with a request. An inline high-volume log hot path has a different shape: sustaining 100 MB/s would need about ${Math.ceil(g.coresFor100MbpsFastest)} to ${Math.ceil(g.coresFor100MbpsSlowest)} cores of scanning alone, so that workload needs sampling or an off-request-path placement rather than inline scanning. These are medians of ${n(ACCEPTED.repetitions)} repetitions on shared CI hardware, not a guarantee.</p>`;
 }
 
 /** Fixed RC performance/resource acceptance criteria this repository owns, with the currently accepted run's measurements shown beside each floor (#405): a floor is a regression tripwire, not what the product does. */
@@ -48,9 +72,10 @@ export function performancePage(): string {
     <tr><th scope="row">Workload profiles</th><td>version ${e(DATA.baseline.workloadProfilesVersion)}, <code>${e(DATA.baseline.workloadProfilesHash)}</code></td></tr>
     <tr><th scope="row">Raw evidence</th><td><code>${e(DATA.baseline.summaryPath)}</code> — see <code>evidence/603/README.md</code></td></tr>
   </tbody></table></div></section>
-  <section class="section"><h2 class="h2-compact">Thresholds</h2><p class="small">Measured columns are this project's pinned <code>benchmarks/operational-evidence.json</code> (product <code>${e(OPS.sourceCommit)}</code>, <code>${e(OPS.productVersion)}</code>, measured ${e(OPS.measuredAt)}) — read the same way the floors are, so it cannot drift from what CI accepted. A floor is half the observed minimum throughput, rounded down: a regression tripwire, not the product's speed.</p><div class="tbl"><table><thead><tr><th scope="col">Surface</th><th scope="col">Profile</th><th scope="col">Init p95 ≤</th><th scope="col">Processing p95 ≤</th><th scope="col">Throughput ≥</th><th scope="col">Memory caps ≤</th><th scope="col">Measured processing (median / p95)</th><th scope="col">Measured throughput (median)</th><th scope="col">Artifact</th></tr></thead><tbody>${DATA.performance.map(row).join('')}</tbody></table></div>
-  <p class="small">The <code>node</code> row's artifact is a recorded fact, not an inference from the run command: the Node loader may serve the N-API addon or fall back to the browser WebAssembly artifact (product decision-add-node-webassembly-fallback), and only the runner calling <code>artifact()</code> can tell which one actually ran. That call is not wired into the committed evidence yet (#405); until it is, this column reads Not recorded rather than assuming the addon.</p>
-  <p class="prose">At roughly 3–4 MB/s on one core (the <code>scale-logs-small-whole</code> medians above), scanning a single-digit-kilobyte AI-context or tool-result payload per request costs well under a millisecond — comfortably inline with a request. An inline high-volume log hot path does not fit that shape: at these rates, a sustained multi-megabyte-per-second stream would dominate request latency, so that workload needs sampling or an off-request-path placement instead of inline scanning.</p>
+  <section class="section"><h2 class="h2-compact">Thresholds</h2><p class="small">${measuredSource()}</p><div class="tbl"><table><thead><tr><th scope="col">Surface</th><th scope="col">Profile</th><th scope="col">Dispatch model</th><th scope="col">Init p95 ≤</th><th scope="col">Processing p95 ≤</th><th scope="col">Throughput ≥</th><th scope="col">Memory caps ≤</th><th scope="col">Measured processing (median / p95)</th><th scope="col">Measured throughput (median)</th><th scope="col">Artifact</th></tr></thead><tbody>${DATA.performance.map(row).join('')}</tbody></table></div>
+  <p class="small">The <code>node</code> row's artifact is a recorded fact, not an inference from the run command: the Node loader may serve the N-API addon or fall back to the browser WebAssembly artifact (product decision-add-node-webassembly-fallback), and only the runner calling <code>artifact()</code> can tell which one actually ran. The accepted run records it from the runner's own <code>artifact()</code> call (<code>provenance.resolvedArtifact</code>); a run that does not read Not recorded rather than assuming the addon.</p>
+  <p class="small"><b class="strong">Dispatch model (#450).</b> Rows are not all the same kind of work: the CLI dispatches each line separately (about 983 <code>detect()</code> calls per 64 KiB) while the library surfaces make one call, or feed 4 KiB chunks. A ratio between rows of different dispatch models mixes dispatch cost with detector cost, so compare a row only with rows of its own model. Regression budgets already compare each surface with itself, paired in one job.</p>
+  ${guidance()}
   <p class="small">To see redact-secret next to flare-redact and OpenRedaction on the same PII inputs, go to <a href="/report#runtime-peers">Report → Runtime redaction libraries</a> (#444, informational).</p>
   </section>
   <section class="section prose"><h2 class="h2-compact">Running an evaluation</h2><p>A fresh candidate run is evaluated against these criteria the same way <code>evidence/603/summary.json</code> — this baseline's own run — was: <code>npm run performance:evaluate -- --summary &lt;path&gt;/summary.json</code>. <code>.github/workflows/performance-evaluation.yml</code> runs this in CI against the exact commit <code>benchmarks/pin-manifest.json</code> pins.</p></section>
@@ -70,7 +95,7 @@ function operationalSection(): string {
   const b = m.browserBundle.totals;
   return `<section class="section"><h2 class="h2-compact" id="operational-evidence">Operational evidence (#141)</h2>
     <p class="small">Product <code>${e(OPS.sourceCommit)}</code> (${e(OPS.productVersion)}), measured ${e(OPS.measuredAt)}. Timings: performance run <code>${e(p.performanceRun)}</code>, ${n(p.repetitions)} repetitions, ${e(p.officialProfile)}. Build: ${e(p.buildProfile)}. Sizes: product artifact-qualification run <code>${e(p.qualificationRun)}</code>. Data: <code>benchmarks/operational-evidence.json</code>.</p>
-    <h3>Measurements · initialization and processing (median / p95)</h3>
+    <h3>Measurements · initialization and processing (median / p95), beta.7 baseline</h3>
     <div class="tbl"><table><thead><tr><th scope="col">Surface</th><th scope="col">Profile</th><th scope="col">Path</th><th scope="col">Initialization</th><th scope="col">Processing</th><th scope="col">Throughput (min)</th><th scope="col">Runtime</th></tr></thead><tbody>${timing}</tbody></table></div>
     <h3>Judgement</h3>
     <p>Against <code>${e(j.criteriaId)}</code> (fixed ${e(j.criteriaFixedAt)}): <b class="strong">${e(j.status)}</b>, ${n(j.checksPassed)} of ${n(j.checksTotal)} checks. ${e(j.note)}</p>

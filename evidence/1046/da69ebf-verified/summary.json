@@ -1,0 +1,1754 @@
+{
+  "schemaVersion": "1",
+  "status": "complete",
+  "sourceCommit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+  "accuracyCorpus": {
+    "version": "3",
+    "hash": "ca96dddd9cb189e83db6cde203060e559f116670f823dd9631c3850aed4892d0"
+  },
+  "workloadProfiles": {
+    "version": "1",
+    "hash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806"
+  },
+  "repetitions": 5,
+  "performanceProfiles": [
+    {
+      "id": "scale-logs-small-whole",
+      "chunkProfile": "whole"
+    },
+    {
+      "id": "scale-logs-medium-fixed4096",
+      "chunkProfile": "fixed-4096"
+    }
+  ],
+  "requiredSurfaces": [
+    "rust-core",
+    "python",
+    "node",
+    "browser-wasm",
+    "cli"
+  ],
+  "runs": [
+    {
+      "surface": "rust-core",
+      "kind": "accuracy",
+      "profileId": "accuracy-corpus",
+      "resultPath": "rust-core/accuracy-corpus.json",
+      "markdownPath": "rust-core/accuracy-corpus.md",
+      "mismatchesPath": "rust-core/accuracy-corpus-mismatches.json",
+      "result": {
+        "accuracy": {
+          "falseNegatives": 5,
+          "falsePositives": 1,
+          "policyMismatches": 0,
+          "truePositives": 21
+        },
+        "profileId": "accuracy-corpus",
+        "provenance": {
+          "artifactIdentity": "redact-secret@0.1.0-beta.11",
+          "buildProfile": "release",
+          "command": "[\"target/release/examples/assessment_adapter\",\"accuracy\",\"--json-out\",\"/home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/rust-core/accuracy-corpus.json\",\"--markdown-out\",\"/home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/rust-core/accuracy-corpus.md\",\"--mismatches-out\",\"/home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/rust-core/accuracy-corpus-mismatches.json\"]",
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "corpusHash": "ca96dddd9cb189e83db6cde203060e559f116670f823dd9631c3850aed4892d0",
+          "corpusVersion": "3",
+          "cpu": "x86_64",
+          "os": "linux-6.17.0-1022-azure",
+          "runtime": "rustc-1.98.1 (48a229cea 2026-09-01)"
+        },
+        "schemaVersion": "3",
+        "surface": "rust-core"
+      },
+      "path": "whole-input",
+      "status": "complete"
+    },
+    {
+      "surface": "rust-core",
+      "kind": "performance",
+      "profileId": "scale-logs-small-whole",
+      "resultPath": "rust-core/scale-logs-small-whole.json",
+      "markdownPath": "rust-core/scale-logs-small-whole.md",
+      "result": {
+        "performance": {
+          "initialization": {
+            "maximum": 0.034933,
+            "mean": 0.0224422,
+            "median": 0.020341,
+            "minimum": 0.016195,
+            "p95": 0.034933,
+            "samples": [
+              0.034933,
+              0.023556,
+              0.020341,
+              0.017186,
+              0.016195
+            ],
+            "standardDeviation": 0.0067576744934925645,
+            "unit": "milliseconds"
+          },
+          "memory": {
+            "browserJsHeap": {
+              "samples": [],
+              "samplingLimit": "No samples were available.",
+              "unavailableReason": "The Rust library does not run inside a browser JavaScript heap.",
+              "unit": "bytes"
+            },
+            "nodeExternal": {
+              "samples": [],
+              "samplingLimit": "No samples were available.",
+              "unavailableReason": "The Rust library has no Node external-memory category.",
+              "unit": "bytes"
+            },
+            "nodeHeap": {
+              "samples": [],
+              "samplingLimit": "No samples were available.",
+              "unavailableReason": "The Rust library does not run inside a Node.js heap.",
+              "unit": "bytes"
+            },
+            "nodeRss": {
+              "samples": [],
+              "samplingLimit": "No samples were available.",
+              "unavailableReason": "The Rust library does not run inside a Node.js process.",
+              "unit": "bytes"
+            },
+            "processRss": {
+              "samples": [
+                {
+                  "baselineBytes": 3514368,
+                  "maximumObservedBytes": 3977216
+                },
+                {
+                  "baselineBytes": 3985408,
+                  "maximumObservedBytes": 3985408
+                },
+                {
+                  "baselineBytes": 3997696,
+                  "maximumObservedBytes": 3997696
+                },
+                {
+                  "baselineBytes": 4005888,
+                  "maximumObservedBytes": 4005888
+                },
+                {
+                  "baselineBytes": 4009984,
+                  "maximumObservedBytes": 4009984
+                }
+              ],
+              "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks.",
+              "unit": "bytes"
+            },
+            "pythonHeap": {
+              "samples": [],
+              "samplingLimit": "No samples were available.",
+              "unavailableReason": "The Rust library does not run inside a Python allocator.",
+              "unit": "bytes"
+            },
+            "streamingBuffer": {
+              "samples": [],
+              "samplingLimit": "No samples were available.",
+              "unavailableReason": "The public incremental session exposes lifecycle state but intentionally does not expose retained plaintext buffer size.",
+              "unit": "bytes"
+            },
+            "wasmLinearMemory": {
+              "samples": [],
+              "samplingLimit": "No samples were available.",
+              "unavailableReason": "The Rust library surface does not use WebAssembly linear memory.",
+              "unit": "bytes"
+            }
+          },
+          "processing": {
+            "maximum": 2.2098069999999996,
+            "mean": 2.086843,
+            "median": 2.070366,
+            "minimum": 2.025358,
+            "p95": 2.2098069999999996,
+            "samples": [
+              2.2098069999999996,
+              2.071748,
+              2.070366,
+              2.025358,
+              2.056936
+            ],
+            "standardDeviation": 0.06370922966729373,
+            "unit": "milliseconds"
+          },
+          "throughput": {
+            "maximum": 32366623.57963382,
+            "mean": 31441254.000937976,
+            "median": 31663000.64819457,
+            "minimum": 29665034.095737774,
+            "p95": 32366623.57963382,
+            "samples": [
+              29665034.095737774,
+              31641879.22469335,
+              31663000.64819457,
+              32366623.57963382,
+              31869732.456430346
+            ],
+            "standardDeviation": 925665.3662747355,
+            "unit": "bytes-per-second"
+          }
+        },
+        "profileId": "scale-logs-small-whole",
+        "provenance": {
+          "artifactIdentity": "redact-secret@0.1.0-beta.11",
+          "buildProfile": "release",
+          "command": "[\"target/release/examples/assessment_adapter\",\"performance\",\"--profile\",\"scale-logs-small-whole\",\"--runs\",\"5\",\"--json-out\",\"/home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/rust-core/scale-logs-small-whole.json\",\"--markdown-out\",\"/home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/rust-core/scale-logs-small-whole.md\"]",
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
+          "corpusVersion": "1",
+          "cpu": "x86_64",
+          "os": "linux-6.17.0-1022-azure",
+          "runtime": "rustc-1.98.1 (48a229cea 2026-09-01)"
+        },
+        "schemaVersion": "3",
+        "surface": "rust-core"
+      },
+      "path": "whole-input",
+      "status": "complete"
+    },
+    {
+      "surface": "rust-core",
+      "kind": "performance",
+      "profileId": "scale-logs-medium-fixed4096",
+      "resultPath": "rust-core/scale-logs-medium-fixed4096.json",
+      "markdownPath": "rust-core/scale-logs-medium-fixed4096.md",
+      "result": {
+        "performance": {
+          "initialization": {
+            "maximum": 0.034202,
+            "mean": 0.023619599999999998,
+            "median": 0.02022,
+            "minimum": 0.019619,
+            "p95": 0.034202,
+            "samples": [
+              0.034202,
+              0.024387,
+              0.01967,
+              0.019619,
+              0.02022
+            ],
+            "standardDeviation": 0.00558099477154387,
+            "unit": "milliseconds"
+          },
+          "memory": {
+            "browserJsHeap": {
+              "samples": [],
+              "samplingLimit": "No samples were available.",
+              "unavailableReason": "The Rust library does not run inside a browser JavaScript heap.",
+              "unit": "bytes"
+            },
+            "nodeExternal": {
+              "samples": [],
+              "samplingLimit": "No samples were available.",
+              "unavailableReason": "The Rust library has no Node external-memory category.",
+              "unit": "bytes"
+            },
+            "nodeHeap": {
+              "samples": [],
+              "samplingLimit": "No samples were available.",
+              "unavailableReason": "The Rust library does not run inside a Node.js heap.",
+              "unit": "bytes"
+            },
+            "nodeRss": {
+              "samples": [],
+              "samplingLimit": "No samples were available.",
+              "unavailableReason": "The Rust library does not run inside a Node.js process.",
+              "unit": "bytes"
+            },
+            "processRss": {
+              "samples": [
+                {
+                  "baselineBytes": 3989504,
+                  "maximumObservedBytes": 4005888
+                },
+                {
+                  "baselineBytes": 4026368,
+                  "maximumObservedBytes": 4034560
+                },
+                {
+                  "baselineBytes": 4050944,
+                  "maximumObservedBytes": 4055040
+                },
+                {
+                  "baselineBytes": 4063232,
+                  "maximumObservedBytes": 4071424
+                },
+                {
+                  "baselineBytes": 4087808,
+                  "maximumObservedBytes": 4096000
+                }
+              ],
+              "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks.",
+              "unit": "bytes"
+            },
+            "pythonHeap": {
+              "samples": [],
+              "samplingLimit": "No samples were available.",
+              "unavailableReason": "The Rust library does not run inside a Python allocator.",
+              "unit": "bytes"
+            },
+            "streamingBuffer": {
+              "samples": [],
+              "samplingLimit": "No samples were available.",
+              "unavailableReason": "The public incremental session exposes lifecycle state but intentionally does not expose retained plaintext buffer size.",
+              "unit": "bytes"
+            },
+            "wasmLinearMemory": {
+              "samples": [],
+              "samplingLimit": "No samples were available.",
+              "unavailableReason": "The Rust library surface does not use WebAssembly linear memory.",
+              "unit": "bytes"
+            }
+          },
+          "processing": {
+            "maximum": 11.831385999999998,
+            "mean": 11.711502999999999,
+            "median": 11.685556,
+            "minimum": 11.637964,
+            "p95": 11.831385999999998,
+            "samples": [
+              11.637964,
+              11.675120000000001,
+              11.685556,
+              11.727489,
+              11.831385999999998
+            ],
+            "standardDeviation": 0.06638138278764534,
+            "unit": "milliseconds"
+          },
+          "throughput": {
+            "maximum": 22525761.37888036,
+            "mean": 22385033.037789475,
+            "median": 22434020.255433287,
+            "minimum": 22157505.46892816,
+            "p95": 22525761.37888036,
+            "samples": [
+              22525761.37888036,
+              22454073.277191155,
+              22434020.255433287,
+              22353804.80851442,
+              22157505.46892816
+            ],
+            "standardDeviation": 126265.40700517491,
+            "unit": "bytes-per-second"
+          }
+        },
+        "profileId": "scale-logs-medium-fixed4096",
+        "provenance": {
+          "artifactIdentity": "redact-secret@0.1.0-beta.11",
+          "buildProfile": "release",
+          "command": "[\"target/release/examples/assessment_adapter\",\"performance\",\"--profile\",\"scale-logs-medium-fixed4096\",\"--runs\",\"5\",\"--json-out\",\"/home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/rust-core/scale-logs-medium-fixed4096.json\",\"--markdown-out\",\"/home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/rust-core/scale-logs-medium-fixed4096.md\"]",
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
+          "corpusVersion": "1",
+          "cpu": "x86_64",
+          "os": "linux-6.17.0-1022-azure",
+          "runtime": "rustc-1.98.1 (48a229cea 2026-09-01)"
+        },
+        "schemaVersion": "3",
+        "surface": "rust-core"
+      },
+      "path": "incremental",
+      "status": "complete"
+    },
+    {
+      "surface": "python",
+      "kind": "accuracy",
+      "profileId": "accuracy-corpus",
+      "resultPath": "python/accuracy-corpus.json",
+      "markdownPath": "python/accuracy-corpus.md",
+      "mismatchesPath": "python/accuracy-corpus-mismatches.json",
+      "result": {
+        "schemaVersion": "3",
+        "surface": "python",
+        "profileId": "accuracy-corpus",
+        "accuracy": {
+          "truePositives": 21,
+          "falsePositives": 1,
+          "falseNegatives": 5,
+          "policyMismatches": 0
+        },
+        "provenance": {
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "artifactIdentity": "redact-secret==0.1.0b11",
+          "corpusVersion": "3",
+          "corpusHash": "ca96dddd9cb189e83db6cde203060e559f116670f823dd9631c3850aed4892d0",
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "cpython-3.12.14",
+          "command": "node scripts/assessment-python-run.mjs --python .venv/bin/python --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/python/accuracy-corpus.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/python/accuracy-corpus.md --mismatches-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/python/accuracy-corpus-mismatches.json"
+        }
+      },
+      "path": "whole-input",
+      "status": "complete"
+    },
+    {
+      "surface": "python",
+      "kind": "performance",
+      "profileId": "scale-logs-small-whole",
+      "resultPath": "python/scale-logs-small-whole.json",
+      "markdownPath": "python/scale-logs-small-whole.md",
+      "result": {
+        "schemaVersion": "3",
+        "surface": "python",
+        "profileId": "scale-logs-small-whole",
+        "performance": {
+          "initialization": {
+            "unit": "milliseconds",
+            "samples": [
+              0.72193,
+              0.729462,
+              0.733508,
+              0.683182,
+              0.720187
+            ],
+            "minimum": 0.683182,
+            "median": 0.72193,
+            "p95": 0.733508,
+            "maximum": 0.733508,
+            "mean": 0.7176538,
+            "standardDeviation": 0.017909758394796985
+          },
+          "processing": {
+            "unit": "milliseconds",
+            "samples": [
+              2.228515,
+              2.174123,
+              2.202596,
+              2.197699,
+              2.181324
+            ],
+            "minimum": 2.174123,
+            "median": 2.197699,
+            "p95": 2.228515,
+            "maximum": 2.228515,
+            "mean": 2.1968514,
+            "standardDeviation": 0.018941925652900222
+          },
+          "throughput": {
+            "unit": "bytes-per-second",
+            "samples": [
+              29416001.2384929,
+              30151927.926800836,
+              29762153.386276916,
+              29828470.595836826,
+              30052390.199713565
+            ],
+            "minimum": 29416001.2384929,
+            "median": 29828470.595836826,
+            "p95": 30151927.926800836,
+            "maximum": 30151927.926800836,
+            "mean": 29842188.669424206,
+            "standardDeviation": 256262.61891717964
+          },
+          "memory": {
+            "nodeHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The Python process does not run inside a Node.js heap.",
+              "samplingLimit": "No samples were available."
+            },
+            "nodeRss": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The Python process is not a Node.js process; its whole-process RSS is reported as processRss.",
+              "samplingLimit": "No samples were available."
+            },
+            "nodeExternal": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The Python process has no Node external-memory category.",
+              "samplingLimit": "No samples were available."
+            },
+            "browserJsHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The Python process does not run inside a browser JavaScript heap.",
+              "samplingLimit": "No samples were available."
+            },
+            "wasmLinearMemory": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The Python package uses a native extension, not WebAssembly linear memory.",
+              "samplingLimit": "No samples were available."
+            },
+            "pythonHeap": {
+              "unit": "bytes",
+              "samples": [
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 75205
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 75160
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 75160
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 75205
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 75205
+                }
+              ],
+              "samplingLimit": "Measured by tracemalloc during a separate untimed processing pass; it observes Python allocations made after tracing starts, not the interpreter's pre-existing heap or native Rust allocations."
+            },
+            "processRss": {
+              "unit": "bytes",
+              "samples": [
+                {
+                  "baselineBytes": 21254144,
+                  "maximumObservedBytes": 21254144
+                },
+                {
+                  "baselineBytes": 21319680,
+                  "maximumObservedBytes": 21319680
+                },
+                {
+                  "baselineBytes": 21364736,
+                  "maximumObservedBytes": 21364736
+                },
+                {
+                  "baselineBytes": 21233664,
+                  "maximumObservedBytes": 21233664
+                },
+                {
+                  "baselineBytes": 21336064,
+                  "maximumObservedBytes": 21336064
+                }
+              ],
+              "samplingLimit": "Unix ru_maxrss high-water marks sampled immediately before and after a separate untimed processing pass; the value includes the Python interpreter, native extension, allocator, and earlier process activity and cannot isolate Rust-only memory."
+            },
+            "streamingBuffer": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The public incremental session exposes lifecycle state but intentionally does not expose retained plaintext buffer size.",
+              "samplingLimit": "No samples were available."
+            }
+          }
+        },
+        "provenance": {
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "artifactIdentity": "redact-secret==0.1.0b11",
+          "corpusVersion": "1",
+          "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "cpython-3.12.14",
+          "command": "node scripts/assessment-python-performance.mjs --python .venv/bin/python --profile scale-logs-small-whole --runs 5 --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/python/scale-logs-small-whole.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/python/scale-logs-small-whole.md"
+        }
+      },
+      "path": "whole-input",
+      "status": "complete"
+    },
+    {
+      "surface": "python",
+      "kind": "performance",
+      "profileId": "scale-logs-medium-fixed4096",
+      "resultPath": "python/scale-logs-medium-fixed4096.json",
+      "markdownPath": "python/scale-logs-medium-fixed4096.md",
+      "result": {
+        "schemaVersion": "3",
+        "surface": "python",
+        "profileId": "scale-logs-medium-fixed4096",
+        "performance": {
+          "initialization": {
+            "unit": "milliseconds",
+            "samples": [
+              0.989865,
+              0.719807,
+              0.760819,
+              0.734048,
+              0.74123
+            ],
+            "minimum": 0.719807,
+            "median": 0.74123,
+            "p95": 0.989865,
+            "maximum": 0.989865,
+            "mean": 0.7891538,
+            "standardDeviation": 0.1012226903088433
+          },
+          "processing": {
+            "unit": "milliseconds",
+            "samples": [
+              12.425183,
+              12.35661,
+              12.713118,
+              12.571965,
+              12.821151
+            ],
+            "minimum": 12.35661,
+            "median": 12.571965,
+            "p95": 12.821151,
+            "maximum": 12.821151,
+            "mean": 12.5776054,
+            "standardDeviation": 0.17307887970125066
+          },
+          "throughput": {
+            "unit": "bytes-per-second",
+            "samples": [
+              21098602.732853107,
+              21215689.416433796,
+              20620747.79766852,
+              20852269.31509911,
+              20446994.18952323
+            ],
+            "minimum": 20446994.18952323,
+            "median": 20852269.31509911,
+            "p95": 21215689.416433796,
+            "maximum": 21215689.416433796,
+            "mean": 20846860.690315552,
+            "standardDeviation": 286516.3859503116
+          },
+          "memory": {
+            "nodeHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The Python process does not run inside a Node.js heap.",
+              "samplingLimit": "No samples were available."
+            },
+            "nodeRss": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The Python process is not a Node.js process; its whole-process RSS is reported as processRss.",
+              "samplingLimit": "No samples were available."
+            },
+            "nodeExternal": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The Python process has no Node external-memory category.",
+              "samplingLimit": "No samples were available."
+            },
+            "browserJsHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The Python process does not run inside a browser JavaScript heap.",
+              "samplingLimit": "No samples were available."
+            },
+            "wasmLinearMemory": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The Python package uses a native extension, not WebAssembly linear memory.",
+              "samplingLimit": "No samples were available."
+            },
+            "pythonHeap": {
+              "unit": "bytes",
+              "samples": [
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 537703
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 537748
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 537748
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 537656
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 537703
+                }
+              ],
+              "samplingLimit": "Measured by tracemalloc during a separate untimed processing pass; it observes Python allocations made after tracing starts, not the interpreter's pre-existing heap or native Rust allocations."
+            },
+            "processRss": {
+              "unit": "bytes",
+              "samples": [
+                {
+                  "baselineBytes": 21860352,
+                  "maximumObservedBytes": 21860352
+                },
+                {
+                  "baselineBytes": 21872640,
+                  "maximumObservedBytes": 21872640
+                },
+                {
+                  "baselineBytes": 21872640,
+                  "maximumObservedBytes": 21872640
+                },
+                {
+                  "baselineBytes": 21884928,
+                  "maximumObservedBytes": 21884928
+                },
+                {
+                  "baselineBytes": 21839872,
+                  "maximumObservedBytes": 21839872
+                }
+              ],
+              "samplingLimit": "Unix ru_maxrss high-water marks sampled immediately before and after a separate untimed processing pass; the value includes the Python interpreter, native extension, allocator, and earlier process activity and cannot isolate Rust-only memory."
+            },
+            "streamingBuffer": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The public incremental session exposes lifecycle state but intentionally does not expose retained plaintext buffer size.",
+              "samplingLimit": "No samples were available."
+            }
+          }
+        },
+        "provenance": {
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "artifactIdentity": "redact-secret==0.1.0b11",
+          "corpusVersion": "1",
+          "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "cpython-3.12.14",
+          "command": "node scripts/assessment-python-performance.mjs --python .venv/bin/python --profile scale-logs-medium-fixed4096 --runs 5 --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/python/scale-logs-medium-fixed4096.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/python/scale-logs-medium-fixed4096.md"
+        }
+      },
+      "path": "incremental",
+      "status": "complete"
+    },
+    {
+      "surface": "node",
+      "kind": "accuracy",
+      "profileId": "accuracy-corpus",
+      "resultPath": "node/accuracy-corpus.json",
+      "markdownPath": "node/accuracy-corpus.md",
+      "mismatchesPath": "node/accuracy-corpus-mismatches.json",
+      "result": {
+        "schemaVersion": "3",
+        "surface": "node",
+        "profileId": "accuracy-corpus",
+        "accuracy": {
+          "truePositives": 21,
+          "falsePositives": 1,
+          "falseNegatives": 5,
+          "policyMismatches": 0
+        },
+        "provenance": {
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "artifactIdentity": "@redact-secret/core@0.1.0-beta.11",
+          "corpusVersion": "3",
+          "corpusHash": "ca96dddd9cb189e83db6cde203060e559f116670f823dd9631c3850aed4892d0",
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "node-22.23.3",
+          "command": "node scripts/assessment-run.mjs --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/node/accuracy-corpus.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/node/accuracy-corpus.md --mismatches-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/node/accuracy-corpus-mismatches.json"
+        }
+      },
+      "path": "whole-input",
+      "status": "complete"
+    },
+    {
+      "surface": "node",
+      "kind": "performance",
+      "profileId": "scale-logs-small-whole",
+      "resultPath": "node/scale-logs-small-whole.json",
+      "markdownPath": "node/scale-logs-small-whole.md",
+      "result": {
+        "schemaVersion": "3",
+        "surface": "node",
+        "profileId": "scale-logs-small-whole",
+        "performance": {
+          "initialization": {
+            "unit": "milliseconds",
+            "samples": [
+              4.015493999999997,
+              3.9562549999999987,
+              4.143647000000001,
+              4.404119999999999,
+              4.122686000000002
+            ],
+            "minimum": 3.9562549999999987,
+            "median": 4.122686000000002,
+            "p95": 4.404119999999999,
+            "maximum": 4.404119999999999,
+            "mean": 4.1284404,
+            "standardDeviation": 0.1540573249833974
+          },
+          "processing": {
+            "unit": "milliseconds",
+            "samples": [
+              2.222797,
+              2.1308970000000045,
+              2.262675999999999,
+              2.215574999999994,
+              2.2498470000000026
+            ],
+            "minimum": 2.1308970000000045,
+            "median": 2.222797,
+            "p95": 2.262675999999999,
+            "maximum": 2.262675999999999,
+            "mean": 2.2163584,
+            "standardDeviation": 0.04607065568276476
+          },
+          "throughput": {
+            "unit": "bytes-per-second",
+            "samples": [
+              29491671.979042623,
+              30763570.45882549,
+              28971889.921491202,
+              29587804.520271342,
+              29137092.433396548
+            ],
+            "minimum": 28971889.921491202,
+            "median": 29491671.979042623,
+            "p95": 30763570.45882549,
+            "maximum": 30763570.45882549,
+            "mean": 29590405.86260544,
+            "standardDeviation": 628351.072424174
+          },
+          "memory": {
+            "nodeHeap": {
+              "unit": "bytes",
+              "samples": [
+                {
+                  "baselineBytes": 7412408,
+                  "maximumObservedBytes": 7483064
+                },
+                {
+                  "baselineBytes": 7274088,
+                  "maximumObservedBytes": 7344744
+                },
+                {
+                  "baselineBytes": 7412408,
+                  "maximumObservedBytes": 7483064
+                },
+                {
+                  "baselineBytes": 7306024,
+                  "maximumObservedBytes": 7414992
+                },
+                {
+                  "baselineBytes": 7412480,
+                  "maximumObservedBytes": 7483136
+                }
+              ],
+              "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks."
+            },
+            "nodeRss": {
+              "unit": "bytes",
+              "samples": [
+                {
+                  "baselineBytes": 67706880,
+                  "maximumObservedBytes": 67969024
+                },
+                {
+                  "baselineBytes": 67579904,
+                  "maximumObservedBytes": 67710976
+                },
+                {
+                  "baselineBytes": 67780608,
+                  "maximumObservedBytes": 67911680
+                },
+                {
+                  "baselineBytes": 67649536,
+                  "maximumObservedBytes": 67780608
+                },
+                {
+                  "baselineBytes": 67579904,
+                  "maximumObservedBytes": 67842048
+                }
+              ],
+              "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks."
+            },
+            "nodeExternal": {
+              "unit": "bytes",
+              "samples": [
+                {
+                  "baselineBytes": 2321833,
+                  "maximumObservedBytes": 2321873
+                },
+                {
+                  "baselineBytes": 2321833,
+                  "maximumObservedBytes": 2321873
+                },
+                {
+                  "baselineBytes": 2321833,
+                  "maximumObservedBytes": 2321873
+                },
+                {
+                  "baselineBytes": 2321833,
+                  "maximumObservedBytes": 2321873
+                },
+                {
+                  "baselineBytes": 2321833,
+                  "maximumObservedBytes": 2321873
+                }
+              ],
+              "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks. External memory can overlap RSS and must not be summed with it."
+            },
+            "browserJsHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The Node process does not expose a browser JavaScript heap.",
+              "samplingLimit": "No samples were available."
+            },
+            "wasmLinearMemory": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The Node N-API surface does not use WebAssembly linear memory.",
+              "samplingLimit": "No samples were available."
+            },
+            "pythonHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The Node process does not run inside a Python allocator.",
+              "samplingLimit": "No samples were available."
+            },
+            "processRss": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "Node process RSS is reported as nodeRss; duplicating it as processRss would report one overlapping measure twice.",
+              "samplingLimit": "No samples were available."
+            },
+            "streamingBuffer": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The public incremental session exposes lifecycle state but intentionally does not expose retained plaintext buffer size.",
+              "samplingLimit": "No samples were available."
+            }
+          }
+        },
+        "provenance": {
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "artifactIdentity": "@redact-secret/core@0.1.0-beta.11",
+          "corpusVersion": "1",
+          "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "node-22.23.3",
+          "command": "node scripts/assessment-node-performance.mjs --profile scale-logs-small-whole --runs 5 --addon-dir bindings/node --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/node/scale-logs-small-whole.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/node/scale-logs-small-whole.md",
+          "resolvedArtifact": "node-addon"
+        }
+      },
+      "path": "whole-input",
+      "status": "complete"
+    },
+    {
+      "surface": "node",
+      "kind": "performance",
+      "profileId": "scale-logs-medium-fixed4096",
+      "resultPath": "node/scale-logs-medium-fixed4096.json",
+      "markdownPath": "node/scale-logs-medium-fixed4096.md",
+      "result": {
+        "schemaVersion": "3",
+        "surface": "node",
+        "profileId": "scale-logs-medium-fixed4096",
+        "performance": {
+          "initialization": {
+            "unit": "milliseconds",
+            "samples": [
+              4.362017000000009,
+              4.170648,
+              4.806578000000002,
+              4.19153,
+              4.1584100000000035
+            ],
+            "minimum": 4.1584100000000035,
+            "median": 4.19153,
+            "p95": 4.806578000000002,
+            "maximum": 4.806578000000002,
+            "mean": 4.337836600000003,
+            "standardDeviation": 0.2457050043361758
+          },
+          "processing": {
+            "unit": "milliseconds",
+            "samples": [
+              16.105099999999993,
+              17.548349,
+              15.78591800000001,
+              15.640138000000007,
+              15.415597999999989
+            ],
+            "minimum": 15.415597999999989,
+            "median": 15.78591800000001,
+            "p95": 17.548349,
+            "maximum": 17.548349,
+            "mean": 16.0990206,
+            "standardDeviation": 0.7584540459449349
+          },
+          "throughput": {
+            "unit": "bytes-per-second",
+            "samples": [
+              16277700.852524983,
+              14938955.22593037,
+              16606826.413262747,
+              16761616.809263438,
+              17005762.60486296
+            ],
+            "minimum": 14938955.22593037,
+            "median": 16606826.413262747,
+            "p95": 17005762.60486296,
+            "maximum": 17005762.60486296,
+            "mean": 16318172.381168898,
+            "standardDeviation": 728920.0686915967
+          },
+          "memory": {
+            "nodeHeap": {
+              "unit": "bytes",
+              "samples": [
+                {
+                  "baselineBytes": 21725904,
+                  "maximumObservedBytes": 21725904
+                },
+                {
+                  "baselineBytes": 21722512,
+                  "maximumObservedBytes": 21722512
+                },
+                {
+                  "baselineBytes": 21724144,
+                  "maximumObservedBytes": 21724144
+                },
+                {
+                  "baselineBytes": 21723408,
+                  "maximumObservedBytes": 21723408
+                },
+                {
+                  "baselineBytes": 21747728,
+                  "maximumObservedBytes": 21747728
+                }
+              ],
+              "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks."
+            },
+            "nodeRss": {
+              "unit": "bytes",
+              "samples": [
+                {
+                  "baselineBytes": 95981568,
+                  "maximumObservedBytes": 95981568
+                },
+                {
+                  "baselineBytes": 95285248,
+                  "maximumObservedBytes": 95285248
+                },
+                {
+                  "baselineBytes": 95514624,
+                  "maximumObservedBytes": 95514624
+                },
+                {
+                  "baselineBytes": 95342592,
+                  "maximumObservedBytes": 95342592
+                },
+                {
+                  "baselineBytes": 95334400,
+                  "maximumObservedBytes": 95334400
+                }
+              ],
+              "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks."
+            },
+            "nodeExternal": {
+              "unit": "bytes",
+              "samples": [
+                {
+                  "baselineBytes": 2353513,
+                  "maximumObservedBytes": 2353553
+                },
+                {
+                  "baselineBytes": 2353630,
+                  "maximumObservedBytes": 2353670
+                },
+                {
+                  "baselineBytes": 2353463,
+                  "maximumObservedBytes": 2353503
+                },
+                {
+                  "baselineBytes": 2353485,
+                  "maximumObservedBytes": 2353525
+                },
+                {
+                  "baselineBytes": 2353667,
+                  "maximumObservedBytes": 2353707
+                }
+              ],
+              "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks. External memory can overlap RSS and must not be summed with it."
+            },
+            "browserJsHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The Node process does not expose a browser JavaScript heap.",
+              "samplingLimit": "No samples were available."
+            },
+            "wasmLinearMemory": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The Node N-API surface does not use WebAssembly linear memory.",
+              "samplingLimit": "No samples were available."
+            },
+            "pythonHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The Node process does not run inside a Python allocator.",
+              "samplingLimit": "No samples were available."
+            },
+            "processRss": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "Node process RSS is reported as nodeRss; duplicating it as processRss would report one overlapping measure twice.",
+              "samplingLimit": "No samples were available."
+            },
+            "streamingBuffer": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The public incremental session exposes lifecycle state but intentionally does not expose retained plaintext buffer size.",
+              "samplingLimit": "No samples were available."
+            }
+          }
+        },
+        "provenance": {
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "artifactIdentity": "@redact-secret/core@0.1.0-beta.11",
+          "corpusVersion": "1",
+          "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "node-22.23.3",
+          "command": "node scripts/assessment-node-performance.mjs --profile scale-logs-medium-fixed4096 --runs 5 --addon-dir bindings/node --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/node/scale-logs-medium-fixed4096.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/node/scale-logs-medium-fixed4096.md",
+          "resolvedArtifact": "node-addon"
+        }
+      },
+      "path": "incremental",
+      "status": "complete"
+    },
+    {
+      "surface": "browser-wasm",
+      "kind": "accuracy",
+      "profileId": "accuracy-corpus",
+      "resultPath": "browser-wasm/accuracy-corpus.json",
+      "markdownPath": "browser-wasm/accuracy-corpus.md",
+      "mismatchesPath": "browser-wasm/accuracy-corpus-mismatches.json",
+      "result": {
+        "schemaVersion": "3",
+        "surface": "browser-wasm",
+        "profileId": "accuracy-corpus",
+        "accuracy": {
+          "truePositives": 21,
+          "falsePositives": 1,
+          "falseNegatives": 5,
+          "policyMismatches": 0
+        },
+        "provenance": {
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "artifactIdentity": "@redact-secret/wasm@0.1.0-beta.11",
+          "corpusVersion": "3",
+          "corpusHash": "ca96dddd9cb189e83db6cde203060e559f116670f823dd9631c3850aed4892d0",
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "chromium-153.0.8010.12",
+          "command": "node scripts/assessment-browser-run.mjs --engine chromium --artifact-dir /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/core-repo/bindings/wasm/pkg --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/browser-wasm/accuracy-corpus.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/browser-wasm/accuracy-corpus.md --mismatches-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/browser-wasm/accuracy-corpus-mismatches.json"
+        }
+      },
+      "path": "whole-input",
+      "status": "complete"
+    },
+    {
+      "surface": "browser-wasm",
+      "kind": "performance",
+      "profileId": "scale-logs-small-whole",
+      "resultPath": "browser-wasm/scale-logs-small-whole.json",
+      "markdownPath": "browser-wasm/scale-logs-small-whole.md",
+      "result": {
+        "schemaVersion": "3",
+        "surface": "browser-wasm",
+        "profileId": "scale-logs-small-whole",
+        "performance": {
+          "initialization": {
+            "unit": "milliseconds",
+            "samples": [
+              14.800000000017462,
+              8.10000000000582,
+              8.199999999982538,
+              7.099999999976717,
+              7
+            ],
+            "minimum": 7,
+            "median": 8.10000000000582,
+            "p95": 14.800000000017462,
+            "maximum": 14.800000000017462,
+            "mean": 9.039999999996507,
+            "standardDeviation": 2.922054072063345
+          },
+          "processing": {
+            "unit": "milliseconds",
+            "samples": [
+              9.700000000011642,
+              11.5,
+              10.800000000017462,
+              10.900000000023283,
+              11.39999999999418
+            ],
+            "minimum": 9.700000000011642,
+            "median": 10.900000000023283,
+            "p95": 11.5,
+            "maximum": 11.5,
+            "mean": 10.860000000009313,
+            "standardDeviation": 0.6406246951166451
+          },
+          "throughput": {
+            "unit": "bytes-per-second",
+            "samples": [
+              6758144.329888796,
+              5700347.826086957,
+              6069814.814805001,
+              6014128.440354126,
+              5750350.877195919
+            ],
+            "minimum": 5700347.826086957,
+            "median": 6014128.440354126,
+            "p95": 6758144.329888796,
+            "maximum": 6758144.329888796,
+            "mean": 6058557.2576661585,
+            "standardDeviation": 378107.89302959107
+          },
+          "memory": {
+            "nodeHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "A browser process does not expose Node heapUsed.",
+              "samplingLimit": "No samples were available."
+            },
+            "nodeRss": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "Browser pages do not expose process RSS through a standard API.",
+              "samplingLimit": "No samples were available."
+            },
+            "nodeExternal": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "Browser pages do not expose Node external memory.",
+              "samplingLimit": "No samples were available."
+            },
+            "browserJsHeap": {
+              "unit": "bytes",
+              "samples": [
+                {
+                  "baselineBytes": 10000000,
+                  "maximumObservedBytes": 10000000
+                },
+                {
+                  "baselineBytes": 10000000,
+                  "maximumObservedBytes": 10000000
+                },
+                {
+                  "baselineBytes": 10000000,
+                  "maximumObservedBytes": 10000000
+                },
+                {
+                  "baselineBytes": 10000000,
+                  "maximumObservedBytes": 10000000
+                },
+                {
+                  "baselineBytes": 10000000,
+                  "maximumObservedBytes": 10000000
+                }
+              ],
+              "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks. performance.memory is non-standard, engine-dependent, and may be coarsened."
+            },
+            "wasmLinearMemory": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The package intentionally keeps its WebAssembly.Memory handle private; the test harness cannot read linear-memory size without adding product instrumentation.",
+              "samplingLimit": "No samples were available."
+            },
+            "pythonHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The browser surface does not run inside a Python allocator.",
+              "samplingLimit": "No samples were available."
+            },
+            "processRss": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "Browser pages do not expose whole-process RSS through a standard API.",
+              "samplingLimit": "No samples were available."
+            },
+            "streamingBuffer": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The public incremental session exposes lifecycle state but intentionally does not expose retained plaintext buffer size.",
+              "samplingLimit": "No samples were available."
+            }
+          }
+        },
+        "provenance": {
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "artifactIdentity": "@redact-secret/wasm@0.1.0-beta.11",
+          "corpusVersion": "1",
+          "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "chromium-153.0.8010.12",
+          "command": "node scripts/assessment-browser-performance.mjs --engine chromium --artifact-dir /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/core-repo/bindings/wasm/pkg --profile scale-logs-small-whole --runs 5 --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/browser-wasm/scale-logs-small-whole.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/browser-wasm/scale-logs-small-whole.md"
+        }
+      },
+      "path": "whole-input",
+      "status": "complete"
+    },
+    {
+      "surface": "browser-wasm",
+      "kind": "performance",
+      "profileId": "scale-logs-medium-fixed4096",
+      "resultPath": "browser-wasm/scale-logs-medium-fixed4096.json",
+      "markdownPath": "browser-wasm/scale-logs-medium-fixed4096.md",
+      "result": {
+        "schemaVersion": "3",
+        "surface": "browser-wasm",
+        "profileId": "scale-logs-medium-fixed4096",
+        "performance": {
+          "initialization": {
+            "unit": "milliseconds",
+            "samples": [
+              12.5,
+              13.39999999999418,
+              11.199999999982538,
+              11.300000000017462,
+              11.200000000011642
+            ],
+            "minimum": 11.199999999982538,
+            "median": 11.300000000017462,
+            "p95": 13.39999999999418,
+            "maximum": 13.39999999999418,
+            "mean": 11.920000000001163,
+            "standardDeviation": 0.8885943956574899
+          },
+          "processing": {
+            "unit": "milliseconds",
+            "samples": [
+              21.5,
+              21.5,
+              21.5,
+              21.5,
+              18.39999999999418
+            ],
+            "minimum": 18.39999999999418,
+            "median": 21.5,
+            "p95": 21.5,
+            "maximum": 21.5,
+            "mean": 20.879999999998837,
+            "standardDeviation": 1.2400000000023284
+          },
+          "throughput": {
+            "unit": "bytes-per-second",
+            "samples": [
+              12193209.302325582,
+              12193209.302325582,
+              12193209.302325582,
+              12193209.302325582,
+              14247500.000004508
+            ],
+            "minimum": 12193209.302325582,
+            "median": 12193209.302325582,
+            "p95": 14247500.000004508,
+            "maximum": 14247500.000004508,
+            "mean": 12604067.441861367,
+            "standardDeviation": 821716.2790715701
+          },
+          "memory": {
+            "nodeHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "A browser process does not expose Node heapUsed.",
+              "samplingLimit": "No samples were available."
+            },
+            "nodeRss": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "Browser pages do not expose process RSS through a standard API.",
+              "samplingLimit": "No samples were available."
+            },
+            "nodeExternal": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "Browser pages do not expose Node external memory.",
+              "samplingLimit": "No samples were available."
+            },
+            "browserJsHeap": {
+              "unit": "bytes",
+              "samples": [
+                {
+                  "baselineBytes": 39600000,
+                  "maximumObservedBytes": 39600000
+                },
+                {
+                  "baselineBytes": 39600000,
+                  "maximumObservedBytes": 39600000
+                },
+                {
+                  "baselineBytes": 39600000,
+                  "maximumObservedBytes": 39600000
+                },
+                {
+                  "baselineBytes": 39600000,
+                  "maximumObservedBytes": 39600000
+                },
+                {
+                  "baselineBytes": 39600000,
+                  "maximumObservedBytes": 39600000
+                }
+              ],
+              "samplingLimit": "Sampled immediately before and after processing; short-lived peaks between those boundaries may be missed, so maxima are observed samples, not guaranteed true peaks. performance.memory is non-standard, engine-dependent, and may be coarsened."
+            },
+            "wasmLinearMemory": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The package intentionally keeps its WebAssembly.Memory handle private; the test harness cannot read linear-memory size without adding product instrumentation.",
+              "samplingLimit": "No samples were available."
+            },
+            "pythonHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The browser surface does not run inside a Python allocator.",
+              "samplingLimit": "No samples were available."
+            },
+            "processRss": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "Browser pages do not expose whole-process RSS through a standard API.",
+              "samplingLimit": "No samples were available."
+            },
+            "streamingBuffer": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The public incremental session exposes lifecycle state but intentionally does not expose retained plaintext buffer size.",
+              "samplingLimit": "No samples were available."
+            }
+          }
+        },
+        "provenance": {
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "artifactIdentity": "@redact-secret/wasm@0.1.0-beta.11",
+          "corpusVersion": "1",
+          "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "chromium-153.0.8010.12",
+          "command": "node scripts/assessment-browser-performance.mjs --engine chromium --artifact-dir /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/core-repo/bindings/wasm/pkg --profile scale-logs-medium-fixed4096 --runs 5 --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/browser-wasm/scale-logs-medium-fixed4096.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/browser-wasm/scale-logs-medium-fixed4096.md"
+        }
+      },
+      "path": "incremental",
+      "status": "complete"
+    },
+    {
+      "surface": "cli",
+      "kind": "accuracy",
+      "profileId": "accuracy-corpus",
+      "resultPath": "cli/accuracy-corpus.json",
+      "markdownPath": "cli/accuracy-corpus.md",
+      "mismatchesPath": "cli/accuracy-corpus-mismatches.json",
+      "result": {
+        "schemaVersion": "3",
+        "surface": "cli",
+        "profileId": "accuracy-corpus",
+        "accuracy": {
+          "truePositives": 21,
+          "falsePositives": 1,
+          "falseNegatives": 5,
+          "policyMismatches": 0
+        },
+        "provenance": {
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "artifactIdentity": "redact-secret@0.1.0-beta.11",
+          "corpusVersion": "3",
+          "corpusHash": "ca96dddd9cb189e83db6cde203060e559f116670f823dd9631c3850aed4892d0",
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "rustc 1.98.1 (48a229cea 2026-09-01)",
+          "command": "node scripts/assessment-cli-run.mjs --binary target/release/redact-secret --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/cli/accuracy-corpus.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/cli/accuracy-corpus.md --mismatches-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/cli/accuracy-corpus-mismatches.json"
+        }
+      },
+      "path": "whole-input",
+      "status": "complete"
+    },
+    {
+      "surface": "cli",
+      "kind": "performance",
+      "profileId": "scale-logs-small-whole",
+      "resultPath": "cli/scale-logs-small-whole.json",
+      "markdownPath": "cli/scale-logs-small-whole.md",
+      "result": {
+        "schemaVersion": "3",
+        "surface": "cli",
+        "profileId": "scale-logs-small-whole",
+        "performance": {
+          "initialization": {
+            "unit": "milliseconds",
+            "samples": [
+              1.7894579999999962,
+              1.5392850000000067,
+              1.5024879999999996,
+              1.4990880000000004,
+              1.4795040000000057
+            ],
+            "minimum": 1.4795040000000057,
+            "median": 1.5024879999999996,
+            "p95": 1.7894579999999962,
+            "maximum": 1.7894579999999962,
+            "mean": 1.5619646000000018,
+            "standardDeviation": 0.11537616272627291
+          },
+          "processing": {
+            "unit": "milliseconds",
+            "samples": [
+              4.9301750000000055,
+              4.935603,
+              4.766317999999998,
+              4.7322460000000035,
+              4.953068999999999
+            ],
+            "minimum": 4.7322460000000035,
+            "median": 4.9301750000000055,
+            "p95": 4.953068999999999,
+            "maximum": 4.953068999999999,
+            "mean": 4.863482200000002,
+            "standardDeviation": 0.09416895035073937
+          },
+          "throughput": {
+            "unit": "bytes-per-second",
+            "samples": [
+              13296485.41887457,
+              13281862.418837171,
+              13753593.444667356,
+              13852618.81990073,
+              13235026.60673615
+            ],
+            "minimum": 13235026.60673615,
+            "median": 13296485.41887457,
+            "p95": 13852618.81990073,
+            "maximum": 13852618.81990073,
+            "mean": 13483917.341803197,
+            "standardDeviation": 263275.32965967455
+          },
+          "memory": {
+            "nodeHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The CLI is a native process, not a Node.js process.",
+              "samplingLimit": "No samples were available."
+            },
+            "nodeRss": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The CLI is a native process, not a Node.js process.",
+              "samplingLimit": "No samples were available."
+            },
+            "nodeExternal": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The CLI is a native process, not a Node.js process.",
+              "samplingLimit": "No samples were available."
+            },
+            "browserJsHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The CLI is a native process, not a browser JavaScript environment.",
+              "samplingLimit": "No samples were available."
+            },
+            "wasmLinearMemory": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The CLI is a native process and does not use WebAssembly linear memory.",
+              "samplingLimit": "No samples were available."
+            },
+            "pythonHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The CLI is a native process, not a Python allocator.",
+              "samplingLimit": "No samples were available."
+            },
+            "processRss": {
+              "unit": "bytes",
+              "samples": [
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 3719168
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 3706880
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 3727360
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 3756032
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 3805184
+                }
+              ],
+              "samplingLimit": "A separate, untimed /usr/bin/time-wrapped repetition's whole-process maximum resident set size; it includes process startup, argument parsing, the Rust runtime, and the entire scan, and cannot isolate steady-state or Rust-only memory."
+            },
+            "streamingBuffer": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The CLI's standard-input path streams through the incremental core, but the public contract exposes no retained plaintext buffer size.",
+              "samplingLimit": "No samples were available."
+            }
+          }
+        },
+        "provenance": {
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "artifactIdentity": "redact-secret@0.1.0-beta.11",
+          "corpusVersion": "1",
+          "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "rustc 1.98.1 (48a229cea 2026-09-01)",
+          "command": "node scripts/assessment-cli-performance.mjs --binary target/release/redact-secret --profile scale-logs-small-whole --runs 5 --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/cli/scale-logs-small-whole.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/cli/scale-logs-small-whole.md"
+        }
+      },
+      "path": "whole-input",
+      "status": "complete"
+    },
+    {
+      "surface": "cli",
+      "kind": "performance",
+      "profileId": "scale-logs-medium-fixed4096",
+      "resultPath": "cli/scale-logs-medium-fixed4096.json",
+      "markdownPath": "cli/scale-logs-medium-fixed4096.md",
+      "result": {
+        "schemaVersion": "3",
+        "surface": "cli",
+        "profileId": "scale-logs-medium-fixed4096",
+        "performance": {
+          "initialization": {
+            "unit": "milliseconds",
+            "samples": [
+              1.9051369999999963,
+              1.9835959999999915,
+              1.6968119999999942,
+              1.7472879999999975,
+              1.9605899999999963
+            ],
+            "minimum": 1.6968119999999942,
+            "median": 1.9051369999999963,
+            "p95": 1.9835959999999915,
+            "maximum": 1.9835959999999915,
+            "mean": 1.8586845999999952,
+            "standardDeviation": 0.1155485482273137
+          },
+          "processing": {
+            "unit": "milliseconds",
+            "samples": [
+              13.720328000000002,
+              13.945108999999988,
+              13.69360900000001,
+              13.966680999999994,
+              14.209788000000003
+            ],
+            "minimum": 13.69360900000001,
+            "median": 13.945108999999988,
+            "p95": 14.209788000000003,
+            "maximum": 14.209788000000003,
+            "mean": 13.907103000000001,
+            "standardDeviation": 0.18818968728705388
+          },
+          "throughput": {
+            "unit": "bytes-per-second",
+            "samples": [
+              19106977.617444713,
+              18798992.53566252,
+              19144259.194197807,
+              18769956.870927323,
+              18448832.593420815
+            ],
+            "minimum": 18448832.593420815,
+            "median": 18798992.53566252,
+            "p95": 19144259.194197807,
+            "maximum": 19144259.194197807,
+            "mean": 18853803.762330636,
+            "standardDeviation": 253967.54841101967
+          },
+          "memory": {
+            "nodeHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The CLI is a native process, not a Node.js process.",
+              "samplingLimit": "No samples were available."
+            },
+            "nodeRss": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The CLI is a native process, not a Node.js process.",
+              "samplingLimit": "No samples were available."
+            },
+            "nodeExternal": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The CLI is a native process, not a Node.js process.",
+              "samplingLimit": "No samples were available."
+            },
+            "browserJsHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The CLI is a native process, not a browser JavaScript environment.",
+              "samplingLimit": "No samples were available."
+            },
+            "wasmLinearMemory": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The CLI is a native process and does not use WebAssembly linear memory.",
+              "samplingLimit": "No samples were available."
+            },
+            "pythonHeap": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The CLI is a native process, not a Python allocator.",
+              "samplingLimit": "No samples were available."
+            },
+            "processRss": {
+              "unit": "bytes",
+              "samples": [
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 4124672
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 4079616
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 4050944
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 4083712
+                },
+                {
+                  "baselineBytes": 0,
+                  "maximumObservedBytes": 3956736
+                }
+              ],
+              "samplingLimit": "A separate, untimed /usr/bin/time-wrapped repetition's whole-process maximum resident set size; it includes process startup, argument parsing, the Rust runtime, and the entire scan, and cannot isolate steady-state or Rust-only memory."
+            },
+            "streamingBuffer": {
+              "unit": "bytes",
+              "samples": [],
+              "unavailableReason": "The CLI's standard-input path streams through the incremental core, but the public contract exposes no retained plaintext buffer size.",
+              "samplingLimit": "No samples were available."
+            }
+          }
+        },
+        "provenance": {
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "artifactIdentity": "redact-secret@0.1.0-beta.11",
+          "corpusVersion": "1",
+          "corpusHash": "b4db2cd22b4c008c9d63789df8ca2e21e697a21a84699466ea5f96c89d8e2806",
+          "os": "linux-6.17.0-1022-azure",
+          "cpu": "x64",
+          "runtime": "rustc 1.98.1 (48a229cea 2026-09-01)",
+          "command": "node scripts/assessment-cli-performance.mjs --binary target/release/redact-secret --profile scale-logs-medium-fixed4096 --runs 5 --json-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/cli/scale-logs-medium-fixed4096.json --markdown-out /home/runner/work/redact-secret-benchmarks/redact-secret-benchmarks/performance-output/cli/scale-logs-medium-fixed4096.md"
+        }
+      },
+      "path": "standard-input",
+      "status": "complete"
+    }
+  ],
+  "validationFailures": []
+}

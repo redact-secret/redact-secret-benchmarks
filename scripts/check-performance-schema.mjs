@@ -41,6 +41,22 @@ report('benchmarks/performance-criteria.json matches schemas/performance-criteri
 const evidenceSummary = await read('evidence/603/summary.json');
 report('evidence/603/summary.json matches schemas/performance-assessment-v1.json (pinned core result contract)', validAssessment(evidenceSummary), validAssessment);
 
+// #405: the accepted run's own summary (the one the performance page reads its Measured columns from) is held to
+// the same standard as a freshly submitted one, including naming which artifact served the node runs.
+const acceptedPath = `${criteria.baseline.verificationPath.replace(/\/[^/]+$/, '')}/summary.json`;
+const acceptedSummary = await read(acceptedPath);
+report(`${acceptedPath} (accepted run at ${criteria.baseline.verifiedCommit.slice(0, 7)}) matches schemas/performance-assessment-v1.json`, validAssessment(acceptedSummary), validAssessment);
+if (acceptedSummary.sourceCommit !== criteria.baseline.verifiedCommit) {
+  failed = true;
+  console.error(`FAILED: ${acceptedPath} sourceCommit ${acceptedSummary.sourceCommit} is not baseline.verifiedCommit ${criteria.baseline.verifiedCommit}`);
+}
+const nodeRunsMissingArtifact = summary => (summary.runs ?? []).filter(run =>
+  run.surface === 'node' && run.kind === 'performance' && run.result?.provenance && run.result.provenance.resolvedArtifact === undefined);
+if (nodeRunsMissingArtifact(acceptedSummary).length) {
+  failed = true;
+  console.error(`FAILED: ${acceptedPath} node performance runs must record provenance.resolvedArtifact`);
+} else console.log(`OK: ${acceptedPath} node performance runs name their resolved artifact`);
+
 const summaryFlagIndex = process.argv.indexOf('--summary');
 if (summaryFlagIndex !== -1) {
   const summaryPath = process.argv[summaryFlagIndex + 1];
@@ -51,8 +67,7 @@ if (summaryFlagIndex !== -1) {
   // #405: unlike the frozen evidence/603 baseline above, a freshly submitted summary is held to naming
   // which artifact served a node performance run -- the loader may serve the N-API addon or fall back to
   // WebAssembly, and only the runner calling artifact() can tell.
-  const missingResolvedArtifact = (liveSummary.runs ?? []).filter(run =>
-    run.surface === 'node' && run.kind === 'performance' && run.result?.provenance && run.result.provenance.resolvedArtifact === undefined);
+  const missingResolvedArtifact = nodeRunsMissingArtifact(liveSummary);
   if (missingResolvedArtifact.length) {
     failed = true;
     console.error(`FAILED: ${summaryPath} node performance runs must record provenance.resolvedArtifact ("node-addon" or "wasm")`);

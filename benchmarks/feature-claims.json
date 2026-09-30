@@ -1,0 +1,1090 @@
+{
+  "schemaVersion": 1,
+  "readOn": "2026-09-30",
+  "libraries": [
+    {
+      "id": "redact-secret",
+      "name": "redact-secret",
+      "version": "0.1.0-beta.11",
+      "package": "@redact-secret/core",
+      "facts": {
+        "runsIn": "Node.js 20, 22, 24; browsers and Cloudflare Workers through WebAssembly",
+        "dependencies": "1 dependency (@redact-secret/wasm); 8 optional platform add-ons",
+        "install": {
+          "measuredOn": "2026-09-30",
+          "method": "npm pack --dry-run --json",
+          "note": "core, WebAssembly and one platform add-on (linux x64 glibc)",
+          "packages": [
+            {
+              "name": "@redact-secret/core",
+              "version": "0.1.0-beta.11",
+              "packedBytes": 41944,
+              "unpackedBytes": 159965
+            },
+            {
+              "name": "@redact-secret/wasm",
+              "version": "0.1.0-beta.11",
+              "packedBytes": 900782,
+              "unpackedBytes": 2581187
+            },
+            {
+              "name": "@redact-secret/node-linux-x64-gnu",
+              "version": "0.1.0-beta.11",
+              "packedBytes": 698018,
+              "unpackedBytes": 1645141
+            }
+          ]
+        },
+        "sources": [
+          "https://unpkg.com/@redact-secret/core@0.1.0-beta.11/README.md",
+          "https://unpkg.com/@redact-secret/core@0.1.0-beta.11/package.json"
+        ]
+      }
+    },
+    {
+      "id": "flare-redact",
+      "name": "flare-redact",
+      "version": "1.6.1",
+      "package": "flare-redact",
+      "facts": {
+        "runsIn": "Node.js 20 or later; browsers and edge runtimes",
+        "dependencies": "None",
+        "install": {
+          "measuredOn": "2026-09-30",
+          "method": "npm pack --dry-run --json",
+          "note": "one package",
+          "packages": [
+            {
+              "name": "flare-redact",
+              "version": "1.6.1",
+              "packedBytes": 236586,
+              "unpackedBytes": 949073
+            }
+          ]
+        },
+        "sources": [
+          "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md",
+          "https://unpkg.com/flare-redact@1.6.1/package.json"
+        ]
+      }
+    },
+    {
+      "id": "openredaction",
+      "name": "OpenRedaction",
+      "version": "1.1.5",
+      "package": "@openredaction/core",
+      "facts": {
+        "runsIn": "Node.js 20 or later; browser support not documented",
+        "dependencies": "None required; 3 optional peers (mammoth, pdf-parse, tesseract.js)",
+        "install": {
+          "measuredOn": "2026-09-30",
+          "method": "npm pack --dry-run --json",
+          "note": "one package",
+          "packages": [
+            {
+              "name": "@openredaction/core",
+              "version": "1.1.5",
+              "packedBytes": 774547,
+              "unpackedBytes": 3800574
+            }
+          ]
+        },
+        "sources": [
+          "https://unpkg.com/@openredaction/core@1.1.5/README.md",
+          "https://unpkg.com/@openredaction/core@1.1.5/package.json"
+        ]
+      }
+    }
+  ],
+  "groups": [
+    {
+      "label": "WHERE IT RUNS",
+      "rows": [
+        {
+          "id": "node",
+          "label": "Node.js",
+          "cells": {
+            "redact-secret": {
+              "mark": "yes",
+              "note": "Node.js 20, 22 and 24; native add-on with WebAssembly fallback",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.11/README.md"
+              },
+              "tested": true,
+              "test": "node.redact-secret"
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "Node 20 or later",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              },
+              "tested": true,
+              "test": "node.flare-redact"
+            },
+            "openredaction": {
+              "mark": "yes",
+              "note": "Node 20 or later (engines field)",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/package.json"
+              },
+              "tested": true,
+              "test": "node.openredaction"
+            }
+          }
+        },
+        {
+          "id": "browser",
+          "label": "Web browser",
+          "cells": {
+            "redact-secret": {
+              "mark": "yes",
+              "note": "WebAssembly build; needs ES2022",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "Listed: browser and edge runtimes",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "no",
+              "note": "Not documented; the main entry imports Node built-ins, a separate lite entry does not",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/dist/index.d.ts"
+              },
+              "tested": true,
+              "test": "browser.openredaction"
+            }
+          }
+        },
+        {
+          "id": "edge",
+          "label": "Edge runtimes",
+          "cells": {
+            "redact-secret": {
+              "mark": "partly",
+              "note": "Cloudflare Workers is supported; Vercel Edge is not",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "Listed: edge runtimes",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "no",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "python",
+          "label": "Python",
+          "cells": {
+            "redact-secret": {
+              "mark": "yes",
+              "note": "PyPI package",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "partly",
+              "note": "Separate SDK, installed from git",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "no",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "rust",
+          "label": "Rust",
+          "cells": {
+            "redact-secret": {
+              "mark": "yes",
+              "note": "crates.io crate; the core is written in Rust",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "partly",
+              "note": "Separate SDK, installed from git",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "no",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "go",
+          "label": "Go",
+          "cells": {
+            "redact-secret": {
+              "mark": "no",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "partly",
+              "note": "Separate SDK",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "no",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "cli",
+          "label": "Command line",
+          "cells": {
+            "redact-secret": {
+              "mark": "yes",
+              "note": "Checks files and staged diffs; redacts one file or standard input",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/docs/guides/cli.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "CLI: scan, redact, gateway",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "no",
+              "note": "No bin entry in the package",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/package.json"
+              }
+            }
+          }
+        },
+        {
+          "id": "service",
+          "label": "As a separate service",
+          "cells": {
+            "redact-secret": {
+              "mark": "no",
+              "note": "Runs inside your process",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "Docker sidecar gateway",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "partly",
+              "note": "REST API, described for the larger openredaction package",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "label": "WHAT IT FINDS",
+      "rows": [
+        {
+          "id": "credentials",
+          "label": "Passwords and API keys",
+          "cells": {
+            "redact-secret": {
+              "mark": "yes",
+              "note": "152 credential families from 76 providers",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "Tokens, keys, JWTs and connection strings, listed by detector",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "yes",
+              "note": "API keys, OAuth tokens, JWT and bearer tokens",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "payment",
+          "label": "Emails, cards and IBANs",
+          "cells": {
+            "redact-secret": {
+              "mark": "partly",
+              "note": "Opt-in personal-data switch; provisional",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "On by default",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "yes",
+              "note": "Listed: email, credit cards, IBANs",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "phone",
+          "label": "Phone numbers",
+          "cells": {
+            "redact-secret": {
+              "mark": "partly",
+              "note": "Opt-in; +1 / NANP numbers only",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/docs/guides/cli.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "partly",
+              "note": "Opt-in (phone)",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "yes",
+              "note": "US, UK and international",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "ip",
+          "label": "IP addresses",
+          "cells": {
+            "redact-secret": {
+              "mark": "partly",
+              "note": "Opt-in network address family",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/docs/guides/cli.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "partly",
+              "note": "Opt-in (network): IPs, MAC addresses, coordinates",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "no",
+              "note": "Not listed in its README",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "national-id",
+          "label": "National ID numbers",
+          "cells": {
+            "redact-secret": {
+              "mark": "partly",
+              "note": "US Social Security numbers only, opt-in, pending",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "partly",
+              "note": "Opt-in; 15 countries listed, checksum-validated",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "yes",
+              "note": "50+ countries listed",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "names",
+          "label": "Names and street addresses",
+          "cells": {
+            "redact-secret": {
+              "mark": "no",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "partly",
+              "note": "Opt-in contextual detectors: names, street addresses, dates of birth",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "partly",
+              "note": "Names listed; street addresses not listed",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "custom",
+          "label": "Your own formats",
+          "cells": {
+            "redact-secret": {
+              "mark": "yes",
+              "note": "Declarative rulesets: data, no code callbacks",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/docs/guides/rulesets.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "Custom detectors and allow-lists",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "no",
+              "note": "Not listed in its README",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "label": "HOW IT HIDES THINGS",
+      "rows": [
+        {
+          "id": "look",
+          "label": "What hidden text looks like",
+          "cells": {
+            "redact-secret": {
+              "mark": "yes",
+              "note": "<SECRET_1>",
+              "literal": true,
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              },
+              "tested": true,
+              "test": "look.redact-secret"
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "b***@***",
+              "literal": true,
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              },
+              "tested": true,
+              "test": "look.flare-redact"
+            },
+            "openredaction": {
+              "mark": "yes",
+              "note": "[EMAIL_9619]",
+              "literal": true,
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              },
+              "tested": true,
+              "test": "look.openredaction"
+            }
+          }
+        },
+        {
+          "id": "hint",
+          "label": "Keep a hint (last 4 digits)",
+          "cells": {
+            "redact-secret": {
+              "mark": "no",
+              "note": "Placeholder formatter sees finding metadata, not the value",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "The default: masks keep a hint",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "yes",
+              "note": "Mask-middle and mask-all modes",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "repeatable",
+          "label": "Same value, same stand-in",
+          "cells": {
+            "redact-secret": {
+              "mark": "partly",
+              "note": "Same input, same output; one placeholder per value is not stated",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "Hash, pseudonym and surrogate modes; one placeholder per value in a vault",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "yes",
+              "note": "Deterministic placeholders",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "restore",
+          "label": "Get the originals back",
+          "cells": {
+            "redact-secret": {
+              "mark": "partly",
+              "note": "Separate opt-in vault package, alpha",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "Vault, with optional AES-GCM persistence",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "yes",
+              "note": "Result carries a redaction map; restore() in the package types",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/dist/index.d.ts"
+              }
+            }
+          }
+        },
+        {
+          "id": "policy",
+          "label": "Warn or block instead of hiding",
+          "cells": {
+            "redact-secret": {
+              "mark": "yes",
+              "note": "Policy: redact, block, warn or allow",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "Middleware actions: redact, observe or block",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "no",
+              "note": "Not listed in its README",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "label": "HOW IT FITS INTO AN APP",
+      "rows": [
+        {
+          "id": "chunks",
+          "label": "Text that arrives in pieces",
+          "cells": {
+            "redact-secret": {
+              "mark": "yes",
+              "note": "Same result as scanning it whole",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/docs/guides/streaming.md"
+              },
+              "tested": true,
+              "test": "chunks.redact-secret"
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "Secrets split across chunks",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              },
+              "tested": true,
+              "test": "chunks.flare-redact"
+            },
+            "openredaction": {
+              "mark": "partly",
+              "note": "A StreamingDetector class is exported; its behaviour is not documented",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/dist/index.d.ts"
+              }
+            }
+          }
+        },
+        {
+          "id": "logs",
+          "label": "Logs",
+          "cells": {
+            "redact-secret": {
+              "mark": "yes",
+              "note": "Pino and Python logging adapters, separate packages",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "Pino, Winston and console",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "no",
+              "note": "Not listed in its README",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "tracing",
+          "label": "Tracing",
+          "cells": {
+            "redact-secret": {
+              "mark": "yes",
+              "note": "OpenTelemetry span processor, separate package",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "partly",
+              "note": "Generic boundary for telemetry exporters",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "no",
+              "note": "Not listed in its README",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "llm",
+          "label": "LLM prompts and agent tools",
+          "cells": {
+            "redact-secret": {
+              "mark": "partly",
+              "note": "MCP adapter, alpha, separate package",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "Wraps OpenAI and Anthropic clients, tool calls and MCP",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "no",
+              "note": "Not listed in its README",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "structured",
+          "label": "JSON, CSV and spreadsheets",
+          "cells": {
+            "redact-secret": {
+              "mark": "no",
+              "note": "Works on text",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "partly",
+              "note": "Objects, JSON and CSV; spreadsheets not listed",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "yes",
+              "note": "JSON, CSV and XLSX",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "audit",
+          "label": "Audit log and multiple tenants",
+          "cells": {
+            "redact-secret": {
+              "mark": "no",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "partly",
+              "note": "Gateway audit line with counts; tenants not listed",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "yes",
+              "note": "SQLite or PostgreSQL audit log; multi-tenancy",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        },
+        {
+          "id": "sync",
+          "label": "Answers right away (no waiting)",
+          "cells": {
+            "redact-secret": {
+              "mark": "yes",
+              "note": "Synchronous call after one initialize()",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.11/README.md"
+              },
+              "tested": true,
+              "test": "sync.redact-secret"
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "Synchronous call",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              },
+              "tested": true,
+              "test": "sync.flare-redact"
+            },
+            "openredaction": {
+              "mark": "no",
+              "note": "Returns a promise",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              },
+              "tested": true,
+              "test": "sync.openredaction"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "label": "SAFETY",
+      "rows": [
+        {
+          "id": "leak",
+          "label": "Results never repeat the secret",
+          "cells": {
+            "redact-secret": {
+              "mark": "yes",
+              "note": "Findings carry position and type only",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.11/README.md"
+              },
+              "tested": true,
+              "test": "leak.redact-secret"
+            },
+            "flare-redact": {
+              "mark": "yes",
+              "note": "scan() leaves values out by default",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              },
+              "tested": true,
+              "test": "leak.flare-redact"
+            },
+            "openredaction": {
+              "mark": "no",
+              "note": "Result includes the original text and a value map",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/dist/index.d.ts"
+              },
+              "tested": true,
+              "test": "leak.openredaction"
+            }
+          }
+        },
+        {
+          "id": "network",
+          "label": "No network calls or telemetry",
+          "cells": {
+            "redact-secret": {
+              "mark": "yes",
+              "note": "Stated",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+              }
+            },
+            "flare-redact": {
+              "mark": "no",
+              "note": "Not stated",
+              "source": {
+                "kind": "doc",
+                "ref": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+              }
+            },
+            "openredaction": {
+              "mark": "no",
+              "note": "Not stated",
+              "source": {
+                "kind": "doc",
+                "ref": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "name": "redact-secret",
+      "detail": "0.1.0-beta.11 (the published @redact-secret/core, tag v0.1.0-beta.11): the package README, the repository README and its guides at that tag. Adapters and the vault ship as separate packages and say so in the cell.",
+      "links": [
+        {
+          "label": "Package README",
+          "href": "https://unpkg.com/@redact-secret/core@0.1.0-beta.11/README.md"
+        },
+        {
+          "label": "Repository README",
+          "href": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/README.md"
+        },
+        {
+          "label": "CLI guide",
+          "href": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/docs/guides/cli.md"
+        },
+        {
+          "label": "Rulesets guide",
+          "href": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/docs/guides/rulesets.md"
+        },
+        {
+          "label": "Streaming guide",
+          "href": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.11/docs/guides/streaming.md"
+        }
+      ]
+    },
+    {
+      "name": "flare-redact",
+      "detail": "1.6.1: the README at tag v1.6.1, which is the README shipped in the npm package, and its package.json.",
+      "links": [
+        {
+          "label": "README",
+          "href": "https://github.com/flare-collection/flare-redact/blob/v1.6.1/README.md"
+        },
+        {
+          "label": "package.json",
+          "href": "https://unpkg.com/flare-redact@1.6.1/package.json"
+        }
+      ]
+    },
+    {
+      "name": "OpenRedaction",
+      "detail": "@openredaction/core 1.1.5: the README shipped in the npm package, its package.json and its type declarations. The README describes the larger openredaction package; where a feature is listed only for that package, or not at all, the cell says so.",
+      "links": [
+        {
+          "label": "README",
+          "href": "https://unpkg.com/@openredaction/core@1.1.5/README.md"
+        },
+        {
+          "label": "Type declarations",
+          "href": "https://unpkg.com/@openredaction/core@1.1.5/dist/index.d.ts"
+        },
+        {
+          "label": "package.json",
+          "href": "https://unpkg.com/@openredaction/core@1.1.5/package.json"
+        }
+      ]
+    },
+    {
+      "name": "A dash",
+      "detail": "means not listed in the documentation read, or not stated. It does not say the library cannot do it."
+    },
+    {
+      "name": "“tested”",
+      "detail": "means a test in this repository runs the pinned version on every CI run and checks the claim (tests/feature-claims.test.mjs). Everything else is what the project says about itself."
+    }
+  ]
+}

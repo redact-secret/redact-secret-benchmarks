@@ -93,6 +93,8 @@ export type FeatureFilter = 'all' | 'differences';
 export interface FeatureSource {
   name: string;
   detail: string;
+  /** Pages of the project's own documentation at the version read. */
+  links?: { label: string; href: string }[];
 }
 
 /* ---- /comparison/runtime ---- */

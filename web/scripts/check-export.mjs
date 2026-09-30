@@ -229,6 +229,34 @@ if (!claims) {
 } else {
   for (const l of claims.libraries) if (!featurePage.includes(l.name) || !featurePage.includes(l.version)) fail(`/comparison/feature/ does not list ${l.name} ${l.version}`);
   if (featurePage.includes('No feature claims recorded yet')) fail('/comparison/feature/ says nothing is recorded, but the claims file exists');
+  // Every row, note, mark word, source link and "tested" chip in the file is on the page, and nothing extra is (#564).
+  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;');
+  const featureHtml = await readFile(path.join(out, 'comparison/feature/index.html'), 'utf8');
+  const MARK_WORD = { yes: 'Yes', partly: 'Opt-in or partly', no: 'Not listed' };
+  const rows = claims.groups.flatMap(g => g.rows);
+  const cells = rows.flatMap(r => Object.entries(r.cells).map(([lib, c]) => ({ r, lib, c })));
+  for (const g of claims.groups) if (!featurePage.includes(esc(g.label))) fail(`/comparison/feature/ does not show the group ${g.label}`);
+  for (const r of rows) if (!featurePage.includes(esc(r.label))) fail(`/comparison/feature/ does not show the row ${r.label}`);
+  for (const { r, lib, c } of cells) {
+    const shown = `${MARK_WORD[c.mark]}. ${c.note ? esc(c.note) : c.mark === 'yes' ? 'Yes' : '—'}`;
+    // A literal note renders in <code>: the tags become spaces in the stripped text.
+    if (!featurePage.replace(/ ([.,])/g, '$1').includes(c.literal ? `${MARK_WORD[c.mark]}. ${esc(c.note)}` : shown)) fail(`/comparison/feature/ does not show ${lib} on ${r.id} as recorded: ${shown}`);
+  }
+  const testedCells = cells.filter(x => x.c.tested).length;
+  const tableHtml = /<table[\s\S]*<\/table>/.exec(featureHtml)?.[0] ?? '';
+  const chips = (tableHtml.match(/>tested</g) ?? []).length;
+  if (chips !== testedCells) fail(`/comparison/feature/ shows ${chips} "tested" chips in its table, the file records ${testedCells}`);
+  for (const s of claims.sources) for (const l of s.links ?? []) if (!featureHtml.includes(`href="${esc(l.href)}"`)) fail(`/comparison/feature/ does not link the source ${l.href}`);
+  if (!featurePage.includes(`Read on ${claims.readOn}`)) fail('/comparison/feature/ does not state the date the docs were read');
+  if (!hub.includes(`${rows.length} features`) || !hub.includes(`${rows.filter(r => Object.values(r.cells).some(c => c.tested)).length} checked by us`)) fail('/comparison/ does not state the feature count and how many are checked by us');
+  if (!hub.includes(`docs read ${claims.readOn}`)) fail('/comparison/ does not state when the docs were read');
+  // The runtime page's "About the libraries" table carries the package facts (install size, runs in, dependencies).
+  const kib = n => `${(n / 1024).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} KiB`;
+  for (const l of claims.libraries) {
+    if (!l.facts) continue;
+    const packed = l.facts.install.packages.reduce((t, p) => t + p.packedBytes, 0);
+    for (const want of [`${kib(packed)} packed`, esc(l.facts.runsIn), esc(l.facts.dependencies)]) if (!runtimePage.includes(want)) fail(`/comparison/runtime/ does not state ${l.id}: ${want}`);
+  }
 }
 if (summary && !/Accuracy · \d{4}-\d{2}-\d{2} · (published|candidate) ·/.test(hub)) fail('/comparison/ does not state the accuracy run date and mode');
 

@@ -74,7 +74,7 @@ of the corpus meets a shard or paginate decision before the host does.
   scanner output: a row holds ranges only), the same values the existing site's fixture page shows.
 - The largest cost left is the duplicated page data the static export writes (three `.txt` copies of each
   page). A route handler serving each suite's records once as a static file would cut the export by about half
-  and needs the "no client fetch" rule changed; it is left as a follow-up rather than decided here.
+  and needs the "no client fetch" rule changed; it is left as a follow-up rather than decided here. Decided in `2026-09-30-allow-same-origin-fetch-of-build-emitted-data.md` (#573).
 - Rejected: a page per fixture (size and rebuild cost above), fetching the ledger as JSON in the browser
   (the decision in `2026-09-30-load-web-data-through-services-and-resolvers.md`), and sharding suites into
   numbered pages (a fixture URL would depend on corpus order).

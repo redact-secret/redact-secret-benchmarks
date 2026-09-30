@@ -24,6 +24,11 @@ the bench takes about 15 seconds (peer results come from committed snapshots).
 
 ## Decision
 
+> Amended by [`2026-09-30-allow-same-origin-fetch-of-build-emitted-data.md`](2026-09-30-allow-same-origin-fetch-of-build-emitted-data.md) (#573): the browser may make one
+> kind of request, a same-origin GET of a JSON file the build emitted under `<basePath>/data/`, through `web/lib/build-data.ts`.
+> Services still do not fetch, ledger files are still never fetched, and the rule below on the three layers stands. Where
+> this record says "no client fetch" or rejects fetching JSON on the client, read it with that amendment.
+
 Three layers, one direction: **pages -> resolvers -> services**. Blocks import
 none of them.
 

@@ -11,8 +11,10 @@ import type { AnswerData, EvidenceLevelLink, FindingData, HubTileData, PeerScann
 import type { MetaItem } from '../components/page/MetaList';
 import type { KnownGaps } from '../services/findings';
 import type { MeasuredRun, RunScanner } from '../services/run';
-import type { Catalog } from '../services/catalog';
+import type { Catalog, CatalogFixture } from '../services/catalog';
+import type { PeerProfile } from '../services/peers';
 import type { FamilyList } from './families';
+import { agreesWithSummary, inputsAt, sliceInputs } from './peers';
 import { axisMaxFor, count, int, isoDate, onAxis, percent } from './format';
 
 export type Level = 'T1' | 'T2' | 'T3';
@@ -239,18 +241,56 @@ export interface PeersBlock {
 
 const peerRatio = (count_: number, of: number, note?: string): Ratio => ({ count: int(count_), of: int(of), ...(note ? { note } : {}) });
 
-export function resolvePeers(run: MeasuredRun, gaps: KnownGaps, level: Level): PeersBlock {
+/** What the ledger holds about the peers beyond their results: the fixtures, and each peer's kind, description and targeted families. */
+export interface PeerContext { fixtures: CatalogFixture[]; profiles: Map<string, PeerProfile> }
+
+/** "Repository scanner · Directory scan": the kind, then the first part of the run's mode line. */
+const roleOf = (peer: RunScanner, profile: PeerProfile | undefined): string =>
+  profile ? `${profile.kindLabel} · ${peer.mode.split(' · ')[0]}` : peer.mode;
+
+interface Targeting { targeted: Ratio; leftReadable: Ratio; elsewhere: Ratio; sentence: string; inputsTargeted: number }
+
+/** The three "rules target" figures for one peer at one level, or `null` when the run cannot confirm them. */
+function targetingOf(run: MeasuredRun, peer: RunScanner, level: Level, context: PeerContext | undefined): Targeting | null {
+  const profile = context?.profiles.get(peer.id);
+  const group = groupsOf(run, peer.id, redactKey(level));
+  if (!context || !profile || !isRedact(group)) return null;
+  const inputs = inputsAt(context.fixtures, level);
+  const slices = sliceInputs(inputs, peer.rows, profile.families);
+  if (!slices || !agreesWithSummary(slices, group)) return null;
+  const mineRows = run.scanners.find(s => s.id === PRODUCT)?.rows;
+  const mine = sliceInputs(inputs, mineRows, profile.families);
+  const { targeted, elsewhere } = slices;
+  return {
+    targeted: { count: int(targeted.inputs), of: int(inputs.length), note: `${int(profile.mappedRules)} of its ${int(profile.ruleCount)} rules map to a family in this corpus` },
+    leftReadable: {
+      count: int(targeted.leaked), of: int(targeted.spans), unit: 'spans',
+      ...(mine ? { note: `${PRODUCT}, same inputs: ${int(mine.targeted.leaked)} of ${int(mine.targeted.spans)}` } : {}),
+    },
+    elsewhere: {
+      count: int(elsewhere.leaked), of: int(elsewhere.spans), unit: 'spans',
+      note: elsewhere.inputs === 0 ? 'Every input at this level is one its rules target' : 'No rule of its own targets these',
+    },
+    sentence: `${int(targeted.inputs)} ${TIER_TITLE[level].toLowerCase()} inputs that match ${peer.name} ${peer.version ?? ''}’s default rules`.replace('  ', ' '),
+    inputsTargeted: targeted.inputs,
+  };
+}
+
+export function resolvePeers(run: MeasuredRun, gaps: KnownGaps, level: Level, context?: PeerContext): PeersBlock {
   const mine = groupsOf(run, PRODUCT, redactKey(level));
   const myControls = groupsOf(run, PRODUCT, controlKey(level));
   const peers = run.scanners.filter(s => s.id !== PRODUCT);
+  const targeting = new Map(peers.map(peer => [peer.id, targetingOf(run, peer, level, context)]));
   const rows: PeerScannerRow[] = peers.map(peer => {
     const g = groupsOf(run, peer.id, redactKey(level));
     const c = groupsOf(run, peer.id, controlKey(level));
     const mineNote = isRedact(mine) && isRedact(g) ? `${PRODUCT}, same inputs: ${int(mine.leakedSpans)} of ${int(mine.spans)}` : undefined;
+    const profile = context?.profiles.get(peer.id);
+    const t = targeting.get(peer.id) ?? null;
     return {
-      name: peer.name, version: peer.version ?? '', role: peer.mode, blurb: '',
-      // Which inputs a peer's own rules target needs a rule-to-family map the ledger does not hold yet (a tracked gap).
-      targeted: null, leftReadable: null, elsewhere: null,
+      name: peer.name, version: peer.version ?? '', role: roleOf(peer, profile), blurb: profile?.description ?? '',
+      // Which inputs a peer's own rules target: read from the reviewed rule-to-family map (scanners/peer-rule-families.json).
+      targeted: t?.targeted ?? null, leftReadable: t?.leftReadable ?? null, elsewhere: t?.elsewhere ?? null,
       allInputs: isRedact(g) ? { count: int(g.leakedSpans), of: int(g.spans), unit: 'spans', ...(mineNote ? { note: mineNote } : {}) } : null,
       safeFlagged: isControl(c)
         ? peerRatio(c.flaggedFiles, c.files, c.files < FEW_SAMPLES_BELOW ? 'Too few controls to tell apart' : isControl(myControls) ? `${PRODUCT}, same inputs: ${int(myControls.flaggedFiles)} of ${int(myControls.files)}` : undefined)
@@ -260,6 +300,9 @@ export function resolvePeers(run: MeasuredRun, gaps: KnownGaps, level: Level): P
 
   const inputs = isRedact(mine) ? mine.files : 0;
   const first = rows.find(r => r.allInputs);
+  // The quote guidance uses the targeted slice when the run confirms one: the inputs the peer's own rules target.
+  const quotable = peers.find(p => targeting.get(p.id));
+  const quotableTarget = quotable ? targeting.get(quotable.id) : null;
   const fixedShare = `${int(gaps.issues.filter(i => i.status === 'fixed' || i.status === 'verified').length)} of ${int(gaps.issues.length)}`;
   return {
     title: 'Other scanners on the same inputs',
@@ -273,12 +316,14 @@ export function resolvePeers(run: MeasuredRun, gaps: KnownGaps, level: Level): P
         { lead: `${PRODUCT} was tuned on these inputs.`, text: `${fixedShare} findings from this corpus are recorded as fixed in ${PRODUCT}. The other scanners were never tuned against it.` },
         { lead: 'Different jobs.', text: 'Most inputs fall outside at least one scanner’s rules. A readable span there shows where its rules end, not that it failed.' },
       ],
-      source: peerSource(peers),
+      source: `${peerSource(peers)}${quotableTarget ? ` Rules are matched to families from each scanner’s pinned rule file (reviewed ${isoDate(context?.profiles.get(quotable!.id)?.reviewedAt)}).` : ''}`,
       quoteTitle: 'Quoting these numbers',
       quoteDont: first ? `“${PRODUCT} leaks far fewer secrets than ${first.name}.”` : `“${PRODUCT} leaks far fewer secrets than other scanners.”`,
-      quoteDo: first?.allInputs
-        ? `“On ${int(inputs)} ${TIER_TITLE[level].toLowerCase()} inputs written and used for tuning by the ${PRODUCT} team, ${first.name} ${first.version} left ${first.allInputs.count} of ${first.allInputs.of} secret spans readable.”`
-        : 'Name the input slice, the scanner version, the date and who wrote the inputs.',
+      quoteDo: quotableTarget
+        ? `“On ${quotableTarget.sentence}, in a corpus written and used for tuning by the ${PRODUCT} team, ${quotable!.name} left ${quotableTarget.leftReadable.count} of ${quotableTarget.leftReadable.of} secret spans readable.”`
+        : first?.allInputs
+          ? `“On ${int(inputs)} ${TIER_TITLE[level].toLowerCase()} inputs written and used for tuning by the ${PRODUCT} team, ${first.name} ${first.version} left ${first.allInputs.count} of ${first.allInputs.of} secret spans readable.”`
+          : 'Name the input slice, the scanner version, the date and who wrote the inputs.',
       quoteNote: 'Any quote names the input slice, the version, the date, and who wrote the inputs.',
     },
   };

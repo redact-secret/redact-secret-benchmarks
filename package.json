@@ -36,6 +36,7 @@
     "test:coverage": "node --import tsx --experimental-test-coverage --test-coverage-include='benchmarks/**/*.ts' --test-coverage-include='scanners/**' --test tests/*.test.mjs tests/integration/*.test.mjs",
     "detectors:refresh": "python3 scripts/refresh-detector-inventory.py",
     "detectors:check": "python3 scripts/refresh-detector-inventory.py --check",
+    "peer-rules:check": "node --import tsx scripts/check-peer-rule-families.mjs",
     "pins:check": "node --import tsx scripts/check-pin-drift.mjs",
     "pins:check:local": "node --import tsx scripts/check-pin-drift.mjs --local-only",
     "promotion:check": "node --import tsx scripts/check-promotion-consistency.mjs",

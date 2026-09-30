@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { FixtureTable } from './FixtureTable';
 import { familyFacts, fixtureRows, manyFixtureRows } from './storyData';
+import { manyScannerRows, scannerColumns, scannerRows } from './fixtureStoryData';
 
 const meta = {
   title: 'Report/FixtureTable',
@@ -33,5 +34,32 @@ export const LastPage: Story = {
 
 /** A family the corpus does not target: dashed "Not measured", no coverage claimed. */
 export const NoFixtures: Story = { args: { rows: [], facts: undefined } };
+
+/** One outcome column per scanner, from the same run. Each fixture id links to its page. */
+export const EveryScanner: Story = {
+  args: {
+    familyName: 'Provider-documented inputs',
+    title: 'Rows at this evidence level',
+    rows: scannerRows,
+    scanners: scannerColumns,
+    description: '1,298 rows for every scanner in the run. A scanner with no row for a fixture shows "Not measured", never a pass.',
+    facts: [{ term: 'Inputs', value: '1,298' }, { term: 'Left readable (redact-secret)', value: '60' }, { term: 'Too much', value: '4' }, { term: 'False alarms', value: '0' }],
+  },
+};
+
+export const EveryScannerFirstPageOfMany: Story = {
+  args: {
+    ...EveryScanner.args,
+    rows: manyScannerRows,
+    pager: { page: 1, pageCount: 26, total: 1298, pageSize: 50, nextHref: '?page=2' },
+  },
+};
+
+/** A level with no rows: dashed "Not measured" with the wording for rows, not for a family. */
+export const NoRowsAtLevel: Story = {
+  args: { rows: [], scanners: scannerColumns, emptyTitle: 'No rows at this level', emptyText: 'No fixture is recorded at this evidence level, so nothing is measured.' },
+};
+
+export const EveryScannerPhone: Story = { args: EveryScanner.args, globals: { viewport: { value: 'mobile1', isRotated: false } } };
 
 export const Phone: Story = { globals: { viewport: { value: 'mobile1', isRotated: false } } };

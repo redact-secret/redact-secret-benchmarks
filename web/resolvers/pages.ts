@@ -11,6 +11,7 @@ import { loadCatalog } from '../services/catalog';
 import type { Catalog } from '../services/catalog';
 import { loadFeatureClaims } from '../services/features';
 import { loadFindings } from '../services/findings';
+import { loadPeerProfiles } from '../services/peers';
 import { loadPeerRuntime } from '../services/runtime';
 import { loadRun, type MeasuredRun } from '../services/run';
 import {
@@ -53,7 +54,8 @@ export interface ReportPageData {
 }
 
 export async function resolveReportPage(): Promise<ReportPageData> {
-  const [{ catalog, run, measured, rows }, findings] = await Promise.all([context(), loadFindings()]);
+  const [{ catalog, run, measured, rows }, findings, profiles] = await Promise.all([context(), loadFindings(), loadPeerProfiles()]);
+  const peerContext = { fixtures: catalog.fixtures, profiles };
   const list = resolveFamilyList(catalog, rows);
   return {
     head: {
@@ -65,7 +67,7 @@ export async function resolveReportPage(): Promise<ReportPageData> {
     runState: resolveRunState(run),
     tiles: resolveHubTiles(list, findings),
     levels: levelLinks(),
-    byLevel: measured ? LEVELS.map(level => ({ level: resolveAnswers(measured, level), peers: resolvePeers(measured, findings, level) })) : null,
+    byLevel: measured ? LEVELS.map(level => ({ level: resolveAnswers(measured, level), peers: resolvePeers(measured, findings, level, peerContext) })) : null,
     answersMeta: measured ? answerMeta(measured, catalog) : [],
     findings: resolveFindings(findings),
   };

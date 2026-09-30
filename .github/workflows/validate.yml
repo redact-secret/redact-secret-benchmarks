@@ -68,6 +68,8 @@ jobs:
         run: npm run decisions:validate
       - name: Every taxonomy provider and family has a dossier entry (#473)
         run: npm run dossiers:check
+      - name: Peer scanner rules map to real taxonomy families, and the peer registry ranks nothing (#558)
+        run: npm run peer-rules:check
       - name: Contribution readiness next actions, advisory only (#534)
         # Aggregates the validators above into a step summary. Non-blocking, no
         # new job, and no PR-controlled input reaches the shell: the command and

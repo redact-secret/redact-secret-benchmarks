@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "scanners": {
+    "flare-redact": {
+      "kind": "runtime-library",
+      "description": "Built to redact secrets and personal data from text at runtime. Run secrets-only here: its personal-data and generic-assignment detectors are off."
+    },
+    "gitleaks": {
+      "kind": "repository-scanner",
+      "description": "Built to find secrets in git history, files and directories before they are committed."
+    },
+    "openredaction": {
+      "kind": "runtime-library",
+      "description": "Built to detect and redact personal data in text. Run at its defaults: every built-in pattern is on, and only its credential patterns map to families here."
+    },
+    "trufflehog": {
+      "kind": "repository-scanner",
+      "description": "Built to find and verify secrets in repositories and other sources. Verification is off here."
+    }
+  }
+}

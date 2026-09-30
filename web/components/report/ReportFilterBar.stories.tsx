@@ -42,4 +42,28 @@ export const WithLevel: Story = {
   },
 };
 
+/** A list of fixture rows: its own "Show" choices, an evidence level and which scanners' outcomes the table shows. */
+export const ForRows: Story = {
+  args: {
+    placeholder: 'fixture, suite, kind',
+    resultText: '1,298 of 1,298 rows',
+    showOptions: [
+      { value: 'all', label: 'All rows' },
+      { value: 'signal', label: 'Needs a look' },
+      { value: 'leaked', label: 'Left readable' },
+      { value: 'flagged', label: 'Flagged' },
+    ],
+    scope: {
+      label: 'Scanners', value: 'all', onChange: () => {},
+      options: [{ value: 'product', label: 'redact-secret only' }, { value: 'all', label: 'Every scanner' }],
+    },
+  },
+  render: args => {
+    const [query, setQuery] = useState(args.query);
+    const [show, setShow] = useState<ReportShow>('all');
+    const [scope, setScope] = useState('all');
+    return <ReportFilterBar {...args} query={query} onQueryChange={setQuery} show={show} onShowChange={setShow} scope={{ ...args.scope!, value: scope, onChange: setScope }} />;
+  },
+};
+
 export const Phone: Story = { globals: { viewport: { value: 'mobile1', isRotated: false } } };

@@ -1,0 +1,153 @@
+@layer components {
+  .wrap {
+    display: grid;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+
+  .scroll {
+    overflow-x: auto;
+    padding: var(--space-4) 0;
+    border-top: var(--hairline) solid var(--line);
+    border-bottom: var(--hairline) solid var(--line);
+  }
+
+  /* Line number, bytes and (under a touched line) label, lane and outcome words. */
+  .grid {
+    display: grid;
+    grid-template-columns: var(--col-label) max-content max-content;
+    gap: var(--space-1) var(--space-6);
+    align-items: center;
+    width: max-content;
+    min-width: 100%;
+  }
+
+  .label {
+    position: sticky;
+    left: 0;
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    padding-right: var(--space-3);
+    background: var(--surface);
+    color: var(--ink-muted);
+    font: var(--text-small);
+  }
+
+  .number {
+    font: var(--text-mono-small);
+  }
+
+  .gap {
+    grid-column: 1 / -1;
+    height: var(--space-3);
+  }
+
+  .bytes {
+    font: var(--text-mono);
+    white-space: pre;
+  }
+
+  .envelope {
+    border-bottom: var(--rule-strong) solid var(--ink);
+  }
+
+  /* Green means one thing in data: a secret span that must be redacted. */
+  .secret {
+    background: var(--brand-green);
+    color: var(--on-brand);
+  }
+
+  .companion {
+    border-bottom: var(--hairline) dashed var(--ink-muted);
+  }
+
+  .ws {
+    color: var(--ink-muted);
+  }
+
+  .secret .ws {
+    color: var(--on-brand);
+  }
+
+  .lane {
+    display: block;
+    height: var(--lane-h);
+    overflow: hidden;
+    border-bottom: var(--hairline) solid var(--line);
+    color: transparent;
+    font: var(--text-mono);
+    line-height: var(--lane-h);
+    white-space: pre;
+    user-select: none;
+  }
+
+  .lane i {
+    display: inline-block;
+    height: var(--lane-h);
+    vertical-align: top;
+    font-style: normal;
+  }
+
+  .fill {
+    background: var(--ink);
+  }
+
+  .hatch {
+    background: repeating-linear-gradient(135deg, var(--ink) 0 var(--rule-strong), transparent var(--rule-strong) calc(var(--space-1) + var(--hairline)));
+  }
+
+  .outline {
+    border: var(--hairline) dashed var(--ink-muted);
+  }
+
+  .verdict {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+
+  .caption {
+    margin: 0;
+    color: var(--ink-muted);
+    font: var(--text-small);
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    margin: 0;
+    padding: 0;
+    color: var(--ink-muted);
+    font: var(--text-small);
+    list-style: none;
+  }
+
+  .legend li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .key {
+    display: inline-block;
+    width: var(--space-6);
+    height: var(--lane-h);
+  }
+
+  .keySecret {
+    background: var(--brand-green);
+  }
+
+  .keyEnvelope {
+    border-bottom: var(--rule-strong) solid var(--ink);
+  }
+
+  @media (max-width: 720px) {
+    .grid {
+      grid-template-columns: calc(var(--space-16) * 1.5) max-content max-content;
+      gap: var(--space-1) var(--space-3);
+    }
+  }
+}

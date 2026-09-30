@@ -156,7 +156,7 @@ export interface FamilyAboutData {
   sources?: { href: string; host: string }[];
 }
 
-/** One fixture row on a family page. */
+/** One fixture row on a family, level, suite or detector page. */
 export interface FixtureRowData {
   slug: string;
   /** The suite or folder the fixture sits in. */
@@ -167,8 +167,161 @@ export interface FixtureRowData {
   kind: string;
   /** Evidence level, e.g. "T1". */
   evidence?: string;
+  /** redact-secret's outcome: the one column a table without `scanners` shows. */
   outcome: StatusLabel;
+  /** The fixture page: bytes, expected spans and what each scanner reported. Omit for a row with no page. */
+  href?: string;
+  /** One outcome per scanner column, in the order of the table's `scanners`. */
+  outcomes?: StatusLabel[];
 }
 
-/** Which rows a list shows; the page owns the value. */
-export type ReportShow = 'all' | 'signal' | 'empty';
+/** A scanner column of a fixture table. */
+export interface ScannerColumnData {
+  id: string;
+  name: string;
+}
+
+/**
+ * Which rows a list shows; the page owns the value. `all`, `signal` (needs a look) and `empty`
+ * (no fixtures) serve the provider and family lists; a list of fixture rows adds `leaked`
+ * (redact-secret left a span readable), `flagged` (redact-secret flagged a control) and `twins`.
+ */
+export type ReportShow = 'all' | 'signal' | 'empty' | 'leaked' | 'flagged' | 'twins';
+
+/** One piece of a fixture's text between range boundaries. The text is verbatim; the block draws whitespace as symbols. */
+export interface ByteSegment {
+  text: string;
+  /** The piece is inside a secret span that must be redacted, or a companion span. */
+  role?: 'secret' | 'companion';
+  /** The piece is inside an envelope: a finding may reach this far at no cost. */
+  envelope?: boolean;
+}
+
+/** One piece of a scanner's lane under a line: text mirrors the bytes so a bar sits under exactly the glyphs it covers. */
+export interface LanePiece {
+  text: string;
+  /** `fill` a finding covers it, `hatch` it is partly exposed, `outline` a secret was missed here. Never colour alone. */
+  shape?: 'fill' | 'hatch' | 'outline';
+}
+
+export interface ByteLineData {
+  /** 1-based line number. */
+  number: number;
+  segments: ByteSegment[];
+  /** One lane per scanner, in the order of the block's `scanners`. Empty on a line nothing touches. */
+  lanes: { label: string; pieces: LanePiece[] }[];
+}
+
+/** A scanner as the fixture page shows it: its name, and one outcome word per secret span (or "Quiet"/"Flagged" for a control). */
+export interface FixtureScannerData {
+  id: string;
+  name: string;
+  verdict: StatusLabel[];
+}
+
+/** One expected span of a fixture, as authored. */
+export interface ExpectedSpanRow {
+  /** "[0, 40)" in UTF-8 bytes. */
+  range: string;
+  role: string;
+  value: string;
+  envelope?: { range: string; reason?: string };
+  note?: string;
+}
+
+/** What one scanner reported for a fixture. */
+export interface ReportedRangesRow {
+  scanner: string;
+  /** "8.30.1 · Directory scan · default rules". */
+  detail: string;
+  outcome: StatusLabel[];
+  /** The outcome code the run recorded, e.g. "EXACT", or the reason a scanner has no row. */
+  code?: string;
+  /** "[0, 40) · [52, 60)" or "none reported". */
+  ranges: string;
+  /** "leaked 0 · outside envelope 0". */
+  bytes?: string;
+}
+
+export interface FixtureFactData {
+  term: string;
+  value: string;
+  href?: string;
+}
+
+/** Everything the fixture page shows about one fixture. */
+export interface FixtureDetailData {
+  id: string;
+  /** "detector-coverage" or the suite title. */
+  suite: string;
+  suiteHref: string;
+  kind: string;
+  evidence: string;
+  path: string;
+  size: string;
+  detectors: { id: string; title: string; href: string }[];
+  families: { id: string; name: string; href: string }[];
+  scanners: FixtureScannerData[];
+  lines: ByteLineData[];
+  caption: string;
+  expected: ExpectedSpanRow[];
+  reported: ReportedRangesRow[];
+  /** Why the expectation holds: kind, evidence, contract, twin, reason, sources, follow-ups, review. */
+  facts: FixtureFactData[];
+  sources: { href: string; label: string }[];
+  command: string;
+  /** The exact bytes as an escaped string, for the disclosure. */
+  escaped: string;
+  /** Not measured: the run left this suite's report out, or holds none. */
+  runProblem?: string;
+}
+
+/** A detector as the detector list shows it. */
+export interface DetectorRowData {
+  id: string;
+  title: string;
+  href: string;
+  fixtures: string;
+  /** The count and the minimum sample size on one scale, for the bar. */
+  value: number;
+  max: number;
+  minimum: number;
+  /** "Below minimum", "At minimum", or empty. */
+  flag?: StatusLabel;
+}
+
+/** One group (kind and evidence level) of a detector's fixtures, with what the run recorded for it. */
+export interface DetectorGroupRowData {
+  group: string;
+  fixtures: string;
+  /** The headline figure of the group, formatted: "at most 3.6%", or the reason it is withheld. */
+  headline: { label: string; value: string; note?: string };
+  /** A second figure where the group has one (near-twins). */
+  secondary?: { label: string; value: string; note?: string };
+  outcomes?: { segments: { kind: 'fill' | 'wide' | 'hatch' | 'outline'; weight: number }[]; label: string; text: string };
+  /** Other scanners' figure for the same cell, in run order. */
+  others: { scanner: string; value: string }[];
+}
+
+/** A finding as the inventory page shows it. */
+export interface FindingRowData {
+  id: string;
+  number: string;
+  title: string;
+  href: string;
+  status: StatusLabel;
+  kind: string;
+  fixtures: { label: string; href?: string }[];
+  measured: string;
+  reviewed: string;
+}
+
+/** A suite as the suite list shows it. */
+export interface SuiteRowData {
+  id: string;
+  title: string;
+  href: string;
+  fixtures: string;
+  description: string;
+  counts: FixtureCounts | null;
+}

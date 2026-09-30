@@ -13,7 +13,7 @@
   "sources": {
     "reviewedMetadata": {
       "algorithm": "sha256",
-      "digest": "1db1d5eedb17248cada73d05bd3c3e73999fc8b2e6e178355f7a084e7a42fdf9"
+      "digest": "4f3c31f60f867814fac80c2ea9a24d2660d69c80b10920ade5aeba430c5fb04e"
     },
     "scenarios": {
       "algorithm": "sha256",
@@ -570,6 +570,26 @@
         "fixtureId": "aws-secret-access-key-credentials-file",
         "corpus": "fixtures/generated/beta8-1012a.json",
         "path": "cases/aws-secret-access-key-credentials-file.ini"
+      },
+      "familyIds": [
+        "aws:iam-user-secret-access-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012a--aws-secret-access-key-credentials-file-named-profile",
+      "source": {
+        "categoryId": "beta8-1012a",
+        "fixtureId": "aws-secret-access-key-credentials-file-named-profile",
+        "corpus": "fixtures/generated/beta8-1012a.json",
+        "path": "cases/aws-secret-access-key-credentials-file-named-profile.ini"
       },
       "familyIds": [
         "aws:iam-user-secret-access-key"
@@ -1196,10 +1216,10 @@
         "path": "cases/aws-secret-access-key-truncated-near-miss.env"
       },
       "familyIds": [
-        "aws:iam-user-secret-access-key"
+        "generic:unclassified-assignment-literal"
       ],
       "scenarioIds": [
-        "benign-controls-and-twins",
+        "credential-shape-grammar",
         "regression-behavior"
       ],
       "provenance": {
@@ -1568,6 +1588,26 @@
       }
     },
     {
+      "slug": "beta8-1012b--google-oauth-client-secret-environ-lookup-reference",
+      "source": {
+        "categoryId": "beta8-1012b",
+        "fixtureId": "google-oauth-client-secret-environ-lookup-reference",
+        "corpus": "fixtures/generated/beta8-1012b.json",
+        "path": "cases/google-oauth-client-secret-environ-lookup-reference.py"
+      },
+      "familyIds": [
+        "google:oauth-client-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012b",
+        "milestone": "beta.12"
+      }
+    },
+    {
       "slug": "beta8-1012b--google-oauth-client-secret-export",
       "source": {
         "categoryId": "beta8-1012b",
@@ -1668,6 +1708,26 @@
       }
     },
     {
+      "slug": "beta8-1012b--google-oauth-client-secret-json-web-client-file",
+      "source": {
+        "categoryId": "beta8-1012b",
+        "fixtureId": "google-oauth-client-secret-json-web-client-file",
+        "corpus": "fixtures/generated/beta8-1012b.json",
+        "path": "cases/google-oauth-client-secret-json-web-client-file.json"
+      },
+      "familyIds": [
+        "google:oauth-client-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012b",
+        "milestone": "beta.12"
+      }
+    },
+    {
       "slug": "beta8-1012b--google-oauth-client-secret-leading-glue-twin",
       "source": {
         "categoryId": "beta8-1012b",
@@ -1716,6 +1776,50 @@
       }
     },
     {
+      "slug": "beta8-1012b--google-oauth-client-secret-prefix-without-hyphen-twin",
+      "source": {
+        "categoryId": "beta8-1012b",
+        "fixtureId": "google-oauth-client-secret-prefix-without-hyphen-twin",
+        "corpus": "fixtures/generated/beta8-1012b.json",
+        "path": "cases/google-oauth-client-secret-prefix-without-hyphen-twin.env"
+      },
+      "familyIds": [
+        "google:oauth-client-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012b",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-1012b--google-oauth-client-secret-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-1012b--google-oauth-client-secret-project-id-public-id",
+      "source": {
+        "categoryId": "beta8-1012b",
+        "fixtureId": "google-oauth-client-secret-project-id-public-id",
+        "corpus": "fixtures/generated/beta8-1012b.json",
+        "path": "cases/google-oauth-client-secret-project-id-public-id.env"
+      },
+      "familyIds": [
+        "google:oauth-client-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012b",
+        "milestone": "beta.12"
+      }
+    },
+    {
       "slug": "beta8-1012b--google-oauth-client-secret-sdk-kwarg",
       "source": {
         "categoryId": "beta8-1012b",
@@ -1753,6 +1857,30 @@
       "provenance": {
         "categoryId": "beta8-1012b",
         "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012b--google-oauth-client-secret-truncated-marker-twin",
+      "source": {
+        "categoryId": "beta8-1012b",
+        "fixtureId": "google-oauth-client-secret-truncated-marker-twin",
+        "corpus": "fixtures/generated/beta8-1012b.json",
+        "path": "cases/google-oauth-client-secret-truncated-marker-twin.json"
+      },
+      "familyIds": [
+        "google:oauth-client-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012b",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-1012b--google-oauth-client-secret-json-token"
       }
     },
     {
@@ -3116,6 +3244,46 @@
       }
     },
     {
+      "slug": "beta8-1012e--vercel-app-access-token-angle-placeholder",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-access-token-angle-placeholder",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-access-token-angle-placeholder.env"
+      },
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-azure-task-input",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-access-token-azure-task-input",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-access-token-azure-task-input.yml"
+      },
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
       "slug": "beta8-1012e--vercel-app-access-token-bare-prose",
       "source": {
         "categoryId": "beta8-1012e",
@@ -3216,6 +3384,26 @@
       ],
       "scenarioIds": [
         "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-deployment-id-public-id",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-access-token-deployment-id-public-id",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-access-token-deployment-id-public-id.json"
+      },
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
         "regression-behavior"
       ],
       "provenance": {
@@ -3368,6 +3556,50 @@
       }
     },
     {
+      "slug": "beta8-1012e--vercel-app-access-token-hyphen-separator-twin",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-access-token-hyphen-separator-twin",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-access-token-hyphen-separator-twin.env"
+      },
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-1012e--vercel-app-access-token-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-introspect-curl",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-access-token-introspect-curl",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-access-token-introspect-curl.sh"
+      },
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
       "slug": "beta8-1012e--vercel-app-access-token-json-api-key",
       "source": {
         "categoryId": "beta8-1012e",
@@ -3476,12 +3708,112 @@
       }
     },
     {
+      "slug": "beta8-1012e--vercel-app-access-token-masked-placeholder",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-access-token-masked-placeholder",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-access-token-masked-placeholder.env"
+      },
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-prefix-table-prose",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-access-token-prefix-table-prose",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-access-token-prefix-table-prose.md"
+      },
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-process-env-reference",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-access-token-process-env-reference",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-access-token-process-env-reference.ts"
+      },
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-python-requests",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-access-token-python-requests",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-access-token-python-requests.py"
+      },
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
       "slug": "beta8-1012e--vercel-app-access-token-sdk-kwarg",
       "source": {
         "categoryId": "beta8-1012e",
         "fixtureId": "vercel-app-access-token-sdk-kwarg",
         "corpus": "fixtures/generated/beta8-1012e.json",
         "path": "cases/vercel-app-access-token-sdk-kwarg.py"
+      },
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-session-store",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-access-token-session-store",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-access-token-session-store.json"
       },
       "familyIds": [
         "vercel:app-access-token"
@@ -3616,6 +3948,26 @@
       }
     },
     {
+      "slug": "beta8-1012e--vercel-app-access-token-turbo-token",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-access-token-turbo-token",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-access-token-turbo-token.env"
+      },
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
       "slug": "beta8-1012e--vercel-app-access-token-underscore-in-body-twin",
       "source": {
         "categoryId": "beta8-1012e",
@@ -3710,6 +4062,26 @@
         "fixtureId": "vercel-app-refresh-token-actions-secret-reference",
         "corpus": "fixtures/generated/beta8-1012e.json",
         "path": "cases/vercel-app-refresh-token-actions-secret-reference.yml"
+      },
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-angle-placeholder",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-refresh-token-angle-placeholder",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-refresh-token-angle-placeholder.env"
       },
       "familyIds": [
         "vercel:app-refresh-token"
@@ -3832,6 +4204,46 @@
       }
     },
     {
+      "slug": "beta8-1012e--vercel-app-refresh-token-debug-log",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-refresh-token-debug-log",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-refresh-token-debug-log.log"
+      },
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-deployment-id-public-id",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-refresh-token-deployment-id-public-id",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-refresh-token-deployment-id-public-id.json"
+      },
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
       "slug": "beta8-1012e--vercel-app-refresh-token-deployment-url-public-id",
       "source": {
         "categoryId": "beta8-1012e",
@@ -3844,6 +4256,26 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-docker-env",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-refresh-token-docker-env",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-refresh-token-docker-env.sh"
+      },
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
         "regression-behavior"
       ],
       "provenance": {
@@ -3956,6 +4388,30 @@
       }
     },
     {
+      "slug": "beta8-1012e--vercel-app-refresh-token-hyphen-separator-twin",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-refresh-token-hyphen-separator-twin",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-refresh-token-hyphen-separator-twin.env"
+      },
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-1012e--vercel-app-refresh-token-dotenv"
+      }
+    },
+    {
       "slug": "beta8-1012e--vercel-app-refresh-token-json-api-key",
       "source": {
         "categoryId": "beta8-1012e",
@@ -4064,6 +4520,86 @@
       }
     },
     {
+      "slug": "beta8-1012e--vercel-app-refresh-token-masked-placeholder",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-refresh-token-masked-placeholder",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-refresh-token-masked-placeholder.env"
+      },
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-prefix-table-prose",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-refresh-token-prefix-table-prose",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-refresh-token-prefix-table-prose.md"
+      },
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-process-env-reference",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-refresh-token-process-env-reference",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-refresh-token-process-env-reference.ts"
+      },
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-python-dict",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-refresh-token-python-dict",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-refresh-token-python-dict.py"
+      },
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
       "slug": "beta8-1012e--vercel-app-refresh-token-refresh-body",
       "source": {
         "categoryId": "beta8-1012e",
@@ -4084,12 +4620,52 @@
       }
     },
     {
+      "slug": "beta8-1012e--vercel-app-refresh-token-refresh-curl",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-refresh-token-refresh-curl",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-refresh-token-refresh-curl.sh"
+      },
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
       "slug": "beta8-1012e--vercel-app-refresh-token-sdk-kwarg",
       "source": {
         "categoryId": "beta8-1012e",
         "fixtureId": "vercel-app-refresh-token-sdk-kwarg",
         "corpus": "fixtures/generated/beta8-1012e.json",
         "path": "cases/vercel-app-refresh-token-sdk-kwarg.py"
+      },
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-session-store",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-app-refresh-token-session-store",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-app-refresh-token-session-store.json"
       },
       "familyIds": [
         "vercel:app-refresh-token"
@@ -4352,6 +4928,46 @@
       }
     },
     {
+      "slug": "beta8-1012e--vercel-personal-access-token-angle-placeholder",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-personal-access-token-angle-placeholder",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-personal-access-token-angle-placeholder.env"
+      },
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-azure-task-input",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-personal-access-token-azure-task-input",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-personal-access-token-azure-task-input.yml"
+      },
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
       "slug": "beta8-1012e--vercel-personal-access-token-bare-prose",
       "source": {
         "categoryId": "beta8-1012e",
@@ -4460,6 +5076,46 @@
       }
     },
     {
+      "slug": "beta8-1012e--vercel-personal-access-token-cli-auth-file",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-personal-access-token-cli-auth-file",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-personal-access-token-cli-auth-file.json"
+      },
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-cli-env-pull",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-personal-access-token-cli-env-pull",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-personal-access-token-cli-env-pull.sh"
+      },
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
       "slug": "beta8-1012e--vercel-personal-access-token-cli-token-flag",
       "source": {
         "categoryId": "beta8-1012e",
@@ -4480,6 +5136,26 @@
       }
     },
     {
+      "slug": "beta8-1012e--vercel-personal-access-token-deployment-id-public-id",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-personal-access-token-deployment-id-public-id",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-personal-access-token-deployment-id-public-id.json"
+      },
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
       "slug": "beta8-1012e--vercel-personal-access-token-deployment-url-public-id",
       "source": {
         "categoryId": "beta8-1012e",
@@ -4492,6 +5168,26 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-docker-env",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-personal-access-token-docker-env",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-personal-access-token-docker-env.sh"
+      },
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
         "regression-behavior"
       ],
       "provenance": {
@@ -4604,6 +5300,30 @@
       }
     },
     {
+      "slug": "beta8-1012e--vercel-personal-access-token-hyphen-separator-twin",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-personal-access-token-hyphen-separator-twin",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-personal-access-token-hyphen-separator-twin.env"
+      },
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-1012e--vercel-personal-access-token-dotenv"
+      }
+    },
+    {
       "slug": "beta8-1012e--vercel-personal-access-token-json-api-key",
       "source": {
         "categoryId": "beta8-1012e",
@@ -4709,6 +5429,66 @@
       },
       "relations": {
         "twinOf": "beta8-1012e--vercel-personal-access-token-sdk-kwarg"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-masked-placeholder",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-personal-access-token-masked-placeholder",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-personal-access-token-masked-placeholder.env"
+      },
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-prefix-table-prose",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-personal-access-token-prefix-table-prose",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-personal-access-token-prefix-table-prose.md"
+      },
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-process-env-reference",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-personal-access-token-process-env-reference",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-personal-access-token-process-env-reference.ts"
+      },
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
       }
     },
     {
@@ -4824,6 +5604,26 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-1012e",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-turbo-token",
+      "source": {
+        "categoryId": "beta8-1012e",
+        "fixtureId": "vercel-personal-access-token-turbo-token",
+        "corpus": "fixtures/generated/beta8-1012e.json",
+        "path": "cases/vercel-personal-access-token-turbo-token.env"
+      },
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
         "regression-behavior"
       ],
       "provenance": {
@@ -69840,10 +70640,10 @@
         "path": "cases/daytona-api-key-runner-key-unprefixed-encoded-value.env"
       },
       "familyIds": [
-        "daytona:api-key"
+        "generic:unclassified-assignment-literal"
       ],
       "scenarioIds": [
-        "benign-controls-and-twins",
+        "credential-shape-grammar",
         "regression-behavior"
       ],
       "provenance": {
@@ -72693,11 +73493,10 @@
         "path": "cases/cerebras-api-key-pinecone-hyphen-key-near-miss.py"
       },
       "familyIds": [
-        "cerebras:inference-api-key"
+        "generic:unclassified-assignment-literal"
       ],
       "scenarioIds": [
-        "benign-controls-and-twins",
-        "cross-family-interactions",
+        "credential-shape-grammar",
         "regression-behavior"
       ],
       "provenance": {
@@ -72714,11 +73513,10 @@
         "path": "cases/cerebras-api-key-pinecone-key-near-miss.env"
       },
       "familyIds": [
-        "cerebras:inference-api-key"
+        "pinecone:api-key"
       ],
       "scenarioIds": [
-        "benign-controls-and-twins",
-        "cross-family-interactions",
+        "credential-shape-grammar",
         "regression-behavior"
       ],
       "provenance": {
@@ -75169,11 +75967,10 @@
         "path": "cases/polar-token-checkout-client-secret-public-id.html"
       },
       "familyIds": [
-        "polar:organization-access-token"
+        "generic:unclassified-assignment-literal"
       ],
       "scenarioIds": [
-        "benign-controls-and-twins",
-        "cross-family-interactions",
+        "credential-shape-grammar",
         "regression-behavior"
       ],
       "provenance": {
@@ -121628,7 +122425,7 @@
   "identity": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "ad9fbac3f043ef15cac361615935a3a778284e13cf86a2468df0be5e7f4c6d07",
-    "fixtureCount": 5886
+    "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+    "fixtureCount": 5925
   }
 }

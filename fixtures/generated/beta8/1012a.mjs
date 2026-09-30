@@ -58,6 +58,9 @@ export function build1012a({ fixture, synthetic }) {
     c.positive(T, x.axis, x.slug, x.build({ secret: v }, x.gate), x.ext);
     c.twin(T, x.slug, x.twinSlug, x.build(v, x.twinGate), x.mutation, "context", x.ext);
   }
+  // Profile completion (Beta.12 graduation, 2026-09-30): the context-constrained profile needs one positive that is not
+  // a twin's pair. A named profile in the shared credentials file, the research record's first context.
+  c.positive(T, "structured-file", "credentials-file-named-profile", ["[ci-deployer]\naws_secret_access_key=", { secret: secret("credentials-file-named-profile") }, "\n"], "ini");
   for (const [axis, slug, ext, build] of adjacency) {
     const v = secret(slug);
     values.set(slug, v);

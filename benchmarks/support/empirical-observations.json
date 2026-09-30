@@ -2544,7 +2544,7 @@
       "family": "aws-secret-access-key",
       "mode": "context-constrained",
       "supportsBareValues": false,
-      "uncertainty": "AWS states no length or alphabet for the secret access key in prose (IAM AccessKey and STS Credentials type it as String). The 40-character [A-Za-z0-9/+] shape rests on the STS GetAccessKeyInfo documentation example and on AWS-owned scanner rules (git-secrets, ferret-scan), which R2 has not been applied to, plus independent peer rules. The value has no prefix, so the family is claimed only under an AWS secret-key name or next to an AKIA/ASIA ID; AWS Macie also requires a keyword. The temporary (ASIA-paired) secret example is 41 characters and is scoped out. Research: redact-secret docs/audits/evidence/1012/aws-iam-user-secret-access-key.md at product main 4fb7882. The AWS-owned git-secrets and ferret-scan rules and the trufflehog, noseyparker and osv-scalibr rules (research #5-#10) are not recorded here: every GitHub permalink to them contains a 40-character [A-Za-z0-9/] path run that this record's credential-shape guard rejects, so the corroborated route is not met from this record alone and the family stays provisional until that is settled.",
+      "uncertainty": "AWS states no length or alphabet for the secret access key in prose (IAM AccessKey and STS Credentials type it as String). The 40-character [A-Za-z0-9/+] shape rests on the STS GetAccessKeyInfo documentation example and on AWS-owned scanner rules (git-secrets, ferret-scan), which R2 has not been applied to, plus independent peer rules. The value has no prefix, so the family is claimed only under an AWS secret-key name or next to an AKIA/ASIA ID; AWS Macie also requires a keyword. The temporary (ASIA-paired) secret example is 41 characters and is scoped out. Research: redact-secret docs/audits/evidence/1012/aws-iam-user-secret-access-key.md at product main 4fb7882. Peer and AWS-owned rules are cited at tag or short-commit permalinks whose paths carry no 40-character [A-Za-z0-9/] run, so the record passes its own credential-shape guard.",
       "supportedContexts": [
         "AWS_SECRET_ACCESS_KEY= / aws_secret_access_key = assignments in env, INI credentials files and shell",
         "\"SecretAccessKey\": \"...\" JSON and CloudFormation/SDK responses",
@@ -2565,6 +2565,27 @@
           "reference": "https://summitroute.com/blog/2018/06/20/aws_security_credential_formats/",
           "observedAt": "2026-09-29",
           "supports": "Base64 of 30 random bytes: 40 characters, only + and / beyond alphanumerics (research #11)"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "aws",
+          "reference": "https://github.com/awslabs/git-secrets/blob/7d6b970/git-secrets#L242",
+          "observedAt": "2026-09-30",
+          "supports": "awslabs/git-secrets (AWS-owned, 2015): a secret-access-key-name-gated value of 40 [A-Za-z0-9/+=] (research #5)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/aws/common.go#L16",
+          "observedAt": "2026-09-30",
+          "supports": "SecretPat: 40 [A-Za-z0-9+/] with non-base64 boundaries, used only paired with an access key ID (research #7, at the pinned peer version)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "google",
+          "reference": "https://github.com/google/osv-scalibr/blob/v0.5.3/veles/secrets/awsaccesskey/detector.go#L25-L26",
+          "observedAt": "2026-09-30",
+          "supports": "secretPattern \\b[A-Za-z0-9+/]{40}\\b paired with an AKIA/ASIA access key ID (research #10, at tag v0.5.3)"
         }
       ],
       "contradictions": [

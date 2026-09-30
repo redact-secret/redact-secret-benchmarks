@@ -5,8 +5,8 @@
   "cellsMetByProfile": {
     "arrival-provisional": 115,
     "stable-documented": 115,
-    "stable-empirical": 36,
-    "context-constrained-empirical": 20
+    "stable-empirical": 40,
+    "context-constrained-empirical": 21
   },
   "families": [
     {
@@ -579,11 +579,13 @@
       "claimed": "context-constrained-empirical",
       "explicit": false,
       "target": "context-constrained-empirical",
-      "cellsMet": [],
+      "cellsMet": [
+        "context-constrained-empirical"
+      ],
       "cells": {
         "totalFixtures": 60,
-        "positiveCases": 0,
-        "benignControls": 24,
+        "positiveCases": 1,
+        "benignControls": 23,
         "twinPairs": 20,
         "positiveContextAxes": 11,
         "controlAxes": 6,
@@ -629,14 +631,7 @@
         "confusionAxes": 6
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 0,
-          "required": 1,
-          "shortfall": 1
-        }
-      ]
+      "debt": []
     },
     {
       "family": "aws-sts-temporary-access-key",
@@ -1086,9 +1081,9 @@
         "stable-empirical"
       ],
       "cells": {
-        "totalFixtures": 48,
+        "totalFixtures": 46,
         "positiveCases": 16,
-        "benignControls": 16,
+        "benignControls": 14,
         "twinPairs": 8,
         "positiveContextAxes": 7,
         "controlAxes": 5,
@@ -2216,9 +2211,9 @@
         "stable-documented"
       ],
       "cells": {
-        "totalFixtures": 45,
+        "totalFixtures": 44,
         "positiveCases": 9,
-        "benignControls": 16,
+        "benignControls": 15,
         "twinPairs": 10,
         "positiveContextAxes": 12,
         "controlAxes": 5,
@@ -3419,14 +3414,15 @@
         "stable-documented"
       ],
       "cells": {
-        "totalFixtures": 161,
-        "positiveCases": 65,
+        "totalFixtures": 165,
+        "positiveCases": 69,
         "benignControls": 76,
         "twinPairs": 10,
-        "positiveContextAxes": 32,
+        "positiveContextAxes": 35,
         "controlAxes": 4,
         "confusionAxes": 5,
         "positiveContextAxisIds": [
+          "#1012a · aws-secret-access-key · control · near-miss",
           "#207 · confluent-cloud-api-secret-legacy · control · near-miss",
           "#207 · discord-bot-token · control · near-miss",
           "#207 · heroku-api-key-legacy · control · near-miss",
@@ -3450,7 +3446,9 @@
           "#280 · Secret-manager grammars",
           "#464a · daytona-api-key · control · encoded-value",
           "#464d · browserbase-api-key · control · near-miss",
+          "#464e · cerebras-api-key · control · near-miss",
           "#464f · runpod-api-key · control · near-miss",
+          "#528b · polar-token · control · public-id",
           "Generic fallback",
           "Literal-secret positive controls",
           "datadog-api-key",
@@ -3881,13 +3879,14 @@
       "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
-        "stable-documented"
+        "stable-documented",
+        "stable-empirical"
       ],
       "cells": {
-        "totalFixtures": 35,
-        "positiveCases": 9,
-        "benignControls": 14,
-        "twinPairs": 6,
+        "totalFixtures": 40,
+        "positiveCases": 10,
+        "benignControls": 16,
+        "twinPairs": 8,
         "positiveContextAxes": 9,
         "controlAxes": 5,
         "confusionAxes": 9,
@@ -3930,26 +3929,7 @@
         "controlAxes": 5
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "totalFixtures",
-          "actual": 35,
-          "required": 40,
-          "shortfall": 5
-        },
-        {
-          "cell": "positiveCases",
-          "actual": 9,
-          "required": 10,
-          "shortfall": 1
-        },
-        {
-          "cell": "twinPairs",
-          "actual": 6,
-          "required": 8,
-          "shortfall": 2
-        }
-      ]
+      "debt": []
     },
     {
       "family": "grafana-cloud-access-policy-token",
@@ -6171,11 +6151,11 @@
         "stable-empirical"
       ],
       "cells": {
-        "totalFixtures": 42,
-        "positiveCases": 10,
+        "totalFixtures": 43,
+        "positiveCases": 11,
         "benignControls": 16,
         "twinPairs": 8,
-        "positiveContextAxes": 16,
+        "positiveContextAxes": 17,
         "controlAxes": 6,
         "confusionAxes": 9,
         "positiveContextAxisIds": [
@@ -6194,6 +6174,7 @@
           "#263 · pinecone-api-key · shell-export",
           "#263 · pinecone-api-key · structured-file",
           "#263 · pinecone-api-key · tool-output",
+          "#464e · cerebras-api-key · control · near-miss",
           "pinecone-api-key"
         ],
         "controlAxisIds": [
@@ -6364,9 +6345,9 @@
         "stable-documented"
       ],
       "cells": {
-        "totalFixtures": 39,
+        "totalFixtures": 38,
         "positiveCases": 9,
-        "benignControls": 14,
+        "benignControls": 13,
         "twinPairs": 8,
         "positiveContextAxes": 10,
         "controlAxes": 5,
@@ -8545,17 +8526,20 @@
       "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
-        "stable-documented"
+        "stable-documented",
+        "stable-empirical"
       ],
       "cells": {
-        "totalFixtures": 29,
-        "positiveCases": 6,
-        "benignControls": 9,
-        "twinPairs": 7,
-        "positiveContextAxes": 9,
+        "totalFixtures": 40,
+        "positiveCases": 11,
+        "benignControls": 14,
+        "twinPairs": 8,
+        "positiveContextAxes": 11,
         "controlAxes": 5,
         "confusionAxes": 9,
         "positiveContextAxisIds": [
+          "#1012e · vercel-app-access-token · ci-config",
+          "#1012e · vercel-app-access-token · cli",
           "#1012e · vercel-app-access-token · env",
           "#1012e · vercel-app-access-token · header",
           "#1012e · vercel-app-access-token · log",
@@ -8594,32 +8578,7 @@
         "controlAxes": 5
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "totalFixtures",
-          "actual": 29,
-          "required": 40,
-          "shortfall": 11
-        },
-        {
-          "cell": "positiveCases",
-          "actual": 6,
-          "required": 10,
-          "shortfall": 4
-        },
-        {
-          "cell": "benignControls",
-          "actual": 9,
-          "required": 14,
-          "shortfall": 5
-        },
-        {
-          "cell": "twinPairs",
-          "actual": 7,
-          "required": 8,
-          "shortfall": 1
-        }
-      ]
+      "debt": []
     },
     {
       "family": "vercel-app-refresh-token",
@@ -8630,17 +8589,19 @@
       "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
-        "stable-documented"
+        "stable-documented",
+        "stable-empirical"
       ],
       "cells": {
-        "totalFixtures": 29,
-        "positiveCases": 6,
-        "benignControls": 9,
-        "twinPairs": 7,
-        "positiveContextAxes": 9,
+        "totalFixtures": 40,
+        "positiveCases": 11,
+        "benignControls": 14,
+        "twinPairs": 8,
+        "positiveContextAxes": 10,
         "controlAxes": 5,
         "confusionAxes": 9,
         "positiveContextAxisIds": [
+          "#1012e · vercel-app-refresh-token · cli",
           "#1012e · vercel-app-refresh-token · env",
           "#1012e · vercel-app-refresh-token · header",
           "#1012e · vercel-app-refresh-token · log",
@@ -8679,32 +8640,7 @@
         "controlAxes": 5
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "totalFixtures",
-          "actual": 29,
-          "required": 40,
-          "shortfall": 11
-        },
-        {
-          "cell": "positiveCases",
-          "actual": 6,
-          "required": 10,
-          "shortfall": 4
-        },
-        {
-          "cell": "benignControls",
-          "actual": 9,
-          "required": 14,
-          "shortfall": 5
-        },
-        {
-          "cell": "twinPairs",
-          "actual": 7,
-          "required": 8,
-          "shortfall": 1
-        }
-      ]
+      "debt": []
     },
     {
       "family": "vercel-personal-access-token",
@@ -8715,13 +8651,14 @@
       "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
-        "stable-documented"
+        "stable-documented",
+        "stable-empirical"
       ],
       "cells": {
-        "totalFixtures": 29,
-        "positiveCases": 6,
-        "benignControls": 9,
-        "twinPairs": 7,
+        "totalFixtures": 40,
+        "positiveCases": 11,
+        "benignControls": 14,
+        "twinPairs": 8,
         "positiveContextAxes": 9,
         "controlAxes": 5,
         "confusionAxes": 9,
@@ -8764,32 +8701,7 @@
         "controlAxes": 5
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "totalFixtures",
-          "actual": 29,
-          "required": 40,
-          "shortfall": 11
-        },
-        {
-          "cell": "positiveCases",
-          "actual": 6,
-          "required": 10,
-          "shortfall": 4
-        },
-        {
-          "cell": "benignControls",
-          "actual": 9,
-          "required": 14,
-          "shortfall": 5
-        },
-        {
-          "cell": "twinPairs",
-          "actual": 7,
-          "required": 8,
-          "shortfall": 1
-        }
-      ]
+      "debt": []
     },
     {
       "family": "vercel-token",

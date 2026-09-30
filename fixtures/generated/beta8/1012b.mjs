@@ -31,6 +31,9 @@ export function build1012b({ fixture, synthetic }) {
     { axis: "structured-file", slug: "json-client-file", ext: "json", build: clientFile },
     { axis: "cli", slug: "token-curl", ext: "sh", build: tokenCurl },
     { axis: "source-code", slug: "flask-config", ext: "py", build: flask },
+    // Profile completion (Beta.12 graduation, 2026-09-30): the web-application client file, the other layout of the
+    // client_secret JSON the research record's contexts name.
+    { axis: "structured-file", slug: "json-web-client-file", ext: "json", build: v => [`{"web":{"client_id":"${clientId("web")}","project_id":"acme-web","client_secret":"`, v, "\",\"redirect_uris\":[\"https://acme.example/oauth2/callback\"]}}\n"] },
   ];
   const K = authorPositives(c, T, contexts, key);
   const body = v => v.slice(7);
@@ -42,6 +45,11 @@ export function build1012b({ fixture, synthetic }) {
   c.twin(T, "sdk-kwarg", "dot-in-body", K.put("sdk-kwarg", g.refuse(at(K.k["sdk-kwarg"], 20, "."))), "alphabet: one body byte replaced by ., outside [A-Za-z0-9_-]", "alphabet", "py");
   c.twin(T, "bare-prose", "leading-glue", K.put("bare-prose", g.refuse(`x${K.k["bare-prose"]}`)), "boundary: x glued before GOCSPX-", "boundary", "md");
 
+  // Profile completion: two more one-property twins on already-twinned positives, and two more controls.
+  c.twin(T, "dotenv", "prefix-without-hyphen", K.put("dotenv", g.refuse(`GOCSPX${body(K.k.dotenv)}`)), "prefix: GOCSPX with no hyphen before the body", "prefix", "env");
+  c.twin(T, "json-token", "truncated-marker", K.put("json-token", g.refuse(`GOCSP-${body(K.k["json-token"])}`)), "prefix: GOCSP- (one letter short) vs GOCSPX-", "prefix", "json");
+  c.control(T, "public-id", "project-id", ["GOOGLE_CLOUD_PROJECT=acme-desktop-481516\n"], "env");
+  c.control(T, "reference", "environ-lookup", ["client_secret = os.environ[\"GOOGLE_CLIENT_SECRET\"]\n"], "py");
   c.control(T, "public-id", "client-id", [`GOOGLE_CLIENT_ID=${clientId("control")}\n`], "env");
   c.control(T, "public-id", "consent-url", [`https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId("url")}&response_type=code&scope=openid%20email\n`]);
   c.control(T, "placeholder", "ellipsis", ["{\n  \"client_secret\": \"GOCSPX-...\"\n}\n"], "json");

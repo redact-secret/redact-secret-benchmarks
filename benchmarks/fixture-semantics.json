@@ -50578,10 +50578,10 @@
     {
       "slug": "beta8-464a--daytona-api-key-runner-key-unprefixed-encoded-value",
       "familyIds": [
-        "daytona:api-key"
+        "generic:unclassified-assignment-literal"
       ],
       "scenarioIds": [
-        "benign-controls-and-twins",
+        "credential-shape-grammar",
         "regression-behavior"
       ]
     },
@@ -51942,22 +51942,20 @@
     {
       "slug": "beta8-464e--cerebras-api-key-pinecone-key-near-miss",
       "familyIds": [
-        "cerebras:inference-api-key"
+        "pinecone:api-key"
       ],
       "scenarioIds": [
-        "benign-controls-and-twins",
-        "cross-family-interactions",
+        "credential-shape-grammar",
         "regression-behavior"
       ]
     },
     {
       "slug": "beta8-464e--cerebras-api-key-pinecone-hyphen-key-near-miss",
       "familyIds": [
-        "cerebras:inference-api-key"
+        "generic:unclassified-assignment-literal"
       ],
       "scenarioIds": [
-        "benign-controls-and-twins",
-        "cross-family-interactions",
+        "credential-shape-grammar",
         "regression-behavior"
       ]
     },
@@ -52995,11 +52993,10 @@
     {
       "slug": "beta8-528b--polar-token-checkout-client-secret-public-id",
       "familyIds": [
-        "polar:organization-access-token"
+        "generic:unclassified-assignment-literal"
       ],
       "scenarioIds": [
-        "benign-controls-and-twins",
-        "cross-family-interactions",
+        "credential-shape-grammar",
         "regression-behavior"
       ]
     },
@@ -57102,10 +57099,10 @@
     {
       "slug": "beta8-1012a--aws-secret-access-key-truncated-near-miss",
       "familyIds": [
-        "aws:iam-user-secret-access-key"
+        "generic:unclassified-assignment-literal"
       ],
       "scenarioIds": [
-        "benign-controls-and-twins",
+        "credential-shape-grammar",
         "regression-behavior"
       ]
     },
@@ -57266,6 +57263,16 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012a--aws-secret-access-key-credentials-file-named-profile",
+      "familyIds": [
+        "aws:iam-user-secret-access-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
         "regression-behavior"
       ]
     },
@@ -57542,6 +57549,58 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012b--google-oauth-client-secret-environ-lookup-reference",
+      "familyIds": [
+        "google:oauth-client-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012b--google-oauth-client-secret-json-web-client-file",
+      "familyIds": [
+        "google:oauth-client-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012b--google-oauth-client-secret-prefix-without-hyphen-twin",
+      "familyIds": [
+        "google:oauth-client-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012b--google-oauth-client-secret-project-id-public-id",
+      "familyIds": [
+        "google:oauth-client-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012b--google-oauth-client-secret-truncated-marker-twin",
+      "familyIds": [
+        "google:oauth-client-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
         "regression-behavior"
       ]
     },
@@ -59047,6 +59106,339 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-angle-placeholder",
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-azure-task-input",
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-deployment-id-public-id",
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-hyphen-separator-twin",
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-introspect-curl",
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-masked-placeholder",
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-prefix-table-prose",
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-process-env-reference",
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-python-requests",
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-session-store",
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-access-token-turbo-token",
+      "familyIds": [
+        "vercel:app-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-angle-placeholder",
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-debug-log",
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-deployment-id-public-id",
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-docker-env",
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-hyphen-separator-twin",
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-masked-placeholder",
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-prefix-table-prose",
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-process-env-reference",
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-python-dict",
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-refresh-curl",
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-app-refresh-token-session-store",
+      "familyIds": [
+        "vercel:app-refresh-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-angle-placeholder",
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-azure-task-input",
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-cli-auth-file",
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-cli-env-pull",
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-deployment-id-public-id",
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-docker-env",
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-hyphen-separator-twin",
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-masked-placeholder",
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-prefix-table-prose",
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-process-env-reference",
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ]
+    },
+    {
+      "slug": "beta8-1012e--vercel-personal-access-token-turbo-token",
+      "familyIds": [
+        "vercel:personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
         "regression-behavior"
       ]
     }

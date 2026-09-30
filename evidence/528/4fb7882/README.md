@@ -1,5 +1,8 @@
 # Evidence: Beta.12 graduation at product main 4fb7882 (#464, #528, #1012)
 
+> **Superseded** by [`../99c8c2b/README.md`](../99c8c2b/README.md): the registry was re-pinned to product main `99c8c2b`
+> (PR #1045). This file stays as history.
+
 **Result:** candidate mode (product `4fb7882`, main after PRs #1037 and #1039) reads **113 stable of 135** scored
 families (documented 81, empirical 32; 21 provisional, 1 pending). Published mode (`@redact-secret/core`
 0.1.0-beta.11) reads **98 stable of 135** (68 / 30; 36 provisional, 1 pending); every new family is provisional there

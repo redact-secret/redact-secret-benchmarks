@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-30T07:40:43.955Z",
+  "observedAt": "2026-09-30T08:52:16.372Z",
   "sourceRun": {
-    "runId": "17ed2726-6797-4ecb-bace-3ab5b9a25c43",
-    "benchmarkRevision": "4098786273e25052b42f15cc391154634d2c88a6"
+    "runId": "dc5fbaa7-4dae-4230-bc20-f86fab9306e1",
+    "benchmarkRevision": "5b5faeba99414fff1c5d91f71648e568f6e2e702"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "193a8a0f77270fec850fd78180d9b7fa2ca51a8cfabf5fc351aef6f34d4baf55",
-    "fixtureCount": 47590,
-    "fixturesDigest": "84f76ad0dd74a1f771f5f5acdc6bbdce7cc1bf25748496eb454088ecabe4bac1",
+    "corpusHash": "5530a915a840432a7408610cf9dc9e81a084c59898d4fde5cd3918eaeb756ea1",
+    "fixtureCount": 47917,
+    "fixturesDigest": "4b4b036bc36dd193812f595f7ce792b80a481ea3575342b057af8ee0951c77a9",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "ad9fbac3f043ef15cac361615935a3a778284e13cf86a2468df0be5e7f4c6d07",
-      "fixtureCount": 5886
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
     }
   },
   "peer": {
@@ -283,6 +283,66 @@
       "path": "cases/beta8-1012b--google-oauth-client-secret-json-client-file--mutation/lexical.replace-last.txt",
       "start": 27,
       "end": 72
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--differential/canonical.txt",
+      "start": 21,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--metamorphic/canonical.txt",
+      "start": 21,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--metamorphic/context.indent.txt",
+      "start": 25,
+      "end": 70
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--metamorphic/context.unicode-prefix.txt",
+      "start": 41,
+      "end": 86
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--metamorphic/encoding.crlf.txt",
+      "start": 21,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--mutation/boundary.remove-delimiter.txt",
+      "start": 21,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--mutation/canonical.txt",
+      "start": 21,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--mutation/lexical.invalid-alphabet.txt",
+      "start": 21,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--mutation/lexical.length-minus-one.txt",
+      "start": 21,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--mutation/lexical.length-plus-one.txt",
+      "start": 21,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--mutation/lexical.prefix-change.txt",
+      "start": 21,
+      "end": 66
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--mutation/lexical.replace-last.txt",
+      "start": 21,
+      "end": 66
     },
     {
       "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-bare-prose--differential/canonical.txt",
@@ -27191,12 +27251,6 @@
       "family": "nvidia-api-key"
     },
     {
-      "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--benign/canonical.txt",
-      "start": 17,
-      "end": 92,
-      "family": "pinecone-api-key"
-    },
-    {
       "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--differential/canonical.txt",
       "start": 17,
       "end": 92,
@@ -46953,5 +47007,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "d919e3af27630b74f59c86f59eedf573ccc5f3ee7588a5739875328c18b10a53"
+  "digest": "6f428561cd47fa28be2bf4f4b453d7a6837db37ebac1ae6231d15eea13b4c34c"
 }

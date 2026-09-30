@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-30T07:40:43.955Z",
+  "observedAt": "2026-09-30T08:52:16.372Z",
   "sourceRun": {
-    "runId": "17ed2726-6797-4ecb-bace-3ab5b9a25c43",
-    "benchmarkRevision": "4098786273e25052b42f15cc391154634d2c88a6"
+    "runId": "dc5fbaa7-4dae-4230-bc20-f86fab9306e1",
+    "benchmarkRevision": "5b5faeba99414fff1c5d91f71648e568f6e2e702"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "193a8a0f77270fec850fd78180d9b7fa2ca51a8cfabf5fc351aef6f34d4baf55",
-    "fixtureCount": 47590,
-    "fixturesDigest": "84f76ad0dd74a1f771f5f5acdc6bbdce7cc1bf25748496eb454088ecabe4bac1",
+    "corpusHash": "5530a915a840432a7408610cf9dc9e81a084c59898d4fde5cd3918eaeb756ea1",
+    "fixtureCount": 47917,
+    "fixturesDigest": "4b4b036bc36dd193812f595f7ce792b80a481ea3575342b057af8ee0951c77a9",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "ad9fbac3f043ef15cac361615935a3a778284e13cf86a2468df0be5e7f4c6d07",
-      "fixtureCount": 5886
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
     }
   },
   "peer": {
@@ -292,6 +292,42 @@
       "path": "cases/beta8-1012a--aws-secret-access-key-credentials-file--mutation/canonical.txt",
       "start": 53,
       "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-credentials-file-named-profile--differential/canonical.txt",
+      "start": 36,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-credentials-file-named-profile--metamorphic/canonical.txt",
+      "start": 36,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-credentials-file-named-profile--metamorphic/context.indent.txt",
+      "start": 40,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-credentials-file-named-profile--metamorphic/context.unicode-prefix.txt",
+      "start": 56,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-credentials-file-named-profile--metamorphic/encoding.crlf.txt",
+      "start": 37,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-credentials-file-named-profile--mutation/canonical.txt",
+      "start": 36,
+      "end": 76,
       "family": "generic-token"
     },
     {
@@ -991,6 +1027,72 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--differential/canonical.txt",
+      "start": 136,
+      "end": 171,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--metamorphic/canonical.txt",
+      "start": 136,
+      "end": 171,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--metamorphic/context.indent.txt",
+      "start": 140,
+      "end": 175,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--metamorphic/context.unicode-prefix.txt",
+      "start": 156,
+      "end": 191,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--metamorphic/encoding.crlf.txt",
+      "start": 136,
+      "end": 171,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--mutation/boundary.remove-delimiter.txt",
+      "start": 136,
+      "end": 170,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--mutation/canonical.txt",
+      "start": 136,
+      "end": 171,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--mutation/lexical.length-minus-one.txt",
+      "start": 136,
+      "end": 170,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--mutation/lexical.length-plus-one.txt",
+      "start": 136,
+      "end": 172,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--mutation/lexical.prefix-change.txt",
+      "start": 136,
+      "end": 171,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-web-client-file--mutation/lexical.replace-last.txt",
+      "start": 136,
+      "end": 171,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/beta8-1012b--google-oauth-client-secret-lowercase-prefix-twin--differential/canonical.txt",
       "start": 14,
       "end": 49,
@@ -1006,6 +1108,24 @@
       "path": "cases/beta8-1012b--google-oauth-client-secret-lowercase-prefix-twin--twin/canonical.txt",
       "start": 14,
       "end": 49,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-prefix-without-hyphen-twin--differential/canonical.txt",
+      "start": 28,
+      "end": 62,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-prefix-without-hyphen-twin--twin/authored.twin.txt",
+      "start": 28,
+      "end": 62,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-prefix-without-hyphen-twin--twin/canonical.txt",
+      "start": 28,
+      "end": 63,
       "family": "generic-token"
     },
     {
@@ -1144,6 +1264,24 @@
       "path": "cases/beta8-1012b--google-oauth-client-secret-token-curl--mutation/lexical.replace-last.txt",
       "start": 147,
       "end": 182,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-truncated-marker-twin--differential/canonical.txt",
+      "start": 14,
+      "end": 48,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-truncated-marker-twin--twin/authored.twin.txt",
+      "start": 14,
+      "end": 48,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-truncated-marker-twin--twin/canonical.txt",
+      "start": 14,
+      "end": 49,
       "family": "generic-token"
     },
     {
@@ -3415,6 +3553,72 @@
       "family": "aws-access-key"
     },
     {
+      "path": "cases/beta8-1012e--vercel-app-access-token-azure-task-input--differential/canonical.txt",
+      "start": 60,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-azure-task-input--metamorphic/canonical.txt",
+      "start": 60,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-azure-task-input--metamorphic/context.indent.txt",
+      "start": 64,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-azure-task-input--metamorphic/context.unicode-prefix.txt",
+      "start": 80,
+      "end": 140,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-azure-task-input--metamorphic/encoding.crlf.txt",
+      "start": 62,
+      "end": 122,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-azure-task-input--mutation/boundary.remove-delimiter.txt",
+      "start": 60,
+      "end": 119,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-azure-task-input--mutation/canonical.txt",
+      "start": 60,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-azure-task-input--mutation/lexical.length-minus-one.txt",
+      "start": 60,
+      "end": 119,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-azure-task-input--mutation/lexical.length-plus-one.txt",
+      "start": 60,
+      "end": 121,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-azure-task-input--mutation/lexical.prefix-change.txt",
+      "start": 60,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-azure-task-input--mutation/lexical.replace-last.txt",
+      "start": 60,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/beta8-1012e--vercel-app-access-token-body-55-twin--differential/canonical.txt",
       "start": 27,
       "end": 86,
@@ -3610,6 +3814,90 @@
       "path": "cases/beta8-1012e--vercel-app-access-token-hyphen-in-body-twin--twin/canonical.txt",
       "start": 14,
       "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-hyphen-separator-twin--differential/canonical.txt",
+      "start": 27,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-hyphen-separator-twin--twin/authored.twin.txt",
+      "start": 27,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-hyphen-separator-twin--twin/canonical.txt",
+      "start": 27,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-introspect-curl--differential/canonical.txt",
+      "start": 69,
+      "end": 129,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-introspect-curl--metamorphic/canonical.txt",
+      "start": 69,
+      "end": 129,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-introspect-curl--metamorphic/context.indent.txt",
+      "start": 73,
+      "end": 133,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-introspect-curl--metamorphic/context.unicode-prefix.txt",
+      "start": 89,
+      "end": 149,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-introspect-curl--metamorphic/encoding.crlf.txt",
+      "start": 69,
+      "end": 129,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-introspect-curl--mutation/boundary.remove-delimiter.txt",
+      "start": 69,
+      "end": 128,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-introspect-curl--mutation/canonical.txt",
+      "start": 69,
+      "end": 129,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-introspect-curl--mutation/lexical.length-minus-one.txt",
+      "start": 69,
+      "end": 128,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-introspect-curl--mutation/lexical.length-plus-one.txt",
+      "start": 69,
+      "end": 130,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-introspect-curl--mutation/lexical.prefix-change.txt",
+      "start": 69,
+      "end": 129,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-introspect-curl--mutation/lexical.replace-last.txt",
+      "start": 69,
+      "end": 129,
       "family": "generic-token"
     },
     {
@@ -3847,6 +4135,72 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/beta8-1012e--vercel-app-access-token-session-store--differential/canonical.txt",
+      "start": 44,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-session-store--metamorphic/canonical.txt",
+      "start": 44,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-session-store--metamorphic/context.indent.txt",
+      "start": 48,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-session-store--metamorphic/context.unicode-prefix.txt",
+      "start": 64,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-session-store--metamorphic/encoding.crlf.txt",
+      "start": 46,
+      "end": 106,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-session-store--mutation/boundary.remove-delimiter.txt",
+      "start": 44,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-session-store--mutation/canonical.txt",
+      "start": 44,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-session-store--mutation/lexical.length-minus-one.txt",
+      "start": 44,
+      "end": 103,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-session-store--mutation/lexical.length-plus-one.txt",
+      "start": 44,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-session-store--mutation/lexical.prefix-change.txt",
+      "start": 44,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-session-store--mutation/lexical.replace-last.txt",
+      "start": 44,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/beta8-1012e--vercel-app-access-token-suffix-mismatch-dotenv--differential/canonical.txt",
       "start": 20,
       "end": 80,
@@ -3979,6 +4333,72 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/beta8-1012e--vercel-app-access-token-turbo-token--differential/canonical.txt",
+      "start": 28,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-turbo-token--metamorphic/canonical.txt",
+      "start": 28,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-turbo-token--metamorphic/context.indent.txt",
+      "start": 32,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-turbo-token--metamorphic/context.unicode-prefix.txt",
+      "start": 48,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-turbo-token--metamorphic/encoding.crlf.txt",
+      "start": 29,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-turbo-token--mutation/boundary.remove-delimiter.txt",
+      "start": 28,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-turbo-token--mutation/canonical.txt",
+      "start": 28,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-turbo-token--mutation/lexical.length-minus-one.txt",
+      "start": 28,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-turbo-token--mutation/lexical.length-plus-one.txt",
+      "start": 28,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-turbo-token--mutation/lexical.prefix-change.txt",
+      "start": 28,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-access-token-turbo-token--mutation/lexical.replace-last.txt",
+      "start": 28,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/beta8-1012e--vercel-app-access-token-underscore-in-body-twin--differential/canonical.txt",
       "start": 16,
       "end": 76,
@@ -4096,6 +4516,72 @@
       "path": "cases/beta8-1012e--vercel-app-refresh-token-body-57-twin--twin/canonical.txt",
       "start": 29,
       "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-docker-env--differential/canonical.txt",
+      "start": 40,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-docker-env--metamorphic/canonical.txt",
+      "start": 40,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-docker-env--metamorphic/context.indent.txt",
+      "start": 44,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-docker-env--metamorphic/context.unicode-prefix.txt",
+      "start": 60,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-docker-env--metamorphic/encoding.crlf.txt",
+      "start": 40,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-docker-env--mutation/boundary.remove-delimiter.txt",
+      "start": 40,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-docker-env--mutation/canonical.txt",
+      "start": 40,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-docker-env--mutation/lexical.length-minus-one.txt",
+      "start": 40,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-docker-env--mutation/lexical.length-plus-one.txt",
+      "start": 40,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-docker-env--mutation/lexical.prefix-change.txt",
+      "start": 40,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-docker-env--mutation/lexical.replace-last.txt",
+      "start": 40,
+      "end": 100,
       "family": "generic-token"
     },
     {
@@ -4258,6 +4744,24 @@
       "path": "cases/beta8-1012e--vercel-app-refresh-token-hyphen-in-body-twin--twin/canonical.txt",
       "start": 14,
       "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-hyphen-separator-twin--differential/canonical.txt",
+      "start": 28,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-hyphen-separator-twin--twin/authored.twin.txt",
+      "start": 28,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-hyphen-separator-twin--twin/canonical.txt",
+      "start": 28,
+      "end": 88,
       "family": "generic-token"
     },
     {
@@ -4489,6 +4993,72 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-refresh-curl--differential/canonical.txt",
+      "start": 94,
+      "end": 154,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-refresh-curl--metamorphic/canonical.txt",
+      "start": 94,
+      "end": 154,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-refresh-curl--metamorphic/context.indent.txt",
+      "start": 98,
+      "end": 158,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-refresh-curl--metamorphic/context.unicode-prefix.txt",
+      "start": 114,
+      "end": 174,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-refresh-curl--metamorphic/encoding.crlf.txt",
+      "start": 94,
+      "end": 154,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-refresh-curl--mutation/boundary.remove-delimiter.txt",
+      "start": 94,
+      "end": 153,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-refresh-curl--mutation/canonical.txt",
+      "start": 94,
+      "end": 154,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-refresh-curl--mutation/lexical.length-minus-one.txt",
+      "start": 94,
+      "end": 153,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-refresh-curl--mutation/lexical.length-plus-one.txt",
+      "start": 94,
+      "end": 155,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-refresh-curl--mutation/lexical.prefix-change.txt",
+      "start": 94,
+      "end": 154,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-refresh-curl--mutation/lexical.replace-last.txt",
+      "start": 94,
+      "end": 154,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/beta8-1012e--vercel-app-refresh-token-sdk-kwarg--differential/canonical.txt",
       "start": 25,
       "end": 85,
@@ -4558,6 +5128,72 @@
       "path": "cases/beta8-1012e--vercel-app-refresh-token-sdk-kwarg--mutation/lexical.replace-last.txt",
       "start": 25,
       "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-session-store--differential/canonical.txt",
+      "start": 45,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-session-store--metamorphic/canonical.txt",
+      "start": 45,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-session-store--metamorphic/context.indent.txt",
+      "start": 49,
+      "end": 109,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-session-store--metamorphic/context.unicode-prefix.txt",
+      "start": 65,
+      "end": 125,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-session-store--metamorphic/encoding.crlf.txt",
+      "start": 47,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-session-store--mutation/boundary.remove-delimiter.txt",
+      "start": 45,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-session-store--mutation/canonical.txt",
+      "start": 45,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-session-store--mutation/lexical.length-minus-one.txt",
+      "start": 45,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-session-store--mutation/lexical.length-plus-one.txt",
+      "start": 45,
+      "end": 106,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-session-store--mutation/lexical.prefix-change.txt",
+      "start": 45,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-app-refresh-token-session-store--mutation/lexical.replace-last.txt",
+      "start": 45,
+      "end": 105,
       "family": "generic-token"
     },
     {
@@ -4843,6 +5479,72 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-azure-task-input--differential/canonical.txt",
+      "start": 97,
+      "end": 157,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-azure-task-input--metamorphic/canonical.txt",
+      "start": 97,
+      "end": 157,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-azure-task-input--metamorphic/context.indent.txt",
+      "start": 101,
+      "end": 161,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-azure-task-input--metamorphic/context.unicode-prefix.txt",
+      "start": 117,
+      "end": 177,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-azure-task-input--metamorphic/encoding.crlf.txt",
+      "start": 100,
+      "end": 160,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-azure-task-input--mutation/boundary.remove-delimiter.txt",
+      "start": 97,
+      "end": 156,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-azure-task-input--mutation/canonical.txt",
+      "start": 97,
+      "end": 157,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-azure-task-input--mutation/lexical.length-minus-one.txt",
+      "start": 97,
+      "end": 156,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-azure-task-input--mutation/lexical.length-plus-one.txt",
+      "start": 97,
+      "end": 158,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-azure-task-input--mutation/lexical.prefix-change.txt",
+      "start": 97,
+      "end": 157,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-azure-task-input--mutation/lexical.replace-last.txt",
+      "start": 97,
+      "end": 157,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/beta8-1012e--vercel-personal-access-token-body-55-twin--differential/canonical.txt",
       "start": 20,
       "end": 79,
@@ -4876,6 +5578,204 @@
       "path": "cases/beta8-1012e--vercel-personal-access-token-body-57-twin--twin/canonical.txt",
       "start": 21,
       "end": 81,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-auth-file--differential/canonical.txt",
+      "start": 82,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-auth-file--metamorphic/canonical.txt",
+      "start": 82,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-auth-file--metamorphic/context.indent.txt",
+      "start": 86,
+      "end": 146,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-auth-file--metamorphic/context.unicode-prefix.txt",
+      "start": 102,
+      "end": 162,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-auth-file--metamorphic/encoding.crlf.txt",
+      "start": 84,
+      "end": 144,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-auth-file--mutation/boundary.remove-delimiter.txt",
+      "start": 82,
+      "end": 141,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-auth-file--mutation/canonical.txt",
+      "start": 82,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-auth-file--mutation/lexical.length-minus-one.txt",
+      "start": 82,
+      "end": 141,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-auth-file--mutation/lexical.length-plus-one.txt",
+      "start": 82,
+      "end": 143,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-auth-file--mutation/lexical.prefix-change.txt",
+      "start": 82,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-auth-file--mutation/lexical.replace-last.txt",
+      "start": 82,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-env-pull--differential/canonical.txt",
+      "start": 41,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-env-pull--metamorphic/canonical.txt",
+      "start": 41,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-env-pull--metamorphic/context.indent.txt",
+      "start": 45,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-env-pull--metamorphic/context.unicode-prefix.txt",
+      "start": 61,
+      "end": 121,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-env-pull--metamorphic/encoding.crlf.txt",
+      "start": 41,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-env-pull--mutation/boundary.remove-delimiter.txt",
+      "start": 41,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-env-pull--mutation/canonical.txt",
+      "start": 41,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-env-pull--mutation/lexical.length-minus-one.txt",
+      "start": 41,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-env-pull--mutation/lexical.length-plus-one.txt",
+      "start": 41,
+      "end": 102,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-env-pull--mutation/lexical.prefix-change.txt",
+      "start": 41,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-cli-env-pull--mutation/lexical.replace-last.txt",
+      "start": 41,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-docker-env--differential/canonical.txt",
+      "start": 32,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-docker-env--metamorphic/canonical.txt",
+      "start": 32,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-docker-env--metamorphic/context.indent.txt",
+      "start": 36,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-docker-env--metamorphic/context.unicode-prefix.txt",
+      "start": 52,
+      "end": 112,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-docker-env--metamorphic/encoding.crlf.txt",
+      "start": 32,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-docker-env--mutation/boundary.remove-delimiter.txt",
+      "start": 32,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-docker-env--mutation/canonical.txt",
+      "start": 32,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-docker-env--mutation/lexical.length-minus-one.txt",
+      "start": 32,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-docker-env--mutation/lexical.length-plus-one.txt",
+      "start": 32,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-docker-env--mutation/lexical.prefix-change.txt",
+      "start": 32,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-docker-env--mutation/lexical.replace-last.txt",
+      "start": 32,
+      "end": 92,
       "family": "generic-token"
     },
     {
@@ -5038,6 +5938,24 @@
       "path": "cases/beta8-1012e--vercel-personal-access-token-hyphen-in-body-twin--twin/canonical.txt",
       "start": 14,
       "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-hyphen-separator-twin--differential/canonical.txt",
+      "start": 20,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-hyphen-separator-twin--twin/authored.twin.txt",
+      "start": 20,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-hyphen-separator-twin--twin/canonical.txt",
+      "start": 20,
+      "end": 80,
       "family": "generic-token"
     },
     {
@@ -5338,6 +6256,72 @@
       "path": "cases/beta8-1012e--vercel-personal-access-token-suffix-mismatch-dotenv--mutation/lexical.replace-last.txt",
       "start": 26,
       "end": 86,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-turbo-token--differential/canonical.txt",
+      "start": 28,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-turbo-token--metamorphic/canonical.txt",
+      "start": 28,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-turbo-token--metamorphic/context.indent.txt",
+      "start": 32,
+      "end": 92,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-turbo-token--metamorphic/context.unicode-prefix.txt",
+      "start": 48,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-turbo-token--metamorphic/encoding.crlf.txt",
+      "start": 29,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-turbo-token--mutation/boundary.remove-delimiter.txt",
+      "start": 28,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-turbo-token--mutation/canonical.txt",
+      "start": 28,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-turbo-token--mutation/lexical.length-minus-one.txt",
+      "start": 28,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-turbo-token--mutation/lexical.length-plus-one.txt",
+      "start": 28,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-turbo-token--mutation/lexical.prefix-change.txt",
+      "start": 28,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/beta8-1012e--vercel-personal-access-token-turbo-token--mutation/lexical.replace-last.txt",
+      "start": 28,
+      "end": 88,
       "family": "generic-token"
     },
     {
@@ -67613,12 +68597,6 @@
       "family": "generic-token"
     },
     {
-      "path": "cases/beta8-464a--daytona-api-key-runner-key-unprefixed-encoded-value--benign/canonical.txt",
-      "start": 15,
-      "end": 79,
-      "family": "generic-token"
-    },
-    {
       "path": "cases/beta8-464a--daytona-api-key-runner-key-unprefixed-encoded-value--differential/canonical.txt",
       "start": 15,
       "end": 79,
@@ -71451,12 +72429,6 @@
       "family": "generic-token"
     },
     {
-      "path": "cases/beta8-464e--cerebras-api-key-pinecone-hyphen-key-near-miss--benign/canonical.txt",
-      "start": 26,
-      "end": 101,
-      "family": "generic-token"
-    },
-    {
       "path": "cases/beta8-464e--cerebras-api-key-pinecone-hyphen-key-near-miss--differential/canonical.txt",
       "start": 26,
       "end": 101,
@@ -71490,12 +72462,6 @@
       "path": "cases/beta8-464e--cerebras-api-key-pinecone-hyphen-key-near-miss--mutation/canonical.txt",
       "start": 26,
       "end": 101,
-      "family": "generic-token"
-    },
-    {
-      "path": "cases/beta8-464e--cerebras-api-key-pinecone-key-near-miss--benign/canonical.txt",
-      "start": 17,
-      "end": 92,
       "family": "generic-token"
     },
     {
@@ -73483,12 +74449,6 @@
       "path": "cases/beta8-528b--polar-token-body-44-twin--twin/canonical.txt",
       "start": 27,
       "end": 80,
-      "family": "generic-token"
-    },
-    {
-      "path": "cases/beta8-528b--polar-token-checkout-client-secret-public-id--benign/canonical.txt",
-      "start": 39,
-      "end": 90,
       "family": "generic-token"
     },
     {
@@ -110561,5 +111521,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "f79853737339fce3d7abb8502d49f4683f0f7c1d6857efc917d013cf7d0bd29f"
+  "digest": "c96ea40e1e3be850492615f02962090bc72c1707dddf0c6548f75d508d91b1dc"
 }

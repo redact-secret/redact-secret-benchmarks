@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-30T07:30:50.018Z",
+  "observedAt": "2026-09-30T08:47:52.010Z",
   "sourceRun": {
-    "runId": "2026-09-30T07:30:50.018Z-24bd38",
-    "benchmarkRevision": "4098786273e25052b42f15cc391154634d2c88a6"
+    "runId": "2026-09-30T08:47:52.010Z-b39234",
+    "benchmarkRevision": "5b5faeba99414fff1c5d91f71648e568f6e2e702"
   },
   "input": {
     "surface": "comparison/beta8-1012e",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "96d4551be8c320fa53151dfccd47cbc15c5a20e9dca6a8af8620983cf269ae55",
-    "fixtureCount": 87,
-    "fixturesDigest": "6edefe451a6f485c5443cd7617374aa1ad9cd3567381101f6d59fb4bf551cd36",
+    "corpusHash": "bbbffca090dd0b4e73ef7655a67889c4ded33e60f8d6b928cd824ce3d467015c",
+    "fixtureCount": 120,
+    "fixturesDigest": "a33a536613b32cc832a55324ba3efe0d5ea140bba39013f48cbc90213dcd1b47",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "ad9fbac3f043ef15cac361615935a3a778284e13cf86a2468df0be5e7f4c6d07",
-      "fixtureCount": 5886
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
     }
   },
   "peer": {
@@ -61,6 +61,12 @@
   },
   "findings": [
     {
+      "path": "cases/vercel-app-access-token-azure-task-input.yml",
+      "start": 60,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/vercel-app-access-token-body-55-twin.env",
       "start": 27,
       "end": 86,
@@ -91,6 +97,18 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/vercel-app-access-token-hyphen-separator-twin.env",
+      "start": 27,
+      "end": 87,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/vercel-app-access-token-introspect-curl.sh",
+      "start": 69,
+      "end": 129,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/vercel-app-access-token-json-api-key.json",
       "start": 16,
       "end": 76,
@@ -115,6 +133,12 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/vercel-app-access-token-session-store.json",
+      "start": 44,
+      "end": 104,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/vercel-app-access-token-suffix-mismatch-dotenv.env",
       "start": 20,
       "end": 80,
@@ -124,6 +148,12 @@
       "path": "cases/vercel-app-access-token-token-response.json",
       "start": 21,
       "end": 81,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/vercel-app-access-token-turbo-token.env",
+      "start": 28,
+      "end": 88,
       "family": "generic-token"
     },
     {
@@ -151,6 +181,12 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/vercel-app-refresh-token-docker-env.sh",
+      "start": 40,
+      "end": 100,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/vercel-app-refresh-token-dotenv.env",
       "start": 28,
       "end": 88,
@@ -166,6 +202,12 @@
       "path": "cases/vercel-app-refresh-token-hyphen-in-body-twin.json",
       "start": 14,
       "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-hyphen-separator-twin.env",
+      "start": 28,
+      "end": 88,
       "family": "generic-token"
     },
     {
@@ -193,9 +235,21 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/vercel-app-refresh-token-refresh-curl.sh",
+      "start": 94,
+      "end": 154,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/vercel-app-refresh-token-sdk-kwarg.py",
       "start": 25,
       "end": 85,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-session-store.json",
+      "start": 45,
+      "end": 105,
       "family": "generic-token"
     },
     {
@@ -229,6 +283,12 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/vercel-personal-access-token-azure-task-input.yml",
+      "start": 97,
+      "end": 157,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/vercel-personal-access-token-body-55-twin.env",
       "start": 20,
       "end": 79,
@@ -238,6 +298,24 @@
       "path": "cases/vercel-personal-access-token-body-57-twin.sh",
       "start": 21,
       "end": 82,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/vercel-personal-access-token-cli-auth-file.json",
+      "start": 82,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/vercel-personal-access-token-cli-env-pull.sh",
+      "start": 41,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/vercel-personal-access-token-docker-env.sh",
+      "start": 32,
+      "end": 92,
       "family": "generic-token"
     },
     {
@@ -256,6 +334,12 @@
       "path": "cases/vercel-personal-access-token-hyphen-in-body-twin.json",
       "start": 14,
       "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/vercel-personal-access-token-hyphen-separator-twin.env",
+      "start": 20,
+      "end": 80,
       "family": "generic-token"
     },
     {
@@ -289,6 +373,12 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/vercel-personal-access-token-turbo-token.env",
+      "start": 28,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/vercel-personal-access-token-underscore-in-body-twin.json",
       "start": 16,
       "end": 76,
@@ -301,5 +391,5 @@
       "family": "generic-token"
     }
   ],
-  "digest": "668bf48e32ff590f2a387674d2e09150ecfc704c623bea989b9ea5a57c0c0e76"
+  "digest": "7fc25c12fdd06c64ee7912841362aef25c70a12594aafe6843149f6fe86b715b"
 }

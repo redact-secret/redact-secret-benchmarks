@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-30T07:30:50.018Z",
+  "observedAt": "2026-09-30T08:47:52.010Z",
   "sourceRun": {
-    "runId": "2026-09-30T07:30:50.018Z-24bd38",
-    "benchmarkRevision": "4098786273e25052b42f15cc391154634d2c88a6"
+    "runId": "2026-09-30T08:47:52.010Z-b39234",
+    "benchmarkRevision": "5b5faeba99414fff1c5d91f71648e568f6e2e702"
   },
   "input": {
     "surface": "comparison/beta8-1012a",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "c18aef442994e71796b7c1d4fe54edf5a7bd189a599e87b0b7b5bc2c7693b64c",
-    "fixtureCount": 50,
-    "fixturesDigest": "090b8d0c55569cd5551a9bbd8faeed3920dc3f1b515d53beae6c7dcc0d0be7c6",
+    "corpusHash": "7ed7c0278a1d5ce43851ccb88eef2530eb2eebec9356d43f1dba74236ee74cff",
+    "fixtureCount": 51,
+    "fixturesDigest": "d71fc2a39f83688f9180b8b5d678fe917c34252cf805764de2cb2caa24e1451a",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "ad9fbac3f043ef15cac361615935a3a778284e13cf86a2468df0be5e7f4c6d07",
-      "fixtureCount": 5886
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
     }
   },
   "peer": {
@@ -91,6 +91,12 @@
       "family": "generic-token"
     },
     {
+      "path": "cases/aws-secret-access-key-credentials-file-named-profile.ini",
+      "start": 36,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/aws-secret-access-key-credentials-file.ini",
       "start": 53,
       "end": 93,
@@ -145,5 +151,5 @@
       "family": "generic-token"
     }
   ],
-  "digest": "232c32482702806895077f950ef4581c60f549e3b6498cb3913e93df4ba64fc9"
+  "digest": "7c870e9ca8a9c59e4ab34a0544f7edc3ecf0cb6a0145c74b0d3bca1a572a38f6"
 }

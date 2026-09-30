@@ -1,24 +1,46 @@
 /**
- * What each library's own documentation says it can do: `benchmarks/feature-claims.json`.
+ * What each library's own documentation says it can do: `benchmarks/feature-claims.json`
+ * (#564, part of #543). Without the file this service returns `not-recorded` and the
+ * page says so; it never falls back to another source. The file is read and checked
+ * against the shape below: an invalid file is reported, not rendered.
  *
- * That file does not exist yet (follow-up to #543, linked from the /comparison/feature
- * page). Until it does, this service returns `not-recorded` and the page says so; it
- * never falls back to another source. When the file is committed it is read and
- * checked against the shape below: an invalid file is reported, not rendered.
+ * A mark reads "listed in the documentation read". `no` means not listed or not stated
+ * (a dash on the page), never "the library cannot"; there is no separate `unknown` mark
+ * (docs/decisions/2026-09-30-record-feature-claims-from-each-librarys-own-docs.md).
  */
 import { once, readJsonIfPresent } from './repo';
 
 export const FEATURE_CLAIMS = 'benchmarks/feature-claims.json';
 export type Mark = 'yes' | 'partly' | 'no';
 
-export interface FeatureClaimCell { mark: Mark; note?: string; tested?: boolean; literal?: boolean }
+/** Where a mark comes from: a page of the project's own documentation at the version read. */
+export interface FeatureClaimSource { kind: 'doc'; ref: string }
+export interface FeatureClaimCell {
+  mark: Mark;
+  note?: string;
+  source: FeatureClaimSource;
+  /** A committed test checks the claim; `test` names it (`tests/feature-claims.test.mjs`). */
+  tested?: boolean;
+  test?: string;
+  literal?: boolean;
+}
+export interface LibraryInstallPackage { name: string; version: string; packedBytes: number; unpackedBytes: number }
+/** Facts from package metadata, for the runtime page's "About the libraries" table. */
+export interface LibraryFacts {
+  runsIn: string;
+  dependencies: string;
+  install: { measuredOn: string; method: string; note: string; packages: LibraryInstallPackage[] };
+  sources: string[];
+}
+export interface FeatureClaimLibrary { id: string; name: string; version: string; package?: string; facts?: LibraryFacts }
+export interface FeatureClaimSourceNote { name: string; detail: string; links?: { label: string; href: string }[] }
 export interface FeatureClaims {
   schemaVersion: 1;
   /** The date the documentation was read. */
   readOn: string;
-  libraries: { id: string; name: string; version: string }[];
+  libraries: FeatureClaimLibrary[];
   groups: { label: string; rows: { id: string; label: string; cells: Record<string, FeatureClaimCell> }[] }[];
-  sources: { name: string; detail: string }[];
+  sources: FeatureClaimSourceNote[];
 }
 
 export type FeatureClaimsLoad =
@@ -48,10 +70,19 @@ export function featureClaimsProblem(value: unknown): string | null {
       for (const [lib, cell] of Object.entries(r.cells)) {
         if (!ids.includes(lib)) return `row ${r.id} has a cell for unknown library ${lib}`;
         if (!isObject(cell) || !['yes', 'partly', 'no'].includes(cell.mark as string)) return `row ${r.id}, ${lib}: mark must be yes, partly or no`;
+        if (!isObject(cell.source) || cell.source.kind !== 'doc' || !isText(cell.source.ref) || !/^https:\/\//.test(cell.source.ref)) return `row ${r.id}, ${lib}: a mark needs a source (kind doc, an https ref)`;
+        if (cell.tested !== undefined && (cell.tested !== true || !isText(cell.test))) return `row ${r.id}, ${lib}: tested must be true and name its test`;
       }
     }
   }
   if (!Array.isArray(sources) || sources.some(s => !isObject(s) || !isText(s.name) || !isText(s.detail))) return 'sources must list name and detail';
+  for (const l of libraries as { id: string; facts?: unknown }[]) {
+    if (l.facts === undefined) continue;
+    const f = l.facts;
+    if (!isObject(f) || !isText(f.runsIn) || !isText(f.dependencies) || !Array.isArray(f.sources) || f.sources.length === 0 || !isObject(f.install)) return `library ${l.id}: facts need runsIn, dependencies, install and sources`;
+    const pk = f.install.packages;
+    if (!isText(f.install.measuredOn) || !Array.isArray(pk) || pk.length === 0 || pk.some(x => !isObject(x) || !isText(x.name) || !isText(x.version) || !Number.isInteger(x.packedBytes) || !Number.isInteger(x.unpackedBytes))) return `library ${l.id}: install must list packages with packed and unpacked bytes`;
+  }
   return null;
 }
 

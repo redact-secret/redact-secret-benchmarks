@@ -10,7 +10,7 @@ import type { ComparisonQuestion, FeatureFilter, Principle, RunLine, RuntimeColu
 import type { ComparisonHubProps } from '../components/comparison/ComparisonHub';
 import type { FeatureComparisonProps } from '../components/comparison/FeatureComparison';
 import type { RuntimeComparisonProps } from '../components/comparison/RuntimeComparison';
-import type { FeatureClaims, FeatureClaimsLoad } from '../services/features';
+import type { FeatureClaims, FeatureClaimsLoad, LibraryFacts } from '../services/features';
 import type { PeerRuntime, RuntimeTool, RuntimeWorkload } from '../services/runtime';
 import type { RunLoad } from '../services/run';
 import { count, int, isoDate } from './format';
@@ -163,7 +163,10 @@ export function resolveFeaturePage(load: FeatureClaimsLoad): FeaturePage {
         label: g.label,
         rows: g.rows.map(r => {
           const marks = claims.libraries.map(l => r.cells[l.id]?.mark);
-          return { id: r.id, label: r.label, same: marks.every(m => m !== undefined && m === marks[0]), cells: r.cells };
+          // A row that shows a literal value (what hidden text looks like) always differs, whatever the marks.
+          const same = marks.every(m => m !== undefined && m === marks[0]) && !Object.values(r.cells).some(c => c.literal);
+          const cells = Object.fromEntries(Object.entries(r.cells).map(([id, c]) => [id, { mark: c.mark, ...(c.note ? { note: c.note } : {}), ...(c.tested ? { tested: true } : {}), ...(c.literal ? { literal: true } : {}) }]));
+          return { id: r.id, label: r.label, same, cells };
         }),
       })),
       sourcesTitle: 'Where this comes from',
@@ -269,12 +272,26 @@ function piiQuestions(runtime: PeerRuntime, key: string, notMeasured?: string): 
 const libraryColumns = (runtime: PeerRuntime): RuntimeColumn[] =>
   runtime.tools.map(t => ({ id: t.id, name: toolName(t.id), ...(t.piiSelectors.length ? { sub: t.piiSelectors.join(', ') } : {}) }));
 
-function libraryFacts(runtime: PeerRuntime): RuntimeFactRow[] {
+/** Package-metadata rows from `benchmarks/feature-claims.json`; a library it does not describe reads as a dash. */
+function metadataFacts(runtime: PeerRuntime, features: FeatureClaimsLoad | undefined): RuntimeFactRow[] {
+  if (features?.state !== 'recorded') return [];
+  const facts = (id: string): LibraryFacts | undefined => features.claims.libraries.find(l => l.id === id)?.facts;
+  const by = (cell: (f: LibraryFacts) => RuntimeFactRow['cells'][string]) => Object.fromEntries(runtime.tools.map(t => { const f = facts(t.id); return [t.id, f ? cell(f) : null]; }));
+  const sum = (f: LibraryFacts, key: 'packedBytes' | 'unpackedBytes') => f.install.packages.reduce((total, p) => total + p[key], 0);
+  return [
+    { label: 'Runs in', cells: by(f => ({ text: f.runsIn, note: 'from package metadata and documentation' })) },
+    { label: 'Install size', cells: by(f => ({ text: `${kibibytes(sum(f, 'packedBytes'))} packed`, note: `${kibibytes(sum(f, 'unpackedBytes'))} unpacked: ${f.install.note}` })) },
+    { label: 'Dependencies', cells: by(f => ({ text: f.dependencies })) },
+  ];
+}
+
+function libraryFacts(runtime: PeerRuntime, features?: FeatureClaimsLoad): RuntimeFactRow[] {
   const by = (cell: (t: RuntimeTool) => RuntimeFactRow['cells'][string]) => Object.fromEntries(runtime.tools.map(t => [t.id, cell(t)]));
   return [
     { label: 'Version', cells: by(t => (t.version ? { text: t.version, chip: t.buildKind === 'local-source-build' ? 'local build · unreleased' : 'npm' } : null)) },
     { label: 'Package', cells: by(t => ({ text: t.package })) },
     { label: 'Call timed', cells: by(t => ({ text: `${t.call}()`, note: t.async ? 'asynchronous: returns a Promise' : 'synchronous' })) },
+    ...metadataFacts(runtime, features),
   ];
 }
 
@@ -284,7 +301,7 @@ export function activeFamilies(piiActivation: string | undefined): string[] {
   return list ? list.split(',').map(f => f.replace(/^pii:[^:]+:/, '').replace(/-/g, ' ')).filter(Boolean) : [];
 }
 
-export function resolveRuntimePanels(runtime: PeerRuntime): RuntimePanel[] {
+export function resolveRuntimePanels(runtime: PeerRuntime, features?: FeatureClaimsLoad): RuntimePanel[] {
   const { measurement } = runtime;
   const measured = measurement.state === 'measured' ? measurement : undefined;
   const externalNote = measurement.state === 'invalid' ? measurement.reason : measurement.state === 'not-published' ? NOT_MEASURED.notPublished : undefined;
@@ -334,7 +351,7 @@ export function resolveRuntimePanels(runtime: PeerRuntime): RuntimePanel[] {
         questions: piiQuestions(runtime, key, externalNote),
         factsTitle: 'About the libraries',
         factColumns: external.map(c => ({ id: c.id, name: c.name })),
-        facts: libraryFacts(runtime),
+        facts: libraryFacts(runtime, features),
         run: runMeta,
         notes: measured?.methodologyNotes,
       },
@@ -371,7 +388,7 @@ export function resolveRuntimePanels(runtime: PeerRuntime): RuntimePanel[] {
         })),
         factsTitle: analysis === 'external' ? 'About the libraries' : 'About the settings',
         factColumns: analysis === 'external' ? external.map(c => ({ id: c.id, name: c.name })) : internalColumns.map(c => ({ id: c.id, name: c.name, sub: c.sub })),
-        facts: analysis === 'external' ? libraryFacts(runtime) : internalFacts,
+        facts: analysis === 'external' ? libraryFacts(runtime, features) : internalFacts,
       },
     });
   }

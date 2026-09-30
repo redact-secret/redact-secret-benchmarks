@@ -12,8 +12,9 @@ families:
       issues:
         - redact-secret/redact-secret#1014
         - redact-secret/redact-secret#1021
+        - redact-secret/redact-secret#1039
         - redact-secret/redact-secret-benchmarks#528
-      evidence: https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/sonarqube.md
+      evidence: https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/sonarqube.md
       researchedAt: 2026-09-29
     blockedBy: null
   - id: sonarqube:analysis-token
@@ -25,8 +26,9 @@ families:
       issues:
         - redact-secret/redact-secret#1014
         - redact-secret/redact-secret#1021
+        - redact-secret/redact-secret#1039
         - redact-secret/redact-secret-benchmarks#528
-      evidence: https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/sonarqube.md
+      evidence: https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/sonarqube.md
       researchedAt: 2026-09-29
     blockedBy: null
 ---
@@ -43,7 +45,7 @@ SonarQube Server tokens (`SONAR_TOKEN`) authenticate API calls and analysis uplo
 - **Sources:** T1 under R1 from the provider token generator and token-type enum.
 - **Issuance:** not attempted; the grammar is T1 from provider sources, so no key is needed.
 - **Collisions:** the 40-hex body alone is SHA-1 shaped, so the prefix is load-bearing; `sqb_` badge tokens are public (Q5).
-- **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md) (no row on `main` until the Beta.12 detector, redact-secret#1021, is merged).
+- **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md) (row on `main`; the Beta.12 detector, redact-secret#1021, merged in redact-secret#1039 and is unreleased).
 
 ### `sonarqube:analysis-token` — Analysis tokens (sqa_, sqp_)
 
@@ -51,7 +53,7 @@ SonarQube Server tokens (`SONAR_TOKEN`) authenticate API calls and analysis uplo
 - **Sources:** T1 under R1 from the same generator and enum.
 - **Issuance:** not attempted; the grammar is T1 from provider sources, so no key is needed.
 - **Collisions:** as for the user token; `sqx_` with an unknown type letter is not issued.
-- **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md) (no row on `main` until the Beta.12 detector, redact-secret#1021, is merged).
+- **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md) (row on `main`; the Beta.12 detector, redact-secret#1021, merged in redact-secret#1039 and is unreleased).
 
 ## Candidates that are not families yet
 
@@ -65,6 +67,6 @@ SonarQube Server tokens (`SONAR_TOKEN`) authenticate API calls and analysis uplo
 
 ## Research log
 
-- redact-secret#1014 — Beta.12 broad-discovery epic (open); [handoff index](https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md) ranks 50 candidates and freezes ten handoffs at `4f220ea`, 2026-09-29.
-- redact-secret#1021 — Beta.12 implementation issue (open; the detector is on an unmerged product branch).
+- redact-secret#1014 — Beta.12 broad-discovery epic (open); [handoff index](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/README.md) ranks 50 candidates, freezes ten handoffs and records a step-4 disposition for all 50 (merge commit `3785817`, 2026-09-30; the ten handoffs are unchanged since `4f220ea`, 2026-09-29).
+- redact-secret#1021 — Beta.12 implementation issue (detector merged to `main` in redact-secret#1039, unreleased).
 - redact-secret-benchmarks#528 — Beta.12 contracts and synthetic corpus for the #1014 families. Corpus work only, no change to the research verdict.

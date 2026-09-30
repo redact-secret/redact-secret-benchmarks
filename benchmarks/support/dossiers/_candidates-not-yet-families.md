@@ -299,3 +299,76 @@ Each row has a step-1 research section (linked by comment) and a step-4 disposit
 - **Current contract in core:** no detector on `main`; contextual detection and generic coverage apply.
 - **Open questions:** Q4 (refuse, or allow at T2 with a context keyword when the provider disclaims a grammar).
 - **Research log:** [step-1, #21 to #30](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282); [step-4 disposition](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/README.md#step-4-disposition-of-all-50-candidates).
+
+### Wave C: T2 families (eligible now, no handoff yet)
+
+Step 4 found each of these eligible for a distinct T2 family under the Together and Tavily precedent in [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md): the prefix is provider-documented and distinctive, but length or alphabet comes from scanner rules only. A T2 handoff is the next action and needs no ruling. Shapes are schematic.
+
+| candidate | verdict | tier | step-4 disposition | gate | research |
+| --- | --- | --- | --- | --- | --- |
+| `zuplo:consumer-api-key` | ready | T2 | T2 FAMILY | Q1 (CRC32) | [step-1, #21 to #30](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282) |
+| `flutterwave:secret-key` | ready | T2 | T2 FAMILY | policy alphabet for the 32-byte segment | [step-1, #41 to #50](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820) |
+| `shippo:api-token` | ready | T2 | T2 FAMILY | none | [step-1, #41 to #50](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820) |
+| `duffel:access-token` | ready | T2 | T2 FAMILY | none | [step-1, #41 to #50](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820) |
+| `brevo:api-key` | ready | T2 | T2 FAMILY | none | [step-1, #41 to #50](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820) |
+| `mailersend:api-token` | ready | T2 | T2 FAMILY | floor by policy; `mssp.` prose collision | [step-1, #41 to #50](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820) |
+| `airtable:personal-access-token` | ready | T2 | T2 FAMILY | secret half required | [step-1, #21 to #30](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282) |
+| `contentful:personal-access-token` | ready | T2 | T2 FAMILY | 43 against 46 eras to settle | [step-1, #21 to #30](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282) |
+
+All eight records below share: researchedAt 2026-09-30, blockedBy `null`, issues `redact-secret/redact-secret#1014`, issuance not attempted, no detector on `main`, research log = the step-1 comment linked in the table plus the [step-4 disposition](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/README.md#step-4-disposition-of-all-50-candidates).
+
+#### `zuplo:consumer-api-key`
+
+- **Shape:** `zpka_` + a 32-character lowercase alphanumeric body + `_` + 8 lowercase hex (a CRC32 of the body by one scanner's validation); the provider documents only the three-part structure.
+- **Sources:** prefix and structure T1 by R4 ([Zuplo docs](https://zuplo.com/docs/concepts/api-keys) and a masked placeholder in a [provider README](https://github.com/zuplo/zuplo/blob/4e8c0553e3cc79dffc03f68804774ee6c3f1dcd5/examples/basic-api-gateway/README.md#L59)); lengths, alphabet and the CRC32 are T2 (betterleaks, Kingfisher, GitHub partner list). One provider demo string has a 33-character body, which may be a typo.
+- **Collisions:** none.
+- **Open questions:** Q1 (verify the CRC32 as a reject-only post-check); a T1 length would need Zuplo's closed-source generator.
+
+#### `flutterwave:secret-key`
+
+- **Shape:** `FLWSECK-` (live) or `FLWSECK_TEST-` (test) + 32 characters (lowercase hex by scanners) + a literal `-X` suffix. The public `FLWPUBK` sibling is excluded, and the derived encryption key (`FLWSECK` + 12) is optional.
+- **Sources:** prefix T1 by R4 and R6 ([Flutterwave docs placeholders](https://developer.flutterwave.com/docs/authentication) and [Node SDK code](https://github.com/Flutterwave/Node-v3/blob/537f9f4455f922a879e4f088cf0f596621c3517c/lib/security.js#L11)); the 32 width is consistent across docs and SDK placeholders; the alphabet is scanner-only (T2).
+- **Collisions:** none; `FLWPUBK` is public (Q5).
+- **Open questions:** a policy alphabet for the 32-byte segment (the hex alphabet has no provider source).
+
+#### `shippo:api-token`
+
+- **Shape:** `shippo_live_` or `shippo_test_` + 40 lowercase hex by scanners.
+- **Sources:** prefix T1 ([Shippo docs](https://docs.goshippo.com/docs/guides_general/authentication/) and an SDK `startsWith("shippo_")` hook under R6); length and alphabet T2 (trufflehog, gitleaks); provider fixtures use short stubs.
+- **Collisions:** none.
+- **Open questions:** a provider source for the 40-hex body.
+
+#### `duffel:access-token`
+
+- **Shape:** `duffel_test_` or `duffel_live_` + 43 characters from `[A-Za-z0-9_-]` by scanners.
+- **Sources:** the test prefix is T1 ([Duffel docs](https://duffel.com/docs/api/overview/test-mode)); `duffel_live_`, the length and the alphabet are T2 (trufflehog, gitleaks, GitHub partner list). The provider SDKs carry no token examples.
+- **Collisions:** none; the vendor prefix is distinctive.
+- **Open questions:** a provider source for the 43 length.
+
+#### `brevo:api-key`
+
+- **Shape:** `xkeysib-` + 64 lowercase hex + `-` + 16 alphanumerics by scanners (trufflehog uses a looser 81-character class); the SMTP sibling `xsmtpsib-` has no public regex.
+- **Sources:** prefix T1 by R4 (a masked docs response example and SDK fixtures, [Brevo API reference](https://developers.brevo.com/reference/create-an-api-key-for-a-sub-account)); the structure is scanner-only (T2); the `xsmtpsib-` prefix is T2 (partner list).
+- **Collisions:** none.
+- **Open questions:** a provider source for the 64-and-16 layout and for the SMTP key shape.
+
+#### `mailersend:api-token`
+
+- **Shape:** `mlsn.` + an alphanumeric body of unknown length (betterleaks 30 to 100; 64 hex is commonly seen). A sibling `mssp.` appears in a provider-authored rule and is probably the SMTP password.
+- **Sources:** prefix T1 by R2 and R4 (a provider-authored `git secrets` rule in [`mailersend-nodejs`](https://github.com/mailersend/mailersend-nodejs/blob/410d24d084cf0e07fdfcf4eb152c98cb01bbf663/lefthook.yml#L11-L12), 2026-09-17, and the CLI README); no provider source gives a length.
+- **Collisions:** `mssp.` collides with MSSP prose, so it needs a long body and a confirmed role.
+- **Open questions:** the body length and alphabet; whether `mssp.` is the SMTP password.
+
+#### `airtable:personal-access-token`
+
+- **Shape:** `pat` + 14 alphanumerics (the token id, 17 in all, a non-secret identifier) + `.` + 64 lowercase hex. The secret half must be required.
+- **Sources:** the id half is T1 by R5 ([Airtable docs](https://airtable.com/developers/web/guides/personal-access-tokens) and the provider's API description, whose id grammar is three letters + 14); the 64-hex secret half is scanner-only (T2), and Airtable says to treat tokens as opaque, variable-length strings.
+- **Collisions:** a bare `pat` + 14 id is public.
+- **Open questions:** whether to accept a longer secret half given the variable-length caveat.
+
+#### `contentful:personal-access-token`
+
+- **Shape:** `CFPAT-` + 43 characters from `[A-Za-z0-9_-]` by scanners; a 2017 provider fixture has 46 lowercase characters. A `cfw-` web-token sibling exists in the docs.
+- **Sources:** prefix T1 by R4 (Contentful's [audit-log docs](https://www.contentful.com/developers/docs/tutorials/general/audit-logs/) spell it `cfpat-`; the CLI docs use the uppercase form); current length and alphabet T2 (trufflehog, GitHub partner list), contradicted for the older era by the [provider fixture](https://github.com/contentful/contentful-management.py/blob/a2aa04a6c8b3556d450c1c799ebb2c1ba30ad422/fixtures/pat/create.yaml).
+- **Collisions:** none for `CFPAT-`.
+- **Open questions:** 43 against 46 eras; whether a current `cfw-` token deserves a sibling family.

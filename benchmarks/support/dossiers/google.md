@@ -28,6 +28,21 @@ families:
       evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/519/README.md
       researchedAt: 2026-09-21
     blockedBy: null
+  - id: google:oauth-client-secret
+    research:
+      verdict: ready
+      tier: T2
+      sources:
+        - https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/gcpoauth2client/detector.go#L51-L58
+        - https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules/google.yml#L17-L29
+        - https://github.com/Samsung/CredSweeper/blob/f21ab2f2553eea288a72273b9658cd297ab1d11f/credsweeper/rules/config.yaml#L463-L475
+      issues:
+        - redact-secret/redact-secret#1012
+        - redact-secret/redact-secret#1029
+        - redact-secret/redact-secret-benchmarks#528
+      evidence: https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/google-oauth2-credential.md
+      researchedAt: 2026-09-29
+    blockedBy: null
 ---
 
 # Google
@@ -64,9 +79,26 @@ family is not recorded here.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
 - **Open caveat:** The provider shows the AIza prefix and a 39-character length in one example, not a stated grammar; the 35-character body alphabet is tool-corroborated.
 
-### `google:oauth2-credential` — OAuth2 credential
+### `google:oauth-client-secret` — OAuth client secret
 
-- **Shape:** three formats with literal prefixes: `GOCSPX-` (client
+- **Shape:** `GOCSPX-` followed by exactly 28 characters from letters, digits,
+  underscore and hyphen, 35 in all.
+- **Sources:** T2. Google's own osv-scalibr rule (narrowed to exactly 28 by a
+  Google engineer on 2025-12-03), noseyparker and CredSweeper agree: three
+  dated references, three owners, two classes. Google documents no format. The
+  #1012 research record ([google-oauth2-credential.md](https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/google-oauth2-credential.md))
+  is READY-T2, and T1 only if the maintainer applies R2 to the Google-authored rule.
+- **Collisions:** the OAuth client ID is public. Unprefixed pre-`GOCSPX-`
+  secrets are caught only by a `client_secret` name.
+- **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+
+### `google:oauth2-credential` — OAuth2 access and refresh tokens
+
+- **Status (#1012):** the `GOCSPX-` client secret is split out above. The
+  `ya29.` access token and the `1//` refresh token stay BLOCKED: Google's
+  `ya29.c.` example has an interior `.` every rule excludes, and its `1//`
+  example (43 after the prefix) contradicts the only peer rule (`1//0` + 80 or more).
+- **Shape (as first researched):** three formats with literal prefixes: `GOCSPX-` (client
   secret), `1//` (refresh token) and `ya29.` (access token). No body length or
   alphabet is established for any of them.
 - **Sources:** none reach a grammar. Google's OAuth 2.0 protocol page states only

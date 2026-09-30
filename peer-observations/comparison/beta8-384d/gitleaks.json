@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-30T02:53:31.552Z",
+  "observedAt": "2026-09-30T08:47:52.010Z",
   "sourceRun": {
-    "runId": "2026-09-30T02:53:31.552Z-c34054",
-    "benchmarkRevision": "85694a1604874e4d0a24ef15225bbbaa32be85b2"
+    "runId": "2026-09-30T08:47:52.010Z-b39234",
+    "benchmarkRevision": "5b5faeba99414fff1c5d91f71648e568f6e2e702"
   },
   "input": {
     "surface": "comparison/beta8-384d",
@@ -15,15 +15,15 @@
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "7b49e5d73bdf08f138c639a4631d164ebba421e0fb672083b2c9e7f6c9c6398c",
-      "fixtureCount": 5516
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
     }
   },
   "peer": {
     "id": "gitleaks",
     "version": "8.30.1",
     "mode": "Directory scan · default rules",
-    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configurationHash": "bfbc883ee23e1b5c3d3c25aa3754935a9631c166844cd42fa32e2efce58b4a05",
     "configuration": {
       "adapterVersion": 2,
       "familyMappingVersion": 2,
@@ -42,7 +42,7 @@
       ],
       "processLimits": {
         "timeout": 120000,
-        "maxBuffer": 16777216
+        "maxBuffer": 67108864
       },
       "rules": "default",
       "environmentRuleOverrides": false
@@ -52,7 +52,7 @@
       "platform": "darwin-arm64",
       "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
     },
-    "adapterDigest": "f7f72b2d21d7e19cb59717ad25b352bea8770f907ed284d7f95c49fe4fe3cfa6"
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
@@ -244,5 +244,5 @@
       "family": "generic-token"
     }
   ],
-  "digest": "d11533629e593a98d2a95d5e6e0fee5fb073324b7d203b3f714d592675750536"
+  "digest": "1750a143416a489591a86c882c6dd04f4ed23457e4ebc4a5c1587a0620571d3a"
 }

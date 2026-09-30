@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T08:47:52.010Z",
+  "sourceRun": {
+    "runId": "2026-09-30T08:47:52.010Z-b39234",
+    "benchmarkRevision": "5b5faeba99414fff1c5d91f71648e568f6e2e702"
+  },
+  "input": {
+    "surface": "comparison/beta8-1012d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "d22a268fb2b8eb8b69b2167c837b1b5f6e74b3b667c93f8af0ec867ee43c4760",
+    "fixtureCount": 29,
+    "fixturesDigest": "ef9ce20f8f81ba0acc02d685209185b360fe2a2453671e3acc262a2e8cd04fd8",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "bfbc883ee23e1b5c3d3c25aa3754935a9631c166844cd42fa32e2efce58b4a05",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 67108864
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/aws-sts-temporary-access-key-asib-prefix-twin.py",
+      "start": 26,
+      "end": 46,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-bare-prose.md",
+      "start": 57,
+      "end": 77,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-bearer-header.http",
+      "start": 70,
+      "end": 90,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-cloudtrail-event.json",
+      "start": 83,
+      "end": 103,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-export.sh",
+      "start": 26,
+      "end": 46,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-json-api-key.json",
+      "start": 16,
+      "end": 36,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-json-token.json",
+      "start": 14,
+      "end": 34,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-lowercase-byte-twin.json",
+      "start": 14,
+      "end": 34,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-sdk-kwarg.py",
+      "start": 26,
+      "end": 46,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-x-api-key-header.http",
+      "start": 58,
+      "end": 78,
+      "family": "aws-access-key"
+    }
+  ],
+  "digest": "8ea19857e391566bed28ffd375449e3d42b187ddd48ec36851318b50220b9cfe"
+}

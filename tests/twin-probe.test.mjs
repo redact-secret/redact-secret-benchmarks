@@ -63,7 +63,8 @@ test('a context twin keeps the value byte-for-byte, changes only its surrounding
   // #213 (213d) added two for the context-gated legacy Datadog application key, and 213e eight more.
   // #259 added two for travisci-api-token (registry detector since the 3144bb3 pin).
   // #384: the four keyword-gated families (mistral, cohere, deepgram, ai21) graduated at the cfe2aec pin with their beta8-384e context twins.
-  assert.deepEqual([...new Set(context.map(t => t.detectors[0]))].sort(), ['ai21-api-key', 'bearer-token', 'cohere-api-key', 'confluent-cloud-api-secret-legacy', 'connection-string', 'datadog-application-key-legacy', 'deepgram-api-key', 'generic-token', 'heroku-api-key-legacy', 'mistral-api-key', 'travisci-api-token', 'twilio-api-key-secret', 'twilio-auth-token']);
+  // #1012: aws-secret-access-key (registry detector since the 4fb7882 pin) is context-gated; beta8-1012a carries its context twins.
+  assert.deepEqual([...new Set(context.map(t => t.detectors[0]))].sort(), ['ai21-api-key', 'aws-secret-access-key', 'bearer-token', 'cohere-api-key', 'confluent-cloud-api-secret-legacy', 'connection-string', 'datadog-application-key-legacy', 'deepgram-api-key', 'generic-token', 'heroku-api-key-legacy', 'mistral-api-key', 'travisci-api-token', 'twilio-api-key-secret', 'twilio-auth-token']);
   for (const t of context) {
     const positive = fixtures.find(f => f.category === t.category && f.id === t.twinOf);
     const value = bytesOf(positive, positive.expected[0]);
@@ -226,6 +227,25 @@ const T1_DIMENSIONS = {
   'resend-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
   'apify-api-token': ['alphabet', 'boundary', 'length', 'prefix'],
   'wandb-api-key': ['alphabet', 'boundary', 'prefix'],
+  // Beta.12 #464/#528 families, registry detectors since the 4fb7882 re-pin (redact-secret#970-#975, #1019-#1035). Their
+  // beta8-464*/528* twins mutate the prefix, width and boundary each contract states, and the alphabet in every corpus
+  // except Browserbase, RunPod and Cerebras, whose #464 corpora author no alphabet twin.
+  'daytona-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'clickhouse-cloud-api-secret': ['alphabet', 'boundary', 'length', 'prefix'],
+  'nvidia-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'browserbase-api-key': ['boundary', 'length', 'prefix'],
+  'runpod-api-key': ['boundary', 'length', 'prefix'],
+  'cerebras-api-key': ['boundary', 'length', 'prefix'],
+  'bitwarden-secrets-manager-access-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  'polar-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  'sonarqube-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  'rubygems-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'clojars-deploy-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  'crates-io-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  'dynatrace-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  'paddle-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'honeycomb-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
+  'axiom-token': ['alphabet', 'boundary', 'length', 'prefix'],
 };
 
 test('every T1 ("stable"-track) family has a twin for each structural dimension its provider source asserts', () => {
@@ -248,5 +268,5 @@ test('on the real corpus no family is left unrecorded', () => {
   const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: `${f.category}--${f.id}`, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), undefined, contracts);
   assert.equal(probe.counts.unrecorded, 0);
   assert.equal(probe.counts['un-probeable'], 1);
-  assert.equal(probe.counts['not-measured'], 91);
+  assert.equal(probe.counts['not-measured'], 109);
 });

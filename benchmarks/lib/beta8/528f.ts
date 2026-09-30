@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field } from '../contract-sources.ts';
-import { handoff, researchTable, HANDOFF_INDEX, RULING_QUESTIONS, R1014, RULINGS_R1_R3, B528, product, at, src, reason, GRADUATES, byFindingType, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG } from './528-sources.ts';
+import { handoff, researchTable, HANDOFF_INDEX, RULING_QUESTIONS, R1014, RULINGS_R1_R3, B528, product, at, src, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG, scoredReason, splitGraduated } from './528-sources.ts';
 
 // Issue #528, slice f: Beta.12 contracts for the crates.io API token (cio) and trusted-publishing token (cio_tp_)
 // (#1014 rank 6, READY; handoff docs/audits/evidence/1014/crates-io.md; product redact-secret#1031). Owned by this slice
@@ -18,10 +18,9 @@ const HANDOFF = handoff('crates-io.md');
 const RESEARCH = researchTable('5900447282');
 const REFS = [TOKEN, TRUSTPUB, HANDOFF, RESEARCH, HANDOFF_INDEX, RULING_QUESTIONS, R1014, RULINGS_R1_R3, product(1031), B528];
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
+/** Sibling types the product reports inside a shared detector under their own finding type: arrival families scored by finding type since the 4fb7882 re-pin. */
 export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'crates-io-token', taxonomy: 'crates-io:api-token', issue, reason: reason('crates-io-token', 'crates_io_api_token', 1031, GRADUATES) },
-  { id: 'crates-io-trusted-publishing-token', taxonomy: 'crates-io:trusted-publishing-token', issue, reason: reason('crates-io-token', 'crates_io_trusted_publishing_token', 1031, byFindingType('cio_tp_', 'crates-io-token')) },
+  { id: 'crates-io-trusted-publishing-token', taxonomy: 'crates-io:trusted-publishing-token', issue, reason: scoredReason('crates-io-token', 'crates_io_trusted_publishing_token', 1031) },
 ];
 
 const shared = [
@@ -30,8 +29,8 @@ const shared = [
   field({ field: 'peer-lag', claim: 'no crates.io rule in trufflehog 3.97.4 or gitleaks 8.30.1: both lag on every positive. noseyparker (not pinned here) has \\bcio[a-zA-Z0-9]{32}\\b and no cio_tp_ rule', basis: 'tool', status: 'frozen', sources: [src(TRUFFLEHOG_DETECTORS, 'no crates.io detector directory at the pinned version'), src(GITLEAKS_CONFIG, 'no crates.io rule'), src(HANDOFF, 'tier rationale')] }),
 ];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'crates-io-token': {
     tier: 'T1',
     pattern: '^cio[A-Za-z0-9]{32}$',
@@ -61,6 +60,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['crates-io-token']);
+/** Contracts for this slice's detector-id family, a registry detector since the 4fb7882 re-pin (redact-secret PR #1039). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'crates-io-token': 'documented-24', 'crates-io-trusted-publishing-token': 'documented-24' };

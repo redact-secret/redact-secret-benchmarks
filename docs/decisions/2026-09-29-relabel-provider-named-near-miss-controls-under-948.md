@@ -171,3 +171,26 @@ changes in any family record are:
   0 unexpected. It is still provisional, on the protected holdout that has not run.
 
 Numbers of record: [`evidence/860/ec9224d/README.md`](../../evidence/860/ec9224d/README.md).
+
+## Application to the #464 corpus (2026-09-30, Beta.12 graduation)
+
+The same rule applies, unchanged, to four #464 controls and one #1012 control built on the input this decision names: random or
+secret-shaped material as `<NAME>=<value>` under a provider's own credential variable. They are added to
+`PROVIDER_NAMED_FALLBACK_948` (ids unchanged, as history) and move from `must-not-flag`/T2 on their family to
+`policy`/T3 on `generic-token`: the four #464 values at `redact` (34+ bytes, entropy above 3.0), the 12-byte AWS value at `warn`.
+
+| Fixture | Family (old contract) | Variable | Value bytes | New action |
+| --- | --- | --- | ---: | --- |
+| `beta8-464a--daytona-api-key-named-bare-hex-encoded-value` | daytona-api-key | `DAYTONA_API_KEY` | 64 | redact |
+| `beta8-464d--browserbase-api-key-bb-test-key-near-miss` | browserbase-api-key | `BROWSERBASE_API_KEY` | 40 | redact |
+| `beta8-464f--runpod-api-key-redirect-pizza-30-near-miss` | runpod-api-key | `REDIRECTPIZZA_API_TOKEN` | 34 | redact |
+| `beta8-464f--runpod-api-key-s3-secret-rps-near-miss` | runpod-api-key | `RUNPOD_S3_SECRET_KEY` | 48 | redact |
+| `beta8-1012a--aws-secret-access-key-truncated-near-miss` | aws-secret-access-key | `AWS_SECRET_ACCESS_KEY` | 12 | warn |
+
+Not relabelled, because they are not this input: `beta8-464a--daytona-api-key-runner-key-unprefixed-encoded-value`
+(`RUNNER_API_KEY` names no provider), `beta8-464e--cerebras-api-key-pinecone-key-near-miss` (a Pinecone-shaped value
+that the typed `pinecone-api-key` detector reports, not a generic fallback),
+`beta8-464e--cerebras-api-key-pinecone-hyphen-key-near-miss` (an SDK keyword argument, not `<NAME>=`) and
+`beta8-528b--polar-token-checkout-client-secret-public-id` (a JavaScript object member). Those four are settled as
+accepted policy by [`2026-09-30-accept-credential-named-and-typed-neighbour-redactions.md`](2026-09-30-accept-credential-named-and-typed-neighbour-redactions.md). No replacement controls are added; the #206 cells are re-checked by
+`npm run profiles:check`. Numbers of record: [`evidence/528/99c8c2b/README.md`](../../evidence/528/99c8c2b/README.md).

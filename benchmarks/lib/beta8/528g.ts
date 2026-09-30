@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field, gl } from '../contract-sources.ts';
-import { handoff, researchTable, HANDOFF_INDEX, R1014, RULINGS_R1_R3, RULINGS_R2_R8, B528, product, at, src, reason, GRADUATES, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG } from './528-sources.ts';
+import { handoff, researchTable, HANDOFF_INDEX, R1014, RULINGS_R1_R3, RULINGS_R2_R8, B528, product, at, src, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG, splitGraduated } from './528-sources.ts';
 
 // Issue #528, slice g: Beta.12 contract for Dynatrace access and platform tokens (#1014 rank 7, READY; handoff
 // docs/audits/evidence/1014/dynatrace.md; product redact-secret#1032). Owned by this slice only; see
@@ -18,13 +18,11 @@ const OPERATOR = 'https://github.com/Dynatrace/dynatrace-operator/blob/2a39d88a0
 const HANDOFF = handoff('dynatrace.md');
 const RESEARCH = researchTable('5900447540');
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'dynatrace-token', taxonomy: 'dynatrace:api-token', issue, reason: reason('dynatrace-token', 'dynatrace_token', 1032, GRADUATES) },
-];
+/** No arrival family remains: the family graduated to a registry detector at the 4fb7882 re-pin (redact-secret PR #1039). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'dynatrace-token': {
     tier: 'T1',
     pattern: '^dt0[cs][0-9]{2}\\.[A-Z2-7]{24}\\.[A-Z2-7]{64}$',
@@ -43,6 +41,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['dynatrace-token']);
+/** Contracts for this slice's detector-id family, a registry detector since the 4fb7882 re-pin (redact-secret PR #1039). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'dynatrace-token': 'documented-24' };

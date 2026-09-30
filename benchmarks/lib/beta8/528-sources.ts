@@ -13,6 +13,8 @@
 // offline-checkable checksum (Polar polar_oat_, crates.io cio_tp_), the checksum corroborates only and never rejects a
 // shape-valid match (ruling question Q1 in the handoff index is open; the security-first standing decision applies).
 
+import { splitGraduated as split434 } from './434-sources.ts';
+
 export const HANDOFF_REVISION = '4f220ea000b58fa2e0e431ad88dea4eccb393fb0';
 export const handoff = (file: string) => `https://github.com/redact-secret/redact-secret/blob/${HANDOFF_REVISION}/docs/audits/evidence/1014/${file}`;
 export const HANDOFF_INDEX = handoff('README.md');
@@ -43,3 +45,15 @@ export const reason = (detector: string, findingType: string, issue: number, not
 export const GRADUATES = 'The detector id is also this family\'s arrival id, so it graduates when the registry is re-pinned.';
 export const byFindingType = (prefix: string, detector: string) =>
   `${prefix} shares the ${detector} detector, so after the re-pin it stays an arrival family scored by finding type.`;
+
+/** The product main commit the registry is pinned to when these detector-id families graduate: redact-secret PR #1039 added the detectors (#1019–#1035). */
+export const REGISTRY_PIN = '4fb78827f1ddf5b3106f25130ca510a836ada186';
+
+/** The reason for a sibling type that stays an arrival family after the re-pin, scored by its own finding type. */
+export const scoredReason = (detector: string, findingType: string, issue: number, note = '') =>
+  `The product types this family inside the shared ${detector} detector as ${findingType} since redact-secret#${issue} (registry pinned at ${REGISTRY_PIN.slice(0, 7)}), so it stays an arrival family scored by its finding type (scanners/families.mjs arrivalFindingTypes, docs/decisions/2026-09-24-score-arrival-families-by-finding-type.md).${note ? ` ${note}` : ''}`;
+
+type Contracts = Record<string, import('../../types.ts').FormatContract>;
+/** Split a slice's authored contracts: `graduated` ids become registry contracts at the re-pin, the rest stay arrival contracts. */
+export const splitGraduated = (authored: Contracts, graduated: string[]) =>
+  split434(authored, graduated, `Graduated to a registry detector at the ${REGISTRY_PIN.slice(0, 7)} re-pin (redact-secret PR #1039).`);

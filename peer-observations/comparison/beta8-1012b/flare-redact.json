@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T08:47:52.010Z",
+  "sourceRun": {
+    "runId": "2026-09-30T08:47:52.010Z-b39234",
+    "benchmarkRevision": "5b5faeba99414fff1c5d91f71648e568f6e2e702"
+  },
+  "input": {
+    "surface": "comparison/beta8-1012b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "9eaee113324306ce18708e90cb084c1ba76009190051693948f1495a89a74b6b",
+    "fixtureCount": 32,
+    "fixturesDigest": "42a7fe092752baeb21e7aadb4fa862a8e3ff1e085a65cf87152a5dbf6ccea7a9",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/google-oauth-client-secret-bearer-header.http",
+      "start": 67,
+      "end": 109,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "011aa0a134bfbd9972a9095835d80aa0e583db2c3e4e5ccc96c04fbe6040b2a0"
+}

@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field, gl } from '../contract-sources.ts';
-import { handoff, research, HANDOFF_INDEX, R860, RULINGS_R1_R3, RULINGS_R9_R10, B464, product, at, src, reason, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG } from './464-sources.ts';
+import { handoff, research, HANDOFF_INDEX, R860, RULINGS_R1_R3, RULINGS_R9_R10, B464, product, at, src, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG, splitGraduated } from './464-sources.ts';
 
 // Issue #464, slice b: Beta.12 contract for the ClickHouse Cloud API key secret (#860, READY under the existing
 // rulings; handoff docs/audits/evidence/860/clickhouse-cloud.md; product redact-secret#971). Owned by this slice
@@ -21,13 +21,11 @@ const RESEARCH = research('clickhouse-cloud.md');
 
 export const CLICKHOUSE_PATTERN = '^4b1d[A-Za-z0-9]{38}$';
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'clickhouse-cloud-api-secret', taxonomy: 'clickhouse-cloud:api-key', issue, reason: reason('clickhouse-cloud-api-secret', 'clickhouse_cloud_api_secret', 971, 'The detector id is also this family\'s arrival id, so it graduates when the registry is re-pinned. The key ID (Basic-auth username) stays unclaimed.') },
-];
+/** No arrival family remains: the family graduated to a registry detector at the 4fb7882 re-pin (redact-secret PR #1037). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'clickhouse-cloud-api-secret': {
     tier: 'T1',
     pattern: CLICKHOUSE_PATTERN,
@@ -49,6 +47,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['clickhouse-cloud-api-secret']);
+/** Contracts for this slice's detector-id family, a registry detector since the 4fb7882 re-pin (redact-secret PR #1037). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'clickhouse-cloud-api-secret': 'documented-24' };

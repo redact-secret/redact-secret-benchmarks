@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field, gl } from '../contract-sources.ts';
-import { handoff, researchTable, HANDOFF_INDEX, R1014, RULINGS_R1_R3, B528, product, at, src, reason, GRADUATES, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG } from './528-sources.ts';
+import { handoff, researchTable, HANDOFF_INDEX, R1014, RULINGS_R1_R3, B528, product, at, src, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG, splitGraduated } from './528-sources.ts';
 
 // Issue #528, slice e: Beta.12 contract for the Clojars deploy token (#1014 rank 5, READY; handoff
 // docs/audits/evidence/1014/clojars.md; product redact-secret#1025). Owned by this slice only; see
@@ -14,13 +14,11 @@ const GENERATOR = 'https://github.com/clojars/clojars-web/blob/442eb895e7ab34491
 const HANDOFF = handoff('clojars.md');
 const RESEARCH = researchTable('5900447282');
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'clojars-deploy-token', taxonomy: 'clojars:deploy-token', issue, reason: reason('clojars-deploy-token', 'clojars_deploy_token', 1025, GRADUATES) },
-];
+/** No arrival family remains: the family graduated to a registry detector at the 4fb7882 re-pin (redact-secret PR #1039). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'clojars-deploy-token': {
     tier: 'T1',
     pattern: '^CLOJARS_[0-9a-f]{60}$',
@@ -38,6 +36,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['clojars-deploy-token']);
+/** Contracts for this slice's detector-id family, a registry detector since the 4fb7882 re-pin (redact-secret PR #1039). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'clojars-deploy-token': 'documented-24' };

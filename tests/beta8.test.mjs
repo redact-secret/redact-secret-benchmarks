@@ -19,7 +19,7 @@ const beta8 = Object.entries(generated).filter(([id]) => id.startsWith('beta8-')
 
 test('Beta.8 modules: arrival families are declared once, carry a taxonomy family and a contract, and never shadow a registry detector', () => {
   assert.deepEqual(validateBeta8(registry.detectors.map(d => d.id), taxonomy.families.map(f => f.id)), []);
-  assert.deepEqual(BETA8_MODULES.map(m => m.issue), [207, 208, 209, 210, 211, 212, 213, 213, '213d', '213e', '213f', 259, 263, '384a', '384b', '384c', '384d', '384e', '434a', '434b', '434c', '434d', '434e', '434f', '434g', '436a', '436b', '436c', '436d', '436e', '436f', '464a', '464b', '464c', '464d', '464e', '464f', '528a', '528b', '528c', '528d', '528e', '528f', '528g', '528h', '528i', '528j']);
+  assert.deepEqual(BETA8_MODULES.map(m => m.issue), [207, 208, 209, 210, 211, 212, 213, 213, '213d', '213e', '213f', 259, 263, '384a', '384b', '384c', '384d', '384e', '434a', '434b', '434c', '434d', '434e', '434f', '434g', '436a', '436b', '436c', '436d', '436e', '436f', '464a', '464b', '464c', '464d', '464e', '464f', '528a', '528b', '528c', '528d', '528e', '528f', '528g', '528h', '528i', '528j', '1012a', '1012b', '1012c', '1012d', '1012e']);
   for (const f of arrivalFamilies) {
     const family = taxonomy.families.find(t => t.id === f.taxonomy);
     assert.ok(family, f.id);
@@ -50,7 +50,7 @@ test('every beta8-<issue> corpus is registered, and its fixtures follow the targ
       assert.ok(f.id.startsWith(`${relabel948 ? relabel948.from : targets[0]}-`), f.id);
       assert.deepEqual(assignments[`${category}--${f.id}`], f.detectors ?? [], f.id);
       const secret = f.expected.some(r => r.role === 'secret');
-      if (relabel948) assert.ok(targets[0] === 'generic-token' && secret && f.id.endsWith('-near-miss') && f.assessment.kind === 'policy', f.id);
+      if (relabel948) assert.ok(targets[0] === (relabel948.to ?? 'generic-token') && secret && /-(near-miss|encoded-value|public-id)$/.test(f.id) && f.assessment.kind === 'policy', f.id);
       else if (secret) assert.ok(POSITIVE_AXES.includes(f.contextAxis), `${f.id}: positive names its context axis`);
       else if (!f.twinOf) assert.ok(CONTROL_SUFFIXES.some(s => f.id.endsWith(`-${s}`)) && controlAxis(category, f), `${f.id}: control carries an axis`);
       // Only a fixture re-scoped off a provider-undecided property (lib/assessment.ts DISPUTED_PROPERTIES) may read T0.

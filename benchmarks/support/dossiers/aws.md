@@ -17,7 +17,7 @@ families:
   - id: aws:sts-temporary-access-key
     research:
       verdict: ready
-      tier: T1
+      tier: T2
       sources:
         - https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-prefixes
         - https://docs.aws.amazon.com/IAM/latest/UserGuide/security-creds-programmatic-access.html
@@ -37,7 +37,10 @@ families:
         - https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns
       issues:
         - redact-secret/redact-secret-benchmarks#473
-      evidence: null
+        - redact-secret/redact-secret#1012
+        - redact-secret/redact-secret#1027
+        - redact-secret/redact-secret-benchmarks#528
+      evidence: https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/aws-sts-temporary-access-key.md
       researchedAt: 2026-09-29
     blockedBy: null
   - id: aws:sts-service-bearer-token
@@ -91,7 +94,10 @@ families:
         - https://docs.github.com/en/code-security/secret-scanning/introduction/supported-secret-scanning-patterns
       issues:
         - redact-secret/redact-secret-benchmarks#473
-      evidence: null
+        - redact-secret/redact-secret#1012
+        - redact-secret/redact-secret#1028
+        - redact-secret/redact-secret-benchmarks#528
+      evidence: https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/aws-iam-user-secret-access-key.md
       researchedAt: 2026-09-29
     blockedBy: null
 ---

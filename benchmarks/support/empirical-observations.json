@@ -2539,6 +2539,248 @@
           "bound": "Pending Q-AI the literals are not recorded as corroboration and never reproduced; the corroborated route clears without them (3 / 3 / 2)."
         }
       ]
+    },
+    {
+      "family": "aws-secret-access-key",
+      "mode": "context-constrained",
+      "supportsBareValues": false,
+      "uncertainty": "AWS states no length or alphabet for the secret access key in prose (IAM AccessKey and STS Credentials type it as String). The 40-character [A-Za-z0-9/+] shape rests on the STS GetAccessKeyInfo documentation example and on AWS-owned scanner rules (git-secrets, ferret-scan), which R2 has not been applied to, plus independent peer rules. The value has no prefix, so the family is claimed only under an AWS secret-key name or next to an AKIA/ASIA ID; AWS Macie also requires a keyword. The temporary (ASIA-paired) secret example is 41 characters and is scoped out. Research: redact-secret docs/audits/evidence/1012/aws-iam-user-secret-access-key.md at product main 4fb7882. Peer and AWS-owned rules are cited at tag or short-commit permalinks whose paths carry no 40-character [A-Za-z0-9/] run, so the record passes its own credential-shape guard.",
+      "supportedContexts": [
+        "AWS_SECRET_ACCESS_KEY= / aws_secret_access_key = assignments in env, INI credentials files and shell",
+        "\"SecretAccessKey\": \"...\" JSON and CloudFormation/SDK responses",
+        "a value on the line of, or directly below, an AKIA access key ID"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "provider-example",
+          "owner": "aws",
+          "reference": "https://docs.aws.amazon.com/STS/latest/APIReference/API_GetAccessKeyInfo.html",
+          "observedAt": "2026-09-29",
+          "supports": "documentation example secret access key of 40 characters of [A-Za-z0-9/] beside its access key ID (research #1)"
+        },
+        {
+          "class": "independent-research",
+          "owner": "summitroute",
+          "reference": "https://summitroute.com/blog/2018/06/20/aws_security_credential_formats/",
+          "observedAt": "2026-09-29",
+          "supports": "Base64 of 30 random bytes: 40 characters, only + and / beyond alphanumerics (research #11)"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "aws",
+          "reference": "https://github.com/awslabs/git-secrets/blob/7d6b970/git-secrets#L242",
+          "observedAt": "2026-09-30",
+          "supports": "awslabs/git-secrets (AWS-owned, 2015): a secret-access-key-name-gated value of 40 [A-Za-z0-9/+=] (research #5)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/aws/common.go#L16",
+          "observedAt": "2026-09-30",
+          "supports": "SecretPat: 40 [A-Za-z0-9+/] with non-base64 boundaries, used only paired with an access key ID (research #7, at the pinned peer version)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "google",
+          "reference": "https://github.com/google/osv-scalibr/blob/v0.5.3/veles/secrets/awsaccesskey/detector.go#L25-L26",
+          "observedAt": "2026-09-30",
+          "supports": "secretPattern \\b[A-Za-z0-9+/]{40}\\b paired with an AKIA/ASIA access key ID (research #10, at tag v0.5.3)"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "The STS AssumeRole sample temporary secret is 41 characters.",
+          "status": "bounded",
+          "bound": "The contract claims the long-term IAM user secret only; temporary (ASIA-paired) secrets are scoped out and no fixture asserts a 41-character value either way."
+        }
+      ]
+    },
+    {
+      "family": "google-oauth-client-secret",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "Google publishes no client-secret grammar; secrets are hashed and shown only by their last four characters since 2025. The GOCSPX- prefix and the exact 28-character [A-Za-z0-9_-] body rest on Google-authored osv-scalibr (narrowed to exactly 28 in Google's own commit; R2 not applied) and independent peer rules, with a provider placeholder confirming the prefix only. Access (ya29.) and refresh (1//) tokens are blocked and not part of this family. Research: https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/google-oauth2-credential.md.",
+      "supportedContexts": [
+        "bare GOCSPX- value anywhere on a line",
+        "client_secret in a downloaded client_secret JSON file",
+        "env and config assignments (GOOGLE_CLIENT_SECRET=...)"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "provider-owned-code",
+          "owner": "google",
+          "reference": "https://github.com/google/osv-scalibr/blob/5ab8022/veles/secrets/gcpoauth2client/detector.go#L51-L58",
+          "observedAt": "2026-09-29",
+          "supports": "GOCSPX- + exactly 28 [a-zA-Z0-9_-]; narrowed to exactly 28 in commit 0583d09 (2025-12-03) by @google.com authors (research G1)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "praetorian-inc",
+          "reference": "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f3/crates/noseyparker/data/default/builtin/rules/google.yml#L17-L29",
+          "observedAt": "2026-09-29",
+          "supports": "GOCSPX- + 28 [a-zA-Z0-9_-] with a trailing non-identifier boundary (research G2)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "samsung",
+          "reference": "https://github.com/Samsung/CredSweeper/blob/f21ab2f/credsweeper/rules/config.yaml#L463-L475",
+          "observedAt": "2026-09-29",
+          "supports": "GOCSPX- + 28 [0-9A-Za-z_-] with a negative lookahead boundary (research G3)"
+        },
+        {
+          "class": "provider-example",
+          "owner": "google",
+          "reference": "https://github.com/googleworkspace/cli/blob/a3768d0/crates/google-workspace-cli/src/oauth_config.rs#L26",
+          "observedAt": "2026-09-29",
+          "supports": "client_secret placeholder GOCSPX-...: the prefix only, under R4 (research G4)"
+        }
+      ],
+      "contradictions": []
+    },
+    {
+      "family": "vercel-personal-access-token",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "Vercel documents the vcp_ prefix and states the body is opaque. The exact 56-character [A-Za-z0-9] body rests on one hand-written provider CLI example and peer rules (T2); the CRC32 base62 tail is corroboration only and never rejects. Research: https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/vercel.md.",
+      "supportedContexts": [
+        "VERCEL_TOKEN= / --token and other env or CLI assignments",
+        "Authorization: Bearer headers and JSON token fields",
+        "bare value on a line"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "provider-example",
+          "owner": "vercel",
+          "reference": "https://vercel.com/docs/cli/global-options",
+          "observedAt": "2026-09-29",
+          "supports": "--token / VERCEL_TOKEN example: one vcp_ + 56 alphanumeric value (hand-written, fails the checksum) (research P3)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "samsung",
+          "reference": "https://github.com/Samsung/CredSweeper/blob/1aa6046/credsweeper/rules/config.yaml#L1995-L2007",
+          "observedAt": "2026-09-29",
+          "supports": "vcp_ + exactly 56 [0-9A-Za-z], vcp_ only (research S3)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "mongodb",
+          "reference": "https://github.com/mongodb/kingfisher/blob/88d3f78/crates/kingfisher-rules/data/rules/vercel.yml#L46-L299",
+          "observedAt": "2026-09-29",
+          "supports": "vc[pikar]_ + 50 [A-Za-z0-9_-] + 6 [A-Za-z0-9] (a CRC32 base62 tail), so vcp_ + 56 in all (research S1)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "betterleaks",
+          "reference": "https://github.com/betterleaks/betterleaks/blob/2a387a5/cmd/generate/config/rules/vercel.go#L46-L212",
+          "observedAt": "2026-09-29",
+          "supports": "vc[pikar]_ + 56 [A-Za-z0-9_-], derived from S1 (research S2)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "secretlint",
+          "reference": "https://github.com/secretlint/secretlint/blob/e8fc913/packages/@secretlint/secretlint-rule-vercel/src/index.ts#L27-L58",
+          "observedAt": "2026-09-29",
+          "supports": "(vcp|vci|vca|vcr|vck)_ + 20-60 alphanumerics: the vcp_ marker and class only (research S4)"
+        }
+      ],
+      "contradictions": []
+    },
+    {
+      "family": "vercel-app-access-token",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "Vercel documents the vca_ prefix; the exact 56-character [A-Za-z0-9] body rests on one provider documentation value and peer rules (T2). Research: https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/vercel.md.",
+      "supportedContexts": [
+        "VERCEL_TOKEN= / --token and other env or CLI assignments",
+        "Authorization: Bearer headers and JSON token fields",
+        "bare value on a line"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "provider-example",
+          "owner": "vercel",
+          "reference": "https://vercel.com/docs/sign-in-with-vercel/tokens",
+          "observedAt": "2026-09-29",
+          "supports": "Sign in with Vercel token docs: one vca_ + 56 [A-Za-z0-9] value, checksum-valid (research P2)"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "vercel",
+          "reference": "https://github.com/vercel/turborepo/blob/07ee418/crates/turborepo-auth/src/auth/mod.rs#L361",
+          "observedAt": "2026-09-29",
+          "supports": "turborepo discriminates a Vercel App token by starts_with(\"vca_\"): the prefix and role (research C5)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "mongodb",
+          "reference": "https://github.com/mongodb/kingfisher/blob/88d3f78/crates/kingfisher-rules/data/rules/vercel.yml#L46-L299",
+          "observedAt": "2026-09-29",
+          "supports": "vc[pikar]_ + 50 [A-Za-z0-9_-] + 6 [A-Za-z0-9] (a CRC32 base62 tail), so vca_ + 56 in all (research S1)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "betterleaks",
+          "reference": "https://github.com/betterleaks/betterleaks/blob/2a387a5/cmd/generate/config/rules/vercel.go#L46-L212",
+          "observedAt": "2026-09-29",
+          "supports": "vc[pikar]_ + 56 [A-Za-z0-9_-], derived from S1 (research S2)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "secretlint",
+          "reference": "https://github.com/secretlint/secretlint/blob/e8fc913/packages/@secretlint/secretlint-rule-vercel/src/index.ts#L27-L58",
+          "observedAt": "2026-09-29",
+          "supports": "(vcp|vci|vca|vcr|vck)_ + 20-60 alphanumerics: the vca_ marker and class only (research S4)"
+        }
+      ],
+      "contradictions": []
+    },
+    {
+      "family": "vercel-app-refresh-token",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "Vercel documents the vcr_ prefix; the body width is shared with the vca_ documentation value (T2) and corroborated by peer rules only. Research: https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/vercel.md.",
+      "supportedContexts": [
+        "VERCEL_TOKEN= / --token and other env or CLI assignments",
+        "Authorization: Bearer headers and JSON token fields",
+        "bare value on a line"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "provider-example",
+          "owner": "vercel",
+          "reference": "https://vercel.com/docs/sign-in-with-vercel/tokens",
+          "observedAt": "2026-09-29",
+          "supports": "Sign in with Vercel token docs: a vcr_ refresh token with the same 56-character body as the vca_ example (research P2)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "mongodb",
+          "reference": "https://github.com/mongodb/kingfisher/blob/88d3f78/crates/kingfisher-rules/data/rules/vercel.yml#L46-L299",
+          "observedAt": "2026-09-29",
+          "supports": "vc[pikar]_ + 50 [A-Za-z0-9_-] + 6 [A-Za-z0-9] (a CRC32 base62 tail), so vcr_ + 56 in all (research S1)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "betterleaks",
+          "reference": "https://github.com/betterleaks/betterleaks/blob/2a387a5/cmd/generate/config/rules/vercel.go#L46-L212",
+          "observedAt": "2026-09-29",
+          "supports": "vc[pikar]_ + 56 [A-Za-z0-9_-], derived from S1 (research S2)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "secretlint",
+          "reference": "https://github.com/secretlint/secretlint/blob/e8fc913/packages/@secretlint/secretlint-rule-vercel/src/index.ts#L27-L58",
+          "observedAt": "2026-09-29",
+          "supports": "(vcp|vci|vca|vcr|vck)_ + 20-60 alphanumerics: the vcr_ marker and class only (research S4)"
+        }
+      ],
+      "contradictions": []
     }
   ]
 }

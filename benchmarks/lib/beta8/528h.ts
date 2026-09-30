@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field } from '../contract-sources.ts';
-import { handoff, researchTable, HANDOFF_INDEX, RULING_QUESTIONS, R1014, B528, product, at, src, reason, GRADUATES, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG } from './528-sources.ts';
+import { handoff, researchTable, HANDOFF_INDEX, RULING_QUESTIONS, R1014, B528, product, at, src, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG, splitGraduated } from './528-sources.ts';
 
 // Issue #528, slice h: Beta.12 contract for the Paddle Billing API key (#1014 rank 8, READY; handoff
 // docs/audits/evidence/1014/paddle.md; product redact-secret#1033). Owned by this slice only; see
@@ -16,13 +16,11 @@ const SDK_MOCK = 'https://github.com/PaddleHQ/paddle-node-sdk/blob/651261beddfc6
 const HANDOFF = handoff('paddle.md');
 const RESEARCH = researchTable('5900447820');
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'paddle-api-key', taxonomy: 'paddle:api-key', issue, reason: reason('paddle-api-key', 'paddle_api_key', 1033, GRADUATES) },
-];
+/** No arrival family remains: the family graduated to a registry detector at the 4fb7882 re-pin (redact-secret PR #1039). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'paddle-api-key': {
     tier: 'T1',
     pattern: '^pdl_(?:live|sdbx)_apikey_[a-z0-9]{26}_[A-Za-z0-9]{22}_[A-Za-z0-9]{3}$',
@@ -43,6 +41,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['paddle-api-key']);
+/** Contracts for this slice's detector-id family, a registry detector since the 4fb7882 re-pin (redact-secret PR #1039). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'paddle-api-key': 'documented-24' };

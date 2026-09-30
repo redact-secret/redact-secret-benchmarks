@@ -7456,6 +7456,565 @@
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
         ]
       }
+    },
+    {
+      "id": "aws-secret-access-key-positive",
+      "path": "aws-secret-access-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AWS_SECRET_ACCESS_KEY=\u0052eviewAlpha7Beta9/ReviewAlpha7Beta9+Revi\n",
+      "expected": [
+        {
+          "start": 22,
+          "end": 62,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "aws-secret-access-key"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "aws-secret-access-key",
+        "sources": [
+          "https://github.com/awslabs/git-secrets/blob/7d6b970cbd3c216353cb22b383b70c150140662e/git-secrets#L242",
+          "https://github.com/awslabs/ferret-scan/blob/c3b10fba90a5ed6178314ac646988546122afc60/internal/validators/secrets/validator.go#L1434-L1444",
+          "https://github.com/trufflesecurity/trufflehog/blob/48b58d3bf3f02ba17bf23b87f095499bc80c6fd7/pkg/detectors/aws/common.go#L16",
+          "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules/aws.yml#L30-L43",
+          "https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/awsaccesskey/detector.go#L25-L26",
+          "https://docs.aws.amazon.com/STS/latest/APIReference/API_GetAccessKeyInfo.html",
+          "https://docs.aws.amazon.com/IAM/latest/APIReference/API_AccessKey.html",
+          "https://docs.aws.amazon.com/macie/latest/user/mdis-reference-credentials.html",
+          "https://github.com/awslabs/git-secrets/blob/7d6b970cbd3c216353cb22b383b70c150140662e/git-secrets#L242",
+          "https://github.com/awslabs/ferret-scan/blob/c3b10fba90a5ed6178314ac646988546122afc60/internal/validators/secrets/validator.go#L1434-L1444",
+          "https://github.com/trufflesecurity/trufflehog/blob/48b58d3bf3f02ba17bf23b87f095499bc80c6fd7/pkg/detectors/aws/common.go#L16",
+          "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules/aws.yml#L30-L43",
+          "https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/awsaccesskey/detector.go#L25-L26",
+          "https://summitroute.com/blog/2018/06/20/aws_security_credential_formats/",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/aws-iam-user-secret-access-key.md",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1012",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1028",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "aws-secret-access-key-negative",
+      "path": "aws-secret-access-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "aws-secret-access-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "aws-secret-access-key",
+        "sources": [
+          "https://github.com/awslabs/git-secrets/blob/7d6b970cbd3c216353cb22b383b70c150140662e/git-secrets#L242",
+          "https://github.com/awslabs/ferret-scan/blob/c3b10fba90a5ed6178314ac646988546122afc60/internal/validators/secrets/validator.go#L1434-L1444",
+          "https://github.com/trufflesecurity/trufflehog/blob/48b58d3bf3f02ba17bf23b87f095499bc80c6fd7/pkg/detectors/aws/common.go#L16",
+          "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules/aws.yml#L30-L43",
+          "https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/awsaccesskey/detector.go#L25-L26",
+          "https://docs.aws.amazon.com/STS/latest/APIReference/API_GetAccessKeyInfo.html",
+          "https://docs.aws.amazon.com/IAM/latest/APIReference/API_AccessKey.html",
+          "https://docs.aws.amazon.com/macie/latest/user/mdis-reference-credentials.html",
+          "https://github.com/awslabs/git-secrets/blob/7d6b970cbd3c216353cb22b383b70c150140662e/git-secrets#L242",
+          "https://github.com/awslabs/ferret-scan/blob/c3b10fba90a5ed6178314ac646988546122afc60/internal/validators/secrets/validator.go#L1434-L1444",
+          "https://github.com/trufflesecurity/trufflehog/blob/48b58d3bf3f02ba17bf23b87f095499bc80c6fd7/pkg/detectors/aws/common.go#L16",
+          "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules/aws.yml#L30-L43",
+          "https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/awsaccesskey/detector.go#L25-L26",
+          "https://summitroute.com/blog/2018/06/20/aws_security_credential_formats/",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/aws-iam-user-secret-access-key.md",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1012",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1028",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "google-oauth-client-secret-positive",
+      "path": "google-oauth-client-secret/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GOOGLE_CLIENT_SECRET=\u0047OCSPX-ReviewAlpha7Beta9-Review_Alp\n",
+      "expected": [
+        {
+          "start": 21,
+          "end": 56,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "google-oauth-client-secret"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "google-oauth-client-secret",
+        "sources": [
+          "https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/gcpoauth2client/detector.go#L51-L58",
+          "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules/google.yml#L17-L29",
+          "https://github.com/Samsung/CredSweeper/blob/f21ab2f2553eea288a72273b9658cd297ab1d11f/credsweeper/rules/config.yaml#L463-L475",
+          "https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/gcpoauth2client/detector.go#L51-L58",
+          "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules/google.yml#L17-L29",
+          "https://github.com/Samsung/CredSweeper/blob/f21ab2f2553eea288a72273b9658cd297ab1d11f/credsweeper/rules/config.yaml#L463-L475",
+          "https://github.com/googleworkspace/cli/blob/a3768d0e82ad83cca2da97724e46bea4ff0e6dbd/crates/google-workspace-cli/src/oauth_config.rs#L26",
+          "https://developers.google.com/identity/protocols/oauth2",
+          "https://support.google.com/cloud/answer/15549257",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/google-oauth2-credential.md",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1012",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1029",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "google-oauth-client-secret-negative",
+      "path": "google-oauth-client-secret/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "google-oauth-client-secret"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "google-oauth-client-secret",
+        "sources": [
+          "https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/gcpoauth2client/detector.go#L51-L58",
+          "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules/google.yml#L17-L29",
+          "https://github.com/Samsung/CredSweeper/blob/f21ab2f2553eea288a72273b9658cd297ab1d11f/credsweeper/rules/config.yaml#L463-L475",
+          "https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/gcpoauth2client/detector.go#L51-L58",
+          "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules/google.yml#L17-L29",
+          "https://github.com/Samsung/CredSweeper/blob/f21ab2f2553eea288a72273b9658cd297ab1d11f/credsweeper/rules/config.yaml#L463-L475",
+          "https://github.com/googleworkspace/cli/blob/a3768d0e82ad83cca2da97724e46bea4ff0e6dbd/crates/google-workspace-cli/src/oauth_config.rs#L26",
+          "https://developers.google.com/identity/protocols/oauth2",
+          "https://support.google.com/cloud/answer/15549257",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/google-oauth2-credential.md",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1012",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1029",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "gitlab-routable-personal-access-token-positive",
+      "path": "gitlab-routable-personal-access-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GITLAB_TOKEN=\u0067lpat-ReviewAlpha7Beta9ReviewAlpha7Beta9.01.0y0ttspke\n",
+      "expected": [
+        {
+          "start": 13,
+          "end": 66,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "gitlab-routable-personal-access-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "gitlab-routable-personal-access-token",
+        "sources": [
+          "https://gitlab.com/gitlab-org/gitlab/-/blob/fa2faf332129a1fd9130b052f42b85f0fa346b65/lib/authn/token_field/generator/routable_token.rb#L7-L86",
+          "https://gitlab.com/gitlab-org/gitlab/-/blob/fa2faf332129a1fd9130b052f42b85f0fa346b65/lib/authn/token_field/generator/routable_token.rb#L7-L86",
+          "https://gitlab.com/gitlab-org/gitlab/-/blob/fa2faf332129a1fd9130b052f42b85f0fa346b65/lib/authn/token_field/decoders/v1/routable_payload.rb#L24-L71",
+          "https://gitlab.com/gitlab-org/gitlab/-/blob/fa2faf332129a1fd9130b052f42b85f0fa346b65/app/models/personal_access_token.rb#L22-L36",
+          "https://handbook.gitlab.com/handbook/engineering/architecture/design-documents/cells/routable_tokens/",
+          "https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules/-/blob/cae5670b0d83aaea0ff37c085119e82ff394f283/rules/mit/gitlab/gitlab.toml#L27-L57",
+          "https://gitlab.com/gitlab-org/gitlab/-/blob/fa2faf332129a1fd9130b052f42b85f0fa346b65/app/assets/javascripts/lib/utils/secret_detection_patterns.js#L5-L24",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/gitlab/v3/gitlab_v3.go",
+          "https://github.com/trufflesecurity/trufflehog/issues/4551",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/gitlab-routable-personal-access-token.md",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1012",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/1022",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "gitlab-routable-personal-access-token-negative",
+      "path": "gitlab-routable-personal-access-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "GITLAB_TOKEN=${GITLAB_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "gitlab-routable-personal-access-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "gitlab-routable-personal-access-token",
+        "sources": [
+          "https://gitlab.com/gitlab-org/gitlab/-/blob/fa2faf332129a1fd9130b052f42b85f0fa346b65/lib/authn/token_field/generator/routable_token.rb#L7-L86",
+          "https://gitlab.com/gitlab-org/gitlab/-/blob/fa2faf332129a1fd9130b052f42b85f0fa346b65/lib/authn/token_field/generator/routable_token.rb#L7-L86",
+          "https://gitlab.com/gitlab-org/gitlab/-/blob/fa2faf332129a1fd9130b052f42b85f0fa346b65/lib/authn/token_field/decoders/v1/routable_payload.rb#L24-L71",
+          "https://gitlab.com/gitlab-org/gitlab/-/blob/fa2faf332129a1fd9130b052f42b85f0fa346b65/app/models/personal_access_token.rb#L22-L36",
+          "https://handbook.gitlab.com/handbook/engineering/architecture/design-documents/cells/routable_tokens/",
+          "https://gitlab.com/gitlab-org/security-products/secret-detection/secret-detection-rules/-/blob/cae5670b0d83aaea0ff37c085119e82ff394f283/rules/mit/gitlab/gitlab.toml#L27-L57",
+          "https://gitlab.com/gitlab-org/gitlab/-/blob/fa2faf332129a1fd9130b052f42b85f0fa346b65/app/assets/javascripts/lib/utils/secret_detection_patterns.js#L5-L24",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/gitlab/v3/gitlab_v3.go",
+          "https://github.com/trufflesecurity/trufflehog/issues/4551",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/gitlab-routable-personal-access-token.md",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1012",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5852413851",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5880547337",
+          "https://github.com/redact-secret/redact-secret/issues/1022",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "aws-sts-temporary-access-key-positive",
+      "path": "aws-sts-temporary-access-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AWS_ACCESS_KEY_ID=\u0041SIAREVIEWALPHA7BETA\n",
+      "expected": [
+        {
+          "start": 18,
+          "end": 38,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "aws-sts-temporary-access-key"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "aws-sts-temporary-access-key",
+        "sources": [
+          "https://github.com/awslabs/ferret-scan/blob/c3b10fba90a5ed6178314ac646988546122afc60/internal/validators/secrets/validator.go#L1444",
+          "https://github.com/awslabs/git-secrets/blob/7d6b970cbd3c216353cb22b383b70c150140662e/git-secrets#L239",
+          "https://github.com/trufflesecurity/trufflehog/blob/48b58d3bf3f02ba17bf23b87f095499bc80c6fd7/pkg/detectors/aws/session_keys/sessionkey.go#L74-L75",
+          "https://github.com/gitleaks/gitleaks/blob/b58d3f102cf3a2c84cb7f923d05c25c9b1aed84b/cmd/generate/config/rules/aws.go#L15-L24",
+          "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules/aws.yml#L3-L6",
+          "https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/awsaccesskey/detector.go#L25-L26",
+          "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-prefixes",
+          "https://docs.aws.amazon.com/STS/latest/APIReference/API_GetAccessKeyInfo.html",
+          "https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html",
+          "https://github.com/awslabs/git-secrets/blob/7d6b970cbd3c216353cb22b383b70c150140662e/git-secrets#L239",
+          "https://github.com/awslabs/ferret-scan/blob/c3b10fba90a5ed6178314ac646988546122afc60/internal/validators/secrets/validator.go#L1444",
+          "https://github.com/trufflesecurity/trufflehog/blob/48b58d3bf3f02ba17bf23b87f095499bc80c6fd7/pkg/detectors/aws/session_keys/sessionkey.go#L74-L75",
+          "https://github.com/gitleaks/gitleaks/blob/b58d3f102cf3a2c84cb7f923d05c25c9b1aed84b/cmd/generate/config/rules/aws.go#L15-L24",
+          "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules/aws.yml#L3-L6",
+          "https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/awsaccesskey/detector.go#L25-L26",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/aws-sts-temporary-access-key.md",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1012",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1027",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "aws-sts-temporary-access-key-negative",
+      "path": "aws-sts-temporary-access-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "aws-sts-temporary-access-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "aws-sts-temporary-access-key",
+        "sources": [
+          "https://github.com/awslabs/ferret-scan/blob/c3b10fba90a5ed6178314ac646988546122afc60/internal/validators/secrets/validator.go#L1444",
+          "https://github.com/awslabs/git-secrets/blob/7d6b970cbd3c216353cb22b383b70c150140662e/git-secrets#L239",
+          "https://github.com/trufflesecurity/trufflehog/blob/48b58d3bf3f02ba17bf23b87f095499bc80c6fd7/pkg/detectors/aws/session_keys/sessionkey.go#L74-L75",
+          "https://github.com/gitleaks/gitleaks/blob/b58d3f102cf3a2c84cb7f923d05c25c9b1aed84b/cmd/generate/config/rules/aws.go#L15-L24",
+          "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules/aws.yml#L3-L6",
+          "https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/awsaccesskey/detector.go#L25-L26",
+          "https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_identifiers.html#identifiers-prefixes",
+          "https://docs.aws.amazon.com/STS/latest/APIReference/API_GetAccessKeyInfo.html",
+          "https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html",
+          "https://github.com/awslabs/git-secrets/blob/7d6b970cbd3c216353cb22b383b70c150140662e/git-secrets#L239",
+          "https://github.com/awslabs/ferret-scan/blob/c3b10fba90a5ed6178314ac646988546122afc60/internal/validators/secrets/validator.go#L1444",
+          "https://github.com/trufflesecurity/trufflehog/blob/48b58d3bf3f02ba17bf23b87f095499bc80c6fd7/pkg/detectors/aws/session_keys/sessionkey.go#L74-L75",
+          "https://github.com/gitleaks/gitleaks/blob/b58d3f102cf3a2c84cb7f923d05c25c9b1aed84b/cmd/generate/config/rules/aws.go#L15-L24",
+          "https://github.com/praetorian-inc/noseyparker/blob/2e6e7f36ce36619852532bbe698d8cb7a26d2da7/crates/noseyparker/data/default/builtin/rules/aws.yml#L3-L6",
+          "https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/awsaccesskey/detector.go#L25-L26",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/aws-sts-temporary-access-key.md",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1012",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1027",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "vercel-personal-access-token-positive",
+      "path": "vercel-personal-access-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "VERCEL_TOKEN=\u0076cp_ReviewAlpha7Beta9ReviewAlpha7Beta9ReviewAlpha7Beta9Revie\n",
+      "expected": [
+        {
+          "start": 13,
+          "end": 73,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "vercel-personal-access-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "vercel-personal-access-token",
+        "sources": [
+          "https://github.com/mongodb/kingfisher/blob/88d3f780fad83960aaddfcf732a690049853ccc9/crates/kingfisher-rules/data/rules/vercel.yml#L46-L299",
+          "https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/vercel.go#L46-L212",
+          "https://github.com/Samsung/CredSweeper/blob/1aa60465c4ec064357ead06f5b4da7c3adbce7a8/credsweeper/rules/config.yaml#L1995-L2007",
+          "https://vercel.com/changelog/new-token-formats-and-secret-scanning",
+          "https://vercel.com/docs/cli/global-options",
+          "https://vercel.com/docs/accounts/access-tokens",
+          "https://openapi.vercel.sh",
+          "https://vercel.com/docs/sign-in-with-vercel/authorization-server-api",
+          "https://github.com/vercel/turborepo/blob/07ee4185589823c984ea9f28d1f8480b60d6374f/crates/turborepo-auth/src/auth/mod.rs#L361",
+          "https://github.com/vercel/vercel-azure-devops-extension/blob/24183cd1671cdb451e22a20634c2bb19e3478870/vercel-deployment-task-source/src/index.ts#L37-L38",
+          "https://github.com/mongodb/kingfisher/blob/88d3f780fad83960aaddfcf732a690049853ccc9/crates/kingfisher-rules/data/rules/vercel.yml#L46-L299",
+          "https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/vercel.go#L46-L212",
+          "https://github.com/Samsung/CredSweeper/blob/1aa60465c4ec064357ead06f5b4da7c3adbce7a8/credsweeper/rules/config.yaml#L1995-L2007",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/vercel.md",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1013",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1036",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "vercel-personal-access-token-negative",
+      "path": "vercel-personal-access-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "VERCEL_TOKEN=${VERCEL_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "vercel-personal-access-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "vercel-personal-access-token",
+        "sources": [
+          "https://github.com/mongodb/kingfisher/blob/88d3f780fad83960aaddfcf732a690049853ccc9/crates/kingfisher-rules/data/rules/vercel.yml#L46-L299",
+          "https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/vercel.go#L46-L212",
+          "https://github.com/Samsung/CredSweeper/blob/1aa60465c4ec064357ead06f5b4da7c3adbce7a8/credsweeper/rules/config.yaml#L1995-L2007",
+          "https://vercel.com/changelog/new-token-formats-and-secret-scanning",
+          "https://vercel.com/docs/cli/global-options",
+          "https://vercel.com/docs/accounts/access-tokens",
+          "https://openapi.vercel.sh",
+          "https://vercel.com/docs/sign-in-with-vercel/authorization-server-api",
+          "https://github.com/vercel/turborepo/blob/07ee4185589823c984ea9f28d1f8480b60d6374f/crates/turborepo-auth/src/auth/mod.rs#L361",
+          "https://github.com/vercel/vercel-azure-devops-extension/blob/24183cd1671cdb451e22a20634c2bb19e3478870/vercel-deployment-task-source/src/index.ts#L37-L38",
+          "https://github.com/mongodb/kingfisher/blob/88d3f780fad83960aaddfcf732a690049853ccc9/crates/kingfisher-rules/data/rules/vercel.yml#L46-L299",
+          "https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/vercel.go#L46-L212",
+          "https://github.com/Samsung/CredSweeper/blob/1aa60465c4ec064357ead06f5b4da7c3adbce7a8/credsweeper/rules/config.yaml#L1995-L2007",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/vercel.md",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1013",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1036",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "vercel-app-access-token-positive",
+      "path": "vercel-app-access-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "VERCEL_ACCESS_TOKEN=\u0076ca_ReviewGamma7Delta9ReviewGamma7Delta9ReviewGamma7Delta9Re\n",
+      "expected": [
+        {
+          "start": 20,
+          "end": 80,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "vercel-app-access-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "vercel-app-access-token",
+        "sources": [
+          "https://github.com/mongodb/kingfisher/blob/88d3f780fad83960aaddfcf732a690049853ccc9/crates/kingfisher-rules/data/rules/vercel.yml#L46-L299",
+          "https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/vercel.go#L46-L212",
+          "https://vercel.com/changelog/new-token-formats-and-secret-scanning",
+          "https://vercel.com/docs/sign-in-with-vercel/tokens",
+          "https://vercel.com/docs/accounts/access-tokens",
+          "https://openapi.vercel.sh",
+          "https://vercel.com/docs/sign-in-with-vercel/authorization-server-api",
+          "https://github.com/vercel/turborepo/blob/07ee4185589823c984ea9f28d1f8480b60d6374f/crates/turborepo-auth/src/auth/mod.rs#L361",
+          "https://github.com/vercel/vercel-azure-devops-extension/blob/24183cd1671cdb451e22a20634c2bb19e3478870/vercel-deployment-task-source/src/index.ts#L37-L38",
+          "https://github.com/mongodb/kingfisher/blob/88d3f780fad83960aaddfcf732a690049853ccc9/crates/kingfisher-rules/data/rules/vercel.yml#L46-L299",
+          "https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/vercel.go#L46-L212",
+          "https://github.com/Samsung/CredSweeper/blob/1aa60465c4ec064357ead06f5b4da7c3adbce7a8/credsweeper/rules/config.yaml#L1995-L2007",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/vercel.md",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1013",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1036",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "vercel-app-access-token-negative",
+      "path": "vercel-app-access-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "VERCEL_ACCESS_TOKEN=${VERCEL_ACCESS_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "vercel-app-access-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "vercel-app-access-token",
+        "sources": [
+          "https://github.com/mongodb/kingfisher/blob/88d3f780fad83960aaddfcf732a690049853ccc9/crates/kingfisher-rules/data/rules/vercel.yml#L46-L299",
+          "https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/vercel.go#L46-L212",
+          "https://vercel.com/changelog/new-token-formats-and-secret-scanning",
+          "https://vercel.com/docs/sign-in-with-vercel/tokens",
+          "https://vercel.com/docs/accounts/access-tokens",
+          "https://openapi.vercel.sh",
+          "https://vercel.com/docs/sign-in-with-vercel/authorization-server-api",
+          "https://github.com/vercel/turborepo/blob/07ee4185589823c984ea9f28d1f8480b60d6374f/crates/turborepo-auth/src/auth/mod.rs#L361",
+          "https://github.com/vercel/vercel-azure-devops-extension/blob/24183cd1671cdb451e22a20634c2bb19e3478870/vercel-deployment-task-source/src/index.ts#L37-L38",
+          "https://github.com/mongodb/kingfisher/blob/88d3f780fad83960aaddfcf732a690049853ccc9/crates/kingfisher-rules/data/rules/vercel.yml#L46-L299",
+          "https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/vercel.go#L46-L212",
+          "https://github.com/Samsung/CredSweeper/blob/1aa60465c4ec064357ead06f5b4da7c3adbce7a8/credsweeper/rules/config.yaml#L1995-L2007",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/vercel.md",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1013",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1036",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "vercel-app-refresh-token-positive",
+      "path": "vercel-app-refresh-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "VERCEL_REFRESH_TOKEN=\u0076cr_ReviewEpsilon7Zeta9ReviewEpsilon7Zeta9ReviewEpsilon7Zeta\n",
+      "expected": [
+        {
+          "start": 21,
+          "end": 81,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "vercel-app-refresh-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T2",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "vercel-app-refresh-token",
+        "sources": [
+          "https://github.com/mongodb/kingfisher/blob/88d3f780fad83960aaddfcf732a690049853ccc9/crates/kingfisher-rules/data/rules/vercel.yml#L46-L299",
+          "https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/vercel.go#L46-L212",
+          "https://vercel.com/changelog/new-token-formats-and-secret-scanning",
+          "https://vercel.com/docs/sign-in-with-vercel/tokens",
+          "https://vercel.com/docs/accounts/access-tokens",
+          "https://openapi.vercel.sh",
+          "https://vercel.com/docs/sign-in-with-vercel/authorization-server-api",
+          "https://github.com/vercel/turborepo/blob/07ee4185589823c984ea9f28d1f8480b60d6374f/crates/turborepo-auth/src/auth/mod.rs#L361",
+          "https://github.com/vercel/vercel-azure-devops-extension/blob/24183cd1671cdb451e22a20634c2bb19e3478870/vercel-deployment-task-source/src/index.ts#L37-L38",
+          "https://github.com/mongodb/kingfisher/blob/88d3f780fad83960aaddfcf732a690049853ccc9/crates/kingfisher-rules/data/rules/vercel.yml#L46-L299",
+          "https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/vercel.go#L46-L212",
+          "https://github.com/Samsung/CredSweeper/blob/1aa60465c4ec064357ead06f5b4da7c3adbce7a8/credsweeper/rules/config.yaml#L1995-L2007",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/vercel.md",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1013",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1036",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
+    },
+    {
+      "id": "vercel-app-refresh-token-negative",
+      "path": "vercel-app-refresh-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "VERCEL_REFRESH_TOKEN=${VERCEL_REFRESH_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "vercel-app-refresh-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "vercel-app-refresh-token",
+        "sources": [
+          "https://github.com/mongodb/kingfisher/blob/88d3f780fad83960aaddfcf732a690049853ccc9/crates/kingfisher-rules/data/rules/vercel.yml#L46-L299",
+          "https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/vercel.go#L46-L212",
+          "https://vercel.com/changelog/new-token-formats-and-secret-scanning",
+          "https://vercel.com/docs/sign-in-with-vercel/tokens",
+          "https://vercel.com/docs/accounts/access-tokens",
+          "https://openapi.vercel.sh",
+          "https://vercel.com/docs/sign-in-with-vercel/authorization-server-api",
+          "https://github.com/vercel/turborepo/blob/07ee4185589823c984ea9f28d1f8480b60d6374f/crates/turborepo-auth/src/auth/mod.rs#L361",
+          "https://github.com/vercel/vercel-azure-devops-extension/blob/24183cd1671cdb451e22a20634c2bb19e3478870/vercel-deployment-task-source/src/index.ts#L37-L38",
+          "https://github.com/mongodb/kingfisher/blob/88d3f780fad83960aaddfcf732a690049853ccc9/crates/kingfisher-rules/data/rules/vercel.yml#L46-L299",
+          "https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/vercel.go#L46-L212",
+          "https://github.com/Samsung/CredSweeper/blob/1aa60465c4ec064357ead06f5b4da7c3adbce7a8/credsweeper/rules/config.yaml#L1995-L2007",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/vercel.md",
+          "https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1013",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1036",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
+        ]
+      }
     }
   ]
 }

@@ -427,6 +427,41 @@
     "corpus": "fixtures/generated/beta8-528j.json"
   },
   {
+    "id": "beta8-1012a",
+    "title": "Beta.12 evidence for the AWS IAM user secret access key (#528, #1012 slice a)",
+    "description": "Fixtures for aws-secret-access-key (exactly 40 [A-Za-z0-9/+], context-constrained: only under an AWS secret key name or next to an AKIA access key id), a registry detector since product redact-secret#1028, authored from the #1012 research record https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/aws-iam-user-secret-access-key.md: context-gated positives with context twins, length and alphabet twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-1012a.json"
+  },
+  {
+    "id": "beta8-1012b",
+    "title": "Beta.12 evidence for the Google OAuth client secret (#528, #1012 slice b)",
+    "description": "Fixtures for google-oauth-client-secret (GOCSPX- + exactly 28 [A-Za-z0-9_-]), a registry detector since product redact-secret#1029, authored from the #1012 research record https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/google-oauth2-credential.md: positives in every probe context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-1012b.json"
+  },
+  {
+    "id": "beta8-1012c",
+    "title": "Beta.12 evidence for the routable GitLab personal access token (#528, #1012 slice c)",
+    "description": "Fixtures for gitlab-routable-personal-access-token (glpat- + base64url payload 27-300 + . + 2 base36 version + . + base36 payload length + base36 CRC32; the length holder and CRC are provider offline checks), an unscored arrival family reported under gitlab-token by product redact-secret#1022, authored from the #1012 research record https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/gitlab-routable-personal-access-token.md: positives in every probe context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-1012c.json"
+  },
+  {
+    "id": "beta8-1012d",
+    "title": "Beta.12 evidence for the AWS STS temporary access key id (#528, #1012 slice d)",
+    "description": "Fixtures for aws-sts-temporary-access-key (ASIA + exactly 16 [A-Z0-9]; a bare id is project policy), an unscored arrival family reported under aws-access-key by product redact-secret#1027, authored from the #1012 research record https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/aws-sts-temporary-access-key.md: positives in every probe context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-1012d.json"
+  },
+  {
+    "id": "beta8-1012e",
+    "title": "Beta.12 evidence for Vercel personal, app access and app refresh tokens (#528, #1012 slice e)",
+    "description": "Fixtures for vercel-personal-access-token, vercel-app-access-token and vercel-app-refresh-token (vcp_/vca_/vcr_ + exactly 56 [A-Za-z0-9]; the base62 CRC-32 suffix is unresolved and never enforced), arrival families scored by the finding types product redact-secret#1036 gives them inside vercel-token, authored from the #1013 record https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/vercel.md: positives in every probe context, one-property twins, and independent benign controls. Values are synthetic, built at generation time, never provider-issued. Measures and records; moves no support status by itself.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-1012e.json"
+  },
+  {
     "id": "policy-qualified-credentials",
     "title": "Public policy qualification controls for bounded T3 credentials (#365)",
     "description": "Independent deterministic action, exact-span, benign and context-twin controls for bearer credentials, connection-string passwords, OTP seeds and supported assignment literals. These public rows exercise the frozen project-policy contracts and remain separate from protected holdout evidence and PII claims.",

@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field, gl } from '../contract-sources.ts';
-import { handoff, researchTable, HANDOFF_INDEX, RULING_QUESTIONS, R1014, RULINGS_R1_R3, B528, product, at, src, reason, GRADUATES, byFindingType, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG } from './528-sources.ts';
+import { handoff, researchTable, HANDOFF_INDEX, RULING_QUESTIONS, R1014, RULINGS_R1_R3, B528, product, at, src, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG, scoredReason, splitGraduated } from './528-sources.ts';
 
 // Issue #528, slice c: Beta.12 contracts for the SonarQube Server user token (squ_) and analysis tokens (sqa_, sqp_)
 // (#1014 rank 3, READY; handoff docs/audits/evidence/1014/sonarqube.md; product redact-secret#1021). Owned by this slice
@@ -18,10 +18,9 @@ const RESEARCH = researchTable('5900447016');
 const TH_SONARCLOUD = 'https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/sonarcloud/v1/sonarcloud.go';
 const REFS = [GENERATOR, TOKEN_TYPE, HANDOFF, RESEARCH, HANDOFF_INDEX, RULING_QUESTIONS, R1014, RULINGS_R1_R3, product(1021), B528];
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
+/** Sibling types the product reports inside a shared detector under their own finding type: arrival families scored by finding type since the 4fb7882 re-pin. */
 export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'sonarqube-token', taxonomy: 'sonarqube:user-token', issue, reason: reason('sonarqube-token', 'sonarqube_user_token', 1021, GRADUATES) },
-  { id: 'sonarqube-analysis-token', taxonomy: 'sonarqube:analysis-token', issue, reason: reason('sonarqube-token', 'sonarqube_analysis_token', 1021, byFindingType('The sqa_ and sqp_ analysis tokens', 'sonarqube-token')) },
+  { id: 'sonarqube-analysis-token', taxonomy: 'sonarqube:analysis-token', issue, reason: scoredReason('sonarqube-token', 'sonarqube_analysis_token', 1021) },
 ];
 
 const shared = (prefixes: string) => [
@@ -33,8 +32,8 @@ const shared = (prefixes: string) => [
   field({ field: 'peer-lag', claim: 'gitleaks 8.30.1 sonar-api-token is keyword-gated on sonar.login/sonar.token-style names with an optional squ_|sqp_|sqa_ prefix before [a-z0-9=_-]{40}: it lags on bare prose, chat and JSON "token" and reads every prefix under one label (mapped to sonarqube-token, so an analysis-token finding reads as co-detection). trufflehog 3.97.4 SonarCloud v1 wants a word-bounded bare [0-9a-z]{40} near "sonar" (legacy tokens only; it cannot match inside squ_ + 40) and v2 reads sqco_ + 59, so it lags on every positive and stays unmapped', basis: 'tool', status: 'frozen', sources: [src(GITLEAKS_CONFIG, 'sonar-api-token'), src(TH_SONARCLOUD, 'SonarCloud v1'), src(TRUFFLEHOG_DETECTORS, 'sonarcloud/v2: sqco_')] }),
 ];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'sonarqube-token': {
     tier: 'T1',
     pattern: '^squ_[0-9a-f]{40}$',
@@ -54,6 +53,12 @@ export const contracts: Record<string, FormatContract> = {
     fields: shared('sqa_ (global analysis) or sqp_ (project analysis)'),
   },
 };
+
+const split = splitGraduated(authored, ['sonarqube-token']);
+/** Contracts for this slice's detector-id family, a registry detector since the 4fb7882 re-pin (redact-secret PR #1039). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'sonarqube-token': 'documented-24', 'sonarqube-analysis-token': 'documented-24' };

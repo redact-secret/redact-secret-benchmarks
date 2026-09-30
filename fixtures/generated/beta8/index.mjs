@@ -46,6 +46,11 @@ import { build528g } from "./528g.mjs";
 import { build528h } from "./528h.mjs";
 import { build528i } from "./528i.mjs";
 import { build528j } from "./528j.mjs";
+import { build1012a } from "./1012a.mjs";
+import { build1012b } from "./1012b.mjs";
+import { build1012c } from "./1012c.mjs";
+import { build1012d } from "./1012d.mjs";
+import { build1012e } from "./1012e.mjs";
 import { build379 } from "./379.mjs";
 import { build948 } from "./948.mjs";
 
@@ -53,7 +58,7 @@ import { build948 } from "./948.mjs";
 // change another corpus's source hash (and so never re-key its ledger rows).
 // A corpus with no fixtures yet is omitted; its category is registered in
 // benchmarks/categories.json and corpora/development/manifest.json with its first fixture.
-const BUILDERS = { 207: build207, 208: build208, 209: build209, 210: build210, 211: build211, 212: build212, "213a": build213a, "213c": build213c, "213b": build213b, "213d": build213d, "213e": build213e, "213f": build213f, 259: build259, 263: build263, "384a": build384a, "384b": build384b, "384c": build384c, "384d": build384d, "384e": build384e, "434a": build434a, "434b": build434b, "434c": build434c, "434d": build434d, "434e": build434e, "434f": build434f, "434g": build434g, "436a": build436a, "436b": build436b, "436c": build436c, "436d": build436d, "436e": build436e, "436f": build436f, "464a": build464a, "464b": build464b, "464c": build464c, "464d": build464d, "464e": build464e, "464f": build464f, "528a": build528a, "528b": build528b, "528c": build528c, "528d": build528d, "528e": build528e, "528f": build528f, "528g": build528g, "528h": build528h, "528i": build528i, "528j": build528j, 379: build379, 948: build948 };
+const BUILDERS = { 207: build207, 208: build208, 209: build209, 210: build210, 211: build211, 212: build212, "213a": build213a, "213c": build213c, "213b": build213b, "213d": build213d, "213e": build213e, "213f": build213f, 259: build259, 263: build263, "384a": build384a, "384b": build384b, "384c": build384c, "384d": build384d, "384e": build384e, "434a": build434a, "434b": build434b, "434c": build434c, "434d": build434d, "434e": build434e, "434f": build434f, "434g": build434g, "436a": build436a, "436b": build436b, "436c": build436c, "436d": build436d, "436e": build436e, "436f": build436f, "464a": build464a, "464b": build464b, "464c": build464c, "464d": build464d, "464e": build464e, "464f": build464f, "528a": build528a, "528b": build528b, "528c": build528c, "528d": build528d, "528e": build528e, "528f": build528f, "528g": build528g, "528h": build528h, "528i": build528i, "528j": build528j, "1012a": build1012a, "1012b": build1012b, "1012c": build1012c, "1012d": build1012d, "1012e": build1012e, 379: build379, 948: build948 };
 
 export function buildBeta8(tools) {
   const corpora = {};

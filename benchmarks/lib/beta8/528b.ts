@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field } from '../contract-sources.ts';
-import { handoff, researchTable, HANDOFF_INDEX, RULING_QUESTIONS, R1014, RULINGS_R1_R3, RULINGS_R9_R10, B528, product, at, src, reason, GRADUATES, byFindingType, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG } from './528-sources.ts';
+import { handoff, researchTable, HANDOFF_INDEX, RULING_QUESTIONS, R1014, RULINGS_R1_R3, RULINGS_R9_R10, B528, product, at, src, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG, scoredReason, splitGraduated } from './528-sources.ts';
 
 // Issue #528, slice b: Beta.12 contracts for the Polar organization access token (polar_oat_) and the other Polar API
 // credentials (#1014 rank 2, READY; handoff docs/audits/evidence/1014/polar.md; product redact-secret#1020). Owned by
@@ -26,10 +26,9 @@ const REFS = [CRYPTO, ERA, OAT_SERVICE, OAT_ADDED, PAT_SERVICE, OAUTH_CONSTANTS,
 export const POLAR_OAT_PATTERN = '^polar_oat_[A-Za-z0-9]{43}$';
 export const POLAR_API_CREDENTIAL_PATTERN = '^polar_(?:pat|at_u|at_o|rt_u|rt_o|cs|crt)_[A-Za-z0-9_-]{43}$';
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
+/** Sibling types the product reports inside a shared detector under their own finding type: arrival families scored by finding type since the 4fb7882 re-pin. */
 export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'polar-token', taxonomy: 'polar:organization-access-token', issue, reason: reason('polar-token', 'polar_organization_access_token', 1020, GRADUATES) },
-  { id: 'polar-api-credential', taxonomy: 'polar:api-credential', issue, reason: reason('polar-token', 'polar_api_credential', 1020, byFindingType('The polar_pat_, polar_at_u_/o_, polar_rt_u_/o_, polar_cs_ and polar_crt_ roles', 'polar-token')) },
+  { id: 'polar-api-credential', taxonomy: 'polar:api-credential', issue, reason: scoredReason('polar-token', 'polar_api_credential', 1020) },
 ];
 
 const shared = [
@@ -41,8 +40,8 @@ const shared = [
   field({ field: 'peer-lag', claim: 'no Polar rule in trufflehog 3.97.4 or gitleaks 8.30.1: both lag on every positive. betterleaks (unpinned, not measured here) uses polar_(oat|pat|at)_[A-Za-z0-9_-]{20,100}, which is wider on length and misses polar_rt_, polar_cs_ and polar_crt_', basis: 'tool', status: 'frozen', sources: [src(TRUFFLEHOG_DETECTORS, 'no polar detector directory at the pinned version'), src(GITLEAKS_CONFIG, 'no polar rule'), src(HANDOFF, 'tier rationale: betterleaks is looser and not used')] }),
 ];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'polar-token': {
     tier: 'T1',
     pattern: POLAR_OAT_PATTERN,
@@ -72,6 +71,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['polar-token']);
+/** Contracts for this slice's detector-id family, a registry detector since the 4fb7882 re-pin (redact-secret PR #1039). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'polar-token': 'documented-24', 'polar-api-credential': 'documented-24' };

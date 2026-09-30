@@ -6,7 +6,7 @@ import { contracts } from '../benchmarks/lib/assessment.ts';
 import { BETA8_MODULES, arrivalIds } from '../benchmarks/lib/beta8/index.ts';
 import { HANDOFF_REVISION } from '../benchmarks/lib/beta8/464-sources.ts';
 import { beta8ProfileCounts } from '../scripts/report-beta8-profiles.mjs';
-import { findingFamily } from '../scanners/families.mjs';
+import { findingFamily, scoredArrivalFamilies } from '../scanners/families.mjs';
 
 // Beta.12 #860 issuance-research contracts and corpus (#464): the conventions tests/beta8.test.mjs cannot see
 // because they are specific to these six slices.
@@ -32,16 +32,18 @@ const valuesOf = (corpus, target) => positivesOf(corpus, target).map(f => valueO
 const widths = (values, prefix) => [...new Set(values.map(v => v.length - prefix))].sort((a, b) => a - b);
 const policyFields = id => contracts[id].fields.filter(f => f.field.startsWith('policy-'));
 
-test('the six #464 families are T1 unscored arrival families, one slice each, with a taxonomy row, a contract and a profile', async () => {
+test('the six #464 families graduated to registry detectors at the 4fb7882 re-pin, one slice each, with a taxonomy row, a contract and a profile', async () => {
   const taxonomy = await read('benchmarks/support/taxonomy.json');
   const registry = new Set((await read('benchmarks/detectors.json')).detectors.map(d => d.id));
-  assert.deepEqual(modules.map(m => m.arrivalFamilies.length), [1, 1, 1, 1, 1, 1]);
-  assert.deepEqual(modules.flatMap(m => m.arrivalFamilies.map(f => f.id)).sort(), Object.keys(families).sort());
+  const graduated = modules.flatMap(m => Object.keys(m.registryContracts ?? {})).sort();
+  const siblings = modules.flatMap(m => m.arrivalFamilies.map(f => f.id)).sort();
+  assert.deepEqual([...graduated, ...siblings].sort(), Object.keys(families).sort());
+  assert.ok(graduated.every(id => registry.has(id) && !arrivalIds.has(id)), 'graduated ids are registry detectors, never arrival ids');
+  assert.ok(siblings.every(id => arrivalIds.has(id) && !registry.has(id) && scoredArrivalFamilies.includes(id)), 'sibling types stay arrival families scored by finding type');
   for (const [id, [taxonomyId]] of Object.entries(families)) {
-    assert.ok(arrivalIds.has(id) && !registry.has(id), `${id}: an arrival family until the product detector is in the pinned registry`);
     const row = taxonomy.families.find(f => f.id === taxonomyId);
     assert.ok(row, `${id}: taxonomy row ${taxonomyId}`);
-    assert.deepEqual(row.detectors, [], `${id}: no detector mapped yet`);
+    assert.deepEqual(row.detectors, [id], `${id}: the taxonomy row maps to the family's own id`);
     assert.equal(row.supportStatus, undefined, `${id}: no hand-edited support status`);
     const contract = contracts[id];
     assert.equal(contract.tier, 'T1', id);
@@ -96,7 +98,9 @@ test('every target meets its declared fixture profile', async () => {
 test('every family has a positive in each of the nine re-rank probe contexts', () => {
   const probe = ['bare-prose', 'dotenv', 'export', 'bearer-header', 'x-api-key-header', 'json-token', 'json-api-key', 'sdk-kwarg', 'chat-paste'];
   for (const [category, corpus] of corpora)
-    for (const target of new Set(corpus.fixtures.map(targetOf)))
+    // generic-token and pinecone-api-key are the targets of controls relabelled as accepted policy (#948 and
+  // docs/decisions/2026-09-30-accept-credential-named-and-typed-neighbour-redactions.md), never probed families.
+    for (const target of new Set(corpus.fixtures.map(targetOf).filter(t => Object.hasOwn(families, t))))
       for (const slug of probe) assert.ok(corpus.fixtures.some(f => f.id === `${target}-${slug}` && secretsOf(f).length), `${category}: ${target}-${slug}`);
 });
 
@@ -134,12 +138,15 @@ test('no fixture asserts silence on a bound only project policy sets: no over-ca
   }
 });
 
-test('Daytona: bodies are lowercase hex of 64; dtn_secret_, dtn_artifact_ and bare 64-hex are controls, never positives', () => {
+test('Daytona: bodies are lowercase hex of 64; dtn_secret_, dtn_artifact_ and bare 64-hex are never positives', () => {
   const corpus = generated['beta8-464a'];
   const values = valuesOf(corpus, 'daytona-api-key');
   assert.ok(values.every(v => /^dtn_[0-9a-f]{64}$/.test(v)));
-  for (const slug of ['secret-placeholder', 'secret-then-hex', 'artifact-marker', 'bare-sha256', 'runner-key-unprefixed', 'named-bare-hex'])
+  for (const slug of ['secret-placeholder', 'secret-then-hex', 'artifact-marker', 'bare-sha256'])
     assert.ok(corpus.fixtures.some(f => f.id.includes(slug) && !secretsOf(f).length && !f.twinOf), slug);
+  // DAYTONA_API_KEY=<bare 64 hex> is a generic-token policy row since the #948 relabel (Beta.12 graduation), never a daytona positive.
+  for (const id of ['daytona-api-key-named-bare-hex-encoded-value', 'daytona-api-key-runner-key-unprefixed-encoded-value'])
+    assert.ok(corpus.fixtures.some(f => f.id === id && targetOf(f) === 'generic-token' && f.assessment.kind === 'policy'), id);
   const twins = corpus.fixtures.filter(f => f.twinOf).map(f => f.id.replace('daytona-api-key-', ''));
   for (const t of ['body-63-twin', 'body-65-twin', 'uppercase-hex-byte-twin', 'non-hex-letter-twin', 'uppercase-prefix-twin', 'hyphen-separator-twin', 'leading-glue-twin']) assert.ok(twins.includes(t), t);
 });
@@ -169,16 +176,18 @@ test('NVIDIA: bodies of 60, 64, 70 and 128 with _ and -; a 59 twin and control; 
   assert.ok(!corpus.fixtures.some(f => f.twinOf && f.mutationKind === 'length' && /129|over/i.test(f.mutation)), 'no over-cap twin');
 });
 
-test('Browserbase: bodies of 20, 32 and 128; bb_test_ and bb_live_session_ are controls; the X-BB-API-Key header is a positive', () => {
+test('Browserbase: bodies of 20, 32 and 128; bb_test_ and bb_live_session_ are never positives; the X-BB-API-Key header is a positive', () => {
   const corpus = generated['beta8-464d'];
   assert.deepEqual(widths(valuesOf(corpus, 'browserbase-api-key'), 8), [20, 32, 128]);
-  assert.ok(!corpus.fixtures.some(f => f.expected.length && /bb_test_/.test(valueOf(f, f.expected[0]))), 'bb_test_ is never a positive');
-  for (const slug of ['bb-test-key', 'live-session-identifier', 'timestamp-cookie', 'project-id']) assert.ok(corpus.fixtures.some(f => f.id.includes(slug) && !secretsOf(f).length), slug);
+  assert.ok(!corpus.fixtures.some(f => targetOf(f) === 'browserbase-api-key' && f.expected.length && /bb_test_/.test(valueOf(f, f.expected[0]))), 'bb_test_ is never a browserbase positive');
+  // BROWSERBASE_API_KEY=bb_test_... is a generic-token policy row since the #948 relabel (Beta.12 graduation).
+  assert.ok(corpus.fixtures.some(f => f.id === 'browserbase-api-key-bb-test-key-near-miss' && targetOf(f) === 'generic-token' && f.assessment.kind === 'policy'));
+  for (const slug of ['live-session-identifier', 'timestamp-cookie', 'project-id']) assert.ok(corpus.fixtures.some(f => f.id.includes(slug) && !secretsOf(f).length), slug);
   assert.ok(corpus.fixtures.some(f => f.id === 'browserbase-api-key-x-bb-api-key-header' && /X-BB-API-Key: /.test(f.content)));
   for (const t of ['body-19', 'trailing-underscore', 'trailing-hyphen', 'uppercase-prefix', 'hyphen-prefix', 'leading-glue']) assert.ok(corpus.fixtures.some(f => f.twinOf && f.id.includes(t)), t);
 });
 
-test('Cerebras: both prefixes in every probe context; lowercase-only and _/- bodies are positives; pcsk_ is a control and a boundary twin; no alphabet twin', () => {
+test('Cerebras: both prefixes in every probe context; lowercase-only and _/- bodies are positives; pcsk_ is a typed Pinecone row and a boundary twin; no alphabet twin', () => {
   const corpus = generated['beta8-464e'];
   const probe = ['bare-prose', 'dotenv', 'export', 'bearer-header', 'x-api-key-header', 'json-token', 'json-api-key', 'sdk-kwarg', 'chat-paste'];
   for (const slug of probe) {
@@ -193,11 +202,12 @@ test('Cerebras: both prefixes in every probe context; lowercase-only and _/- bod
   const pinecone = corpus.fixtures.filter(f => f.id.includes('pinecone-key') && !f.twinOf);
   assert.equal(pinecone.length, 1);
   assert.match(pinecone[0].content, /pcsk_[A-Za-z0-9]{6}_[A-Za-z0-9]{63}\n/, 'a real-shape Pinecone key, built at run time');
-  assert.equal(secretsOf(pinecone[0]).length, 0);
+  // The Pinecone key is a typed pinecone-api-key policy row (accepted as the Pinecone detector's correct finding), never a Cerebras positive.
+  assert.ok(targetOf(pinecone[0]) === 'pinecone-api-key' && secretsOf(pinecone[0]).length === 1 && pinecone[0].assessment.kind === 'policy');
   assert.ok(corpus.fixtures.filter(f => f.twinOf && /pcsk/.test(f.mutation)).length === 2, 'pcsk_ and pcsk- leading-glue twins');
 });
 
-test('RunPod: bodies of 31, 46 (in and out of the 40-upper-plus-6-mixed layout) and 128; the 30 twin is labelled POLICY; Redirect.pizza and rps_ are controls', () => {
+test('RunPod: bodies of 31, 46 (in and out of the 40-upper-plus-6-mixed layout) and 128; the 30 twin is labelled POLICY; Redirect.pizza and rps_ are never positives', () => {
   const corpus = generated['beta8-464f'];
   const values = valuesOf(corpus, 'runpod-api-key');
   assert.deepEqual(widths(values, 4), [31, 46, 128]);
@@ -205,7 +215,8 @@ test('RunPod: bodies of 31, 46 (in and out of the 40-upper-plus-6-mixed layout) 
   const twin30 = corpus.fixtures.find(f => f.id === 'runpod-api-key-body-30-policy-floor-twin');
   assert.match(twin30.mutation, /^length: POLICY \(ruling R10\), not T1/);
   assert.equal(corpus.fixtures.filter(f => f.twinOf && /POLICY/.test(f.mutation)).length, 1, 'the only policy twin');
-  for (const slug of ['redirect-pizza-30', 's3-secret-rps']) assert.ok(corpus.fixtures.some(f => f.id.includes(slug) && !secretsOf(f).length && !f.twinOf), slug);
+  // Redirect.pizza and rps_ values under their own credential variables are generic-token policy rows since the #948 relabel.
+  for (const slug of ['redirect-pizza-30', 's3-secret-rps']) assert.ok(corpus.fixtures.some(f => f.id.includes(slug) && targetOf(f) === 'generic-token' && f.assessment.kind === 'policy' && !f.twinOf), slug);
   assert.ok(!corpus.fixtures.some(f => /rpa_[A-Za-z0-9]{16,29}(?![A-Za-z0-9])/.test(f.content)), 'a 16-30 body is an accepted false negative; only the 30 boundary is authored');
 });
 

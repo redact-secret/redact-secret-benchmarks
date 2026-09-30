@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T08:47:52.010Z",
+  "sourceRun": {
+    "runId": "2026-09-30T08:47:52.010Z-b39234",
+    "benchmarkRevision": "5b5faeba99414fff1c5d91f71648e568f6e2e702"
+  },
+  "input": {
+    "surface": "comparison/beta8-1012b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "9eaee113324306ce18708e90cb084c1ba76009190051693948f1495a89a74b6b",
+    "fixtureCount": 32,
+    "fixturesDigest": "42a7fe092752baeb21e7aadb4fa862a8e3ff1e085a65cf87152a5dbf6ccea7a9",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
+    },
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/google-oauth-client-secret-json-client-file.json",
+      "start": 27,
+      "end": 72
+    },
+    {
+      "path": "cases/google-oauth-client-secret-json-web-client-file.json",
+      "start": 21,
+      "end": 66
+    }
+  ],
+  "digest": "d106b535999e9d7aed7de22308fd8564cc91835059e57e0cc51026d515429579"
+}

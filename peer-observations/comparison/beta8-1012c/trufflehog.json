@@ -1,0 +1,163 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T08:47:52.010Z",
+  "sourceRun": {
+    "runId": "2026-09-30T08:47:52.010Z-b39234",
+    "benchmarkRevision": "5b5faeba99414fff1c5d91f71648e568f6e2e702"
+  },
+  "input": {
+    "surface": "comparison/beta8-1012c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "52725241b40d19213f25b5643eede72af20b923065d59bd5e87a9092c1f118b4",
+    "fixtureCount": 31,
+    "fixturesDigest": "fcbeecf28396e1dd9eac554e6296f8d0b808009f2d70fe8cbeb97c02e1dd4e4e",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
+    },
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/gitlab-routable-personal-access-token-bare-prose.md",
+      "start": 60,
+      "end": 119,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-bearer-header.http",
+      "start": 63,
+      "end": 124,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-chat-paste.txt",
+      "start": 22,
+      "end": 83,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-checksum-mismatch-twin.env",
+      "start": 20,
+      "end": 81,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-dotenv.env",
+      "start": 20,
+      "end": 81,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-export.sh",
+      "start": 21,
+      "end": 82,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-git-remote-url.txt",
+      "start": 40,
+      "end": 99,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-json-api-key.json",
+      "start": 16,
+      "end": 77,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-json-token.json",
+      "start": 14,
+      "end": 72,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-length-holder-mismatch-twin.sh",
+      "start": 21,
+      "end": 82,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-missing-separator-twin.json",
+      "start": 16,
+      "end": 76,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-payload-27.yml",
+      "start": 56,
+      "end": 102,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-payload-300.txt",
+      "start": 128,
+      "end": 447,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-private-token-header.http",
+      "start": 78,
+      "end": 139,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-python-gitlab.py",
+      "start": 71,
+      "end": 132,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-sdk-kwarg.py",
+      "start": 25,
+      "end": 86,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-x-api-key-header.http",
+      "start": 51,
+      "end": 112,
+      "family": "gitlab-token"
+    }
+  ],
+  "digest": "ea82b0ad02d177d8287718df2e5dde3cd84f859ee619d04e23bf59d2a8212fc1"
+}

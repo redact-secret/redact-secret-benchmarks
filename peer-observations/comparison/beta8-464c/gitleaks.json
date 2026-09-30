@@ -1,29 +1,29 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-30T02:53:31.552Z",
+  "observedAt": "2026-09-30T08:47:52.010Z",
   "sourceRun": {
-    "runId": "2026-09-30T02:53:31.552Z-c34054",
-    "benchmarkRevision": "85694a1604874e4d0a24ef15225bbbaa32be85b2"
+    "runId": "2026-09-30T08:47:52.010Z-b39234",
+    "benchmarkRevision": "5b5faeba99414fff1c5d91f71648e568f6e2e702"
   },
   "input": {
     "surface": "comparison/beta8-464c",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "ca1e9ae32c1d8965866e42428b125932546d5932af58a29a051486a928d38e42",
+    "corpusHash": "610b57923b1f4ad3024e3c2a92c1f264252c199e7d5616f642381be4c3935aa9",
     "fixtureCount": 31,
     "fixturesDigest": "061fe6b489020570f27b79512a5c3d995ec6b68c658141c7e221b85f25d9400a",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "7b49e5d73bdf08f138c639a4631d164ebba421e0fb672083b2c9e7f6c9c6398c",
-      "fixtureCount": 5516
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
     }
   },
   "peer": {
     "id": "gitleaks",
     "version": "8.30.1",
     "mode": "Directory scan · default rules",
-    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configurationHash": "bfbc883ee23e1b5c3d3c25aa3754935a9631c166844cd42fa32e2efce58b4a05",
     "configuration": {
       "adapterVersion": 2,
       "familyMappingVersion": 2,
@@ -42,7 +42,7 @@
       ],
       "processLimits": {
         "timeout": 120000,
-        "maxBuffer": 16777216
+        "maxBuffer": 67108864
       },
       "rules": "default",
       "environmentRuleOverrides": false
@@ -52,7 +52,7 @@
       "platform": "darwin-arm64",
       "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
     },
-    "adapterDigest": "f7f72b2d21d7e19cb59717ad25b352bea8770f907ed284d7f95c49fe4fe3cfa6"
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
@@ -138,5 +138,5 @@
       "family": "generic-token"
     }
   ],
-  "digest": "8e0dbe3812a8446fd9ab245a045778ccadb17272999d566b30c5f71d40104111"
+  "digest": "43d985658b832adb8d85f5341cef5f0c91fcc2ed852837cb3266d21a4e0eaa1e"
 }

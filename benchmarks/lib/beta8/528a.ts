@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field } from '../contract-sources.ts';
-import { handoff, researchTable, HANDOFF_INDEX, R1014, RULINGS_R1_R3, B528, product, at, src, reason, GRADUATES, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG } from './528-sources.ts';
+import { handoff, researchTable, HANDOFF_INDEX, R1014, RULINGS_R1_R3, B528, product, at, src, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG, splitGraduated } from './528-sources.ts';
 
 // Issue #528, slice a: Beta.12 contract for the Bitwarden Secrets Manager access token (#1014 rank 1, READY; handoff
 // docs/audits/evidence/1014/bitwarden.md; product redact-secret#1019). Owned by this slice only; see
@@ -22,13 +22,11 @@ const RESEARCH = researchTable('5900447282');
 const UUID = '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}';
 export const BITWARDEN_PATTERN = `^0\\.${UUID}\\.[A-Za-z0-9]{30}:[A-Za-z0-9+/]{22}==$`;
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'bitwarden-secrets-manager-access-token', taxonomy: 'bitwarden:secrets-manager-access-token', issue, reason: reason('bitwarden-secrets-manager-access-token', 'bitwarden_secrets_manager_access_token', 1019, GRADUATES) },
-];
+/** No arrival family remains: the family graduated to a registry detector at the 4fb7882 re-pin (redact-secret PR #1039). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'bitwarden-secrets-manager-access-token': {
     tier: 'T1',
     pattern: BITWARDEN_PATTERN,
@@ -49,6 +47,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['bitwarden-secrets-manager-access-token']);
+/** Contracts for this slice's detector-id family, a registry detector since the 4fb7882 re-pin (redact-secret PR #1039). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'bitwarden-secrets-manager-access-token': 'documented-24' };

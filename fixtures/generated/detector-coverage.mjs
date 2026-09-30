@@ -1019,6 +1019,52 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     add(detector, "label-prose", [`Documentation mentions a ${label} without embedding the key value.`]);
   }
 
+  // Beta.12 #464/#528 families, registry detectors since the 4fb7882 re-pin (redact-secret#970-#975, product PR #1037;
+  // #1019-#1035, product PR #1039). Full evidence lives in the beta8-464a..464f and beta8-528a..528j corpora and their
+  // contracts (benchmarks/lib/beta8/464a..528j.ts); these are the registry-wide minimum, one detector-id shape each,
+  // built from public synthetic seeds in each contract's shape, never copied from a provider or scanner example.
+  const B32_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+  const uuidHex = label => [8, 4, 4, 4, 12].map((n, i) => synthetic(`${label}:u${i}`, n, AI_HEX)).join("-");
+  const beta12 = [
+    // [detector, value, prefix, env name, provider label]
+    ["daytona-api-key", `dtn_${synthetic("coverage:daytona:api-key:body", 64, AI_HEX)}`, "dtn_", "DAYTONA_API_KEY", "Daytona API key (dtn_ prefix)"],
+    ["clickhouse-cloud-api-secret", `4b1d${synthetic("coverage:clickhouse-cloud:api-secret:body", 38, AI_ALNUM)}`, "4b1d", "CLICKHOUSE_KEY_SECRET", "ClickHouse Cloud API key secret (4b1d prefix)"],
+    ["nvidia-api-key", `nvapi-${synthetic("coverage:nvidia:api-key:body", 64, `${AI_ALNUM}_-`)}`, "nvapi-", "NVIDIA_API_KEY", "NVIDIA API key (nvapi- prefix)"],
+    ["browserbase-api-key", `bb_live_${synthetic("coverage:browserbase:api-key:body", 27, AI_ALNUM)}`, "bb_live_", "BROWSERBASE_API_KEY", "Browserbase API key (bb_live_ prefix)"],
+    ["runpod-api-key", `rpa_${synthetic("coverage:runpod:api-key:body", 46, AI_ALNUM)}`, "rpa_", "RUNPOD_API_KEY", "RunPod API key (rpa_ prefix)"],
+    ["cerebras-api-key", `csk-${synthetic("coverage:cerebras:api-key:body", 48, AI_ALNUM)}`, "csk-", "CEREBRAS_API_KEY", "Cerebras API key (csk- prefix)"],
+    ["bitwarden-secrets-manager-access-token", `0.${uuidHex("coverage:bitwarden:access-token:id")}.${synthetic("coverage:bitwarden:access-token:secret", 30, AI_ALNUM)}:${synthetic("coverage:bitwarden:access-token:key", 22, AI_ALNUM)}==`, "0.", "BWS_ACCESS_TOKEN", "Bitwarden Secrets Manager access token (0. version lead)"],
+    ["polar-token", `polar_oat_${synthetic("coverage:polar:organization-access-token:body", 43, AI_ALNUM)}`, "polar_oat_", "POLAR_ACCESS_TOKEN", "Polar organization access token (polar_oat_ prefix)"],
+    ["sonarqube-token", `squ_${synthetic("coverage:sonarqube:user-token:body", 40, AI_HEX)}`, "squ_", "SONAR_TOKEN", "SonarQube user token (squ_ prefix)"],
+    ["rubygems-api-key", `rubygems_${synthetic("coverage:rubygems:api-key:body", 48, AI_HEX)}`, "rubygems_", "GEM_HOST_API_KEY", "RubyGems.org API key (rubygems_ prefix)"],
+    ["clojars-deploy-token", `CLOJARS_${synthetic("coverage:clojars:deploy-token:body", 60, AI_HEX)}`, "CLOJARS_", "CLOJARS_PASSWORD", "Clojars deploy token (CLOJARS_ prefix)"],
+    ["crates-io-token", `cio${synthetic("coverage:crates-io:api-token:body", 32, AI_ALNUM)}`, "cio", "CARGO_REGISTRY_TOKEN", "crates.io API token (cio prefix)"],
+    ["dynatrace-token", `dt0c01.${synthetic("coverage:dynatrace:token:id", 24, B32_UPPER)}.${synthetic("coverage:dynatrace:token:secret", 64, B32_UPPER)}`, "dt0c01.", "DT_API_TOKEN", "Dynatrace access token (dt0c01. prefix)"],
+    ["paddle-api-key", `pdl_live_apikey_${synthetic("coverage:paddle:api-key:id", 26, LOWER_ALNUM)}_${synthetic("coverage:paddle:api-key:secret", 22, AI_ALNUM)}_${synthetic("coverage:paddle:api-key:suffix", 3, AI_ALNUM)}`, "pdl_live_apikey_", "PADDLE_API_KEY", "Paddle Billing API key (pdl_live_apikey_ prefix)"],
+    ["honeycomb-api-key", `hcaik_${synthetic("coverage:honeycomb:ingest-key:body", 58, LOWER_ALNUM)}`, "hcaik_", "HONEYCOMB_API_KEY", "Honeycomb ingest key (hcaik_ prefix)"],
+    ["axiom-token", `xaat-${uuidHex("coverage:axiom:api-token")}`, "xaat-", "AXIOM_TOKEN", "Axiom API token (xaat- prefix)"],
+    // #1012 (redact-secret#1029, product PR #1039): contract in benchmarks/lib/beta8/1012b.ts.
+    ["google-oauth-client-secret", `GOCSPX-${synthetic("coverage:google:oauth-client-secret:body", 28, `${AI_ALNUM}_-`)}`, "GOCSPX-", "GOOGLE_CLIENT_SECRET", "Google OAuth client secret (GOCSPX- prefix)"],
+  ];
+  // #1012 (redact-secret#1028, product PR #1039): aws-secret-access-key is context-gated (contract in
+  // benchmarks/lib/beta8/1012a.ts), so, as for mistral-api-key above, the positive carries its key name, the bare value
+  // is a missing-keyword control and a 39-character near-miss beside the same name is a negative twin.
+  const awsSecret = synthetic("coverage:aws:secret-access-key:value", 40, `${AI_ALNUM}/+`);
+  positive("aws-secret-access-key", "key-shape", ["AWS_SECRET_ACCESS_KEY=", { secret: awsSecret }]);
+  add("aws-secret-access-key", "missing-keyword", [awsSecret]);
+  addTwin("aws-secret-access-key", "key-shape", [`AWS_SECRET_ACCESS_KEY=${awsSecret.slice(0, 39)}`], "length: 39 vs contracted 40");
+  add("aws-secret-access-key", "mask", [`AWS_SECRET_ACCESS_KEY=${"*".repeat(40)}`]);
+  add("aws-secret-access-key", "reference", ["AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}\n"]);
+  add("aws-secret-access-key", "label-prose", ["Documentation mentions an AWS secret access key without embedding the key value."]);
+  for (const [detector, value, prefix, env, label] of beta12) {
+    positive(detector, "key-shape", [{ secret: value }]);
+    add(detector, "prefix-only", [prefix]);
+    add(detector, "short-body", [value.slice(0, prefix.length + 8)]);
+    add(detector, "mask", [`${prefix}${"*".repeat(value.length - prefix.length)}`]);
+    add(detector, "reference", [`${env}=\${${env}}\n`]);
+    add(detector, "label-prose", [`Documentation mentions a ${label} without embedding the key value.`]);
+  }
+
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
   // unchanged so historical before/after evidence stays comparable.

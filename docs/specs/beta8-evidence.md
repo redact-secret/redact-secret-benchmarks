@@ -496,6 +496,57 @@ The corpus adds one authored calibration row pair per family to
 `corpora/development/shadow-scoring-authored.json` and lists the ten categories as development-evaluation
 in `tuning/shadow-scoring-development-v1.json`.
 
+## Beta.12 first-measured variant slices (#1012)
+
+The same layout carries the credential variants the product first ships at the 4fb7882 registry pin with no
+benchmarks contract: the families its coverage allowlist listed as not yet measured
+(`aws-secret-access-key`, `google-oauth-client-secret`) and three variants it claims inside an existing detector
+(the routable GitLab PAT, the AWS `ASIA` key id and the Vercel per-class tokens). Contracts are authored from the
+research records frozen in the product repository at `4fb7882`
+([#1012 index](https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/README.md) and the [#1013 Vercel record](https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/vercel.md)) and the provider sources they cite,
+never from product detector code; `benchmarks/lib/beta8/1012-sources.ts` carries the shared citations and
+`fixtures/generated/beta8/1012-shared.mjs` the builders, reusing the #464 contract guard and probe contexts and the
+#212 base36 CRC32. The fixture index labels these corpora `beta.12`.
+
+| Key | Category | Families | Kind | Tier / profile | Record | Product issue | Positives / twins / controls |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `1012a` | `beta8-1012a` | `aws-secret-access-key` | registry, context-gated | T2 / `context-48` | [aws-iam-user-secret-access-key.md](https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/aws-iam-user-secret-access-key.md) | [#1028](https://github.com/redact-secret/redact-secret/issues/1028) | 13 / 17 / 20 |
+| `1012b` | `beta8-1012b` | `google-oauth-client-secret` | registry | T2 / `arrival-24` | [google-oauth2-credential.md](https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/google-oauth2-credential.md) | [#1029](https://github.com/redact-secret/redact-secret/issues/1029) | 12 / 6 / 9 |
+| `1012c` | `beta8-1012c` | `gitlab-routable-personal-access-token` | unscored arrival | T1 / `documented-24` | [gitlab-routable-personal-access-token.md](https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/gitlab-routable-personal-access-token.md) | [#1022](https://github.com/redact-secret/redact-secret/issues/1022) | 14 / 8 / 9 |
+| `1012d` | `beta8-1012d` | `aws-sts-temporary-access-key` | unscored arrival | T2 / `arrival-24` | [aws-sts-temporary-access-key.md](https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/aws-sts-temporary-access-key.md) | [#1027](https://github.com/redact-secret/redact-secret/issues/1027) | 12 / 6 / 11 |
+| `1012e` | `beta8-1012e` | `vercel-personal-access-token`, `vercel-app-access-token`, `vercel-app-refresh-token` | scored arrival (finding type) | T2 / `arrival-24` | [vercel.md](https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1013/vercel.md) | [#1036](https://github.com/redact-secret/redact-secret/issues/1036) | 13 / 7 / 9 each |
+
+No support status moves and none is hand-edited. Conventions specific to these slices:
+
+- **How a variant inside an existing detector is measured.** The product types vcp_/vca_/vcr_ as their own finding
+  types inside `vercel-token` (redact-secret#1036), so each is an arrival family scored by finding type
+  (`scanners/families.mjs` `arrivalFindingTypes`). It reports the routable PAT as `gitlab_token` and `ASIA` as
+  `aws_access_key_id`, the owning detector's own types, so those two findings carry no evidence of their own: both are
+  unscored arrival families (docs/decisions/2026-09-24-score-arrival-families-by-finding-type.md, point 4). Neither is
+  extra corpus for the owning detector, whose contract (`gitlab-token`: the legacy 20-byte body; `aws-access-key`:
+  AKIA only) the variant does not satisfy.
+- **Provider checks are enforced only where the provider enforces them.** The routable PAT's base36 length holder and
+  CRC32 are GitLab's own offline validator, so the contract's `validate` enforces them and the corpus has a checksum
+  twin and a length-holder twin. The Vercel 50 + 6 base62 CRC-32 suffix is backed on one provider value only and the
+  CLI `vcp_` example fails it, so it is an unresolved field: two positives per class carry a wrong suffix and are still
+  positives, and no twin asserts silence on it.
+- **Context-constrained AWS secret.** No bare-value claim: positives sit under an AWS secret key name or next to an
+  `AKIA` id (a companion span, after the value); every positive has a context twin that keeps the value and removes the
+  gate (the name renamed to an identifier name, or the `AKIA` id replaced by an `AIDA` user id); four structural twins
+  keep the gate (39, 41, `=` and `-`). A bare `ASIA` id scores as project policy, as the registry's bare `AKIA` id does.
+- **Not authored either way:** a 41-character temporary AWS secret, session tokens, AWS `EXAMPLE` docs values, Google
+  `ya29.` and `1//` tokens (BLOCKED), legacy `glpat-` + 20 and `glrt-` values (other families' credentials), the
+  unversioned routable form and custom prefixes, `AKIA` ids as `ASIA` controls, Vercel `vci_`/`vck_` (ruling Q-VC) and
+  the legacy unprefixed 24-character Vercel token.
+- **Peer lag and overreach** is a `peer-lag` field per contract: gitleaks 8.30.1 has no AWS secret-key, `GOCSPX-` or
+  prefixed Vercel rule, reads `ASIA` over `[A-Z2-7]` only and the routable PAT only in its unversioned form; trufflehog
+  3.97.4 pairs AWS secrets and `ASIA` ids with their companions, reads the versioned routable PAT without checking the
+  length holder or CRC, and has only the legacy Vercel rule.
+
+The corpus adds one authored calibration row pair per family to
+`corpora/development/shadow-scoring-authored.json` and lists the five categories as development-evaluation in
+`tuning/shadow-scoring-development-v1.json`.
+
 ## Beta.11 family evidence (#379)
 
 [#379](https://github.com/redact-secret/redact-secret-benchmarks/issues/379) (parent

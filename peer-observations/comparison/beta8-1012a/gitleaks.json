@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T08:47:52.010Z",
+  "sourceRun": {
+    "runId": "2026-09-30T08:47:52.010Z-b39234",
+    "benchmarkRevision": "5b5faeba99414fff1c5d91f71648e568f6e2e702"
+  },
+  "input": {
+    "surface": "comparison/beta8-1012a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "7ed7c0278a1d5ce43851ccb88eef2530eb2eebec9356d43f1dba74236ee74cff",
+    "fixtureCount": 51,
+    "fixturesDigest": "d71fc2a39f83688f9180b8b5d678fe917c34252cf805764de2cb2caa24e1451a",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "bfbc883ee23e1b5c3d3c25aa3754935a9631c166844cd42fa32e2efce58b4a05",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 67108864
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/aws-secret-access-key-actions-env.yml",
+      "start": 80,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-akia-next-line.txt",
+      "start": 100,
+      "end": 120,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-akia-same-line.log",
+      "start": 94,
+      "end": 114,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-compose-env.yml",
+      "start": 110,
+      "end": 150,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-create-access-key-yaml.yml",
+      "start": 71,
+      "end": 111,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-credentials-file-named-profile.ini",
+      "start": 36,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-credentials-file.ini",
+      "start": 53,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-dotenv.env",
+      "start": 50,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-export.sh",
+      "start": 30,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-hyphen-inside-twin.ini",
+      "start": 53,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-js-credentials.ts",
+      "start": 125,
+      "end": 165,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-json-member.json",
+      "start": 75,
+      "end": 115,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-tfvars.tfvars",
+      "start": 39,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-value-39-twin.env",
+      "start": 50,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-value-41-twin.sh",
+      "start": 30,
+      "end": 71,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "7c870e9ca8a9c59e4ab34a0544f7edc3ecf0cb6a0145c74b0d3bca1a572a38f6"
+}

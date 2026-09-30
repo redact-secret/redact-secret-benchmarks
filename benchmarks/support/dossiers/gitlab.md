@@ -17,7 +17,7 @@ families:
   - id: gitlab:routable-personal-access-token
     research:
       verdict: ready
-      tier: T2
+      tier: T1
       sources:
         - https://docs.gitlab.com/security/tokens/
         - https://gitlab.com/gitlab-org/gitlab/-/blob/87cb885dccf8cfa81ee5aa734b7f2e796413e221/lib/authn/token_field/generator/routable_token.rb
@@ -35,7 +35,10 @@ families:
       issues:
         - redact-secret/redact-secret-benchmarks#473
         - redact-secret/redact-secret#518
-      evidence: null
+        - redact-secret/redact-secret#1012
+        - redact-secret/redact-secret#1022
+        - redact-secret/redact-secret-benchmarks#528
+      evidence: https://github.com/redact-secret/redact-secret/blob/4fb78827f1ddf5b3106f25130ca510a836ada186/docs/audits/evidence/1012/gitlab-routable-personal-access-token.md
       researchedAt: 2026-09-29
     blockedBy: null
   - id: gitlab:runner-authentication-token

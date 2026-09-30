@@ -26,7 +26,10 @@ export function build464e({ fixture, synthetic }) {
   const underscored = probe.map(x => ({ ...x, slug: `${x.slug}-underscore` }));
   const openai = v => ["from openai import OpenAI\n\nclient = OpenAI(base_url=\"https://api.cerebras.ai/v1\", api_key=\"", v, "\")\n"];
   const pySdk = v => ["from cerebras.cloud.sdk import Cerebras\n\nclient = Cerebras(api_key=\"", v, "\")\nchat = client.chat.completions.create(model=\"llama3.1-8b\", messages=[])\n"];
-  const pineconeNeighbour = v => [`# .env\nPINECONE_API_KEY=${pinecone("neighbour")}\nCEREBRAS_API_KEY=`, v, "\n"];
+  // The neighbouring Pinecone key is a credential of its own, reported by the typed pinecone-api-key detector: an
+  // authored companion span (redacted with the Cerebras key at no collateral cost), never a Cerebras positive
+  // (docs/decisions/2026-09-30-accept-credential-named-and-typed-neighbour-redactions.md).
+  const pineconeNeighbour = v => ["# .env\nPINECONE_API_KEY=", { companion: pinecone("neighbour"), note: "A complete Pinecone pcsk_ key under PINECONE_API_KEY: its own credential, reported by pinecone-api-key; expected, never a Cerebras positive." }, "\nCEREBRAS_API_KEY=", v, "\n"];
   const contexts = [...probe, ...underscored,
     { axis: "sdk-config", slug: "openai-compat-underscore", ext: "py", build: openai },
     { axis: "sdk-config", slug: "python-sdk", ext: "py", build: pySdk },

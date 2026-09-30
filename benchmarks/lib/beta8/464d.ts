@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field } from '../contract-sources.ts';
-import { handoff, research, RERANK, HANDOFF_INDEX, R860, RULINGS_R2_R8, RULINGS_R9_R10, B464, product, at, src, reason, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG } from './464-sources.ts';
+import { handoff, research, RERANK, HANDOFF_INDEX, R860, RULINGS_R2_R8, RULINGS_R9_R10, B464, product, at, src, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG, splitGraduated } from './464-sources.ts';
 
 // Issue #464, slice d: Beta.12 contract for the Browserbase API key, bb_live_ only (#860, READY with an open-ended
 // body under the existing rulings; handoff docs/audits/evidence/860/browserbase.md; product redact-secret#973).
@@ -20,13 +20,11 @@ const RESEARCH = research('browserbase.md');
 
 export const BROWSERBASE_PATTERN = '^bb_live_[A-Za-z0-9]{20,}$';
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
-export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'browserbase-api-key', taxonomy: 'browserbase:api-key', issue, reason: reason('browserbase-api-key', 'browserbase_api_key', 973, 'The detector id is also this family\'s arrival id, so it graduates when the registry is re-pinned. bb_test_ stays issuance-gated and is unclaimed.') },
-];
+/** No arrival family remains: the family graduated to a registry detector at the 4fb7882 re-pin (redact-secret PR #1037). */
+export const arrivalFamilies: ArrivalFamily[] = [];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'browserbase-api-key': {
     tier: 'T1',
     pattern: BROWSERBASE_PATTERN,
@@ -46,6 +44,12 @@ export const contracts: Record<string, FormatContract> = {
     ],
   },
 };
+
+const split = splitGraduated(authored, ['browserbase-api-key']);
+/** Contracts for this slice's detector-id family, a registry detector since the 4fb7882 re-pin (redact-secret PR #1037). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'browserbase-api-key': 'documented-24' };

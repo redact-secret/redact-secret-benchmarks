@@ -1,29 +1,29 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-30T02:53:31.552Z",
+  "observedAt": "2026-09-30T08:47:52.010Z",
   "sourceRun": {
-    "runId": "2026-09-30T02:53:31.552Z-c34054",
-    "benchmarkRevision": "85694a1604874e4d0a24ef15225bbbaa32be85b2"
+    "runId": "2026-09-30T08:47:52.010Z-b39234",
+    "benchmarkRevision": "5b5faeba99414fff1c5d91f71648e568f6e2e702"
   },
   "input": {
     "surface": "comparison/beta8-464b",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "8dd87fdd8363ebdc4c4089e16ff35edba1a44631c1c81827583d147da9d032d4",
+    "corpusHash": "6f51a748d562e4451ad86621b5990cc10cd07ff08f4292c95c822b9c5d1f94f0",
     "fixtureCount": 37,
     "fixturesDigest": "e728248d693bad05bfb4db11d2661be0eb7bf15440d9a3306dc8cf944779fc28",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "7b49e5d73bdf08f138c639a4631d164ebba421e0fb672083b2c9e7f6c9c6398c",
-      "fixtureCount": 5516
+      "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
+      "fixtureCount": 5925
     }
   },
   "peer": {
     "id": "gitleaks",
     "version": "8.30.1",
     "mode": "Directory scan · default rules",
-    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configurationHash": "bfbc883ee23e1b5c3d3c25aa3754935a9631c166844cd42fa32e2efce58b4a05",
     "configuration": {
       "adapterVersion": 2,
       "familyMappingVersion": 2,
@@ -42,7 +42,7 @@
       ],
       "processLimits": {
         "timeout": 120000,
-        "maxBuffer": 16777216
+        "maxBuffer": 67108864
       },
       "rules": "default",
       "environmentRuleOverrides": false
@@ -52,7 +52,7 @@
       "platform": "darwin-arm64",
       "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
     },
-    "adapterDigest": "f7f72b2d21d7e19cb59717ad25b352bea8770f907ed284d7f95c49fe4fe3cfa6"
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
@@ -220,5 +220,5 @@
       "family": "clickhouse-cloud-api-secret"
     }
   ],
-  "digest": "67d333b97191e60c09c855805f8bfeb49a2a2023bb7ed6ce4c17a8fbc11d7f7f"
+  "digest": "0c457301b51ee24b1fb7ae93ccfa3ec87f5e5c0444a4618ac5cee7c42cac2655"
 }

@@ -1,6 +1,6 @@
 import type { ArrivalFamily, FixtureProfile, FormatContract } from '../../types.ts';
 import { provider, field } from '../contract-sources.ts';
-import { handoff, researchTable, HANDOFF_INDEX, R1014, RULINGS_R2_R8, B528, product, at, src, reason, GRADUATES, byFindingType, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG } from './528-sources.ts';
+import { handoff, researchTable, HANDOFF_INDEX, R1014, RULINGS_R2_R8, B528, product, at, src, TRUFFLEHOG_DETECTORS, GITLEAKS_CONFIG, scoredReason, splitGraduated } from './528-sources.ts';
 
 // Issue #528, slice j: Beta.12 contracts for the Axiom API token (xaat-) and personal access token (xapt-) (#1014 rank
 // 10, READY by R5; handoff docs/audits/evidence/1014/axiom.md; product redact-secret#1035). Owned by this slice only; see
@@ -20,10 +20,9 @@ const RESEARCH = researchTable('5900447540');
 const REFS = [GO_TOKEN, GO_TEST, DOCS, HANDOFF, RESEARCH, HANDOFF_INDEX, R1014, RULINGS_R2_R8, product(1035), B528];
 const UUID = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 
-/** Families measured here that no registry detector targets at the pinned product revision. */
+/** Sibling types the product reports inside a shared detector under their own finding type: arrival families scored by finding type since the 4fb7882 re-pin. */
 export const arrivalFamilies: ArrivalFamily[] = [
-  { id: 'axiom-token', taxonomy: 'axiom:api-token', issue, reason: reason('axiom-token', 'axiom_api_token', 1035, GRADUATES) },
-  { id: 'axiom-personal-token', taxonomy: 'axiom:personal-token', issue, reason: reason('axiom-token', 'axiom_personal_token', 1035, byFindingType('xapt-', 'axiom-token')) },
+  { id: 'axiom-personal-token', taxonomy: 'axiom:personal-token', issue, reason: scoredReason('axiom-token', 'axiom_personal_token', 1035) },
 ];
 
 const shared = (prefix: string) => [
@@ -34,8 +33,8 @@ const shared = (prefix: string) => [
   field({ field: 'peer-lag', claim: 'no Axiom rule in trufflehog 3.97.4 or gitleaks 8.30.1: both lag on every positive', basis: 'tool', status: 'frozen', sources: [src(TRUFFLEHOG_DETECTORS, 'no axiom detector directory at the pinned version'), src(GITLEAKS_CONFIG, 'no axiom rule')] }),
 ];
 
-/** Contracts for `arrivalFamilies` ids only. */
-export const contracts: Record<string, FormatContract> = {
+/** Every contract this slice authored; split at the re-pin below. */
+const authored: Record<string, FormatContract> = {
   'axiom-token': {
     tier: 'T1',
     pattern: `^xaat-${UUID}$`,
@@ -55,6 +54,12 @@ export const contracts: Record<string, FormatContract> = {
     fields: [...shared('xapt- (personal access token)'), field({ field: 'transport', claim: 'AXIOM_TOKEN with AXIOM_ORG_ID; Authorization: Bearer with the x-axiom-org-id header', basis: 'provider-documentation', status: 'frozen', sources: [src(DOCS), src(HANDOFF, 'role and blast radius')] })],
   },
 };
+
+const split = splitGraduated(authored, ['axiom-token']);
+/** Contracts for this slice's detector-id family, a registry detector since the 4fb7882 re-pin (redact-secret PR #1039). */
+export const registryContracts: Record<string, FormatContract> = split.registryContracts;
+/** Contracts for `arrivalFamilies` ids only. */
+export const contracts: Record<string, FormatContract> = split.contracts;
 
 /** The Beta.8 profile each target this slice owns is authored toward. */
 export const profiles: Record<string, FixtureProfile> = { 'axiom-token': 'documented-24', 'axiom-personal-token': 'documented-24' };

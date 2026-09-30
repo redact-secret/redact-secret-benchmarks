@@ -4,7 +4,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   resolveHub, resolveFeaturePage, resolveRuntimePanels, milliseconds, megabytesPerSecond, kibibytes, activeFamilies,
-  analysisOf, domainOf, viewOf, featureFilterOf, featureFilterString,
+  analysisOf, domainOf, viewOf, featureFilterOf, featureFilterString, stabilityNote,
 } from '../web/resolvers/comparison.ts';
 import { featureClaimsProblem } from '../web/services/features.ts';
 
@@ -154,4 +154,123 @@ test('comparison query contract: unknown values fall back to the defaults', () =
   assert.deepEqual([analysisOf('internal'), domainOf('credentials'), viewOf('speed')], ['internal', 'credentials', 'speed']);
   assert.equal(featureFilterOf(new URLSearchParams('rows=differences')), 'differences');
   assert.equal(featureFilterString('all'), '');
+});
+
+// ---- #562 / #563: recorded outcomes and per-setting runs ---------------------------------------------------
+
+const cmpWorkload = (id, domain, lines) => ({ id, domain, question: `Question ${id}?`, description: `About ${id}.`, lines });
+const piiLines = [
+  { label: 'Email', values: [{ kind: 'email', family: 'pii:global:email' }] },
+  { label: 'US SSN', values: [{ kind: 'us-ssn', family: 'pii:us:ssn' }] },
+  { label: 'Email and phone', values: [{ kind: 'email', family: 'pii:global:email' }, { kind: 'phone', family: 'pii:global:phone' }] },
+];
+const credLines = [{ label: 'Token', values: [{ kind: 'github-token' }] }, { label: 'Hash', values: [{ kind: 'checksum' }] }];
+const cmpWorkloads = [cmpWorkload('pii-a', 'pii', piiLines), cmpWorkload('cred-a', 'credentials', credLines)];
+const o = (changed, valuesHidden, replacement = '') => ({ changed, valuesHidden, replacement });
+const cmpObs = (tool, workload, medianMs) => ({ tool, workload, workloadBytes: 131072, medianMs, p95Ms: medianMs, medianBytesPerSecond: 131072 / (medianMs / 1000) });
+function cmpRun(families, rsPii, rsCred, ms = 10) {
+  return {
+    state: 'measured', generatedAt: '2026-09-30T12:00:00Z', runner: { platform: 'linux', arch: 'x64', node: 'v22', cpuModel: 'Test CPU', cpuLimit: 4 },
+    tools: [{ id: 'redact-secret', version: '9.9.9', buildKind: 'local-source-build' }, { id: 'flare-redact', version: '1.0.0', buildKind: 'published-npm-package' }, { id: 'openredaction', version: '2.0.0', buildKind: 'published-npm-package' }],
+    families, activation: `credentials=full;selectors=x;families=${families.join(',')};vocabulary=v`, methodologyNotes: ['a note'],
+    observations: ['redact-secret', 'flare-redact', 'openredaction'].flatMap((tool, i) => ['pii-a', 'cred-a'].map(w => cmpObs(tool, w, ms * (i + 1)))),
+    outcomes: {
+      'redact-secret/pii-a': rsPii, 'redact-secret/cred-a': rsCred,
+      'flare-redact/pii-a': [o(true, 1, '***@***'), o(false, 0), o(true, 1, '***@***')], 'flare-redact/cred-a': [o(true, 1, '***'), o(false, 0)],
+      'openredaction/pii-a': [o(true, 1, '[EMAIL_1]'), o(false, 0), o(true, 2, '[X] [Y]')], 'openredaction/cred-a': [o(false, 0), o(false, 0)],
+    },
+    samplesPerCell: 12, commitment: 'c', path: 'evidence/562/x.json',
+  };
+}
+const setting = (id, label, sub, selectors, run) => ({ id, label, sub, selectors, run });
+const comparison = {
+  planId: 'runtime-comparison-v2', lineCount: 4096, workloads: cmpWorkloads,
+  settings: [
+    setting('default', 'Default', 'no PII', [], cmpRun([], [o(false, 0), o(false, 0), o(false, 0)], [o(true, 1, '<S_1>'), o(false, 0)], 8)),
+    setting('pii-global', 'PII', 'pii:global', ['pii:global'], cmpRun(['pii:global:email', 'pii:global:phone'], [o(true, 1, '<S_1>'), o(false, 0), o(true, 1, '<S_1> phone')], [o(true, 1, '<S_1>'), o(false, 0)], 12)),
+    setting('pii-global-us', 'PII + US', 'adds pii:us', ['pii:global', 'pii:us'], cmpRun(['pii:global:email', 'pii:global:phone', 'pii:us:ssn'], [o(true, 1, '<S_1>'), o(true, 1, '<S_1>'), o(true, 2, '<S_1> <S_2>')], [o(true, 1, '<S_1>'), o(false, 0)], 14)),
+  ],
+};
+const withComparison = { ...runtime, comparison };
+const panelsWith = resolveRuntimePanels(withComparison);
+const panelOf = key => panelsWith.find(p => p.key === key);
+
+test('with recorded outcomes every measured combination has one panel per view, keyed analysis-domain-view', () => {
+  assert.deepEqual(panelsWith.map(p => p.key), [
+    'external-pii-all', 'external-pii-speed', 'external-pii-accuracy', 'internal-pii-all', 'internal-pii-speed', 'internal-pii-accuracy',
+    'internal-credentials-all', 'internal-credentials-speed', 'internal-credentials-accuracy', 'external-credentials-all', 'external-credentials-speed', 'external-credentials-accuracy',
+  ]);
+  assert.ok(panelsWith.every(p => p.props.toolbar.legend.length === 4));
+  assert.equal(panelOf('internal-pii-accuracy').props.toolbar.currentHref, '/comparison/runtime/?analysis=internal&domain=pii&view=accuracy');
+  const ids = panelsWith.flatMap(p => p.props.questions.map(q => q.id));
+  assert.equal(new Set(ids).size, ids.length, 'question ids are unique across the pre-rendered panels');
+});
+
+test('external PII: rows are the plan lines, outcomes are the recorded ones, "Switch off" only for an unchanged line whose family is off', () => {
+  const q = panelOf('external-pii-all').props.questions[0];
+  assert.equal(q.outcomesRecorded, true);
+  assert.deepEqual(q.rows.map(r => r.label), ['Email', 'US SSN', 'Email and phone']);
+  const [email, ssn, both] = q.rows;
+  assert.deepEqual(email.cells['redact-secret'], { outcome: 'replaced', word: 'Hidden', how: 'shown as <S_1>' });
+  assert.deepEqual(ssn.cells['redact-secret'], { outcome: 'not-applicable', word: 'Switch off' }, 'pii:us:ssn is not in the pii:global families');
+  assert.equal(ssn.cells['flare-redact'].outcome, 'unchanged', 'a library has no such switch: an unchanged line is "Left as is"');
+  assert.equal(both.cells['redact-secret'].outcome, 'partial', 'one of two values hidden');
+  assert.equal(both.cells.openredaction.outcome, 'replaced');
+  assert.deepEqual(q.hidden['redact-secret'], { percent: '50%', count: '2 of 4' });
+  assert.deepEqual(q.hidden.openredaction, { percent: '75%', count: '3 of 4' });
+  assert.equal(q.timing['redact-secret'].medianMs, '12.0');
+  assert.equal(q.size, '128.0 KiB');
+  assert.equal(q.workload, 'pii-a');
+});
+
+test('internal PII: one column per setting, each read from its own run', () => {
+  const panel = panelOf('internal-pii-all');
+  assert.deepEqual(panel.props.columns.map(c => c.id), ['default', 'pii-global', 'pii-global-us']);
+  const q = panel.props.questions[0];
+  assert.deepEqual(q.rows[1].cells.default, { outcome: 'not-applicable', word: 'Switch off' });
+  assert.equal(q.rows[1].cells['pii-global-us'].outcome, 'replaced');
+  assert.deepEqual(q.hidden.default, { percent: '0%', count: '0 of 4' });
+  assert.deepEqual(q.hidden['pii-global-us'], { percent: '100%', count: '4 of 4' });
+  assert.deepEqual([q.timing.default.medianMs, q.timing['pii-global'].medianMs, q.timing['pii-global-us'].medianMs], ['8.0', '12.0', '14.0']);
+  assert.equal(panel.props.facts.find(f => f.label === 'Turns on').cells.default.text, 'no PII family');
+  assert.equal(panel.props.facts.find(f => f.label === 'Turns on').cells['pii-global-us'].text, 'email, phone, ssn');
+});
+
+test('credentials: the questions are the credential workloads; libraries are timed at Default, a credential line is never "Switch off"', () => {
+  const external = panelOf('external-credentials-all');
+  assert.equal(external.props.questions[0].workload, 'cred-a');
+  assert.equal(external.props.columns[0].sub, 'no PII');
+  assert.equal(external.props.questions[0].timing['redact-secret'].medianMs, '8.0');
+  assert.equal(external.props.questions[0].rows[1].cells['redact-secret'].outcome, 'unchanged');
+  assert.equal(external.props.questions[0].rows[0].cells.openredaction.outcome, 'unchanged');
+  const internal = panelOf('internal-credentials-all');
+  assert.equal(internal.props.questions[0].rows[0].cells.default.outcome, 'replaced');
+});
+
+test('a setting with no run keeps its cells "not measured" and says why; a panel with no run at all is one unswitchable panel', () => {
+  const partial = { ...comparison, settings: comparison.settings.map(s => (s.id === 'pii-global-us' ? { ...s, run: { state: 'not-published', reason: 'us run absent.' } } : s)) };
+  const panels = resolveRuntimePanels({ ...runtime, comparison: partial });
+  const q = panels.find(p => p.key === 'internal-pii-all').props.questions[0];
+  assert.equal(q.rows[0].cells['pii-global-us'], null);
+  assert.equal(q.hidden['pii-global-us'], null);
+  assert.equal(q.timing['pii-global-us'], null);
+  const none = { ...comparison, settings: comparison.settings.map((s, i) => (i === 0 ? s : { ...s, run: { state: 'invalid', reason: 'stale summary.' } })) };
+  const onlyDefault = resolveRuntimePanels({ ...runtime, comparison: none });
+  const ext = onlyDefault.find(p => p.key === 'external-pii');
+  assert.equal(ext.view, null);
+  assert.ok(ext.props.questions.every(qq => qq.notMeasured === 'stale summary.'));
+  assert.equal(ext.props.toolbar, undefined);
+});
+
+test('the machine variation is recorded from the unchanged libraries, and stated only with two runs', () => {
+  assert.match(stabilityNote(comparison), /3 runs the same flare-redact and OpenRedaction calls on the same text moved by up to 75%/);
+  const one = { ...comparison, settings: comparison.settings.map((s, i) => (i ? { ...s, run: { state: 'not-published', reason: 'r' } } : s)) };
+  assert.equal(stabilityNote(one), undefined);
+});
+
+test('the hub reads the newest run and counts the test texts measured', () => {
+  const hub = resolveHub({ runtime: withComparison, features: { state: 'not-recorded', reason: 'x' }, run: { state: 'not-published', reason: 'r' } });
+  assert.equal(hub.questions[0].fact, '2 test texts');
+  assert.equal(hub.questions[0].factNote, 'personal data and credentials, made up');
+  assert.match(hub.runs[0].detail, /^2026-09-30 · redact-secret 9\.9\.9/);
 });

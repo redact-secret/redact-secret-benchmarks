@@ -27,7 +27,9 @@ const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const basePath = process.env.BASE_PATH ?? '/next';
 const WIDTHS = [320, 375, 768];
 const MAX_WORD = 24;
-const ROUTES = ['report', 'report/?level=T2', 'report/?level=T3&peers=1', 'report/providers', 'report/providers/?q=github&show=signal', 'report/families', 'report/families/?show=empty', 'comparison', 'comparison/feature', 'comparison/runtime', 'comparison/runtime/?view=speed', 'comparison/runtime/?view=accuracy', 'comparison/runtime/?analysis=internal&domain=pii', 'comparison/runtime/?analysis=external&domain=credentials'];
+const ROUTES = ['report', 'report/?level=T2', 'report/?level=T3&peers=1', 'report/providers', 'report/providers/?q=github&show=signal', 'report/families', 'report/families/?show=empty', 'comparison', 'comparison/feature', 'comparison/runtime', 'comparison/runtime/?view=speed', 'comparison/runtime/?view=accuracy', 'comparison/runtime/?analysis=internal&domain=pii', 'comparison/runtime/?analysis=external&domain=credentials',
+  // #562/#563: outcome rows, the legend and shares in every measured panel, at each view that changes what is drawn.
+  'comparison/runtime/?analysis=internal&domain=pii&view=accuracy', 'comparison/runtime/?analysis=internal&domain=credentials', 'comparison/runtime/?analysis=external&domain=credentials&view=accuracy', 'comparison/runtime/?analysis=external&domain=pii&view=speed'];
 // The real family pages (#556): the family with the most fixtures (paged rows), one with a few, and one with none.
 const repoRoot = path.resolve(webRoot, '..');
 const taxonomy = JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/support/taxonomy.json'), 'utf8'));

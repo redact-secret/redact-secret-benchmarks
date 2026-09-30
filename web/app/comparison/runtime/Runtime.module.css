@@ -5,7 +5,8 @@
    * on the root element (RuntimeSync and the inline script in the page), so a static
    * export serves every combination from one page and the URL stays
    * `/comparison/runtime/?analysis=internal&domain=pii`. Without script the default
-   * panel (external, PII, all) shows. A panel with nothing to switch between shows at every view.
+   * panel (external, PII, all) shows. A panel with nothing to switch between (no measurement behind it) is keyed without a view and shows at every view; a
+   * panel with a measurement has one panel per view, keyed `analysis-domain-view`.
    */
   .panel {
     display: none;
@@ -22,8 +23,18 @@
   :global(:root[data-analysis='external'][data-domain='pii'][data-view='all']) .panel[data-key='external-pii-all'],
   :global(:root[data-analysis='external'][data-domain='pii'][data-view='speed']) .panel[data-key='external-pii-speed'],
   :global(:root[data-analysis='external'][data-domain='pii'][data-view='accuracy']) .panel[data-key='external-pii-accuracy'],
-  :global(:root[data-analysis='internal'][data-domain='pii']) .panel[data-key='internal-pii'],
+  :global(:root[data-analysis='external'][data-domain='pii']) .panel[data-key='external-pii'],
+  :global(:root[data-analysis='external'][data-domain='credentials'][data-view='all']) .panel[data-key='external-credentials-all'],
+  :global(:root[data-analysis='external'][data-domain='credentials'][data-view='speed']) .panel[data-key='external-credentials-speed'],
+  :global(:root[data-analysis='external'][data-domain='credentials'][data-view='accuracy']) .panel[data-key='external-credentials-accuracy'],
   :global(:root[data-analysis='external'][data-domain='credentials']) .panel[data-key='external-credentials'],
+  :global(:root[data-analysis='internal'][data-domain='pii'][data-view='all']) .panel[data-key='internal-pii-all'],
+  :global(:root[data-analysis='internal'][data-domain='pii'][data-view='speed']) .panel[data-key='internal-pii-speed'],
+  :global(:root[data-analysis='internal'][data-domain='pii'][data-view='accuracy']) .panel[data-key='internal-pii-accuracy'],
+  :global(:root[data-analysis='internal'][data-domain='pii']) .panel[data-key='internal-pii'],
+  :global(:root[data-analysis='internal'][data-domain='credentials'][data-view='all']) .panel[data-key='internal-credentials-all'],
+  :global(:root[data-analysis='internal'][data-domain='credentials'][data-view='speed']) .panel[data-key='internal-credentials-speed'],
+  :global(:root[data-analysis='internal'][data-domain='credentials'][data-view='accuracy']) .panel[data-key='internal-credentials-accuracy'],
   :global(:root[data-analysis='internal'][data-domain='credentials']) .panel[data-key='internal-credentials'] {
     display: block;
   }

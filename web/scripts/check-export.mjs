@@ -51,7 +51,7 @@ async function* walk(dir) {
 for await (const file of walk(path.join(out, '_next', 'static'))) {
   if (!file.endsWith('.js')) continue;
   const text = await readFile(file, 'utf8');
-  if (/pin-manifest|evidence\/429|feature-claims|peer-pii-runtime|support\/taxonomy|public\/results|results\/summary|known-gaps|fixture-index|summary\.json/.test(text)) fail(`${path.relative(out, file)} names a ledger file: ledger data must be read at build time only`);
+  if (/pin-manifest|evidence\/429|evidence\/562|runtime-comparison-v2|feature-claims|peer-pii-runtime|support\/taxonomy|public\/results|results\/summary|known-gaps|fixture-index|summary\.json/.test(text)) fail(`${path.relative(out, file)} names a ledger file: ledger data must be read at build time only`);
 }
 
 // ---- The report pages carry the ledger's numbers (#556) ----------------------------------
@@ -119,9 +119,91 @@ const runtimePage = text(runtimeHtml);
 const featurePage = await page('comparison/feature');
 const ms = n => (n < 100 ? n.toFixed(1) : Math.round(n).toLocaleString('en-US'));
 const mbs = n => (n / 1e6).toFixed(1);
+const SETTINGS = ['default', 'pii-global', 'pii-global-us'];
+const plan2 = await readJson('qualification/runtime-comparison-v2.json');
+const reports = {};
+for (const id of SETTINGS) { try { reports[id] = await readJson(`evidence/562/runtime-comparison-${id}.json`); } catch { /* not committed */ } }
 let snapshot;
 try { snapshot = await readJson('evidence/429/peer-pii-runtime-throughput.json'); } catch { /* not committed */ }
-if (!snapshot) {
+const cells = html => [...html.matchAll(/<td\b[^>]*>([\s\S]*?)<\/td>/g)].map(m => ({ outcome: /data-outcome="([^"]+)"/.exec(m[1])?.[1], text: text(m[1]).trim() }));
+const rowsOf = html => [...html.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/g)].map(m => ({ label: text(/<th\b[^>]*>([\s\S]*?)<\/th>/.exec(m[1])?.[1] ?? '').trim(), cells: cells(m[1]) })).filter(r => r.label);
+const panelChunk = key => runtimeHtml.split('data-key="').find(chunk => chunk.startsWith(`${key}"`));
+
+if (Object.keys(reports).length) {
+  // Outcomes and times are recomputed here from the committed reports and the plan, never through web/resolvers.
+  const outcomeOf = (report, tool, workload, i) => {
+    const rec = report.outcomes.find(o => o.tool === tool && o.workload === workload.id).lines[i];
+    const line = workload.lines[i];
+    if (!rec.changed && tool === 'redact-secret' && line.values.every(v => v.family && !report.setting.families.includes(v.family))) return 'not-applicable';
+    return rec.valuesHidden === line.values.length ? 'replaced' : rec.valuesHidden > 0 || rec.changed ? 'partial' : 'unchanged';
+  };
+  const hiddenOf = (report, tool, workload) => {
+    const total = workload.lines.reduce((n, l) => n + l.values.length, 0);
+    const hidden = report.outcomes.find(o => o.tool === tool && o.workload === workload.id).lines.reduce((n, l) => n + l.valuesHidden, 0);
+    return { percent: `${Math.round((hidden / total) * 100)}%`, count: `${hidden.toLocaleString('en-US')} of ${total.toLocaleString('en-US')}` };
+  };
+  // [analysis, domain, columns]: a column is a tool measured in one setting's report.
+  const libs = setting => ['redact-secret', 'flare-redact', 'openredaction'].map(tool => ({ tool, setting }));
+  const PANELS = [
+    ['external', 'pii', libs('pii-global')],
+    ['internal', 'pii', SETTINGS.map(setting => ({ tool: 'redact-secret', setting }))],
+    ['internal', 'credentials', SETTINGS.map(setting => ({ tool: 'redact-secret', setting }))],
+    ['external', 'credentials', libs('default')],
+  ];
+  let checkedQuestions = 0;
+  for (const [analysis, domain, columns] of PANELS) {
+    const needed = [...new Set(columns.map(c => c.setting))];
+    const workloads = plan2.workloads.filter(w => w.domain === domain);
+    for (const view of ['all', 'speed', 'accuracy']) {
+      const key = `${analysis}-${domain}-${view}`;
+      if (needed.some(s => !reports[s])) {
+        if (!panelChunk(`${analysis}-${domain}`) || !text(panelChunk(`${analysis}-${domain}`)).includes('Not measured yet')) fail(`/comparison/runtime/ panel ${analysis}-${domain} lacks a snapshot and must say "Not measured yet"`);
+        break;
+      }
+      const chunk = panelChunk(key);
+      if (!chunk) { fail(`/comparison/runtime/ has no panel for ${key}`); continue; }
+      if (!chunk.includes('aria-label="Outcome key"')) fail(`/comparison/runtime/ ${key} has no outcome key`);
+      for (const workload of workloads) {
+        const section = chunk.split('<section').find(part => part.includes(`id="${key}-${workload.id}-h"`));
+        if (!section) { fail(`/comparison/runtime/ ${key} has no question for ${workload.id}`); continue; }
+        checkedQuestions++;
+        const rows = rowsOf(section);
+        if (view !== 'accuracy') {
+          const timeRow = rows.find(r => r.label.startsWith('Usual time')), speed = rows.find(r => r.label.startsWith('Speed'));
+          columns.forEach((c, i) => {
+            const o = reports[c.setting].observations.find(x => x.tool === c.tool && x.workload === workload.id);
+            if (timeRow?.cells[i]?.text !== ms(o.summary.medianMs)) fail(`/comparison/runtime/ ${key} ${workload.id}: ${c.tool} in ${c.setting} shows ${timeRow?.cells[i]?.text} ms, the snapshot says ${ms(o.summary.medianMs)}`);
+            if (speed?.cells[i]?.text !== mbs(o.summary.medianBytesPerSecond)) fail(`/comparison/runtime/ ${key} ${workload.id}: ${c.tool} in ${c.setting} shows ${speed?.cells[i]?.text} MB/s, the snapshot says ${mbs(o.summary.medianBytesPerSecond)}`);
+          });
+        }
+        if (view !== 'speed') {
+          workload.lines.forEach(line => {
+            const row = rows.find(r => r.label === line.label);
+            const index = workload.lines.indexOf(line);
+            if (!row) { fail(`/comparison/runtime/ ${key} ${workload.id} has no row "${line.label}"`); return; }
+            columns.forEach((c, i) => {
+              const want = outcomeOf(reports[c.setting], c.tool, workload, index);
+              if (row.cells[i]?.outcome !== want) fail(`/comparison/runtime/ ${key} ${workload.id} "${line.label}": ${c.tool} in ${c.setting} shows ${row.cells[i]?.outcome}, the snapshot records ${want}`);
+            });
+          });
+          const hiddenRow = rows.find(r => r.label === 'Hidden');
+          columns.forEach((c, i) => {
+            const want = hiddenOf(reports[c.setting], c.tool, workload);
+            if (hiddenRow?.cells[i]?.text.replace(/\s+/g, '') !== `${want.percent}${want.count}`.replace(/\s+/g, '')) fail(`/comparison/runtime/ ${key} ${workload.id}: ${c.tool} in ${c.setting} shows hidden "${hiddenRow?.cells[i]?.text}", the snapshot says ${want.percent} ${want.count}`);
+          });
+        }
+      }
+    }
+  }
+  const newest = Object.values(reports).map(r => r.generatedAt).sort().at(-1);
+  const pii = reports['pii-global'] ?? Object.values(reports)[0];
+  for (const t of pii.tools) if (!runtimePage.includes(t.version)) fail(`/comparison/runtime/ does not state ${t.id} ${t.version}`);
+  if (!runtimePage.includes(newest.slice(0, 10))) fail('/comparison/runtime/ does not state the run date');
+  if (!runtimePage.includes('local build · unreleased')) fail('/comparison/runtime/ does not state that redact-secret was a local unreleased build');
+  const measuredTexts = new Set(Object.values(reports).flatMap(r => r.observations.map(o => o.workload))).size;
+  if (!hub.includes(newest.slice(0, 10)) || !hub.includes(`${measuredTexts} test texts`)) fail('/comparison/ does not state the runtime run date and test-text count');
+  if (!checkedQuestions) fail('/comparison/runtime/: no measured question was checked against the snapshots');
+} else if (!snapshot) {
   if (!runtimePage.includes('Not measured yet')) fail('/comparison/runtime/ has no snapshot to read and must say "Not measured yet"');
 } else {
   for (const o of snapshot.observations) {
@@ -134,8 +216,9 @@ if (!snapshot) {
   if (!runtimePage.includes('local build · unreleased')) fail('/comparison/runtime/ does not state that redact-secret was a local unreleased build');
   if (!hub.includes(snapshot.generatedAt.slice(0, 10)) || !hub.includes(`${new Set(snapshot.observations.map(o => o.workload)).size} test texts`)) fail('/comparison/ does not state the runtime run date and test-text count');
 }
-for (const key of ['external-pii-all', 'external-pii-speed', 'external-pii-accuracy', 'internal-pii', 'internal-credentials', 'external-credentials']) {
-  if (!runtimeHtml.includes(`data-key="${key}"`)) fail(`/comparison/runtime/ has no panel for ${key}`);
+// A panel with a measurement has one panel per view, keyed analysis-domain-view; one without has a single panel, keyed analysis-domain.
+for (const key of ['external-pii', 'internal-pii', 'internal-credentials', 'external-credentials']) {
+  if (!runtimeHtml.includes(`data-key="${key}"`) && !runtimeHtml.includes(`data-key="${key}-all"`)) fail(`/comparison/runtime/ has no panel for ${key}`);
 }
 for (const q of ['analysis', 'domain', 'view']) if (!runtimeHtml.includes(`data-${q}`) && !runtimeHtml.includes(`dataset.${q}`)) fail(`/comparison/runtime/ does not carry the ${q} query state`);
 let claims;

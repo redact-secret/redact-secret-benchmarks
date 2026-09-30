@@ -63,6 +63,10 @@ is judged afresh:
 | `size/wasm/common/gzip` | 100,058 | 137,650 | 137,879 | +229 | regression (not accepted) |
 | `size/browser-bundle/quickstart/gzip` | 144,501 | 211,130 | 211,335 | +205 | regression (not accepted) |
 
-No tradeoff is recorded here, because that is a maintainer decision. So `performance-criteria.json`
-`baseline.verifiedCommit` stays at `99c8c2b`, and `pins:check` reports that single mismatch until a maintainer
-accepts these rows for `da69ebf` and an accepted run is recorded.
+The maintainer's 2026-09-30 decision (option A, first recorded at `99c8c2b`) accepts Beta.12's size growth on these
+three rows as a tradeoff for the Beta.12 detector additions. `da69ebf` adds only the #1046 Deepgram widening
+(+205 to +229 bytes, about 0.1%), so the same decision is applied to the same rows rather than a new tradeoff
+being made. The orchestrator relayed it, and it is recorded as three `beta12-da69ebf-*` entries in
+`benchmarks/accepted-regressions.json` for `da69ebf` only. The performance evaluation re-dispatched after that record
+is in [`../da69ebf-verified/`](../da69ebf-verified/), and `performance-criteria.json` `baseline.verifiedCommit`
+advances to `da69ebf`.

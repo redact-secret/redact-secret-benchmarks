@@ -957,5 +957,89 @@
     },
     "decidedAt": "2026-09-30",
     "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-30, option A, accepting the Beta.12 WASM and quickstart-bundle size growth at 99c8c2b; relayed by the Beta.12 orchestrator)"
+  },
+  {
+    "id": "beta12-da69ebf-wasm-full-gzip",
+    "triggerId": "size/wasm/full/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "da69ebf5090e0fb9519eb07829ff46001ede0de2"
+    },
+    "measured": {
+      "baseline": 137639,
+      "candidate": 203957,
+      "unit": "bytes"
+    },
+    "rationale": "Full-profile WASM gzip is 203,957 bytes against the 0.1.0-beta.8 baseline of 137,639 at redact-secret da69ebf (main after PR #1047), measured by performance-evaluation.yml run 36696368348. That is +209 bytes (+0.10%) over the 203,748 bytes accepted at 99c8c2b (entry beta12-99c8c2b-wasm-full-gzip). da69ebf adds only the redact-secret#1046 Deepgram indented-request widening to 99c8c2b. This is the same maintainer decision of 2026-09-30 (option A, first recorded at 99c8c2b) applied to the same row: Beta.12's size growth is accepted as a tradeoff for the Beta.12 detector additions. It is not a new tradeoff. The paired latency, initialization and memory rows are within budget in the same run. Evidence: evidence/1046/da69ebf/README.md. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.12 detector additions (about 26 provider credential families, accepted at 99c8c2b) plus the #1046 fix, which makes deepgram-api-key stable in benchmark candidate mode at da69ebf (127 of 135 scored families stable).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1037",
+        "https://github.com/redact-secret/redact-secret/pull/1039",
+        "https://github.com/redact-secret/redact-secret/pull/1045",
+        "https://github.com/redact-secret/redact-secret/pull/1047",
+        "https://github.com/redact-secret/redact-secret-benchmarks/pull/530",
+        "https://github.com/redact-secret/redact-secret-benchmarks/pull/536"
+      ]
+    },
+    "decidedAt": "2026-09-30",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-30, option A, originally recorded at 99c8c2b, applied to da69ebf's same rows; relayed by the Beta.12 orchestrator)"
+  },
+  {
+    "id": "beta12-da69ebf-wasm-common-gzip",
+    "triggerId": "size/wasm/common/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "da69ebf5090e0fb9519eb07829ff46001ede0de2"
+    },
+    "measured": {
+      "baseline": 100058,
+      "candidate": 137879,
+      "unit": "bytes"
+    },
+    "rationale": "Common-profile WASM gzip is 137,879 bytes against the 0.1.0-beta.8 baseline of 100,058 at redact-secret da69ebf (main after PR #1047), measured by performance-evaluation.yml run 36696368348. That is +229 bytes (+0.17%) over the 137,650 bytes accepted at 99c8c2b (entry beta12-99c8c2b-wasm-common-gzip). da69ebf adds only the redact-secret#1046 Deepgram indented-request widening to 99c8c2b. This is the same maintainer decision of 2026-09-30 (option A, first recorded at 99c8c2b) applied to the same row: Beta.12's size growth is accepted as a tradeoff for the Beta.12 detector additions. It is not a new tradeoff. The paired latency, initialization and memory rows are within budget in the same run. Evidence: evidence/1046/da69ebf/README.md. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.12 detector additions (about 26 provider credential families, accepted at 99c8c2b) plus the #1046 fix, which makes deepgram-api-key stable in benchmark candidate mode at da69ebf (127 of 135 scored families stable).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1037",
+        "https://github.com/redact-secret/redact-secret/pull/1039",
+        "https://github.com/redact-secret/redact-secret/pull/1045",
+        "https://github.com/redact-secret/redact-secret/pull/1047",
+        "https://github.com/redact-secret/redact-secret-benchmarks/pull/530",
+        "https://github.com/redact-secret/redact-secret-benchmarks/pull/536"
+      ]
+    },
+    "decidedAt": "2026-09-30",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-30, option A, originally recorded at 99c8c2b, applied to da69ebf's same rows; relayed by the Beta.12 orchestrator)"
+  },
+  {
+    "id": "beta12-da69ebf-quickstart-bundle-gzip",
+    "triggerId": "size/browser-bundle/quickstart/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "da69ebf5090e0fb9519eb07829ff46001ede0de2"
+    },
+    "measured": {
+      "baseline": 144501,
+      "candidate": 211335,
+      "unit": "bytes"
+    },
+    "rationale": "The quickstart browser bundle a default initialize() fetches is 211,335 bytes against the 0.1.0-beta.8 baseline of 144,501 at redact-secret da69ebf (main after PR #1047), measured by performance-evaluation.yml run 36696368348. That is +205 bytes (+0.10%) over the 211,130 bytes accepted at 99c8c2b (entry beta12-99c8c2b-quickstart-bundle-gzip). da69ebf adds only the redact-secret#1046 Deepgram indented-request widening to 99c8c2b. This is the same maintainer decision of 2026-09-30 (option A, first recorded at 99c8c2b) applied to the same row: Beta.12's size growth is accepted as a tradeoff for the Beta.12 detector additions. It is not a new tradeoff. The paired latency, initialization and memory rows are within budget in the same run. Evidence: evidence/1046/da69ebf/README.md. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.12 detector additions (about 26 provider credential families, accepted at 99c8c2b) plus the #1046 fix, which makes deepgram-api-key stable in benchmark candidate mode at da69ebf (127 of 135 scored families stable).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1037",
+        "https://github.com/redact-secret/redact-secret/pull/1039",
+        "https://github.com/redact-secret/redact-secret/pull/1045",
+        "https://github.com/redact-secret/redact-secret/pull/1047",
+        "https://github.com/redact-secret/redact-secret-benchmarks/pull/530",
+        "https://github.com/redact-secret/redact-secret-benchmarks/pull/536"
+      ]
+    },
+    "decidedAt": "2026-09-30",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-30, option A, originally recorded at 99c8c2b, applied to da69ebf's same rows; relayed by the Beta.12 orchestrator)"
   }
 ]

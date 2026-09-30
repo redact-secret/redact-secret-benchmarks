@@ -63,6 +63,12 @@ export interface Snapshot {
   readonly productVersion: string;
   readonly sourceCommit: string;
   readonly takenAt: string;
+  /**
+   * Set when this snapshot re-takes only the adapter-overhead series of the named earlier baseline (#472): same
+   * product commit, every other metric identical (checked by `historyProblems`). Accepted tradeoffs recorded
+   * against the earlier baseline keep applying, because their measured baseline values are unchanged.
+   */
+  readonly continues?: string;
   readonly sources: Record<string, unknown>;
   /** Profile identities a candidate must match for each dimension to be comparable. */
   readonly profiles: Record<string, Record<string, string>>;
@@ -753,7 +759,7 @@ export const RULES = {
   initialization: 'judged on the same-job paired ratio, like latency: a regression is an initialization median ratio above 1 + ceil5%(max(25%, 2 x the row\'s largest A/A median ratio deviation)) that also rises by more than 2 ms; a p95 ratio above 1 + ceil5%(max(50%, 2 x the row\'s largest A/A p95 ratio deviation)) and 2 ms with the median inside is tail-only (invalid-measurement, rerun); at least 10 samples per side',
   memory: 'the largest observed sample must rise by more than ceil5%(max(10%, 2 x the larger of the CI cross-run spread and the rerun spread)) and 1 MiB; at least 5 samples',
   size: 'sizes are deterministic (16 bytes observed between two platforms\' builds of one wasm), so the threshold is review policy anchored to release history: 5% (the median of the last releases\' 4.0-10.3% per-release growth), with floors of 4 KiB for compressed WebAssembly and bundles, 4 KiB for npm tarballs, and 16 KiB for native addons, wheels and CLI binaries; the default bundle and optional profiles are separate triggers',
-  'adapter-overhead': 'traversal (host+adapter over a finds-nothing scanner, minus host) must rise by more than ceil5%(max(15%, 2 x its between-process spread)) and ceil(3 x its between-process standard deviation, at least 0.5 microseconds); scanner calls and scanned code units per event are deterministic and trigger on any increase; the candidate must match the baseline profile (platform, arch, CPU model, runtime line, workload digest) and have at least 15 repetitions',
+  'adapter-overhead': 'traversal (host+adapter over a finds-nothing scanner, minus host) is judged on the harness\'s same-session change against the previous adapter release (median over at least 5 processes of the current/previous ratio): a regression is a ratio above 1 + ceil5%(max(15%, 2 x the row\'s largest A/A ratio deviation)) that also rises by more than ceil(3 x its between-process standard deviation, at least 0.5 microseconds) of the in-process previous-release traversal; it applies only when both builds make the same scanner calls per event (otherwise not-evaluated), a previous release the harness could not compare is invalid-measurement, and an adapter-core p95 latency ratio above 1 + ceil5%(max(15%, 2 x its A/A deviation)) with the median inside is tail-only (invalid-measurement, rerun); adapter-core allocation (JavaScript bytes allocated per event, Python peak traced bytes) must rise by more than ceil5%(max(10%, 2 x its A/A deviation)) and 1 KiB against the snapshot; p99 latency and GC count are recorded, not budgeted; a row with no A/A study keeps the absolute traversal trigger against the snapshot; scanner calls and scanned code units per event are deterministic and trigger on any increase; the candidate must match the baseline profile (platform, arch, CPU model, runtime line, workload digest) and have at least 15 repetitions',
 } as const satisfies Record<Dimension, string>;
 
 function sizeThreshold(id: string): Threshold {
@@ -986,7 +992,7 @@ export function evaluateBudgets(
         continue;
       }
     }
-    const accepted = ledger.find(entry => entry.triggerId === trigger.id && entry.baselineId === baseline.id &&
+    const accepted = ledger.find(entry => entry.triggerId === trigger.id && (entry.baselineId === baseline.id || entry.baselineId === baseline.continues) &&
       entry.candidate.sourceCommit === candidate.sourceCommit);
     results.push(accepted
       ? { ...common, ...measured, verdict: 'accepted-tradeoff', acceptedBy: accepted.id }
@@ -1151,6 +1157,13 @@ export function historyProblems(
     if (previous === undefined || !byId.has(record.supersedes)) {
       problems.push(`baseline ${record.id}: supersedes unknown baseline ${record.supersedes}`);
       continue;
+    }
+    if (snapshots.get(record.id)!.continues !== undefined) {
+      const next = snapshots.get(record.id)!;
+      const rest = (snapshot: Snapshot) => JSON.stringify({ sourceCommit: snapshot.sourceCommit, detection: snapshot.detection ?? null,
+        latency: snapshot.profiles.latency, metrics: Object.values(snapshot.metrics).filter(metric => metric.dimension !== 'adapter-overhead') });
+      if (next.continues !== record.supersedes) problems.push(`baseline ${record.id}: continues ${next.continues}, but supersedes ${record.supersedes}`);
+      else if (rest(next) !== rest(previous)) problems.push(`baseline ${record.id} claims to continue ${next.continues} but differs outside the adapter-overhead series`);
     }
     const promoted = candidateFromSnapshot(snapshots.get(record.id)!);
     // A promotion may re-take the adapter series at a new workload digest (#472). The digest changes because

@@ -430,6 +430,29 @@ test('a previous release the harness could not compare is invalid; a moved scann
   assert.equal(metricsFromAdapterOverhead(five({})).metrics.find(m => m.id.endsWith('/traversal-change')).invalid, undefined);
 });
 
+test('an adapter-only re-take continues the earlier baseline: its accepted tradeoffs still apply, and any other difference is a history problem', () => {
+  const older = snapshot('older', COMMIT_A);
+  const newer = { ...snapshot('newer', COMMIT_A), continues: 'older' };
+  const files = { 'older.json': JSON.stringify(older), 'newer.json': JSON.stringify(newer) };
+  const chain = files2 => ({
+    budgetsId: 'test', baseline: 'newer', triggers,
+    baselines: [
+      { id: 'older', file: 'older.json', sha256: sha256OfText(files2['older.json']), sourceCommit: COMMIT_A, promotedAt: '2026-09-25', supersedes: null },
+      { id: 'newer', file: 'newer.json', sha256: sha256OfText(files2['newer.json']), sourceCommit: COMMIT_A, promotedAt: '2026-09-30', supersedes: 'older' },
+    ],
+  });
+  assert.deepEqual(historyProblems(chain(files), file => files[file], []), []);
+  const changed = { ...newer, metrics: { ...newer.metrics, 'size/wasm/full/gzip': { ...newer.metrics['size/wasm/full/gzip'], value: 90_000 } } };
+  const bad = { ...files, 'newer.json': JSON.stringify(changed) };
+  assert.ok(historyProblems(chain(bad), file => bad[file], []).some(p => /differs outside the adapter-overhead series/.test(p)));
+  const entry = { id: 'AR-1', triggerId: 'size/wasm/full/gzip', baselineId: 'older', candidate: { sourceCommit: COMMIT_B },
+    measured: { baseline: 100_000, candidate: 120_000, unit: 'bytes' }, rationale: 'x'.repeat(40),
+    benefit: { kind: 'safety', summary: 's', links: ['https://github.com/redact-secret/redact-secret/pull/9'] }, decidedAt: '2026-09-26', decidedBy: 'm' };
+  const over = candidate(withValues(newer, { 'size/wasm/full/gzip': 120_000 }));
+  assert.equal(verdictOf(evaluateBudgets(budgets, newer, over, [entry]), 'size/wasm/full/gzip'), 'accepted-tradeoff');
+  assert.equal(verdictOf(evaluateBudgets(budgets, older, over, [{ ...entry, baselineId: 'other' }]), 'size/wasm/full/gzip'), 'regression');
+});
+
 test('the ledger requires a rationale, a linked detection or safety benefit, and the original measurement', () => {
   const ids = new Set(triggers.map(t => t.id));
   const good = {

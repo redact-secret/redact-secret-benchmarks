@@ -215,15 +215,15 @@ The noise inputs are committed under `benchmarks/regression-evidence/`:
   median. Two ran 22% and 45% faster across every row, which points to a
   faster runner machine, and two times that spread would disable every
   absolute timing trigger.
-- `adapter-overhead-darwin-arm64.json` holds five independent processes per
-  language of the adapter harnesses. Each trigger's between-process spread and
-  standard deviation come from it.
-- `adapter-aa-darwin-arm64.json` (once a baseline is promoted with it; a row
-  with no A/A study keeps the absolute traversal trigger against the snapshot
-  until then) holds A/A runs of the adapter harness on the
-  same host: the current build timed against a copy of itself with
-  `--baseline`. The largest ratio deviation of each row's traversal, p95
-  latency and allocation sets the adapter thresholds above.
+- `adapter-overhead-v2-darwin-arm64.json` holds five independent processes per
+  language of the adapter harnesses at the v2 workload digest (#472), current
+  build only. Each trigger's between-process standard deviation (the traversal
+  floor) comes from it. `adapter-overhead-darwin-arm64.json` stays as the
+  evidence of the `0.1.0-beta.8` baseline at the v1 digest.
+- `adapter-aa-darwin-arm64.json` holds three A/A processes per language of the
+  same harness on the same host: the current build timed against a copy of
+  itself with `--baseline`. The largest ratio deviation of each row's
+  traversal, p95 latency and allocation sets the adapter thresholds above.
 
 ### Why timing is judged on the median ratio, with the p95 ratio as a tail check
 
@@ -362,6 +362,11 @@ pairs. The same commit on both sides is an A/A run.
    the promotion's timing with a paired run of the old baseline commit
    against the new one. Snapshots do not carry paired ratios, so the history
    check marks timing between baselines as not evaluated.
+   A re-take of only the adapter series (a new workload digest, same product
+   commit) passes `--continues <previous id>` to `snapshot`: `check` then
+   requires every other metric to equal the previous baseline's, and accepted
+   tradeoffs recorded against the previous baseline keep applying. The
+   promotion is compared row by row, not refused for the digest change.
 2. Write the snapshot with `scripts/regression-budgets.mjs snapshot`, append a
    history record with `supersedes` set to the previous baseline and the
    snapshot's sha256, and set `baseline` to the new id.

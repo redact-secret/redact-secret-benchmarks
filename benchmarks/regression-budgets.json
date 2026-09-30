@@ -3,7 +3,7 @@
   "budgetsId": "regression-budgets-v1",
   "reviewStatus": "reviewed",
   "derivedAt": "2026-09-25",
-  "baseline": "0.1.0-beta.8",
+  "baseline": "0.1.0-beta.8-adapters-v2",
   "baselines": [
     {
       "id": "0.1.0-beta.8",
@@ -12,13 +12,22 @@
       "sourceCommit": "3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c",
       "promotedAt": "2026-09-25",
       "supersedes": null
+    },
+    {
+      "id": "0.1.0-beta.8-adapters-v2",
+      "file": "benchmarks/regression-baselines/0.1.0-beta.8-adapters-v2.json",
+      "sha256": "64680d9c05df191b67f05661f9551443ae65951cf6e1a55949317dfa9b72a803",
+      "sourceCommit": "3144bb32c6ebf8f1eefa2cbbad7d431d1d6e8c4c",
+      "promotedAt": "2026-09-30",
+      "supersedes": "0.1.0-beta.8"
     }
   ],
   "noise": {
     "sources": {
       "ciDispersion": "benchmarks/regression-evidence/ci-dispersion.json",
       "rerun": "benchmarks/regression-evidence/rerun-noise-darwin-arm64.json",
-      "adapter": "benchmarks/regression-evidence/adapter-overhead-darwin-arm64.json",
+      "adapter": "benchmarks/regression-evidence/adapter-overhead-v2-darwin-arm64.json",
+      "adapterAA": "benchmarks/regression-evidence/adapter-aa-darwin-arm64.json",
       "pairedAA": "benchmarks/regression-evidence/paired-aa-linux-x64.json"
     },
     "summary": {
@@ -41,7 +50,8 @@
       },
       "rerunMemorySpread": 0.0197,
       "ciRuns": 8,
-      "adapterProcesses": 10
+      "adapterProcesses": 10,
+      "adapterAAProcesses": 6
     }
   },
   "rules": {
@@ -49,9 +59,364 @@
     "initialization": "judged on the same-job paired ratio, like latency: a regression is an initialization median ratio above 1 + ceil5%(max(25%, 2 x the row's largest A/A median ratio deviation)) that also rises by more than 2 ms; a p95 ratio above 1 + ceil5%(max(50%, 2 x the row's largest A/A p95 ratio deviation)) and 2 ms with the median inside is tail-only (invalid-measurement, rerun); at least 10 samples per side",
     "memory": "the largest observed sample must rise by more than ceil5%(max(10%, 2 x the larger of the CI cross-run spread and the rerun spread)) and 1 MiB; at least 5 samples",
     "size": "sizes are deterministic (16 bytes observed between two platforms' builds of one wasm), so the threshold is review policy anchored to release history: 5% (the median of the last releases' 4.0-10.3% per-release growth), with floors of 4 KiB for compressed WebAssembly and bundles, 4 KiB for npm tarballs, and 16 KiB for native addons, wheels and CLI binaries; the default bundle and optional profiles are separate triggers",
-    "adapter-overhead": "traversal (host+adapter over a finds-nothing scanner, minus host) must rise by more than ceil5%(max(15%, 2 x its between-process spread)) and ceil(3 x its between-process standard deviation, at least 0.5 microseconds); scanner calls and scanned code units per event are deterministic and trigger on any increase; the candidate must match the baseline profile (platform, arch, CPU model, runtime line, workload digest) and have at least 15 repetitions"
+    "adapter-overhead": "traversal (host+adapter over a finds-nothing scanner, minus host) is judged on the harness's same-session change against the previous adapter release (median over at least 5 processes of the current/previous ratio): a regression is a ratio above 1 + ceil5%(max(15%, 2 x the row's largest A/A ratio deviation)) that also rises by more than ceil(3 x its between-process standard deviation, at least 0.5 microseconds) of the in-process previous-release traversal; it applies only when both builds make the same scanner calls per event (otherwise not-evaluated), a previous release the harness could not compare is invalid-measurement, and an adapter-core p95 latency ratio above 1 + ceil5%(max(15%, 2 x its A/A deviation)) with the median inside is tail-only (invalid-measurement, rerun); adapter-core allocation (JavaScript bytes allocated per event, Python peak traced bytes) must rise by more than ceil5%(max(10%, 2 x its A/A deviation)) and 1 KiB against the snapshot; p99 latency and GC count are recorded, not budgeted; a row with no A/A study keeps the absolute traversal trigger against the snapshot; scanner calls and scanned code units per event are deterministic and trigger on any increase; the candidate must match the baseline profile (platform, arch, CPU model, runtime line, workload digest) and have at least 15 repetitions"
   },
   "triggers": [
+    {
+      "id": "adapter/ai-context-js/mask-payload/allocated-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "bytes-per-event",
+      "direction": "increase",
+      "baselineValue": 29547.92,
+      "metric": "adapter-core bytes allocated per event, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 1.4%"
+    },
+    {
+      "id": "adapter/ai-context-js/mask-payload/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 3111.25,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/ai-context-js/mask-payload/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 20.125,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/ai-context-js/mask-payload/traversal-change",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.35,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 10.1,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 6.8%, p95 latency ratio deviation 16.4%; floor from the between-process standard deviation 3.362 microseconds"
+    },
+    {
+      "id": "adapter/mask-js/limit-array-over/allocated-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "bytes-per-event",
+      "direction": "increase",
+      "baselineValue": 315494.4,
+      "metric": "adapter-core bytes allocated per event, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.1%"
+    },
+    {
+      "id": "adapter/mask-js/limit-array-over/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 10122.094,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-js/limit-array-over/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 1008,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-js/limit-array-over/traversal-change",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.15,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 54.5,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 4.7%, p95 latency ratio deviation 4.2%; floor from the between-process standard deviation 18.146 microseconds"
+    },
+    {
+      "id": "adapter/mask-js/limit-depth-over/allocated-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "bytes-per-event",
+      "direction": "increase",
+      "baselineValue": 12173.18,
+      "metric": "adapter-core bytes allocated per event, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 3.5%"
+    },
+    {
+      "id": "adapter/mask-js/limit-depth-over/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 553.047,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-js/limit-depth-over/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 14,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-js/limit-depth-over/traversal-change",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.15,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 3.1,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 1.6%, p95 latency ratio deviation 4.9%; floor from the between-process standard deviation 1.019 microseconds"
+    },
+    {
+      "id": "adapter/mask-js/limit-keys-over/allocated-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "bytes-per-event",
+      "direction": "increase",
+      "baselineValue": 155868.72,
+      "metric": "adapter-core bytes allocated per event, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.25,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 10.1%"
+    },
+    {
+      "id": "adapter/mask-js/limit-keys-over/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 1960.953,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-js/limit-keys-over/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 201,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-js/limit-keys-over/traversal-change",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.2,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 45.7,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 2.9%, p95 latency ratio deviation 8.6%; floor from the between-process standard deviation 15.206 microseconds"
+    },
+    {
+      "id": "adapter/mask-js/limit-string-over/allocated-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "bytes-per-event",
+      "direction": "increase",
+      "baselineValue": 2343.3,
+      "metric": "adapter-core bytes allocated per event, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 1.4%"
+    },
+    {
+      "id": "adapter/mask-js/limit-string-over/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 5.75,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-js/limit-string-over/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 0.125,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-js/limit-string-over/traversal-change",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
+      "threshold": {
+        "relative": 0.2,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.15,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 0.7,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 9.2%, p95 latency ratio deviation 1.9%; floor from the between-process standard deviation 0.231 microseconds"
+    },
+    {
+      "id": "adapter/mask-js/mask-payload/allocated-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "bytes-per-event",
+      "direction": "increase",
+      "baselineValue": 20607.72,
+      "metric": "adapter-core bytes allocated per event, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.1%"
+    },
     {
       "id": "adapter/mask-js/mask-payload/scanned-code-units",
       "dimension": "adapter-overhead",
@@ -83,19 +448,314 @@
       "derivation": "deterministic count: any increase is a trigger"
     },
     {
-      "id": "adapter/mask-js/mask-payload/traversal",
+      "id": "adapter/mask-js/mask-payload/traversal-change",
       "dimension": "adapter-overhead",
       "profile": "darwin-arm64|Apple M4|node-22",
-      "unit": "microseconds-per-event",
+      "unit": "ratio",
       "direction": "increase",
-      "baselineValue": 4.291,
-      "metric": "adapter traversal, median over processes of per-process median difference",
-      "minimumSamples": 15,
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
       "threshold": {
         "relative": 0.15,
-        "absoluteFloor": 0.5
+        "absoluteFloor": 0
       },
-      "derivation": "between-process spread 2.2%, standard deviation 0.038 microseconds"
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.35,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 5.4,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 1.7%, p95 latency ratio deviation 16.7%; floor from the between-process standard deviation 1.782 microseconds"
+    },
+    {
+      "id": "adapter/mask-python/limit-array-over/peak-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 79278,
+      "metric": "adapter-core peak traced bytes, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.0%"
+    },
+    {
+      "id": "adapter/mask-python/limit-array-over/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 10122.094,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-python/limit-array-over/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 1008,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-python/limit-array-over/traversal-change",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.15,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 328.2,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 0.3%, p95 latency ratio deviation 7.4%; floor from the between-process standard deviation 109.374 microseconds"
+    },
+    {
+      "id": "adapter/mask-python/limit-depth-over/peak-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 18500,
+      "metric": "adapter-core peak traced bytes, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.0%"
+    },
+    {
+      "id": "adapter/mask-python/limit-depth-over/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 553.047,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-python/limit-depth-over/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 14,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-python/limit-depth-over/traversal-change",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.15,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 9.2,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 0.8%, p95 latency ratio deviation 2.8%; floor from the between-process standard deviation 3.043 microseconds"
+    },
+    {
+      "id": "adapter/mask-python/limit-keys-over/peak-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 35557,
+      "metric": "adapter-core peak traced bytes, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.0%"
+    },
+    {
+      "id": "adapter/mask-python/limit-keys-over/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 1960.953,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-python/limit-keys-over/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 201,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-python/limit-keys-over/traversal-change",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.15,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 62.5,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 1.0%, p95 latency ratio deviation 2.4%; floor from the between-process standard deviation 20.827 microseconds"
+    },
+    {
+      "id": "adapter/mask-python/limit-string-over/peak-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 16295,
+      "metric": "adapter-core peak traced bytes, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.0%"
+    },
+    {
+      "id": "adapter/mask-python/limit-string-over/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 5.75,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-python/limit-string-over/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 0.125,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mask-python/limit-string-over/traversal-change",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
+      "threshold": {
+        "relative": 0.25,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.2,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 1,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 11.6%, p95 latency ratio deviation 7.9%; floor from the between-process standard deviation 0.307 microseconds"
+    },
+    {
+      "id": "adapter/mask-python/mask-payload/peak-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 20983,
+      "metric": "adapter-core peak traced bytes, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.0%"
     },
     {
       "id": "adapter/mask-python/mask-payload/scanned-code-units",
@@ -128,19 +788,178 @@
       "derivation": "deterministic count: any increase is a trigger"
     },
     {
-      "id": "adapter/mask-python/mask-payload/traversal",
+      "id": "adapter/mask-python/mask-payload/traversal-change",
       "dimension": "adapter-overhead",
       "profile": "darwin-arm64|Apple M4|cpython-3.14",
-      "unit": "microseconds-per-event",
+      "unit": "ratio",
       "direction": "increase",
-      "baselineValue": 13.147,
-      "metric": "adapter traversal, median over processes of per-process median difference",
-      "minimumSamples": 15,
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
       "threshold": {
         "relative": 0.15,
-        "absoluteFloor": 0.5
+        "absoluteFloor": 0
       },
-      "derivation": "between-process spread 2.0%, standard deviation 0.108 microseconds"
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.45,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 9.6,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 5.8%, p95 latency ratio deviation 21.7%; floor from the between-process standard deviation 3.180 microseconds"
+    },
+    {
+      "id": "adapter/mcp-js/mask-payload/allocated-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "bytes-per-event",
+      "direction": "increase",
+      "baselineValue": 68164.44,
+      "metric": "adapter-core bytes allocated per event, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.5%"
+    },
+    {
+      "id": "adapter/mcp-js/mask-payload/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 5361.125,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mcp-js/mask-payload/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 33.25,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mcp-js/mask-payload/traversal-change",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
+      "threshold": {
+        "relative": 0.15,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.2,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 32,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 3.2%, p95 latency ratio deviation 8.6%; floor from the between-process standard deviation 10.651 microseconds"
+    },
+    {
+      "id": "adapter/mcp-stream-js/mask-payload/allocated-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "bytes-per-event",
+      "direction": "increase",
+      "baselineValue": 23672.74,
+      "metric": "adapter-core bytes allocated per event, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.4%"
+    },
+    {
+      "id": "adapter/mcp-stream-js/mask-payload/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 2478.188,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mcp-stream-js/mask-payload/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 10,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/mcp-stream-js/mask-payload/traversal-change",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
+      "threshold": {
+        "relative": 0.75,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.3,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 1.8,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 36.8%, p95 latency ratio deviation 14.6%; floor from the between-process standard deviation 0.583 microseconds"
+    },
+    {
+      "id": "adapter/otel-js/span-attributes/allocated-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "bytes-per-event",
+      "direction": "increase",
+      "baselineValue": 25677.7,
+      "metric": "adapter-core bytes allocated per event, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 1.6%"
     },
     {
       "id": "adapter/otel-js/span-attributes/scanned-code-units",
@@ -173,19 +992,42 @@
       "derivation": "deterministic count: any increase is a trigger"
     },
     {
-      "id": "adapter/otel-js/span-attributes/traversal",
+      "id": "adapter/otel-js/span-attributes/traversal-change",
       "dimension": "adapter-overhead",
       "profile": "darwin-arm64|Apple M4|node-22",
-      "unit": "microseconds-per-event",
+      "unit": "ratio",
       "direction": "increase",
-      "baselineValue": 1.122,
-      "metric": "adapter traversal, median over processes of per-process median difference",
-      "minimumSamples": 15,
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
       "threshold": {
-        "relative": 5.75,
-        "absoluteFloor": 3.5
+        "relative": 5.45,
+        "absoluteFloor": 0
       },
-      "derivation": "between-process spread 286.6%, standard deviation 1.157 microseconds"
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.25,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 5.4,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 270.1%, p95 latency ratio deviation 10.5%; floor from the between-process standard deviation 1.774 microseconds"
+    },
+    {
+      "id": "adapter/otel-python/span-attributes/peak-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 30690,
+      "metric": "adapter-core peak traced bytes, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.0%"
     },
     {
       "id": "adapter/otel-python/span-attributes/scanned-code-units",
@@ -218,19 +1060,42 @@
       "derivation": "deterministic count: any increase is a trigger"
     },
     {
-      "id": "adapter/otel-python/span-attributes/traversal",
+      "id": "adapter/otel-python/span-attributes/traversal-change",
       "dimension": "adapter-overhead",
       "profile": "darwin-arm64|Apple M4|cpython-3.14",
-      "unit": "microseconds-per-event",
+      "unit": "ratio",
       "direction": "increase",
-      "baselineValue": 18.643,
-      "metric": "adapter traversal, median over processes of per-process median difference",
-      "minimumSamples": 15,
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
       "threshold": {
         "relative": 0.15,
-        "absoluteFloor": 0.5
+        "absoluteFloor": 0
       },
-      "derivation": "between-process spread 2.3%, standard deviation 0.165 microseconds"
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.15,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 27.7,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 5.0%, p95 latency ratio deviation 6.6%; floor from the between-process standard deviation 9.203 microseconds"
+    },
+    {
+      "id": "adapter/pino-streamwrite/log-flat/allocated-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "bytes-per-event",
+      "direction": "increase",
+      "baselineValue": 15860.86,
+      "metric": "adapter-core bytes allocated per event, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.1%"
     },
     {
       "id": "adapter/pino-streamwrite/log-flat/scanned-code-units",
@@ -263,19 +1128,42 @@
       "derivation": "deterministic count: any increase is a trigger"
     },
     {
-      "id": "adapter/pino-streamwrite/log-flat/traversal",
+      "id": "adapter/pino-streamwrite/log-flat/traversal-change",
       "dimension": "adapter-overhead",
       "profile": "darwin-arm64|Apple M4|node-22",
-      "unit": "microseconds-per-event",
+      "unit": "ratio",
       "direction": "increase",
-      "baselineValue": 3.7,
-      "metric": "adapter traversal, median over processes of per-process median difference",
-      "minimumSamples": 15,
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
       "threshold": {
-        "relative": 0.15,
-        "absoluteFloor": 0.5
+        "relative": 0.3,
+        "absoluteFloor": 0
       },
-      "derivation": "between-process spread 4.9%, standard deviation 0.062 microseconds"
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.15,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 9.8,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 15.0%, p95 latency ratio deviation 5.8%; floor from the between-process standard deviation 3.251 microseconds"
+    },
+    {
+      "id": "adapter/pino-streamwrite/log-nested/allocated-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "bytes-per-event",
+      "direction": "increase",
+      "baselineValue": 37020.26,
+      "metric": "adapter-core bytes allocated per event, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 2.4%"
     },
     {
       "id": "adapter/pino-streamwrite/log-nested/scanned-code-units",
@@ -308,19 +1196,42 @@
       "derivation": "deterministic count: any increase is a trigger"
     },
     {
-      "id": "adapter/pino-streamwrite/log-nested/traversal",
+      "id": "adapter/pino-streamwrite/log-nested/traversal-change",
       "dimension": "adapter-overhead",
       "profile": "darwin-arm64|Apple M4|node-22",
-      "unit": "microseconds-per-event",
+      "unit": "ratio",
       "direction": "increase",
-      "baselineValue": 8.518,
-      "metric": "adapter traversal, median over processes of per-process median difference",
-      "minimumSamples": 15,
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
       "threshold": {
         "relative": 0.15,
-        "absoluteFloor": 0.5
+        "absoluteFloor": 0
       },
-      "derivation": "between-process spread 3.8%, standard deviation 0.105 microseconds"
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.15,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 14.1,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 5.0%, p95 latency ratio deviation 5.8%; floor from the between-process standard deviation 4.686 microseconds"
+    },
+    {
+      "id": "adapter/pino/log-flat/allocated-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "bytes-per-event",
+      "direction": "increase",
+      "baselineValue": 9692.26,
+      "metric": "adapter-core bytes allocated per event, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 1.7%"
     },
     {
       "id": "adapter/pino/log-flat/scanned-code-units",
@@ -353,19 +1264,42 @@
       "derivation": "deterministic count: any increase is a trigger"
     },
     {
-      "id": "adapter/pino/log-flat/traversal",
+      "id": "adapter/pino/log-flat/traversal-change",
       "dimension": "adapter-overhead",
       "profile": "darwin-arm64|Apple M4|node-22",
-      "unit": "microseconds-per-event",
+      "unit": "ratio",
       "direction": "increase",
-      "baselineValue": 1.494,
-      "metric": "adapter traversal, median over processes of per-process median difference",
-      "minimumSamples": 15,
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
       "threshold": {
-        "relative": 0.15,
-        "absoluteFloor": 0.5
+        "relative": 0.35,
+        "absoluteFloor": 0
       },
-      "derivation": "between-process spread 6.8%, standard deviation 0.045 microseconds"
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.2,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 6.5,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 15.0%, p95 latency ratio deviation 8.5%; floor from the between-process standard deviation 2.146 microseconds"
+    },
+    {
+      "id": "adapter/pino/log-nested/allocated-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "bytes-per-event",
+      "direction": "increase",
+      "baselineValue": 19007.24,
+      "metric": "adapter-core bytes allocated per event, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 4.8%"
     },
     {
       "id": "adapter/pino/log-nested/scanned-code-units",
@@ -398,19 +1332,178 @@
       "derivation": "deterministic count: any increase is a trigger"
     },
     {
-      "id": "adapter/pino/log-nested/traversal",
+      "id": "adapter/pino/log-nested/traversal-change",
       "dimension": "adapter-overhead",
       "profile": "darwin-arm64|Apple M4|node-22",
-      "unit": "microseconds-per-event",
+      "unit": "ratio",
       "direction": "increase",
-      "baselineValue": 3.136,
-      "metric": "adapter traversal, median over processes of per-process median difference",
-      "minimumSamples": 15,
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
       "threshold": {
         "relative": 0.15,
-        "absoluteFloor": 0.5
+        "absoluteFloor": 0
       },
-      "derivation": "between-process spread 3.1%, standard deviation 0.034 microseconds"
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.25,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 8.6,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 4.6%, p95 latency ratio deviation 11.2%; floor from the between-process standard deviation 2.859 microseconds"
+    },
+    {
+      "id": "adapter/pino/log-scale-16x/allocated-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "bytes-per-event",
+      "direction": "increase",
+      "baselineValue": 131687.52,
+      "metric": "adapter-core bytes allocated per event, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.0%"
+    },
+    {
+      "id": "adapter/pino/log-scale-16x/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 5166.516,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/pino/log-scale-16x/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 129,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/pino/log-scale-16x/traversal-change",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
+      "threshold": {
+        "relative": 0.3,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.2,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 33.8,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 13.9%, p95 latency ratio deviation 9.9%; floor from the between-process standard deviation 11.238 microseconds"
+    },
+    {
+      "id": "adapter/pino/log-scale-4x/allocated-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "bytes-per-event",
+      "direction": "increase",
+      "baselineValue": 30606.64,
+      "metric": "adapter-core bytes allocated per event, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.1%"
+    },
+    {
+      "id": "adapter/pino/log-scale-4x/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 1315.016,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/pino/log-scale-4x/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 33,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/pino/log-scale-4x/traversal-change",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|node-22",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
+      "threshold": {
+        "relative": 1.6,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.55,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 8.1,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 78.4%, p95 latency ratio deviation 26.2%; floor from the between-process standard deviation 2.675 microseconds"
+    },
+    {
+      "id": "adapter/python-logging/log-flat/peak-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 19559,
+      "metric": "adapter-core peak traced bytes, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.0%"
     },
     {
       "id": "adapter/python-logging/log-flat/scanned-code-units",
@@ -443,19 +1536,42 @@
       "derivation": "deterministic count: any increase is a trigger"
     },
     {
-      "id": "adapter/python-logging/log-flat/traversal",
+      "id": "adapter/python-logging/log-flat/traversal-change",
       "dimension": "adapter-overhead",
       "profile": "darwin-arm64|Apple M4|cpython-3.14",
-      "unit": "microseconds-per-event",
+      "unit": "ratio",
       "direction": "increase",
-      "baselineValue": 4.026,
-      "metric": "adapter traversal, median over processes of per-process median difference",
-      "minimumSamples": 15,
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
       "threshold": {
-        "relative": 0.15,
-        "absoluteFloor": 0.5
+        "relative": 0.45,
+        "absoluteFloor": 0
       },
-      "derivation": "between-process spread 3.4%, standard deviation 0.049 microseconds"
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.15,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 5.3,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 21.8%, p95 latency ratio deviation 4.9%; floor from the between-process standard deviation 1.765 microseconds"
+    },
+    {
+      "id": "adapter/python-logging/log-nested/peak-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 23362,
+      "metric": "adapter-core peak traced bytes, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.0%"
     },
     {
       "id": "adapter/python-logging/log-nested/scanned-code-units",
@@ -488,19 +1604,163 @@
       "derivation": "deterministic count: any increase is a trigger"
     },
     {
-      "id": "adapter/python-logging/log-nested/traversal",
+      "id": "adapter/python-logging/log-nested/traversal-change",
       "dimension": "adapter-overhead",
       "profile": "darwin-arm64|Apple M4|cpython-3.14",
-      "unit": "microseconds-per-event",
+      "unit": "ratio",
       "direction": "increase",
-      "baselineValue": 11.718,
-      "metric": "adapter traversal, median over processes of per-process median difference",
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
+      "threshold": {
+        "relative": 0.2,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.25,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 17.1,
       "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 9.9%, p95 latency ratio deviation 11.2%; floor from the between-process standard deviation 5.685 microseconds"
+    },
+    {
+      "id": "adapter/python-logging/log-scale-16x/peak-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 44601,
+      "metric": "adapter-core peak traced bytes, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.0%"
+    },
+    {
+      "id": "adapter/python-logging/log-scale-16x/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 5166.516,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/python-logging/log-scale-16x/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 129,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/python-logging/log-scale-16x/traversal-change",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
       "threshold": {
         "relative": 0.15,
-        "absoluteFloor": 0.5
+        "absoluteFloor": 0
       },
-      "derivation": "between-process spread 2.3%, standard deviation 0.095 microseconds"
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.25,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 50.9,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 4.5%, p95 latency ratio deviation 10.7%; floor from the between-process standard deviation 16.934 microseconds"
+    },
+    {
+      "id": "adapter/python-logging/log-scale-4x/peak-bytes",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "bytes",
+      "direction": "increase",
+      "baselineValue": 24471,
+      "metric": "adapter-core peak traced bytes, median over processes",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0.1,
+        "absoluteFloor": 1024
+      },
+      "derivation": "A/A deviation 0.0%"
+    },
+    {
+      "id": "adapter/python-logging/log-scale-4x/scanned-code-units",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "code-units-per-event",
+      "direction": "increase",
+      "baselineValue": 1315.016,
+      "metric": "scanned code units per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/python-logging/log-scale-4x/scanner-calls",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "calls-per-event",
+      "direction": "increase",
+      "baselineValue": 33,
+      "metric": "scanner calls per event",
+      "minimumSamples": 1,
+      "threshold": {
+        "relative": 0,
+        "absoluteFloor": 0
+      },
+      "derivation": "deterministic count: any increase is a trigger"
+    },
+    {
+      "id": "adapter/python-logging/log-scale-4x/traversal-change",
+      "dimension": "adapter-overhead",
+      "profile": "darwin-arm64|Apple M4|cpython-3.14",
+      "unit": "ratio",
+      "direction": "increase",
+      "baselineValue": 1,
+      "metric": "adapter traversal, current/previous-release ratio timed in one process, median over processes",
+      "threshold": {
+        "relative": 0.3,
+        "absoluteFloor": 0
+      },
+      "tail": {
+        "statistic": "adapter-core p95 latency ratio",
+        "threshold": {
+          "relative": 0.15,
+          "absoluteFloor": 0
+        }
+      },
+      "pairedFloorMicroseconds": 13,
+      "minimumSamples": 15,
+      "derivation": "A/A traversal ratio deviation 12.9%, p95 latency ratio deviation 5.6%; floor from the between-process standard deviation 4.316 microseconds"
     },
     {
       "id": "initialization/browser-wasm/scale-logs-medium-fixed4096/initialization-ratio",

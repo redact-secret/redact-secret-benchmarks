@@ -63,7 +63,8 @@ compatibility with every binary release.
 
 The local comparison has been exercised with Gitleaks **8.30.1**,
 TruffleHog **3.97.4**, `@redact-secret/core` **0.1.0-beta.4**, and
-`flare-redact` **1.6.1** on macOS arm64. Install the external tools using
+`flare-redact` **1.6.1** on macOS arm64. `@openredaction/core` **1.1.5**
+is used only by the informational runtime-throughput comparison (#429), not as an accuracy adapter. Install the external tools using
 `brew install gitleaks trufflehog`. Other systems can use the upstream
 installation instructions above.
 
@@ -214,3 +215,16 @@ token, whose first segment is base64 text. Any other decoded transformation
 remains an explicit normalization failure.
 Unit tests cover mismatched/unsupported output and missing source lines; a
 real-binary integration check covers the encoded and decoded PEM path.
+
+## OpenRedaction (runtime-throughput peer only)
+
+`@openredaction/core` is pinned to an exact version in `package.json`
+(not the `openredaction` umbrella package, which pulls in unused react and
+server peers). It is measured for wall-clock redaction latency and throughput
+on the shared synthetic PII workloads by
+`scripts/measure-peer-pii-runtime-throughput.mjs`, through its async
+`OpenRedaction#detect(text)` call, alongside flare-redact's synchronous
+`redact()` and redact-secret's `scan()`. The async-versus-sync difference is
+stated in the report. It has no adapter in `index.mjs`, so it takes no part in
+the accuracy comparison. Informational only: no verdict, no ranking. See
+`docs/specs/peer-pii-runtime-throughput.md`.

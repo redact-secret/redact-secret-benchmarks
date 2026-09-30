@@ -6964,7 +6964,7 @@
         "beta8-384a--anthropic-admin01-key-angle-key-placeholder"
       ],
       "kind": "false-positive",
-      "status": "fixed",
+      "status": "verified",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.11",
@@ -7007,13 +7007,23 @@
             "https://github.com/redact-secret/redact-secret/pull/1039",
             "https://github.com/redact-secret/redact-secret/commit/4fa06aeba268e2090ed034582a542aa2a86a699d"
           ]
+        },
+        "verified": {
+          "at": "2026-09-30",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/README.md",
+            "https://github.com/redact-secret/redact-secret/blob/99c8c2b33e99142620bcc66f115200ca615d6d0a/conformance/benchmark-regressions.json",
+            "https://github.com/redact-secret/redact-secret/actions/runs/36681168598"
+          ]
         }
       },
       "promotion": {
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/1015",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-1015",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "regression-1015-anthropic-admin-angle-placeholder"
+        ]
       },
       "evidence": [
         {
@@ -7033,6 +7043,33 @@
       ],
       "fix": {
         "commit": "4fa06aeba268e2090ed034582a542aa2a86a699d"
+      },
+      "verification": {
+        "canonicalProductRegression": {
+          "manifestRecordId": "benchmark-gap-1015",
+          "fixtureIds": [
+            "regression-1015-anthropic-admin-angle-placeholder"
+          ]
+        },
+        "fixingCommitOrVersion": "4fa06aeba268e2090ed034582a542aa2a86a699d",
+        "productConformanceEvidence": [
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821875",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821900",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776822049",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820898",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820913",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821010",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820907",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821120",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109777260603",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109777998147",
+          "https://github.com/redact-secret/redact-secret/blob/99c8c2b33e99142620bcc66f115200ca615d6d0a/conformance/benchmark-regressions.json"
+        ],
+        "benchmarkRerunEvidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/README.md",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/candidate-evidence-v1.json"
+        ]
       }
     },
     {
@@ -7046,7 +7083,7 @@
         "beta8-384e--mistral-api-key-k8s-env-value"
       ],
       "kind": "false-negative",
-      "status": "fixed",
+      "status": "verified",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.11",
@@ -7089,13 +7126,25 @@
             "https://github.com/redact-secret/redact-secret/pull/1039",
             "https://github.com/redact-secret/redact-secret/commit/39bf06f77a6ba18a94b0f86152d28aceddcf4371"
           ]
+        },
+        "verified": {
+          "at": "2026-09-30",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/README.md",
+            "https://github.com/redact-secret/redact-secret/blob/99c8c2b33e99142620bcc66f115200ca615d6d0a/conformance/benchmark-regressions.json",
+            "https://github.com/redact-secret/redact-secret/actions/runs/36681168598"
+          ]
         }
       },
       "promotion": {
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/1016",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-1016",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "regression-1016-deepgram-k8s-env-value",
+          "regression-1016-cohere-k8s-env-value",
+          "regression-1016-mistral-k8s-env-value"
+        ]
       },
       "evidence": [
         {
@@ -7134,6 +7183,35 @@
       ],
       "fix": {
         "commit": "39bf06f77a6ba18a94b0f86152d28aceddcf4371"
+      },
+      "verification": {
+        "canonicalProductRegression": {
+          "manifestRecordId": "benchmark-gap-1016",
+          "fixtureIds": [
+            "regression-1016-deepgram-k8s-env-value",
+            "regression-1016-cohere-k8s-env-value",
+            "regression-1016-mistral-k8s-env-value"
+          ]
+        },
+        "fixingCommitOrVersion": "39bf06f77a6ba18a94b0f86152d28aceddcf4371",
+        "productConformanceEvidence": [
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821875",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821900",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776822049",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820898",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820913",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821010",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820907",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821120",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109777260603",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109777998147",
+          "https://github.com/redact-secret/redact-secret/blob/99c8c2b33e99142620bcc66f115200ca615d6d0a/conformance/benchmark-regressions.json"
+        ],
+        "benchmarkRerunEvidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/README.md",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/candidate-evidence-v1.json"
+        ]
       }
     },
     {
@@ -7146,7 +7224,7 @@
         "beta8-384e--deepgram-api-key-websocket-subprotocol"
       ],
       "kind": "false-negative",
-      "status": "fixed",
+      "status": "verified",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.11",
@@ -7187,13 +7265,24 @@
             "https://github.com/redact-secret/redact-secret/pull/1039",
             "https://github.com/redact-secret/redact-secret/commit/7e0bad0a95ad606ae5b223697acd8de9f288dbec"
           ]
+        },
+        "verified": {
+          "at": "2026-09-30",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/README.md",
+            "https://github.com/redact-secret/redact-secret/blob/99c8c2b33e99142620bcc66f115200ca615d6d0a/conformance/benchmark-regressions.json",
+            "https://github.com/redact-secret/redact-secret/actions/runs/36681168598"
+          ]
         }
       },
       "promotion": {
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/1017",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-1017",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "regression-1017-deepgram-create-client",
+          "regression-1017-deepgram-websocket-subprotocol"
+        ]
       },
       "evidence": [
         {
@@ -7221,6 +7310,34 @@
       ],
       "fix": {
         "commit": "7e0bad0a95ad606ae5b223697acd8de9f288dbec"
+      },
+      "verification": {
+        "canonicalProductRegression": {
+          "manifestRecordId": "benchmark-gap-1017",
+          "fixtureIds": [
+            "regression-1017-deepgram-create-client",
+            "regression-1017-deepgram-websocket-subprotocol"
+          ]
+        },
+        "fixingCommitOrVersion": "7e0bad0a95ad606ae5b223697acd8de9f288dbec",
+        "productConformanceEvidence": [
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821875",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821900",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776822049",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820898",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820913",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821010",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820907",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821120",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109777260603",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109777998147",
+          "https://github.com/redact-secret/redact-secret/blob/99c8c2b33e99142620bcc66f115200ca615d6d0a/conformance/benchmark-regressions.json"
+        ],
+        "benchmarkRerunEvidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/README.md",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/candidate-evidence-v1.json"
+        ]
       }
     },
     {
@@ -7232,7 +7349,7 @@
         "beta8-384e--mistral-api-key-python-environ-assign"
       ],
       "kind": "false-negative",
-      "status": "fixed",
+      "status": "verified",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.11",
@@ -7273,13 +7390,23 @@
             "https://github.com/redact-secret/redact-secret/pull/1039",
             "https://github.com/redact-secret/redact-secret/commit/b3beba418a7a2b393403ce34af4dc547f9946214"
           ]
+        },
+        "verified": {
+          "at": "2026-09-30",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/README.md",
+            "https://github.com/redact-secret/redact-secret/blob/99c8c2b33e99142620bcc66f115200ca615d6d0a/conformance/benchmark-regressions.json",
+            "https://github.com/redact-secret/redact-secret/actions/runs/36681168598"
+          ]
         }
       },
       "promotion": {
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/1038",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-1038",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "regression-1038-mistral-python-environ-assign"
+        ]
       },
       "evidence": [
         {
@@ -7296,6 +7423,33 @@
       ],
       "fix": {
         "commit": "b3beba418a7a2b393403ce34af4dc547f9946214"
+      },
+      "verification": {
+        "canonicalProductRegression": {
+          "manifestRecordId": "benchmark-gap-1038",
+          "fixtureIds": [
+            "regression-1038-mistral-python-environ-assign"
+          ]
+        },
+        "fixingCommitOrVersion": "b3beba418a7a2b393403ce34af4dc547f9946214",
+        "productConformanceEvidence": [
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821875",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821900",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776822049",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820898",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820913",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821010",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820907",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821120",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109777260603",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109777998147",
+          "https://github.com/redact-secret/redact-secret/blob/99c8c2b33e99142620bcc66f115200ca615d6d0a/conformance/benchmark-regressions.json"
+        ],
+        "benchmarkRerunEvidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/README.md",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/candidate-evidence-v1.json"
+        ]
       }
     },
     {
@@ -7307,7 +7461,7 @@
         "beta8-379--cohere-api-key-litellm-proxy-debug"
       ],
       "kind": "false-negative",
-      "status": "fixed",
+      "status": "verified",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.11",
@@ -7348,13 +7502,23 @@
             "https://github.com/redact-secret/redact-secret/pull/1039",
             "https://github.com/redact-secret/redact-secret/commit/67afc725dec0838d38edd5000d0b96a76224bfb8"
           ]
+        },
+        "verified": {
+          "at": "2026-09-30",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/README.md",
+            "https://github.com/redact-secret/redact-secret/blob/99c8c2b33e99142620bcc66f115200ca615d6d0a/conformance/benchmark-regressions.json",
+            "https://github.com/redact-secret/redact-secret/actions/runs/36681168598"
+          ]
         }
       },
       "promotion": {
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/1018",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-1018",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "regression-1018-cohere-litellm-masked-name"
+        ]
       },
       "fix": {
         "commit": "67afc725dec0838d38edd5000d0b96a76224bfb8"
@@ -7371,7 +7535,34 @@
           ],
           "actual": []
         }
-      ]
+      ],
+      "verification": {
+        "canonicalProductRegression": {
+          "manifestRecordId": "benchmark-gap-1018",
+          "fixtureIds": [
+            "regression-1018-cohere-litellm-masked-name"
+          ]
+        },
+        "fixingCommitOrVersion": "67afc725dec0838d38edd5000d0b96a76224bfb8",
+        "productConformanceEvidence": [
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821875",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821900",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776822049",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820898",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820913",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821010",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820907",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821120",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109777260603",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109777998147",
+          "https://github.com/redact-secret/redact-secret/blob/99c8c2b33e99142620bcc66f115200ca615d6d0a/conformance/benchmark-regressions.json"
+        ],
+        "benchmarkRerunEvidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/README.md",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/candidate-evidence-v1.json"
+        ]
+      }
     },
     {
       "id": "product-1041",
@@ -7382,7 +7573,7 @@
         "real-world-shapes--rust-secrecy-config"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "verified",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.11",
@@ -7415,13 +7606,31 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/1041"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-30",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/1045",
+            "https://github.com/redact-secret/redact-secret/commit/3d4f9a7d6fddca418b82b8c12d7f279b4a55b892"
+          ]
+        },
+        "verified": {
+          "at": "2026-09-30",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/README.md",
+            "https://github.com/redact-secret/redact-secret/blob/99c8c2b33e99142620bcc66f115200ca615d6d0a/conformance/benchmark-regressions.json",
+            "https://github.com/redact-secret/redact-secret/actions/runs/36681168598"
+          ]
         }
       },
       "promotion": {
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/1041",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-1041",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "contextual-negative-placeholder-led-phrase",
+          "contextual-negative-placeholder-led-phrase-value"
+        ]
       },
       "evidence": [
         {
@@ -7438,7 +7647,38 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "3d4f9a7d6fddca418b82b8c12d7f279b4a55b892"
+      },
+      "verification": {
+        "canonicalProductRegression": {
+          "manifestRecordId": "benchmark-gap-1041",
+          "fixtureIds": [
+            "contextual-negative-placeholder-led-phrase",
+            "contextual-negative-placeholder-led-phrase-value"
+          ]
+        },
+        "fixingCommitOrVersion": "3d4f9a7d6fddca418b82b8c12d7f279b4a55b892",
+        "productConformanceEvidence": [
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821875",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821900",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776822049",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820898",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820913",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821010",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820907",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821120",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109777260603",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109777998147",
+          "https://github.com/redact-secret/redact-secret/blob/99c8c2b33e99142620bcc66f115200ca615d6d0a/conformance/benchmark-regressions.json"
+        ],
+        "benchmarkRerunEvidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/README.md",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/candidate-evidence-v1.json"
+        ]
+      }
     },
     {
       "id": "product-1042",
@@ -7455,7 +7695,7 @@
         "beta8-464b--clickhouse-cloud-api-secret-docs-placeholders-placeholder"
       ],
       "kind": "false-positive",
-      "status": "promoted",
+      "status": "verified",
       "candidate": {
         "package": "@redact-secret/core",
         "version": "0.1.0-beta.11",
@@ -7493,13 +7733,36 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret/issues/1042"
           ]
+        },
+        "fixed": {
+          "at": "2026-09-30",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/pull/1045",
+            "https://github.com/redact-secret/redact-secret/commit/3e53ea06ec98f7fc9c837646876ab4a624b218fb"
+          ]
+        },
+        "verified": {
+          "at": "2026-09-30",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/README.md",
+            "https://github.com/redact-secret/redact-secret/blob/99c8c2b33e99142620bcc66f115200ca615d6d0a/conformance/benchmark-regressions.json",
+            "https://github.com/redact-secret/redact-secret/actions/runs/36681168598"
+          ]
         }
       },
       "promotion": {
         "productIssue": "https://github.com/redact-secret/redact-secret/issues/1042",
         "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
         "productManifestRecordId": "benchmark-gap-1042",
-        "canonicalFixtureIds": []
+        "canonicalFixtureIds": [
+          "vercel-negative-repeated-filler-placeholder",
+          "vercel-negative-x-run-placeholder",
+          "vercel-negative-app-x-run-placeholder",
+          "contextual-negative-vendor-prefix-lead-word-phrase",
+          "contextual-negative-vendor-prefix-ellipsis",
+          "contextual-negative-layout-filler-with-padding",
+          "contextual-negative-glued-my-credential-words"
+        ]
       },
       "evidence": [
         {
@@ -7600,7 +7863,43 @@
             }
           ]
         }
-      ]
+      ],
+      "fix": {
+        "commit": "3e53ea06ec98f7fc9c837646876ab4a624b218fb"
+      },
+      "verification": {
+        "canonicalProductRegression": {
+          "manifestRecordId": "benchmark-gap-1042",
+          "fixtureIds": [
+            "vercel-negative-repeated-filler-placeholder",
+            "vercel-negative-x-run-placeholder",
+            "vercel-negative-app-x-run-placeholder",
+            "contextual-negative-vendor-prefix-lead-word-phrase",
+            "contextual-negative-vendor-prefix-ellipsis",
+            "contextual-negative-layout-filler-with-padding",
+            "contextual-negative-glued-my-credential-words"
+          ]
+        },
+        "fixingCommitOrVersion": "3e53ea06ec98f7fc9c837646876ab4a624b218fb",
+        "productConformanceEvidence": [
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821875",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821900",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776822049",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820898",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820913",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821010",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776820907",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109776821120",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109777260603",
+          "https://github.com/redact-secret/redact-secret/actions/runs/36681168598/job/109777998147",
+          "https://github.com/redact-secret/redact-secret/blob/99c8c2b33e99142620bcc66f115200ca615d6d0a/conformance/benchmark-regressions.json"
+        ],
+        "benchmarkRerunEvidence": [
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/README.md",
+          "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/candidate-evidence-v1.json"
+        ]
+      }
     }
   ]
 }

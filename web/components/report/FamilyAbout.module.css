@@ -1,0 +1,17 @@
+@layer components {
+  .about {
+    max-width: var(--measure);
+    display: grid;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+
+  .about p {
+    margin: 0;
+  }
+
+  .small {
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+}

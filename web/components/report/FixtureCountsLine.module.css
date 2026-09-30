@@ -1,0 +1,13 @@
+@layer components {
+  .line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-4);
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .line b {
+    color: var(--ink);
+  }
+}

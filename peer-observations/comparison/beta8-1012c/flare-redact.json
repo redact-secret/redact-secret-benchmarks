@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T04:17:52.698Z",
+  "sourceRun": {
+    "runId": "2026-09-30T04:17:52.698Z-e1cee5",
+    "benchmarkRevision": "561125c3f50c7d664352a96f3105b091b66f8b55"
+  },
+  "input": {
+    "surface": "comparison/beta8-1012c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "52725241b40d19213f25b5643eede72af20b923065d59bd5e87a9092c1f118b4",
+    "fixtureCount": 31,
+    "fixturesDigest": "fcbeecf28396e1dd9eac554e6296f8d0b808009f2d70fe8cbeb97c02e1dd4e4e",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "946be7013e43eb30b995e6f09edb85a028bcfc4898eccb6c4d7cd22be0eb4b41",
+      "fixtureCount": 5886
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/gitlab-routable-personal-access-token-bearer-header.http",
+      "start": 56,
+      "end": 124,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-env-reference-reference.sh",
+      "start": 10,
+      "end": 41,
+      "family": "connection-string"
+    },
+    {
+      "path": "cases/gitlab-routable-personal-access-token-git-remote-url.txt",
+      "start": 25,
+      "end": 100,
+      "family": "connection-string"
+    }
+  ],
+  "digest": "b8caff0f9db931d4ea018af6f927b1b629c0ce20299659eaf8aa887615597321"
+}

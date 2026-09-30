@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T04:17:52.698Z",
+  "sourceRun": {
+    "runId": "2026-09-30T04:17:52.698Z-e1cee5",
+    "benchmarkRevision": "561125c3f50c7d664352a96f3105b091b66f8b55"
+  },
+  "input": {
+    "surface": "comparison/beta8-1012b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "f6188a9e76b110b55f6b2ec0ba70950b1dc9ed41e4b4c7fadb8fe5f6a7adb520",
+    "fixtureCount": 27,
+    "fixturesDigest": "036be48d00b8e93ac8a3bb43f1248d2609c51036bff61e702229fc54974c73e7",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "946be7013e43eb30b995e6f09edb85a028bcfc4898eccb6c4d7cd22be0eb4b41",
+      "fixtureCount": 5886
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
+    },
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/google-oauth-client-secret-json-client-file.json",
+      "start": 27,
+      "end": 72
+    }
+  ],
+  "digest": "e97c96c266df086712eaf9fafcbc33496afd247db33e3d0dc65fe610e6fb08c8"
+}

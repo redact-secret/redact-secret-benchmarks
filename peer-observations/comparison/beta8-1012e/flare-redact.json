@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T04:17:52.698Z",
+  "sourceRun": {
+    "runId": "2026-09-30T04:17:52.698Z-e1cee5",
+    "benchmarkRevision": "561125c3f50c7d664352a96f3105b091b66f8b55"
+  },
+  "input": {
+    "surface": "comparison/beta8-1012e",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "96d4551be8c320fa53151dfccd47cbc15c5a20e9dca6a8af8620983cf269ae55",
+    "fixtureCount": 87,
+    "fixturesDigest": "6edefe451a6f485c5443cd7617374aa1ad9cd3567381101f6d59fb4bf551cd36",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "946be7013e43eb30b995e6f09edb85a028bcfc4898eccb6c4d7cd22be0eb4b41",
+      "fixtureCount": 5886
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/vercel-app-access-token-bearer-header.http",
+      "start": 60,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/vercel-app-access-token-fetch-header.ts",
+      "start": 87,
+      "end": 154,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/vercel-app-access-token-uppercase-prefix-twin.http",
+      "start": 60,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-bearer-header.http",
+      "start": 60,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/vercel-app-refresh-token-uppercase-prefix-twin.http",
+      "start": 60,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/vercel-personal-access-token-bearer-header.http",
+      "start": 60,
+      "end": 127,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/vercel-personal-access-token-uppercase-prefix-twin.http",
+      "start": 60,
+      "end": 127,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "9bfffeaa1067706559e4eddc813f36e5ae17ae381e5546c1ef86a37b03ade35d"
+}

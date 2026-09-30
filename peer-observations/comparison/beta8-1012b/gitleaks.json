@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T04:17:52.698Z",
+  "sourceRun": {
+    "runId": "2026-09-30T04:17:52.698Z-e1cee5",
+    "benchmarkRevision": "561125c3f50c7d664352a96f3105b091b66f8b55"
+  },
+  "input": {
+    "surface": "comparison/beta8-1012b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "f6188a9e76b110b55f6b2ec0ba70950b1dc9ed41e4b4c7fadb8fe5f6a7adb520",
+    "fixtureCount": 27,
+    "fixturesDigest": "036be48d00b8e93ac8a3bb43f1248d2609c51036bff61e702229fc54974c73e7",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "946be7013e43eb30b995e6f09edb85a028bcfc4898eccb6c4d7cd22be0eb4b41",
+      "fixtureCount": 5886
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "bfbc883ee23e1b5c3d3c25aa3754935a9631c166844cd42fa32e2efce58b4a05",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 67108864
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/google-oauth-client-secret-body-27-twin.env",
+      "start": 28,
+      "end": 62,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-oauth-client-secret-body-29-twin.sh",
+      "start": 29,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-oauth-client-secret-dot-in-body-twin.py",
+      "start": 30,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-oauth-client-secret-dotenv.env",
+      "start": 28,
+      "end": 63,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-oauth-client-secret-export.sh",
+      "start": 29,
+      "end": 64,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-oauth-client-secret-flask-config.py",
+      "start": 142,
+      "end": 177,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-oauth-client-secret-json-api-key.json",
+      "start": 16,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-oauth-client-secret-json-token.json",
+      "start": 14,
+      "end": 49,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-oauth-client-secret-lowercase-prefix-twin.json",
+      "start": 14,
+      "end": 49,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-oauth-client-secret-sdk-kwarg.py",
+      "start": 30,
+      "end": 65,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-oauth-client-secret-token-curl.sh",
+      "start": 147,
+      "end": 182,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-oauth-client-secret-underscore-separator-twin.json",
+      "start": 16,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/google-oauth-client-secret-x-api-key-header.http",
+      "start": 62,
+      "end": 97,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "0939a1c30126f92ce11cb15b02aa87b10acd34b463f6ad337905eccabf3101df"
+}

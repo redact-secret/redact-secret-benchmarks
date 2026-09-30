@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T04:17:52.698Z",
+  "sourceRun": {
+    "runId": "2026-09-30T04:17:52.698Z-e1cee5",
+    "benchmarkRevision": "561125c3f50c7d664352a96f3105b091b66f8b55"
+  },
+  "input": {
+    "surface": "comparison/beta8-1012d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "d22a268fb2b8eb8b69b2167c837b1b5f6e74b3b667c93f8af0ec867ee43c4760",
+    "fixtureCount": 29,
+    "fixturesDigest": "ef9ce20f8f81ba0acc02d685209185b360fe2a2453671e3acc262a2e8cd04fd8",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "946be7013e43eb30b995e6f09edb85a028bcfc4898eccb6c4d7cd22be0eb4b41",
+      "fixtureCount": 5886
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/aws-sts-temporary-access-key-bare-prose.md",
+      "start": 57,
+      "end": 77,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-bearer-header.http",
+      "start": 70,
+      "end": 90,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-chat-paste.txt",
+      "start": 19,
+      "end": 39,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-cloudtrail-event.json",
+      "start": 83,
+      "end": 103,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-credentials-file.ini",
+      "start": 46,
+      "end": 66,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-dotenv.env",
+      "start": 25,
+      "end": 45,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-export.sh",
+      "start": 26,
+      "end": 46,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-iam-user-id-public-id.json",
+      "start": 39,
+      "end": 59,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-json-api-key.json",
+      "start": 16,
+      "end": 36,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-json-token.json",
+      "start": 14,
+      "end": 34,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-role-id-public-id.json",
+      "start": 34,
+      "end": 54,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-sdk-kwarg.py",
+      "start": 26,
+      "end": 46,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-sts-json.json",
+      "start": 41,
+      "end": 61,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-sts-temporary-access-key-x-api-key-header.http",
+      "start": 58,
+      "end": 78,
+      "family": "aws-access-key"
+    }
+  ],
+  "digest": "4ec3eec7c5b8cdc1803295cdb8d0a7c34f4ae24c2f2ed29633e9b67e0ce682d2"
+}

@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T04:17:52.698Z",
+  "sourceRun": {
+    "runId": "2026-09-30T04:17:52.698Z-e1cee5",
+    "benchmarkRevision": "561125c3f50c7d664352a96f3105b091b66f8b55"
+  },
+  "input": {
+    "surface": "comparison/beta8-1012a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "c18aef442994e71796b7c1d4fe54edf5a7bd189a599e87b0b7b5bc2c7693b64c",
+    "fixtureCount": 50,
+    "fixturesDigest": "090b8d0c55569cd5551a9bbd8faeed3920dc3f1b515d53beae6c7dcc0d0be7c6",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "946be7013e43eb30b995e6f09edb85a028bcfc4898eccb6c4d7cd22be0eb4b41",
+      "fixtureCount": 5886
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "bfbc883ee23e1b5c3d3c25aa3754935a9631c166844cd42fa32e2efce58b4a05",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 67108864
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/aws-secret-access-key-actions-env.yml",
+      "start": 80,
+      "end": 120,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-akia-next-line.txt",
+      "start": 100,
+      "end": 120,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-akia-same-line.log",
+      "start": 94,
+      "end": 114,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-compose-env.yml",
+      "start": 110,
+      "end": 150,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-create-access-key-yaml.yml",
+      "start": 71,
+      "end": 111,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-credentials-file.ini",
+      "start": 53,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-dotenv.env",
+      "start": 50,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-export.sh",
+      "start": 30,
+      "end": 70,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-hyphen-inside-twin.ini",
+      "start": 53,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-js-credentials.ts",
+      "start": 125,
+      "end": 165,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-json-member.json",
+      "start": 75,
+      "end": 115,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-tfvars.tfvars",
+      "start": 39,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-value-39-twin.env",
+      "start": 50,
+      "end": 89,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/aws-secret-access-key-value-41-twin.sh",
+      "start": 30,
+      "end": 71,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "4b506cac788c946eca81362d663620a19f960cbeb3a5a857dda2385b41e1066d"
+}

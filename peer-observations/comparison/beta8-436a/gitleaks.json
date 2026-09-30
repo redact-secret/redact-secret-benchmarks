@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-30T02:53:31.552Z",
+  "observedAt": "2026-09-30T04:17:52.698Z",
   "sourceRun": {
-    "runId": "2026-09-30T02:53:31.552Z-c34054",
-    "benchmarkRevision": "85694a1604874e4d0a24ef15225bbbaa32be85b2"
+    "runId": "2026-09-30T04:17:52.698Z-e1cee5",
+    "benchmarkRevision": "561125c3f50c7d664352a96f3105b091b66f8b55"
   },
   "input": {
     "surface": "comparison/beta8-436a",
@@ -15,15 +15,15 @@
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "7b49e5d73bdf08f138c639a4631d164ebba421e0fb672083b2c9e7f6c9c6398c",
-      "fixtureCount": 5516
+      "digest": "946be7013e43eb30b995e6f09edb85a028bcfc4898eccb6c4d7cd22be0eb4b41",
+      "fixtureCount": 5886
     }
   },
   "peer": {
     "id": "gitleaks",
     "version": "8.30.1",
     "mode": "Directory scan · default rules",
-    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configurationHash": "bfbc883ee23e1b5c3d3c25aa3754935a9631c166844cd42fa32e2efce58b4a05",
     "configuration": {
       "adapterVersion": 2,
       "familyMappingVersion": 2,
@@ -42,7 +42,7 @@
       ],
       "processLimits": {
         "timeout": 120000,
-        "maxBuffer": 16777216
+        "maxBuffer": 67108864
       },
       "rules": "default",
       "environmentRuleOverrides": false
@@ -52,7 +52,7 @@
       "platform": "darwin-arm64",
       "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
     },
-    "adapterDigest": "f7f72b2d21d7e19cb59717ad25b352bea8770f907ed284d7f95c49fe4fe3cfa6"
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
@@ -60,5 +60,5 @@
     "agreed": true
   },
   "findings": [],
-  "digest": "48a009fddc2d225ff983396e9e3d8c7b51a40ba0185e4745693f3e55cc11b6fd"
+  "digest": "9eaee832dbbe0928ed01b1816b4de1f53e0d9310bb99e6cea302e76e1d01600e"
 }

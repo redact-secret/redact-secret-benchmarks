@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T04:17:52.698Z",
+  "sourceRun": {
+    "runId": "2026-09-30T04:17:52.698Z-e1cee5",
+    "benchmarkRevision": "561125c3f50c7d664352a96f3105b091b66f8b55"
+  },
+  "input": {
+    "surface": "comparison/beta8-1012a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "c18aef442994e71796b7c1d4fe54edf5a7bd189a599e87b0b7b5bc2c7693b64c",
+    "fixtureCount": 50,
+    "fixturesDigest": "090b8d0c55569cd5551a9bbd8faeed3920dc3f1b515d53beae6c7dcc0d0be7c6",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "946be7013e43eb30b995e6f09edb85a028bcfc4898eccb6c4d7cd22be0eb4b41",
+      "fixtureCount": 5886
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/aws-secret-access-key-actions-env.yml",
+      "start": 80,
+      "end": 120,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-aida-akia-next-line-twin.txt",
+      "start": 100,
+      "end": 120,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-aida-akia-same-line-twin.log",
+      "start": 94,
+      "end": 114,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-akia-next-line.txt",
+      "start": 100,
+      "end": 120,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-akia-same-line.log",
+      "start": 94,
+      "end": 114,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-boto3-kwarg.py",
+      "start": 61,
+      "end": 101,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-compose-env.yml",
+      "start": 110,
+      "end": 150,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-create-access-key-yaml.yml",
+      "start": 71,
+      "end": 111,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-credentials-file.ini",
+      "start": 53,
+      "end": 93,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-dotenv.env",
+      "start": 50,
+      "end": 90,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-export.sh",
+      "start": 30,
+      "end": 70,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-iam-user-id-public-id.json",
+      "start": 44,
+      "end": 64,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-js-credentials.ts",
+      "start": 125,
+      "end": 165,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-json-member.json",
+      "start": 75,
+      "end": 115,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/aws-secret-access-key-tfvars.tfvars",
+      "start": 39,
+      "end": 79,
+      "family": "aws-access-key"
+    }
+  ],
+  "digest": "02013b80608b7bc52f446840448081899ce6f35321e318e9502900dcd7ba6ebb"
+}

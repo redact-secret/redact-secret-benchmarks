@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-30T03:04:05.403Z",
+  "observedAt": "2026-09-30T04:27:40.469Z",
   "sourceRun": {
-    "runId": "f9973c1e-7fd5-469f-bb9b-f39deeab872a",
-    "benchmarkRevision": "85694a1604874e4d0a24ef15225bbbaa32be85b2"
+    "runId": "ed0127eb-1bb1-4cac-84c5-2058cd8bf585",
+    "benchmarkRevision": "561125c3f50c7d664352a96f3105b091b66f8b55"
   },
   "input": {
     "surface": "evaluation/suite-development",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "22a836c2d4f7122808b021f80db343e19adc2e59bd05ff9defce81a7ee5e17a4",
-    "fixtureCount": 44307,
-    "fixturesDigest": "4e48d219ee914a72eed0496804fdfb1bc57b5c726f5c2fc6e6eed093e8656069",
+    "corpusHash": "ed9e03d3613d4b19098afa64ddcd6b7328d6c7e5b89ccd601014fd71e72505bb",
+    "fixtureCount": 47594,
+    "fixturesDigest": "87cff13c199f4a86ccba6064e9f2b049d4be1fb09fe683d107f130fa7c22cc78",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "7b49e5d73bdf08f138c639a4631d164ebba421e0fb672083b2c9e7f6c9c6398c",
-      "fixtureCount": 5516
+      "digest": "946be7013e43eb30b995e6f09edb85a028bcfc4898eccb6c4d7cd22be0eb4b41",
+      "fixtureCount": 5886
     }
   },
   "peer": {
@@ -48,7 +48,7 @@
       "platform": "darwin-arm64",
       "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
     },
-    "adapterDigest": "f7f72b2d21d7e19cb59717ad25b352bea8770f907ed284d7f95c49fe4fe3cfa6"
+    "adapterDigest": "576f3c939357e957f714a50370f972b24901be760595ed803913b46e76aaece7"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
@@ -56,6 +56,900 @@
     "agreed": true
   },
   "findings": [
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-aida-akia-next-line-twin--twin/canonical.txt",
+      "start": 59,
+      "end": 99,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-aida-akia-next-line-twin--twin/canonical.txt",
+      "start": 100,
+      "end": 120,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-aida-akia-same-line-twin--twin/canonical.txt",
+      "start": 41,
+      "end": 81,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-aida-akia-same-line-twin--twin/canonical.txt",
+      "start": 94,
+      "end": 114,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-next-line--differential/canonical.txt",
+      "start": 59,
+      "end": 99,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-next-line--differential/canonical.txt",
+      "start": 100,
+      "end": 120,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-next-line--metamorphic/canonical.txt",
+      "start": 59,
+      "end": 99,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-next-line--metamorphic/canonical.txt",
+      "start": 100,
+      "end": 120,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-next-line--metamorphic/context.indent.txt",
+      "start": 63,
+      "end": 103,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-next-line--metamorphic/context.indent.txt",
+      "start": 104,
+      "end": 124,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-next-line--metamorphic/context.unicode-prefix.txt",
+      "start": 79,
+      "end": 119,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-next-line--metamorphic/context.unicode-prefix.txt",
+      "start": 120,
+      "end": 140,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-next-line--metamorphic/encoding.crlf.txt",
+      "start": 60,
+      "end": 100,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-next-line--metamorphic/encoding.crlf.txt",
+      "start": 102,
+      "end": 122,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-next-line--mutation/canonical.txt",
+      "start": 59,
+      "end": 99,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-next-line--mutation/canonical.txt",
+      "start": 100,
+      "end": 120,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-same-line--differential/canonical.txt",
+      "start": 41,
+      "end": 81,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-same-line--differential/canonical.txt",
+      "start": 94,
+      "end": 114,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-same-line--metamorphic/canonical.txt",
+      "start": 41,
+      "end": 81,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-same-line--metamorphic/canonical.txt",
+      "start": 94,
+      "end": 114,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-same-line--metamorphic/context.indent.txt",
+      "start": 45,
+      "end": 85,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-same-line--metamorphic/context.indent.txt",
+      "start": 98,
+      "end": 118,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-same-line--metamorphic/context.unicode-prefix.txt",
+      "start": 61,
+      "end": 101,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-same-line--metamorphic/context.unicode-prefix.txt",
+      "start": 114,
+      "end": 134,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-same-line--metamorphic/encoding.crlf.txt",
+      "start": 41,
+      "end": 81,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-same-line--metamorphic/encoding.crlf.txt",
+      "start": 94,
+      "end": 114,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-same-line--mutation/canonical.txt",
+      "start": 41,
+      "end": 81,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012a--aws-secret-access-key-akia-same-line--mutation/canonical.txt",
+      "start": 94,
+      "end": 114,
+      "family": "aws-access-key"
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-client-file--differential/canonical.txt",
+      "start": 27,
+      "end": 72
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-client-file--metamorphic/canonical.txt",
+      "start": 27,
+      "end": 72
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-client-file--metamorphic/context.indent.txt",
+      "start": 31,
+      "end": 76
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-client-file--metamorphic/context.unicode-prefix.txt",
+      "start": 47,
+      "end": 92
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-client-file--metamorphic/encoding.crlf.txt",
+      "start": 27,
+      "end": 72
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-client-file--mutation/boundary.remove-delimiter.txt",
+      "start": 27,
+      "end": 72
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-client-file--mutation/canonical.txt",
+      "start": 27,
+      "end": 72
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-client-file--mutation/lexical.invalid-alphabet.txt",
+      "start": 27,
+      "end": 72
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-client-file--mutation/lexical.length-minus-one.txt",
+      "start": 27,
+      "end": 72
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-client-file--mutation/lexical.length-plus-one.txt",
+      "start": 27,
+      "end": 72
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-client-file--mutation/lexical.prefix-change.txt",
+      "start": 27,
+      "end": 72
+    },
+    {
+      "path": "cases/beta8-1012b--google-oauth-client-secret-json-client-file--mutation/lexical.replace-last.txt",
+      "start": 27,
+      "end": 72
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-bare-prose--differential/canonical.txt",
+      "start": 60,
+      "end": 119,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-bare-prose--metamorphic/canonical.txt",
+      "start": 60,
+      "end": 119,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-bare-prose--metamorphic/context.indent.txt",
+      "start": 64,
+      "end": 123,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-bare-prose--metamorphic/context.unicode-prefix.txt",
+      "start": 80,
+      "end": 139,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-bare-prose--metamorphic/encoding.crlf.txt",
+      "start": 60,
+      "end": 119,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-bare-prose--mutation/boundary.remove-delimiter.txt",
+      "start": 60,
+      "end": 118,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-bare-prose--mutation/canonical.txt",
+      "start": 60,
+      "end": 119,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-bearer-header--differential/canonical.txt",
+      "start": 63,
+      "end": 124,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-bearer-header--metamorphic/canonical.txt",
+      "start": 63,
+      "end": 124,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-bearer-header--metamorphic/context.indent.txt",
+      "start": 67,
+      "end": 128,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-bearer-header--metamorphic/context.unicode-prefix.txt",
+      "start": 83,
+      "end": 144,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-bearer-header--metamorphic/encoding.crlf.txt",
+      "start": 65,
+      "end": 126,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-bearer-header--mutation/boundary.remove-delimiter.txt",
+      "start": 63,
+      "end": 123,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-bearer-header--mutation/canonical.txt",
+      "start": 63,
+      "end": 124,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-chat-paste--differential/canonical.txt",
+      "start": 22,
+      "end": 83,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-chat-paste--metamorphic/canonical.txt",
+      "start": 22,
+      "end": 83,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-chat-paste--metamorphic/context.indent.txt",
+      "start": 26,
+      "end": 87,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-chat-paste--metamorphic/context.unicode-prefix.txt",
+      "start": 42,
+      "end": 103,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-chat-paste--metamorphic/encoding.crlf.txt",
+      "start": 22,
+      "end": 83,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-chat-paste--mutation/canonical.txt",
+      "start": 22,
+      "end": 83,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-checksum-mismatch-twin--differential/canonical.txt",
+      "start": 20,
+      "end": 81,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-checksum-mismatch-twin--twin/authored.twin.txt",
+      "start": 20,
+      "end": 81,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-checksum-mismatch-twin--twin/canonical.txt",
+      "start": 20,
+      "end": 81,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-dotenv--differential/canonical.txt",
+      "start": 20,
+      "end": 81,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-dotenv--metamorphic/canonical.txt",
+      "start": 20,
+      "end": 81,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-dotenv--metamorphic/context.indent.txt",
+      "start": 24,
+      "end": 85,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-dotenv--metamorphic/context.unicode-prefix.txt",
+      "start": 40,
+      "end": 101,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-dotenv--metamorphic/encoding.crlf.txt",
+      "start": 21,
+      "end": 82,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-dotenv--mutation/authored.twin.txt",
+      "start": 20,
+      "end": 81,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-dotenv--mutation/boundary.remove-delimiter.txt",
+      "start": 20,
+      "end": 80,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-dotenv--mutation/canonical.txt",
+      "start": 20,
+      "end": 81,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-export--differential/canonical.txt",
+      "start": 21,
+      "end": 82,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-export--metamorphic/canonical.txt",
+      "start": 21,
+      "end": 82,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-export--metamorphic/context.indent.txt",
+      "start": 25,
+      "end": 86,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-export--metamorphic/context.unicode-prefix.txt",
+      "start": 41,
+      "end": 102,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-export--metamorphic/encoding.crlf.txt",
+      "start": 21,
+      "end": 82,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-export--mutation/authored.twin.txt",
+      "start": 21,
+      "end": 82,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-export--mutation/canonical.txt",
+      "start": 21,
+      "end": 82,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-git-remote-url--differential/canonical.txt",
+      "start": 40,
+      "end": 99,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-git-remote-url--metamorphic/canonical.txt",
+      "start": 40,
+      "end": 99,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-git-remote-url--metamorphic/context.indent.txt",
+      "start": 44,
+      "end": 103,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-git-remote-url--metamorphic/context.unicode-prefix.txt",
+      "start": 60,
+      "end": 119,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-git-remote-url--metamorphic/encoding.crlf.txt",
+      "start": 41,
+      "end": 100,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-git-remote-url--mutation/boundary.remove-delimiter.txt",
+      "start": 40,
+      "end": 98,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-git-remote-url--mutation/canonical.txt",
+      "start": 40,
+      "end": 99,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-json-api-key--differential/canonical.txt",
+      "start": 16,
+      "end": 77,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-json-api-key--metamorphic/canonical.txt",
+      "start": 16,
+      "end": 77,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-json-api-key--metamorphic/context.indent.txt",
+      "start": 20,
+      "end": 81,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-json-api-key--metamorphic/context.unicode-prefix.txt",
+      "start": 36,
+      "end": 97,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-json-api-key--metamorphic/encoding.crlf.txt",
+      "start": 17,
+      "end": 78,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-json-api-key--mutation/authored.twin.txt",
+      "start": 16,
+      "end": 76,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-json-api-key--mutation/canonical.txt",
+      "start": 16,
+      "end": 77,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-json-token--differential/canonical.txt",
+      "start": 14,
+      "end": 72,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-json-token--metamorphic/canonical.txt",
+      "start": 14,
+      "end": 72,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-json-token--metamorphic/context.indent.txt",
+      "start": 18,
+      "end": 76,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-json-token--metamorphic/context.unicode-prefix.txt",
+      "start": 34,
+      "end": 92,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-json-token--metamorphic/encoding.crlf.txt",
+      "start": 15,
+      "end": 73,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-json-token--mutation/boundary.remove-delimiter.txt",
+      "start": 14,
+      "end": 71,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-json-token--mutation/canonical.txt",
+      "start": 14,
+      "end": 72,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-leading-glue-twin--twin/canonical.txt",
+      "start": 60,
+      "end": 119,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-length-holder-mismatch-twin--differential/canonical.txt",
+      "start": 21,
+      "end": 82,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-length-holder-mismatch-twin--twin/authored.twin.txt",
+      "start": 21,
+      "end": 82,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-length-holder-mismatch-twin--twin/canonical.txt",
+      "start": 21,
+      "end": 82,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-missing-separator-twin--differential/canonical.txt",
+      "start": 16,
+      "end": 76,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-missing-separator-twin--twin/authored.twin.txt",
+      "start": 16,
+      "end": 76,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-missing-separator-twin--twin/canonical.txt",
+      "start": 16,
+      "end": 77,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-26-twin--twin/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-27--differential/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-27--metamorphic/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-27--metamorphic/context.indent.txt",
+      "start": 60,
+      "end": 106,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-27--metamorphic/context.unicode-prefix.txt",
+      "start": 76,
+      "end": 122,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-27--metamorphic/encoding.crlf.txt",
+      "start": 59,
+      "end": 105,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-27--mutation/canonical.txt",
+      "start": 56,
+      "end": 102,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-300--differential/canonical.txt",
+      "start": 128,
+      "end": 447,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-300--metamorphic/canonical.txt",
+      "start": 128,
+      "end": 447,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-300--metamorphic/context.indent.txt",
+      "start": 132,
+      "end": 451,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-300--metamorphic/context.unicode-prefix.txt",
+      "start": 148,
+      "end": 467,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-300--metamorphic/encoding.crlf.txt",
+      "start": 129,
+      "end": 448,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-300--mutation/boundary.remove-delimiter.txt",
+      "start": 128,
+      "end": 446,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-300--mutation/canonical.txt",
+      "start": 128,
+      "end": 447,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-300--mutation/lexical.invalid-alphabet.txt",
+      "start": 128,
+      "end": 210,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-300--mutation/lexical.length-minus-one.txt",
+      "start": 128,
+      "end": 210,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-300--mutation/lexical.length-plus-one.txt",
+      "start": 128,
+      "end": 210,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-payload-300--mutation/lexical.replace-last.txt",
+      "start": 128,
+      "end": 210,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-private-token-header--differential/canonical.txt",
+      "start": 78,
+      "end": 139,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-private-token-header--metamorphic/canonical.txt",
+      "start": 78,
+      "end": 139,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-private-token-header--metamorphic/context.indent.txt",
+      "start": 82,
+      "end": 143,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-private-token-header--metamorphic/context.unicode-prefix.txt",
+      "start": 98,
+      "end": 159,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-private-token-header--metamorphic/encoding.crlf.txt",
+      "start": 80,
+      "end": 141,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-private-token-header--mutation/canonical.txt",
+      "start": 78,
+      "end": 139,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-python-gitlab--differential/canonical.txt",
+      "start": 71,
+      "end": 132,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-python-gitlab--metamorphic/canonical.txt",
+      "start": 71,
+      "end": 132,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-python-gitlab--metamorphic/context.indent.txt",
+      "start": 75,
+      "end": 136,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-python-gitlab--metamorphic/context.unicode-prefix.txt",
+      "start": 91,
+      "end": 152,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-python-gitlab--metamorphic/encoding.crlf.txt",
+      "start": 73,
+      "end": 134,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-python-gitlab--mutation/canonical.txt",
+      "start": 71,
+      "end": 132,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-sdk-kwarg--differential/canonical.txt",
+      "start": 25,
+      "end": 86,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-sdk-kwarg--metamorphic/canonical.txt",
+      "start": 25,
+      "end": 86,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-sdk-kwarg--metamorphic/context.indent.txt",
+      "start": 29,
+      "end": 90,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-sdk-kwarg--metamorphic/context.unicode-prefix.txt",
+      "start": 45,
+      "end": 106,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-sdk-kwarg--metamorphic/encoding.crlf.txt",
+      "start": 25,
+      "end": 86,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-sdk-kwarg--mutation/canonical.txt",
+      "start": 25,
+      "end": 86,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-trailing-glue-twin--twin/canonical.txt",
+      "start": 22,
+      "end": 83,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-uppercase-base36-twin--twin/canonical.txt",
+      "start": 25,
+      "end": 86,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-version-one-char-twin--twin/canonical.txt",
+      "start": 14,
+      "end": 72,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-x-api-key-header--differential/canonical.txt",
+      "start": 51,
+      "end": 112,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-x-api-key-header--metamorphic/canonical.txt",
+      "start": 51,
+      "end": 112,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-x-api-key-header--metamorphic/context.indent.txt",
+      "start": 55,
+      "end": 116,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-x-api-key-header--metamorphic/context.unicode-prefix.txt",
+      "start": 71,
+      "end": 132,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-x-api-key-header--metamorphic/encoding.crlf.txt",
+      "start": 53,
+      "end": 114,
+      "family": "gitlab-token"
+    },
+    {
+      "path": "cases/beta8-1012c--gitlab-routable-personal-access-token-x-api-key-header--mutation/canonical.txt",
+      "start": 51,
+      "end": 112,
+      "family": "gitlab-token"
+    },
     {
       "path": "cases/beta8-207--atlassian-api-token-acli-login--differential/canonical.txt",
       "start": 5,
@@ -39434,6 +40328,150 @@
       "end": 61
     },
     {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-bare--differential/canonical.txt",
+      "start": 0,
+      "end": 70,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-bare--metamorphic/canonical.txt",
+      "start": 0,
+      "end": 70,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-bare--metamorphic/context.indent.txt",
+      "start": 4,
+      "end": 74,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-bare--metamorphic/context.json.txt",
+      "start": 10,
+      "end": 80,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-bare--metamorphic/context.markdown.txt",
+      "start": 1,
+      "end": 71,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-bare--metamorphic/context.quote.txt",
+      "start": 1,
+      "end": 71,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-bare--metamorphic/context.single-quote.txt",
+      "start": 1,
+      "end": 71,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-bare--metamorphic/context.unicode-prefix.txt",
+      "start": 20,
+      "end": 90,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-bare--metamorphic/context.yaml.txt",
+      "start": 8,
+      "end": 78,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-bare--mutation/canonical.txt",
+      "start": 0,
+      "end": 70,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-bare--mutation/lexical.replace-last.txt",
+      "start": 0,
+      "end": 70,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-quoted--differential/canonical.txt",
+      "start": 7,
+      "end": 77,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-quoted--metamorphic/canonical.txt",
+      "start": 7,
+      "end": 77,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-quoted--metamorphic/context.indent.txt",
+      "start": 11,
+      "end": 81,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-quoted--metamorphic/context.unicode-prefix.txt",
+      "start": 27,
+      "end": 97,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-quoted--metamorphic/encoding.crlf.txt",
+      "start": 7,
+      "end": 77,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-quoted--mutation/canonical.txt",
+      "start": 7,
+      "end": 77,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-quoted--mutation/lexical.replace-last.txt",
+      "start": 7,
+      "end": 77,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-unicode-crlf--differential/canonical.txt",
+      "start": 21,
+      "end": 91,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-unicode-crlf--metamorphic/canonical.txt",
+      "start": 21,
+      "end": 91,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-unicode-crlf--metamorphic/context.indent.txt",
+      "start": 25,
+      "end": 95,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-unicode-crlf--metamorphic/context.unicode-prefix.txt",
+      "start": 41,
+      "end": 111,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-unicode-crlf--mutation/canonical.txt",
+      "start": 21,
+      "end": 91,
+      "family": "nvidia-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--nvidia-api-key-key-shape-unicode-crlf--mutation/lexical.replace-last.txt",
+      "start": 21,
+      "end": 91,
+      "family": "nvidia-api-key"
+    },
+    {
       "path": "cases/detector-coverage--openrouter-api-key-key-shape-bare--differential/canonical.txt",
       "start": 0,
       "end": 73,
@@ -40894,6 +41932,150 @@
       "start": 21,
       "end": 61,
       "family": "replicate-api-token"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-bare--differential/canonical.txt",
+      "start": 0,
+      "end": 57,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-bare--metamorphic/canonical.txt",
+      "start": 0,
+      "end": 57,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-bare--metamorphic/context.indent.txt",
+      "start": 4,
+      "end": 61,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-bare--metamorphic/context.json.txt",
+      "start": 10,
+      "end": 67,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-bare--metamorphic/context.markdown.txt",
+      "start": 1,
+      "end": 58,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-bare--metamorphic/context.quote.txt",
+      "start": 1,
+      "end": 58,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-bare--metamorphic/context.single-quote.txt",
+      "start": 1,
+      "end": 58,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-bare--metamorphic/context.unicode-prefix.txt",
+      "start": 20,
+      "end": 77,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-bare--metamorphic/context.yaml.txt",
+      "start": 8,
+      "end": 65,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-bare--mutation/canonical.txt",
+      "start": 0,
+      "end": 57,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-bare--mutation/lexical.replace-last.txt",
+      "start": 0,
+      "end": 57,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-quoted--differential/canonical.txt",
+      "start": 7,
+      "end": 64,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-quoted--metamorphic/canonical.txt",
+      "start": 7,
+      "end": 64,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-quoted--metamorphic/context.indent.txt",
+      "start": 11,
+      "end": 68,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-quoted--metamorphic/context.unicode-prefix.txt",
+      "start": 27,
+      "end": 84,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-quoted--metamorphic/encoding.crlf.txt",
+      "start": 7,
+      "end": 64,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-quoted--mutation/canonical.txt",
+      "start": 7,
+      "end": 64,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-quoted--mutation/lexical.replace-last.txt",
+      "start": 7,
+      "end": 64,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-unicode-crlf--differential/canonical.txt",
+      "start": 21,
+      "end": 78,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-unicode-crlf--metamorphic/canonical.txt",
+      "start": 21,
+      "end": 78,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-unicode-crlf--metamorphic/context.indent.txt",
+      "start": 25,
+      "end": 82,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-unicode-crlf--metamorphic/context.unicode-prefix.txt",
+      "start": 41,
+      "end": 98,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-unicode-crlf--mutation/canonical.txt",
+      "start": 21,
+      "end": 78,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/detector-coverage--rubygems-api-key-key-shape-unicode-crlf--mutation/lexical.replace-last.txt",
+      "start": 21,
+      "end": 78,
+      "family": "rubygems-api-key"
     },
     {
       "path": "cases/detector-coverage--sendgrid-token-segmented-bare--differential/canonical.txt",
@@ -45771,5 +46953,5 @@
       "family": "github-token"
     }
   ],
-  "digest": "4964a858d1efba9239be29b4ed2e105aebbe049bdc09c8428100e8c4a4a0bb6e"
+  "digest": "b7a1034dc229b1ad63008c8a33ca0b6160ea0d7f816c01ee2f71fdb9e8f6db00"
 }

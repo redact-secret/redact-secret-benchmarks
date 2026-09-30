@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-29T22:00:46.542Z",
+  "observedAt": "2026-09-29T23:32:03.315Z",
   "sourceRun": {
-    "runId": "2026-09-29T22:00:46.542Z-48ba53",
-    "benchmarkRevision": "5380aa3a421555883225a62358fa40f81dcd2baa"
+    "runId": "2026-09-29T23:32:03.315Z-eebb2b",
+    "benchmarkRevision": "0f04da9f3bb5e437181d2ee4faafc4fc42009c4e"
   },
   "input": {
     "surface": "comparison/detector-coverage",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "49ed9e968d4ef04d783f50487060b358b5fb2804b96e82a225251fd58a7149b3",
-    "fixtureCount": 1161,
-    "fixturesDigest": "2a500986d6ed65c93d1a5f87e00302228d9213be39894927ee681b1770065bc9",
+    "corpusHash": "ba8baf89e8ca4cb5acd67f462ab88312bea8c562a3e34b00d4099075326413ed",
+    "fixtureCount": 1163,
+    "fixturesDigest": "f0880e1ffda0e809282a2140c26ec2f1894d4076f60934e8d17822bfb5c92ec9",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "6f66c4e499491ddb532f7cfe17236c043ac5796c43323d3f3e85e0eed9d820dd",
-      "fixtureCount": 5034
+      "digest": "afe1b903d0acd944e40d18126b2677dc75b3863a37d5b0fc3d051b259fb1f48b",
+      "fixtureCount": 5090
     }
   },
   "peer": {
@@ -52,7 +52,7 @@
       "platform": "darwin-arm64",
       "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
     },
-    "adapterDigest": "c33f4929e72d2715163765dca6af7e7f6e014fc0c671072ba94fb770c80cd2b4"
+    "adapterDigest": "edf76541038e3f60f153a3d13aa47bb7bdd9f6fdbf6d2df4a12d1675e9c90066"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
@@ -61,9 +61,21 @@
   },
   "findings": [
     {
+      "path": "cases/ai21-api-key-key-shape-bare-twin.txt",
+      "start": 13,
+      "end": 44,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/ai21-api-key-key-shape-bare.txt",
       "start": 13,
       "end": 45,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-key-shape-quoted-twin.txt",
+      "start": 20,
+      "end": 51,
       "family": "generic-token"
     },
     {
@@ -73,15 +85,15 @@
       "family": "generic-token"
     },
     {
-      "path": "cases/ai21-api-key-key-shape-unicode-crlf.txt",
+      "path": "cases/ai21-api-key-key-shape-unicode-crlf-twin.txt",
       "start": 34,
-      "end": 66,
+      "end": 65,
       "family": "generic-token"
     },
     {
-      "path": "cases/ai21-api-key-short-token.txt",
-      "start": 13,
-      "end": 44,
+      "path": "cases/ai21-api-key-key-shape-unicode-crlf.txt",
+      "start": 34,
+      "end": 66,
       "family": "generic-token"
     },
     {
@@ -1662,5 +1674,5 @@
       "family": "travisci-api-token"
     }
   ],
-  "digest": "fa818d870c37d616c02fc3f4e2260d7f3a8a32c8c8efd86b63cfbbe0aa223dd8"
+  "digest": "b016997ec497b7f07a4f309a7586b32177f56344725cfdf8982cc48b70acc1df"
 }

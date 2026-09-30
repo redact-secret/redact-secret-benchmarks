@@ -101,7 +101,7 @@ assert flare_rows['github_token']['sourceUrl'].startswith('https://example.inval
 });
 
 test('known gap issues cover all recorded failures and link to authored fixtures', async () => {
-  assert.deepEqual(knownGaps.issues.map(i => i.number), [292,293,294,404,405,406,407,408,551,552,553,428,428,671,672,670,707,708,714,738,739,740,749,741,742,743,743,744,745,746,747,754,756,727,264,730,702,815,816,817,818,819,820,821,822,823,824,825,911,931,932,932,933,934,935,936,949,1015,1016,1017]);
+  assert.deepEqual(knownGaps.issues.map(i => i.number), [292,293,294,404,405,406,407,408,551,552,553,428,428,671,672,670,707,708,714,738,739,740,749,741,742,743,743,744,745,746,747,754,756,727,264,730,702,815,816,817,818,819,820,821,822,823,824,825,911,931,932,932,933,934,935,936,949,1015,1016,1017,1038]);
   const assignments = await read('benchmarks/fixture-detectors.json');
   const slugs = knownGaps.issues.flatMap(i => i.fixtures);
   // #949: three Inngest/Resend placeholder controls (Beta.11 #434/#436 graduation).
@@ -109,8 +109,9 @@ test('known gap issues cover all recorded failures and link to authored fixtures
   // (product-932-masked-key-policy, policy-decision); the fixture count is unchanged.
   // #1015-#1017: Beta.12 provisional triage (five beta8-384a/384e fixtures); #1018 is
   // linked from product-932-masked-key-policy, which already owns the LiteLLM fixture.
-  assert.equal(slugs.length, 184);
-  assert.equal(new Set(slugs).size, 184);
+  // #1038: redact-secret#1013 Mistral os.environ subscript assignment (beta8-384e).
+  assert.equal(slugs.length, 185);
+  assert.equal(new Set(slugs).size, 185);
   // A slug is either a corpus fixture or `<adversarial pack id>--<fixture id>`
   // for a fixture in that pack's intake record (#140). An adversarial record's
   // corpus hash is the pack's expectations digest.

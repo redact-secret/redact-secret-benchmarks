@@ -624,8 +624,8 @@ export function build379({ fixture, synthetic }) {
       "openai_admin_key = \"", k("tfvars-admin-key", 58), "\"\nopenai_org      = \"org-analytics\"\n",
       "Terraform tfvars admin_key (58/58 form).");
     P(T_, "shell-export", "powershell-env", "ps1",
-      "$env:OPENAI_ADMIN_KEY = \"", k("powershell-env", 74), "\"\n",
-      "PowerShell $env: assignment (74/74 form).");
+      "$env:OPENAI_ADMIN_KEY = \"", k("powershell-env", 58), "\"\n",
+      "PowerShell $env: assignment (58/58; redact-secret#1013 authors no 74/74 admin value).");
     P(T_, "ci-config", "actions-usage-export", "yml",
       "jobs:\n  usage-export:\n    runs-on: ubuntu-latest\n    env:\n      OPENAI_ADMIN_KEY: ", k("actions-usage-export", 58), "\n    steps:\n      - run: python export_usage.py --since 7d\n",
       "GitHub Actions env literal on a usage-export job.");
@@ -633,11 +633,11 @@ export function build379({ fixture, synthetic }) {
       "send: b'GET /v1/organization/usage/completions?start_time=1759017600 HTTP/1.1\\r\\nHost: api.openai.com\\r\\nAuthorization: Bearer ", k("requests-debug", 58), "\\r\\n'\n",
       "requests debug log with Authorization: Bearer on the admin usage endpoint.");
     P(T_, "prose", "oncall-handoff", "md",
-      "Handoff: the usage dashboards read from the admin key ", k("oncall-handoff", 74), " until Friday's rotation.\n",
+      "Handoff: the usage dashboards read from the admin key ", k("oncall-handoff", 58), " until Friday's rotation.\n",
       "On-call handoff note pasting the key.");
-    P(T_, "source-code", "go-const-74", "go",
-      "package billing\n\nconst adminKey = \"", k("go-const-74", 74), "\"\n",
-      "Go const, 74/74 form.");
+    P(T_, "source-code", "go-const", "go",
+      "package billing\n\nconst adminKey = \"", k("go-const", 58), "\"\n",
+      "Go const (58/58; redact-secret#1013 authors no 74/74 admin value).");
     C(T_, "public-id", "admin-keys-listing", "json",
       `{"object": "list", "data": [{"object": "organization.admin_api_key", "id": "key_${synthetic(seed(T_, "key-id"), 16, ALNUM)}", "name": "usage-export", "redacted_value": "sk-admin-${synthetic(seed(T_, "redacted-head"), 4, ALNUM)}...${synthetic(seed(T_, "redacted-tail"), 4, ALNUM)}"}]}\n`,
       "admin_api_keys list response with id, name and redacted_value.");
@@ -659,8 +659,8 @@ export function build379({ fixture, synthetic }) {
     T(T_, "actions-usage-export", "first-segment-57", "length", "tool-undisputed",
       "length: the first segment has 57 characters (its last byte removed); the marker and the second segment are byte-identical",
       w => w.pre + `sk-admin-${segs["actions-usage-export"].a.slice(0, -1)}T3BlbkFJ${segs["actions-usage-export"].b}` + w.post);
-    T(T_, "go-const-74", "admn-prefix", "prefix", "provider",
-      "prefix: sk-admin- becomes sk-admn- (one letter dropped) on the 74/74 form",
+    T(T_, "go-const", "admn-prefix", "prefix", "provider",
+      "prefix: sk-admin- becomes sk-admn- (one letter dropped)",
       w => w.pre + w.value.replace(/^sk-admin-/, "sk-admn-") + w.post);
   }
 

@@ -13,7 +13,7 @@
   "sources": {
     "reviewedMetadata": {
       "algorithm": "sha256",
-      "digest": "014b69741e17c438d69fd4b638cc0f65f0f04ea3ae451c127b9c889e41b1e4b3"
+      "digest": "a80c3cae5684f5822498f47f7d20b0a5668b741f8d00a86692067cdf9ee25123"
     },
     "scenarios": {
       "algorithm": "sha256",
@@ -12731,6 +12731,31 @@
       }
     },
     {
+      "slug": "beta8-211--github-fine-grained-pat-bearer-header-plus-alphabet-twin",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "github-fine-grained-pat-bearer-header-plus-alphabet-twin",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/github-fine-grained-pat-bearer-header-plus-alphabet-twin.http"
+      },
+      "familyIds": [
+        "github:fine-grained-personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      },
+      "relations": {
+        "twinOf": "beta8-211--github-fine-grained-pat-bearer-header"
+      }
+    },
+    {
       "slug": "beta8-211--github-fine-grained-pat-command-substitution-reference",
       "source": {
         "categoryId": "beta8-211",
@@ -12819,6 +12844,27 @@
       }
     },
     {
+      "slug": "beta8-211--github-fine-grained-pat-curl-basic-auth",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "github-fine-grained-pat-curl-basic-auth",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/github-fine-grained-pat-curl-basic-auth.sh"
+      },
+      "familyIds": [
+        "github:fine-grained-personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
       "slug": "beta8-211--github-fine-grained-pat-docs-sentence-prose",
       "source": {
         "categoryId": "beta8-211",
@@ -12861,6 +12907,31 @@
       }
     },
     {
+      "slug": "beta8-211--github-fine-grained-pat-dotenv-gh-token-hyphen-prefix-twin",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "github-fine-grained-pat-dotenv-gh-token-hyphen-prefix-twin",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/github-fine-grained-pat-dotenv-gh-token-hyphen-prefix-twin.env"
+      },
+      "familyIds": [
+        "github:fine-grained-personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      },
+      "relations": {
+        "twinOf": "beta8-211--github-fine-grained-pat-dotenv-gh-token"
+      }
+    },
+    {
       "slug": "beta8-211--github-fine-grained-pat-dotenv-gh-token-prefix-twin",
       "source": {
         "categoryId": "beta8-211",
@@ -12883,6 +12954,27 @@
       },
       "relations": {
         "twinOf": "beta8-211--github-fine-grained-pat-dotenv-gh-token"
+      }
+    },
+    {
+      "slug": "beta8-211--github-fine-grained-pat-expiry-variable-near-miss",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "github-fine-grained-pat-expiry-variable-near-miss",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/github-fine-grained-pat-expiry-variable-near-miss.env"
+      },
+      "familyIds": [
+        "github:fine-grained-personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
       }
     },
     {
@@ -12995,6 +13087,69 @@
       }
     },
     {
+      "slug": "beta8-211--github-fine-grained-pat-gitlab-ci-mirror",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "github-fine-grained-pat-gitlab-ci-mirror",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/github-fine-grained-pat-gitlab-ci-mirror.yml"
+      },
+      "familyIds": [
+        "github:fine-grained-personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--github-fine-grained-pat-go-oauth2-static",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "github-fine-grained-pat-go-oauth2-static",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/github-fine-grained-pat-go-oauth2-static.go"
+      },
+      "familyIds": [
+        "github:fine-grained-personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--github-fine-grained-pat-hub-config",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "github-fine-grained-pat-hub-config",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/github-fine-grained-pat-hub-config.yml"
+      },
+      "familyIds": [
+        "github:fine-grained-personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
       "slug": "beta8-211--github-fine-grained-pat-identifier-name-near-miss",
       "source": {
         "categoryId": "beta8-211",
@@ -13007,6 +13162,27 @@
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--github-fine-grained-pat-k8s-secret-stringdata",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "github-fine-grained-pat-k8s-secret-stringdata",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/github-fine-grained-pat-k8s-secret-stringdata.yml"
+      },
+      "familyIds": [
+        "github:fine-grained-personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
         "regression-behavior"
       ],
       "provenance": {
@@ -13058,12 +13234,117 @@
       }
     },
     {
+      "slug": "beta8-211--github-fine-grained-pat-org-token-requests-listing-public-id",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "github-fine-grained-pat-org-token-requests-listing-public-id",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/github-fine-grained-pat-org-token-requests-listing-public-id.json"
+      },
+      "familyIds": [
+        "github:fine-grained-personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--github-fine-grained-pat-pygithub-auth-token",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "github-fine-grained-pat-pygithub-auth-token",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/github-fine-grained-pat-pygithub-auth-token.py"
+      },
+      "familyIds": [
+        "github:fine-grained-personal-access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--github-fine-grained-pat-redacted-dotenv-placeholder",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "github-fine-grained-pat-redacted-dotenv-placeholder",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/github-fine-grained-pat-redacted-dotenv-placeholder.env"
+      },
+      "familyIds": [
+        "github:fine-grained-personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
       "slug": "beta8-211--github-fine-grained-pat-request-id-header-public-id",
       "source": {
         "categoryId": "beta8-211",
         "fixtureId": "github-fine-grained-pat-request-id-header-public-id",
         "corpus": "fixtures/generated/beta8-211.json",
         "path": "cases/github-fine-grained-pat-request-id-header-public-id.http"
+      },
+      "familyIds": [
+        "github:fine-grained-personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--github-fine-grained-pat-revocation-fingerprint-log-encoded-value",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "github-fine-grained-pat-revocation-fingerprint-log-encoded-value",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/github-fine-grained-pat-revocation-fingerprint-log-encoded-value.log"
+      },
+      "familyIds": [
+        "github:fine-grained-personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--github-fine-grained-pat-rotation-policy-prose",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "github-fine-grained-pat-rotation-policy-prose",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/github-fine-grained-pat-rotation-policy-prose.md"
       },
       "familyIds": [
         "github:fine-grained-personal-access-token"
@@ -13122,6 +13403,52 @@
       },
       "relations": {
         "twinOf": "beta8-211--github-fine-grained-pat-terraform-provider"
+      }
+    },
+    {
+      "slug": "beta8-211--github-fine-grained-pat-terraform-provider-prefix-separator-twin",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "github-fine-grained-pat-terraform-provider-prefix-separator-twin",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/github-fine-grained-pat-terraform-provider-prefix-separator-twin.tf"
+      },
+      "familyIds": [
+        "github:fine-grained-personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      },
+      "relations": {
+        "twinOf": "beta8-211--github-fine-grained-pat-terraform-provider"
+      }
+    },
+    {
+      "slug": "beta8-211--github-fine-grained-pat-vault-kv-lookup-reference",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "github-fine-grained-pat-vault-kv-lookup-reference",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/github-fine-grained-pat-vault-kv-lookup-reference.sh"
+      },
+      "familyIds": [
+        "github:fine-grained-personal-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
       }
     },
     {
@@ -13649,6 +13976,48 @@
       }
     },
     {
+      "slug": "beta8-211--slack-app-level-token-actions-secret-reference",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "slack-app-level-token-actions-secret-reference",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/slack-app-level-token-actions-secret-reference.yml"
+      },
+      "familyIds": [
+        "slack:app-level-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--slack-app-level-token-actions-socket-mode-env",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "slack-app-level-token-actions-socket-mode-env",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/slack-app-level-token-actions-socket-mode-env.yml"
+      },
+      "familyIds": [
+        "slack:app-level-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
       "slug": "beta8-211--slack-app-level-token-agent-env-echo",
       "source": {
         "categoryId": "beta8-211",
@@ -13716,12 +14085,79 @@
       }
     },
     {
+      "slug": "beta8-211--slack-app-level-token-agent-yaml-boundary-twin",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "slack-app-level-token-agent-yaml-boundary-twin",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/slack-app-level-token-agent-yaml-boundary-twin.yml"
+      },
+      "familyIds": [
+        "slack:app-level-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      },
+      "relations": {
+        "twinOf": "beta8-211--slack-app-level-token-agent-yaml"
+      }
+    },
+    {
+      "slug": "beta8-211--slack-app-level-token-angle-dotenv-placeholder",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "slack-app-level-token-angle-dotenv-placeholder",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/slack-app-level-token-angle-dotenv-placeholder.env"
+      },
+      "familyIds": [
+        "slack:app-level-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
       "slug": "beta8-211--slack-app-level-token-angle-placeholder-placeholder",
       "source": {
         "categoryId": "beta8-211",
         "fixtureId": "slack-app-level-token-angle-placeholder-placeholder",
         "corpus": "fixtures/generated/beta8-211.json",
         "path": "cases/slack-app-level-token-angle-placeholder-placeholder.yml"
+      },
+      "familyIds": [
+        "slack:app-level-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--slack-app-level-token-app-and-enterprise-ids-public-id",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "slack-app-level-token-app-and-enterprise-ids-public-id",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/slack-app-level-token-app-and-enterprise-ids-public-id.env"
       },
       "familyIds": [
         "slack:app-level-token"
@@ -13806,6 +14242,31 @@
         "fixtureId": "slack-app-level-token-bolt-python-handler-separator-twin",
         "corpus": "fixtures/generated/beta8-211.json",
         "path": "cases/slack-app-level-token-bolt-python-handler-separator-twin.py"
+      },
+      "familyIds": [
+        "slack:app-level-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      },
+      "relations": {
+        "twinOf": "beta8-211--slack-app-level-token-bolt-python-handler"
+      }
+    },
+    {
+      "slug": "beta8-211--slack-app-level-token-bolt-python-handler-short-prefix-twin",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "slack-app-level-token-bolt-python-handler-short-prefix-twin",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/slack-app-level-token-bolt-python-handler-short-prefix-twin.py"
       },
       "familyIds": [
         "slack:app-level-token"
@@ -14068,6 +14529,31 @@
       }
     },
     {
+      "slug": "beta8-211--slack-app-level-token-dotenv-app-token-underscore-prefix-twin",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "slack-app-level-token-dotenv-app-token-underscore-prefix-twin",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/slack-app-level-token-dotenv-app-token-underscore-prefix-twin.env"
+      },
+      "familyIds": [
+        "slack:app-level-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      },
+      "relations": {
+        "twinOf": "beta8-211--slack-app-level-token-dotenv-app-token"
+      }
+    },
+    {
       "slug": "beta8-211--slack-app-level-token-environ-lookup-reference",
       "source": {
         "categoryId": "beta8-211",
@@ -14095,6 +14581,69 @@
         "fixtureId": "slack-app-level-token-export-app-token",
         "corpus": "fixtures/generated/beta8-211.json",
         "path": "cases/slack-app-level-token-export-app-token.sh"
+      },
+      "familyIds": [
+        "slack:app-level-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--slack-app-level-token-fish-set",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "slack-app-level-token-fish-set",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/slack-app-level-token-fish-set.fish"
+      },
+      "familyIds": [
+        "slack:app-level-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--slack-app-level-token-helm-values",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "slack-app-level-token-helm-values",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/slack-app-level-token-helm-values.yml"
+      },
+      "familyIds": [
+        "slack:app-level-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--slack-app-level-token-java-socket-mode-app",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "slack-app-level-token-java-socket-mode-app",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/slack-app-level-token-java-socket-mode-app.java"
       },
       "familyIds": [
         "slack:app-level-token"
@@ -14173,12 +14722,117 @@
       }
     },
     {
+      "slug": "beta8-211--slack-app-level-token-printenv-grep",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "slack-app-level-token-printenv-grep",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/slack-app-level-token-printenv-grep.txt"
+      },
+      "familyIds": [
+        "slack:app-level-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--slack-app-level-token-scopes-paragraph-prose",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "slack-app-level-token-scopes-paragraph-prose",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/slack-app-level-token-scopes-paragraph-prose.md"
+      },
+      "familyIds": [
+        "slack:app-level-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--slack-app-level-token-scopes-variable-near-miss",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "slack-app-level-token-scopes-variable-near-miss",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/slack-app-level-token-scopes-variable-near-miss.env"
+      },
+      "familyIds": [
+        "slack:app-level-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--slack-app-level-token-socket-mode-debug",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "slack-app-level-token-socket-mode-debug",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/slack-app-level-token-socket-mode-debug.log"
+      },
+      "familyIds": [
+        "slack:app-level-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
       "slug": "beta8-211--slack-app-level-token-team-and-client-id-public-id",
       "source": {
         "categoryId": "beta8-211",
         "fixtureId": "slack-app-level-token-team-and-client-id-public-id",
         "corpus": "fixtures/generated/beta8-211.json",
         "path": "cases/slack-app-level-token-team-and-client-id-public-id.env"
+      },
+      "familyIds": [
+        "slack:app-level-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-211",
+        "milestone": "beta.8",
+        "release": "0.1.0-beta.8"
+      }
+    },
+    {
+      "slug": "beta8-211--slack-app-level-token-token-digest-log-encoded-value",
+      "source": {
+        "categoryId": "beta8-211",
+        "fixtureId": "slack-app-level-token-token-digest-log-encoded-value",
+        "corpus": "fixtures/generated/beta8-211.json",
+        "path": "cases/slack-app-level-token-token-digest-log-encoded-value.log"
       },
       "familyIds": [
         "slack:app-level-token"
@@ -34572,7 +35226,7 @@
         "milestone": "beta.11"
       },
       "relations": {
-        "twinOf": "beta8-379--openai-admin-api-key-go-const-74"
+        "twinOf": "beta8-379--openai-admin-api-key-go-const"
       }
     },
     {
@@ -34618,12 +35272,12 @@
       }
     },
     {
-      "slug": "beta8-379--openai-admin-api-key-go-const-74",
+      "slug": "beta8-379--openai-admin-api-key-go-const",
       "source": {
         "categoryId": "beta8-379",
-        "fixtureId": "openai-admin-api-key-go-const-74",
+        "fixtureId": "openai-admin-api-key-go-const",
         "corpus": "fixtures/generated/beta8-379.json",
-        "path": "cases/openai-admin-api-key-go-const-74.go"
+        "path": "cases/openai-admin-api-key-go-const.go"
       },
       "familyIds": [
         "openai:admin-api-key"
@@ -36746,6 +37400,26 @@
       }
     },
     {
+      "slug": "beta8-384a--openai-admin-api-key-config-toml",
+      "source": {
+        "categoryId": "beta8-384a",
+        "fixtureId": "openai-admin-api-key-config-toml",
+        "corpus": "fixtures/generated/beta8-384a.json",
+        "path": "cases/openai-admin-api-key-config-toml.toml"
+      },
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384a",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384a--openai-admin-api-key-curl-bearer",
       "source": {
         "categoryId": "beta8-384a",
@@ -36850,12 +37524,32 @@
       }
     },
     {
-      "slug": "beta8-384a--openai-admin-api-key-export-74",
+      "slug": "beta8-384a--openai-admin-api-key-export",
       "source": {
         "categoryId": "beta8-384a",
-        "fixtureId": "openai-admin-api-key-export-74",
+        "fixtureId": "openai-admin-api-key-export",
         "corpus": "fixtures/generated/beta8-384a.json",
-        "path": "cases/openai-admin-api-key-export-74.sh"
+        "path": "cases/openai-admin-api-key-export.sh"
+      },
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384a",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-gitlab-ci-variables",
+      "source": {
+        "categoryId": "beta8-384a",
+        "fixtureId": "openai-admin-api-key-gitlab-ci-variables",
+        "corpus": "fixtures/generated/beta8-384a.json",
+        "path": "cases/openai-admin-api-key-gitlab-ci-variables.yml"
       },
       "familyIds": [
         "openai:admin-api-key"
@@ -37058,6 +37752,26 @@
       }
     },
     {
+      "slug": "beta8-384a--openai-admin-api-key-python-requests-headers",
+      "source": {
+        "categoryId": "beta8-384a",
+        "fixtureId": "openai-admin-api-key-python-requests-headers",
+        "corpus": "fixtures/generated/beta8-384a.json",
+        "path": "cases/openai-admin-api-key-python-requests-headers.py"
+      },
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384a",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384a--openai-admin-api-key-python-sdk",
       "source": {
         "categoryId": "beta8-384a",
@@ -37075,30 +37789,6 @@
       "provenance": {
         "categoryId": "beta8-384a",
         "milestone": "beta.10"
-      }
-    },
-    {
-      "slug": "beta8-384a--openai-admin-api-key-short-first-segment-74-twin",
-      "source": {
-        "categoryId": "beta8-384a",
-        "fixtureId": "openai-admin-api-key-short-first-segment-74-twin",
-        "corpus": "fixtures/generated/beta8-384a.json",
-        "path": "cases/openai-admin-api-key-short-first-segment-74-twin.sh"
-      },
-      "familyIds": [
-        "openai:admin-api-key"
-      ],
-      "scenarioIds": [
-        "benign-controls-and-twins",
-        "context-and-encoding",
-        "regression-behavior"
-      ],
-      "provenance": {
-        "categoryId": "beta8-384a",
-        "milestone": "beta.10"
-      },
-      "relations": {
-        "twinOf": "beta8-384a--openai-admin-api-key-export-74"
       }
     },
     {
@@ -37123,30 +37813,6 @@
       },
       "relations": {
         "twinOf": "beta8-384a--openai-admin-api-key-dotenv"
-      }
-    },
-    {
-      "slug": "beta8-384a--openai-admin-api-key-short-second-segment-74-twin",
-      "source": {
-        "categoryId": "beta8-384a",
-        "fixtureId": "openai-admin-api-key-short-second-segment-74-twin",
-        "corpus": "fixtures/generated/beta8-384a.json",
-        "path": "cases/openai-admin-api-key-short-second-segment-74-twin.sh"
-      },
-      "familyIds": [
-        "openai:admin-api-key"
-      ],
-      "scenarioIds": [
-        "benign-controls-and-twins",
-        "context-and-encoding",
-        "regression-behavior"
-      ],
-      "provenance": {
-        "categoryId": "beta8-384a",
-        "milestone": "beta.10"
-      },
-      "relations": {
-        "twinOf": "beta8-384a--openai-admin-api-key-export-74"
       }
     },
     {
@@ -37235,6 +37901,26 @@
       },
       "relations": {
         "twinOf": "beta8-384a--openai-admin-api-key-python-sdk"
+      }
+    },
+    {
+      "slug": "beta8-384a--openai-admin-api-key-usage-cli-flag",
+      "source": {
+        "categoryId": "beta8-384a",
+        "fixtureId": "openai-admin-api-key-usage-cli-flag",
+        "corpus": "fixtures/generated/beta8-384a.json",
+        "path": "cases/openai-admin-api-key-usage-cli-flag.sh"
+      },
+      "familyIds": [
+        "openai:admin-api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384a",
+        "milestone": "beta.10"
       }
     },
     {
@@ -40574,6 +41260,46 @@
       }
     },
     {
+      "slug": "beta8-384e--ai21-api-key-actions-env-literal",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-actions-env-literal",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-actions-env-literal.yml"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-actions-secret-reference",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-actions-secret-reference",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-actions-secret-reference.yml"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--ai21-api-key-angle-key-placeholder",
       "source": {
         "categoryId": "beta8-384e",
@@ -40634,12 +41360,92 @@
       }
     },
     {
+      "slug": "beta8-384e--ai21-api-key-base64-text-encoded-value",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-base64-text-encoded-value",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-base64-text-encoded-value.yml"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-compose-env",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-compose-env",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-compose-env.yml"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--ai21-api-key-curl-header",
       "source": {
         "categoryId": "beta8-384e",
         "fixtureId": "ai21-api-key-curl-header",
         "corpus": "fixtures/generated/beta8-384e.json",
         "path": "cases/ai21-api-key-curl-header.sh"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-data-uri-encoded-value",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-data-uri-encoded-value",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-data-uri-encoded-value.md"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-docker-run-env",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-docker-run-env",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-docker-run-env.sh"
       },
       "familyIds": [
         "ai21:api-key"
@@ -40694,6 +41500,46 @@
       }
     },
     {
+      "slug": "beta8-384e--ai21-api-key-dotenv-alt",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-dotenv-alt",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-dotenv-alt.env"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-embedded-run-near-miss",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-embedded-run-near-miss",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-embedded-run-near-miss.txt"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--ai21-api-key-env-reference-reference",
       "source": {
         "categoryId": "beta8-384e",
@@ -40731,6 +41577,54 @@
       "provenance": {
         "categoryId": "beta8-384e",
         "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-id-named-compose-twin",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-id-named-compose-twin",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-id-named-compose-twin.yml"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384e--ai21-api-key-compose-env"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-id-named-env-alt-twin",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-id-named-env-alt-twin",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-id-named-env-alt-twin.env"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384e--ai21-api-key-dotenv-alt"
       }
     },
     {
@@ -40874,6 +41768,26 @@
       }
     },
     {
+      "slug": "beta8-384e--ai21-api-key-key-guidance-prose",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-key-guidance-prose",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-key-guidance-prose.md"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--ai21-api-key-langchain-kwarg",
       "source": {
         "categoryId": "beta8-384e",
@@ -40894,12 +41808,32 @@
       }
     },
     {
+      "slug": "beta8-384e--ai21-api-key-litellm-yaml",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-litellm-yaml",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-litellm-yaml.yml"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--ai21-api-key-long-value-twin",
       "source": {
         "categoryId": "beta8-384e",
         "fixtureId": "ai21-api-key-long-value-twin",
         "corpus": "fixtures/generated/beta8-384e.json",
-        "path": "cases/ai21-api-key-long-value-twin.py"
+        "path": "cases/ai21-api-key-long-value-twin.sh"
       },
       "familyIds": [
         "ai21:api-key"
@@ -40914,7 +41848,7 @@
         "milestone": "beta.10"
       },
       "relations": {
-        "twinOf": "beta8-384e--ai21-api-key-python-ctor"
+        "twinOf": "beta8-384e--ai21-api-key-export"
       }
     },
     {
@@ -40924,6 +41858,46 @@
         "fixtureId": "ai21-api-key-model-id-public-id",
         "corpus": "fixtures/generated/beta8-384e.json",
         "path": "cases/ai21-api-key-model-id-public-id.yml"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-model-notes-prose",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-model-notes-prose",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-model-notes-prose.md"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-object-id-public-id",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-object-id-public-id",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-object-id-public-id.json"
       },
       "familyIds": [
         "ai21:api-key"
@@ -40962,6 +41936,94 @@
       }
     },
     {
+      "slug": "beta8-384e--ai21-api-key-other-host-log-twin",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-other-host-log-twin",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-other-host-log-twin.log"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384e--ai21-api-key-proxy-log"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-other-provider-model-twin",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-other-provider-model-twin",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-other-provider-model-twin.yml"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      },
+      "relations": {
+        "twinOf": "beta8-384e--ai21-api-key-litellm-yaml"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-project-uuid-public-id",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-project-uuid-public-id",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-project-uuid-public-id.env"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-proxy-log",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-proxy-log",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-proxy-log.log"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--ai21-api-key-python-ctor",
       "source": {
         "categoryId": "beta8-384e",
@@ -40988,6 +42050,26 @@
         "fixtureId": "ai21-api-key-python-environ-reference",
         "corpus": "fixtures/generated/beta8-384e.json",
         "path": "cases/ai21-api-key-python-environ-reference.py"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-request-hex-public-id",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-request-hex-public-id",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-request-hex-public-id.txt"
       },
       "familyIds": [
         "ai21:api-key"
@@ -41106,6 +42188,26 @@
       }
     },
     {
+      "slug": "beta8-384e--ai21-api-key-unrelated-assignment-near-miss",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-unrelated-assignment-near-miss",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-unrelated-assignment-near-miss.env"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
       "slug": "beta8-384e--ai21-api-key-unrelated-python-ctor-twin",
       "source": {
         "categoryId": "beta8-384e",
@@ -41151,6 +42253,46 @@
       },
       "relations": {
         "twinOf": "beta8-384e--ai21-api-key-ts-ctor"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-upper-name-placeholder",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-upper-name-placeholder",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-upper-name-placeholder.env"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
+      }
+    },
+    {
+      "slug": "beta8-384e--ai21-api-key-x-ellipsis-placeholder",
+      "source": {
+        "categoryId": "beta8-384e",
+        "fixtureId": "ai21-api-key-x-ellipsis-placeholder",
+        "corpus": "fixtures/generated/beta8-384e.json",
+        "path": "cases/ai21-api-key-x-ellipsis-placeholder.env"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-384e",
+        "milestone": "beta.10"
       }
     },
     {
@@ -75207,6 +76349,28 @@
       }
     },
     {
+      "slug": "detector-coverage--ai21-api-key-key-shape-bare-twin",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ai21-api-key-key-shape-bare-twin",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ai21-api-key-key-shape-bare-twin.txt"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      },
+      "relations": {
+        "twinOf": "detector-coverage--ai21-api-key-key-shape-bare"
+      }
+    },
+    {
       "slug": "detector-coverage--ai21-api-key-key-shape-quoted",
       "source": {
         "categoryId": "detector-coverage",
@@ -75225,6 +76389,28 @@
       }
     },
     {
+      "slug": "detector-coverage--ai21-api-key-key-shape-quoted-twin",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ai21-api-key-key-shape-quoted-twin",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ai21-api-key-key-shape-quoted-twin.txt"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      },
+      "relations": {
+        "twinOf": "detector-coverage--ai21-api-key-key-shape-quoted"
+      }
+    },
+    {
       "slug": "detector-coverage--ai21-api-key-key-shape-unicode-crlf",
       "source": {
         "categoryId": "detector-coverage",
@@ -75240,6 +76426,28 @@
       ],
       "provenance": {
         "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--ai21-api-key-key-shape-unicode-crlf-twin",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "ai21-api-key-key-shape-unicode-crlf-twin",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/ai21-api-key-key-shape-unicode-crlf-twin.txt"
+      },
+      "familyIds": [
+        "ai21:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      },
+      "relations": {
+        "twinOf": "detector-coverage--ai21-api-key-key-shape-unicode-crlf"
       }
     },
     {
@@ -75306,25 +76514,6 @@
         "fixtureId": "ai21-api-key-reference",
         "corpus": "fixtures/generated/detector-coverage.json",
         "path": "cases/ai21-api-key-reference.txt"
-      },
-      "familyIds": [
-        "ai21:api-key"
-      ],
-      "scenarioIds": [
-        "benign-controls-and-twins",
-        "credential-shape-grammar"
-      ],
-      "provenance": {
-        "categoryId": "detector-coverage"
-      }
-    },
-    {
-      "slug": "detector-coverage--ai21-api-key-short-token",
-      "source": {
-        "categoryId": "detector-coverage",
-        "fixtureId": "ai21-api-key-short-token",
-        "corpus": "fixtures/generated/detector-coverage.json",
-        "path": "cases/ai21-api-key-short-token.txt"
       },
       "familyIds": [
         "ai21:api-key"
@@ -103978,7 +105167,7 @@
   "identity": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "6f66c4e499491ddb532f7cfe17236c043ac5796c43323d3f3e85e0eed9d820dd",
-    "fixtureCount": 5034
+    "digest": "afe1b903d0acd944e40d18126b2677dc75b3863a37d5b0fc3d051b259fb1f48b",
+    "fixtureCount": 5090
   }
 }

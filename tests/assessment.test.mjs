@@ -241,7 +241,9 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // reference, label-prose each).
   // redact-secret#948 relabels six detector-coverage near-miss controls under the provider's own credential
   // variable to policy/T3 on generic-token (docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md): -6.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 586);
+  // redact-secret#1013 promotes ai21-api-key to T2 and scopes its detector-coverage short-token near-miss as three
+  // negative length twins of key-shape, as #384 did for mistral, cohere and deepgram (netted out via -twins.length): -1.
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 585);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

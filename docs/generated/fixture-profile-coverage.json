@@ -3,31 +3,36 @@
   "profilesVersion": 1,
   "familyCount": 120,
   "cellsMetByProfile": {
-    "arrival-provisional": 100,
-    "stable-documented": 100,
-    "stable-empirical": 32,
-    "context-constrained-empirical": 19
+    "arrival-provisional": 101,
+    "stable-documented": 101,
+    "stable-empirical": 35,
+    "context-constrained-empirical": 20
   },
   "families": [
     {
       "family": "ai21-api-key",
-      "tier": "T0",
+      "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "context-constrained-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
-      "cellsMet": [],
+      "target": "context-constrained-empirical",
+      "cellsMet": [
+        "context-constrained-empirical"
+      ],
       "cells": {
-        "totalFixtures": 36,
-        "positiveCases": 3,
-        "benignControls": 15,
-        "twinPairs": 10,
-        "positiveContextAxes": 8,
-        "controlAxes": 5,
-        "confusionAxes": 7,
+        "totalFixtures": 60,
+        "positiveCases": 2,
+        "benignControls": 26,
+        "twinPairs": 17,
+        "positiveContextAxes": 11,
+        "controlAxes": 6,
+        "confusionAxes": 8,
         "positiveContextAxisIds": [
+          "#384e · ai21-api-key · ci-config",
+          "#384e · ai21-api-key · container-config",
           "#384e · ai21-api-key · env",
           "#384e · ai21-api-key · header",
+          "#384e · ai21-api-key · log",
           "#384e · ai21-api-key · sdk-config",
           "#384e · ai21-api-key · shell-export",
           "#384e · ai21-api-key · source-code",
@@ -38,6 +43,7 @@
         "controlAxisIds": [
           "encoded-value",
           "near-miss",
+          "ordinary-prose",
           "placeholder",
           "public-identifier",
           "reference"
@@ -45,6 +51,7 @@
         "confusionAxisIds": [
           "encoded-value",
           "near-miss",
+          "ordinary-prose",
           "placeholder",
           "public-identifier",
           "reference",
@@ -53,22 +60,14 @@
         ]
       },
       "requiredCells": {
-        "totalFixtures": 24,
-        "positiveCases": 6,
-        "benignControls": 8,
-        "twinPairs": 5,
-        "positiveContextAxes": 4,
-        "controlAxes": 4
+        "totalFixtures": 48,
+        "positiveCases": 1,
+        "benignControls": 1,
+        "twinPairs": 10,
+        "confusionAxes": 6
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 3,
-          "required": 6,
-          "shortfall": 3
-        }
-      ]
+      "debt": []
     },
     {
       "family": "anthropic-admin01-key",
@@ -2922,22 +2921,24 @@
       "family": "github-fine-grained-pat",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
+      "target": "stable-empirical",
       "cellsMet": [
         "arrival-provisional",
-        "stable-documented"
+        "stable-documented",
+        "stable-empirical"
       ],
       "cells": {
-        "totalFixtures": 25,
-        "positiveCases": 6,
-        "benignControls": 9,
-        "twinPairs": 5,
-        "positiveContextAxes": 11,
+        "totalFixtures": 40,
+        "positiveCases": 12,
+        "benignControls": 15,
+        "twinPairs": 8,
+        "positiveContextAxes": 13,
         "controlAxes": 6,
         "confusionAxes": 9,
         "positiveContextAxisIds": [
+          "#211 · github-fine-grained-pat · basic-auth",
           "#211 · github-fine-grained-pat · ci-config",
           "#211 · github-fine-grained-pat · cli",
           "#211 · github-fine-grained-pat · container-config",
@@ -2946,6 +2947,7 @@
           "#211 · github-fine-grained-pat · log",
           "#211 · github-fine-grained-pat · sdk-config",
           "#211 · github-fine-grained-pat · shell-export",
+          "#211 · github-fine-grained-pat · source-code",
           "#211 · github-fine-grained-pat · structured-file",
           "#211 · github-fine-grained-pat · tool-output",
           "#211 · github-fine-grained-pat · url"
@@ -2971,12 +2973,12 @@
         ]
       },
       "requiredCells": {
-        "totalFixtures": 24,
-        "positiveCases": 6,
-        "benignControls": 8,
-        "twinPairs": 5,
-        "positiveContextAxes": 4,
-        "controlAxes": 4
+        "totalFixtures": 40,
+        "positiveCases": 10,
+        "benignControls": 14,
+        "twinPairs": 8,
+        "positiveContextAxes": 6,
+        "controlAxes": 5
       },
       "requiredButEmptyAxisIds": [],
       "debt": []
@@ -5002,16 +5004,20 @@
       "family": "openai-admin-api-key",
       "tier": "T2",
       "profilesVersion": 1,
-      "claimed": null,
+      "claimed": "stable-empirical",
       "explicit": false,
-      "target": "arrival-provisional",
-      "cellsMet": [],
+      "target": "stable-empirical",
+      "cellsMet": [
+        "arrival-provisional",
+        "stable-documented",
+        "stable-empirical"
+      ],
       "cells": {
-        "totalFixtures": 41,
-        "positiveCases": 5,
+        "totalFixtures": 43,
+        "positiveCases": 10,
         "benignControls": 15,
-        "twinPairs": 11,
-        "positiveContextAxes": 15,
+        "twinPairs": 9,
+        "positiveContextAxes": 17,
         "controlAxes": 6,
         "confusionAxes": 10,
         "positiveContextAxisIds": [
@@ -5021,6 +5027,8 @@
           "#379 · openai-admin-api-key · shell-export",
           "#379 · openai-admin-api-key · source-code",
           "#379 · openai-admin-api-key · structured-file",
+          "#384a · openai-admin-api-key · ci-config",
+          "#384a · openai-admin-api-key · cli",
           "#384a · openai-admin-api-key · container-config",
           "#384a · openai-admin-api-key · env",
           "#384a · openai-admin-api-key · header",
@@ -5053,22 +5061,15 @@
         ]
       },
       "requiredCells": {
-        "totalFixtures": 24,
-        "positiveCases": 6,
-        "benignControls": 8,
-        "twinPairs": 5,
-        "positiveContextAxes": 4,
-        "controlAxes": 4
+        "totalFixtures": 40,
+        "positiveCases": 10,
+        "benignControls": 14,
+        "twinPairs": 8,
+        "positiveContextAxes": 6,
+        "controlAxes": 5
       },
       "requiredButEmptyAxisIds": [],
-      "debt": [
-        {
-          "cell": "positiveCases",
-          "actual": 5,
-          "required": 6,
-          "shortfall": 1
-        }
-      ]
+      "debt": []
     },
     {
       "family": "openai-token",
@@ -6322,17 +6323,19 @@
       "target": "arrival-provisional",
       "cellsMet": [
         "arrival-provisional",
-        "stable-documented"
+        "stable-documented",
+        "stable-empirical"
       ],
       "cells": {
-        "totalFixtures": 25,
-        "positiveCases": 6,
-        "benignControls": 9,
-        "twinPairs": 5,
-        "positiveContextAxes": 10,
-        "controlAxes": 5,
-        "confusionAxes": 8,
+        "totalFixtures": 40,
+        "positiveCases": 12,
+        "benignControls": 15,
+        "twinPairs": 8,
+        "positiveContextAxes": 12,
+        "controlAxes": 6,
+        "confusionAxes": 9,
         "positiveContextAxisIds": [
+          "#211 · slack-app-level-token · ci-config",
           "#211 · slack-app-level-token · cli",
           "#211 · slack-app-level-token · container-config",
           "#211 · slack-app-level-token · env",
@@ -6342,9 +6345,11 @@
           "#211 · slack-app-level-token · sdk-config",
           "#211 · slack-app-level-token · shell-export",
           "#211 · slack-app-level-token · source-code",
-          "#211 · slack-app-level-token · structured-file"
+          "#211 · slack-app-level-token · structured-file",
+          "#211 · slack-app-level-token · tool-output"
         ],
         "controlAxisIds": [
+          "encoded-value",
           "near-miss",
           "ordinary-prose",
           "placeholder",
@@ -6352,6 +6357,7 @@
           "reference"
         ],
         "confusionAxisIds": [
+          "encoded-value",
           "near-miss",
           "ordinary-prose",
           "placeholder",

@@ -3810,12 +3810,13 @@
         "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
         "contract": "openai-admin-api-key",
         "sources": [
-          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/openai/openai.go",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/openaiadmin/openaiadmin.go",
           "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
           "https://github.com/trufflesecurity/trufflehog/issues/4698",
           "https://github.com/redact-secret/redact-secret/issues/777",
           "https://github.com/redact-secret/redact-secret/issues/863",
-          "https://platform.openai.com/docs/api-reference/admin-api-keys"
+          "https://platform.openai.com/docs/api-reference/admin-api-keys",
+          "https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/openai-admin-api-key.md"
         ]
       }
     },
@@ -3834,12 +3835,13 @@
         "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "contract": "openai-admin-api-key",
         "sources": [
-          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/openai/openai.go",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/openaiadmin/openaiadmin.go",
           "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
           "https://github.com/trufflesecurity/trufflehog/issues/4698",
           "https://github.com/redact-secret/redact-secret/issues/777",
           "https://github.com/redact-secret/redact-secret/issues/863",
-          "https://platform.openai.com/docs/api-reference/admin-api-keys"
+          "https://platform.openai.com/docs/api-reference/admin-api-keys",
+          "https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/openai-admin-api-key.md"
         ]
       }
     },
@@ -4357,11 +4359,16 @@
         "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
         "contract": "ai21-api-key",
         "sources": [
+          "https://github.com/Vulnetix/cli/blob/c6e24fc9b0148dc0a227da70774300fba7f339ee/internal/sast/rules/vnx-sec-315.rego#L25",
+          "https://github.com/cunnymessiah/keychecker/blob/122eadc6bdbbeec9f31e94878f98c4692d5b5718/main.py#L242",
+          "https://github.com/MCERQUA/LLM-Runner-Router/blob/dc020cfeb6ae071d5582bed6ce3563eea64ae8fd/src/auth/BYOKManager.js#L287-L290",
+          "https://docs.ai21.com/docs/create-api-key",
           "https://raw.githubusercontent.com/AI21Labs/ai21-python/main/ai21/ai21_env_config.py",
           "https://raw.githubusercontent.com/AI21Labs/ai21-python/main/ai21/http_client/base_http_client.py",
           "https://docs.litellm.ai/docs/providers/ai21",
           "https://github.com/redact-secret/redact-secret/issues/784",
-          "https://github.com/redact-secret/redact-secret/issues/868"
+          "https://github.com/redact-secret/redact-secret/issues/868",
+          "https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/ai21-api-key.md"
         ]
       }
     },
@@ -4380,11 +4387,16 @@
         "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "contract": "ai21-api-key",
         "sources": [
+          "https://github.com/Vulnetix/cli/blob/c6e24fc9b0148dc0a227da70774300fba7f339ee/internal/sast/rules/vnx-sec-315.rego#L25",
+          "https://github.com/cunnymessiah/keychecker/blob/122eadc6bdbbeec9f31e94878f98c4692d5b5718/main.py#L242",
+          "https://github.com/MCERQUA/LLM-Runner-Router/blob/dc020cfeb6ae071d5582bed6ce3563eea64ae8fd/src/auth/BYOKManager.js#L287-L290",
+          "https://docs.ai21.com/docs/create-api-key",
           "https://raw.githubusercontent.com/AI21Labs/ai21-python/main/ai21/ai21_env_config.py",
           "https://raw.githubusercontent.com/AI21Labs/ai21-python/main/ai21/http_client/base_http_client.py",
           "https://docs.litellm.ai/docs/providers/ai21",
           "https://github.com/redact-secret/redact-secret/issues/784",
-          "https://github.com/redact-secret/redact-secret/issues/868"
+          "https://github.com/redact-secret/redact-secret/issues/868",
+          "https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/ai21-api-key.md"
         ]
       }
     },

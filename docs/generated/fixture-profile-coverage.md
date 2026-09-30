@@ -24,16 +24,16 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 
 | Profile | Families | Of |
 | --- | ---: | ---: |
-| Arrival / provisional | 100 | 120 |
-| Stable / documented | 100 | 120 |
-| Stable / empirical | 32 | 120 |
-| Context-constrained empirical | 19 | 120 |
+| Arrival / provisional | 101 | 120 |
+| Stable / documented | 101 | 120 |
+| Stable / empirical | 35 | 120 |
+| Context-constrained empirical | 20 | 120 |
 
 ## Per family
 
 | Family | Tier | Target | Total fixtures | Positive/context cases | Non-twin benign controls | Twin pairs | Positive-context axes | Control axes | Confusion axes | Remaining debt |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| ai21-api-key | T0 | arrival-provisional | 36 | 3 | 15 | 10 | 8 | 5 | 7 | positive/context cases 3/6 |
+| ai21-api-key | T2 | context-constrained-empirical | 60 | 2 | 26 | 17 | 11 | 6 | 8 | none |
 | anthropic-admin01-key | T1 | stable-documented | 39 | 7 | 16 | 8 | 15 | 6 | 8 | none |
 | anthropic-api01-key | T1 | stable-documented | 37 | 8 | 15 | 7 | 15 | 6 | 8 | none |
 | anthropic-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 8 | 5 | 6 | none |
@@ -79,7 +79,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | firecrawl-api-key | T1 | stable-documented | 48 | 6 | 15 | 14 | 11 | 6 | 10 | none |
 | fireworks-ai-api-key | T1 | stable-documented | 32 | 6 | 16 | 5 | 8 | 6 | 8 | none |
 | generic-token | T3 | arrival-provisional | 157 | 61 | 76 | 10 | 29 | 4 | 5 | none |
-| github-fine-grained-pat | T2 | arrival-provisional | 25 | 6 | 9 | 5 | 11 | 6 | 9 | none |
+| github-fine-grained-pat | T2 | stable-empirical | 40 | 12 | 15 | 8 | 13 | 6 | 9 | none |
 | github-token | T1 | stable-documented | 131 | 28 | 15 | 45 | 25 | 6 | 8 | none |
 | gitlab-runner-authentication-token | T2 | stable-empirical | 43 | 11 | 16 | 8 | 15 | 6 | 10 | none |
 | gitlab-token | T1 | stable-documented | 26 | 6 | 8 | 7 | 5 | 5 | 7 | none |
@@ -112,7 +112,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | nvidia-api-key | T1 | stable-documented | 31 | 8 | 11 | 6 | 7 | 5 | 9 | none |
 | okta-api-token | T2 | stable-empirical | 40 | 10 | 15 | 9 | 11 | 6 | 9 | none |
 | onepassword-service-account-token | T1 | stable-documented | 39 | 7 | 14 | 9 | 11 | 6 | 10 | none |
-| openai-admin-api-key | T2 | arrival-provisional | 41 | 5 | 15 | 11 | 15 | 6 | 10 | positive/context cases 5/6 |
+| openai-admin-api-key | T2 | stable-empirical | 43 | 10 | 15 | 9 | 17 | 6 | 10 | none |
 | openai-token | T2 | stable-empirical | 45 | 15 | 15 | 8 | 8 | 6 | 10 | none |
 | openrouter-api-key | T1 | stable-documented | 32 | 6 | 14 | 6 | 9 | 6 | 10 | none |
 | otpauth-uri | T3 | arrival-provisional | 24 | 2 | 8 | 7 | 1 | 3 | 4 | positive/context cases 2/6; positive-context axes 1/4; control axes 3/4 |
@@ -133,7 +133,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | sentry-org-auth-token | T2 | stable-empirical | 40 | 13 | 14 | 8 | 14 | 6 | 10 | none |
 | sentry-user-auth-token | T2 | stable-empirical | 40 | 12 | 14 | 8 | 14 | 6 | 10 | none |
 | shopify-token | T1 | stable-documented | 27 | 9 | 8 | 6 | 4 | 6 | 8 | none |
-| slack-app-level-token | T2 | arrival-provisional | 25 | 6 | 9 | 5 | 10 | 5 | 8 | none |
+| slack-app-level-token | T2 | arrival-provisional | 40 | 12 | 15 | 8 | 12 | 6 | 9 | none |
 | slack-token | T1 | stable-documented | 47 | 26 | 13 | 6 | 4 | 4 | 6 | none |
 | slack-user-token | T1 | stable-documented | 27 | 6 | 11 | 5 | 9 | 6 | 9 | none |
 | stripe-token | T1 | stable-documented | 54 | 25 | 15 | 8 | 10 | 6 | 9 | none |

@@ -1,0 +1,46 @@
+@layer components {
+  .pager {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .turn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .button {
+    display: inline-block;
+    font: var(--text-small-strong);
+    color: var(--ink);
+    background: var(--surface);
+    border: var(--hairline) solid var(--ink-muted);
+    border-radius: var(--radius-sm);
+    padding: var(--space-2) var(--space-4);
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .button:hover {
+    border-color: var(--ink);
+    text-decoration: none;
+  }
+
+  .disabled {
+    color: var(--ink-muted);
+    border-color: var(--line);
+    background: transparent;
+    font-weight: 400;
+    cursor: not-allowed;
+  }
+
+  .disabled:hover {
+    border-color: var(--line);
+  }
+}

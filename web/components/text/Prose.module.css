@@ -1,0 +1,32 @@
+@layer components {
+  .prose {
+    max-width: var(--measure);
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+  }
+
+  .prose p,
+  .prose ul,
+  .prose ol {
+    margin: 0;
+  }
+
+  .prose ul,
+  .prose ol {
+    padding-left: var(--space-6);
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .small {
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .small b,
+  .small strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+}

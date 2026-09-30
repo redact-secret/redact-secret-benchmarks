@@ -1,0 +1,31 @@
+@layer components {
+  .code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    overflow-wrap: anywhere;
+  }
+
+  .block {
+    margin: 0;
+    overflow-x: auto;
+    white-space: pre;
+    border-radius: var(--radius-sm);
+    max-width: 100%;
+  }
+
+  .block code {
+    font: var(--text-mono-small);
+  }
+
+  .command {
+    background: var(--ink);
+    color: var(--surface);
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .snippet {
+    border: var(--hairline) solid var(--ink-muted);
+    padding: var(--space-3) var(--space-4);
+    max-height: calc(var(--space-16) * 5);
+  }
+}

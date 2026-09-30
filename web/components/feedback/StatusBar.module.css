@@ -1,0 +1,89 @@
+@layer components {
+  .bar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: var(--rule-strong) solid var(--ink);
+    border-bottom: var(--hairline) solid var(--line);
+  }
+
+  .cell {
+    min-width: 0;
+    border-bottom: var(--hairline) solid var(--line);
+  }
+
+  .cell:last-child {
+    border-bottom: 0;
+  }
+
+  .inner {
+    display: block;
+    padding: var(--space-3) var(--space-4);
+    border-left: var(--rule-strong) solid transparent;
+    font: var(--text-small);
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  a.inner:hover .value {
+    text-decoration: underline;
+  }
+
+  .label {
+    display: block;
+    margin-bottom: var(--space-1);
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  /* Tone marks the cell edge: a rule in the status colour, dashed when nothing was measured. */
+  .danger .inner {
+    border-color: var(--status-danger);
+  }
+
+  .warning .inner {
+    border-color: var(--status-warning);
+  }
+
+  .success .inner {
+    border-color: var(--status-success);
+  }
+
+  .not-measured .inner {
+    border-left-style: dashed;
+    border-color: var(--ink-muted);
+    color: var(--ink-muted);
+  }
+
+  @media (min-width: 861px) {
+    .bar {
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
+    }
+
+    .cell {
+      border-bottom: 0;
+    }
+
+    .cell + .cell {
+      border-left: var(--hairline) solid var(--line);
+    }
+
+    /* The tone rule sits on the bar's own top rule. */
+    .inner {
+      margin-top: calc(var(--rule-strong) * -1);
+      padding-inline: var(--space-4);
+      border-left: 0;
+      border-top: var(--rule-strong) solid transparent;
+    }
+
+    .not-measured .inner {
+      border-left-style: none;
+      border-top-style: dashed;
+    }
+  }
+}

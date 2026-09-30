@@ -1,0 +1,49 @@
+/* Layered after `mui`, so these classes win over MUI without specificity hacks. */
+@layer components {
+  .tabs {
+    min-height: 0;
+    border-bottom: var(--hairline) solid var(--line);
+  }
+
+  .tab {
+    min-height: 0;
+    min-width: 0;
+    padding: var(--space-3) var(--space-1);
+    margin-right: var(--space-6);
+    font: var(--text-small-strong);
+    color: var(--ink-muted);
+    text-transform: none;
+  }
+
+  .tab:hover {
+    color: var(--ink);
+  }
+
+  .tab:global(.Mui-selected) {
+    color: var(--ink);
+  }
+
+  .tab:global(.Mui-disabled) {
+    color: var(--ink-muted);
+    opacity: 0.6;
+  }
+
+  .tab:focus-visible {
+    outline: var(--rule-strong) solid var(--focus);
+    outline-offset: calc(var(--rule-strong) * -1);
+  }
+
+  /* The only green in the chrome: the rule under the current place. */
+  .indicator {
+    height: var(--mark);
+    background: var(--brand-green);
+  }
+
+  .panel {
+    padding-top: var(--space-4);
+  }
+
+  .panel[hidden] {
+    display: none;
+  }
+}

@@ -1,0 +1,29 @@
+@layer components {
+  .bar {
+    position: relative;
+    height: var(--space-3);
+    min-width: var(--space-12);
+    background: var(--line);
+  }
+
+  .thin {
+    height: var(--space-2);
+  }
+
+  .fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: var(--fill);
+    background: var(--ink);
+  }
+
+  .marker {
+    position: absolute;
+    left: var(--marker);
+    top: calc(var(--space-1) * -1);
+    bottom: calc(var(--space-1) * -1);
+    width: var(--hairline);
+    background: var(--ink-muted);
+    text-decoration: none;
+  }
+}

@@ -1,0 +1,38 @@
+@layer components {
+  .banner {
+    background: var(--status-warning-fill);
+    color: var(--ink);
+    border-bottom: var(--hairline) solid var(--status-warning);
+  }
+
+  .info {
+    background: var(--status-info-fill);
+    border-bottom-color: var(--status-info);
+  }
+
+  .inner {
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding: var(--space-2) var(--space-6);
+    font: var(--text-small);
+  }
+
+  .inner b {
+    color: var(--status-warning);
+  }
+
+  .info .inner b {
+    color: var(--status-info);
+  }
+
+  .inner a {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+
+  @media (max-width: 720px) {
+    .inner {
+      padding-inline: var(--space-4);
+    }
+  }
+}

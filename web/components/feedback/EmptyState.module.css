@@ -1,0 +1,27 @@
+@layer components {
+  .empty {
+    display: grid;
+    gap: var(--space-3);
+    border: var(--hairline) dashed var(--ink-muted);
+    padding: var(--space-6);
+    max-width: calc(var(--space-16) * 9);
+  }
+
+  .title {
+    margin: 0;
+    font: var(--text-h3);
+  }
+
+  .body {
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .body p {
+    margin: 0;
+  }
+
+  .action {
+    font: var(--text-small-strong);
+  }
+}

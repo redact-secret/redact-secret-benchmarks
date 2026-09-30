@@ -1,0 +1,60 @@
+@layer components {
+  .tile {
+    display: grid;
+    grid-template-rows: auto auto 1fr auto;
+    gap: var(--space-2);
+    align-content: start;
+    min-width: 0;
+    padding: var(--space-4) var(--space-4) var(--space-4) 0;
+    border-top: var(--rule-strong) solid var(--ink);
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .tile:hover,
+  .tile:focus-visible {
+    text-decoration: none;
+    border-top-color: var(--brand-green);
+  }
+
+  .label {
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .figure b {
+    font: var(--text-figure-compact);
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .unit {
+    position: absolute;
+    width: var(--hairline);
+    height: var(--hairline);
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .description {
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .description b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .action {
+    font: var(--text-small-strong);
+    color: var(--link);
+  }
+
+  .tile:hover .action {
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,41 @@
+/* Rules live in `@layer components`, declared after `mui`, so they override MUI's
+   generated styles by layer order, not specificity. */
+@layer components {
+  .group {
+    border-radius: var(--radius-sm);
+  }
+
+  .option {
+    font: var(--text-small-strong);
+    color: var(--ink-muted);
+    border: var(--hairline) solid var(--ink-muted);
+    border-radius: 0;
+    padding: var(--pad-tight) var(--space-3);
+    text-transform: none;
+    white-space: nowrap;
+  }
+
+  .option:first-child {
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  }
+
+  .option:last-child {
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  }
+
+  .option:hover {
+    color: var(--ink);
+    background: transparent;
+  }
+
+  .option:global(.Mui-selected),
+  .option:global(.Mui-selected):hover {
+    background: var(--ink);
+    color: var(--surface);
+  }
+
+  .option:focus-visible {
+    outline: var(--rule-strong) solid var(--focus);
+    outline-offset: var(--rule-strong);
+  }
+}

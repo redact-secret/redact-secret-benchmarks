@@ -1,0 +1,20 @@
+@layer components {
+  .crumb {
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .list li + li::before {
+    content: '/';
+    margin-right: var(--space-2);
+  }
+}

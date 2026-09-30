@@ -98,8 +98,9 @@ test('every target meets its declared fixture profile', async () => {
 test('every family has a positive in each of the nine re-rank probe contexts', () => {
   const probe = ['bare-prose', 'dotenv', 'export', 'bearer-header', 'x-api-key-header', 'json-token', 'json-api-key', 'sdk-kwarg', 'chat-paste'];
   for (const [category, corpus] of corpora)
-    // generic-token is the target of the near-miss controls relabelled under redact-secret#948, never a probed family.
-    for (const target of new Set(corpus.fixtures.map(targetOf).filter(t => t !== 'generic-token')))
+    // generic-token and pinecone-api-key are the targets of controls relabelled as accepted policy (#948 and
+  // docs/decisions/2026-09-30-accept-credential-named-and-typed-neighbour-redactions.md), never probed families.
+    for (const target of new Set(corpus.fixtures.map(targetOf).filter(t => Object.hasOwn(families, t))))
       for (const slug of probe) assert.ok(corpus.fixtures.some(f => f.id === `${target}-${slug}` && secretsOf(f).length), `${category}: ${target}-${slug}`);
 });
 
@@ -141,10 +142,11 @@ test('Daytona: bodies are lowercase hex of 64; dtn_secret_, dtn_artifact_ and ba
   const corpus = generated['beta8-464a'];
   const values = valuesOf(corpus, 'daytona-api-key');
   assert.ok(values.every(v => /^dtn_[0-9a-f]{64}$/.test(v)));
-  for (const slug of ['secret-placeholder', 'secret-then-hex', 'artifact-marker', 'bare-sha256', 'runner-key-unprefixed'])
+  for (const slug of ['secret-placeholder', 'secret-then-hex', 'artifact-marker', 'bare-sha256'])
     assert.ok(corpus.fixtures.some(f => f.id.includes(slug) && !secretsOf(f).length && !f.twinOf), slug);
   // DAYTONA_API_KEY=<bare 64 hex> is a generic-token policy row since the #948 relabel (Beta.12 graduation), never a daytona positive.
-  assert.ok(corpus.fixtures.some(f => f.id === 'daytona-api-key-named-bare-hex-encoded-value' && targetOf(f) === 'generic-token' && f.assessment.kind === 'policy'));
+  for (const id of ['daytona-api-key-named-bare-hex-encoded-value', 'daytona-api-key-runner-key-unprefixed-encoded-value'])
+    assert.ok(corpus.fixtures.some(f => f.id === id && targetOf(f) === 'generic-token' && f.assessment.kind === 'policy'), id);
   const twins = corpus.fixtures.filter(f => f.twinOf).map(f => f.id.replace('daytona-api-key-', ''));
   for (const t of ['body-63-twin', 'body-65-twin', 'uppercase-hex-byte-twin', 'non-hex-letter-twin', 'uppercase-prefix-twin', 'hyphen-separator-twin', 'leading-glue-twin']) assert.ok(twins.includes(t), t);
 });
@@ -185,7 +187,7 @@ test('Browserbase: bodies of 20, 32 and 128; bb_test_ and bb_live_session_ are n
   for (const t of ['body-19', 'trailing-underscore', 'trailing-hyphen', 'uppercase-prefix', 'hyphen-prefix', 'leading-glue']) assert.ok(corpus.fixtures.some(f => f.twinOf && f.id.includes(t)), t);
 });
 
-test('Cerebras: both prefixes in every probe context; lowercase-only and _/- bodies are positives; pcsk_ is a control and a boundary twin; no alphabet twin', () => {
+test('Cerebras: both prefixes in every probe context; lowercase-only and _/- bodies are positives; pcsk_ is a typed Pinecone row and a boundary twin; no alphabet twin', () => {
   const corpus = generated['beta8-464e'];
   const probe = ['bare-prose', 'dotenv', 'export', 'bearer-header', 'x-api-key-header', 'json-token', 'json-api-key', 'sdk-kwarg', 'chat-paste'];
   for (const slug of probe) {
@@ -200,7 +202,8 @@ test('Cerebras: both prefixes in every probe context; lowercase-only and _/- bod
   const pinecone = corpus.fixtures.filter(f => f.id.includes('pinecone-key') && !f.twinOf);
   assert.equal(pinecone.length, 1);
   assert.match(pinecone[0].content, /pcsk_[A-Za-z0-9]{6}_[A-Za-z0-9]{63}\n/, 'a real-shape Pinecone key, built at run time');
-  assert.equal(secretsOf(pinecone[0]).length, 0);
+  // The Pinecone key is a typed pinecone-api-key policy row (accepted as the Pinecone detector's correct finding), never a Cerebras positive.
+  assert.ok(targetOf(pinecone[0]) === 'pinecone-api-key' && secretsOf(pinecone[0]).length === 1 && pinecone[0].assessment.kind === 'policy');
   assert.ok(corpus.fixtures.filter(f => f.twinOf && /pcsk/.test(f.mutation)).length === 2, 'pcsk_ and pcsk- leading-glue twins');
 });
 

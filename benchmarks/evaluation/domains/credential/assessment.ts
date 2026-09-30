@@ -630,7 +630,14 @@ export const disputedProperty = (category: string, fixtureId: string) => DISPUTE
  * (no typed provider finding) is unchanged and the generic finding is recorded as co-detection.
  * Keyed `<category>--<fixture id>`; `name` is the credential variable the input is built on.
  */
-export const PROVIDER_NAMED_FALLBACK_948: Record<string, { from: string; name: string; expectedAction: 'redact' | 'warn' }> = {
+/**
+ * Optional fields (docs/decisions/2026-09-30-accept-credential-named-and-typed-neighbour-redactions.md): `locator` is
+ * a regular-expression source with one capture group, the value, for an input that is not `<name>=<value>` (a
+ * credential-named object member or keyword argument); `to` retargets the row to a typed registry family whose
+ * detector reports the value, instead of generic-token; `basis` replaces the provider-variable rationale when the
+ * name carries no provider. Each such row cites that decision instead of #948 alone.
+ */
+export const PROVIDER_NAMED_FALLBACK_948: Record<string, { from: string; name: string; expectedAction: 'redact' | 'warn'; locator?: string; to?: string; basis?: string }> = {
   'detector-coverage--datadog-api-key-short-key': { from: 'datadog-api-key', name: 'DD_API_KEY', expectedAction: 'redact' },
   'detector-coverage--heroku-api-key-legacy-short-token': { from: 'heroku-api-key-legacy', name: 'HEROKU_API_KEY', expectedAction: 'redact' },
   'detector-coverage--mailchimp-api-key-missing-marker': { from: 'mailchimp-api-key', name: 'MAILCHIMP_API_KEY', expectedAction: 'redact' },
@@ -661,6 +668,20 @@ export const PROVIDER_NAMED_FALLBACK_948: Record<string, { from: string; name: s
   'beta8-464d--browserbase-api-key-bb-test-key-near-miss': { from: 'browserbase-api-key', name: 'BROWSERBASE_API_KEY', expectedAction: 'redact' },
   'beta8-464f--runpod-api-key-redirect-pizza-30-near-miss': { from: 'runpod-api-key', name: 'REDIRECTPIZZA_API_TOKEN', expectedAction: 'redact' },
   'beta8-464f--runpod-api-key-s3-secret-rps-near-miss': { from: 'runpod-api-key', name: 'RUNPOD_S3_SECRET_KEY', expectedAction: 'redact' },
+  // Beta.12 #1012: a truncated near miss under AWS's own secret-key variable; 12 bytes, so the floors give warn.
+  'beta8-1012a--aws-secret-access-key-truncated-near-miss': { from: 'aws-secret-access-key', name: 'AWS_SECRET_ACCESS_KEY', expectedAction: 'warn' },
+  // docs/decisions/2026-09-30-accept-credential-named-and-typed-neighbour-redactions.md (security-first: a redaction of a
+  // benign-looking value under a credential name is accepted policy, not a false alarm).
+  'beta8-464a--daytona-api-key-runner-key-unprefixed-encoded-value': { from: 'daytona-api-key', name: 'RUNNER_API_KEY', expectedAction: 'redact',
+    basis: 'RUNNER_API_KEY names no provider, but it is a high-signal credential name (API_KEY), and 64 random hex under it is a credential under the generic assignment policy, the same floors as #948.' },
+  'beta8-464e--cerebras-api-key-pinecone-hyphen-key-near-miss': { from: 'cerebras-api-key', name: 'api_key', expectedAction: 'redact',
+    locator: '^index = Pinecone\\(api_key="([^"]+)"\\)\\n$',
+    basis: 'The value is the api_key keyword argument of the Pinecone client: a credential-named argument whose random value generic-token claims at the generic floors. It is not a Cerebras key, so Cerebras stays silent on it.' },
+  'beta8-528b--polar-token-checkout-client-secret-public-id': { from: 'polar-token', name: 'clientSecret', expectedAction: 'redact',
+    locator: '^<script>checkout\\.open\\(\\{ clientSecret: "([^"]+)" \\}\\)</script>\\n$',
+    basis: 'clientSecret is a credential-named object member. Polar documents the checkout client secret as safe to expose, but a redaction of it costs output fidelity only, so the generic-token redaction is accepted policy (security-first). It is not a polar-token credential, so polar-token stays silent on it.' },
+  'beta8-464e--cerebras-api-key-pinecone-key-near-miss': { from: 'cerebras-api-key', name: 'PINECONE_API_KEY', expectedAction: 'redact', to: 'pinecone-api-key',
+    basis: 'The value is a complete Pinecone pcsk_ key under PINECONE_API_KEY, which the typed pinecone-api-key detector correctly reports. That finding is expected; the row is not a Cerebras key, so Cerebras stays silent on it.' },
 };
 const PRODUCT_948_ADR = 'https://github.com/redact-secret/redact-secret/blob/ec9224d9743066fe73d6e61e9843ef52bd853833/docs/decisions/2026-09-24-redact-provider-named-credential-assignments.md#amendment-a-provider-named-high-signal-name-falls-back-to-generic-token-948';
 const PRODUCT_948 = 'https://github.com/redact-secret/redact-secret/issues/948';
@@ -682,17 +703,33 @@ export const genericFloorAction = (value: string): 'redact' | 'warn' | null =>
 export function applyProviderNamedFallback948(category: string, f: Fixture) {
   const relabel = PROVIDER_NAMED_FALLBACK_948[`${category}--${f.id}`];
   if (!relabel) return;
-  const match = /^([A-Z0-9_]+)=([^\r\n]+)\n?$/.exec(f.content);
-  if (!match || match[1] !== relabel.name) throw new Error(`#948 relabel ${category}--${f.id}: input is not ${relabel.name}=<value>`);
+  let prefix: string, value: string;
+  if (relabel.locator) {
+    const match = new RegExp(relabel.locator).exec(f.content);
+    if (!match || match.index !== 0) throw new Error(`relabel ${category}--${f.id}: input does not match its recorded locator`);
+    value = match[1];
+    prefix = f.content.slice(0, f.content.indexOf(value, match[0].indexOf(relabel.name)));
+  } else {
+    const match = /^([A-Z0-9_]+)=([^\r\n]+)\n?$/.exec(f.content);
+    if (!match || match[1] !== relabel.name) throw new Error(`#948 relabel ${category}--${f.id}: input is not ${relabel.name}=<value>`);
+    value = match[2];
+    prefix = `${relabel.name}=`;
+  }
   if (f.expected.length || f.twinOf) throw new Error(`#948 relabel ${category}--${f.id}: only a spanless non-twin control can be relabelled`);
   if ((f.detectors?.[0] ?? f.arrivalTargets?.[0]) !== relabel.from) throw new Error(`#948 relabel ${category}--${f.id}: target is not ${relabel.from}`);
-  const action = genericFloorAction(match[2]);
-  if (action !== relabel.expectedAction) throw new Error(`#948 relabel ${category}--${f.id}: floors give ${action}, the record says ${relabel.expectedAction}`);
-  const start = utf8Length(`${relabel.name}=`);
-  f.expected = [{ start, end: start + utf8Length(match[2]), role: 'secret',
-    note: `Relabelled under redact-secret#948 (was a must-not-flag near-miss control of ${relabel.from}): random near-miss material under the provider's own credential variable is a credential under the amended project policy.` } as Fixture['expected'][number]];
+  const target = relabel.to ?? 'generic-token';
+  if (target === 'generic-token') {
+    const action = genericFloorAction(value);
+    if (action !== relabel.expectedAction) throw new Error(`#948 relabel ${category}--${f.id}: floors give ${action}, the record says ${relabel.expectedAction}`);
+  } else {
+    const pattern = contracts[target]?.pattern;
+    if (!pattern || !new RegExp(pattern).test(value)) throw new Error(`relabel ${category}--${f.id}: value does not match the ${target} contract`);
+  }
+  const start = utf8Length(prefix);
+  f.expected = [{ start, end: start + utf8Length(value), role: 'secret',
+    note: relabel.basis ?? `Relabelled under redact-secret#948 (was a must-not-flag near-miss control of ${relabel.from}): random near-miss material under the provider's own credential variable is a credential under the amended project policy.` } as Fixture['expected'][number]];
   f.expectedAction = relabel.expectedAction;
-  f.detectors = ['generic-token'];
+  f.detectors = [target];
   delete f.arrivalTargets;
 }
 
@@ -700,6 +737,8 @@ export function classifyFixture(category: string, f: Fixture): Assessment {
   const relabel948 = PROVIDER_NAMED_FALLBACK_948[`${category}--${f.id}`];
   if (relabel948) {
     if (!f.expected.length) throw new Error(`#948 relabel ${category}--${f.id} was not applied before classification`);
+    if (relabel948.basis) return { kind: 'policy', tier: 'T3', contract: relabel948.to ?? 'generic-token', sources: [PRODUCT_948_ADR, PRODUCT_948],
+      reason: `Relabelled by docs/decisions/2026-09-30-accept-credential-named-and-typed-neighbour-redactions.md: was must-not-flag/T2 on ${relabel948.from} (expected silence); is policy/T3 on ${relabel948.to ?? 'generic-token'} with the value under ${relabel948.name} as the secret span, expected action ${relabel948.expectedAction}. ${relabel948.basis} No ${relabel948.from} provider-format claim is made.` };
     return { kind: 'policy', tier: 'T3', contract: 'generic-token', sources: [PRODUCT_948_ADR, PRODUCT_948],
       reason: `Relabelled by docs/decisions/2026-09-29-relabel-provider-named-near-miss-controls-under-948.md: was must-not-flag/T2 on ${relabel948.from} (a malformed-by-construction near miss, expected silence); is policy/T3 on generic-token with the value after ${relabel948.name}= as the secret span, expected action ${relabel948.expectedAction}. Random or secret-shaped material under the provider's own credential variable is a credential under the amended project policy (redact-secret#948, amendment of decision-redact-provider-named-credential-assignments, 2026-09-29): generic-token claims it at the generic floors (redact at 16 bytes and entropy 3.0, else warn). No ${relabel948.from} provider-format claim is made.` };
   }

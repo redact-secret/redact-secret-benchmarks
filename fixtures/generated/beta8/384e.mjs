@@ -197,8 +197,11 @@ export function build384e({ fixture, synthetic }) {
       model: "jamba-mini", litellmModel: "ai21/jamba-mini", camel: "ai21ApiKey", camelTwin: "ai21RequestId",
     };
     const s = shared(cfg);
-    family(cfg, [s.dotenv, s.export, s.ctor, s.langchain, s.js, s.curl, s.json, s.tool]);
-    controls(cfg, { count: 10 });
+    // redact-secret#1013 (T2, context-48): the twelve shared contexts as Mistral, Cohere and Deepgram use, the full
+    // control set and two unpaired carriers, so the context-constrained floors (48 fixtures, 10 context twins) are met.
+    family(cfg, [s.dotenv, s.dotenvAlt, s.export, s.compose, s.ctor, s.langchain, s.js, s.curl, s.yaml, s.json, s.tool, s.log]);
+    controls(cfg, { count: 22 });
+    unpaired(cfg, 2);
   }
 
   // ------------------------------------------------------------------------ Exa

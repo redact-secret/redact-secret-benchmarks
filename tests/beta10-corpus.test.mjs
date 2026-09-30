@@ -55,10 +55,12 @@ test('the thirteen Beta.10 families are four arrival families and nine graduated
   }
 });
 
-test('tiers follow the evidence: T1 on the Anthropic prefixes and, by the 2026-09-27 rulings, Bedrock and ElevenLabs; T0 where no shape is evidenced; context-gated where no bare value is claimed', () => {
+test('tiers follow the evidence: T1 on the Anthropic prefixes and, by the 2026-09-27 rulings, Bedrock and ElevenLabs; T2 for AI21 by the redact-secret#1013 corroborated route; T0 where no shape is evidenced; context-gated where no bare value is claimed', () => {
   const tier = Object.fromEntries(targetIds.map(id => [id, contracts[id].tier]));
   assert.deepEqual(Object.entries(tier).filter(([, t]) => t === 'T1').map(([id]) => id).sort(), ['anthropic-admin01-key', 'anthropic-api01-key', 'aws-bedrock-long-term-api-key', 'aws-bedrock-short-term-api-key', 'elevenlabs-api-key']);
-  assert.deepEqual(Object.entries(tier).filter(([, t]) => t === 'T0').map(([id]) => id).sort(), ['ai21-api-key', 'exa-api-key']);
+  assert.deepEqual(Object.entries(tier).filter(([, t]) => t === 'T0').map(([id]) => id).sort(), ['exa-api-key']);
+  assert.equal(contracts['ai21-api-key'].candidateSource, undefined, 'AI21 is T2 on corroboration (redact-secret#1013), not a pending candidate');
+  assert.equal(contracts['ai21-api-key'].corroboration.length, 3);
   for (const id of ['mistral-api-key', 'cohere-api-key', 'deepgram-api-key', 'ai21-api-key', 'exa-api-key']) assert.equal(contracts[id].contextGated, true, id);
   // The maintainer rulings (redact-secret#778, #779, #788) promote the prefix and alphabet, not the lengths or the ElevenLabs body.
   for (const id of ['aws-bedrock-long-term-api-key', 'aws-bedrock-short-term-api-key', 'elevenlabs-api-key']) {

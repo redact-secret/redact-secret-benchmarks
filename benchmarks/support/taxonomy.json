@@ -329,6 +329,46 @@
     {
       "id": "runpod",
       "name": "RunPod"
+    },
+    {
+      "id": "bitwarden",
+      "name": "Bitwarden"
+    },
+    {
+      "id": "polar",
+      "name": "Polar"
+    },
+    {
+      "id": "sonarqube",
+      "name": "SonarQube"
+    },
+    {
+      "id": "rubygems",
+      "name": "RubyGems.org"
+    },
+    {
+      "id": "clojars",
+      "name": "Clojars"
+    },
+    {
+      "id": "crates-io",
+      "name": "crates.io"
+    },
+    {
+      "id": "dynatrace",
+      "name": "Dynatrace"
+    },
+    {
+      "id": "paddle",
+      "name": "Paddle"
+    },
+    {
+      "id": "honeycomb",
+      "name": "Honeycomb"
+    },
+    {
+      "id": "axiom",
+      "name": "Axiom"
     }
   ],
   "families": [
@@ -2175,6 +2215,174 @@
         "https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/runpod.md"
       ],
       "note": "Beta.12 arrival family runpod-api-key (#464, product redact-secret#974), contract in benchmarks/lib/beta8/464f.ts from the #860 handoff runpod.md. T1 on the prefix and alphabet; the floor and cap are policy. Neither pinned scanner has a RunPod rule; unpinned betterleaks uses a narrower 46-byte layout."
+    },
+    {
+      "id": "bitwarden:secrets-manager-access-token",
+      "provider": "bitwarden",
+      "name": "Secrets Manager access token (0. + UUID layout)",
+      "description": "0. + UUID + . + exactly 30 [A-Za-z0-9] + : + 22 standard Base64 + == (94 in all); unpadded keys, other versions and Password Manager user./organization. API keys are not claimed.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/bitwarden/sdk-internal/blob/824c1cf06636daa2778d53435cdbf354ab58eff2/crates/bitwarden-core/src/auth/access_token.rs#L47-L85",
+        "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/bitwarden.md"
+      ],
+      "note": "Beta.12 arrival family bitwarden-secrets-manager-access-token (#528, product redact-secret#1019), contract in benchmarks/lib/beta8/528a.ts from the #1014 handoff bitwarden.md. T1 on every part (provider SDK parser, server generator, docs example). Neither pinned scanner has a Bitwarden rule."
+    },
+    {
+      "id": "polar:organization-access-token",
+      "provider": "polar",
+      "name": "Organization access token (polar_oat_)",
+      "description": "polar_oat_ + exactly 43 [A-Za-z0-9] (37 random + a 6-character base62 CRC32); the checksum corroborates only and never rejects (policy).",
+      "detectors": [],
+      "sources": [
+        "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/kit/crypto.py#L11-L32",
+        "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/polar.md"
+      ],
+      "note": "Beta.12 arrival family polar-token (#528, product redact-secret#1020), contract in benchmarks/lib/beta8/528b.ts from the #1014 handoff polar.md. T1 (provider server code, R1/R9). whsec_ webhook secrets stay with stripe-token; polar_ci_ is public. Neither pinned scanner has a Polar rule."
+    },
+    {
+      "id": "polar:api-credential",
+      "provider": "polar",
+      "name": "API credentials (polar_pat_, polar_at_, polar_rt_, polar_cs_, polar_crt_)",
+      "description": "One of seven role prefixes + exactly 43 [A-Za-z0-9_-], the union of the pre-2025-01-02 URL-safe era and the alphanumeric-plus-checksum era.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/polarsource/polar/blob/6a4f2f6d6083ef503cd23cb7f432ab2c60515973/server/polar/oauth2/constants.py#L5-L16",
+        "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/polar.md"
+      ],
+      "note": "Beta.12 arrival family polar-api-credential (#528, product redact-secret#1020), contract in benchmarks/lib/beta8/528b.ts from the #1014 handoff polar.md. T1 (provider server code, R1/R9). Shares the polar-token detector (finding type polar_api_credential). Neither pinned scanner has a Polar rule."
+    },
+    {
+      "id": "sonarqube:user-token",
+      "provider": "sonarqube",
+      "name": "User token (squ_)",
+      "description": "squ_ + exactly 40 lowercase hex (44 in all); unprefixed legacy tokens, sqb_ badge tokens and SonarQube Cloud sqco_ are not claimed.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/SonarSource/sonarqube/blob/9ec5e86425011f6c1ffa0eb2db08880e3b347271/server/sonar-webserver-auth/src/main/java/org/sonar/server/usertoken/TokenGeneratorImpl.java#L29-L46",
+        "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/sonarqube.md"
+      ],
+      "note": "Beta.12 arrival family sonarqube-token (#528, product redact-secret#1021), contract in benchmarks/lib/beta8/528c.ts from the #1014 handoff sonarqube.md. T1 (provider generator, R1). gitleaks 8.30.1 sonar-api-token (keyword-gated) is mapped to this family; trufflehog 3.97.4 SonarCloud reads legacy and sqco_ shapes only."
+    },
+    {
+      "id": "sonarqube:analysis-token",
+      "provider": "sonarqube",
+      "name": "Analysis tokens (sqa_, sqp_)",
+      "description": "sqa_ (global) or sqp_ (project) + exactly 40 lowercase hex (44 in all).",
+      "detectors": [],
+      "sources": [
+        "https://github.com/SonarSource/sonarqube/blob/9ec5e86425011f6c1ffa0eb2db08880e3b347271/server/sonar-db-dao/src/main/java/org/sonar/db/user/TokenType.java#L24-L27",
+        "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/sonarqube.md"
+      ],
+      "note": "Beta.12 arrival family sonarqube-analysis-token (#528, product redact-secret#1021), contract in benchmarks/lib/beta8/528c.ts from the #1014 handoff sonarqube.md. T1 (provider generator, R1). Shares the sonarqube-token detector (finding type sonarqube_analysis_token); a gitleaks sonar-api-token finding reads as co-detection."
+    },
+    {
+      "id": "rubygems:api-key",
+      "provider": "rubygems",
+      "name": "API key (rubygems_)",
+      "description": "rubygems_ + exactly 48 lowercase hex (57 in all); OIDC-exchanged keys share the generator.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/rubygems/rubygems.org/blob/d4cfcc961d08cb5f661f2e5dc0081736233b97ec/app/controllers/concerns/api_keyable.rb#L19-L21",
+        "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/rubygems.md"
+      ],
+      "note": "Beta.12 arrival family rubygems-api-key (#528, product redact-secret#1023), contract in benchmarks/lib/beta8/528d.ts from the #1014 handoff rubygems.md. T1 (provider generator, R1). gitleaks 8.30.1 rubygems-api-token and trufflehog 3.97.4 RubyGems are mapped to this family."
+    },
+    {
+      "id": "clojars:deploy-token",
+      "provider": "clojars",
+      "name": "Deploy token (CLOJARS_)",
+      "description": "CLOJARS_ + exactly 60 lowercase hex (68 in all), exactly the server validator; the prefix is case-sensitive.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/clojars/clojars-web/blob/442eb895e7ab3449161848d8c368d4783c5f0067/src/clojars/db.clj#L799-L853",
+        "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/clojars.md"
+      ],
+      "note": "Beta.12 arrival family clojars-deploy-token (#528, product redact-secret#1025), contract in benchmarks/lib/beta8/528e.ts from the #1014 handoff clojars.md. T1 (provider generator and validator, R1). gitleaks 8.30.1 clojars-api-token (case-insensitive, wider) is mapped to this family; trufflehog 3.97.4 has no rule."
+    },
+    {
+      "id": "crates-io:api-token",
+      "provider": "crates-io",
+      "name": "API token (cio)",
+      "description": "cio + exactly 32 [A-Za-z0-9] (35 in all); the exact body and both identifier boundaries carry the precision of the three-letter prefix.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/rust-lang/crates.io/blob/7b2475e26337856ab054844c9078bb23c11b2f19/crates/crates_io_database/src/utils/token.rs#L10-L91",
+        "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/crates-io.md"
+      ],
+      "note": "Beta.12 arrival family crates-io-token (#528, product redact-secret#1031), contract in benchmarks/lib/beta8/528f.ts from the #1014 handoff crates-io.md. T1 (provider server code, R1). Neither pinned scanner has a crates.io rule."
+    },
+    {
+      "id": "crates-io:trusted-publishing-token",
+      "provider": "crates-io",
+      "name": "Trusted-publishing token (cio_tp_)",
+      "description": "cio_tp_ + exactly 32 [A-Za-z0-9] (31 + one check character, 39 in all); the check character corroborates only and never rejects (policy).",
+      "detectors": [],
+      "sources": [
+        "https://github.com/rust-lang/crates.io/blob/f937ab051067e793ed647c7b587a5419db85949b/crates/crates_io_trustpub/src/access_token.rs#L21-L102",
+        "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/crates-io.md"
+      ],
+      "note": "Beta.12 arrival family crates-io-trusted-publishing-token (#528, product redact-secret#1031), contract in benchmarks/lib/beta8/528f.ts from the #1014 handoff crates-io.md. T1 (provider server code, R1). Shares the crates-io-token detector (finding type crates_io_trusted_publishing_token). No scanner covers cio_tp_."
+    },
+    {
+      "id": "dynatrace:api-token",
+      "provider": "dynatrace",
+      "name": "Access and platform token (dt0c01, dt0s..)",
+      "description": "dt0 + c|s + 2 digits + . + 24 [A-Z2-7] + . + 64 [A-Z2-7] (96 in all); the token identifier alone is documented as safe to log and is not claimed.",
+      "detectors": [],
+      "sources": [
+        "https://docs.dynatrace.com/docs/dynatrace-api/basics/dynatrace-api-authentication",
+        "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/dynatrace.md"
+      ],
+      "note": "Beta.12 arrival family dynatrace-token (#528, product redact-secret#1032), contract in benchmarks/lib/beta8/528g.ts from the #1014 handoff dynatrace.md. T1 (provider docs; alphabet from the provider operator generator, R1). gitleaks 8.30.1 dynatrace-api-token (dt0c01 only) is mapped to this family; trufflehog 3.97.4 has no rule."
+    },
+    {
+      "id": "paddle:api-key",
+      "provider": "paddle",
+      "name": "Billing API key (pdl_live_/pdl_sdbx_apikey_)",
+      "description": "pdl_(live|sdbx)_apikey_ + 26 [a-z0-9] + _ + 22 [A-Za-z0-9] + _ + 3 [A-Za-z0-9] (69 in all), the provider-published regex; key ids and legacy 50-character keys are not claimed.",
+      "detectors": [],
+      "sources": [
+        "https://developer.paddle.com/api-reference/about/api-keys",
+        "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/paddle.md"
+      ],
+      "note": "Beta.12 arrival family paddle-api-key (#528, product redact-secret#1033), contract in benchmarks/lib/beta8/528h.ts from the #1014 handoff paddle.md. T1 (provider docs regex and length). Neither pinned scanner has a Paddle rule."
+    },
+    {
+      "id": "honeycomb:ingest-key",
+      "provider": "honeycomb",
+      "name": "Ingest key (hcXik_, hcXic_)",
+      "description": "hc + one [a-z] + ik_ or ic_ + exactly 58 [a-z0-9] (64 in all: key id and secret concatenated); key ids, configuration and classic keys are not claimed, and the management key stays issuance-gated.",
+      "detectors": [],
+      "sources": [
+        "https://docs.honeycomb.io/api/authentication",
+        "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/honeycomb.md"
+      ],
+      "note": "Beta.12 arrival family honeycomb-api-key (#528, product redact-secret#1034), contract in benchmarks/lib/beta8/528i.ts from the #1014 handoff honeycomb.md. T1 (docs, provider SDK regex, length gate and fixtures; R1, R5). trufflehog 3.97.4 Honeycomb reads classic and configuration keys only and is unmapped; gitleaks 8.30.1 has no rule."
+    },
+    {
+      "id": "axiom:api-token",
+      "provider": "axiom",
+      "name": "API token (xaat-)",
+      "description": "xaat- + a lowercase-hex UUID (41 in all); placeholders and bare UUIDs are not claimed.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/axiomhq/axiom-go/blob/ae983c9447003f74f00e55a2ca64ea119b558fb8/internal/config/token.go#L7-L18",
+        "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/axiom.md"
+      ],
+      "note": "Beta.12 arrival family axiom-token (#528, product redact-secret#1035), contract in benchmarks/lib/beta8/528j.ts from the #1014 handoff axiom.md. T1 (SDK runtime check R6; docs example plus SDK fixtures R5); a structure-only issuance check is recommended. Neither pinned scanner has an Axiom rule."
+    },
+    {
+      "id": "axiom:personal-token",
+      "provider": "axiom",
+      "name": "Personal access token (xapt-)",
+      "description": "xapt- + a lowercase-hex UUID (41 in all), used with an org id; full console and API access.",
+      "detectors": [],
+      "sources": [
+        "https://github.com/axiomhq/axiom-go/blob/ae983c9447003f74f00e55a2ca64ea119b558fb8/internal/config/token.go#L7-L18",
+        "https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/axiom.md"
+      ],
+      "note": "Beta.12 arrival family axiom-personal-token (#528, product redact-secret#1035), contract in benchmarks/lib/beta8/528j.ts from the #1014 handoff axiom.md. T1 (SDK runtime check R6; R5 layout). Shares the axiom-token detector (finding type axiom_personal_token). Neither pinned scanner has an Axiom rule."
     }
   ]
 }

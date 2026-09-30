@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import Ajv from 'ajv';
 import { empiricalObservations, empiricalEvidence, validateEmpiricalObservations, isPinnedReference } from '../benchmarks/support/empirical.ts';
 import { empiricalRoute } from '../benchmarks/support/status.ts';
-import { contracts, registryContractIds } from '../benchmarks/lib/assessment.ts';
+import { contracts, registryContractIds, scoredContractIds } from '../benchmarks/lib/assessment.ts';
 import { captureObservation, readHiddenCredential, runObservationCapture } from '../benchmarks/support/observation-capture.ts';
 
 const schema = JSON.parse(await readFile(new URL('../schemas/empirical-observations-v1.json', import.meta.url), 'utf8'));
@@ -49,10 +49,15 @@ const corroborated = () => ({
   }],
 });
 
-test('checked-in records are schema-valid, carry no observation or credential value, and cover the registry T2 families only', () => {
+test('checked-in records are schema-valid, carry no observation or credential value, and cover the scored T2 families only', () => {
   assert.ok(validate(empiricalObservations), JSON.stringify(validate.errors));
-  const t2 = registryContractIds.filter(id => contracts[id].tier === 'T2').sort();
-  assert.deepEqual(empiricalObservations.families.map(record => record.family).sort(), t2, 'one corroboration record per registry T2 family');
+  const recorded = empiricalObservations.families.map(record => record.family);
+  // Every registry T2 family has a record; a scored arrival T2 family (docs/specs/beta8-evidence.md) may carry
+  // its own. Nothing else may: a T0, T1 or T3 contract, or an unscored arrival id, never reads the record.
+  for (const id of registryContractIds.filter(id => contracts[id].tier === 'T2'))
+    assert.ok(recorded.includes(id), `${id}: one corroboration record per registry T2 family`);
+  for (const id of recorded)
+    assert.ok(scoredContractIds.includes(id) && contracts[id].tier === 'T2', `${id}: a record belongs to a scored T2 family only`);
   for (const record of empiricalObservations.families) {
     assert.deepEqual(record.observations, [], `${record.family}: no provider-issued observation has been captured`);
     const pattern = contracts[record.family].pattern;

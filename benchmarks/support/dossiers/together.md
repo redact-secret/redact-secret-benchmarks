@@ -10,13 +10,17 @@ families:
       sources:
         - https://docs.together.ai/docs/api-keys-authentication
         - https://github.com/betterleaks/betterleaks/blob/6cf4f1a29160b68be7c6390599b9b773234e5a43/cmd/generate/config/rules/togetherai.go
+        - https://github.com/mongodb/kingfisher/blob/82d050530cdef9af070b8f9a75701c9c27a948c3/crates/kingfisher-rules/data/rules/togetherai.yml#L8
+        - https://github.com/Samsung/CredSweeper/blob/f21ab2f2553eea288a72273b9658cd297ab1d11f/credsweeper/rules/config.yaml#L1814-L1827
+        - https://github.com/togethercomputer/together-py/blob/9c9c34e47686344b996eaf19a7c470f72dcdecd6/src/together/lib/cli/_track_cli.py#L205
       issues:
         - redact-secret/redact-secret#783
         - redact-secret/redact-secret#774
         - redact-secret/redact-secret#867
+        - redact-secret/redact-secret#1013
         - redact-secret/redact-secret-benchmarks#384
-      evidence: null
-      researchedAt: 2026-09-27
+      evidence: https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/together-api-key.md
+      researchedAt: 2026-09-29
     blockedBy: null
 ---
 
@@ -43,12 +47,22 @@ was renamed to the detector id `together-ai-api-key`.
   (50 in all), lowercase prefix, with identifier boundaries on both sides.
   A `tgp_v2_` prefix is only a scanner negative; no source says a v2 exists.
   Recognised bare or in any context.
-- **Sources:** T2. No provider page, staff statement or SDK code states the
-  prefix, length or alphabet; the docs establish only issuance, the
-  `TOGETHER_API_KEY` variable and the legacy population. The shape rests on
-  one betterleaks rule (Kingfisher only aliases it, so one lineage), one blog
-  post, and four full-length samples from the first page of a public code
-  search. No pinned scanner has a Together rule.
+- **Sources:** T2. No provider page or staff statement states the prefix,
+  length or alphabet; the docs establish only issuance, the
+  `TOGETHER_API_KEY` variable and the legacy population. The exact width
+  rests on three peer rules from three owners: betterleaks; Kingfisher's
+  native rule, added 2025-08-27 and replaced by a betterleaks alias only on
+  2026-08-21, so its own lineage (the earlier "Kingfisher only aliases it" was
+  wrong; corrected by redact-secret#1013); and CredSweeper (2026-05-11). Four
+  full-length samples from a public code search agree (#783). Together's own
+  CLI redactor in together-py (2026-04-27) confirms the `tgp_` prefix and a
+  `[A-Za-z0-9_-]` body with no length. No pinned scanner has a Together rule.
+- **Pending ruling Q-TG (redact-secret#1013):** must the second non-summary
+  class corroborate the exact width, or is prefix + alphabet from provider
+  code enough when three peer owners agree on it? Until ruled, together-py is
+  not counted and the ledger reads 4 references, 4 owners, 1 class; a "yes"
+  makes the family READY-T2, a "no" leaves one issued project key (prefix
+  `tgp_v1_`, total 50, `_` or `-` in the body) as the only way through.
 - **Issuance:** not attempted. The #783 checklist covers prefix, total length
   (expected 50), alphabet, project and expiry variants, and the legacy key.
 - **Collisions:** `tgp` appears only in unrelated project names. The
@@ -57,7 +71,7 @@ was renamed to the detector id `together-ai-api-key`.
   corroboration of this one.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md),
   section Together AI and Tavily (#867). Legacy keys are not claimed.
-- **Open caveat:** No provider source states prefix, length or alphabet; one scanner lineage and four samples back it. Needs one issued project key (checklist in #783); corroboration 2/2/1 against the 3/3/2 needed.
+- **Open caveat:** No provider source states the length; three peer lineages and four samples back it, provider code backs prefix and alphabet only. Corroboration 4/4/1 against the 3/3/2 needed until Q-TG is ruled; otherwise one issued project key (checklist in #783).
 
 ## Candidates that are not families yet
 
@@ -78,6 +92,8 @@ was renamed to the detector id `together-ai-api-key`.
 
 ## Research log
 
+- redact-secret#1013 — 2026-09-29 T1/T2 pass ([evidence](https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/together-api-key.md)):
+  READY-T2 conditional on Q-TG; Kingfisher lineage corrected.
 - redact-secret#783 — discovery pass; disposition distinct family, T2,
   pending hands-on corroboration.
 - redact-secret#867 — implementation for Together AI and Tavily.

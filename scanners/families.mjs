@@ -56,6 +56,12 @@ const gitleaks = {
   // #464: gitleaks 8.30.1 clickhouse-cloud-api-secret-key is \b(4b1d[A-Za-z0-9]{38})\b with entropy 3, the T1 grammar of the
   // ClickHouse Cloud key secret (benchmarks/lib/beta8/464b.ts), so it maps to that arrival family.
   'clickhouse-cloud-api-secret-key': 'clickhouse-cloud-api-secret',
+  // #528 arrival families (benchmarks/lib/beta8/528c-528g.ts). gitleaks 8.30.1 rubygems-api-token is the RubyGems grammar
+  // with a trailing delimiter; clojars-api-token ((?i)CLOJARS_[a-z0-9]{60}) and dynatrace-api-token (dt0c01 only,
+  // (?i)[a-z0-9]) read the credential over a wider class; sonar-api-token is keyword-gated and reads squ_/sqa_/sqp_ under
+  // one label, so it maps to the detector-id family sonarqube-token and an analysis-token finding reads as co-detection.
+  'rubygems-api-token': 'rubygems-api-key', 'clojars-api-token': 'clojars-deploy-token',
+  'dynatrace-api-token': 'dynatrace-token', 'sonar-api-token': 'sonarqube-token',
   // #436 (deferred to graduation): gitleaks 8.30.1 1password-service-account-token is ops_eyJ + standard Base64, the same
   // credential as the onepassword-service-account-token family over a different alphabet (it misses the Base64url
   // positives; peer lag, not a family difference). 1password-secret-key is the account Secret Key, never this family,
@@ -92,11 +98,20 @@ const trufflehog = {
   // #464 arrival family (benchmarks/lib/beta8/464c.ts): trufflehog 3.97.4's nvapi detector (label NVAPI) reads an exact 64
   // [a-zA-Z0-9_-] body after nvapi-, one width of the provider's open-ended grammar, so a finding maps to nvidia-api-key.
   NVAPI: 'nvidia-api-key',
+  // #528 arrival family (benchmarks/lib/beta8/528d.ts): trufflehog 3.97.4's rubygems detector (label RubyGems) reads
+  // rubygems_ + 48 of [a-zA0-9] (a class typo), the RubyGems credential over a wider class. Its SonarCloud (legacy bare
+  // 40 near "sonar", sqco_) and Honeycomb (32-hex or 22-alphanumeric near "Honeycomb") labels read no #528 family's
+  // shape and stay unmapped.
+  RubyGems: 'rubygems-api-key',
   // #436 (deferred to graduation): trufflehog 3.97.4's apify detector reads apify_api_ + exactly 36 alphanumerics, the
   // apify-api-token credential over a narrower width (it misses the 20- and 128-byte positives). Its weightsandbiases
   // detectors report under one label: v2 (wandb_v1_ keys, the wandb-api-key family) and v1 (the legacy keyword-gated
   // 40-hex key, which the family does not claim) -- the same one-label, two-shape case as ElevenLabs above.
   Apify: 'apify-api-token', WeightsAndBiases: 'wandb-api-key',
+  // redact-secret#1013: trufflehog 3.97.4's openaiadmin detector (label OpenAIAdmin, PR #4689) reads exactly
+  // sk-admin- + 58 [A-Za-z0-9_-] + T3BlbkFJ + 58, the openai-admin-api-key arrival family's corroborated width. The
+  // generic OpenAI detector skips sk-admin- because of this move, so an admin key is attributed here, not to openai-token.
+  OpenAIAdmin: 'openai-admin-api-key',
 };
 // flare-redact 1.6.1 (FRS-1 spec) detector ids. Only ids whose matched format
 // is genuinely the same credential type as an existing family are mapped;

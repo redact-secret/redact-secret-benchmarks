@@ -24,16 +24,16 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 
 | Profile | Families | Of |
 | --- | ---: | ---: |
-| Arrival / provisional | 100 | 120 |
-| Stable / documented | 100 | 120 |
-| Stable / empirical | 32 | 120 |
-| Context-constrained empirical | 19 | 120 |
+| Arrival / provisional | 103 | 134 |
+| Stable / documented | 103 | 134 |
+| Stable / empirical | 35 | 134 |
+| Context-constrained empirical | 20 | 134 |
 
 ## Per family
 
 | Family | Tier | Target | Total fixtures | Positive/context cases | Non-twin benign controls | Twin pairs | Positive-context axes | Control axes | Confusion axes | Remaining debt |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| ai21-api-key | T0 | arrival-provisional | 36 | 3 | 15 | 10 | 8 | 5 | 7 | positive/context cases 3/6 |
+| ai21-api-key | T2 | context-constrained-empirical | 60 | 2 | 26 | 17 | 11 | 6 | 8 | none |
 | anthropic-admin01-key | T1 | stable-documented | 39 | 7 | 16 | 8 | 15 | 6 | 8 | none |
 | anthropic-api01-key | T1 | stable-documented | 37 | 8 | 15 | 7 | 15 | 6 | 8 | none |
 | anthropic-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 8 | 5 | 6 | none |
@@ -42,11 +42,15 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | aws-access-key | T1 | stable-documented | 26 | 6 | 8 | 6 | 5 | 5 | 6 | none |
 | aws-bedrock-long-term-api-key | T1 | stable-documented | 44 | 12 | 20 | 6 | 16 | 6 | 9 | none |
 | aws-bedrock-short-term-api-key | T1 | stable-documented | 34 | 7 | 15 | 6 | 11 | 6 | 10 | none |
+| axiom-personal-token | T1 | stable-documented | 25 | 5 | 8 | 6 | 6 | 5 | 9 | positive/context cases 5/6 |
+| axiom-token | T1 | stable-documented | 29 | 5 | 8 | 8 | 7 | 5 | 9 | positive/context cases 5/6 |
 | azure-devops-personal-access-token | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 7 | none |
 | bearer-token | T3 | arrival-provisional | 52 | 5 | 19 | 14 | 12 | 6 | 9 | positive/context cases 5/6 |
+| bitwarden-secrets-manager-access-token | T1 | stable-documented | 38 | 0 | 11 | 14 | 10 | 6 | 10 | positive/context cases 0/6 |
 | browserbase-api-key | T1 | stable-documented | 31 | 6 | 11 | 7 | 8 | 5 | 8 | none |
 | cerebras-api-key | T1 | stable-documented | 40 | 13 | 11 | 8 | 6 | 5 | 8 | none |
 | clickhouse-cloud-api-secret | T1 | stable-documented | 37 | 6 | 11 | 10 | 10 | 6 | 10 | none |
+| clojars-deploy-token | T1 | stable-documented | 29 | 4 | 9 | 8 | 7 | 6 | 10 | positive/context cases 4/6 |
 | cloudflare-token | T1 | stable-documented | 24 | 6 | 10 | 6 | 4 | 5 | 8 | none |
 | cohere-api-key | T2 | context-constrained-empirical | 78 | 10 | 31 | 20 | 17 | 6 | 8 | none |
 | composio-api-key | T1 | stable-documented | 48 | 6 | 15 | 14 | 10 | 6 | 10 | none |
@@ -56,6 +60,8 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | confluent-cloud-api-secret-legacy | T2 | context-constrained-empirical | 60 | 3 | 23 | 18 | 17 | 6 | 9 | none |
 | connection-string | T3 | arrival-provisional | 74 | 14 | 24 | 18 | 9 | 6 | 7 | none |
 | convex-deployment-key | T1 | stable-documented | 41 | 6 | 15 | 10 | 11 | 6 | 10 | none |
+| crates-io-token | T1 | stable-documented | 29 | 5 | 8 | 8 | 8 | 6 | 10 | positive/context cases 5/6 |
+| crates-io-trusted-publishing-token | T1 | stable-documented | 29 | 6 | 9 | 7 | 8 | 5 | 9 | none |
 | databricks-personal-access-token | T2 | stable-empirical | 40 | 12 | 15 | 9 | 14 | 6 | 9 | none |
 | datadog-api-key | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | datadog-application-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 6 | 8 | none |
@@ -72,6 +78,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | doppler-service-account-identity-token | T1 | stable-documented | 36 | 2 | 10 | 12 | 9 | 6 | 10 | positive/context cases 2/6 |
 | doppler-service-account-token | T1 | stable-documented | 37 | 1 | 10 | 13 | 9 | 6 | 10 | positive/context cases 1/6 |
 | doppler-token | T1 | stable-documented | 51 | 6 | 15 | 15 | 10 | 6 | 10 | none |
+| dynatrace-token | T1 | stable-documented | 33 | 2 | 9 | 11 | 7 | 6 | 10 | positive/context cases 2/6 |
 | e2b-api-key | T1 | stable-documented | 43 | 6 | 15 | 11 | 10 | 6 | 10 | none |
 | elevenlabs-api-key | T1 | stable-documented | 35 | 7 | 15 | 7 | 9 | 6 | 8 | none |
 | exa-api-key | T0 | arrival-provisional | 30 | 0 | 14 | 8 | 6 | 6 | 7 | positive/context cases 0/6 |
@@ -79,7 +86,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | firecrawl-api-key | T1 | stable-documented | 48 | 6 | 15 | 14 | 11 | 6 | 10 | none |
 | fireworks-ai-api-key | T1 | stable-documented | 32 | 6 | 16 | 5 | 8 | 6 | 8 | none |
 | generic-token | T3 | arrival-provisional | 157 | 61 | 76 | 10 | 29 | 4 | 5 | none |
-| github-fine-grained-pat | T2 | arrival-provisional | 25 | 6 | 9 | 5 | 11 | 6 | 9 | none |
+| github-fine-grained-pat | T2 | stable-empirical | 40 | 12 | 15 | 8 | 13 | 6 | 9 | none |
 | github-token | T1 | stable-documented | 131 | 28 | 15 | 45 | 25 | 6 | 8 | none |
 | gitlab-runner-authentication-token | T2 | stable-empirical | 43 | 11 | 16 | 8 | 15 | 6 | 10 | none |
 | gitlab-token | T1 | stable-documented | 26 | 6 | 8 | 7 | 5 | 5 | 7 | none |
@@ -91,6 +98,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | helicone-write-api-key | T1 | stable-documented | 36 | 2 | 10 | 14 | 7 | 6 | 10 | positive/context cases 2/6 |
 | heroku-api-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 8 | none |
 | heroku-api-key-legacy | T2 | context-constrained-empirical | 62 | 4 | 24 | 17 | 18 | 6 | 8 | none |
+| honeycomb-api-key | T1 | stable-documented | 31 | 4 | 9 | 9 | 7 | 5 | 9 | positive/context cases 4/6 |
 | huggingface-token | T1 | stable-documented | 26 | 6 | 8 | 7 | 7 | 4 | 6 | none |
 | inngest-signing-key | T1 | stable-documented | 40 | 7 | 15 | 9 | 10 | 6 | 10 | none |
 | jwt | T1 | stable-documented | 26 | 6 | 8 | 7 | 7 | 6 | 8 | none |
@@ -112,13 +120,16 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | nvidia-api-key | T1 | stable-documented | 31 | 8 | 11 | 6 | 7 | 5 | 9 | none |
 | okta-api-token | T2 | stable-empirical | 40 | 10 | 15 | 9 | 11 | 6 | 9 | none |
 | onepassword-service-account-token | T1 | stable-documented | 39 | 7 | 14 | 9 | 11 | 6 | 10 | none |
-| openai-admin-api-key | T2 | arrival-provisional | 41 | 5 | 15 | 11 | 15 | 6 | 10 | positive/context cases 5/6 |
+| openai-admin-api-key | T2 | stable-empirical | 43 | 10 | 15 | 9 | 17 | 6 | 10 | none |
 | openai-token | T2 | stable-empirical | 45 | 15 | 15 | 8 | 8 | 6 | 10 | none |
 | openrouter-api-key | T1 | stable-documented | 32 | 6 | 14 | 6 | 9 | 6 | 10 | none |
 | otpauth-uri | T3 | arrival-provisional | 24 | 2 | 8 | 7 | 1 | 3 | 4 | positive/context cases 2/6; positive-context axes 1/4; control axes 3/4 |
+| paddle-api-key | T1 | stable-documented | 33 | 0 | 9 | 12 | 7 | 6 | 10 | positive/context cases 0/6 |
 | perplexity-api-key | T2 | stable-empirical | 41 | 10 | 15 | 8 | 15 | 6 | 10 | none |
 | pinecone-api-key | T2 | stable-empirical | 42 | 10 | 16 | 8 | 16 | 6 | 9 | none |
 | pinecone-api-key-legacy | T3 | arrival-provisional | 48 | 0 | 24 | 12 | 9 | 6 | 7 | positive/context cases 0/6 |
+| polar-api-credential | T1 | stable-documented | 28 | 5 | 9 | 7 | 7 | 5 | 9 | positive/context cases 5/6 |
+| polar-token | T1 | stable-documented | 31 | 6 | 9 | 8 | 9 | 5 | 9 | none |
 | posthog-project-secret-api-key | T1 | stable-documented | 36 | 3 | 11 | 11 | 9 | 6 | 10 | positive/context cases 3/6 |
 | posthog-token | T1 | stable-documented | 44 | 6 | 16 | 11 | 10 | 6 | 10 | none |
 | postman-api-key | T2 | stable-empirical | 40 | 11 | 17 | 9 | 12 | 6 | 9 | none |
@@ -128,14 +139,17 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | pypi-token | T1 | stable-documented | 26 | 6 | 8 | 9 | 7 | 6 | 9 | none |
 | replicate-api-token | T1 | stable-documented | 32 | 6 | 14 | 6 | 8 | 6 | 10 | none |
 | resend-api-key | T1 | stable-documented | 42 | 6 | 14 | 11 | 11 | 5 | 9 | none |
+| rubygems-api-key | T1 | stable-documented | 31 | 4 | 9 | 9 | 8 | 6 | 10 | positive/context cases 4/6 |
 | runpod-api-key | T1 | stable-documented | 30 | 6 | 10 | 7 | 9 | 4 | 7 | none |
 | sendgrid-token | T1 | stable-documented | 68 | 22 | 12 | 18 | 8 | 4 | 6 | none |
 | sentry-org-auth-token | T2 | stable-empirical | 40 | 13 | 14 | 8 | 14 | 6 | 10 | none |
 | sentry-user-auth-token | T2 | stable-empirical | 40 | 12 | 14 | 8 | 14 | 6 | 10 | none |
 | shopify-token | T1 | stable-documented | 27 | 9 | 8 | 6 | 4 | 6 | 8 | none |
-| slack-app-level-token | T2 | arrival-provisional | 25 | 6 | 9 | 5 | 10 | 5 | 8 | none |
+| slack-app-level-token | T2 | arrival-provisional | 40 | 12 | 15 | 8 | 12 | 6 | 9 | none |
 | slack-token | T1 | stable-documented | 47 | 26 | 13 | 6 | 4 | 4 | 6 | none |
 | slack-user-token | T1 | stable-documented | 27 | 6 | 11 | 5 | 9 | 6 | 9 | none |
+| sonarqube-analysis-token | T1 | stable-documented | 28 | 5 | 9 | 7 | 8 | 6 | 10 | positive/context cases 5/6 |
+| sonarqube-token | T1 | stable-documented | 32 | 5 | 9 | 9 | 8 | 6 | 10 | positive/context cases 5/6 |
 | stripe-token | T1 | stable-documented | 54 | 25 | 15 | 8 | 10 | 6 | 9 | none |
 | stripe-webhook-signing-secret | T1 | stable-documented | 26 | 6 | 10 | 5 | 9 | 6 | 10 | none |
 | supabase-management-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 7 | 6 | 8 | none |

@@ -1024,7 +1024,7 @@
       "family": "okta-api-token",
       "mode": "shape",
       "supportsBareValues": false,
-      "uncertainty": "Okta shows the token only as an elided SSWS example beginning 00, and its only staff statement (2023) says not to assume a set structure; the 40-byte body and alphabet rest on tools and a 2019 community answer. Tools disagree on '=' in the body and GitGuardian does not treat 00 as a prefix; no issued token has been measured.",
+      "uncertainty": "Okta states no length or alphabet in prose. It shows the token as an elided SSWS example beginning 00, and three dated, distinct full-length examples in its own repositories (developer docs guide, management OpenAPI spec 2025-2026, an API-security book page 2019), all 00 + 40 alphanumeric. A 2019 devforum answer ('always 42 characters', regex 00 + 40 [a-zA-Z0-9-_]) comes from an account whose staff status is not confirmed on the forum. Both 2023 items in this record come from one devforum thread (2023-09-21): an Okta team reply saying not to assume a set structure (and that there are no plans to change it) and a customer's alphabet reading. gitleaks' '=' comes from its generic AlphaNumericExtended helper, not from Okta evidence, and GitGuardian does not treat 00 as a prefix. The four open contradictions below carry the dispositions redact-secret#1013 proposes, pending maintainer ruling Q-OK; until ruled they stay unresolved. No issued token has been measured.",
       "supportedContexts": [
         "Authorization: SSWS <value> header",
         "same-line okta keyword assignment (e.g. OKTA_API_TOKEN=<value>)",
@@ -1069,6 +1069,20 @@
           "supports": "Okta's own developer docs (oie-upgrade-api-sdk-to-oie-sdk guide) show an unelided Authorization: SSWS value of 00 + 40 [A-Za-z0-9] (42 characters, no '_', '-' or '=')"
         },
         {
+          "class": "provider-example",
+          "owner": "okta",
+          "reference": "https://github.com/okta/okta-management-openapi-spec/blob/74fcd17fad54332caee96ebbb11fd7f203b03e4f/dist/current/management-dev-noEnums-minimal.yaml#L60548",
+          "observedAt": "2026-09-29",
+          "supports": "Okta management OpenAPI spec (path history 2025-01-10 to 2026-03-23): an SSWS example with one full-length value, 00 + 40 alphanumeric, distinct from the developer-docs guide example; value not reproduced"
+        },
+        {
+          "class": "provider-example",
+          "owner": "okta",
+          "reference": "https://github.com/okta/okta-developer-docs/blob/8aff3329cb8e651d2182ce6dcd5ebd303b42a690/packages/@okta/vuepress-site/books/api-security/api-keys/other-options/index.md#L18",
+          "observedAt": "2026-09-29",
+          "supports": "Okta developer docs, API-security book (2019-02-14): 'Okta (with tokens that look like this …)', a third distinct 00 + 40 alphanumeric value; value not reproduced"
+        },
+        {
           "class": "independent-research",
           "owner": "redact-secret",
           "reference": "https://github.com/redact-secret/redact-secret/issues/694#issuecomment-5800302850",
@@ -1078,15 +1092,15 @@
       ],
       "contradictions": [
         {
-          "statement": "gitleaks and betterleaks admit '=' in the body; the contract's alphabet twin asserts silence on a body containing one '=' byte.",
+          "statement": "gitleaks and betterleaks admit '=' in the body; the contract's alphabet twin asserts silence on a body containing one '=' byte. (redact-secret#1013: the '=' comes from gitleaks' generic AlphaNumericExtended helper, cmd/generate/config/utils/patterns.go L27-L28 at v8.30.1, PR #1599, not from Okta evidence; no Okta API-token or sibling-token example contains '='.) [redact-secret#1013 proposes, pending maintainer ruling Q-OK: bounded -- the contract excludes '=' and accepts a false negative if a padded token ever appears]",
           "status": "unresolved"
         },
         {
-          "statement": "Okta staff (2023): do not assume a set structure for Okta API tokens; the contract freezes a 00 + 40 grammar and fixtures assert it.",
+          "statement": "Okta staff (2023): do not assume a set structure for Okta API tokens; the contract freezes a 00 + 40 grammar and fixtures assert it. (redact-secret#1013: devforum thread 'Okta API token format', 2023-09-21; the same reply says there are no plans to change it, and three dated provider examples from 2019 to 2026 all match 00 + 40.) [redact-secret#1013 proposes, pending maintainer ruling Q-OK: bounded -- the contract freezes the currently issued shape, accepts false negatives on a future format change, and is re-reviewed on any new Okta statement]",
           "status": "unresolved"
         },
         {
-          "statement": "A 2023 customer observation gives the alphabet as [A-Za-z0-9-] without '_'; the contract admits '_' (tools, the 2019 answer and 23/52 measured candidates include it).",
+          "statement": "A 2023 customer observation gives the alphabet as [A-Za-z0-9-] without '_'; the contract admits '_' (tools, the 2019 answer and 23/52 measured candidates include it). (redact-secret#1013: the same 2023-09-21 thread as the staff reply above, and the customer's own regex 00[\\w\\d-]{40} admits '_'; Okta's sibling 00 tokens (session, state, recovery) in its authn reference contain '_' and '-'.) [redact-secret#1013 proposes, pending maintainer ruling Q-OK: bounded -- the detector admits '_' and no fixture asserts either way on '_'; settled instead if the ruling accepts the 2019 answer as a staff statement (R3) with the sibling-token examples]",
           "status": "unresolved"
         },
         {
@@ -1095,7 +1109,7 @@
           "bound": "The benchmark makes no claim about a final '-': no positive, twin or control ends in '-', so a trailing '-' is outside supportedContexts and neither asserted nor refuted."
         },
         {
-          "statement": "GitGuardian records the Okta detector as 'Prefixed: False', i.e. 00 is not treated as a prefix; the contract's prefix twin asserts silence on a 01-prefixed value.",
+          "statement": "GitGuardian records the Okta detector as 'Prefixed: False', i.e. 00 is not treated as a prefix; the contract's prefix twin asserts silence on a 01-prefixed value. [redact-secret#1013 proposes, pending maintainer ruling Q-OK: bounded -- 'Prefixed: False' classifies GitGuardian's detector, not the tokens; every Okta example starts 00, and the contract excludes non-00 shapes]",
           "status": "unresolved"
         }
       ]
@@ -1998,7 +2012,7 @@
       "family": "together-ai-api-key",
       "mode": "shape",
       "supportsBareValues": true,
-      "uncertainty": "No Together page, staff statement or SDK code states the tgp_v1_ prefix, a length or an alphabet. The shape rests on one scanner rule (betterleaks; Kingfisher aliases it, so it is one lineage, not two) and a four-sample maintainer observation (#783). No pinned scanner (trufflehog 3.97.4, gitleaks 8.30.1) has a Together rule. No provider-issued key has been captured through #205 intake. A 2026-09-27 re-check of the broad-discovery sources for #783 (Reddit, Stack Overflow, GitHub code and issue search, Hacker News, and the scanner repos trufflehog main, gitleaks master, GitGuardian ggshield, osv-scalibr, secretlint, pleno-dlp and two general leak-scanner projects) found no new source for the tgp_v1_ shape itself; betterleaks/Kingfisher and #783 remain the only two owners. It did find that pleno-dlp (github.com/plenoai/pleno-dlp, tag v0.66.4, commit b3cd17fa41953a98aaafaa61aa8ab3e05882bf66) ships a Together detector for a different, sibling shape (a bare 64-character lowercase-hex string, keyword-gated on 'together'), which the corroboration decision's own rule ('a rule for a sibling shape does not count') excludes from this family's corroboration count; it is recorded below as evidence toward the open legacy-key contradiction instead.",
+      "uncertainty": "No Together page, staff statement or SDK code states the tgp_v1_ prefix, a length or an alphabet. The exact width rests on three peer scanner rules from three owners (betterleaks; Kingfisher's native rule, added 2025-08-27 and replaced by a betterleaks alias only on 2026-08-21, so its own lineage, not an alias as recorded earlier; CredSweeper since 2026-05-11, per redact-secret#1013) and a four-sample maintainer observation (#783). Together's own CLI redactor (together-py, 2026-04-27) confirms the tgp_ prefix and a [A-Za-z0-9_-] body but states no length; whether provider code that corroborates prefix and alphabet but not the width may supply the second corroboration class is maintainer ruling Q-TG (redact-secret#1013), pending, so it is not recorded as a reference here. No pinned scanner (trufflehog 3.97.4, gitleaks 8.30.1) has a Together rule. No provider-issued key has been captured through #205 intake. A 2026-09-27 re-check of the broad-discovery sources for #783 (Reddit, Stack Overflow, GitHub code and issue search, Hacker News, and the scanner repos trufflehog main, gitleaks master, GitGuardian ggshield, osv-scalibr, secretlint, pleno-dlp and two general leak-scanner projects) found no new source for the tgp_v1_ shape itself; betterleaks/Kingfisher and #783 remained the only two owners at that date (the 2026-09-29 #1013 pass found the Kingfisher native rule and CredSweeper). It did find that pleno-dlp (github.com/plenoai/pleno-dlp, tag v0.66.4, commit b3cd17fa41953a98aaafaa61aa8ab3e05882bf66) ships a Together detector for a different, sibling shape (a bare 64-character lowercase-hex string, keyword-gated on 'together'), which the corroboration decision's own rule ('a rule for a sibling shape does not count') excludes from this family's corroboration count; it is recorded below as evidence toward the open legacy-key contradiction instead.",
       "supportedContexts": [
         "bare value (the tgp_v1_ prefix plus exactly 43 base64url characters is the only marker)",
         "double-quoted assignment value",
@@ -2012,6 +2026,20 @@
           "reference": "https://github.com/betterleaks/betterleaks/blob/2a387a5bad42/cmd/generate/config/rules/togetherai.go",
           "observedAt": "2026-09-27",
           "supports": "togetherai-api-key: tgp_v1_ + [A-Za-z0-9_-]{43}, entropy filter 3.0"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "mongodb",
+          "reference": "https://github.com/mongodb/kingfisher/blob/82d050530cdef9af070b8f9a75701c9c27a948c3/crates/kingfisher-rules/data/rules/togetherai.yml#L8",
+          "observedAt": "2026-09-29",
+          "supports": "Kingfisher native togetherai rule (v1.113.0; added 2025-08-27, replaced by a betterleaks alias 2026-08-21): tgp_v1_ + [A-Za-z0-9_-]{43}; predates the betterleaks rule, so its own lineage"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "samsung",
+          "reference": "https://github.com/Samsung/CredSweeper/blob/f21ab2f2553eea288a72273b9658cd297ab1d11f/credsweeper/rules/config.yaml#L1814-L1827",
+          "observedAt": "2026-09-29",
+          "supports": "CredSweeper Together rule (commit 2e9aeef4, 2026-05-11): tgp_v1_ + [0-9A-Za-z_-]{43}, min_line_len 50; its three samples are 43-character bodies"
         },
         {
           "class": "independent-research",
@@ -2082,7 +2110,7 @@
       "family": "mistral-api-key",
       "mode": "context-constrained",
       "supportsBareValues": false,
-      "uncertainty": "No Mistral page or SDK code states a prefix, length or alphabet. Three tool rules (osv-scalibr, betterleaks, pleno-dlp) read as one assertion of 32 alphanumerics beside a Mistral name, and the value has no marker of its own, so it is claimed only beside a same-line Mistral name, host or constructor. No pinned scanner has a Mistral rule. No provider-issued key has been captured through #205 intake.",
+      "uncertainty": "Mistral states no prefix, length or alphabet in prose and its SDK does no validation. Its own Admin API OpenAPI schema (APIKeyExtendedOUT, synced to the docs 2026-07-24) shows one full-length example key: 32 alphanumeric characters, no prefix. Three tool rules (osv-scalibr, betterleaks, pleno-dlp) read as one assertion of 32 alphanumerics beside a Mistral name, and three independent client validators (GitLens, GPTPortal, NeuroLink) accept exactly ^[A-Za-z0-9]{32}$. The value has no marker of its own, so it is claimed only beside a same-line Mistral name, host or constructor. GitGuardian lists a second, prefixed 'Mistral AI API Key v2' with an undisclosed prefix that no Mistral source mentions. No pinned scanner has a Mistral rule. No provider-issued key has been captured through #205 intake.",
       "supportedContexts": [
         "same line as the word mistral, e.g. MISTRAL_API_KEY=, api.mistral.ai, Mistral(api_key=...)",
         "Authorization: Bearer on a line naming the Mistral API host"
@@ -2104,11 +2132,46 @@
           "supports": "mistral-api-key: mistral keyword + [A-Z0-9]{32}, case-insensitive"
         },
         {
+          "class": "provider-example",
+          "owner": "mistral",
+          "reference": "https://github.com/mistralai/platform-docs-public/blob/ecac75b617af/openapi-public-doc.yaml#L33436-L33455",
+          "observedAt": "2026-09-29",
+          "supports": "Admin API schema APIKeyExtendedOUT (commit 220f18c8, 'sync docs to v1.3.0', 2026-07-24; rendered at docs.mistral.ai api/endpoint/beta/admin/api-keys): field key, 'Plaintext API key value. Only returned at creation time.', example one full-length value of 32 [A-Za-z0-9] with upper, lower and digits, no prefix; hidden_key shows 4 + '...' + 4. Value not reproduced"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "gitkraken",
+          "reference": "https://github.com/gitkraken/vscode-gitlens/blob/6492b560fd70/packages/plus/ai/src/providers/mistralProvider.ts#L156-L159",
+          "observedAt": "2026-09-29",
+          "supports": "GitLens Mistral provider (2025-05-27, 'Adds Mistral support'): keyValidator /^[a-zA-Z0-9]{32}$/, enforced on key entry in openAICompatibleProviderBase.ts L85-L92"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "zaki-1052",
+          "reference": "https://github.com/Zaki-1052/GPTPortal/blob/eb320cd2763a/src/server/utils/ValidationUtils.js#L150",
+          "observedAt": "2026-09-29",
+          "supports": "GPTPortal key validation (2025-05-23): Mistral key /^[A-Za-z0-9]{32}$/"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "juspay",
+          "reference": "https://github.com/juspay/neurolink/blob/4d034813e71e/src/lib/utils/providerConfig.ts#L51",
+          "observedAt": "2026-09-29",
+          "supports": "NeuroLink provider config (2025-07-30): Mistral key /^[A-Za-z0-9]{32}$/"
+        },
+        {
           "class": "independent-research",
           "owner": "redact-secret",
           "reference": "https://github.com/redact-secret/redact-secret/issues/781",
           "observedAt": "2026-09-27",
           "supports": "2026-09-26 broad-discovery pass: the SDK does no validation; the three rules are one assertion"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/1013",
+          "observedAt": "2026-09-29",
+          "supports": "redact-secret#1013 T1/T2 pass (2026-09-29; frozen record docs/audits/evidence/1013/mistral-api-key.md at redact-secret add1188f): 7 references, 7 owners, 3 non-summary classes (peer-scanner-rule, provider-example, independent-implementation)"
         }
       ],
       "contradictions": [
@@ -2116,6 +2179,11 @@
           "statement": "The Codestral key and the realtime rt_ token are separate credentials of undecided shape.",
           "status": "bounded",
           "bound": "The contract covers the Studio API key only; no fixture asserts silence on a Codestral key or an rt_ token."
+        },
+        {
+          "statement": "GitGuardian's mistralai_apikey page (updated 2026-09-28) lists a second type, 'Mistral AI API Key v2', Prefixed: True, prefix undisclosed; no Mistral source mentions a prefixed key.",
+          "status": "bounded",
+          "bound": "The contract covers only the unprefixed, context-gated 32-alphanumeric key and asserts nothing on a prefixed one: no fixture is a prefixed Mistral key, positive or control."
         }
       ]
     },
@@ -2217,6 +2285,258 @@
           "statement": "The documentation's 32-hex example suggests a 32-character key.",
           "status": "bounded",
           "bound": "The example is an ascending-digit placeholder; the contract freezes 40 and no fixture asserts silence on a 32-hex value."
+        }
+      ]
+    },
+    {
+      "family": "github-fine-grained-pat",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "GitHub documents only the github_pat_ prefix (docs 'GitHub's token formats'); no GitHub page states the 22 + '_' + 59 body. The grammar is corroborated by three GitHub-owned redaction and DLP rules (which redact, never generate or validate), one full-length value in GitHub's own REST 'Revoke a list of credentials' example, two pinned peer rules (osv-scalibr, trivy) and four independent validators. A GitHub product manager endorsed the exact regex in community discussion 36441 (2022-10-24); whether that staff reply (R3) or the GitHub-owned code (R1/R9) is a T1 grammar statement is maintainer ruling Q-GH (redact-secret#1013), pending, so the family stays T2. No checksum, fixed '11' lead or GHES parity is claimed, and peer rules that admit other widths (trufflehog 36-255, CredSweeper 80-255, \\w{82}) are recorded as supersets. No provider-issued token has been measured.",
+      "supportedContexts": [
+        "bare github_pat_ value anywhere on a line (the prefix is the marker)",
+        ".env / shell export / CI or compose environment assignment (GH_TOKEN, GITHUB_PAT, RENOVATE_TOKEN)",
+        "Authorization: Bearer header and an octokit debug log 'token ' header value",
+        "git remote URL userinfo and git credential fill output",
+        "JSON (composer auth.json) and Terraform provider token string",
+        "gh auth login --with-token stdin",
+        "values with and without a leading '11' in segment 1 (neither is asserted)"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "provider-owned-code",
+          "owner": "github",
+          "reference": "https://github.com/github/CopilotForXcode/blob/258d4577dcf8fba0e9131b514dbe45b5dbb8906c/Tool/Sources/TelemetryService/TelemetryCleaner.swift#L65",
+          "observedAt": "2026-09-29",
+          "supports": "github/CopilotForXcode TelemetryCleaner (file first committed 2025-02-12, 'Release 0.30.0'): redactor regex github_pat_[a-zA-Z0-9]{22}_[a-zA-Z0-9]{59}; redacts, does not generate or validate"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "github",
+          "reference": "https://github.com/github/gh-aw-firewall/blob/8f9b21bf756e3a9a46819dc29118b92e96c1b7a8/src/dlp.ts#L64-L65",
+          "observedAt": "2026-09-29",
+          "supports": "github/gh-aw-firewall DLP rule (2026-03-13): the same 22 + '_' + 59 alphanumeric regex"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "github",
+          "reference": "https://github.com/github/gh-aw-mcpg/blob/4576c3e06752aae7d50502883db294b468844dc5/internal/sanitize/sanitize.go#L44",
+          "observedAt": "2026-09-29",
+          "supports": "github/gh-aw-mcpg sanitizer (2026-06-13): the same 22 + '_' + 59 alphanumeric regex"
+        },
+        {
+          "class": "provider-example",
+          "owner": "github",
+          "reference": "https://github.com/github/docs/blob/e4859a83ac13c5715b723b3d17e273beba5c4572/src/rest/data/fpt-2026-03-10/credentials.json#L29",
+          "observedAt": "2026-09-29",
+          "supports": "GitHub REST 'Revoke a list of credentials' example (file 2026-03-18; endpoint GA 2025-04-29): one full-length fine-grained PAT, 82 characters after the prefix, '_' at body offset 22, segments 22 and 59, alphanumeric only, starting with two letters (not '11'); value not reproduced"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "google",
+          "reference": "https://github.com/google/osv-scalibr/blob/5ab8022c6d67ff99d91d9750f2456ed9549fe8cb/veles/secrets/github/pat_finegrained_detector.go#L24-L26",
+          "observedAt": "2026-09-29",
+          "supports": "veles fine-grained PAT detector (2025-09-18): github_pat_[A-Za-z0-9]{22}_[A-Za-z0-9]{59} (its comment's '92 bytes' is an off-by-one for 93)"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "aquasecurity",
+          "reference": "https://github.com/aquasecurity/trivy/blob/3a1b311e63a1b64ab3221bf52683581b77187198/pkg/fanal/secret/builtin-rules.go#L171",
+          "observedAt": "2026-09-29",
+          "supports": "trivy builtin rule (2023-12-07): the same 22 + '_' + 59 alphanumeric regex"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "aws",
+          "reference": "https://github.com/aws/eks-anywhere/blob/8758183b5623691a8d565521241d53ac25a6d676/pkg/git/providers/github/github.go#L23",
+          "observedAt": "2026-09-29",
+          "supports": "eks-anywhere GitHub provider (2023-05-04; enforced at L120-L129): rejects a token that does not match; the fine-grained branch is anchored 22 + '_' + 59 alphanumeric"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "coderamp-labs",
+          "reference": "https://github.com/coderamp-labs/gitingest/blob/4e259a02fe72115bee538271622f1234a81c8e1a/src/gitingest/utils/git_utils.py#L26-L29",
+          "observedAt": "2026-09-29",
+          "supports": "gitingest token validator (2025-06-30; fullmatch at L395): '22 alphanumerics + _ + 59 alphanumerics'"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "slint-ui",
+          "reference": "https://github.com/slint-ui/slint/blob/d1371e535a4197afa36efcb95aa155c372af0175/tools/slintpad/src/github.ts#L26",
+          "observedAt": "2026-09-29",
+          "supports": "slintpad GitHub token validator (2023-03-29): anchored 22 + '_' + 59 alphanumeric"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "electron",
+          "reference": "https://github.com/electron/fiddle/blob/a63225b53664fd750828c29aa35de4b4d0eb0b28/src/constants.ts#L11-L15",
+          "observedAt": "2026-09-29",
+          "supports": "Electron Fiddle sign-in validation (2026-06-03): anchored 22 + '_' + 59 alphanumeric"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/github-fine-grained-personal-access-token.md",
+          "observedAt": "2026-09-29",
+          "supports": "redact-secret#1013 frozen research (2026-09-29): 9 full-shape references from 6 owners in 3 non-summary classes; staff endorsement (discussion 36441) held for ruling Q-GH"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Peer rules admit other widths or '_' anywhere: trufflehog v2 github_pat_ + [a-zA-Z0-9_]{36,255}, CredSweeper 80-255, gitleaks/noseyparker/secretlint \\w{82}.",
+          "status": "bounded",
+          "bound": "Supersets of the contract. The benchmark claims only 22 + '_' + 59 alphanumeric; no twin mutates width and no fixture asserts silence on another width or on '_' elsewhere in the body."
+        },
+        {
+          "statement": "A GitHub-owned skill file (github/awesome-copilot secret-patterns.md, community-authored) gives github_pat_ + 82 alphanumerics with no '_' separator.",
+          "status": "settled",
+          "bound": "GitHub's own REST example value has '_' at body offset 22 between segments of 22 and 59, and GitHub-owned redaction code matches 22 + '_' + 59; an 82-alphanumeric body without the separator cannot match the provider example. The contract keeps the separator.",
+          "settledBy": "https://github.com/github/docs/blob/e4859a83ac13c5715b723b3d17e273beba5c4572/src/rest/data/fpt-2026-03-10/credentials.json#L29"
+        },
+        {
+          "statement": "The regex a GitHub product manager endorsed in 2022 uses a character class that literally also admits '-'.",
+          "status": "settled",
+          "bound": "GitHub-owned code matches [a-zA-Z0-9] in both segments and the provider example is alphanumeric only; the contract body alphabet is [A-Za-z0-9].",
+          "settledBy": "https://github.com/github/CopilotForXcode/blob/258d4577dcf8fba0e9131b514dbe45b5dbb8906c/Tool/Sources/TelemetryService/TelemetryCleaner.swift#L65"
+        },
+        {
+          "statement": "A third-party README claims a fixed leading '11' and a body checksum.",
+          "status": "bounded",
+          "bound": "No provider source states either, GitHub's REST example starts with two letters, and the 2022 staff reply calls the token 'purely a high-entropy string'. The contract claims neither: positives are authored with and without '11', and no twin asserts a checksum."
+        }
+      ]
+    },
+    {
+      "family": "openai-admin-api-key",
+      "mode": "shape",
+      "supportsBareValues": true,
+      "uncertainty": "No OpenAI page states a length or alphabet for sk-admin- keys; OpenAI's OpenAPI spec shows only short placeholders. openai/codex (provider code, a recognizer that neither generates nor validates a width) fixes the sk-admin- prefix and the T3BlbkFJ watermark. The 58 + T3BlbkFJ + 58 width (133 characters) rests on four peer owners: trufflehog 3.97.4's dedicated openaiadmin detector, gitleaks 8.30.1 (whose three admin vectors are 58/58), nuclei-templates and poltergeist. No source anywhere shows a 74/74 admin value, which gitleaks admits only through the width union shared with sk-proj-/sk-svcacct-; the benchmark claim is 58/58 and 74/74 is outside it (bounded below), while the product keeps accepting 74/74. A marker-less body is out of contract. No provider-issued key has been measured.",
+      "supportedContexts": [
+        "bare sk-admin- value with the T3BlbkFJ marker anywhere on a line (the prefix and marker are the markers)",
+        ".env / shell export / compose environment assignment (OPENAI_ADMIN_KEY)",
+        "Authorization: Bearer header on a curl command line",
+        "JSON / TOML / tfvars config value, CI variables (GitHub Actions, GitLab) and tool-call JSON argument",
+        "CLI flag argument and a Python requests Authorization header dict",
+        "OpenAI SDK constructor argument (Python admin_api_key=, TypeScript adminAPIKey)",
+        "application log line",
+        "58 + T3BlbkFJ + 58 bodies only; a 74/74 body is outside the claim and not asserted either way"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "trufflesecurity",
+          "reference": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/detectors/openaiadmin/openaiadmin.go#L26-L29",
+          "observedAt": "2026-09-29",
+          "supports": "openaiadmin detector (PR #4689, 2026-02-11; in the v3.97.4 default list): 'sk-admin-{58 chars}T3BlbkFJ{58 chars}', total 133, \\b(sk-admin-[A-Za-z0-9_-]{58}T3BlbkFJ[A-Za-z0-9_-]{58})\\b; ten 58/58 test positives, a marker-less 124-byte body is a test negative. The generic openai detector skips sk-admin- because of this move, not to exclude admin keys"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "gitleaks",
+          "reference": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/cmd/generate/config/rules/openai.go#L14",
+          "observedAt": "2026-09-29",
+          "supports": "openai-api-key rule at v8.30.1 (admin branch 2025-03-27, PR #1780): sk-(proj|svcacct|admin)- + 74 or 58 + T3BlbkFJ + 74 or 58; its three admin vectors (described as revoked) are all 58/58"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "projectdiscovery",
+          "reference": "https://github.com/projectdiscovery/nuclei-templates/blob/02b06eb813310376e9a29543fd63a53f0dd3d4b3/http/exposures/tokens/openai/openai-admin-api-key.yaml#L23",
+          "observedAt": "2026-09-29",
+          "supports": "openai-admin-api-key template (2025-10-09): sk-admin-[A-Za-z0-9_-]{58}T3BlbkFJ[A-Za-z0-9_-]{58}"
+        },
+        {
+          "class": "peer-scanner-rule",
+          "owner": "ghostsecurity",
+          "reference": "https://github.com/ghostsecurity/poltergeist/blob/e071ca2d15f652c6e87e63a64716144a9383c3b2/pkg/rules/openai.yaml#L36",
+          "observedAt": "2026-09-29",
+          "supports": "poltergeist openai rule (2025-08-13): sk-admin- + 58 + T3BlbkFJ + 58 (case-insensitive class)"
+        },
+        {
+          "class": "provider-owned-code",
+          "owner": "openai",
+          "reference": "https://github.com/openai/codex/blob/bd4204efc24a888c6671681f5cd41fbf9377c163/codex-rs/network-proxy/src/credential_broker/providers/openai.rs#L13-L22",
+          "observedAt": "2026-09-29",
+          "supports": "codex credential broker (sk-admin- and the watermark present from 2026-09-09): prefix set includes sk-admin-, credential_watermark T3BlbkFJ, minimum length 51; prefix and marker only, not the width"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/openai-admin-api-key.md",
+          "observedAt": "2026-09-29",
+          "supports": "redact-secret#1013 frozen research (2026-09-29): 58/58 corroborated by 5 references, 5 owners, 2 non-summary classes; 74/74 unobserved; corrects the earlier reading that trufflehog 3.97.4 excludes admin keys"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "trufflehog issue #4698 (2026-01-26) asks for a marker-less sk-admin- + 124 body, with no reference.",
+          "status": "bounded",
+          "bound": "Out of contract since redact-secret#863: the pattern requires the T3BlbkFJ marker, trufflehog's own openaiadmin detector treats the marker-less body as a negative, and the benchmark authors it only as a negative twin."
+        },
+        {
+          "statement": "The contract admits a 74 + T3BlbkFJ + 74 admin body and a positive (export-74) plus two 74-width twins assert it, but no source shows a 74/74 admin value: gitleaks admits it only through the width union it shares with sk-proj-/sk-svcacct-, while trufflehog openaiadmin, nuclei-templates and poltergeist admit 58/58 only.",
+          "status": "bounded",
+          "bound": "Bounded 2026-09-29 as redact-secret#1013 recommends: the benchmark contract claims 58 + T3BlbkFJ + 58 only, the export-74, powershell, handoff and go-const positives were re-authored at 58/58 and the two 74-width twins removed, so no positive, twin or control is 74/74 and nothing asserts it either way. The shipped detector keeps accepting 74/74 (security-first over-redaction, not measured)."
+        }
+      ]
+    },
+    {
+      "family": "ai21-api-key",
+      "mode": "context-constrained",
+      "supportsBareValues": false,
+      "uncertainty": "AI21 states no prefix, length or alphabet, and its SDK does no validation. The 32-alphanumeric shape rests on one peer rule (Vulnetix vnx-sec-315) and two independent implementations (keychecker, LLM-Runner-Router) that accept exactly [A-Za-z0-9]{32}, plus a ten-sample maintainer observation (#784). AI21 staff committed six key literals to public example code (2023-2025), each 32 mixed alphanumerics and none a UUID; their validity is unknown, and whether a provider-committed literal counts as a provider example is maintainer ruling Q-AI (redact-secret#1013), pending, so they are not counted. The value has no marker of its own, so it is claimed only beside a same-line AI21 name, host or SDK constructor. No pinned scanner has an AI21 rule, and no provider-issued key has been measured.",
+      "supportedContexts": [
+        "same line as AI21_API_KEY (dotenv, shell export, compose, CI env, docker run -e, tool-call export)",
+        "AI21Client(api_key=...), ChatAI21(api_key=...), new AI21({ apiKey }) and a litellm ai21/ model api_key",
+        "Authorization: Bearer on a curl line naming api.ai21.com, and a gateway log line naming the host",
+        "JSON ai21ApiKey field"
+      ],
+      "observations": [],
+      "corroboration": [
+        {
+          "class": "peer-scanner-rule",
+          "owner": "vulnetix",
+          "reference": "https://github.com/Vulnetix/cli/blob/c6e24fc9b014/internal/sast/rules/vnx-sec-315.rego#L25",
+          "observedAt": "2026-09-29",
+          "supports": "vnx-sec-315 (2026-06-14): (?i)ai21[_-]?api[_-]?key assignment + exactly [A-Za-z0-9]{32}"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "cunnymessiah",
+          "reference": "https://github.com/cunnymessiah/keychecker/blob/122eadc6bdbb/main.py#L242",
+          "observedAt": "2026-09-29",
+          "supports": "keychecker (2023-12-16): ai21_and_mistral_regex [A-Za-z0-9]{32} filters candidates before a live AI21 check"
+        },
+        {
+          "class": "independent-implementation",
+          "owner": "mcerqua",
+          "reference": "https://github.com/MCERQUA/LLM-Runner-Router/blob/dc020cfeb6ae/src/auth/BYOKManager.js#L287-L290",
+          "observedAt": "2026-09-29",
+          "supports": "LLM-Runner-Router BYOK manager (2025-08-26): ai21 keyFormat '[A-Za-z0-9]{32}' with baseURL api.ai21.com"
+        },
+        {
+          "class": "independent-research",
+          "owner": "redact-secret",
+          "reference": "https://github.com/redact-secret/redact-secret/issues/1013",
+          "observedAt": "2026-09-29",
+          "supports": "redact-secret#1013 T1/T2 pass (2026-09-29; frozen record docs/audits/evidence/1013/ai21-api-key.md at redact-secret add1188f): 3 references, 3 owners, 2 non-summary classes without provider material; READY-T2, context-constrained"
+        }
+      ],
+      "contradictions": [
+        {
+          "statement": "Kingfisher's AI21 rule (2025-07-18 until its deletion on 2026-08-21) read an ai21 keyword + a UUID.",
+          "status": "bounded",
+          "bound": "The contract claims exactly 32 alphanumerics and excludes UUIDs; no fixture asserts silence on a UUID beside an AI21 name. If ruling Q-AI accepts AI21's committed literals as provider examples they settle it, since every one is 32 alphanumerics and none a UUID."
+        },
+        {
+          "statement": "octocode's AI21 pattern (2026-07-12) reads AI21_API_KEY + 40 to 64 alphanumerics.",
+          "status": "bounded",
+          "bound": "The contract claims exactly 32; only 31- and 33-character length twins are asserted, nothing at 40-64. Settled instead under ruling Q-AI as above."
+        },
+        {
+          "statement": "AI21 staff committed six key literals of unknown validity to public example code (AI21Labs/ai21-python 2024-2025, a 2023 AI21 demo app); whether a provider-committed literal is a provider example (R5) or a leak is maintainer ruling Q-AI.",
+          "status": "bounded",
+          "bound": "Pending Q-AI the literals are not recorded as corroboration and never reproduced; the corroborated route clears without them (3 / 3 / 2)."
         }
       ]
     }

@@ -11,14 +11,17 @@ families:
         - https://docs.mistral.ai/getting-started/quickstarts/studio/activate-and-generate-api-key
         - https://github.com/google/osv-scalibr/blob/110859bf0788ec406a93c1320f8d95c99ab60eea/veles/secrets/mistralapikey/detector.go
         - https://github.com/betterleaks/betterleaks/blob/2a387a5bad4290a84b9a1eb679bffe70611218cc/cmd/generate/config/rules/mistral.go
+        - https://github.com/mistralai/platform-docs-public/blob/ecac75b617af32e87a6d59c5d9e39e7029fc35db/openapi-public-doc.yaml#L33436-L33455
+        - https://github.com/gitkraken/vscode-gitlens/blob/6492b560fd704d62fc6e0bd4f86c4daa06a4d8e1/packages/plus/ai/src/providers/mistralProvider.ts#L156-L159
       issues:
         - redact-secret/redact-secret#781
         - redact-secret/redact-secret#774
         - redact-secret/redact-secret#868
         - redact-secret/redact-secret#866
+        - redact-secret/redact-secret#1013
         - redact-secret/redact-secret-benchmarks#384
-      evidence: null
-      researchedAt: 2026-09-27
+      evidence: https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/mistral-api-key.md
+      researchedAt: 2026-09-29
     blockedBy: null
   - id: mistral:realtime-client-token
     research:
@@ -57,14 +60,22 @@ table uses the research name and names detector `mistral-api-key`.
 
 - **Shape:** no prefix; 32 alphanumeric characters `[A-Za-z0-9]`, recognised
   only beside Mistral context on the same line (a `mistral` key name, the
-  `api.mistral.ai` host, a `Mistral(...)` call argument). Not stated by any
-  provider source; the SDK model is a plain optional string with no
-  validation.
+  `api.mistral.ai` host, a `Mistral(...)` call argument). Not stated in
+  provider prose, and the SDK model is a plain optional string with no
+  validation, but Mistral's own Admin API OpenAPI schema (`APIKeyExtendedOUT`,
+  2026-07-24) shows one full-length example key of exactly that shape.
 - **Sources:** T2 at best, and #868 says no provider has T1 here. Three tool
   rules (osv-scalibr, betterleaks, pleno-dlp) agree on 32 alphanumeric with a
   mandatory keyword gate, but read as one repeated assertion, not three
-  measurements. GitGuardian states "Prefixed: No" and no length. No pinned
-  scanner (trufflehog 3.97.4, gitleaks 8.30.1) has a Mistral rule.
+  measurements. The redact-secret#1013 pass added the missing second class
+  twice: the provider example above, and three independent client validators
+  (GitLens since 2025-05-27, GPTPortal, NeuroLink) that accept exactly
+  `^[A-Za-z0-9]{32}$`. That is 7 references, 7 owners and 3 non-summary
+  classes, recorded in `empirical-observations.json`. GitGuardian states
+  "Prefixed: No" for this detector but lists a second, prefixed
+  "Mistral AI API Key v2" with an undisclosed prefix; no Mistral source
+  mentions one, and the contract bounds it out. No pinned scanner
+  (trufflehog 3.97.4, gitleaks 8.30.1) has a Mistral rule.
 - **Issuance:** not attempted. Console "Create new key" with name and expiry;
   "may take a few minutes to be usable" per the console message; connector
   scope option. Codestral keys use a separate console tab; their shape is
@@ -74,7 +85,7 @@ table uses the research name and names detector `mistral-api-key`.
   is a different shape. Model ids such as `mistral-large-latest` are benign.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md),
   section Keyword-gated provider keys (#868).
-- **Open caveat:** No provider source states any shape; 32 alphanumeric rests on scanner rules that read as one assertion. Contextual only, never bare. Needs one issued Studio key (checklist in #781).
+- **Open caveat:** No provider prose states a shape; 32 alphanumeric rests on one provider API example, independent validators and scanner rules, so T2, never T1. Contextual only, never bare. The remaining gates are two product false negatives, not evidence: the Kubernetes `name:`/`value:` pair (redact-secret#1016) and the Python subscript assignment `os.environ["MISTRAL_API_KEY"] = "…"` (redact-secret#1038). One issued Studio key would still settle whether a prefixed "v2" key exists.
 
 ### `mistral:realtime-client-token` — Realtime client token (rt_)
 
@@ -123,6 +134,9 @@ table uses the research name and names detector `mistral-api-key`.
 
 ## Research log
 
+- redact-secret#1013 — 2026-09-29 T1/T2 pass ([evidence](https://github.com/redact-secret/redact-secret/blob/add1188fed9993723c59fbce8c867086b9d2049a/docs/audits/evidence/1013/mistral-api-key.md)): Studio key
+  READY-T2 (provider example + independent validators); realtime token still
+  issuance-only.
 - redact-secret#780 — realtime client token discovery; disposition pending,
   no implementation (2026-09-27).
 - redact-secret#781 — Studio key discovery; disposition generic coverage

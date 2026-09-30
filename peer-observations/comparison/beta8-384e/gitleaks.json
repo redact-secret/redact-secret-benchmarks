@@ -1,22 +1,22 @@
 {
   "schemaVersion": 1,
   "reportType": "normalized-peer-observation",
-  "observedAt": "2026-09-29T22:00:46.542Z",
+  "observedAt": "2026-09-30T02:53:31.552Z",
   "sourceRun": {
-    "runId": "2026-09-29T22:00:46.542Z-48ba53",
-    "benchmarkRevision": "5380aa3a421555883225a62358fa40f81dcd2baa"
+    "runId": "2026-09-30T02:53:31.552Z-c34054",
+    "benchmarkRevision": "85694a1604874e4d0a24ef15225bbbaa32be85b2"
   },
   "input": {
     "surface": "comparison/beta8-384e",
     "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
-    "corpusHash": "ac91c3d070184bf30e03c60ffa1236eeae7500e80b94540d4a5339086cc68a93",
-    "fixtureCount": 227,
-    "fixturesDigest": "dc82c50bc7abc1af9c7622f3e875aad92c0e1d970ce9c46163475a65a036c442",
+    "corpusHash": "dd461f869162466d15560369b73d3285ffb2edd73687f6ea23e395294516cf57",
+    "fixtureCount": 249,
+    "fixturesDigest": "3248b1a4b95b403f64b4db95b079dfbf0422c7e9477d70ee0eecc76e34ec074d",
     "semanticIndex": {
       "schemaVersion": 1,
       "algorithm": "sha256",
-      "digest": "6f66c4e499491ddb532f7cfe17236c043ac5796c43323d3f3e85e0eed9d820dd",
-      "fixtureCount": 5034
+      "digest": "7b49e5d73bdf08f138c639a4631d164ebba421e0fb672083b2c9e7f6c9c6398c",
+      "fixtureCount": 5516
     }
   },
   "peer": {
@@ -52,7 +52,7 @@
       "platform": "darwin-arm64",
       "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
     },
-    "adapterDigest": "c33f4929e72d2715163765dca6af7e7f6e014fc0c671072ba94fb770c80cd2b4"
+    "adapterDigest": "f7f72b2d21d7e19cb59717ad25b352bea8770f907ed284d7f95c49fe4fe3cfa6"
   },
   "replay": {
     "protocol": "sorted-normalized-ranges-v1",
@@ -61,9 +61,33 @@
   },
   "findings": [
     {
+      "path": "cases/ai21-api-key-actions-env-literal.yml",
+      "start": 69,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-compose-env.yml",
+      "start": 95,
+      "end": 127,
+      "family": "generic-token"
+    },
+    {
       "path": "cases/ai21-api-key-curl-header.sh",
       "start": 65,
       "end": 97
+    },
+    {
+      "path": "cases/ai21-api-key-docker-run-env.sh",
+      "start": 32,
+      "end": 64,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-dotenv-alt.env",
+      "start": 13,
+      "end": 45,
+      "family": "generic-token"
     },
     {
       "path": "cases/ai21-api-key-dotenv.env",
@@ -75,6 +99,12 @@
       "path": "cases/ai21-api-key-export.sh",
       "start": 21,
       "end": 53,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-id-named-compose-twin.yml",
+      "start": 96,
+      "end": 128,
       "family": "generic-token"
     },
     {
@@ -108,15 +138,39 @@
       "family": "generic-token"
     },
     {
-      "path": "cases/ai21-api-key-long-value-twin.py",
-      "start": 58,
-      "end": 91,
+      "path": "cases/ai21-api-key-litellm-yaml.yml",
+      "start": 103,
+      "end": 135,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-long-value-twin.sh",
+      "start": 21,
+      "end": 54,
       "family": "generic-token"
     },
     {
       "path": "cases/ai21-api-key-other-host-curl-twin.sh",
       "start": 72,
       "end": 104
+    },
+    {
+      "path": "cases/ai21-api-key-other-host-log-twin.log",
+      "start": 62,
+      "end": 94,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-other-provider-model-twin.yml",
+      "start": 110,
+      "end": 142,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/ai21-api-key-proxy-log.log",
+      "start": 55,
+      "end": 87,
+      "family": "generic-token"
     },
     {
       "path": "cases/ai21-api-key-python-ctor.py",
@@ -651,5 +705,5 @@
       "family": "generic-token"
     }
   ],
-  "digest": "bdab9b643ae71d8a97940c54b47eae6720569f72e8232595aa7e5cdfc5841ece"
+  "digest": "92b763168b25e538f652466b55595b187cae4ca13301972703973cef47d80100"
 }

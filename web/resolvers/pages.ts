@@ -14,13 +14,14 @@ import { loadFindings } from '../services/findings';
 import { loadPeerRuntime } from '../services/runtime';
 import { loadRun, type MeasuredRun } from '../services/run';
 import {
-  resolveFamily, resolveFamilyList, familySlug, type FamilyDetail, type FamilyList,
+  resolveFamily, resolveFamilyList, familySlug, type FamilyDetail, type FamilyList, type LevelList,
 } from './families';
 import {
   LEVELS, answerMeta, levelLinks, resolveAnswers, resolveFindings, resolveHubTiles, resolvePeers, runEyebrow, runFacts,
   type FindingsBlock, type LevelAnswers, type PeersBlock,
 } from './report';
-import { int } from './format';
+import { count, int } from './format';
+import { LIST_LEVELS } from './filters';
 import { resolveFeaturePage, resolveHub, resolveRuntimePanels, type FeaturePage, type RuntimePanel } from './comparison';
 import type { ComparisonHubProps } from '../components/comparison/ComparisonHub';
 import { resolveRunState, type RunState } from './run';
@@ -75,28 +76,39 @@ export async function resolveReportPage(): Promise<ReportPageData> {
 export interface ListPageData {
   head: HeadData;
   runState: RunState;
+  /** Every level, `all` first. The island shows the one `?level=` names; the whole set is pre-rendered. */
+  levels: LevelList[];
   list: FamilyList;
   footnote: string;
 }
 
+const footnoteOf = (totals: FamilyList['totals']): string =>
+  `${int(totals.global)} fixtures are global or not tied to one family. They count in no provider or family row.`;
+
 async function listPage(title: 'Providers' | 'Families'): Promise<ListPageData> {
   const { catalog, run, measured, rows } = await context();
-  const list = resolveFamilyList(catalog, rows);
+  const levels: LevelList[] = LIST_LEVELS.map(({ level, label }) => {
+    const list = resolveFamilyList(catalog, rows, level);
+    const unit = title === 'Providers' ? count(list.totals.providersWithFixtures, 'provider') : count(list.totals.familiesWithFixtures, 'family', 'families');
+    return { level, optionLabel: level === 'all' ? label : `${label} · ${unit}`, list, footnote: footnoteOf(list.totals) };
+  });
+  const list = levels[0].list;
   const { totals } = list;
   const facts = measured ? runFacts(measured) : [];
   return {
     runState: resolveRunState(run),
+    levels,
     list,
-    footnote: `${int(totals.global)} fixtures are global or not tied to one family. They count in no provider or family row.`,
+    footnote: footnoteOf(totals),
     head: title === 'Providers'
       ? {
           eyebrow: 'redact-secret · Report', title,
-          lede: 'Counts are fixture rows for redact-secret on the current run. Open a provider to see its families, then pick a family to see every row behind it. A fixture in two families counts once for its provider.',
+          lede: 'Counts are fixture rows for redact-secret on the current run. Open a provider to see its families, then pick a family to see every row behind it. A fixture in two families counts once for its provider. Choose an evidence level to count only the rows at that level.',
           meta: [{ value: `${int(totals.providers)} providers` }, { value: `${int(totals.families)} families` }, { value: `${int(totals.fixtures)} fixtures` }, ...facts],
         }
       : {
           eyebrow: 'redact-secret · Report', title,
-          lede: 'One row per credential family, in taxonomy order. Counts are fixture rows for redact-secret on the current run; a fixture in two families appears in both rows.',
+          lede: 'One row per credential family, in taxonomy order. Counts are fixture rows for redact-secret on the current run; a fixture in two families appears in both rows. Choose an evidence level to count only the rows at that level.',
           meta: [
             { value: `${int(totals.families)} families` }, { value: `${int(totals.familiesWithFixtures)} with fixtures` },
             ...(measured ? [{ value: `${int(totals.familiesNeedingLook)} need a look` }] : []), ...facts,

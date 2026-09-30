@@ -123,6 +123,65 @@ too. The unit this taxonomy fixes on is **provider x credential family**.
   project masking policy respectively), not credentials any one provider
   issues. Their family ids use the `generic:` prefix instead of a provider id.
 
+## Counting fixtures per family
+
+Decision: [`2026-09-30-count-a-fixture-in-every-family-it-is-related-to.md`](../decisions/2026-09-30-count-a-fixture-in-every-family-it-is-related-to.md)
+(#560). A fixture's family relationships are `familyIds` in
+`benchmarks/fixture-index.json`: none (a global fixture, with an
+`unscopedReason`), one, or several. Every count that says "fixtures in a family"
+follows one rule.
+
+- **Family row.** A fixture is counted in **every** family it is related to.
+  The count of a family is the number of fixtures whose `familyIds` include it.
+- **Provider row.** A fixture is counted **once** per provider, however many of
+  that provider's families it is related to. A provider count is the number of
+  distinct fixtures related to any of its families.
+- **Global fixtures.** A fixture with no family is in no family row and no
+  provider row. It is stated as a footnote count ("135 fixtures are global").
+  Families that no provider owns (`provider: null`) are listed as
+  "Not provider-specific".
+- **Zero is "No fixtures".** A family with no fixtures shows "No fixtures" and
+  "Not measured", never zeros: no coverage is claimed.
+- **Levels partition.** A fixture has exactly one evidence level (`T1`
+  provider-documented, `T2` tool-corroborated, `T3` project policy, `T0`
+  pending review), so a family's per-level counts add up to its all-levels
+  count. A level control on the provider and family lists (and on a family's
+  rows) recounts from the fixtures at that level with the same rule, so a family
+  that has fixtures only at `T2` reads "No fixtures" at `T1`.
+- **Outcome columns.** For redact-secret, in one run: *left readable* (some
+  secret span `PARTIAL` or `MISS`), *too much* (some span `OVERBROAD`), *false
+  alarms* (a control it flagged), *not measured* (no recorded row).
+
+### How the existing report tree differs, and why both stay
+
+The existing site's report tree (`src/pages/report-hierarchy.ts`) is a display
+projection whose leaves must add up to the fixture total, so each fixture is one
+leaf. It places a fixture with exactly one family in that family and puts every
+fixture with several families, and every global one, into one shared bucket
+("Global / multi-family"). The two views therefore agree exactly on every fixture
+with exactly one family, and differ only by the multi-family fixtures:
+
+| | Existing tree | This rule |
+| --- | --- | --- |
+| Fixture with one family | that family | that family |
+| Fixture with several families | the shared bucket | each of its families |
+| Fixture with none | the shared bucket | no row (footnote) |
+| Family row count | its single-family fixtures | its single-family fixtures **plus** its multi-family fixtures |
+
+On the current corpus 116 fixtures have several families and 135 have none; the
+shared bucket holds those 251. The existing tree shows 158 families with rows, and
+this rule shows 158 too (the same families have single-family fixtures), but 40
+families differ, and three Mailgun families that have **only** multi-family
+fixtures show no fixtures in the tree and 46 each under this rule.
+
+The existing tree is not changed: it is published output, and its one-leaf-per-fixture
+invariant (a leaf is never counted twice) is what a total-of-rows reconciliation
+needs. The two are reconciled by `tests/family-counting.test.mjs`, which reads the
+committed index and asserts, for every family, `family count = tree count + the
+multi-family fixtures related to it`, that the tree's shared bucket is exactly the
+multi-family plus global fixtures, and that no fixture is lost or counted twice in
+the tree. When the tree is retired at cutover the rule above is the only one left.
+
 ## What's deliberately excluded
 
 Some values that share a credential's lexical shape are not credential

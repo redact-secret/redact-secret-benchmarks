@@ -3,13 +3,16 @@
  * ProviderTree, FamilyTable and FixtureTable. Pure: raw catalog and run in,
  * props out.
  *
- * Counting rules, all "of fixture rows, for redact-secret, in one run":
+ * Counting rules, all "of fixture rows, for redact-secret, in one run". The rule
+ * is written once, in docs/specs/taxonomy.md ("Counting fixtures per family") and
+ * decided in docs/decisions/2026-09-30-count-a-fixture-in-every-family-it-is-related-to.md:
  *
  *  - fixtures    every fixture with a reviewed relationship to the family, at any
- *                evidence level. A fixture related to two families is in both
- *                rows; at provider level it counts once (a provider's row never
- *                double counts). A fixture with no family is global and appears
- *                in no family or provider row.
+ *                evidence level (or at one level, when a level is asked for). A
+ *                fixture related to two families is in both rows; at provider
+ *                level it counts once (a provider's row never double counts). A
+ *                fixture with no family is global and appears in no family or
+ *                provider row.
  *  - leftReadable  a must-redact or policy row where some secret span was
  *                PARTIAL or MISS.
  *  - tooMuch     a row where some secret span was OVERBROAD.
@@ -26,6 +29,7 @@ import type {
   FamilyAboutData, FamilyEntry, FamilyRowData, FixtureCounts, FixtureRowData, ProviderGroupData, StatusLabel,
 } from '../components/report/types';
 import { count, int } from './format';
+import { levelQuery, type ListLevel } from './filters';
 
 export const NOT_PROVIDER_SPECIFIC = { id: 'not-provider-specific', name: 'Not provider-specific' };
 
@@ -70,27 +74,41 @@ export interface Filterable { hasFixtures: boolean; needsLook: boolean; search: 
 export interface FamilyItem extends Filterable { row: FamilyRowData; entry: FamilyEntry }
 export interface ProviderItem extends Filterable { group: ProviderGroupData; families: FamilyItem[] }
 
+/** One evidence level of a list: the list recomputed from that level's fixtures, and the option text that names it. */
+export interface LevelList { level: ListLevel; optionLabel: string; list: FamilyList; footnote: string }
+
 export interface FamilyList {
   providers: ProviderItem[];
   families: FamilyItem[];
   totals: { providers: number; providersWithFixtures: number; families: number; familiesWithFixtures: number; familiesNeedingLook: number; fixtures: number; global: number };
 }
 
-export function resolveFamilyList(catalog: Catalog, rows: Map<string, RowResult> | undefined): FamilyList {
+/**
+ * A list at one evidence level (`ListLevel`, resolvers/filters.ts): the family
+ * and provider counts are recomputed from the fixtures at that level. A family
+ * with no fixtures at the level says "No fixtures", never zeros. The levels
+ * partition a family's fixtures, so the per-level counts add up to the `all` count.
+ */
+export function resolveFamilyList(catalog: Catalog, rows: Map<string, RowResult> | undefined, level: ListLevel = 'all'): FamilyList {
   const measured = rows !== undefined;
   const { taxonomy, providerById } = catalog;
+  const fixturesOf = (id: string): CatalogFixture[] => {
+    const all = catalog.fixturesByFamily.get(id) ?? [];
+    return level === 'all' ? all : all.filter(f => f.tier === level);
+  };
+  const href = (id: string): string => `${familyHref(id)}${levelQuery(level)}`;
 
   const familyItem = (id: string): FamilyItem => {
     const family = catalog.familyById.get(id)!;
-    const fixtures = catalog.fixturesByFamily.get(id) ?? [];
+    const fixtures = fixturesOf(id);
     const t = tally(fixtures, rows);
     const providerName = family.provider === null ? NOT_PROVIDER_SPECIFIC.name : providerById.get(family.provider)!.name;
     const counts = countsOf(t, measured);
     const search = `${providerName} ${family.name} ${family.id}`.toLowerCase();
     return {
       hasFixtures: t.fixtures > 0, needsLook: needsLook(t), search,
-      row: { id: family.id, name: family.name, href: familyHref(family.id), provider: providerName, fixtures: int(t.fixtures), counts },
-      entry: { id: family.id, name: family.name, href: familyHref(family.id), fixturesLabel: count(t.fixtures, 'fixture'), counts },
+      row: { id: family.id, name: family.name, href: href(family.id), provider: providerName, fixtures: int(t.fixtures), counts },
+      entry: { id: family.id, name: family.name, href: href(family.id), fixturesLabel: count(t.fixtures, 'fixture'), counts },
     };
   };
 
@@ -106,7 +124,7 @@ export function resolveFamilyList(catalog: Catalog, rows: Map<string, RowResult>
   const providers: ProviderItem[] = groups.filter(g => g.familyIds.length > 0).map(g => {
     // A fixture related to two of a provider's families counts once for the provider.
     const unique = new Map<string, CatalogFixture>();
-    for (const id of g.familyIds) for (const f of catalog.fixturesByFamily.get(id) ?? []) unique.set(f.slug, f);
+    for (const id of g.familyIds) for (const f of fixturesOf(id)) unique.set(f.slug, f);
     const t = tally([...unique.values()], rows);
     const items = g.familyIds.map(id => byId.get(id)!);
     return {
@@ -131,8 +149,8 @@ export function resolveFamilyList(catalog: Catalog, rows: Map<string, RowResult>
       families: families.length,
       familiesWithFixtures: families.filter(f => f.hasFixtures).length,
       familiesNeedingLook: families.filter(f => f.needsLook).length,
-      fixtures: catalog.fixtures.filter(f => f.familyIds.length > 0).length,
-      global: catalog.fixtures.filter(f => f.familyIds.length === 0).length,
+      fixtures: catalog.fixtures.filter(f => f.familyIds.length > 0 && (level === 'all' || f.tier === level)).length,
+      global: catalog.fixtures.filter(f => f.familyIds.length === 0 && (level === 'all' || f.tier === level)).length,
     },
   };
 }

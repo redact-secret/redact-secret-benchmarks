@@ -1,0 +1,26 @@
+@layer components {
+  .sources {
+    margin-top: 0;
+  }
+
+  .list {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding-left: 1.2em;
+    max-width: var(--measure);
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .list b {
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .empty {
+    margin: 0;
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+}

@@ -15,11 +15,25 @@ export interface OutcomeMarkProps {
   label: string;
   /** How it happened, in small mono text ("labelled IBAN"). */
   detail?: string;
+  /**
+   * `icon` draws only the shape for dense matrices; the word and detail stay in
+   * the DOM for assistive tech and as a tooltip, and a Legend carries the words.
+   */
+  display?: 'full' | 'icon';
   className?: string;
 }
 
 /** An outcome icon with its word and optional detail. */
-export function OutcomeMark({ outcome, label, detail, className }: OutcomeMarkProps) {
+export function OutcomeMark({ outcome, label, detail, display = 'full', className }: OutcomeMarkProps) {
+  if (display === 'icon') {
+    const text = detail ? `${label}: ${detail}` : label;
+    return (
+      <span className={cx(styles.mark, styles.iconOnly, styles[outcome], className)} data-outcome={outcome} title={text}>
+        <i className={styles.icon} aria-hidden="true" />
+        <span className={styles.hidden}>{text}</span>
+      </span>
+    );
+  }
   return (
     <span className={cx(styles.mark, styles[outcome], className)} data-outcome={outcome}>
       <i className={styles.icon} aria-hidden="true" />

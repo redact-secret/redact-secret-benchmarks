@@ -1,0 +1,36 @@
+@layer components {
+  .section {
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  .principle {
+    display: grid;
+    gap: var(--space-1);
+    align-content: start;
+    padding-block: var(--space-4);
+  }
+
+  .title {
+    font: 700 calc(var(--space-3) + var(--rule-strong) + var(--hairline)) / var(--space-6) var(--font-montserrat);
+  }
+
+  .text {
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .runs {
+    display: grid;
+    gap: var(--space-1);
+    border-top: var(--hairline) solid var(--line);
+    padding-top: var(--space-3);
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .runs b {
+    font-weight: 600;
+    color: var(--ink);
+  }
+}

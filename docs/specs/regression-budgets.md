@@ -139,7 +139,7 @@ alike (#472). v2 only adds fields: per-mode single-event latency and
 allocation, `derived.adapterOverheadRatio`, and, under the harness's
 `--baseline`, a per-result `baseline` and `change` against the previous
 adapter release measured in the same process. Either version yields the same
-three metrics. The added fields are not budgeted yet; the proposed rules for
+three metrics. The added fields are not budgeted yet; the accepted rules for
 them are in
 [`2026-09-29-judge-adapter-traversal-on-same-session-change.md`](../decisions/2026-09-29-judge-adapter-traversal-on-same-session-change.md).
 The v2 harnesses also add workloads, which changes the workload digest, so a

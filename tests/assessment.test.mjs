@@ -499,19 +499,19 @@ test('a percent-encoded TruffleHog URI result maps to its literal source span in
   const content = `# mailgun\nMAILGUN_URL=https://api:${password}@api.mailgun.net/v3\n`;
   const f = { id: 'uri', path: 'uri.txt', content, expected: [] };
   const metadata = line => ({ Data: { Filesystem: { file: f.path, line } } });
-  const row = { DetectorName: 'URI', DetectorType: 17, Raw: `https://api:${password.replace('!', '%21')}@api.mailgun.net`, SourceMetadata: metadata(2) };
+  const row = { DetectorName: 'URI', DetectorType: 17, Raw: `https://api:${password.replaceAll('!', '%21')}@api.mailgun.net`, SourceMetadata: metadata(2) };
   const literal = `https://api:${password}@api.mailgun.net`;
   const start = Buffer.byteLength(content.slice(0, content.indexOf(literal)));
   assert.throws(() => locate([f], '/tmp', f.path, row.Raw, 2), /unmappable/, 'the plain locator still cannot see an encoded raw');
   assert.deepEqual(normalizeTrufflehogFindings([f], '/tmp', row), [{ path: f.path, start, end: start + Buffer.byteLength(literal) }]);
   // Lower-case escapes decode the same byte; an escape the source also wrote literally still matches.
-  const star = { ...f, content: content.replace('!', '*') };
-  assert.deepEqual(normalizeTrufflehogFindings([star], '/tmp', { ...row, Raw: row.Raw.replace('%21', '%2a') }), [{ path: f.path, start, end: start + Buffer.byteLength(literal) }]);
-  const encoded = { ...f, content: content.replace('!', '%21') };
+  const star = { ...f, content: content.replaceAll('!', '*') };
+  assert.deepEqual(normalizeTrufflehogFindings([star], '/tmp', { ...row, Raw: row.Raw.replaceAll('%21', '%2a') }), [{ path: f.path, start, end: start + Buffer.byteLength(literal) }]);
+  const encoded = { ...f, content: content.replaceAll('!', '%21') };
   assert.deepEqual(normalizeTrufflehogFindings([encoded], '/tmp', row), [{ path: f.path, start, end: start + Buffer.byteLength(row.Raw) }]);
   // Still fail closed: wrong line, a raw that decodes to nothing in the file, or two candidate spans.
   assert.throws(() => normalizeTrufflehogFindings([f], '/tmp', { ...row, SourceMetadata: metadata(1) }), /percent-encoded/);
-  assert.throws(() => normalizeTrufflehogFindings([f], '/tmp', { ...row, Raw: row.Raw.replace('%21', '%40') }), /percent-encoded/);
+  assert.throws(() => normalizeTrufflehogFindings([f], '/tmp', { ...row, Raw: row.Raw.replaceAll('%21', '%40') }), /percent-encoded/);
   const twice = { ...f, content: `${content.trimEnd()} ${literal}\n` };
   assert.throws(() => normalizeTrufflehogFindings([twice], '/tmp', row), /percent-encoded/);
   // Only escapes are widened: the rest of the raw is matched case-sensitively.

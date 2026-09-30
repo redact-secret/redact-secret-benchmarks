@@ -17,7 +17,7 @@ families:
     blockedBy: null
   - id: netlify:other-prefixed-tokens
     research:
-      verdict: ready
+      verdict: issuance-gated
       tier: T1
       sources:
         - https://answers.netlify.com/t/change-to-the-netlify-authentication-token-format/106146
@@ -27,13 +27,16 @@ families:
         - https://github.com/koki-develop/mask-go/blob/1b861d7ac421b392a5bb962207fd1886b28e013e/builtin_netlify_auth_token.go
         - https://github.com/bzzimmy/kestrel/blob/6d5ff28089d0b775e2a2c3f63366907d45ddb6fd/src/rules/cloud.rs
         - https://github.com/testpatterndev/patterns/blob/64580c807ea3a3c2896ca4e0f7044da56333fff6/data/patterns/global-netlify-token.yaml
+        - https://github.com/Vulnetix/cli/blob/c6e24fc9b0148dc0a227da70774300fba7f339ee/internal/sast/rules/vnx-sec-092.rego#L25-L26
+        - https://github.com/gitleaks/gitleaks/blob/b58d3f102cf3a2c84cb7f923d05c25c9b1aed84b/cmd/generate/config/rules/netlify.go#L9-L25
       issues:
         - redact-secret/redact-secret#311
         - redact-secret/redact-secret#582
         - redact-secret/redact-secret-benchmarks#473
-      evidence: https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/582/README.md
+        - redact-secret/redact-secret#1012
+      evidence: https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/netlify-other-prefixed-tokens.md
       researchedAt: 2026-09-29
-    blockedBy: null
+    blockedBy: Separator, body width and alphabet per prefix are not provider-stated and peer rules disagree; nfc_ needs one netlify login measured, nfo_, nfu_ and nfb_ need an OAuth app, browser storage and a build step.
 ---
 
 # Netlify
@@ -71,15 +74,17 @@ family is not recorded here.
 
 ### `netlify:other-prefixed-tokens` — CLI, OAuth, app and build tokens (nfc_/nfo_/nfu_/nfb_)
 
-Researched 2026-09-29 (broad pass; sources recorded first, classified after). Verdict `ready`, tier T1 on the same footing as `netlify:personal-access-token`, with the body evidence weaker for three of the four classes (below).
+Researched 2026-09-29 (broad pass; sources recorded first, classified after).
+
+**Verdict (#1012, 2026-09-29): `issuance-gated`, tier T1 for the four prefixes and the 40-character capacity.** This supersedes the benchmarks#473 entry (`ready`, T1), which treated these classes as on the same footing as `nfp_`. The product research record reads the bar more strictly, as it already noted about benchmarks PR #506: the announcement states a capacity and prefixes, not a body grammar, so the `_` separator, the 36-character body and the alphabet are unstated for every class, and peer rules disagree (geiger `nf[a-z]_[A-Za-z0-9]{30,}`, Vulnetix `nf[pcoub]_[A-Za-z0-9]{40,}`, which contradicts the 40 capacity, testpatterndev `nf[bcou]_` + 20 to 36, mask-go exactly 36). `nfc_` is one cheap issuance away from ready; `nfo_` has no observed shape of any kind; `nfu_` and `nfb_` are platform-minted and not trivially issuable. The two records should be reconciled before a contract freezes.
 
 - **Shape:** prefix `nf` + one class letter + `_`: `nfc_` (Netlify CLI), `nfo_` (OAuth access token), `nfu_` (app.netlify.com), `nfb_` (build), then 36 characters, 40 in all. The observed body alphabet is `[A-Za-z0-9]`; the personal-token rules allow `_` too.
 - **Provider-documented (T1):** the 2023-11-07 announcement on answers.netlify.com (account labelled "Netlify Alumni" now) names all five classes, says every new token starts with `nf` plus one identifying character, and tells customers with fixed-size fields to allow 40 characters. It does not write the underscore, the body length or the alphabet. Netlify's own `netlify-mcp` tests use an `nfp_` placeholder, which shows the underscore for the personal class only.
 - **Scanner and implementation evidence:** trufflehog's `netlify/v2` detector (behind a `netlify` keyword) and CredSweeper (by prefix) encode `nfp_` only. gitleaks' Netlify rule is a keyword-gated run of 40 to 46 characters from `[a-z0-9=_-]` and encodes no prefix. No scanner among trufflehog, gitleaks, Nosey Parker, detect-secrets, CredSweeper and GitHub's partner list has a rule keyed to `nfc_`, `nfo_`, `nfu_` or `nfb_` as a distinct class. Independent tools that do (geiger with `{30,}`, kestrel with 36 of `[A-Za-z0-9_-]`, testpatterndev with 20-36, mask-go with exactly 36, a Vulnetix rule with 40 or more) all derive the class letters from the announcement and disagree on the body, so they corroborate the prefix set and nothing about the body. Netlify's secret-scanning docs state no prefix.
 - **Measured (independent-research, structure only, 2026-09-29):** GitHub code search in text near `netlify` and `NETLIFY_AUTH_TOKEN`, excluding scanner and rule repositories and values with fewer than 14 distinct body characters: 36 distinct candidates in 36 repositories. Distinct `nfp_` values: 28 with a 36-character alphanumeric body and one with 45. Distinct `nfc_` values: 5 with a 36-character alphanumeric body (40 in all), plus two of 20 and 30 characters that contain underscores and look like unrelated identifiers. No real `nfo_`, `nfu_` or `nfb_` value turned up. Nothing was printed or stored, and none was tested against Netlify.
-- **Issuance:** not attempted. A CLI login token (`nfc_`) and an OAuth token (`nfo_`) are cheap to mint and revoke; `nfu_` and `nfb_` are minted by the platform (session and build) and are not.
+- **Issuance:** not attempted. A CLI login token (`nfc_`) and an OAuth token (`nfo_`) are cheap to mint and revoke; `nfu_` and `nfb_` are minted by the platform (session and build) and are not. The #1012 checks: `nfc_` run `netlify login` once and record total length (40?), whether byte 4 is `_` and the body classes; `nfo_` authorize a test OAuth app once, same record; `nfu_` read only the shape (length, `_` position, classes) of the app session token in browser storage without copying it; `nfb_` a build step that prints only the length and classes of the build token variable. Revoke afterwards.
 - **Collisions:** each is a distinct credential, so none is a control or positive for the personal access token family. `nfc_` also opens ordinary snake_case names (Unicode normalization code), which the 36-character body, not the prefix, separates. Pre-2023 unprefixed tokens are a separate variant. Site, account and deploy IDs are not credentials.
-- **Current contract in core:** none for these four classes; #311 listed them as unsupported variants.
+- **Current contract in core:** none for these four classes; #311 listed them as unsupported variants. The shipped `netlify-token` claims `nfp_` + exactly 36 `[A-Za-z0-9_]` and tests the four other prefixes as non-matches; its module doc says gitleaks converges on `nfp_` + 36, but at gitleaks HEAD the rule has no prefix (a keyword-gated run of 40 to 46), so that sentence overstates it. A bounded interim contract (`nf[coub]_` + `[A-Za-z0-9]`, total at most 40) is defensible but its floor would be policy. Named contexts (`NETLIFY_AUTH_TOKEN=`) are already redacted.
 - **Open caveat:** for `nfo_`, `nfu_` and `nfb_` the underscore and 36-character alphanumeric body rest on analogy with `nfp_` and `nfc_` plus the announcement's 40-character size; no real value of those three was observed. One issued token each would settle it. Whether a former-staff forum announcement counts as provider documentation is the same ruling as for `nfp_`.
 
 ## Candidates that are not families yet
@@ -92,12 +97,15 @@ Researched 2026-09-29 (broad pass; sources recorded first, classified after). Ve
 
 ## Open questions
 
-1. **`netlify:other-prefixed-tokens`** is researched (2026-09-29, see above). Open: are `nfo_`, `nfu_` and `nfb_` bodies the same 36 alphanumeric characters as `nfp_` and `nfc_`? One issued token per class would answer it.
+1. **`netlify:other-prefixed-tokens`** is researched (2026-09-29, see above) and gated on issuance. Open: are `nfo_`, `nfu_` and `nfb_` bodies the same 36 alphanumeric characters as `nfp_` and `nfc_`? One issued token per class would answer it; `nfc_` alone opens the cheapest path.
 2. **Delimiter and alphabet.** No Netlify text states the underscore or the
    body alphabet for `nfp_`.
 
 ## Research log
 
+- redact-secret#1012 — 2026-09-29 contract research for the four other classes
+  ([evidence](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/netlify-other-prefixed-tokens.md)):
+  BLOCKED on body per prefix; stricter than benchmarks#473, with the conflict recorded above.
 - redact-secret-benchmarks#473 — 2026-09-29 broad pass for `netlify:other-prefixed-tokens`: the announcement, Netlify docs and forum search (only the announcement mentions the classes), Netlify-owned repositories, six scanners, eight independent tools, GitHub code-search shape measurement, Stack Overflow and Reddit (no relevant hits). Verdict `ready`, T1.
 - redact-secret#311 (closed 2026-09-23) — froze the personal access token
   grammar from the provider announcement and two tools, and listed the legacy

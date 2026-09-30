@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "99c8c2b33e99142620bcc66f115200ca615d6d0a",
+  "method": "npm pack output of the product benchmark:candidate recipe at the exact commit (darwin-arm64 host); packed bytes are the tarball file size. Baselines and thresholds from benchmarks/regression-budgets.json (0.1.0-beta.8, 5% relative, 4096-byte floor). Informational: performance-evaluation.yml does not evaluate these rows, and no tradeoff is recorded for them at 99c8c2b.",
+  "packages": [
+    { "label": "core", "file": "redact-secret-core-0.1.0-beta.11.tgz", "sha256": "3e70490584e529be5097fc8a9a3655cb57a3d2f31b58ef173bf614aab4134b05", "packedBytes": 41944, "trigger": "size/npm/core/packed", "baseline": 39461, "allowedIncrease": 4096, "verdict": "within-budget" },
+    { "label": "node-darwin-arm64", "file": "redact-secret-node-darwin-arm64-0.1.0-beta.11.tgz", "sha256": "a24717c33477dba47be2227e4af93d7c14c9503b94f294b3b475eae65c33e1bf", "packedBytes": 670578, "trigger": "size/npm/node-darwin-arm64/packed", "baseline": 424514, "allowedIncrease": 21225.7, "verdict": "breach (informational)" },
+    { "label": "wasm", "file": "redact-secret-wasm-0.1.0-beta.11.tgz", "sha256": "b4b6deeb4e3049686be100bfc3dca8338518eb32b398cb37b85b637ae7ba36ac", "packedBytes": 954396, "trigger": "size/npm/wasm/packed", "baseline": 254413, "allowedIncrease": 12720.65, "verdict": "breach (informational)" }
+  ],
+  "nativeAddons": [
+    { "target": "aarch64-apple-darwin", "file": "package/redact-secret.darwin-arm64.node (inside the node-darwin-arm64 tarball above)", "bytes": 1494656, "trigger": "size/node-addon/aarch64-apple-darwin", "baseline": 1004128, "allowedIncrease": 50206.4, "verdict": "breach (informational)" }
+  ]
+}

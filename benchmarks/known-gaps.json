@@ -7080,7 +7080,7 @@
       "evidence": [
         {
           "fixture": "beta8-384a--anthropic-admin01-key-angle-key-placeholder",
-          "corpusHash": "900fdce11ecc6ff3ec01093865dbccb87d7c970360ed6f1e235e9b993574670e",
+          "corpusHash": "31c6497baeb301ae1417cadefc8366514558d91b824e8860ea8ee3b7fb562f4b",
           "expected": [],
           "actual": [
             {
@@ -7101,7 +7101,8 @@
       "number": 1016,
       "fixtures": [
         "beta8-384e--deepgram-api-key-k8s-env-value",
-        "beta8-384e--cohere-api-key-k8s-env-value"
+        "beta8-384e--cohere-api-key-k8s-env-value",
+        "beta8-384e--mistral-api-key-k8s-env-value"
       ],
       "kind": "false-negative",
       "status": "promoted",
@@ -7124,6 +7125,7 @@
           "evidence": [
             "https://github.com/redact-secret/redact-secret-benchmarks/commit/a78809b89b867d17858591529f2be6c62982c132",
             "https://github.com/redact-secret/redact-secret-benchmarks/commit/5f1327b49edeb71c60a47c89e5722c7b8b108d73",
+            "https://github.com/redact-secret/redact-secret-benchmarks/commit/0ba1fa4f4bf45e104afa384ca409978350f28211",
             "https://github.com/redact-secret/redact-secret/issues/1016"
           ]
         },
@@ -7150,7 +7152,7 @@
       "evidence": [
         {
           "fixture": "beta8-384e--deepgram-api-key-k8s-env-value",
-          "corpusHash": "c84626ad5de260532ee29833fe610103218da6bfe138ea1cea7d6f7caec98797",
+          "corpusHash": "6cd48d23536d787898c5f9b188b320dbd349cfb92872065bd84dd8e8bb655931",
           "expected": [
             {
               "start": 44,
@@ -7161,11 +7163,22 @@
         },
         {
           "fixture": "beta8-384e--cohere-api-key-k8s-env-value",
-          "corpusHash": "c84626ad5de260532ee29833fe610103218da6bfe138ea1cea7d6f7caec98797",
+          "corpusHash": "6cd48d23536d787898c5f9b188b320dbd349cfb92872065bd84dd8e8bb655931",
           "expected": [
             {
               "start": 38,
               "end": 78
+            }
+          ],
+          "actual": []
+        },
+        {
+          "fixture": "beta8-384e--mistral-api-key-k8s-env-value",
+          "corpusHash": "6cd48d23536d787898c5f9b188b320dbd349cfb92872065bd84dd8e8bb655931",
+          "expected": [
+            {
+              "start": 43,
+              "end": 75
             }
           ],
           "actual": []
@@ -7227,7 +7240,7 @@
       "evidence": [
         {
           "fixture": "beta8-384e--deepgram-api-key-create-client",
-          "corpusHash": "c84626ad5de260532ee29833fe610103218da6bfe138ea1cea7d6f7caec98797",
+          "corpusHash": "6cd48d23536d787898c5f9b188b320dbd349cfb92872065bd84dd8e8bb655931",
           "expected": [
             {
               "start": 78,
@@ -7238,7 +7251,7 @@
         },
         {
           "fixture": "beta8-384e--deepgram-api-key-websocket-subprotocol",
-          "corpusHash": "c84626ad5de260532ee29833fe610103218da6bfe138ea1cea7d6f7caec98797",
+          "corpusHash": "6cd48d23536d787898c5f9b188b320dbd349cfb92872065bd84dd8e8bb655931",
           "expected": [
             {
               "start": 77,

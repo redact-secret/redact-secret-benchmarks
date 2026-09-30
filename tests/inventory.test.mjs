@@ -110,8 +110,9 @@ test('known gap issues cover all recorded failures and link to authored fixtures
   // #1015-#1017: Beta.12 provisional triage (five beta8-384a/384e fixtures); #1018 is
   // linked from product-932-masked-key-policy, which already owns the LiteLLM fixture.
   // #1038: redact-secret#1013 Mistral os.environ subscript assignment (beta8-384e).
-  assert.equal(slugs.length, 185);
-  assert.equal(new Set(slugs).size, 185);
+  // product-1016 also carries the Mistral name:/value: fixture (confirmed on redact-secret#1016).
+  assert.equal(slugs.length, 186);
+  assert.equal(new Set(slugs).size, 186);
   // A slug is either a corpus fixture or `<adversarial pack id>--<fixture id>`
   // for a fixture in that pack's intake record (#140). An adversarial record's
   // corpus hash is the pack's expectations digest.

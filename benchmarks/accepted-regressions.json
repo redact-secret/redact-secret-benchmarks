@@ -879,5 +879,83 @@
     },
     "decidedAt": "2026-09-29",
     "decidedBy": "milocosmopolitan (maintainer decisions of 2026-09-28 and 2026-09-29 accepting the Beta.11 WASM and package growth, and the approval of 94fc18a as the 0.1.0-beta.11 release source; relayed by the Beta.11 orchestrator)"
+  },
+  {
+    "id": "beta12-99c8c2b-wasm-full-gzip",
+    "triggerId": "size/wasm/full/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "99c8c2b33e99142620bcc66f115200ca615d6d0a"
+    },
+    "measured": {
+      "baseline": 137639,
+      "candidate": 203748,
+      "unit": "bytes"
+    },
+    "rationale": "Full-profile WASM gzip is 203,748 bytes against the 0.1.0-beta.8 baseline of 137,639 at redact-secret 99c8c2b (main after PR #1045), measured by performance-evaluation.yml runs 36683611495 and 36683614390 (both measured the same bytes). The maintainer accepted the Beta.12 WASM size growth on 2026-09-30 (option A). The reason is the Beta.12 detector additions: about 26 families (redact-secret#970-#975, #1019-#1035, #1022-#1029, #1036), partly offset by the #1043 initialization and size work, which leaves output byte-identical. The paired latency, initialization (browser-wasm small-whole ratio 1.233 and 1.202, within 1.25) and memory rows are within budget in both runs. Evidence: evidence/528/99c8c2b/README.md. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.12 adds about 26 provider credential families (the #860 issuance-research families, the #1014 broad-discovery families, the #1012 AWS secret access key, Google OAuth client secret, routable GitLab PAT and Vercel per-class types); candidate 99c8c2b reads 125 of 135 scored families stable in benchmark candidate mode.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1037",
+        "https://github.com/redact-secret/redact-secret/pull/1039",
+        "https://github.com/redact-secret/redact-secret/pull/1045",
+        "https://github.com/redact-secret/redact-secret-benchmarks/pull/530"
+      ]
+    },
+    "decidedAt": "2026-09-30",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-30, option A, accepting the Beta.12 WASM and quickstart-bundle size growth at 99c8c2b; relayed by the Beta.12 orchestrator)"
+  },
+  {
+    "id": "beta12-99c8c2b-wasm-common-gzip",
+    "triggerId": "size/wasm/common/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "99c8c2b33e99142620bcc66f115200ca615d6d0a"
+    },
+    "measured": {
+      "baseline": 100058,
+      "candidate": 137650,
+      "unit": "bytes"
+    },
+    "rationale": "Common-profile WASM gzip is 137,650 bytes against the 0.1.0-beta.8 baseline of 100,058 at redact-secret 99c8c2b (main after PR #1045), measured by performance-evaluation.yml runs 36683611495 and 36683614390 (both measured the same bytes). The maintainer accepted the Beta.12 WASM size growth on 2026-09-30 (option A). The reason is the Beta.12 detector additions: about 26 families (redact-secret#970-#975, #1019-#1035, #1022-#1029, #1036), partly offset by the #1043 initialization and size work, which leaves output byte-identical. The paired latency, initialization (browser-wasm small-whole ratio 1.233 and 1.202, within 1.25) and memory rows are within budget in both runs. Evidence: evidence/528/99c8c2b/README.md. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.12 adds about 26 provider credential families (the #860 issuance-research families, the #1014 broad-discovery families, the #1012 AWS secret access key, Google OAuth client secret, routable GitLab PAT and Vercel per-class types); candidate 99c8c2b reads 125 of 135 scored families stable in benchmark candidate mode.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1037",
+        "https://github.com/redact-secret/redact-secret/pull/1039",
+        "https://github.com/redact-secret/redact-secret/pull/1045",
+        "https://github.com/redact-secret/redact-secret-benchmarks/pull/530"
+      ]
+    },
+    "decidedAt": "2026-09-30",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-30, option A, accepting the Beta.12 WASM and quickstart-bundle size growth at 99c8c2b; relayed by the Beta.12 orchestrator)"
+  },
+  {
+    "id": "beta12-99c8c2b-quickstart-bundle-gzip",
+    "triggerId": "size/browser-bundle/quickstart/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "99c8c2b33e99142620bcc66f115200ca615d6d0a"
+    },
+    "measured": {
+      "baseline": 144501,
+      "candidate": 211130,
+      "unit": "bytes"
+    },
+    "rationale": "The quickstart browser bundle a default initialize() fetches (the redact-secret#937 method) is 211,130 bytes against the 0.1.0-beta.8 baseline of 144,501 at redact-secret 99c8c2b (main after PR #1045), measured by performance-evaluation.yml runs 36683611495 and 36683614390 (both measured the same bytes). The maintainer accepted the Beta.12 WASM size growth on 2026-09-30 (option A). The reason is the Beta.12 detector additions: about 26 families (redact-secret#970-#975, #1019-#1035, #1022-#1029, #1036), partly offset by the #1043 initialization and size work, which leaves output byte-identical. The paired latency, initialization (browser-wasm small-whole ratio 1.233 and 1.202, within 1.25) and memory rows are within budget in both runs. Evidence: evidence/528/99c8c2b/README.md. Accepted for this candidate only; the budget definition is unchanged, and a later breach of this trigger at a different source commit is judged afresh.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Beta.12 adds about 26 provider credential families (the #860 issuance-research families, the #1014 broad-discovery families, the #1012 AWS secret access key, Google OAuth client secret, routable GitLab PAT and Vercel per-class types); candidate 99c8c2b reads 125 of 135 scored families stable in benchmark candidate mode.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1037",
+        "https://github.com/redact-secret/redact-secret/pull/1039",
+        "https://github.com/redact-secret/redact-secret/pull/1045",
+        "https://github.com/redact-secret/redact-secret-benchmarks/pull/530"
+      ]
+    },
+    "decidedAt": "2026-09-30",
+    "decidedBy": "milocosmopolitan (maintainer decision of 2026-09-30, option A, accepting the Beta.12 WASM and quickstart-bundle size growth at 99c8c2b; relayed by the Beta.12 orchestrator)"
   }
 ]

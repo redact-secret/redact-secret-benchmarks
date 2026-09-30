@@ -196,3 +196,106 @@ Shapes are grammar in words; every body is built at run time in the record's tes
 - **Current contract in core:** no provider detector on `main`; the `secret-token:` form is redacted through `bearer-token`.
 - **Open questions:** Q6 extended to a single provider example repeated in the provider's own API description; the sandbox environment word and the Read Only and Custom tags have no provider source.
 - **Research log:** [handoff](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/mercury.md); [step-1 table, #41 to #50](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820).
+
+### Wave B: ruling- or policy-gated (no step-3 record yet)
+
+Each row has a step-1 research section (linked by comment) and a step-4 disposition. A step-3 handoff is the next action once the gate clears. Shapes are schematic.
+
+| candidate | verdict | tier | step-4 disposition | gate | research |
+| --- | --- | --- | --- | --- | --- |
+| `azure:storage-account-key` | ready | T1 (if Q2) | BLOCKED | Q2 | [step-1, #01 to #10](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900446812) |
+| `azure:ai-services-key` | ready | T1 (if Q2) | BLOCKED | Q2; route is extending the existing CASK scanner, not a new family | [step-1, #01 to #10](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900446812) |
+| `datastax:astra-db-application-token` | issuance-gated | T2 (T1 if Q3) | BLOCKED | Q3; else issuance of the 64-byte tail | [step-1, #31 to #40](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540) |
+| `tailscale:api-key` | issuance-gated | T2 | BLOCKED | policy: is a floor-only grammar acceptable; else issuance of the secret length | [step-1, #11 to #20](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016) |
+| `circleci:personal-access-token` | ready | T2 | BLOCKED | policy: alphabet `[A-Za-z0-9]` for the 40-byte segment; `CCIPRJ_` layout unconfirmed | [step-1, #11 to #20](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016) |
+| `onesignal:rich-auth-token` | ready | T2 (T1 if R2 authorship holds) | BLOCKED | R2 authorship check of the provider-org scanning rule | [step-1, #31 to #40](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540) |
+| `stytch:project-secret` | ready | T2 (T1 if Q6) | BLOCKED | Q6 | [step-1, #31 to #40](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540) |
+| `asana:personal-access-token` | not-found | T2 | BLOCKED | Q4: the provider documents the format as opaque | [step-1, #21 to #30](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282) |
+
+#### `azure:storage-account-key`
+
+- **Record:** verdict `ready`, tier T1 provided Q2 is ruled yes (T2 otherwise), researchedAt 2026-09-30, blockedBy `null`; issues `redact-secret/redact-secret#1014`.
+- **Shape:** 88 standard-Base64 characters: 76 + the literal signature `+ASt` + 5 + one of `A`, `Q`, `g`, `w` + `==`, with a Marvin32 checksum embedded. The legacy 86-character + `==` form has no signature and stays in context.
+- **Sources:** provider-authored scanner code in Microsoft's [`security-utilities`](https://github.com/microsoft/security-utilities/blob/638ad20eb4d446319a31e9c0ed293d087b4ffa55/src/Microsoft.Security.Utilities.Core/PreciselyClassifiedSecurityKeys/Azure64ByteIdentifiableKey.cs) (R2 if Q2 is yes) and a Microsoft Learn page that documents the 88-character length and the checksum but not `+ASt` ([Purview SIT](https://learn.microsoft.com/en-us/purview/sit-defn-azure-storage-account-access-key)). GitHub's partner list has the type with a validity check. trufflehog, betterleaks and noseyparker are contextual and do not anchor on `+ASt`.
+- **Issuance:** not attempted; the gate is a ruling, not a sample.
+- **Collisions:** overlaps the `connection-string` (`azure`) detector inside `AccountKey=`, so one finding must win; a standalone run matching the signature and tail has a very low benign rate.
+- **Current contract in core:** no detector on `main`; the embedded form is covered by `connection-string` only.
+- **Open questions:** Q2 (Microsoft `security-utilities` as R2); Q1 (whether a failed Marvin32 check ever rejects).
+- **Research log:** [step-1, #01 to #10](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900446812); [step-4 disposition](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/README.md#step-4-disposition-of-all-50-candidates).
+
+#### `azure:ai-services-key`
+
+- **Record:** verdict `ready`, tier T1 provided Q2 is ruled yes (T2 otherwise), researchedAt 2026-09-30, blockedBy `null`; issues `redact-secret/redact-secret#1014`.
+- **Shape:** 84 base62 characters of Microsoft's identifiable legacy key layout: 52 + the literal `JQQJ99` + 1 + one of `A` to `L` + 12 + `AAA` and a service character + the literal provider signature `ACOG` + 4 checksum characters. One family covers AI Services, Azure OpenAI and Cognitive Services keys. The legacy 32-hex key is indistinct and stays generic.
+- **Sources:** provider-authored scanner code in [`security-utilities`](https://github.com/microsoft/security-utilities/blob/638ad20eb4d446319a31e9c0ed293d087b4ffa55/src/Microsoft.Security.Utilities.Core/PreciselyClassifiedSecurityKeys/LegacyCommonAnnotatedSecurityAccessKey.cs#L13-L21) (2025-05-14, R2 if Q2 is yes); no Learn page states the 84-character grammar (Purview documents only the 32-hex legacy form). GitHub's partner list has three Azure key types.
+- **Issuance:** not attempted; the gate is a ruling.
+- **Collisions:** the same layout as the existing `azure-devops-personal-access-token` scanner (whose provider signature is `AZDO`); the two signatures are disjoint, so the natural route is to extend that scanner with `ACOG`, not add a family.
+- **Current contract in core:** no `ACOG` detector on `main`; the Azure DevOps CASK scanner exists.
+- **Open questions:** Q2; Q1 (lexical or checksum-checked).
+- **Research log:** [step-1, #01 to #10](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900446812); [step-4 disposition](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/README.md#step-4-disposition-of-all-50-candidates).
+
+#### `datastax:astra-db-application-token`
+
+- **Record:** verdict `issuance-gated`, tier T2 (T1 with a policy tail if Q3 is yes), researchedAt 2026-09-30, blockedBy `the alphabet of the 64-byte tail has no provider source; Q3 (policy alphabet) or one token checked for structure only`; issues `redact-secret/redact-secret#1014`.
+- **Shape:** `AstraCS:` + 24 letters + `:` + 64 characters, 97 in all. The tail is commonly reported as hex but no provider source fixes its alphabet.
+- **Sources:** T1 for the prefix and the exact lengths: the provider's [`astra-cli` validator](https://github.com/datastax/astra-cli/blob/3d746a51c08c07696c8198ea65fb667625677564/src/main/java/com/dtsx/astra/cli/core/models/AstraToken.java#L27-L41) (2026-08) and its token docs; the middle alphabet by docs example.
+- **Issuance:** the fallback if Q3 is refused: one token, structure only.
+- **Collisions:** none; the prefix plus colon structure is unique.
+- **Current contract in core:** no detector on `main`.
+- **Open questions:** Q3 (R10 extended to Astra with a policy alphabet `[A-Za-z0-9]`, at least as wide as hex).
+- **Research log:** [step-1, #31 to #40](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540); [step-4 disposition](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/README.md#step-4-disposition-of-all-50-candidates).
+
+#### `tailscale:api-key`
+
+- **Record:** verdict `issuance-gated`, tier T2, researchedAt 2026-09-30, blockedBy `the secret length is T2 (placeholders only); accept a floor-only grammar by policy or check one key for structure only`; issues `redact-secret/redact-secret#1014`.
+- **Shape:** `tskey-` + a type (`api`, `auth`, `client`, `scim`, `webhook`) + `-` + a key id + `-` + a secret, all alphanumeric segments. Docs examples show a 12-character id and a 32-character secret, but the secret is placeholder-filled.
+- **Sources:** prefix and type set T1 ([Tailscale KB 1277](https://tailscale.com/kb/1277/key-prefixes); the CLI's `HasPrefix` check and a redaction pattern in [`tailscale`](https://github.com/tailscale/tailscale/blob/a00fd3273b3865ec587d0c4b36ab5debf358545e/cmd/tailscale/cli/cli.go#L606-L631)); segment lengths T2.
+- **Issuance:** the fallback if a floor-only grammar is refused: one key, structure only.
+- **Collisions:** placeholders such as `tskey-auth-xxxx` and test strings are common, so a minimum secret length or an entropy floor is needed.
+- **Current contract in core:** no detector on `main`.
+- **Open questions:** whether a floor-only grammar is acceptable; the minimum secret length.
+- **Research log:** [step-1, #11 to #20](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016); [step-4 disposition](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/README.md#step-4-disposition-of-all-50-candidates).
+
+#### `circleci:personal-access-token`
+
+- **Record:** verdict `ready`, tier T2, researchedAt 2026-09-30, blockedBy `null` (a policy alphabet decision comes first); issues `redact-secret/redact-secret#1014`.
+- **Shape:** `CCIPAT_` + 22 alphanumerics + `_` + 40 characters (70 in all); `CCIPRJ_` project tokens presumably share the layout (no source). Legacy unprefixed 40-hex tokens stay generic.
+- **Sources:** prefix and segment lengths T1 from the provider's CLI placeholder, which sets its own input limit ([`circleci-cli`](https://github.com/CircleCI-Public/circleci-cli/blob/acf7852dad47f1e9af5310f6b11a8e05588d3550/internal/ui/token.go#L35-L51)); the 40-byte segment's alphabet is hex only in trufflehog (T2). The GitHub partner list has four CircleCI types.
+- **Issuance:** not required for T2.
+- **Collisions:** none; both prefixes are distinctive. A lowercase `ccipat_` form in the provider's OAuth docs may be a separate token.
+- **Current contract in core:** no detector on `main`.
+- **Open questions:** policy ruling on `[A-Za-z0-9]` for the 40-byte segment (keeps T1 length); whether `CCIPRJ_` shares the layout.
+- **Research log:** [step-1, #11 to #20](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016); first named as a follow-up in the #523 CI ranking; [step-4 disposition](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/README.md#step-4-disposition-of-all-50-candidates).
+
+#### `onesignal:rich-auth-token`
+
+- **Record:** verdict `ready`, tier T2 until authorship is verified (T1 under R2 if it holds), researchedAt 2026-09-30, blockedBy `null`; issues `redact-secret/redact-secret#1014`.
+- **Shape:** `os_v2_app_` (app key) or `os_v2_org_` (organization key) + a lowercase alphanumeric body with a floor of 20 and no published length. Legacy UUID REST keys stay generic.
+- **Sources:** a provider-organization scanning rule in [`onesignal-agent-plugin`](https://github.com/OneSignal/onesignal-agent-plugin/blob/75c08e9ee30e055765c0a475c3dd39769cbde543/scripts/scan_secrets.py#L29) (2026-08-13; staff authorship inferred from the org repository, not verified) and the provider's key docs (app prefix only; the organization steps appear to contain a copy error).
+- **Issuance:** not required for the floor-only grammar.
+- **Collisions:** none; `os_v2_app_` is distinctive.
+- **Current contract in core:** no detector on `main`.
+- **Open questions:** whether the rule's author is OneSignal staff (clean R2); the exact body length.
+- **Research log:** [step-1, #31 to #40](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540); [step-4 disposition](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/README.md#step-4-disposition-of-all-50-candidates).
+
+#### `stytch:project-secret`
+
+- **Record:** verdict `ready`, tier T2 (T1 if Q6 is yes), researchedAt 2026-09-30, blockedBy `null`; issues `redact-secret/redact-secret#1014`.
+- **Shape:** `secret-live-` or `secret-test-` + 36 base64url-like characters ending in `=` (48 in all). `public-token-*` and `project-*` are not secrets and stay unclaimed (Q5).
+- **Sources:** prefix, length and alphabet by one example repeated in three provider SDK READMEs ([stytch-node](https://github.com/stytchauth/stytch-node/blob/a59868d7e970b44fb96e61bf38d3ddd884d4238a/README.md#L67)); no docs response example or server generator was found. trufflehog's rule is consistent (T2).
+- **Issuance:** not attempted.
+- **Collisions:** `secret-test-` appears in generic test strings, so the exact body shape must be required; whether the trailing `=` is always present is open.
+- **Current contract in core:** no detector on `main`.
+- **Open questions:** Q6 (SDK README examples as R5).
+- **Research log:** [step-1, #31 to #40](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540); [step-4 disposition](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/README.md#step-4-disposition-of-all-50-candidates).
+
+#### `asana:personal-access-token`
+
+- **Record:** verdict `not-found`, tier T2, researchedAt 2026-09-30, blockedBy `null` (pending Q4); issues `redact-secret/redact-secret#1014`.
+- **Shape:** by era: a legacy `0/` or `1/` form, and since October 2023 `2/` + a digit user id + `/` + a digit token id + `:` + 32 hex. No provider source states the grammar.
+- **Sources:** the provider's docs say tokens are opaque and formats may change without notice ([Asana docs](https://developers.asana.com/docs/personal-access-token), 2026-01-22), and staff withheld the new grammar; the shape is from trufflehog's rule, a forum and the GitHub partner list (T2).
+- **Issuance:** not attempted.
+- **Collisions:** a digit-slash-digit prefix is ordinary text (dates, paths), so only the anchored `:` + 32-hex tail is safe.
+- **Current contract in core:** no detector on `main`; contextual detection and generic coverage apply.
+- **Open questions:** Q4 (refuse, or allow at T2 with a context keyword when the provider disclaims a grammar).
+- **Research log:** [step-1, #21 to #30](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282); [step-4 disposition](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/README.md#step-4-disposition-of-all-50-candidates).

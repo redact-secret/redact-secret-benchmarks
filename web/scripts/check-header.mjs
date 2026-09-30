@@ -38,7 +38,8 @@ export function findHeaderViolations({ logos, tsx, css }) {
 
   const code = tsx.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
   for (const name of Object.keys(CANONICAL)) {
-    if (!new RegExp(`src=["']/${name.replace('.', '\\.')}["']`).test(code)) add('header-logo', `SiteHeader must render /${name}`);
+    // The path is the plain string, or the base path (NEXT_PUBLIC_BASE_PATH) followed by it.
+    if (!new RegExp(`src=(?:["']|\\{\`\\$\\{BASE\\})/${name.replace('.', '\\.')}(?:["']|\`\\})`).test(code)) add('header-logo', `SiteHeader must render /${name}`);
   }
   if (/<svg\b|<path\b|<symbol\b|dangerouslySetInnerHTML/.test(code)) add('header-logo', 'SiteHeader must not draw the mark itself; use the canonical files');
   if (/\.(?:png|jpe?g|webp|gif)\b/i.test(code)) add('header-logo', 'SiteHeader must use the canonical SVG, not a raster copy');

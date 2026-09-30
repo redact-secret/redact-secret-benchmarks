@@ -93,3 +93,33 @@ neutral: state what the ledger records, never that a product is good or bad
 3. `cd web && npm run check` (rules, header, typecheck, build, export check,
    Storybook build, and the Playwright layout check: `PW_CHANNEL=chrome` uses an
    installed Chrome, otherwise `npx playwright install chromium`) and `node --import tsx --test tests/web-tokens.test.mjs` from the root.
+
+## Data layer: services, resolvers, pages
+
+Decision: `docs/decisions/2026-09-30-load-web-data-through-services-and-resolvers.md`.
+
+```
+web/app/ (pages)  ->  web/resolvers/  ->  web/services/
+web/components/ (blocks): imports none of the three
+```
+
+- **Services** (`web/services/`) load at build time: read repository files, validate
+  with the validators that already exist, return typed raw data, memoise with `once()`.
+  No `fetch`, no network, nothing imported by a client component.
+- **Resolvers** (`web/resolvers/`) are pure: raw data in, block props out. All number,
+  interval, count and date formatting lives in `resolvers/format.ts` and the resolver
+  that uses it. No filesystem, no service import, except `resolvers/pages.ts`, the one
+  module a page calls (it awaits services and hands the result to the pure resolvers).
+- **Pages** (`web/app/`) are server components: `await resolveXPage()`, compose blocks.
+  A client island (a filter, a pager) receives resolved props and may import
+  `resolvers/filters.ts`; it never imports a service or `resolvers/pages.ts`.
+- A count with no fixtures resolves to `null` (the block shows "No fixtures"). A missing
+  measurement resolves to a stated "Not measured" with the command that produces it,
+  never a zero and never an invented value. A stable count states its mode.
+- Query state lives in the URL and works on a static export: pre-render every route
+  (one page per family), pre-render the default view and every level, then let a client
+  island read `?q=`, `?show=`, `?page=` and `?level=` after hydration and rewrite them
+  with `history` (`app/report/useListQuery.ts`, `LevelSync.tsx`).
+- Resolver tests live in `tests/web-resolvers.test.mjs` (synthetic data only) and also
+  enforce the import direction. `check:routes` compares the built pages with the
+  ledger, read independently; CI sets `WEB_REQUIRE_RUN=1` and runs `npm run bench` first.

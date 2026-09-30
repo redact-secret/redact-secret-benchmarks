@@ -25,8 +25,7 @@ function RatioCell({ ratio }: { ratio: Ratio | null }) {
   );
 }
 
-const columns: DataTableColumn<PeerScannerRow>[] = [
-  {
+const scannerColumn: DataTableColumn<PeerScannerRow> = {
     key: 'scanner',
     header: 'Scanner',
     rowHeader: true,
@@ -34,15 +33,28 @@ const columns: DataTableColumn<PeerScannerRow>[] = [
       <>
         <b>{r.name} {r.version}</b>
         <small>{r.role}</small>
-        <small>{r.blurb}</small>
+        {r.blurb && <small>{r.blurb}</small>}
       </>
     ),
-  },
+};
+const targetedColumns: DataTableColumn<PeerScannerRow>[] = [
   { key: 'targeted', header: 'Inputs its rules target', numeric: true, cell: r => <RatioCell ratio={r.targeted} /> },
   { key: 'readable', header: 'Left readable on those inputs', numeric: true, cell: r => <RatioCell ratio={r.leftReadable} /> },
   { key: 'elsewhere', header: 'Left readable everywhere else', numeric: true, cell: r => <RatioCell ratio={r.elsewhere} /> },
-  { key: 'safe', header: 'Safe values flagged', numeric: true, cell: r => <RatioCell ratio={r.safeFlagged} /> },
 ];
+const allInputsColumn: DataTableColumn<PeerScannerRow> = { key: 'all', header: 'Left readable on all inputs', numeric: true, cell: r => <RatioCell ratio={r.allInputs ?? null} /> };
+const safeColumn: DataTableColumn<PeerScannerRow> = { key: 'safe', header: 'Safe values flagged', numeric: true, cell: r => <RatioCell ratio={r.safeFlagged} /> };
+
+/**
+ * The columns a run can fill. The three "rules target" columns need a map from a
+ * scanner's rules to families; while no row carries one they are left out rather
+ * than drawn as a wall of "Not measured".
+ */
+function columnsFor(rows: PeerScannerRow[]): DataTableColumn<PeerScannerRow>[] {
+  const targeted = rows.some(r => r.targeted || r.leftReadable || r.elsewhere);
+  const all = rows.some(r => r.allInputs);
+  return [scannerColumn, ...(targeted ? targetedColumns : []), ...(all ? [allInputsColumn] : []), safeColumn];
+}
 
 /**
  * What other scanners left readable on the same inputs, framed by the caveats a
@@ -60,7 +72,7 @@ export function PeerScannerSection({ title, description, rows, notes, className 
       </Note>
       <DataTable<PeerScannerRow>
         className={styles.table}
-        columns={columns}
+        columns={columnsFor(rows)}
         rows={rows}
         getRowKey={r => `${r.name} ${r.version}`}
         caption={title}

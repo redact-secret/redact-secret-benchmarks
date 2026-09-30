@@ -23,4 +23,11 @@ export const MissingMeasurements: Story = { args: { rows: peerRowsMissing } };
 
 export const NoScanners: Story = { args: { rows: [], description: 'No other scanner has been run on these inputs yet.' } };
 
+/** What a run records today: no rule-to-family map, so the three "rules target" columns are left out and the all-inputs column shows. */
+export const AllInputsOnly: Story = {
+  args: {
+    rows: peerRows.map(r => ({ ...r, blurb: undefined, targeted: null, leftReadable: null, elsewhere: null, allInputs: { count: '445', of: '1,305', unit: 'spans', note: 'redact-secret, same inputs: 153 of 1,305' } })),
+  },
+};
+
 export const Phone: Story = { globals: { viewport: { value: 'mobile1', isRotated: false } } };

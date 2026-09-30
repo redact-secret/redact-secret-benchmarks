@@ -133,26 +133,65 @@
     transform: none;
   }
 
-  @media (max-width: 720px) {
-    .header {
-      position: static;
-    }
+  /* Bottom tab bar: the same entrances, reachable by thumb, shown on a phone only. */
+  .tabs {
+    display: none;
+  }
 
+  /* On a phone the header stays one 72px row (logo and theme, still sticky) and the entrances move to a fixed bar at the bottom. */
+  @media (max-width: 720px) {
     .inner {
       grid-template-columns: minmax(0, 1fr) auto;
-      grid-template-areas:
-        'brand tools'
-        'nav nav';
+      grid-template-areas: 'brand tools';
       column-gap: var(--space-4);
     }
 
     .nav {
-      border-top: var(--hairline) solid var(--line);
+      display: none;
     }
 
-    .link {
-      min-height: var(--touch);
-      padding-top: 0;
+    .tabs {
+      display: block;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 20;
+      background: var(--surface);
+      border-top: var(--hairline) solid var(--line);
+      padding-bottom: env(safe-area-inset-bottom, 0);
+    }
+
+    .tabList {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .tab {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: var(--tabs-h);
+      padding: 0 var(--space-1) var(--mark);
+      border-top: var(--mark) solid transparent;
+      font: var(--text-label);
+      color: var(--ink-muted);
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .tab[aria-current='page'] {
+      color: var(--ink);
+      border-top-color: var(--brand-green);
+    }
+
+    .tab:focus-visible {
+      outline: var(--rule-strong) solid var(--focus);
+      outline-offset: calc(var(--rule-strong) * -1);
     }
   }
 

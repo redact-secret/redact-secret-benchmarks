@@ -1,0 +1,43 @@
+@layer components {
+  /*
+   * The three evidence levels are pre-rendered as three panels. Which one shows is
+   * decided by `data-level` on the root element (LevelSync and the inline script
+   * in the page), so a static export serves every level from one page and the URL
+   * stays `/report/?level=T2`. T1 is the default. Without script, T1 shows.
+   */
+  .panel {
+    display: none;
+  }
+
+  .panel[data-panel='T1'] {
+    display: block;
+  }
+
+  :global(:root[data-level='T2']) .panel[data-panel='T1'],
+  :global(:root[data-level='T3']) .panel[data-panel='T1'] {
+    display: none;
+  }
+
+  :global(:root[data-level='T2']) .panel[data-panel='T2'],
+  :global(:root[data-level='T3']) .panel[data-panel='T3'] {
+    display: block;
+  }
+
+  /* T3 peers: a note by default, the table when `?peers=1`. */
+  .peersShown {
+    display: none;
+  }
+
+  :global(:root[data-peers='1']) .peersShown {
+    display: block;
+  }
+
+  :global(:root[data-peers='1']) .peersHidden {
+    display: none;
+  }
+
+  .notes {
+    display: grid;
+    gap: var(--space-4);
+  }
+}

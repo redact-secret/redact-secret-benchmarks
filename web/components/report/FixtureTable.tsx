@@ -31,6 +31,8 @@ export interface FixtureTableProps {
   /** What an empty table says. Defaults to the family wording. */
   emptyTitle?: string;
   emptyText?: string;
+  /** Draw the dashed "Not measured" badge under an empty table. Off when a filter, not the corpus, emptied it. */
+  emptyBadge?: boolean;
   className?: string;
 }
 
@@ -76,12 +78,12 @@ const scannerColumns = (scanners: ScannerColumnData[]): DataTableColumn<FixtureR
  * shows redact-secret's outcome, or one column per scanner when `scanners` is given.
  * A list with no fixtures shows a dashed "Not measured" box, never a table of zeros.
  */
-export function FixtureTable({ familyName, rows, description, facts, pager, scanners, title = 'Fixtures in this family', emptyTitle = 'No fixtures in this family yet', emptyText = 'Nothing in the corpus targets it, so nothing is measured and no coverage is claimed.', className }: FixtureTableProps) {
+export function FixtureTable({ familyName, rows, description, facts, pager, scanners, title = 'Fixtures in this family', emptyTitle = 'No fixtures in this family yet', emptyText = 'Nothing in the corpus targets it, so nothing is measured and no coverage is claimed.', emptyBadge = true, className }: FixtureTableProps) {
   if (rows.length === 0) {
     return (
       <EmptyState className={className} title={emptyTitle}>
         <p>{emptyText}</p>
-        <p><StatusBadge status="not-measured">Not measured</StatusBadge></p>
+        {emptyBadge && <p><StatusBadge status="not-measured">Not measured</StatusBadge></p>}
       </EmptyState>
     );
   }

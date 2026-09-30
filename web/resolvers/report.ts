@@ -15,6 +15,7 @@ import type { Catalog, CatalogFixture } from '../services/catalog';
 import type { PeerProfile } from '../services/peers';
 import type { FamilyList } from './families';
 import { agreesWithSummary, inputsAt, sliceInputs } from './peers';
+import { rowsHref } from './rows';
 import { axisMaxFor, count, int, isoDate, onAxis, percent } from './format';
 
 export type Level = 'T1' | 'T2' | 'T3';
@@ -24,6 +25,8 @@ export const isLevel = (value: string | null): value is Level => value === 'T1' 
 const PRODUCT = 'redact-secret';
 const TIER_TITLE: Record<Level, string> = { T1: 'Provider-documented', T2: 'Tool-corroborated', T3: 'Project policy' };
 const SHORT: Record<Level, string> = { T1: 'Provider', T2: 'Tool', T3: 'Policy' };
+export const LEVEL_TITLE = TIER_TITLE;
+export const LEVEL_SHORT = SHORT;
 /** Below this many samples a published bound stays wide enough that the figure says so. Display rule only. */
 const FEW_SAMPLES_BELOW = 30;
 
@@ -45,6 +48,8 @@ export const levelLinks = (): EvidenceLevelLink[] => LEVELS.map(level => ({
   label: TIER_TITLE[level], shortLabel: SHORT[level], href: level === 'T1' ? '/report/' : `/report/?level=${level}`,
 }));
 export const levelHref = (level: Level): string => (level === 'T1' ? '/report/' : `/report/?level=${level}`);
+/** The rows behind a level's figures (`/report/rows/T1/`); a figure links here with the `show` that isolates its rows. */
+const rowsLink = (level: Level): string => rowsHref(level);
 
 // ---- Run facts ---------------------------------------------------------------
 
@@ -89,7 +94,7 @@ const WITHHELD_WHY: Record<string, string> = {
   'not-measured': 'Nothing is recorded for this group.',
 };
 
-function answer(id: string, question: string, fig: Figure, count_: { strong: string; rest: string }, definition: string): AnswerData {
+function answer(id: string, question: string, fig: Figure, count_: { strong: string; rest: string }, definition: string, href?: string): AnswerData {
   const withheld = fig.withheld !== undefined;
   const axisMax = fig.direction === 'lower' ? 1 : axisMaxFor(fig.bound ?? 0);
   const interval = withheld || fig.observed === null || fig.bound === null
@@ -104,6 +109,7 @@ function answer(id: string, question: string, fig: Figure, count_: { strong: str
       })();
   return {
     id, question, qualifier: fig.qualifier, value: fig.value, interval, observation: count_,
+    ...(href ? { href } : {}),
     ...(withheld ? { status: status(fig.withheld === 'not-measured' ? 'not-measured' : 'withheld', fig.withheld === 'not-measured' ? 'Not measured' : 'Withheld') }
       : fig.fewSamples ? { status: status('withheld', 'Few samples') } : {}),
     definition: withheld ? `${definition} ${WITHHELD_WHY[fig.withheld!] ?? ''}`.trim() : definition,
@@ -134,18 +140,21 @@ export function resolveAnswers(run: MeasuredRun, level: Level): LevelAnswers {
     'miss', policy ? 'Does it leave policy spans readable?' : 'Does it miss real secrets?',
     figureOf(mine.leakedSpanRate, mine.spans), { strong: `${int(mine.leakedSpans)} of ${int(mine.spans)}`, rest: 'secret spans leaked' },
     `Leaked span rate. Lower is better. ${CONFIDENCE(run)}.${policy ? ' These spans are this project’s redaction policy: a difference here is a difference of opinion, not a defect.' : ''}`,
+    `${rowsLink(level)}?show=leaked`,
   ) : missing('miss', policy ? 'Does it leave policy spans readable?' : 'Does it miss real secrets?');
 
   const alarm = isControl(controls) ? answer(
     'flag', 'Does it flag safe values?',
     figureOf(controls.falseAlarmRate, controls.files), { strong: `${int(controls.flaggedFiles)} of ${int(controls.files)}`, rest: 'controls flagged' },
     `False alarm rate on ${TIER_TITLE[level].toLowerCase()} controls. Lower is better. Few controls keep the bound wide.`,
+    `${rowsLink(level)}?show=flagged`,
   ) : missing('flag', 'Does it flag safe values?');
 
   const twins = isRedact(mine) && mine.twins.rate !== null && mine.twins.rate !== undefined ? answer(
     'twins', 'Does it tell near-twins apart?',
     figureOf(mine.twins.rate, mine.twins.pairs), { strong: `${int(mine.twins.discriminated)} of ${int(mine.twins.pairs)}`, rest: 'pairs discriminated' },
     'Twin discrimination: the secret is covered and its one-character fake stays quiet. Higher is better.',
+    `${rowsLink(level)}?show=twins`,
   ) : missing('twins', 'Does it tell near-twins apart?', 'No near-twin pairs are authored in this group.');
 
   return {
@@ -177,22 +186,23 @@ export function answerMeta(run: MeasuredRun, catalog: Catalog): MetaItem[] {
 // ---- Hub tiles ---------------------------------------------------------------
 
 /**
- * The hub links to the pages this app has. The existing site's coverage and
- * detector pages are not migrated yet, so no tile points at them: a link that
- * leaves the app under the preview base path would be dead.
+ * The hub links to the pages this app has, and only those: every tile stays inside
+ * the app (a link that left it would leave the preview base path). The detector and
+ * findings pages exist here since #559, so their tiles are back.
  */
-export function resolveHubTiles(list: FamilyList, findings: KnownGaps): HubTileData[] {
+export function resolveHubTiles(list: FamilyList, findings: KnownGaps, detectors?: { count: number; fixtures: number }): HubTileData[] {
   const { totals } = list;
   return [
     { href: '/report/providers/', label: 'Providers', figure: int(totals.providers), figureUnit: 'providers', emphasis: int(totals.providersWithFixtures), text: 'with fixtures in this corpus. Each opens its families and rows.', action: 'By provider →' },
     { href: '/report/families/', label: 'Families', figure: int(totals.families), figureUnit: 'families', emphasis: int(totals.familiesWithFixtures), text: 'with fixtures. Rows and outcomes for every family, in one list.', action: 'All families →' },
-    { href: '#news', label: 'News', figure: int(findings.issues.length), figureUnit: 'findings', text: `Ledger snapshot ${findings.reviewedAt}: findings from this benchmark and where each one stands.`, action: 'What changed →' },
+    ...(detectors ? [{ href: '/report/detectors/', label: 'Detectors', figure: int(detectors.count), figureUnit: 'detectors', emphasis: int(detectors.fixtures), text: 'fixtures exercise them. Sample size and rows per detector.', action: 'By detector →' }] : []),
+    { href: '/report/findings/', label: 'News', figure: int(findings.issues.length), figureUnit: 'findings', text: `Ledger snapshot ${findings.reviewedAt}: findings from this benchmark and where each one stands.`, action: 'What changed →' },
   ];
 }
 
 // ---- Findings ----------------------------------------------------------------
 
-const FINDING_STATUS: Record<string, StatusLabel> = {
+export const FINDING_STATUS: Record<string, StatusLabel> = {
   verified: status('pass', 'Verified'),
   fixed: status('pass', 'Fixed'),
   promoted: status('review', 'Promoted'),
@@ -202,7 +212,7 @@ const FINDING_STATUS: Record<string, StatusLabel> = {
   'policy-decision': status('withheld', 'Policy'),
 };
 
-const lastDate = (history: Record<string, { at: string } | undefined>): string =>
+export const lastDate = (history: Record<string, { at: string } | undefined>): string =>
   Object.values(history).flatMap(t => (t ? [t.at] : [])).sort().at(-1) ?? '';
 
 export interface FindingsBlock { title: string; description: string; findings: FindingData[]; allHref: string; allLabel: string }
@@ -223,7 +233,8 @@ export function resolveFindings(gaps: KnownGaps, limit = 6): FindingsBlock {
       date,
       status: FINDING_STATUS[i.status] ?? status('info', i.status),
     })),
-    allHref: gaps.milestoneUrl,
+    // Inside the app: the inventory page lists every finding and links the milestone.
+    allHref: '/report/findings/',
     allLabel: `All ${int(gaps.issues.length)} findings`,
   };
 }

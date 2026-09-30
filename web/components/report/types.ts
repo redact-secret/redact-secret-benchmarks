@@ -245,8 +245,12 @@ export interface ReportedRangesRow {
 
 export interface FixtureFactData {
   term: string;
-  value: string;
+  /** The recorded value. Omit when the fact is only links. */
+  value?: string;
+  /** Makes `value` a link. */
   href?: string;
+  /** Several linked values, e.g. the near-twins of a fixture. */
+  links?: { label: string; href: string }[];
 }
 
 /** Everything the fixture page shows about one fixture. */

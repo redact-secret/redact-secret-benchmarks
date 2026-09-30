@@ -11,7 +11,8 @@
  */
 import type { ReportShow } from '../components/report/types';
 import type { FamilyItem, ProviderItem } from './families';
-import { count } from './format';
+import { FLAG, rowSearchText, type CompactRow, type RowsData } from './rowdata';
+import { count, int } from './format';
 
 export const SHOW_VALUES: ReportShow[] = ['all', 'signal', 'empty'];
 
@@ -75,6 +76,53 @@ export function filterProviders(items: ProviderItem[], { q, show }: Pick<ListQue
     .map(p => ({ ...p, group: { ...p.group, families: p.families.map(f => f.entry) } }));
   const families = shown.reduce((n, p) => n + p.families.length, 0);
   return { items: shown, resultText: `${count(shown.length, 'provider')} · ${count(families, 'family', 'families')}` };
+}
+
+// ---- Fixture rows -------------------------------------------------------------------
+
+/** The scanners a rows table shows: redact-secret only, or a column for every scanner in the run. */
+export type RowsScanners = 'product' | 'all';
+
+export const ROW_SHOW_VALUES: ReportShow[] = ['all', 'signal', 'leaked', 'flagged', 'twins'];
+
+/** The state of a rows table, kept in the URL: `?q=&show=&level=&scanners=&page=` (page is the table's own). */
+export interface RowsQuery { q: string; show: ReportShow; level: ListLevel; scanners: RowsScanners }
+
+export function rowsQueryOf(params: { get(name: string): string | null }, defaultScanners: RowsScanners): RowsQuery {
+  const show = params.get('show');
+  const level = params.get('level');
+  const scanners = params.get('scanners');
+  return {
+    q: (params.get('q') ?? '').trim(),
+    show: ROW_SHOW_VALUES.includes(show as ReportShow) ? (show as ReportShow) : 'all',
+    level: isListLevel(level) ? level : 'all',
+    scanners: scanners === 'all' || scanners === 'product' ? scanners : defaultScanners,
+  };
+}
+
+/** The search string for a rows query without its page; defaults are left out. */
+export function rowsQueryString({ q, show, level, scanners }: RowsQuery, defaultScanners: RowsScanners): string {
+  const params = new URLSearchParams();
+  if (q.trim()) params.set('q', q.trim());
+  if (show !== 'all') params.set('show', show);
+  if (level && level !== 'all') params.set('level', level);
+  if (scanners && scanners !== defaultScanners) params.set('scanners', scanners);
+  const text = params.toString();
+  return text ? `?${text}` : '';
+}
+
+const rowMatches = (item: CompactRow, show: ReportShow): boolean =>
+  show === 'all'
+  || (show === 'signal' && (item.f & FLAG.look) !== 0)
+  || (show === 'leaked' && (item.f & FLAG.leaked) !== 0)
+  || (show === 'flagged' && (item.f & FLAG.flagged) !== 0)
+  || (show === 'twins' && (item.f & FLAG.twin) !== 0);
+
+/** Narrow rows by search text, the show choice and the evidence level. Order is the order given. */
+export function filterRows(data: Pick<RowsData, 'dictionary' | 'items'>, { q, show, level }: Pick<RowsQuery, 'q' | 'show' | 'level'>): { items: CompactRow[]; resultText: string; total: number } {
+  const needle = q.trim().toLowerCase();
+  const shown = data.items.filter(item => (level === 'all' || item.l === level) && rowMatches(item, show) && (!needle || rowSearchText(data, item).includes(needle)));
+  return { items: shown, total: data.items.length, resultText: `${int(shown.length)} of ${int(data.items.length)} rows` };
 }
 
 /** 1-based page from `?page=`, clamped to the pages that exist. */

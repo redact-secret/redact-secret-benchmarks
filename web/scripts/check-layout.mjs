@@ -42,6 +42,22 @@ const small = [...perFamily.entries()].find(([, n]) => n > 0 && n <= 10)?.[0];
 const none = taxonomy.families.find(f => !perFamily.has(f.id))?.id;
 for (const id of [largest, small, none]) if (id) ROUTES.push(`report/families/${slugOf(id)}`);
 if (largest) ROUTES.push(`report/families/${slugOf(largest)}/?page=2`);
+// The rows, suite, fixture, detector and findings pages (#559), and the level and scanner controls (#560).
+ROUTES.push('report/rows/T1', 'report/rows/T2/?show=leaked&scanners=product', 'report/rows/T3/?show=flagged', 'report/fixtures', 'report/detectors', 'report/detectors/?show=signal', 'report/findings', 'report/families/?level=T2', 'report/providers/?level=T3');
+if (largest) ROUTES.push(`report/families/${slugOf(largest)}/?scanners=all&level=T1`);
+const detectors = JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/detectors.json'), 'utf8')).detectors;
+ROUTES.push(`report/detectors/${detectors[0].id}`, `report/detectors/${detectors.at(-1).id}`);
+const suites = JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/categories.json'), 'utf8')).filter(c => !c.calibrationOnly);
+// A fixture page: the first fixture of a small suite, and the largest single fixture of the corpus (a 72 KB line-heavy input).
+const firstOf = new Map();
+for (const f of index.fixtures) { const [category, ...rest] = f.slug.split('--'); if (!firstOf.has(category)) firstOf.set(category, rest.join('--')); }
+const smallSuite = suites.find(c => c.id === 'common-formats') ?? suites[0];
+ROUTES.push(`report/fixtures/${smallSuite.id}`, `report/fixtures/${smallSuite.id}/?fixture=${firstOf.get(smallSuite.id)}`, 'report/fixtures/context-edges');
+try {
+  const corpus = JSON.parse(await readFile(path.join(repoRoot, 'fixtures/generated/context-edges.json'), 'utf8'));
+  const big = corpus.fixtures.reduce((a, b) => (b.content.length > a.content.length ? b : a));
+  ROUTES.push(`report/fixtures/context-edges/?fixture=${big.id}`);
+} catch { /* the generated corpus is materialised by npm ci */ }
 const PAGE_ONLY = ['404.html'];
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.png': 'image/png', '.txt': 'text/plain' };
 
@@ -153,7 +169,7 @@ async function main() {
 
   const targets = [
     ...stories.map(id => ({ name: `story ${id}`, url: `${origin}/iframe.html?id=${id}&viewMode=story`, ready: 'body.sb-show-main', header: false })),
-    ...ROUTES.map(r => ({ name: `page /${r}`, url: `${origin}${basePath}/${r.includes('?') ? r.replace('?', '/?').replace('//', '/') : `${r}/`}`, ready: 'main', header: true })),
+    ...ROUTES.map(r => ({ name: `page /${r}`, url: `${origin}${basePath}/${r.includes('?') ? r.replace('?', '/?').replace('//', '/') : `${r}/`}`, ready: /[?&]fixture=/.test(r) ? '[data-fixture-ready]' : 'main', header: true })),
     ...PAGE_ONLY.map(r => ({ name: `page /${r}`, url: `${origin}${basePath}/${r}`, ready: 'main', header: true })),
   ];
 

@@ -18,6 +18,8 @@ export const SECTIONS: Section[] = [
       { href: '/report/', label: 'Overview', title: 'Report', summary: 'What the ledger records for the published release, level by level.' },
       { href: '/report/providers/', label: 'Providers', title: 'Providers', summary: 'Every provider in the taxonomy and what the ledger records for it.' },
       { href: '/report/families/', label: 'Families', title: 'Families', summary: 'Every credential family, with the evidence behind its recorded status.' },
+      { href: '/report/detectors/', label: 'Detectors', title: 'Detectors', summary: 'Every detector family by the fixtures that exercise it, and what the run recorded for each group.' },
+      { href: '/report/findings/', label: 'Findings', title: 'Findings', summary: 'Every finding this benchmark handed to the product, with its recorded status and the fixtures it rests on.' },
     ],
   },
   {

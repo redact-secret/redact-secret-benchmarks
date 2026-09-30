@@ -33,7 +33,13 @@ export interface CatalogFixture {
   /** Reviewed family relationships; empty for a global fixture. */
   familyIds: string[];
   unscopedReason?: string;
+  /** Detector families the fixture is assigned to (`benchmarks/fixture-detectors.json`); assignments overlap. */
+  detectors: string[];
 }
+
+/** A published suite of the corpus, in registry order. */
+export interface CatalogSuite { id: string; title: string; description: string; reviewStatus: string }
+export interface CatalogDetector { id: string; title: string }
 
 export interface Catalog {
   fixtures: CatalogFixture[];
@@ -44,13 +50,22 @@ export interface Catalog {
   /** Fixtures with exactly one family relationship, by family id. A fixture with two relationships is listed under both. */
   fixturesByFamily: Map<string, CatalogFixture[]>;
   detectorCount: number;
+  suites: CatalogSuite[];
+  detectors: CatalogDetector[];
+  /** Fixtures assigned to a detector. A fixture can be under several, so these are never summed. */
+  fixturesByDetector: Map<string, CatalogFixture[]>;
+  fixturesBySuite: Map<string, CatalogFixture[]>;
 }
 
-interface CategoryEntry { id: string; corpus: string; calibrationOnly?: boolean }
-interface CorpusFile { fixtures: { id: string; group: string; twinOf?: string; assessment: { kind: Kind; tier: Tier } }[] }
-interface DetectorRegistry { detectors: { id: string }[] }
+interface CategoryEntry { id: string; title: string; description: string; corpus: string; calibrationOnly?: boolean }
+interface CorpusFile { reviewStatus?: string; fixtures: { id: string; group: string; twinOf?: string; assessment: { kind: Kind; tier: Tier } }[] }
+interface DetectorRegistry { detectors: { id: string; title: string }[] }
 /** A fixture as `buildCatalog` returns it, with the bytes and ground truth `reportProblem` re-checks reports against. */
-export type BuiltFixture = { id: string; slug: string; category: string; group: string; path: string; content: string; expected: unknown[]; twinOf?: string; assessment: { kind: Kind; tier: Tier; contract?: string } };
+export type BuiltFixture = {
+  id: string; slug: string; category: string; group: string; path: string; content: string; expected: unknown[]; twinOf?: string;
+  detectors: string[]; issue?: number; mutation?: string; mutationKind?: string;
+  assessment: { kind: Kind; tier: Tier; contract?: string; reason?: string; sources?: string[] };
+};
 
 export interface CatalogSources {
   /** Published suite ids, in registry order. */
@@ -80,6 +95,7 @@ interface Loaded extends CatalogSources {
   index: FixtureIndex;
   taxonomy: Taxonomy;
   registry: DetectorRegistry;
+  suites: CatalogSuite[];
 }
 
 function loadSources(): Promise<Loaded> {
@@ -103,8 +119,24 @@ function loadSources(): Promise<Loaded> {
 
     const built = buildCatalog(categories, corpora, assignments, registry.detectors) as BuiltFixture[];
     if (index.identity.fixtureCount !== built.length) throw new Error('Fixture semantic index membership does not match the fixture corpora');
-    return { categories: categories.map(c => c.id), hashes, fixtures: built, index, taxonomy, registry };
+    const suites = categories.map(c => ({ id: c.id, title: c.title, description: c.description, reviewStatus: corpora[c.id].reviewStatus ?? '' }));
+    return { categories: categories.map(c => c.id), hashes, fixtures: built, index, taxonomy, registry, suites };
   });
+}
+
+/**
+ * The fixture bytes, expected spans and assessments as `buildCatalog` returns them,
+ * by slug: what the fixture page shows and what `reportProblem` re-checks reports
+ * against. Held apart from `Catalog` so a list never carries the bytes.
+ */
+export async function loadFixtureBytes(): Promise<Map<string, BuiltFixture>> {
+  const { fixtures } = await loadSources();
+  return new Map(fixtures.map(f => [f.slug, f]));
+}
+
+/** The published suites, in registry order, with the review status the corpus carries. */
+export async function loadSuites(): Promise<CatalogSuite[]> {
+  return (await loadSources()).suites;
 }
 
 /** What `reportProblem` needs to re-validate a suite report. Used by services/run.ts. */
@@ -115,7 +147,7 @@ export async function loadCatalogSources(): Promise<CatalogSources> {
 
 export function loadCatalog(): Promise<Catalog> {
   return once('catalog', async () => {
-    const { fixtures: built, index, taxonomy, registry } = await loadSources();
+    const { fixtures: built, index, taxonomy, registry, suites } = await loadSources();
     const semantic = new Map(index.fixtures.map(entry => [entry.slug, entry]));
     const providerById = new Map(taxonomy.providers.map(p => [p.id, p]));
     const familyById = new Map(taxonomy.families.map(f => [f.id, f]));
@@ -131,15 +163,21 @@ export function loadCatalog(): Promise<Catalog> {
         ...(f.twinOf ? { twinOf: `${f.category}--${f.twinOf}` } : {}),
         familyIds: entry.familyIds,
         ...(entry.unscopedReason ? { unscopedReason: entry.unscopedReason } : {}),
+        detectors: f.detectors,
       };
     });
 
     const fixturesByFamily = new Map<string, CatalogFixture[]>();
     for (const f of fixtures) for (const id of f.familyIds) (fixturesByFamily.get(id) ?? fixturesByFamily.set(id, []).get(id)!).push(f);
+    const fixturesByDetector = new Map<string, CatalogFixture[]>(registry.detectors.map(d => [d.id, []]));
+    for (const f of fixtures) for (const id of f.detectors) fixturesByDetector.get(id)!.push(f);
+    const fixturesBySuite = new Map<string, CatalogFixture[]>(suites.map(s => [s.id, []]));
+    for (const f of fixtures) fixturesBySuite.get(f.category)!.push(f);
 
     return {
       fixtures, bySlug: new Map(fixtures.map(f => [f.slug, f])), taxonomy, providerById, familyById, fixturesByFamily,
       detectorCount: registry.detectors.length,
+      suites, detectors: registry.detectors.map(d => ({ id: d.id, title: d.title })), fixturesByDetector, fixturesBySuite,
     };
   });
 }

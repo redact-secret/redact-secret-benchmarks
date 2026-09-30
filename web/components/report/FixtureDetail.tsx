@@ -100,7 +100,12 @@ export function FixtureDetail({ fixture, className }: FixtureDetailProps) {
           <Eyebrow>Why this expectation</Eyebrow>
           <KeyValueList
             items={[
-              ...f.facts.map(fact => ({ term: fact.term, description: fact.href ? <Link href={fact.href}>{fact.value}</Link> : fact.value })),
+              ...f.facts.map(fact => ({
+                term: fact.term,
+                description: fact.links
+                  ? fact.links.map((l, i) => <span key={l.href}>{i > 0 && ', '}<Link href={l.href}>{l.label}</Link></span>)
+                  : fact.href ? <Link href={fact.href}>{fact.value}</Link> : fact.value,
+              })),
               ...(f.sources.length ? [{ term: 'Sources', description: f.sources.map((s, i) => <span key={s.href}>{i > 0 && ' · '}<a href={s.href}>{s.label}</a></span>) }] : []),
             ]}
           />

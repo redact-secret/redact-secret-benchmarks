@@ -157,8 +157,8 @@ export function resolveFamilyList(catalog: Catalog, rows: Map<string, RowResult>
 
 // ---- One family --------------------------------------------------------------
 
-const KIND_TITLE: Record<string, string> = { 'must-redact': 'Must redact', 'must-not-flag': 'Must not flag', policy: 'Project policy' };
-const TIER_TITLE: Record<string, string> = { T1: 'Provider-documented', T2: 'Tool-corroborated', T3: 'Project policy', T0: 'Pending' };
+export const KIND_TITLE: Record<string, string> = { 'must-redact': 'Must redact', 'must-not-flag': 'Must not flag', policy: 'Project policy' };
+export const TIER_TITLE: Record<string, string> = { T1: 'Provider-documented', T2: 'Tool-corroborated', T3: 'Project policy', T0: 'Pending' };
 
 /** One fixture row: a word and a status, never a colour alone. A policy row records a difference of opinion, so it is information, not failure. */
 export function outcomeOf(f: CatalogFixture, row: RowResult | undefined): StatusLabel {
@@ -173,7 +173,7 @@ export function outcomeOf(f: CatalogFixture, row: RowResult | undefined): Status
   return { status: 'not-measured', label: 'Unscored' };
 }
 
-const rowClean = (row: RowResult | undefined): boolean => !row || (row.spanOutcomes ? row.spanOutcomes.every(o => o === 'EXACT' || o === 'COVERED') : !row.flagged);
+export const rowClean = (row: RowResult | undefined): boolean => !row || (row.spanOutcomes ? row.spanOutcomes.every(o => o === 'EXACT' || o === 'COVERED') : !row.flagged);
 
 export interface FamilyDetail {
   id: string;

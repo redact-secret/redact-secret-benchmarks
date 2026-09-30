@@ -71,6 +71,10 @@ if (html) {
     };
     const mine = rowsBy.get('redact-secret') ?? new Map();
     const peers = summary.scanners.filter(s => s.id !== 'redact-secret');
+    let file;
+    try { file = JSON.parse(await readFile(path.join(out, '..', '..', 'data', 'comparison', 'accuracy', 'differences.json'), 'utf8')); } catch { fail('the export has no data/comparison/accuracy/differences.json'); }
+    if (!file || file.version !== 1 || file.runId !== run.runId) { fail('differences.json is missing or is not from this run'); file = { fixtures: [], peers: {}, providers: [] }; }
+    if (!new RegExp(`fixtures\\\\*":${file.fixtures.length}[,}]`).test(html)) fail(`the page does not name the ${file.fixtures.length} files differences.json holds, so a file from another build could not be refused`);
     for (const peer of peers) {
       const theirs = rowsBy.get(peer.id) ?? new Map();
       for (const level of ['T1', 'T2', 'T3']) {
@@ -79,13 +83,20 @@ if (html) {
         if (!panel) { fail(`missing panel ${key}`); continue; }
         const t = text(panel.split('data-acc-panel=""')[0]);
         const us = { r: [0, 0, 0], a: [0, 0] }, them = { r: [0, 0, 0], a: [0, 0] };
-        const total = { r: 0, a: 0 };
+        const total = { r: 0, a: 0 }, dif = { r: 0, a: 0 };
         for (const [slug, a] of fixtures) {
           if (a.tier !== level) continue;
           const q = a.kind === 'must-not-flag' ? 'a' : 'r';
           const x = stateOf(q, mine.get(slug)), y = stateOf(q, theirs.get(slug));
           if (x === null || y === null) continue;
           total[q]++; us[q][x]++; them[q][y]++;
+          if ((x === 0) !== (y === 0)) dif[q]++;
+        }
+        // The differing files: the page states the count, and the build-emitted file holds exactly those files.
+        for (const q of ['r', 'a']) {
+          const held = (file.peers[peer.id] ?? []).filter(([at]) => file.fixtures[at].l === level && file.fixtures[at].q === q).length;
+          if (held !== dif[q]) fail(`${key}: differences.json holds ${held} ${q} files for ${peer.id} at ${level}, the suite reports give ${dif[q]}`);
+          if (dif[q] && !t.includes(`Show the ${int(dif[q])} files with different results`)) fail(`${key}: does not state ${int(dif[q])} differing files`);
         }
         const stated = (re, count) => [...t.matchAll(re)].map(m => m.slice(1, 1 + count).map(v => Number(v.replace(/,/g, ''))));
         const r = stated(/Hidden ([\d,]+) Partly readable ([\d,]+) Readable ([\d,]+)/g, 3);

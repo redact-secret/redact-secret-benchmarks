@@ -9,6 +9,7 @@
  *
  *   rows/<kind>/<id>/rows.json        every row of a rows table that does not fit one page
  *   fixtures/<suite>/records.json     the records a suite's fixture pages are built from
+ *   comparison/accuracy/differences.json   the differing files of every accuracy pair (#570)
  */
 export type RowsKind = 'level' | 'family' | 'suite' | 'detector';
 export const ROWS_KINDS: readonly RowsKind[] = ['level', 'family', 'suite', 'detector'];
@@ -18,6 +19,8 @@ export const DATA_DIR = 'data';
 
 export const rowsDataPath = (kind: RowsKind, id: string): string => `rows/${kind}/${id}/rows.json`;
 export const recordsDataPath = (suite: string): string => `fixtures/${suite}/records.json`;
+/** The files where redact-secret and another tool differ, for every pair of `/comparison/accuracy`. One file. */
+export const ACCURACY_DIFFERENCES_PATH = 'comparison/accuracy/differences.json';
 
 /** The only paths the browser may request. An id is letters, digits, dot, underscore and hyphen. */
-export const BUILD_DATA_PATH = /^(?:rows\/(?:level|family|suite|detector)\/[a-z0-9][a-z0-9._-]*\/rows|fixtures\/[a-z0-9][a-z0-9._-]*\/records)\.json$/i;
+export const BUILD_DATA_PATH = /^(?:rows\/(?:level|family|suite|detector)\/[a-z0-9][a-z0-9._-]*\/rows|fixtures\/[a-z0-9][a-z0-9._-]*\/records|comparison\/accuracy\/differences)\.json$/i;

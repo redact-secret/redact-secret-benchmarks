@@ -16,11 +16,11 @@ export const metadata: Metadata = { title: 'Accuracy comparison' };
  * the same test files. A server component: it runs during `next build` and ships HTML. Every
  * reachable pair, evidence level and scope is a pre-rendered panel; `?data=&with=&level=&scope=&peers=`
  * picks one after load (docs/decisions/2026-09-30-...), so a link stays shareable and nothing is
- * fetched. The lists of differing files are built in the browser from one compact dataset, only when
- * a reader opens one.
+ * re-rendered. The lists of differing files are built in the browser from one build-emitted JSON file
+ * (`data/comparison/accuracy/differences.json`), fetched only when a reader opens one.
  */
 export default async function Page() {
-  const { options, panels, diff, runState } = await resolveAccuracyPairPage();
+  const { options, panels, source, runState } = await resolveAccuracyPairPage();
   const defaultKey = panels.find(p => p.isDefault)?.key;
   const page = (
     <>
@@ -38,5 +38,5 @@ export default async function Page() {
       ))}
     </>
   );
-  return diff ? <DifferencesProvider data={diff}>{page}</DifferencesProvider> : page;
+  return source ? <DifferencesProvider source={source}>{page}</DifferencesProvider> : page;
 }

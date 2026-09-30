@@ -21,11 +21,13 @@ says which scanner is better.
 - **Route and address.** `/comparison/accuracy/`, `?data=credentials|pii&with=<tool>&level=T1|T2|T3&scope=all|listed&peers=1`,
   defaults left out. The tool offered first is the first in run order, never chosen by result. The comparison hub's Accuracy
   row points here; `/report` stays in the navigation and is one link away ("All scanners at once").
-- **Pre-rendered panels, no client fetch.** Every reachable pair, level and scope is a panel (34 today); one key on the root
-  element (`data-acc-key`, set by an inline script before paint and by `AccuracySync`) shows one. The panel rules are emitted
-  per key from the page, so a new scanner in the run needs no stylesheet edit. The lists of differing files are one compact
-  dataset (`DiffData`) held once by a context provider and drawn only when a reader opens a list; no request is made. The
-  route is about 4.5 MB in four files (`check-export-accuracy.mjs` caps it at 8 MB).
+- **Pre-rendered panels, differences as build-emitted JSON.** Every reachable pair, level and scope is a panel (34 today);
+  one key on the root element (`data-acc-key`, set by an inline script before paint and by `AccuracySync`) shows one. The
+  panel rules are emitted per key from the page, so a new scanner in the run needs no stylesheet edit. The lists of
+  differing files are one build-emitted file, `data/comparison/accuracy/differences.json` (a shared table of files and one
+  short list of references per tool), fetched through `lib/build-data.ts` when a reader first opens a list, with a skeleton
+  and a retry note (allowed by the same-origin fetch decision, #573). The page names the run and the file count it expects,
+  so a file from another build is refused. `check-export-accuracy.mjs` recounts every panel and the file from the suite reports.
 - **Files, not spans.** A test file is Hidden (no PARTIAL or MISS span), Partly readable (PARTIAL, no MISS) or Readable (MISS);
   a control is Left alone or Flagged. The page says so; `/report` counts spans, so a file with several secrets counts once
   here. A file either tool has no usable row for is left out and stated, never a pass or a zero.

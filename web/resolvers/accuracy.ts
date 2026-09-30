@@ -202,6 +202,22 @@ export type DiffEntry = [number, 1 | 2, 0 | 1];
 /** Every file where the two differ, for every peer: what the island lists. Shipped once. */
 export interface DiffData { providers: string[]; fixtures: DiffFixture[]; peers: Record<string, DiffEntry[]> }
 
+/** `data/comparison/accuracy/differences.json`: the dataset plus the run it came from. */
+export interface DiffFile extends DiffData { version: 1; runId: string }
+/** What the page knows about the file it will ask for, so a file from another build is refused. */
+export interface DiffSource { src: string; runId: string; fixtures: number }
+
+export const diffFileOf = (diff: DiffData, runId: string): DiffFile => ({ version: 1, runId, ...diff });
+
+const isArray = (value: unknown): value is unknown[] => Array.isArray(value);
+/** The shape guard for the file: the parts the lists read, and the run and size the page expects. */
+export const isDiffFileOf = (source: Pick<DiffSource, 'runId' | 'fixtures'>) => (value: unknown): value is DiffFile => {
+  if (!value || typeof value !== 'object') return false;
+  const v = value as Partial<DiffFile>;
+  return v.version === 1 && v.runId === source.runId && isArray(v.providers) && isArray(v.fixtures) && v.fixtures.length === source.fixtures
+    && !!v.peers && typeof v.peers === 'object' && Object.values(v.peers).every(isArray);
+};
+
 export interface PairModel { peers: PairPeer[]; diff: DiffData; product: { version: string; mode: string; modeLine: string } }
 
 const cellKey = (level: Level, scope: PairScope): string => `${level}|${scope}`;

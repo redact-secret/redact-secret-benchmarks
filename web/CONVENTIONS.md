@@ -185,6 +185,7 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
 - `/comparison/accuracy` (#570) pre-renders every reachable pair, level and scope as a panel keyed
   `<data>.<tool>.<level>.<scope>.<peers>` and shows one by `data-acc-key` on the root (inline script plus `AccuracySync`;
   the per-key rules come from `app/comparison/accuracy/panel-css.ts`). Blocks are `Accuracy*` in `components/comparison`; the
-  resolver is `resolvers/accuracy.ts` (pure, also read by the client island that lists differing files from one compact
-  `DiffData` when opened). `check-export-accuracy.mjs` recounts every panel from the suite reports. Decision:
+  resolver is `resolvers/accuracy.ts` (pure, also read by the client island that lists differing files from the
+  build-emitted `data/comparison/accuracy/differences.json` when a list is opened). `check-export-accuracy.mjs` recounts every
+  panel and that file from the suite reports. Decision:
   `docs/decisions/2026-09-30-compare-accuracy-one-pair-at-a-time.md`.

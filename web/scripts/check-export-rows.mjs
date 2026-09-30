@@ -203,7 +203,7 @@ import assert from 'node:assert/strict';
 
 const PAGE = 50; // resolvers/filters.ts PAGE_SIZE
 // The same pattern as web/lib/data-paths.ts (tests/web-conventions.test.mjs keeps the two equal).
-const DATA_PATH = /^(?:rows\/(?:level|family|suite|detector)\/[a-z0-9][a-z0-9._-]*\/rows|fixtures\/[a-z0-9][a-z0-9._-]*\/records)\.json$/i;
+const DATA_PATH = /^(?:rows\/(?:level|family|suite|detector)\/[a-z0-9][a-z0-9._-]*\/rows|fixtures\/[a-z0-9][a-z0-9._-]*\/records|comparison\/accuracy\/differences)\.json$/i;
 const dataRoot = path.join(out, 'data');
 const emitted = new Set();
 try {
@@ -224,7 +224,7 @@ for (const c of categories) tables.push({ kind: 'suite', id: c.id, page: `report
 for (const d of detectors.detectors) tables.push({ kind: 'detector', id: d.id, page: `report/detectors/${d.id}`, slugs: Object.entries(assignments).filter(([, ids]) => ids.includes(d.id)).map(([slug]) => slug) });
 if (run) for (const level of ['T1', 'T2', 'T3']) tables.push({ kind: 'level', id: level, page: `report/rows/${level}`, slugs: [...tierOf.entries()].filter(([, v]) => v.tier === level).map(([slug]) => slug) });
 
-const wanted = new Set([...tables.filter(t => t.slugs.length > PAGE).map(t => `rows/${t.kind}/${t.id}/rows.json`), ...categories.map(c => `fixtures/${c.id}/records.json`)]);
+const wanted = new Set([...tables.filter(t => t.slugs.length > PAGE).map(t => `rows/${t.kind}/${t.id}/rows.json`), ...categories.map(c => `fixtures/${c.id}/records.json`), 'comparison/accuracy/differences.json' /* /comparison/accuracy (#570); its content is checked by check-export-accuracy.mjs */]);
 for (const file of wanted) if (!emitted.has(file)) fail(`data/${file} is missing from the export`);
 for (const file of emitted) if (!wanted.has(file)) fail(`data/${file} is emitted but no page asks for it (a table that fits one page ships whole)`);
 

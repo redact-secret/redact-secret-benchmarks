@@ -4,7 +4,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {
-  buildPairModel, defaultQuery, differenceColumns, differencesOf, normalise, pairHref, pairQueryOf, pairScript, pairSearch, panelKey, resolveAccuracyPage, share, stateOf, questionOf,
+  buildPairModel, diffFileOf, isDiffFileOf, defaultQuery, differenceColumns, differencesOf, normalise, pairHref, pairQueryOf, pairScript, pairSearch, panelKey, resolveAccuracyPage, share, stateOf, questionOf,
   GROUPS_SHOWN,
 } from '../web/resolvers/accuracy.ts';
 
@@ -142,6 +142,18 @@ test('a long provider list is cut to 40 and shows all on request, per column', (
   const all = differenceColumns(lists, 'r', 'Peer', [true, false]);
   assert.equal(all[0].groups.length, 90);
   assert.equal(all[0].more, undefined);
+});
+
+test('the differences file is refused unless it is the page\'s own run and size', () => {
+  const model = buildPairModel(catalog, run, profiles);
+  const file = diffFileOf(model.diff, 'run-1');
+  const ok = isDiffFileOf({ runId: 'run-1', fixtures: model.diff.fixtures.length });
+  assert.ok(ok(JSON.parse(JSON.stringify(file))));
+  assert.ok(!isDiffFileOf({ runId: 'run-2', fixtures: model.diff.fixtures.length })(file), 'another run');
+  assert.ok(!isDiffFileOf({ runId: 'run-1', fixtures: model.diff.fixtures.length + 1 })(file), 'another build');
+  assert.ok(!ok(null) && !ok({ version: 1 }) && !ok({ ...file, peers: { peer: 3 } }));
+  // The lists read the same from the file as from the model.
+  assert.deepEqual(differencesOf(JSON.parse(JSON.stringify(file)), 'peer', 'T1', 'all', 'r'), differencesOf(model.diff, 'peer', 'T1', 'all', 'r'));
 });
 
 const options = { credentials: ['gitleaks', 'trufflehog', 'flare-redact'], pii: ['flare-redact', 'openredaction'] };

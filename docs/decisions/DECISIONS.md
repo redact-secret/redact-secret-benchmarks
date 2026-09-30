@@ -63,3 +63,4 @@ every record here has valid frontmatter and is indexed exactly once.
 - [Keep provider research in schema-validated dossiers in this repository](2026-09-29-keep-provider-research-in-validated-dossiers.md)
 - [Relabel the provider-named near-miss controls that redact-secret#948 makes credentials](2026-09-29-relabel-provider-named-near-miss-controls-under-948.md) (twins keep their scoped expectation; 25 controls move to policy/T3 on generic-token; nine replacement controls in `beta8-948`)
 - [Run the peer PII runtime-throughput snapshot in a pinned Docker image, and refuse emulated or lagging snapshots](2026-09-29-run-peer-pii-throughput-in-a-pinned-docker-image.md) (proposed; #513)
+- [Define benchmark handoff states as a work-item vocabulary that never implies support status](2026-09-30-define-benchmark-handoff-states.md) (#533; five states shared with redact-secret#1049, no new field, no status inferred from workflow state)

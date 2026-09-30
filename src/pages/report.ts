@@ -4,6 +4,7 @@ import { currentReports, groupsOf, hasResults, PRODUCT, runIdOf, type BenchData 
 import { boundCell, confidence, metric, type Floors } from './figures';
 import { peerRuntimeSection } from './peer-runtime-throughput';
 import { peerObservation, reportHierarchy } from './report-hierarchy';
+import { newsSection, reportHub } from './report-hub';
 import { tierTitle } from './rows';
 import { runStates } from './states';
 
@@ -19,11 +20,13 @@ export const redactKey = (level: Level) => (level === 'T3' ? 'policy/T3' : `must
 export const controlKey = (level: Level) => `must-not-flag/${level}`;
 
 /**
- * Report: three answers, each one Figure. Production reads the published
+ * Report: a hub first, then three answers. The first screen only counts what
+ * each drill-down page holds (providers, families, detectors, news); the
+ * three Figures follow as the second section. Production reads the published
  * package; a staging run may measure an unreleased candidate (#201), and the
- * eyebrow then names it. Other scanners are reference rows in run order: no
- * sort, no rank, no winner. Runtime redaction libraries (#444) follow the
- * peer table: PII runtime speed, identical at every evidence level.
+ * eyebrow then names it. What changed and the rows behind the numbers come
+ * next. Comparison with other tools sits last, in run order with no rank: the
+ * peer table and runtime redaction libraries (#444), identical at every level.
  */
 export function reportPage(data: BenchData, level: Level, fixtures: Fixture[], search = ''): string {
   const version = data.run?.scannerVersions[PRODUCT], runId = runIdOf(data), candidate = data.run?.candidate;
@@ -31,23 +34,27 @@ export function reportPage(data: BenchData, level: Level, fixtures: Fixture[], s
   const seg = `<div class="seg" role="group" aria-label="Evidence level">${LEVELS.map(l => `<a href="/report${l === 'T1' ? '' : `?level=${l}`}"${l === level ? ' aria-current="true"' : ''} aria-label="${e(tierTitle(l))}"><span class="wide">${e(tierTitle(l))}</span><span class="narrow">${SHORT[l]}</span></a>`).join('')}</div>`;
   const summary = data.summaryProblem ? undefined : data.summary;
   const reports = currentReports(data), scanners = summary?.scanners ?? [];
-  const head = `<div class="page-head"><div><p class="eyebrow"${candidate ? ' data-candidate' : ''}>${e(measured.toUpperCase())}</p><h1>What the benchmark shows</h1><div class="meta">${runId ? `<span>Run <b>${e(runId.slice(0, 10))}</b></span>` : ''}${summary ? `<span>Same ${fixtures.length.toLocaleString('en-US')} inputs for ${scanners.length} scanners</span><span>Accounting <b>v${e(summary.accountingVersion)}</b></span>` : ''}<a href="/how-to-read">How to read these numbers</a></div></div>${seg}</div>`;
-  if (!hasResults(data) || !summary) return head + runStates(data) + peerRuntimeSection();
+  const head = `<div class="page-head hub-head"><div><p class="eyebrow"${candidate ? ' data-candidate' : ''}>${e(measured.toUpperCase())}</p><h1>What the benchmark shows</h1><p class="lede">Synthetic inputs, the same for every scanner, scored span by span. Start from a provider, a family or a detector, or see what changed.</p></div></div>${reportHub(fixtures)}`;
+  const answers = `<section class="section answers" id="answers"><div class="section-head"><div><p class="eyebrow muted">${e(tierTitle(level).toUpperCase())}</p><h2 class="h2-compact">Three answers</h2><div class="meta">${runId ? `<span>Run <b>${e(runId.slice(0, 10))}</b></span>` : ''}${summary ? `<span>Same ${fixtures.length.toLocaleString('en-US')} inputs for ${scanners.length} scanners</span><span>Accounting <b>v${e(summary.accountingVersion)}</b></span>` : ''}<a href="/how-to-read">How to read these numbers</a></div></div>${seg}</div>`;
+  if (!hasResults(data) || !summary) return head + `${answers}${runStates(data)}</section>` + newsSection() + comparison('', peerRuntimeSection());
 
   const floors = summary.accounting as unknown as Floors, mine = groupsOf(summary, PRODUCT);
   const rKey = redactKey(level), cKey = controlKey(level), policy = level === 'T3';
-  const figs = `<div class="figs">${[
+  const figs = `${answers}<div class="figs">${[
     figure({ question: policy ? 'Does it leave policy spans readable?' : 'Does it miss real secrets?', ...metric(mine[rKey], 'leak', rKey, floors), href: '#rows', definition: `Leaked span rate. Lower is better. ${confidence(floors)}.${policy ? ' These spans are this project’s redaction policy: a difference here is a difference of opinion, not a defect.' : ''}` }),
     figure({ question: 'Does it flag safe values?', ...metric(mine[cKey], 'alarm', cKey, floors), href: '#rows', definition: `False alarm rate on ${tierTitle(level).toLowerCase()} controls. Lower is better. Few controls keep the bound wide.` }),
     figure({ question: 'Does it tell near-twins apart?', ...metric(mine[rKey], 'twins', rKey, floors), href: '#rows', definition: 'Twin discrimination: the secret is covered and its one-character fake stays quiet. Higher is better.' }),
-  ].join('')}</div>`;
+  ].join('')}</div></section>`;
 
   const others = scanners.filter(s => s.id !== PRODUCT);
   const showT3Peers = !policy || t3PeersOf(search);
   const peers = !others.length ? '' : !showT3Peers
-    ? `<section class="section peers"><p class="eyebrow">OTHER SCANNERS ON THE SAME INPUTS</p><p class="small">Hidden by default: T3 is this project’s masking policy, and a peer’s rate here reflects scope, not accuracy — it is not built to flag this. <a href="?level=T3&amp;peers=1">Show anyway</a>.</p></section>`
-    : `<section class="section peers"><p class="eyebrow">OTHER SCANNERS ON THE SAME INPUTS</p><p class="small">${policy ? 'T3 is this project’s masking policy, never compared with provider-documented formats. A peer’s rate below reflects scope, not accuracy. <a href="?level=T3">Hide</a>.' : 'Reference only. Not a ranking: scanners differ in scope and defaults. Listed in run order.'}</p><div class="tbl"><table><thead><tr><th scope="col">Scanner</th><th scope="col" class="num">Leaked, at most</th><th scope="col" class="num">False alarms, at most</th><th scope="col" class="num">Twins, at least</th></tr></thead><tbody>${others.map(s => { const g = groupsOf(summary, s.id); return `<tr><td>${e(s.id)} ${e(s.version ?? '')}${peerObservation(s.id, reports)}</td><td class="num">${boundCell(g[rKey], 'leak', rKey, floors)}</td><td class="num">${boundCell(g[cKey], 'alarm', cKey, floors)}</td><td class="num">${boundCell(g[rKey], 'twins', rKey, floors)}</td></tr>`; }).join('')}</tbody></table></div></section>`;
+    ? `<div class="peers"><p class="eyebrow">OTHER SCANNERS ON THE SAME INPUTS</p><p class="small">Hidden by default: T3 is this project’s masking policy, and a peer’s rate here reflects scope, not accuracy — it is not built to flag this. <a href="?level=T3&amp;peers=1#compare">Show anyway</a>.</p></div>`
+    : `<div class="peers"><p class="eyebrow">OTHER SCANNERS ON THE SAME INPUTS</p><p class="small">${policy ? 'T3 is this project’s masking policy, never compared with provider-documented formats. A peer’s rate below reflects scope, not accuracy. <a href="?level=T3#compare">Hide</a>.' : 'Reference only. Not a ranking: scanners differ in scope and defaults. Listed in run order.'}</p><div class="tbl"><table><thead><tr><th scope="col">Scanner</th><th scope="col" class="num">Leaked, at most</th><th scope="col" class="num">False alarms, at most</th><th scope="col" class="num">Twins, at least</th></tr></thead><tbody>${others.map(s => { const g = groupsOf(summary, s.id); return `<tr><td>${e(s.id)} ${e(s.version ?? '')}${peerObservation(s.id, reports)}</td><td class="num">${boundCell(g[rKey], 'leak', rKey, floors)}</td><td class="num">${boundCell(g[cKey], 'alarm', cKey, floors)}</td><td class="num">${boundCell(g[rKey], 'twins', rKey, floors)}</td></tr>`; }).join('')}</tbody></table></div></div>`;
 
   const selected = fixtures.filter(f => f.assessment.tier === level && (policy ? f.assessment.kind !== 'must-redact' : f.assessment.kind !== 'policy'));
-  return head + figs + runStates(data) + peers + peerRuntimeSection() + reportHierarchy(selected, reports, `Rows behind these numbers · ${tierTitle(level)}`);
+  return head + figs + runStates(data) + newsSection() + reportHierarchy(selected, reports, `Rows behind these numbers · ${tierTitle(level)}`) + comparison(peers, peerRuntimeSection());
 }
+
+/** Other tools on the same inputs, kept after the benchmark's own evidence. */
+const comparison = (peers: string, runtime: string) => `<section class="section compare" id="compare"><h2 class="h2-compact">Other tools on the same inputs</h2><p class="small">Reference only. Not a ranking: tools differ in scope and defaults, and are listed in run order.</p>${peers}${runtime}</section>`;

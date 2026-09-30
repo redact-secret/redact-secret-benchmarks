@@ -114,16 +114,34 @@ test('Report: T3 hides its peer table by default (#404); the same query the capt
   assert.ok(/<table>/.test(t1.slice(t1.indexOf('OTHER SCANNERS'), t1.indexOf('id="runtime-peers"'))), 'T1 and T2 keep showing peers unconditionally');
 });
 
-test('Report: runtime redaction libraries (#444) sit between the peer table and the rows, identical at every evidence level', async () => {
+test('Report: comparison with other tools (peer table, then #444 runtime libraries) comes after the rows, identical runtime at every evidence level', async () => {
   const { reportPage } = await load('/src/pages/report.ts');
   const section = html => html.slice(html.indexOf('<section class="section rt"'), html.indexOf('</section>', html.indexOf('id="runtime-peers"')) + '</section>'.length);
   const pages = [reportPage(data, 'T1', fixtures), reportPage(data, 'T2', fixtures), reportPage(data, 'T3', fixtures), reportPage(data, 'T3', fixtures, '?level=T3&peers=1')];
   for (const html of pages) {
-    assert.ok(html.indexOf('OTHER SCANNERS') < html.indexOf('id="runtime-peers"') && html.indexOf('id="runtime-peers"') < html.indexOf('id="rows"'), 'after the peer table, before the rows');
+    assert.ok(html.indexOf('id="rows"') < html.indexOf('id="compare"') && html.indexOf('OTHER SCANNERS') < html.indexOf('id="runtime-peers"'), 'the rows first, then the peer table, then runtime');
     assert.equal(section(html), section(pages[0]), 'byte-identical at every level');
   }
   const none = reportPage({ hashes: {}, loaded: categories.map(category => ({ category, problem: 'Missing or unreadable report' })) }, 'T1', fixtures);
   assert.equal(section(none), section(pages[0]), 'renders without accuracy results too');
+});
+
+test('Report: the first section is a hub of drill-down links that counts, never scores; the three answers come second', async () => {
+  const { reportPage } = await load('/src/pages/report.ts');
+  for (const level of ['T1', 'T2', 'T3']) {
+    const html = reportPage(data, level, fixtures);
+    const hub = html.slice(html.indexOf('<nav class="hub"'), html.indexOf('</nav>', html.indexOf('<nav class="hub"')));
+    assert.ok(hub && html.indexOf('<nav class="hub"') < html.indexOf('id="answers"') && html.indexOf('id="answers"') < html.indexOf('class="fig"'), `${level}: hub, then the answers`);
+    const hrefs = [...hub.matchAll(/href="([^"]+)"/g)].map(match => match[1]);
+    assert.deepEqual(hrefs, ['/coverage', '/support', '/coverage?show=detectors', '#news'], 'provider, family, detector, news');
+    assert.ok(!/%|\bms\b|at most|at least/.test(text(hub)), 'no rate, bound or time on the hub');
+    assert.equal(hub.match(/<b>(\d[\d,]*)<\/b><span class="visually-hidden"> providers</)?.[1], taxonomy.providers.length.toLocaleString('en-US'));
+    assert.equal(hub.match(/<b>(\d[\d,]*)<\/b><span class="visually-hidden"> families</)?.[1], taxonomy.families.length.toLocaleString('en-US'));
+    assert.equal(hub.match(/<b>(\d[\d,]*)<\/b><span class="visually-hidden"> detectors</)?.[1], registry.detectors.length.toLocaleString('en-US'));
+    assert.match(html, /id="news"/, 'the news tile has a target on the page');
+  }
+  const none = reportPage({ hashes: {}, loaded: categories.map(category => ({ category, problem: 'Missing or unreadable report' })) }, 'T1', fixtures);
+  assert.match(none, /<nav class="hub"/, 'the hub renders without accuracy results');
 });
 
 test('Report: provider/family projection preserves the exact selected leaf set once', async () => {

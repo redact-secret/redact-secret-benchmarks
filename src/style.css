@@ -136,6 +136,20 @@ h3, .h3 { font: var(--text-h3); margin: 0; }
 .section { border-top: var(--rule-strong) solid var(--ink); padding-top: var(--space-4); margin-top: var(--space-12); }
 .section > .small { margin-top: var(--space-1); }
 .section-head { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-4); }
+/* ---------- report hub (#report first screen): counts and links, never a result ---------- */
+.hub-head .lede { font: var(--text-body); color: var(--ink-muted); max-width: 66ch; margin-top: var(--space-2); }
+.hub { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-4); }
+.hub-tile { display: grid; gap: var(--space-2); align-content: start; grid-template-rows: auto auto 1fr auto; min-width: 0; padding: var(--space-4) var(--space-4) var(--space-4) 0; border-top: var(--rule-strong) solid var(--ink); color: var(--ink); text-decoration: none; }
+.hub-tile:hover, .hub-tile:focus-visible { text-decoration: none; border-top-color: var(--brand-green); }
+.hub-tile .hub-n b { font: var(--text-figure-compact); letter-spacing: -0.01em; color: var(--ink); font-variant-numeric: tabular-nums; }
+.hub-tile .small b { color: var(--ink); font-weight: 600; }
+.hub-tile .hub-go { font: var(--text-small-strong); color: var(--link); }
+.hub-tile:hover .hub-go { text-decoration: underline; }
+.answers .figs { margin-top: var(--space-2); }
+.compare .section { margin-top: var(--space-8); border-top-width: var(--hairline); border-top-color: var(--line); }
+.compare .peers { margin-top: var(--space-6); }
+@media (max-width: 860px) { .hub { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .hub { gap: 0 var(--space-4); } .hub-tile { padding-bottom: var(--space-6); } }
 .cols2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8); }
 .cols2 > * { min-width: 0; }
 .prose { max-width: var(--measure); display: grid; gap: var(--space-4); align-content: start; }

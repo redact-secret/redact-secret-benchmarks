@@ -27,6 +27,7 @@ families:
         - https://github.com/Yelp/detect-secrets/blob/5e141933554a0b74e7341841f318be21e895339c/detect_secrets/plugins/aws.py
         - https://github.com/trufflesecurity/trufflehog/blob/48b58d3bf3f02ba17bf23b87f095499bc80c6fd7/pkg/detectors/aws/session_keys/sessionkey.go
         - https://github.com/awslabs/git-secrets/blob/7d6b970cbd3c216353cb22b383b70c150140662e/git-secrets
+        - https://github.com/awslabs/ferret-scan/blob/c3b10fba90a5ed6178314ac646988546122afc60/internal/validators/secrets/validator.go#L1444
         - https://github.com/hashicorp/aws-sdk-go-base/blob/41fc7e1b09a140821eb9cbe6889bb53072a0da2e/logging/aws.go
         - https://github.com/BishopFox/jsluice/blob/0ddfab153e060a9eeaded4d8669233f7c071e7e4/secret-aws.go
         - https://github.com/gitleaks/gitleaks/pull/1816
@@ -45,7 +46,7 @@ families:
     blockedBy: null
   - id: aws:sts-service-bearer-token
     research:
-      verdict: not-found
+      verdict: rejected
       tier: null
       sources:
         - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_bearer.html
@@ -58,7 +59,8 @@ families:
         - https://github.com/BishopFox/jsluice/blob/0ddfab153e060a9eeaded4d8669233f7c071e7e4/secret-aws.go
       issues:
         - redact-secret/redact-secret-benchmarks#473
-      evidence: null
+        - redact-secret/redact-secret#1012
+      evidence: https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/aws-other-iam-prefixes.md
       researchedAt: 2026-09-29
     blockedBy: null
   - id: aws:context-specific-credential
@@ -76,7 +78,8 @@ families:
         - https://github.com/BishopFox/jsluice/blob/0ddfab153e060a9eeaded4d8669233f7c071e7e4/secret-aws.go
       issues:
         - redact-secret/redact-secret-benchmarks#473
-      evidence: null
+        - redact-secret/redact-secret#1012
+      evidence: https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/aws-other-iam-prefixes.md
       researchedAt: 2026-09-29
     blockedBy: null
   - id: aws:iam-user-secret-access-key
@@ -87,6 +90,7 @@ families:
         - https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html
         - https://docs.aws.amazon.com/IAM/latest/APIReference/API_AccessKey.html
         - https://github.com/awslabs/git-secrets/blob/7d6b970cbd3c216353cb22b383b70c150140662e/git-secrets
+        - https://github.com/awslabs/ferret-scan/blob/c3b10fba90a5ed6178314ac646988546122afc60/internal/validators/secrets/validator.go#L1434-L1444
         - https://github.com/Yelp/detect-secrets/blob/5e141933554a0b74e7341841f318be21e895339c/detect_secrets/plugins/aws.py
         - https://github.com/trufflesecurity/trufflehog/blob/48b58d3bf3f02ba17bf23b87f095499bc80c6fd7/pkg/detectors/aws/common.go
         - https://github.com/hashicorp/aws-sdk-go-base/blob/41fc7e1b09a140821eb9cbe6889bb53072a0da2e/logging/aws.go
@@ -106,7 +110,7 @@ families:
 
 AWS issues long-term IAM user access keys, short-term STS credentials and related service credentials, told apart by a four-letter identifier prefix (AKIA, ASIA, ABIA, ACCA), plus a separate 40-character secret paired with an access key ID. Amazon Bedrock API keys are recorded under `aws-bedrock` and not here.
 
-`aws:iam-user-access-key` is `ready` at T1 on the shipped `aws-access-key` contract. The 2026-09-29 pass (#473) settled the other four: ASIA is `ready` (T1 prefix, T2 body), the secret access key is `ready` (T2, context-constrained only), the ABIA bearer token is `not-found`, and ACCA is `rejected`. Whether and how core detects a family is not recorded here.
+`aws:iam-user-access-key` is `ready` at T1 on the shipped `aws-access-key` contract. The 2026-09-29 pass (#473) settled the other four: ASIA is `ready` (T1 prefix, T2 body), the secret access key is `ready` (T2, context-constrained only), the ABIA bearer token is `rejected` (identifier, not a secret; #1012), and ACCA is `rejected`. Whether and how core detects a family is not recorded here.
 
 ## Families
 
@@ -130,16 +134,17 @@ AWS issues long-term IAM user access keys, short-term STS credentials and relate
 ### `aws:sts-service-bearer-token` — STS service bearer token
 
 - **Shape:** AWS documents that the access key ID inside an STS service bearer token starts with ABIA. It says nothing about the bearer token string itself.
-- **Verdict:** `not-found` (2026-09-29, #473) for the family as named: a bearer credential prefixed ABIA.
+- **Verdict (#1012, 2026-09-29):** `rejected`, NOT-A-SECRET. This supersedes `not-found` (#473, same day): `ABIA` is the access key ID that CloudTrail records for a service bearer token, an identifier; the credential a user could leak is the bearer token, which has no documented prefix. The 1012 record recommends relabelling the support-matrix row as an identifier, not a redaction target; that maintainer ruling is pending (taxonomy unchanged). Earlier verdict for the family as named (a bearer credential prefixed ABIA): `not-found`.
 - **What the sources say.** The service-bearer-token page says services such as CodeArtifact (and, by the same permission, ECR Public) call `sts:GetServiceBearerToken` and hand back a token, and that "the token's access key ID begins with the ABIA prefix", which helps read CloudTrail. The CodeArtifact API types the returned token only as a string, with no length, alphabet or prefix, and a 15-minute to 12-hour life. The prefix table lists ABIA in the same row style as AKIA.
 - **What was searched and not found.** AWS docs (IAM, STS, CodeArtifact, ECR Public), AWS SDK and CLI source hits, search-result listings of AWS re:Post and Medium threads on the `GetServiceBearerToken` permission error (titles only, not opened), a Docker forum thread on CodeArtifact tokens in a Dockerfile (no shape described), blogs (Hacking the Cloud, Steele's tweet and blog, Adobe, Summit Route), Hacker News, and GitHub code search. Every one names the ABIA prefix or the permission only. None states the token's shape, and no scanner has a rule for the CodeArtifact or ECR Public token; the peers (gitleaks, TruffleHog `access_keys`, hashicorp, jsluice) list ABIA only as an access-key-ID prefix.
 - **Consequence.** The ABIA key ID, if it turns up bare, is an identifier shaped like the other key IDs and would belong to a key-ID candidate, not to a bearer-token family. Whether a bare ABIA ID needs a detector is a core policy question; this dossier has no grammar for the token that actually authenticates. Revisit only if AWS documents the token format or a decoded token structure is published.
-- **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md).
+- **Current contract in core:** none; `ABIA` and `ACCA` are identifiers and stay unclaimed ([`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md#unsupported-variant-contracts-1012)).
+- **If an identifier grammar were ever wanted (blocked):** total length (19 in the docs example, 20 at the API minimum, 20 in peers) and alphabet (`[A-Z2-7]` vs `[A-Z0-9]`) are unsettled, and no provider example of a full `ABIA` value exists; only peer rules corroborate, so T2 fails. Structure-only check: read the ID from `aws iam create-service-specific-credential` and the CloudTrail `accessKeyId` from `aws codeartifact get-authorization-token`; record the total length and whether the body holds any of `0 1 8 9`; delete the credential afterwards.
 
 ### `aws:context-specific-credential` — Context-specific credential
 
 - **Shape:** ACCA is the prefix of a service-specific credential ID, at least 20 and at most 128 word characters. It identifies a credential and does not authenticate.
-- **Verdict:** `rejected` (2026-09-29, #473): the ACCA value is a management handle, not a secret, and the secret half is recorded elsewhere.
+- **Verdict:** `rejected` (2026-09-29, #473; confirmed NOT-A-SECRET by #1012): the ACCA value is a management handle, not a secret, and the secret half is recorded elsewhere. The 1012 record recommends relabelling the support-matrix row as an identifier (ruling pending). Its sources add the `ServiceSpecificCredential` API type (`ServiceSpecificCredentialId`, length 20 to 128, `\w`+; the secret fields have no constraint) and show neither AWS-owned scanner (git-secrets, ferret-scan) includes `ABIA` or `ACCA`. The `ACCA` docs example is a 19-character `EXAMPLE` placeholder against an API minimum of 20.
 - **Why.** The IAM prefix table gives ACCA as "Context-specific credential". AWS's own Bedrock guidance says "the prefix to a service-specific credential ID is ACCA" and shows it in CloudTrail fields. The IAM API returns the ID as the unique identifier used to update, reset or delete the credential, and lists it in ordinary `list-service-specific-credentials` output. The credential that authenticates is a different field: the generated `ServicePassword` (with a generated user name built from the IAM user and account ID) for CodeCommit and Keyspaces, or the `ServiceCredentialSecret` and `ServiceApiKeyValue` for Bedrock and CloudWatch Logs API keys. Bedrock's long-term key has its own documented `ABSK` prefix and is the `aws-bedrock` family, not this one.
 - **Peer view.** gitleaks, TruffleHog (`access_keys`, which pairs the ID with a secret before it reports), hashicorp and jsluice all include ACCA in a key-ID prefix set, so ACCA-shaped IDs get matched. None documents that ACCA is a credential in its own right. No source gives a body alphabet beyond the API's word-character pattern.
 - **Reversible.** If core wants ACCA key-ID detection as it has for AKIA, the prefix is T1 and the peers corroborate a 20-character form; that would be a key-ID candidate, and the taxonomy description ("temporary credential") should change with it, because the docs describe a service-specific credential ID.
@@ -165,12 +170,17 @@ AWS issues long-term IAM user access keys, short-term STS credentials and relate
 
 ## Open questions
 
-1. Does AWS document the CodeArtifact and ECR Public bearer token format anywhere? Nothing reviewed does; a decoded structure published by AWS would reopen `aws:sts-service-bearer-token`.
-2. Does any ASIA key ID carry a digit outside `2-7`? The taxonomy note says legacy ones do; no reviewed source shows one.
-3. Do the two keys of an IAM user ever show a secret that is not 40 characters? No source reports one.
+1. R2 (asked in redact-secret#1012, no question id): do AWS-authored scanner rules (awslabs/ferret-scan, 2026, `@amazon.com` author; awslabs/git-secrets, 2015) count as provider statements? A yes moves `ASIA` and the IAM secret from T2 to T1; both are already backed at T2 and are not blocked on it. Also pending: relabel `ABIA` and `ACCA` as identifiers.
+2. Does AWS document the CodeArtifact and ECR Public bearer token format anywhere? Nothing reviewed does; a decoded structure published by AWS would reopen `aws:sts-service-bearer-token`.
+3. Does any ASIA key ID carry a digit outside `2-7`? The taxonomy note says legacy ones do; no reviewed source shows one.
+4. Do the two keys of an IAM user ever show a secret that is not 40 characters? No source reports one.
 
 ## Research log
 
+- redact-secret#1012 — 2026-09-29 contract research for the four variants
+  ([`ASIA`](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/aws-sts-temporary-access-key.md), [IAM secret](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/aws-iam-user-secret-access-key.md),
+  [`ABIA` and `ACCA`](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1012/aws-other-iam-prefixes.md)): READY-T2 (x2), NOT-A-SECRET (x2). Status comment
+  2026-09-30: `ASIA` (#1027) and the secret (#1028; follow-ups #1026, #1040, #1044) are merged to product main, unreleased.
 - redact-secret-benchmarks#36 (PR #38, 2026-09-20) — re-check of the IAM prefix table as the `aws-access-key` provider source.
 - redact-secret-benchmarks#473 (2026-09-29) — wide-first pass on the four unresearched families: ASIA `ready`, secret access key `ready` (T2, context-only), ABIA `not-found`, ACCA `rejected`. Searched: AWS IAM, STS, CodeArtifact, Bedrock and CLI docs; gitleaks, detect-secrets, TruffleHog, git-secrets, HashiCorp and BishopFox source; the gitleaks base32 PR; GitHub's supported-pattern table; Summit Route, Steele, Adobe and Hacking the Cloud write-ups; Hacker News. Reddit was unreachable (search filter and browser both refused it) and the Stack Overflow web pages returned no text to the browser, so those two communities are not covered.
 - Related non-research issues: core #254 and #318.

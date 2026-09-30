@@ -8,16 +8,17 @@ jobs:
   # `unit-tests` shards, which run in parallel instead of serially (#479 P3).
   validate:
     if: always()
-    needs: [validate-sources, unit-tests]
+    needs: [validate-sources, unit-tests, web]
     runs-on: ubuntu-latest
     permissions: {}
     env:
       SOURCES: ${{ needs.validate-sources.result }}
       TESTS: ${{ needs.unit-tests.result }}
+      WEB: ${{ needs.web.result }}
     steps:
       - run: |
-          echo "validate-sources: $SOURCES; unit-tests: $TESTS"
-          [ "$SOURCES" = success ] && [ "$TESTS" = success ]
+          echo "validate-sources: $SOURCES; unit-tests: $TESTS; web: $WEB"
+          [ "$SOURCES" = success ] && [ "$TESTS" = success ] && [ "$WEB" = success ]
 
   unit-tests:
     runs-on: ubuntu-latest
@@ -102,6 +103,36 @@ jobs:
         run: npm run baseline:check-t3
       - name: Generated inputs must not change tracked files
         run: git diff --exit-code
+
+  # The redesigned site (#547): a self-contained package in web/ with its own
+  # lockfile. It builds to web/out and web/storybook-static, never to dist/, and
+  # publish-site.yml does not run it, so what develop and main publish is unchanged.
+  web:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --ignore-scripts
+        working-directory: web
+      - name: No sx prop, no styled(), no client fetch, CSS Modules layered (#547)
+        run: npm run check:no-sx
+        working-directory: web
+      - run: npm run typecheck
+        working-directory: web
+      - name: Static export builds and contains the six routes (#547)
+        run: npm run build && npm run check:routes
+        working-directory: web
+      - name: Storybook builds on the Next.js framework (#547)
+        run: npm run build-storybook
+        working-directory: web
 
   pin-drift:
     runs-on: ubuntu-latest

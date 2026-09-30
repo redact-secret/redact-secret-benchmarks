@@ -19,3 +19,11 @@ public/results/.*.json
 
 # The redact-secret checkout the staging publish packs its candidate from (#152).
 /.redact-secret-product/
+
+# The redesigned site (web/, #547): build output and installs.
+/web/node_modules/
+/web/.next/
+/web/out/
+/web/storybook-static/
+/web/next-env.d.ts
+/web/*.tsbuildinfo

@@ -1,0 +1,30 @@
+/* Page-level base. Tokens come from the design system (../../src/tokens.css) and
+   are imported first by layout.tsx; rules here sit in `base`, below MUI and components. */
+@layer base {
+  html {
+    scroll-padding-top: calc(56px + var(--space-8));
+  }
+
+  body {
+    margin: 0;
+    background: var(--surface);
+    color: var(--ink);
+    font: var(--text-body);
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  a {
+    color: var(--link);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--brand-green);
+    color: var(--on-brand);
+  }
+}

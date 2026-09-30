@@ -85,7 +85,7 @@ table uses the research name and names detector `mistral-api-key`.
   is a different shape. Model ids such as `mistral-large-latest` are benign.
 - **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md),
   section Keyword-gated provider keys (#868).
-- **Open caveat:** No provider prose states a shape; 32 alphanumeric rests on one provider API example, independent validators and scanner rules, so T2, never T1. Contextual only, never bare. The remaining gates are fixture and behaviour findings (metamorphic, mutation, differential), not evidence. One issued Studio key would still settle whether a prefixed "v2" key exists.
+- **Open caveat:** No provider prose states a shape; 32 alphanumeric rests on one provider API example, independent validators and scanner rules, so T2, never T1. Contextual only, never bare. The remaining gates are two product false negatives, not evidence: the Kubernetes `name:`/`value:` pair (redact-secret#1016) and the Python subscript assignment `os.environ["MISTRAL_API_KEY"] = "…"` (redact-secret#1038). One issued Studio key would still settle whether a prefixed "v2" key exists.
 
 ### `mistral:realtime-client-token` — Realtime client token (rt_)
 

@@ -130,7 +130,9 @@ here; the workflow-webhook family is recorded on the tokens-page prefix alone (s
   bounded? If yes, the four-section anatomy clears the corroborated route
   (gitleaks, osv-scalibr, Docker and Slack: at least 4 owners, 2 non-summary
   classes) with widths left open. If no, only one issued token closes it.
-  Until then the family has no `empirical-observations.json` record.
+  Until then the family has no `empirical-observations.json` record. The fixture
+  profile (40 fixtures, 12 positives, 15 controls, 8 twins) and the review rows
+  were cleared under #1013, so the ruling is the only open gate.
 - **Issuance:** Basic Information > App-Level Tokens, scope chosen at creation
   (`connections:write`, `authorizations:read`, `app_configurations:write`).
   Not attempted.

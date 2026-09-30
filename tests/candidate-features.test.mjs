@@ -150,12 +150,12 @@ test('the shadow-scoring corpus is static authored material, not copied generate
   const generatedValues = new Set(inputs.filter(input => input.corpusPath.startsWith('fixtures/generated/'))
     .flatMap(input => input.fixtures.flatMap(fixture => fixture.expected.filter(range => (range.role ?? 'secret') === 'secret').map(range => value(fixture, range)))));
   const positives = authored.fixtures.flatMap(fixture => fixture.expected.filter(range => (range.role ?? 'secret') === 'secret').map(range => value(fixture, range)));
-  assert.equal(positives.length, 119, '118 family fixtures plus the second AWS span');
+  assert.equal(positives.length, 133, '132 family fixtures plus the second AWS span');
   assert.equal((authoredSource.match(/\\u[0-9a-f]{4}/g) ?? []).length, positives.length,
     'one semantic-preserving source escape per positive span keeps synthetic detector shapes out of the Git blob');
   assert.ok(positives.every(candidate => !generatedValues.has(candidate)), 'no authored positive duplicates a generated candidate value');
   const rows = dataset.rows.filter(row => row.category === 'shadow-scoring-authored');
-  assert.equal(rows.length, 237);
+  assert.equal(rows.length, 265);
   assert.ok(rows.every(row => row.origin === 'authored' && row.originBasis === 'authored-corpus'));
 });
 

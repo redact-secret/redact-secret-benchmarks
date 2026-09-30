@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T02:53:31.552Z",
+  "sourceRun": {
+    "runId": "2026-09-30T02:53:31.552Z-c34054",
+    "benchmarkRevision": "85694a1604874e4d0a24ef15225bbbaa32be85b2"
+  },
+  "input": {
+    "surface": "comparison/beta8-528c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "332dea8e65006d221ecb6187019cb4f44fa0919d6b48f4036926e1f468149b35",
+    "fixtureCount": 60,
+    "fixturesDigest": "09b0f3ab18c1bdd8de5f796add94a44bf877afbe431f71c7f5f7ff5034975190",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "7b49e5d73bdf08f138c639a4631d164ebba421e0fb672083b2c9e7f6c9c6398c",
+      "fixtureCount": 5516
+    }
+  },
+  "peer": {
+    "id": "flare-redact",
+    "version": "1.6.1",
+    "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+    "configurationHash": "12e4179b5f2aa2fd8cd00839152e1f69f82ce0f355ef36fd1549b992987db709",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "flare-redact",
+      "engine": "javascript",
+      "options": {
+        "disable": [
+          "pii",
+          "generic_assignment"
+        ],
+        "includeValues": false
+      }
+    },
+    "artifactDigest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "17f3bca88481835695a88a0b2bdf6f840ea038a9b4eb218d775e07fc3964dc70"
+    },
+    "adapterDigest": "f7f72b2d21d7e19cb59717ad25b352bea8770f907ed284d7f95c49fe4fe3cfa6"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/sonarqube-analysis-token-bearer-header.http",
+      "start": 68,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/sonarqube-analysis-token-uppercase-prefix-twin.http",
+      "start": 68,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/sonarqube-token-bearer-header.http",
+      "start": 68,
+      "end": 119,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/sonarqube-token-unknown-type-letter-twin.http",
+      "start": 68,
+      "end": 119,
+      "family": "bearer-token"
+    }
+  ],
+  "digest": "5e8c003b16bf6325fe5240e8a924b7c8756bdeea04298102b03297311ecf28c5"
+}

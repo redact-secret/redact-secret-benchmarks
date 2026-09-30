@@ -97,6 +97,15 @@ too. The unit this taxonomy fixes on is **provider x credential family**.
   `daytona:api-key`, `clickhouse-cloud:api-key`, `nvidia:ngc-api-key`, `browserbase:api-key`
   (`bb_live_` only), `cerebras:inference-api-key` and `runpod:api-key`. Each maps no detector
   until the product detector (redact-secret#970–#975) is in the pinned registry.
+- **Beta.12 #1014 broad-discovery credential families (#528).** Fourteen zero-detector rows across ten
+  providers are measured arrival families whose contracts and corpora live in
+  `benchmarks/lib/beta8/528a.ts`–`528j.ts` (see [beta8-evidence.md](beta8-evidence.md)):
+  `bitwarden:secrets-manager-access-token`, `polar:organization-access-token`, `polar:api-credential`,
+  `sonarqube:user-token`, `sonarqube:analysis-token`, `rubygems:api-key`, `clojars:deploy-token`,
+  `crates-io:api-token`, `crates-io:trusted-publishing-token`, `dynatrace:api-token`, `paddle:api-key`,
+  `honeycomb:ingest-key` (the management key stays issuance-gated), `axiom:api-token` and
+  `axiom:personal-token`. Each maps no detector until the product detector (redact-secret#1019–#1035) is in
+  the pinned registry.
 - **`families[].provider: null`** marks a family that is not provider-specific
   at all: `private-key`, `jwt`, `bearer-token`, `connection-string`,
   `otpauth-uri` and `generic-token` are structural or protocol-level formats
@@ -142,8 +151,8 @@ without one.
 
 ## Current counts
 
-158 families total: 152 across 82 providers plus 6 non-provider-specific
-formats; 127 carry at least one detector, 31 currently do not (counts as of 2026-09-29;
+172 families total: 166 across 92 providers plus 6 non-provider-specific
+formats; 127 carry at least one detector, 45 currently do not (counts as of 2026-09-29;
 `benchmarks/support/taxonomy.json` is the source of truth). This is a taxonomy, not a
 support claim — a family having a detector says nothing about that
 detector's evidence tier (T0-T3, see `benchmarks/lib/assessment.ts`) or

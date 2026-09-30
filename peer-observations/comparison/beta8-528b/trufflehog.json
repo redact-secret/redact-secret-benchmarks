@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T02:53:31.552Z",
+  "sourceRun": {
+    "runId": "2026-09-30T02:53:31.552Z-c34054",
+    "benchmarkRevision": "85694a1604874e4d0a24ef15225bbbaa32be85b2"
+  },
+  "input": {
+    "surface": "comparison/beta8-528b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "f656681f01d716257d2cbedf95146804638a016b22a197fd9e2d53b36d42706c",
+    "fixtureCount": 59,
+    "fixturesDigest": "17b9c0cbff0d8e93b429423f25e45fe606e5a7623dd85a14ec789d7a0afb0fd7",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "7b49e5d73bdf08f138c639a4631d164ebba421e0fb672083b2c9e7f6c9c6398c",
+      "fixtureCount": 5516
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
+    },
+    "adapterDigest": "f7f72b2d21d7e19cb59717ad25b352bea8770f907ed284d7f95c49fe4fe3cfa6"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [],
+  "digest": "4dfa9e60a5c1054fd3c76f6daae1dd2eb4e930c59c53038aad3a0eb7f2cdd4fa"
+}

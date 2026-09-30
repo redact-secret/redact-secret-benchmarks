@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T02:53:31.552Z",
+  "sourceRun": {
+    "runId": "2026-09-30T02:53:31.552Z-c34054",
+    "benchmarkRevision": "85694a1604874e4d0a24ef15225bbbaa32be85b2"
+  },
+  "input": {
+    "surface": "comparison/beta8-528d",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "6fd954966c7cdfaf0876c515999e2a738332f80ff00281836825b76a96dbf39e",
+    "fixtureCount": 31,
+    "fixturesDigest": "a87e2770aed4682f9de0ef412c1c4dfad011683a9d3e05db0f2d0f09914a55a6",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "7b49e5d73bdf08f138c639a4631d164ebba421e0fb672083b2c9e7f6c9c6398c",
+      "fixtureCount": 5516
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "f7f72b2d21d7e19cb59717ad25b352bea8770f907ed284d7f95c49fe4fe3cfa6"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/rubygems-api-key-actions-env.yml",
+      "start": 110,
+      "end": 167,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-authorization-no-scheme.http",
+      "start": 61,
+      "end": 118,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-bare-prose.md",
+      "start": 62,
+      "end": 119,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-bearer-header.http",
+      "start": 65,
+      "end": 122,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-body-47-twin.env",
+      "start": 24,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/rubygems-api-key-body-49-twin.sh",
+      "start": 25,
+      "end": 83,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/rubygems-api-key-chat-paste.txt",
+      "start": 24,
+      "end": 81,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-dotenv.env",
+      "start": 24,
+      "end": 81,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-export.sh",
+      "start": 25,
+      "end": 82,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-gem-credentials-yaml.yml",
+      "start": 44,
+      "end": 101,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-gem-push-env.sh",
+      "start": 17,
+      "end": 74,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-hyphen-separator-twin.http",
+      "start": 53,
+      "end": 110,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/rubygems-api-key-json-api-key.json",
+      "start": 16,
+      "end": 73,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-json-token.json",
+      "start": 14,
+      "end": 71,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-non-hex-letter-twin.json",
+      "start": 16,
+      "end": 73,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/rubygems-api-key-sdk-kwarg.py",
+      "start": 35,
+      "end": 92,
+      "family": "rubygems-api-key"
+    },
+    {
+      "path": "cases/rubygems-api-key-trailing-letter-twin.py",
+      "start": 35,
+      "end": 93,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/rubygems-api-key-uppercase-hex-byte-twin.json",
+      "start": 14,
+      "end": 71,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/rubygems-api-key-x-api-key-header.http",
+      "start": 53,
+      "end": 110,
+      "family": "rubygems-api-key"
+    }
+  ],
+  "digest": "52b73c0b33e0e9334912ee9fa903fcc3afa6259adab7babf4692ba83680bcb54"
+}

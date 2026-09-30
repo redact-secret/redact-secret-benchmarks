@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-09-30T02:53:31.552Z",
+  "sourceRun": {
+    "runId": "2026-09-30T02:53:31.552Z-c34054",
+    "benchmarkRevision": "85694a1604874e4d0a24ef15225bbbaa32be85b2"
+  },
+  "input": {
+    "surface": "comparison/beta8-528b",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "f656681f01d716257d2cbedf95146804638a016b22a197fd9e2d53b36d42706c",
+    "fixtureCount": 59,
+    "fixturesDigest": "17b9c0cbff0d8e93b429423f25e45fe606e5a7623dd85a14ec789d7a0afb0fd7",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "7b49e5d73bdf08f138c639a4631d164ebba421e0fb672083b2c9e7f6c9c6398c",
+      "fixtureCount": 5516
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "167e6da9fc8c11be45ec4c96e314b0557373ac0cf77ef90e37aea016ddbeb840",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "f7f72b2d21d7e19cb59717ad25b352bea8770f907ed284d7f95c49fe4fe3cfa6"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/polar-api-credential-access-token-without-subtype-twin.env",
+      "start": 25,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-api-credential-body-44-twin.py",
+      "start": 57,
+      "end": 111,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-api-credential-client-secret-env.env",
+      "start": 22,
+      "end": 74,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-api-credential-client-secret-env.env",
+      "start": 101,
+      "end": 153,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-api-credential-dot-in-body-twin.json",
+      "start": 14,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-api-credential-dotenv.env",
+      "start": 25,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-api-credential-export.sh",
+      "start": 26,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-api-credential-json-api-key.json",
+      "start": 16,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-api-credential-json-token.json",
+      "start": 14,
+      "end": 66,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-api-credential-oauth-refresh-json.json",
+      "start": 70,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-api-credential-python-sdk.py",
+      "start": 57,
+      "end": 110,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-api-credential-x-api-key-header.http",
+      "start": 53,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-token-body-42-twin.env",
+      "start": 26,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-token-body-44-twin.sh",
+      "start": 27,
+      "end": 81,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-token-checkout-client-secret-public-id.html",
+      "start": 39,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-token-checksum-mismatch-dotenv.env",
+      "start": 37,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-token-dotenv.env",
+      "start": 26,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-token-export.sh",
+      "start": 27,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-token-hyphen-in-body-twin.json",
+      "start": 14,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-token-json-api-key.json",
+      "start": 16,
+      "end": 69,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-token-json-token.json",
+      "start": 14,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-token-mcp-env.json",
+      "start": 136,
+      "end": 189,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-token-python-sdk.py",
+      "start": 54,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-token-sdk-kwarg.py",
+      "start": 24,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-token-trailing-hyphen-twin.py",
+      "start": 24,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-token-ts-sdk.ts",
+      "start": 80,
+      "end": 133,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/polar-token-x-api-key-header.http",
+      "start": 53,
+      "end": 106,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "408143f39adbda568cef0a89e862d7c722c35237cfba45326b25de99794af999"
+}

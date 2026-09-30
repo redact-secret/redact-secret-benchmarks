@@ -423,6 +423,79 @@ The corpus adds one authored calibration row pair per family to
 `corpora/development/shadow-scoring-authored.json` and lists the six categories as development-evaluation
 in `tuning/shadow-scoring-development-v1.json`.
 
+## Beta.12 broad-discovery slices (#528)
+
+The same layout carries the ten #1014 broad-discovery READY handoffs
+([#528](https://github.com/redact-secret/redact-secret-benchmarks/issues/528); product parent
+[redact-secret#1014](https://github.com/redact-secret/redact-secret/issues/1014), rulings R1–R10 from
+[redact-secret#860](https://github.com/redact-secret/redact-secret/issues/860), open ruling questions Q1–Q6 in the
+[handoff index](https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer)). The fixture index labels these corpora `beta.12`.
+One corpus key per product issue; a key carries one family per finding type the product detector reports. Each
+contract is authored from the step-3 handoff frozen at product `4f220ea` and the provider sources it cites, never from
+product detector code; `benchmarks/lib/beta8/528-sources.ts` carries the shared citations and
+`fixtures/generated/beta8/528-shared.mjs` the checksum builders, reusing the #464 contract guard and probe contexts.
+
+| Key | Category | Families (arrival ids) | Handoff | Product issue | Positives / twins / controls |
+| --- | --- | --- | --- | --- | --- |
+| `528a` | `beta8-528a` | `bitwarden-secrets-manager-access-token` | [bitwarden.md](https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/bitwarden.md) | [#1019](https://github.com/redact-secret/redact-secret/issues/1019) | 13 / 14 / 11 |
+| `528b` | `beta8-528b` | `polar-token`, `polar-api-credential` | [polar.md](https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/polar.md) | [#1020](https://github.com/redact-secret/redact-secret/issues/1020) | 14 / 8 / 9; 12 / 7 / 9 |
+| `528c` | `beta8-528c` | `sonarqube-token`, `sonarqube-analysis-token` | [sonarqube.md](https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/sonarqube.md) | [#1021](https://github.com/redact-secret/redact-secret/issues/1021) | 14 / 9 / 9; 12 / 7 / 9 |
+| `528d` | `beta8-528d` | `rubygems-api-key` | [rubygems.md](https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/rubygems.md) | [#1023](https://github.com/redact-secret/redact-secret/issues/1023) | 13 / 9 / 9 |
+| `528e` | `beta8-528e` | `clojars-deploy-token` | [clojars.md](https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/clojars.md) | [#1025](https://github.com/redact-secret/redact-secret/issues/1025) | 12 / 8 / 9 |
+| `528f` | `beta8-528f` | `crates-io-token`, `crates-io-trusted-publishing-token` | [crates-io.md](https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/crates-io.md) | [#1031](https://github.com/redact-secret/redact-secret/issues/1031) | 13 / 8 / 8; 13 / 7 / 9 |
+| `528g` | `beta8-528g` | `dynatrace-token` | [dynatrace.md](https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/dynatrace.md) | [#1032](https://github.com/redact-secret/redact-secret/issues/1032) | 13 / 11 / 9 |
+| `528h` | `beta8-528h` | `paddle-api-key` | [paddle.md](https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/paddle.md) | [#1033](https://github.com/redact-secret/redact-secret/issues/1033) | 12 / 12 / 9 |
+| `528i` | `beta8-528i` | `honeycomb-api-key` | [honeycomb.md](https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/honeycomb.md) | [#1034](https://github.com/redact-secret/redact-secret/issues/1034) | 13 / 9 / 9 |
+| `528j` | `beta8-528j` | `axiom-token`, `axiom-personal-token` | [axiom.md](https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/axiom.md) | [#1035](https://github.com/redact-secret/redact-secret/issues/1035) | 13 / 8 / 8; 11 / 6 / 8 |
+
+All fourteen are T1 arrival families declared `documented-24` and unscored until the product detector with the same
+id is in the pinned registry. The detector-id family (`polar-token`, `sonarqube-token`, `crates-io-token`,
+`axiom-token`) graduates on the re-pin; its siblings (`polar-api-credential`, `sonarqube-analysis-token`,
+`crates-io-trusted-publishing-token`, `axiom-personal-token`) stay arrival families scored by finding type once
+`scanners/families.mjs` `arrivalFindingTypes` records them at that re-pin. The product detectors are on unmerged
+product branches and in no released artifact, so only published-mode measurement exists. No support status moves and
+none is hand-edited. Conventions specific to these slices:
+
+- **Checksums corroborate only.** Polar `polar_oat_` (a base62 CRC32 of the 37 random characters) and crates.io
+  `cio_tp_` (one check character) carry offline-checkable checksums. The checksum is a provider fact (a `checksum`
+  field, basis `provider-code`), but whether it may reject is policy: the `policy-checksum` field says it never
+  rejects (ruling Q1 is open; security-first standing decision). Probe positives carry the provider checksum, two
+  positives per family carry a wrong one and are still positives, and no twin or control asserts silence on a
+  checksum failure. No contract has a `validate` post-check.
+- **Boundaries are handoff decisions.** Every contract records its boundary as a `research-hypothesis` field, and no
+  other part is. The Dynatrace boundary, read literally, would reject the URL-encoded OpenTelemetry header
+  `Authorization=Api-Token%20<token>` (the byte before `dt0` is `0`); that form is a documented transport, so it is a
+  positive and measures whether an implementation handles it.
+- **Every positive in every probe context.** Each family has a positive in the nine #860 probe contexts plus the
+  handoff's own (the `bws` CLI, `sonar-scanner -Dsonar.token=`/`-Dsonar.login=`, `~/.gem/credentials`, a bare-key
+  `Authorization` header, Leiningen and Maven credentials, `credentials.toml`, `cargo publish --token`, a GitHub Actions
+  log line, `Authorization: Api-Token`, a DynaKube secret, OTel collector and env headers, `X-Honeycomb-Team`,
+  `libhoney.Init`, Vector, Fluent Bit and Grafana password fields, MCP `env` blocks). Bodies cover both Polar eras,
+  all seven Polar API roles, `sqa_` and `sqp_`, `dt0c01`/`dt0s01`/`dt0s16`, live and sandbox Paddle keys, `ik_` and
+  `ic_` Honeycomb keys with five type letters, and an uppercase Bitwarden UUID (parser-accepted).
+- **Siblings the handoffs leave unclaimed are controls:** `sqb_` badge tokens, bare 40/48/60-hex digests, `polar_ci_`
+  and checkout `polar_c_`/`polar_cl_` secrets, Paddle `apikey_` key ids and a legacy-shaped 50-character value, the
+  Dynatrace token identifier alone, Honeycomb key, configuration-key and environment ids, Bitwarden version-dotted
+  UUIDs and Password Manager `user.`/`organization.` client ids, words and identifiers starting `cio`, a `cio` run
+  inside a longer value, and Axiom placeholders and bare UUIDs.
+- **Not authored either way:** Polar `whsec_` webhook secrets (`stripe-token` owns the prefix) and the short-lived
+  Polar session and verification prefixes, the Honeycomb management key (issuance-gated) and its configuration and
+  classic keys, SonarQube legacy unprefixed and Cloud `sqco_` tokens, Paddle legacy keys in a named context, and
+  Bitwarden unpadded keys as positives (the unpadded key is a twin).
+- **Lexical separability (#84).** No trailing-glue twin for the Polar API-credential body (its class contains `_`
+  and `-`, so a trailing byte only lengthens the run; `body-44` covers it), and the Dynatrace trailing twin appends
+  `_x`, not `.x` (a token before a dot is still contract-valid).
+- **Peer lag and overreach** is recorded per contract as a `peer-lag` field. gitleaks 8.30.1 `rubygems-api-token`
+  agrees with the grammar; `clojars-api-token` (case-insensitive `[a-z0-9]{60}`, no boundary) and
+  `dynatrace-api-token` (`dt0c01` only, case-insensitive) are wider, and `sonar-api-token` is keyword-gated. trufflehog
+  3.97.4 `RubyGems` reads `[a-zA0-9]{48}` (a class typo); its `SonarCloud` and `Honeycomb` labels read only legacy,
+  `sqco_`, classic and configuration shapes and stay unmapped. Neither pinned peer has a Bitwarden, Polar, crates.io,
+  Paddle, Honeycomb-ingest or Axiom rule. The mapped labels are in `scanners/families.mjs`.
+
+The corpus adds one authored calibration row pair per family to
+`corpora/development/shadow-scoring-authored.json` and lists the ten categories as development-evaluation
+in `tuning/shadow-scoring-development-v1.json`.
+
 ## Beta.11 family evidence (#379)
 
 [#379](https://github.com/redact-secret/redact-secret-benchmarks/issues/379) (parent

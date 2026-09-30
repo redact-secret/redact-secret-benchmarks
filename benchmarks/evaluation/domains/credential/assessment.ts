@@ -656,6 +656,11 @@ export const PROVIDER_NAMED_FALLBACK_948: Record<string, { from: string; name: s
   'beta8-259--mailgun-api-key-triplet-short-last-segment-near-miss': { from: 'mailgun-api-key-triplet', name: 'MAILGUN_API_KEY', expectedAction: 'redact' },
   'beta8-259--mailgun-api-key-triplet-uppercase-hex-near-miss': { from: 'mailgun-api-key-triplet', name: 'MAILGUN_API_KEY', expectedAction: 'redact' },
   'beta8-259--mailgun-api-key-triplet-two-segments-near-miss': { from: 'mailgun-api-key-triplet', name: 'MAILGUN_API_KEY', expectedAction: 'redact' },
+  // Beta.12 graduation at product 99c8c2b (#464): the same input under the #464 families' own credential variables.
+  'beta8-464a--daytona-api-key-named-bare-hex-encoded-value': { from: 'daytona-api-key', name: 'DAYTONA_API_KEY', expectedAction: 'redact' },
+  'beta8-464d--browserbase-api-key-bb-test-key-near-miss': { from: 'browserbase-api-key', name: 'BROWSERBASE_API_KEY', expectedAction: 'redact' },
+  'beta8-464f--runpod-api-key-redirect-pizza-30-near-miss': { from: 'runpod-api-key', name: 'REDIRECTPIZZA_API_TOKEN', expectedAction: 'redact' },
+  'beta8-464f--runpod-api-key-s3-secret-rps-near-miss': { from: 'runpod-api-key', name: 'RUNPOD_S3_SECRET_KEY', expectedAction: 'redact' },
 };
 const PRODUCT_948_ADR = 'https://github.com/redact-secret/redact-secret/blob/ec9224d9743066fe73d6e61e9843ef52bd853833/docs/decisions/2026-09-24-redact-provider-named-credential-assignments.md#amendment-a-provider-named-high-signal-name-falls-back-to-generic-token-948';
 const PRODUCT_948 = 'https://github.com/redact-secret/redact-secret/issues/948';

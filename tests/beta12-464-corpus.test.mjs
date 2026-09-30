@@ -98,7 +98,8 @@ test('every target meets its declared fixture profile', async () => {
 test('every family has a positive in each of the nine re-rank probe contexts', () => {
   const probe = ['bare-prose', 'dotenv', 'export', 'bearer-header', 'x-api-key-header', 'json-token', 'json-api-key', 'sdk-kwarg', 'chat-paste'];
   for (const [category, corpus] of corpora)
-    for (const target of new Set(corpus.fixtures.map(targetOf)))
+    // generic-token is the target of the near-miss controls relabelled under redact-secret#948, never a probed family.
+    for (const target of new Set(corpus.fixtures.map(targetOf).filter(t => t !== 'generic-token')))
       for (const slug of probe) assert.ok(corpus.fixtures.some(f => f.id === `${target}-${slug}` && secretsOf(f).length), `${category}: ${target}-${slug}`);
 });
 
@@ -136,12 +137,14 @@ test('no fixture asserts silence on a bound only project policy sets: no over-ca
   }
 });
 
-test('Daytona: bodies are lowercase hex of 64; dtn_secret_, dtn_artifact_ and bare 64-hex are controls, never positives', () => {
+test('Daytona: bodies are lowercase hex of 64; dtn_secret_, dtn_artifact_ and bare 64-hex are never positives', () => {
   const corpus = generated['beta8-464a'];
   const values = valuesOf(corpus, 'daytona-api-key');
   assert.ok(values.every(v => /^dtn_[0-9a-f]{64}$/.test(v)));
-  for (const slug of ['secret-placeholder', 'secret-then-hex', 'artifact-marker', 'bare-sha256', 'runner-key-unprefixed', 'named-bare-hex'])
+  for (const slug of ['secret-placeholder', 'secret-then-hex', 'artifact-marker', 'bare-sha256', 'runner-key-unprefixed'])
     assert.ok(corpus.fixtures.some(f => f.id.includes(slug) && !secretsOf(f).length && !f.twinOf), slug);
+  // DAYTONA_API_KEY=<bare 64 hex> is a generic-token policy row since the #948 relabel (Beta.12 graduation), never a daytona positive.
+  assert.ok(corpus.fixtures.some(f => f.id === 'daytona-api-key-named-bare-hex-encoded-value' && targetOf(f) === 'generic-token' && f.assessment.kind === 'policy'));
   const twins = corpus.fixtures.filter(f => f.twinOf).map(f => f.id.replace('daytona-api-key-', ''));
   for (const t of ['body-63-twin', 'body-65-twin', 'uppercase-hex-byte-twin', 'non-hex-letter-twin', 'uppercase-prefix-twin', 'hyphen-separator-twin', 'leading-glue-twin']) assert.ok(twins.includes(t), t);
 });
@@ -171,11 +174,13 @@ test('NVIDIA: bodies of 60, 64, 70 and 128 with _ and -; a 59 twin and control; 
   assert.ok(!corpus.fixtures.some(f => f.twinOf && f.mutationKind === 'length' && /129|over/i.test(f.mutation)), 'no over-cap twin');
 });
 
-test('Browserbase: bodies of 20, 32 and 128; bb_test_ and bb_live_session_ are controls; the X-BB-API-Key header is a positive', () => {
+test('Browserbase: bodies of 20, 32 and 128; bb_test_ and bb_live_session_ are never positives; the X-BB-API-Key header is a positive', () => {
   const corpus = generated['beta8-464d'];
   assert.deepEqual(widths(valuesOf(corpus, 'browserbase-api-key'), 8), [20, 32, 128]);
-  assert.ok(!corpus.fixtures.some(f => f.expected.length && /bb_test_/.test(valueOf(f, f.expected[0]))), 'bb_test_ is never a positive');
-  for (const slug of ['bb-test-key', 'live-session-identifier', 'timestamp-cookie', 'project-id']) assert.ok(corpus.fixtures.some(f => f.id.includes(slug) && !secretsOf(f).length), slug);
+  assert.ok(!corpus.fixtures.some(f => targetOf(f) === 'browserbase-api-key' && f.expected.length && /bb_test_/.test(valueOf(f, f.expected[0]))), 'bb_test_ is never a browserbase positive');
+  // BROWSERBASE_API_KEY=bb_test_... is a generic-token policy row since the #948 relabel (Beta.12 graduation).
+  assert.ok(corpus.fixtures.some(f => f.id === 'browserbase-api-key-bb-test-key-near-miss' && targetOf(f) === 'generic-token' && f.assessment.kind === 'policy'));
+  for (const slug of ['live-session-identifier', 'timestamp-cookie', 'project-id']) assert.ok(corpus.fixtures.some(f => f.id.includes(slug) && !secretsOf(f).length), slug);
   assert.ok(corpus.fixtures.some(f => f.id === 'browserbase-api-key-x-bb-api-key-header' && /X-BB-API-Key: /.test(f.content)));
   for (const t of ['body-19', 'trailing-underscore', 'trailing-hyphen', 'uppercase-prefix', 'hyphen-prefix', 'leading-glue']) assert.ok(corpus.fixtures.some(f => f.twinOf && f.id.includes(t)), t);
 });
@@ -199,7 +204,7 @@ test('Cerebras: both prefixes in every probe context; lowercase-only and _/- bod
   assert.ok(corpus.fixtures.filter(f => f.twinOf && /pcsk/.test(f.mutation)).length === 2, 'pcsk_ and pcsk- leading-glue twins');
 });
 
-test('RunPod: bodies of 31, 46 (in and out of the 40-upper-plus-6-mixed layout) and 128; the 30 twin is labelled POLICY; Redirect.pizza and rps_ are controls', () => {
+test('RunPod: bodies of 31, 46 (in and out of the 40-upper-plus-6-mixed layout) and 128; the 30 twin is labelled POLICY; Redirect.pizza and rps_ are never positives', () => {
   const corpus = generated['beta8-464f'];
   const values = valuesOf(corpus, 'runpod-api-key');
   assert.deepEqual(widths(values, 4), [31, 46, 128]);
@@ -207,7 +212,8 @@ test('RunPod: bodies of 31, 46 (in and out of the 40-upper-plus-6-mixed layout) 
   const twin30 = corpus.fixtures.find(f => f.id === 'runpod-api-key-body-30-policy-floor-twin');
   assert.match(twin30.mutation, /^length: POLICY \(ruling R10\), not T1/);
   assert.equal(corpus.fixtures.filter(f => f.twinOf && /POLICY/.test(f.mutation)).length, 1, 'the only policy twin');
-  for (const slug of ['redirect-pizza-30', 's3-secret-rps']) assert.ok(corpus.fixtures.some(f => f.id.includes(slug) && !secretsOf(f).length && !f.twinOf), slug);
+  // Redirect.pizza and rps_ values under their own credential variables are generic-token policy rows since the #948 relabel.
+  for (const slug of ['redirect-pizza-30', 's3-secret-rps']) assert.ok(corpus.fixtures.some(f => f.id.includes(slug) && targetOf(f) === 'generic-token' && f.assessment.kind === 'policy' && !f.twinOf), slug);
   assert.ok(!corpus.fixtures.some(f => /rpa_[A-Za-z0-9]{16,29}(?![A-Za-z0-9])/.test(f.content)), 'a 16-30 body is an accepted false negative; only the 30 boundary is authored');
 });
 

@@ -50,7 +50,7 @@ test('every beta8-<issue> corpus is registered, and its fixtures follow the targ
       assert.ok(f.id.startsWith(`${relabel948 ? relabel948.from : targets[0]}-`), f.id);
       assert.deepEqual(assignments[`${category}--${f.id}`], f.detectors ?? [], f.id);
       const secret = f.expected.some(r => r.role === 'secret');
-      if (relabel948) assert.ok(targets[0] === 'generic-token' && secret && f.id.endsWith('-near-miss') && f.assessment.kind === 'policy', f.id);
+      if (relabel948) assert.ok(targets[0] === 'generic-token' && secret && /-(near-miss|encoded-value)$/.test(f.id) && f.assessment.kind === 'policy', f.id);
       else if (secret) assert.ok(POSITIVE_AXES.includes(f.contextAxis), `${f.id}: positive names its context axis`);
       else if (!f.twinOf) assert.ok(CONTROL_SUFFIXES.some(s => f.id.endsWith(`-${s}`)) && controlAxis(category, f), `${f.id}: control carries an axis`);
       // Only a fixture re-scoped off a provider-undecided property (lib/assessment.ts DISPUTED_PROPERTIES) may read T0.

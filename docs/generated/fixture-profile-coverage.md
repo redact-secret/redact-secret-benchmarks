@@ -49,7 +49,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | azure-devops-personal-access-token | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 5 | 7 | none |
 | bearer-token | T3 | arrival-provisional | 52 | 5 | 19 | 14 | 12 | 6 | 9 | positive/context cases 5/6 |
 | bitwarden-secrets-manager-access-token | T1 | stable-documented | 46 | 3 | 16 | 14 | 11 | 6 | 10 | positive/context cases 3/6 |
-| browserbase-api-key | T1 | stable-documented | 39 | 9 | 16 | 7 | 9 | 5 | 8 | none |
+| browserbase-api-key | T1 | stable-documented | 38 | 9 | 15 | 7 | 9 | 5 | 8 | none |
 | cerebras-api-key | T1 | stable-documented | 48 | 16 | 16 | 8 | 7 | 5 | 8 | none |
 | clickhouse-cloud-api-secret | T1 | stable-documented | 45 | 9 | 16 | 10 | 11 | 6 | 10 | none |
 | clojars-deploy-token | T1 | stable-documented | 37 | 7 | 14 | 8 | 8 | 6 | 10 | none |
@@ -68,7 +68,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | datadog-api-key | T1 | stable-documented | 36 | 6 | 8 | 11 | 13 | 6 | 7 | none |
 | datadog-application-key | T1 | stable-documented | 29 | 6 | 8 | 9 | 10 | 6 | 8 | none |
 | datadog-application-key-legacy | T2 | context-constrained-empirical | 52 | 10 | 14 | 16 | 18 | 6 | 9 | none |
-| daytona-api-key | T1 | stable-documented | 46 | 9 | 17 | 10 | 12 | 5 | 9 | none |
+| daytona-api-key | T1 | stable-documented | 45 | 9 | 16 | 10 | 12 | 5 | 9 | none |
 | deepgram-api-key | T2 | context-constrained-empirical | 81 | 10 | 30 | 22 | 18 | 6 | 8 | none |
 | digitalocean-token | T1 | stable-documented | 39 | 15 | 10 | 8 | 4 | 4 | 6 | none |
 | discord-bot-token | T2 | stable-empirical | 46 | 18 | 14 | 8 | 14 | 6 | 9 | none |
@@ -87,7 +87,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | firebase-server-key | T2 | stable-empirical | 45 | 10 | 19 | 8 | 16 | 6 | 9 | none |
 | firecrawl-api-key | T1 | stable-documented | 48 | 6 | 15 | 14 | 11 | 6 | 10 | none |
 | fireworks-ai-api-key | T1 | stable-documented | 32 | 6 | 16 | 5 | 8 | 6 | 8 | none |
-| generic-token | T3 | arrival-provisional | 157 | 61 | 76 | 10 | 29 | 4 | 5 | none |
+| generic-token | T3 | arrival-provisional | 161 | 65 | 76 | 10 | 32 | 4 | 5 | none |
 | github-fine-grained-pat | T2 | stable-empirical | 40 | 12 | 15 | 8 | 13 | 6 | 9 | none |
 | github-token | T1 | stable-documented | 131 | 28 | 15 | 45 | 25 | 6 | 8 | none |
 | gitlab-routable-personal-access-token | T1 | stable-documented | 31 | 6 | 9 | 8 | 8 | 6 | 10 | none |
@@ -144,7 +144,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | replicate-api-token | T1 | stable-documented | 32 | 6 | 14 | 6 | 8 | 6 | 10 | none |
 | resend-api-key | T1 | stable-documented | 42 | 6 | 14 | 11 | 11 | 5 | 9 | none |
 | rubygems-api-key | T1 | stable-documented | 39 | 7 | 14 | 9 | 9 | 6 | 10 | none |
-| runpod-api-key | T1 | stable-documented | 38 | 9 | 15 | 7 | 10 | 4 | 7 | none |
+| runpod-api-key | T1 | stable-documented | 36 | 9 | 13 | 7 | 10 | 4 | 7 | none |
 | sendgrid-token | T1 | stable-documented | 68 | 22 | 12 | 18 | 8 | 4 | 6 | none |
 | sentry-org-auth-token | T2 | stable-empirical | 40 | 13 | 14 | 8 | 14 | 6 | 10 | none |
 | sentry-user-auth-token | T2 | stable-empirical | 40 | 12 | 14 | 8 | 14 | 6 | 10 | none |

@@ -1,0 +1,50 @@
+@layer components {
+  .block {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+    min-width: 0;
+  }
+
+  .head {
+    display: grid;
+    gap: var(--space-1);
+    max-width: var(--measure);
+  }
+
+  .position {
+    margin: 0;
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    color: var(--ink-muted);
+  }
+
+  .title {
+    margin: 0;
+    font: var(--text-h3);
+    text-wrap: balance;
+  }
+
+  .description {
+    margin: 0;
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .description b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .rows {
+    display: grid;
+    border-top: var(--hairline) solid var(--ink);
+  }
+
+  .readout {
+    margin: 0;
+    max-width: var(--measure);
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+}

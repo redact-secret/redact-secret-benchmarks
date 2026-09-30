@@ -1,0 +1,16 @@
+@layer components {
+  /*
+   * Every reachable pair, level and scope is pre-rendered as its own panel (a static export has
+   * one page per route, so the address picks the panel after load). Which panel shows is
+   * decided by `data-acc-key` on the root element, set before first paint by the inline script in
+   * the page and kept in step by AccuracySync. `AccuracyPanelStyle` emits one rule per panel key;
+   * unlayered, it outranks this layer. Without script only the default panel shows.
+   */
+  .panel {
+    display: none;
+  }
+
+  .panel[data-default] {
+    display: block;
+  }
+}

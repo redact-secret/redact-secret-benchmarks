@@ -1,3 +1,18 @@
+export { AccuracyDifferences } from './AccuracyDifferences';
+export type { AccuracyDifferencesProps } from './AccuracyDifferences';
+export { AccuracyPairBar } from './AccuracyPairBar';
+export type { AccuracyPairBarProps } from './AccuracyPairBar';
+export { AccuracyPairComparison } from './AccuracyPairComparison';
+export type { AccuracyPairComparisonProps } from './AccuracyPairComparison';
+export { AccuracyQuestion } from './AccuracyQuestion';
+export type { AccuracyQuestionProps } from './AccuracyQuestion';
+export { AccuracyResultRow } from './AccuracyResultRow';
+export type { AccuracyResultRowProps } from './AccuracyResultRow';
+export { AccuracySources } from './AccuracySources';
+export type { AccuracySourcesProps } from './AccuracySources';
+export { AccuracyToolPair } from './AccuracyToolPair';
+export type { AccuracyToolPairProps } from './AccuracyToolPair';
+export type * from './accuracyTypes';
 export { ComparisonHub } from './ComparisonHub';
 export type { ComparisonHubProps } from './ComparisonHub';
 export { ComparisonQuestions } from './ComparisonQuestions';

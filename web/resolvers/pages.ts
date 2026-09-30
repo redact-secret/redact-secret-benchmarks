@@ -34,7 +34,8 @@ import { resolveRowsData, rowFacts, rowsHref, rowsSource, type RowScanner, type 
 import { PAGE_SIZE } from './filters';
 import { ROWS_KINDS, recordsDataPath, rowsDataPath, type RowsKind } from '../lib/data-paths';
 import type { DetectorRowData, FindingRowData, SuiteRowData } from '../components/report/types';
-import { resolveFeaturePage, resolveHub, resolveRuntimePanels, type FeaturePage, type RuntimePanel } from './comparison';
+import { resolveFeaturePage, resolveHub, resolveRuntimePanels, toolName, type FeaturePage, type RuntimePanel } from './comparison';
+import { resolveAccuracyPage, type AccuracyPage } from './accuracy';
 import type { ComparisonHubProps } from '../components/comparison/ComparisonHub';
 import { resolveRunState, type RunState } from './run';
 import type { EvidenceLevelLink, HubTileData } from '../components/report/types';
@@ -456,4 +457,17 @@ export async function resolveRuntimeComparisonPage(): Promise<RuntimePanel[]> {
 export async function resolvePerformancePairPage(): Promise<PerformancePanel[]> {
   const [runtime, own] = await Promise.all([loadPeerRuntime(), loadOwnPerformance()]);
   return resolvePerformancePanels(runtime, own);
+}
+
+// ---- /comparison/accuracy ---------------------------------------------------------------
+
+export interface AccuracyPairPageData extends AccuracyPage { runState: RunState }
+
+/** The accuracy pair page: every reachable pair, level and scope as a panel, and the compact differences the island lists. */
+export async function resolveAccuracyPairPage(): Promise<AccuracyPairPageData> {
+  const [{ catalog, run, measured }, profiles, runtime] = await Promise.all([context(), loadPeerProfiles(), loadPeerRuntime()]);
+  return {
+    ...resolveAccuracyPage({ catalog, run: measured, profiles, runtime: runtime.comparison, toolNames: { 'flare-redact': toolName('flare-redact'), openredaction: toolName('openredaction') } }),
+    runState: resolveRunState(run),
+  };
 }

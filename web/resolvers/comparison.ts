@@ -75,12 +75,12 @@ export function resolveHub({ runtime, features, run }: HubInput): ComparisonHubP
       action: 'Feature comparison →',
     },
     {
-      href: '/report/', label: 'Accuracy', title: 'Does it miss real secrets, or flag safe values?',
+      href: '/comparison/accuracy/', label: 'Accuracy', title: 'Does it miss real secrets, or flag safe values?',
       description: 'How often each scanner lets a secret through or flags something harmless, on the same synthetic inputs, with the rows behind every number.',
       tools: run.state === 'measured' ? run.scanners.map(s => s.name) : ['redact-secret'],
       fact: `${count(levelLinks().length, 'evidence level')}`,
       factNote: levelLinks().map(l => l.shortLabel.toLowerCase()).join(', '),
-      action: 'Accuracy report →',
+      action: 'Accuracy comparison →',
     },
   ];
 

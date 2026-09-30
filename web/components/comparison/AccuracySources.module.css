@@ -1,0 +1,21 @@
+@layer components {
+  .list {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding-left: 1.2em;
+    max-width: var(--measure);
+    font: var(--text-small);
+    color: var(--ink-muted);
+    overflow-wrap: break-word;
+  }
+
+  .link {
+    color: var(--link);
+    text-decoration: none;
+  }
+
+  .link:hover {
+    text-decoration: underline;
+  }
+}

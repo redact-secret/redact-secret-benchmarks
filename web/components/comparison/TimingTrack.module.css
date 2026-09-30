@@ -1,0 +1,110 @@
+@layer components {
+  .wrap {
+    display: grid;
+    gap: var(--space-1);
+    min-width: 0;
+  }
+
+  .axis {
+    position: relative;
+    height: var(--space-4);
+    font: var(--text-mono-small);
+    color: var(--ink-muted);
+  }
+
+  .axis span {
+    position: absolute;
+    top: 0;
+    left: var(--at);
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  .axis span:first-child {
+    transform: none;
+  }
+
+  .axis span:last-child {
+    transform: translateX(-100%);
+  }
+
+  .track {
+    position: relative;
+    height: var(--space-6);
+    background-image: linear-gradient(var(--line), var(--line));
+    background-size: 100% var(--hairline);
+    background-position: 0 50%;
+    background-repeat: no-repeat;
+  }
+
+  .tick {
+    position: absolute;
+    top: var(--space-1);
+    bottom: var(--space-1);
+    left: var(--at);
+    width: var(--hairline);
+    background: var(--line);
+  }
+
+  .range {
+    position: absolute;
+    top: 50%;
+    left: var(--from);
+    width: var(--span);
+    height: var(--hairline);
+    background: var(--ink);
+  }
+
+  .dot {
+    position: absolute;
+    top: 50%;
+    left: var(--at);
+    width: calc(var(--space-2) + var(--rule-strong));
+    height: calc(var(--space-2) + var(--rule-strong));
+    margin: calc((var(--space-2) + var(--rule-strong)) / -2) 0 0 calc((var(--space-2) + var(--rule-strong)) / -2);
+    border: var(--hairline) solid var(--ink);
+  }
+
+  .a {
+    background: var(--ink);
+    z-index: 2;
+  }
+
+  .b {
+    background: var(--surface);
+    z-index: 1;
+  }
+
+  .key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .key li {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .glyph {
+    position: static;
+    display: inline-block;
+    flex: none;
+    width: calc(var(--space-2) + var(--rule-strong));
+    height: calc(var(--space-2) + var(--rule-strong));
+    margin: 0;
+    border: var(--hairline) solid var(--ink);
+  }
+
+  @media (max-width: 720px) {
+    .axis span:nth-child(even) {
+      display: none;
+    }
+  }
+}

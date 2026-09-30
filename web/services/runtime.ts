@@ -62,6 +62,11 @@ export interface RuntimeObservation {
   medianMs: number;
   p95Ms: number;
   medianBytesPerSecond: number;
+  /** The fastest and slowest single call of the cell, from the validated samples (v2 reports only). */
+  minMs?: number;
+  maxMs?: number;
+  /** Timed calls in the cell. */
+  samples?: number;
 }
 
 export interface RuntimeMeasurement {
@@ -200,7 +205,7 @@ interface ComparisonReport {
   setting: { families: string[]; activation: string };
   tools: { id: string; version: string; provenance: { kind: string } }[];
   methodologyNotes: string[];
-  observations: { tool: string; workload: string; workloadBytes: number; samples: unknown[]; summary: { medianMs: number; p95Ms: number; medianBytesPerSecond: number } }[];
+  observations: { tool: string; workload: string; workloadBytes: number; samples: { redactMs: number }[]; summary: { medianMs: number; p95Ms: number; medianBytesPerSecond: number } }[];
   outcomes: { tool: string; workload: string; lines: ComparisonOutcome[] }[];
   artifactCommitment: string;
 }
@@ -226,7 +231,10 @@ async function loadComparison(): Promise<RuntimeComparison> {
           families: report.setting.families,
           activation: report.setting.activation,
           methodologyNotes: report.methodologyNotes,
-          observations: report.observations.map(o => ({ tool: o.tool, workload: o.workload, workloadBytes: o.workloadBytes, ...o.summary })),
+          observations: report.observations.map(o => ({
+            tool: o.tool, workload: o.workload, workloadBytes: o.workloadBytes, ...o.summary,
+            minMs: Math.min(...o.samples.map(x => x.redactMs)), maxMs: Math.max(...o.samples.map(x => x.redactMs)), samples: o.samples.length,
+          })),
           outcomes: Object.fromEntries(report.outcomes.map(o => [`${o.tool}/${o.workload}`, o.lines])),
           samplesPerCell: Math.min(...report.observations.map(o => o.samples.length)),
           commitment: report.artifactCommitment,

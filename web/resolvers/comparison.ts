@@ -30,6 +30,7 @@ export const toolName = (id: string): string => DISPLAY[id] ?? id;
 const COMPARISON = '/comparison/';
 const RUNTIME = '/comparison/runtime/';
 const FEATURE = '/comparison/feature/';
+const PERFORMANCE = '/comparison/performance/';
 
 // ---- Hub -----------------------------------------------------------------------
 
@@ -559,6 +560,7 @@ function comparisonPanels(runtime: PeerRuntime, cmp: RuntimeComparison, features
       factsTitle,
       factColumns: named(columns),
       facts,
+      pairLink: { href: PERFORMANCE, label: 'Compare two across many texts →' },
       run: comparisonRunMeta(runtime, columns),
       notes: notesOf(columns, domain),
     });

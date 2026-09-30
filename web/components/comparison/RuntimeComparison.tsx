@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { cx } from '../../lib/cx';
 import { Stack } from '../layout';
 import { Breadcrumb, PageHead } from '../page';
@@ -27,14 +28,17 @@ export interface RuntimeComparisonProps {
   facts: RuntimeFactRow[];
   run?: MetaItem[];
   notes?: string[];
+  /** A link to the page that sets two libraries side by side across many texts. */
+  pairLink?: { href: string; label: string };
   className?: string;
 }
 
 /** `/comparison/runtime`: three questions as tables of what each library or setting hid, then what the libraries are. Shows, never grades. */
-export function RuntimeComparison({ breadcrumb, eyebrow, title, lede, switches, toolbar, columns, columnKind, questions, factsTitle, factColumns, facts, run, notes, className }: RuntimeComparisonProps) {
+export function RuntimeComparison({ breadcrumb, eyebrow, title, lede, switches, toolbar, columns, columnKind, questions, factsTitle, factColumns, facts, run, notes, pairLink, className }: RuntimeComparisonProps) {
   return (
     <Stack gap="lg" className={cx(styles.page, className)}>
       <PageHead before={<Breadcrumb items={breadcrumb} />} eyebrow={eyebrow} title={title} lede={lede} actions={<RuntimeSwitches {...switches} />} />
+      {pairLink && <p className={styles.pair}><Link href={pairLink.href}>{pairLink.label}</Link></p>}
       {toolbar && <RuntimeToolbar {...toolbar} />}
       <Stack gap="xl">
         {questions.map(q => (

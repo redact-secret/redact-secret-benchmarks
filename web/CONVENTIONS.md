@@ -151,3 +151,8 @@ web/components/ (blocks): imports none of the three
   (`external-pii-all|speed|accuracy`, ...); one without is a single "Not measured yet" panel keyed `analysis-domain`.
   `check:routes` recomputes every outcome, share and time from the committed reports. Decision:
   `docs/decisions/2026-09-30-record-runtime-outcomes-and-time-redact-secret-settings.md`.
+- `/comparison/performance` (#569) pre-renders one panel per pair and setting (`?with=`, `?setting=`, picked by `data-peer` and
+  `data-setting` on the root, as the runtime page does). Pair times come from `evidence/562` (only the chosen setting's run, both
+  sides), redact-secret's own throughput from the accepted run via `services/performance.ts`; the two are never drawn on one axis.
+  `check:routes` recomputes every time, spread and mark position (`scripts/check-export-performance.mjs`). Decision:
+  `docs/decisions/2026-09-30-show-the-performance-pair-as-same-run-times-with-a-noise-rule.md`.

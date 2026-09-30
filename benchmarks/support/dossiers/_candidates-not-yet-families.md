@@ -2,6 +2,8 @@
 
 Issue [#860](https://github.com/redact-secret/redact-secret/issues/860) researched 50 provider credential candidates, and its [final disposition](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/disposition.md) gives each one a disposition. The 31 candidates below have no provider dossier, because `dossiers:check` requires every dossier provider to exist in `taxonomy.json` and none of these does. The six READY rows (daytona, clickhouse-cloud, nvidia, browserbase, cerebras, runpod) were promoted to taxonomy families with their own dossiers by [benchmarks#464](https://github.com/redact-secret/redact-secret-benchmarks/issues/464) (Beta.12), with the product counterparts redact-secret#970 to #975, so they are no longer listed here. Adding one to the taxonomy is the promotion step, a family-intake change, and it is outside the scope of the dossier work. Until then the research stays in the linked core evidence. Several are not distinct families at all: 23 are `generic coverage sufficient`, two extend existing families and one is pending-unsupported. Only the distinct-family candidates could become taxonomy families, and their readiness is recorded per row (state as of 2026-09-28; issue #860 is still open).
 
+The 40 candidates of issue [#1014](https://github.com/redact-secret/redact-secret/issues/1014) that are not families yet are recorded in [the #1014 section](#issue-1014-candidates-beta12-broad-discovery-second-50) below, in the dossier vocabulary.
+
 | candidate | tier | disposition | readiness | reason / blocker | record |
 | --- | --- | --- | --- | --- | --- |
 | `fal:api-key` | C | extend existing family | n/a | no provider anchor; extended in Beta.11: #919 added the `FAL_KEY` name and the `Authorization: Key` scheme, and #918 fixed the Bearer span for `id:secret` | [fal-contextual-gap.md](https://github.com/redact-secret/redact-secret/blob/8b6a5fde52ecb4dfce13f09c7a947062d21483c7/docs/audits/evidence/860/fal-contextual-gap.md) |
@@ -372,3 +374,146 @@ All eight records below share: researchedAt 2026-09-30, blockedBy `null`, issues
 - **Sources:** prefix T1 by R4 (Contentful's [audit-log docs](https://www.contentful.com/developers/docs/tutorials/general/audit-logs/) spell it `cfpat-`; the CLI docs use the uppercase form); current length and alphabet T2 (trufflehog, GitHub partner list), contradicted for the older era by the [provider fixture](https://github.com/contentful/contentful-management.py/blob/a2aa04a6c8b3556d450c1c799ebb2c1ba30ad422/fixtures/pat/create.yaml).
 - **Collisions:** none for `CFPAT-`.
 - **Open questions:** 43 against 46 eras; whether a current `cfw-` token deserves a sibling family.
+
+### Wave D: evidence- or issuance-blocked, deferred or generic
+
+Thirteen candidates have no dedicated family now. For the evidence- and issuance-blocked ones the prefix is usually provider-attested but no provider source states a body length, so a detector would need an arbitrary floor. Their unblocking step is one provider source for the length, or one issued-and-revoked key checked for structure only (the model is benchmarks#526, and a benchmarks issue for these is drafted in step 5 but not filed). Shapes are schematic.
+
+| candidate | verdict | tier | step-4 disposition | gate | research |
+| --- | --- | --- | --- | --- | --- |
+| `hubspot:private-app-access-token` | date-gated | T2 | DEFERRED | the format is being replaced by Service Keys; revisit after the migration | [step-1, #21 to #30](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282) |
+| `elastic:cloud-api-key` | issuance-gated | T2 | BLOCKED (evidence) | a T1 length for `essu_` | [step-1, #01 to #10](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900446812) |
+| `llamaindex:llama-cloud-api-key` | issuance-gated | T2 | BLOCKED (evidence) | a T1 length | [step-1, #01 to #10](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900446812) |
+| `figma:personal-access-token` | issuance-gated | T2 | BLOCKED (evidence) | a T1 length | [step-1, #11 to #20](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016) |
+| `harness:personal-access-token` | issuance-gated | T2 | BLOCKED (evidence) | segment lengths | [step-1, #11 to #20](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016) |
+| `jina:api-key` | issuance-gated | T2 | BLOCKED (evidence) | a T1 length | [step-1, #01 to #10](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900446812) |
+| `kaggle:api-token` | issuance-gated | T2 | BLOCKED (issuance) | one issued token, structure only | [step-1, #01 to #10](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900446812) |
+| `devcycle:server-sdk-key` | issuance-gated | T2 | BLOCKED (issuance) | one issued key, structure only | [step-1, #31 to #40](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540) |
+| `mixedbread:api-key` | issuance-gated | T3 | BLOCKED (issuance) | one issued key, structure only | [step-1, #01 to #10](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900446812) |
+| `dbt-cloud:service-token` | issuance-gated | T3 | BLOCKED (issuance) | one issued token per prefix (`dbtc_`, `dbtu_`), structure only | [step-1, #11 to #20](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016) |
+| `launchdarkly:access-token` | rejected | T2 | DEFERRED | `api-` and `sdk-` + UUID collide with resource ids; context-gated coverage only, not a family | [step-1, #31 to #40](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540) |
+| `octopus-deploy:api-key` | rejected | T2 | DEFERRED | `API-` collides with ticket keys and gateway names; context-gated at best | [step-1, #11 to #20](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016) |
+| `gocardless:access-token` | rejected | T2 | GENERIC | `live_` and `sandbox_` are generic words; no family | [step-1, #41 to #50](https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820) |
+
+All thirteen records below share: researchedAt 2026-09-30, issues `redact-secret/redact-secret#1014`, issuance not attempted, no detector on `main` (generic and contextual coverage apply), research log = the step-1 comment linked in the table plus the [step-4 disposition](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/README.md#step-4-disposition-of-all-50-candidates).
+
+#### `hubspot:private-app-access-token`
+
+- **Record:** verdict `date-gated`, tier T2, blockedBy `legacy private-app token format is being replaced by Service Keys; revisit once the migration lands and the new credential shape is published`.
+- **Shape:** `pat-` + a data-centre code (`na1`, `eu1`; others such as `na2`, `na3`, `ap1` appear in HubSpot's CLI host list) + `-` + a UUID-shaped body (8-4-4-4-12 hex). The Service Key replacement has no known format.
+- **Sources:** a HubSpot community-manager statement that the `pat-` format is being replaced ([HubSpot Community](https://community.hubspot.com/t/private-app-access-token-format-change/151661), prefix only, staff statement under R3); trufflehog and the GitHub partner list (T2).
+- **Collisions:** `pat-` can sit inside `glpat-` without a boundary, so a boundary anchor is required.
+- **Open questions:** which region codes exist beyond `na1` and `eu1`; what the Service Key looks like.
+
+#### `elastic:cloud-api-key`
+
+- **Record:** verdict `issuance-gated`, tier T2, blockedBy `no provider source states the body length of essu_ keys; a provider source or one key checked for structure only`.
+- **Shape:** `essu_` + a Base64 body (Veles says 92 plus optional padding; betterleaks says 60 to 200 URL-safe characters). Kibana treats every credential that starts `essu_` as an Elastic Cloud UIAM credential, API keys and Bearer access tokens alike, with an `essu_dev_` mock variant. Elasticsearch stack API keys are unprefixed Base64 of `id:api_key` and stay generic.
+- **Sources:** prefix T1 by R6 ([Kibana `uiam/utils.ts`](https://github.com/elastic/kibana/blob/f65836545184f238efa7827b37c57dc3c80a6412/src/core/packages/security/server/src/uiam/utils.ts#L12-L20), 2026-09-17); length and alphabet from third-party scanners that disagree (T2).
+- **Collisions:** `essu_` is unique; redacting every `essu_`-prefixed credential is safe.
+- **Open questions:** an Elastic doc or code path that states the `essu_` body length.
+
+#### `llamaindex:llama-cloud-api-key`
+
+- **Record:** verdict `issuance-gated`, tier T2, blockedBy `no provider source states the length or alphabet after llx-; a provider source or one key checked for structure only`.
+- **Shape:** `llx-` + a body of about 48 alphanumerics (CredSweeper fixes 48; betterleaks allows 44 to 52). Provider material shows only the placeholder.
+- **Sources:** prefix T1 by R4 ([llama_cloud_services README](https://github.com/run-llama/llama_cloud_services/blob/f385e96ab82ddb88330277c34394546398c8bed0/py/llama_parse/README.md#L54), 2026-03-24); length and alphabet T2 (betterleaks, CredSweeper).
+- **Collisions:** a short 4-byte prefix.
+- **Open questions:** a T1 length.
+
+#### `figma:personal-access-token`
+
+- **Record:** verdict `issuance-gated`, tier T2, blockedBy `no provider source states the length or alphabet after figd_; a provider source or one token checked for structure only`.
+- **Shape:** `figd_` + about 40 characters from `[A-Za-z0-9_-]`; a plan token `figp_` is a separate shape (40 to 54). The legacy token is UUID-like and unprefixed.
+- **Sources:** the prefix as a test placeholder in provider code ([`figma/code-connect`](https://github.com/figma/code-connect/blob/204e84ada6500dbcfbf637f60c4d86d9e3928eee/cli/src/connect/__test__/e2e/test_wizard_e2e.ts#L44), 2025-09-04, R4); Figma's developer docs state no format; length from trufflehog (T2).
+- **Collisions:** the legacy UUID-like form collides with UUIDs.
+- **Open questions:** a T1 length; whether `figp_` is Figma's documented plan access token.
+
+#### `harness:personal-access-token`
+
+- **Record:** verdict `issuance-gated`, tier T2, blockedBy `no provider source states the segment lengths; a provider source or one token checked for structure only`.
+- **Shape:** `pat.` or `sat.` + three dot-joined segments (account id, token id, secret), each from `[A-Za-z0-9_-]` by the provider's parser; scanners claim 22, 24 and 20 characters, with a hex middle segment in trufflehog.
+- **Sources:** T1 for the prefixes and the segment structure ([`harness/cli` `auth.go`](https://github.com/harness/cli/blob/cfb36aa58bc9010a6396f909aca142f2b4f8ba03/pkg/auth/auth.go#L288-L327), 2026-09-04); lengths T2 (gitleaks, trufflehog); docs show truncated placeholders.
+- **Collisions:** `pat.` and `sat.` also appear in code as property paths, so the unbounded grammar is too loose to stand alone.
+- **Open questions:** the account id, token id and secret lengths.
+
+#### `jina:api-key`
+
+- **Record:** verdict `issuance-gated`, tier T2, blockedBy `no provider source states the length or alphabet after jina_; a provider source or one key checked for structure only`.
+- **Shape:** `jina_` + 60 alphanumerics by one third-party rule (noseyparker); provider material shows only a placeholder.
+- **Sources:** prefix provider-attested by R4 ([`jina-ai/MCP` README](https://github.com/jina-ai/MCP/blob/5d6eb191a75d8e67b6e01ce427f0cc5c05c800aa/README.md#L8)); length and alphabet T2. The provider's own pages are script-rendered and could not be read.
+- **Collisions:** identifiers such as `jina_client` if the body floor were small.
+- **Open questions:** a dashboard or docs example showing the full key length.
+
+#### `kaggle:api-token`
+
+- **Record:** verdict `issuance-gated`, tier T2, blockedBy `no provider source states the length of KGAT_ tokens; one issued token checked for structure only`.
+- **Shape:** `KGAT_` + hex of unknown length (provider placeholder only); a community report says not every new-format token starts `KGAT_`. The legacy `kaggle.json` key is 32 hex with no prefix and stays generic.
+- **Sources:** the placeholder in provider docs ([Kaggle/kaggle-skills](https://github.com/Kaggle/kaggle-skills/blob/fd71736386a6000af54e4b925f7458e80f9bc412/kaggle-standardized-agent-exam/SKILL.md#L71), 2026-04-27); no length or alphabet source from any class.
+- **Collisions:** `KGAT_` is unique and uppercase.
+- **Open questions:** length, alphabet, and whether other new-format tokens have a different prefix.
+
+#### `devcycle:server-sdk-key`
+
+- **Record:** verdict `issuance-gated`, tier T2, blockedBy `no provider source states the body after dvc_server_; one issued key checked for structure only`.
+- **Shape:** `dvc_server_` + a body of unknown shape (SDK tests use synthetic UUIDs); legacy keys start `server` without `dvc_`. `dvc_client_` and `dvc_mobile_` keys are client-embedded and stay unclaimed (Q5).
+- **Sources:** prefix T1 by R6 (provider SDK checks, for example [`js-sdks` `paramUtils.ts`](https://github.com/DevCycleHQ/js-sdks/blob/ffc52abae48312daf80dd5d462571e8704f0e27a/sdk/js-cloud-server/src/utils/paramUtils.ts#L42-L44)); the GitHub partner list has three DevCycle types without a published regex.
+- **Collisions:** low for `dvc_server_`; `DEVCYCLE_SERVER_SDK_KEY=` is not recognized as a credential name by today's contextual detection (measured on `main` 2026-09-29).
+- **Open questions:** whether the real body is a UUID or a hash with a version suffix.
+
+#### `mixedbread:api-key`
+
+- **Record:** verdict `issuance-gated`, tier T3, blockedBy `only the mxb_ prefix is known; one issued key checked for structure only`.
+- **Shape:** `mxb_` + an unknown body; every provider fixture is a placeholder.
+- **Sources:** prefix by R6 (a runtime `startsWith` check in the provider CLI, [`openbread` `config.ts`](https://github.com/mixedbread-ai/openbread/blob/c7925f2cff0da9662bca8dac09d5b8ae8d75dcf2/packages/cli/src/utils/config.ts#L58), 2026-02-19); no length or alphabet source.
+- **Collisions:** `mxb_`-prefixed identifiers such as `mxb_client`.
+- **Open questions:** length and alphabet.
+
+#### `dbt-cloud:service-token`
+
+- **Record:** verdict `issuance-gated`, tier T3, blockedBy `only the dbtc_ and dbtu_ prefixes are known; one issued token per prefix checked for structure only`.
+- **Shape:** `dbtc_` (service token) or `dbtu_` (user personal access token) + an unknown body.
+- **Sources:** prefix by R6 (the provider's own credential classifier, [`dbt-platform-auth` `credential.rs`](https://github.com/dbt-labs/dbt/blob/d07f4e28e0c31e3661c8e74e3bdab63bea5292ad/crates/dbt-platform-auth/src/credential.rs#L58-L61), 2026-06-01); docs and tests use short placeholders only.
+- **Collisions:** none, but without a length rule a placeholder would match.
+- **Open questions:** length and alphabet per prefix.
+
+#### `launchdarkly:access-token`
+
+- **Record:** verdict `rejected` (deliberately not pursued as a family), tier T2, blockedBy `null`.
+- **Shape:** `api-` (access token) or `sdk-` (server SDK key) + a lowercase UUID; `mob-` mobile keys are documented as not secret and the client-side id is public (Q5).
+- **Sources:** prefix by the provider's CLI heuristic ([`ld-find-code-refs`](https://github.com/launchdarkly/ld-find-code-refs/blob/b757d6722832011678b1a38812798a97fe7fc603/options/options.go#L285-L288), R6); the UUID body is trufflehog-only (T2).
+- **Collisions:** high: `api-` and `sdk-` + UUID occur in resource ids and test data.
+- **Open questions:** a provider fixture or docs response with a full-length token; until then context-gated coverage only.
+
+#### `octopus-deploy:api-key`
+
+- **Record:** verdict `rejected` (deliberately not pursued as a family), tier T2, blockedBy `null`.
+- **Shape:** `API-` + uppercase alphanumerics; scanners disagree on length (26 against 29 to 34) and provider placeholders use 8, 13, 26 and 29.
+- **Sources:** prefix by R6 (a runtime `StartsWith("API-")` check in [`OctopusTentacle`](https://github.com/OctopusDeploy/OctopusTentacle/blob/d9b3b3402c6bf7f796e8afd711366a0ab815cbcc/source/Octopus.Manager.Tentacle/TentacleConfiguration/SetupWizard/SetupTentacleWizardModel.cs#L845), 2026-05-26); length contested (T2).
+- **Collisions:** high: `API-GATEWAY`, ticket keys such as `API-1234`, header and constant names.
+- **Open questions:** the true length (a self-hosted trial key would settle it); context-gated at best.
+
+#### `gocardless:access-token`
+
+- **Record:** verdict `rejected` (generic coverage is sufficient), tier T2, blockedBy `null`.
+- **Shape:** `live_` or `sandbox_` + 40 characters from `[A-Za-z0-9_=-]` by scanners.
+- **Sources:** a GoCardless staff statement that sandbox tokens begin `sandbox_` ([gocardless-pro-php#54](https://github.com/gocardless/gocardless-pro-php/issues/54#issuecomment-454874930), 2019-01-16, R3); length and alphabet from scanners that also require a `gocardless` keyword (T2).
+- **Collisions:** high: `live_` and `sandbox_` are generic words.
+- **Open questions:** a provider source for the length; a family would also need `gocardless` context.
+
+### Candidates that map to taxonomy families (#1014)
+
+The other 10 of the 50 candidates (ranks 1 to 10 of the #1014 roll-up) are taxonomy families with a dossier in this folder. Their detectors merged to `main` in redact-secret#1039 (unreleased), and each dossier was refreshed against the frozen record at `3785817`.
+
+| candidate | dossier |
+| --- | --- |
+| `bitwarden:secrets-manager-access-token` | [`bitwarden.md`](bitwarden.md) |
+| `polar:organization-access-token` | [`polar.md`](polar.md) (also `polar:api-credential`) |
+| `sonarqube:token` | [`sonarqube.md`](sonarqube.md) (`sonarqube:user-token`, `sonarqube:analysis-token`) |
+| `rubygems:api-key` | [`rubygems.md`](rubygems.md) |
+| `clojars:deploy-token` | [`clojars.md`](clojars.md) |
+| `crates-io:api-token` | [`crates-io.md`](crates-io.md) (also `crates-io:trusted-publishing-token`) |
+| `dynatrace:api-token` | [`dynatrace.md`](dynatrace.md) |
+| `paddle:api-key` | [`paddle.md`](paddle.md) |
+| `honeycomb:api-key` | [`honeycomb.md`](honeycomb.md) (`honeycomb:ingest-key`; the management key stays issuance-gated) |
+| `axiom:api-token` | [`axiom.md`](axiom.md) (also `axiom:personal-token`) |

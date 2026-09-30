@@ -9,7 +9,9 @@
  */
 import { loadCatalog } from '../services/catalog';
 import type { Catalog } from '../services/catalog';
+import { loadFeatureClaims } from '../services/features';
 import { loadFindings } from '../services/findings';
+import { loadPeerRuntime } from '../services/runtime';
 import { loadRun, type MeasuredRun } from '../services/run';
 import {
   resolveFamily, resolveFamilyList, familySlug, type FamilyDetail, type FamilyList,
@@ -19,10 +21,13 @@ import {
   type FindingsBlock, type LevelAnswers, type PeersBlock,
 } from './report';
 import { int } from './format';
+import { resolveFeaturePage, resolveHub, resolveRuntimePanels, type FeaturePage, type RuntimePanel } from './comparison';
+import type { ComparisonHubProps } from '../components/comparison/ComparisonHub';
 import { resolveRunState, type RunState } from './run';
 import type { EvidenceLevelLink, HubTileData } from '../components/report/types';
 import type { MetaItem } from '../components/page/MetaList';
 
+export type { FeaturePage, RuntimePanel, ComparisonHubProps };
 export type { FamilyDetail, FamilyList, FindingsBlock, LevelAnswers, PeersBlock, RunState };
 
 async function context() {
@@ -135,4 +140,19 @@ export async function resolveFamilyPage(slug: string): Promise<FamilyPageData | 
     ],
     description: `${int(family.fixtureCount)} rows for redact-secret only. Rows that need a look come first (${int(family.needsLookCount)}), then the rest in corpus order.`,
   };
+}
+
+// ---- /comparison, /comparison/feature, /comparison/runtime -------------------------
+
+export async function resolveComparisonHubPage(): Promise<ComparisonHubProps> {
+  const [runtime, features, run] = await Promise.all([loadPeerRuntime(), loadFeatureClaims(), loadRun()]);
+  return resolveHub({ runtime, features, run });
+}
+
+export async function resolveFeatureComparisonPage(): Promise<FeaturePage> {
+  return resolveFeaturePage(await loadFeatureClaims());
+}
+
+export async function resolveRuntimeComparisonPage(): Promise<RuntimePanel[]> {
+  return resolveRuntimePanels(await loadPeerRuntime());
 }

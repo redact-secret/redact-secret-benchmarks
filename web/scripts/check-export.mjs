@@ -51,7 +51,7 @@ async function* walk(dir) {
 for await (const file of walk(path.join(out, '_next', 'static'))) {
   if (!file.endsWith('.js')) continue;
   const text = await readFile(file, 'utf8');
-  if (/pin-manifest|support\/taxonomy|public\/results|results\/summary|known-gaps|fixture-index|summary\.json/.test(text)) fail(`${path.relative(out, file)} names a ledger file: ledger data must be read at build time only`);
+  if (/pin-manifest|evidence\/429|feature-claims|peer-pii-runtime|support\/taxonomy|public\/results|results\/summary|known-gaps|fixture-index|summary\.json/.test(text)) fail(`${path.relative(out, file)} names a ledger file: ledger data must be read at build time only`);
 }
 
 // ---- The report pages carry the ledger's numbers (#556) ----------------------------------
@@ -110,6 +110,44 @@ if (!summary) {
   if (!/Mode (published|candidate) ·/.test(providersPage)) fail('/report/providers/ does not state its mode');
   if (report.includes('No benchmark results for this checkout')) fail('/report/ says there is no run, but public/results exists');
 }
+
+// ---- The comparison pages carry the ledger's numbers (#557) ------------------------------
+// Read independently of web/services and web/resolvers, from the committed snapshot.
+const hub = await page('comparison');
+const runtimeHtml = await readFile(path.join(out, 'comparison/runtime/index.html'), 'utf8');
+const runtimePage = text(runtimeHtml);
+const featurePage = await page('comparison/feature');
+const ms = n => (n < 100 ? n.toFixed(1) : Math.round(n).toLocaleString('en-US'));
+const mbs = n => (n / 1e6).toFixed(1);
+let snapshot;
+try { snapshot = await readJson('evidence/429/peer-pii-runtime-throughput.json'); } catch { /* not committed */ }
+if (!snapshot) {
+  if (!runtimePage.includes('Not measured yet')) fail('/comparison/runtime/ has no snapshot to read and must say "Not measured yet"');
+} else {
+  for (const o of snapshot.observations) {
+    const times = new RegExp(`Usual time\\s*ms[\\s\\S]*?${ms(o.summary.medianMs).replace(/[.,]/g, m => `\\${m}`)}\\b`);
+    if (!times.test(runtimePage)) fail(`/comparison/runtime/ does not state ${ms(o.summary.medianMs)} ms for ${o.tool} on ${o.workload}`);
+    if (!runtimePage.includes(mbs(o.summary.medianBytesPerSecond))) fail(`/comparison/runtime/ does not state ${mbs(o.summary.medianBytesPerSecond)} MB/s for ${o.tool} on ${o.workload}`);
+  }
+  for (const t of snapshot.tools) if (!runtimePage.includes(t.version)) fail(`/comparison/runtime/ does not state ${t.id} ${t.version}`);
+  if (!runtimePage.includes(snapshot.generatedAt.slice(0, 10))) fail('/comparison/runtime/ does not state the run date');
+  if (!runtimePage.includes('local build · unreleased')) fail('/comparison/runtime/ does not state that redact-secret was a local unreleased build');
+  if (!hub.includes(snapshot.generatedAt.slice(0, 10)) || !hub.includes(`${new Set(snapshot.observations.map(o => o.workload)).size} test texts`)) fail('/comparison/ does not state the runtime run date and test-text count');
+}
+for (const key of ['external-pii-all', 'external-pii-speed', 'external-pii-accuracy', 'internal-pii', 'internal-credentials', 'external-credentials']) {
+  if (!runtimeHtml.includes(`data-key="${key}"`)) fail(`/comparison/runtime/ has no panel for ${key}`);
+}
+for (const q of ['analysis', 'domain', 'view']) if (!runtimeHtml.includes(`data-${q}`) && !runtimeHtml.includes(`dataset.${q}`)) fail(`/comparison/runtime/ does not carry the ${q} query state`);
+let claims;
+try { claims = await readJson('benchmarks/feature-claims.json'); } catch { /* not committed yet */ }
+if (!claims) {
+  if (!featurePage.includes('No feature claims recorded yet')) fail('/comparison/feature/ has no claims file and must say so');
+  if (!hub.includes('Not recorded yet')) fail('/comparison/ must say the features are not recorded yet');
+} else {
+  for (const l of claims.libraries) if (!featurePage.includes(l.name) || !featurePage.includes(l.version)) fail(`/comparison/feature/ does not list ${l.name} ${l.version}`);
+  if (featurePage.includes('No feature claims recorded yet')) fail('/comparison/feature/ says nothing is recorded, but the claims file exists');
+}
+if (summary && !/Accuracy · \d{4}-\d{2}-\d{2} · (published|candidate) ·/.test(hub)) fail('/comparison/ does not state the accuracy run date and mode');
 
 if (problems.length) {
   for (const p of problems) console.error(p);

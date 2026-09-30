@@ -11,7 +11,8 @@ export interface RuntimeToolbarProps {
   currentHref: string;
   /** The current view; the legend is hidden in `speed`, where there are no outcome icons to read. */
   view: RuntimeView;
-  legend: RuntimeLegendItem[];
+  /** Omitted when no outcomes are recorded, so there is nothing to key. */
+  legend?: RuntimeLegendItem[];
   className?: string;
 }
 
@@ -20,11 +21,13 @@ export function RuntimeToolbar({ views, currentHref, view, legend, className }: 
   return (
     <div className={cx(styles.bar, className)}>
       <SegmentedNav items={views} currentHref={currentHref} label="What to show" />
-      <Legend
-        className={cx(view === 'speed' && styles.hiddenLegend)}
-        label="Outcome key"
-        items={legend.map(item => <OutcomeMark key={item.outcome} outcome={item.outcome} label={item.label} />)}
-      />
+      {legend && legend.length > 0 && (
+        <Legend
+          className={cx(view === 'speed' && styles.hiddenLegend)}
+          label="Outcome key"
+          items={legend.map(item => <OutcomeMark key={item.outcome} outcome={item.outcome} label={item.label} />)}
+        />
+      )}
     </div>
   );
 }

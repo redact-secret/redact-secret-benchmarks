@@ -125,9 +125,12 @@ export function RuntimeQuestionTable({ question, columns, view = 'all', columnKi
           </table>
         </div>
       )}
-      <p className={styles.id}>
-        <code>{question.workload}</code> · {question.size} · {question.repeat}
-      </p>
+      {question.workload && (
+        <p className={styles.id}>
+          <code>{question.workload}</code>
+          {[question.size, question.repeat].filter(Boolean).map(part => ` · ${part}`)}
+        </p>
+      )}
     </section>
   );
 }

@@ -23,4 +23,47 @@ export const Searching: Story = { args: { query: 'stripe', resultText: '1 provid
 
 export const NoResults: Story = { args: { query: 'zzzz', show: 'empty', resultText: '0 providers · 0 families' } };
 
+/** A list that narrows to one evidence level; the counts in the list follow the choice. */
+export const WithLevel: Story = {
+  args: {
+    levels: {
+      label: 'Evidence level', value: 'all', onChange: () => {},
+      options: [
+        { value: 'all', label: 'All levels' }, { value: 'T1', label: 'Provider-documented' },
+        { value: 'T2', label: 'Tool-corroborated' }, { value: 'T3', label: 'Project policy' }, { value: 'T0', label: 'Pending review' },
+      ],
+    },
+  },
+  render: args => {
+    const [query, setQuery] = useState(args.query);
+    const [show, setShow] = useState<ReportShow>(args.show);
+    const [level, setLevel] = useState('all');
+    return <ReportFilterBar {...args} query={query} onQueryChange={setQuery} show={show} onShowChange={setShow} levels={{ ...args.levels!, value: level, onChange: setLevel }} />;
+  },
+};
+
+/** A list of fixture rows: its own "Show" choices, an evidence level and which scanners' outcomes the table shows. */
+export const ForRows: Story = {
+  args: {
+    placeholder: 'fixture, suite, kind',
+    resultText: '1,298 of 1,298 rows',
+    showOptions: [
+      { value: 'all', label: 'All rows' },
+      { value: 'signal', label: 'Needs a look' },
+      { value: 'leaked', label: 'Left readable' },
+      { value: 'flagged', label: 'Flagged' },
+    ],
+    scope: {
+      label: 'Scanners', value: 'all', onChange: () => {},
+      options: [{ value: 'product', label: 'redact-secret only' }, { value: 'all', label: 'Every scanner' }],
+    },
+  },
+  render: args => {
+    const [query, setQuery] = useState(args.query);
+    const [show, setShow] = useState<ReportShow>('all');
+    const [scope, setScope] = useState('all');
+    return <ReportFilterBar {...args} query={query} onQueryChange={setQuery} show={show} onShowChange={setShow} scope={{ ...args.scope!, value: scope, onChange: setScope }} />;
+  },
+};
+
 export const Phone: Story = { globals: { viewport: { value: 'mobile1', isRotated: false } } };

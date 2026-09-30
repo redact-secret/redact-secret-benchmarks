@@ -20,7 +20,7 @@ export default async function Page() {
         meta={data.head.meta}
       />
       <RunNotes state={data.runState} />
-      <FamiliesView items={data.list.families} />
+      <FamiliesView levels={data.levels} />
     </Stack>
   );
 }

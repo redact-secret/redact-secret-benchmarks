@@ -1,0 +1,24 @@
+@layer components {
+  /*
+   * A suite page holds two views: the suite's rows, and one fixture's page. `?fixture=<id>`
+   * chooses the second (FixtureSync and the inline script set `data-fixture` on the root
+   * element), so a static export serves every fixture of a suite from one page and the URL
+   * stays `/report/fixtures/<suite>/?fixture=<id>`. Without a fixture the rows show.
+   */
+  .fixtureView {
+    display: none;
+  }
+
+  :global(:root[data-fixture]) .fixtureView {
+    display: block;
+  }
+
+  :global(:root[data-fixture]) .rowsView {
+    display: none;
+  }
+
+  .loading {
+    color: var(--ink-muted);
+    font: var(--text-small);
+  }
+}

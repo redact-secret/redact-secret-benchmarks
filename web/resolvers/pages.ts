@@ -7,20 +7,29 @@
  *
  * Server-only. Client components import `./filters` and the types, never this.
  */
-import { loadCatalog } from '../services/catalog';
+import { loadCatalog, loadFixtureBytes } from '../services/catalog';
 import type { Catalog } from '../services/catalog';
+import { loadDetectorContracts } from '../services/contracts';
+import { loadAccountingFloors } from '../services/floors';
 import { loadFeatureClaims } from '../services/features';
 import { loadFindings } from '../services/findings';
+import { loadPeerProfiles } from '../services/peers';
 import { loadPeerRuntime } from '../services/runtime';
 import { loadRun, type MeasuredRun } from '../services/run';
 import {
-  resolveFamily, resolveFamilyList, familySlug, type FamilyDetail, type FamilyList,
+  resolveFamily, resolveFamilyList, familySlug, type FamilyDetail, type FamilyList, type LevelList,
 } from './families';
 import {
-  LEVELS, answerMeta, levelLinks, resolveAnswers, resolveFindings, resolveHubTiles, resolvePeers, runEyebrow, runFacts,
-  type FindingsBlock, type LevelAnswers, type PeersBlock,
+  LEVELS, LEVEL_SHORT as SHORT_LABEL, LEVEL_TITLE as TIER_LABEL, answerMeta, levelHref, levelLinks, resolveAnswers, resolveFindings, resolveHubTiles, resolvePeers, runEyebrow, runFacts,
+  type FindingsBlock, type LevelAnswers, type Level, type PeersBlock,
 } from './report';
-import { int } from './format';
+import { count, int } from './format';
+import { LIST_LEVELS } from './filters';
+import { buildSuiteRecords, type FixtureRecord, type SuiteShared } from './fixtures';
+import { resolveDetector, resolveDetectorList, type DetectorDetail } from './detectors';
+import { milestoneLabel, resolveFindingsInventory, resolveSuiteRows, type FindingsInventory } from './inventory';
+import { resolveRowsData, rowFacts, rowsHref, type RowScanner, type RowsData } from './rows';
+import type { DetectorRowData, FindingRowData, SuiteRowData } from '../components/report/types';
 import { resolveFeaturePage, resolveHub, resolveRuntimePanels, type FeaturePage, type RuntimePanel } from './comparison';
 import type { ComparisonHubProps } from '../components/comparison/ComparisonHub';
 import { resolveRunState, type RunState } from './run';
@@ -52,7 +61,8 @@ export interface ReportPageData {
 }
 
 export async function resolveReportPage(): Promise<ReportPageData> {
-  const [{ catalog, run, measured, rows }, findings] = await Promise.all([context(), loadFindings()]);
+  const [{ catalog, run, measured, rows }, findings, profiles] = await Promise.all([context(), loadFindings(), loadPeerProfiles()]);
+  const peerContext = { fixtures: catalog.fixtures, profiles };
   const list = resolveFamilyList(catalog, rows);
   return {
     head: {
@@ -62,9 +72,13 @@ export async function resolveReportPage(): Promise<ReportPageData> {
       meta: [],
     },
     runState: resolveRunState(run),
-    tiles: resolveHubTiles(list, findings),
+    tiles: resolveHubTiles(list, findings, {
+      count: catalog.detectors.length,
+      // Distinct fixtures that exercise at least one detector: assignments overlap, so a fixture counts once.
+      fixtures: catalog.fixtures.filter(f => f.detectors.length > 0).length,
+    }),
     levels: levelLinks(),
-    byLevel: measured ? LEVELS.map(level => ({ level: resolveAnswers(measured, level), peers: resolvePeers(measured, findings, level) })) : null,
+    byLevel: measured ? LEVELS.map(level => ({ level: resolveAnswers(measured, level), peers: resolvePeers(measured, findings, level, peerContext) })) : null,
     answersMeta: measured ? answerMeta(measured, catalog) : [],
     findings: resolveFindings(findings),
   };
@@ -75,28 +89,39 @@ export async function resolveReportPage(): Promise<ReportPageData> {
 export interface ListPageData {
   head: HeadData;
   runState: RunState;
+  /** Every level, `all` first. The island shows the one `?level=` names; the whole set is pre-rendered. */
+  levels: LevelList[];
   list: FamilyList;
   footnote: string;
 }
 
+const footnoteOf = (totals: FamilyList['totals']): string =>
+  `${int(totals.global)} fixtures are global or not tied to one family. They count in no provider or family row.`;
+
 async function listPage(title: 'Providers' | 'Families'): Promise<ListPageData> {
   const { catalog, run, measured, rows } = await context();
-  const list = resolveFamilyList(catalog, rows);
+  const levels: LevelList[] = LIST_LEVELS.map(({ level, label }) => {
+    const list = resolveFamilyList(catalog, rows, level);
+    const unit = title === 'Providers' ? count(list.totals.providersWithFixtures, 'provider') : count(list.totals.familiesWithFixtures, 'family', 'families');
+    return { level, optionLabel: level === 'all' ? label : `${label} · ${unit}`, list, footnote: footnoteOf(list.totals) };
+  });
+  const list = levels[0].list;
   const { totals } = list;
   const facts = measured ? runFacts(measured) : [];
   return {
     runState: resolveRunState(run),
+    levels,
     list,
-    footnote: `${int(totals.global)} fixtures are global or not tied to one family. They count in no provider or family row.`,
+    footnote: footnoteOf(totals),
     head: title === 'Providers'
       ? {
           eyebrow: 'redact-secret · Report', title,
-          lede: 'Counts are fixture rows for redact-secret on the current run. Open a provider to see its families, then pick a family to see every row behind it. A fixture in two families counts once for its provider.',
+          lede: 'Counts are fixture rows for redact-secret on the current run. Open a provider to see its families, then pick a family to see every row behind it. A fixture in two families counts once for its provider. Choose an evidence level to count only the rows at that level.',
           meta: [{ value: `${int(totals.providers)} providers` }, { value: `${int(totals.families)} families` }, { value: `${int(totals.fixtures)} fixtures` }, ...facts],
         }
       : {
           eyebrow: 'redact-secret · Report', title,
-          lede: 'One row per credential family, in taxonomy order. Counts are fixture rows for redact-secret on the current run; a fixture in two families appears in both rows.',
+          lede: 'One row per credential family, in taxonomy order. Counts are fixture rows for redact-secret on the current run; a fixture in two families appears in both rows. Choose an evidence level to count only the rows at that level.',
           meta: [
             { value: `${int(totals.families)} families` }, { value: `${int(totals.familiesWithFixtures)} with fixtures` },
             ...(measured ? [{ value: `${int(totals.familiesNeedingLook)} need a look` }] : []), ...facts,
@@ -115,7 +140,17 @@ export interface FamilyPageData {
   runState: RunState;
   meta: MetaItem[];
   description: string;
+  /** The family's rows with one outcome per scanner; the page opens on redact-secret's column alone. */
+  rows: RowsData;
+  /** The evidence levels the family has rows at, each with its row count, `all` first. */
+  levels: { value: string; label: string }[];
+  /** The headline counts at each of those levels, so the counts above the rows match the level chosen. */
+  factsByLevel: Record<string, { term: string; value: string }[]>;
 }
+
+/** The scanners of a run in run order, or redact-secret alone when there is no usable run. */
+const rowScanners = (measured: MeasuredRun | undefined): RowScanner[] =>
+  measured ? measured.scanners.map(s => ({ id: s.id, name: s.name, rows: s.rows })) : [{ id: 'redact-secret', name: 'redact-secret', rows: undefined }];
 
 /** Every family that gets a pre-rendered page: all of them, including those with no fixtures. */
 export async function resolveFamilySlugs(): Promise<string[]> {
@@ -130,6 +165,15 @@ export async function resolveFamilyPage(slug: string): Promise<FamilyPageData | 
   const id = catalog.taxonomy.families.find(f => familySlug(f.id) === slug)?.id;
   const family = id ? resolveFamily(catalog, id, rows) : undefined;
   if (!family) return undefined;
+  const fixtures = catalog.fixturesByFamily.get(family.id) ?? [];
+  const scanners = rowScanners(measured);
+  const levels = [
+    { value: 'all', label: `All levels (${int(fixtures.length)})` },
+    ...LIST_LEVELS.filter(l => l.level !== 'all').flatMap(l => {
+      const n = fixtures.filter(f => f.tier === l.level).length;
+      return n > 0 ? [{ value: l.level, label: `${l.label} (${int(n)})` }] : [];
+    }),
+  ];
   return {
     family,
     runState: resolveRunState(run),
@@ -138,7 +182,201 @@ export async function resolveFamilyPage(slug: string): Promise<FamilyPageData | 
       { label: 'Detectors:', value: family.detectors.length ? family.detectors.join(', ') : 'none mapped' },
       ...(measured ? runFacts(measured) : []),
     ],
-    description: `${int(family.fixtureCount)} rows for redact-secret only. Rows that need a look come first (${int(family.needsLookCount)}), then the rest in corpus order.`,
+    description: `${int(family.fixtureCount)} rows, redact-secret's outcome on each. Rows that need a look come first (${int(family.needsLookCount)}), then the rest in corpus order. Choose "Every scanner" to see each scanner's outcome for the same rows.`,
+    rows: resolveRowsData(fixtures, scanners),
+    levels: levels.length > 2 ? levels : [],
+    factsByLevel: Object.fromEntries(LIST_LEVELS.filter(l => l.level !== 'all').map(l => [l.level, rowFacts(fixtures.filter(f => f.tier === l.level), rows, 'Fixtures')])),
+  };
+}
+
+// ---- /report/rows/[level] ---------------------------------------------------------
+
+export interface LevelRowsPageData {
+  level: Level;
+  head: HeadData;
+  runState: RunState;
+  /** The three levels as links to their rows, and the current one. */
+  levels: EvidenceLevelLink[];
+  currentHref: string;
+  rows: RowsData;
+  facts: { term: string; value: string }[];
+  description: string;
+  /** The hub page's own level: where the three answers for these rows are. */
+  answersHref: string;
+}
+
+export const resolveLevelSlugs = (): Level[] => LEVELS;
+
+/** Rows at one evidence level for every scanner in the run: what the three answers at that level are counted from. */
+export async function resolveLevelRowsPage(level: Level): Promise<LevelRowsPageData> {
+  const { catalog, run, measured, rows } = await context();
+  const fixtures = catalog.fixtures.filter(f => f.tier === level);
+  const scanners = rowScanners(measured);
+  const t = TIER_LABEL[level];
+  return {
+    level,
+    head: {
+      eyebrow: 'redact-secret · Report',
+      title: `Rows at the ${t.toLowerCase()} level`,
+      lede: 'Every fixture at this evidence level, with the outcome each scanner recorded for it. The three answers on the report are counted from these rows. Rows that need a look come first.',
+      meta: [{ value: count(fixtures.length, 'row') }, ...(measured ? runFacts(measured) : [])],
+    },
+    runState: resolveRunState(run),
+    levels: LEVELS.map(l => ({ label: TIER_LABEL[l], shortLabel: SHORT_LABEL[l], href: rowsHref(l) })),
+    currentHref: rowsHref(level),
+    rows: resolveRowsData(fixtures, scanners),
+    facts: rowFacts(fixtures, rows, 'Rows'),
+    description: `${int(fixtures.length)} rows at this level. Counts above are redact-secret's; each scanner's outcome for a row is a column. A scanner with no row for a fixture shows "Not measured", never a pass.`,
+    answersHref: levelHref(level),
+  };
+}
+
+// ---- /report/fixtures, /report/fixtures/[suite] -------------------------------------
+
+export interface SuiteListPageData { head: HeadData; runState: RunState; suites: SuiteRowData[] }
+
+export async function resolveSuitesPage(): Promise<SuiteListPageData> {
+  const { catalog, run, measured, rows } = await context();
+  return {
+    head: {
+      eyebrow: 'redact-secret · Report',
+      title: 'Suites',
+      lede: 'The corpus is a set of suites, each a folder of fixtures authored for one purpose. Open a suite for its rows, then a row for the fixture: its bytes, what was expected and what each scanner reported.',
+      meta: [{ value: count(catalog.suites.length, 'suite') }, { value: count(catalog.fixtures.length, 'fixture') }, ...(measured ? runFacts(measured) : [])],
+    },
+    runState: resolveRunState(run),
+    suites: resolveSuiteRows(catalog, rows),
+  };
+}
+
+export interface SuitePageData {
+  id: string;
+  title: string;
+  head: HeadData;
+  runState: RunState;
+  rows: RowsData;
+  facts: { term: string; value: string }[];
+  description: string;
+  /** The compact fixture records and shared text the page builds a fixture's detail from in the browser. */
+  records: FixtureRecord[];
+  shared: SuiteShared;
+}
+
+export async function resolveSuiteSlugs(): Promise<string[]> {
+  return (await loadCatalog()).suites.map(s => s.id);
+}
+
+export async function resolveSuitePage(id: string): Promise<SuitePageData | undefined> {
+  const [{ catalog, run, measured, rows }, bytes, gaps] = await Promise.all([context(), loadFixtureBytes(), loadFindings()]);
+  const suite = catalog.suites.find(s => s.id === id);
+  if (!suite) return undefined;
+  const fixtures = catalog.fixturesBySuite.get(id) ?? [];
+  const scanners = rowScanners(measured);
+  const runProblem = run.state !== 'measured'
+    ? 'No benchmark run is published for this checkout.'
+    : run.excludedSuites.find(s => s.id === id)?.problem ? `The report for these bytes is left out: ${run.excludedSuites.find(s => s.id === id)!.problem}. The expectation stands on its own; lanes appear once a report re-validates against these bytes.`
+    : run.staleSuites.includes(id) ? 'The report for these bytes is from an older run and is left out.' : undefined;
+  const { records, shared } = buildSuiteRecords({
+    suite, fixtures, bytes,
+    scanners: measured ? measured.scanners : [],
+    ...(runProblem ? { runProblem } : {}),
+    findings: gaps.issues.map(i => ({ number: i.number, url: i.url, milestone: milestoneLabel(gaps.milestone), fixtures: i.fixtures })),
+    detectorTitles: new Map(catalog.detectors.map(d => [d.id, d.title])),
+    familyNames: new Map(catalog.taxonomy.families.map(f => [f.id, f.name])),
+  });
+  return {
+    id, title: suite.title,
+    head: {
+      eyebrow: 'redact-secret · Report',
+      title: suite.title,
+      lede: suite.description,
+      meta: [{ value: count(fixtures.length, 'fixture') }, ...(measured ? runFacts(measured) : [])],
+    },
+    runState: resolveRunState(run),
+    rows: resolveRowsData(fixtures, scanners),
+    facts: rowFacts(fixtures, rows, 'Fixtures'),
+    description: `${int(fixtures.length)} fixtures in this suite. Open a fixture for its bytes, expected spans and what each scanner reported.`,
+    records, shared,
+  };
+}
+
+// ---- /report/detectors, /report/detectors/[detector] ----------------------------------
+
+export interface DetectorListPageData { head: HeadData; runState: RunState; detectors: DetectorRowData[]; note: string }
+
+export async function resolveDetectorsPage(): Promise<DetectorListPageData> {
+  const [{ catalog, run, measured }, floors] = await Promise.all([context(), loadAccountingFloors()]);
+  const detectors = resolveDetectorList(catalog, floors.minDenominator);
+  const thin = detectors.filter(d => d.value <= d.minimum).length;
+  return {
+    head: {
+      eyebrow: 'redact-secret · Report',
+      title: 'Detectors',
+      lede: 'One row per detector family the product registers, by the fixtures that exercise it. The line on each bar is the minimum sample size below which the run withholds a bound.',
+      meta: [{ value: count(detectors.length, 'detector') }, { value: `${int(thin)} at or below the minimum` }, ...(measured ? runFacts(measured) : [])],
+    },
+    runState: resolveRunState(run),
+    detectors,
+    note: `Detector assignments overlap: a fixture can exercise several detectors, so these counts are never summed. The minimum sample size is ${int(floors.minDenominator)} fixtures.`,
+  };
+}
+
+export interface DetectorPageData {
+  detector: DetectorDetail;
+  head: HeadData;
+  runState: RunState;
+  rows: RowsData;
+  facts: { term: string; value: string }[];
+  findings: FindingRowData[];
+  note: string;
+}
+
+export async function resolveDetectorSlugs(): Promise<string[]> {
+  return (await loadCatalog()).detectors.map(d => d.id);
+}
+
+export async function resolveDetectorPage(id: string): Promise<DetectorPageData | undefined> {
+  const [{ catalog, run, measured, rows }, floors, contracts, gaps] = await Promise.all([context(), loadAccountingFloors(), loadDetectorContracts(), loadFindings()]);
+  const detector = resolveDetector(catalog, id, measured, contracts.get(id), floors.minDenominator);
+  if (!detector) return undefined;
+  const scanners = rowScanners(measured);
+  const slugs = new Set(detector.fixtures.map(f => f.slug));
+  const inventory = resolveFindingsInventory({ ...gaps, issues: gaps.issues.filter(i => i.fixtures.some(s => slugs.has(s))) }, catalog);
+  return {
+    detector,
+    head: {
+      eyebrow: 'redact-secret · Report · Detector',
+      title: detector.title,
+      lede: '',
+      meta: [
+        { value: count(detector.fixtureCount, 'fixture') },
+        ...(detector.tier ? [{ label: 'Format evidence:', value: `${detector.tier} · ${detector.tierTitle ?? ''}`.trim() }] : []),
+        ...(measured ? runFacts(measured) : []),
+      ],
+    },
+    runState: resolveRunState(run),
+    rows: resolveRowsData(detector.fixtures, scanners),
+    facts: rowFacts(detector.fixtures, rows, 'Fixtures'),
+    findings: inventory.rows,
+    note: 'Detector views overlap, so their groups are never summed across detectors. Other scanners are reference values on the same inputs, in run order.',
+  };
+}
+
+// ---- /report/findings -----------------------------------------------------------------
+
+export interface FindingsPageData { head: HeadData; inventory: FindingsInventory }
+
+export async function resolveFindingsPage(): Promise<FindingsPageData> {
+  const [catalog, gaps] = await Promise.all([loadCatalog(), loadFindings()]);
+  const inventory = resolveFindingsInventory(gaps, catalog);
+  return {
+    head: {
+      eyebrow: 'redact-secret · Report',
+      title: inventory.title,
+      lede: inventory.description,
+      meta: [{ value: count(inventory.count, 'finding') }, { label: 'Snapshot', value: gaps.reviewedAt }],
+    },
+    inventory,
   };
 }
 

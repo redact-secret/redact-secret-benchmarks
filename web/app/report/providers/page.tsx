@@ -20,7 +20,7 @@ export default async function Page() {
         meta={data.head.meta}
       />
       <RunNotes state={data.runState} />
-      <ProvidersView items={data.list.providers} footnote={data.footnote} />
+      <ProvidersView levels={data.levels} />
     </Stack>
   );
 }

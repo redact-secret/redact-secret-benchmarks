@@ -1,0 +1,1451 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-09-30",
+  "method": "Authored and reviewed by hand from each pinned peer's own rule file (the same revisions benchmarks/detector-inventory.json snapshots: the Gitleaks config, the TruffleHog detector sources, the flare-redact spec and the OpenRedaction package patterns). A rule targets a family when its pattern, with the keyword gate or wrapper it requires, can match a credential of that family, or it is the peer's rule for that credential class. Never derived from what a peer found on the fixtures. A rule for the same provider but another token class is not mapped. Rules whose name looks like a provider are either mapped or listed in reviewedNoFamily with the reason; validated by benchmarks/lib/peer-rule-families.ts.",
+  "scanners": {
+    "gitleaks": {
+      "source": {
+        "version": "8.30.1",
+        "revision": "83d9cd684c87d95d656c1458ef04895a7f1cbd8e",
+        "sha256": "e163e53b9e7e8a8511e77271e2b323ed057759542a6d988258afe3a1fa329caf",
+        "path": "config/gitleaks.toml"
+      },
+      "ruleCount": 222,
+      "rules": {
+        "1password-service-account-token": {
+          "families": [
+            "onepassword:service-account-token"
+          ],
+          "basis": "ops_eyJ + Base64 body"
+        },
+        "anthropic-admin-api-key": {
+          "families": [
+            "anthropic:admin-api-key"
+          ],
+          "basis": "sk-ant-admin01- + 93 chars + AA"
+        },
+        "anthropic-api-key": {
+          "families": [
+            "anthropic:secret-api-key"
+          ],
+          "basis": "sk-ant-api03- + 93 chars + AA"
+        },
+        "atlassian-api-token": {
+          "families": [
+            "atlassian:api-token"
+          ],
+          "basis": "ATATT3 + 186 chars (second alternative)"
+        },
+        "aws-access-token": {
+          "families": [
+            "aws:iam-user-access-key",
+            "aws:sts-temporary-access-key",
+            "aws:sts-service-bearer-token",
+            "aws:context-specific-credential"
+          ],
+          "basis": "AKIA, ASIA, ABIA or ACCA + 16 characters"
+        },
+        "aws-amazon-bedrock-api-key-long-lived": {
+          "families": [
+            "aws-bedrock:long-term-api-key"
+          ],
+          "basis": "ABSK + 109-269 Base64 characters"
+        },
+        "aws-amazon-bedrock-api-key-short-lived": {
+          "families": [
+            "aws-bedrock:short-term-api-key"
+          ],
+          "basis": "bedrock-api-key- + the Base64 pre-signed URL prefix"
+        },
+        "azure-ad-client-secret": {
+          "families": [
+            "microsoft-entra:application-client-secret"
+          ],
+          "basis": "3 characters + digit + Q~ + 31-34 characters"
+        },
+        "clickhouse-cloud-api-secret-key": {
+          "families": [
+            "clickhouse-cloud:api-key"
+          ],
+          "basis": "4b1d + 38 alphanumerics"
+        },
+        "clojars-api-token": {
+          "families": [
+            "clojars:deploy-token"
+          ],
+          "basis": "CLOJARS_ + 60 characters"
+        },
+        "cohere-api-token": {
+          "families": [
+            "cohere:api-key"
+          ],
+          "basis": "cohere or CO_API_KEY keyword + 40 alphanumerics"
+        },
+        "confluent-secret-key": {
+          "families": [
+            "confluent:cloud-api-secret-legacy"
+          ],
+          "basis": "confluent keyword + 64 alphanumerics"
+        },
+        "curl-auth-header": {
+          "families": [
+            "generic:bearer-token"
+          ],
+          "basis": "curl -H Authorization Bearer, Basic or Token value"
+        },
+        "databricks-api-token": {
+          "families": [
+            "databricks:personal-access-token"
+          ],
+          "basis": "dapi + 32 hex, optional -digit"
+        },
+        "datadog-access-token": {
+          "families": [
+            "datadog:application-key-legacy"
+          ],
+          "basis": "datadog keyword + 40 alphanumerics"
+        },
+        "digitalocean-access-token": {
+          "families": [
+            "digitalocean:oauth-token"
+          ],
+          "basis": "doo_v1_ + 64 hex"
+        },
+        "digitalocean-pat": {
+          "families": [
+            "digitalocean:personal-access-token"
+          ],
+          "basis": "dop_v1_ + 64 hex"
+        },
+        "digitalocean-refresh-token": {
+          "families": [
+            "digitalocean:refresh-token"
+          ],
+          "basis": "dor_v1_ + 64 hex"
+        },
+        "doppler-api-token": {
+          "families": [
+            "doppler:personal-token"
+          ],
+          "basis": "dp.pt. + 43 alphanumerics"
+        },
+        "dynatrace-api-token": {
+          "families": [
+            "dynatrace:api-token"
+          ],
+          "basis": "dt0c01. + 24 + . + 64 characters"
+        },
+        "gcp-api-key": {
+          "families": [
+            "google:generic-api-key"
+          ],
+          "basis": "AIza + 35 characters"
+        },
+        "generic-api-key": {
+          "families": [
+            "generic:unclassified-assignment-literal"
+          ],
+          "basis": "keyword-before-value assignment with a literal of 10 or more characters"
+        },
+        "github-app-token": {
+          "families": [
+            "github:app-user-to-server-token",
+            "github:app-server-to-server-token"
+          ],
+          "basis": "ghu_ or ghs_ + 36 alphanumerics"
+        },
+        "github-fine-grained-pat": {
+          "families": [
+            "github:fine-grained-personal-access-token"
+          ],
+          "basis": "github_pat_ + 82 characters"
+        },
+        "github-oauth": {
+          "families": [
+            "github:oauth-access-token"
+          ],
+          "basis": "gho_ + 36 alphanumerics"
+        },
+        "github-pat": {
+          "families": [
+            "github:classic-personal-access-token"
+          ],
+          "basis": "ghp_ + 36 alphanumerics"
+        },
+        "github-refresh-token": {
+          "families": [
+            "github:oauth-refresh-token"
+          ],
+          "basis": "ghr_ + 36 alphanumerics"
+        },
+        "gitlab-pat": {
+          "families": [
+            "gitlab:legacy-personal-access-token"
+          ],
+          "basis": "glpat- + 20 characters"
+        },
+        "gitlab-pat-routable": {
+          "families": [
+            "gitlab:routable-personal-access-token"
+          ],
+          "basis": "glpat- + 27-300 characters + . + 2 + 7 base36 characters"
+        },
+        "gitlab-runner-authentication-token": {
+          "families": [
+            "gitlab:runner-authentication-token"
+          ],
+          "basis": "glrt- + 20 characters"
+        },
+        "gitlab-runner-authentication-token-routable": {
+          "families": [
+            "gitlab:runner-authentication-token"
+          ],
+          "basis": "glrt-t<digit>_ + routable payload"
+        },
+        "grafana-cloud-api-token": {
+          "families": [
+            "grafana:cloud-access-policy-token"
+          ],
+          "basis": "glc_ + 32-400 Base64 characters"
+        },
+        "grafana-service-account-token": {
+          "families": [
+            "grafana:service-account-token"
+          ],
+          "basis": "glsa_ + 32 characters + _ + 8 hex"
+        },
+        "hashicorp-tf-api-token": {
+          "families": [
+            "hashicorp-terraform:user-token",
+            "hashicorp-terraform:organization-token",
+            "hashicorp-terraform:team-token"
+          ],
+          "basis": "14 characters + .atlasv1. + 60-70 characters"
+        },
+        "heroku-api-key": {
+          "families": [
+            "heroku:legacy-api-key"
+          ],
+          "basis": "heroku keyword + a UUID"
+        },
+        "heroku-api-key-v2": {
+          "families": [
+            "heroku:oauth-access-token"
+          ],
+          "basis": "HRKU-AA + 58 characters"
+        },
+        "huggingface-access-token": {
+          "families": [
+            "huggingface:api-token"
+          ],
+          "basis": "hf_ + 34 letters"
+        },
+        "jwt": {
+          "families": [
+            "generic:jwt"
+          ],
+          "basis": "eyJ header . eyJ payload . signature"
+        },
+        "jwt-base64": {
+          "families": [
+            "generic:jwt"
+          ],
+          "basis": "Base64 of a JWT header (ZXlK...)"
+        },
+        "linear-api-key": {
+          "families": [
+            "linear:personal-api-key"
+          ],
+          "basis": "lin_api_ + 40 characters"
+        },
+        "mailchimp-api-key": {
+          "families": [
+            "mailchimp:marketing-api-key"
+          ],
+          "basis": "mailchimp keyword + 32 hex + -us + digits"
+        },
+        "mailgun-private-api-token": {
+          "families": [
+            "mailgun:private-api-key"
+          ],
+          "basis": "mailgun keyword + key- + 32 hex"
+        },
+        "mailgun-pub-key": {
+          "families": [
+            "mailgun:public-validation-key"
+          ],
+          "basis": "mailgun keyword + pubkey- + 32 hex"
+        },
+        "mailgun-signing-key": {
+          "families": [
+            "mailgun:legacy-signing-key-triplet"
+          ],
+          "basis": "mailgun keyword + 32-8-8 hex triplet"
+        },
+        "netlify-access-token": {
+          "families": [
+            "netlify:personal-access-token",
+            "netlify:other-prefixed-tokens"
+          ],
+          "basis": "netlify keyword + a 40-46 character body"
+        },
+        "new-relic-user-api-key": {
+          "families": [
+            "new-relic:user-api-key"
+          ],
+          "basis": "newrelic keyword + NRAK- + 27 characters"
+        },
+        "notion-api-token": {
+          "families": [
+            "notion:integration-token"
+          ],
+          "basis": "ntn_ + 11 digits + 35 characters"
+        },
+        "npm-access-token": {
+          "families": [
+            "npm:granular-access-token"
+          ],
+          "basis": "npm_ + 36 characters"
+        },
+        "okta-access-token": {
+          "families": [
+            "okta:api-token"
+          ],
+          "basis": "okta keyword + 00 + 40 characters"
+        },
+        "openai-api-key": {
+          "families": [
+            "openai:secret-api-key",
+            "openai:admin-api-key"
+          ],
+          "basis": "sk-proj-, sk-svcacct- or sk-admin- with the T3BlbkFJ marker"
+        },
+        "perplexity-api-key": {
+          "families": [
+            "perplexity:api-key"
+          ],
+          "basis": "pplx- + 48 alphanumerics"
+        },
+        "postman-api-token": {
+          "families": [
+            "postman:api-key"
+          ],
+          "basis": "PMAK- + 24 hex + - + 34 hex"
+        },
+        "private-key": {
+          "families": [
+            "generic:private-key"
+          ],
+          "basis": "-----BEGIN ... PRIVATE KEY----- block"
+        },
+        "pulumi-api-token": {
+          "families": [
+            "pulumi:personal-access-token",
+            "pulumi:organization-access-token",
+            "pulumi:team-access-token"
+          ],
+          "basis": "pul- + 40 hex"
+        },
+        "pypi-upload-token": {
+          "families": [
+            "pypi:api-token"
+          ],
+          "basis": "pypi-AgEIcHlwaS5vcmc + 50-1000 characters"
+        },
+        "rubygems-api-token": {
+          "families": [
+            "rubygems:api-key"
+          ],
+          "basis": "rubygems_ + 48 hex"
+        },
+        "sendgrid-api-token": {
+          "families": [
+            "sendgrid:api-key"
+          ],
+          "basis": "SG. + 66 characters"
+        },
+        "sentry-org-token": {
+          "families": [
+            "sentry:organization-auth-token"
+          ],
+          "basis": "sntrys_eyJ... Base64 payload"
+        },
+        "sentry-user-token": {
+          "families": [
+            "sentry:user-auth-token"
+          ],
+          "basis": "sntryu_ + 64 hex"
+        },
+        "shopify-access-token": {
+          "families": [
+            "shopify:custom-app-access-token"
+          ],
+          "basis": "shpat_ + 32 hex"
+        },
+        "shopify-private-app-access-token": {
+          "families": [
+            "shopify:public-app-access-token"
+          ],
+          "basis": "shppa_ + 32 hex"
+        },
+        "slack-app-token": {
+          "families": [
+            "slack:app-level-token"
+          ],
+          "basis": "xapp- + digits and identifiers"
+        },
+        "slack-bot-token": {
+          "families": [
+            "slack:bot-token"
+          ],
+          "basis": "xoxb- + 10-13 digits + 10-13 digits"
+        },
+        "slack-legacy-bot-token": {
+          "families": [
+            "slack:bot-token"
+          ],
+          "basis": "xoxb- + 8-14 digits + 18-26 characters"
+        },
+        "slack-user-token": {
+          "families": [
+            "slack:user-token"
+          ],
+          "basis": "xoxp- or xoxe- + three digit groups + 28-34 characters"
+        },
+        "sonar-api-token": {
+          "families": [
+            "sonarqube:user-token",
+            "sonarqube:analysis-token"
+          ],
+          "basis": "sonar login or token keyword + squ_, sqp_ or sqa_ + 40 characters"
+        },
+        "stripe-access-token": {
+          "families": [
+            "stripe:secret-key-live",
+            "stripe:secret-key-test",
+            "stripe:restricted-key-live",
+            "stripe:restricted-key-test"
+          ],
+          "basis": "sk_ or rk_ + test, live or prod + 10-99 characters"
+        },
+        "telegram-bot-api-token": {
+          "families": [
+            "telegram:bot-token"
+          ],
+          "basis": "telegr keyword + digits + :A + 34 characters"
+        },
+        "travisci-access-token": {
+          "families": [
+            "travis-ci:api-token"
+          ],
+          "basis": "travis keyword + 22 alphanumerics"
+        },
+        "vault-batch-token": {
+          "families": [
+            "hashicorp-vault:batch-token"
+          ],
+          "basis": "hvb. + 138-300 characters"
+        },
+        "vault-service-token": {
+          "families": [
+            "hashicorp-vault:service-token"
+          ],
+          "basis": "hvs. + 90-120 characters or legacy s. + 24"
+        }
+      },
+      "reviewedNoFamily": {
+        "1password-secret-key": "the account Secret Key (A3-...), a different credential from the service account token family",
+        "cloudflare-api-key": "a 40-character legacy key beside a cloudflare keyword; the taxonomy family is the cfut_ scannable token (53 characters), which this pattern cannot match",
+        "cloudflare-global-api-key": "a 37-character hex global API key; the taxonomy family is the cfut_ scannable token",
+        "cloudflare-origin-ca-key": "an origin CA key (v1.0-...), not the cfut_ scannable token",
+        "confluent-access-token": "the 16-character Cloud API key ID, an identifier and not the API secret",
+        "discord-api-token": "a 64-hex value beside a discord keyword, not the three-segment bot token",
+        "discord-client-id": "an OAuth application id, not a credential family in the taxonomy",
+        "discord-client-secret": "an OAuth client secret, not the bot token",
+        "gitlab-cicd-job-token": "a GitLab CI/CD job token (glcbt-); the taxonomy has no family for it",
+        "gitlab-deploy-token": "a GitLab deploy token (gldt-); no taxonomy family",
+        "gitlab-feature-flag-client-token": "a GitLab feature flag client token (glffct-); no taxonomy family",
+        "gitlab-feed-token": "a GitLab feed token (glft-); no taxonomy family",
+        "gitlab-incoming-mail-token": "a GitLab incoming mail token (glimt-); no taxonomy family",
+        "gitlab-kubernetes-agent-token": "a GitLab Kubernetes agent token (glagent-); no taxonomy family",
+        "gitlab-oauth-app-secret": "a GitLab OAuth application secret (gloas-); no taxonomy family",
+        "gitlab-ptt": "a GitLab pipeline trigger token (glptt-); no taxonomy family",
+        "gitlab-rrt": "a GitLab runner registration token (GR1348941); the taxonomy family is the runner authentication token",
+        "gitlab-scim-token": "a GitLab SCIM token (glsoat-); no taxonomy family",
+        "gitlab-session-cookie": "a GitLab session cookie; not a token family",
+        "grafana-api-key": "a legacy Grafana API key (eyJrIjoi); the taxonomy families are the glsa_ and glc_ tokens",
+        "hashicorp-tf-password": "a password assignment in Terraform files, not a Terraform Cloud API token",
+        "huggingface-organization-api-token": "the api_org_ prefix, a different token class from hf_ access tokens",
+        "linear-client-secret": "an OAuth client secret beside a linear keyword, not the personal API key or the OAuth access token",
+        "microsoft-teams-webhook": "a webhook URL, not a credential family in the taxonomy",
+        "new-relic-browser-api-token": "a browser key (NRJS-); the taxonomy families are the NRAK- user key and the license key",
+        "new-relic-insert-key": "an insert key (NRII-); no taxonomy family",
+        "new-relic-user-api-id": "a 64-character user id beside a newrelic keyword; not the NRAK- user API key",
+        "sentry-access-token": "a 64-hex value beside a sentry keyword, not the sntryu_ or sntrys_ prefixed tokens",
+        "shopify-custom-access-token": "the shpca_ prefix; the taxonomy's custom app token is shpat_",
+        "shopify-shared-secret": "an app shared secret (shpss_), not an access token",
+        "slack-config-access-token": "a configuration access token (xoxe.xoxb- or xoxe.xoxp-); the taxonomy families are the xoxb-, xoxp- and xapp- tokens",
+        "slack-config-refresh-token": "a configuration refresh token (xoxe-); no taxonomy family",
+        "slack-legacy-token": "a legacy xoxo- or xoxs- token; no taxonomy family",
+        "slack-legacy-workspace-token": "a legacy xoxa- or xoxr- workspace token; no taxonomy family",
+        "slack-webhook-url": "a webhook URL; the taxonomy's workflow webhook family is the xwfp- token",
+        "twilio-api-key": "the SK API key SID, a public identifier the taxonomy excludes (docs/specs/taxonomy.md); the 32-character secret is not matched"
+      }
+    },
+    "trufflehog": {
+      "source": {
+        "version": "3.97.4",
+        "revision": "363923b901c911a9164f50b6c423f47c15372b1c",
+        "sha256": "0757f94d996bf5a0a17af569cf30a8b473b1541ffcfebb385dc224979f496ffd",
+        "path": "pkg/engine/defaults/defaults.go"
+      },
+      "ruleCount": 892,
+      "rules": {
+        "anthropic": {
+          "families": [
+            "anthropic:secret-api-key",
+            "anthropic:admin-api-key"
+          ],
+          "basis": "sk-ant-api03- or sk-ant-admin01- + 93 characters + AA"
+        },
+        "apify": {
+          "families": [
+            "apify:api-token"
+          ],
+          "basis": "apify_api_ + 36 characters"
+        },
+        "atlassian/v2": {
+          "families": [
+            "atlassian:access-token"
+          ],
+          "basis": "ATCTT3xFfG + Base64 payload"
+        },
+        "aws/access_keys": {
+          "families": [
+            "aws:iam-user-access-key",
+            "aws:sts-service-bearer-token",
+            "aws:context-specific-credential",
+            "aws:iam-user-secret-access-key"
+          ],
+          "basis": "AKIA, ABIA or ACCA id, reported with its paired secret"
+        },
+        "aws/session_keys": {
+          "families": [
+            "aws:sts-temporary-access-key"
+          ],
+          "basis": "ASIA id + a session token of 100 or more characters"
+        },
+        "azure_entra/serviceprincipal/v1": {
+          "families": [
+            "microsoft-entra:application-client-secret"
+          ],
+          "basis": "secret or password keyword + 31-34 characters"
+        },
+        "azure_entra/serviceprincipal/v2": {
+          "families": [
+            "microsoft-entra:application-client-secret"
+          ],
+          "basis": "3 characters + digit + Q~ + 31-34 characters"
+        },
+        "azuredevopspersonalaccesstoken": {
+          "families": [
+            "azure-devops:personal-access-token"
+          ],
+          "basis": "azure keyword + 52 characters"
+        },
+        "cloudflareapitoken/v2": {
+          "families": [
+            "cloudflare:api-token"
+          ],
+          "basis": "cfut_ or cfat_ + 40 characters + 8 hex"
+        },
+        "confluent": {
+          "families": [
+            "confluent:cloud-api-secret-legacy"
+          ],
+          "basis": "confluent keyword + 64 characters"
+        },
+        "databrickstoken": {
+          "families": [
+            "databricks:personal-access-token"
+          ],
+          "basis": "dapi + 32 hex, optional -digit"
+        },
+        "datadogapikey": {
+          "families": [
+            "datadog:api-key"
+          ],
+          "basis": "datadog keyword + 32 characters"
+        },
+        "datadogtoken": {
+          "families": [
+            "datadog:api-key",
+            "datadog:application-key-legacy"
+          ],
+          "basis": "datadog or dd keyword + 32 or 40 characters"
+        },
+        "deepgram": {
+          "families": [
+            "deepgram:api-key"
+          ],
+          "basis": "deepgram keyword + 40 alphanumerics"
+        },
+        "digitaloceanv2": {
+          "families": [
+            "digitalocean:personal-access-token",
+            "digitalocean:oauth-token",
+            "digitalocean:refresh-token"
+          ],
+          "basis": "dop_v1_, doo_v1_ or dor_v1_ + 64 hex"
+        },
+        "discordbottoken": {
+          "families": [
+            "discord:bot-token"
+          ],
+          "basis": "discord keyword + 24.6.27 character segments"
+        },
+        "dockerhub/v2": {
+          "families": [
+            "docker:personal-access-token",
+            "docker:oauth-access-token"
+          ],
+          "basis": "dckr_pat_ + 27 or dckr_oat_ + 32 characters"
+        },
+        "doppler": {
+          "families": [
+            "doppler:service-token",
+            "doppler:personal-token",
+            "doppler:cli-token",
+            "doppler:service-account-token",
+            "doppler:scim-token",
+            "doppler:audit-token"
+          ],
+          "basis": "dp.st., dp.pt., dp.ct., dp.sa., dp.scim. or dp.audit. + 40-44 characters"
+        },
+        "elevenlabs/v2": {
+          "families": [
+            "elevenlabs:api-key"
+          ],
+          "basis": "sk_ + 48 hex"
+        },
+        "gcpapplicationdefaultcredentials": {
+          "families": [
+            "google:oauth-client-secret"
+          ],
+          "basis": "application default credentials JSON with a client_secret"
+        },
+        "github/v2": {
+          "families": [
+            "github:classic-personal-access-token",
+            "github:oauth-access-token",
+            "github:app-user-to-server-token",
+            "github:app-server-to-server-token",
+            "github:oauth-refresh-token",
+            "github:fine-grained-personal-access-token"
+          ],
+          "basis": "ghp_, gho_, ghu_, ghs_, ghr_ or github_pat_ + 36-255 characters"
+        },
+        "gitlab/v2": {
+          "families": [
+            "gitlab:legacy-personal-access-token"
+          ],
+          "basis": "glpat- + 20-22 characters"
+        },
+        "gitlab/v3": {
+          "families": [
+            "gitlab:routable-personal-access-token"
+          ],
+          "basis": "glpat- + 27-300 characters + 2 + 9 characters"
+        },
+        "googlegemini": {
+          "families": [
+            "google:generic-api-key"
+          ],
+          "basis": "AIzaSy + 33 characters"
+        },
+        "googleoauth2": {
+          "families": [
+            "google:oauth2-credential"
+          ],
+          "basis": "ya29. + 10 or more characters"
+        },
+        "grafana": {
+          "families": [
+            "grafana:cloud-access-policy-token"
+          ],
+          "basis": "glc_eyJ + 60-160 Base64 characters"
+        },
+        "grafanaserviceaccount": {
+          "families": [
+            "grafana:service-account-token"
+          ],
+          "basis": "glsa_ + 41 characters"
+        },
+        "groq": {
+          "families": [
+            "groq:api-key"
+          ],
+          "basis": "gsk_ + 52 characters"
+        },
+        "hashicorpvault/hashicorpvaultbatchtoken": {
+          "families": [
+            "hashicorp-vault:batch-token"
+          ],
+          "basis": "hvb. token, with a HashiCorp Cloud URL"
+        },
+        "hashicorpvault/hashicorpvaulttoken": {
+          "families": [
+            "hashicorp-vault:service-token"
+          ],
+          "basis": "hvs. token, with a HashiCorp Cloud URL"
+        },
+        "heroku/v1": {
+          "families": [
+            "heroku:legacy-api-key"
+          ],
+          "basis": "heroku keyword + a UUID"
+        },
+        "heroku/v2": {
+          "families": [
+            "heroku:oauth-access-token"
+          ],
+          "basis": "HRKU-AA + 58 characters"
+        },
+        "huggingface": {
+          "families": [
+            "huggingface:api-token"
+          ],
+          "basis": "hf_ + 34 alphanumerics"
+        },
+        "jiratoken/v2": {
+          "families": [
+            "atlassian:api-token"
+          ],
+          "basis": "ATATT + Base64 payload"
+        },
+        "jwt": {
+          "families": [
+            "generic:jwt"
+          ],
+          "basis": "eyJ header . eyJ payload . signature"
+        },
+        "langfuse": {
+          "families": [
+            "langfuse:secret-key"
+          ],
+          "basis": "langfuse keyword + sk-lf- + UUID"
+        },
+        "langsmith": {
+          "families": [
+            "langsmith:api-key"
+          ],
+          "basis": "lsv2_pt_ or lsv2_sk_ + 32 hex + _ + 10 hex"
+        },
+        "linearapi": {
+          "families": [
+            "linear:personal-api-key"
+          ],
+          "basis": "lin_api_ + 40 characters"
+        },
+        "mailchimp": {
+          "families": [
+            "mailchimp:marketing-api-key"
+          ],
+          "basis": "32 hex + -us + 1-2 digits"
+        },
+        "mailgun": {
+          "families": [
+            "mailgun:private-api-key",
+            "mailgun:legacy-signing-key-triplet"
+          ],
+          "basis": "key- + 32 characters, or a 32-8-8 hex triplet"
+        },
+        "mongodb": {
+          "families": [
+            "generic:connection-string-password"
+          ],
+          "basis": "mongodb:// or mongodb+srv:// URI with a password"
+        },
+        "netlify/v2": {
+          "families": [
+            "netlify:personal-access-token"
+          ],
+          "basis": "netlify keyword + nfp_ + 36 characters"
+        },
+        "newreliclicensekey": {
+          "families": [
+            "new-relic:license-key"
+          ],
+          "basis": "32 hex + FFFFNRAL"
+        },
+        "newrelicuserkey": {
+          "families": [
+            "new-relic:user-api-key"
+          ],
+          "basis": "NRAK- + 27 characters"
+        },
+        "notion": {
+          "families": [
+            "notion:legacy-integration-token"
+          ],
+          "basis": "secret_ + 43 characters"
+        },
+        "npmtoken": {
+          "families": [
+            "npm:legacy-token"
+          ],
+          "basis": "npm keyword + a UUID"
+        },
+        "npmtokenv2": {
+          "families": [
+            "npm:granular-access-token"
+          ],
+          "basis": "npm_ + 36 characters"
+        },
+        "nvapi": {
+          "families": [
+            "nvidia:ngc-api-key"
+          ],
+          "basis": "nvapi- + 64 characters"
+        },
+        "okta": {
+          "families": [
+            "okta:api-token"
+          ],
+          "basis": ".okta domain + 00 + 40 characters"
+        },
+        "openai": {
+          "families": [
+            "openai:secret-api-key"
+          ],
+          "basis": "sk- with the T3BlbkFJ marker"
+        },
+        "openaiadmin": {
+          "families": [
+            "openai:admin-api-key"
+          ],
+          "basis": "sk-admin- + 58 + T3BlbkFJ + 58"
+        },
+        "openrouter": {
+          "families": [
+            "openrouter:api-key"
+          ],
+          "basis": "sk-or-v1- + 64 hex"
+        },
+        "pinecone": {
+          "families": [
+            "pinecone:api-key"
+          ],
+          "basis": "pcsk_ + 5-6 characters + _ + 63 characters"
+        },
+        "postgres": {
+          "families": [
+            "generic:connection-string-password"
+          ],
+          "basis": "postgres:// or postgresql:// URI with a password"
+        },
+        "posthog": {
+          "families": [
+            "posthog:personal-api-key"
+          ],
+          "basis": "phx_ + 43-48 characters"
+        },
+        "postman": {
+          "families": [
+            "postman:api-key"
+          ],
+          "basis": "PMAK- + 59 characters"
+        },
+        "privatekey": {
+          "families": [
+            "generic:private-key"
+          ],
+          "basis": "-----BEGIN ... PRIVATE KEY----- block"
+        },
+        "pulumi": {
+          "families": [
+            "pulumi:personal-access-token",
+            "pulumi:organization-access-token",
+            "pulumi:team-access-token"
+          ],
+          "basis": "pul- + 40 characters"
+        },
+        "pypi": {
+          "families": [
+            "pypi:api-token"
+          ],
+          "basis": "pypi-AgEIcHlwaS5vcmcCJ + 150-157 characters"
+        },
+        "redis": {
+          "families": [
+            "generic:connection-string-password"
+          ],
+          "basis": "redis:// URI with a password"
+        },
+        "replicate": {
+          "families": [
+            "replicate:api-token"
+          ],
+          "basis": "r8_ + 37 characters"
+        },
+        "rubygems": {
+          "families": [
+            "rubygems:api-key"
+          ],
+          "basis": "rubygems_ + 48 characters"
+        },
+        "sendgrid": {
+          "families": [
+            "sendgrid:api-key"
+          ],
+          "basis": "SG. + 20-24 + . + 39-50 characters"
+        },
+        "sentryorgtoken": {
+          "families": [
+            "sentry:organization-auth-token"
+          ],
+          "basis": "sntrys_eyJ + 197 characters"
+        },
+        "sentrytoken/v2": {
+          "families": [
+            "sentry:user-auth-token"
+          ],
+          "basis": "sntryu_ + 64 hex"
+        },
+        "shopify": {
+          "families": [
+            "shopify:public-app-access-token",
+            "shopify:custom-app-access-token"
+          ],
+          "basis": "shppa_ or shpat_ + 32 hex"
+        },
+        "slack": {
+          "families": [
+            "slack:bot-token",
+            "slack:user-token"
+          ],
+          "basis": "xoxb- or xoxp- + 10-13 digits + 10-13 digits"
+        },
+        "stripe": {
+          "families": [
+            "stripe:secret-key-live",
+            "stripe:restricted-key-live"
+          ],
+          "basis": "sk_live_ or rk_live_ + 20-247 characters"
+        },
+        "stripepaymentintent": {
+          "families": [
+            "stripe:secret-key-live",
+            "stripe:restricted-key-live"
+          ],
+          "basis": "sk_live_ or rk_live_ + 20-247 characters"
+        },
+        "supabasetoken": {
+          "families": [
+            "supabase:personal-access-token"
+          ],
+          "basis": "sbp_ + 40 characters"
+        },
+        "telegrambottoken": {
+          "families": [
+            "telegram:bot-token"
+          ],
+          "basis": "telegram keyword + 8-10 digits + : + 35 characters"
+        },
+        "terraformcloudpersonaltoken": {
+          "families": [
+            "hashicorp-terraform:user-token",
+            "hashicorp-terraform:organization-token",
+            "hashicorp-terraform:team-token"
+          ],
+          "basis": "14 characters + .atlasv1. + 67 characters"
+        },
+        "travisci": {
+          "families": [
+            "travis-ci:api-token"
+          ],
+          "basis": "travis keyword + 22 characters"
+        },
+        "twilio": {
+          "families": [
+            "twilio:auth-token"
+          ],
+          "basis": "32 hex beside an AC account SID"
+        },
+        "twilioapikey": {
+          "families": [
+            "twilio:api-key-secret"
+          ],
+          "basis": "SK key SID + a 32 character secret"
+        },
+        "uri": {
+          "families": [
+            "generic:connection-string-password"
+          ],
+          "basis": "http(s) URL with a userinfo password"
+        },
+        "weightsandbiases/v2": {
+          "families": [
+            "wandb:api-key"
+          ],
+          "basis": "wandb_v1_ + 27 + _ + 49 characters"
+        },
+        "xai": {
+          "families": [
+            "xai:api-key"
+          ],
+          "basis": "xai- + 80 characters"
+        }
+      },
+      "reviewedNoFamily": {
+        "atlassian/v1": "a 24-character legacy token beside an atlassian keyword; the taxonomy families are the ATAT-prefixed tokens",
+        "atlassiandatacenter/bitbucketdatacenter": "a Bitbucket Data Center token; no taxonomy family",
+        "atlassiandatacenter/confluencedatacenter": "a Confluence Data Center token; no taxonomy family",
+        "atlassiandatacenter/jiradatacenterpat": "a Jira Data Center personal access token; no taxonomy family",
+        "azure_openai": "an Azure OpenAI resource key, a different credential from the OpenAI secret API key",
+        "cloudflareapitoken/v1": "a 40-character legacy key beside a cloudflare keyword; cannot match the cfut_ scannable token",
+        "cloudflarecakey": "an origin CA key, not the cfut_ scannable token",
+        "cloudflareglobalapikey/v1": "a global API key beside a cloudflare keyword, not the cfut_ scannable token",
+        "cloudflareglobalapikey/v2": "a global API key (cfk_), not the cfut_ scannable token",
+        "digitaloceantoken": "an unprefixed 64-character token beside a digitalocean keyword; the taxonomy families are the dop_v1_, doo_v1_ and dor_v1_ tokens, which this pattern cannot match at 71 characters",
+        "discordwebhook": "a webhook URL, not the bot token",
+        "elevenlabs/v1": "a legacy 32-hex key beside an elevenlabs keyword; the taxonomy family is sk_ + 48 hex",
+        "github/v1": "a 40-hex legacy token beside a github keyword; the taxonomy families are the prefixed tokens",
+        "github_oauth2": "an OAuth application client id and 40-hex client secret; no taxonomy family",
+        "githubapp": "a GitHub App id and RSA private key; no taxonomy family",
+        "gitlab/v1": "an unprefixed 20-22 character legacy token beside a gitlab keyword; the taxonomy family is glpat- prefixed",
+        "gitlaboauth2": "a GitLab OAuth application secret (gloas-); no taxonomy family",
+        "hashicorpvaultauth": "an AppRole role id and secret id; no taxonomy family",
+        "honeycomb": "a 32-hex or 22-character key beside a honeycomb keyword; the taxonomy family is the hc?ik_ 64-character ingest key",
+        "microsoftteamswebhook/v1": "a webhook URL, not a credential family in the taxonomy",
+        "microsoftteamswebhook/v2": "a webhook URL, not a credential family in the taxonomy",
+        "netlify/v1": "a 43-45 character key beside a netlify keyword; the taxonomy families are 40-character nf-prefixed tokens",
+        "newrelicbrowserkey": "a browser key (NRBR-); no taxonomy family",
+        "newrelicinsightsinsertkey": "an insert key (NRII-); no taxonomy family",
+        "newrelicinsightsquerykey": "a query key (NRIQ-); no taxonomy family",
+        "newrelicmobileapptoken": "a mobile app token (-NRMA); no taxonomy family",
+        "newrelicpersonalapikey": "a 47-character personal key beside a newrelic keyword; the taxonomy family is the 32-character NRAK- key",
+        "sentrytoken/v1": "a 64-hex value beside a sentry keyword, not the sntryu_ or sntrys_ prefixed tokens",
+        "shopifyoauth": "an app shared secret (shpss_) and client id, not an access token",
+        "slackwebhook": "a webhook URL; the taxonomy's workflow webhook family is the xwfp- token",
+        "vercel": "a 24-character legacy token beside a vercel keyword; the taxonomy's modern families are the vcp_, vca_, vcr_, vci_ and vck_ tokens, and the compatibility aggregate is a routing row, not a credential class"
+      }
+    },
+    "flare-redact": {
+      "source": {
+        "version": "1.6.1",
+        "revision": "c652ea7946028b70527069d7c282752b8a0ccee3",
+        "sha256": "2da525f0c709481ab0157dda21b16de3c2d6d627a0dfdaaff6ab80f71ab13dbc",
+        "path": "spec/detectors.json"
+      },
+      "ruleCount": 81,
+      "rules": {
+        "anthropic_key": {
+          "families": [
+            "anthropic:secret-api-key",
+            "anthropic:compliance-access-key",
+            "anthropic:admin-api-key"
+          ],
+          "basis": "sk-ant- + 24-160 characters"
+        },
+        "aws_access_key": {
+          "families": [
+            "aws:iam-user-access-key",
+            "aws:sts-temporary-access-key"
+          ],
+          "basis": "AKIA or ASIA + 16 characters"
+        },
+        "aws_secret_key": {
+          "families": [
+            "aws:iam-user-secret-access-key"
+          ],
+          "basis": "aws_secret_access_key assignment + 40 characters"
+        },
+        "bearer_token": {
+          "families": [
+            "generic:bearer-token"
+          ],
+          "basis": "Bearer + 8 or more characters"
+        },
+        "databricks_token": {
+          "families": [
+            "databricks:personal-access-token"
+          ],
+          "basis": "dapi + 32 hex, optional -digit"
+        },
+        "digitalocean_token": {
+          "families": [
+            "digitalocean:personal-access-token"
+          ],
+          "basis": "dop_v1_ + 64 hex"
+        },
+        "discord_bot_token": {
+          "families": [
+            "discord:bot-token"
+          ],
+          "basis": "M, N or O + 23 . 6 . 27 characters"
+        },
+        "doppler_token": {
+          "families": [
+            "doppler:service-token",
+            "doppler:personal-token",
+            "doppler:cli-token"
+          ],
+          "basis": "dp.ct., dp.pt. or dp.st. + 40-44 characters"
+        },
+        "gcp_refresh_token": {
+          "families": [
+            "google:oauth2-credential"
+          ],
+          "basis": "1// + 20-160 characters"
+        },
+        "github_token": {
+          "families": [
+            "github:classic-personal-access-token",
+            "github:oauth-access-token",
+            "github:app-user-to-server-token",
+            "github:app-server-to-server-token",
+            "github:oauth-refresh-token",
+            "github:fine-grained-personal-access-token"
+          ],
+          "basis": "ghp_, gho_, ghu_, ghs_, ghr_ + 36 or github_pat_ + 82 characters"
+        },
+        "gitlab_token": {
+          "families": [
+            "gitlab:legacy-personal-access-token"
+          ],
+          "basis": "glpat- + 20 characters"
+        },
+        "google_api_key": {
+          "families": [
+            "google:generic-api-key"
+          ],
+          "basis": "AIza + 35 characters"
+        },
+        "groq_key": {
+          "families": [
+            "groq:api-key"
+          ],
+          "basis": "gsk_ + 40-60 characters"
+        },
+        "huggingface_token": {
+          "families": [
+            "huggingface:api-token"
+          ],
+          "basis": "hf_ + 30-45 characters"
+        },
+        "jwt": {
+          "families": [
+            "generic:jwt"
+          ],
+          "basis": "eyJ header . payload . signature"
+        },
+        "linear_key": {
+          "families": [
+            "linear:personal-api-key"
+          ],
+          "basis": "lin_api_ + 40-48 characters"
+        },
+        "mailgun_key": {
+          "families": [
+            "mailgun:private-api-key"
+          ],
+          "basis": "key- + 32 hex"
+        },
+        "netlify_token": {
+          "families": [
+            "netlify:personal-access-token"
+          ],
+          "basis": "nfp_ + 36-60 characters"
+        },
+        "new_relic_key": {
+          "families": [
+            "new-relic:user-api-key"
+          ],
+          "basis": "NRAK- + 27 characters"
+        },
+        "notion_token": {
+          "families": [
+            "notion:integration-token",
+            "notion:legacy-integration-token"
+          ],
+          "basis": "ntn_ + 40-50 or secret_ + 43 characters"
+        },
+        "npm_token": {
+          "families": [
+            "npm:granular-access-token"
+          ],
+          "basis": "npm_ + 36 characters"
+        },
+        "openai_key": {
+          "families": [
+            "openai:secret-api-key"
+          ],
+          "basis": "sk- or sk-proj- + 20-64 characters"
+        },
+        "openrouter_key": {
+          "families": [
+            "openrouter:api-key"
+          ],
+          "basis": "sk-or-v1- + 64 hex"
+        },
+        "perplexity_key": {
+          "families": [
+            "perplexity:api-key"
+          ],
+          "basis": "pplx- + 40-60 characters"
+        },
+        "postman_key": {
+          "families": [
+            "postman:api-key"
+          ],
+          "basis": "PMAK- + 24 hex + - + 34 hex"
+        },
+        "private_key": {
+          "families": [
+            "generic:private-key"
+          ],
+          "basis": "-----BEGIN ... PRIVATE KEY----- block"
+        },
+        "replicate_token": {
+          "families": [
+            "replicate:api-token"
+          ],
+          "basis": "r8_ + 30-45 characters"
+        },
+        "sendgrid_key": {
+          "families": [
+            "sendgrid:api-key"
+          ],
+          "basis": "SG. + 16-32 + . + 16-64 characters"
+        },
+        "shopify_token": {
+          "families": [
+            "shopify:custom-app-access-token",
+            "shopify:public-app-access-token"
+          ],
+          "basis": "shpat_ or shppa_ + 32 hex"
+        },
+        "slack_token": {
+          "families": [
+            "slack:bot-token",
+            "slack:user-token"
+          ],
+          "basis": "xoxb- or xoxp- + 10-64 characters"
+        },
+        "stripe_key": {
+          "families": [
+            "stripe:secret-key-live",
+            "stripe:secret-key-test",
+            "stripe:restricted-key-live",
+            "stripe:restricted-key-test"
+          ],
+          "basis": "sk_ or rk_ + live or test + 16-64 characters"
+        },
+        "stripe_webhook_secret": {
+          "families": [
+            "stripe:webhook-signing-secret"
+          ],
+          "basis": "whsec_ + 32-64 characters"
+        },
+        "supabase_key": {
+          "families": [
+            "supabase:personal-access-token"
+          ],
+          "basis": "sbp_ + 40 hex"
+        },
+        "telegram_bot_token": {
+          "families": [
+            "telegram:bot-token"
+          ],
+          "basis": "8-10 digits + : + 34-46 characters"
+        },
+        "url_credentials": {
+          "families": [
+            "generic:connection-string-password"
+          ],
+          "basis": "scheme:// user:password@ URL"
+        },
+        "vault_token": {
+          "families": [
+            "hashicorp-vault:service-token",
+            "hashicorp-vault:batch-token",
+            "hashicorp-vault:recovery-token"
+          ],
+          "basis": "hvs., hvb. or hvr. + 20-200 characters"
+        },
+        "xai_key": {
+          "families": [
+            "xai:api-key"
+          ],
+          "basis": "xai- + 40-120 characters"
+        }
+      },
+      "reviewedNoFamily": {
+        "discord_webhook": "a webhook URL, not the bot token",
+        "sentry_dsn": "a DSN URL with a public key; not a token family",
+        "twilio_key": "the AC account SID and SK key SID, public identifiers the taxonomy excludes"
+      }
+    },
+    "openredaction": {
+      "source": {
+        "version": "1.1.5",
+        "path": "@openredaction/core getPatterns() at 1.1.5 (package-lock.json)"
+      },
+      "ruleCount": 575,
+      "rules": {
+        "AWS_ACCESS_KEY": {
+          "families": [
+            "aws:iam-user-access-key"
+          ],
+          "basis": "AKIA + 16 characters"
+        },
+        "AWS_SECRET_KEY": {
+          "families": [
+            "aws:iam-user-secret-access-key"
+          ],
+          "basis": "aws or secret keyword + 40 characters"
+        },
+        "BEARER_TOKEN": {
+          "families": [
+            "generic:bearer-token"
+          ],
+          "basis": "Bearer + 20 or more characters"
+        },
+        "DATABASE_CONNECTION": {
+          "families": [
+            "generic:connection-string-password"
+          ],
+          "basis": "postgres, mysql, mongodb, redis or sqlite URI with a password"
+        },
+        "FIREBASE_API_KEY": {
+          "families": [
+            "google:generic-api-key"
+          ],
+          "basis": "AIza + 35 characters"
+        },
+        "GENERIC_API_KEY": {
+          "families": [
+            "generic:unclassified-assignment-literal"
+          ],
+          "basis": "api key keyword + a value of 20 or more characters"
+        },
+        "GENERIC_SECRET": {
+          "families": [
+            "generic:unclassified-assignment-literal"
+          ],
+          "basis": "password, passwd, pwd or secret keyword + a value of 8 or more characters"
+        },
+        "GITHUB_TOKEN": {
+          "families": [
+            "github:classic-personal-access-token",
+            "github:oauth-access-token",
+            "github:app-user-to-server-token",
+            "github:app-server-to-server-token",
+            "github:oauth-refresh-token"
+          ],
+          "basis": "ghp_, gho_, ghu_, ghs_ or ghr_ + 36 or more characters"
+        },
+        "GOOGLE_API_KEY": {
+          "families": [
+            "google:generic-api-key"
+          ],
+          "basis": "AIza + 35 characters"
+        },
+        "HEROKU_API_KEY": {
+          "families": [
+            "heroku:legacy-api-key"
+          ],
+          "basis": "a bare UUID"
+        },
+        "JWT_TOKEN": {
+          "families": [
+            "generic:jwt"
+          ],
+          "basis": "eyJ header . eyJ payload . signature"
+        },
+        "MAILGUN_API_KEY": {
+          "families": [
+            "mailgun:private-api-key"
+          ],
+          "basis": "key- + 32 characters"
+        },
+        "NPM_TOKEN": {
+          "families": [
+            "npm:granular-access-token"
+          ],
+          "basis": "npm_ + 36 characters"
+        },
+        "OAUTH_CLIENT_SECRET": {
+          "families": [
+            "generic:unclassified-assignment-literal"
+          ],
+          "basis": "client secret or consumer secret keyword + 20 or more characters"
+        },
+        "OAUTH_TOKEN": {
+          "families": [
+            "generic:unclassified-assignment-literal"
+          ],
+          "basis": "oauth token or access token keyword + 20 or more characters"
+        },
+        "OPENAI_API_KEY": {
+          "families": [
+            "openai:secret-api-key"
+          ],
+          "basis": "sk-proj- + 100-200 or sk- + 48-52 characters"
+        },
+        "PRIVATE_KEY": {
+          "families": [
+            "generic:private-key"
+          ],
+          "basis": "-----BEGIN (RSA or EC) PRIVATE KEY----- block"
+        },
+        "PYPI_TOKEN": {
+          "families": [
+            "pypi:api-token"
+          ],
+          "basis": "pypi- + 100 or more characters"
+        },
+        "SENDGRID_API_KEY": {
+          "families": [
+            "sendgrid:api-key"
+          ],
+          "basis": "SG. + 22 + . + 43 characters"
+        },
+        "SLACK_TOKEN": {
+          "families": [
+            "slack:bot-token",
+            "slack:user-token"
+          ],
+          "basis": "xoxb- or xoxp- + 10 or more characters"
+        },
+        "SSH_PRIVATE_KEY": {
+          "families": [
+            "generic:private-key"
+          ],
+          "basis": "-----BEGIN OPENSSH PRIVATE KEY----- block"
+        },
+        "STRIPE_API_KEY": {
+          "families": [
+            "stripe:secret-key-live",
+            "stripe:secret-key-test"
+          ],
+          "basis": "sk_ + live or test + 24 or more characters"
+        },
+        "URL_WITH_AUTH": {
+          "families": [
+            "generic:connection-string-password"
+          ],
+          "basis": "http(s) or ftp URL with user:password@"
+        }
+      },
+      "reviewedNoFamily": {
+        "DISCORD_USER_ID": "a user identifier, not a credential",
+        "MICROSOFT_CERTIFICATION": "a certification identifier, not a credential",
+        "SLACK_WEBHOOK": "a webhook URL; the taxonomy's workflow webhook family is the xwfp- token",
+        "TELEGRAM_USER_ID": "a user identifier, not a credential",
+        "TWILIO_API_KEY": "the SK API key SID, a public identifier the taxonomy excludes"
+      }
+    }
+  }
+}

@@ -35,6 +35,13 @@ export interface RowResult {
   spanOutcomes?: Outcome[];
   /** A control row: did the scanner flag it. */
   flagged?: boolean;
+  /** The byte ranges the scanner reported, as recorded (never the matched values). Read by the fixture page. */
+  actual?: { start: number; end: number }[];
+  /** Bytes of a secret left readable, and bytes redacted outside the allowed envelope, as the row recorded them. */
+  leakedBytes?: number;
+  collateralBytes?: number;
+  /** Findings on a control the scanner flagged. */
+  findings?: number;
 }
 
 export interface ScannerObservation { source: 'fresh' | 'snapshot'; observedAt: string; sourceRunId: string }
@@ -48,6 +55,12 @@ export interface RunScanner {
   status: string;
   /** Distinct observations across suites: a peer's snapshot dates. */
   observations: ScannerObservation[];
+  /**
+   * What this scanner recorded for every fixture slug that has a row (all scanners, not only
+   * redact-secret). A slug with no row is not measured: its suite report was left out, or the
+   * scanner did not complete there.
+   */
+  rows: Map<string, RowResult>;
 }
 
 export interface MeasuredRun {
@@ -86,6 +99,10 @@ async function readResult<T>(name: string): Promise<T | undefined> {
 const resultOf = (row: Row): RowResult => ({
   ...(row.spanOutcomes ? { spanOutcomes: row.spanOutcomes as Outcome[] } : {}),
   ...(row.flagged != null ? { flagged: row.flagged } : {}),
+  ...(row.actual ? { actual: row.actual.map(r => ({ start: r.start, end: r.end })) } : {}),
+  ...(row.leakedBytes != null ? { leakedBytes: row.leakedBytes } : {}),
+  ...(row.collateralBytes != null ? { collateralBytes: row.collateralBytes } : {}),
+  ...(row.findings != null ? { findings: row.findings } : {}),
 });
 
 export function loadRun(): Promise<RunLoad> {
@@ -108,19 +125,19 @@ export function loadRun(): Promise<RunLoad> {
 
     const reports = loaded.flatMap(l => (l.report && l.report.runId === run.runId ? [l.report] : []));
     const scanners = new Map<string, RunScanner>();
-    for (const s of summary.scanners) scanners.set(s.id, { id: s.id, name: s.name, version: s.version, mode: s.mode, status: s.status, observations: [] });
-    const productRows = new Map<string, RowResult>();
+    for (const s of summary.scanners) scanners.set(s.id, { id: s.id, name: s.name, version: s.version, mode: s.mode, status: s.status, observations: [], rows: new Map() });
     for (const report of reports) {
       for (const scanner of report.scanners as Scanner[]) {
         const held = scanners.get(scanner.id);
         if (held && scanner.observation && !held.observations.some(o => o.source === scanner.observation!.source && o.observedAt === scanner.observation!.observedAt && o.sourceRunId === scanner.observation!.sourceRunId)) {
           held.observations.push({ source: scanner.observation.source, observedAt: scanner.observation.observedAt, sourceRunId: scanner.observation.sourceRunId });
         }
-        if (scanner.id === PRODUCT && scanner.status === 'complete') {
-          for (const row of scanner.rows ?? []) productRows.set(`${report.category}--${row.id}`, resultOf(row));
+        if (held && scanner.status === 'complete') {
+          for (const row of scanner.rows ?? []) held.rows.set(`${report.category}--${row.id}`, resultOf(row));
         }
       }
     }
+    const productRows = scanners.get(PRODUCT)?.rows ?? new Map<string, RowResult>();
 
     const candidate = run.candidate ? { sourceCommit: run.candidate.sourceCommit, declaredVersion: run.candidate.declaredVersion } : undefined;
     return {

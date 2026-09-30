@@ -1,0 +1,19 @@
+@layer components {
+  .table {
+    min-width: 0;
+  }
+
+  .sub {
+    display: block;
+    color: var(--ink-muted);
+  }
+
+  .fixtures {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}

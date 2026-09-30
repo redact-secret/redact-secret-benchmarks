@@ -127,8 +127,23 @@ web/components/ (blocks): imports none of the three
   keeps its row filter in `?rows=` with a client island, as the lists do. The feature
   claims (`benchmarks/feature-claims.json`) and per-value runtime outcomes do not exist yet:
   those pages render "not recorded" / "not measured yet", never a placeholder value.
-- Resolver tests live in `tests/web-resolvers.test.mjs` (synthetic data only) and also
-  enforce the import direction. `check:routes` compares the built pages with the
+- **Rows tables** (level, family, suite and detector pages) ship their data compact
+  (`resolvers/rows.ts`: a dictionary of shared strings, a table of outcome words, one small record per
+  row) and keep find, show, level, scanner scope and page in the URL (`app/report/RowsView.tsx`,
+  `useRowsQuery.ts`, `resolvers/filters.ts`). A client island may import the pure resolvers
+  `filters.ts`, `rows.ts`, `rowdata.ts` and `fixtures.ts` (no `node:`, services only as types), never
+  `resolvers/pages.ts`. Decision: `docs/decisions/2026-09-30-add-rows-fixture-detector-and-findings-pages.md`.
+- **A fixture's page is `?fixture=<id>` on its suite page** (`/report/fixtures/<suite>/`): the suite page
+  pre-renders the rows and ships compact records; the detail is built in the browser for the one fixture
+  named (`FixtureSync` and an inline script set `data-fixture`, as `?level=` does). 67 pages, not 5,925.
+  `check:routes` fails the export above 200 MB or 6,000 files.
+- **Peer scanners** get their kind, description and the families their rules target from
+  `scanners/peer-registry.json` and `scanners/peer-rule-families.json` (validated by
+  `npm run peer-rules:check` and again by `services/peers.ts`); the peer columns state what a scanner's
+  rules target and what was recorded, never which scanner is better. Every link on a report page stays
+  inside the app (`check:routes` fails a link that leaves `/next/`).
+- Resolver tests live in `tests/web-resolvers.test.mjs` and `tests/web-report-rows.test.mjs` (synthetic
+  data only) and also enforce the import direction. `check:routes` compares the built pages with the
   ledger, read independently; CI sets `WEB_REQUIRE_RUN=1` and runs `npm run bench` first.
 - Runtime outcomes and per-setting times (#562, #563): `evidence/562/runtime-comparison-<setting>.json` (three
   reports, from `qualification/runtime-comparison-v2.json`) are read by `services/runtime.ts` and validated with

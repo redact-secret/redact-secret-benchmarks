@@ -32,6 +32,18 @@ Schema-v3 reporting separates reviewed formats, standalone masking policy,
 malformed/example controls and unscored review. Scanner adapters never select
 cohorts or change expectations based on their results.
 
+## Peer registry and rule-to-family map
+
+`peer-registry.json` says what kind of tool each peer is (repository scanner or runtime
+library) and, in one sentence, what it is built for. `peer-rule-families.json` maps the rules of
+each pinned peer to the credential families of `benchmarks/support/taxonomy.json` they target, each
+with the pattern evidence it was read from, and lists the provider-looking rules that target none.
+Both are authored and reviewed from the peers' own rule files, never from what a peer found, and are
+validated by `npm run peer-rules:check` (`benchmarks/lib/peer-rule-families.ts`). Neither is part of an
+adapter's identity (`index.mjs` and `families.mjs` are hashed into a peer snapshot; these files are not),
+so a correction here re-keys nothing. The site reads them to state which inputs a peer's own rules target
+(`docs/decisions/2026-09-30-map-peer-scanner-rules-to-families-by-review.md`).
+
 ## Composite credential findings
 
 TruffleHog 3.97.4 AWS findings put the ID in `Raw` and `ID:secret` in `RawV2`.

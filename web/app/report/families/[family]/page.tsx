@@ -6,7 +6,8 @@ import { Breadcrumb, PageHead } from '../../../../components/page';
 import { FamilyAbout } from '../../../../components/report';
 import { resolveFamilyPage, resolveFamilySlugs } from '../../../../resolvers/pages';
 import { RunNotes } from '../../RunNotes';
-import { FamilyRows } from './FamilyRows';
+import { RowsView } from '../../RowsView';
+import { ROW_SHOW } from '../../rowShowOptions';
 
 /** Every family in the taxonomy is a page, including those with no fixtures, so a static host serves each and 404s the rest. */
 export const dynamicParams = false;
@@ -37,7 +38,20 @@ export default async function Page({ params }: { params: Promise<{ family: strin
       />
       <RunNotes state={data.runState} />
       <FamilyAbout {...family.about} />
-      <FamilyRows familyName={family.name} rows={family.rows} facts={family.facts} description={data.description} />
+      <RowsView
+        anchor="family-rows"
+        name={family.name}
+        title="Fixtures in this family"
+        description={data.description}
+        facts={family.facts}
+        factsByLevel={data.factsByLevel}
+        data={data.rows}
+        levels={data.levels.length ? data.levels : undefined}
+        defaultScanners="product"
+        showOptions={ROW_SHOW}
+        emptyTitle="No fixtures in this family yet"
+        emptyText="Nothing in the corpus targets it, so nothing is measured and no coverage is claimed."
+      />
     </Stack>
   );
 }

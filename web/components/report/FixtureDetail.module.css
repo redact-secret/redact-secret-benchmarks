@@ -1,0 +1,48 @@
+@layer components {
+  .detail {
+    display: grid;
+    gap: var(--space-8);
+    min-width: 0;
+  }
+
+  .sub {
+    display: block;
+    color: var(--ink-muted);
+  }
+
+  .badges {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+
+  .side {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4) var(--space-8);
+    padding-top: var(--space-6);
+    border-top: var(--hairline) solid var(--line);
+  }
+
+  .col {
+    display: grid;
+    align-content: start;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+
+  .escaped summary {
+    cursor: pointer;
+    font: var(--text-small);
+  }
+
+  .escaped pre {
+    margin-top: var(--space-2);
+  }
+
+  @media (max-width: 860px) {
+    .side {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+}

@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { listQueryOf, listQueryString, type ListQuery } from '../../resolvers/filters';
 
-const DEFAULT: ListQuery = { q: '', show: 'all' };
+const DEFAULT: ListQuery = { q: '', show: 'all', level: 'all' };
 
 /**
  * The search text and the show choice of a list, kept in the URL (`?q=&show=`).

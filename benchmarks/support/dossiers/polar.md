@@ -13,8 +13,9 @@ families:
       issues:
         - redact-secret/redact-secret#1014
         - redact-secret/redact-secret#1020
+        - redact-secret/redact-secret#1039
         - redact-secret/redact-secret-benchmarks#528
-      evidence: https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/polar.md
+      evidence: https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/polar.md
       researchedAt: 2026-09-29
     blockedBy: null
   - id: polar:api-credential
@@ -27,8 +28,9 @@ families:
       issues:
         - redact-secret/redact-secret#1014
         - redact-secret/redact-secret#1020
+        - redact-secret/redact-secret#1039
         - redact-secret/redact-secret-benchmarks#528
-      evidence: https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/polar.md
+      evidence: https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/polar.md
       researchedAt: 2026-09-29
     blockedBy: null
 ---
@@ -45,7 +47,7 @@ Polar.sh is a payments and billing platform for developers. Organization access 
 - **Sources:** T1 under R1 and R9 from the provider server code; the service postdates the 2025-01-02 checksum era, so there is one era. The checksum corroborates only and never rejects (policy; ruling Q1 open).
 - **Issuance:** not attempted; the grammar is T1 from provider sources, so no key is needed.
 - **Collisions:** `whsec_` webhook secrets come from the same generator but `stripe-token` owns the prefix (misattributed, still redacted); `polar_ci_` is a public client id (Q5).
-- **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md) (no row on `main` until the Beta.12 detector, redact-secret#1020, is merged).
+- **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md) (row on `main`; the Beta.12 detector, redact-secret#1020, merged in redact-secret#1039 and is unreleased).
 
 ### `polar:api-credential` — API credentials (polar_pat_, polar_at_u_/o_, polar_rt_u_/o_, polar_cs_, polar_crt_)
 
@@ -53,7 +55,7 @@ Polar.sh is a payments and billing platform for developers. Organization access 
 - **Sources:** T1 under R1 and R9 from the provider server code and its commit history. No checksum applies: an era-1 body is all-alphanumeric about a quarter of the time.
 - **Issuance:** not attempted; the grammar is T1 from provider sources, so no key is needed.
 - **Collisions:** `polar_at_` without the `u_`/`o_` sub-type is not a prefix; checkout `polar_c_`/`polar_cl_` secrets are handed to the browser.
-- **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md) (no row on `main` until the Beta.12 detector, redact-secret#1020, is merged).
+- **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md) (row on `main`; the Beta.12 detector, redact-secret#1020, merged in redact-secret#1039 and is unreleased).
 
 ## Candidates that are not families yet
 
@@ -66,6 +68,6 @@ Polar.sh is a payments and billing platform for developers. Organization access 
 
 ## Research log
 
-- redact-secret#1014 — Beta.12 broad-discovery epic (open); [handoff index](https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md) ranks 50 candidates and freezes ten handoffs at `4f220ea`, 2026-09-29.
-- redact-secret#1020 — Beta.12 implementation issue (open; the detector is on an unmerged product branch).
+- redact-secret#1014 — Beta.12 broad-discovery epic (open); [handoff index](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/README.md) ranks 50 candidates, freezes ten handoffs and records a step-4 disposition for all 50 (merge commit `3785817`, 2026-09-30; the ten handoffs are unchanged since `4f220ea`, 2026-09-29).
+- redact-secret#1020 — Beta.12 implementation issue (detector merged to `main` in redact-secret#1039, unreleased).
 - redact-secret-benchmarks#528 — Beta.12 contracts and synthetic corpus for the #1014 families. Corpus work only, no change to the research verdict.

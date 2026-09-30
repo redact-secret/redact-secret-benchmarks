@@ -13,8 +13,9 @@ families:
       issues:
         - redact-secret/redact-secret#1014
         - redact-secret/redact-secret#1033
+        - redact-secret/redact-secret#1039
         - redact-secret/redact-secret-benchmarks#528
-      evidence: https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/paddle.md
+      evidence: https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/paddle.md
       researchedAt: 2026-09-29
     blockedBy: null
 ---
@@ -31,7 +32,7 @@ Paddle is a merchant-of-record billing platform. A Paddle Billing API key (`PADD
 - **Sources:** T1: the provider docs publish the regex and the total length.
 - **Issuance:** not attempted; the grammar is T1 from provider sources, so no key is needed.
 - **Collisions:** the `apikey_` + 26 key id is a non-secret identifier (Q5); legacy keys are 50 unprefixed `[a-z0-9]`.
-- **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md) (no row on `main` until the Beta.12 detector, redact-secret#1033, is merged).
+- **Current contract in core:** [`detector-families.md`](https://github.com/redact-secret/redact-secret/blob/main/docs/specs/detector-families.md) (row on `main`; the Beta.12 detector, redact-secret#1033, merged in redact-secret#1039 and is unreleased).
 
 ## Candidates that are not families yet
 
@@ -44,6 +45,6 @@ Paddle is a merchant-of-record billing platform. A Paddle Billing API key (`PADD
 
 ## Research log
 
-- redact-secret#1014 — Beta.12 broad-discovery epic (open); [handoff index](https://github.com/redact-secret/redact-secret/blob/4f220ea000b58fa2e0e431ad88dea4eccb393fb0/docs/audits/evidence/1014/README.md) ranks 50 candidates and freezes ten handoffs at `4f220ea`, 2026-09-29.
-- redact-secret#1033 — Beta.12 implementation issue (open; the detector is on an unmerged product branch).
+- redact-secret#1014 — Beta.12 broad-discovery epic (open); [handoff index](https://github.com/redact-secret/redact-secret/blob/378581770a87751d72e27529796c4f790649fd00/docs/audits/evidence/1014/README.md) ranks 50 candidates, freezes ten handoffs and records a step-4 disposition for all 50 (merge commit `3785817`, 2026-09-30; the ten handoffs are unchanged since `4f220ea`, 2026-09-29).
+- redact-secret#1033 — Beta.12 implementation issue (detector merged to `main` in redact-secret#1039, unreleased).
 - redact-secret-benchmarks#528 — Beta.12 contracts and synthetic corpus for the #1014 families. Corpus work only, no change to the research verdict.

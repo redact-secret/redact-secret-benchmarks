@@ -149,7 +149,19 @@ test('layout and Storybook preview load the same token and measure sheets', asyn
 /* ---- component contract: pure render, story + module + barrel ---- */
 
 test('every component has a story and a CSS Module, is exported by its barrel, and imports no data', async () => {
-  const groups = (await readdir(new URL('components/', WEB), { withFileTypes: true })).filter(e => e.isDirectory()).map(e => e.name);
+  // A group is a folder of components with a barrel. A folder that only holds groups (`evaluation/`, one folder per
+  // phase of the Evaluation section) is a namespace and needs no barrel of its own.
+  const groups = [];
+  const collectGroups = async relative => {
+    for (const entry of await readdir(new URL(`components/${relative}`, WEB), { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const child = `${relative}${entry.name}/`;
+      const inner = await readdir(new URL(`components/${child}`, WEB), { withFileTypes: true });
+      if (inner.some(e => e.isFile() && e.name.endsWith('.tsx'))) groups.push(child.slice(0, -1));
+      await collectGroups(child);
+    }
+  };
+  await collectGroups('');
   assert.ok(groups.length >= 7, `groups: ${groups.join(', ')}`);
   const problems = [];
   for (const group of groups) {

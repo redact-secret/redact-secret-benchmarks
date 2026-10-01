@@ -196,6 +196,11 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   build-emitted `data/comparison/accuracy/differences.json` when a list is opened). `check-export-accuracy.mjs` recounts every
   panel and that file from the suite reports. Decision:
   `docs/decisions/2026-09-30-compare-accuracy-one-pair-at-a-time.md`.
+- `/evaluation/rc` (#613) reads the candidate evidence the build generated (`public/results/candidate-evidence-v1.json`,
+  validated by `candidateProblem`) in `services/candidate.ts`, with the last release from `baselines/` and the pin
+  manifest. A build without it shows "No release candidate is recorded" (the normal state in CI), so its tests
+  build synthetic evidence in the overlay (`tests/unit/rc-fixtures.ts`) and never read a candidate from the ledger. Blocks are
+  `Rc*` in `components/evaluation/rc/`. Decision: `docs/decisions/2026-10-01-show-the-release-candidate-beside-the-last-release.md`.
 
 ## Tests
 

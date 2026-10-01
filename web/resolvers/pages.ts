@@ -43,6 +43,8 @@ import { resolveFeaturePage, resolveHub, resolveRuntimePanels, toolName, type Fe
 import { diffFileOf, resolveAccuracyPage, type AccuracyPage, type DiffFile, type DiffSource } from './accuracy';
 import type { ComparisonHubProps } from '../components/comparison/ComparisonHub';
 import { resolveRunState, type RunState } from './run';
+import { loadRcSources } from '../services/candidate';
+import { resolveRcPage, type RcPage } from './rc';
 import type { EvidenceLevelLink, HubTileData } from '../components/report/types';
 import type { MetaItem } from '../components/page/MetaList';
 
@@ -510,4 +512,11 @@ export async function resolveAccuracyDifferencesFile(): Promise<DiffFile> {
   const { measured, page } = await accuracyPage();
   // Without a run there is nothing to list (the page asks for no file); the export still gets a valid, empty one.
   return page.diff && measured ? diffFileOf(page.diff, measured.runId) : diffFileOf({ providers: [], fixtures: [], peers: {} }, '');
+}
+
+// ---- /evaluation/rc ----------------------------------------------------------------------
+
+/** The release candidate beside the last release: the candidate evidence when this build has one, the release alone when not. */
+export async function resolveReleaseCandidatePage(): Promise<RcPage> {
+  return resolveRcPage(await loadRcSources());
 }

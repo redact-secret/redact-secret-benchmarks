@@ -42,6 +42,7 @@ describe('routes', () => {
   test('every page of the app is covered', () => {
     expect(all.map(c => c.route).filter((r, i, a) => a.indexOf(r) === i).sort()).toEqual([
       '/', '/comparison', '/comparison/accuracy', '/comparison/feature', '/comparison/performance', '/comparison/runtime',
+      '/evaluation/rc',
       '/report', '/report/detectors', '/report/detectors/[detector]', '/report/families', '/report/families/[family]', '/report/findings',
       '/report/fixtures', '/report/fixtures/[suite]', '/report/providers', '/report/rows/[level]',
     ]);

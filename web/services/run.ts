@@ -76,6 +76,11 @@ export interface MeasuredRun {
   scanners: RunScanner[];
   /** The redact-secret row for every fixture slug that has one. A missing slug is not measured. */
   productRows: Map<string, RowResult>;
+  /** Where the suite reports say the run executed: each distinct host and how many suites ran on it. Never summed with another run. */
+  hosts: { node: string; platform: string; arch: string; suites: number }[];
+  /** The repository revision the run recorded, and whether the tree was modified. */
+  revision: string | null;
+  dirty: boolean | null;
   /** Suites left out because their report did not re-validate, with the reason. Never summed. */
   excludedSuites: { id: string; problem: string }[];
   /** Suites whose report is from another run id. Never summed. */
@@ -139,6 +144,14 @@ export function loadRun(): Promise<RunLoad> {
     }
     const productRows = scanners.get(PRODUCT)?.rows ?? new Map<string, RowResult>();
 
+    const hostCounts = new Map<string, { node: string; platform: string; arch: string; suites: number }>();
+    for (const report of reports) {
+      const { node, platform, arch } = report.runtime;
+      const key = `${node}|${platform}|${arch}`;
+      const held = hostCounts.get(key);
+      if (held) held.suites++; else hostCounts.set(key, { node, platform, arch, suites: 1 });
+    }
+
     const candidate = run.candidate ? { sourceCommit: run.candidate.sourceCommit, declaredVersion: run.candidate.declaredVersion } : undefined;
     return {
       state: 'measured',
@@ -151,6 +164,9 @@ export function loadRun(): Promise<RunLoad> {
       summary,
       scanners: [...scanners.values()],
       productRows,
+      hosts: [...hostCounts.values()],
+      revision: run.revision ?? null,
+      dirty: run.dirty ?? null,
       excludedSuites: loaded.filter(l => l.problem).map(l => ({ id: l.id, problem: l.problem! })),
       staleSuites: loaded.filter(l => l.report && l.report.runId !== run.runId).map(l => l.id),
       suiteCount: categories.length,

@@ -11,9 +11,11 @@ describe('cx', () => {
 });
 
 describe('routes', () => {
-  test('there are ten routes in two sections, each under its section href', () => {
-    expect(SECTIONS.map(s => s.label)).toEqual(['Report', 'Comparison']);
-    expect(ROUTES).toHaveLength(10);
+  test('Report and Comparison come first, Evaluation is an entrance too, and every entry is under its section href', () => {
+    const labels = SECTIONS.map(s => s.label);
+    expect(labels.slice(0, 2)).toEqual(['Report', 'Comparison']);
+    expect(labels).toContain('Evaluation');
+    expect(ROUTES.length).toBeGreaterThanOrEqual(10);
     for (const section of SECTIONS) for (const entry of section.entries) expect(entry.href.startsWith(section.href)).toBe(true);
     expect(new Set(ROUTES.map(r => r.href)).size).toBe(ROUTES.length);
   });
@@ -31,6 +33,7 @@ describe('routes', () => {
   test('sectionFor finds the section of a page, and none for the home page', () => {
     expect(sectionFor('/report/families/github-pat')?.label).toBe('Report');
     expect(sectionFor('/comparison/runtime/?view=speed')?.label).toBe('Comparison');
+    expect(sectionFor('/evaluation/method/twin/')?.label).toBe('Evaluation');
     expect(sectionFor('/')).toBeUndefined();
     expect(sectionFor('/other/')).toBeUndefined();
   });

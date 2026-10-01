@@ -1,0 +1,61 @@
+@layer components {
+  .table {
+    min-width: 0;
+  }
+
+  .label {
+    display: grid;
+    gap: var(--space-1);
+    font: var(--text-small-strong);
+  }
+
+  .label small {
+    font: var(--text-small);
+    font-weight: 400;
+  }
+
+  .scanner {
+    display: grid;
+    gap: var(--rule-strong);
+    justify-items: end;
+  }
+
+  .scanner small {
+    font: var(--text-mono-small);
+    color: var(--ink-muted);
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  /* One figure over its denominator. Same weight for every cell: no cell is drawn to be noticed. */
+  .count {
+    display: grid;
+    justify-items: end;
+  }
+
+  .count b {
+    font: var(--text-small-strong);
+  }
+
+  .count small {
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .muted {
+    color: var(--ink-muted);
+  }
+
+  /* A stacked row already has the scanner's name in front of the figure, so the figure and its denominator share a line. */
+  @media (max-width: 720px) {
+    .count {
+      display: inline-flex;
+      gap: var(--space-1);
+      align-items: baseline;
+    }
+
+    .scanner {
+      justify-items: start;
+    }
+  }
+}

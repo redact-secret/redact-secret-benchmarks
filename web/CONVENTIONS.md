@@ -175,6 +175,12 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   `npm run peer-rules:check` and again by `services/peers.ts`); the peer columns state what a scanner's
   rules target and what was recorded, never which scanner is better. Every link on a report page stays
   inside the app (`check:routes` fails a link that leaves `/next/`).
+- `/evaluation/scanner/` (#612) shows the scanners the benchmark ran with and each one's environment: pins, install checksums, configuration and
+  platform from the validated peer snapshots (`services/scanners.ts`), the mode line and host from the run, `outOfScope` from the registry. Blocks are
+  `Scanner*` in `components/evaluation/scanner/` (a folder of folders is a section; each phase of `/evaluation` has its own). A fact the repository does not
+  hold is "Not recorded" (#620, #621, #622), never a guess; the tests use synthetic scanners and never assert a version, digest or host.
+  `check-export-scanners.mjs` rereads the pins, the run, the checksums and the registry. Decision:
+  `docs/decisions/2026-10-01-show-the-scanners-and-their-environments-on-evaluation-scanner.md`.
 - Resolver tests live in `web/tests/unit` (`resolvers.test.mjs`, `report-rows.test.mjs`, ...; synthetic
   data only) and also enforce the import direction. `check:routes` compares the built pages with the
   ledger, read independently; CI sets `WEB_REQUIRE_RUN=1` and runs `npm run bench` first.
@@ -200,6 +206,19 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   (pure) over `services/domains.ts`. PII is rebuilt from the reviewed protected binding (candidate mode); the credential stable count is the support
   record of the run's own mode and version. A fact the ledger does not hold is a dashed "Not recorded" with its issue, never a zero. Decision:
   `docs/decisions/2026-10-01-explain-how-pii-and-credentials-are-evaluated-on-one-paired-page-design.md`.
+- `/evaluation/rc` (#613) reads the candidate evidence the build generated (`public/results/candidate-evidence-v1.json`,
+  validated by `candidateProblem`) in `services/candidate.ts`, with the last release from `baselines/` and the pin
+  manifest. A build without it shows "No release candidate is recorded" (the normal state in CI), so its tests
+  build synthetic evidence in the overlay (`tests/unit/rc-fixtures.ts`) and never read a candidate from the ledger. Blocks are
+  `Rc*` in `components/evaluation/rc/`. Decision: `docs/decisions/2026-10-01-show-the-release-candidate-beside-the-last-release.md`.
+
+- `/evaluation` and `/evaluation/method/<method>/` (#614): the six method pages share one schema (head, how it runs, recorded now,
+  how to read it, exact inputs) and one table (`EvidenceTable`: scanners across, checks down, a cell is "n of N did not hold",
+  no total, no sort). `services/evaluation.ts` reads `public/results/evaluation-v1.json` (CI writes it with
+  `npm run eval:discover` and `npm run eval:publish`) and checks it with `evaluationProblem`; `resolvers/evaluation-methods.ts`
+  and `evaluation-hub.ts` are pure, `evaluation-pages.ts` awaits the services. A phase page the hub links is a link only once
+  its entry is in the Evaluation section of `lib/routes.ts`: add yours there. Decision:
+  `docs/decisions/2026-10-01-show-each-evaluation-method-in-one-fixed-order.md`.
 
 ## Tests
 

@@ -25,6 +25,8 @@ export interface PeerProfile {
   /** "Repository scanner", "Runtime library". */
   kindLabel: string;
   description: string;
+  /** What this benchmark does not run or measure for the scanner (`outOfScope` in the registry). */
+  outOfScope: string[];
   /** The taxonomy families at least one of the scanner's own rules targets. */
   families: Set<string>;
   /** The scanner's own rules that target a family, with the reviewed pattern evidence (`basis`), by family id. */
@@ -34,6 +36,9 @@ export interface PeerProfile {
   ruleCount: number;
   /** The pinned rule file the map was reviewed against, e.g. "8.30.1". */
   ruleFileVersion: string;
+  /** Where the rule file lives, as the map records it: a path, and for a rule file in a repository the commit. */
+  ruleFilePath: string | null;
+  ruleFileRevision: string | null;
   reviewedAt: string;
 }
 
@@ -58,8 +63,8 @@ export function loadPeerProfiles(): Promise<Map<string, PeerProfile>> {
         for (const family of mapping.families) (rulesByFamily.get(family) ?? rulesByFamily.set(family, []).get(family)!).push({ rule, basis: mapping.basis });
       }
       profiles.set(id, {
-        id, kind: entry.kind, kindLabel: PEER_KINDS[entry.kind], description: entry.description,
-        families, rulesByFamily, mappedRules, ruleCount: set.ruleCount, ruleFileVersion: set.source.version, reviewedAt: map.reviewedAt,
+        id, kind: entry.kind, kindLabel: PEER_KINDS[entry.kind], description: entry.description, outOfScope: entry.outOfScope,
+        families, rulesByFamily, mappedRules, ruleCount: set.ruleCount, ruleFileVersion: set.source.version, ruleFilePath: set.source.path ?? null, ruleFileRevision: set.source.revision ?? null, reviewedAt: map.reviewedAt,
       });
     }
     return profiles;

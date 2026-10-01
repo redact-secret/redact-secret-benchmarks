@@ -89,6 +89,23 @@
     white-space: nowrap;
   }
 
+  /* A page that is not in this build: dashed and muted, never a link, and not a result. */
+  .pending {
+    border-bottom-style: dashed;
+    color: var(--ink-muted);
+  }
+
+  .pending .title {
+    color: var(--ink-muted);
+  }
+
+  .state {
+    margin-top: var(--space-2);
+    font: var(--text-small);
+    color: var(--ink-muted);
+    white-space: nowrap;
+  }
+
   @media (min-width: 721px) {
     .row {
       grid-template-columns: minmax(0, 1fr) auto;

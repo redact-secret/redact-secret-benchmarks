@@ -1,0 +1,53 @@
+@layer components {
+  .profile {
+    min-width: 0;
+    scroll-margin-top: calc(var(--header-h) + var(--space-4));
+  }
+
+  .group {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+    min-width: 0;
+  }
+
+  .h3 {
+    margin: 0;
+    padding-bottom: var(--space-2);
+    border-bottom: var(--hairline) solid var(--line);
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .note {
+    display: block;
+    color: var(--ink-muted);
+    font: var(--text-small);
+  }
+
+  .list {
+    margin: 0;
+    padding-left: var(--space-6);
+    display: grid;
+    gap: var(--space-1);
+    font: var(--text-small);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font: var(--text-small-strong);
+  }
+
+  @media (max-width: 720px) {
+    .profile {
+      scroll-margin-top: var(--space-4);
+    }
+  }
+}

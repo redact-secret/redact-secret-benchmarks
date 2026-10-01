@@ -15,7 +15,7 @@
     "test:e2e": "playwright test",
     "coverage:summary": "node scripts/coverage-summary.mjs",
     "check:no-sx": "node scripts/check-no-sx.mjs",
-    "check:routes": "node scripts/check-export.mjs && node scripts/check-export-rows.mjs && node scripts/check-export-performance.mjs && node scripts/check-export-accuracy.mjs",
+    "check:routes": "node scripts/check-export.mjs && node scripts/check-export-rows.mjs && node scripts/check-export-performance.mjs && node scripts/check-export-accuracy.mjs && node scripts/check-export-scanners.mjs",
     "check:header": "node scripts/check-header.mjs",
     "check:layout": "node scripts/check-layout.mjs",
     "check:docker": "node scripts/docker-run.mjs all",

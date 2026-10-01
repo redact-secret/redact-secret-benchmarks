@@ -46,6 +46,11 @@ import { resolveRunState, type RunState } from './run';
 import { resolveCredentialView, resolvePiiView, type DomainId } from './domains';
 import { loadCredentialEvaluation, loadPiiEvaluation } from '../services/domains';
 import type { DomainViewData } from '../components/evaluation/domain';
+import { loadRcSources } from '../services/candidate';
+import { resolveRcPage, type RcPage } from './rc';
+import { resolveScanners } from './scanners';
+import { loadScannerEnvironment } from '../services/scanners';
+import type { ScannerOverviewProps } from '../components/evaluation/scanner';
 import type { EvidenceLevelLink, HubTileData } from '../components/report/types';
 import type { MetaItem } from '../components/page/MetaList';
 
@@ -518,4 +523,19 @@ export async function resolveAccuracyDifferencesFile(): Promise<DiffFile> {
 /** `/evaluation/pii/` and `/evaluation/credential/` (#611): one view shape for both domains. */
 export async function resolveDomainPage(domain: DomainId): Promise<DomainViewData> {
   return domain === 'pii' ? resolvePiiView(await loadPiiEvaluation()) : resolveCredentialView(await loadCredentialEvaluation());
+}
+
+// ---- /evaluation/rc ----------------------------------------------------------------------
+
+/** The release candidate beside the last release: the candidate evidence when this build has one, the release alone when not. */
+export async function resolveReleaseCandidatePage(): Promise<RcPage> {
+  return resolveRcPage(await loadRcSources());
+}
+
+// ---- /evaluation/scanner ------------------------------------------------------------------
+
+/** The scanners the benchmark ran with and the environment each ran in (#612). */
+export async function resolveScannerPage(): Promise<ScannerOverviewProps> {
+  const [environment, profiles, run, runtime, catalog] = await Promise.all([loadScannerEnvironment(), loadPeerProfiles(), loadRun(), loadPeerRuntime(), loadCatalog()]);
+  return resolveScanners({ environment, profiles, run: run.state === 'measured' ? run : undefined, runtime, productDetectors: catalog.detectors.length || null });
 }

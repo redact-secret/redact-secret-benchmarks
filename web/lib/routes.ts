@@ -53,9 +53,9 @@ export const SECTIONS: Section[] = [
 ];
 
 /**
- * The pages the Evaluation overview links to besides the methods. Each phase owns its page and adds its
- * entry to the Evaluation section above when the page exists; until then the overview names the page and
- * says it is not in this build, so no link points at a route the export does not contain.
+ * The pages the Evaluation overview lists besides the methods. Every one is also an entry of the Evaluation section above;
+ * the overview links a phase only when its page is an entry there, and otherwise names it as not in this build, so no link
+ * points at a route the export does not contain.
  */
 export const EVALUATION_PHASES: RouteEntry[] = [
   { href: '/evaluation/scanner/', label: 'Scanners', title: 'Scanners and where they ran', summary: 'The scanners the benchmark ran with, how each was pinned and run, and what was left out.' },

@@ -33,6 +33,10 @@ export function inspect({ maxWord }) {
   for (let node = walker.nextNode(); node; node = walker.nextNode()) {
     const el = node.parentElement;
     if (!el || ['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(el.tagName)) continue;
+    // A text node drawn on one line cannot hold a broken word; one range per node spares one per word.
+    const whole = document.createRange();
+    whole.selectNodeContents(node);
+    if ([...whole.getClientRects()].filter(r => r.width > 0 && r.height > 0).length < 2) continue;
     const text = node.textContent ?? '';
     // A run of non-space characters is one token. A token longer than maxWord (a
     // hash, a path, a hyphenated id) is allowed to break wherever it must; inside

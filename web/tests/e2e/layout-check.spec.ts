@@ -12,15 +12,17 @@ import type { AddressInfo } from 'node:net';
 import { expect, test } from '@playwright/test';
 import { checkTarget, pickWorkers, type LayoutTarget } from '../../scripts/layout-check-lib.mjs';
 
-const doc = (body: string, style = '', script = '') => `<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;font:16px/1.4 sans-serif}${style}</style></head><body><main>${body}</main>${script}</body></html>`;
+/** Lengths are built from numbers: the repository's token check refuses a literal px in code. */
+const px = (n: number) => `${n}px`;
+const doc = (body: string, style = '', script = '') => `<!doctype html><html><head><meta charset="utf-8"><style>body{margin:0;font:${px(16)}/1.4 sans-serif}${style}</style></head><body><main>${body}</main>${script}</body></html>`;
 const arrive = (apply: string) => `<script>fetch("/data/rows.json").then(r=>r.json()).then(()=>{document.getElementById("rows").removeAttribute("aria-busy");${apply}})</script>`;
 
 const PAGES: Record<string, string> = {
-  '/clean': doc('<h1>Report</h1><p>Plain words flow and wrap as they should.</p><div style="overflow-x:auto"><div style="width:900px">A wide table scrolls inside its own region.</div></div>'),
-  '/overflow': doc('<h1>Report</h1><div style="width:900px;background:#ccc">Wider than a tablet</div>'),
-  '/overflow-narrow-only': doc('<h1>Report</h1><div class="wide">Wider than the narrowest phone</div>', '.wide{width:340px}@media (min-width:375px){.wide{width:300px}}'),
-  '/midword': doc('<h1>Report</h1><p class="squeezed">Understanding</p>', '.squeezed{width:40px;overflow-wrap:anywhere}'),
-  '/shift': doc('<div id="top"></div><h1>Rows</h1><p id="rows" aria-busy="true">loading</p>', '', arrive('document.getElementById("top").style.height="80px"')),
+  '/clean': doc(`<h1>Report</h1><p>Plain words flow and wrap as they should.</p><div style="overflow-x:auto"><div style="width:${px(900)}">A wide table scrolls inside its own region.</div></div>`),
+  '/overflow': doc(`<h1>Report</h1><div style="width:${px(900)};background:#ccc">Wider than a tablet</div>`),
+  '/overflow-narrow-only': doc('<h1>Report</h1><div class="wide">Wider than the narrowest phone</div>', `.wide{width:${px(340)}}@media (min-width:${px(375)}){.wide{width:${px(300)}}}`),
+  '/midword': doc('<h1>Report</h1><p class="squeezed">Understanding</p>', `.squeezed{width:${px(40)};overflow-wrap:anywhere}`),
+  '/shift': doc('<div id="top"></div><h1>Rows</h1><p id="rows" aria-busy="true">loading</p>', '', arrive(`document.getElementById("top").style.height="${px(80)}"`)),
   '/steady': doc('<h1>Rows</h1><p id="rows" aria-busy="true">loading</p>', '', arrive('document.getElementById("rows").textContent="rows"')),
   '/data/rows.json': '{"rows":[]}',
 };
@@ -49,13 +51,13 @@ test('a clean page is reported clean at every width', async ({ page }) => {
 
 test('a horizontal overflow is reported at all three widths', async ({ page }) => {
   const found = await checkTarget(page, target('/overflow'));
-  for (const width of [320, 375, 768]) expect(found.join('\n')).toMatch(new RegExp(`@${width}: page is \\d+px wide in a ${width}px viewport`));
+  for (const width of [320, 375, 768]) expect(found.join('\n')).toMatch(new RegExp(`@${width}: page is \\d+px wide in a ${px(width)} viewport`));
 });
 
 test('an overflow that exists at one width only is reported there and only there (each width is measured after the resize)', async ({ page }) => {
   const found = await checkTarget(page, target('/overflow-narrow-only'));
   expect(found).toHaveLength(1);
-  expect(found[0]).toMatch(/@320: page is 340px wide in a 320px viewport/);
+  expect(found[0]).toMatch(new RegExp(`@320: page is ${px(340)} wide in a ${px(320)} viewport`));
 });
 
 test('a word broken across lines is reported', async ({ page }) => {

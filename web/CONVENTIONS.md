@@ -215,7 +215,14 @@ Decision: `docs/decisions/2026-10-01-test-the-web-app-with-vitest-and-playwright
 - `npm run test:e2e` (Playwright Test) drives the built export: `npm run build` first. A new route or address variant goes in
   `ROUTES` in `tests/e2e/fixtures.ts`, which runs it through the page matrix (light and dark, 320 and 1280px, axe with no
   serious or critical violation, no sideways scroll, no console output, no off-origin request but web fonts).
-  `PW_CHANNEL=chrome` uses an installed Chrome. No sleeps and no retries.
+  `PW_CHANNEL=chrome` uses an installed Chrome. No sleeps and no retries. `PW_PORT` (or `PORT`) moves the suite's server
+  off 4173: set it to a private port when another session may be running the suite.
+- "No console output" fails on `console.error`/`console.warn`, an uncaught error, a failed request and a 4xx/5xx. One message
+  is ignored, by exact text and only for a built `.css` chunk of this origin: Chrome's "The resource ... was preloaded using
+  link preload but not used within a few seconds from the window's load event". It is Next's link prefetch preloading the CSS
+  of the route a header link leads to, and it prints only when a test keeps a page open about three seconds (a slow runner),
+  so it failed pages a PR never touched. `isUnusedPreloadAdvice` in `tests/e2e/fixtures.ts` is the filter and
+  `tests/e2e/watch.spec.ts` proves a real error, warning or uncaught error still fails. Do not widen it to other warnings.
 
 ## Before you merge
 

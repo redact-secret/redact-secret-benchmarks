@@ -14,6 +14,20 @@ export interface Watch {
   external: string[];
 }
 
+/**
+ * Chrome's own advice, not a fault of the page: a stylesheet preloaded "but not used within a few seconds from the
+ * window's load event". Next's viewport link prefetch preloads the CSS chunks of the route a link leads to (the header
+ * links to /report, whose fixture chunks no comparison page applies), and Chrome warns about any preload still unapplied
+ * about three seconds after load. Whether it appears depends only on how long a test keeps the page open (a slow CI runner,
+ * a long test), so it failed matrix routes the PR never touched (reproduced: an 8 s wait on /comparison/runtime/ prints it).
+ * The preload is the prefetch working, so there is nothing to fix in the app; only this message, for a built stylesheet of
+ * this origin, is dropped. Any other warning, including an app's own console.warn, still fails.
+ */
+export function isUnusedPreloadAdvice(text: string, origin: string): boolean {
+  const match = /^The resource (\S+) was preloaded using link preload but not used within a few seconds from the window's load event\. Please make sure it has an appropriate `as` value and it is preloaded intentionally\.$/.exec(text);
+  return !!match && match[1].startsWith(`${origin}${BASE}/_next/static/`) && match[1].endsWith('.css');
+}
+
 const FONT_HOSTS = new Set(['fonts.googleapis.com', 'fonts.gstatic.com']);
 
 /**
@@ -50,7 +64,10 @@ export const test = base.extend<{ watch: Watch }>({
       watch.external.push(url.hostname);
       return route.fulfill({ status: 200, contentType: url.hostname === 'fonts.googleapis.com' ? 'text/css' : 'font/woff2', body: '' });
     });
-    page.on('console', message => { if (['error', 'warning'].includes(message.type())) watch.problems.push(`console.${message.type()}: ${message.text()}`); });
+    page.on('console', message => {
+      if (!['error', 'warning'].includes(message.type()) || isUnusedPreloadAdvice(message.text(), origin)) return;
+      watch.problems.push(`console.${message.type()}: ${message.text()}`);
+    });
     page.on('pageerror', error => watch.problems.push(`pageerror: ${error.message}`));
     page.on('requestfailed', request => request.failure()?.errorText === 'net::ERR_ABORTED' ? undefined : watch.problems.push(`requestfailed: ${request.url()} (${request.failure()?.errorText})`));
     page.on('response', response => { if (response.status() >= 400 && response.url().startsWith(origin)) watch.problems.push(`HTTP ${response.status()}: ${response.url()}`); });

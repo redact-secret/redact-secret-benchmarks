@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import type { Section } from '../../lib/routes';
+import { isCurrentEntry, type Section } from '../../lib/routes';
 import styles from './SectionNav.module.css';
 
 export interface SectionNavProps {
@@ -15,7 +15,7 @@ export function SectionNav({ section, currentPath }: SectionNavProps) {
       <ul className={styles.list}>
         {section.entries.map(entry => (
           <li key={entry.href}>
-            <Link className={styles.link} href={entry.href} aria-current={currentPath === entry.href ? 'page' : undefined}>
+            <Link className={styles.link} href={entry.href} aria-current={isCurrentEntry(entry, currentPath) ? 'page' : undefined}>
               {entry.label}
             </Link>
           </li>

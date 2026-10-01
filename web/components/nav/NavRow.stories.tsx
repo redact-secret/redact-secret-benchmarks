@@ -25,3 +25,6 @@ export const LongTitle: Story = {
   args: { title: 'A very long question that a reader might bring to the site and that has to wrap onto several lines without breaking the row layout' },
 };
 export const ManyTools: Story = { args: { tools: Array.from({ length: 12 }, (_, i) => `scanner-${i + 1}`) } };
+export const NotInThisBuild: Story = {
+  args: { href: undefined, action: 'Not in this build yet', fact: undefined, factNote: undefined, tools: undefined },
+};

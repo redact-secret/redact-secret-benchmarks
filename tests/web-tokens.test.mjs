@@ -149,7 +149,20 @@ test('layout and Storybook preview load the same token and measure sheets', asyn
 /* ---- component contract: pure render, story + module + barrel ---- */
 
 test('every component has a story and a CSS Module, is exported by its barrel, and imports no data', async () => {
-  const groups = (await readdir(new URL('components/', WEB), { withFileTypes: true })).filter(e => e.isDirectory()).map(e => e.name);
+  // A group is a folder of components. A folder that only holds groups (`evaluation/`, one folder per phase) is not one.
+  const groupsUnder = async (relative) => {
+    const found = [];
+    for (const entry of await readdir(new URL(`components/${relative}`, WEB), { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const name = `${relative}${entry.name}`;
+      const nested = await groupsUnder(`${name}/`);
+      const files = await readdir(new URL(`components/${name}/`, WEB));
+      if (files.some(n => n.endsWith('.tsx') || n === 'index.ts') || nested.length === 0) found.push(name);
+      found.push(...nested);
+    }
+    return found;
+  };
+  const groups = await groupsUnder('');
   assert.ok(groups.length >= 7, `groups: ${groups.join(', ')}`);
   const problems = [];
   for (const group of groups) {

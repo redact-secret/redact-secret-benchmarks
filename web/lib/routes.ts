@@ -44,6 +44,7 @@ export const SECTIONS: Section[] = [
     entries: [
       { href: '/evaluation/', label: 'Overview', title: 'Evaluation', summary: 'The evaluation methods, the run behind them and the pages that read it.' },
       { href: '/evaluation/method/twin/', label: 'Methods', title: 'Evaluation methods', summary: 'Six methods, each with how it runs and what was recorded for it.', match: '/evaluation/method/' },
+      { href: '/evaluation/rc/', label: 'Release candidate', title: 'What changed in the release candidate?', summary: 'A pinned candidate read against the published release.' },
       { href: '/evaluation/pii/', label: 'Personal data', title: 'How is personal data evaluated?', summary: 'The personal-data domain: its families, fixtures and what was recorded.' },
       { href: '/evaluation/credential/', label: 'Credentials', title: 'How are credentials evaluated?', summary: 'The credential domain: its families, fixtures and what was recorded.' },
     ],

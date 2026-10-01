@@ -1,7 +1,7 @@
 import { defineConfig } from '@playwright/test';
 
 /**
- * Browser tests of the built static export (#597). `npm run build` first; the suite serves web/out
+ * Browser tests of the built static export (#598). `npm run build` first; the suite serves web/out
  * with tests/e2e/serve.mjs and drives it in Chrome. `PW_CHANNEL=chrome` uses an installed Google
  * Chrome (as check:layout does); CI installs Playwright's Chromium instead.
  *

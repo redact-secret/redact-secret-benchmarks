@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config';
 
-// Unit and component tests for the Next app (#597). V8 coverage over real application code;
+// Unit and component tests for the Next app (#598). V8 coverage over real application code;
 // the exclusions are listed and justified in docs/decisions/2026-10-01-test-the-web-app-with-vitest-and-playwright.md.
 export default defineConfig({
   test: {
@@ -12,7 +12,7 @@ export default defineConfig({
     css: { modules: { classNameStrategy: 'non-scoped' } },
     restoreMocks: true,
     // The first test of a file that renders a page also pays for loading the corpora; coverage instrumentation slows it further.
-    testTimeout: 30_000,
+    testTimeout: 60_000,
     coverage: {
       provider: 'v8',
       reporter: ['text-summary', 'json-summary', 'json', 'lcov', 'html'],

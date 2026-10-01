@@ -18,6 +18,9 @@
     "check:routes": "node scripts/check-export.mjs && node scripts/check-export-rows.mjs && node scripts/check-export-performance.mjs && node scripts/check-export-accuracy.mjs && node scripts/check-export-scanners.mjs",
     "check:header": "node scripts/check-header.mjs",
     "check:layout": "node scripts/check-layout.mjs",
+    "check:docker": "node scripts/docker-run.mjs all",
+    "check:layout:docker": "node scripts/docker-run.mjs layout",
+    "test:e2e:docker": "node scripts/docker-run.mjs e2e",
     "check": "npm run check:no-sx && npm run check:header && npm run typecheck && npm run build && npm run check:routes && npm run build-storybook && npm run check:layout",
     "storybook": "storybook dev --port 6006",
     "build-storybook": "storybook build --quiet"

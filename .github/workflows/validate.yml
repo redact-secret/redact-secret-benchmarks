@@ -171,9 +171,9 @@ jobs:
       - name: Chromium for the layout check and the Playwright suite (#554, #598)
         run: npx playwright install --with-deps chromium
         working-directory: web
-      # The Playwright suite (#598) drives the export check:routes just built. check:layout below uses one
-      # browser on one core, so the suite starts first in the background on the other cores and is joined
-      # after it; its exit status and log are kept in RUNNER_TEMP, and a failing run uploads its traces.
+      # The Playwright suite (#598) drives the export check:routes just built. check:layout below runs
+      # one browser with a page per core it can have (3 on a 4 vCPU runner: it leaves the suite's 2 workers
+      # a share), so the suite starts first in the background and is joined after it; its exit status and log are kept in RUNNER_TEMP, and a failing run uploads its traces.
       - name: Playwright suite over the export, started in the background (#598)
         run: |
           rm -f "$RUNNER_TEMP/e2e.status"

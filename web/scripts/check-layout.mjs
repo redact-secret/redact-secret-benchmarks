@@ -30,6 +30,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
+import { checkTarget, pickWorkers } from './layout-check-lib.mjs';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const basePath = process.env.BASE_PATH ?? '/next';
@@ -115,78 +116,6 @@ function serve() {
   return new Promise(resolve => server.listen(0, '127.0.0.1', () => resolve(server)));
 }
 
-/** Runs in the page. Returns the problems found in the rendered document. */
-function inspect({ maxWord }) {
-  const problems = [];
-  const doc = document.documentElement;
-  if (doc.scrollWidth > doc.clientWidth + 1) {
-    // Name the outermost boxes that stick out of the viewport and are not inside a scroll region.
-    const inScroller = el => { for (let p = el.parentElement; p && p !== document.body; p = p.parentElement) { const o = getComputedStyle(p).overflowX; if (o === 'auto' || o === 'scroll' || o === 'hidden' || o === 'clip') return true; } return false; };
-    const culprits = [...document.body.querySelectorAll('*')]
-      .filter(el => el.getBoundingClientRect().right > doc.clientWidth + 1 && getComputedStyle(el).position !== 'fixed' && !inScroller(el))
-      .filter(el => ![...el.children].some(c => c.getBoundingClientRect().right > doc.clientWidth + 1))
-      .slice(0, 3)
-      .map(el => `<${el.tagName.toLowerCase()}${typeof el.className === 'string' && el.className ? `.${el.className.split(' ')[0]}` : ''}>`);
-    problems.push(`page is ${doc.scrollWidth}px wide in a ${doc.clientWidth}px viewport${culprits.length ? ` (${culprits.join(', ')})` : ''}`);
-  }
-  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-  const seen = new Set();
-  for (let node = walker.nextNode(); node; node = walker.nextNode()) {
-    const el = node.parentElement;
-    if (!el || ['SCRIPT', 'STYLE', 'NOSCRIPT'].includes(el.tagName)) continue;
-    const text = node.textContent ?? '';
-    // A run of non-space characters is one token. A token longer than maxWord (a
-    // hash, a path, a hyphenated id) is allowed to break wherever it must; inside
-    // a shorter one, every word must stay on one line.
-    for (const token of text.matchAll(/\S+/g)) {
-      if (token[0].length > maxWord) continue;
-      for (const m of token[0].matchAll(/[\p{L}\p{N}']+/gu)) {
-        if (m[0].length < 3) continue;
-        const start = token.index + m.index;
-        const range = document.createRange();
-        range.setStart(node, start);
-        range.setEnd(node, start + m[0].length);
-        const rects = [...range.getClientRects()].filter(r => r.width > 0 && r.height > 0);
-        if (rects.length < 2) continue;
-        const tops = new Set(rects.map(r => Math.round(r.top / 2)));
-        if (tops.size > 1 && !seen.has(m[0])) {
-          seen.add(m[0]);
-          const cls = typeof el.className === 'string' ? el.className.split(' ')[0] : '';
-          problems.push(`word "${m[0]}" is broken across lines in <${el.tagName.toLowerCase()}${cls ? `.${cls}` : ''}>`);
-        }
-      }
-    }
-  }
-  return problems;
-}
-
-/** Runs in the page, on exported pages only. */
-function inspectHeader() {
-  const problems = [];
-  const header = document.querySelector('header');
-  if (!header) return ['no <header>'];
-  const imgs = [...header.querySelectorAll('img')];
-  const light = imgs.find(i => /\/logo-light\.svg$/.test(i.getAttribute('src') ?? '') || /logo-light\.svg/.test(i.currentSrc));
-  const dark = imgs.find(i => /logo-dark\.svg/.test(i.getAttribute('src') ?? '') || /logo-dark\.svg/.test(i.currentSrc));
-  if (!light || !dark) problems.push('header must carry both canonical logo images (logo-light.svg, logo-dark.svg)');
-  const visible = imgs.filter(i => getComputedStyle(i).display !== 'none');
-  if (visible.length !== 1) problems.push(`exactly one logo image must be visible, found ${visible.length}`);
-  for (const img of visible) {
-    if (!img.complete || img.naturalWidth === 0) problems.push('the logo image did not load');
-    const probe = document.createElement('div');
-    probe.style.width = 'var(--logo-w)';
-    document.body.append(probe);
-    const want = probe.getBoundingClientRect().width;
-    probe.remove();
-    const got = img.getBoundingClientRect().width;
-    if (Math.abs(got - want) > 0.5) problems.push(`the logo is ${got}px wide, the --logo-w token is ${want}px`);
-    const ratio = img.getBoundingClientRect().width / img.getBoundingClientRect().height;
-    if (Math.abs(ratio - 944 / 817) > 0.02) problems.push(`the logo is stretched (ratio ${ratio.toFixed(3)}, asset 944:817)`);
-  }
-  if (header.querySelector('svg path')) problems.push('header draws its own mark inline instead of using the canonical asset');
-  return problems;
-}
-
 async function main() {
   const server = await serve();
   const origin = `http://127.0.0.1:${server.address().port}`;
@@ -207,54 +136,14 @@ async function main() {
   ];
 
   const failures = [];
+  const workers = pickWorkers();
   let next = 0;
   const worker = async () => {
     const page = await context.newPage();
-    for (;;) {
-      const target = targets[next++];
-      if (!target) break;
-      for (const width of WIDTHS) {
-        await page.setViewportSize({ width, height: 900 });
-        // One retry: a cold browser under load occasionally misses the render signal.
-        for (let attempt = 1; attempt <= 2; attempt++) {
-          // A state target holds (gate) or fails (abort) every request for build-emitted data while the page is inspected.
-          let release = () => {};
-          if (target.gate || target.abort) {
-            const gate = new Promise(resolve => { release = resolve; });
-            await page.route('**/data/**', async route => { if (target.abort) return route.abort('failed'); await gate; return route.continue().catch(() => {}); });
-          }
-          try {
-            await page.goto(target.url, { waitUntil: 'domcontentloaded' });
-            await page.waitForSelector(target.ready ?? target.wait, { timeout: 20000 });
-            await page.evaluate(() => document.fonts.ready).catch(() => {});
-            await page.waitForTimeout(50);
-            const found = await page.evaluate(inspect, { maxWord: MAX_WORD });
-            if (target.header) found.push(...(await page.evaluate(inspectHeader)));
-            for (const problem of found) failures.push(`${target.name} @${width}: ${problem}`);
-            if (target.gate) {
-              // Let the file arrive: the loaded state must fit too, and what sits above the rows must not have moved.
-              const before = await page.evaluate(anchor => document.querySelector(anchor)?.getBoundingClientRect().top + window.scrollY, target.anchor);
-              release();
-              await page.waitForFunction(target.loaded, null, { timeout: 20000 });
-              await page.waitForTimeout(100);
-              const after = await page.evaluate(anchor => document.querySelector(anchor)?.getBoundingClientRect().top + window.scrollY, target.anchor);
-              if (process.env.LAYOUT_DEBUG) console.log(`${target.name} @${width}: ${target.anchor} top ${before} -> ${after}`);
-              if (before === undefined || after === undefined || Math.abs(before - after) > 1) failures.push(`${target.name} @${width}: ${target.anchor} moved from ${before} to ${after} when the data arrived (layout shift)`);
-              for (const problem of await page.evaluate(inspect, { maxWord: MAX_WORD })) failures.push(`${target.name.replace(/loading/, 'loaded')} @${width}: ${problem}`);
-            }
-            break;
-          } catch (error) {
-            if (attempt === 2) failures.push(`${target.name} @${width}: did not render (${String(error.message).split('\n')[0]})`);
-          } finally {
-            release();
-            await page.unroute('**/data/**').catch(() => {});
-          }
-        }
-      }
-    }
+    for (let target = targets[next++]; target; target = targets[next++]) failures.push(...(await checkTarget(page, target, { widths: WIDTHS, maxWord: MAX_WORD })));
     await page.close();
   };
-  await Promise.all(Array.from({ length: 4 }, worker));
+  await Promise.all(Array.from({ length: Math.min(workers, targets.length) }, worker));
   await browser.close();
   server.close();
 

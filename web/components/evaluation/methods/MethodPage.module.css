@@ -1,0 +1,40 @@
+@layer components {
+  .page {
+    min-width: 0;
+  }
+
+  .switch {
+    justify-self: start;
+  }
+
+  .step {
+    display: grid;
+    gap: var(--space-1);
+    align-content: start;
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .step b {
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .step span {
+    max-width: var(--measure);
+  }
+
+  .meaning {
+    margin: 0;
+    font: var(--text-small);
+    color: var(--ink-muted);
+    max-width: var(--measure);
+  }
+
+  .h3 {
+    margin: 0;
+    font: var(--text-h3);
+  }
+}

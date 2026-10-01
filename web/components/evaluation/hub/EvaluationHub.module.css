@@ -1,0 +1,23 @@
+@layer components {
+  .hub {
+    min-width: 0;
+  }
+
+  .phases {
+    display: grid;
+    border-top: var(--rule-strong) solid var(--ink);
+  }
+
+  .principle {
+    display: grid;
+    gap: var(--space-1);
+    align-content: start;
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .principle b {
+    font: var(--text-small-strong);
+    color: var(--ink);
+  }
+}

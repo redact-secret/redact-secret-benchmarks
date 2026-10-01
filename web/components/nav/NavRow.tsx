@@ -4,7 +4,8 @@ import { cx } from '../../lib/cx';
 import styles from './NavRow.module.css';
 
 export interface NavRowProps {
-  href: string;
+  /** The page the row opens. Omit it for a page that is not in this build yet: the row is then plain text, dashed, with `action` as its state. */
+  href?: string;
   /** Names the kind of page: "Runtime". */
   label: string;
   /** The question the page answers. */
@@ -15,15 +16,15 @@ export interface NavRowProps {
   /** A count of what the page contains, as text: "6 test texts". Never a result. */
   fact?: string;
   factNote?: string;
-  /** The link words: "Runtime comparison →". */
+  /** The link words: "Runtime comparison →", or the state ("Not in this build yet") when there is no `href`. */
   action: string;
   className?: string;
 }
 
 /** A question row for a hub: the whole row is one link, with one visible link text. */
 export function NavRow({ href, label, title, description, tools, fact, factNote, action, className }: NavRowProps) {
-  return (
-    <Link className={cx(styles.row, className)} href={href}>
+  const content = (
+    <>
       <span className={styles.main}>
         <span className={styles.label}>{label}</span>
         <span className={styles.title}>{title}</span>
@@ -41,8 +42,13 @@ export function NavRow({ href, label, title, description, tools, fact, factNote,
             {factNote && <small>{factNote}</small>}
           </span>
         )}
-        <span className={styles.go}>{action}</span>
+        <span className={href ? styles.go : styles.state}>{action}</span>
       </span>
-    </Link>
+    </>
+  );
+  return href ? (
+    <Link className={cx(styles.row, className)} href={href}>{content}</Link>
+  ) : (
+    <div className={cx(styles.row, styles.pending, className)}>{content}</div>
   );
 }

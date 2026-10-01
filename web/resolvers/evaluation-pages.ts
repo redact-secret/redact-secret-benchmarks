@@ -4,10 +4,13 @@
  * resolvers alone. Server-only.
  */
 import type { EvaluationHubProps } from '../components/evaluation/hub/EvaluationHub';
+import type { MethodPageProps } from '../components/evaluation/methods/types';
 import { EVALUATION_PHASES, SECTIONS } from '../lib/routes';
+import type { MethodId } from '../lib/methods';
 import { loadSuites } from '../services/catalog';
 import { loadEvaluation, loadQualification } from '../services/evaluation';
 import { resolveEvaluationHub } from './evaluation-hub';
+import { resolveMethodPage } from './evaluation-methods';
 
 const builtHrefs = (): Set<string> => new Set(SECTIONS.find(s => s.href === '/evaluation/')?.entries.map(e => e.href) ?? []);
 
@@ -27,4 +30,8 @@ export async function resolveEvaluationHubPage(): Promise<EvaluationHubProps> {
     phases: EVALUATION_PHASES,
     builtHrefs: builtHrefs(),
   });
+}
+
+export async function resolveMethodPageFor(id: MethodId): Promise<MethodPageProps> {
+  return resolveMethodPage(id, await sources());
 }

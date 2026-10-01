@@ -200,6 +200,11 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   (pure) over `services/domains.ts`. PII is rebuilt from the reviewed protected binding (candidate mode); the credential stable count is the support
   record of the run's own mode and version. A fact the ledger does not hold is a dashed "Not recorded" with its issue, never a zero. Decision:
   `docs/decisions/2026-10-01-explain-how-pii-and-credentials-are-evaluated-on-one-paired-page-design.md`.
+- `/evaluation/rc` (#613) reads the candidate evidence the build generated (`public/results/candidate-evidence-v1.json`,
+  validated by `candidateProblem`) in `services/candidate.ts`, with the last release from `baselines/` and the pin
+  manifest. A build without it shows "No release candidate is recorded" (the normal state in CI), so its tests
+  build synthetic evidence in the overlay (`tests/unit/rc-fixtures.ts`) and never read a candidate from the ledger. Blocks are
+  `Rc*` in `components/evaluation/rc/`. Decision: `docs/decisions/2026-10-01-show-the-release-candidate-beside-the-last-release.md`.
 
 ## Tests
 

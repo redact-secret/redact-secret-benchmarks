@@ -43,6 +43,7 @@ describe('routes', () => {
     expect(all.map(c => c.route).filter((r, i, a) => a.indexOf(r) === i).sort()).toEqual([
       '/', '/comparison', '/comparison/accuracy', '/comparison/feature', '/comparison/performance', '/comparison/runtime',
       '/evaluation/credential', '/evaluation/pii',
+      '/evaluation/rc',
       '/report', '/report/detectors', '/report/detectors/[detector]', '/report/families', '/report/families/[family]', '/report/findings',
       '/report/fixtures', '/report/fixtures/[suite]', '/report/providers', '/report/rows/[level]',
     ]);

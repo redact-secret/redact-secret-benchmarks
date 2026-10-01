@@ -239,6 +239,14 @@ Playwright tests that opened `?show=leaked` and expected a pager found zero leak
   1. `git fetch origin && git rebase origin/develop` (or merge it) right before you push, not when you branched.
   2. From `web/`: `npm run check`, `npm run test:coverage` and, on a fresh `npm run build`, `npm run test:e2e`. Run the
      root checks CI runs too if you touched anything outside `web/`.
+     Prefer the Docker run for this final verification: `npm run check:docker` (every step of the web CI job after
+     install), or `npm run check:layout:docker` / `npm run test:e2e:docker` for one of the two browser checks. It runs in
+     the official Playwright image pinned to the repo's Playwright version (`mcr.microsoft.com/playwright:v<version>-noble`),
+     on Linux with the bundled Chromium and `CI=true`, which is what CI runs; on a Mac the same checks run on Google Chrome
+     (`PW_CHANNEL=chrome`) and a pass there has missed what only CI caught. The container copies the checkout read-only, keeps
+     `node_modules` in named volumes (never the host's), publishes no port (several agents never clash) and is capped at
+     4 CPUs and 6 GB (`DOCKER_CPUS`, `DOCKER_MEMORY`). `node scripts/docker-run.mjs clean` drops the volumes. A failure's
+     traces land in `web/test-results`. See `scripts/docker-run.mjs` for the details and for `DOCKER_PLATFORM=linux/amd64`.
   3. Push once. If CI fails on something that passed locally, find why (clean build, worker count, a base that moved)
      before pushing again; do not just retry.
 - **A red check is never "known".** If a check fails on your branch, either fix it or name the issue or PR that owns it in

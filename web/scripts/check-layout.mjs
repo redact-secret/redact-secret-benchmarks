@@ -67,6 +67,8 @@ try {
   const corpus = JSON.parse(await readFile(path.join(repoRoot, 'fixtures/generated/context-edges.json'), 'utf8'));
   const big = corpus.fixtures.reduce((a, b) => (b.content.length > a.content.length ? b : a));
   ROUTES.push(`report/fixtures/context-edges/?fixture=${big.id}`);
+  // The fixture page of #588: a fixture with two twins and a family crumb, one with hidden characters, and the quiet twin.
+  ROUTES.push('report/fixtures/beta8-211/?fixture=github-fine-grained-pat-terraform-provider', 'report/fixtures/context-edges/?fixture=bom', 'report/fixtures/beta8-211/?fixture=github-fine-grained-pat-terraform-provider-alphabet-twin');
 } catch { /* the generated corpus is materialised by npm ci */ }
 // The performance pair page (#569): the default pair, the other library, and the setting that changes what redact-secret did.
 ROUTES.push('comparison/performance', 'comparison/performance/?with=openredaction&setting=default', 'comparison/performance/?with=openredaction&setting=pii-global');

@@ -7,7 +7,7 @@
  *
  * Server-only. Client components import `./filters` and the types, never this.
  */
-import { loadCatalog, loadFixtureBytes } from '../services/catalog';
+import { loadCatalog, loadFixtureBytes, loadFixtureHashes } from '../services/catalog';
 import type { Catalog } from '../services/catalog';
 import { loadDetectorContracts } from '../services/contracts';
 import { loadAccountingFloors } from '../services/floors';
@@ -27,10 +27,11 @@ import {
   LEVELS, isLevel, LEVEL_SHORT as SHORT_LABEL, LEVEL_TITLE as TIER_LABEL, answerMeta, levelHref, levelLinks, resolveAnswers, resolveFindings, resolveHubTiles, resolvePeers, runEyebrow, runFacts,
   type FindingsBlock, type LevelAnswers, type Level, type PeersBlock,
 } from './report';
-import { count, int } from './format';
+import { count, int, isoDate } from './format';
 import { resolveBenchmark, resolveNotes, resolveRules, resolveSources, resolveStatus } from './family-detail';
 import { LIST_LEVELS } from './filters';
 import { buildSuiteRecords, type SuiteRecordsFile } from './fixtures';
+import { NOT_PROVIDER_SPECIFIC } from './families';
 import { resolvePerformancePanels, type PerformancePanel } from './performance';
 import { resolveDetector, resolveDetectorList, type DetectorDetail } from './detectors';
 import { milestoneLabel, resolveFindingsInventory, resolveSuiteRows, type FindingsInventory } from './inventory';
@@ -191,7 +192,7 @@ export async function resolveRowsFileParams(): Promise<{ kind: RowsKind; id: str
 
 /** A suite's fixture records and shared text: what `?fixture=<id>` builds one fixture's page from. */
 export async function resolveSuiteRecordsFile(id: string): Promise<SuiteRecordsFile | undefined> {
-  const [{ catalog, run, measured }, bytes, gaps] = await Promise.all([context(), loadFixtureBytes(), loadFindings()]);
+  const [{ catalog, run, measured }, bytes, hashes, gaps] = await Promise.all([context(), loadFixtureBytes(), loadFixtureHashes(), loadFindings()]);
   const suite = catalog.suites.find(s => s.id === id);
   if (!suite) return undefined;
   const runProblem = run.state !== 'measured'
@@ -199,12 +200,15 @@ export async function resolveSuiteRecordsFile(id: string): Promise<SuiteRecordsF
     : run.excludedSuites.find(s => s.id === id)?.problem ? `The report for these bytes is left out: ${run.excludedSuites.find(s => s.id === id)!.problem}. The expectation stands on its own; lanes appear once a report re-validates against these bytes.`
     : run.staleSuites.includes(id) ? 'The report for these bytes is from an older run and is left out.' : undefined;
   return buildSuiteRecords({
-    suite, fixtures: catalog.fixturesBySuite.get(id) ?? [], bytes,
+    suite, fixtures: catalog.fixturesBySuite.get(id) ?? [], bytes, hashes,
     scanners: measured ? measured.scanners : [],
+    ...(measured ? { run: { date: isoDate(measured.generatedAt), mode: measured.mode, ...(measured.candidate ? { commit: measured.candidate.sourceCommit } : {}) } } : {}),
     ...(runProblem ? { runProblem } : {}),
     findings: gaps.issues.map(i => ({ number: i.number, url: i.url, milestone: milestoneLabel(gaps.milestone), fixtures: i.fixtures })),
     detectorTitles: new Map(catalog.detectors.map(d => [d.id, d.title])),
     familyNames: new Map(catalog.taxonomy.families.map(f => [f.id, f.name])),
+    providerNames: new Map(catalog.taxonomy.families.map(f => [f.id, f.provider === null ? NOT_PROVIDER_SPECIFIC.name : catalog.providerById.get(f.provider)!.name])),
+    scenarioTitles: catalog.scenarioTitles,
   });
 }
 

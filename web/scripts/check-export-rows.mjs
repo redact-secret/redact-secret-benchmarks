@@ -22,6 +22,7 @@
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(webRoot, 'out');
@@ -228,6 +229,15 @@ const wanted = new Set([...tables.filter(t => t.slugs.length > PAGE).map(t => `r
 for (const file of wanted) if (!emitted.has(file)) fail(`data/${file} is missing from the export`);
 for (const file of emitted) if (!wanted.has(file)) fail(`data/${file} is emitted but no page asks for it (a table that fits one page ships whole)`);
 
+// The packed row of the records files (resolvers/fixtures.ts packRow), written out again here from the run's own fields.
+const LETTER = { EXACT: 'E', COVERED: 'C', OVERBROAD: 'O', PARTIAL: 'P', MISS: 'M' };
+const packRow = row => [
+  row.spanOutcomes ? row.spanOutcomes.map(o => LETTER[o]).join('') || '=' : '-',
+  row.flagged == null ? '-' : row.flagged ? '1' : '0',
+  (row.actual ?? []).map(r => `${r.start}-${r.end}`).join(','),
+  row.leakedBytes ?? '', row.collateralBytes ?? '', row.findings ?? '',
+].join('|');
+
 const labelOf = row => (!row ? 'Not measured'
   : row.spanOutcomes ? (row.spanOutcomes.some(o => o === 'PARTIAL' || o === 'MISS') ? 'Left readable' : row.spanOutcomes.includes('OVERBROAD') ? 'Too much' : 'Redacted')
   : row.flagged != null ? (row.flagged ? 'Flagged' : 'Quiet') : 'Unscored');
@@ -241,6 +251,8 @@ const linkedRows = html => {
 };
 
 let dataRows = 0, dataFiles = 0;
+const indexBySlug = new Map(index.fixtures.map(f => [f.slug, f]));
+const scenarioTitles = new Map((await readJson('benchmarks/scenarios.json')).scenarios.map(x => [x.id, x.title]));
 for (const table of tables) {
   const where = `/${table.page}/`;
   const html = await readHtml(table.page);
@@ -296,9 +308,26 @@ for (const c of categories) {
     const source = corpora.get(corpusPath)?.get(record.id);
     try { assert.deepStrictEqual({ content: record.content, expected: record.expected }, { content: source?.content, expected: source?.expected }); } catch { differs++; }
     if (record.rows.length !== (run ? scannerIds.length : 0)) differs++;
-    else if (run) record.rows.forEach((packed, k) => { if ((packed === null) !== !rowsByScanner.get(scannerIds[k])?.get(`${c.id}--${record.id}`)) differs++; });
+    else if (run) record.rows.forEach((packed, k) => {
+      const held = rowsByScanner.get(scannerIds[k])?.get(`${c.id}--${record.id}`);
+      if ((packed === null) !== !held) differs++;
+      // The fixture page shows these rows: every outcome, flag, range and byte count is recomputed from the run, not from the resolver.
+      else if (held && packed !== packRow(held)) differs++;
+    });
+    // What the page says about the fixture (the file's hash, its group label, axis, scenarios, milestone, why no family owns it) is the corpus's and the index's.
+    const slug = `${c.id}--${record.id}`;
+    const entry = indexBySlug.get(slug);
+    const sha = createHash('sha256').update(Buffer.from(source?.content ?? '', 'utf8')).digest('hex').slice(0, 12);
+    const textOf = i => (i === undefined ? undefined : file.shared.texts?.[i]);
+    const wantScenarios = (entry?.scenarioIds ?? []).map(id => scenarioTitles.get(id));
+    const gotScenarios = (record.scenarios ?? []).map(i => file.shared.scenarios?.[i]?.title);
+    if (record.sha !== sha || textOf(record.group) !== source?.group || textOf(record.axis) !== source?.contextAxis || textOf(record.action) !== source?.expectedAction
+      || textOf(record.milestone) !== entry?.provenance?.milestone || textOf(record.unscoped) !== entry?.unscopedReason
+      || JSON.stringify(gotScenarios) !== JSON.stringify(wantScenarios) || JSON.stringify(record.families) !== JSON.stringify(entry?.familyIds)) differs++;
   }
-  if (differs) fail(`${where}: ${differs} records differ from the corpus bytes, expected spans or the run's rows`);
+  if (differs) fail(`${where}: ${differs} records differ from the corpus bytes, expected spans, hashes, labels or the run's rows`);
+  if (run && file.shared.run?.date !== summaryForData?.generatedAt?.slice(0, 10)) fail(`${where}: shared.run.date ${file.shared.run?.date} is not the run's date`);
+  if (!run && file.shared.run) fail(`${where} names a run, but none was published`);
   const html = await readHtml(`report/fixtures/${c.id}`);
   if (!text(html).includes(`${int(slugs.length)} fixture`)) fail(`/report/fixtures/${c.id}/ does not state ${slugs.length} fixtures`);
   if (!html.includes(`fixtures/${c.id}/records.json`)) fail(`/report/fixtures/${c.id}/ does not name its records file`);

@@ -154,7 +154,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | slack-user-token | T1 | stable-documented | 27 | 6 | 11 | 5 | 9 | 6 | 9 | none |
 | sonarqube-analysis-token | T1 | stable-documented | 28 | 5 | 9 | 7 | 8 | 6 | 10 | positive/context cases 5/6 |
 | sonarqube-token | T1 | stable-documented | 40 | 8 | 14 | 9 | 9 | 6 | 10 | none |
-| stripe-token | T1 | stable-documented | 54 | 25 | 15 | 8 | 10 | 6 | 9 | none |
+| stripe-token | T1 | stable-documented | 79 | 40 | 25 | 8 | 10 | 6 | 9 | none |
 | stripe-webhook-signing-secret | T1 | stable-documented | 26 | 6 | 10 | 5 | 9 | 6 | 10 | none |
 | supabase-management-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 7 | 6 | 8 | none |
 | supabase-token | T1 | stable-documented | 30 | 6 | 14 | 5 | 9 | 6 | 9 | none |

@@ -14,6 +14,20 @@ export interface Watch {
   external: string[];
 }
 
+/**
+ * Chrome's own advice, not a fault of the page: a stylesheet preloaded "but not used within a few seconds from the
+ * window's load event". Next's viewport link prefetch preloads the CSS chunks of the route a link leads to (the header
+ * links to /report, whose fixture chunks no comparison page applies), and Chrome warns about any preload still unapplied
+ * about three seconds after load. Whether it appears depends only on how long a test keeps the page open (a slow CI runner,
+ * a long test), so it failed matrix routes the PR never touched (reproduced: an 8 s wait on /comparison/runtime/ prints it).
+ * The preload is the prefetch working, so there is nothing to fix in the app; only this message, for a built stylesheet of
+ * this origin, is dropped. Any other warning, including an app's own console.warn, still fails.
+ */
+export function isUnusedPreloadAdvice(text: string, origin: string): boolean {
+  const match = /^The resource (\S+) was preloaded using link preload but not used within a few seconds from the window's load event\. Please make sure it has an appropriate `as` value and it is preloaded intentionally\.$/.exec(text);
+  return !!match && match[1].startsWith(`${origin}${BASE}/_next/static/`) && match[1].endsWith('.css');
+}
+
 const FONT_HOSTS = new Set(['fonts.googleapis.com', 'fonts.gstatic.com']);
 
 /**
@@ -51,11 +65,7 @@ export const test = base.extend<{ watch: Watch }>({
       return route.fulfill({ status: 200, contentType: url.hostname === 'fonts.googleapis.com' ? 'text/css' : 'font/woff2', body: '' });
     });
     page.on('console', message => {
-      if (!['error', 'warning'].includes(message.type())) return;
-      // Next prefetches the pages a header link points to, and with them the stylesheet chunks only those pages use. Which chunks a
-      // page does not share with another is decided by the bundler's chunking, so adding any route can move it, and Chrome then warns
-      // that the prefetched stylesheet was "preloaded ... but not used". That is the prefetch working, not a page loading something it does not use.
-      if (message.type() === 'warning' && /^The resource \S+\/_next\/static\/chunks\/[\w-]+\.css was preloaded using link preload but not used/.test(message.text())) return;
+      if (!['error', 'warning'].includes(message.type()) || isUnusedPreloadAdvice(message.text(), origin)) return;
       watch.problems.push(`console.${message.type()}: ${message.text()}`);
     });
     page.on('pageerror', error => watch.problems.push(`pageerror: ${error.message}`));

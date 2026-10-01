@@ -8,7 +8,8 @@ import { defineConfig } from '@playwright/test';
  * No retries: a test that passes only on the second run is a bug in the test or the page. A trace is
  * kept for a failure. Output goes to PW_OUTPUT_DIR (default web/test-results, git-ignored).
  */
-const port = Number(process.env.PORT ?? 4173);
+// Parallel sessions share a machine: PW_PORT (or PORT) moves the dev server off 4173 so they do not collide.
+const port = Number(process.env.PW_PORT ?? process.env.PORT ?? 4173);
 
 export default defineConfig({
   testDir: 'tests/e2e',

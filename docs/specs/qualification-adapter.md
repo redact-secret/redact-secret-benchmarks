@@ -94,6 +94,9 @@ artifact's `manifest.methods`, a family that would be `stable` is held at `provi
 
 ## Parity gaps (for #607, recorded rather than hidden)
 
+Compared against the legacy path, with each difference attributed to a structural cause, in
+[qualification-parity.md](qualification-parity.md) and `docs/generated/qualification-parity.md`.
+
 1. **Methods.** The official configuration runs none, so no family can read `stable` through this path until a
    configuration that runs them is pinned (a new `config_hash`) or the policy changes. The legacy path is the oracle.
 2. **Axes.** The public snapshot has no benign taxonomy and its group vocabulary is credential-evidence's, so positive

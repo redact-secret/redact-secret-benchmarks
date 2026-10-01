@@ -73,6 +73,7 @@
     "official-runs:record": "node scripts/record-official-run.mjs",
     "qualification:export": "node --import tsx scripts/export-qualification-population.ts",
     "qualification:view": "node --import tsx scripts/build-qualification-view.ts",
+    "qualification:parity": "node --import tsx scripts/build-qualification-parity.ts",
     "ledger:decisions:check": "node scripts/check-ledger-decisions.mjs",
     "ledger:provenance:check": "node --import tsx scripts/check-review-ledger.mjs",
     "queue:check": "node --import tsx scripts/check-review-queue-coverage.mjs",

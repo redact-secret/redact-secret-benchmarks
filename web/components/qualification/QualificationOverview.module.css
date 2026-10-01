@@ -1,0 +1,58 @@
+@layer components {
+  .overview {
+    min-width: 0;
+  }
+
+  .mode {
+    margin: 0;
+    font: var(--text-small-strong);
+  }
+
+  .sub {
+    display: block;
+    color: var(--ink-muted);
+    font: var(--text-small);
+  }
+
+  .muted {
+    color: var(--ink-muted);
+    font: var(--text-small);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin: 0;
+  }
+
+  .plain {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--space-1);
+    font: var(--text-small);
+  }
+
+  .details summary {
+    cursor: pointer;
+    font: var(--text-small-strong);
+  }
+
+  .undetected {
+    display: grid;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+  }
+
+  .h3 {
+    margin: 0;
+    padding-bottom: var(--space-2);
+    border-bottom: var(--hairline) solid var(--line);
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+}

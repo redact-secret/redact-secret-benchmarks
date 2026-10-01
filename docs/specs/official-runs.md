@@ -82,5 +82,8 @@ product qualification.
 
 - Candidate-regression inputs: they need a named candidate build; there is none, so there is no artifact yet.
 - The protected holdout: it stays outside credential-eval (a specialized runner and an aggregate receipt).
-- The linux-x64 executable digests come from the upstream release checksum files and have not yet run on linux; the
-  first canonical run verifies them and records the linux `config_hash`.
+- The canonical linux-x64 run is recorded: CI run 36933982377 of `official-runs.yml` ran all three populations with every
+  scanner complete, equal semantic digests across its two engine runs, and the linux executable digests (from the upstream
+  release checksum files) verified at run time. Its `config_hash` and artifact digests are the `*@linux-x64` entries of
+  `runs[]`. The darwin-arm64 entries remain local verification runs and are never compared with a linux run; the qualification
+  view and the #607 comparison read the canonical artifacts.

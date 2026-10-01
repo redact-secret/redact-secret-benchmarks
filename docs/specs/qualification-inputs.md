@@ -131,5 +131,7 @@ carrying an evidence class. Qualification, owned here, supplies the route and th
 
 ## Out of scope here
 
-The Next services (#606), parity (#607) and cutover (#608). Running the populations (#604) is
-[official-runs.md](official-runs.md); the RunArtifact adapter (#605) is [qualification-adapter.md](qualification-adapter.md).
+Running the populations (#604) is [official-runs.md](official-runs.md); the RunArtifact adapter (#605) is
+[qualification-adapter.md](qualification-adapter.md); the Next pages (#606) read its view; parity (#607) is
+[qualification-parity.md](qualification-parity.md); the cutover criteria and the legacy disposition (#608) are
+[qualification-cutover.md](qualification-cutover.md).

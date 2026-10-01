@@ -50,6 +50,8 @@ const small = [...perFamily.entries()].find(([, n]) => n > 0 && n <= 10)?.[0];
 const none = taxonomy.families.find(f => !perFamily.has(f.id))?.id;
 for (const id of [largest, small, none]) if (id) ROUTES.push(`report/families/${slugOf(id)}`);
 if (largest) ROUTES.push(`report/families/${slugOf(largest)}/?page=2`);
+// #589: a family with a long dossier (notes, open questions, look-alikes, six sources, seven research issues), and one with several peer rules.
+ROUTES.push('report/families/github--fine-grained-personal-access-token');
 // The rows, suite, fixture, detector and findings pages (#559), and the level and scanner controls (#560).
 ROUTES.push('report/rows/T1', 'report/rows/T2/?show=leaked&scanners=product', 'report/rows/T3/?show=flagged', 'report/fixtures', 'report/detectors', 'report/detectors/?show=signal', 'report/findings', 'report/families/?level=T2', 'report/providers/?level=T3');
 if (largest) ROUTES.push(`report/families/${slugOf(largest)}/?scanners=all&level=T1`);

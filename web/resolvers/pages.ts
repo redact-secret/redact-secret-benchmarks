@@ -11,6 +11,7 @@ import { loadCatalog, loadFixtureBytes } from '../services/catalog';
 import type { Catalog } from '../services/catalog';
 import { loadDetectorContracts } from '../services/contracts';
 import { loadAccountingFloors } from '../services/floors';
+import { loadDossiers } from '../services/dossiers';
 import { loadFeatureClaims } from '../services/features';
 import { loadFindings } from '../services/findings';
 import { loadPeerProfiles } from '../services/peers';
@@ -18,13 +19,16 @@ import { loadOwnPerformance } from '../services/performance';
 import { loadPeerRuntime } from '../services/runtime';
 import { loadRun, type MeasuredRun } from '../services/run';
 import {
-  resolveFamily, resolveFamilyList, familySlug, type FamilyDetail, type FamilyList, type LevelList,
+  resolveFamily, resolveFamilyList, familyHref, familySlug, type FamilyDetail, type FamilyList, type LevelList,
 } from './families';
+import type { StatusBarItem } from '../components/feedback';
+import type { FamilyBenchmarkData, FamilyNoteItem, FamilyRulesData, FamilySourcesData } from '../components/family/types';
 import {
   LEVELS, isLevel, LEVEL_SHORT as SHORT_LABEL, LEVEL_TITLE as TIER_LABEL, answerMeta, levelHref, levelLinks, resolveAnswers, resolveFindings, resolveHubTiles, resolvePeers, runEyebrow, runFacts,
   type FindingsBlock, type LevelAnswers, type Level, type PeersBlock,
 } from './report';
 import { count, int } from './format';
+import { resolveBenchmark, resolveNotes, resolveRules, resolveSources, resolveStatus } from './family-detail';
 import { LIST_LEVELS } from './filters';
 import { buildSuiteRecords, type SuiteRecordsFile } from './fixtures';
 import { resolvePerformancePanels, type PerformancePanel } from './performance';
@@ -215,8 +219,16 @@ export interface FamilyPageData {
   rows: RowsSource;
   /** The evidence levels the family has rows at, each with its row count, `all` first. */
   levels: { value: string; label: string }[];
-  /** The headline counts at each of those levels, so the counts above the rows match the level chosen. */
-  factsByLevel: Record<string, { term: string; value: string }[]>;
+  /** What the page says above the rows (#589): research status, dossier notes, benchmark counts, peer rules, sources. */
+  status: StatusBarItem[];
+  format: FamilyNoteItem[];
+  lookAlikes: FamilyNoteItem[];
+  open: FamilyNoteItem[];
+  benchmark: FamilyBenchmarkData;
+  rules: FamilyRulesData;
+  sources: FamilySourcesData;
+  /** The provider's other families, in taxonomy order. */
+  siblings: { name: string; href: string }[];
 }
 
 /** The scanners of a run in run order, or redact-secret alone when there is no usable run. */
@@ -232,11 +244,14 @@ export async function resolveFamilySlugs(): Promise<string[]> {
 }
 
 export async function resolveFamilyPage(slug: string): Promise<FamilyPageData | undefined> {
-  const { catalog, run, measured, rows } = await context();
+  const [{ catalog, run, measured, rows }, dossiers, peers] = await Promise.all([context(), loadDossiers(), loadPeerProfiles()]);
   const id = catalog.taxonomy.families.find(f => familySlug(f.id) === slug)?.id;
   const family = id ? resolveFamily(catalog, id, rows) : undefined;
   if (!family) return undefined;
   const fixtures = catalog.fixturesByFamily.get(family.id) ?? [];
+  const taxonomyFamily = catalog.familyById.get(family.id)!;
+  const dossier = dossiers.get(family.id);
+  const notes = resolveNotes(dossier);
   const levels = [
     { value: 'all', label: `All levels (${int(fixtures.length)})` },
     ...LIST_LEVELS.filter(l => l.level !== 'all').flatMap(l => {
@@ -255,7 +270,14 @@ export async function resolveFamilyPage(slug: string): Promise<FamilyPageData | 
     description: `${int(family.fixtureCount)} rows, redact-secret's outcome on each. Rows that need a look come first (${int(family.needsLookCount)}), then the rest in corpus order. Choose "Every scanner" to see each scanner's outcome for the same rows.`,
     rows: await rowsFor('family', slug),
     levels: levels.length > 2 ? levels : [],
-    factsByLevel: Object.fromEntries(LIST_LEVELS.filter(l => l.level !== 'all').map(l => [l.level, rowFacts(fixtures.filter(f => f.tier === l.level), rows, 'Fixtures')])),
+    status: resolveStatus(dossier),
+    format: notes.format,
+    lookAlikes: notes.lookAlikes,
+    open: notes.open,
+    benchmark: resolveBenchmark({ family: taxonomyFamily, fixtures, run: measured, peers, facts: family.facts, rowsHref: '#family-rows' }),
+    rules: resolveRules(family.id, peers, new Map((measured?.scanners ?? []).map(s => [s.id, s.name]))),
+    sources: resolveSources(taxonomyFamily, dossier),
+    siblings: taxonomyFamily.provider === null ? [] : catalog.taxonomy.families.filter(f => f.provider === taxonomyFamily.provider && f.id !== family.id).map(f => ({ name: f.name, href: familyHref(f.id) })),
   };
 }
 

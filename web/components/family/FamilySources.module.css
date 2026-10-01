@@ -1,0 +1,39 @@
+@layer components {
+  .sources {
+    min-width: 0;
+  }
+
+  .groups {
+    display: grid;
+    gap: var(--space-8);
+    min-width: 0;
+  }
+
+  .h3 {
+    margin: 0 0 var(--space-2);
+    font: var(--text-h3);
+  }
+
+  .list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: var(--hairline) solid var(--ink);
+  }
+
+  .row {
+    display: grid;
+    gap: var(--space-1);
+    padding: var(--space-3) 0;
+    border-bottom: var(--hairline) solid var(--line);
+    min-width: 0;
+    font: var(--text-body-strong);
+    overflow-wrap: break-word;
+  }
+
+  .detail {
+    color: var(--ink-muted);
+    font: var(--text-small);
+    overflow-wrap: break-word;
+  }
+}

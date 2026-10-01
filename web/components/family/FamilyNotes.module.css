@@ -1,0 +1,15 @@
+@layer components {
+  .notes {
+    min-width: 0;
+  }
+
+  /* The notes are sentences, so they keep a readable measure instead of the full page width. */
+  .list {
+    max-width: var(--measure);
+  }
+
+  .text {
+    display: block;
+    font: var(--text-body);
+  }
+}

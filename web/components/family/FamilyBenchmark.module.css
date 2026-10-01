@@ -1,0 +1,35 @@
+@layer components {
+  .bench {
+    min-width: 0;
+  }
+
+  .body {
+    display: grid;
+    gap: var(--space-6);
+    min-width: 0;
+  }
+
+  .small {
+    margin: 0;
+    max-width: var(--measure);
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .scanners {
+    display: grid;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+
+  .h3 {
+    margin: 0;
+    font: var(--text-h3);
+  }
+
+  /* The scanner's name keeps a readable width, so its kind and mode do not wrap to a word per line. */
+  .scanner {
+    display: block;
+    min-inline-size: var(--col-name);
+  }
+}

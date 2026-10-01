@@ -27,6 +27,8 @@ export interface PeerProfile {
   description: string;
   /** The taxonomy families at least one of the scanner's own rules targets. */
   families: Set<string>;
+  /** The scanner's own rules that target a family, with the reviewed pattern evidence (`basis`), by family id. */
+  rulesByFamily: Map<string, { rule: string; basis: string }[]>;
   /** Rules that map to a family, and the rules in the pinned rule file. */
   mappedRules: number;
   ruleCount: number;
@@ -51,9 +53,13 @@ export function loadPeerProfiles(): Promise<Map<string, PeerProfile>> {
     for (const [id, entry] of Object.entries(registry.scanners)) {
       const set = map.scanners[id as PeerId];
       const { families, mappedRules } = targetedFamilies(set);
+      const rulesByFamily = new Map<string, { rule: string; basis: string }[]>();
+      for (const [rule, mapping] of Object.entries(set.rules)) {
+        for (const family of mapping.families) (rulesByFamily.get(family) ?? rulesByFamily.set(family, []).get(family)!).push({ rule, basis: mapping.basis });
+      }
       profiles.set(id, {
         id, kind: entry.kind, kindLabel: PEER_KINDS[entry.kind], description: entry.description,
-        families, mappedRules, ruleCount: set.ruleCount, ruleFileVersion: set.source.version, reviewedAt: map.reviewedAt,
+        families, rulesByFamily, mappedRules, ruleCount: set.ruleCount, ruleFileVersion: set.source.version, reviewedAt: map.reviewedAt,
       });
     }
     return profiles;

@@ -43,4 +43,6 @@ ledger exists to make visible.
 
 The checked-in holdout is a public conformance corpus, not independently maintained protected detector evidence. No stable-support claim follows. GitHub prerequisite issues #1–#8 remain open in the recorded milestone snapshot; the formal milestone-closure gate was tested and correctly failed before consuming a holdout attempt. No prerequisite was silently removed from scope.
 
+The checked-in `engine-v1.json` is frozen at the Beta.11 suite. CI validates it against the snapshot it was produced with, `npm run eval:validate -- docs/specs/qualification/engine-v1.json --suite=evidence/449/suite-v1.json`; without `--suite` the live `qualification/suite-v1.json` decides, which is how new evidence is checked.
+
 See [reproduction and internal architecture](../evaluation-engine-v1.md) and [protected holdout operations](../../../holdout/README.md).

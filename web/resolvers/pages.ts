@@ -43,6 +43,9 @@ import { resolveFeaturePage, resolveHub, resolveRuntimePanels, toolName, type Fe
 import { diffFileOf, resolveAccuracyPage, type AccuracyPage, type DiffFile, type DiffSource } from './accuracy';
 import type { ComparisonHubProps } from '../components/comparison/ComparisonHub';
 import { resolveRunState, type RunState } from './run';
+import { resolveCredentialView, resolvePiiView, type DomainId } from './domains';
+import { loadCredentialEvaluation, loadPiiEvaluation } from '../services/domains';
+import type { DomainViewData } from '../components/evaluation/domain';
 import type { EvidenceLevelLink, HubTileData } from '../components/report/types';
 import type { MetaItem } from '../components/page/MetaList';
 
@@ -510,4 +513,9 @@ export async function resolveAccuracyDifferencesFile(): Promise<DiffFile> {
   const { measured, page } = await accuracyPage();
   // Without a run there is nothing to list (the page asks for no file); the export still gets a valid, empty one.
   return page.diff && measured ? diffFileOf(page.diff, measured.runId) : diffFileOf({ providers: [], fixtures: [], peers: {} }, '');
+}
+
+/** `/evaluation/pii/` and `/evaluation/credential/` (#611): one view shape for both domains. */
+export async function resolveDomainPage(domain: DomainId): Promise<DomainViewData> {
+  return domain === 'pii' ? resolvePiiView(await loadPiiEvaluation()) : resolveCredentialView(await loadCredentialEvaluation());
 }

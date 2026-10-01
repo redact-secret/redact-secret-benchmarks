@@ -24,7 +24,13 @@ export function completenessReasons({ executed, unresolvedGroups, review }: { ex
 }
 
 /** Strict public schemas prohibit accidental inclusion of case-level data. */
-export function validateEvidence(report: unknown, type: 'holdout' | 'qualification' | 'candidate') {
+export type QualificationSuite = typeof suite;
+
+/**
+ * `expectedSuite` defaults to the live `qualification/suite-v1.json`, so new evidence is always checked against the current pin. A frozen
+ * record is validated against the suite snapshot it was produced with (`evidence/<issue>/suite-v1.json`), never the live file.
+ */
+export function validateEvidence(report: unknown, type: 'holdout' | 'qualification' | 'candidate', expectedSuite: QualificationSuite = suite) {
   const validate = ajv.getSchema(`urn:redact-secret:${type}:1`)!;
   if (!validate(report)) {
     const locations = (validate.errors ?? []).map(error => `${error.instancePath || '/'}:${error.keyword}`).join(',');
@@ -91,8 +97,8 @@ export function validateEvidence(report: unknown, type: 'holdout' | 'qualificati
         }) || ['sourceHash', 'lockHash', 'candidateArtifactHash'].some(k => value.provenance[k] !== value.holdout.candidate[k]))
       throw new Error('Mixed candidate or inconsistent holdout evidence');
     if ((value.scope === 'engine-conformance') !== (value.holdout.independence === 'public-control')) throw new Error('Invalid qualification scope');
-    if (value.suiteHash !== hash(suite) || value.holdout.scanners.some((s: any) =>
-      s.status === 'complete' && s.version !== suite.scanners[s.id as keyof typeof suite.scanners])) throw new Error('Qualification suite or tool version drift');
+    if (value.suiteHash !== hash(expectedSuite) || value.holdout.scanners.some((s: any) =>
+      s.status === 'complete' && s.version !== expectedSuite.scanners[s.id as keyof typeof suite.scanners])) throw new Error('Qualification suite or tool version drift');
     const failures = value.methods.filter((m: any) => m.method !== 'holdout').reduce((n: number, m: any) =>
       n + m.scanners.reduce((total: number, s: any) => total + s.assertions.fail, 0), 0);
     if (failures !== value.development.failures) throw new Error('Inconsistent development failure count');

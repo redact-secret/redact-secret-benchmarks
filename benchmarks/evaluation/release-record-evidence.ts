@@ -7,7 +7,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { hash } from './substrate/hash.ts';
-import { validateEvidence } from './domains/credential/evidence.ts';
+import { validateEvidence, type QualificationSuite } from './domains/credential/evidence.ts';
 import { bindPiiProtectedSupport } from './domains/pii/protected-support-binding.ts';
 import { PII_PROTECTED_ROUTE } from './domains/pii/support-semantics.ts';
 import { validateReleaseRecordV2, type ReleaseRecordV2, type ReleaseSourceEquivalence } from './release-record.ts';
@@ -40,8 +40,8 @@ export async function verifySourceEquivalenceParity(root: string, entry: Release
 }
 
 /** Full validation of a schema 2 record against the repository at `root`. */
-export async function verifyReleaseRecordEvidence(value: unknown, registryFamilies: readonly string[], root: string): Promise<ReleaseRecordV2> {
-  const record = validateReleaseRecordV2(value, registryFamilies);
+export async function verifyReleaseRecordEvidence(value: unknown, registryFamilies: readonly string[], root: string, suite?: QualificationSuite): Promise<ReleaseRecordV2> {
+  const record = validateReleaseRecordV2(value, registryFamilies, suite);
   if (record.pii.route === PII_PROTECTED_ROUTE) {
     await bindPiiProtectedSupport(root, record.pii.binding);
     const committed = await readJson(root, `${record.pii.binding.evidenceDirectory}/pii-beta11-protected-disposition-v2.json`);

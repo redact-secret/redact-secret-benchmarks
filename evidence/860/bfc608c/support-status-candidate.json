@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-01T01:44:18.878Z",
-  "runId": "9f573ce2-6e67-4fb6-968e-fba9f63e49f6",
-  "revision": "4c79d52fa1fa89a794c49fb74cdf6a461e2d6856",
+  "generatedAt": "2026-10-01T01:51:54.844Z",
+  "runId": "dbbeea5b-c769-43dc-853f-4c0f5484c7c0",
+  "revision": "f35037073a3cd9bc1269f62e4c51b7d9f457515e",
   "dirty": false,
   "criteriaSchemaVersion": 1,
   "fixtureProfilesVersion": 1,
@@ -40,8 +40,8 @@
   "scannerObservations": {
     "redact-secret": {
       "source": "fresh",
-      "observedAt": "2026-10-01T01:44:01.609Z",
-      "sourceRunId": "9f573ce2-6e67-4fb6-968e-fba9f63e49f6"
+      "observedAt": "2026-10-01T01:51:38.697Z",
+      "sourceRunId": "dbbeea5b-c769-43dc-853f-4c0f5484c7c0"
     },
     "gitleaks": {
       "source": "snapshot",
@@ -62,13 +62,13 @@
   "variantCount": 48132,
   "familyCount": 135,
   "distribution": {
-    "stable": 126,
-    "provisional": 8,
+    "stable": 127,
+    "provisional": 7,
     "pending": 1,
     "unsupported": 0
   },
   "stableDistribution": {
-    "documented": 88,
+    "documented": 89,
     "empirical": 38,
     "policyQualified": 0
   },
@@ -13981,11 +13981,9 @@
     },
     {
       "family": "stripe-token",
-      "status": "provisional",
-      "reasons": [
-        "differential.unresolvedContractDisagreements: 24 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled."
-      ],
-      "qualificationProfile": null,
+      "status": "stable",
+      "reasons": [],
+      "qualificationProfile": "documented",
       "evidenceTier": "T1",
       "evidenceBasis": "provider-documented",
       "taxonomyFamilies": [
@@ -14035,7 +14033,7 @@
         ],
         "metamorphicCriticalFailures": 0,
         "mutationUnresolvedCritical": 0,
-        "differentialUnresolvedContractDisagreements": 24,
+        "differentialUnresolvedContractDisagreements": 0,
         "policyQualification": null
       },
       "unprobeable": null,

@@ -3,9 +3,9 @@
   "taxonomySchemaVersion": 1,
   "sourceReport": {
     "schemaVersion": 1,
-    "generatedAt": "2026-10-01T01:44:18.878Z",
-    "runId": "9f573ce2-6e67-4fb6-968e-fba9f63e49f6",
-    "revision": "4c79d52fa1fa89a794c49fb74cdf6a461e2d6856",
+    "generatedAt": "2026-10-01T01:51:54.844Z",
+    "runId": "dbbeea5b-c769-43dc-853f-4c0f5484c7c0",
+    "revision": "f35037073a3cd9bc1269f62e4c51b7d9f457515e",
     "dirty": false,
     "criteriaSchemaVersion": 1,
     "fixtureIndex": {
@@ -37,8 +37,8 @@
     "scannerObservations": {
       "redact-secret": {
         "source": "fresh",
-        "observedAt": "2026-10-01T01:44:01.609Z",
-        "sourceRunId": "9f573ce2-6e67-4fb6-968e-fba9f63e49f6"
+        "observedAt": "2026-10-01T01:51:38.697Z",
+        "sourceRunId": "dbbeea5b-c769-43dc-853f-4c0f5484c7c0"
       },
       "gitleaks": {
         "source": "snapshot",
@@ -59,13 +59,13 @@
   "providerCount": 92,
   "familyCount": 173,
   "distribution": {
-    "stable": 140,
-    "provisional": 11,
+    "stable": 144,
+    "provisional": 7,
     "pending": 5,
     "unsupported": 17
   },
   "stableDistribution": {
-    "documented": 102,
+    "documented": 106,
     "empirical": 38,
     "policy-qualified": 0
   },
@@ -16136,10 +16136,10 @@
       "provider": "stripe",
       "family": "stripe:restricted-key-live",
       "familyName": "Live restricted key",
-      "status": "provisional",
+      "status": "stable",
       "evidenceTier": "T1",
       "evidenceBasis": "provider-documented",
-      "qualificationProfile": null,
+      "qualificationProfile": "documented",
       "providerSource": {
         "url": "https://docs.stripe.com/keys",
         "observedAt": "2026-09-17",
@@ -16158,7 +16158,7 @@
       "unresolvedCriticalItems": {
         "metamorphic": 0,
         "mutation": 0,
-        "differential": 24
+        "differential": 0
       },
       "empiricalEvidence": {
         "observations": 0,
@@ -16188,7 +16188,7 @@
       "detectors": [
         "stripe-token"
       ],
-      "reason": "differential.unresolvedContractDisagreements: 24 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+      "reason": null,
       "profileCoverage": {
         "profilesVersion": 1,
         "claimed": "stable-documented",
@@ -16255,10 +16255,10 @@
       "provider": "stripe",
       "family": "stripe:restricted-key-test",
       "familyName": "Test restricted key",
-      "status": "provisional",
+      "status": "stable",
       "evidenceTier": "T1",
       "evidenceBasis": "provider-documented",
-      "qualificationProfile": null,
+      "qualificationProfile": "documented",
       "providerSource": {
         "url": "https://docs.stripe.com/keys",
         "observedAt": "2026-09-17",
@@ -16277,7 +16277,7 @@
       "unresolvedCriticalItems": {
         "metamorphic": 0,
         "mutation": 0,
-        "differential": 24
+        "differential": 0
       },
       "empiricalEvidence": {
         "observations": 0,
@@ -16307,7 +16307,7 @@
       "detectors": [
         "stripe-token"
       ],
-      "reason": "differential.unresolvedContractDisagreements: 24 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+      "reason": null,
       "profileCoverage": {
         "profilesVersion": 1,
         "claimed": "stable-documented",
@@ -16374,10 +16374,10 @@
       "provider": "stripe",
       "family": "stripe:secret-key-live",
       "familyName": "Live secret key",
-      "status": "provisional",
+      "status": "stable",
       "evidenceTier": "T1",
       "evidenceBasis": "provider-documented",
-      "qualificationProfile": null,
+      "qualificationProfile": "documented",
       "providerSource": {
         "url": "https://docs.stripe.com/keys",
         "observedAt": "2026-09-17",
@@ -16396,7 +16396,7 @@
       "unresolvedCriticalItems": {
         "metamorphic": 0,
         "mutation": 0,
-        "differential": 24
+        "differential": 0
       },
       "empiricalEvidence": {
         "observations": 0,
@@ -16426,7 +16426,7 @@
       "detectors": [
         "stripe-token"
       ],
-      "reason": "differential.unresolvedContractDisagreements: 24 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+      "reason": null,
       "profileCoverage": {
         "profilesVersion": 1,
         "claimed": "stable-documented",
@@ -16493,10 +16493,10 @@
       "provider": "stripe",
       "family": "stripe:secret-key-test",
       "familyName": "Test secret key",
-      "status": "provisional",
+      "status": "stable",
       "evidenceTier": "T1",
       "evidenceBasis": "provider-documented",
-      "qualificationProfile": null,
+      "qualificationProfile": "documented",
       "providerSource": {
         "url": "https://docs.stripe.com/keys",
         "observedAt": "2026-09-17",
@@ -16515,7 +16515,7 @@
       "unresolvedCriticalItems": {
         "metamorphic": 0,
         "mutation": 0,
-        "differential": 24
+        "differential": 0
       },
       "empiricalEvidence": {
         "observations": 0,
@@ -16545,7 +16545,7 @@
       "detectors": [
         "stripe-token"
       ],
-      "reason": "differential.unresolvedContractDisagreements: 24 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+      "reason": null,
       "profileCoverage": {
         "profilesVersion": 1,
         "claimed": "stable-documented",

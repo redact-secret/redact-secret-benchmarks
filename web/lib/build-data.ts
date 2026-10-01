@@ -39,6 +39,12 @@ export class BuildDataError extends Error {
 const settled = new Map<string, unknown>();
 const inflight = new Map<string, Promise<unknown>>();
 
+/** Test hook: forget every loaded file and in-flight request, as a fresh page load would. */
+export function resetBuildData(): void {
+  settled.clear();
+  inflight.clear();
+}
+
 /** A file already loaded this session, without a request. */
 export const peekBuildData = <T>(path: string): T | undefined => settled.get(path) as T | undefined;
 

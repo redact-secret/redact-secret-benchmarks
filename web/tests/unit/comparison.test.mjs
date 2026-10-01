@@ -1,12 +1,12 @@
 // Unit tests for the /comparison resolvers (#557). Synthetic data only: no credentials,
 // no filesystem reads by the code under test.
-import test from 'node:test';
+import { test } from 'vitest';
 import assert from 'node:assert/strict';
 import {
   resolveHub, resolveFeaturePage, resolveRuntimePanels, milliseconds, megabytesPerSecond, kibibytes, activeFamilies,
   analysisOf, domainOf, viewOf, featureFilterOf, featureFilterString, stabilityNote,
-} from '../web/resolvers/comparison.ts';
-import { featureClaimsProblem } from '../web/services/features.ts';
+} from '../../resolvers/comparison.ts';
+import { featureClaimsProblem } from '../../services/features.ts';
 
 const tools = [
   { id: 'redact-secret', package: '@redact-secret/core', call: 'scanAndRedact', async: false, piiSelectors: ['pii:global'], version: '9.9.9', buildKind: 'local-source-build', piiActivation: 'credentials=full;selectors=pii:global;families=pii:global:email,pii:global:network-address' },

@@ -1,12 +1,12 @@
 // Unit tests for the pure resolver behind /comparison/accuracy (#570). Synthetic catalog, run and
 // runtime data only: no credentials, no filesystem reads by the code under test.
-import test from 'node:test';
+import { test } from 'vitest';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {
   buildPairModel, diffFileOf, isDiffFileOf, defaultQuery, differenceColumns, differencesOf, normalise, pairHref, pairQueryOf, pairScript, pairSearch, panelKey, resolveAccuracyPage, share, stateOf, questionOf,
   GROUPS_SHOWN,
-} from '../web/resolvers/accuracy.ts';
+} from '../../resolvers/accuracy.ts';
 
 const fx = (id, kind, tier, familyIds) => ({ slug: `s--${id}`, category: 's', id, group: 'g', kind, tier, familyIds, detectors: [] });
 const fixtures = [

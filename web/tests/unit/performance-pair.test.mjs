@@ -1,8 +1,8 @@
 // Unit tests for the performance pair resolver (web/resolvers/performance.ts, #569).
 // Synthetic runs only: no credentials, no filesystem reads by the code under test.
-import test from 'node:test';
+import { test } from 'vitest';
 import assert from 'node:assert/strict';
-import { axisFor, nearText, noisiest, peerOf, positionOn, resolvePerformancePanels, runToRunSpread, settingOf, SETTING_IDS, ticksFor, timeText } from '../web/resolvers/performance.ts';
+import { axisFor, nearText, noisiest, peerOf, positionOn, resolvePerformancePanels, runToRunSpread, settingOf, SETTING_IDS, ticksFor, timeText } from '../../resolvers/performance.ts';
 
 const obs = (tool, workload, median, min, max) => ({ tool, workload, workloadBytes: 131072, medianMs: median, p95Ms: max, medianBytesPerSecond: 131072 / (median / 1000), minMs: min, maxMs: max, samples: 12 });
 const workloads = [

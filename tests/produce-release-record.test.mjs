@@ -10,6 +10,8 @@ import registry from '../benchmarks/evaluation/domains/pii/support-registry-v1.j
 import { assembleReleaseRecordV2, assertNoCrossDomainAggregate, reviewedReleaseSourceEquivalence, validateReleaseRecord,
   validateReleaseRecordV2 } from '../benchmarks/evaluation/release-record.ts';
 import { verifyReleaseRecordEvidence, verifySourceEquivalenceParity } from '../benchmarks/evaluation/release-record-evidence.ts';
+import { validateEvidence } from '../benchmarks/evaluation/domains/credential/evidence.ts';
+import liveSuite from '../qualification/suite-v1.json' with { type: 'json' };
 import { piiReviewedProtectedRoute } from '../benchmarks/evaluation/domains/pii/support-semantics.ts';
 
 const execFile = promisify(execFileCallback);
@@ -17,6 +19,9 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const registryFamilies = registry.families.map(row => row.family);
 const json = async file => JSON.parse(await readFile(path.join(root, file), 'utf8'));
 const RELEASE = '94fc18a974f659ea882c89120dbf1adb3acf2f28', PII_COMMIT = '8b6a5fde52ecb4dfce13f09c7a947062d21483c7';
+// The frozen Beta.11 record is validated against the suite it was produced with, not the live pin that every re-pin bumps.
+const SUITE_PATH = 'evidence/449/suite-v1.json';
+const suite = JSON.parse(await readFile(path.join(root, SUITE_PATH), 'utf8'));
 const binding = piiReviewedProtectedRoute('beta11-8b6a5fd-pii-protected');
 
 async function beta11Input(overrides = {}) {
@@ -27,7 +32,7 @@ async function beta11Input(overrides = {}) {
     credentialQualification: await json('evidence/449/credential-qualification-engine-v1.json'),
     sourceEquivalenceId: 'beta11-8b6a5fd-to-94fc18a', piiRoute: 'pii-b11-protected-v1', piiProtectedBinding: binding,
     piiProtectedDisposition: await json(`${binding.evidenceDirectory}/pii-beta11-protected-disposition-v2.json`),
-    ...overrides,
+    suite, ...overrides,
   };
 }
 
@@ -40,14 +45,14 @@ test('assembles a Beta.11 schema 2 record from committed evidence and verifies i
   assert.equal(record.sourceEquivalence.id, 'beta11-8b6a5fd-to-94fc18a');
   assert.equal(record.identity.holdoutState.pii, 'complete');
   assert.doesNotThrow(() => assertNoCrossDomainAggregate(record));
-  assert.equal(validateReleaseRecord(structuredClone(record), registryFamilies).artifactCommitment, record.artifactCommitment);
-  await verifyReleaseRecordEvidence(structuredClone(record), registryFamilies, root);
+  assert.equal(validateReleaseRecord(structuredClone(record), registryFamilies, suite).artifactCommitment, record.artifactCommitment);
+  await verifyReleaseRecordEvidence(structuredClone(record), registryFamilies, root, suite);
 });
 
 test('the frozen Beta.11 record reproduces from its embedded artifacts and the committed evidence', async () => {
   const record = await json('evidence/449/release-record-v2.json');
-  validateReleaseRecordV2(record, registryFamilies);
-  await verifyReleaseRecordEvidence(record, registryFamilies, root);
+  validateReleaseRecordV2(record, registryFamilies, suite);
+  await verifyReleaseRecordEvidence(record, registryFamilies, root, suite);
   assert.equal(record.release.sourceCommit, RELEASE);
 });
 
@@ -102,9 +107,20 @@ test('the CLI writes a verified Beta.11 record', async () => {
       `--source-commit=${RELEASE}`, '--benchmark-revision=c82a15ab797452fe200fc74674604ae9cd03cac3', '--credential-profile=measurement-v4',
       '--performance-budget=evidence/860/94fc18a-release/regression-budgets.json', '--credential-candidate=evidence/449/credential-candidate-94fc18a-v1.json',
       '--credential-qualification=evidence/449/credential-qualification-engine-v1.json', '--pii-route=pii-b11-protected-v1',
-      '--pii-protected-binding=beta11-8b6a5fd-pii-protected', '--source-equivalence=beta11-8b6a5fd-to-94fc18a', `--output=${output}`],
+      `--suite=${SUITE_PATH}`, '--pii-protected-binding=beta11-8b6a5fd-pii-protected', '--source-equivalence=beta11-8b6a5fd-to-94fc18a', `--output=${output}`],
       { cwd: root, timeout: 60_000 });
     const record = JSON.parse(await readFile(output, 'utf8'));
     assert.deepEqual(record, assembleReleaseRecordV2(await beta11Input()));
   } finally { await rm(directory, { recursive: true, force: true }); }
+});
+
+test('a record produced against a stale suite snapshot is still rejected against the live suite', async () => {
+  const qualification = await json('evidence/449/credential-qualification-engine-v1.json');
+  validateEvidence(qualification, 'qualification', suite);
+  const stale = { ...suite, scanners: { ...suite.scanners, 'redact-secret': '0.0.0-stale' } };
+  assert.throws(() => validateEvidence(qualification, 'qualification', stale), /suite or tool version drift/);
+  assert.throws(() => validateEvidence({ ...qualification, suiteHash: '0'.repeat(64) }, 'qualification', suite), /suite or tool version drift/);
+  // Without a snapshot the live suite decides: a Beta.11 record no longer matches the current pin, and the check has no bypass.
+  assert.throws(() => validateEvidence(qualification, 'qualification', liveSuite), /suite or tool version drift/);
+  await assert.rejects(async () => assembleReleaseRecordV2(await beta11Input({ suite: undefined })), /suite or tool version drift/);
 });

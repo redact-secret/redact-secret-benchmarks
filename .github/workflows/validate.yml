@@ -54,8 +54,8 @@ jobs:
       - run: npm run fixtures:check
       - name: Fixture semantic index is complete, reviewed, and current (#340)
         run: npm run fixture-index:check
-      - name: Validate published engine qualification evidence
-        run: npm run eval:validate -- docs/specs/qualification/engine-v1.json
+      - name: Validate published engine qualification evidence (frozen Beta.11 report, against the suite snapshot it was produced with)
+        run: npm run eval:validate -- docs/specs/qualification/engine-v1.json --suite=evidence/449/suite-v1.json
       - name: Exercise evaluation engine with the published npm scanner
         run: npm run eval -- --scanner=redact-secret
       - name: The UI carries no support status the generated matrix cannot

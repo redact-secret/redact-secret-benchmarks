@@ -10,7 +10,7 @@
  * equivalence when the PII evidence commit differs from the release commit.
  */
 import { hash } from './substrate/hash.ts';
-import { validateEvidence } from './domains/credential/evidence.ts';
+import { validateEvidence, type QualificationSuite } from './domains/credential/evidence.ts';
 import { credentialAccountingIdentity } from './domains/credential/accounting.ts';
 import { validatePiiQualificationReport, type PiiQualificationReport } from './domains/pii/qualification.ts';
 import { validatePiiProductBinding, type PiiTrustedProductBinding } from './domains/pii/product-binding.ts';
@@ -171,12 +171,12 @@ export function assembleReleaseRecord(input: AssembleReleaseRecordInput): Releas
  * against the stored value — the same assemble-then-compare idiom used by
  * `validatePiiQualificationReport` and `validatePiiAccountingReport`.
  */
-export function validateReleaseRecord(value: unknown, registryFamilies: readonly string[]): ReleaseRecord;
-export function validateReleaseRecord(value: unknown, registryFamilies: readonly string[]): ReleaseRecord | ReleaseRecordV2;
-export function validateReleaseRecord(value: unknown, registryFamilies: readonly string[]): ReleaseRecord | ReleaseRecordV2 {
+export function validateReleaseRecord(value: unknown, registryFamilies: readonly string[], suite?: QualificationSuite): ReleaseRecord;
+export function validateReleaseRecord(value: unknown, registryFamilies: readonly string[], suite?: QualificationSuite): ReleaseRecord | ReleaseRecordV2;
+export function validateReleaseRecord(value: unknown, registryFamilies: readonly string[], suite?: QualificationSuite): ReleaseRecord | ReleaseRecordV2 {
   const typed = value as Record<string, unknown> | null;
   if (typed && typeof typed === 'object' && typed.schemaVersion === RELEASE_RECORD_V2_SCHEMA_VERSION && typed.reportType === RELEASE_RECORD_V2_REPORT_TYPE)
-    return validateReleaseRecordV2(value, registryFamilies);
+    return validateReleaseRecordV2(value, registryFamilies, suite);
   if (!exact(value, ['schemaVersion', 'reportType', 'supportClaims', 'identity', 'performanceBudget', 'credential', 'pii', 'artifactCommitment']))
     throw new Error('Invalid release record shape');
   const record = value as ReleaseRecord;
@@ -253,6 +253,8 @@ export type AssembleReleaseRecordV2Input = {
   releaseVersion: string; sourceCommit: string; benchmarkRevision: string; performanceBudget: BudgetReport;
   credentialProfile: 'measurement-v4' | 'evaluation-v1'; credentialCandidateEvidence: unknown; credentialQualification: unknown;
   sourceEquivalenceId?: string | null;
+  /** Suite snapshot a frozen record was produced with; omitted for new records, which use the live suite. */
+  suite?: QualificationSuite;
 } & ({ piiRoute: typeof PII_TRUSTED_PRODUCT_ROUTE; piiQualification: PiiQualificationReport; piiBinding: PiiTrustedProductBinding; registryFamilies: readonly string[] } |
   { piiRoute: typeof PII_PROTECTED_ROUTE; piiProtectedBinding: PiiProtectedRoute; piiProtectedDisposition: unknown });
 
@@ -283,8 +285,8 @@ function checkProtectedSection(binding: PiiProtectedRoute, disposition: any) {
 }
 
 export function assembleReleaseRecordV2(input: AssembleReleaseRecordV2Input): ReleaseRecordV2 {
-  const credentialCandidateEvidence = validateEvidence(input.credentialCandidateEvidence, 'candidate') as unknown as CredentialCandidateEvidence;
-  const credentialQualification = validateEvidence(input.credentialQualification, 'qualification') as unknown as CredentialQualificationEvidence;
+  const credentialCandidateEvidence = validateEvidence(input.credentialCandidateEvidence, 'candidate', input.suite) as unknown as CredentialCandidateEvidence;
+  const credentialQualification = validateEvidence(input.credentialQualification, 'qualification', input.suite) as unknown as CredentialQualificationEvidence;
   if (!RELEASE_VERSION.test(input.releaseVersion)) throw new Error('Invalid release version');
   if (!digest(input.sourceCommit, 40)) throw new Error('Invalid release source commit');
   if (!digest(input.benchmarkRevision, 40)) throw new Error('Invalid benchmark revision');
@@ -353,7 +355,7 @@ export function assembleReleaseRecordV2(input: AssembleReleaseRecordV2Input): Re
 }
 
 /** Re-assembles a schema 2 record from its own embedded artifacts and requires a byte-identical result. Reads no file. */
-export function validateReleaseRecordV2(value: unknown, registryFamilies: readonly string[]): ReleaseRecordV2 {
+export function validateReleaseRecordV2(value: unknown, registryFamilies: readonly string[], suite?: QualificationSuite): ReleaseRecordV2 {
   if (!exact(value, ['schemaVersion', 'reportType', 'supportClaims', 'release', 'identity', 'performanceBudget', 'credential', 'pii', 'sourceEquivalence', 'artifactCommitment']))
     throw new Error('Invalid release record shape');
   const record = value as ReleaseRecordV2;
@@ -371,7 +373,7 @@ export function validateReleaseRecordV2(value: unknown, registryFamilies: readon
     releaseVersion: record.release.version, sourceCommit: record.release.sourceCommit, benchmarkRevision: record.identity.benchmarkRevision,
     performanceBudget: record.performanceBudget, credentialProfile: record.identity.profileVersions.credential,
     credentialCandidateEvidence: record.credential.candidateEvidence, credentialQualification: record.credential.qualification,
-    sourceEquivalenceId: record.sourceEquivalence?.id ?? null,
+    sourceEquivalenceId: record.sourceEquivalence?.id ?? null, suite,
   };
   const pii = record.pii as any;
   const expected = assembleReleaseRecordV2(pii.route === PII_PROTECTED_ROUTE ?

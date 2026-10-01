@@ -71,16 +71,17 @@ export async function produceSchema1(args) {
 export async function produceSchema2(args) {
   const base = [...SHARED, 'release-version', 'source-commit', 'pii-route'];
   const route = args['pii-route'];
-  if (route === PII_TRUSTED_PRODUCT_ROUTE) requireArgs(args, [...base, 'pii-qualification', 'pii-binding'], [...base, 'pii-qualification', 'pii-binding']);
-  else if (route === PII_PROTECTED_ROUTE) requireArgs(args, [...base, 'pii-protected-binding'], [...base, 'pii-protected-binding', 'source-equivalence']);
-  else if (!route) requireArgs(args, base, base);
+  // --suite names the snapshot a frozen record was produced with; without it a new record is checked against the live qualification/suite-v1.json.
+  if (route === PII_TRUSTED_PRODUCT_ROUTE) requireArgs(args, [...base, 'pii-qualification', 'pii-binding'], [...base, 'pii-qualification', 'pii-binding', 'suite']);
+  else if (route === PII_PROTECTED_ROUTE) requireArgs(args, [...base, 'pii-protected-binding'], [...base, 'pii-protected-binding', 'source-equivalence', 'suite']);
+  else if (!route) requireArgs(args, base, [...base, 'suite']);
   else throw new Error(`--pii-route must be '${PII_TRUSTED_PRODUCT_ROUTE}' or '${PII_PROTECTED_ROUTE}'`);
   if (!/^[a-f0-9]{40}$/.test(args['source-commit'])) throw new Error('--source-commit must be 40 hex characters');
   const common = {
     releaseVersion: args['release-version'], sourceCommit: args['source-commit'], benchmarkRevision: args['benchmark-revision'],
     credentialProfile: args['credential-profile'], performanceBudget: await readJson(args['performance-budget']),
     credentialCandidateEvidence: await readJson(args['credential-candidate']), credentialQualification: await readJson(args['credential-qualification']),
-    sourceEquivalenceId: args['source-equivalence'] ?? null,
+    sourceEquivalenceId: args['source-equivalence'] ?? null, suite: args.suite ? await readJson(args.suite) : undefined,
   };
   let record;
   if (route === PII_TRUSTED_PRODUCT_ROUTE) {
@@ -92,7 +93,7 @@ export async function produceSchema2(args) {
     const disposition = await readJson(path.join(repositoryRoot, binding.evidenceDirectory, 'pii-beta11-protected-disposition-v2.json'));
     record = assembleReleaseRecordV2({ ...common, piiRoute: route, piiProtectedBinding: binding, piiProtectedDisposition: disposition });
   }
-  await verifyReleaseRecordEvidence(record, registryFamilies, repositoryRoot);
+  await verifyReleaseRecordEvidence(record, registryFamilies, repositoryRoot, common.suite);
   return write(record, args.output);
 }
 

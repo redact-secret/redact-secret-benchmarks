@@ -1,10 +1,15 @@
 import { readFile } from 'node:fs/promises';
 import { validateEvidence } from './engine/evidence.ts';
 
+// Usage: validate-evidence <report.json> [--suite=<suite-v1.json>]
+// Without --suite a report is checked against the live qualification/suite-v1.json, so new evidence is held to the current pin. A frozen
+// record names the suite snapshot it was produced with (evidence/<issue>/suite-v1.json).
 try {
-  if (process.argv.length !== 3) throw new Error();
-  const report = JSON.parse(await readFile(process.argv[2], 'utf8'));
+  const [reportPath, ...flags] = process.argv.slice(2);
+  if (!reportPath || reportPath.startsWith('--') || flags.length > 1 || (flags.length === 1 && !/^--suite=.+/.test(flags[0]))) throw new Error();
+  const report = JSON.parse(await readFile(reportPath, 'utf8'));
   if (!['holdout', 'qualification', 'candidate'].includes(report.reportType)) throw new Error();
-  validateEvidence(report, report.reportType);
+  const suite = flags.length ? JSON.parse(await readFile(flags[0].slice('--suite='.length), 'utf8')) : undefined;
+  validateEvidence(report, report.reportType, suite);
   console.log('Evidence schema and consistency checks passed.');
 } catch { console.error('Invalid or incomplete evidence.'); process.exitCode = 1; }

@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "credential-population-policy-v1",
+  "scanner": "redact-secret",
+  "populations": {
+    "public-evidence-snapshot": {
+      "role": "floors-and-gates",
+      "rationale": "The only population whose size and breadth can carry an evidence floor (cases, axes, twin pairs, fixture-profile cells). Its denominators are read as published, never topped up from another population."
+    },
+    "regression-corpus": {
+      "role": "gates",
+      "rationale": "Product-authored regressions guard behavior already shipped. They add zero-tolerance gates (a twin or benign failure here blocks stable) and never add to a floor, because their cases were authored to pin one defect each and would inflate a count they were not authored to measure."
+    },
+    "policy-corpus": {
+      "role": "policy-route",
+      "rationale": "The bounded behavior contract of the four policy-qualified families. It feeds only the T3 policy-qualified route, whose gates are defined in benchmarks/support/policy-qualified-credentials.json; it never counts toward the documented or empirical routes."
+    }
+  },
+  "axes": {
+    "positiveContext": "group",
+    "benignControl": "taxonomy-else-group"
+  },
+  "methods": {
+    "required": ["metamorphic", "mutation", "differential"],
+    "whenNotRun": "block-stable"
+  },
+  "rules": [
+    "One artifact is one population. Counts stay per population, keyed by (population, case id), and are never summed, averaged or pooled into one rate.",
+    "Floors and fixture-profile cells are read from the floors-and-gates population only.",
+    "A zero-tolerance gate (twin failures, benign false alarms) is evaluated in each gate-bearing population on its own; the classifier receives the worst population, never a sum.",
+    "The policy-route population feeds only the T3 policy-qualified route.",
+    "A method that did not run (manifest.methods) is unmeasured, never zero failures. A family that would be stable is held at provisional until every required method has run.",
+    "The route (documented, empirical, policy-qualified) is read from the product contract and empirical overlays, never from the evidence class a case carries.",
+    "A view is public only when every contributing artifact is publication public and its population is publishable; one internal artifact makes the whole view internal."
+  ]
+}

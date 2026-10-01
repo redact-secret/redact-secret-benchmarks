@@ -1,0 +1,981 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://benchmarks.redactsecret.dev/schemas/qualification-view-v1.json",
+  "title": "Redact Secret qualification view v1",
+  "description": "Deterministic output of the RunArtifact to qualification adapter (#605, docs/specs/qualification-adapter.md). One view cites one artifact per population; counts stay per population and are never pooled. Status is computed here by the benchmark-owned rules; credential-eval never emits one.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "adapter",
+    "publication",
+    "policy",
+    "populations",
+    "scanners",
+    "distribution",
+    "stableDistribution",
+    "families",
+    "undetected",
+    "knownGaps",
+    "unmappedFamilies"
+  ],
+  "properties": {
+    "schema": {
+      "const": "redact-secret/qualification-view/v1"
+    },
+    "adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "publication": {
+      "enum": [
+        "public",
+        "internal"
+      ],
+      "description": "public only when every contributing artifact is publication public and its population is publishable."
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "revision",
+        "components",
+        "scanner",
+        "populations",
+        "methodsRequired",
+        "criteria",
+        "fixtureProfilesVersion",
+        "rules"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "string",
+          "pattern": "^rs-policy-[0-9]+:sha256:[0-9a-f]{64}$",
+          "description": "The product policy revision stamp: SHA-256 over the adapter identity and one digest per benchmark-owned qualification input."
+        },
+        "components": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/component"
+          }
+        },
+        "scanner": {
+          "type": "string"
+        },
+        "populations": {
+          "type": "object",
+          "additionalProperties": {
+            "enum": [
+              "floors-and-gates",
+              "gates",
+              "policy-route"
+            ]
+          }
+        },
+        "methodsRequired": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "criteria": {
+          "type": "object",
+          "description": "benchmarks/support/status-criteria.json as applied."
+        },
+        "fixtureProfilesVersion": {
+          "type": "integer"
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "populations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "population",
+          "role",
+          "denominator",
+          "runClass",
+          "artifact",
+          "unattributed",
+          "aggregates"
+        ],
+        "properties": {
+          "population": {
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "floors-and-gates",
+              "gates",
+              "policy-route"
+            ]
+          },
+          "denominator": {
+            "type": "string",
+            "description": "Equal to the population id: one denominator per population."
+          },
+          "runClass": {
+            "enum": [
+              "public",
+              "internal"
+            ]
+          },
+          "artifact": {
+            "$ref": "#/$defs/artifactIdentity"
+          },
+          "unattributed": {
+            "type": "array",
+            "description": "Counts of cases that map to no product detector family, per scanner.",
+            "items": {
+              "$ref": "#/$defs/scannerCounts"
+            }
+          },
+          "aggregates": {
+            "type": "array",
+            "description": "The engine's published aggregates, verbatim (withheld figures stay withheld); never recomputed here.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "scanner",
+                "status",
+                "groups",
+                "byTarget"
+              ],
+              "properties": {
+                "scanner": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                },
+                "groups": {
+                  "type": "object"
+                },
+                "byTarget": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "scanners": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "distribution": {
+      "$ref": "#/$defs/distribution"
+    },
+    "stableDistribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "documented",
+        "empirical",
+        "policy-qualified"
+      ],
+      "properties": {
+        "documented": {
+          "type": "integer"
+        },
+        "empirical": {
+          "type": "integer"
+        },
+        "policy-qualified": {
+          "type": "integer"
+        }
+      }
+    },
+    "families": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "family",
+          "taxonomyFamilies",
+          "contract",
+          "status",
+          "evidence",
+          "fixtureProfile",
+          "gates",
+          "populations"
+        ],
+        "properties": {
+          "family": {
+            "type": "string",
+            "description": "A product detector family."
+          },
+          "taxonomyFamilies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "provider",
+                "name"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "provider": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "contract": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false,
+            "required": [
+              "tier",
+              "providerSource",
+              "unprobeable",
+              "supportedContext"
+            ],
+            "properties": {
+              "tier": {
+                "enum": [
+                  "T0",
+                  "T1",
+                  "T2",
+                  "T3"
+                ]
+              },
+              "providerSource": {
+                "type": "boolean"
+              },
+              "unprobeable": {},
+              "supportedContext": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "status": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "value",
+              "reasons",
+              "qualificationProfile",
+              "evidenceTier",
+              "evidenceBasis",
+              "methodsNotRun"
+            ],
+            "properties": {
+              "value": {
+                "enum": [
+                  "stable",
+                  "provisional",
+                  "pending",
+                  "unsupported"
+                ]
+              },
+              "reasons": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Empty only when stable."
+              },
+              "qualificationProfile": {
+                "enum": [
+                  "documented",
+                  "empirical",
+                  "policy-qualified",
+                  null
+                ]
+              },
+              "evidenceTier": {
+                "enum": [
+                  "T0",
+                  "T1",
+                  "T2",
+                  "T3",
+                  null
+                ]
+              },
+              "evidenceBasis": {
+                "enum": [
+                  "provider-documented",
+                  "independently-corroborated",
+                  "empirically-observed",
+                  "project-policy",
+                  "none"
+                ]
+              },
+              "methodsNotRun": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "evidence": {
+            "type": "object",
+            "description": "FamilySupportEvidence (benchmarks/support/status.ts) as derived from the artifacts.",
+            "required": [
+              "family",
+              "detectors",
+              "positiveContractTier",
+              "twinPairs",
+              "twinFailures",
+              "benignCases",
+              "benignFalseAlarms",
+              "benignAxes",
+              "benignAxisIds",
+              "positiveCases",
+              "positiveAxes",
+              "totalFixtures",
+              "policyQualification"
+            ],
+            "properties": {
+              "family": {
+                "type": "string"
+              },
+              "policyQualification": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "required": [
+                  "failedGates"
+                ],
+                "properties": {
+                  "failedGates": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "code",
+                        "actual",
+                        "required"
+                      ],
+                      "properties": {
+                        "code": {},
+                        "actual": {},
+                        "required": {}
+                      }
+                    }
+                  }
+                }
+              },
+              "detectors": {},
+              "positiveContractTier": {},
+              "twinPairs": {},
+              "twinFailures": {},
+              "benignCases": {},
+              "benignFalseAlarms": {},
+              "benignAxes": {},
+              "benignAxisIds": {},
+              "positiveCases": {},
+              "positiveAxes": {},
+              "totalFixtures": {}
+            }
+          },
+          "fixtureProfile": {
+            "type": "object",
+            "required": [
+              "profilesVersion",
+              "target",
+              "cells",
+              "requiredCells",
+              "debt"
+            ],
+            "properties": {
+              "profilesVersion": {},
+              "target": {},
+              "cells": {},
+              "requiredCells": {},
+              "debt": {}
+            }
+          },
+          "gates": {
+            "type": "array",
+            "description": "The zero-tolerance gate inputs of each gate-bearing population, side by side. Never summed.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "population",
+                "twinPairs",
+                "twinFailures",
+                "benignCases",
+                "benignFalseAlarms"
+              ],
+              "properties": {
+                "population": {
+                  "type": "string"
+                },
+                "twinPairs": {
+                  "type": "integer"
+                },
+                "twinFailures": {
+                  "type": "integer"
+                },
+                "benignCases": {
+                  "type": "integer"
+                },
+                "benignFalseAlarms": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "populations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "population",
+                "role",
+                "scanners"
+              ],
+              "properties": {
+                "population": {
+                  "type": "string"
+                },
+                "role": {
+                  "enum": [
+                    "floors-and-gates",
+                    "gates",
+                    "policy-route"
+                  ]
+                },
+                "scanners": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/$defs/scannerCounts"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "undetected": {
+      "type": "array",
+      "description": "Taxonomy families with no detector: representable, undetected.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "provider",
+          "name",
+          "supportStatus"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "provider": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "supportStatus": {
+            "enum": [
+              "pending",
+              "unsupported",
+              null
+            ]
+          }
+        }
+      }
+    },
+    "knownGaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "status",
+          "kind",
+          "number",
+          "fixtures"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "kind": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "number": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "fixtures": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "fixture",
+                "matches"
+              ],
+              "properties": {
+                "fixture": {
+                  "type": "string"
+                },
+                "matches": {
+                  "type": "array",
+                  "description": "Cases with this id, per population; empty when the id does not exist in a population (a re-key, #607).",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "population",
+                      "measurement",
+                      "outcomes",
+                      "flagged"
+                    ],
+                    "properties": {
+                      "population": {
+                        "type": "string"
+                      },
+                      "measurement": {
+                        "enum": [
+                          "positive",
+                          "control",
+                          "pending",
+                          "not-measured"
+                        ]
+                      },
+                      "outcomes": {
+                        "type": [
+                          "array",
+                          "null"
+                        ],
+                        "items": {
+                          "enum": [
+                            "EXACT",
+                            "COVERED",
+                            "OVERBROAD",
+                            "PARTIAL",
+                            "MISS"
+                          ]
+                        }
+                      },
+                      "flagged": {
+                        "type": [
+                          "boolean",
+                          "null"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "unmappedFamilies": {
+      "type": "array",
+      "description": "population:family pairs the artifact names that no product detector family serves.",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "digest"
+      ],
+      "properties": {
+        "path": {
+          "type": "string"
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        }
+      }
+    },
+    "distribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "stable",
+        "provisional",
+        "pending",
+        "unsupported"
+      ],
+      "properties": {
+        "stable": {
+          "type": "integer"
+        },
+        "provisional": {
+          "type": "integer"
+        },
+        "pending": {
+          "type": "integer"
+        },
+        "unsupported": {
+          "type": "integer"
+        }
+      }
+    },
+    "artifactIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifactDigest",
+        "semanticDigest",
+        "schema",
+        "engine",
+        "protocolVersion",
+        "configHash",
+        "evidence",
+        "engineRunClass",
+        "publication",
+        "methods",
+        "caseCount",
+        "scanners"
+      ],
+      "properties": {
+        "artifactDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "semanticDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "schema": {
+          "const": "credential-eval/run-artifact/v1"
+        },
+        "engine": {
+          "type": "object",
+          "required": [
+            "name",
+            "version"
+          ],
+          "properties": {
+            "name": {},
+            "version": {}
+          }
+        },
+        "protocolVersion": {
+          "type": "string"
+        },
+        "configHash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "evidence": {
+          "type": "object",
+          "required": [
+            "source",
+            "revision",
+            "evidence_schema",
+            "corpus_digest"
+          ],
+          "properties": {
+            "source": {},
+            "revision": {},
+            "evidence_schema": {},
+            "corpus_digest": {}
+          }
+        },
+        "engineRunClass": {
+          "enum": [
+            "official",
+            "exploratory"
+          ]
+        },
+        "publication": {
+          "enum": [
+            "public",
+            "internal"
+          ]
+        },
+        "methods": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "caseCount": {
+          "type": "integer"
+        },
+        "scanners": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "id",
+              "version",
+              "mode",
+              "build",
+              "adapter",
+              "configurationHash",
+              "status"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "version": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "mode": {
+                "type": "string"
+              },
+              "build": {
+                "enum": [
+                  "released",
+                  "candidate",
+                  null
+                ]
+              },
+              "adapter": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "version"
+                ],
+                "properties": {
+                  "id": {},
+                  "version": {}
+                }
+              },
+              "configurationHash": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "scannerCounts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scanner",
+        "counts"
+      ],
+      "properties": {
+        "scanner": {
+          "type": "string"
+        },
+        "counts": {
+          "$ref": "#/$defs/counts"
+        }
+      }
+    },
+    "positive": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cases",
+        "spans",
+        "outcomes",
+        "leakedSpans",
+        "leakedBytes",
+        "collateralBytes"
+      ],
+      "properties": {
+        "cases": {
+          "type": "integer"
+        },
+        "spans": {
+          "type": "integer"
+        },
+        "outcomes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "EXACT",
+            "COVERED",
+            "OVERBROAD",
+            "PARTIAL",
+            "MISS"
+          ],
+          "properties": {
+            "EXACT": {
+              "type": "integer"
+            },
+            "COVERED": {
+              "type": "integer"
+            },
+            "OVERBROAD": {
+              "type": "integer"
+            },
+            "PARTIAL": {
+              "type": "integer"
+            },
+            "MISS": {
+              "type": "integer"
+            }
+          }
+        },
+        "leakedSpans": {
+          "type": "integer"
+        },
+        "leakedBytes": {
+          "type": "integer"
+        },
+        "collateralBytes": {
+          "type": "integer"
+        }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "cases",
+        "pending",
+        "notMeasured",
+        "positives",
+        "benign",
+        "twins"
+      ],
+      "properties": {
+        "cases": {
+          "type": "integer"
+        },
+        "pending": {
+          "type": "integer"
+        },
+        "notMeasured": {
+          "type": "integer"
+        },
+        "positives": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "must-redact",
+            "policy"
+          ],
+          "properties": {
+            "must-redact": {
+              "$ref": "#/$defs/positive"
+            },
+            "policy": {
+              "$ref": "#/$defs/positive"
+            }
+          }
+        },
+        "benign": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "cases",
+            "flagged",
+            "findings"
+          ],
+          "properties": {
+            "cases": {
+              "type": "integer"
+            },
+            "flagged": {
+              "type": "integer"
+            },
+            "findings": {
+              "type": "integer"
+            }
+          }
+        },
+        "twins": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "pairs",
+            "discriminated",
+            "flagged",
+            "coDetected"
+          ],
+          "properties": {
+            "pairs": {
+              "type": "integer"
+            },
+            "discriminated": {
+              "type": "integer"
+            },
+            "flagged": {
+              "type": "integer"
+            },
+            "coDetected": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    }
+  }
+}

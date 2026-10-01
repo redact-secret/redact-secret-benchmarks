@@ -56,6 +56,14 @@ test('a support status change needs an explicit product-policy reason and decisi
   assert.ok((await qualificationInputProblems(m, always)).some(p => /supportStatusChanges entries need/.test(p)));
 });
 
+test('a support status change cites the product policy revision as the adapter stamps it', async () => {
+  const m = clone();
+  m.supportStatusChanges.push({ family: 'example', reason: 'r', decision: 'benchmarks/qualification-inputs.json', productPolicyRevision: 'abc123' });
+  assert.ok((await qualificationInputProblems(m, always)).some(p => /must be an adapter stamp/.test(p)));
+  m.supportStatusChanges[0].productPolicyRevision = `rs-policy-1:sha256:${'a'.repeat(64)}`;
+  assert.deepEqual(await qualificationInputProblems(m, always), []);
+});
+
 test('a pending pin names the issue that resolves it', async () => {
   const m = clone();
   m.populations[1].pin.runArtifact = { state: 'pending' };

@@ -28,6 +28,15 @@ Issue-to-implementation and PR-review work uses the user-global `resolve-gh-issu
 and `pr-review` Claude Code skills instead of a repo-local copy; the local
 `resolve-issue`/`review-pr` skills were removed in favor of those.
 
+## Official runs and the qualification adapter
+
+Credential qualification reads credential-eval RunArtifacts, one official run per population (#604, #605). The pins and
+recorded runs are `benchmarks/official-runs.json` ([`docs/specs/official-runs.md`](docs/specs/official-runs.md)); the one
+adapter boundary that turns the artifacts into the status and the Next app's data is
+[`docs/specs/qualification-adapter.md`](docs/specs/qualification-adapter.md). Support status stays here and is never
+asked of credential-eval. Canonical runs are linux-x64 CI runs (`official-runs.yml`, dispatch only); a local darwin run is
+a verification, never compared with them. `trufflehog --version` must print the pinned 3.97.4 before any run.
+
 ## Branches
 
 `develop` is the default and integration branch: open feature and workbench PRs

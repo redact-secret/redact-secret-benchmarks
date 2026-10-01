@@ -53,6 +53,12 @@ assemble the facts. Mockup: https://claude.ai/artifact/1HJUT4fXynKkBTHdQQkrNT.
     with stories for default, not recorded, long content and phone; `resolvers/scanners.ts` is pure; `resolvers/pages.ts`
     `resolveScannerPage` awaits the services. `tests/web-tokens.test.mjs` treats a folder of folders as a section so
     `components/evaluation/<phase>/` is checked like any group.
+11. **The e2e console watch ignores one benign warning.** Adding this route moved the bundler's CSS chunking: Report and Comparison
+    pages no longer share every stylesheet chunk, so a page's header-link prefetch preloads the other section's chunk, and Chrome warns
+    after a few seconds that it was "preloaded but not used". In CI that failed 33 matrix tests on pages this change does not touch
+    (develop's tip, with the old chunking, passed). The warning is the prefetch working, and any route added to the app can move the
+    chunk boundary again, so `tests/e2e/fixtures.ts` skips exactly this message for `_next/static/chunks/*.css` and still fails on every
+    other console warning or error.
 
 ## Old to new URLs, for cutover
 

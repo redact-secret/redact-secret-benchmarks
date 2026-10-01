@@ -167,7 +167,8 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   pre-renders the first page of rows; the suite's records are one build-emitted file, fetched when a fixture is
   opened, and the detail is built in the browser for the one fixture named (`FixtureSync` and an inline script
   set `data-fixture`, as `?level=` does; `FixtureView` shows the title and a skeleton until the file is in).
-  67 pages, not 5,925. `check:routes` holds the export to budgets (`check-export-rows.mjs`: MB, files, `data/`,
+  67 pages, not 5,925 (decision: `docs/decisions/2026-10-01-keep-the-fixture-page-on-its-suite-page.md`, #588; the page is the `Fixture*` blocks in
+  `components/report`, built by `resolveFixtureRecord`, and `fixtureHref()` is the one place that writes its address). `check:routes` holds the export to budgets (`check-export-rows.mjs`: MB, files, `data/`,
   the largest page, the largest table page).
 - **Peer scanners** get their kind, description and the families their rules target from
   `scanners/peer-registry.json` and `scanners/peer-rule-families.json` (validated by

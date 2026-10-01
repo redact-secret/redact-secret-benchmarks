@@ -1,0 +1,59 @@
+@layer components {
+  .key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    margin: 0;
+    padding: 0;
+    color: var(--ink-muted);
+    font: var(--text-small);
+    list-style: none;
+  }
+
+  .key li {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .swatch {
+    display: inline-block;
+    width: var(--space-6);
+    height: var(--lane-h);
+    flex: none;
+  }
+
+  .expected {
+    background: var(--brand-green);
+    outline: var(--rule-strong) dashed var(--ink);
+    outline-offset: calc(var(--rule-strong) * -1);
+  }
+
+  .envelope {
+    border-bottom: var(--rule-strong) solid var(--ink);
+  }
+
+  .companion {
+    border-bottom: var(--hairline) dashed var(--ink-muted);
+  }
+
+  .redacted,
+  .extra {
+    background: var(--ink);
+  }
+
+  .partial {
+    background: repeating-linear-gradient(135deg, var(--ink) 0 var(--rule-strong), transparent var(--rule-strong) calc(var(--space-1) + var(--hairline)));
+  }
+
+  .exposed {
+    outline: var(--rule-strong) dashed var(--status-danger);
+    outline-offset: calc(var(--rule-strong) * -1);
+  }
+
+  .changed {
+    background: var(--status-warning-fill);
+    outline: var(--hairline) solid var(--status-warning);
+    outline-offset: calc(var(--hairline) * -1);
+  }
+}

@@ -62,7 +62,7 @@ export function FixtureView({ suiteTitle, suiteHref, src, fixtureCount }: Fixtur
   const load = useBuildData(id ? src : null, isThisBuild, 'now');
   const file = load.data;
   const record = useMemo(() => (id && file ? file.records.find(r => r.id === id) : undefined), [id, file]);
-  const detail = useMemo(() => (record && file ? resolveFixtureRecord(record, file.shared) : undefined), [record, file]);
+  const detail = useMemo(() => (record && file ? resolveFixtureRecord(record, file.shared, file.records) : undefined), [record, file]);
   const crumbs = crumbsOf(suiteTitle, suiteHref);
   const state = !id ? 'idle' : file ? (record ? 'ready' : 'missing') : load.status === 'error' ? 'error' : 'loading';
   const problem = state === 'error' ? failureText(load.failure, 'this fixture', 'The rest of the suite is unaffected.') : undefined;
@@ -82,15 +82,8 @@ export function FixtureView({ suiteTitle, suiteHref, src, fixtureCount }: Fixtur
             Fixture ids come from the corpus. This suite has {fixtureCount.toLocaleString('en-US')} fixtures.
           </EmptyState>
         </Stack>
-      ) : detail && record ? (
+      ) : detail ? (
         <Stack gap="lg">
-          <PageHead
-            before={<Breadcrumb items={[...crumbs, { label: record.id }]} />}
-            eyebrow={detail.suite.toUpperCase()}
-            title={record.id}
-            meta={[{ value: `${detail.kind} · ${detail.evidence}` }, { value: detail.size }]}
-            actions={<Link href={suiteHref}>All fixtures in this suite</Link>}
-          />
           <FixtureDetail fixture={detail} />
         </Stack>
       ) : null}

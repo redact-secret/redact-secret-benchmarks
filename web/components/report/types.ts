@@ -219,67 +219,6 @@ export interface FixtureScannerData {
   verdict: StatusLabel[];
 }
 
-/** One expected span of a fixture, as authored. */
-export interface ExpectedSpanRow {
-  /** "[0, 40)" in UTF-8 bytes. */
-  range: string;
-  role: string;
-  value: string;
-  envelope?: { range: string; reason?: string };
-  note?: string;
-}
-
-/** What one scanner reported for a fixture. */
-export interface ReportedRangesRow {
-  scanner: string;
-  /** "8.30.1 · Directory scan · default rules". */
-  detail: string;
-  outcome: StatusLabel[];
-  /** The outcome code the run recorded, e.g. "EXACT", or the reason a scanner has no row. */
-  code?: string;
-  /** "[0, 40) · [52, 60)" or "none reported". */
-  ranges: string;
-  /** "leaked 0 · outside envelope 0". */
-  bytes?: string;
-}
-
-export interface FixtureFactData {
-  term: string;
-  /** The recorded value. Omit when the fact is only links. */
-  value?: string;
-  /** Makes `value` a link. */
-  href?: string;
-  /** Several linked values, e.g. the near-twins of a fixture. */
-  links?: { label: string; href: string }[];
-}
-
-/** Everything the fixture page shows about one fixture. */
-export interface FixtureDetailData {
-  id: string;
-  /** "detector-coverage" or the suite title. */
-  suite: string;
-  suiteHref: string;
-  kind: string;
-  evidence: string;
-  path: string;
-  size: string;
-  detectors: { id: string; title: string; href: string }[];
-  families: { id: string; name: string; href: string }[];
-  scanners: FixtureScannerData[];
-  lines: ByteLineData[];
-  caption: string;
-  expected: ExpectedSpanRow[];
-  reported: ReportedRangesRow[];
-  /** Why the expectation holds: kind, evidence, contract, twin, reason, sources, follow-ups, review. */
-  facts: FixtureFactData[];
-  sources: { href: string; label: string }[];
-  command: string;
-  /** The exact bytes as an escaped string, for the disclosure. */
-  escaped: string;
-  /** Not measured: the run left this suite's report out, or holds none. */
-  runProblem?: string;
-}
-
 /** A detector as the detector list shows it. */
 export interface DetectorRowData {
   id: string;

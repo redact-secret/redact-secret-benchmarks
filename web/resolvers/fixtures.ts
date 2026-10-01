@@ -1,28 +1,30 @@
 /**
- * One fixture as the fixture page shows it (#559): the exact bytes with what was
- * expected and what each scanner covered drawn under them, the expected spans, each
- * scanner's reported ranges, and why the expectation holds. Pure: the fixture, the
- * catalog entry and the run's rows in, block props out.
+ * One fixture as the fixture page shows it (#559, #588): what redact-secret recorded on it, the exact
+ * bytes as an input (what was expected) and an output (what was reported), each span's outcome, the
+ * near-twin it is held against, why the expectation holds, and the other scanners. Pure: a suite's
+ * compact records and the text they share in, block props out.
  *
- * Everything here is a value the corpus or the run recorded. Ranges are UTF-8 byte
- * offsets, [start, end). The lane marks follow the run's own outcomes: a finding is
- * a bar, hatched where the row's outcome for the span it touches is `PARTIAL`, and a
- * `MISS` is an empty frame where the secret is. Nothing is re-scored, and matched
- * values of a scanner's raw output are never read (a row holds ranges only).
+ * Everything here is a value the corpus or the run recorded. Ranges are UTF-8 byte offsets,
+ * [start, end). The marks follow the run's own outcomes: a reported range is a bar, hatched where the
+ * row's outcome for the span it touches is `PARTIAL`; secret bytes no range covers are a dashed frame.
+ * Nothing is re-scored, and matched values of a scanner's raw output are never read (a row holds ranges
+ * only). A value the corpus does not hold is stated as "Not recorded", never filled in.
  */
 import type { BuiltFixture, CatalogFixture, CatalogSuite } from '../services/catalog';
 import type { RowResult, RunScanner } from '../services/run';
+import type { ByteLineData, ByteSegment, LanePiece, StatusLabel } from '../components/report/types';
 import type {
-  ByteLineData, ByteSegment, ExpectedSpanRow, FixtureDetailData, FixtureFactData, LanePiece, ReportedRangesRow, StatusLabel,
-} from '../components/report/types';
-import { KIND_TITLE, TIER_TITLE } from './families';
-import { familyHref } from './families';
+  FileMarkKind, FileRowData, FileSegment, FixtureDetailData, FixtureFactData, FixtureFileData, FixtureKeyItem, FixturePeerRow,
+  FixtureSpanRow, FixtureTwinData, FixtureVerdictData,
+} from '../components/report/fixtureTypes';
+import { KIND_TITLE, NOT_PROVIDER_SPECIFIC, TIER_TITLE, familyHref } from './families';
 import { fixtureHref, suiteHref } from './rows';
 import { count, int } from './format';
 
 interface Range { start: number; end: number }
 interface Span extends Range { role?: 'secret' | 'companion'; envelope?: Range & { reason?: string }; note?: string }
 
+const PRODUCT_ID = 'redact-secret';
 const encoder = new TextEncoder();
 const decoder = new TextDecoder('utf-8', { ignoreBOM: true });
 
@@ -36,11 +38,11 @@ export function byteLines(bytes: Uint8Array): (Range & { index: number })[] {
 }
 
 /** Cut [from, to) at every range boundary and say which ranges cover each piece. */
-export function segment<T extends Range>(bytes: Uint8Array, from: number, to: number, ranges: T[]): { text: string; marks: T[] }[] {
+export function segment<T extends Range>(bytes: Uint8Array, from: number, to: number, ranges: T[]): { text: string; start: number; end: number; marks: T[] }[] {
   const cuts = [...new Set([from, to, ...ranges.flatMap(r => [r.start, r.end]).filter(offset => offset > from && offset < to)])].sort((a, b) => a - b);
   return cuts.slice(0, -1).map((start, i) => {
     const end = cuts[i + 1];
-    return { text: decoder.decode(bytes.slice(start, end)), marks: ranges.filter(r => r.start < end && r.end > start) };
+    return { text: decoder.decode(bytes.slice(start, end)), start, end, marks: ranges.filter(r => r.start < end && r.end > start) };
   });
 }
 
@@ -61,6 +63,14 @@ function laneMarks(secrets: Range[], outcomes: string[] | undefined, findings: R
 }
 
 const SPAN_WORD: Record<string, string> = { EXACT: 'Exact', COVERED: 'Within range', OVERBROAD: 'Too much', PARTIAL: 'Partly exposed', MISS: 'Missed' };
+/** What each outcome word means, in the ledger's terms (src/pages/how-to-read.ts). */
+const SPAN_NOTE: Record<string, string> = {
+  EXACT: 'A reported range equals the span: same start, same end',
+  COVERED: 'One reported range contains it and stays inside the envelope',
+  OVERBROAD: 'One reported range contains it and reaches past the envelope',
+  PARTIAL: 'Reported ranges overlap it but none contains it',
+  MISS: 'No reported range overlaps it',
+};
 
 /** One word and a status per secret span, or Quiet/Flagged for a control. A policy row is information, never failure. */
 export function verdictsOf(kind: string, row: RowResult | undefined, scannerStatus?: string): StatusLabel[] {
@@ -76,6 +86,8 @@ export function verdictsOf(kind: string, row: RowResult | undefined, scannerStat
   return [{ status: 'not-measured', label: `Unscored · ${count(row.actual?.length ?? 0, 'range')}` }];
 }
 
+const rangeText = (r: Range): string => `${int(r.start)}–${int(r.end)}`;
+const sizeText = (r: Range): string => count(r.end - r.start, 'byte');
 const rangesText = (items: Range[] | undefined): string => (items && items.length ? items.map(r => `[${r.start}, ${r.end})`).join(' · ') : 'none reported');
 const describeSpans = (spans: Range[]): string => spans.map(s => `${s.start}–${s.end}`).join(', ') || 'none';
 
@@ -114,8 +126,8 @@ export function unpackRow(text: string): RowResult {
 /**
  * A suite page ships one compact record per fixture and builds the detail of the one a
  * reader opens in the browser (`resolveFixtureRecord`), so a suite of 1,300 fixtures does not
- * carry 1,300 drawn lanes. Shared text (an assessment's reason and sources, a scanner's mode
- * line, a detector's title) is held once in `SuiteShared` and referred to by index or id.
+ * carry 1,300 drawn views. Shared text (an assessment's reason and sources, a scanner's mode
+ * line, a detector's title, a group label) is held once in `SuiteShared` and referred to by index or id.
  * Plain JSON: nothing here is derived from more than the corpus and the run recorded.
  */
 export interface FixtureRecord {
@@ -140,16 +152,33 @@ export interface FixtureRecord {
   twins: string[];
   /** One entry per `SuiteShared.scanners`: what the scanner recorded (`packRow`), or `null` when it holds no row. */
   rows: (string | null)[];
+  /** Indexes into `SuiteShared.texts`: the corpus's group label, where in a file the fixture sits (`sdk-config`), the action a policy fixture expects, why no family owns it, the milestone that added it. */
+  group?: number;
+  axis?: number;
+  action?: number;
+  unscoped?: number;
+  milestone?: number;
+  /** Indexes into `SuiteShared.scenarios`. */
+  scenarios: number[];
+  /** The first 12 hex digits of the sha256 of the file's UTF-8 bytes. */
+  sha: string;
 }
 
 export interface SuiteShared {
   category: string;
   suite: { title: string; reviewStatus: string };
-  scanners: { id: string; name: string; version: string | null; mode: string; status: string }[];
+  scanners: { id: string; name: string; version: string | null; mode: string; status: string; observed: string[] }[];
   assessments: { reason?: string; sources: string[] }[];
   followUps: { number: number; url: string; milestone: string }[];
   detectorTitles: Record<string, string>;
   familyNames: Record<string, string>;
+  /** The provider each family belongs to, by family id. */
+  providerNames: Record<string, string>;
+  scenarios: { id: string; title: string }[];
+  /** Strings the records refer to by index, so a label held by 300 fixtures is shipped once. */
+  texts: string[];
+  /** The run the rows come from: its date and which build of the product it measured. */
+  run?: { date: string; mode: 'published' | 'candidate'; commit?: string };
   runProblem?: string;
 }
 
@@ -159,26 +188,43 @@ export interface SuiteRecordsFile { records: FixtureRecord[]; shared: SuiteShare
 /** Shape guard for a loaded records file: the parts `resolveFixtureRecord` reads exist. */
 export const isSuiteRecordsFile = (value: unknown): value is SuiteRecordsFile => {
   const v = value as Partial<SuiteRecordsFile> | null;
-  return !!v && Array.isArray(v.records) && !!v.shared && Array.isArray(v.shared.scanners) && Array.isArray(v.shared.assessments) && typeof v.shared.category === 'string';
+  return !!v && Array.isArray(v.records) && !!v.shared && Array.isArray(v.shared.scanners) && Array.isArray(v.shared.assessments) && Array.isArray(v.shared.texts) && Array.isArray(v.shared.scenarios) && typeof v.shared.category === 'string';
 };
 
 export interface SuiteBuild {
   suite: CatalogSuite;
   fixtures: CatalogFixture[];
   bytes: Map<string, BuiltFixture>;
+  /** sha256 of each fixture's bytes, by slug. */
+  hashes: Map<string, string>;
   /** The run's scanners in run order. Empty when there is no usable run. */
-  scanners: Pick<RunScanner, 'id' | 'name' | 'version' | 'mode' | 'status' | 'rows'>[];
+  scanners: (Pick<RunScanner, 'id' | 'name' | 'version' | 'mode' | 'status' | 'rows'> & { observations?: { observedAt: string }[] })[];
+  run?: SuiteShared['run'];
   runProblem?: string;
   /** Findings, each with the fixtures it rests on and its milestone label. */
   findings: { number: number; url: string; milestone: string; fixtures: string[] }[];
   detectorTitles: Map<string, string>;
   familyNames: Map<string, string>;
+  providerNames: Map<string, string>;
+  scenarioTitles: Map<string, string>;
 }
+
+const dateOf = (value: string): string => /^(\d{4}-\d{2}-\d{2})/.exec(value)?.[1] ?? '';
 
 /** The compact records of one suite, and the shared text they refer to. */
 export function buildSuiteRecords(input: SuiteBuild): { records: FixtureRecord[]; shared: SuiteShared } {
   const assessments: SuiteShared['assessments'] = [];
   const assessmentIndex = new Map<string, number>();
+  const texts: string[] = [];
+  const textIndex = new Map<string, number>();
+  const text = (value: string | undefined): number | undefined => {
+    if (!value) return undefined;
+    let index = textIndex.get(value);
+    if (index === undefined) { index = texts.length; texts.push(value); textIndex.set(value, index); }
+    return index;
+  };
+  const scenarios: SuiteShared['scenarios'] = [];
+  const scenarioIndex = new Map<string, number>();
   const followUps: SuiteShared['followUps'] = input.findings.map(({ number, url, milestone }) => ({ number, url, milestone }));
   const twinsOf = new Map<string, string[]>();
   for (const f of input.fixtures) {
@@ -187,6 +233,7 @@ export function buildSuiteRecords(input: SuiteBuild): { records: FixtureRecord[]
   }
   const detectorTitles: Record<string, string> = {};
   const familyNames: Record<string, string> = {};
+  const providerNames: Record<string, string> = {};
 
   const records = input.fixtures.map((entry): FixtureRecord => {
     const built = input.bytes.get(entry.slug)!;
@@ -198,8 +245,17 @@ export function buildSuiteRecords(input: SuiteBuild): { records: FixtureRecord[]
       assessmentIndex.set(key, index);
     }
     for (const id of entry.detectors) detectorTitles[id] = input.detectorTitles.get(id) ?? id;
-    for (const id of entry.familyIds) familyNames[id] = input.familyNames.get(id) ?? id;
+    for (const id of entry.familyIds) {
+      familyNames[id] = input.familyNames.get(id) ?? id;
+      providerNames[id] = input.providerNames.get(id) ?? NOT_PROVIDER_SPECIFIC.name;
+    }
     const twinOf = built.twinOf;
+    const scenarioIds = (entry.scenarioIds ?? []).map(id => {
+      let at = scenarioIndex.get(id);
+      if (at === undefined) { at = scenarios.length; scenarios.push({ id, title: input.scenarioTitles.get(id) ?? id }); scenarioIndex.set(id, at); }
+      return at;
+    });
+    const group = text(built.group), axis = text(built.contextAxis), action = text(built.expectedAction), unscoped = text(entry.unscopedReason), milestone = text(entry.milestone);
     return {
       id: entry.id, path: built.path, kind: entry.kind, tier: entry.tier,
       ...(built.assessment.contract ? { contract: built.assessment.contract } : {}),
@@ -212,6 +268,10 @@ export function buildSuiteRecords(input: SuiteBuild): { records: FixtureRecord[]
       followUps: input.findings.flatMap((finding, i) => (finding.fixtures.includes(entry.slug) ? [i] : [])),
       twins: twinsOf.get(entry.id) ?? [],
       rows: input.scanners.map(s => { const row = s.rows?.get(entry.slug); return row ? packRow(row) : null; }),
+      ...(group !== undefined ? { group } : {}), ...(axis !== undefined ? { axis } : {}), ...(action !== undefined ? { action } : {}),
+      ...(unscoped !== undefined ? { unscoped } : {}), ...(milestone !== undefined ? { milestone } : {}),
+      scenarios: scenarioIds,
+      sha: (input.hashes.get(entry.slug) ?? '').slice(0, 12),
     };
   });
   return {
@@ -219,85 +279,405 @@ export function buildSuiteRecords(input: SuiteBuild): { records: FixtureRecord[]
     shared: {
       category: input.suite.id,
       suite: { title: input.suite.title, reviewStatus: input.suite.reviewStatus },
-      scanners: input.scanners.map(s => ({ id: s.id, name: s.name, version: s.version, mode: s.mode, status: s.status })),
-      assessments, followUps, detectorTitles, familyNames,
+      scanners: input.scanners.map(s => ({ id: s.id, name: s.name, version: s.version, mode: s.mode, status: s.status, observed: [...new Set((s.observations ?? []).map(o => dateOf(o.observedAt)).filter(Boolean))].sort() })),
+      assessments, followUps, detectorTitles, familyNames, providerNames, scenarios, texts,
+      ...(input.run ? { run: input.run } : {}),
       ...(input.runProblem ? { runProblem: input.runProblem } : {}),
     },
   };
 }
 
+// ---- The file views --------------------------------------------------------------------------------------
+
+/** Characters the file view draws as symbols and tells the reader about. Kept equal to `symbolOf` in components/report/FixtureText.tsx. */
+const HIDDEN = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f-\u009f\u00a0\u00ad\u200b-\u200f\u2028\u2029\u202a-\u202e\u2060\u2066-\u2069\ufeff]/gu;
+const hex = (char: string): string => `U+${char.codePointAt(0)!.toString(16).toUpperCase().padStart(4, '0')}`;
+
+/** "145 bytes · LF · UTF-8": size, line endings and encoding, read from the bytes. */
+function fileFacts(bytes: Uint8Array): string {
+  let crlf = 0, lf = 0, cr = 0;
+  for (let i = 0; i < bytes.length; i++) {
+    if (bytes[i] === 0x0d) { if (bytes[i + 1] === 0x0a) { crlf++; i++; } else cr++; }
+    else if (bytes[i] === 0x0a) lf++;
+  }
+  const kinds = [crlf && 'CRLF', lf && 'LF', cr && 'CR'].filter(Boolean) as string[];
+  const endings = kinds.length === 0 ? 'no line ending' : kinds.length === 1 ? kinds[0] : 'mixed line endings';
+  const bom = bytes[0] === 0xef && bytes[1] === 0xbb && bytes[2] === 0xbf;
+  return `${count(bytes.length, 'byte')} · ${endings} · UTF-8${bom ? ' with BOM' : ''}`;
+}
+
+/** What the reader should know about characters they cannot see in the file, or undefined when there are none. */
+function hiddenNotice(content: string): string | undefined {
+  const found = content.match(HIDDEN) ?? [];
+  // A lone surrogate or U+FFFD is not valid text: UTF-8 stores each as the replacement character.
+  const invalid = (content.match(/[\ud800-\udbff](?![\udc00-\udfff])|(?<![\ud800-\udbff])[\udc00-\udfff]|�/g) ?? []).length;
+  if (!found.length && !invalid) return undefined;
+  const parts: string[] = [];
+  if (found.length) parts.push(`${count(found.length, 'character')} that ${found.length === 1 ? 'is' : 'are'} not normally visible (${[...new Set(found.map(hex))].join(', ')}), drawn as symbols`);
+  if (invalid) parts.push(`${count(invalid, 'character')} that ${invalid === 1 ? 'is' : 'are'} not valid text (a lone surrogate or U+FFFD), stored as the replacement character`);
+  return `This file holds ${parts.join(' and ')}. The bytes are exact; the symbols are only how they are drawn.`;
+}
+
+const WINDOW_ABOVE = 30;
+const CONTEXT = 1;
+
+interface MarkRange extends Range { kind: string; label?: string; title?: string }
+
+/** The numbered lines of a file, cut into segments at every mark's edge. A long file keeps the lines a mark touches and counts the rest. */
+function fileRows(bytes: Uint8Array, marks: MarkRange[], pick: (marks: MarkRange[], piece: Range) => Pick<FileSegment, 'mark' | 'label' | 'title'> & { envelope?: boolean }): FileRowData[] {
+  const lines = byteLines(bytes);
+  const keep = new Set<number>();
+  if (lines.length <= WINDOW_ABOVE) lines.forEach(l => keep.add(l.index));
+  else {
+    for (const line of lines) if (marks.some(m => touches(line, m))) for (let i = Math.max(0, line.index - CONTEXT); i <= Math.min(lines.length - 1, line.index + CONTEXT); i++) keep.add(i);
+    if (!keep.size) for (let i = 0; i < 10; i++) keep.add(i);
+  }
+  const rows: FileRowData[] = [];
+  let hidden = 0;
+  for (const line of lines) {
+    if (!keep.has(line.index)) { hidden++; continue; }
+    if (hidden) { rows.push({ gap: hidden }); hidden = 0; }
+    const segments: FileSegment[] = [];
+    for (const piece of segment(bytes, line.start, line.end, marks)) {
+      const text = piece.text.replace(/\n$/, '');
+      if (!text) continue;
+      segments.push({ text, ...pick(piece.marks, piece) });
+    }
+    rows.push({ number: line.index + 1, segments });
+  }
+  if (hidden) rows.push({ gap: hidden });
+  return rows;
+}
+
+const plural = (n: number, one: string, many: string): string => (n === 1 ? one : many);
+
+/** What differs between two files: the byte ranges of `other` that are not the bytes of `base` at the same place. One range per run of changed bytes. */
+export function changedRanges(base: Uint8Array, other: Uint8Array): Range[] {
+  if (base.length === other.length) {
+    const ranges: Range[] = [];
+    for (let i = 0; i < other.length; i++) {
+      if (base[i] === other[i]) continue;
+      const last = ranges[ranges.length - 1];
+      if (last && last.end === i) last.end = i + 1; else ranges.push({ start: i, end: i + 1 });
+    }
+    return ranges;
+  }
+  let head = 0;
+  while (head < base.length && head < other.length && base[head] === other[head]) head++;
+  let tail = 0;
+  while (tail < base.length - head && tail < other.length - head && base[base.length - 1 - tail] === other[other.length - 1 - tail]) tail++;
+  return [{ start: head, end: other.length - tail }];
+}
+
+function changedText(ranges: Range[], baseLength: number, otherLength: number): string {
+  const lengths = baseLength === otherLength ? '' : ` · length ${int(baseLength)} → ${int(otherLength)}`;
+  if (!ranges.length) return 'no byte differs';
+  const total = ranges.reduce((n, r) => n + (r.end - r.start), 0);
+  if (ranges.length === 1) {
+    const r = ranges[0];
+    if (r.end === r.start) return `${count(baseLength - otherLength, 'byte')} removed at ${int(r.start)}${lengths}`;
+    return `${r.end - r.start === 1 ? `byte ${int(r.start)}` : `bytes ${int(r.start)}–${int(r.end)}`} changed${lengths}`;
+  }
+  return `${count(total, 'byte')} changed in ${ranges.length} places${lengths}`;
+}
+
+// ---- The detail --------------------------------------------------------------------------------------------
+
+const KIND_EYEBROW: Record<string, string> = { 'must-redact': 'must redact', 'must-not-flag': 'must not flag', policy: 'project policy' };
+const REASON_TERM: Record<string, string> = { 'must-redact': 'Why it must be redacted', 'must-not-flag': 'Why it must stay quiet', policy: 'Why this policy applies' };
+const capital = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
+
+/** "github.com/gitleaks/gitleaks": where a source link points, from the link itself. */
+function sourceLabel(href: string): string {
+  try {
+    const url = new URL(href);
+    return `${url.hostname.replace(/^www\./, '')}${url.pathname.split('/').filter(Boolean).slice(0, 2).map(part => `/${decodeURIComponent(part)}`).join('')}`;
+  } catch { return href; }
+}
+
+/** A data URL holding the exact bytes, or undefined when the text cannot be encoded as UTF-8. */
+function downloadOf(content: string, path: string): { href: string; filename: string } | undefined {
+  try {
+    return { href: `data:text/plain;charset=utf-8,${encodeURIComponent(content)}`, filename: path.split('/').pop() || 'fixture.txt' };
+  } catch { return undefined; }
+}
+
+function verdictOf(shared: SuiteShared, kind: string, tier: string, row: RowResult | undefined, scannerStatus: string | undefined): FixtureVerdictData {
+  const product = shared.scanners.find(s => s.id === PRODUCT_ID);
+  const run = shared.run;
+  const who = run?.mode === 'candidate' ? `${PRODUCT_ID} candidate${run.commit ? ` main ${run.commit.slice(0, 7)}` : ''}` : `${PRODUCT_ID}${product?.version ? ` ${product.version}` : ''}`;
+  const when = run ? `${run.mode} run ${run.date}` : 'no run recorded';
+  const policy = kind === 'policy';
+  if (!row) {
+    const reason = shared.runProblem ?? (product && scannerStatus && scannerStatus !== 'complete' ? `${PRODUCT_ID} did not complete in this run (${scannerStatus}).` : product ? 'The run holds no row for these bytes.' : 'No benchmark run is published for this checkout.');
+    return { who, run: when, headline: { status: 'not-measured', label: 'Not measured' }, explanation: reason, figures: [] };
+  }
+  const bytesReported = (row.actual ?? []).reduce((n, r) => n + (r.end - r.start), 0);
+  if (row.spanOutcomes) {
+    const outcomes = row.spanOutcomes;
+    const total = outcomes.length;
+    const n = (...words: string[]) => outcomes.filter(o => words.includes(o)).length;
+    const leaked = n('PARTIAL', 'MISS'), over = n('OVERBROAD'), exact = n('EXACT'), covered = total - leaked;
+    const label = total === 0 ? 'No secret span scored'
+      : leaked === total ? 'Left readable' : leaked > 0 ? 'Some left readable' : over > 0 ? 'Redacted past the envelope' : exact === total ? 'Redacted exactly' : 'Redacted';
+    const status: StatusLabel['status'] = policy ? 'info' : leaked > 0 ? 'fail' : over > 0 ? 'review' : 'pass';
+    const parts = [[exact, 'exact'], [n('COVERED'), 'covered inside the envelope'], [over, 'covered past the envelope'], [n('PARTIAL'), 'partly covered'], [n('MISS'), 'not covered']].filter(([c]) => (c as number) > 0).map(([c, w]) => `${c} ${w}`);
+    const explanation = total === 0 ? 'The corpus authored no secret span to score on this file.'
+      : exact === total ? (total === 1 ? 'It reported one range that starts and ends on the same bytes as the expected secret.' : `Each of the ${total} expected secrets has a reported range that starts and ends on the same bytes.`)
+      : `Of ${count(total, 'expected secret span')}: ${parts.join(', ')}.${policy ? ' This is a project-policy fixture: the outcome is recorded as information.' : ''}`;
+    return {
+      who, run: when, headline: { status, label }, explanation,
+      figures: [
+        { label: 'Secret spans covered', value: int(covered), of: `of ${int(total)}` },
+        { label: 'Bytes left readable', value: int(row.leakedBytes ?? 0) },
+        { label: 'Bytes redacted outside the envelope', value: int(row.collateralBytes ?? 0) },
+      ],
+    };
+  }
+  if (row.flagged != null) {
+    const findings = row.findings ?? row.actual?.length ?? 0;
+    return {
+      who, run: when,
+      headline: row.flagged ? { status: policy ? 'info' : 'fail', label: 'Flagged' } : { status: 'pass', label: 'Quiet' },
+      explanation: row.flagged ? `It reported ${count(findings, 'range')} on a file that holds no expected secret.` : 'It reported no range on this file, which holds no expected secret.',
+      figures: [
+        { label: 'Secret spans expected', value: '0' },
+        { label: 'Ranges reported', value: int(findings) },
+        { label: 'Bytes in reported ranges', value: int(bytesReported) },
+      ],
+    };
+  }
+  return {
+    who, run: when,
+    headline: { status: 'not-measured', label: 'Unscored' },
+    explanation: `It reported ${count(row.actual?.length ?? 0, 'range')}. ${tier === 'T0' ? 'This fixture is pending review and excluded from comparative scores.' : 'The run records no outcome for this fixture.'}`,
+    figures: [{ label: 'Ranges reported', value: int(row.actual?.length ?? 0) }, { label: 'Bytes in reported ranges', value: int(bytesReported) }],
+  };
+}
+
+/** The product's outcome words on a related fixture, with a line saying what it reported. */
+function relatedOutcome(shared: SuiteShared, sibling: FixtureRecord, productIndex: number): { outcome: StatusLabel[]; note: string } {
+  const packed = productIndex >= 0 ? sibling.rows[productIndex] : null;
+  const row = packed ? unpackRow(packed) : undefined;
+  const product = shared.scanners[productIndex];
+  const outcome = verdictsOf(sibling.kind, row, product?.status);
+  if (!row) return { outcome, note: `${PRODUCT_ID} holds no row for it` };
+  if (row.flagged != null) return { outcome, note: row.flagged ? `${PRODUCT_ID} reported ${count(row.findings ?? row.actual?.length ?? 0, 'range')}` : `${PRODUCT_ID} flagged nothing` };
+  if (row.spanOutcomes) return { outcome, note: `${PRODUCT_ID}: ${count(row.spanOutcomes.length, 'secret span')}` };
+  return { outcome, note: `${PRODUCT_ID} reported ${count(row.actual?.length ?? 0, 'range')}` };
+}
+
 /** Rebuild what the fixture page shows from a compact record. Pure, and cheap enough to run for one fixture in the browser. */
-export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared): FixtureDetailData {
-  const assessment = shared.assessments[record.assessment] ?? { sources: [] };
-  const slug = `${shared.category}--${record.id}`;
-  const scanners = shared.scanners.map((s, i) => {
-    const row = record.rows[i];
-    const held = new Map<string, RowResult>();
-    if (row) held.set(slug, unpackRow(row));
-    return { id: s.id, name: s.name, version: s.version, mode: s.mode, status: s.status, rows: held };
-  });
-  return resolveFixtureDetail({
-    fixture: {
-      id: record.id, slug, category: shared.category, group: '', path: record.path, content: record.content, expected: record.expected,
-      ...(record.twinOf ? { twinOf: record.twinOf } : {}),
-      detectors: record.detectors, ...(record.issue ? { issue: record.issue } : {}),
-      ...(record.mutation ? { mutation: record.mutation } : {}), ...(record.mutationKind ? { mutationKind: record.mutationKind } : {}),
-      assessment: { kind: record.kind as BuiltFixture['assessment']['kind'], tier: record.tier as BuiltFixture['assessment']['tier'], ...(record.contract ? { contract: record.contract } : {}), ...(assessment.reason ? { reason: assessment.reason } : {}), sources: assessment.sources },
-    },
-    entry: { slug, category: shared.category, id: record.id, group: '', kind: record.kind as CatalogFixture['kind'], tier: record.tier as CatalogFixture['tier'], familyIds: record.families, detectors: record.detectors },
-    suite: { id: shared.category, title: shared.suite.title, description: '', reviewStatus: shared.suite.reviewStatus },
-    scanners,
-    ...(shared.runProblem ? { runProblem: shared.runProblem } : {}),
-    detectors: record.detectors.map(id => ({ id, title: shared.detectorTitles[id] ?? id })),
-    families: record.families.map(id => ({ id, name: shared.familyNames[id] ?? id })),
-    twins: record.twins.map(id => ({ slug: `${shared.category}--${id}`, category: shared.category, id, group: '', kind: 'must-not-flag', tier: record.tier as CatalogFixture['tier'], familyIds: [], detectors: [] })),
-    followUps: record.followUps.map(i => shared.followUps[i]).filter(Boolean),
-  });
-}
-
-export interface FixtureInput {
-  /** The bytes, expected spans and assessment as the corpus holds them. */
-  fixture: BuiltFixture;
-  entry: CatalogFixture;
-  suite: CatalogSuite;
-  /** The run's scanners in run order, with their rows. Empty when there is no usable run. */
-  scanners: Pick<RunScanner, 'id' | 'name' | 'version' | 'mode' | 'status' | 'rows'>[];
-  /** Why the run has nothing for this suite, when it does not. */
-  runProblem?: string;
-  detectors: { id: string; title: string }[];
-  families: { id: string; name: string }[];
-  /** The negative twins authored from this fixture. */
-  twins: CatalogFixture[];
-  /** Findings that rest on this fixture: milestone label, issue number and url. */
-  followUps: { number: number; url: string; milestone: string }[];
-}
-
-export function resolveFixtureDetail(input: FixtureInput): FixtureDetailData {
-  const { fixture: f, entry, suite } = input;
-  const bytes = encoder.encode(f.content);
-  const spans = f.expected as Span[];
+export function resolveFixtureRecord(record: FixtureRecord, shared: SuiteShared, siblings: FixtureRecord[] = []): FixtureDetailData {
+  const bytes = encoder.encode(record.content);
+  const spans = record.expected;
   const secrets = spans.filter(s => (s.role ?? 'secret') === 'secret');
   const envelopes = spans.flatMap(s => (s.envelope ? [s.envelope] : []));
-  const a = f.assessment;
+  const assessment = shared.assessments[record.assessment] ?? { sources: [] };
+  const text = (index: number | undefined): string | undefined => (index === undefined ? undefined : shared.texts[index]);
+  const slug = `${shared.category}--${record.id}`;
+  const productIndex = shared.scanners.findIndex(s => s.id === PRODUCT_ID);
+  const rowOf = (rec: FixtureRecord, i: number): RowResult | undefined => (rec.rows[i] ? unpackRow(rec.rows[i]!) : undefined);
+  const productRow = productIndex >= 0 ? rowOf(record, productIndex) : undefined;
+  const findings = productRow?.actual ?? [];
+  const kindWord = KIND_TITLE[record.kind] ?? record.kind;
+  const evidence = `${record.tier} · ${TIER_TITLE[record.tier] ?? record.tier}`;
+  const facts = fileFacts(bytes);
+  const notice = hiddenNotice(record.content);
 
-  // A scanner gets a lane only when the run recorded a row for it: a scanner with none is listed as not measured below.
-  const lanes = input.scanners.flatMap(s => {
-    const row = s.rows?.get(f.slug);
-    return row ? [{ scanner: s, row, marks: laneMarks(secrets, row.spanOutcomes, row.actual ?? []) }] : [];
+  // ---- The input: what the corpus expects ----
+  const inputMarks: MarkRange[] = [
+    ...spans.map(s => ({ start: s.start, end: s.end, kind: s.role === 'companion' ? 'companion' : 'expected' })),
+    ...envelopes.map(r => ({ start: r.start, end: r.end, kind: 'envelope' })),
+  ];
+  const input: FixtureFileData = {
+    label: 'Input file', title: record.path, facts,
+    ...(secrets.length ? { note: secrets.length === 1 ? `expected bytes ${rangeText(secrets[0])}` : `${secrets.length} expected spans` } : {}),
+    rows: fileRows(bytes, inputMarks, marks => {
+      const secret = marks.find(m => m.kind === 'expected');
+      return {
+        ...(secret ? { mark: 'expected' as const, title: `Expected secret, bytes ${secret.start} to ${secret.end}` } : marks.some(m => m.kind === 'companion') ? { mark: 'companion' as const, title: 'Companion text of an expected secret' } : {}),
+        ...(marks.some(m => m.kind === 'envelope') ? { envelope: true } : {}),
+      };
+    }),
+    ...(notice ? { notice } : {}),
+  };
+
+  // ---- The output: the product's reported ranges drawn over the input ----
+  const outcomes = productRow?.spanOutcomes;
+  const partialSecrets = secrets.filter((_, i) => outcomes?.[i] === 'PARTIAL');
+  const outputMarks: MarkRange[] = [];
+  for (const f of findings) outputMarks.push({ ...f, kind: partialSecrets.some(s => overlaps(s, f)) ? 'partial' : spans.some(s => overlaps(s, f)) ? 'redacted' : 'extra' });
+  secrets.forEach((s, i) => {
+    if (outcomes?.[i] !== 'PARTIAL' && outcomes?.[i] !== 'MISS') return;
+    // The secret's bytes no reported range covers.
+    let open: Range[] = [{ start: s.start, end: s.end }];
+    for (const f of findings) open = open.flatMap(r => (overlaps(r, f) ? [{ start: r.start, end: Math.min(r.end, f.start) }, { start: Math.max(r.start, f.end), end: r.end }].filter(x => x.end > x.start) : [r]));
+    for (const r of open) outputMarks.push({ ...r, kind: 'exposed' });
   });
+  const output: FixtureFileData | undefined = productRow ? {
+    label: 'Output with the reported ranges drawn over the input',
+    title: findings.length ? `${count(findings.length, 'range')} reported` : 'no range reported',
+    facts,
+    ...(findings.length === 1 ? { note: `bytes ${rangeText(findings[0])}` } : {}),
+    rows: fileRows(bytes, outputMarks, (marks, piece) => {
+      const finding = marks.find(m => m.kind === 'partial') ?? marks.find(m => m.kind === 'redacted') ?? marks.find(m => m.kind === 'extra');
+      if (finding) {
+        const size = count(piece.end - piece.start, 'byte');
+        const label = finding.kind === 'partial' ? `redacted, a secret is partly exposed, ${size}` : finding.kind === 'extra' ? `redacted outside the expected spans, ${size}` : `redacted, ${size}`;
+        return { mark: finding.kind as FileMarkKind, label, title: `Reported range, bytes ${finding.start} to ${finding.end}` };
+      }
+      return marks.some(m => m.kind === 'exposed') ? { mark: 'exposed' as const, title: 'Secret bytes no reported range covers' } : {};
+    }),
+    ...(notice ? { notice } : {}),
+  } : undefined;
+  const product = shared.scanners[productIndex];
+  const outputNote = productRow ? undefined
+    : shared.runProblem ?? (product && product.status !== 'complete' ? `${PRODUCT_ID} did not complete in this run (${product.status}).` : product ? 'The run holds no row for these bytes.' : 'No benchmark run is published for this checkout.');
 
+  const shapes = new Set(outputMarks.map(m => m.kind));
+  const key: FixtureKeyItem[] = [
+    ...(secrets.length ? [{ mark: 'expected' as const, label: 'Expected secret' }] : []),
+    ...(envelopes.length ? [{ mark: 'envelope' as const, label: 'Envelope: may be redacted at no cost' }] : []),
+    ...(spans.some(s => s.role === 'companion') ? [{ mark: 'companion' as const, label: 'Companion text' }] : []),
+    ...(shapes.has('redacted') || shapes.has('extra') ? [{ mark: 'redacted' as const, label: 'Reported by redact-secret' }] : []),
+    ...(shapes.has('partial') ? [{ mark: 'partial' as const, label: 'Reported, a secret partly exposed' }] : []),
+    ...(shapes.has('exposed') ? [{ mark: 'exposed' as const, label: 'Secret bytes left readable' }] : []),
+  ];
+
+  // ---- Spans: expected beside reported, with the outcome the run recorded ----
+  const spanRows: FixtureSpanRow[] = [];
+  let secretNo = 0, companionNo = 0;
+  const usedFindings = new Set<number>();
+  for (const s of spans) {
+    const isSecret = (s.role ?? 'secret') === 'secret';
+    const label = isSecret ? `Secret ${++secretNo}` : `Companion ${++companionNo}`;
+    const outcome = isSecret ? outcomes?.[secretNo - 1] : undefined;
+    const reported = findings.flatMap((f, i) => (overlaps(s, f) ? (usedFindings.add(i), [{ range: rangeText(f), size: sizeText(f) }]) : []));
+    spanRows.push({
+      label, role: `role: ${s.role ?? 'secret'}`,
+      expected: { range: rangeText(s), size: sizeText(s), ...(s.envelope ? { envelope: `${rangeText(s.envelope)}${s.envelope.reason ? `: ${s.envelope.reason.replace(/\.\s*$/, '')}` : ''}` } : {}) },
+      reported,
+      reportedNote: productRow ? 'none reported' : 'not measured',
+      ...(isSecret
+        ? (outcome ? { outcome: verdictsOf(record.kind, { spanOutcomes: [outcome] })[0], outcomeNote: SPAN_NOTE[outcome] } : productRow ? { outcomeNote: 'no outcome recorded' } : { outcome: { status: 'not-measured' as const, label: 'Not measured' } })
+        : { outcomeNote: 'context, not scored' }),
+    });
+  }
+  const outside = findings.flatMap((f, i) => (usedFindings.has(i) ? [] : [{ range: rangeText(f), size: sizeText(f) }]));
+  if (spans.length && outside.length) {
+    spanRows.push({ label: 'Outside the expected spans', role: 'reported where nothing is expected', reported: outside, reportedNote: '', outcomeNote: productRow?.collateralBytes != null ? `${count(productRow.collateralBytes, 'byte')} outside the envelope in this row` : undefined });
+  }
+  if (!spans.length) {
+    findings.forEach((f, i) => spanRows.push({
+      label: `Reported range ${i + 1}`, role: 'no secret expected', reported: [{ range: rangeText(f), size: sizeText(f) }], reportedNote: '',
+      outcome: verdictsOf(record.kind, { flagged: true })[0], outcomeNote: 'a finding on a file with no expected secret',
+    }));
+  }
+  const spansLede = secrets.length
+    ? 'Offsets are UTF-8 bytes, [start, end). An envelope is the widest range a finding may reach at no cost: authored with a reason, hashed with the corpus and never widened in response to a scanner.'
+    : `No secret is expected in this file.${record.kind === 'must-not-flag' ? ' Any reported range is a false alarm.' : ''} Offsets are UTF-8 bytes, [start, end).`;
+
+  // ---- The twins: the files that differ by one authored mutation ----
+  const byId = new Map(siblings.map(s => [s.id, s]));
+  const twinItems: FixtureTwinData[] = [];
+  const related: { label: string; record: FixtureRecord }[] = [];
+  if (record.twinOf) {
+    const original = byId.get(record.twinOf);
+    if (original) {
+      const diff = changedRanges(bytes, encoder.encode(original.content));
+      const ob = encoder.encode(original.content);
+      const o = relatedOutcome(shared, original, productIndex);
+      related.push({ label: original.id, record: original });
+      twinItems.push({
+        id: original.id, href: fixtureHref({ category: shared.category, id: original.id }), title: 'The original',
+        description: `${original.id} is the file this one was made from.${record.mutation ? ` What was changed: ${record.mutation}` : ''}`,
+        changed: changedText(diff, bytes.length, ob.length),
+        file: {
+          label: 'The original, changed lines', title: original.path, facts: fileFacts(ob), note: changedText(diff, bytes.length, ob.length),
+          rows: fileRows(ob, diff.map(r => ({ ...r, kind: 'changed' })), marks => (marks.length ? { mark: 'changed' as const, title: 'A byte this twin differs by' } : {})),
+        },
+        outcome: o.outcome, outcomeNote: o.note, linkLabel: 'Open the original',
+      });
+    }
+  }
+  for (const id of record.twins) {
+    const twin = byId.get(id);
+    if (!twin) continue;
+    const tb = encoder.encode(twin.content);
+    const diff = changedRanges(bytes, tb);
+    const o = relatedOutcome(shared, twin, productIndex);
+    related.push({ label: twin.id, record: twin });
+    twinItems.push({
+      id: twin.id, href: fixtureHref({ category: shared.category, id: twin.id }),
+      title: twin.mutationKind ? `${capital(twin.mutationKind)} twin` : twin.id,
+      description: twin.mutation ?? 'The corpus records no description of what was changed.',
+      changed: changedText(diff, bytes.length, tb.length),
+      file: {
+        label: `${twin.id}, changed lines`, title: twin.path, facts: fileFacts(tb), note: changedText(diff, bytes.length, tb.length),
+        rows: fileRows(tb, diff.map(r => ({ ...r, kind: 'changed' })), marks => (marks.length ? { mark: 'changed' as const, title: 'A byte that differs from this fixture' } : {})),
+      },
+      outcome: o.outcome, outcomeNote: o.note, linkLabel: 'Open the twin',
+    });
+  }
+  const twins = twinItems.length ? {
+    heading: record.twinOf ? 'Its original' : twinItems.length === 1 ? 'Its near-twin' : 'Its near-twins',
+    lede: record.twinOf
+      ? 'The file this one was made from, with the bytes that differ boxed. The corpus expects nothing to be flagged on a twin; a scanner that redacts the original and stays quiet on this file tells the two apart.'
+      : 'The same file with one authored mutation. The corpus expects nothing to be flagged on a twin; a scanner that redacts this fixture and stays quiet on the twin tells the two apart.',
+    items: twinItems,
+  } : undefined;
+
+  // ---- Why this fixture exists ----
+  const group = text(record.group);
+  const axis = text(record.axis);
+  const action = text(record.action);
+  const milestone = text(record.milestone);
+  const scenarioTitles = record.scenarios.map(i => shared.scenarios[i]?.title).filter(Boolean) as string[];
+  // The old site read the issue from the group label ("#211 · …") when the fixture names none.
+  const issueNumber = record.issue ?? (Number(/#(\d+)/.exec(group ?? '')?.[1]) || undefined);
+  const issues = [
+    ...(issueNumber ? [{ label: `Issue #${issueNumber}`, href: `https://github.com/redact-secret/redact-secret/issues/${issueNumber}`, external: true }] : []),
+    ...record.followUps.map(i => shared.followUps[i]).filter(Boolean).map(i => ({ label: `${i.milestone} #${i.number}`, href: i.url, external: true })),
+  ];
+  const factList: FixtureFactData[] = [
+    { term: 'What it tests', notRecorded: true, note: group ? `The corpus records a group label, “${group}”, and no description.` : 'The corpus records no description of this fixture.' },
+    assessment.reason ? { term: REASON_TERM[record.kind] ?? 'Reason', value: assessment.reason } : { term: REASON_TERM[record.kind] ?? 'Reason', notRecorded: true },
+    ...(record.contract ? [{ term: 'Contract', value: record.contract, mono: true }] : []),
+    { term: 'Evidence level', value: evidence, ...(record.tier === 'T0' ? { note: 'Pending review: excluded from comparative scores.' } : {}) },
+    record.families.length
+      ? { term: record.families.length === 1 ? 'Family' : 'Families', links: record.families.map(id => ({ label: shared.familyNames[id] ?? id, href: familyHref(id) })) }
+      : { term: 'Family', value: 'None', note: text(record.unscoped) ?? 'No family relationship is recorded for this fixture.' },
+    ...(record.detectors.length ? [{ term: record.detectors.length === 1 ? 'Detector' : 'Detectors', links: record.detectors.map(id => ({ label: shared.detectorTitles[id] ?? id, href: `/report/detectors/${id}/` })) }] : []),
+    ...(scenarioTitles.length ? [{ term: 'Scenarios', value: scenarioTitles.join(' · ') }] : []),
+    ...(axis ? [{ term: 'Context axis', value: axis, mono: true }] : []),
+    ...(action ? [{ term: 'Expected action', value: action, mono: true }] : []),
+    { term: 'Added', value: `${milestone ? `${capital(milestone)} · ` : ''}suite ${shared.suite.title}`, note: `Suite ${shared.category}` },
+    ...(issues.length ? [{ term: 'Issues', links: issues }] : []),
+    { term: 'Review', value: record.tier === 'T0' ? 'Pending review: excluded from comparative scores.' : `Authored from construction and evidence, never from scanner output.${shared.suite.reviewStatus ? ` ${shared.suite.reviewStatus}.` : ''}` },
+    { term: 'File', value: record.path, mono: true, note: `${count(bytes.length, 'byte')}${record.sha ? ` · sha256 ${record.sha}…` : ''}` },
+  ];
+
+  // ---- The other scanners ----
+  const others = shared.scanners.map((s, i) => ({ s, i })).filter(({ s }) => s.id !== PRODUCT_ID);
+  const relatedHeading = record.twinOf ? 'Its original' : twinItems.length === 1 ? 'Its twin' : twinItems.length > 1 ? 'Its twins' : undefined;
+  const peerRows: FixturePeerRow[] = others.map(({ s, i }) => {
+    const row = rowOf(record, i);
+    return {
+      id: s.id, name: `${s.name}${s.version ? ` ${s.version}` : ''}`,
+      detail: `${s.observed.length ? `Results from ${s.observed.join(', ')} · ` : ''}${s.version ? '' : 'version unavailable · '}${s.mode}`,
+      fixture: verdictsOf(record.kind, row, s.status),
+      ranges: row ? rangesText(row.actual) : '—',
+      ...(related.length ? { related: related.map(r => ({ label: r.label, outcome: verdictsOf(r.record.kind, rowOf(r.record, i), s.status) })) } : {}),
+    };
+  });
+  const laneScanners = shared.scanners.flatMap((s, i) => { const row = rowOf(record, i); return row ? [{ s, i, row, marks: laneMarks(secrets, row.spanOutcomes, row.actual ?? []) }] : []; });
   const lines = byteLines(bytes);
-  const active = new Set(lines.filter(line => spans.some(s => touches(line, s)) || envelopes.some(r => touches(line, r)) || lanes.some(l => l.marks.some(m => touches(line, m)))).map(l => l.index));
+  const active = new Set(lines.filter(line => spans.some(s => touches(line, s)) || envelopes.some(r => touches(line, r)) || laneScanners.some(l => l.marks.some(m => touches(line, m)))).map(l => l.index));
   if (!active.size && lines.length) active.add(0);
-
-  const describe = (marks: Mark[], line: Range): string =>
-    marks.filter(m => touches(line, m)).map(m => `${m.shape === 'outline' ? 'missed' : m.shape === 'hatch' ? 'partly covered' : 'covered'} bytes ${m.start}–${m.end}`).join('; ') || 'nothing covered';
-
-  const lineData: ByteLineData[] = lines.map(line => {
-    const marks = [
-      ...spans.map(s => ({ start: s.start, end: s.end, kind: s.role === 'companion' ? 'companion' : 'secret' })),
-      ...envelopes.map(r => ({ start: r.start, end: r.end, kind: 'envelope' })),
-    ];
+  const describe = (marks: Mark[], line: Range): string => marks.filter(m => touches(line, m)).map(m => `${m.shape === 'outline' ? 'missed' : m.shape === 'hatch' ? 'partly covered' : 'covered'} bytes ${m.start}–${m.end}`).join('; ') || 'nothing covered';
+  const laneLines: ByteLineData[] = lines.filter(line => lines.length <= WINDOW_ABOVE || [...active].some(a => Math.abs(a - line.index) <= CONTEXT)).map(line => {
+    const marks = [...spans.map(s => ({ start: s.start, end: s.end, kind: s.role === 'companion' ? 'companion' : 'secret' })), ...envelopes.map(r => ({ start: r.start, end: r.end, kind: 'envelope' }))];
     const segments: ByteSegment[] = segment(bytes, line.start, line.end, marks).map(piece => ({
       text: piece.text,
       ...(piece.marks.some(m => m.kind === 'secret') ? { role: 'secret' as const } : piece.marks.some(m => m.kind === 'companion') ? { role: 'companion' as const } : {}),
@@ -306,74 +686,60 @@ export function resolveFixtureDetail(input: FixtureInput): FixtureDetailData {
     return {
       number: line.index + 1,
       segments,
-      lanes: active.has(line.index) ? lanes.map(l => ({
-        label: `${l.scanner.name}, line ${line.index + 1}: ${describe(l.marks, line)}`,
+      lanes: active.has(line.index) ? laneScanners.map(l => ({
+        label: `${l.s.name}, line ${line.index + 1}: ${describe(l.marks, line)}`,
         pieces: segment(bytes, line.start, line.end, l.marks).map((piece): LanePiece => {
-          const shape = PRIORITY.find(s => piece.marks.some(m => m.shape === s));
+          const shape = PRIORITY.find(sh => piece.marks.some(m => m.shape === sh));
           return { text: piece.text, ...(shape ? { shape } : {}) };
         }),
       })) : [],
     };
   });
-
-  const caption = secrets.length
+  const lanesCaption = secrets.length
     ? `Secret bytes ${describeSpans(secrets)}.${spans.filter(s => s.envelope).map(s => ` Envelope ${s.envelope!.start}–${s.envelope!.end}: ${(s.envelope!.reason ?? 'a finding may extend this far at no cost').replace(/\.\s*$/, '')}.`).join('')} All values are synthetic test data.`
-    : `No authored secret spans.${a.kind === 'must-not-flag' ? ' Any finding on this file is a false alarm.' : ''} All values are synthetic test data.`;
+    : `No authored secret spans.${record.kind === 'must-not-flag' ? ' Any finding on this file is a false alarm.' : ''} All values are synthetic test data.`;
+  const peers = others.length ? {
+    summary: `Same input, ${count(others.length, 'other scanner')}`,
+    ...(relatedHeading ? { relatedHeading } : {}),
+    rows: peerRows,
+    ...(laneScanners.length ? { lanes: { lines: laneLines, scanners: laneScanners.map(l => ({ id: l.s.id, name: l.s.name, verdict: verdictsOf(record.kind, l.row, l.s.status) })), caption: lanesCaption } } : {}),
+  } : undefined;
 
-  const expected: ExpectedSpanRow[] = spans.map(s => ({
-    range: `[${s.start}, ${s.end})`,
-    role: s.role ?? 'secret',
-    value: decoder.decode(bytes.slice(s.start, s.end)),
-    ...(s.envelope ? { envelope: { range: `[${s.envelope.start}, ${s.envelope.end})`, ...(s.envelope.reason ? { reason: s.envelope.reason } : {}) } } : {}),
-    ...(s.note ? { note: s.note } : {}),
-  }));
-
-  const reported: ReportedRangesRow[] = input.scanners.map(s => {
-    const row = s.rows?.get(f.slug);
-    return {
-      scanner: s.name,
-      detail: `${s.version ?? 'version unavailable'} · ${s.mode}`,
-      outcome: verdictsOf(a.kind, row, s.status),
-      ...(row ? { code: row.spanOutcomes ? row.spanOutcomes.join(' · ') : row.flagged != null ? (row.flagged ? 'FLAGGED' : 'QUIET') : 'UNSCORED' } : { code: s.status === 'complete' ? 'No row is recorded for these bytes in this run.' : `The scanner did not complete (${s.status}).` }),
-      ranges: row ? rangesText(row.actual) : '—',
-      ...(row?.spanOutcomes ? { bytes: `leaked ${row.leakedBytes ?? 0} · outside envelope ${row.collateralBytes ?? 0}` } : {}),
-    };
-  });
-
-  const facts: FixtureFactData[] = [
-    { term: 'Kind', value: KIND_TITLE[a.kind] ?? a.kind },
-    { term: 'Evidence', value: `${a.tier} · ${TIER_TITLE[a.tier] ?? a.tier}${a.tier === 'T0' ? ' (unscored)' : ''}` },
-    ...(a.contract ? [{ term: 'Contract', value: a.contract }] : []),
-    ...(f.twinOf ? [{ term: 'Twin of', value: f.twinOf, href: fixtureHref({ category: f.category, id: f.twinOf }) }] : []),
-    ...(f.mutation ? [{ term: 'Mutation', value: `${f.mutationKind ?? 'mutation'}: ${f.mutation}` }] : []),
-    ...(input.twins.length ? [{ term: 'Negative twins', links: input.twins.map(t => ({ label: t.id, href: fixtureHref(t) })) }] : []),
-    ...(a.reason ? [{ term: 'Reason', value: a.reason }] : []),
-    ...(input.followUps.length || f.issue ? [{ term: 'Issues', links: [
-      ...(f.issue ? [{ label: `Issue #${f.issue}`, href: `https://github.com/redact-secret/redact-secret/issues/${f.issue}` }] : []),
-      ...input.followUps.map(i => ({ label: `${i.milestone} #${i.number}`, href: i.url })),
-    ] }] : []),
-    { term: 'Review', value: `${a.tier === 'T0' ? 'Pending review: excluded from comparative scores.' : 'Authored from construction and evidence, never from scanner output.'}${suite.reviewStatus ? ` ${suite.reviewStatus}.` : ''}` },
-  ];
+  // ---- The head ----
+  const provider = record.families.length ? shared.providerNames[record.families[0]] ?? NOT_PROVIDER_SPECIFIC.name : undefined;
+  const crumbs = record.families.length
+    ? [{ label: 'Report', href: '/report/' }, { label: 'Providers', href: '/report/providers/' }, { label: provider!, href: `/report/providers/?q=${encodeURIComponent(provider!)}` }, { label: shared.familyNames[record.families[0]] ?? record.families[0], href: familyHref(record.families[0]) }, { label: record.id }]
+    : [{ label: 'Report', href: '/report/' }, { label: 'Suites', href: '/report/fixtures/' }, { label: shared.suite.title, href: suiteHref(shared.category) }, { label: record.id }];
 
   return {
-    id: f.id,
-    suite: suite.title,
-    suiteHref: suiteHref(f.category),
-    kind: KIND_TITLE[a.kind] ?? a.kind,
-    evidence: `${a.tier} · ${TIER_TITLE[a.tier] ?? a.tier}`,
-    path: f.path,
-    size: `${int(bytes.length)} UTF-8 bytes, [start, end)`,
-    detectors: input.detectors.map(d => ({ id: d.id, title: d.title, href: `/report/detectors/${d.id}/` })),
-    families: input.families.map(fam => ({ id: fam.id, name: fam.name, href: familyHref(fam.id) })),
-    scanners: lanes.map(l => ({ id: l.scanner.id, name: l.scanner.name, verdict: verdictsOf(a.kind, l.row, l.scanner.status) })),
-    lines: lineData,
-    caption,
-    expected,
-    reported,
-    facts,
-    sources: (a.sources ?? []).map((href, i) => ({ href, label: `Evidence ${i + 1}` })),
-    command: `npm run bench -- --category=${f.category}`,
-    escaped: JSON.stringify(f.content).replace(/﻿/g, '\\uFEFF'),
-    ...(input.runProblem ? { runProblem: input.runProblem } : {}),
+    id: record.id,
+    head: {
+      eyebrow: `Fixture · ${KIND_EYEBROW[record.kind] ?? record.kind}`,
+      title: record.id,
+      slug,
+      tags: [
+        { label: kindWord },
+        { label: evidence },
+        ...(axis ? [{ label: axis, mono: true }] : []),
+        { label: 'Synthetic value', dashed: true },
+      ],
+    },
+    crumbs,
+    suiteHref: suiteHref(shared.category),
+    verdict: verdictOf(shared, record.kind, record.tier, productRow, product?.status),
+    input,
+    ...(output ? { output } : { outputNote }),
+    key,
+    spans: spanRows,
+    spansLede,
+    ...(twins ? { twins } : {}),
+    whyHeading: 'Why this fixture exists',
+    facts: factList,
+    sources: assessment.sources.map(href => ({ href, label: sourceLabel(href) })),
+    escaped: JSON.stringify(record.content).replace(/\ufeff/g, '\\uFEFF'),
+    command: `npm run bench -- --category=${shared.category}`,
+    actions: { ...(downloadOf(record.content, record.path) ? { download: downloadOf(record.content, record.path)! } : {}), corpusHref: suiteHref(shared.category) },
+    ...(peers ? { peers } : {}),
+    ...(shared.runProblem ? { runProblem: shared.runProblem } : {}),
   };
 }

@@ -35,6 +35,10 @@ export interface CatalogFixture {
   unscopedReason?: string;
   /** Detector families the fixture is assigned to (`benchmarks/fixture-detectors.json`); assignments overlap. */
   detectors: string[];
+  /** Reviewed scenarios (`benchmarks/scenarios.json`), from the fixture index. */
+  scenarioIds?: string[];
+  /** The release milestone that added the fixture ("beta.8"), when the fixture index records one. */
+  milestone?: string;
 }
 
 /** A published suite of the corpus, in registry order. */
@@ -55,6 +59,8 @@ export interface Catalog {
   /** Fixtures assigned to a detector. A fixture can be under several, so these are never summed. */
   fixturesByDetector: Map<string, CatalogFixture[]>;
   fixturesBySuite: Map<string, CatalogFixture[]>;
+  /** Scenario titles by id (`benchmarks/scenarios.json`). */
+  scenarioTitles: Map<string, string>;
 }
 
 interface CategoryEntry { id: string; title: string; description: string; corpus: string; calibrationOnly?: boolean }
@@ -64,6 +70,8 @@ interface DetectorRegistry { detectors: { id: string; title: string }[] }
 export type BuiltFixture = {
   id: string; slug: string; category: string; group: string; path: string; content: string; expected: unknown[]; twinOf?: string;
   detectors: string[]; issue?: number; mutation?: string; mutationKind?: string;
+  /** Authored where the corpus has one: where in a file the fixture sits (`sdk-config`), the action a policy fixture expects. */
+  contextAxis?: string; expectedAction?: string;
   assessment: { kind: Kind; tier: Tier; contract?: string; reason?: string; sources?: string[] };
 };
 
@@ -96,16 +104,18 @@ interface Loaded extends CatalogSources {
   taxonomy: Taxonomy;
   registry: DetectorRegistry;
   suites: CatalogSuite[];
+  scenarios: { id: string; title: string }[];
 }
 
 function loadSources(): Promise<Loaded> {
   return once('catalog-sources', async () => {
-    const [categoriesAll, registry, assignments, index, taxonomy] = await Promise.all([
+    const [categoriesAll, registry, assignments, index, taxonomy, scenarioRegistry] = await Promise.all([
       readJson<CategoryEntry[]>('benchmarks/categories.json'),
       readJson<DetectorRegistry>('benchmarks/detectors.json'),
       readJson<Record<string, string[]>>('benchmarks/fixture-detectors.json'),
       readJson<FixtureIndex>('benchmarks/fixture-index.json'),
       readJson<Taxonomy>('benchmarks/support/taxonomy.json'),
+      readJson<{ scenarios: { id: string; title: string }[] }>('benchmarks/scenarios.json'),
     ]);
     const categories = categoriesAll.filter(c => !c.calibrationOnly);
     const texts = await Promise.all(categories.map(async c => [c.id, await readFile(path.join(REPO_ROOT, c.corpus), 'utf8')] as const));
@@ -120,7 +130,7 @@ function loadSources(): Promise<Loaded> {
     const built = buildCatalog(categories, corpora, assignments, registry.detectors) as BuiltFixture[];
     if (index.identity.fixtureCount !== built.length) throw new Error('Fixture semantic index membership does not match the fixture corpora');
     const suites = categories.map(c => ({ id: c.id, title: c.title, description: c.description, reviewStatus: corpora[c.id].reviewStatus ?? '' }));
-    return { categories: categories.map(c => c.id), hashes, fixtures: built, index, taxonomy, registry, suites };
+    return { categories: categories.map(c => c.id), hashes, fixtures: built, index, taxonomy, registry, suites, scenarios: scenarioRegistry.scenarios.map(s => ({ id: s.id, title: s.title })) };
   });
 }
 
@@ -132,6 +142,14 @@ function loadSources(): Promise<Loaded> {
 export async function loadFixtureBytes(): Promise<Map<string, BuiltFixture>> {
   const { fixtures } = await loadSources();
   return new Map(fixtures.map(f => [f.slug, f]));
+}
+
+/** sha256 of each fixture's bytes (UTF-8), by slug. What the fixture page shows as the file's hash. */
+export function loadFixtureHashes(): Promise<Map<string, string>> {
+  return once('fixture-hashes', async () => {
+    const { fixtures } = await loadSources();
+    return new Map(fixtures.map(f => [f.slug, createHash('sha256').update(new TextEncoder().encode(f.content)).digest('hex')]));
+  });
 }
 
 /** The published suites, in registry order, with the review status the corpus carries. */
@@ -147,7 +165,7 @@ export async function loadCatalogSources(): Promise<CatalogSources> {
 
 export function loadCatalog(): Promise<Catalog> {
   return once('catalog', async () => {
-    const { fixtures: built, index, taxonomy, registry, suites } = await loadSources();
+    const { fixtures: built, index, taxonomy, registry, suites, scenarios } = await loadSources();
     const semantic = new Map(index.fixtures.map(entry => [entry.slug, entry]));
     const providerById = new Map(taxonomy.providers.map(p => [p.id, p]));
     const familyById = new Map(taxonomy.families.map(f => [f.id, f]));
@@ -164,6 +182,8 @@ export function loadCatalog(): Promise<Catalog> {
         familyIds: entry.familyIds,
         ...(entry.unscopedReason ? { unscopedReason: entry.unscopedReason } : {}),
         detectors: f.detectors,
+        ...(entry.scenarioIds.length ? { scenarioIds: entry.scenarioIds } : {}),
+        ...(entry.provenance.milestone ? { milestone: entry.provenance.milestone } : {}),
       };
     });
 
@@ -178,6 +198,7 @@ export function loadCatalog(): Promise<Catalog> {
       fixtures, bySlug: new Map(fixtures.map(f => [f.slug, f])), taxonomy, providerById, familyById, fixturesByFamily,
       detectorCount: registry.detectors.length,
       suites, detectors: registry.detectors.map(d => ({ id: d.id, title: d.title })), fixturesByDetector, fixturesBySuite,
+      scenarioTitles: new Map(scenarios.map(s => [s.id, s.title])),
     };
   });
 }

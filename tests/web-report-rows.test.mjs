@@ -14,7 +14,7 @@ import { BUILD_DATA_PATH, recordsDataPath, rowsDataPath } from '../web/lib/data-
 import { PAGE_SIZE, filterRows, rowsQueryOf, rowsQueryString } from '../web/resolvers/filters.ts';
 import { boundText, resolveDetector, resolveDetectorList } from '../web/resolvers/detectors.ts';
 import { milestoneLabel, resolveFindingsInventory, resolveSuiteRows } from '../web/resolvers/inventory.ts';
-import { buildSuiteRecords, byteLines, packRow, resolveFixtureDetail, resolveFixtureRecord, segment, unpackRow, verdictsOf } from '../web/resolvers/fixtures.ts';
+import { buildSuiteRecords, byteLines, changedRanges, isSuiteRecordsFile, packRow, resolveFixtureRecord, segment, unpackRow, verdictsOf } from '../web/resolvers/fixtures.ts';
 
 const fx = (slug, kind, tier, familyIds, extra = {}) => ({ slug: `s--${slug}`, category: 's', id: slug, group: 'g', kind, tier, familyIds, detectors: [], ...extra });
 const fixtures = [
@@ -157,56 +157,214 @@ test('row filters narrow by search, show and level, and the query lives in the U
 const content = 'k=synth-01\n é value ';
 const bytes = new TextEncoder().encode(content);
 const built = (over = {}) => ({
-  id: 'demo', slug: 's--demo', category: 's', group: 'g', path: 'cases/demo.txt', content,
+  id: 'demo', slug: 's--demo', category: 's', group: '#1 · demo · sdk-config', path: 'cases/demo.txt', content, contextAxis: 'sdk-config',
   expected: [{ start: 2, end: 10, role: 'secret', envelope: { start: 0, end: 10, reason: 'the name may go with the value.' }, note: 'synthetic' }],
-  detectors: ['det'], assessment: { kind: 'must-redact', tier: 'T1', contract: 'det', reason: 'Because.', sources: ['https://docs.example.com/x'] }, ...over,
+  detectors: ['det'], assessment: { kind: 'must-redact', tier: 'T1', contract: 'det', reason: 'Because.', sources: ['https://docs.example.com/x/y/z'] }, ...over,
 });
-const lane = (rows) => ({ id: 'p', name: 'Peer', version: '1.0.0', mode: 'Directory scan', status: 'complete', rows: new Map(rows) });
+const scanner = (id, name, rows, over = {}) => ({ id, name, version: '1.0.0', mode: 'Directory scan', status: 'complete', rows: new Map(rows), observations: [{ observedAt: '2026-09-29T10:00:00Z' }], ...over });
 const suite = { id: 's', title: 'Suite S', description: '', reviewStatus: 'Reviewed 2026-09-30' };
+const hashOf = slug => `${slug.length.toString(16).padStart(2, '0')}abcdef0123456789`.padEnd(64, '0');
+
+/** Records and shared text of one synthetic suite, then the page of one fixture. */
+function suiteOf(items, scanners, over = {}) {
+  const fixtures = items.map(i => i.entry);
+  const out = buildSuiteRecords({
+    suite, fixtures, bytes: new Map(items.map(i => [i.entry.slug, i.built])), hashes: new Map(items.map(i => [i.entry.slug, hashOf(i.entry.slug)])), scanners,
+    run: { date: '2026-09-30', mode: 'published' }, findings: [{ number: 7, url: 'https://example.com/7', milestone: 'Beta.3', fixtures: ['s--demo'] }],
+    detectorTitles: new Map([['det', 'Det']]), familyNames: new Map([['x:one', 'One']]), providerNames: new Map([['x:one', 'Ex']]),
+    scenarioTitles: new Map([['ctx', 'Context and encoding']]), ...over,
+  });
+  const page = id => resolveFixtureRecord(out.records.find(r => r.id === id), out.shared, out.records);
+  return { ...out, page };
+}
+const demoEntry = (over = {}) => fx('demo', 'must-redact', 'T1', ['x:one'], { detectors: ['det'], scenarioIds: ['ctx'], milestone: 'beta.8', ...over });
 
 test('bytes are cut at range boundaries in UTF-8 offsets, never in the middle of a character', () => {
   assert.deepEqual(byteLines(bytes).map(l => [l.start, l.end]), [[0, 11], [11, bytes.length]]);
   const pieces = segment(bytes, 11, bytes.length, [{ start: 12, end: 14 }]);
   assert.deepEqual(pieces.map(p => p.text), [' ', 'é', ' value '], 'a two-byte character stays whole');
+  assert.deepEqual(pieces.map(p => [p.start, p.end]), [[11, 12], [12, 14], [14, bytes.length]]);
 });
 
-test('the fixture page draws each scanner’s outcome as a shape under the bytes and lists what was reported', () => {
-  const detail = resolveFixtureDetail({
-    fixture: built(), entry: fx('demo', 'must-redact', 'T1', ['x:one']), suite,
-    scanners: [
-      lane([['s--demo', { spanOutcomes: ['EXACT'], actual: [{ start: 2, end: 10 }], leakedBytes: 0, collateralBytes: 0 }]]),
-      { id: 'q', name: 'Quiet', version: '2', mode: 'm', status: 'complete', rows: new Map([['s--demo', { spanOutcomes: ['PARTIAL'], actual: [{ start: 2, end: 6 }], leakedBytes: 4, collateralBytes: 0 }]]) },
-      { id: 'm', name: 'Misser', version: '3', mode: 'm', status: 'complete', rows: new Map([['s--demo', { spanOutcomes: ['MISS'], actual: [] }]]) },
-      { id: 'n', name: 'NoRow', version: '4', mode: 'm', status: 'complete', rows: new Map() },
-    ],
-    detectors: [{ id: 'det', title: 'Det' }], families: [{ id: 'x:one', name: 'One' }], twins: [], followUps: [{ number: 7, url: 'https://example.com/7', milestone: 'Beta.3' }],
-  });
-  assert.deepEqual(detail.scanners.map(s => s.name), ['Peer', 'Quiet', 'Misser'], 'a scanner with no row gets no lane');
-  const first = detail.lines[0];
-  assert.deepEqual(first.segments.map(s => [s.text, !!s.role, !!s.envelope]), [['k=', false, true], ['synth-01', true, true]].concat([['\n', false, false]]));
-  assert.deepEqual(first.lanes.map(l => l.pieces.map(p => p.shape ?? '-')), [['-', 'fill', '-'], ['-', 'hatch', '-'], ['-', 'outline', '-']]);
-  assert.equal(detail.lines[1].lanes.length, 0, 'a line nothing touches carries no lanes');
-  assert.deepEqual(detail.reported.map(r => r.outcome[0].label), ['Redacted'.replace('Redacted', 'Exact'), 'Partly exposed', 'Missed', 'Not measured']);
-  assert.equal(detail.reported[1].bytes, 'leaked 4 · outside envelope 0');
-  assert.equal(detail.reported[3].ranges, '—');
-  assert.match(detail.caption, /Secret bytes 2–10\. Envelope 0–10: the name may go with the value\. All values are synthetic test data\./);
-  assert.deepEqual(detail.expected, [{ range: '[2, 10)', role: 'secret', value: 'synth-01', envelope: { range: '[0, 10)', reason: 'the name may go with the value.' }, note: 'synthetic' }]);
-  assert.deepEqual(detail.facts.find(f => f.term === 'Issues').links, [{ label: 'Beta.3 #7', href: 'https://example.com/7' }]);
-  assert.equal(detail.escaped, JSON.stringify(content));
-  assert.equal(detail.detectors[0].href, '/report/detectors/det/');
-  assert.equal(detail.families[0].href, '/report/families/x--one/');
+test('the input marks what was expected and the output draws what redact-secret reported, exposed bytes included', () => {
+  const { page } = suiteOf([{ entry: demoEntry(), built: built() }], [
+    scanner('redact-secret', 'redact-secret', [['s--demo', { spanOutcomes: ['PARTIAL'], actual: [{ start: 2, end: 6 }], leakedBytes: 4, collateralBytes: 0 }]]),
+    scanner('q', 'Quiet', [['s--demo', { spanOutcomes: ['EXACT'], actual: [{ start: 2, end: 10 }], leakedBytes: 0, collateralBytes: 0 }]]),
+    scanner('n', 'NoRow', []),
+  ]);
+  const detail = page('demo');
+  const segs = row => row.segments.map(x => [x.text, x.mark ?? '-', !!x.envelope]);
+  assert.deepEqual(segs(detail.input.rows[0]), [['k=', '-', true], ['synth-01', 'expected', true]], 'the secret sits inside its envelope; the line break is not drawn');
+  assert.equal(detail.input.rows[0].segments[1].title, 'Expected secret, bytes 2 to 10');
+  assert.deepEqual(segs(detail.output.rows[0]), [['k=', '-', false], ['synt', 'partial', false], ['h-01', 'exposed', false]], 'a range over a partly exposed secret is hatched; the bytes it leaves are a dashed frame');
+  assert.equal(detail.output.rows[0].segments[1].label, 'redacted, a secret is partly exposed, 4 bytes');
+  assert.equal(detail.input.facts, '21 bytes · LF · UTF-8');
+  assert.equal(detail.output.title, '1 range reported');
+  assert.equal(detail.output.note, 'bytes 2–6');
+  assert.deepEqual(detail.key.map(k => k.mark), ['expected', 'envelope', 'partial', 'exposed']);
+  assert.deepEqual(detail.spans.map(r => [r.label, r.expected.range, r.reported.map(x => x.range), r.outcome.label, r.outcomeNote]), [['Secret 1', '2–10', ['2–6'], 'Partly exposed', 'Reported ranges overlap it but none contains it']]);
+  assert.equal(detail.spans[0].expected.envelope, '0–10: the name may go with the value');
+  assert.deepEqual(detail.verdict.headline, { status: 'fail', label: 'Left readable' });
+  assert.deepEqual(detail.verdict.figures, [{ label: 'Secret spans covered', value: '0', of: 'of 1' }, { label: 'Bytes left readable', value: '4' }, { label: 'Bytes redacted outside the envelope', value: '0' }]);
+  assert.match(detail.verdict.who, /^redact-secret 1\.0\.0$/);
+  assert.equal(detail.verdict.run, 'published run 2026-09-30');
+  // The other scanners: the product is not among them, a scanner with no row is not measured, ranges are as recorded.
+  assert.deepEqual(detail.peers.rows.map(r => [r.name, r.fixture.map(x => x.label), r.ranges]), [['Quiet 1.0.0', ['Exact'], '[2, 10)'], ['NoRow 1.0.0', ['Not measured'], '—']]);
+  assert.equal(detail.peers.summary, 'Same input, 2 other scanners');
+  assert.match(detail.peers.rows[0].detail, /^Results from 2026-09-29 · Directory scan/);
+  assert.equal(detail.peers.relatedHeading, undefined, 'no twin, no related column');
+  assert.deepEqual(detail.peers.lanes.scanners.map(s => s.name), ['redact-secret', 'Quiet'], 'a scanner with no row gets no lane');
 });
 
-test('a control has no secret spans and its verdicts are Quiet or Flagged; a policy row is information', () => {
+test('an exact outcome is said in words, and a control is Quiet or Flagged with its ranges listed', () => {
+  const exactRow = { spanOutcomes: ['EXACT'], actual: [{ start: 2, end: 10 }], leakedBytes: 0, collateralBytes: 0 };
+  const control = (id, row) => ({ entry: fx(id, 'must-not-flag', 'T1', []), built: built({ id, slug: `s--${id}`, expected: [], assessment: { kind: 'must-not-flag', tier: 'T1', reason: 'Because.', sources: [] } }), row });
+  const items = [{ entry: demoEntry(), built: built() }, control('quiet'), control('flagged')];
+  const { page } = suiteOf(items, [scanner('redact-secret', 'redact-secret', [['s--demo', exactRow], ['s--quiet', { flagged: false, actual: [] }], ['s--flagged', { flagged: true, findings: 2, actual: [{ start: 0, end: 3 }, { start: 5, end: 9 }] }]])]);
+  const exact = page('demo');
+  assert.deepEqual(exact.verdict.headline, { status: 'pass', label: 'Redacted exactly' });
+  assert.equal(exact.verdict.explanation, 'It reported one range that starts and ends on the same bytes as the expected secret.');
+  assert.deepEqual(exact.verdict.figures[0], { label: 'Secret spans covered', value: '1', of: 'of 1' });
+  assert.equal(exact.peers, undefined, 'the only scanner is the product: no other scanners to list');
+  const quiet = page('quiet');
+  assert.deepEqual(quiet.verdict.headline, { status: 'pass', label: 'Quiet' });
+  assert.deepEqual(quiet.spans, [], 'a quiet control has no span rows');
+  assert.match(quiet.spansLede, /^No secret is expected in this file\. Any reported range is a false alarm\./);
+  assert.equal(quiet.output.title, 'no range reported');
+  const flagged = page('flagged');
+  assert.deepEqual(flagged.verdict.headline, { status: 'fail', label: 'Flagged' });
+  assert.deepEqual(flagged.spans.map(r => [r.label, r.reported[0].range, r.outcome.label]), [['Reported range 1', '0–3', 'Flagged'], ['Reported range 2', '5–9', 'Flagged']]);
+  assert.deepEqual(flagged.output.rows[0].segments.map(x => x.mark ?? '-'), ['extra', '-', 'extra', '-'], 'ranges on a control are bars');
+  assert.equal(flagged.verdict.figures[2].value, '7', 'the bytes in the reported ranges, as recorded');
+});
+
+test('a policy row is information, an overbroad one is a review, a missed one is left readable', () => {
+  const run = rows => suiteOf([{ entry: demoEntry({ kind: 'policy', tier: 'T3' }), built: built({ assessment: { kind: 'policy', tier: 'T3', reason: 'Policy.', sources: [] } }) }], [scanner('redact-secret', 'redact-secret', [['s--demo', rows]])]).page('demo');
+  assert.deepEqual(run({ spanOutcomes: ['MISS'], actual: [] }).verdict.headline, { status: 'info', label: 'Left readable' });
+  assert.equal(run({ spanOutcomes: ['MISS'], actual: [] }).spans[0].outcome.status, 'info');
+  const over = suiteOf([{ entry: demoEntry(), built: built() }], [scanner('redact-secret', 'redact-secret', [['s--demo', { spanOutcomes: ['OVERBROAD'], actual: [{ start: 0, end: 20 }], leakedBytes: 0, collateralBytes: 10 }]])]).page('demo');
+  assert.deepEqual(over.verdict.headline, { status: 'review', label: 'Redacted past the envelope' });
+  assert.equal(over.verdict.figures[2].value, '10');
+  assert.equal(verdictsOf('policy', { spanOutcomes: ['MISS'] })[0].status, 'info');
   assert.deepEqual(verdictsOf('must-not-flag', { flagged: false }).map(v => v.label), ['Quiet']);
   assert.deepEqual(verdictsOf('must-not-flag', { flagged: true, findings: 3 }).map(v => v.label), ['Flagged ×3']);
-  assert.equal(verdictsOf('policy', { spanOutcomes: ['MISS'] })[0].status, 'info');
   assert.equal(verdictsOf('must-redact', undefined, 'unstable')[0].label, 'Unstable');
-  const control = resolveFixtureDetail({ fixture: built({ expected: [], assessment: { kind: 'must-not-flag', tier: 'T1' } }), entry: fx('demo', 'must-not-flag', 'T1', []), suite, scanners: [], detectors: [], families: [], twins: [], followUps: [], runProblem: 'No run.' });
-  assert.match(control.caption, /^No authored secret spans\. Any finding on this file is a false alarm\./);
-  assert.equal(control.runProblem, 'No run.');
-  assert.deepEqual(control.expected, []);
-  assert.equal(control.lines.filter(l => l.lanes.length).length, 0);
+});
+
+test('a fixture with no row, or a run that left the suite out, says Not measured and why, never a pass', () => {
+  const none = suiteOf([{ entry: demoEntry(), built: built() }], [scanner('redact-secret', 'redact-secret', [])]).page('demo');
+  assert.deepEqual(none.verdict.headline, { status: 'not-measured', label: 'Not measured' });
+  assert.equal(none.verdict.explanation, 'The run holds no row for these bytes.');
+  assert.deepEqual(none.verdict.figures, []);
+  assert.equal(none.output, undefined);
+  assert.equal(none.outputNote, 'The run holds no row for these bytes.');
+  assert.deepEqual(none.spans[0].outcome, { status: 'not-measured', label: 'Not measured' });
+  assert.equal(none.spans[0].reportedNote, 'not measured');
+  const left = suiteOf([{ entry: demoEntry(), built: built() }], [], { run: undefined, runProblem: 'No benchmark run is published for this checkout.' }).page('demo');
+  assert.equal(left.verdict.run, 'no run recorded');
+  assert.equal(left.verdict.explanation, 'No benchmark run is published for this checkout.');
+  assert.equal(left.runProblem, 'No benchmark run is published for this checkout.');
+  assert.equal(left.input.rows.length, 2, 'the expectation stands without a run');
+  const incomplete = suiteOf([{ entry: demoEntry(), built: built() }], [scanner('redact-secret', 'redact-secret', [], { status: 'unstable' })]).page('demo');
+  assert.equal(incomplete.verdict.explanation, 'redact-secret did not complete in this run (unstable).');
+});
+
+test('a candidate run names the build and its commit', () => {
+  const detail = suiteOf([{ entry: demoEntry(), built: built() }], [scanner('redact-secret', 'redact-secret', [['s--demo', { spanOutcomes: ['EXACT'], actual: [{ start: 2, end: 10 }], leakedBytes: 0, collateralBytes: 0 }]])], { run: { date: '2026-10-01', mode: 'candidate', commit: '1a2b3c4d5e6f' } }).page('demo');
+  assert.equal(detail.verdict.who, 'redact-secret candidate main 1a2b3c4');
+  assert.equal(detail.verdict.run, 'candidate run 2026-10-01');
+});
+
+test('what the corpus does not hold is stated as not recorded, and what it holds is shown as recorded', () => {
+  const { page, records, shared } = suiteOf([{ entry: demoEntry(), built: built() }], [scanner('redact-secret', 'redact-secret', [])]);
+  const detail = page('demo');
+  const fact = term => detail.facts.find(f => f.term === term);
+  assert.equal(fact('What it tests').notRecorded, true, 'the corpus has no description of what a fixture tests');
+  assert.match(fact('What it tests').note, /group label, “#1 · demo · sdk-config”/);
+  assert.equal(fact('Why it must be redacted').value, 'Because.');
+  assert.deepEqual(fact('Family').links, [{ label: 'One', href: '/report/families/x--one/' }]);
+  assert.deepEqual(fact('Detector').links, [{ label: 'Det', href: '/report/detectors/det/' }]);
+  assert.equal(fact('Scenarios').value, 'Context and encoding');
+  assert.equal(fact('Context axis').value, 'sdk-config');
+  assert.equal(fact('Added').value, 'Beta.8 · suite Suite S');
+  assert.deepEqual(fact('Issues').links, [{ label: 'Issue #1', href: 'https://github.com/redact-secret/redact-secret/issues/1', external: true }, { label: 'Beta.3 #7', href: 'https://example.com/7', external: true }], 'the issue the group label names, as the old page read it, then the findings that rest on the fixture');
+  assert.equal(fact('File').note, '21 bytes · sha256 ' + hashOf('s--demo').slice(0, 12) + '…');
+  assert.deepEqual(detail.sources, [{ href: 'https://docs.example.com/x/y/z', label: 'docs.example.com/x/y' }]);
+  assert.equal(detail.escaped, JSON.stringify(content));
+  assert.equal(detail.command, 'npm run bench -- --category=s');
+  assert.equal(detail.head.eyebrow, 'Fixture · must redact');
+  assert.deepEqual(detail.head.tags.map(t => t.label), ['Must redact', 'T1 · Provider-documented', 'sdk-config', 'Synthetic value']);
+  assert.deepEqual(detail.crumbs.map(c => c.label), ['Report', 'Providers', 'Ex', 'One', 'demo']);
+  assert.equal(detail.crumbs[3].href, '/report/families/x--one/');
+  // A fixture without a reason or a family says so instead of leaving a blank.
+  const bare = suiteOf([{ entry: fx('bare', 'must-redact', 'T0', [], { unscopedReason: 'No provider owns this shape.', detectors: [] }), built: built({ id: 'bare', slug: 's--bare', contextAxis: undefined, assessment: { kind: 'must-redact', tier: 'T0', sources: [] } }) }], []).page('bare');
+  assert.equal(bare.facts.find(f => f.term === 'Why it must be redacted').notRecorded, true);
+  assert.deepEqual(bare.facts.find(f => f.term === 'Family'), { term: 'Family', value: 'None', note: 'No provider owns this shape.' });
+  assert.deepEqual(bare.crumbs.map(c => c.label), ['Report', 'Suites', 'Suite S', 'bare']);
+  assert.match(bare.facts.find(f => f.term === 'Evidence level').note, /excluded from comparative scores/);
+  // The records hold a label once, however many fixtures share it.
+  assert.equal(shared.texts.filter(t => t === '#1 · demo · sdk-config').length, 1);
+  assert.equal(records[0].sha.length, 12);
+});
+
+test('the exact bytes can be taken as a file, and text that cannot be encoded says so', () => {
+  const detail = suiteOf([{ entry: demoEntry(), built: built() }], []).page('demo');
+  assert.equal(detail.actions.download.filename, 'demo.txt');
+  assert.equal(decodeURIComponent(detail.actions.download.href.replace('data:text/plain;charset=utf-8,', '')), content);
+  assert.equal(detail.actions.corpusHref, '/report/fixtures/s/');
+  const lone = suiteOf([{ entry: demoEntry(), built: built({ content: 'a\ud800b', expected: [] }) }], []).page('demo');
+  assert.equal(lone.actions.download, undefined, 'a lone surrogate cannot be saved as UTF-8: no link is better than a wrong file');
+  assert.match(lone.input.notice, /1 character that is not valid text/);
+});
+
+test('characters nobody can see are named, in a notice under the file', () => {
+  const hidden = '\ufeffkey=v\u200b\r\nx\u0000\n';
+  const detail = suiteOf([{ entry: demoEntry(), built: built({ content: hidden, expected: [{ start: 7, end: 8, role: 'secret' }] }) }], []).page('demo');
+  assert.equal(detail.input.facts, '16 bytes · mixed line endings · UTF-8 with BOM');
+  assert.match(detail.input.notice, /3 characters that are not normally visible \(U\+FEFF, U\+200B, U\+0000\), drawn as symbols\./);
+  assert.equal(suiteOf([{ entry: demoEntry(), built: built() }], []).page('demo').input.notice, undefined, 'ordinary text carries no notice');
+});
+
+test('a long file keeps the lines a mark touches with one line of context and counts the rest', () => {
+  const lines = Array.from({ length: 100 }, (_, i) => `line ${i + 1}`);
+  const long = `${lines.join('\n')}\n`;
+  const start = new TextEncoder().encode(lines.slice(0, 60).join('\n') + '\n').length;
+  const detail = suiteOf([{ entry: demoEntry(), built: built({ content: long, expected: [{ start, end: start + 4, role: 'secret' }] }) }], [scanner('redact-secret', 'redact-secret', [['s--demo', { spanOutcomes: ['EXACT'], actual: [{ start, end: start + 4 }], leakedBytes: 0, collateralBytes: 0 }]])]).page('demo');
+  assert.deepEqual(detail.input.rows.map(r => ('gap' in r ? `gap ${r.gap}` : r.number)), ['gap 59', 60, 61, 62, 'gap 38'], 'the marked line and one of context each side; 97 of 100 lines are counted, not shown');
+});
+
+test('a twin is held against its original with the changed bytes boxed, and each is the other’s related file', () => {
+  assert.deepEqual(changedRanges(new TextEncoder().encode('abcdef'), new TextEncoder().encode('abXdeY')), [{ start: 2, end: 3 }, { start: 5, end: 6 }]);
+  assert.deepEqual(changedRanges(new TextEncoder().encode('abcdef'), new TextEncoder().encode('abXXef')), [{ start: 2, end: 4 }], 'adjacent bytes are one range');
+  assert.deepEqual(changedRanges(new TextEncoder().encode('abcdef'), new TextEncoder().encode('abcZZdef')), [{ start: 3, end: 5 }], 'a longer file: the prefix and suffix they share are left out');
+  assert.deepEqual(changedRanges(new TextEncoder().encode('abc'), new TextEncoder().encode('abc')), []);
+  const twinContent = content.replace('synth-01', 'synth!01');
+  const items = [
+    { entry: demoEntry(), built: built() },
+    { entry: fx('demo-twin', 'must-not-flag', 'T1', [], { twinOf: 's--demo', detectors: ['det'] }), built: built({ id: 'demo-twin', slug: 's--demo-twin', path: 'cases/demo-twin.txt', content: twinContent, twinOf: 'demo', mutationKind: 'alphabet', mutation: 'alphabet: one character replaced with !', expected: [], assessment: { kind: 'must-not-flag', tier: 'T1', reason: 'Twin.', sources: [] } }) },
+  ];
+  const { page } = suiteOf(items, [
+    scanner('redact-secret', 'redact-secret', [['s--demo', { spanOutcomes: ['EXACT'], actual: [{ start: 2, end: 10 }], leakedBytes: 0, collateralBytes: 0 }], ['s--demo-twin', { flagged: false, actual: [] }]]),
+    scanner('g', 'Gitleaks', [['s--demo', { spanOutcomes: ['EXACT'], actual: [{ start: 2, end: 10 }], leakedBytes: 0, collateralBytes: 0 }], ['s--demo-twin', { flagged: true, findings: 1, actual: [{ start: 2, end: 10 }] }]]),
+  ]);
+  const positive = page('demo');
+  assert.equal(positive.twins.heading, 'Its near-twin');
+  const item = positive.twins.items[0];
+  assert.deepEqual([item.id, item.title, item.changed, item.linkLabel, item.href], ['demo-twin', 'Alphabet twin', 'byte 7 changed', 'Open the twin', '/report/fixtures/s/?fixture=demo-twin']);
+  assert.equal(item.description, 'alphabet: one character replaced with !');
+  assert.deepEqual(item.file.rows[0].segments.map(x => [x.text, x.mark ?? '-']), [['k=synth', '-'], ['!', 'changed'], ['01', '-']]);
+  assert.deepEqual(item.outcome, [{ status: 'pass', label: 'Quiet' }]);
+  assert.equal(item.outcomeNote, 'redact-secret flagged nothing');
+  assert.equal(positive.peers.relatedHeading, 'Its twin');
+  assert.deepEqual(positive.peers.rows[0].related, [{ label: 'demo-twin', outcome: [{ status: 'fail', label: 'Flagged' }] }], 'what another scanner recorded on the twin is a fact, shown without comment');
+  const twin = page('demo-twin');
+  assert.equal(twin.twins.heading, 'Its original');
+  assert.equal(twin.twins.items[0].title, 'The original');
+  assert.equal(twin.twins.items[0].linkLabel, 'Open the original');
+  assert.equal(twin.twins.items[0].file.rows[0].segments.find(x => x.mark === 'changed').text, '-', 'the original’s own byte is the one boxed');
+  assert.equal(twin.peers.relatedHeading, 'Its original');
+  assert.equal(twin.verdict.headline.label, 'Quiet');
+  assert.equal(twin.input.rows.length, 2);
 });
 
 test('a row packs into a short string and back without loss', () => {
@@ -248,24 +406,27 @@ test('the browser may request only the build-emitted rows and records files', ()
   }
 });
 
-test('a suite page ships compact records and rebuilds the same fixture page in the browser', () => {
-  const entry = fx('demo', 'must-redact', 'T1', ['x:one'], { detectors: ['det'] });
-  const twin = fx('demo-twin', 'must-not-flag', 'T1', [], { twinOf: 's--demo', detectors: ['det'] });
-  const bytesBySlug = new Map([['s--demo', built()], ['s--demo-twin', built({ id: 'demo-twin', slug: 's--demo-twin', twinOf: 'demo', expected: [], assessment: { kind: 'must-not-flag', tier: 'T1', reason: 'Because.', sources: ['https://docs.example.com/x'] } })]]);
-  const scanners = [lane([['s--demo', { spanOutcomes: ['EXACT'], actual: [{ start: 2, end: 10 }], leakedBytes: 0, collateralBytes: 0 }]])];
-  const { records, shared } = buildSuiteRecords({
-    suite, fixtures: [entry, twin], bytes: bytesBySlug, scanners, findings: [{ number: 7, url: 'https://example.com/7', milestone: 'Beta.3', fixtures: ['s--demo'] }],
-    detectorTitles: new Map([['det', 'Det']]), familyNames: new Map([['x:one', 'One']]),
-  });
-  assert.equal(shared.assessments.length, 1, 'one reason and one source list are held once');
+test('a suite page ships compact records, shared text once, and rebuilds the same fixture page after a round trip through JSON', () => {
+  const twinBuilt = built({ id: 'demo-twin', slug: 's--demo-twin', twinOf: 'demo', expected: [], assessment: { kind: 'must-not-flag', tier: 'T1', reason: 'Because.', sources: ['https://docs.example.com/x/y/z'] } });
+  const items = [{ entry: demoEntry(), built: built() }, { entry: fx('demo-twin', 'must-not-flag', 'T1', [], { twinOf: 's--demo', detectors: ['det'], scenarioIds: ['ctx'] }), built: twinBuilt }];
+  const { records, shared, page } = suiteOf(items, [scanner('redact-secret', 'redact-secret', [['s--demo', { spanOutcomes: ['EXACT'], actual: [{ start: 2, end: 10 }], leakedBytes: 0, collateralBytes: 0 }]])]);
+  assert.equal(shared.assessments.length, 1, 'the same reason and sources, held by two fixtures, are shipped once');
+  assert.equal(shared.texts.filter(t => t === '#1 · demo · sdk-config').length, 1, 'a group label shared by two fixtures is held once');
+  assert.deepEqual(shared.scenarios, [{ id: 'ctx', title: 'Context and encoding' }]);
+  assert.deepEqual(shared.scanners[0].observed, ['2026-09-29']);
+  assert.deepEqual(shared.run, { date: '2026-09-30', mode: 'published' });
+  assert.deepEqual(shared.providerNames, { 'x:one': 'Ex' });
   assert.deepEqual(records.map(r => r.twins), [['demo-twin'], []]);
   assert.deepEqual(records[0].followUps, [0]);
+  assert.deepEqual(records[0].scenarios, [0]);
   assert.equal(records[1].rows[0], null, 'a fixture the scanner holds no row for is null, not a pass');
-  const direct = resolveFixtureDetail({ fixture: bytesBySlug.get('s--demo'), entry, suite, scanners, detectors: [{ id: 'det', title: 'Det' }], families: [{ id: 'x:one', name: 'One' }], twins: [twin], followUps: [{ number: 7, url: 'https://example.com/7', milestone: 'Beta.3' }] });
-  const rebuilt = resolveFixtureRecord(records[0], shared);
-  for (const k of ['lines', 'expected', 'reported', 'caption', 'scanners', 'detectors', 'families', 'escaped', 'size', 'path']) assert.deepEqual(rebuilt[k], direct[k], k);
-  assert.deepEqual(rebuilt.facts.find(f => f.term === 'Negative twins').links, [{ label: 'demo-twin', href: '/report/fixtures/s/?fixture=demo-twin' }]);
+  assert.match(records[0].sha, /^[0-9a-f]{12}$/);
+  const wire = JSON.parse(JSON.stringify({ records, shared }));
+  assert.ok(isSuiteRecordsFile(wire));
+  assert.deepEqual(resolveFixtureRecord(wire.records[0], wire.shared, wire.records), page('demo'), 'the browser builds exactly what the build would');
+  assert.ok(!isSuiteRecordsFile({ records: [], shared: { scanners: [], assessments: [], category: 's' } }), 'a file from before the texts and scenarios were added is refused');
 });
+
 
 // ---- Detectors, findings, suites --------------------------------------------------------------------
 

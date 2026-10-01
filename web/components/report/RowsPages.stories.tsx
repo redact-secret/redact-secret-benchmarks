@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import Link from 'next/link';
-import { EmptyState, StatusBadge } from '../feedback';
+import { EmptyState, RetryNote, Skeleton, SkeletonBlock, StatusBadge } from '../feedback';
 import { PageContainer, Section, Stack } from '../layout';
 import { SegmentedNav } from '../nav';
 import { Breadcrumb, PageHead } from '../page';
@@ -12,7 +12,8 @@ import { FixtureDetail } from './FixtureDetail';
 import { FixtureTable } from './FixtureTable';
 import { ReportFilterBar } from './ReportFilterBar';
 import { SuiteTable } from './SuiteTable';
-import { detectorGroups, detectorRows, findingRows, fixtureDetail, manyScannerRows, scannerColumns, scannerRows, suiteRows } from './fixtureStoryData';
+import { fixtureDetail } from './fixturePageData';
+import { detectorGroups, detectorRows, findingRows, manyScannerRows, scannerColumns, scannerRows, suiteRows } from './fixtureStoryData';
 import type { ReportShow } from './types';
 
 /**
@@ -123,14 +124,36 @@ export const SuiteRows: Story = {
 export const FixturePage: Story = {
   render: () => (
     <Page>
-      <PageHead
-        before={<Breadcrumb items={[{ label: 'Report', href: '/report/' }, { label: 'Suites', href: '/report/fixtures/' }, { label: 'Detector coverage', href: '/report/fixtures/detector-coverage/' }, { label: fixtureDetail.id }]} />}
-        eyebrow="DETECTOR COVERAGE"
-        title={fixtureDetail.id}
-        meta={[{ value: 'Must redact · T1 · Provider-documented' }, { value: fixtureDetail.size }]}
-        actions={<Link href="/report/fixtures/detector-coverage/">All fixtures in this suite</Link>}
-      />
       <FixtureDetail fixture={fixtureDetail} />
+    </Page>
+  ),
+};
+
+/** A fixture opened while its suite's records load: the title and two regions the size of the page to come. */
+export const FixtureLoading: Story = {
+  render: () => (
+    <Page>
+      <Stack gap="lg">
+        <PageHead before={<Breadcrumb items={[{ label: 'Report', href: '/report/' }, { label: 'Suites', href: '/report/fixtures/' }, { label: 'Detector coverage', href: '/report/fixtures/detector-coverage/' }, { label: fixtureDetail.id }]} />} eyebrow="DETECTOR COVERAGE" title={fixtureDetail.id} meta={[{ value: ' ' }]} />
+        <Skeleton label={`Loading fixture ${fixtureDetail.id}`}>
+          <SkeletonBlock shape="panel" />
+          <SkeletonBlock shape="panel" />
+          <SkeletonBlock shape="line" width="half" />
+        </Skeleton>
+      </Stack>
+    </Page>
+  ),
+};
+
+/** The records file did not load: why, what still works, and a retry. */
+export const FixtureLoadFailed: Story = {
+  render: () => (
+    <Page>
+      <Stack gap="lg">
+        <PageHead before={<Breadcrumb items={[{ label: 'Report', href: '/report/' }, { label: 'Suites', href: '/report/fixtures/' }, { label: 'Detector coverage', href: '/report/fixtures/detector-coverage/' }, { label: fixtureDetail.id }]} />} eyebrow="DETECTOR COVERAGE" title={fixtureDetail.id} meta={[{ value: ' ' }]} />
+        <RetryNote title="Could not load this fixture" onRetry={() => undefined}>You are offline. The rest of the suite is unaffected.</RetryNote>
+        <Link href="/report/fixtures/detector-coverage/">All fixtures in this suite</Link>
+      </Stack>
     </Page>
   ),
 };

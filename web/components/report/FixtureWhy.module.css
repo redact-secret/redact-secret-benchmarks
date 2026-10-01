@@ -1,0 +1,92 @@
+@layer components {
+  .why {
+    display: grid;
+    gap: var(--space-6);
+    min-width: 0;
+  }
+
+  .note {
+    display: block;
+    color: var(--ink-muted);
+    font: var(--text-small);
+    overflow-wrap: break-word;
+  }
+
+  /* Not measured and not recorded are dashed and muted, never a blank and never a colour. */
+  .missing {
+    padding: 0 var(--pad-tight);
+    border: var(--hairline) dashed var(--ink-muted);
+    border-radius: var(--radius-sm);
+    color: var(--ink-muted);
+    font: var(--text-label);
+  }
+
+  .sources {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-4);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  .action {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-2) var(--space-3);
+    border: var(--hairline) solid var(--ink-muted);
+    border-radius: var(--radius-sm);
+    color: var(--ink);
+    font: var(--text-label);
+    white-space: nowrap;
+    transition-property: border-color, transform;
+    transition-duration: 160ms;
+    transition-timing-function: var(--ease-out);
+  }
+
+  .off {
+    border-style: dashed;
+    color: var(--ink-muted);
+  }
+
+  .more summary {
+    cursor: pointer;
+    font: var(--text-small-strong);
+  }
+
+  .body {
+    display: grid;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .action:hover {
+      border-color: var(--ink);
+      text-decoration: none;
+    }
+  }
+
+  .action:active {
+    transform: scale(var(--press));
+  }
+
+  @media (pointer: coarse) {
+    .action {
+      min-height: var(--touch);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .action {
+      transition: none;
+    }
+
+    .action:active {
+      transform: none;
+    }
+  }
+}

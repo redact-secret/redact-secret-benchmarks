@@ -43,6 +43,7 @@ describe('stories', () => {
     expect(stories.length).toBeGreaterThan(300);
   });
 
+  // The Tabs stories without a panel leave aria-controls pointing at the parent's panel, so axe cannot resolve it; that rule is off for those stories only.
   test.each(stories.map(s => [`${s.file} ${s.name}`, s] as const))('%s renders and is structurally accessible', async (_label, { meta, story }) => {
     const { container } = render(compose(meta, story));
     if (!/Empty/.test(_label)) expect(container).not.toBeEmptyDOMElement();

@@ -79,8 +79,8 @@ describe('families and providers lists (?q= ?show= ?level=)', () => {
     await user.selectOptions(await screen.findByRole('combobox', { name: 'Evidence level' }), 'T2');
     expect(search()).toBe('?level=T2');
     await user.click(screen.getByRole('button', { name: 'No fixtures' }));
-    expect(search()).toBe('?show=empty&level=T2'.replace('?show=empty&level=T2', search()));
     expect(search()).toContain('show=empty');
+    expect(search()).toContain('level=T2');
     visit('/report/families/?level=T3');
     act(() => { window.dispatchEvent(new PopStateEvent('popstate')); });
     await waitFor(() => expect(screen.getByRole('combobox', { name: 'Evidence level' })).toHaveValue('T3'));
@@ -189,7 +189,6 @@ describe('rows table (RowsView)', () => {
     const nav = await screen.findByRole('navigation', { name: 'Pagination' });
     expect(within(nav).getByText(/Page 1 of/)).toBeInTheDocument();
     await user.click(within(nav).getByRole('button', { name: 'Next' }));
-    expect(search()).toMatch(/q=a.*page=2|page=2/);
     expect(search()).toContain('page=2');
     expect(search()).toContain('q=a');
     expect(scroll).toHaveBeenCalled();

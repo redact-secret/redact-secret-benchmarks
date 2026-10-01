@@ -88,7 +88,7 @@ test.describe('phone navigation', () => {
     await expect(page.getByRole('navigation', { name: 'Primary, bottom bar' }).getByRole('link', { name: 'Comparison' })).toHaveAttribute('aria-current', 'page');
   });
 
-  test('touch targets in the bar are at least 44px tall', async ({ page }) => {
+  test('touch targets in the bar are at least 44 CSS pixels tall', async ({ page }) => {
     await page.goto(`${BASE}/report/`);
     for (const link of await page.getByRole('navigation', { name: 'Primary, bottom bar' }).getByRole('link').all()) {
       expect((await link.boundingBox())!.height).toBeGreaterThanOrEqual(44);

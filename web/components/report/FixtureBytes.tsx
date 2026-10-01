@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import type { ReactNode } from 'react';
 import { StatusBadge } from '../feedback';
 import { cx } from '../../lib/cx';
+import { FixtureText } from './FixtureText';
 import styles from './FixtureBytes.module.css';
 import type { ByteLineData, ByteSegment, FixtureScannerData, LanePiece } from './types';
 
@@ -17,38 +18,13 @@ export interface FixtureBytesProps {
   className?: string;
 }
 
-const SYMBOLS: Record<string, [string, string]> = {
-  ' ': ['·', 'space'],
-  '\t': ['→', 'tab'],
-  '\r': ['␍', 'carriage return'],
-  '\n': ['␊', 'line feed'],
-  '﻿': ['BOM', 'byte order mark U+FEFF'],
-};
-
-/** Whitespace is drawn as a symbol, so a trailing space, a tab or a CRLF is visible. `withTitle` names it for a pointer. */
-function Visible({ text, withTitle }: { text: string; withTitle: boolean }) {
-  const parts: ReactNode[] = [];
-  let run = '';
-  let key = 0;
-  for (const char of text) {
-    const symbol = SYMBOLS[char];
-    if (!symbol) { run += char; continue; }
-    if (run) { parts.push(run); run = ''; }
-    parts.push(withTitle
-      ? <span key={key++} className={styles.ws} title={symbol[1]}>{symbol[0]}</span>
-      : symbol[0]);
-  }
-  if (run) parts.push(run);
-  return <>{parts}</>;
-}
-
 function Bytes({ segments }: { segments: ByteSegment[] }) {
   const empty = segments.every(s => s.text === '');
   return (
     <span className={styles.bytes}>
       {empty && <span className={styles.ws} title="empty">∅</span>}
       {segments.map((segment, i) => {
-        let node: ReactNode = <Visible text={segment.text} withTitle />;
+        let node: ReactNode = <FixtureText text={segment.text} withTitle />;
         // The secret sits inside the envelope so the underline runs unbroken beneath the highlight.
         if (segment.role === 'companion') node = <span className={styles.companion}>{node}</span>;
         if (segment.role === 'secret') node = <span className={styles.secret}>{node}</span>;
@@ -63,8 +39,8 @@ function Lane({ pieces, label }: { pieces: LanePiece[]; label: string }) {
   return (
     <span className={styles.lane} role="img" aria-label={label}>
       {pieces.map((piece, i) => (piece.shape
-        ? <i key={i} className={styles[piece.shape]}><Visible text={piece.text} withTitle={false} /></i>
-        : <Fragment key={i}><Visible text={piece.text} withTitle={false} /></Fragment>))}
+        ? <i key={i} className={styles[piece.shape]}><FixtureText text={piece.text} withTitle={false} /></i>
+        : <Fragment key={i}><FixtureText text={piece.text} withTitle={false} /></Fragment>))}
     </span>
   );
 }

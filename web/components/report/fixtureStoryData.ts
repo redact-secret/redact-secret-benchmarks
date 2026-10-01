@@ -9,7 +9,6 @@ import type {
   DetectorRowData,
   FindingRowData,
   FixtureCounts,
-  FixtureDetailData,
   FixtureRowData,
   FixtureScannerData,
   LanePiece,
@@ -84,58 +83,6 @@ export const missedLines: ByteLineData[] = [
     lanes: [lane([{ text: 'key=' }, { text: 'synth-02', shape: 'outline' }, { text: '\n' }], 'Gitleaks, line 1: missed bytes 4-12')],
   },
 ];
-
-export const fixtureDetail: FixtureDetailData = {
-  id: 'synthetic-env-assignment',
-  suite: 'detector-coverage',
-  suiteHref: '/report/fixtures/detector-coverage/',
-  kind: 'Must redact',
-  evidence: 'T1 · Provider-documented',
-  path: 'cases/synthetic-env-assignment.txt',
-  size: '61 UTF-8 bytes, [start, end)',
-  detectors: [{ id: 'example-token', title: 'Example token', href: '/report/detectors/example-token/' }],
-  families: [{ id: 'example:api-key', name: 'API key', href: '/report/families/example--api-key/' }],
-  scanners: fixtureScanners,
-  lines: fixtureLines,
-  caption: 'Secret bytes 30–38. Envelope 24–38: a finding may extend this far at no cost. All values are synthetic test data.',
-  expected: [{ range: '[30, 38)', role: 'secret', value: 'synth-01', envelope: { range: '[24, 38)', reason: 'the assignment name may be redacted with its value' }, note: 'A synthetic value with the documented prefix.' }],
-  reported: [
-    { scanner: 'redact-secret', detail: '0.1.0 · Published npm package · default detectors', outcome: [s('pass', 'Redacted')], code: 'EXACT', ranges: '[30, 38)', bytes: 'leaked 0 · outside envelope 0' },
-    { scanner: 'Gitleaks', detail: '8.30.1 · Directory scan · default rules', outcome: [s('fail', 'Left readable')], code: 'PARTIAL', ranges: '[30, 36)', bytes: 'leaked 2 · outside envelope 0' },
-    { scanner: 'TruffleHog', detail: '3.97.4 · Filesystem scan · verification disabled', outcome: [s('review', 'Too much')], code: 'OVERBROAD', ranges: '[24, 38)', bytes: 'leaked 0 · outside envelope 0' },
-    { scanner: 'flare-redact', detail: '1.6.1 · Published npm package', outcome: [notMeasured], code: 'The suite report was left out of this run.', ranges: '—' },
-  ],
-  facts: [
-    { term: 'Kind', value: 'Must redact' },
-    { term: 'Evidence', value: 'T1 · Provider-documented' },
-    { term: 'Contract', value: 'example-token' },
-    { term: 'Twin of', value: 'synthetic-env-assignment-twin', href: '/report/fixtures/detector-coverage/?fixture=synthetic-env-assignment-twin' },
-    { term: 'Reason', value: 'The provider documents this prefix and length; the value is synthetic.' },
-    { term: 'Review', value: 'Authored from construction and evidence, never from scanner output.' },
-  ],
-  sources: [{ href: 'https://docs.example.com/tokens', label: 'Evidence 1' }],
-  command: 'npm run bench -- --category=detector-coverage',
-  escaped: '"# example configuration\\nTOKEN=synth-01\\npassword:\\tvalue with a trailing space \\r\\n"',
-};
-
-/** A run that left the suite's report out: the expectation stands on its own and no scanner has a lane. */
-export const fixtureDetailNoRun: FixtureDetailData = {
-  ...fixtureDetail,
-  scanners: [],
-  lines: fixtureLines.map(line => ({ ...line, lanes: [] })),
-  reported: [],
-  runProblem: 'The report for these bytes is left out: its corpus hash does not match. The expectation stands on its own; lanes appear once a report re-validates against these bytes.',
-};
-
-export const fixtureDetailLong: FixtureDetailData = {
-  ...fixtureDetail,
-  id: 'a-very-long-fixture-id-with-no-natural-break-points-0123456789-0123456789-0123456789',
-  lines: Array.from({ length: 12 }, (_, i) => ({
-    number: i + 1,
-    segments: [{ text: `line ${i + 1}: an unbroken synthetic string ${'x'.repeat(80)}\n` }],
-    lanes: [],
-  })),
-};
 
 // ---- Detectors ------------------------------------------------------------------------------------
 

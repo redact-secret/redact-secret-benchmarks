@@ -1,0 +1,103 @@
+@layer components {
+  .verdict {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 2fr);
+    gap: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: var(--rule-strong) solid var(--ink);
+    min-width: 0;
+  }
+
+  .lead {
+    display: grid;
+    align-content: start;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+
+  .who {
+    margin: 0;
+    color: var(--ink-muted);
+    font: var(--text-small);
+    overflow-wrap: break-word;
+  }
+
+  .big {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin: 0;
+    font: var(--text-figure-compact);
+    letter-spacing: -0.01em;
+    overflow-wrap: break-word;
+  }
+
+  .mark {
+    flex: none;
+    width: var(--space-4);
+    height: var(--space-4);
+    background: var(--ink-muted);
+  }
+
+  .mark[data-status='pass'] {
+    background: var(--status-success);
+  }
+
+  .mark[data-status='fail'] {
+    background: repeating-linear-gradient(135deg, var(--status-danger) 0 var(--rule-strong), transparent var(--rule-strong) var(--mark));
+    border: var(--hairline) solid var(--status-danger);
+  }
+
+  .mark[data-status='review'],
+  .mark[data-status='withheld'] {
+    background: var(--status-warning);
+  }
+
+  .mark[data-status='unstable'] {
+    background: repeating-linear-gradient(135deg, var(--status-warning) 0 var(--rule-strong), transparent var(--rule-strong) var(--mark));
+    border: var(--hairline) solid var(--status-warning);
+  }
+
+  .mark[data-status='info'] {
+    background: var(--status-info);
+  }
+
+  .mark[data-status='not-measured'] {
+    background: transparent;
+    border: var(--hairline) dashed var(--ink-muted);
+  }
+
+  .mark[data-status='none'] {
+    background: transparent;
+    border: var(--hairline) solid var(--ink-muted);
+  }
+
+  .expl {
+    margin: 0;
+    max-width: calc(var(--space-16) * 10);
+    color: var(--ink-muted);
+    font: var(--text-small);
+  }
+
+  .verdict .figures {
+    align-content: start;
+    border-top: 0;
+  }
+
+  .of {
+    margin-left: var(--space-1);
+    color: var(--ink-muted);
+    font: var(--text-small);
+  }
+
+  @media (max-width: 720px) {
+    .verdict {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-4);
+    }
+
+    .big {
+      font: var(--text-h2-narrow);
+    }
+  }
+}

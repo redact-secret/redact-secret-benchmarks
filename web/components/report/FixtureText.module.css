@@ -1,0 +1,16 @@
+@layer components {
+  .ws {
+    color: var(--ink-muted);
+  }
+
+  /* Several characters stand for one that cannot be seen (BOM, ZWSP): small, framed, so it reads as a name, not as text. */
+  .code {
+    white-space: nowrap;
+    padding: 0 var(--mark);
+    border: var(--hairline) solid var(--ink-muted);
+    border-radius: var(--radius-sm);
+    color: var(--ink-muted);
+    font: var(--text-label);
+    font-family: var(--font-mono);
+  }
+}

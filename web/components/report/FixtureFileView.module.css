@@ -1,0 +1,123 @@
+@layer components {
+  .file {
+    margin: 0;
+    min-width: 0;
+    max-width: 100%;
+    border: var(--hairline) solid var(--line);
+    border-radius: var(--radius-sm);
+  }
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-1) var(--space-4);
+    padding: var(--space-2) var(--space-4);
+    border-bottom: var(--hairline) solid var(--line);
+    color: var(--ink-muted);
+    font: var(--text-mono-small);
+  }
+
+  .path {
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  .facts {
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  .scroll {
+    overflow-x: auto;
+    padding: var(--space-3) 0;
+  }
+
+  .lines {
+    display: grid;
+    width: max-content;
+    min-width: 100%;
+  }
+
+  .line,
+  .gap {
+    display: grid;
+    grid-template-columns: calc(var(--space-8) + var(--space-3)) max-content;
+    align-items: baseline;
+    font: var(--text-mono);
+    min-height: var(--space-6);
+  }
+
+  .gap {
+    color: var(--ink-muted);
+    font: var(--text-mono-small);
+  }
+
+  .no {
+    padding-right: var(--space-3);
+    color: var(--ink-muted);
+    text-align: right;
+    user-select: none;
+    font: var(--text-mono-small);
+  }
+
+  .text {
+    padding-right: var(--space-4);
+    white-space: pre;
+  }
+
+  .empty {
+    color: var(--ink-muted);
+  }
+
+  /* The ink underline of an envelope, drawn under the secret's own mark. */
+  .envelope {
+    border-bottom: var(--rule-strong) solid var(--ink);
+  }
+
+  /* Green marks a secret span; the dashed frame says so without colour. */
+  .expected {
+    background: var(--brand-green);
+    color: var(--on-brand);
+    outline: var(--rule-strong) dashed var(--ink);
+    outline-offset: var(--hairline);
+  }
+
+  .companion {
+    border-bottom: var(--hairline) dashed var(--ink-muted);
+  }
+
+  /* A reported range: the bytes under it are not drawn. */
+  .mask {
+    display: inline-block;
+    background: var(--ink);
+    color: transparent;
+    line-height: inherit;
+    user-select: none;
+  }
+
+  .partial {
+    background: repeating-linear-gradient(135deg, var(--ink) 0 var(--rule-strong), transparent var(--rule-strong) calc(var(--space-1) + var(--hairline)));
+  }
+
+  /* Secret bytes no reported range covers: the bytes show inside a dashed frame. */
+  .exposed {
+    outline: var(--rule-strong) dashed var(--status-danger);
+    outline-offset: var(--hairline);
+  }
+
+  .changed {
+    background: var(--status-warning-fill);
+    color: var(--status-warning);
+    outline: var(--hairline) solid var(--status-warning);
+    font-weight: 600;
+  }
+
+  .notice {
+    margin: 0;
+    padding: var(--space-2) var(--space-4);
+    border-top: var(--hairline) solid var(--line);
+    color: var(--ink-muted);
+    font: var(--text-small);
+  }
+}

@@ -16,4 +16,14 @@
   :global(:root[data-fixture]) .rowsView {
     display: none;
   }
+
+  /*
+   * The breadcrumb of a fixture is the suite's while it loads and the provider's and family's once it has:
+   * on a phone the longer one wraps to a second line, so both reserve two lines and the title does not move.
+   */
+  @media (max-width: 720px) {
+    .fixtureView nav[aria-label='Breadcrumb'] {
+      min-height: calc(var(--space-6) + var(--space-4));
+    }
+  }
 }

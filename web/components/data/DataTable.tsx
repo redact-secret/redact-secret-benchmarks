@@ -73,13 +73,15 @@ export function DataTable<Row>({ columns, getRowKey, caption, showCaption = fals
   );
 
   return (
-    <div className={cx(styles.region, className)} role="region" aria-label={caption} tabIndex={0}>
+    <div className={cx(styles.region, className)} role="region" aria-label={`${caption} (table)`} tabIndex={0}>
       <table className={cx(styles.table, wide && styles.wide, stackOnPhone && styles.stack)}>
         <caption className={showCaption ? styles.caption : styles.hidden}>{caption}</caption>
         <thead>
           <tr>
             {columns.map(col => (
-              <th key={col.key} scope="col" className={cx(styles.head, col.numeric && styles.num)}>{col.header}</th>
+              <th key={col.key} scope="col" className={cx(styles.head, col.numeric && styles.num)}>
+                {col.header === '' ? <span className={styles.hidden}>{col.label ?? col.key}</span> : col.header}
+              </th>
             ))}
           </tr>
         </thead>

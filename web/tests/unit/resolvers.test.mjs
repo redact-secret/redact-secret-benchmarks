@@ -1,14 +1,16 @@
 // Unit tests for the pure resolvers in web/resolvers (#556). Synthetic catalog, run and
 // ledger data only: no credentials, no filesystem reads by the code under test.
-import test from 'node:test';
+import { test } from 'vitest';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
-import { resolveFamilyList, resolveFamily, familySlug } from '../web/resolvers/families.ts';
-import { filterFamilies, filterProviders, listQueryOf, listQueryString, pageOf } from '../web/resolvers/filters.ts';
-import { resolveAnswers, resolveFindings, resolvePeers, resolveHubTiles, modeText, runEyebrow, LEVELS } from '../web/resolvers/report.ts';
-import { resolveRunState } from '../web/resolvers/run.ts';
-import { axisMaxFor, onAxis, percent, isoDate } from '../web/resolvers/format.ts';
+import { resolveFamilyList, resolveFamily, familySlug } from '../../resolvers/families.ts';
+import { filterFamilies, filterProviders, listQueryOf, listQueryString, pageOf } from '../../resolvers/filters.ts';
+import { resolveAnswers, resolveFindings, resolvePeers, resolveHubTiles, modeText, runEyebrow, LEVELS } from '../../resolvers/report.ts';
+import { resolveRunState } from '../../resolvers/run.ts';
+import { axisMaxFor, onAxis, percent, isoDate } from '../../resolvers/format.ts';
+const WEB = path.resolve(import.meta.dirname, '../..');
+const ROOT = path.resolve(WEB, '..');
 
 const fx = (slug, kind, tier, familyIds) => ({ slug, category: 'c', id: slug, group: 'g', kind, tier, familyIds });
 const fixtures = [
@@ -94,7 +96,7 @@ test('a policy row is information, never a failure', () => {
 });
 
 test('every real family has a unique colon-free URL slug', () => {
-  const t = JSON.parse(readFileSync('benchmarks/support/taxonomy.json', 'utf8'));
+  const t = JSON.parse(readFileSync(ROOT + '/benchmarks/support/taxonomy.json', 'utf8'));
   const slugs = t.families.map(f => familySlug(f.id));
   assert.equal(new Set(slugs).size, slugs.length);
   for (const s of slugs) assert.match(s, /^[a-z0-9-]+$/);
@@ -236,16 +238,16 @@ const walk = dir => readdirSync(dir, { withFileTypes: true, recursive: true }).f
 const importsOf = file => [...readFileSync(file, 'utf8').matchAll(/^\s*(?:import|export)\s+(type\s+)?[^;]*?from\s+['"]([^'"]+)['"]/gm)].map(m => ({ type: !!m[1], from: m[2] }));
 
 test('dependency direction: blocks import no service or resolver; only resolvers/pages.ts and its siblings import services', () => {
-  for (const file of walk('web/components').filter(f => /\.tsx?$/.test(f) && !/\.stories\./.test(f))) {
+  for (const file of walk(WEB + '/components').filter(f => /\.tsx?$/.test(f) && !/\.stories\./.test(f))) {
     for (const { from } of importsOf(file)) assert.doesNotMatch(from, /(^|\/)(services|resolvers)(\/|$)/, `${file} imports ${from}`);
   }
-  for (const file of walk('web/app').filter(f => /\.tsx?$/.test(f))) {
+  for (const file of walk(WEB + '/app').filter(f => /\.tsx?$/.test(f))) {
     for (const { from } of importsOf(file)) assert.doesNotMatch(from, /(^|\/)services(\/|$)/, `${file} imports a service directly`);
   }
-  for (const file of walk('web/resolvers').filter(f => f.endsWith('.ts') && !f.endsWith('pages.ts'))) {
+  for (const file of walk(WEB + '/resolvers').filter(f => f.endsWith('.ts') && !f.endsWith('pages.ts'))) {
     for (const { type, from } of importsOf(file)) if (/services/.test(from)) assert.ok(type, `${file} imports ${from} at runtime; only pages.ts may`);
   }
-  for (const file of walk('web/services').filter(f => f.endsWith('.ts'))) {
+  for (const file of walk(WEB + '/services').filter(f => f.endsWith('.ts'))) {
     for (const { from } of importsOf(file)) assert.doesNotMatch(from, /(^|\/)(resolvers|app|components)(\/|$)/, `${file} imports ${from}`);
   }
 });

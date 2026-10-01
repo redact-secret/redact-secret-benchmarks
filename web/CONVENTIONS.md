@@ -168,14 +168,14 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   opened, and the detail is built in the browser for the one fixture named (`FixtureSync` and an inline script
   set `data-fixture`, as `?level=` does; `FixtureView` shows the title and a skeleton until the file is in).
   67 pages, not 5,925 (decision: `docs/decisions/2026-10-01-keep-the-fixture-page-on-its-suite-page.md`, #588; the page is the `Fixture*` blocks in
-  `components/report`, built by `resolveFixtureRecord`, and `fixtureHref()` is the one place that writes its address). `check:routes` holds the export to budgets (`check-export-rows.mjs`: MB, files, `data/`,
-  the largest page, the largest table page).
+  `components/report`, built by `resolveFixtureRecord`, and `fixtureHref()` is the one place that writes its address). `check:routes` holds what a visitor downloads to limits (`check-export-rows.mjs`: one data file, the largest page,
+  the largest rows page); the export's total size and file count are printed, not judged.
 - **Peer scanners** get their kind, description and the families their rules target from
   `scanners/peer-registry.json` and `scanners/peer-rule-families.json` (validated by
   `npm run peer-rules:check` and again by `services/peers.ts`); the peer columns state what a scanner's
   rules target and what was recorded, never which scanner is better. Every link on a report page stays
   inside the app (`check:routes` fails a link that leaves `/next/`).
-- Resolver tests live in `tests/web-resolvers.test.mjs` and `tests/web-report-rows.test.mjs` (synthetic
+- Resolver tests live in `web/tests/unit` (`resolvers.test.mjs`, `report-rows.test.mjs`, ...; synthetic
   data only) and also enforce the import direction. `check:routes` compares the built pages with the
   ledger, read independently; CI sets `WEB_REQUIRE_RUN=1` and runs `npm run bench` first.
 - Runtime outcomes and per-setting times (#562, #563): `evidence/562/runtime-comparison-<setting>.json` (three
@@ -196,3 +196,19 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   build-emitted `data/comparison/accuracy/differences.json` when a list is opened). `check-export-accuracy.mjs` recounts every
   panel and that file from the suite reports. Decision:
   `docs/decisions/2026-09-30-compare-accuracy-one-pair-at-a-time.md`.
+
+## Tests
+
+Decision: `docs/decisions/2026-10-01-test-the-web-app-with-vitest-and-playwright.md`.
+
+- `npm run test` (Vitest, jsdom) runs `tests/unit`; `npm run test:coverage` adds V8 coverage over `app`, `components`, `lib`,
+  `resolvers`, `services` and `theme` and fails below 80% of lines, statements, functions and branches. Only stories, `.d.ts`
+  and CSS are excluded. `npm run coverage:summary` prints the table by directory.
+- Every story is rendered and scanned by axe (`tests/unit/stories.test.tsx`), so a new component's story is its first test.
+  Behaviour (keys, controlled state, ARIA) gets a test by role and accessible name, never a snapshot.
+- `tests/unit/overlay.ts` builds a repository root that is the real one except for named files, to put a service in a state the
+  committed tree is not in (no run published, a snapshot that does not validate). Synthetic content only.
+- `npm run test:e2e` (Playwright Test) drives the built export: `npm run build` first. A new route or address variant goes in
+  `ROUTES` in `tests/e2e/fixtures.ts`, which runs it through the page matrix (light and dark, 320 and 1280px, axe with no
+  serious or critical violation, no sideways scroll, no console output, no off-origin request but web fonts).
+  `PW_CHANNEL=chrome` uses an installed Chrome. No sleeps and no retries.

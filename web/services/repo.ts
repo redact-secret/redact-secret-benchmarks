@@ -4,8 +4,8 @@
  * component that imports it fails the build.
  *
  * `REPO_ROOT` is the parent of `web/`, the working directory of `next build`.
- * The unit tests (tests/web-resolvers.test.mjs) run from the repository root and
- * set `WEB_REPO_ROOT`.
+ * The unit tests (web/tests/unit) run from web/, so this default is the repository root;
+ * a test that needs another tree sets `WEB_REPO_ROOT` (tests/unit/overlay.ts).
  */
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';

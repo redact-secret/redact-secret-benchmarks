@@ -18,13 +18,15 @@
     color: var(--ink);
   }
 
+  /* A link inside a sentence is told from the text by more than its colour. */
   .link {
     color: var(--link);
-    text-decoration: none;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
 
   .link:hover {
-    text-decoration: underline;
+    text-decoration-thickness: var(--rule-strong);
   }
 
   .empty {

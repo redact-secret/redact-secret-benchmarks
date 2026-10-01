@@ -5,6 +5,13 @@
     scroll-padding-top: calc(var(--header-h) + var(--space-8));
   }
 
+  /* On a phone the entrances are a bar fixed to the bottom of the screen; a focused control scrolls into view above it, not under it (WCAG 2.2 focus not obscured). */
+  @media (max-width: 720px) {
+    html {
+      scroll-padding-bottom: calc(var(--tabs-h) + var(--space-8) + env(safe-area-inset-bottom, 0));
+    }
+  }
+
   body {
     margin: 0;
     background: var(--surface);

@@ -133,7 +133,7 @@ function cssModuleProblems(source, file) {
 
 async function* walk(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
-    if (entry.name === 'node_modules' || entry.name === '.next' || entry.name === 'out') continue;
+    if (['node_modules', '.next', 'out', 'coverage', 'test-results', 'playwright-report'].includes(entry.name)) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) yield* walk(full);
     else yield full;

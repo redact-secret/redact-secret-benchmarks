@@ -143,15 +143,59 @@ jobs:
         working-directory: web
         env:
           WEB_REQUIRE_RUN: '1'
+      # Unit and component tests (#598): Vitest with V8 coverage over web/app, components, lib, resolvers,
+      # services and theme. Fails below 80% of lines, statements, functions or branches (vitest.config.mts).
+      # The services read the corpora and the run installed above; the resolver suites that used to run in
+      # the root unit-tests job run here, where their coverage is counted.
+      - name: Unit and component tests, at least 80% of lines, statements, functions and branches (#598)
+        run: npm run test:coverage
+        working-directory: web
+      - name: Coverage by directory
+        if: always() && hashFiles('web/coverage/coverage-summary.json') != ''
+        run: npm run coverage:summary
+        working-directory: web
+      - name: Coverage report (lcov and HTML)
+        if: always() && hashFiles('web/coverage/coverage-summary.json') != ''
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: web-coverage
+          path: web/coverage
+          retention-days: 14
       - name: Storybook builds on the Next.js framework (#547)
         run: npm run build-storybook
         working-directory: web
-      - name: Chromium for the layout check (#554)
+      - name: Chromium for the layout check and the Playwright suite (#554, #598)
         run: npx playwright install --with-deps chromium
         working-directory: web
+      # The Playwright suite (#598) drives the export check:routes just built. check:layout below uses one
+      # browser on one core, so the suite starts first in the background on the other cores and is joined
+      # after it; its exit status and log are kept in RUNNER_TEMP, and a failing run uploads its traces.
+      - name: Playwright suite over the export, started in the background (#598)
+        run: |
+          rm -f "$RUNNER_TEMP/e2e.status"
+          touch "$RUNNER_TEMP/e2e.started"
+          nohup bash -c "npm run test:e2e; echo \$? > \"$RUNNER_TEMP/e2e.status\"" > "$RUNNER_TEMP/e2e.log" 2>&1 &
+        working-directory: web
+        env:
+          PW_WORKERS: '2'
       - name: No page overflow, no mid-word breaks and no shift when data loads, at 320, 375 and 768px in any story, page or loading or error state (#554, #573)
         run: npm run check:layout
         working-directory: web
+      - name: Playwright suite results (every route in both themes at 320 and 1280px with axe, navigation, URL state, data states, theme, keyboard, reduced motion, no script)
+        if: always()
+        run: |
+          [ -f "$RUNNER_TEMP/e2e.started" ] || { echo 'The Playwright suite did not start (an earlier step failed).'; exit 0; }
+          for _ in $(seq 1 600); do [ -f "$RUNNER_TEMP/e2e.status" ] && break; sleep 2; done
+          cat "$RUNNER_TEMP/e2e.log"
+          [ "$(cat "$RUNNER_TEMP/e2e.status" 2>/dev/null)" = "0" ]
+      - name: Playwright traces of the failures
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: web-playwright-failures
+          path: web/test-results
+          retention-days: 7
+          if-no-files-found: ignore
 
   pin-drift:
     runs-on: ubuntu-latest

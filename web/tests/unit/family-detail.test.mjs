@@ -1,14 +1,14 @@
 // Unit tests for the family page's resolver and dossier service (#589). Synthetic catalog, run and dossier
 // data for the resolver; the committed dossiers for the parser (read as files, no network).
-import test from 'node:test';
+import { test } from 'vitest';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
-import { resolveFamily } from '../web/resolvers/families.ts';
-import { inlineParts, kindsText, resolveBenchmark, resolveNotes, resolveRules, resolveSources, resolveStatus } from '../web/resolvers/family-detail.ts';
-import { parseDossierNotes } from '../web/services/dossiers.ts';
+import { resolveFamily } from '../../resolvers/families.ts';
+import { inlineParts, kindsText, resolveBenchmark, resolveNotes, resolveRules, resolveSources, resolveStatus } from '../../resolvers/family-detail.ts';
+import { parseDossierNotes } from '../../services/dossiers.ts';
 
-const root = path.resolve(import.meta.dirname, '..');
+const root = path.resolve(import.meta.dirname, '../../..');
 process.env.WEB_REPO_ROOT = root;
 
 const fx = (slug, kind, tier, familyIds) => ({ slug, category: 'c', id: slug, group: 'g', kind, tier, familyIds });

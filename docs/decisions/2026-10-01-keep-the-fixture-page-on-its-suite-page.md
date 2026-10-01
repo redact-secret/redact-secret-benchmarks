@@ -8,6 +8,8 @@ decided_at: 2026-10-01
 
 # Keep a fixture's page on its suite page (?fixture=), and rebuild the page as the fixture mockup
 
+> Amended 2026-10-01 (#598, `2026-10-01-test-the-web-app-with-vitest-and-playwright.md`): the export-wide limits named here (total size, file count, the size of `data/`) are removed. They had no external basis: the site is static and deployed to S3 and CloudFront. Only per-page and per-request limits remain: one data file, the largest page, the largest rows page.
+
 ## Context
 
 #588 (part of #543). The fixture mockup (https://claude.ai/artifact/JE71WM6PuwCuRA1Qeixr6Q) is titled

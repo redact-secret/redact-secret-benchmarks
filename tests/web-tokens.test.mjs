@@ -30,7 +30,7 @@ const MEASURES_CSS = new URL('theme/measures.css', WEB);
 
 async function* walk(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
-    if (['node_modules', '.next', 'out', 'storybook-static'].includes(entry.name)) continue;
+    if (['node_modules', '.next', 'out', 'storybook-static', 'coverage', 'test-results', 'playwright-report'].includes(entry.name)) continue;
     const full = new URL(entry.name + (entry.isDirectory() ? '/' : ''), dir);
     if (entry.isDirectory()) yield* walk(full);
     else yield full;

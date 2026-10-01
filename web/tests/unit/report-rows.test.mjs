@@ -1,20 +1,21 @@
 // Unit tests for the pure resolvers behind the peer columns, the rows, fixture, detector and
 // findings pages (#558, #559). Synthetic catalog, run and ledger data only: no credentials, no
 // filesystem reads by the code under test, and fixture bytes that are obviously fake.
-import test from 'node:test';
+import { test } from 'vitest';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
-import { agreesWithSummary, inputsAt, sliceInputs } from '../web/resolvers/peers.ts';
-import { resolvePeers, resolveAnswers, resolveHubTiles } from '../web/resolvers/report.ts';
-import { resolveFamilyList } from '../web/resolvers/families.ts';
-import { FLAG, expandRows, fixtureHref, resolveRowsData, rowFacts, rowsSource } from '../web/resolvers/rows.ts';
-import { isRowsData } from '../web/resolvers/rowdata.ts';
-import { BUILD_DATA_PATH, recordsDataPath, rowsDataPath } from '../web/lib/data-paths.ts';
-import { PAGE_SIZE, filterRows, rowsQueryOf, rowsQueryString } from '../web/resolvers/filters.ts';
-import { boundText, resolveDetector, resolveDetectorList } from '../web/resolvers/detectors.ts';
-import { milestoneLabel, resolveFindingsInventory, resolveSuiteRows } from '../web/resolvers/inventory.ts';
-import { buildSuiteRecords, byteLines, changedRanges, isSuiteRecordsFile, packRow, resolveFixtureRecord, segment, unpackRow, verdictsOf } from '../web/resolvers/fixtures.ts';
+import { agreesWithSummary, inputsAt, sliceInputs } from '../../resolvers/peers.ts';
+import { resolvePeers, resolveAnswers, resolveHubTiles } from '../../resolvers/report.ts';
+import { resolveFamilyList } from '../../resolvers/families.ts';
+import { FLAG, expandRows, fixtureHref, resolveRowsData, rowFacts, rowsSource } from '../../resolvers/rows.ts';
+import { isRowsData } from '../../resolvers/rowdata.ts';
+import { BUILD_DATA_PATH, recordsDataPath, rowsDataPath } from '../../lib/data-paths.ts';
+import { PAGE_SIZE, filterRows, rowsQueryOf, rowsQueryString } from '../../resolvers/filters.ts';
+import { boundText, resolveDetector, resolveDetectorList } from '../../resolvers/detectors.ts';
+import { milestoneLabel, resolveFindingsInventory, resolveSuiteRows } from '../../resolvers/inventory.ts';
+import { buildSuiteRecords, byteLines, changedRanges, isSuiteRecordsFile, packRow, resolveFixtureRecord, segment, unpackRow, verdictsOf } from '../../resolvers/fixtures.ts';
+const WEB = path.resolve(import.meta.dirname, '../..');
 
 const fx = (slug, kind, tier, familyIds, extra = {}) => ({ slug: `s--${slug}`, category: 's', id: slug, group: 'g', kind, tier, familyIds, detectors: [], ...extra });
 const fixtures = [
@@ -498,11 +499,11 @@ const walk = dir => readdirSync(dir, { withFileTypes: true, recursive: true }).f
 test('the resolvers a client island may run import nothing from node and no service at runtime', () => {
   const pure = ['filters', 'rowdata', 'rows', 'fixtures', 'families', 'format', 'peers', 'detectors', 'inventory', 'report'];
   for (const name of pure) {
-    const source = readFileSync(`web/resolvers/${name}.ts`, 'utf8');
+    const source = readFileSync(`${WEB}/resolvers/${name}.ts`, 'utf8');
     assert.doesNotMatch(source, /from\s+['"]node:/, `${name}.ts imports node`);
     assert.doesNotMatch(source, /^\s*import\s+(?!type\b)[^;]*from\s+['"][^'"]*services[^'"]*['"]/m, `${name}.ts imports a service at runtime`);
   }
-  for (const file of walk('web/app').filter(f => /\.tsx?$/.test(f))) {
+  for (const file of walk(WEB + '/app').filter(f => /\.tsx?$/.test(f))) {
     const source = readFileSync(file, 'utf8');
     if (!/^'use client'/m.test(source)) continue;
     assert.doesNotMatch(source, /resolvers\/pages/, `${file} is a client component and imports the page resolvers`);

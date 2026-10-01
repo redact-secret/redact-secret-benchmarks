@@ -237,6 +237,33 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     if (detector === "aws-access-key") add(detector, "mask", ["AKIA" + "*".repeat(16)]);
   }
 
+  // redact-secret#1030 (product #1101): core claims sk_org_, sk_org_live_ and sk_org_test_ followed by at least 20
+  // [A-Za-z0-9] as one stripe finding. That is a support-policy floor, not a provider grammar: no source states the body or
+  // a mode segment (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md), so these rows score
+  // policy/T3 (positives) and as policy-floor controls (negatives), never T1/T2, and assert no body property as
+  // provider-valid. Every body is built here from the public `synthetic` seed, never a literal key-shaped string in source.
+  // Negatives are bare-context only: no body, 19 bytes, `_`/`-` inside the body, the prefix inside a wider identifier, and
+  // rk_org_ (Stripe says no such prefix exists). sk_live_/sk_test_ stay their own families (shape-1/2 above).
+  {
+    const orgBody = (slug, length) => synthetic(`detector-coverage:stripe-token:policy-org:${slug}`, length);
+    for (const [mode, prefix] of [["bare", "sk_org_"], ["live", "sk_org_live_"], ["test", "sk_org_test_"]]) {
+      for (const [floor, length] of [["floor", 20], ["above", 32]]) {
+        if (mode === "bare" && floor === "above") continue; // shape-5 above already carries the bare 32-byte body
+        positive("stripe-token", `policy-org-${mode}-${floor}`, [{ secret: prefix + orgBody(`${mode}-${floor}`, length) }]);
+      }
+    }
+    for (const mode of ["live", "test"]) {
+      add("stripe-token", `policy-org-${mode}-no-body-control`, [`sk_org_${mode}_`]);
+      add("stripe-token", `policy-org-${mode}-19-control`, [`sk_org_${mode}_${orgBody(`${mode}-19`, 19)}`]);
+    }
+    add("stripe-token", "policy-org-bare-19-control", [`sk_org_${orgBody("bare-19", 19)}`]);
+    add("stripe-token", "policy-org-live-underscore-control", [`sk_org_live_${orgBody("live-us-a", 10)}_${orgBody("live-us-b", 10)}`]);
+    add("stripe-token", "policy-org-test-hyphen-control", [`sk_org_test_${orgBody("test-hy-a", 10)}-${orgBody("test-hy-b", 10)}`]);
+    add("stripe-token", "policy-org-live-embedded-control", [`task_org_live_${orgBody("live-embedded", 20)}`]);
+    add("stripe-token", "policy-org-rk-live-control", [`rk_org_live_${orgBody("rk-live", 20)}`]);
+    add("stripe-token", "policy-org-rk-bare-control", [`rk_org_${orgBody("rk-bare", 20)}`]);
+  }
+
   // #65: additional detector-coverage benign controls for the eight T1
   // families short of the stable floor of 5 benign cases
   // (redact-secret-benchmarks#65). mask/reference/label-prose join each

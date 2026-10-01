@@ -180,8 +180,10 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // detector-coverage near-miss controls under the provider's own credential variable move from must-not-flag/T2
   // to policy/T3 on generic-token (+6 files/+6 spans).
   // #1012 (registry pin 4fb7882): aws-secret-access-key's context-gated coverage positive in three contexts (+3).
-  assert.deepEqual(tally['policy/T3'], { files: 238, spans: 238 });
-  assert.deepEqual(tally['must-redact/T0'], { files: 30, spans: 30 });
+  // redact-secret#1030 (product #1101): the three existing sk_org_ shape-5 positives move from must-redact/T0 to policy/T3 (+3, T0 -3)
+  // and the 15 new sk_org_ policy-floor positives are policy/T3 (+15).
+  assert.deepEqual(tally['policy/T3'], { files: 256, spans: 256 });
+  assert.deepEqual(tally['must-redact/T0'], { files: 27, spans: 27 });
   const twins = all.filter(([category]) => !category.startsWith('beta8-')).flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
   // jwt-prefix-only/reference/mask, private-key-prefix-only/reference) plus
@@ -250,7 +252,8 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // The #464/#528 graduation and #1012 (registry pin 4fb7882) add 89: prefix-only, short-body, mask, reference and label-prose for
   // the sixteen new registry detectors and google-oauth-client-secret (85), and missing-keyword, mask, reference and label-prose
   // for the context-gated aws-secret-access-key (4; its 39-character near-miss is a length twin).
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 674);
+  // redact-secret#1030 adds ten sk_org_ policy-floor controls to stripe-token (no body, 19 bytes, `_`/`-` in the body, a wider identifier, rk_org_): +10.
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 684);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

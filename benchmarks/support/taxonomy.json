@@ -638,7 +638,7 @@
       "sources": [
         "benchmarks/lib/assessment.ts (classifyFixture variant guard: \"Variant support must not be inferred from a related family name.\")"
       ],
-      "note": "classifyFixture explicitly routes sk_org_ values to \"this variant needs a separate format contract; related detector support is not evidence of parity\", so it is not claimed by stripe-token's live/test secret-key pattern."
+      "note": "stripe-token's live/test secret-key pattern does not claim sk_org_ values. Since redact-secret#1030 (product #1101) classifyFixture resolves sk_org_, sk_org_live_ and sk_org_test_ followed by at least 20 [A-Za-z0-9] to this one family as policy/T3 rows at core's support-policy floor (not a provider grammar; no organization key issued or observed); other sk_org_ values and whsec_ stay pending."
     },
     {
       "id": "stripe:webhook-signing-secret",

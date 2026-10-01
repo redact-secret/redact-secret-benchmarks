@@ -13,7 +13,7 @@
   "sources": {
     "reviewedMetadata": {
       "algorithm": "sha256",
-      "digest": "4f3c31f60f867814fac80c2ea9a24d2660d69c80b10920ade5aeba430c5fb04e"
+      "digest": "ba47172f0772773092a386af517892ae114f8ff27ef96f1387f87fb3cd6ce2f2"
     },
     "scenarios": {
       "algorithm": "sha256",
@@ -21,7 +21,7 @@
     },
     "taxonomy": {
       "algorithm": "sha256",
-      "digest": "246aa1f00409f148073bbdd0796b137d57db132e273d0bf60c84155c7de2ffc8"
+      "digest": "7a210894da37b6641543d6faf7acf75d670eec74618111bd3311621fbf3844fc"
     }
   },
   "fixtures": [
@@ -112749,6 +112749,466 @@
       }
     },
     {
+      "slug": "detector-coverage--stripe-token-policy-org-bare-19-control",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-bare-19-control",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-bare-19-control.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-bare-floor-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-bare-floor-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-bare-floor-bare.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-bare-floor-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-bare-floor-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-bare-floor-quoted.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-bare-floor-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-bare-floor-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-bare-floor-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-live-19-control",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-live-19-control",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-live-19-control.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-live-above-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-live-above-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-live-above-bare.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-live-above-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-live-above-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-live-above-quoted.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-live-above-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-live-above-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-live-above-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-live-embedded-control",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-live-embedded-control",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-live-embedded-control.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-live-floor-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-live-floor-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-live-floor-bare.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-live-floor-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-live-floor-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-live-floor-quoted.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-live-floor-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-live-floor-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-live-floor-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-live-no-body-control",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-live-no-body-control",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-live-no-body-control.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-live-underscore-control",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-live-underscore-control",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-live-underscore-control.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-rk-bare-control",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-rk-bare-control",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-rk-bare-control.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-rk-live-control",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-rk-live-control",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-rk-live-control.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-test-19-control",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-test-19-control",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-test-19-control.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-test-above-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-test-above-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-test-above-bare.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-test-above-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-test-above-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-test-above-quoted.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-test-above-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-test-above-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-test-above-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-test-floor-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-test-floor-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-test-floor-bare.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-test-floor-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-test-floor-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-test-floor-quoted.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-test-floor-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-test-floor-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-test-floor-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-test-hyphen-control",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-test-hyphen-control",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-test-hyphen-control.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--stripe-token-policy-org-test-no-body-control",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "stripe-token-policy-org-test-no-body-control",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/stripe-token-policy-org-test-no-body-control.txt"
+      },
+      "familyIds": [
+        "stripe:organization-api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
       "slug": "detector-coverage--stripe-token-prefix-only",
       "source": {
         "categoryId": "detector-coverage",
@@ -122425,7 +122885,7 @@
   "identity": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "a633715b2b24bab97dc919644540617ae152c86e9289c81ddb92a4dc3314dba8",
-    "fixtureCount": 5925
+    "digest": "58f09c3544bf7238dcd076a7c1379681a302adef9ba66ee14dc801f95cfdbbdd",
+    "fixtureCount": 5950
   }
 }

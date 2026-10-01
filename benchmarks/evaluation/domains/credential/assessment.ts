@@ -66,6 +66,8 @@ const STRIPE_ORG_KEYS = 'https://docs.stripe.com/keys/organization-api-keys';
 const MASK_GO_STRIPE = 'https://github.com/koki-develop/mask-go/blob/1b861d7ac421b392a5bb962207fd1886b28e013e/builtin_stripe_secret_key.go#L100-L113';
 const RICHMOND_STRIPE = 'https://github.com/lazyluke16-dotcom/richmond-rapid-connect/blob/5c057a98ccc24602917441f6c78f3a6aa15dc740/src/lib/stripe.server.ts#L12-L18';
 const PRODUCT_1030 = 'https://github.com/redact-secret/redact-secret/issues/1030';
+/** The sk_org_ support-policy floor core claims (redact-secret#1030): optional live_/test_ segment, then at least 20 alphanumerics. */
+const STRIPE_ORG_FLOOR = /^sk_org_(?:live_|test_)?[A-Za-z0-9]{20,}$/;
 const FIELDS_1030: FieldClaim[] = [
   { field: 'organization-prefix', claim: 'sk_org_ (organization API key; no rk_org_ sibling)', basis: 'provider-documentation', status: 'frozen', sources: [src(STRIPE_ORG_KEYS, '2026-09-29', 'names the organization key type; "support sandboxes and live mode"')],
     note: 'Prefix only. Not issuance-evidenced: no organization key has been issued or observed.' },
@@ -501,6 +503,9 @@ const CONTROL_RULES: Record<string, ControlRule[]> = {
     { test: always, tier: 'T3', reason: 'Independent public control for the bounded credential policy profile.', axis: 'near-miss', family: detectorFamily },
   ],
   'detector-coverage': [
+    // redact-secret#1030: the sk_org_ policy-floor controls. Silence here follows core's own floor (fewer than 20 alphanumerics,
+    // a _ or - in the body, a wider identifier, rk_org_), which is project policy, not a provider near miss, so T3 and never T2.
+    { test: f => f.id.startsWith('stripe-token-policy-org-') && f.id.endsWith('-control'), tier: 'T3', reason: 'Control at the sk_org_ support-policy floor (redact-secret#1030): no body, fewer than 20 alphanumerics, a _ or - inside the body, the prefix inside a wider identifier, or rk_org_. Expected silence follows core\'s support-policy floor, not a provider grammar; no organization key has been issued or observed.', axis: 'near-miss', family: detectorFamily },
     // #45: missing-marker/-identifier/-segment/-separator/-keyword/-json-marker cover a
     // required same-line or in-value marker the family's shape depends on; short-* covers
     // truncation below the reviewed minimum; invalid-alphabet and *-identifier-embedding
@@ -821,6 +826,11 @@ export function classifyFixture(category: string, f: Fixture): Assessment {
     // this family's own re-checked evidence gap (#45), not a shared placeholder.
     if (family === 'linear-token' && value.startsWith('lin_oauth_'))
       return pending('Re-checked 2026-09-22 (#127, following #45): Linear documents no OAuth access-token grammar, and neither pinned tool registers a lin_oauth_ pattern — trufflehog\'s linearapi and gitleaks\'s linear-api-key detectors both match only lin_api_. redact-secret#551 briefly turned this guard\'s floor into an exact length on tool-agreement grounds shared with other families, but redact-secret#570/#571 (closed; no tracked issue remains open) found that regressed real oauth tokens and restored it to an open, unevidenced floor (RunLength::OpenFloor) — confirming, not resolving, the same gap. Pending until a pinned scanner registration or Linear documentation describes this shape.', family);
+    // redact-secret#1030 (product #1101): sk_org_, sk_org_live_ and sk_org_test_ + at least 20 [A-Za-z0-9] are one stripe finding
+    // at core's support-policy floor. The body and the mode segment are provider-undecided, so the row is policy/T3 on the
+    // same stripe-token family, never a T1/T2 must-redact (docs/decisions/2026-09-24-stop-asserting-provider-undecided-format-properties.md).
+    if (family === 'stripe-token' && STRIPE_ORG_FLOOR.test(value))
+      return policy('Stripe organization API key at core\'s support-policy floor (redact-secret#1030, product #1101): sk_org_, sk_org_live_ or sk_org_test_ followed by at least 20 [A-Za-z0-9], one stripe finding. Stripe documents only the sk_org_ prefix; the mode segment, body length and alphabet are provider-undecided and no organization key has been issued or observed, so this scores as project policy, not a provider grammar.', family);
     if (family === 'stripe-token' && /^(?:sk_org_|whsec_)/.test(value))
       return pending('Re-checked 2026-09-22 (#127, following #45): Stripe\'s key-types page names sk_org_ organization keys and the webhooks page documents whsec_ as the signing-secret prefix, but neither page nor the pinned trufflehog (`[rs]k_live_[a-zA-Z0-9]{20,247}`, live-only) or gitleaks (`(?:sk|rk)_(?:test|live|prod)_[a-zA-Z0-9]{10,99}`, no org alternative) stripe rules establish a body length or alphabet for either prefix. redact-secret#513 is closed (PR #533): the product adopted both prefixes on that same provider prefix documentation alone, recording its own 20-byte alnum-run floor as a support-policy choice, not independent evidence. This corpus\'s bar is unmet on that same evidence, not on an open product issue: pending until a pinned scanner registers a rule or Stripe documents a body length or alphabet for either prefix.', family);
     if (family === 'slack-token' && value.startsWith('xwfp-'))

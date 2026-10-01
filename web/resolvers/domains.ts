@@ -19,7 +19,8 @@ const issue = (number: number) => ({ number, href: `${REPO}/issues/${number}` })
 const ISSUES = { activation: 615, population: 616, methods: 617, metrics: 618, policyHoldout: 619, accuracyCorpus: 576 } as const;
 
 const pair = [{ label: 'Credential', href: DOMAIN_HREF.credential }, { label: 'PII', href: DOMAIN_HREF.pii }];
-const breadcrumb = (label: string) => [{ label: 'Evaluation', href: '/evaluation/' }, { label }];
+/** The Evaluation hub (/evaluation/) is the P1 phase (#614). Until it is built the first crumb is plain text, never a link to a 404. */
+const breadcrumb = (label: string) => [{ label: 'Evaluation' }, { label }];
 
 /** "5 provisional, 1 pending": the states with a count, in the order stable, provisional, pending, unsupported. */
 export function distributionText(distribution: Record<string, number>): string {

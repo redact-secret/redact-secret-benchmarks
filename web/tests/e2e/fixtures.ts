@@ -50,7 +50,14 @@ export const test = base.extend<{ watch: Watch }>({
       watch.external.push(url.hostname);
       return route.fulfill({ status: 200, contentType: url.hostname === 'fonts.googleapis.com' ? 'text/css' : 'font/woff2', body: '' });
     });
-    page.on('console', message => { if (['error', 'warning'].includes(message.type())) watch.problems.push(`console.${message.type()}: ${message.text()}`); });
+    page.on('console', message => {
+      if (!['error', 'warning'].includes(message.type())) return;
+      // Next prefetches the pages a header link points to, and with them the stylesheet chunks only those pages use. Which chunks a
+      // page does not share with another is decided by the bundler's chunking, so adding any route can move it, and Chrome then warns
+      // that the prefetched stylesheet was "preloaded ... but not used". That is the prefetch working, not a page loading something it does not use.
+      if (message.type() === 'warning' && /^The resource \S+\/_next\/static\/chunks\/[\w-]+\.css was preloaded using link preload but not used/.test(message.text())) return;
+      watch.problems.push(`console.${message.type()}: ${message.text()}`);
+    });
     page.on('pageerror', error => watch.problems.push(`pageerror: ${error.message}`));
     page.on('requestfailed', request => request.failure()?.errorText === 'net::ERR_ABORTED' ? undefined : watch.problems.push(`requestfailed: ${request.url()} (${request.failure()?.errorText})`));
     page.on('response', response => { if (response.status() >= 400 && response.url().startsWith(origin)) watch.problems.push(`HTTP ${response.status()}: ${response.url()}`); });

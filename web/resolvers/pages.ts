@@ -43,6 +43,9 @@ import { resolveFeaturePage, resolveHub, resolveRuntimePanels, toolName, type Fe
 import { diffFileOf, resolveAccuracyPage, type AccuracyPage, type DiffFile, type DiffSource } from './accuracy';
 import type { ComparisonHubProps } from '../components/comparison/ComparisonHub';
 import { resolveRunState, type RunState } from './run';
+import { resolveScanners } from './scanners';
+import { loadScannerEnvironment } from '../services/scanners';
+import type { ScannerOverviewProps } from '../components/evaluation/scanner';
 import type { EvidenceLevelLink, HubTileData } from '../components/report/types';
 import type { MetaItem } from '../components/page/MetaList';
 
@@ -510,4 +513,12 @@ export async function resolveAccuracyDifferencesFile(): Promise<DiffFile> {
   const { measured, page } = await accuracyPage();
   // Without a run there is nothing to list (the page asks for no file); the export still gets a valid, empty one.
   return page.diff && measured ? diffFileOf(page.diff, measured.runId) : diffFileOf({ providers: [], fixtures: [], peers: {} }, '');
+}
+
+// ---- /evaluation/scanner ------------------------------------------------------------------
+
+/** The scanners the benchmark ran with and the environment each ran in (#612). */
+export async function resolveScannerPage(): Promise<ScannerOverviewProps> {
+  const [environment, profiles, run, runtime, catalog] = await Promise.all([loadScannerEnvironment(), loadPeerProfiles(), loadRun(), loadPeerRuntime(), loadCatalog()]);
+  return resolveScanners({ environment, profiles, run: run.state === 'measured' ? run : undefined, runtime, productDetectors: catalog.detectors.length || null });
 }

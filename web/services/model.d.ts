@@ -19,3 +19,9 @@ declare module '*/scripts/scaffold-dossiers.mjs' {
   export function parseFrontmatter(text: string): { data?: unknown; error?: string };
   export function run(options: { dir?: string; check?: boolean; taxonomy?: unknown }): { created: number; problems: string[] };
 }
+
+// The adapter registry the benchmark runs (scanners/index.mjs): read only for each adapter's id, mode line and
+// configuration (services/scanners.ts). Its `scan` and `version` functions are never called here.
+declare module '*/scanners/index.mjs' {
+  export const scanners: readonly { id: string; name: string; mode: string; configuration: Record<string, unknown> }[];
+}

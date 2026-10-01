@@ -96,6 +96,7 @@ export const ROUTES: string[] = [
   '/comparison/', '/comparison/feature/', '/comparison/feature/?rows=differences',
   '/comparison/runtime/', '/comparison/runtime/?view=speed', '/comparison/runtime/?analysis=external&domain=credentials',
   '/comparison/performance/', '/comparison/accuracy/', '/comparison/accuracy/?data=pii',
+  '/evaluation/scanner/',
 ].map(route => `${BASE}${route}`);
 
 /** Resolves with the page's own links, so a test can follow the real hrefs rather than guess them. */

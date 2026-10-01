@@ -12,7 +12,7 @@ export interface AccuracyDifferencesProps extends AccuracyDifferencesData {
 
 function Column({ column, none, onShowAll }: { column: AccuracyDifferenceColumn; none: string; onShowAll?: () => void }) {
   return (
-    <section className={styles.column} aria-label={column.title}>
+    <section className={styles.column}>
       <h4 className={styles.title}>
         {column.title}
         <span>{column.total}</span>

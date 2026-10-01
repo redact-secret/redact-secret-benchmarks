@@ -175,6 +175,15 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   `npm run peer-rules:check` and again by `services/peers.ts`); the peer columns state what a scanner's
   rules target and what was recorded, never which scanner is better. Every link on a report page stays
   inside the app (`check:routes` fails a link that leaves `/next/`).
+- `/evaluation/qualification/` and `/evaluation/qualification/families/<family>/` (#606) show the qualification view the adapter derived from the official
+  credential-eval runs (`public/results/qualification-v1.json`, `npm run qualification:view`), beside the existing pages, which keep reading the legacy files.
+  `services/qualification.ts` returns `ready`, `not-built` (the normal state in CI), `incompatible` or `stale` (built from other pins than
+  `benchmarks/official-runs.json` or a changed policy file) and a view that is not `ready` shows no number, only why and the commands; with no usable view the
+  family route keeps one `view-unavailable` page because `output: export` refuses a dynamic route with no params. Blocks are in `components/qualification/`.
+  Every count names its population and none is a sum across populations or scanners; the product's support status is a separate section from the scanners' counts;
+  a method that did not run and a pending case are "not measured" and "pending", never zero. The view has counts and no per-fixture rows, so there is no fixture
+  page. The tests build synthetic views (`tests/unit/qualification-data.ts`, put in each state with an overlay root). Decision:
+  `docs/decisions/2026-10-01-show-the-qualification-view-beside-the-existing-report.md`.
 - `/evaluation/scanner/` (#612) shows the scanners the benchmark ran with and each one's environment: pins, install checksums, configuration and
   platform from the validated peer snapshots (`services/scanners.ts`), the mode line and host from the run, `outOfScope` from the registry. Blocks are
   `Scanner*` in `components/evaluation/scanner/` (a folder of folders is a section; each phase of `/evaluation` has its own). A fact the repository does not

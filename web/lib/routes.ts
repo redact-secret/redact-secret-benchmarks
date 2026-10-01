@@ -44,6 +44,7 @@ export const SECTIONS: Section[] = [
     entries: [
       { href: '/evaluation/', label: 'Overview', title: 'Evaluation', summary: 'The evaluation methods, the run behind them and the pages that read it.' },
       { href: '/evaluation/method/twin/', label: 'Methods', title: 'Evaluation methods', summary: 'Six methods, each with how it runs and what was recorded for it.', match: '/evaluation/method/' },
+      { href: '/evaluation/scanner/', label: 'Scanners', title: 'Scanners and where they ran', summary: 'The scanners the benchmark ran with, how each was pinned and run, and what was left out.' },
       { href: '/evaluation/rc/', label: 'Release candidate', title: 'What changed in the release candidate?', summary: 'A pinned candidate read against the published release.' },
       { href: '/evaluation/pii/', label: 'Personal data', title: 'How is personal data evaluated?', summary: 'The personal-data domain: its families, fixtures and what was recorded.' },
       { href: '/evaluation/credential/', label: 'Credentials', title: 'How are credentials evaluated?', summary: 'The credential domain: its families, fixtures and what was recorded.' },
@@ -57,7 +58,7 @@ export const SECTIONS: Section[] = [
  * says it is not in this build, so no link points at a route the export does not contain.
  */
 export const EVALUATION_PHASES: RouteEntry[] = [
-  { href: '/evaluation/scanner/', label: 'Scanners', title: 'What did each scanner record?', summary: 'One scanner at a time, across every evaluation method.' },
+  { href: '/evaluation/scanner/', label: 'Scanners', title: 'Scanners and where they ran', summary: 'The scanners the benchmark ran with, how each was pinned and run, and what was left out.' },
   { href: '/evaluation/rc/', label: 'Release candidate', title: 'What changed in the release candidate?', summary: 'A pinned candidate read against the published release.' },
   { href: '/evaluation/pii/', label: 'Personal data', title: 'How is personal data evaluated?', summary: 'The personal-data domain: its families, fixtures and what was recorded.' },
   { href: '/evaluation/credential/', label: 'Credentials', title: 'How are credentials evaluated?', summary: 'The credential domain: its families, fixtures and what was recorded.' },

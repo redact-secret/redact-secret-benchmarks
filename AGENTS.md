@@ -37,6 +37,14 @@ publishable. Go to production with `npm run go-production`: it opens the develop
 by fast-forwarding `main` to `develop` (never a merge or squash PR, which leaves `main` ahead of `develop`).
 It refuses unless every run on `develop`'s tip succeeded.
 
+## Web app (`web/`)
+
+The new Next.js static site (Storybook-first components, services, resolvers) lives in `web/` and ships alongside the
+existing site until cutover. Its rules are in [`web/CONVENTIONS.md`](web/CONVENTIONS.md); read it before touching `web/`.
+Two rules apply to every agent and every merge there: tests never assert ledger values (a repin re-keys them), and you
+verify locally on a freshly rebased `origin/develop` and confirm `develop` is green after the merge
+([Before you merge](web/CONVENTIONS.md#before-you-merge)).
+
 ## Peer scanner version
 
 Before `eval:classify`, `eval:matrix` or `benchmark:candidate`, check that

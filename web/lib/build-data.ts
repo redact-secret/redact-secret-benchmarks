@@ -110,7 +110,12 @@ export function useBuildData<T>(path: string | null, check: (value: unknown) => 
   const [, rerender] = useState(0);
 
   useEffect(() => {
-    if (!path || settled.has(path)) return undefined;
+    if (!path) return undefined;
+    if (settled.has(path)) {
+      // The file landed after this render read the cache (a hover warmed it) and before this effect ran: redraw with it.
+      rerender(n => n + 1);
+      return undefined;
+    }
     let cancelled = false;
     const run = () => {
       setOutcome(null);

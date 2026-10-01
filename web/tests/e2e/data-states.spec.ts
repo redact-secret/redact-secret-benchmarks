@@ -66,7 +66,7 @@ test.describe('rows table', () => {
   test('error: says why, keeps the first page readable, and Try again loads it', async ({ page }) => {
     let failures = 1;
     await page.route(ROWS, route => (failures-- > 0 ? route.fulfill({ status: 503, body: 'down' }) : route.continue()));
-    await page.goto(`${BASE}/report/rows/T1/?show=leaked`);
+    await page.goto(`${BASE}/report/rows/T1/?q=token`);
     const alert = page.getByRole('alert').filter({ hasText: 'Could not load the rest of the rows' });
     await expect(alert).toBeVisible();
     await expect(status(page)).toHaveText('Rows not loaded');

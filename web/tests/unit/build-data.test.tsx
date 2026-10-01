@@ -3,6 +3,8 @@
  * session cache and the in-flight table start empty. Requests are a stubbed `fetch`; no network.
  */
 import { act, renderHook, waitFor } from '@testing-library/react';
+import { createElement } from 'react';
+import { createRoot } from 'react-dom/client';
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest';
 
 type Lib = typeof import('../../lib/build-data');
@@ -122,6 +124,32 @@ describe('useBuildData', () => {
     const { result } = renderHook(() => lib.useBuildData(PATH, isNumbers));
     expect(result.current.status).toBe('ready');
     expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  // A hover warms the file, the click then mounts the view, and the file lands after React rendered
+  // "loading" but before the effect ran. The effect finds it cached and must still redraw (CI saw a
+  // fixture page stay on its skeleton for 25 s). Outside `act`, so render and effect are separate tasks.
+  test('a file that lands between the render and the effect is drawn, not left on "loading"', async () => {
+    const env = globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean };
+    const before = env.IS_REACT_ACT_ENVIRONMENT;
+    env.IS_REACT_ACT_ENVIRONMENT = false;
+    let release!: (response: Response) => void;
+    fetchMock.mockReturnValue(new Promise<Response>(resolve => { release = resolve; }));
+    lib.warmBuildData(PATH, isNumbers);
+    const seen: string[] = [];
+    const Probe = () => {
+      const { status } = lib.useBuildData(PATH, isNumbers);
+      seen.push(status);
+      if (seen.length === 1) release(ok({ n: [3] }));
+      return null;
+    };
+    const root = createRoot(document.createElement('div'));
+    root.render(createElement(Probe));
+    await new Promise(resolve => setTimeout(resolve, 100));
+    root.unmount();
+    env.IS_REACT_ACT_ENVIRONMENT = before;
+    expect(seen[0]).toBe('idle');
+    expect(seen.at(-1)).toBe('ready');
   });
 
   test('a failure is an error with its reason, and retry asks again', async () => {

@@ -79,19 +79,20 @@ test.describe('lists (?q= ?show= ?level=)', () => {
 });
 
 test.describe('rows and paging (?page=)', () => {
+  // A search, not a `show` choice: paging needs a view longer than a page, and which rows a scanner leaves readable is the product's to change.
   test('Next is a history entry that keeps the filter; Back and Forward move between pages', async ({ page }) => {
-    await page.goto(`${BASE}/report/rows/T1/?show=leaked`);
+    await page.goto(`${BASE}/report/rows/T1/?q=token`);
     const pager = page.getByRole('navigation', { name: 'Pagination' });
     await expect(pager).toContainText('Page 1 of');
     await pager.getByRole('button', { name: 'Next' }).click();
-    await expect(page).toHaveURL(`${BASE}/report/rows/T1/?show=leaked&page=2`);
+    await expect(page).toHaveURL(`${BASE}/report/rows/T1/?q=token&page=2`);
     await expect(pager).toContainText('Page 2 of');
     await pager.getByRole('button', { name: 'Next' }).click();
     await expect(pager).toContainText('Page 3 of');
     await page.goBack();
     await expect(pager).toContainText('Page 2 of');
     await page.goBack();
-    await expect(page).toHaveURL(`${BASE}/report/rows/T1/?show=leaked`);
+    await expect(page).toHaveURL(`${BASE}/report/rows/T1/?q=token`);
     await expect(pager).toContainText('Page 1 of');
     await page.goForward();
     await expect(pager).toContainText('Page 2 of');

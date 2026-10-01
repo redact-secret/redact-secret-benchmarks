@@ -4,7 +4,7 @@
  * checks the address, the page and the history.
  */
 import type { Page } from '@playwright/test';
-import { BASE, FIXTURE, SUITE, expect, test } from './fixtures';
+import { BASE, FIXTURE, SUITE, expect, fixtureReady, test } from './fixtures';
 
 const status = (page: Page) => page.getByRole('status').filter({ visible: true }).first();
 
@@ -112,7 +112,7 @@ test.describe('rows and paging (?page=)', () => {
     await link.click();
     await expect(page).toHaveURL(href);
     await expect(page.getByRole('heading', { level: 1 }).filter({ visible: true })).toHaveCount(1);
-    await expect(page.locator('[data-fixture-state="ready"]')).toBeVisible();
+    await fixtureReady(page);
   });
 });
 
@@ -198,12 +198,12 @@ test.describe('one fixture (?fixture=)', () => {
     await link.click();
     await expect(page).toHaveURL(href);
     await expect(page.locator('html')).toHaveAttribute('data-fixture', '1');
-    await expect(page.locator('[data-fixture-state="ready"]')).toBeVisible();
+    await fixtureReady(page);
     await page.goBack();
     await expect(page.locator('html')).not.toHaveAttribute('data-fixture', '1');
     await expect(page.getByRole('searchbox', { name: 'Find' })).toBeVisible();
     await page.goForward();
-    await expect(page.locator('[data-fixture-state="ready"]')).toBeVisible();
+    await fixtureReady(page);
   });
 
   test('a direct visit shows the fixture: its title is the id, with a breadcrumb back to the report', async ({ page }) => {

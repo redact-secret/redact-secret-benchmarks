@@ -63,7 +63,9 @@ coverage of lines, statements, functions and branches, enforced in CI, over real
    `check:layout`), in `web/tests/e2e`, against the built export.** `tests/e2e/serve.mjs` serves `web/out` like the
    host (base path, directory index, `404.html`, no rewrites), so the suite reuses the export `check:routes`
    already built. `@playwright/test` over a bare `playwright` script gives web-first assertions with auto-retry (no
-   sleeps), parallel workers, traces on failure and a JSON report. Retries are off: a pass on the second try is a
+   sleeps), parallel workers, traces on failure and a JSON report. Every navigation the suite starts returns once the
+   page is hydrated (a click before that reaches HTML with no handler, which is how the first CI run failed two
+   tests). Retries are off: a pass on the second try is a
    bug. `axe-core` is injected into the page (no wrapper package). `PW_CHANNEL=chrome` uses an installed Chrome;
    CI installs Chromium. The suite never touches the network: web fonts are answered empty, any other off-origin
    request fails the test.
@@ -80,7 +82,7 @@ coverage of lines, statements, functions and branches, enforced in CI, over real
 5. **CI: the existing `web` job only.** It already builds the export and installs Chromium. The unit run with
    coverage follows `check:routes`; a coverage table by directory goes to the job summary and the lcov and HTML
    report upload as the `web-coverage` artifact. `check:layout` drives one browser on one core, so the Playwright
-   suite starts before it in the background (three workers) and is joined after it: the wall time is the longer of
+   suite starts before it in the background (two workers) and is joined after it: the wall time is the longer of
    the two, not the sum. A failing run uploads its traces. Actions are pinned by SHA and the job keeps
    `contents: read`. The existing `check:*` scripts stay: none is superseded (`check:layout` also lays out every
    story and each loading state at three widths, which the suite does not).
@@ -96,12 +98,15 @@ coverage of lines, statements, functions and branches, enforced in CI, over real
 On a developer machine under load (so times are an upper bound):
 
 - 815 unit tests in 15 files (531 stories, 95 ported resolver tests, 189 behaviour tests), about 25 s alone;
-  130 Playwright tests, about 2.7 minutes with three workers.
+  130 Playwright tests, about 1 minute with eight workers on a quiet machine. In CI (the first run, three workers beside
+  `check:layout`): 66 s for the unit run with coverage, 3.5 minutes for the Playwright suite.
 - Coverage of the application code (the exclusions above): lines 99.1%, statements 97.8%, functions 97.9%,
   branches 89.9%. With stories in the denominator (only `.d.ts` and CSS left out): 99.1%, 97.9%, 96.7%, 89.9%.
   By directory (lines / branches): `app` 96.7 / 85.2, `components` 99.7 / 97.0, `lib` 100 / 94.7,
   `resolvers` 99.1 / 88.1, `services` 100 / 88.7, `theme` 100 / 100.
-- The existing `web` job ran in about 9.3 minutes, 7.5 of them `check:layout`. The CI delta is in the pull request.
+- The `web` job ran in 9.3 minutes before, 7.5 of them `check:layout`; with this change 10.2 minutes: the unit run adds
+  about a minute and the Playwright suite hides behind `check:layout`. The suite runs on two workers in CI, so it
+  leaves `check:layout` a core and a page has time to hydrate.
 
 ## What the tests found
 

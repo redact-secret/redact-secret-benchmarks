@@ -5,7 +5,7 @@
  * every state, and a failure says why and offers the right next step.
  */
 import type { Page, Route } from '@playwright/test';
-import { BASE, FIXTURE, SUITE, expect, test } from './fixtures';
+import { BASE, FIXTURE, SUITE, expect, fixtureReady, test } from './fixtures';
 
 const ROWS = '**/data/rows/level/T1/rows.json';
 const RECORDS = `**/data/fixtures/${SUITE}/records.json`;
@@ -140,7 +140,7 @@ test.describe('one fixture of a suite', () => {
     await expect(view.getByRole('heading', { level: 1 })).toHaveText(FIXTURE);
     await expect(view.getByRole('link', { name: 'All fixtures in this suite' })).toBeVisible();
     await view.getByRole('button', { name: 'Try again' }).click();
-    await expect(page.locator('[data-fixture-state="ready"]')).toBeVisible();
+    await fixtureReady(page);
   });
 
   test('a records file of another build (another number of fixtures) is refused with a reload offer', async ({ page }) => {
@@ -161,7 +161,7 @@ test.describe('one fixture of a suite', () => {
     await expect(alert).toBeVisible();
     await expect(page.locator('[data-fixture-state="error"]').getByRole('heading', { level: 1 })).toHaveText(FIXTURE);
     await connection.restore();
-    await expect(page.locator('[data-fixture-state="ready"]')).toBeVisible();
+    await fixtureReady(page);
   });
 
   test('pointing at a row link warms the records file, so opening the fixture needs no second wait', async ({ page }) => {
@@ -172,7 +172,7 @@ test.describe('one fixture of a suite', () => {
     await link.hover();
     await expect.poll(() => requests.length).toBe(1);
     await link.click();
-    await expect(page.locator('[data-fixture-state="ready"]')).toBeVisible();
+    await fixtureReady(page);
     expect(requests).toHaveLength(1);
   });
 });

@@ -1,6 +1,6 @@
 import { readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
-import { test as base, expect } from '@playwright/test';
+import { test as base, expect, type Page } from '@playwright/test';
 
 export { expect };
 
@@ -58,7 +58,14 @@ export const test = base.extend<{ watch: Watch }>({
   }, { auto: true }],
 });
 
-export const onlyFontHosts = (watch: Watch): string[] => [...new Set(watch.external)].filter(host => !FONT_HOSTS.has(host));
+/** A fixture's page is drawn: states what the view is in when it is not (loading, error, missing), so a failure names it. */
+export async function fixtureReady(page: Page): Promise<void> {
+  const view = page.locator('[data-fixture-state]');
+  await expect(view).toHaveAttribute('data-fixture-state', 'ready');
+  await expect(view).toBeVisible();
+}
+
+export const onlyFontHosts =(watch: Watch): string[] => [...new Set(watch.external)].filter(host => !FONT_HOSTS.has(host));
 
 // ---- What the export contains ------------------------------------------------------------------
 

@@ -14,13 +14,14 @@ export default defineConfig({
   testDir: 'tests/e2e',
   testMatch: '**/*.spec.ts',
   fullyParallel: true,
-  workers: process.env.PW_WORKERS ? Number(process.env.PW_WORKERS) : process.env.CI ? 4 : undefined,
+  workers: process.env.PW_WORKERS ? Number(process.env.PW_WORKERS) : undefined,
   retries: 0,
   forbidOnly: !!process.env.CI,
   reporter: process.env.CI ? [['dot'], ['json', { outputFile: 'test-results/results.json' }]] : [['list']],
   outputDir: process.env.PW_OUTPUT_DIR ?? 'test-results',
-  expect: { timeout: 10_000 },
-  timeout: 60_000,
+  // CI runs this beside check:layout on shared cores: a page may take a few seconds to hydrate and a data file longer to arrive.
+  expect: { timeout: process.env.CI ? 25_000 : 10_000 },
+  timeout: process.env.CI ? 120_000 : 60_000,
   use: {
     baseURL: `http://127.0.0.1:${port}`,
     channel: process.env.PW_CHANNEL || undefined,

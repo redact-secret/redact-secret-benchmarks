@@ -197,6 +197,14 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   panel and that file from the suite reports. Decision:
   `docs/decisions/2026-09-30-compare-accuracy-one-pair-at-a-time.md`.
 
+- `/evaluation` and `/evaluation/method/<method>/` (#614): the six method pages share one schema (head, how it runs, recorded now,
+  how to read it, exact inputs) and one table (`EvidenceTable`: scanners across, checks down, a cell is "n of N did not hold",
+  no total, no sort). `services/evaluation.ts` reads `public/results/evaluation-v1.json` (CI writes it with
+  `npm run eval:discover` and `npm run eval:publish`) and checks it with `evaluationProblem`; `resolvers/evaluation-methods.ts`
+  and `evaluation-hub.ts` are pure, `evaluation-pages.ts` awaits the services. A phase page the hub links is a link only once
+  its entry is in the Evaluation section of `lib/routes.ts`: add yours there. Decision:
+  `docs/decisions/2026-10-01-show-each-evaluation-method-in-one-fixed-order.md`.
+
 ## Tests
 
 Decision: `docs/decisions/2026-10-01-test-the-web-app-with-vitest-and-playwright.md`.

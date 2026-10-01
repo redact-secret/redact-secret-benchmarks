@@ -45,4 +45,17 @@
   .muted {
     color: var(--ink-muted);
   }
+
+  /* A stacked row already has the scanner's name in front of the figure, so the figure and its denominator share a line. */
+  @media (max-width: 720px) {
+    .count {
+      display: inline-flex;
+      gap: var(--space-1);
+      align-items: baseline;
+    }
+
+    .scanner {
+      justify-items: start;
+    }
+  }
 }

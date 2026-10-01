@@ -47,7 +47,12 @@ export interface PeerRuleFamilies {
   scanners: Record<string, PeerRuleSet>;
 }
 
-export interface PeerProfile { kind: PeerKind; description: string }
+export interface PeerProfile {
+  kind: PeerKind;
+  description: string;
+  /** What this benchmark does not run or measure for the scanner, one plain statement each (#612). */
+  outOfScope: string[];
+}
 export type PeerKind = 'repository-scanner' | 'runtime-library';
 export const PEER_KINDS: Record<PeerKind, string> = { 'repository-scanner': 'Repository scanner', 'runtime-library': 'Runtime library' };
 export interface PeerRegistry { schemaVersion: 1; scanners: Record<string, PeerProfile> }
@@ -140,6 +145,12 @@ export function peerRegistryProblems(registry: PeerRegistry, registered: string[
     if (!(profile.kind in PEER_KINDS)) problems.push(`peer-registry.json: ${id} has unknown kind ${profile.kind}`);
     if (!profile.description?.trim() || profile.description.length > 240) problems.push(`peer-registry.json: ${id} needs a description of one sentence or two, at most 240 characters`);
     if (RANKING_WORDS.test(profile.description ?? '')) problems.push(`peer-registry.json: ${id} description words a judgement; state what the scanner is built for`);
+    const scope = profile.outOfScope;
+    if (!Array.isArray(scope) || scope.length === 0 || scope.length > 6) problems.push(`peer-registry.json: ${id} needs one to six outOfScope statements`);
+    for (const statement of Array.isArray(scope) ? scope : []) {
+      if (typeof statement !== 'string' || !statement.trim() || statement.length > 200) problems.push(`peer-registry.json: ${id} has an outOfScope statement that is empty or over 200 characters`);
+      else if (RANKING_WORDS.test(statement)) problems.push(`peer-registry.json: ${id} outOfScope statement words a judgement; state what is not run`);
+    }
   }
   return problems;
 }

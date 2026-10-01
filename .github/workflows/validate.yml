@@ -126,10 +126,14 @@ jobs:
         working-directory: web
       # The web services read the fixture corpora and the benchmark run, as the existing site does (#556).
       # `npm ci` materialises the generated corpora (prepare); the bench takes about 15 seconds.
-      - name: Repository dependencies, generated fixtures and one benchmark run for the report pages
+      - name: Repository dependencies, generated fixtures, one benchmark run for the report pages and one evaluation for the evaluation pages
+        # The evaluation pages (#614) read public/results/evaluation-v1.json. With the product alone the run takes under a minute
+        # and has no peer, so the pages are built in the state a checkout without peers has; a full evaluation is published by publish-site.
         run: |
           npm ci
           npm run bench
+          npm run eval:discover -- --scanner=redact-secret
+          npm run eval:publish
       - name: No sx prop, no styled(), fetch only of build-emitted data through one helper, CSS Modules layered (#547, #573)
         run: npm run check:no-sx
         working-directory: web

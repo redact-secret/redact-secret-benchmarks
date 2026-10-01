@@ -19,7 +19,7 @@ const out = path.join(webRoot, 'out');
 const basePath = process.env.BASE_PATH ?? '/next';
 const repoRoot = path.resolve(webRoot, '..');
 const readJson = async rel => JSON.parse(await readFile(path.join(repoRoot, rel), 'utf8'));
-const ROUTES = ['report', 'report/providers', 'report/families', 'comparison', 'comparison/feature', 'comparison/runtime'];
+const ROUTES = ['report', 'report/providers', 'report/families', 'comparison', 'comparison/feature', 'comparison/runtime', 'evaluation/rc'];
 const LAYER_ORDER = /@layer\s+theme\s*,\s*base\s*,\s*mui\s*,\s*components\s*,\s*utilities\s*;/;
 
 const problems = [];

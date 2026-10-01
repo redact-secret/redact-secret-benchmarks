@@ -32,7 +32,7 @@ export function TimingTrack({ ticks, marks, ariaLabel, axis = false, className }
           {ticks.map(t => <span key={t.label} style={at(t.position)}>{t.label}</span>)}
         </div>
       )}
-      <div className={styles.track} role="img" aria-label={ariaLabel}>
+      <div className={styles.track} {...(ariaLabel ? { role: 'img', 'aria-label': ariaLabel } : { 'aria-hidden': true })}>
         {ticks.map(t => <i key={t.label} className={styles.tick} style={at(t.position)} />)}
         {ordered.map((m, i) => (
           <span key={`${m.side}-${i}`}>

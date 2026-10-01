@@ -97,7 +97,7 @@ export const uniformQuestion: AccuracyQuestionData = {
 };
 /** A share that is not exactly all must never round up to 100%. */
 export const nearlyAllQuestion: AccuracyQuestionData = {
-  ...hiddenQuestion, id: 'story.nearly', description: '4,827 test files. Secrets in formats the provider itself documents.',
+  ...hiddenQuestion, id: 'story.nearly', position: '2 / 3', title: 'Secrets that must be hidden, nearly all', description: '4,827 test files. Secrets in formats the provider itself documents.',
   results: [
     result('redact-secret', '0.0.0-story', '99.9%', '4,826 of 4,827 hidden', hiddenStates(4826, 1, 0)),
     result('Examplescan', '1.2.3', '0.1%', '5 of 4,827 hidden', hiddenStates(5, 0, 4822)),
@@ -110,7 +110,7 @@ export const emptyQuestion: AccuracyQuestionData = {
   results: [], empty: 'No test files at this level are ones Examplescan’s rules target.',
 };
 export const leftOutQuestion: AccuracyQuestionData = {
-  ...hiddenQuestion, id: 'story.leftout',
+  ...hiddenQuestion, id: 'story.leftout', position: '3 / 3', title: 'Secrets that must be hidden, some left out',
   notes: ['3 test files left out: at least one of the two has no recorded result. Not measured, never counted as a pass or a zero.'],
 };
 

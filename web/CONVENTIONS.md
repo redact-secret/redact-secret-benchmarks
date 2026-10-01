@@ -212,3 +212,25 @@ Decision: `docs/decisions/2026-10-01-test-the-web-app-with-vitest-and-playwright
   `ROUTES` in `tests/e2e/fixtures.ts`, which runs it through the page matrix (light and dark, 320 and 1280px, axe with no
   serious or critical violation, no sideways scroll, no console output, no off-origin request but web fonts).
   `PW_CHANNEL=chrome` uses an installed Chrome. No sleeps and no retries.
+
+## Before you merge
+
+`develop` moves while a branch is open (repins, release records, go-production). A branch that was green on the base it
+forked from can turn `develop` red once merged. #599 did: it merged nine minutes after the beta12 repin (#600), and two
+Playwright tests that opened `?show=leaked` and expected a pager found zero leaked rows at T1.
+
+- **Tests do not assert ledger values.** No row, fixture, family, scanner or leaked-span count, and no "this view has more
+  than one page", read from the committed ledger or the run. A repin or a new corpus re-keys them. Put the state under test
+  in a committed synthetic fixture (`tests/unit/overlay.ts` for services; synthetic props for blocks), or derive it from the
+  data at run time (find a view that has the property, and fail with a message saying which input is missing). The e2e
+  suite may rely on structure that cannot change without a new page (routes, landmarks, controls), not on counts.
+- **Verify on the final base, locally, before the merge:**
+  1. `git fetch origin && git rebase origin/develop` (or merge it) right before you push, not when you branched.
+  2. From `web/`: `npm run check`, `npm run test:coverage` and, on a fresh `npm run build`, `npm run test:e2e`. Run the
+     root checks CI runs too if you touched anything outside `web/`.
+  3. Push once. If CI fails on something that passed locally, find why (clean build, worker count, a base that moved)
+     before pushing again; do not just retry.
+- **A red check is never "known".** If a check fails on your branch, either fix it or name the issue or PR that owns it in
+  the PR body, with the evidence that your change did not cause it (the same check red on `develop`'s tip).
+- **A merge is done when `develop` is green.** After merging, read the push-triggered runs on `develop`'s merge commit
+  (`gh run list --branch develop`) and say what they show. If they are red, fixing it comes before anything else.

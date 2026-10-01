@@ -175,6 +175,12 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   `npm run peer-rules:check` and again by `services/peers.ts`); the peer columns state what a scanner's
   rules target and what was recorded, never which scanner is better. Every link on a report page stays
   inside the app (`check:routes` fails a link that leaves `/next/`).
+- `/evaluation/scanner/` (#612) shows the scanners the benchmark ran with and each one's environment: pins, install checksums, configuration and
+  platform from the validated peer snapshots (`services/scanners.ts`), the mode line and host from the run, `outOfScope` from the registry. Blocks are
+  `Scanner*` in `components/evaluation/scanner/` (a folder of folders is a section; each phase of `/evaluation` has its own). A fact the repository does not
+  hold is "Not recorded" (#620, #621, #622), never a guess; the tests use synthetic scanners and never assert a version, digest or host.
+  `check-export-scanners.mjs` rereads the pins, the run, the checksums and the registry. Decision:
+  `docs/decisions/2026-10-01-show-the-scanners-and-their-environments-on-evaluation-scanner.md`.
 - Resolver tests live in `web/tests/unit` (`resolvers.test.mjs`, `report-rows.test.mjs`, ...; synthetic
   data only) and also enforce the import direction. `check:routes` compares the built pages with the
   ledger, read independently; CI sets `WEB_REQUIRE_RUN=1` and runs `npm run bench` first.

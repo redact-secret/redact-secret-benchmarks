@@ -48,6 +48,9 @@ import { loadCredentialEvaluation, loadPiiEvaluation } from '../services/domains
 import type { DomainViewData } from '../components/evaluation/domain';
 import { loadRcSources } from '../services/candidate';
 import { resolveRcPage, type RcPage } from './rc';
+import { resolveScanners } from './scanners';
+import { loadScannerEnvironment } from '../services/scanners';
+import type { ScannerOverviewProps } from '../components/evaluation/scanner';
 import type { EvidenceLevelLink, HubTileData } from '../components/report/types';
 import type { MetaItem } from '../components/page/MetaList';
 
@@ -527,4 +530,12 @@ export async function resolveDomainPage(domain: DomainId): Promise<DomainViewDat
 /** The release candidate beside the last release: the candidate evidence when this build has one, the release alone when not. */
 export async function resolveReleaseCandidatePage(): Promise<RcPage> {
   return resolveRcPage(await loadRcSources());
+}
+
+// ---- /evaluation/scanner ------------------------------------------------------------------
+
+/** The scanners the benchmark ran with and the environment each ran in (#612). */
+export async function resolveScannerPage(): Promise<ScannerOverviewProps> {
+  const [environment, profiles, run, runtime, catalog] = await Promise.all([loadScannerEnvironment(), loadPeerProfiles(), loadRun(), loadPeerRuntime(), loadCatalog()]);
+  return resolveScanners({ environment, profiles, run: run.state === 'measured' ? run : undefined, runtime, productDetectors: catalog.detectors.length || null });
 }

@@ -63,6 +63,15 @@ test('the registry copy states what a scanner is built for and never ranks it', 
   assert.match(found, /extra is not a registered peer/);
 });
 
+test('the registry states what is out of scope for each peer, in plain statements that rank nothing (#612)', () => {
+  const peer = outOfScope => ({ kind: 'repository-scanner', description: 'Built to find secrets.', outOfScope });
+  const registry = { schemaVersion: 1, scanners: { gitleaks: peer(undefined), trufflehog: peer(['Verification is off.', 'It is better than the rest.']), 'flare-redact': peer([' ']) } };
+  const found = peerRegistryProblems(registry, ['redact-secret', 'gitleaks', 'trufflehog', 'flare-redact']).join('\n');
+  assert.match(found, /gitleaks needs one to six outOfScope statements/);
+  assert.match(found, /trufflehog outOfScope statement words a judgement/);
+  assert.match(found, /flare-redact has an outOfScope statement that is empty/);
+});
+
 test('every peer family the map targets is a taxonomy family, and the targeted set is the union of its rules', async () => {
   const committed = read('scanners/peer-rule-families.json');
   const families = new Set(read('benchmarks/support/taxonomy.json').families.map(f => f.id));

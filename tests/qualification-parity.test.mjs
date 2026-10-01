@@ -62,6 +62,17 @@ test('an adjustment explains a residual only when its amounts sum to it', () => 
   assert.equal(diffs(short.evidence, 'totalFixtures')[0].verdict, 'unexplained');
 });
 
+test('a pending twin is no adjustment: legacy drops T0 twins, so only the real residual needs a cause', () => {
+  // 32 legacy vs 30 new: two cross-family twins explain it. Pending twins book nothing, so no pending-not-scored amount is present.
+  const report = compareFamilies([legacy('fam-a', {}, { totalFixtures: 32 })], [next()], { ...options, adjustmentsByFamily: { 'fam-a': { 'twin-scope-vocabulary': { totalFixtures: 2 } } } });
+  const [d] = diffs(report.evidence, 'totalFixtures');
+  assert.equal(d.verdict, 'explained');
+  assert.equal(d.cause, 'twin-scope-vocabulary');
+  // Booking the three pending twins as well (the old behaviour) overshoots the residual and is unexplained.
+  const overshoot = compareFamilies([legacy('fam-a', {}, { totalFixtures: 32 })], [next()], { ...options, adjustmentsByFamily: { 'fam-a': { 'pending-not-scored': { totalFixtures: 3 }, 'twin-scope-vocabulary': { totalFixtures: 2 } } } });
+  assert.equal(diffs(overshoot.evidence, 'totalFixtures')[0].verdict, 'unexplained');
+});
+
 test('axis counts that differ are the axis vocabulary, and equal axis counts are just equal', () => {
   const report = compareFamilies([legacy('fam-a', {}, { positiveAxes: 11 })], [next('fam-a', {}, { positiveAxes: 1 })], options);
   assert.equal(diffs(report.evidence, 'positiveAxes')[0].cause, 'axis-vocabulary');

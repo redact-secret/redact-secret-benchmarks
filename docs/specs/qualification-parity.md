@@ -45,7 +45,7 @@ narrows the pattern but the root cause has not been confirmed with the owner (li
 | `policy-corpus-bounded` | The T3 route reads the bounded policy corpus alone, where the legacy path pooled every T3 fixture of the family. |
 | `legacy-id-rekey` | Legacy fixture, ledger and disputed-property ids do not resolve to canonical ids until the re-key. |
 | `twin-scope-vocabulary` | A twin is scoped by the product contract in the legacy lattice and by the case family in the evidence snapshot, so the twin can belong to another family and its flagged or co-detected verdict can differ. Inferred. |
-| `pending-not-scored` | A T0 fixture has no scored outcome in credential-eval and is excluded from floor counts; the legacy path counted it. |
+| `pending-not-scored` | A T0 non-twin fixture has no scored outcome in credential-eval and is excluded from floor counts; the legacy path counted it. A T0 twin is not counted by either side (the legacy lattice drops it). |
 | `canonical-evidence-membership` | The snapshot holds fixtures with no legacy counterpart (an intended canonical-evidence change). |
 | `fixture-attribution` | The legacy path attributed a fixture by its declared contract and targets; the adapter by targets, family or taxonomy family. Inferred. |
 

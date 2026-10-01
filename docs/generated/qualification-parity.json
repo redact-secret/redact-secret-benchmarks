@@ -123,7 +123,7 @@
     },
     {
       "id": "pending-not-scored",
-      "change": "A T0 (pending) fixture has no scored outcome in credential-eval, so the adapter excludes it from the floor counts; the legacy path counted it as a fixture of its family.",
+      "change": "A T0 (pending) non-twin fixture has no scored outcome in credential-eval, so the adapter excludes it from the floor counts; the legacy path counted it as a fixture of its family. A T0 twin is not in this cause: the legacy path drops T0 twins, so neither side counts it.",
       "confirmation": "confirmed",
       "owner": "benchmarks"
     },
@@ -1322,12 +1322,12 @@
       "tally": {
         "compared": 4455,
         "equal": 3416,
-        "explained": 1038,
-        "unexplained": 1,
+        "explained": 1039,
+        "unexplained": 0,
         "byCause": {
           "axis-vocabulary": 587,
           "methods-not-run": 405,
-          "twin-scope-vocabulary": 5,
+          "twin-scope-vocabulary": 6,
           "canonical-evidence-membership": 7,
           "policy-corpus-bounded": 4,
           "fixture-attribution": 25,
@@ -5325,7 +5325,9 @@
           "field": "totalFixtures",
           "legacy": 35,
           "next": 33,
-          "verdict": "unexplained"
+          "verdict": "explained",
+          "cause": "twin-scope-vocabulary",
+          "note": "residual 2 = 2 twin-scope-vocabulary"
         },
         {
           "subject": "elevenlabs-api-key",
@@ -15780,8 +15782,8 @@
   "summary": {
     "compared": 35024,
     "equal": 33558,
-    "explained": 1465,
-    "unexplained": 1,
+    "explained": 1466,
+    "unexplained": 0,
     "byCause": {
       "axis-vocabulary": 701,
       "canonical-evidence-membership": 7,
@@ -15790,12 +15792,12 @@
       "methods-not-run": 418,
       "pending-not-scored": 5,
       "policy-corpus-bounded": 4,
-      "twin-scope-vocabulary": 152
+      "twin-scope-vocabulary": 153
     },
     "classes": {
       "must-equal": 33558,
-      "expected-structural": 1465,
-      "unexplained": 1
+      "expected-structural": 1466,
+      "unexplained": 0
     }
   },
   "recommendations": [

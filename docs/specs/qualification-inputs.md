@@ -80,7 +80,7 @@ inputs as in the table above. The rest are not populations:
 | --- | --- | --- | --- |
 | `benchmarks/support/empirical-observations.json` | T2 corroboration overlay | redact-secret | remain product-owned |
 | `benchmarks/support/status-criteria.json` | status floors | redact-secret | remain product-owned |
-| `benchmarks/review-ledger.json` | legacy engine disagreement triage | benchmarks | compatibility-only |
+| `benchmarks/review-ledger.json` | review-ledger joins the qualification adapter reads (docs/specs/qualification-adapter.md) | benchmarks | remain in place (benchmark-owned, read by the adapter) |
 | `benchmarks/fixture-index.json` | legacy fixture identity digest | benchmarks | compatibility-only |
 | `peer-observations/` | peer snapshots keyed to legacy ids | benchmarks | compatibility-only |
 | `benchmarks/pin-manifest.json` | legacy corpus hashes | benchmarks | compatibility-only |

@@ -8,6 +8,8 @@ decided_at: 2026-09-30
 
 # Allow the browser one fetch, a same-origin GET of JSON the build emitted, and ship large rows and records that way
 
+> Amended 2026-10-01 (#598, `2026-10-01-test-the-web-app-with-vitest-and-playwright.md`): the export-wide limits named here (total size, file count, the size of `data/`) are removed. They had no external basis: the site is static and deployed to S3 and CloudFront. Only per-page and per-request limits remain: one data file, the largest page, the largest rows page.
+
 ## Context
 
 #573 (part of #543). `2026-09-30-load-web-data-through-services-and-resolvers.md` (#556) said the

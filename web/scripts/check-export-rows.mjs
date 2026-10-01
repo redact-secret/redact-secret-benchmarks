@@ -17,7 +17,9 @@
  *    holding the rows or records the ledger has (ids, scanner columns, outcome words, flags, levels,
  *    corpus bytes and expected spans), and the first page in each table's HTML is the first page of
  *    its file (docs/decisions/2026-09-30-allow-same-origin-fetch-of-build-emitted-data.md);
- *  - the size budgets of the export (bytes, files, data, the largest page and the largest table page).
+ *  - what a visitor downloads: the largest data file (one fetch), the largest page and the largest rows
+ *    page each stay under a limit. The export's total size and file count are printed, never judged:
+ *    the site is static and no host limit applies to them (docs/decisions/2026-10-01-test-the-web-app-with-vitest-and-playwright.md).
  */
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
@@ -403,7 +405,7 @@ for (const c of categories) {
   console.log(`family pages ok: ${checked} with fixtures recounted per level and scanner from the run, research record, sources and peer rules from the dossiers and the rule map`);
 }
 
-// ---- Size of the export: budgets set from the slimmed export, with headroom -------------------------
+// ---- What a visitor downloads: per-request and per-page limits. Totals are information only. --------
 let files = 0, bytes = 0, dataBytes = 0, largestPage = { bytes: 0, file: '' }, largestData = { bytes: 0, file: '' }, largestTablePage = { bytes: 0, file: '' };
 async function* walk(dir) { for (const entry of await readdir(dir, { withFileTypes: true })) { const full = path.join(dir, entry.name); if (entry.isDirectory()) yield* walk(full); else yield full; } }
 for await (const file of walk(out)) {
@@ -414,16 +416,13 @@ for await (const file of walk(out)) {
   if (/^report\/(?:rows|fixtures|families|detectors)\/[^/]+(?:\/[^/]+)?\/index\.html$/.test(rel) && size > largestTablePage.bytes) largestTablePage = { bytes: size, file: rel };
 }
 const MB = 1048576;
-const BUDGET = { bytes: 100 * MB, files: 2300, dataBytes: 14 * MB, dataFile: 2 * MB, page: 1.5 * MB, tablePage: 320 * 1024 };
-if (bytes > BUDGET.bytes) fail(`the export is ${(bytes / MB).toFixed(1)} MB, over the ${BUDGET.bytes / MB} MB budget; move the largest data into build-emitted files`);
-if (files > BUDGET.files) fail(`the export is ${files} files, over the ${BUDGET.files} budget`);
-if (dataBytes > BUDGET.dataBytes) fail(`data/ is ${(dataBytes / MB).toFixed(1)} MB, over the ${BUDGET.dataBytes / MB} MB budget`);
-if (largestData.bytes > BUDGET.dataFile) fail(`${largestData.file} is ${(largestData.bytes / MB).toFixed(1)} MB, over the ${BUDGET.dataFile / MB} MB a single fetch may cost`);
-if (largestPage.bytes > BUDGET.page) fail(`${largestPage.file} is ${(largestPage.bytes / MB).toFixed(2)} MB, over the ${BUDGET.page / MB} MB page budget`);
-if (largestTablePage.bytes > BUDGET.tablePage) fail(`${largestTablePage.file} is ${(largestTablePage.bytes / 1024).toFixed(0)} KB, over the ${BUDGET.tablePage / 1024} KB a rows page may weigh: its rows belong in a data file`);
+const LIMIT = { dataFile: 2 * MB, page: 1.5 * MB, tablePage: 320 * 1024 };
+if (largestData.bytes > LIMIT.dataFile) fail(`${largestData.file} is ${(largestData.bytes / MB).toFixed(1)} MB, over the ${LIMIT.dataFile / MB} MB a single fetch may cost`);
+if (largestPage.bytes > LIMIT.page) fail(`${largestPage.file} is ${(largestPage.bytes / MB).toFixed(2)} MB, over the ${LIMIT.page / MB} MB a page may weigh`);
+if (largestTablePage.bytes > LIMIT.tablePage) fail(`${largestTablePage.file} is ${(largestTablePage.bytes / 1024).toFixed(0)} KB, over the ${LIMIT.tablePage / 1024} KB a rows page may weigh: its rows belong in a data file`);
 
 if (problems.length) {
   for (const p of problems) console.error(p);
   process.exit(1);
 }
-console.log(`report row pages ok: ${detectors.detectors.length} detector pages, ${categories.length} suite pages, ${gaps.issues.length} findings, ${peerCells} peer-by-level target cells and the per-level counts match the ledger, ${dataFiles} data files (${dataRows.toLocaleString('en-US')} rows) match the run and the corpora, links stay under ${basePath}/, export ${(bytes / MB).toFixed(1)} MB in ${files} files (data ${(dataBytes / MB).toFixed(1)} MB, largest page ${(largestPage.bytes / 1024).toFixed(0)} KB, largest table page ${(largestTablePage.bytes / 1024).toFixed(0)} KB)`);
+console.log(`report row pages ok: ${detectors.detectors.length} detector pages, ${categories.length} suite pages, ${gaps.issues.length} findings, ${peerCells} peer-by-level target cells and the per-level counts match the ledger, ${dataFiles} data files (${dataRows.toLocaleString('en-US')} rows) match the run and the corpora, links stay under ${basePath}/, export ${(bytes / MB).toFixed(1)} MB in ${files} files, for information (data ${(dataBytes / MB).toFixed(1)} MB, largest page ${(largestPage.bytes / 1024).toFixed(0)} KB, largest table page ${(largestTablePage.bytes / 1024).toFixed(0)} KB)`);

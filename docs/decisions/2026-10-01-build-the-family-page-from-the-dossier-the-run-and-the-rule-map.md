@@ -8,6 +8,8 @@ decided_at: 2026-10-01
 
 # Build the family page from the provider dossier, the run and the peer rule map, and say what is not recorded
 
+> Amended 2026-10-01 (#598, `2026-10-01-test-the-web-app-with-vitest-and-playwright.md`): the export-wide limits named here (total size, file count, the size of `data/`) are removed. They had no external basis: the site is static and deployed to S3 and CloudFront. Only per-page and per-request limits remain: one data file, the largest page, the largest rows page.
+
 ## Context
 
 #589 (part of #543). The family page showed a title, the taxonomy description and one fixture table. The mockup

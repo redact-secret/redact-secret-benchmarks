@@ -1,0 +1,25 @@
+@layer components {
+  .reading {
+    display: grid;
+    gap: var(--space-8);
+    min-width: 0;
+  }
+
+  .sources {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: var(--hairline) solid var(--ink);
+  }
+
+  .source {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-4);
+    padding: var(--space-2) 0;
+    border-bottom: var(--hairline) solid var(--line);
+    font: var(--text-small);
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+}

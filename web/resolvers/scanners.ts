@@ -230,8 +230,7 @@ export function resolveScanners(input: ScannerInput): ScannerOverviewProps {
     id: p.id, name: p.name, kind: p.kind, version: p.version, pinnedIn: ordered[i].source.pin.file, mode: ordered[i].scanner?.mode ?? null,
   }));
   return {
-    // The Evaluation hub (`/evaluation/`) is owned by the methods phase; its crumb gets an address when that page is in the app.
-    breadcrumb: [{ label: 'Evaluation' }, { label: 'Scanners' }],
+    breadcrumb: [{ label: 'Evaluation', href: '/evaluation/' }, { label: 'Scanners' }],
     eyebrow: 'Evaluation',
     title: 'Scanners and where they ran',
     lede: 'The scanners this benchmark ran with: the version of each, how it was installed, how it was run, where it was observed and what was left out. Results are on the report and comparison pages.',

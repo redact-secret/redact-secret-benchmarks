@@ -16,13 +16,35 @@ export interface Watch {
 
 const FONT_HOSTS = new Set(['fonts.googleapis.com', 'fonts.gstatic.com']);
 
+/**
+ * True once React has hydrated what a reader can operate: every control, link and field inside main (and
+ * the header) has a React fiber attached. Until then a click or a typed character reaches server-rendered
+ * HTML that no handler is listening to, and a controlled input is reset by hydration, so a test that
+ * interacts first is racing the page, not testing it. Runs in the page.
+ */
+const hydrated = (): boolean => {
+  const operable = [...document.querySelectorAll('header a, header button, main a, main button, main input, main select, main summary')];
+  return operable.length > 0 && operable.every(el => Object.keys(el).some(key => key.startsWith('__reactFiber$')));
+};
+
 export const test = base.extend<{ watch: Watch }>({
-  // ERR_ABORTED is the page cancelling its own request (Next cancels a link prefetch it no longer needs), not a failure.
   // The suite never touches the network. A font request is answered with an empty body so the page
   // loads as it would with a font blocker; every other host is recorded and answered the same way.
-  watch: [async ({ page, baseURL }, use) => {
+  // ERR_ABORTED is the page cancelling its own request (Next cancels a link prefetch it no longer needs), not a failure.
+  watch: [async ({ page, baseURL, javaScriptEnabled }, use) => {
     const origin = new URL(baseURL!).origin;
     const watch: Watch = { problems: [], external: [] };
+    if (javaScriptEnabled !== false) {
+      // Every navigation the test starts returns when the page is hydrated, so the next line may interact.
+      for (const method of ['goto', 'reload'] as const) {
+        const original = page[method].bind(page) as (...args: unknown[]) => Promise<unknown>;
+        (page as unknown as Record<string, unknown>)[method] = async (...args: unknown[]) => {
+          const result = await original(...args);
+          await page.waitForFunction(hydrated);
+          return result;
+        };
+      }
+    }
     await page.route(url => new URL(url).origin !== origin, route => {
       const url = new URL(route.request().url());
       watch.external.push(url.hostname);

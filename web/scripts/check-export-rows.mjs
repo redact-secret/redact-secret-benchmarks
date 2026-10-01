@@ -305,6 +305,75 @@ for (const c of categories) {
   if (html.includes('followUps')) fail(`/report/fixtures/${c.id}/ embeds fixture records; they belong in data/fixtures/${c.id}/records.json`);
 }
 
+// ---- Family pages (#589): research record, benchmark counts per level and per scanner, peer rules, sources -----
+{
+  const { parseFrontmatter } = await import('../../scripts/scaffold-dossiers.mjs');
+  const { readdir: ls } = await import('node:fs/promises');
+  const dossierDir = path.join(repoRoot, 'benchmarks/support/dossiers');
+  const entries = new Map();
+  for (const file of (await ls(dossierDir)).filter(f => f.endsWith('.md') && !f.startsWith('_') && f !== 'README.md')) {
+    const body = await readFile(path.join(dossierDir, file), 'utf8');
+    const parsed = parseFrontmatter(body);
+    if (!parsed.data) { fail(`dossier ${file}: ${parsed.error}`); continue; }
+    for (const f of parsed.data.families) entries.set(f.id, f.research);
+  }
+  const VERDICT = { unresearched: 'Not researched', ready: 'Ready', 'issuance-gated': 'Issuance-gated', 'date-gated': 'Date-gated', 'not-found': 'Not found', rejected: 'Rejected' };
+  const TIER = { T0: 'Pending', T1: 'Provider-documented', T2: 'Tool-corroborated', T3: 'Project policy' };
+  const summary = run ? await readJson('public/results/summary.json') : null;
+  const mode = run ? (run.candidate ? 'candidate' : 'published') : null;
+  const tally = (slugs, rows) => {
+    const t = { n: slugs.length, left: 0, much: 0, alarm: 0, none: 0 };
+    for (const slug of slugs) {
+      const row = rows?.get(slug);
+      if (!row) { t.none++; continue; }
+      if (row.spanOutcomes?.some(o => o === 'PARTIAL' || o === 'MISS')) t.left++;
+      if (row.spanOutcomes?.includes('OVERBROAD')) t.much++;
+      if (row.flagged === true) t.alarm++;
+    }
+    return t;
+  };
+  const figures = t => (t.n > 0 && t.none === t.n ? '— — — —' : `${t.left} ${t.much} ${t.alarm}`) + (t.none ? ` ${t.none}` : '');
+  let checked = 0;
+  for (const family of taxonomy.families) {
+    const slugs = index.fixtures.filter(x => x.familyIds.includes(family.id)).map(x => x.slug);
+    const page = text(await readHtml(`report/families/${slugOf(family.id)}`)).replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+    const where = `family page ${family.id}`;
+    const research = entries.get(family.id);
+    if (!research) { fail(`${where}: no dossier entry`); continue; }
+    // The research record is the dossier's own frontmatter.
+    const record = `Research ${VERDICT[research.verdict]} Evidence level ${research.tier ? `${research.tier} · ${TIER[research.tier]}` : 'Not recorded'} Researched ${research.researchedAt ?? 'Not recorded'}`;
+    if (!page.includes(record)) fail(`${where} does not state its research record "${record}"`);
+    for (const source of research.sources) if (!page.includes(new URL(source).host)) fail(`${where} does not list the dossier source ${source}`);
+    for (const ref of research.issues) if (!page.includes(ref)) fail(`${where} does not list the research issue ${ref}`);
+    // Peer rules: every rule the reviewed map names for the family, with its basis, and no other.
+    const mapped = Object.entries(peerMap.scanners).flatMap(([id, set]) => Object.entries(set.rules).filter(([, r]) => r.families.includes(family.id)).map(([rule, r]) => ({ id, rule, basis: r.basis })));
+    for (const m of mapped) if (!page.includes(`${m.rule} ${m.basis}`)) fail(`${where} does not list ${m.id} rule ${m.rule} with its basis`);
+    if (!mapped.length && !page.includes('No peer rule maps to this family')) fail(`${where} has no peer rule and must say so`);
+    // Benchmark: nothing measured for a family with no fixtures; otherwise every level and every scanner recounted.
+    if (!slugs.length) {
+      if (!page.includes('In this benchmark') || !page.includes('No fixtures in this family yet')) fail(`${where} has no fixtures and must say "Not measured"`);
+      continue;
+    }
+    if (mode && !page.includes(`Counts are for redact-secret in ${mode} ·`)) fail(`${where} does not state the ${mode} mode`);
+    const byTier = new Map();
+    for (const x of index.fixtures.filter(f => f.familyIds.includes(family.id))) byTier.set(x.tier ?? tierOf.get(x.slug)?.tier, [...(byTier.get(x.tier ?? tierOf.get(x.slug)?.tier) ?? []), x.slug]);
+    if (run && byTier.size > 1) {
+      for (const [tier, group] of byTier) {
+        const t = tally(group, rowsByScanner.get('redact-secret'));
+        if (!page.includes(`${tier} ${({ T0: 'Pending review', T1: 'Provider-documented', T2: 'Tool-corroborated', T3: 'Project policy' })[tier]} ${group.length} ${figures(t)}`)) fail(`${where}: the ${tier} row does not match the run (${group.length} fixtures, ${figures(t)})`);
+      }
+    }
+    if (run) {
+      for (const s of summary.scanners) {
+        const t = tally(slugs, rowsByScanner.get(s.id));
+        if (!page.includes(` ${slugs.length} ${figures(t)} `) && !page.includes(` ${slugs.length} ${figures(t)}`)) fail(`${where}: ${s.name} counts do not match its rows (${slugs.length} fixtures, ${figures(t)})`);
+      }
+    }
+    checked++;
+  }
+  console.log(`family pages ok: ${checked} with fixtures recounted per level and scanner from the run, research record, sources and peer rules from the dossiers and the rule map`);
+}
+
 // ---- Size of the export: budgets set from the slimmed export, with headroom -------------------------
 let files = 0, bytes = 0, dataBytes = 0, largestPage = { bytes: 0, file: '' }, largestData = { bytes: 0, file: '' }, largestTablePage = { bytes: 0, file: '' };
 async function* walk(dir) { for (const entry of await readdir(dir, { withFileTypes: true })) { const full = path.join(dir, entry.name); if (entry.isDirectory()) yield* walk(full); else yield full; } }

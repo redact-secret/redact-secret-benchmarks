@@ -137,6 +137,12 @@ web/components/ (blocks): imports none of the three
   `resolvers/pages.ts`. Decisions: `docs/decisions/2026-09-30-add-rows-fixture-detector-and-findings-pages.md`
   and `docs/decisions/2026-09-30-allow-same-origin-fetch-of-build-emitted-data.md`.
 
+- `/report/families/<family>/` (#589) adds the provider dossier (`services/dossiers.ts`, validated by `dossiers:check`), the peer rules per
+  family (`PeerProfile.rulesByFamily`) and per-level and per-scanner counts (`resolvers/family-detail.ts`, reusing `tally`). Blocks are
+  `Family*` in `components/family/`; the page hands them to `FamilyView`, a client component only so the data travels as compact props
+  (export budget). A fact the dossier does not record is a "Not recorded" box, never a placeholder. Decision:
+  `docs/decisions/2026-10-01-build-the-family-page-from-the-dossier-the-run-and-the-rule-map.md`.
+
 ### Fetching build-emitted data
 
 The browser may make exactly one kind of request: a same-origin `GET` of a JSON file the build emitted under

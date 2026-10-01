@@ -13,3 +13,9 @@ declare module '*/scanners/families.mjs' {
   export const scoredArrivalFamilies: readonly string[];
   export function findingFamily(scanner: string, label: string, findingType?: string): { family?: string };
 }
+
+// The dossier checker and frontmatter reader (scripts/scaffold-dossiers.mjs), the same `npm run dossiers:check` runs.
+declare module '*/scripts/scaffold-dossiers.mjs' {
+  export function parseFrontmatter(text: string): { data?: unknown; error?: string };
+  export function run(options: { dir?: string; check?: boolean; taxonomy?: unknown }): { created: number; problems: string[] };
+}

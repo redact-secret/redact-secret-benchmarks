@@ -196,6 +196,10 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   build-emitted `data/comparison/accuracy/differences.json` when a list is opened). `check-export-accuracy.mjs` recounts every
   panel and that file from the suite reports. Decision:
   `docs/decisions/2026-09-30-compare-accuracy-one-pair-at-a-time.md`.
+- `/evaluation/pii/` and `/evaluation/credential/` (#611) render one block set, `DomainView` in `components/evaluation/domain/`, with `resolvers/domains.ts`
+  (pure) over `services/domains.ts`. PII is rebuilt from the reviewed protected binding (candidate mode); the credential stable count is the support
+  record of the run's own mode and version. A fact the ledger does not hold is a dashed "Not recorded" with its issue, never a zero. Decision:
+  `docs/decisions/2026-10-01-explain-how-pii-and-credentials-are-evaluated-on-one-paired-page-design.md`.
 
 ## Tests
 

@@ -1,0 +1,87 @@
+@layer components {
+  .method {
+    min-width: 0;
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: step;
+  }
+
+  .step {
+    display: grid;
+    gap: var(--space-1);
+    align-content: start;
+    min-width: 0;
+    padding-top: var(--space-3);
+    border-top: var(--rule-strong) solid var(--ink);
+    counter-increment: step;
+  }
+
+  .stepTitle {
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    text-transform: uppercase;
+  }
+
+  .stepTitle::before {
+    content: counter(step) '  ';
+    color: var(--ink-muted);
+    font-family: var(--font-mono);
+  }
+
+  .stepText {
+    font: var(--text-small);
+    color: var(--ink-muted);
+    overflow-wrap: break-word;
+  }
+
+  .pair {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-8);
+    min-width: 0;
+  }
+
+  .metrics {
+    display: grid;
+    gap: var(--space-3);
+    min-width: 0;
+  }
+
+  .metricsText {
+    margin: 0;
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .group {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+    min-width: 0;
+  }
+
+  @media (min-width: 721px) {
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 861px) {
+    .steps {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .pair {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}

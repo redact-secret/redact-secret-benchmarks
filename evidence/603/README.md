@@ -58,6 +58,42 @@ and the `41fc366` run (35868842776) are superseded here; its verdict is still re
 above and in the decision records.
 
 
+### Verified at `4227160`, not re-derived (published 0.1.0-beta.12)
+
+Product `main` `4227160c4dac402d7add53d3f8fe990f693912c1` is the release source
+of `0.1.0-beta.12` (tag `v0.1.0-beta.12`). Against `bfc608c` it changes no file
+under `crates/`: the diff is the version strings, the changelog and readiness
+docs, the contract review and the refreshed support matrix. The registry list is
+unchanged, so `detectors.json` moves its `sourceRevision` only.
+[Run 36817086580](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/36817086580)
+(`performance-evaluation.yml`, candidate `4227160`, 14 interleaved rounds) reads
+**ACCEPTED** on both verdicts: RC acceptance passed all 46 checks against the
+unchanged criteria, and the regression budgets read latency 10/10,
+initialization 10/10, memory 16/16 within budget, with three accepted
+tradeoffs, no regression and no invalid measurement. Runner: AMD EPYC 9V74, 4
+logical CPUs, image `ubuntu24 20260927.320.1`.
+
+The three size rows are the same Beta.12 growth accepted at `bfc608c`
+(maintainer's 2026-09-30 option A decision, redact-secret-benchmarks#587),
+re-keyed to this commit through the `beta12-4227160-*` entries in
+`benchmarks/accepted-regressions.json`:
+
+| Trigger | Baseline (0.1.0-beta.8) | Measured at 4227160 | Change | Entry |
+| --- | ---: | ---: | ---: | --- |
+| `size/wasm/full/gzip` | 137,639 | 205,059 | +49.0% | `beta12-4227160-wasm-full-gzip` |
+| `size/wasm/common/gzip` | 100,058 | 142,515 | +42.4% | `beta12-4227160-wasm-common-gzip` |
+| `size/browser-bundle/quickstart/gzip` | 144,501 | 212,502 | +47.1% | `beta12-4227160-quickstart-bundle-gzip` |
+
+The thresholds are not re-derived. The run is frozen in
+[`verified-4227160/`](verified-4227160/) and advances only
+`baseline.verifiedCommit`. Its `acceptance.json`/`.md` name the workflow's
+fixed summary label; the summary it evaluated is
+`verified-4227160/summary.json`.
+
+Reproduce: dispatch `performance-evaluation.yml` on `develop` with
+`candidate_revision=4227160c4dac402d7add53d3f8fe990f693912c1`; the artifact is
+`performance-evaluation-4227160c4dac402d7add53d3f8fe990f693912c1`.
+
 ### Verified at `bfc608c`, not re-derived (Beta.12 performance work)
 
 Product `main` `bfc608cce75f79f6a5cab037d7e558ba629777f6` follows `da69ebf`

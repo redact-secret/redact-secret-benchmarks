@@ -1,0 +1,120 @@
+name: Official credential-eval runs
+# Runs credential-eval officially, once per qualification population (#604), and builds the qualification view from the
+# artifacts (#605). Manual only: it builds a private engine and runs five scanners, so it is never part of push or pull
+# request validation. The pins are benchmarks/official-runs.json; the steps are credential-eval
+# docs/consumers/benchmarks-quickstart.md. Spec: docs/specs/official-runs.md.
+#
+# Safety: dispatch only (never pull_request_target); contents: read; the engine token is a GitHub App token scoped to
+# redact-secret/credential-eval with contents: read, minted in the job that needs it and never echoed; no checkout keeps
+# credentials; every action is pinned to a commit.
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: official-runs
+  cancel-in-progress: false
+
+jobs:
+  official-run:
+    name: Official run (${{ matrix.population }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        population: [public-evidence-snapshot, regression-corpus, policy-corpus]
+    env:
+      PLATFORM: linux-x64
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: The registry is consistent and each product corpus still matches its pin
+        run: npm run official-runs:check -- --bindings
+
+      - name: Read the engine pin
+        id: engine
+        run: |
+          echo "tag=$(node -p "require('./benchmarks/official-runs.json').engine.tag")" >> "$GITHUB_OUTPUT"
+      - name: Mint a read-only token for the engine repository
+        id: engine-token
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2.2.2
+        with:
+          app-id: ${{ vars.CREDENTIAL_EVAL_APP_ID }}
+          private-key: ${{ secrets.CREDENTIAL_EVAL_APP_PRIVATE_KEY }}
+          owner: redact-secret
+          repositories: credential-eval
+          permission-contents: read
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          repository: redact-secret/credential-eval
+          ref: ${{ steps.engine.outputs.tag }}
+          token: ${{ steps.engine-token.outputs.token }}
+          path: credential-eval
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # v1
+        with:
+          toolchain: stable
+      - name: Build the engine at the pinned tag
+        run: cargo build --release --locked -p credential-eval-cli --manifest-path credential-eval/Cargo.toml
+      - name: Provision the peer scanners at their pinned digests
+        run: |
+          node scripts/provision-official-peers.mjs --platform "$PLATFORM" --out "$RUNNER_TEMP/peer-bin"
+          echo "$RUNNER_TEMP/peer-bin" >> "$GITHUB_PATH"
+      - name: Install the npm scanners from the engine lockfile, without install scripts
+        run: npm ci --ignore-scripts --no-audit --no-fund
+        working-directory: credential-eval/adapters/node
+      - name: Official run, twice, with the determinism check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POPULATION: ${{ matrix.population }}
+        run: >
+          node --import tsx scripts/run-official-credential-eval.ts
+          --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
+          --out "official-out/$POPULATION" --runs 2
+      - name: Remove the byte copies the check made
+        run: rm -f "official-out/$POPULATION"/artifact-[0-9]*.json
+        env:
+          POPULATION: ${{ matrix.population }}
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: official-run-${{ matrix.population }}
+          path: official-out/${{ matrix.population }}
+          if-no-files-found: error
+          retention-days: 90
+
+  qualification-view:
+    name: Qualification view
+    needs: official-run
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: official-run-*
+          path: official-in
+      - name: Lay the artifacts out one directory per population
+        run: |
+          for dir in official-in/official-run-*; do mv "$dir" "official-in/${dir#official-in/official-run-}"; done
+      - name: Build the qualification view from the artifacts
+        run: npm run qualification:view -- --artifacts official-in --out qualification-out/qualification-v1.json
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qualification-view
+          path: qualification-out/qualification-v1.json
+          if-no-files-found: error
+          retention-days: 90

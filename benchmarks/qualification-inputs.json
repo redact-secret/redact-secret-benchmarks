@@ -30,8 +30,8 @@
         "evalVersion": "v0.1.0-alpha.1",
         "evalRevision": "379e677",
         "evalConfig": "configs/official/credential-public-v1.json",
-        "runArtifact": { "state": "pending", "resolvedBy": "#604" },
-        "productPolicyRevision": { "state": "pending", "resolvedBy": "#605" }
+        "runArtifact": { "state": "resolved-at-run", "from": "benchmarks/official-runs.json runs[] for this population; the canonical record is the linux-x64 CI run of .github/workflows/official-runs.yml (#604)" },
+        "productPolicyRevision": { "state": "resolved-at-run", "from": "policy.revision of the qualification view: the adapter stamp over the benchmark-owned qualification inputs (#605, docs/specs/qualification-adapter.md)" }
       },
       "rekey": {
         "from": "legacy fixture ids, paths and the legacy fixture-index identity digest",
@@ -57,9 +57,9 @@
       "pin": {
         "sourceRevision": { "state": "resolved-at-run", "from": "benchmark repository HEAD" },
         "corpusDigest": { "state": "resolved-at-run", "from": "benchmarks/pin-manifest.json#corpusHashes" },
-        "evalProtocol": { "state": "pending", "resolvedBy": "#604" },
-        "runArtifact": { "state": "pending", "resolvedBy": "#604" },
-        "productPolicyRevision": { "state": "pending", "resolvedBy": "#605" }
+        "evalProtocol": "credential-eval-protocol/1",
+        "runArtifact": { "state": "resolved-at-run", "from": "benchmarks/official-runs.json runs[] for this population; the canonical record is the linux-x64 CI run of .github/workflows/official-runs.yml (#604)" },
+        "productPolicyRevision": { "state": "resolved-at-run", "from": "policy.revision of the qualification view: the adapter stamp over the benchmark-owned qualification inputs (#605, docs/specs/qualification-adapter.md)" }
       }
     },
     {
@@ -79,9 +79,9 @@
       "pin": {
         "sourceRevision": { "state": "resolved-at-run", "from": "benchmark repository HEAD" },
         "corpusDigest": { "state": "resolved-at-run", "from": "benchmarks/pin-manifest.json#corpusHashes" },
-        "evalProtocol": { "state": "pending", "resolvedBy": "#604" },
-        "runArtifact": { "state": "pending", "resolvedBy": "#604" },
-        "productPolicyRevision": { "state": "pending", "resolvedBy": "#605" }
+        "evalProtocol": "credential-eval-protocol/1",
+        "runArtifact": { "state": "resolved-at-run", "from": "benchmarks/official-runs.json runs[] for this population; the canonical record is the linux-x64 CI run of .github/workflows/official-runs.yml (#604)" },
+        "productPolicyRevision": { "state": "resolved-at-run", "from": "policy.revision of the qualification view: the adapter stamp over the benchmark-owned qualification inputs (#605, docs/specs/qualification-adapter.md)" }
       }
     },
     {
@@ -100,8 +100,8 @@
         "sourceRevision": { "state": "resolved-at-run", "from": "candidate source commit" },
         "corpusDigest": { "state": "resolved-at-run", "from": "known-gaps fixture corpus digests and adversarial intake records" },
         "evalProtocol": { "state": "not-applicable", "reason": "run through eval:candidate, not credential-eval" },
-        "runArtifact": { "state": "pending", "resolvedBy": "#604" },
-        "productPolicyRevision": { "state": "pending", "resolvedBy": "#605" }
+        "runArtifact": { "state": "resolved-at-run", "from": "an official internal run against one named candidate build (credential-eval --candidate-root, publication internal); no candidate is named until a release candidate exists, so there is no artifact to record yet" },
+        "productPolicyRevision": { "state": "resolved-at-run", "from": "policy.revision of the qualification view: the adapter stamp over the benchmark-owned qualification inputs (#605, docs/specs/qualification-adapter.md)" }
       }
     },
     {
@@ -122,7 +122,7 @@
         "corpusDigest": { "state": "resolved-at-run", "from": "receipt corpus hash (aggregate only)" },
         "evalProtocol": { "state": "not-applicable", "reason": "protected lifecycle in holdout/, not credential-eval" },
         "runArtifact": { "state": "resolved-at-run", "from": "policy holdout receipt" },
-        "productPolicyRevision": { "state": "pending", "resolvedBy": "#605" }
+        "productPolicyRevision": { "state": "resolved-at-run", "from": "policy.revision of the qualification view: the adapter stamp over the benchmark-owned qualification inputs (#605, docs/specs/qualification-adapter.md)" }
       }
     }
   ],

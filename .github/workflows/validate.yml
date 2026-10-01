@@ -68,6 +68,8 @@ jobs:
         run: npm run decisions:validate
       - name: Every qualification input population has an owner, run class, denominator and pin (#603)
         run: npm run qualification-inputs:check
+      - name: The official-run registry pins the engine, scanners and population evidence, and every recorded run matches (#604)
+        run: npm run official-runs:check
       - name: Every taxonomy provider and family has a dossier entry (#473)
         run: npm run dossiers:check
       - name: Peer scanner rules map to real taxonomy families, and the peer registry ranks nothing (#558)

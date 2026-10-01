@@ -80,6 +80,8 @@ export async function qualificationInputProblems(manifest, pathExists) {
   for (const change of manifest.supportStatusChanges ?? []) {
     if (!change.family || !change.reason || !change.decision || !change.productPolicyRevision) problems.push('supportStatusChanges entries need family, reason, decision and productPolicyRevision');
     if (change.decision && !(await pathExists(change.decision))) problems.push(`supportStatusChanges: decision does not exist: ${change.decision}`);
+    // The stamp is defined by the adapter (#605, docs/specs/qualification-adapter.md).
+    if (change.productPolicyRevision && !/^rs-policy-\d+:sha256:[0-9a-f]{64}$/.test(change.productPolicyRevision)) problems.push(`supportStatusChanges: productPolicyRevision must be an adapter stamp (rs-policy-<n>:sha256:<64 hex>) for ${change.family}`);
   }
   if (!(await pathExists(manifest.spec))) problems.push(`spec does not exist: ${manifest.spec}`);
   if (!(await pathExists(manifest.decision))) problems.push(`decision does not exist: ${manifest.decision}`);

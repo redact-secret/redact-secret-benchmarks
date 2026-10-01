@@ -66,8 +66,10 @@ A pin field is a value or one of three states: `pending` (names the issue that r
 
 `snapshot-2026.10.01` is superseded and the gate refuses it. The product policy revision is the revision of
 the benchmarks-owned qualification inputs (`benchmarks/support/status-criteria.json`,
-`policy-qualified-credentials.json`, `empirical-observations.json`) a run was qualified with; #605 defines how it
-is stamped.
+`policy-qualified-credentials.json`, `empirical-observations.json`) a run was qualified with. The adapter stamps it as
+`rs-policy-<n>:sha256:<hex>` over those inputs and the others a status depends on
+([qualification-adapter.md](qualification-adapter.md#product-policy-revision), #605). Each population's run artifact
+identity is recorded in `benchmarks/official-runs.json` ([official-runs.md](official-runs.md), #604).
 
 ## Legacy qualification inputs
 
@@ -129,5 +131,5 @@ carrying an evidence class. Qualification, owned here, supplies the route and th
 
 ## Out of scope here
 
-Running the populations (#604), the RunArtifact adapter (#605), the Next services (#606), parity (#607) and
-cutover (#608).
+The Next services (#606), parity (#607) and cutover (#608). Running the populations (#604) is
+[official-runs.md](official-runs.md); the RunArtifact adapter (#605) is [qualification-adapter.md](qualification-adapter.md).

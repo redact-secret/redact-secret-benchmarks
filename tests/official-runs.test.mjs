@@ -113,7 +113,7 @@ test('the methods run is pinned: the gates it feeds, the reference, the seed and
 
 test('a recorded methods run must be the pinned methodsRun, with its own id, and a duplicate id is refused', () => {
   const base = clone();
-  const plain = base.runs.find(r => r.population === 'public-evidence-snapshot');
+  const plain = base.runs.find(r => r.population === 'public-evidence-snapshot' && r.kind !== 'methods');
   assert.ok(plain, 'a public run is recorded');
   const methods = { ...structuredClone(plain), id: `${plain.population}+methods@${plain.platform}`, kind: 'methods', methods: [...base.methodsRun.methods], evaluation: { reference: base.methodsRun.reference, seed: base.methodsRun.seed, evidenceDigest: base.methodsRun.evaluationEvidence.digest } };
   const check = (change = () => {}) => { const r = clone(); r.runs = [...r.runs.filter(x => x.id !== methods.id), structuredClone(methods)]; change(r.runs.find(x => x.id === methods.id), r); return officialRunProblems(r, context); };

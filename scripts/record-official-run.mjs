@@ -53,8 +53,8 @@ const entry = {
 const runs = [...registry.runs.filter(run => run.id !== entry.id), entry].sort((a, b) => (a.id < b.id ? -1 : 1));
 const schemaBytes = await readFile(new URL('../schemas/credential-eval-run-artifact-v1.json', import.meta.url));
 const inputs = JSON.parse(await readFile(new URL('../benchmarks/qualification-inputs.json', import.meta.url), 'utf8'));
-const { canonical, sha256Digest } = await import('../benchmarks/qualification/canonical.ts');
-const evaluationEvidenceDigest = sha256Digest(canonical(JSON.parse(await readFile(new URL(registry.methodsRun.evaluationEvidence.file, new URL('../', import.meta.url)), 'utf8'))));
+const { canonical: canonicalJson, sha256Digest } = await import('../benchmarks/qualification/canonical.ts');
+const evaluationEvidenceDigest = sha256Digest(canonicalJson(JSON.parse(await readFile(new URL(registry.methodsRun.evaluationEvidence.file, new URL('../', import.meta.url)), 'utf8'))));
 const problems = officialRunProblems({ ...registry, runs }, { schemaDigest: `sha256:${createHash('sha256').update(schemaBytes).digest('hex')}`, inputs, evaluationEvidenceDigest });
 if (problems.length) throw new Error(`The run record does not match the pins:\n  - ${problems.join('\n  - ')}`);
 

@@ -122,5 +122,9 @@ product qualification.
 - The canonical linux-x64 run is recorded: CI run 36933982377 of `official-runs.yml` ran all three populations with every
   scanner complete, equal semantic digests across its two engine runs, and the linux executable digests (from the upstream
   release checksum files) verified at run time. Its `config_hash` and artifact digests are the `*@linux-x64` entries of
-  `runs[]`. The darwin-arm64 entries remain local verification runs and are never compared with a linux run; the qualification
+  `runs[]`. CI run 36948851341 (#636) ran the same three plain runs again, with the same semantic digests and `config_hash`
+  (the measurement is reproducible across runs), and the methods run, recorded as `public-evidence-snapshot+methods@linux-x64`:
+  every scanner complete, equal semantic digests across its two engine runs, 32,297 generated variants per scanner, 10,739
+  differential review occurrences (none of whose canonical ids is in the review ledger), and 46 failed assertions of
+  `redact-secret` (35 metamorphic, 11 mutation), none attributed to a product detector family (untargeted fixtures and the `exa:api-key` policy fixtures). The darwin-arm64 entries remain local verification runs and are never compared with a linux run; the qualification
   view and the #607 comparison read the canonical artifacts.

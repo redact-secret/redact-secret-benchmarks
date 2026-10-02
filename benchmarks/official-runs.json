@@ -310,6 +310,130 @@
       }
     },
     {
+      "id": "public-evidence-snapshot+methods@linux-x64",
+      "population": "public-evidence-snapshot",
+      "kind": "methods",
+      "methods": [
+        "differential",
+        "metamorphic",
+        "mutation"
+      ],
+      "evaluation": {
+        "reference": "redact-secret",
+        "seed": "case-id",
+        "evidenceDigest": "sha256:1af8d70c6891eddf749f741364b35ba0c46d510a888d7e39111be04ec2c49c91"
+      },
+      "platform": "linux-x64",
+      "canonical": true,
+      "purpose": "canonical methods run: the linux-x64 official run of .github/workflows/official-runs.yml",
+      "recordedOn": "2026-10-02",
+      "benchmarkRevision": "2dd82ee630ed7b599e49e41f15a68d109363a2da",
+      "engine": {
+        "name": "credential-eval",
+        "version": "0.1.0-alpha.1",
+        "revision": "379e677b8e92db93105d26eb1b7f8c84df6ee5fc",
+        "protocol": "credential-eval-protocol/1"
+      },
+      "runClass": "public",
+      "engineRunClass": "official",
+      "publication": "public",
+      "configHash": "sha256:6c9497ada23a16b61f0c82888f3ef6012b8686d1a41b076982821e3b54cf74fa",
+      "evidence": {
+        "source": "credential-evidence",
+        "revision": "records-tree-sha256:4cd72141c1deec4aef21c0f5b2d751c51eb3d7abe5088756219d99c93f464f50",
+        "evidence_schema": "credential-evidence/schema/1.5.0",
+        "corpus_digest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
+        "release": {
+          "tag": "snapshot-2026.10.01.2",
+          "manifest_digest": "sha256:2557a72ae8dec3ca6d734a6c87b6db9cb4881543541693a4555fdfd9f7ba26d8"
+        }
+      },
+      "artifact": {
+        "semanticDigest": "sha256:9e7439a1d2823089693f4dbb2fbb43d8639e72fce185deeaca1a04e3a533d3cb",
+        "byteDigest": "sha256:10ebe8192d25e10c739d14286117d7f36d80186d0abc9fec72d8bf377fa0882c",
+        "schemaDigest": "sha256:938cc4f48660186716edb7b29b14f46a8a5ba20e2e4219f2d1f70b6d594751e2",
+        "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
+      },
+      "determinism": {
+        "runs": 2,
+        "semanticDigestsEqual": true
+      },
+      "scanners": [
+        {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "build": "released",
+          "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+          "adapter": {
+            "id": "flare-redact",
+            "version": "1"
+          },
+          "configurationHash": "sha256:f111f4606c9185205f16555c97493f82a9165e19afe05c38a9d4a4b399b36300",
+          "executableSha256": null,
+          "packageIntegrity": "sha512-13Htu6VPk2ttxcoVOP909pXao6orrIBAMS/qWdhQn3/BS5AxSB5fpyqaPZnRGJhfBAM2M9T+RE662hxEpv6nGQ=="
+        },
+        {
+          "id": "gitleaks",
+          "version": "8.30.1",
+          "build": "released",
+          "mode": "Directory scan · default rules",
+          "adapter": {
+            "id": "gitleaks",
+            "version": "2"
+          },
+          "configurationHash": "sha256:345a2161fd1fbfc563bd41fc39ee552bc4518c43e179c4b734f8e66f6afbeb39",
+          "executableSha256": "sha256:88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
+          "packageIntegrity": null
+        },
+        {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "build": "released",
+          "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+          "adapter": {
+            "id": "openredaction",
+            "version": "1"
+          },
+          "configurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
+          "executableSha256": null,
+          "packageIntegrity": "sha512-SpQTBhVV4p3rmge818NH6iJiL/fvwFlDvhGaejoL0wbzY7jRHIhU5vEf3KzNARsIZmpCJV1eHdiavIjQyN1hXQ=="
+        },
+        {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.12",
+          "build": "released",
+          "mode": "Published npm package · default detectors",
+          "adapter": {
+            "id": "redact-secret",
+            "version": "3"
+          },
+          "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2",
+          "executableSha256": null,
+          "packageIntegrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw=="
+        },
+        {
+          "id": "trufflehog",
+          "version": "3.97.4",
+          "build": "released",
+          "mode": "Filesystem scan · verification disabled",
+          "adapter": {
+            "id": "trufflehog",
+            "version": "2"
+          },
+          "configurationHash": "sha256:676ffe13805b6a1b278ef549e090c4d2f39eab5648565b8d9d5c2980159c230f",
+          "executableSha256": "sha256:95c2a42bce979fce6dd73cc629b37ae4d72731b0dc16e047fba41a77bc765620",
+          "packageIntegrity": null
+        }
+      ],
+      "caseCounts": {
+        "flare-redact": 32297,
+        "gitleaks": 32297,
+        "openredaction": 32297,
+        "redact-secret": 32297,
+        "trufflehog": 32297
+      }
+    },
+    {
       "id": "public-evidence-snapshot@darwin-arm64",
       "population": "public-evidence-snapshot",
       "platform": "darwin-arm64",

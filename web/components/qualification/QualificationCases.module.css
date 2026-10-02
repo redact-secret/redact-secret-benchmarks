@@ -21,8 +21,6 @@
 
   /* An opened row is wide enough for its facts to read as lines, not a word per line; the table scrolls inside its own region. */
   .details[open] {
-    inline-size: calc(var(--space-16) * 7);
-    max-inline-size: 100%;
     padding-bottom: var(--space-2);
   }
 
@@ -44,8 +42,15 @@
     overflow-wrap: break-word;
   }
 
+  /* Beside the other columns the table scrolls inside its own region, so an opened row may be as wide as its facts need; stacked on a phone it is the cell's width. */
   @media (min-width: 721px) {
+    .details[open] {
+      inline-size: calc(var(--space-16) * 7);
+    }
+
+    /* A closed row is still laid out by the browser, so the facts keep a width a word fits in whatever the cell is. */
     .facts {
+      min-inline-size: calc(var(--space-16) * 6);
       grid-template-columns: calc(var(--space-16) * 2) minmax(0, 1fr);
       gap: var(--space-1) var(--space-4);
     }

@@ -32,7 +32,7 @@ export default defineConfig({
   },
   webServer: {
     command: 'node tests/e2e/serve.mjs',
-    url: `http://127.0.0.1:${port}/next/report/`,
+    url: `http://127.0.0.1:${port}/report/`,
     reuseExistingServer: !process.env.CI,
     env: { PORT: String(port) },
   },

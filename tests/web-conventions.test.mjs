@@ -22,7 +22,7 @@ test('styled() is rejected', () => {
 const HELPER = 'lib/build-data.ts';
 const OK_CALL = "fetch(dataUrl(path), { method: 'GET', credentials: 'omit', mode: 'same-origin', referrerPolicy: 'no-referrer' })";
 const helperSource = (call = OK_CALL) => `
-  export function dataUrl(path) { if (!BUILD_DATA_PATH.test(path)) throw new Error(path); return '/next/data/' + path; }
+  export function dataUrl(path) { if (!BUILD_DATA_PATH.test(path)) throw new Error(path); return '/data/' + path; }
   const request = ${call};`;
 
 test('fetch is allowed only in lib/build-data.ts, as a plain same-origin GET of dataUrl()', () => {
@@ -30,7 +30,7 @@ test('fetch is allowed only in lib/build-data.ts, as a plain same-origin GET of 
   assert.deepEqual(rules('await fetch(dataUrl(path));', 'app/report/RowsView.tsx'), ['fetch-scope'], 'a page may not fetch; it uses the helper');
   assert.deepEqual(rules("await fetch('https://example.com/x.json');", 'services/run.ts'), ['fetch-scope']);
   assert.deepEqual(rules(helperSource(), HELPER), [], 'the helper as committed passes');
-  assert.deepEqual(rules(helperSource("fetch('/next/data/rows/level/T1/rows.json', { method: 'GET', credentials: 'omit', mode: 'same-origin' })"), HELPER), ['fetch-helper'], 'the URL must come from dataUrl()');
+  assert.deepEqual(rules(helperSource("fetch('/data/rows/level/T1/rows.json', { method: 'GET', credentials: 'omit', mode: 'same-origin' })"), HELPER), ['fetch-helper'], 'the URL must come from dataUrl()');
   assert.deepEqual(rules(helperSource("fetch(dataUrl(path), { method: 'GET', credentials: 'include', mode: 'same-origin' })"), HELPER), ['fetch-helper'], 'no credentials');
   assert.deepEqual(rules(helperSource("fetch(dataUrl(path), { method: 'POST', credentials: 'omit', mode: 'same-origin' })"), HELPER), ['fetch-helper'], 'GET only');
   assert.deepEqual(rules(helperSource("fetch(dataUrl(path), { method: 'GET', credentials: 'omit', mode: 'cors' })"), HELPER), ['fetch-helper'], 'same-origin only');

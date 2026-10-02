@@ -98,7 +98,11 @@ jobs:
         run: npm run tuning:check
       - name: The statistical scorer's future-promotion contract answers Q1-Q5 with hard constraints and no mixed score (#257)
         run: npm run scorer-promotion:check
-      - run: npm run build
+      # `npm run build` is the legacy Vite UI plus this typecheck. The site is the Next export now (the web job builds it), so the
+      # legacy UI is not built here; its source stays as the oracle and the typecheck keeps it compiling. The two guards below scan
+      # tracked files and public/; the web job runs them again over the assembled site root.
+      - name: Typecheck (the root project, including the legacy oracle source)
+        run: npm run typecheck
       - name: No candidate-level feature vector or calibration boundary detail reaches public/ or the built site (#254, #255)
         run: npm run features:check-public
       - name: No custodian-held blind corpus, freeze or ledger is tracked or published, and every blind aggregate passes the release whitelist (#142)
@@ -112,9 +116,9 @@ jobs:
       - name: Generated inputs must not change tracked files
         run: git diff --exit-code
 
-  # The redesigned site (#547): a self-contained package in web/ with its own
-  # lockfile. It builds to web/out and web/storybook-static, never to dist/. publish-site.yml
-  # builds its own export (with the qualification view, #602) and publishes it under /next/ only.
+  # The site (#547): a self-contained package in web/ with its own lockfile. It builds to web/out and web/storybook-static.
+  # It is the root of the published site (#602): publish-site.yml builds its own export (with the qualification view) and
+  # assembles it with the measured files; this job assembles the same layout from the CI run to scan it.
   web:
     runs-on: ubuntu-latest
     permissions:
@@ -211,6 +215,13 @@ jobs:
         working-directory: web
         env:
           WEB_REQUIRE_RUN: '1'
+      # The layout that ships: the export at the root, the measured files at /results/, robots.txt and favicon.svg. The publication
+      # guards read dist/ and public/ of the repository root, so the site root is assembled there (dist/ is ignored).
+      - name: The assembled site root is the export plus /results/ and carries no leak the publication guards refuse (#142, #254, #602)
+        run: |
+          node scripts/assemble-site.mjs
+          npm run features:check-public
+          npm run blind:check-public
       - name: Playwright traces of the failures
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

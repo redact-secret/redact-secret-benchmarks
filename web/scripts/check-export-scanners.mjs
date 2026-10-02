@@ -10,6 +10,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { linkResolves } from './lib/links.mjs';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const repoRoot = path.resolve(webRoot, '..');
@@ -67,8 +68,8 @@ if (summary) {
 
 const FORBIDDEN = /fastest|slowest|faster|slower|\bbest\b|worst|winner|better|\brank(ed|ing)?\b|recommended|\bmissed\b|\bcaught\b/i;
 if (FORBIDDEN.test(text)) fail(`/evaluation/scanner/ contains a ranking or verdict word: ${FORBIDDEN.exec(text)[0]}`);
-for (const [, href] of html.matchAll(/<a [^>]*href="(\/next\/[^"#]*)/g)) {
-  if (!/^\/next\/(report|comparison|evaluation)\//.test(href) && href !== '/next/') fail(`/evaluation/scanner/ links outside the app: ${href}`);
+for (const [, href] of html.matchAll(/<a [^>]*href="(\/[^"#]*)/g)) {
+  if (!(await linkResolves(path.join(webRoot, 'out'), '', href))) fail(`/evaluation/scanner/ links outside the export: ${href}`);
 }
 
 if (problems.length) {

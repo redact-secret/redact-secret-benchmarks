@@ -7,7 +7,7 @@ export default defineConfig({
     include: ['tests/unit/**/*.test.{ts,tsx,mjs}'],
     environment: 'jsdom',
     setupFiles: ['tests/unit/setup.ts'],
-    env: { NEXT_PUBLIC_BASE_PATH: '/next' },
+    env: { NEXT_PUBLIC_BASE_PATH: '' },
     // CSS Modules resolve to a proxy of their class names, so `styles.x` is a stable string.
     css: { modules: { classNameStrategy: 'non-scoped' } },
     restoreMocks: true,

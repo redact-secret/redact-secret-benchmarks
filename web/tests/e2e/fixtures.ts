@@ -5,7 +5,7 @@ import { test as base, expect, type Page } from '@playwright/test';
 export { expect };
 
 const out = path.resolve(__dirname, '../../out');
-export const BASE = '/next';
+export const BASE = '';
 
 export interface Watch {
   /** Anything a reader's browser would report as broken: console errors and warnings, uncaught errors, failed or 4xx/5xx same-origin requests. */

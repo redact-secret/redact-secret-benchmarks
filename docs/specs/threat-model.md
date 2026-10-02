@@ -107,12 +107,13 @@ a corresponding check exists in the code or CI cited beside it.
   a `product_sha` that isn't 40 hex; publishing a broken qualification run
   (`eval:qualify` failure without a written report fails the job); publishing
   mismatched candidate tarball bytes (`qualified-candidate.mjs verify`).
-  publishing the Next export (`/next/`) without a qualification view built from the
+  publishing the Next export (the site root) without a qualification view built from the
   canonical RunArtifacts: they come from a release asset and are accepted only if every
   file hashes to the `byteDigest` in `benchmarks/official-runs.json`, so a replaced asset
   fails closed (`official-run-archive.mjs fetch`; `WEB_REQUIRE_QUALIFICATION=1`). The
-  Next install and build run before AWS credentials are configured, and the export is
-  moved under `dist/next` only, so it cannot overwrite an existing key.
+  Next install, build, `scripts/assemble-site.mjs` and the publication guards
+  (`features:check-public`, `blind:check-public`) run before AWS credentials are configured; the assembly
+  refuses an export that is not a site root (no `/next/` string, no legacy `assets/`).
 - **Does not protect against:** a compromised `npm ci` dependency running
   during a step that executes after AWS credentials are already exported to
   the job environment; a compromised action pinned by tag rather than SHA

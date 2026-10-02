@@ -22,14 +22,18 @@
 # Both publish a qualification run and a support matrix: staging's matrix
 # classifies the candidate, production's the released package.
 #
-# Both also publish the Next.js app (`web/`, a static export) under `/next/`
-# beside the existing site, from the same run and the same measured files (#602).
-# Deployment is not the authority switch: the existing pages stay the oracle and
-# nothing outside `/next/` is touched. The Next qualification pages read a view
-# built here from the canonical official RunArtifacts, fetched from their durable
-# archive and checked byte for byte against benchmarks/official-runs.json; a
-# publish without that view fails (docs/decisions/2026-10-02-publish-the-next-
-# export-under-next-with-the-qualification-view-built-from-archived-official-runs.md).
+# The site is the Next.js app (`web/`, a static export) at the ROOT of the host,
+# built from the same run and the same measured files, with the measured JSON
+# beside it under /results/ (#602; docs/decisions/2026-10-02-serve-the-next-
+# export-at-the-site-root.md, which supersedes the /next/ preview prefix). The
+# legacy Vite UI is no longer built or published; its source and data code stay
+# as the oracle. The first publish of an environment clears the legacy assets and
+# index.html through the final `--delete` sync. Rollback is redeploying the previous
+# workflow commit. The Next qualification pages read a view built here from the
+# canonical official RunArtifacts, fetched from their durable archive and checked
+# byte for byte against benchmarks/official-runs.json; a publish without that view
+# fails. Staging is kept out of search indexes by CloudFront's X-Robots-Tag, not by
+# the build, so the same export is indexable on production.
 #
 # Per-environment configuration lives in the repository's GitHub environments,
 # so this file carries no account ID and no bucket name:
@@ -353,14 +357,6 @@ jobs:
             npm run eval:publish:pii-support -- "${product_args[@]}" --population-mode=not-measured
           fi
 
-      # The page marks which environment served it and which commit built it
-      # (#155); an unset VITE_SITE_ENV builds as "local", never production.
-      - name: Build the site
-        env:
-          VITE_SITE_ENV: ${{ env.TARGET }}
-          VITE_BUILD_COMMIT: ${{ github.sha }}
-        run: npm run build
-
       # The qualification view the Next pages read (public/results/qualification-v1.json, never committed). Same
       # artifacts and same product inputs write the same bytes. The product populations' case metadata is exported
       # from this checkout, whose corpus official-runs:check --bindings pinned above.
@@ -377,13 +373,14 @@ jobs:
           rm -f public/results/qualification-v1.json
           npm run qualification:view -- --artifacts "$RUNNER_TEMP/official-in" --out public/results/qualification-v1.json
 
-      # The redesigned site, exported statically for /next/ (basePath default). check:routes recounts the pages
+      # The site, exported statically for the root of the host (empty BASE_PATH). check:routes recounts the pages
       # from the files this run measured; WEB_REQUIRE_QUALIFICATION makes the "view not built" state (the normal
       # state of CI without a view) a failure, so a not-ready qualification page is never published.
       - name: Build the Next export and check its routes
         working-directory: web
         env:
           NEXT_TELEMETRY_DISABLED: '1'
+          BASE_PATH: ''
           WEB_REQUIRE_RUN: '1'
           WEB_REQUIRE_QUALIFICATION: '1'
         run: |
@@ -392,17 +389,16 @@ jobs:
           npm run build
           npm run check:routes
 
-      # Only the /next/ prefix: the export is moved wholesale under dist/next, so no existing file can be
-      # overwritten, and the sync below (which deletes what the build no longer has) keeps /next/ because it is in dist.
-      - name: Place the Next export under dist/next
+      # The site root: the export at /, the measured files at /results/, robots.txt and favicon.svg from the export.
+      # The guards scan what is about to ship (dist/ and public/); a refusal here is before anything is signed in.
+      - name: Assemble the site root and run the publication guards on it
         run: |
           set -euo pipefail
-          test -f dist/index.html
-          test ! -e dist/next || { echo "::error::dist/next already exists; the existing site must not own /next/"; exit 1; }
-          test -f web/out/index.html
-          test -f web/out/evaluation/qualification/index.html
-          mv web/out dist/next
-          echo "next export: $(find dist/next -type f | wc -l) files, $(du -sm dist/next | cut -f1) MB"
+          node scripts/assemble-site.mjs
+          npm run features:check-public
+          npm run blind:check-public
+          test -s dist/robots.txt -a -s dist/favicon.svg -a -s dist/results/run.json
+          echo "site root: $(find dist -type f | wc -l) files, $(du -sm dist | cut -f1) MB"
 
       - uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
         with:
@@ -412,8 +408,9 @@ jobs:
 
       # Same three passes as scripts/publish-site.sh in redact-secret-sites:
       # fingerprinted assets first and kept forever, then everything else with
-      # revalidation and stale files removed, then assets pruned once the new
-      # HTML is live.
+      # revalidation and stale files removed (on the first root publish this removes the
+      # legacy index.html and the old next/ preview: neither is in dist; the legacy assets/ are removed after the swap), then
+      # the fingerprinted chunks pruned once the new HTML is live.
       - name: Publish
         env:
           SITE_STACK: ${{ vars.SITE_STACK }}
@@ -426,10 +423,8 @@ jobs:
           distribution=$(awk '$1=="DistributionId"{print $2}' <<<"$outputs")
           test -n "$bucket" -a -n "$distribution"
 
-          aws s3 sync dist/assets "s3://$bucket/assets" --only-show-errors \
-            --cache-control 'public, max-age=31536000, immutable'
-          # Next's fingerprinted chunks (immutable, kept until the new HTML is live), under /next/ only.
-          aws s3 sync dist/next/_next/static "s3://$bucket/next/_next/static" --only-show-errors \
+          # Next's fingerprinted chunks (immutable, kept until the new HTML is live).
+          aws s3 sync dist/_next/static "s3://$bucket/_next/static" --only-show-errors \
             --cache-control 'public, max-age=31536000, immutable'
           pii_artifact=$(jq -r '.domains[] | select(.domain=="pii") | .support.href | ltrimstr("/")' dist/results/evaluation-domains-v2.json)
           test -f "dist/$pii_artifact"
@@ -437,12 +432,13 @@ jobs:
           aws s3 cp "dist/$pii_artifact" "s3://$bucket/$pii_artifact" --only-show-errors \
             --cache-control 'public, max-age=31536000, immutable'
           aws s3 sync dist "s3://$bucket" --only-show-errors --delete \
-            --exclude 'assets/*' --exclude 'next/_next/static/*' --exclude 'results/pii-support-matrix-v2-*.json' \
+            --exclude 'assets/*' --exclude '_next/static/*' --exclude 'results/pii-support-matrix-v2-*.json' \
             --exclude 'results/evaluation-domains-v2.json' --cache-control 'no-cache'
-          aws s3 sync dist/assets "s3://$bucket/assets" --only-show-errors --delete \
+          aws s3 sync dist/_next/static "s3://$bucket/_next/static" --only-show-errors --delete \
             --cache-control 'public, max-age=31536000, immutable'
-          aws s3 sync dist/next/_next/static "s3://$bucket/next/_next/static" --only-show-errors --delete \
-            --cache-control 'public, max-age=31536000, immutable'
+          # The legacy build's fingerprinted assets, kept through the HTML swap above and removed now that no HTML names them.
+          # Empty (a no-op) once the first root publish has run.
+          aws s3 rm "s3://$bucket/assets/" --recursive --only-show-errors
           # The v2 index is the sole mutable commit marker and is always last.
           aws s3 cp dist/results/evaluation-domains-v2.json "s3://$bucket/results/evaluation-domains-v2.json" \
             --only-show-errors --cache-control 'no-cache'
@@ -463,7 +459,7 @@ jobs:
             echo "- redact-secret measured: $(jq -r '.scannerVersions["redact-secret"] + (if .candidate then " (candidate " + .candidate.sourceCommit[0:7] + ", unreleased)" else " (released)" end)' public/results/run.json)"
             echo "- qualification: $(jq -r '.qualification.status + " with redact-secret " + (.qualification.holdout.scanners[] | select(.id == "redact-secret") | .version)' public/results/evaluation-v1.json)"
             echo "- support matrix: $(jq -r '.distribution.stable|tostring' public/results/support-matrix-v1.json) stable, $(jq -r 'if .sourceReport.product then "candidate " + .sourceReport.product.sourceCommit[0:7] else "released " + (.sourceReport.publishedPackage.version // "package") end' public/results/support-matrix-v1.json)"
-            echo "- Next export under /next/: $(find dist/next -type f | wc -l) files; qualification view $(jq -r '.distribution.stable|tostring' public/results/qualification-v1.json) stable, policy \`$(jq -r .policy.revision public/results/qualification-v1.json)\`, official run artifacts checked against benchmarks/official-runs.json"
+            echo "- site root (Next export at /, measured files at /results/): $(find dist -type f | wc -l) files; qualification view $(jq -r '.distribution.stable|tostring' public/results/qualification-v1.json) stable, policy \`$(jq -r .policy.revision public/results/qualification-v1.json)\`, official run artifacts checked against benchmarks/official-runs.json"
             pii_artifact=$(jq -r '.domains[] | select(.domain=="pii") | .support.href | ltrimstr("/")' public/results/evaluation-domains-v2.json)
             echo "- PII populations: $(jq -r '[.populationComparisons[] | .id + "=" + .verdict] | join(", ")' "public/$pii_artifact")"
             if [ "$TARGET" = staging ]; then

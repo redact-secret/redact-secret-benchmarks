@@ -1,0 +1,91 @@
+@layer components {
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: var(--space-12);
+    align-items: center;
+    padding-block: var(--space-8);
+  }
+
+  .text {
+    min-width: 0;
+  }
+
+  .eyebrow {
+    margin: 0;
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .title {
+    margin: var(--space-3) 0 0;
+    font: var(--text-display);
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+
+  /* The one emphasised word sits on a green bar under its lower part: a rule, not a shadow. */
+  .emphasis {
+    font-style: normal;
+    background-image: linear-gradient(var(--brand-green), var(--brand-green));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 100% 0.22em;
+  }
+
+  .lede {
+    margin: var(--space-4) 0 0;
+    max-width: 52ch;
+    font: var(--text-body);
+    color: var(--ink-muted);
+  }
+
+  .lede b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .caveat {
+    display: flex;
+    gap: var(--space-3);
+    align-items: baseline;
+    margin: var(--space-4) 0 0;
+    max-width: 52ch;
+    font: var(--text-small);
+    color: var(--ink);
+  }
+
+  .caveatLabel {
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    white-space: nowrap;
+    flex: none;
+  }
+
+  @media (max-width: 1000px) {
+    .title {
+      font: var(--text-h1);
+    }
+
+    .hero {
+      gap: var(--space-8);
+    }
+  }
+
+  @media (max-width: 860px) {
+    .hero {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 520px) {
+    .title {
+      font: var(--text-h1-narrow);
+    }
+  }
+}

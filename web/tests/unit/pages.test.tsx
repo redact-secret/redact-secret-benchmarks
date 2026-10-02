@@ -51,7 +51,6 @@ describe('routes', () => {
   test.each(all.map(c => [c.label, c] as const))('%s renders its content', async (_label, c) => {
     const mod = await c.load();
     const { container } = render(await mod.default({ params: Promise.resolve(c.params) }));
-    if (c.route === '/') return;
     const headings = container.querySelectorAll('h1');
     // Pre-rendered panels (levels, pairs, a fixture placeholder) each carry their own h1; CSS shows one, so the e2e suite counts the visible ones.
     expect(headings.length, 'a page has an h1').toBeGreaterThanOrEqual(1);
@@ -69,9 +68,11 @@ describe('routes', () => {
   test.each(all.map(c => [c.label, c] as const))('%s has a title', async (_label, c) => {
     const mod = await c.load();
     const meta = mod.generateMetadata ? await mod.generateMetadata({ params: Promise.resolve(c.params) }) : mod.metadata;
-    if (c.route === '/') return;
-    expect(typeof meta?.title).toBe('string');
-    expect((meta!.title as string).length).toBeGreaterThan(0);
+    // The landing page sets its title whole (`absolute`), so the site name is not repeated by the template.
+    const raw = meta?.title as unknown;
+    const title = typeof raw === 'object' && raw !== null && 'absolute' in raw ? (raw as { absolute: unknown }).absolute : raw;
+    expect(typeof title).toBe('string');
+    expect((title as string).length).toBeGreaterThan(0);
   });
 });
 

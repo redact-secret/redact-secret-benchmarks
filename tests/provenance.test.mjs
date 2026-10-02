@@ -63,19 +63,17 @@ test('staging measures the corpus against the qualified candidate; production ag
 
 test('both environments publish a support matrix: staging the candidate, production the released package (#213)', async () => {
   const workflow = await readFile(new URL('../.github/workflows/publish-site.yml', import.meta.url), 'utf8');
-  const step = workflow.slice(workflow.indexOf('- name: Classify support'), workflow.indexOf('- name: Build the site'));
+  const step = workflow.slice(workflow.indexOf('- name: Classify support'), workflow.indexOf('- name: Build the qualification view'));
   assert.ok(!/\n\s+if: /.test(step), 'the step runs for every environment');
   const staging = step.slice(step.indexOf('if [ "$TARGET" = staging ]'), step.indexOf('else'));
   for (const flag of ['--candidate-package="$CORE_PACKAGE"', '--candidate-source-commit="$PRODUCT_COMMIT"']) assert.ok(staging.includes(flag), flag);
   assert.match(step.slice(step.indexOf('else')), /else\n\s+npm run eval:classify\n\s+fi\n\s+npm run eval:matrix\n\s+npm run eval:publish:matrix\n/, 'production classifies the released package in published mode');
 });
 
-test('the publish workflow hands the environment and commit to the site build', async () => {
+test('the publish workflow no longer builds the legacy site UI, so it hands it no environment or commit (#602)', async () => {
   const workflow = await readFile(new URL('../.github/workflows/publish-site.yml', import.meta.url), 'utf8');
-  const step = workflow.slice(workflow.indexOf('- name: Build the site'), workflow.indexOf('- uses: aws-actions/configure-aws-credentials'));
-  assert.match(step, /VITE_SITE_ENV: \$\{\{ env\.TARGET \}\}/);
-  assert.match(step, /VITE_BUILD_COMMIT: \$\{\{ github\.sha \}\}/);
-  assert.match(step, /run: npm run build/);
+  assert.doesNotMatch(workflow, /VITE_SITE_ENV|VITE_BUILD_COMMIT/);
+  assert.doesNotMatch(workflow, /run: npm run build\b/, 'the root npm run build is the legacy Vite UI');
 });
 
 test('the production deployment summary records all immutable release handoff identities', async () => {

@@ -116,7 +116,7 @@ product qualification.
 ## Where the publish build gets the artifacts
 
 The CI build artifacts expire after 90 days (those of run 36964984990 on 2026-12-30), and `publish-site.yml` builds the qualification view the
-published Next pages read (decision: [publish the Next export under /next/](../decisions/2026-10-02-publish-the-next-export-under-next-with-the-qualification-view-built-from-archived-official-runs.md)).
+published Next pages read (decision: [serve the Next export at the site root](../decisions/2026-10-02-serve-the-next-export-at-the-site-root.md; the view and archive decisions are in the superseded [/next/ record](../decisions/2026-10-02-publish-the-next-export-under-next-with-the-qualification-view-built-from-archived-official-runs.md))).
 So the canonical linux-x64 artifacts are also kept as one release asset of this repository, named by `benchmarks/official-run-archive.json`
 (tag `official-runs-<ci run id>`, `official-run-artifacts.tar.gz`: `<population>/artifact.json` and `public-evidence-snapshot/methods/artifact.json`).
 

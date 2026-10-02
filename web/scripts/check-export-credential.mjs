@@ -19,10 +19,11 @@ import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readAuthority, stampOf } from './lib/authority.mjs';
+import { linkResolves } from './lib/links.mjs';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(webRoot, 'out');
-const basePath = process.env.BASE_PATH ?? '/next';
+const basePath = process.env.BASE_PATH ?? '';
 const repoRoot = path.resolve(webRoot, '..');
 const readJson = async rel => JSON.parse(await readFile(path.join(repoRoot, rel), 'utf8'));
 
@@ -186,7 +187,7 @@ if (!view) {
   // ---- Links stay inside the app ---------------------------------------------------------------------------------------
   const internal = html => [...html.matchAll(/<a\b[^>]*\shref="([^"]+)"/g)].map(m => m[1]).filter(h => h.startsWith('/'));
   for (const route of ['report', 'report/providers', 'report/families', 'report/detectors', 'report/fixtures', 'report/findings', 'report/rows/T1', `report/families/${slugOf(taxonomy.families[0].id)}`, `report/fixtures/${[...suites.keys()][0]}`]) {
-    for (const href of internal(await readHtml(route))) if (!href.startsWith(`${basePath}/`)) fail(`/${route}/ links ${href}, outside the app (${basePath}/)`);
+    for (const href of internal(await readHtml(route))) if (!(await linkResolves(path.join(webRoot, 'out'), basePath, href))) fail(`/${route}/ links ${href}, which is not a page or file of the export`);
   }
 
   // ---- The build-emitted data files hold the view's rows and records --------------------------------------------------

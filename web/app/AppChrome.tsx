@@ -2,12 +2,13 @@
 
 import type { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
-import { SectionNav, SiteHeader } from '../components/shell';
+import { SectionNav, SiteFooter, SiteHeader } from '../components/shell';
+import { FOOTER_LINKS, LICENSE_HREF } from '../lib/site';
 import { normalizePath, sectionFor, SECTIONS } from '../lib/routes';
 import styles from './AppChrome.module.css';
 
-/** Connects the pure shell components to the router; the only place the app reads the pathname. */
-export function AppChrome({ children }: { children: ReactNode }) {
+/** Connects the pure shell components to the router; the only place the app reads the pathname. `build` is the run line the layout resolved, or null. */
+export function AppChrome({ children, build = null }: { children: ReactNode; build?: string | null }) {
   const path = normalizePath(usePathname());
   const section = sectionFor(path);
   return (
@@ -17,11 +18,11 @@ export function AppChrome({ children }: { children: ReactNode }) {
         {section && <SectionNav section={section} currentPath={path} />}
         <main id="content" className={styles.main}>{children}</main>
       </div>
-      <footer className={styles.footer}>
-        <p className={styles.note}>
-          This site records measurements and does not assert product output. The redesign is built beside the existing site, which stays the published one until cutover.
-        </p>
-      </footer>
+      <SiteFooter
+        links={FOOTER_LINKS}
+        legal={<>© 2026 Omiologic · Benchmark code and data under the <a href={LICENSE_HREF} rel="noreferrer">MIT License</a>. This site records measurements and does not assert product output.</>}
+        build={build}
+      />
     </>
   );
 }

@@ -1,0 +1,250 @@
+@layer components {
+  .specimen {
+    margin: 0;
+    min-width: 0;
+    display: grid;
+    gap: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: var(--rule-strong) solid var(--ink);
+  }
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .eyebrow {
+    margin: 0;
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .file {
+    min-width: 0;
+    border: var(--hairline) solid var(--line);
+  }
+
+  .fileHead {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border-bottom: var(--hairline) solid var(--line);
+    font: var(--text-mono-small);
+    color: var(--ink-muted);
+  }
+
+  .fileName {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .fileTag {
+    white-space: nowrap;
+  }
+
+  /* Room for the longest example, so switching example or replaying never moves what is under it. */
+  .code {
+    margin: 0;
+    padding: var(--space-3);
+    min-height: calc(var(--space-6) * 5);
+    font: var(--text-mono);
+    white-space: pre-wrap;
+    word-break: break-all;
+    color: var(--ink);
+  }
+
+  .number {
+    display: inline-block;
+    width: calc(var(--space-4) + var(--space-2));
+    color: var(--ink-muted);
+    user-select: none;
+  }
+
+  /* The expected span: a dashed box. The bar is a layer over it, so the text keeps its own colour and contrast. */
+  .secret {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    vertical-align: top;
+    outline: var(--rule-strong) dashed var(--ink);
+    outline-offset: var(--hairline);
+    animation: box 500ms ease 1100ms both;
+  }
+
+  .secret::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--ink);
+    opacity: 0;
+    animation: bar 500ms ease 1100ms both;
+  }
+
+  @keyframes bar {
+    to { opacity: 1; }
+  }
+
+  @keyframes box {
+    to { outline-color: transparent; }
+  }
+
+  .verdict {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: var(--hairline) solid var(--line);
+  }
+
+  .verdict > div {
+    display: grid;
+    gap: calc(var(--space-1) / 2);
+    min-width: 0;
+    padding: var(--space-3) var(--space-3) var(--space-3) 0;
+  }
+
+  .verdict > div + div {
+    padding-left: var(--space-3);
+    border-left: var(--hairline) solid var(--line);
+  }
+
+  .verdict dt {
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-muted);
+  }
+
+  .verdict dd {
+    margin: 0;
+    font: var(--text-mono);
+    overflow-wrap: break-word;
+  }
+
+  /* The waiting mark and the settled value share one cell; the swap changes visibility, never size. */
+  .stack {
+    display: grid;
+  }
+
+  .pending,
+  .settled {
+    grid-area: 1 / 1;
+  }
+
+  .pending {
+    animation: leave 0ms linear 1100ms both;
+  }
+
+  .settled {
+    visibility: hidden;
+    animation: arrive 0ms linear 1100ms both;
+  }
+
+  @keyframes leave {
+    to { visibility: hidden; }
+  }
+
+  @keyframes arrive {
+    to { visibility: visible; }
+  }
+
+  .status {
+    justify-self: start;
+    align-self: start;
+    font: var(--text-small-strong);
+    padding: 0 var(--space-2);
+    border: var(--hairline) solid var(--status-success);
+    border-radius: var(--radius-sm);
+    background: var(--status-success-fill);
+    color: var(--status-success);
+  }
+
+  .caption {
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .replay {
+    font: var(--text-small-strong);
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--link);
+    cursor: pointer;
+    transition: transform 160ms var(--ease-out);
+  }
+
+  .replay:active {
+    transform: scale(var(--press));
+  }
+
+  .replay:focus-visible {
+    outline: var(--rule-strong) solid var(--focus);
+    outline-offset: var(--rule-strong);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .replay:hover {
+      text-decoration: underline;
+    }
+  }
+
+  @media (pointer: coarse) {
+    .replay {
+      min-height: var(--touch);
+    }
+  }
+
+  @media (max-width: 520px) {
+    .verdict {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .verdict > div + div {
+      padding-left: 0;
+      border-left: 0;
+      border-top: var(--hairline) solid var(--line);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .secret,
+    .secret::after,
+    .pending,
+    .settled {
+      animation: none;
+    }
+
+    .secret {
+      outline-color: transparent;
+    }
+
+    .secret::after {
+      opacity: 1;
+    }
+
+    .pending {
+      visibility: hidden;
+    }
+
+    .settled {
+      visibility: visible;
+    }
+
+    .replay {
+      transition: none;
+    }
+
+    .replay:active {
+      transform: none;
+    }
+  }
+}

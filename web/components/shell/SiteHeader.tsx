@@ -23,6 +23,7 @@ export function SiteHeader({ sections, currentPath }: SiteHeaderProps) {
           {/* The canonical lockup, unchanged: public/logo-light.svg and logo-dark.svg differ only in wordmark ink. The theme picks which one shows. */}
           <Image className={styles.logoLight} src={`${BASE}/logo-light.svg`} alt="" width={944} height={817} priority unoptimized />
           <Image className={styles.logoDark} src={`${BASE}/logo-dark.svg`} alt="" width={944} height={817} priority unoptimized />
+          <span className={styles.sub}>Benchmarks</span>
         </Link>
         <nav className={styles.nav} aria-label="Primary">
           <ul className={styles.list}>

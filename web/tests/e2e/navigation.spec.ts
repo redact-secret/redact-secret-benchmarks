@@ -106,9 +106,16 @@ test.describe('addresses the export does not contain', () => {
     await expect(page).toHaveURL(`${BASE}/report/providers/`);
   });
 
-  test('a path outside the base path is a 404 too', async ({ page }) => {
-    const response = await page.goto('/report/');
+  test('the retired /next/ prefix is not in the export (the host redirects it)', async ({ page }) => {
+    const response = await page.goto('/next/report/');
     expect(response?.status()).toBe(404);
+  });
+
+  test('robots.txt allows crawling and the favicon is served', async ({ request }) => {
+    const robots = await request.get('/robots.txt');
+    expect(robots.status()).toBe(200);
+    expect(await robots.text()).toMatch(/^User-agent: \*\s+Allow: \/\s*$/);
+    expect((await request.get('/favicon.svg')).status()).toBe(200);
   });
 });
 

@@ -33,6 +33,24 @@
     transform: scale(var(--press));
   }
 
+  /* The product line the lockup sits beside: a label with a rule, not a second logo. */
+  .sub {
+    margin-left: var(--space-4);
+    padding-left: var(--space-4);
+    border-left: var(--hairline) solid var(--line);
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 720px) {
+    .sub {
+      display: none;
+    }
+  }
+
   .logoLight,
   .logoDark {
     width: var(--logo-w);

@@ -3,8 +3,9 @@
  * `npm run check:routes` after `next build`:
  *
  *  - all six routes exist as pages and each has a level-one heading;
- *  - the export is served under BASE_PATH (default /next), never at the root,
- *    so it cannot shadow the existing site;
+ *  - the export is the site root (BASE_PATH is empty by default, docs/decisions/2026-10-02-serve-the-next-export-at-the-site-root.md):
+ *    `/` is the landing page (one h1, the three questions linking /report/, /comparison/performance/ and /evaluation/, no redirect), robots.txt allows crawling, favicon.svg is present, no page carries a robots meta
+ *    (staging's noindex is CloudFront's header), and nothing in the export names the retired /next/ prefix;
  *  - the CSS layer order is fixed first: the first stylesheet on every page
  *    contains the `@layer` order statement, and no other stylesheet precedes it;
  *  - MUI styles are emitted inside `@layer mui`;
@@ -17,7 +18,7 @@ import { readAuthority, stampOf } from './lib/authority.mjs';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(webRoot, 'out');
-const basePath = process.env.BASE_PATH ?? '/next';
+const basePath = process.env.BASE_PATH ?? '';
 const repoRoot = path.resolve(webRoot, '..');
 const readJson = async rel => JSON.parse(await readFile(path.join(repoRoot, rel), 'utf8'));
 const ROUTES = ['report', 'report/providers', 'report/families', 'comparison', 'comparison/feature', 'comparison/runtime', 'evaluation/rc'];
@@ -38,10 +39,42 @@ for (const route of ROUTES) {
   if (!/data-emotion="mui[^"]*">@layer mui\{/.test(html)) fail(`/${route}/: MUI styles are not inside @layer mui`);
 }
 
+// ---- The export is the site root (#602) -------------------------------------------------------------------------------
+{
+  const root = await readFile(path.join(out, 'index.html'), 'utf8');
+  if ((root.match(/<h1[\s>]/g) ?? []).length !== 1) fail('/ must have exactly one <h1>');
+  if (/http-equiv="refresh"/.test(root)) fail('/ is the landing page and must not redirect');
+  for (const target of ['/report/', '/comparison/performance/', '/evaluation/']) if (!root.includes(`href="${basePath}${target}"`)) fail(`/ does not link ${target}`);
+  try {
+    const robots = await readFile(path.join(out, 'robots.txt'), 'utf8');
+    if (!/^User-agent: \*\s+Allow: \/\s*$/.test(robots)) fail('robots.txt must allow crawling (User-agent: * / Allow: /); staging noindex is the CloudFront header');
+  } catch { fail('missing robots.txt'); }
+  try { await readFile(path.join(out, 'favicon.svg'), 'utf8'); } catch { fail('missing favicon.svg'); }
+  // One copy of each is kept beside the legacy site's own until that source is removed.
+  for (const name of ['robots.txt', 'favicon.svg']) {
+    const legacy = await readFile(path.join(repoRoot, 'public', name), 'utf8').catch(() => null);
+    if (legacy !== null && legacy !== await readFile(path.join(out, name), 'utf8').catch(() => null)) fail(`${name} differs from public/${name}`);
+  }
+}
+for await (const file of walkAll(out)) {
+  if (!/\.(html|txt|js|css|json|svg|xml)$/.test(file)) continue;
+  const text = await readFile(file, 'utf8');
+  if (/["'(=]\/next\/|["']\/next["']/.test(text)) fail(`${path.relative(out, file)} names the retired /next/ prefix`);
+  // Next marks its own not-found pages noindex; every page a reader can reach must not carry the tag.
+  if (file.endsWith('.html') && !/(^|\/)(404\.html|_not-found\/index\.html|404\/index\.html)$/.test(path.relative(out, file)) && /<meta[^>]+name="robots"/.test(text)) fail(`${path.relative(out, file)} carries a robots meta; the published site is indexable and staging's noindex is a response header`);
+}
+
 function href_to_file(href) {
   return href.slice(basePath.length + 1);
 }
 
+async function* walkAll(dir) {
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) yield* walkAll(full);
+    else yield full;
+  }
+}
 async function* walk(dir) {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const full = path.join(dir, entry.name);

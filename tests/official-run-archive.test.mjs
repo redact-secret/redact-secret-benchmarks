@@ -80,18 +80,25 @@ test('the real registry names a durable archive and every canonical file of it',
   assert.ok(expectedFiles(await read('benchmarks/official-runs.json'), archive.platform).length >= 1);
 });
 
-test('publish-site.yml fetches the artifacts first, builds the view and the export, and publishes /next/ only (#602)', async () => {
+test('publish-site.yml fetches the artifacts first, builds the view and the export, and publishes the export at the site root (#602)', async () => {
   const workflow = await readFile(new URL('../.github/workflows/publish-site.yml', import.meta.url), 'utf8');
   const at = text => { const i = workflow.indexOf(text); assert.ok(i >= 0, text); return i; };
   assert.ok(at('official-run-archive.mjs fetch') < at('- name: Measure the corpus'), 'a missing artifact fails before anything slow runs');
-  assert.ok(at('- name: Build the site') < at('- name: Build the qualification view') && at('- name: Build the qualification view') < at('- name: Build the Next export') && at('- name: Build the Next export') < at('- name: Place the Next export under dist/next') && at('- name: Place the Next export under dist/next') < at('aws-actions/configure-aws-credentials'), 'nothing is signed in until the export is built and checked');
-  const build = workflow.slice(at('- name: Build the Next export'), at('- name: Place the Next export'));
+  assert.ok(at('- name: Build the qualification view') < at('- name: Build the Next export') && at('- name: Build the Next export') < at('- name: Assemble the site root') && at('- name: Assemble the site root') < at('aws-actions/configure-aws-credentials'), 'nothing is signed in until the export is built, checked, assembled and guarded');
+  assert.doesNotMatch(workflow, /- name: Build the site\b/, 'the legacy site UI is not built');
+  assert.doesNotMatch(workflow, /VITE_/, 'no legacy build variable');
+  const build = workflow.slice(at('- name: Build the Next export'), at('- name: Assemble the site root'));
   assert.match(build, /WEB_REQUIRE_QUALIFICATION: '1'/);
   assert.match(build, /npm run check:routes/);
-  assert.doesNotMatch(build, /BASE_PATH/, 'the export keeps its /next/ base path');
-  assert.match(workflow, /mv web\/out dist\/next/);
-  assert.match(workflow, /test ! -e dist\/next/);
+  assert.match(build, /BASE_PATH: ''/, 'the export is built for the root');
+  const assemble = workflow.slice(at('- name: Assemble the site root'), at('aws-actions/configure-aws-credentials'));
+  assert.match(assemble, /node scripts\/assemble-site\.mjs/);
+  assert.match(assemble, /npm run features:check-public/);
+  assert.match(assemble, /npm run blind:check-public/);
+  assert.doesNotMatch(workflow, /dist\/next|dist\/assets|next\/_next/, 'nothing is placed under /next/ or synced from the legacy assets');
+  assert.match(workflow, /aws s3 sync dist\/_next\/static "s3:\/\/\$bucket\/_next\/static"/);
   const jobPermissions = workflow.slice(workflow.indexOf('    permissions:\n      contents: read'), workflow.indexOf('    env:\n      AWS_REGION'));
   assert.equal(jobPermissions.trim().split('\n').length, 3, 'the job still has only contents: read and id-token: write');
-  assert.match(workflow, /--exclude 'next\/_next\/static\/\*'/);
+  assert.match(workflow, /--exclude '_next\/static\/\*'/);
+  assert.match(workflow, /aws s3 sync dist "s3:\/\/\$bucket" --only-show-errors --delete/, 'the final sync clears the legacy index.html');
 });

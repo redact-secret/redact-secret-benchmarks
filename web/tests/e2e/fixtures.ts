@@ -114,7 +114,7 @@ export const ROUTES: string[] = [
   '/comparison/runtime/', '/comparison/runtime/?view=speed', '/comparison/runtime/?analysis=external&domain=credentials',
   '/comparison/performance/', '/comparison/accuracy/', '/comparison/accuracy/?data=pii',
   '/evaluation/credential/', '/evaluation/pii/',
-  '/evaluation/rc/', '/evaluation/scanner/', '/evaluation/qualification/',
+  '/evaluation/rc/', '/evaluation/scanner/', '/evaluation/qualification/', '/evaluation/qualification/unattributed/1/',
   '/evaluation/', ...['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => `/evaluation/method/${m}/`),
 ].map(route => `${BASE}${route}`);
 

@@ -10,6 +10,10 @@ qualification and the existing site stays as it is. State below is read from the
 linux-x64 official runs (CI run 36948851341, the three populations and the methods run of #636; run 36933982377 made the same
 three plain runs and their semantic digests are equal) and the product policy of #636 and #638; a new official run, a repin or a change
 to a product input makes it stale and the report is regenerated. #638 re-read the same canonical artifacts: no input of any official run changed.
+#606 then added per-case rows to the view (additive: [ADR](../decisions/2026-10-01-carry-per-case-rows-in-the-qualification-view-and-page-them-by-scope.md));
+the parity report was regenerated from the same artifacts and is byte-identical (35,024 values compared, 34,678 equal, 346 attributed, 0 unexplained,
+123 of 135 families stable), and the view without its `cases` is the previous view value for value. The legacy pipeline, the legacy site and every
+legacy `web/` service and page are unchanged by that work.
 
 ## Cutover criteria
 
@@ -20,10 +24,10 @@ Authority for credential qualification moves from the legacy path to the new pat
 | 1 | Pinned official evidence, eval and scanner identities | Met | `benchmarks/official-runs.json` pins the engine, schema, configuration, five scanners and three populations, and (#636) the methods run: its methods, reference, seed and the product evaluation evidence file by digest. `npm run official-runs:check` passes; the canonical runs are recorded, the methods run included. |
 | 2 | Deterministic official RunArtifacts | Met | Each population ran twice per job with equal semantic digests, the methods run too; a second CI run of the three plain runs (36948851341) has the same semantic digests as the first (36933982377); the view rebuilt locally from the downloaded canonical artifacts is byte-identical to the CI view. |
 | 3 | Product-owned regression and policy populations preserved | Met | Both are populations of the view with their own denominators and roles; every scanner's outcome on every regression and policy case equals the legacy outcome in the #607 report. |
-| 4 | No unexplained qualification verdict drift | **Unmet** | 0 unexplained differences (35,024 compared, 34,678 equal, 346 attributed; `--strict` passes). The verdicts still differ for four families (legacy 127 stable, new path 123), each attributed to a cause that is not a defect of the new path and that this repository cannot resolve alone: three `twin-scope-vocabulary` (anthropic-admin01-key, anthropic-api01-key, elevenlabs-api-key) and one `population-separation` (sendgrid-token). Attributed is not accepted: criterion 4 is met when those four are decided (below). |
-| 5 | One published release qualified end to end through the new path | **Unmet** | `@redact-secret/core` 0.1.0-beta.12 ran end to end (official runs and methods run, adapter, view, Next pages) with the axis overlay, the review-ledger mapping, the differential peer scope and the attribution fallback applied, and the result is not accepted: 123 stable against 127. The 123 agree with the legacy path on status. The other four are held back by a floor or a gate the new path measures differently: the engine cannot scope a cross-provider twin the snapshot gives no family (three families, `twinFailures: 2` each), and sendgrid-token has three public control axes where the legacy pooled count (with its regression fixtures) had four. Needed, not applied: credential-evidence carries a family on such a twin, or credential-eval scopes a twin by its parent's family; and a decision on sendgrid-token's fourth control axis (a public fixture, or a policy on the regression corpus). |
-| 6 | Next credential pages built from new outputs | **Unmet** | `/evaluation/qualification/` and its family pages are built solely from the view (#606). The report, provider, family and fixture pages still read the legacy files, and the view carries counts, not per-fixture rows, so a fixture page cannot be built from it. |
-| 7 | Rollback path to the legacy pipeline | **Unmet** (designed, not built) | Nothing has been switched, so the legacy path is intact. The authority switch below does not exist yet. |
+| 4 | No unexplained qualification verdict drift | **Met** (the differences are carried, not closed) | 0 unexplained of 35,024 compared (34,678 equal, 346 attributed; `--strict` passes), re-run after the #606 case rows with every count unchanged. The criterion asks that no difference is unexplained; it does not ask for equal verdicts, which would erase the architecture change the comparison exists to measure (#607: "the goal is not parity"). 123 families are stable on both paths. The other four (legacy 127 stable, new path 123) are each attributed by a rule that checks the evidence on both sides: one `population-separation` (sendgrid-token), confirmed from data both paths hold, and three `twin-scope-vocabulary` (anthropic-admin01-key, anthropic-api01-key, elevenlabs-api-key), inferred: the data narrows the pattern and the owner has not confirmed it. That counts as explained because the report defines unexplained as a difference no rule attributes, and silent drift is what the criterion guards against. It does not mean accepted: whether the new path's verdict on these four is Redact Secret's qualification is decided in criterion 5, and the three inferred attributions are confirmed there. The report still lists what it did not compare (the support matrix, the peers the legacy run never scanned), so "no unexplained drift" covers what was compared. |
+| 5 | One published release qualified end to end through the new path | **Unmet** (ran end to end; not accepted) | The mechanism is done and deterministic. `@redact-secret/core` 0.1.0-beta.12 went through the official runs and the methods run, the adapter, the view and the Next overview, family and case pages, with the axis overlay, the review-ledger mapping, the differential peer scope and the attribution fallback applied, and two CI runs agree on every semantic digest. Qualified means the result is accepted as Redact Secret's qualification of that release, and it is not: the new path reads 123 stable, the legacy path 127, and the four differences are decisions this repository cannot make alone (next section). Nobody has accepted the new path's verdict on them and nothing here assumes they will. |
+| 6 | Next credential pages built from new outputs | **Met** for the qualification surface; the legacy pages are deliberately not re-pointed | `/evaluation/qualification/` (overview: identity, populations, scanners, families, known-gap inputs), `/evaluation/qualification/families/<family>/` (status, evidence, gates, per-scanner counts) and, new in this change, `/evaluation/qualification/families/<family>/cases/<page>/` and `/evaluation/qualification/unattributed/<page>/` (every case of every population with each scanner's own word, and its path, twin, attribution, expected spans and measurements when opened) are built solely from the pre-derived view; Next never runs credential-eval. An independent check (`web/scripts/check-export-qualification.mjs`) recounts every case row on the built pages against the view. Not built from the view, on purpose: the report, provider, detector, findings and comparison pages, which show legacy-measured scanner comparison and keep reading the legacy files as the oracle (re-pointing them would remove it; ADR of #606). There is no per-provider qualification page: the overview lists each family with its provider. A page that shows legacy-measured data stays labelled as such until the authority switch decides what the navigation presents. |
+| 7 | Rollback path to the legacy pipeline | **Specified; exercised at the switch** | Nothing has been switched, so the legacy path is intact and is the whole of the rollback today. The concrete path (what stays untouched, the committed setting, how Next switches back, how to verify it) is in [Rollback path](#rollback-path-criterion-7). It is a specification because the setting it names does not exist yet; the PR that introduces it must rehearse the rollback before the switch is allowed. |
 
 The count difference the first #607 report left unexplained (`elevenlabs-api-key`, `totalFixtures`) was resolved in #635, and
 `benchmarks/qualification-inputs.json` records `benchmarks/review-ledger.json` and, since #638, its generated mapping to canonical
@@ -49,9 +53,13 @@ leaves unnamed is attributed by the legacy targets the product overlay carries, 
 - **anthropic-admin01-key, anthropic-api01-key, elevenlabs-api-key** (`twin-scope-vocabulary`). The snapshot gives a cross-provider twin no family, so credential-eval cannot
   scope it and reads a finding of another known detector as flagged (`twinFailures: 2`); the legacy path read it as co-detected. Before #638 these twins were attributed to no
   family and invisible; attributing them exposes the difference rather than hiding it. The adapter sums the engine's per-case fields and does not re-score. Resolved by
-  credential-evidence (a family on the twin) or credential-eval (scope a twin by its parent's family); not decided in this repository.
+  credential-evidence (a family on the twin) or credential-eval (scope a twin by its parent's family); not decided in this repository. Recommended, not applied: the credential-eval
+  and credential-evidence owners confirm the cause (it is `inferred` in the report) and choose one of the two fixes; a fix is a new evidence release or engine tag, so it is a repin and a new
+  official run here, and the three families are then measured rather than argued.
 - **sendgrid-token** (`population-separation`). The legacy floor pooled the regression fixtures of the family and counted four control axes; the public snapshot has three. The no-pooling
-  rule of #603 forbids reproducing the pooled count, so this is a legitimate difference: the family needs a fourth reviewed control axis in the public snapshot, or a product policy on the regression corpus.
+  rule of #603 forbids reproducing the pooled count, so this is a legitimate difference of the new architecture, not a defect: the public benchmark shows what the public evidence supports. Recommended,
+  not applied: do not pool; the product owner decides whether sendgrid-token reads provisional on the new path until a fourth reviewed control axis exists in the public snapshot (a credential-evidence
+  contribution through the handoff states), or whether a product policy gives the regression corpus a floor of its own.
 
 The eight families that are not stable on the legacy path read the same status on the new path. The remaining differences that are legitimate rather than defects of the new path: the
 floors population is the public snapshot alone (the legacy path pooled the regression and policy fixtures), pending fixtures are not scored, the methods run uses the
@@ -59,7 +67,7 @@ canonical-id seed (not the legacy category seed), and it scans two peers the leg
 
 ## Authority switch and rollback (design only)
 
-The switch is explicit and reversible, and is one committed value, not a deletion.
+The switch is explicit and reversible, and is one committed value, not a deletion. Nothing in this record builds or flips it.
 
 - A committed setting names the authority for credential qualification: `legacy` or `next`. The publish workflow and the web
   services read it; nothing infers it. Default `legacy`.
@@ -68,6 +76,53 @@ The switch is explicit and reversible, and is one committed value, not a deletio
   is authorised for. Rolling back is reverting that commit; no data is migrated, so nothing has to be restored.
 - The existing site's UI is not removed by an authority change. It is removed only when #543's UI migration criteria are met
   independently.
+
+### Rollback path (criterion 7)
+
+**What stays untouched, today and through the oracle period.** Everything the legacy path needs to produce its numbers and its site, so that
+rolling back never depends on restoring anything: `benchmarks/run.ts`, `benchmarks/evaluate.ts`, `benchmarks/classify-support.ts`,
+`benchmarks/generate-support-matrix.ts`, `benchmarks/engine/`, `benchmarks/evaluation/domains/credential/`, `benchmarks/lib/` (lattice, reporting,
+peer observations), `benchmarks/review-ledger.json` and the committed peer observations, `src/` (the existing site) and its data model, the `web/`
+services and pages that read the legacy files (`web/services/run.ts`, `catalog.ts`, `domains.ts`, `peers.ts`, `dossiers.ts` and `web/app/report/`), and the legacy
+steps of the `validate` and `publish-site` workflows (`eval:classify`, `bench --strict`, `eval:publish`). The legacy outputs (`public/results/*`, `results-output/*`)
+are generated, never committed, so they are rebuilt by the publish run and there is nothing to restore. The #606 and #607 work added files and changed none of these.
+
+**The setting.** `benchmarks/qualification-authority.json`, validated by an `authority:check` the switch PR adds to the `validate` workflow:
+
+```json
+{ "schema": "redact-secret/qualification-authority/v1", "authority": "legacy",
+  "next": { "policyRevision": "rs-policy-1:sha256:<hex>", "semanticDigests": { "<population>": "sha256:<hex>" }, "parityReport": "sha256:<hex>", "decision": "docs/decisions/<adr>.md" } }
+```
+
+Absent or `legacy` means legacy, which is today. `next` is refused by `authority:check` unless `next` names the policy revision and the semantic digests of the view the repository
+builds, the digest of the committed parity report, and an accepted ADR, so a repin, a new run or a policy change makes `next` stale and the check fails until the new
+view is authorised again. Two readers, and no others: the publish workflow (which pipeline's status and support matrix it publishes) and the `web/` navigation (which of the two page sets is presented
+as the credential qualification; both sets stay built and linked either way).
+
+**How Next switches back.** Revert the one commit that set `authority` to `next` (or set it to `legacy`). The legacy pages never stopped reading the legacy files, so the revert
+changes only what the publish workflow selects and what the navigation presents. The qualification pages stay as the parallel set. No migration, no data restore, no re-run.
+
+**How the rollback is verified.** On the revert branch: `npm run eval:classify` and `npm run bench -- --strict` pass, `web` `npm run check` passes, and the staging site
+(`develop` push) shows the legacy support status and matrix before `npm run go-production` is used. The switch PR rehearses exactly this before it merges: it builds both states from one checkout (`legacy` and `next`),
+runs those checks on both, and records the result in its ADR. Until that rehearsal exists criterion 7 is specified, not exercised.
+
+**The oracle period.** The `remove-after-cutover` rows below are not removed at the switch. They are removed only after at least one further published release has been qualified
+through the new path and compared with the legacy path (the parity report regenerated, 0 unexplained), the rollback has been rehearsed, and the removal PR lists each file's callers first.
+
+## What remains before the authority switch, and who decides
+
+Nothing here is decided by this record, and no check flips authority.
+
+1. **Criterion 5: accept or change the verdict on four families.** Decided in an ADR by the product owner for the qualification policy (sendgrid-token: pooling is refused by #603, so
+   either a fourth reviewed control axis in the public snapshot or a product policy on the regression corpus, or acceptance of provisional) and by the credential-eval and
+   credential-evidence owners for the cause and the fix of the three `twin-scope-vocabulary` families (confirm the inferred cause; a family on the twin or scoping by the parent's family). A fix is a
+   repin and a new official run here.
+2. **Criterion 7 exercised.** Build the setting and `authority:check`, and rehearse the rollback in the switch PR.
+3. **The decision itself.** The switch is one reviewed commit by the maintainer of this repository, after 1 and 2, with an ADR that cites the parity report and the policy revision.
+   No workflow, schedule or agent flips it; `go-production` only fast-forwards `main` after `develop` is green.
+4. **Independent of the switch.** The existing site's UI is removed only under #543's criteria. The Next pages that read the legacy files (report, comparison, PII, performance) are migrated or kept by their own decisions.
+5. **Known gaps that do not gate the switch, stated so they are not forgotten:** the support matrix is not compared in the #607 report; flare-redact and openredaction review occurrences are measured and unreviewed
+   (not gate-bearing); known-gap and fixture ids of the public population wait for the evidence release's id map; there is no per-provider qualification page.
 
 ## Disposition of the legacy credential evaluator
 

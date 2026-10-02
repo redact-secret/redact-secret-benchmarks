@@ -4,8 +4,8 @@
  */
 import { render, screen, within } from '@testing-library/react';
 import { describe, expect, test } from 'vitest';
-import { QualificationFamily, QualificationOverview, QualificationUnavailable } from '../../components/qualification';
-import { family, overview, unavailable } from '../../components/qualification/storyData';
+import { QualificationCases, QualificationFamily, QualificationOverview, QualificationUnavailable } from '../../components/qualification';
+import { cases, family, overview, unavailable } from '../../components/qualification/storyData';
 
 describe('QualificationOverview', () => {
   test('a family links to its page, with its support status as a word', () => {
@@ -64,6 +64,32 @@ describe('QualificationUnavailable', () => {
     render(<QualificationUnavailable {...unavailable} />);
     expect(screen.getByText(unavailable.heading)).toBeInTheDocument();
     expect(screen.getByText(unavailable.reason)).toBeInTheDocument();
+    expect(screen.queryByRole('table')).not.toBeInTheDocument();
+  });
+});
+
+describe('QualificationCases', () => {
+  test('one table per population, each case a row that opens to its facts', () => {
+    render(<QualificationCases {...cases} />);
+    for (const section of cases.sections) {
+      const table = screen.getByRole('table', { name: `Cases of ${section.id}` });
+      expect(within(table).getAllByRole('row')).toHaveLength(section.rows.length + 1);
+    }
+    expect(screen.getAllByText('Path').length).toBeGreaterThan(0);
+  });
+
+  test('pending and not measured are dashed words, and a scanner that did not run the case says "Not run"', () => {
+    const rows = [{ ...cases.sections[0].rows[2], cells: [{ scanner: 'alpha-lib', word: 'Pending', state: 'pending' as const }] }];
+    render(<QualificationCases {...cases} sections={[{ ...cases.sections[0], rows }]} />);
+    expect(screen.getByText('Pending')).toHaveAttribute('data-status', 'not-measured');
+    expect(screen.getByText('Not run')).toHaveAttribute('data-status', 'not-measured');
+  });
+
+  test('the pager links to the neighbour pages and an empty scope says so', () => {
+    const { rerender } = render(<QualificationCases {...cases} />);
+    expect(screen.getByRole('link', { name: 'Next' }).getAttribute('href')).toContain('/families/alpha-token/cases/2');
+    rerender(<QualificationCases {...cases} sections={[]} pager={{ page: 1, pageCount: 1 }} />);
+    expect(screen.getByText(cases.empty)).toBeInTheDocument();
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
   });
 });

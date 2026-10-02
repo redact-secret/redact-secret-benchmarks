@@ -81,6 +81,31 @@ export interface ProductInputs {
 }
 
 export interface ScannerSlice { scanner: string; counts: FamilyCounts }
+/** One scanner's measurement of one case, as the artifact recorded it (#606). Nothing is re-scored; a field that does not apply to the measurement is absent. */
+export interface CaseScannerResult {
+  scanner: string; measurement: 'positive' | 'control' | 'pending' | 'not-measured';
+  /** Findings the scanner reported on the case (the length of `actual`). */
+  observed: number;
+  /** A positive case: one outcome per expected span, and the bytes left exposed and over-redacted. */
+  outcomes?: Outcome[]; leakedBytes?: number; collateralBytes?: number;
+  /** A control: whether the scanner flagged it, how many findings, and whether another detector also reported it. */
+  flagged?: boolean; findings?: number; coDetected?: boolean;
+  /** A case that was not measured: the scanner status that prevented the measurement, as the artifact names it. */
+  status?: string;
+}
+/**
+ * One corpus case of a population, with what the artifact says about it and what each scanner did. Keyed by (population, id): the same id in
+ * two populations is two rows. `detectors` and `attribution` are the adapter's product attribution (docs/specs/qualification-adapter.md,
+ * "Attribution"); `evidenceClass` is the artifact's own label and is never a support status. No case content is carried.
+ */
+export interface CaseRow {
+  id: string; path: string; kind: CaseResult['kind']; tier: CaseResult['tier']; group: string;
+  family: string | null; taxonomy: string | null; evidenceClass: string | null; targets: string[];
+  twinOf: string | null; twinMutationKind: string | null;
+  detectors: string[]; attribution: AttributionSource;
+  expected: { start: number; end: number; role: string; envelope?: { start: number; end: number } }[];
+  results: CaseScannerResult[];
+}
 export interface PopulationView {
   population: string; role: PopulationRole; runClass: 'public' | 'internal'; denominator: string;
   artifact: ArtifactIdentity;
@@ -275,6 +300,24 @@ export function validateCombinationPolicy(policy: CombinationPolicy, registry: P
   for (const id of Object.keys(policy.populations)) if (!registry.some(p => p.id === id)) throw new Error(`The population policy names ${id}, which is not in the population registry`);
 }
 
+const scannerResult = (scanner: string, c: CaseResult): CaseScannerResult => {
+  const m = c.measurement;
+  // Only what the measurement has: a field that does not apply is absent, so "not measured" and "pending" never read as a zero.
+  return {
+    scanner, measurement: m.type, observed: c.actual.length,
+    ...(m.type === 'positive' ? { outcomes: m.span_outcomes, leakedBytes: m.leaked_bytes, collateralBytes: m.collateral_bytes } : {}),
+    ...(m.type === 'control' ? { flagged: m.flagged, findings: m.findings, ...(m.co_detected === undefined ? {} : { coDetected: m.co_detected }) } : {}),
+    ...(m.type === 'not-measured' && m.status ? { status: m.status } : {}),
+  };
+};
+
+const caseRow = (c: CaseResult, detectors: string[], attribution: AttributionSource): CaseRow => ({
+  id: c.case_id, path: c.path, kind: c.kind, tier: c.tier, group: c.group,
+  family: c.family ?? null, taxonomy: c.taxonomy ?? null, evidenceClass: c.evidence_class ?? null, targets: c.targets ?? [],
+  twinOf: c.twin_of ?? null, twinMutationKind: c.twin_mutation_kind ?? null,
+  detectors: sorted(detectors), attribution, expected: c.expected, results: [],
+});
+
 export interface BuildOptions { registry: PopulationRegistryEntry[]; engine: { version: string; protocol: string }; artifacts: ArtifactInput[]; product: ProductInputs }
 
 /** Build the qualification view from separately identified artifacts. Throws on any artifact that does not validate or bind: one invalid artifact invalidates the decisions that cite it. */
@@ -339,9 +382,11 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
   // Per population, per scanner: cases grouped by detector, with the unattributed remainder kept visible.
   const sourceOfCase = new Map<string, AttributionSource>();
   const unmapped = new Set<string>();
+  const caseRows = new Map<string, CaseRow[]>();
   const perPopulation = new Map<string, { run: Map<string, ScannerRun>; byDetector: Map<string, Map<string, CaseResult[]>>; counts: Map<string, Map<string, FamilyCounts>>; unattributed: Map<string, FamilyCounts> }>();
   for (const l of loaded) {
     const runs = new Map(l.artifact.scanners.map(s => [s.scanner, s]));
+    const rows: CaseRow[] = [];
     const grouped = new Map<string, Map<string, CaseResult[]>>(), counts = new Map<string, Map<string, FamilyCounts>>(), unattributed = new Map<string, FamilyCounts>();
     for (const scanner of scannerIds) {
       const run = runs.get(scanner);
@@ -351,6 +396,7 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
       const ctx: AttributionContext = { detectorIds, taxonomyDetectors, overlayDetectors: l.input.population === floorsPopulation ? floorsOverlay?.detectors : undefined, fallback: policy.attribution.fallback, byId: index };
       for (const c of run.cases) {
         const { detectors, source } = attributeCase(c, ctx);
+        if (scanner === policy.scanner) rows.push(caseRow(c, detectors, source));
         if (scanner === policy.scanner) { sourceOfCase.set(`${l.input.population}\u0000${c.case_id}`, source); if (!detectors.length && c.family && c.family !== UNASSIGNED) unmapped.add(`${l.input.population}:${c.family}`); }
         if (!detectors.length) countCase(rest, c, index);
         for (const detector of detectors) {
@@ -362,6 +408,10 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
       }
       grouped.set(scanner, own); counts.set(scanner, perDetector); unattributed.set(scanner, rest);
     }
+    // Every scanner's own measurement of each case, joined by case id in the order of `scanners`; a scanner that did not run the population has no entry.
+    const measured = scannerIds.flatMap(id => (runs.has(id) ? [[id, byId(runs.get(id)!)] as const] : []));
+    for (const row of rows) row.results = measured.flatMap(([id, index]) => { const c = index.get(row.id); return c ? [scannerResult(id, c)] : []; });
+    caseRows.set(l.input.population, rows.sort((a, b) => byteOrder(a.id, b.id)));
     perPopulation.set(l.input.population, { run: runs, byDetector: grouped, counts, unattributed });
   }
   const countsFor = (population: string, scanner: string, detector: string) => perPopulation.get(population)?.counts.get(scanner)?.get(detector);
@@ -493,6 +543,7 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
       ...(l.methods ? { methodsArtifact: l.methods.identity } : {}),
     })).map(view => ({
       ...view,
+      cases: caseRows.get(view.population)!,
       unattributed: scannerIds.filter(id => perPopulation.get(view.population)!.unattributed.has(id)).map(id => ({ scanner: id, counts: perPopulation.get(view.population)!.unattributed.get(id)! })),
       aggregates: scannerIds.filter(id => perPopulation.get(view.population)!.run.has(id)).map(id => {
         const run = perPopulation.get(view.population)!.run.get(id)!;

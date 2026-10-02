@@ -1,5 +1,5 @@
 /** Synthetic story data: made-up populations, families, digests and counts. Nothing here is a ledger value. */
-import type { CountsRow, FamilyRow, GapRow, PopulationRow, QualificationFamilyProps, QualificationOverviewProps, QualificationUnavailableProps, ScannerRow } from './types';
+import type { CaseRowProps, CaseSection, CountsRow, QualificationCasesProps, FamilyRow, GapRow, PopulationRow, QualificationFamilyProps, QualificationOverviewProps, QualificationUnavailableProps, ScannerRow } from './types';
 
 export const populationRows: PopulationRow[] = [
   { id: 'evidence-population', role: 'floors and gates', runClass: 'public', evidence: 'example-evidence · snapshot-0000.00.00', corpusDigest: 'sha256:aaaaaaaaaaaa', configHash: 'sha256:cccccccccccc', semanticDigest: 'sha256:111111111111', engine: 'example-eval 0.0.1 · protocol 1', methods: 'None run', cases: '120' },
@@ -69,6 +69,7 @@ export const overview: QualificationOverviewProps = {
     rows: familyRows,
     undetected: { title: 'Taxonomy families with no detector', text: '2 families in the taxonomy have no detector, so no status is derived for them.', items: ['alpha:legacy-key', 'beta:session-id'] },
   },
+  unattributed: { title: 'Cases no detector family claims', description: 'Each population keeps its own cases that no detector family claims.', href: '/evaluation/qualification/unattributed/1/', label: 'Open the unattributed cases' },
   gaps: { title: 'Known-gap inputs', description: 'Each record’s fixtures matched to cases by id, per population.', rows: gapRows },
 };
 
@@ -119,6 +120,7 @@ export const family: QualificationFamilyProps = {
     rows: countsRows,
     empty: 'No scanner recorded a case for this family.',
   },
+  cases: { title: 'Cases', description: 'Each case of the family, per population, with every scanner’s own word.', href: '/evaluation/qualification/families/alpha-token/cases/1/', label: 'Open the cases of alpha-token' },
 };
 
 export const unavailable: QualificationUnavailableProps = {
@@ -130,4 +132,55 @@ export const unavailable: QualificationUnavailableProps = {
   heading: 'Not measured: no qualification view was built',
   reason: 'public/results/qualification-v1.json is absent: no qualification view was built for this checkout.',
   commands: ['npm run official-runs:check', 'npm run qualification:view -- --artifacts <dir>'],
+};
+
+const identity = (population: string) => [
+  { term: 'Evidence', value: 'example-evidence · snapshot-0000.00.00' },
+  { term: 'Corpus digest', value: 'sha256:aaaaaaaaaaaa', code: true },
+  { term: 'Semantic digest', value: 'sha256:bbbbbbbbbbbb', code: true },
+  { term: 'Run class', value: 'public' },
+  { term: 'Population', value: population },
+];
+
+const caseDetail = [
+  { term: 'Path', value: 'alpha/alpha-token-in-prose/alpha-token-in-prose.md', code: true },
+  { term: 'Corpus family', value: 'alpha:api-key' },
+  { term: 'Taxonomy', value: 'Not recorded' },
+  { term: 'Targets', value: 'None named' },
+  { term: 'Twin of', value: 'Not a twin' },
+  { term: 'Attribution', value: 'Named by the evidence snapshot' },
+  { term: 'Product detector families', value: 'alpha-token' },
+  { term: 'Expected spans', value: 'secret 61 to 101 (envelope 26 to 304)' },
+  { term: 'alpha-lib', value: '1 span: EXACT · leaked 0 bytes · collateral 0 bytes · 1 finding reported' },
+  { term: 'beta-scan', value: '1 span: MISS · leaked 40 bytes · collateral 0 bytes · 0 findings reported' },
+];
+
+export const caseRows: CaseRowProps[] = [
+  { key: 'evidence-population/alpha--positive-1', id: 'alpha--positive-1', kind: 'must-redact', tier: 'T1', group: 'config-file', evidenceClass: 'provider-documented',
+    cells: [{ scanner: 'alpha-lib', word: 'EXACT', state: 'measured' }, { scanner: 'beta-scan', word: 'MISS', state: 'measured' }], detail: caseDetail },
+  { key: 'evidence-population/alpha--control-1', id: 'alpha--control-1', kind: 'must-not-flag', tier: 'T2', group: 'format-near-miss', evidenceClass: 'tool-corroborated',
+    cells: [{ scanner: 'alpha-lib', word: 'Not flagged', state: 'measured' }, { scanner: 'beta-scan', word: 'Flagged · co-detected', state: 'measured' }], detail: caseDetail },
+  { key: 'evidence-population/alpha--pending-1', id: 'alpha--pending-1', kind: 'must-redact', tier: 'T0', group: 'config-file', evidenceClass: 'Not recorded',
+    cells: [{ scanner: 'alpha-lib', word: 'Pending', state: 'pending' }, { scanner: 'beta-scan', word: 'Not measured', state: 'not-measured' }], detail: caseDetail },
+  { key: 'evidence-population/alpha--a-very-long-case-identifier-that-keeps-going-without-a-break-point-anywhere-at-all-0123456789', id: 'alpha--a-very-long-case-identifier-that-keeps-going-without-a-break-point-anywhere-at-all-0123456789', kind: 'policy', tier: 'T3', group: 'long-group-name-with-no-break', evidenceClass: 'Not recorded',
+    cells: [{ scanner: 'alpha-lib', word: 'EXACT 2 · MISS 1', state: 'measured' }], detail: caseDetail },
+];
+
+export const caseSections: CaseSection[] = [
+  { id: 'evidence-population', role: 'floors and gates', range: 'cases 1 to 4 of this population', identity: identity('evidence-population'), rows: caseRows },
+  { id: 'regression-population', role: 'gates', range: 'cases 1 to 1 of this population', identity: identity('regression-population'), rows: [{ ...caseRows[0], key: 'regression-population/alpha--positive-1' }] },
+];
+
+export const cases: QualificationCasesProps = {
+  breadcrumb: [{ label: 'Evaluation', href: '/evaluation/' }, { label: 'Qualification', href: '/evaluation/qualification/' }, { label: 'alpha-token', href: '/evaluation/qualification/families/alpha-token/' }, { label: 'Cases' }],
+  eyebrow: 'redact-secret · Evaluation · Qualification',
+  title: 'Cases of alpha-token',
+  lede: 'Every case the populations hold for this family, with what each scanner recorded.',
+  meta: [{ label: 'View', value: 'public' }, { label: 'Policy revision', value: 'rs-policy-1:sha256:0123456789ab' }],
+  note: { title: 'What these rows are', text: 'A row is one case of one population; the same id in two populations is two rows. The evidence class is the artifact’s own label and is not a support status.' },
+  scanners: ['alpha-lib', 'beta-scan'],
+  sections: caseSections,
+  empty: 'No population holds a case in this scope.',
+  pager: { page: 1, pageCount: 2, nextHref: '/evaluation/qualification/families/alpha-token/cases/2/' },
+  back: { href: '/evaluation/qualification/families/alpha-token/', label: 'Back to alpha-token' },
 };

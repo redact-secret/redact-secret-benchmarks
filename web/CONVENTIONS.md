@@ -181,9 +181,13 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   `benchmarks/official-runs.json` or a changed policy file) and a view that is not `ready` shows no number, only why and the commands; with no usable view the
   family route keeps one `view-unavailable` page because `output: export` refuses a dynamic route with no params. Blocks are in `components/qualification/`.
   Every count names its population and none is a sum across populations or scanners; the product's support status is a separate section from the scanners' counts;
-  a method that did not run and a pending case are "not measured" and "pending", never zero. The view has counts and no per-fixture rows, so there is no fixture
-  page. The tests build synthetic views (`tests/unit/qualification-data.ts`, put in each state with an overlay root). Decision:
-  `docs/decisions/2026-10-01-show-the-qualification-view-beside-the-existing-report.md`.
+  a method that did not run and a pending case are "not measured" and "pending", never zero. The view's per-case rows (`populations[].cases`, additive in v1)
+  feed `/evaluation/qualification/families/<family>/cases/<page>/` and `/evaluation/qualification/unattributed/<page>/`: one section per population (the same id in two populations is
+  two rows, nothing is counted across them), 50 rows a page as a window over the scope's rows with static Previous and Next links, a row opened with native `<details>` to the case's
+  facts, and each scanner's own word (`Pending` and `Not measured` dashed). `resolvers/qualification-cases.ts` is pure; the evidence class is labelled as the artifact's own label, never a status;
+  a view without `cases` is incompatible. `scripts/check-export-qualification.mjs` rereads the view and recounts every row on the built pages (without a view it checks the pages say so). The tests build synthetic views (`tests/unit/qualification-data.ts`, put in each state with an overlay root). Decision:
+  `docs/decisions/2026-10-01-show-the-qualification-view-beside-the-existing-report.md` and
+  `docs/decisions/2026-10-01-carry-per-case-rows-in-the-qualification-view-and-page-them-by-scope.md`.
 - `/evaluation/scanner/` (#612) shows the scanners the benchmark ran with and each one's environment: pins, install checksums, configuration and
   platform from the validated peer snapshots (`services/scanners.ts`), the mode line and host from the run, `outOfScope` from the registry. Blocks are
   `Scanner*` in `components/evaluation/scanner/` (a folder of folders is a section; each phase of `/evaluation` has its own). A fact the repository does not

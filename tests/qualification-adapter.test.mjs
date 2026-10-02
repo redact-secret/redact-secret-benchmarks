@@ -409,3 +409,40 @@ test('a case attributed through the overlay counts in its family, is counted by 
   assert.equal(family(withOverlay).populations.find(p => p.population === 'pop-b').scanners[0].counts.cases, 5);
   assert.deepEqual(validateQualificationView(withOverlay), []);
 });
+
+test('case rows list every case of each population with each scanner as the artifact recorded it, and move no count, status or revision (#606)', () => {
+  const pending = unit('a-pending', 'prov:fam', { tier: 'T0', measurement: { type: 'pending' } });
+  const unmeasured = unit('a-unmeasured', 'prov:fam', { measurement: { type: 'not-measured', status: 'timeout' } });
+  const nameless = unit('a-nameless', undefined, { family: undefined, evidence_class: 'synthetic-label' });
+  const cases = [...familyCases('a', 'prov:fam'), pending, unmeasured, nameless];
+  const view = build({ a: cases, methods: true });
+  const withoutCases = structuredClone(view);
+  for (const p of withoutCases.populations) delete p.cases;
+  // Every case of the population, once, in id order, per population.
+  for (const p of view.populations) {
+    const listed = p.cases.map(c => c.id);
+    assert.deepEqual(listed, [...listed].sort());
+    assert.equal(p.cases.length, p.artifact.caseCount);
+    assert.ok(p.cases.every(c => c.results.map(r => r.scanner).join() === view.scanners.join()));
+  }
+  const rows = new Map(view.populations.find(p => p.population === 'pop-a').cases.map(c => [c.id, c]));
+  const result = (id, scanner = 'redact-secret') => rows.get(id).results.find(r => r.scanner === scanner);
+  // A positive carries outcomes and bytes, a control its flags, and neither carries the other's fields.
+  assert.deepEqual(result('a-p1'), { scanner: 'redact-secret', measurement: 'positive', observed: 1, outcomes: ['EXACT'], leakedBytes: 0, collateralBytes: 0 });
+  assert.deepEqual(result('a-t1'), { scanner: 'redact-secret', measurement: 'control', observed: 0, flagged: false, findings: 0, coDetected: false });
+  assert.equal(rows.get('a-t1').twinOf, 'a-p1');
+  assert.equal(rows.get('a-t1').twinMutationKind, 'length');
+  // Pending and not measured are their own measurements with no outcome or flag, never zero; the status is the artifact's.
+  assert.deepEqual(result('a-pending'), { scanner: 'redact-secret', measurement: 'pending', observed: 1 });
+  assert.deepEqual(result('a-unmeasured'), { scanner: 'redact-secret', measurement: 'not-measured', observed: 1, status: 'timeout' });
+  // The evidence class is the artifact's label and the attribution says how a case reached its family; a case no step attributes stays listed, with no detector.
+  assert.equal(rows.get('a-nameless').evidenceClass, 'synthetic-label');
+  assert.deepEqual(rows.get('a-nameless').detectors, []);
+  assert.equal(rows.get('a-nameless').attribution, 'none');
+  assert.deepEqual(rows.get('a-p1').detectors, ['synthetic-token']);
+  assert.equal(rows.get('a-p1').attribution, 'snapshot');
+  // Additive: the view without the rows is what the adapter wrote before them, and the revision is a product input's, not a case's.
+  assert.equal(build({ a: cases, methods: true }).policy.revision, view.policy.revision);
+  assert.deepEqual(withoutCases.distribution, view.distribution);
+  assert.deepEqual(validateQualificationView(view), []);
+});

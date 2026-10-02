@@ -11,8 +11,8 @@ export interface FixtureWhyProps {
   sources: { href: string; label: string }[];
   /** The command that reproduces the suite. */
   command: string;
-  /** The exact bytes as an escaped string. */
-  escaped: string;
+  /** The exact bytes as an escaped string; absent when the bytes are not recorded. */
+  escaped?: string;
   actions: FixtureActionsData;
   className?: string;
 }
@@ -52,14 +52,14 @@ export function FixtureWhy({ facts, sources, command, escaped, actions, classNam
       <div className={styles.actions}>
         {actions.download
           ? <a className={styles.action} href={actions.download.href} download={actions.download.filename}>Download exact bytes</a>
-          : <span className={cx(styles.action, styles.off)}>Exact bytes cannot be saved as UTF-8</span>}
+          : <span className={cx(styles.action, styles.off)}>{actions.bytesNotRecorded ? 'Exact bytes are not recorded' : 'Exact bytes cannot be saved as UTF-8'}</span>}
         <Link className={styles.action} href={actions.corpusHref}>View in corpus</Link>
       </div>
       <details className={styles.more}>
-        <summary>Reproduce and escaped bytes</summary>
+        <summary>{escaped === undefined ? 'Reproduce' : 'Reproduce and escaped bytes'}</summary>
         <div className={styles.body}>
           <CodeBlock label="Command that reproduces this suite">{command}</CodeBlock>
-          <CodeBlock variant="snippet" label="The exact bytes, escaped">{escaped}</CodeBlock>
+          {escaped !== undefined && <CodeBlock variant="snippet" label="The exact bytes, escaped">{escaped}</CodeBlock>}
         </div>
       </details>
     </div>

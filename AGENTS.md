@@ -37,6 +37,13 @@ adapter boundary that turns the artifacts into the status and the Next app's dat
 asked of credential-eval. Canonical runs are linux-x64 CI runs (`official-runs.yml`, dispatch only); a local darwin run is
 a verification, never compared with them. `trufflehog --version` must print the pinned 3.97.4 before any run.
 
+**Authority (#608).** Which pipeline is the authority for credential qualification is one committed value,
+`benchmarks/qualification-authority.json` (`new` or `legacy`), checked by `npm run authority:check`; the Next credential
+report pages are built from the view or the legacy files by it, and each says which. Rolling back is changing that one
+value (rehearsed: [`docs/specs/qualification-cutover.md`](docs/specs/qualification-cutover.md)). Do not read the file
+anywhere else (the gate lists the readers), do not make a build infer it, and do not delete the legacy path: it is the oracle
+until the exit condition in the switch ADR is met.
+
 ## Branches
 
 `develop` is the default and integration branch: open feature and workbench PRs

@@ -1,0 +1,70 @@
+@layer components {
+  .stamp {
+    display: grid;
+    gap: var(--space-2);
+    border: var(--hairline) solid var(--line);
+    border-left: var(--space-1) solid var(--ink-muted);
+    padding: var(--space-4) var(--space-6);
+    color: var(--ink);
+    max-width: var(--measure);
+    min-width: 0;
+  }
+
+  /* The pipeline is told by its word first; the rule colour repeats it and is never the only cue. */
+  .new {
+    border-left-color: var(--status-info);
+  }
+
+  .legacy {
+    border-left-style: dashed;
+  }
+
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: 0;
+    font: var(--text-eyebrow);
+    letter-spacing: var(--track-eyebrow);
+    text-transform: uppercase;
+  }
+
+  .role {
+    color: var(--ink-muted);
+  }
+
+  .title {
+    margin: 0;
+    font: var(--text-small-strong);
+  }
+
+  .text,
+  .link {
+    margin: 0;
+    font: var(--text-small);
+  }
+
+  .facts {
+    display: grid;
+    gap: var(--space-1);
+    margin: 0;
+    font: var(--text-small);
+  }
+
+  .fact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    min-width: 0;
+  }
+
+  .fact dt {
+    color: var(--ink-muted);
+  }
+
+  .fact dd {
+    margin: 0;
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+}

@@ -13,6 +13,7 @@
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readAuthority, stampOf } from './lib/authority.mjs';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(webRoot, 'out');
@@ -61,11 +62,18 @@ for await (const file of walk(path.join(out, '_next', 'static'))) {
 const text = html => html.replace(/<(script|style)\b[\s\S]*?<\/\1[^>]*>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
 const int = n => n.toLocaleString('en-US');
 const taxonomy = await readJson('benchmarks/support/taxonomy.json');
+// The legacy run, read for the legacy recount below and for the comparison pages, which stay on the legacy files under either authority.
+let summary;
+try { summary = await readJson('public/results/summary.json'); } catch { /* no run */ }
+const authority = await readAuthority(repoRoot);
+
+const slug = id => id.replace(':', '--');
+const page = async route => text(await readFile(path.join(out, route, 'index.html'), 'utf8'));
+
+if (authority === 'legacy') {
 const index = await readJson('benchmarks/fixture-index.json');
 const perFamily = new Map();
 for (const f of index.fixtures) for (const id of f.familyIds) perFamily.set(id, (perFamily.get(id) ?? 0) + 1);
-const slug = id => id.replace(':', '--');
-const page = async route => text(await readFile(path.join(out, route, 'index.html'), 'utf8'));
 
 const report = await page('report');
 const providersPage = await page('report/providers');
@@ -96,8 +104,6 @@ if (without) {
 try { const nf = text(await readFile(path.join(out, '404.html'), 'utf8')); if (!nf.includes('Page not found')) fail('404.html is not the not-found page'); } catch { fail('missing 404.html'); }
 
 // The run. Absent locally is allowed (the pages say "Not measured"); CI sets WEB_REQUIRE_RUN=1.
-let summary;
-try { summary = await readJson('public/results/summary.json'); } catch { /* no run */ }
 if (!summary) {
   if (process.env.WEB_REQUIRE_RUN === '1') fail('WEB_REQUIRE_RUN=1 but public/results/summary.json is absent: run npm run bench before the web build');
   else if (!report.includes('No benchmark results for this checkout')) fail('/report/ has no run to read and must say so');
@@ -109,6 +115,14 @@ if (!summary) {
   if (!/Mode published ·|Mode candidate ·/.test(report)) fail('/report/ does not state its mode (published or candidate)');
   if (!/Mode (published|candidate) ·/.test(providersPage)) fail('/report/providers/ does not state its mode');
   if (report.includes('No benchmark results for this checkout')) fail('/report/ says there is no run, but public/results exists');
+}
+// Every report page names the pipeline it was built from: the legacy one, the authority.
+for (const route of ['report', 'report/providers', 'report/families']) {
+  const stamp = stampOf(await readFile(path.join(out, route, 'index.html'), 'utf8'));
+  if (!stamp || stamp.pipeline !== 'legacy' || stamp.role !== 'authority') fail(`/${route}/ must carry the legacy/authority pipeline stamp (authority legacy), found ${stamp ? `${stamp.pipeline}/${stamp.role}` : 'none'}`);
+}
+} else {
+  console.log('credential pages: the authority is new, so check-export-credential.mjs recounts them against the qualification view');
 }
 
 // ---- The comparison pages carry the ledger's numbers (#557) ------------------------------
@@ -264,4 +278,4 @@ if (problems.length) {
   for (const p of problems) console.error(p);
   process.exit(1);
 }
-console.log(`static export ok: ${ROUTES.length} routes, ${taxonomy.families.length} family pages, report numbers match the ledger, under ${basePath}/, layer order first, MUI in @layer mui`);
+console.log(`static export ok: ${ROUTES.length} routes, ${taxonomy.families.length} family pages, report numbers match the ledger (or, under authority new, the view), under ${basePath}/, layer order first, MUI in @layer mui`);

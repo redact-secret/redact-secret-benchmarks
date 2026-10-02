@@ -86,7 +86,8 @@ export interface FixtureTwinData {
   description: string;
   /** "byte 111 changed". */
   changed: string;
-  file: FixtureFileData;
+  /** The twin's changed lines. Absent when the source records no bytes (the qualification view), where only the outcome is shown. */
+  file?: FixtureFileData;
   outcome: StatusLabel[];
   /** "redact-secret flagged nothing". */
   outcomeNote: string;
@@ -139,6 +140,8 @@ export interface FixturePeersData {
 export interface FixtureActionsData {
   /** A data URL holding the exact bytes, and the file name to save it as. Absent when the bytes cannot be encoded. */
   download?: { href: string; filename: string };
+  /** True when the source records no bytes for this fixture: the page says so instead of offering a download. */
+  bytesNotRecorded?: boolean;
   /** The suite page, where the fixture is one row of the corpus. */
   corpusHref: string;
 }
@@ -157,7 +160,10 @@ export interface FixtureDetailData {
   crumbs: Crumb[];
   suiteHref: string;
   verdict: FixtureVerdictData;
-  input: FixtureFileData;
+  /** The file with what was expected drawn on it. Absent when the source records no bytes for the fixture, with `bytesNote` saying so. */
+  input?: FixtureFileData;
+  /** Said where `input` is absent: the bytes are not part of what this pipeline records. */
+  bytesNote?: string;
   /** The product's reported ranges drawn over the input. Absent when the product holds no row for these bytes. */
   output?: FixtureFileData;
   /** Said where `output` is absent. */
@@ -169,8 +175,8 @@ export interface FixtureDetailData {
   whyHeading: string;
   facts: FixtureFactData[];
   sources: { href: string; label: string }[];
-  /** The exact bytes as an escaped string, for the disclosure. */
-  escaped: string;
+  /** The exact bytes as an escaped string, for the disclosure. Absent when the bytes are not recorded. */
+  escaped?: string;
   command: string;
   actions: FixtureActionsData;
   peers?: FixturePeersData;

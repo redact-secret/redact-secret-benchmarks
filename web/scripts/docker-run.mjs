@@ -11,7 +11,9 @@
  * What it does: mounts the repository read-only at /src, copies it (without .git, node_modules and build
  * output) to /work inside a throwaway container, installs with `npm ci` (node_modules live in named
  * volumes keyed by this checkout, refreshed only when a lockfile changes, never bind-mounted from the
- * host: wrong architecture and slow), runs the benchmark run and the builds fresh, then the check. Nothing is
+ * host: wrong architecture and slow), runs the benchmark run and the builds fresh, then the check. The browser checks run on the
+ * legacy pipeline's export (the committed authority is flipped in the container's copy only); the committed state is built and recounted
+ * last, with no qualification view, as CI does. Nothing is
  * published to the host: the container has its own network namespace, so several agents never clash on
  * a port. Playwright traces of a failure come back in web/test-results.
  *
@@ -53,7 +55,7 @@ export CI=true
 mkdir -p /work && cd /work
 tar -C /src --exclude=./.git --exclude=./node_modules --exclude=./graft --exclude=./.claude --exclude=./.playwright-mcp \
   --exclude=./web/node_modules --exclude=./web/out --exclude=./web/.next --exclude=./web/storybook-static \
-  --exclude=./web/test-results --exclude=./web/coverage -cf - . | tar -xf -
+  --exclude=./web/test-results --exclude=./web/coverage --exclude=./public/results/qualification-v1.json -cf - . | tar -xf -
 stamp() { sha256sum "$1" | cut -d' ' -f1; }
 if [ "$(cat web/node_modules/.lock 2>/dev/null)" != "$(stamp web/package-lock.json)" ]; then (cd web && npm ci --ignore-scripts && stamp package-lock.json > node_modules/.lock); fi
 if [ "$(cat node_modules/.lock 2>/dev/null)" != "$(stamp package-lock.json)" ]; then npm ci --ignore-scripts && stamp package-lock.json > node_modules/.lock; fi
@@ -61,10 +63,16 @@ node --import tsx scripts/generate-fixtures.mjs --ensure
 npm run bench > /dev/null
 cd web
 `;
+// CI has no qualification view, and the committed authority is `new` (#608): the browser checks run on the export of the legacy pipeline,
+// built by flipping the one committed value in this container's copy (with-authority.mjs), exactly as the web job does. The committed
+// state is built and recounted last. The copy leaves out a view that may sit in a local public/results, as CI has none.
 const build = sh`
+node scripts/with-authority.mjs legacy -- sh -c 'npm run build && npm run check:routes'
+npm run build-storybook
+`;
+const committed = sh`
 npm run build
 npm run check:routes
-npm run build-storybook
 `;
 // Each browser check reports its own wall time, apart from install and build.
 const timed = (label, command) => `s=$SECONDS; ${command} && r=0 || r=$?; echo "[docker] ${label}: $((SECONDS - s))s"; [ $r -eq 0 ]`;
@@ -81,6 +89,9 @@ status=0
 ${layout} || status=$?
 wait $e2e || { status=$?; }
 cat /tmp/e2e.log
+if [ $status -eq 0 ]; then
+${committed}
+fi
 exit $status
 `;
 const steps = { layout: `${build}\n${layout}`, e2e: `${build}\n${e2e}`, all: both }[mode];

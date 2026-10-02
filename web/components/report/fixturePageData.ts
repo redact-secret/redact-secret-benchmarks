@@ -234,7 +234,7 @@ export const twinFlagged: FixtureTwinData = {
   ...twin,
   id: 'example-provider-block-prefix-twin',
   title: 'Prefix twin',
-  file: { ...twin.file, label: 'example-provider-block-prefix-twin, changed lines' },
+  file: { ...twin.file!, label: 'example-provider-block-prefix-twin, changed lines' },
   description: 'prefix: the documented prefix is replaced with another of the same length',
   outcome: [s('fail', 'Flagged')],
   outcomeNote: 'redact-secret reported 1 range',

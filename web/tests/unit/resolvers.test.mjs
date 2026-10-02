@@ -7,7 +7,7 @@ import path from 'node:path';
 import { resolveFamilyList, resolveFamily, familySlug } from '../../resolvers/families.ts';
 import { filterFamilies, filterProviders, listQueryOf, listQueryString, pageOf } from '../../resolvers/filters.ts';
 import { resolveAnswers, resolveFindings, resolvePeers, resolveHubTiles, modeText, runEyebrow, LEVELS } from '../../resolvers/report.ts';
-import { resolveRunState } from '../../resolvers/run.ts';
+import { resolvePipelineStamp, resolveRunState } from '../../resolvers/run.ts';
 import { axisMaxFor, onAxis, percent, isoDate } from '../../resolvers/format.ts';
 const WEB = path.resolve(import.meta.dirname, '../..');
 const ROOT = path.resolve(WEB, '..');
@@ -215,11 +215,12 @@ test('hub tiles link only to pages this app has', () => {
 });
 
 test('run state names what is missing and the command', () => {
-  assert.equal(resolveRunState(run).kind, 'measured');
-  const none = resolveRunState({ state: 'not-published', reason: 'absent.' });
+  const stamp = resolvePipelineStamp({ authority: 'legacy', from: 'committed' });
+  assert.equal(resolveRunState(run, stamp).kind, 'measured');
+  const none = resolveRunState({ state: 'not-published', reason: 'absent.' }, stamp);
   assert.equal(none.kind, 'not-published');
   assert.equal(none.command, 'npm run bench');
-  const notes = resolveRunState({ ...run, excludedSuites: [{ id: 's', problem: 'Stale report' }], staleSuites: ['t'] }).notes;
+  const notes = resolveRunState({ ...run, excludedSuites: [{ id: 's', problem: 'Stale report' }], staleSuites: ['t'] }, stamp).notes;
   assert.equal(notes.length, 2);
 });
 

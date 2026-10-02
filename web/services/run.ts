@@ -42,6 +42,8 @@ export interface RowResult {
   collateralBytes?: number;
   /** Findings on a control the scanner flagged. */
   findings?: number;
+  /** How many ranges the scanner reported, when the source records the count but not the ranges (the qualification view). */
+  observed?: number;
 }
 
 export interface ScannerObservation { source: 'fresh' | 'snapshot'; observedAt: string; sourceRunId: string }

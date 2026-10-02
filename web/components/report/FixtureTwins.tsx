@@ -21,8 +21,8 @@ export function FixtureTwins({ items, className }: FixtureTwinsProps) {
     <div className={cx(styles.twins, className)}>
       {items.map(item => (
         <article key={item.id} className={styles.twin}>
-          <FixtureFileView file={item.file} />
-          <FixtureKey items={[{ mark: 'changed', label: 'The changed bytes' }]} />
+          {item.file && <FixtureFileView file={item.file} />}
+          {item.file && <FixtureKey items={[{ mark: 'changed', label: 'The changed bytes' }]} />}
           <div className={styles.row}>
             <div className={styles.text}>
               <h3 className={styles.title}>{item.title}</h3>

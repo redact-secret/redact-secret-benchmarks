@@ -13,16 +13,18 @@
  */
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { ACCOUNTING_VERSION } from '../../benchmarks/lib/accounting';
 import { PII_METRIC_IDS, PII_METRIC_LABELS, piiV1Profile } from '../../benchmarks/evaluation/domains/pii/profile';
 import { PII_CONTEXT_LANGUAGES } from '../../benchmarks/evaluation/domains/pii/context-languages';
 import { PII_JURISDICTION_STANDARD } from '../../benchmarks/evaluation/domains/pii/jurisdictions';
 import { piiCurrentProtectedRoute } from '../../benchmarks/evaluation/domains/pii/support-semantics';
 import { loadPiiProtectedSupportEvidence, validatePiiProtectedSupportBinding } from '../../benchmarks/evaluation/domains/pii/protected-support-binding';
 import { buildPiiSupportMatrixV2, validatePiiSupportMatrixV2 } from '../../benchmarks/evaluation/domains/pii/support-v2';
-import { loadCatalog, type Catalog } from './catalog';
+import type { Catalog } from './catalog';
+import { loadCredentialSource, type CredentialPipeline } from './credential-source';
 import { loadFindings } from './findings';
 import { once, readJsonIfPresent, REPO_ROOT } from './repo';
-import { loadRun, type RunLoad } from './run';
+import type { RunLoad } from './run';
 import type { KnownGaps } from './findings';
 
 // ---- PII ----------------------------------------------------------------------------------------
@@ -226,6 +228,13 @@ export function loadSupportRecord(run: RunLoad): Promise<SupportRecord | undefin
   });
 }
 
+/** The new pipeline's stable count as the page's support record: the view's distribution, for the published build the official runs measured. */
+function newSupportRecord(source: Awaited<ReturnType<typeof loadCredentialSource>>): SupportRecord | undefined {
+  const { support } = source;
+  if (!support || source.run.state !== 'measured') return undefined;
+  return { mode: 'published', version: support.version ?? '', sourceCommit: null, generatedAt: support.recordedOn ?? '', path: support.path, familyCount: support.familyCount, distribution: support.distribution, stable: support.stable };
+}
+
 const QUALIFICATION = 'docs/specs/qualification/engine-v1.json';
 
 export function loadEngineQualification(): Promise<EngineQualification | undefined> {
@@ -237,6 +246,8 @@ export function loadEngineQualification(): Promise<EngineQualification | undefin
 }
 
 export interface CredentialEvaluation {
+  /** Which pipeline the run, catalog and stable count come from (#608). */
+  pipeline: CredentialPipeline;
   run: RunLoad;
   catalog: Catalog;
   findings: KnownGaps;
@@ -259,11 +270,16 @@ async function readRunProfiles(): Promise<CredentialEvaluation['profiles']> {
 
 export function loadCredentialEvaluation(): Promise<CredentialEvaluation> {
   return once('credential-evaluation', async () => {
-    const run = await loadRun();
-    const [catalog, findings, support, qualification, runFile] = await Promise.all([
-      loadCatalog(), loadFindings(), loadSupportRecord(run), loadEngineQualification(),
-      run.state === 'measured' ? readRunProfiles() : Promise.resolve(undefined),
+    const source = await loadCredentialSource();
+    const { run, catalog, pipeline } = source;
+    const fromView = pipeline.authority === 'new';
+    const [findings, support, qualification, runFile] = await Promise.all([
+      loadFindings(),
+      // The stable count is the pipeline's own: the committed support record of the legacy run, or the distribution of the new view.
+      fromView ? Promise.resolve(newSupportRecord(source)) : loadSupportRecord(run),
+      loadEngineQualification(),
+      !fromView && run.state === 'measured' ? readRunProfiles() : Promise.resolve(undefined),
     ]);
-    return { run, catalog, findings, support, qualification, profiles: runFile };
+    return { pipeline, run, catalog, findings, support, qualification, profiles: fromView ? { evaluationProfile: 'qualification-view', domainAccountingVersion: ACCOUNTING_VERSION } : runFile };
   });
 }

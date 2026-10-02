@@ -128,7 +128,8 @@ const support = { mode: 'published', version: '1.2.3', sourceCommit: null, gener
   distribution: { stable: 3, provisional: 1, pending: 0, unsupported: 0 }, stable: { documented: 2, empirical: 1, policyQualified: 0 } };
 const qualification = { status: 'execution-qualified', supportClaims: false, finishedAt: '2030-05-01T00:00:00Z', path: 'docs/q.json', methods: [{ method: 'twin', cases: 4, variants: 8 }, { method: 'holdout', cases: 2, variants: 2 }] };
 const findings = { reviewedAt: '2030-01-01', measuredVersion: '0.0.1', issues: [{ status: 'fixed' }, { status: 'fixed' }, { status: 'verified' }] };
-const credential = (over = {}) => ({ run, catalog, findings, support, qualification, profiles: { evaluationProfile: 'eval-x', domainAccountingVersion: 'acct-y' }, ...over });
+const pipeline = { authority: 'legacy', from: 'committed' };
+const credential = (over = {}) => ({ pipeline, run, catalog, findings, support, qualification, profiles: { evaluationProfile: 'eval-x', domainAccountingVersion: 'acct-y' }, ...over });
 
 describe('credential view', () => {
   test('words the outcomes with the five the benchmark records', () => {

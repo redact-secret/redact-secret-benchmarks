@@ -54,6 +54,8 @@ export interface PopulationView {
   population: string; role: string; denominator: string; runClass: 'public' | 'internal';
   /** Every case of the population with each scanner's measurement, sorted by id (#606). */
   cases: CaseRow[];
+  /** The methods run of this population (metamorphic, mutation, differential), when one is pinned: its own identity, never merged into `artifact`. */
+  methodsArtifact?: { semanticDigest: string; artifactDigest?: string; methods?: string[] };
   artifact: {
     artifactDigest: string; semanticDigest: string; configHash: string; protocolVersion: string; engineRunClass?: string; publication?: string;
     engine: { name: string; version: string }; methods: string[]; caseCount: number;

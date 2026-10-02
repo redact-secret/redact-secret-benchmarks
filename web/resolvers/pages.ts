@@ -7,8 +7,8 @@
  *
  * Server-only. Client components import `./filters` and the types, never this.
  */
-import { loadCatalog, loadFixtureBytes, loadFixtureHashes } from '../services/catalog';
 import type { Catalog } from '../services/catalog';
+import { loadCredentialSource, loadLegacySource, NO_VIEW_SUITE } from '../services/credential-source';
 import { loadDetectorContracts } from '../services/contracts';
 import { loadAccountingFloors } from '../services/floors';
 import { loadDossiers } from '../services/dossiers';
@@ -17,7 +17,7 @@ import { loadFindings } from '../services/findings';
 import { loadPeerProfiles } from '../services/peers';
 import { loadOwnPerformance } from '../services/performance';
 import { loadPeerRuntime } from '../services/runtime';
-import { loadRun, type MeasuredRun } from '../services/run';
+import type { MeasuredRun } from '../services/run';
 import {
   resolveFamily, resolveFamilyList, familyHref, familySlug, type FamilyDetail, type FamilyList, type LevelList,
 } from './families';
@@ -42,7 +42,7 @@ import type { DetectorRowData, FindingRowData, SuiteRowData } from '../component
 import { resolveFeaturePage, resolveHub, resolveRuntimePanels, toolName, type FeaturePage, type RuntimePanel } from './comparison';
 import { diffFileOf, resolveAccuracyPage, type AccuracyPage, type DiffFile, type DiffSource } from './accuracy';
 import type { ComparisonHubProps } from '../components/comparison/ComparisonHub';
-import { resolveRunState, type RunState } from './run';
+import { resolvePipelineStamp, resolveRunState, type RunState } from './run';
 import { resolveCredentialView, resolvePiiView, type DomainId } from './domains';
 import { loadCredentialEvaluation, loadPiiEvaluation } from '../services/domains';
 import type { DomainViewData } from '../components/evaluation/domain';
@@ -57,10 +57,21 @@ import type { MetaItem } from '../components/page/MetaList';
 export type { FeaturePage, RuntimePanel, ComparisonHubProps, PerformancePanel };
 export type { FamilyDetail, FamilyList, FindingsBlock, LevelAnswers, PeersBlock, RunState };
 
+/**
+ * The data behind the credential report pages: from the pipeline the committed authority names (`services/credential-source.ts`,
+ * #608), with the stamp that says which. Rolling back is changing that one value; nothing here changes.
+ */
 async function context() {
-  const [catalog, run] = await Promise.all([loadCatalog(), loadRun()]);
+  const { pipeline, catalog, run, fixtureBytes, fixtureHashes } = await loadCredentialSource();
   const measured: MeasuredRun | undefined = run.state === 'measured' ? run : undefined;
-  return { catalog, run, measured, rows: measured?.productRows };
+  return { catalog, run, measured, rows: measured?.productRows, pipeline, stamp: resolvePipelineStamp(pipeline), fixtureBytes, fixtureHashes };
+}
+
+/** The legacy pipeline's data under either authority: the comparison pages stay on it as the oracle (the stamp says so). */
+async function legacyContext() {
+  const [{ pipeline }, { catalog, run }] = await Promise.all([loadCredentialSource(), loadLegacySource()]);
+  const measured: MeasuredRun | undefined = run.state === 'measured' ? run : undefined;
+  return { catalog, run, measured, rows: measured?.productRows, stamp: resolvePipelineStamp(pipeline, 'legacy') };
 }
 
 export interface HeadData { eyebrow: string; title: string; lede: string; meta: MetaItem[] }
@@ -79,7 +90,7 @@ export interface ReportPageData {
 }
 
 export async function resolveReportPage(): Promise<ReportPageData> {
-  const [{ catalog, run, measured, rows }, findings, profiles] = await Promise.all([context(), loadFindings(), loadPeerProfiles()]);
+  const [{ catalog, run, stamp, measured, rows }, findings, profiles] = await Promise.all([context(), loadFindings(), loadPeerProfiles()]);
   const peerContext = { fixtures: catalog.fixtures, profiles };
   const list = resolveFamilyList(catalog, rows);
   return {
@@ -89,7 +100,7 @@ export async function resolveReportPage(): Promise<ReportPageData> {
       lede: 'Synthetic inputs, the same for every scanner, scored span by span. Start from a provider or a family, or see what changed.',
       meta: [],
     },
-    runState: resolveRunState(run),
+    runState: resolveRunState(run, stamp),
     tiles: resolveHubTiles(list, findings, {
       count: catalog.detectors.length,
       // Distinct fixtures that exercise at least one detector: assignments overlap, so a fixture counts once.
@@ -117,7 +128,7 @@ const footnoteOf = (totals: FamilyList['totals']): string =>
   `${int(totals.global)} fixtures are global or not tied to one family. They count in no provider or family row.`;
 
 async function listPage(title: 'Providers' | 'Families'): Promise<ListPageData> {
-  const { catalog, run, measured, rows } = await context();
+  const { catalog, run, stamp, measured, rows } = await context();
   const levels: LevelList[] = LIST_LEVELS.map(({ level, label }) => {
     const list = resolveFamilyList(catalog, rows, level);
     const unit = title === 'Providers' ? count(list.totals.providersWithFixtures, 'provider') : count(list.totals.familiesWithFixtures, 'family', 'families');
@@ -127,7 +138,7 @@ async function listPage(title: 'Providers' | 'Families'): Promise<ListPageData> 
   const { totals } = list;
   const facts = measured ? runFacts(measured) : [];
   return {
-    runState: resolveRunState(run),
+    runState: resolveRunState(run, stamp),
     levels,
     list,
     footnote: footnoteOf(totals),
@@ -187,7 +198,7 @@ async function rowsFor(kind: RowsKind, id: string): Promise<RowsSource> {
 
 /** Every rows file the export emits: one per table with more rows than a page. */
 export async function resolveRowsFileParams(): Promise<{ kind: RowsKind; id: string }[]> {
-  const catalog = await loadCatalog();
+  const { catalog } = await loadCredentialSource();
   const candidates: { kind: RowsKind; id: string }[] = [
     ...LEVELS.map(id => ({ kind: 'level' as const, id })),
     ...catalog.taxonomy.families.map(f => ({ kind: 'family' as const, id: familySlug(f.id) })),
@@ -195,12 +206,14 @@ export async function resolveRowsFileParams(): Promise<{ kind: RowsKind; id: str
     ...catalog.detectors.map(d => ({ kind: 'detector' as const, id: d.id })),
   ];
   const sized = await Promise.all(candidates.map(async c => ({ c, n: (await resolveRowsFile(c.kind, c.id))?.items.length ?? 0 })));
-  return sized.filter(x => x.n > PAGE_SIZE).map(x => x.c);
+  const files = sized.filter(x => x.n > PAGE_SIZE).map(x => x.c);
+  // `output: export` refuses a route with no params: a build with no usable view (no table has more than a page) keeps the one empty table.
+  return files.length ? files : [{ kind: 'suite' as const, id: NO_VIEW_SUITE }];
 }
 
 /** A suite's fixture records and shared text: what `?fixture=<id>` builds one fixture's page from. */
 export async function resolveSuiteRecordsFile(id: string): Promise<SuiteRecordsFile | undefined> {
-  const [{ catalog, run, measured }, bytes, hashes, gaps] = await Promise.all([context(), loadFixtureBytes(), loadFixtureHashes(), loadFindings()]);
+  const [{ catalog, run, stamp, measured, fixtureBytes: bytes, fixtureHashes: hashes }, gaps] = await Promise.all([context(), loadFindings()]);
   const suite = catalog.suites.find(s => s.id === id);
   if (!suite) return undefined;
   const runProblem = run.state !== 'measured'
@@ -249,14 +262,14 @@ const rowScanners = (measured: MeasuredRun | undefined): RowScanner[] =>
 
 /** Every family that gets a pre-rendered page: all of them, including those with no fixtures. */
 export async function resolveFamilySlugs(): Promise<string[]> {
-  const catalog: Catalog = await loadCatalog();
+  const { catalog }: { catalog: Catalog } = await loadCredentialSource();
   const slugs = catalog.taxonomy.families.map(f => familySlug(f.id));
   if (new Set(slugs).size !== slugs.length) throw new Error('Two families share a URL slug');
   return slugs;
 }
 
 export async function resolveFamilyPage(slug: string): Promise<FamilyPageData | undefined> {
-  const [{ catalog, run, measured, rows }, dossiers, peers] = await Promise.all([context(), loadDossiers(), loadPeerProfiles()]);
+  const [{ catalog, run, stamp, measured, rows }, dossiers, peers] = await Promise.all([context(), loadDossiers(), loadPeerProfiles()]);
   const id = catalog.taxonomy.families.find(f => familySlug(f.id) === slug)?.id;
   const family = id ? resolveFamily(catalog, id, rows) : undefined;
   if (!family) return undefined;
@@ -273,7 +286,7 @@ export async function resolveFamilyPage(slug: string): Promise<FamilyPageData | 
   ];
   return {
     family,
-    runState: resolveRunState(run),
+    runState: resolveRunState(run, stamp),
     meta: [
       { value: family.providerName },
       { label: 'Detectors:', value: family.detectors.length ? family.detectors.join(', ') : 'none mapped' },
@@ -313,7 +326,7 @@ export const resolveLevelSlugs = (): Level[] => LEVELS;
 
 /** Rows at one evidence level for every scanner in the run: what the three answers at that level are counted from. */
 export async function resolveLevelRowsPage(level: Level): Promise<LevelRowsPageData> {
-  const { catalog, run, measured, rows } = await context();
+  const { catalog, run, stamp, measured, rows } = await context();
   const fixtures = catalog.fixtures.filter(f => f.tier === level);
   const t = TIER_LABEL[level];
   return {
@@ -324,7 +337,7 @@ export async function resolveLevelRowsPage(level: Level): Promise<LevelRowsPageD
       lede: 'Every fixture at this evidence level, with the outcome each scanner recorded for it. The three answers on the report are counted from these rows. Rows that need a look come first.',
       meta: [{ value: count(fixtures.length, 'row') }, ...(measured ? runFacts(measured) : [])],
     },
-    runState: resolveRunState(run),
+    runState: resolveRunState(run, stamp),
     levels: LEVELS.map(l => ({ label: TIER_LABEL[l], shortLabel: SHORT_LABEL[l], href: rowsHref(l) })),
     currentHref: rowsHref(level),
     rows: await rowsFor('level', level),
@@ -339,7 +352,7 @@ export async function resolveLevelRowsPage(level: Level): Promise<LevelRowsPageD
 export interface SuiteListPageData { head: HeadData; runState: RunState; suites: SuiteRowData[] }
 
 export async function resolveSuitesPage(): Promise<SuiteListPageData> {
-  const { catalog, run, measured, rows } = await context();
+  const { catalog, run, stamp, measured, rows } = await context();
   return {
     head: {
       eyebrow: 'redact-secret · Report',
@@ -347,7 +360,7 @@ export async function resolveSuitesPage(): Promise<SuiteListPageData> {
       lede: 'The corpus is a set of suites, each a folder of fixtures authored for one purpose. Open a suite for its rows, then a row for the fixture: its bytes, what was expected and what each scanner reported.',
       meta: [{ value: count(catalog.suites.length, 'suite') }, { value: count(catalog.fixtures.length, 'fixture') }, ...(measured ? runFacts(measured) : [])],
     },
-    runState: resolveRunState(run),
+    runState: resolveRunState(run, stamp),
     suites: resolveSuiteRows(catalog, rows),
   };
 }
@@ -366,11 +379,11 @@ export interface SuitePageData {
 }
 
 export async function resolveSuiteSlugs(): Promise<string[]> {
-  return (await loadCatalog()).suites.map(s => s.id);
+  return (await loadCredentialSource()).catalog.suites.map(s => s.id);
 }
 
 export async function resolveSuitePage(id: string): Promise<SuitePageData | undefined> {
-  const { catalog, run, measured, rows } = await context();
+  const { catalog, run, stamp, measured, rows } = await context();
   const suite = catalog.suites.find(s => s.id === id);
   if (!suite) return undefined;
   const fixtures = catalog.fixturesBySuite.get(id) ?? [];
@@ -382,7 +395,7 @@ export async function resolveSuitePage(id: string): Promise<SuitePageData | unde
       lede: suite.description,
       meta: [{ value: count(fixtures.length, 'fixture') }, ...(measured ? runFacts(measured) : [])],
     },
-    runState: resolveRunState(run),
+    runState: resolveRunState(run, stamp),
     rows: await rowsFor('suite', id),
     facts: rowFacts(fixtures, rows, 'Fixtures'),
     description: `${int(fixtures.length)} fixtures in this suite. Open a fixture for its bytes, expected spans and what each scanner reported.`,
@@ -396,7 +409,7 @@ export async function resolveSuitePage(id: string): Promise<SuitePageData | unde
 export interface DetectorListPageData { head: HeadData; runState: RunState; detectors: DetectorRowData[]; note: string }
 
 export async function resolveDetectorsPage(): Promise<DetectorListPageData> {
-  const [{ catalog, run, measured }, floors] = await Promise.all([context(), loadAccountingFloors()]);
+  const [{ catalog, run, stamp, measured }, floors] = await Promise.all([context(), loadAccountingFloors()]);
   const detectors = resolveDetectorList(catalog, floors.minDenominator);
   const thin = detectors.filter(d => d.value <= d.minimum).length;
   return {
@@ -406,7 +419,7 @@ export async function resolveDetectorsPage(): Promise<DetectorListPageData> {
       lede: 'One row per detector family the product registers, by the fixtures that exercise it. The line on each bar is the minimum sample size below which the run withholds a bound.',
       meta: [{ value: count(detectors.length, 'detector') }, { value: `${int(thin)} at or below the minimum` }, ...(measured ? runFacts(measured) : [])],
     },
-    runState: resolveRunState(run),
+    runState: resolveRunState(run, stamp),
     detectors,
     note: `Detector assignments overlap: a fixture can exercise several detectors, so these counts are never summed. The minimum sample size is ${int(floors.minDenominator)} fixtures.`,
   };
@@ -423,11 +436,11 @@ export interface DetectorPageData {
 }
 
 export async function resolveDetectorSlugs(): Promise<string[]> {
-  return (await loadCatalog()).detectors.map(d => d.id);
+  return (await loadCredentialSource()).catalog.detectors.map(d => d.id);
 }
 
 export async function resolveDetectorPage(id: string): Promise<DetectorPageData | undefined> {
-  const [{ catalog, run, measured, rows }, floors, contracts, gaps] = await Promise.all([context(), loadAccountingFloors(), loadDetectorContracts(), loadFindings()]);
+  const [{ catalog, run, stamp, measured, rows }, floors, contracts, gaps] = await Promise.all([context(), loadAccountingFloors(), loadDetectorContracts(), loadFindings()]);
   const detector = resolveDetector(catalog, id, measured, contracts.get(id), floors.minDenominator);
   if (!detector) return undefined;
   const slugs = new Set(detector.fixtures.map(f => f.slug));
@@ -444,7 +457,7 @@ export async function resolveDetectorPage(id: string): Promise<DetectorPageData 
         ...(measured ? runFacts(measured) : []),
       ],
     },
-    runState: resolveRunState(run),
+    runState: resolveRunState(run, stamp),
     rows: await rowsFor('detector', id),
     facts: rowFacts(detector.fixtures, rows, 'Fixtures'),
     findings: inventory.rows,
@@ -457,7 +470,7 @@ export async function resolveDetectorPage(id: string): Promise<DetectorPageData 
 export interface FindingsPageData { head: HeadData; inventory: FindingsInventory }
 
 export async function resolveFindingsPage(): Promise<FindingsPageData> {
-  const [catalog, gaps] = await Promise.all([loadCatalog(), loadFindings()]);
+  const [{ catalog }, gaps] = await Promise.all([loadCredentialSource(), loadFindings()]);
   const inventory = resolveFindingsInventory(gaps, catalog);
   return {
     head: {
@@ -473,7 +486,7 @@ export async function resolveFindingsPage(): Promise<FindingsPageData> {
 // ---- /comparison, /comparison/feature, /comparison/runtime -------------------------
 
 export async function resolveComparisonHubPage(): Promise<ComparisonHubProps> {
-  const [runtime, features, run] = await Promise.all([loadPeerRuntime(), loadFeatureClaims(), loadRun()]);
+  const [runtime, features, { run }] = await Promise.all([loadPeerRuntime(), loadFeatureClaims(), loadLegacySource()]);
   return resolveHub({ runtime, features, run });
 }
 
@@ -502,15 +515,15 @@ export interface AccuracyPairPageData extends Omit<AccuracyPage, 'diff'> {
 }
 
 async function accuracyPage() {
-  const [{ catalog, run, measured }, profiles, runtime] = await Promise.all([context(), loadPeerProfiles(), loadPeerRuntime()]);
-  return { run, measured, page: resolveAccuracyPage({ catalog, run: measured, profiles, runtime: runtime.comparison, toolNames: { 'flare-redact': toolName('flare-redact'), openredaction: toolName('openredaction') } }) };
+  const [{ catalog, run, stamp, measured }, profiles, runtime] = await Promise.all([legacyContext(), loadPeerProfiles(), loadPeerRuntime()]);
+  return { run, stamp, measured, page: resolveAccuracyPage({ catalog, run: measured, profiles, runtime: runtime.comparison, toolNames: { 'flare-redact': toolName('flare-redact'), openredaction: toolName('openredaction') } }) };
 }
 
 /** The accuracy pair page: every reachable pair, level and scope as a panel. The lists of differing files are a build-emitted file. */
 export async function resolveAccuracyPairPage(): Promise<AccuracyPairPageData> {
-  const { run, measured, page } = await accuracyPage();
+  const { run, stamp, measured, page } = await accuracyPage();
   const { diff, ...rest } = page;
-  return { ...rest, runState: resolveRunState(run), ...(diff && measured ? { source: { src: ACCURACY_DIFFERENCES_PATH, runId: measured.runId, fixtures: diff.fixtures.length } } : {}) };
+  return { ...rest, runState: resolveRunState(run, stamp), ...(diff && measured ? { source: { src: ACCURACY_DIFFERENCES_PATH, runId: measured.runId, fixtures: diff.fixtures.length } } : {}) };
 }
 
 /** The file behind `data/comparison/accuracy/differences.json`: what the lists of differing files are built from. */
@@ -536,6 +549,6 @@ export async function resolveReleaseCandidatePage(): Promise<RcPage> {
 
 /** The scanners the benchmark ran with and the environment each ran in (#612). */
 export async function resolveScannerPage(): Promise<ScannerOverviewProps> {
-  const [environment, profiles, run, runtime, catalog] = await Promise.all([loadScannerEnvironment(), loadPeerProfiles(), loadRun(), loadPeerRuntime(), loadCatalog()]);
+  const [environment, profiles, { run, catalog }, runtime] = await Promise.all([loadScannerEnvironment(), loadPeerProfiles(), loadLegacySource(), loadPeerRuntime()]);
   return resolveScanners({ environment, profiles, run: run.state === 'measured' ? run : undefined, runtime, productDetectors: catalog.detectors.length || null });
 }

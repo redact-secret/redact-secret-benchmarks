@@ -180,6 +180,27 @@ export const NoFamily: Story = {
   args: { fixture: page(record({ families: [], unscoped: 3, twins: [] }), shared({ texts: ['#211 · example · sdk-config', 'sdk-config', 'beta.8', 'A generic credential shape that no provider owns.'] })) },
 };
 
+/**
+ * A fixture from the qualification view (#608): expected spans and each scanner's outcome are recorded, the bytes are not. The page
+ * says so where the file would be, draws no file, lane or download, and counts the ranges a scanner reported without placing them.
+ */
+const fromView = (rec: Partial<FixtureRecord>, rows: RowResult[] = [{ spanOutcomes: ['EXACT'], observed: 1, leakedBytes: 0, collateralBytes: 0 }, { spanOutcomes: ['MISS'], observed: 0, leakedBytes: 29, collateralBytes: 0 }, { spanOutcomes: ['EXACT'], observed: 2, leakedBytes: 0, collateralBytes: 0 }]): FixtureRecord => record({
+  content: '', noContent: true, sha: '', rows: rows.map(row), twins: [], followUps: [], ...rec,
+});
+export const BytesNotRecorded: Story = {
+  args: { fixture: page(fromView({}), shared({ run: { date: '2026-09-30', mode: 'published' }, scanners: SCANNERS.slice(0, 3) })) },
+};
+
+/** A control from the view: flagged or not, with the count of reported ranges and no offsets. */
+export const BytesNotRecordedControl: Story = {
+  args: { fixture: page(fromView({ id: 'a-control', kind: 'must-not-flag', expected: [] }, [{ flagged: true, findings: 2, observed: 2 }, { flagged: false, findings: 0, observed: 0 }, { observed: 1 }]), shared({ scanners: SCANNERS.slice(0, 3) })) },
+};
+
+/** A twin from the view: the related fixture is named and linked, its changed bytes are not drawn. */
+export const BytesNotRecordedTwins: Story = {
+  args: { fixture: page(fromView({ twins: ['example-provider-block-alphabet-twin'] }), shared({ scanners: SCANNERS.slice(0, 3) }), [fromView({ id: 'example-provider-block-alphabet-twin', kind: 'must-not-flag', twinOf: 'example-provider-block', mutationKind: 'alphabet', expected: [] }, [{ flagged: false, findings: 0, observed: 0 }, { flagged: false, findings: 0, observed: 0 }, { flagged: false, findings: 0, observed: 0 }])]) },
+};
+
 export const Phone: Story = {
   args: { fixture: page(positiveWithTwins, shared(), [alphabetTwin, prefixTwin]) },
   globals: { viewport: { value: 'mobile1', isRotated: false } },

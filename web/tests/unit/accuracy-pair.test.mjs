@@ -4,7 +4,7 @@ import { test } from 'vitest';
 import assert from 'node:assert/strict';
 import vm from 'node:vm';
 import {
-  buildPairModel, diffFileOf, isDiffFileOf, defaultQuery, differenceColumns, differencesOf, normalise, pairHref, pairQueryOf, pairScript, pairSearch, panelKey, resolveAccuracyPage, share, stateOf, questionOf,
+  buildPairModel, diffFileOf, isDiffFileOf, defaultQuery, differenceColumns, differenceNote, differenceTitle, differencesOf, emptyDirection, normalise, pairHref, pairQueryOf, pairScript, pairSearch, panelKey, resolveAccuracyPage, share, stateOf, questionOf,
   GROUPS_SHOWN,
 } from '../../resolvers/accuracy.ts';
 
@@ -124,22 +124,45 @@ test('differences are listed in both directions, grouped by provider, alphabetic
   const listed = differencesOf(model.diff, 'peer', 'T1', 'listed', 'r');
   assert.equal(listed.total, model.peers[0].cells['T1|listed'].r.differing);
   assert.deepEqual(listed.onlyUs.map(g => g.files.map(f => f.slug)), [['a1']]);
-  const cols = differenceColumns(all, 'r', 'Peer', [false, false]);
-  assert.deepEqual(cols.map(c => c.title), ['Hidden by redact-secret only', 'Hidden by Peer only']);
+  const cell = model.peers[0].cells['T1|all'];
+  const cols = differenceColumns(all, 'r', 'Peer', [false, false], { us: cell.r.us[0], them: cell.r.them[0] });
+  assert.deepEqual(cols.map(c => c.title), ['Hidden by redact-secret, not hidden by Peer', 'Hidden by Peer, not hidden by redact-secret']);
   assert.deepEqual(cols.map(c => c.total), ['2', '1']);
   const control = differencesOf(model.diff, 'peer', 'T1', 'all', 'a');
   assert.equal(control.onlyUs.length + control.onlyThem.length, 1, 'the control both differ on');
-  assert.equal(differenceColumns(control, 'a', 'Peer', [false, false])[0].title, 'Left alone by redact-secret only');
+  assert.equal(differenceColumns(control, 'a', 'Peer', [false, false], { us: 1, them: 1 })[0].title, 'Left alone by redact-secret, flagged by Peer');
+});
+
+test('an empty direction says what the zero means, from the counts it is given', () => {
+  assert.equal(emptyDirection('r', 'Tool', 'redact-secret', 7), 'None. All 7 files Tool hid, redact-secret hid too.');
+  assert.equal(emptyDirection('r', 'Tool', 'redact-secret', 1), 'None. The only file Tool hid, redact-secret hid too.');
+  assert.equal(emptyDirection('r', 'Tool', 'redact-secret', 0), 'None. Tool has no files hidden here.');
+  assert.equal(emptyDirection('a', 'Tool', 'redact-secret', 1200, 'text'), 'None. All 1,200 texts Tool left alone, redact-secret left alone too.');
+  assert.equal(differenceTitle('r', 'A', 'B'), 'Hidden by A, not hidden by B');
+  const empty = { total: 0, onlyUs: [], onlyThem: [] };
+  const both = differenceColumns(empty, 'r', 'Peer', [false, false], { us: 4, them: 2 });
+  assert.deepEqual(both.map(c => [c.total, c.none]), [['0', 'None. All 4 files redact-secret hid, Peer hid too.'], ['0', 'None. All 2 files Peer hid, redact-secret hid too.']]);
+  const one = differenceColumns({ total: 1, onlyUs: [{ name: 'P', files: [{ slug: 'f', href: '#' }] }], onlyThem: [] }, 'r', 'Peer', [false, false], { us: 5, them: 3 });
+  assert.equal(one[0].total, '1');
+  assert.equal(one[1].none, 'None. All 3 files Peer hid, redact-secret hid too.');
+});
+
+test('the note says what a list is and that an empty one says nothing about the rest', () => {
+  assert.match(differenceNote('r'), /one tool hid and the other did not \(readable or only partly hidden\)/);
+  assert.match(differenceNote('r'), /says nothing about the rest of its results/);
+  assert.match(differenceNote('a'), /left alone and the other did not\./);
+  assert.match(differenceNote('r', 'text'), /texts one tool hid/);
 });
 
 test('a long provider list is cut to 40 and shows all on request, per column', () => {
   const lists = { total: 90, onlyThem: [], onlyUs: Array.from({ length: 90 }, (_, i) => ({ name: `P${String(i).padStart(3, '0')}`, files: [{ slug: `f${i}`, href: '#' }] })) };
-  const cut = differenceColumns(lists, 'r', 'Peer', [false, false]);
+  const ok = { us: 90, them: 1 };
+  const cut = differenceColumns(lists, 'r', 'Peer', [false, false], ok);
   assert.equal(cut[0].groups.length, GROUPS_SHOWN);
   assert.equal(cut[0].more, 'Show all 90 providers');
   assert.equal(cut[0].total, '90', 'the total counts files, not the cut list');
   assert.equal(cut[1].more, undefined);
-  const all = differenceColumns(lists, 'r', 'Peer', [true, false]);
+  const all = differenceColumns(lists, 'r', 'Peer', [true, false], ok);
   assert.equal(all[0].groups.length, 90);
   assert.equal(all[0].more, undefined);
 });
@@ -273,7 +296,9 @@ test('personal data reads the recorded texts by line, with counts and no percent
   assert.match(pii.preview, /^Preview, not yet a measurement\./);
   const q = pii.questions[0];
   assert.deepEqual(q.results.map(r => [r.name, r.figure]), [['redact-secret', '2 of 3'], ['lib', '2 of 3']]);
-  assert.deepEqual(q.differences.columns.map(c => [c.title, c.groups.flatMap(g => g.files.map(f => f.slug))]), [['Hidden by redact-secret only', ['Phone']], ['Hidden by lib only', ['Card']]]);
+  assert.deepEqual(q.differences.columns.map(c => [c.title, c.groups.flatMap(g => g.files.map(f => f.slug))]), [['Hidden by redact-secret, not hidden by lib', ['Phone']], ['Hidden by lib, not hidden by redact-secret', ['Card']]]);
+  assert.match(q.differences.note, /texts one tool hid/);
+  assert.ok(q.differences.columns.every(c => c.none.startsWith('None.')));
   assert.equal(pii.pair.ours.name, 'redact-secret');
   assert.match(pii.pair.ours.ran, /local build of main, unreleased/);
   assert.equal(pii.pair.ours.job, undefined);

@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { cx } from '../../lib/cx';
 import { Disclosure } from '../disclosure';
 import type { AccuracyDifferenceColumn, AccuracyDifferencesData } from './accuracyTypes';
 import styles from './AccuracyDifferences.module.css';
@@ -10,7 +9,7 @@ export interface AccuracyDifferencesProps extends AccuracyDifferencesData {
   className?: string;
 }
 
-function Column({ column, none, onShowAll }: { column: AccuracyDifferenceColumn; none: string; onShowAll?: () => void }) {
+function Column({ column, onShowAll }: { column: AccuracyDifferenceColumn; onShowAll?: () => void }) {
   return (
     <section className={styles.column}>
       <h4 className={styles.title}>
@@ -18,7 +17,7 @@ function Column({ column, none, onShowAll }: { column: AccuracyDifferenceColumn;
         <span>{column.total}</span>
       </h4>
       {column.groups.length === 0 ? (
-        <p className={styles.none}>{none}</p>
+        <p className={styles.none}>{column.none}</p>
       ) : column.groups[0].name === '' ? (
         <ul className={styles.flat}>
           {column.groups[0].files.map(f => <li key={f.slug}>{f.href ? <Link href={f.href}>{f.slug}</Link> : f.slug}</li>)}
@@ -47,10 +46,13 @@ function Column({ column, none, onShowAll }: { column: AccuracyDifferenceColumn;
  * Grouped by provider, providers alphabetical, files by slug: never ordered by how many there are.
  * Files are slugs that link to the existing fixture page; no file content is shown here.
  */
-export function AccuracyDifferences({ columns, none, onShowAll, className }: AccuracyDifferencesProps) {
+export function AccuracyDifferences({ columns, note, onShowAll, className }: AccuracyDifferencesProps) {
   return (
-    <div className={cx(styles.lists, className)}>
-      {columns.map((column, i) => <Column key={column.title} column={column} none={none} onShowAll={onShowAll ? () => onShowAll(i) : undefined} />)}
+    <div className={className}>
+      <p className={styles.note}>{note}</p>
+      <div className={styles.lists}>
+        {columns.map((column, i) => <Column key={column.title} column={column} onShowAll={onShowAll ? () => onShowAll(i) : undefined} />)}
+      </div>
     </div>
   );
 }

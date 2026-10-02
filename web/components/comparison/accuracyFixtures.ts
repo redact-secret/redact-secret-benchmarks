@@ -115,31 +115,37 @@ export const leftOutQuestion: AccuracyQuestionData = {
 };
 
 const files = (prefix: string, n: number) => Array.from({ length: n }, (_, i) => ({ slug: `${prefix}-${String(i + 1).padStart(2, '0')}`, href: `/report/fixtures/story-suite/?fixture=${prefix}-${i + 1}` }));
+const NOTE = 'Each list holds the files one tool hid and the other did not (readable or only partly hidden). A list is empty when every file one tool hid, the other hid too; that says nothing about the rest of its results, which are in its bar above.';
+const TITLE_US = 'Hidden by redact-secret, not hidden by Examplescan';
+const TITLE_THEM = 'Hidden by Examplescan, not hidden by redact-secret';
+const NONE_US = 'None. All 12 files redact-secret hid, Examplescan hid too.';
+const NONE_THEM = 'None. All 9 files Examplescan hid, redact-secret hid too.';
 export const differences: AccuracyDifferencesData = {
-  none: 'None here.',
+  note: NOTE,
   columns: [
-    { title: 'Hidden by redact-secret only', total: '5', groups: [{ name: 'Example Cloud', count: '3', files: files('example-cloud-token', 3) }, { name: 'Sample Pay', count: '2', files: files('sample-pay-key', 2) }] },
-    { title: 'Hidden by Examplescan only', total: '1', groups: [{ name: 'Example Cloud', count: '1', files: files('example-cloud-secret', 1) }] },
+    { title: TITLE_US, none: NONE_US, total: '5', groups: [{ name: 'Example Cloud', count: '3', files: files('example-cloud-token', 3) }, { name: 'Sample Pay', count: '2', files: files('sample-pay-key', 2) }] },
+    { title: TITLE_THEM, none: NONE_THEM, total: '1', groups: [{ name: 'Example Cloud', count: '1', files: files('example-cloud-secret', 1) }] },
   ],
 };
-/** Both directions always render, even when one has nothing. */
-export const oneSided: AccuracyDifferencesData = { none: 'None here.', columns: [differences.columns[0], { title: 'Hidden by Examplescan only', total: '0', groups: [] }] };
-export const neither: AccuracyDifferencesData = { none: 'None here.', columns: [{ title: 'Hidden by redact-secret only', total: '0', groups: [] }, { title: 'Hidden by Examplescan only', total: '0', groups: [] }] };
+/** Both directions always render, even when one has nothing: the zero says which files it comes from. */
+export const oneSided: AccuracyDifferencesData = { note: NOTE, columns: [differences.columns[0], { title: TITLE_THEM, none: NONE_THEM, total: '0', groups: [] }] };
+/** Neither tool hid a file the other left readable: each empty state names its own count. */
+export const neither: AccuracyDifferencesData = { note: NOTE, columns: [{ title: TITLE_US, none: NONE_US, total: '0', groups: [] }, { title: TITLE_THEM, none: 'None. Examplescan has no files hidden here.', total: '0', groups: [] }] };
 const manyGroups = (n: number, prefix: string): AccuracyDifferenceColumn['groups'] => Array.from({ length: n }, (_, i) => ({ name: `${prefix} provider ${String(i + 1).padStart(3, '0')}`, count: '2', files: files(`${prefix.toLowerCase()}-${i + 1}`, 2) }));
 /** Worst case: 40 providers shown of 240, with a long name and a long slug. */
 export const longLists: AccuracyDifferencesData = {
-  none: 'None here.',
+  note: NOTE,
   columns: [
-    { title: 'Hidden by redact-secret only', total: '480', groups: [{ name: 'A provider with a very long display name that has to wrap inside its column', count: '1', files: [{ slug: `a-very-long-fixture-slug-${'x'.repeat(80)}`, href: '/report/' }] }, ...manyGroups(39, 'Alpha')], more: 'Show all 240 providers' },
-    { title: 'Hidden by Examplescan only', total: '12', groups: manyGroups(6, 'Beta') },
+    { title: TITLE_US, none: NONE_US, total: '480', groups: [{ name: 'A provider with a very long display name that has to wrap inside its column', count: '1', files: [{ slug: `a-very-long-fixture-slug-${'x'.repeat(80)}`, href: '/report/' }] }, ...manyGroups(39, 'Alpha')], more: 'Show all 240 providers' },
+    { title: TITLE_THEM, none: NONE_THEM, total: '12', groups: manyGroups(6, 'Beta') },
   ],
 };
 /** Personal-data texts: a flat list of labels with no page of their own. */
 export const flatDifferences: AccuracyDifferencesData = {
-  none: 'None here.',
+  note: 'Each list holds the texts one tool hid and the other did not (readable or only partly hidden). A list is empty when every text one tool hid, the other hid too; that says nothing about the rest of its results, which are in its bar above.',
   columns: [
-    { title: 'Hidden by redact-secret only', total: '2', groups: [{ name: '', count: '2', files: [{ slug: 'Email, example label' }, { slug: 'Phone, example label' }] }] },
-    { title: 'Hidden by Libsample only', total: '0', groups: [] },
+    { title: 'Hidden by redact-secret, not hidden by Libsample', none: 'None. All 3 texts redact-secret hid, Libsample hid too.', total: '2', groups: [{ name: '', count: '2', files: [{ slug: 'Email, example label' }, { slug: 'Phone, example label' }] }] },
+    { title: 'Hidden by Libsample, not hidden by redact-secret', none: 'None. All 2 texts Libsample hid, redact-secret hid too.', total: '0', groups: [] },
   ],
 };
 

@@ -71,6 +71,8 @@ export interface AccuracyDifferenceColumn {
   title: string;
   total: string;
   groups: AccuracyDifferenceGroup[];
+  /** Said when the list has no files: what the zero means, with the counts it comes from. */
+  none: string;
   /** The "Show all n providers" words, when the list is cut. */
   more?: string;
 }
@@ -78,8 +80,8 @@ export interface AccuracyDifferenceColumn {
 export interface AccuracyDifferencesData {
   /** Both directions, always, even when one is empty. */
   columns: AccuracyDifferenceColumn[];
-  /** Said under a direction that has no files. */
-  none: string;
+  /** One neutral line above the lists: what a list is and what an empty one means. */
+  note: string;
 }
 
 export interface AccuracyQuestionData {

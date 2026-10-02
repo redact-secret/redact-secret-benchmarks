@@ -103,7 +103,7 @@ for (const category of categories) {
 }
 
 // -- new side ------------------------------------------------------------------------------------------------------
-interface NextCase extends Joinable { population: string; detectors: string[]; tier: string; kind: string }
+interface NextCase extends Joinable { population: string; detectors: string[]; tier: string; kind: string; twin: boolean }
 const nextCases: NextCase[] = [];
 const artifacts = new Map<string, RunArtifact>();
 const notCompared: ParityReport['notCompared'] = [];
@@ -129,7 +129,7 @@ for (const population of Object.keys(product.policy.populations)) {
   for (const [id, scanners] of perScanner) {
     const c = cases.get(id)!;
     const h = hashes.get(id);
-    nextCases.push({ key: id, scanners, joinKeys: population === PUBLIC ? (h ? contentKeys(h.hash, h.expected, id) : [`unjoinable:${id}`]) : [id], population, tier: c.tier, kind: c.kind, detectors: detectorsOf(c, detectorIds, taxonomyDetectors) });
+    nextCases.push({ key: id, scanners, joinKeys: population === PUBLIC ? (h ? contentKeys(h.hash, h.expected, id) : [`unjoinable:${id}`]) : [id], population, tier: c.tier, kind: c.kind, twin: Boolean(c.twin_of), detectors: detectorsOf(c, detectorIds, taxonomyDetectors) });
   }
 }
 
@@ -173,6 +173,8 @@ const adjustmentsByFamily: Record<string, Record<string, Record<string, number>>
     const l = legacyByKey.get(pair.legacy.key)!, n = nextByKey.get(pair.next.key)!;
     const kind = kindOf(n);
     if (kind === 'pending') {
+      // Legacy drops T0 twins (benchmarks/lib/lattice.ts), so a pending twin was never a legacy fixture to book.
+      if (n.twin) continue;
       for (const d of l.detectors) { add(d, 'pending-not-scored', 'totalFixtures', 1); add(d, 'pending-not-scored', n.kind === 'must-not-flag' ? 'benignCases' : 'positiveCases', 1); }
       continue;
     }

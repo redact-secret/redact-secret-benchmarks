@@ -52,6 +52,13 @@ function word(result) {
   return result.measurement === 'pending' ? 'Pending' : 'Not measured';
 }
 
+/** Remove tags until none are left, so a tag split by a removed one cannot survive a single pass. */
+function stripTags(html) {
+  let out = html;
+  for (let prev = null; prev !== out;) { prev = out; out = out.replace(/<[^>]+>/g, ''); }
+  return out;
+}
+
 /** The rows on one built page: [population section, case key, scanner words]. */
 function rowsOf(html) {
   const rows = [];
@@ -62,7 +69,7 @@ function rowsOf(html) {
       const id = /<details[^>]* id="case-([^"]+)"/.exec(tr)?.[1];
       if (!id) continue;
       const words = {};
-      for (const m of tr.matchAll(/<td[^>]* data-label="([^"]+)"><span[^>]*>([\s\S]*?)<\/span><\/td>/g)) words[decode(m[1])] = decode(m[2].replace(/<[^>]+>/g, ''));
+      for (const m of tr.matchAll(/<td[^>]* data-label="([^"]+)"><span[^>]*>([\s\S]*?)<\/span><\/td>/g)) words[decode(m[1])] = decode(stripTags(m[2]));
       rows.push({ heading: decode(heading ?? ''), key: decode(id), words });
     }
   }

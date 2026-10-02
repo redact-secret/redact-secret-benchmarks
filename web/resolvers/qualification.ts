@@ -109,7 +109,7 @@ export function resolveQualificationOverview(view: QualificationView): Qualifica
       ],
       routes: [
         { label: 'Stable by documented route', value: int(view.stableDistribution.documented ?? 0), definition: 'Provider-documented format.' },
-        { label: 'Stable by empirical route', value: int(view.stableDistribution.empirical ?? 0), definition: 'Independently corroborated format.' },
+        { label: 'Stable by empirical route', value: int(view.stableDistribution.empirical ?? 0), definition: 'Corroborated: checked against other tools and community sources; the comparison is run by this project.' },
         { label: 'Stable by policy-qualified route', value: int(view.stableDistribution['policy-qualified'] ?? 0), definition: 'Project policy with a protected holdout.' },
       ],
       methodsNote: methodsNotRun.length ? `The official configuration did not run ${methodsNotRun.join(', ')}. A family whose floors all hold stays provisional until every required method has run, so the stable count here is not comparable with a run that executed them.` : null,

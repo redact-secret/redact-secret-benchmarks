@@ -125,14 +125,14 @@ test('a family failing reports which criterion it failed, one entry per breach',
 
 /** A T2 family on the corroborated route: every fixture and behavior gate met, three owners in two classes, and no provider-issued observation. */
 const corroboratedT2 = (over = {}) => ({
-  ...baseEvidence(), positiveContractTier: 'T2', hasProviderSource: false, evidenceBasis: 'independently-corroborated',
+  ...baseEvidence(), positiveContractTier: 'T2', hasProviderSource: false, evidenceBasis: 'corroborated',
   corroborationReferences: 4, corroborationOwners: 3, corroborationClasses: ['independent-research', 'peer-scanner-rule', 'provider-owned-code'],
   boundedContradictions: 1, uncertainty: 'Corroborated shape; no provider documentation states it.',
   supportedContexts: ['assignment', 'header'], empiricalMode: 'shape', positiveCases: 10, positiveAxes: 6,
   benignCases: 14, benignAxes: 5, controlAxes: 5, twinPairs: 8, totalFixtures: 40, ...over,
 });
 
-test('T2 with independent corroboration, the fixture profile and zero failures becomes empirical-stable with no observation', () => {
+test('T2 with corroboration, the fixture profile and zero failures becomes empirical-stable with no observation', () => {
   const evidence = corroboratedT2();
   assert.equal(evidence.observationCount, 0);
   const result = classifyFamilySupport(evidence);
@@ -141,12 +141,12 @@ test('T2 with independent corroboration, the fixture profile and zero failures b
   assert.ok(empiricalRoute(evidence).observed.length > 0, 'the observed route is still reported short, never silently met');
 });
 
-test('corroborated empirical stable stays T2 and is labelled independently-corroborated, never T1 or observed', () => {
+test('corroborated empirical stable stays T2 and is labelled corroborated, never T1 or observed', () => {
   const evidence = corroboratedT2();
   const result = classifyFamilySupport(evidence);
   assert.equal(result.qualificationProfile, 'empirical');
   assert.equal(evidence.positiveContractTier, 'T2');
-  assert.equal(basisForRoute(empiricalRoute(evidence)), 'independently-corroborated');
+  assert.equal(basisForRoute(empiricalRoute(evidence)), 'corroborated');
   const claimsObserved = classifyFamilySupport({ ...evidence, evidenceBasis: 'empirically-observed' });
   assert.equal(claimsObserved.status, 'provisional', 'a basis is derived from the records, never asserted');
   assert.ok(claimsObserved.reasons.some(reason => reason.startsWith('empirical.evidenceBasis: empirically-observed does not match')));

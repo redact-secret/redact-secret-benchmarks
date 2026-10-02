@@ -153,7 +153,7 @@ test('empirical stable is labeled explicitly, retains T2, and is counted separat
 test('corroborated empirical stable shows its basis, and a basis its records cannot carry is refused', () => {
   const matrix = mixed();
   const entry = matrix.families.find(family => family.detectors.length);
-  Object.assign(entry, { status: 'stable', reason: null, evidenceTier: 'T2', evidenceBasis: 'independently-corroborated', qualificationProfile: 'empirical', providerSource: null });
+  Object.assign(entry, { status: 'stable', reason: null, evidenceTier: 'T2', evidenceBasis: 'corroborated', qualificationProfile: 'empirical', providerSource: null });
   entry.empiricalEvidence = { observations: 0, subjects: 0, issuanceDates: 0, corroborationReferences: 4, corroborationOwners: 3, corroborationClasses: ['peer-scanner-rule', 'provider-owned-code'], contradictions: 0, boundedContradictions: 1, uncertainty: 'Corroborated, never provider-issued.', supportedContexts: ['assignment'], mode: 'shape', supportsBareValues: true };
   matrix.distribution.provisional--;
   matrix.distribution.stable++;
@@ -162,7 +162,7 @@ test('corroborated empirical stable shows its basis, and a basis its records can
   const plain = text(supportPage(matrix, null));
   assert.ok(plain.includes('Stable · Empirically qualified'));
   assert.ok(plain.includes('T2 · Tool-corroborated'), 'the tier stays T2');
-  assert.ok(plain.includes('Corroborated by external sources (no provider-issued observation required) independently-corroborated'));
+  assert.ok(plain.includes('Evidence basis Corroborated corroborated'));
   assert.ok(plain.includes('4 references · 3 owners · peer-scanner-rule, provider-owned-code · 0 unresolved / 1 bounded contradictions'));
   assert.ok(plain.includes('0 observations · 0 subjects · 0 issuance dates'));
   const thin = structuredClone(matrix);

@@ -109,7 +109,7 @@
           "familyName": { "type": "string" },
           "status": { "enum": ["stable", "provisional", "pending", "unsupported"] },
           "evidenceTier": { "enum": ["T0", "T1", "T2", "T3", null] },
-          "evidenceBasis": { "enum": ["provider-documented", "independently-corroborated", "empirically-observed", "project-policy", "none"] },
+          "evidenceBasis": { "enum": ["provider-documented", "corroborated", "empirically-observed", "project-policy", "none"] },
           "qualificationProfile": { "enum": ["documented", "empirical", "policy-qualified", null] },
           "providerSource": {
             "type": ["object", "null"],

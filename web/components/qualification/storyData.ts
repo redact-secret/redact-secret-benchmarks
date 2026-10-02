@@ -13,7 +13,7 @@ export const scannerRows: ScannerRow[] = ['alpha-lib', 'beta-scan'].flatMap(scan
 
 export const familyRows: FamilyRow[] = [
   { family: 'alpha-token', href: '/evaluation/qualification/families/alpha-token/', provider: 'Alpha', status: { word: 'Stable', tone: 'info' }, route: 'documented', tier: 'T1', basis: 'provider-documented', heldBy: [], cases: ['evidence-population 60', 'regression-population 4', 'policy-population 0'] },
-  { family: 'beta-key', href: '/evaluation/qualification/families/beta-key/', provider: 'Beta', status: { word: 'Provisional', tone: 'review' }, route: 'No route', tier: 'T2', basis: 'independently-corroborated', heldBy: ['methods not run'], cases: ['evidence-population 31', 'regression-population 0', 'policy-population 0'] },
+  { family: 'beta-key', href: '/evaluation/qualification/families/beta-key/', provider: 'Beta', status: { word: 'Provisional', tone: 'review' }, route: 'No route', tier: 'T2', basis: 'corroborated', heldBy: ['methods not run'], cases: ['evidence-population 31', 'regression-population 0', 'policy-population 0'] },
   { family: 'gamma-secret-with-a-very-long-detector-family-identifier-that-keeps-going', href: '/evaluation/qualification/families/gamma-secret-with-a-very-long-detector-family-identifier-that-keeps-going/', provider: 'Gamma', status: { word: 'Pending', tone: 'none' }, route: 'No route', tier: 'T0', basis: 'none', heldBy: ['no positive fixture has cleared review'], cases: ['evidence-population 0', 'regression-population 0', 'policy-population 0'] },
 ];
 
@@ -47,7 +47,7 @@ export const overview: QualificationOverviewProps = {
     ],
     routes: [
       { label: 'Stable by documented route', value: '1', definition: 'Provider-documented format.' },
-      { label: 'Stable by empirical route', value: '0', definition: 'Independently corroborated format.' },
+      { label: 'Stable by empirical route', value: '0', definition: 'Corroborated: checked against other tools and community sources; the comparison is run by this project.' },
       { label: 'Stable by policy-qualified route', value: '0', definition: 'Project policy with a holdout.' },
     ],
     methodsNote: 'The official configuration ran no metamorphic, mutation or differential method. A family whose floors all hold stays provisional until those methods run.',

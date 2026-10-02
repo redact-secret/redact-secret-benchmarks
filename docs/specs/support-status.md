@@ -51,7 +51,7 @@ empirical counts.
 
 Evidence tier, evidence basis, and qualification profile are separate output
 fields. Empirical stable is represented as tier `T2` and profile `empirical`.
-The basis is derived from the records: `independently-corroborated` on the
+The basis is derived from the records: `corroborated` on the
 corroborated route, and `empirically-observed` only once the observation bar
 is met. It is never rewritten as T1, and a basis the records cannot carry
 blocks classification.

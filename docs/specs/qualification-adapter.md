@@ -208,7 +208,7 @@ stamp (the gate checks its format).
 ## The view (for the Next app)
 
 Top level: `schema` (`redact-secret/qualification-view/v1`), `adapter`, `publication` (`public`|`internal`), `policy`,
-`populations`, `scanners`, `distribution`, `stableDistribution`, `families`, `undetected`, `knownGaps`, `unmappedFamilies`.
+`populations`, `scanners`, `distribution`, `stableDistribution`, `families`, `supportMatrix`, `undetected`, `knownGaps`, `unmappedFamilies`.
 
 - `policy`: `revision`, `components[]` (path, digest), `criteria` (the thresholds as applied), `populations` (roles),
   `methodsRequired`, `differentialPeers`, `attributionFallback`, `axisCoverage` (the populations whose axis labels are unioned), `twinScope` (the twin-scope map: id, scoping population, corpus digest, twins mapped), `rules`, `ledgerRekey` (the mapping: id, population, corpus digest, occurrences mapped) and `axisOverlay` (the overlay the floors were counted with: id, population, corpus digest, entry counts).
@@ -224,6 +224,7 @@ Top level: `schema` (`redact-secret/qualification-view/v1`), `adapter`, `publica
   (`pairs`, `discriminated`, `flagged`, `coDetected`).
 - `populations[].cases[]` (#606, additive within v1): every corpus case of the population, sorted by id, with what the artifact recorded and what each scanner did, for the Next case pages
   (see "Case rows"). No count or status is derived from it.
+- `supportMatrix` (#607, additive within v1): the provider x credential-family projection, the same shape as one entry of the legacy `npm run eval:matrix` output, derived from `families[]`, the product taxonomy and the product contracts by `buildViewSupportMatrix` (benchmarks/qualification/support-matrix.ts). It holds `distribution` (status counts over taxonomy families), `stableDistribution` (stable counts by route) and `families[]` (one entry per taxonomy family, sorted by id). An entry carries `provider`, `family` (the taxonomy id), `familyName`, `status`, `evidenceTier`, `evidenceBasis`, `qualificationProfile`, `providerSource`, `corroboratingScanners`, `twinCoverage` (`pairs`, `failures`, `unprobeable`), `unresolvedCriticalItems` (`metamorphic`, `mutation`, `differential`), `empiricalEvidence`, `policyQualification`, `fixtureProfile` (the floor counts), `detectors`, `reason` and `profileCoverage` (the fixture-profile report). Status, reason and evidence are carried from the detector family that decided the entry, broadcast across every taxonomy family it serves; nothing is re-derived, and no entry is a sum across populations. A taxonomy family with no detector keeps the status its taxonomy row records (`unsupported` unless it records `pending`) and the reason the taxonomy gives. A count of a method that did not run for the family is `null`, never `0`. A taxonomy family claimed by two detector families, a detector-bearing one with no scored family, or an undetected one with no note or source refuses the build. The matrix is one view of the families shown above, not an addition to them: a consumer reads it instead of recomputing it, and the parity report compares it with the legacy matrix (docs/specs/qualification-parity.md).
 - `undetected[]`: taxonomy families with no detector. `knownGaps[]`: the join described above.
 
 A page that shows a count shows it with its population. No field is a sum across populations or scanners.

@@ -45,7 +45,9 @@ export interface Tally { compared: number; equal: number; explained: number; une
 export interface Section { tally: Tally; differences: Difference[] }
 
 const newTally = (): Tally => ({ compared: 0, equal: 0, explained: 0, unexplained: 0, byCause: {} });
-const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
+/** Key order is not a value: the view is written with keys in byte order and the legacy files in authoring order. */
+const ordered = (value: unknown): unknown => Array.isArray(value) ? value.map(ordered) : value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)).map(([k, v]) => [k, ordered(v)])) : value;
+const same = (a: unknown, b: unknown) => JSON.stringify(ordered(a)) === JSON.stringify(ordered(b));
 
 class Collector {
   readonly tally = newTally();
@@ -145,6 +147,7 @@ export interface FamilyOptions {
 
 export interface StatusRow {
   family: string; legacy: string; next: string; verdict: Verdict; causes: string[];
+  legacyProfile?: string | null; nextProfile?: string | null;
   /** The causes of the reasons the new path adds. When it is exactly `methods-not-run`, only the unmeasured methods hold the family back. */
   heldBackBy: string[]; unattributedReasons: string[];
 }
@@ -160,9 +163,9 @@ export interface FamilyReport {
 /** Which structural cause owns a status reason the new path adds. `undefined` means no rule recognises it. */
 export function causeOfReason(code: string, countCause: string | undefined, resolved: { axis?: string; review?: string; overlay?: boolean } = {}): string | undefined {
   if (/^methods\./.test(code)) return 'methods-not-run';
-  if (/^differential\./.test(code)) return resolved.review;
-  if (/PositiveAxes|ControlAxes|positive-axes|benign-axes|benign\.minimumAxes|minimumAxes|^fixtureProfile/.test(code)) return resolved.overlay ? resolved.axis : (resolved.axis ?? 'axis-vocabulary');
   if (/^policy\./.test(code) && code !== 'policy.protected-holdout') return 'policy-corpus-bounded';
+  if (/PositiveAxes|ControlAxes|positive-axes|benign-axes|benign\.minimumAxes|minimumAxes|^fixtureProfile/.test(code)) return resolved.overlay ? resolved.axis : (resolved.axis ?? 'axis-vocabulary');
+  if (/^differential\./.test(code)) return resolved.review;
   if (/minimumBenignCases|benign\.minimumCases|minimumPositiveCases|minimumTwinPairs|minimumFixtures|^twinFailures$|^benignFalseAlarms$/.test(code)) return countCause;
   return undefined;
 }
@@ -269,7 +272,7 @@ export function compareFamilies(legacy: LegacyFamily[], next: NextFamily[], opti
         heldBy[key] = (heldBy[key] ?? 0) + 1;
       }
     } else status.tally.equal++;
-    statusRows.push({ family: id, legacy: l.status, next: n.status.value, verdict, causes: [...causes].sort(), heldBackBy: [...causes].sort(), unattributedReasons: unattributed });
+    statusRows.push({ family: id, legacy: l.status, next: n.status.value, legacyProfile: l.qualificationProfile, nextProfile: n.status.qualificationProfile, verdict, causes: [...causes].sort(), heldBackBy: [...causes].sort(), unattributedReasons: unattributed });
   }
   return { membership: membership.section(), status: status.section(), evidence: evidence.section(), statusRows, counterfactual: counter, heldBy: Object.fromEntries(Object.entries(heldBy).sort()) };
 }
@@ -395,14 +398,155 @@ export function compareKnownGaps(legacy: GapSide[], next: GapNext[], options: Ga
 }
 
 // ---------------------------------------------------------------------------------------------------------------
+// The support matrix (#607): the provider x credential-family projection, legacy `eval:matrix` against the view's `supportMatrix`.
+
+/** One matrix entry as either path writes it (benchmarks/support/matrix.ts; benchmarks/qualification/support-matrix.ts). */
+export interface MatrixEntry {
+  provider: string | null; family: string; familyName: string; status: string; evidenceTier: string | null; evidenceBasis: string; qualificationProfile: string | null;
+  providerSource: unknown; corroboratingScanners: string[]; twinCoverage: Record<string, unknown> | null; unresolvedCriticalItems: Record<string, unknown> | null;
+  empiricalEvidence: Record<string, unknown> | null; policyQualification: unknown; fixtureProfile: Record<string, unknown> | null; detectors: string[]; reason: string | null;
+  profileCoverage: Record<string, unknown> | null;
+}
+/** What the family comparison already attributed: a matrix value is a projection of that evidence, so it is attributed only through a difference found there. */
+export interface MatrixContext { evidence: Section; status: Section; statusRows: StatusRow[] }
+export interface Transition { legacy: string; next: string; legacyProfile: string | null; nextProfile: string | null; cause?: string }
+export interface DistributionSide { distribution: Record<string, number>; stable: Record<string, number> }
+
+const MATRIX_EVIDENCE_FIELD: Record<string, string> = {
+  'twinCoverage.pairs': 'twinPairs', 'twinCoverage.failures': 'twinFailures',
+  'unresolvedCriticalItems.metamorphic': 'metamorphicCriticalFailures', 'unresolvedCriticalItems.mutation': 'mutationUnresolvedCritical', 'unresolvedCriticalItems.differential': 'differentialUnresolvedContractDisagreements',
+  'empiricalEvidence.observations': 'observationCount', 'empiricalEvidence.subjects': 'observationSubjects', 'empiricalEvidence.issuanceDates': 'observationIssuanceDates',
+  'empiricalEvidence.corroborationReferences': 'corroborationReferences', 'empiricalEvidence.corroborationOwners': 'corroborationOwners', 'empiricalEvidence.corroborationClasses': 'corroborationClasses',
+  'empiricalEvidence.contradictions': 'unresolvedContradictions', 'empiricalEvidence.boundedContradictions': 'boundedContradictions', 'empiricalEvidence.uncertainty': 'uncertainty',
+  'empiricalEvidence.supportedContexts': 'supportedContexts', 'empiricalEvidence.mode': 'empiricalMode', 'empiricalEvidence.supportsBareValues': 'supportsBareValues',
+  policyQualification: 'policyQualification', evidenceTier: 'evidenceTier', evidenceBasis: 'evidenceBasis', providerSource: 'hasProviderSource',
+};
+/** The measured counts and axes a fixture-profile cell is built from. */
+const PROFILE_SOURCES: string[] = [...COUNT_EVIDENCE, ...AXIS_EVIDENCE];
+const PROFILE_DERIVED = new Set(['cells', 'cellsMet', 'debt', 'requiredButEmptyAxisIds']);
+const NESTED = ['twinCoverage', 'unresolvedCriticalItems', 'empiricalEvidence', 'fixtureProfile', 'profileCoverage'];
+
+function leavesOf(entry: MatrixEntry): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const [key, value] of Object.entries(entry)) {
+    if (NESTED.includes(key) && value && typeof value === 'object') for (const [k, v] of Object.entries(value)) out[`${key}.${k}`] = v;
+    else out[key] = value;
+  }
+  return out;
+}
+
+export function compareSupportMatrix(legacy: MatrixEntry[], next: MatrixEntry[], legacyTotals: DistributionSide, nextTotals: DistributionSide, ctx: MatrixContext): Section {
+  const c = new Collector();
+  const evidenceDiff = new Map(ctx.evidence.differences.map(d => [`${d.subject}\0${d.field}`, d]));
+  const statusDiff = new Map(ctx.status.differences.map(d => [d.subject, d]));
+  const rows = new Map(ctx.statusRows.map(r => [r.family, r]));
+  type Attribution = { cause: string; note: string } | undefined;
+  const through = (detector: string | undefined, fields: string[], viaStatus: boolean): Attribution => {
+    if (!detector) return undefined;
+    if (viaStatus) { const d = statusDiff.get(detector); if (d?.verdict === 'explained') return { cause: d.cause!, note: `follows the status of ${detector}` }; }
+    for (const field of fields) { const d = evidenceDiff.get(`${detector}\0${field}`); if (d?.verdict === 'explained') return { cause: d.cause!, note: `follows evidence.${field} of ${detector}` }; }
+    return undefined;
+  };
+  const L = new Map(legacy.map(e => [e.family, e])), N = new Map(next.map(e => [e.family, e]));
+  c.compare('matrix', 'taxonomy families', [...L.keys()].sort(), [...N.keys()].sort());
+  const transitions: Transition[] = [];
+  for (const id of [...L.keys()].filter(k => N.has(k)).sort()) {
+    const l = L.get(id)!, n = N.get(id)!, detector = l.detectors[0] ?? n.detectors[0];
+    const row = detector ? rows.get(detector) : undefined;
+    const a = leavesOf(l), b = leavesOf(n);
+    const causes: Record<string, string | undefined> = {};
+    for (const path of [...new Set([...Object.keys(a), ...Object.keys(b)])].sort()) {
+      c.compare(id, path, a[path], b[path], () => {
+        const [group, leaf] = path.split('.');
+        let attribution: Attribution;
+        if (path === 'status' || path === 'qualificationProfile') attribution = through(detector, [], true);
+        else if (path === 'reason') {
+          const codes = (value: unknown) => String(value ?? '').split(' | ').filter(Boolean).map(reasonCode);
+          const was = codes(a.reason), now = codes(b.reason);
+          const removed = was.filter(x => !now.includes(x)), added = now.filter(x => !was.includes(x));
+          // A reason code the new path adds is attributed by the status comparison; a code both name whose figures differ follows a count or axis difference.
+          // A policy gate code only the legacy side names is a gate the pooled T3 fixtures failed and the bounded policy corpus does not (policy-corpus-bounded), shown by the policy aggregate differing.
+          const policyOnly = (codes: string[]) => codes.length > 0 && codes.every(x => /^policy\./.test(x));
+          const policy = through(detector, ['policyQualification'], false);
+          if (row && row.unattributedReasons.length === 0 && (removed.length === 0 || (policyOnly(removed) && policy))) {
+            if (added.length) {
+              const cause = policyOnly(added) && row.causes.includes('policy-corpus-bounded') ? 'policy-corpus-bounded' : row.causes[0];
+              if (cause) attribution = { cause, note: `new-only reason(s) ${added.join(', ')}${removed.length ? `; legacy-only ${removed.join(', ')}` : ''}` };
+            } else if (removed.length) attribution = { cause: policy!.cause, note: `legacy-only reason(s) ${removed.join(', ')}` };
+            else attribution = through(detector, [...PROFILE_SOURCES, 'policyQualification'], false);
+          }
+        } else if (group === 'profileCoverage' && PROFILE_DERIVED.has(leaf)) attribution = through(detector, PROFILE_SOURCES, true);
+        else if (group === 'fixtureProfile') attribution = through(detector, [leaf], false);
+        else if (MATRIX_EVIDENCE_FIELD[path]) attribution = through(detector, [MATRIX_EVIDENCE_FIELD[path]], false);
+        causes[path] = attribution?.cause;
+        return attribution;
+      });
+    }
+    if (l.status !== n.status || l.qualificationProfile !== n.qualificationProfile) transitions.push({ legacy: l.status, next: n.status, legacyProfile: l.qualificationProfile, nextProfile: n.qualificationProfile, cause: causes.status ?? causes.qualificationProfile });
+  }
+  compareDistribution(c, 'matrix', legacyTotals, nextTotals, transitions);
+  return c.section();
+}
+
+/**
+ * The status counts and the stable counts by route are sums of per-family statuses, so a difference in one is explained only when the
+ * family-level status changes that were attributed add up to it exactly (the same rule as a count residual).
+ */
+function compareDistribution(c: Collector, subject: string, legacy: DistributionSide, next: DistributionSide, transitions: Transition[]) {
+  const group = (field: string, l: Record<string, number>, n: Record<string, number>, touches: (t: Transition, key: string) => number) => {
+    for (const key of [...new Set([...Object.keys(l), ...Object.keys(n)])].sort()) {
+      c.compare(subject, `${field}.${key}`, l[key], n[key], () => {
+        const touching = transitions.filter(t => touches(t, key) !== 0);
+        if (!touching.length || touching.some(t => !t.cause)) return undefined;
+        const expected = transitions.reduce((total, t) => total + touches(t, key), 0);
+        if (expected !== (l[key] ?? 0) - (n[key] ?? 0)) return undefined;
+        const causes = [...new Set(touching.map(t => t.cause!))].sort();
+        return { cause: causes[0], note: `${touching.length} family status change(s) account for the difference (${causes.join(', ')})` };
+      });
+    }
+  };
+  group('distribution', legacy.distribution, next.distribution, (t, key) => Number(t.legacy === key) - Number(t.next === key));
+  group('stableDistribution', legacy.stable, next.stable, (t, key) => Number(t.legacy === 'stable' && t.legacyProfile === key) - Number(t.next === 'stable' && t.nextProfile === key));
+}
+
+/** The page-level numbers of the qualification overview: the family count, the status counts and the stable counts by route. */
+export function compareDistributions(legacy: DistributionSide & { familyCount: number }, next: DistributionSide & { familyCount: number }, statusRows: StatusRow[]): Section {
+  const c = new Collector();
+  c.compare('overview', 'familyCount', legacy.familyCount, next.familyCount);
+  const transitions = statusRows.filter(r => r.verdict !== 'equal' || (r.legacyProfile ?? null) !== (r.nextProfile ?? null)).map<Transition>(r => ({ legacy: r.legacy, next: r.next, legacyProfile: r.legacyProfile ?? null, nextProfile: r.nextProfile ?? null, cause: r.verdict === 'explained' ? r.causes[0] : undefined }));
+  compareDistribution(c, 'overview', legacy, next, transitions);
+  return c.section();
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// The review queue and ledger decisions.
+
+/** Per peer, the differential occurrences and how many a decision settles. `null` is a peer the legacy run never scanned, so it holds no legacy entry. */
+export type ReviewSide = Record<string, { occurrences: number; settled: number } | null>;
+export function compareReview(legacy: ReviewSide, next: ReviewSide, legacyEntries: { differential: number; mapped: number }, nextMapped: number): Section {
+  const c = new Collector();
+  c.compare('ledger', 'legacy differential entries, against those mapped to a canonical occurrence', legacyEntries.differential, legacyEntries.mapped);
+  c.compare('ledger', 'legacy entries mapped, against canonical occurrences the mapping settles', legacyEntries.mapped, nextMapped);
+  for (const peer of [...new Set([...Object.keys(legacy), ...Object.keys(next)])].sort()) {
+    const l = legacy[peer], n = next[peer];
+    for (const field of ['occurrences', 'settled'] as const) {
+      c.compare(peer, field, l === null ? 'not run' : l?.[field], n?.[field], () => (l === null ? { cause: 'review-occurrence-identity', note: `${peer} was never scanned by the legacy run, so the legacy ledger holds no entry for it` } : undefined));
+    }
+  }
+  return c.section();
+}
+
+// ---------------------------------------------------------------------------------------------------------------
 // The report.
 
 export interface ParityReport {
   schema: typeof PARITY_SCHEMA;
   identities: Record<string, unknown>;
   causes: Cause[];
-  sections: { identity: Section; membership: Section; status: Section; evidence: Section; outcomes: Section; knownGaps: Section };
+  sections: { identity: Section; membership: Section; status: Section; evidence: Section; outcomes: Section; knownGaps: Section; supportMatrix: Section; distribution: Section; review: Section };
   statusRows: StatusRow[];
+  /** The two support matrices side by side: taxonomy families and the status counts each path reads. */
+  matrix: { taxonomyFamilies: { legacy: number; next: number }; distribution: { legacy: Record<string, number>; next: Record<string, number> }; stableDistribution: { legacy: Record<string, number>; next: Record<string, number> } };
   counterfactual: FamilyReport['counterfactual'];
   heldBy: FamilyReport['heldBy'];
   outcomeGroups: OutcomeReport['groups'];
@@ -451,6 +595,32 @@ export function renderMarkdown(report: ParityReport): string {
   lines.push('| Status change | Causes | Families |', '| --- | --- | ---: |');
   for (const [key, count] of [...byCauseSet].sort()) { const [change, causes, extra] = key.split(' | '); lines.push(`| ${change} | ${causes}${extra ? `; ${extra}` : ''} | ${count} |`); }
   lines.push('');
+  const m = report.matrix;
+  lines.push('## Support matrix', '');
+  lines.push(`The support matrix is the provider x credential-family projection (one entry per taxonomy family) the legacy path writes with \`npm run eval:matrix\`; the new side is the view's \`supportMatrix\`, derived from the view's families and the product taxonomy. ${m.taxonomyFamilies.legacy} taxonomy families on the legacy side, ${m.taxonomyFamilies.next} on the new side. Status counts: legacy \`${JSON.stringify(m.distribution.legacy)}\`, new \`${JSON.stringify(m.distribution.next)}\`; stable by route: legacy \`${JSON.stringify(m.stableDistribution.legacy)}\`, new \`${JSON.stringify(m.stableDistribution.next)}\`. Every leaf of every entry is compared; a difference is attributed only through the difference the family comparison found in the evidence it projects.`, '');
+  const grouped = (section: Section) => {
+    const byKey = new Map<string, { field: string; cause: string; count: number; examples: string[] }>();
+    for (const d of section.differences) {
+      const field = d.field.replace(/\.[^.]*$/, '.*').replace(/^(distribution|stableDistribution)\..*$/, '$1.*');
+      const key = `${field}|${d.verdict === 'explained' ? d.cause : 'unexplained'}`;
+      const g = byKey.get(key) ?? { field, cause: d.verdict === 'explained' ? `\`${d.cause}\`` : '**unexplained**', count: 0, examples: [] };
+      g.count++; if (g.examples.length < 3 && !g.examples.includes(`\`${d.subject}\``)) g.examples.push(`\`${d.subject}\``);
+      byKey.set(key, g);
+    }
+    return [...byKey.values()].sort((a, b) => (a.field + a.cause < b.field + b.cause ? -1 : 1));
+  };
+  const table = (section: Section) => {
+    const rows = grouped(section);
+    if (!rows.length) { lines.push('No value differs.', ''); return; }
+    lines.push('| Field | Cause | Differences | Examples |', '| --- | --- | ---: | --- |');
+    for (const g of rows) lines.push(`| ${g.field} | ${g.cause} | ${g.count} | ${g.examples.join(', ')} |`);
+    lines.push('');
+  };
+  table(report.sections.supportMatrix);
+  lines.push('## Overview numbers', '', 'The numbers the qualification overview page shows: the family count, the status counts and the stable counts by route (the per-family status, evidence counts and reasons are the `status` and `evidence` sections above).', '');
+  table(report.sections.distribution);
+  lines.push('## Review queue and ledger', '', 'The differential review occurrences of the methods run against the legacy review ledger, per peer, through the generated mapping: occurrences, and how many a ledger decision settles.', '');
+  table(report.sections.review);
   lines.push('## Per-fixture outcomes', '');
   for (const [population, j] of Object.entries(report.joins)) lines.push(`- ${population}: ${j.pairs} cases matched one to one (by key tier: ${j.byTier.join(", ")}), ${j.unmatchedLegacy} legacy-only, ${j.unmatchedNext} new-only, ${j.ambiguousLegacy} legacy and ${j.ambiguousNext} new cases share content with another case and are not compared.`);
   lines.push('');

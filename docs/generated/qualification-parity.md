@@ -11,7 +11,7 @@ This repository measures and records. This report states which numbers agree, wh
 
 ## Summary
 
-35084 values compared: **34744 equal** (class 1, must-equal, held), **340 expected-structural** (class 2, each attributed to a cause), **0 unexplained** (class 3, to investigate).
+42611 values compared: **42206 equal** (class 1, must-equal, held), **405 expected-structural** (class 2, each attributed to a cause), **0 unexplained** (class 3, to investigate).
 
 | Area | Compared | Equal | Expected-structural | Unexplained |
 | --- | ---: | ---: | ---: | ---: |
@@ -21,6 +21,9 @@ This repository measures and records. This report states which numbers agree, wh
 | evidence | 4455 | 4415 | 40 | 0 |
 | outcomes | 29810 | 29663 | 147 | 0 |
 | knownGaps | 409 | 256 | 153 | 0 |
+| supportMatrix | 7509 | 7448 | 61 | 0 |
+| distribution | 8 | 8 | 0 | 0 |
+| review | 10 | 6 | 4 | 0 |
 
 ### Differences by cause
 
@@ -29,12 +32,12 @@ This repository measures and records. This report states which numbers agree, wh
 | `population-separation` | 0 | confirmed | The legacy path pooled the development, regression and policy fixtures of a family in one denominator. The new path measures each population on its own and counts floors from the public evidence snapshot alone (benchmarks/support/population-policy.json); a family's axis floors are judged on the union of axis labels across the populations the policy names (axisCoverage), so a pooled COUNT differs and an axis the product's other populations carry is covered. |
 | `axis-vocabulary` | 0 | confirmed | The public snapshot names a case group by scenario, not by source context, and has no benign taxonomy, so positive and control axis counts are not the legacy fixture axes. Applies only to a view built without the product axis overlay (population-policy.json axes); with the overlay, an axis difference is attributed to the population or membership cause it checks. |
 | `methods-not-run` | 0 | confirmed | The qualification view was built without a methods run, so the metamorphic, mutation and differential gates are unmeasured and a family that would be stable is held at provisional (methods.notRun). |
-| `review-occurrence-identity` | 0 | confirmed | The review queue of the methods run is keyed by canonical occurrence ids and holds the occurrences of every pinned peer, including peers the legacy run never scanned; the committed review ledger is keyed by legacy ids of a three-scanner legacy run. A canonical occurrence id the ledger and its generated mapping (benchmarks/support/public-review-ledger-map.json) do not hold reads unresolved. Recognised only for a view built without that mapping, where no decision can apply; with it, an occurrence of a peer the legacy run never scanned stays unreviewed and is not gate-bearing (population-policy.json methods.differential.peers). |
-| `policy-corpus-bounded` | 4 | confirmed | The T3 policy route reads the policy corpus alone (a bounded contract), where the legacy path pooled every T3 fixture of the family. |
+| `review-occurrence-identity` | 4 | confirmed | The review queue of the methods run is keyed by canonical occurrence ids and holds the occurrences of every pinned peer, including peers the legacy run never scanned; the committed review ledger is keyed by legacy ids of a three-scanner legacy run. A canonical occurrence id the ledger and its generated mapping (benchmarks/support/public-review-ledger-map.json) do not hold reads unresolved. Recognised only for a view built without that mapping, where no decision can apply; with it, an occurrence of a peer the legacy run never scanned stays unreviewed and is not gate-bearing (population-policy.json methods.differential.peers). |
+| `policy-corpus-bounded` | 12 | confirmed | The T3 policy route reads the policy corpus alone (a bounded contract), where the legacy path pooled every T3 fixture of the family. |
 | `legacy-id-rekey` | 153 | confirmed | Legacy fixture ids, ledger ids and disputed-property ids are legacy hashes or slugs; the public snapshot has canonical ids. Stored per-fixture inputs keyed by legacy ids do not resolve until the re-key. |
 | `twin-scope-vocabulary` | 147 | confirmed | A twin control is scoped to its declared family, and a finding of another known family is co-detection, not a flag. The legacy path scoped a twin by the product contract of the positive it mutates (a detector id); the evidence snapshot gives the twin its own family (a taxonomy id), so the twin can belong to another family and the same finding can swap between flagged and co-detected. A cross-provider twin has no family at all in the snapshot, so the engine cannot scope it and reads a finding of another known detector as flagged; recognised from the matched cases (the new twin is flagged with no family, the legacy twin was not). The adapter does not re-score it. Confirmed by the project twin-scope corpus (#602): the same bytes carried with the parent's family (twin-scope-regressions, a product regression-corpus addition) are read as co-detected, as the legacy path read them, so the public engine verdict on the unscoped copy stays a difference of the public population and the twin gate reads the project case (population-policy.json twinScope). |
-| `pending-not-scored` | 9 | confirmed | A T0 (pending) non-twin fixture has no scored outcome in credential-eval, so the adapter excludes it from the floor counts; the legacy path counted it as a fixture of its family. A T0 twin is not in this cause: the legacy path drops T0 twins, so neither side counts it. |
-| `canonical-evidence-membership` | 27 | confirmed | The evidence snapshot holds fixtures with no legacy counterpart (intended canonical-evidence change): they count in the new floors and in no legacy count. |
+| `pending-not-scored` | 35 | confirmed | A T0 (pending) non-twin fixture has no scored outcome in credential-eval, so the adapter excludes it from the floor counts; the legacy path counted it as a fixture of its family. A T0 twin is not in this cause: the legacy path drops T0 twins, so neither side counts it. |
+| `canonical-evidence-membership` | 54 | confirmed | The evidence snapshot holds fixtures with no legacy counterpart (intended canonical-evidence change): they count in the new floors and in no legacy count. |
 | `fixture-attribution` | 0 | inferred | The legacy path attributed a fixture to its declared contract and targets; the adapter attributes a case to the detectors named by its targets, its family, or the taxonomy family it belongs to and, where the snapshot names none, to the legacy targets the product overlay carries, then to its twin parent (population-policy.json attribution). What remains is a case the legacy path scoped to a family the overlay does not carry (no legacy counterpart) or that the legacy path attributed to a detector the adapter attributes elsewhere. |
 
 ## Status
@@ -47,6 +50,35 @@ Of the legacy-stable families the new path does not read stable, by what holds e
 
 | Status change | Causes | Families |
 | --- | --- | ---: |
+
+## Support matrix
+
+The support matrix is the provider x credential-family projection (one entry per taxonomy family) the legacy path writes with `npm run eval:matrix`; the new side is the view's `supportMatrix`, derived from the view's families and the product taxonomy. 173 taxonomy families on the legacy side, 173 on the new side. Status counts: legacy `{"stable":144,"provisional":7,"pending":5,"unsupported":17}`, new `{"pending":5,"provisional":7,"stable":144,"unsupported":17}`; stable by route: legacy `{"documented":106,"empirical":38,"policy-qualified":0}`, new `{"documented":106,"empirical":38,"policy-qualified":0}`. Every leaf of every entry is compared; a difference is attributed only through the difference the family comparison found in the evidence it projects.
+
+| Field | Cause | Differences | Examples |
+| --- | --- | ---: | --- |
+| fixtureProfile.* | `canonical-evidence-membership` | 19 | `aws:iam-user-access-key`, `generic:bearer-token`, `generic:connection-string-password` |
+| fixtureProfile.* | `pending-not-scored` | 15 | `linear:personal-api-key`, `slack:bot-token`, `stripe:restricted-key-live` |
+| policyQualification | `policy-corpus-bounded` | 4 | `generic:bearer-token`, `generic:connection-string-password`, `generic:otp-seed` |
+| profileCoverage.* | `canonical-evidence-membership` | 7 | `aws:iam-user-access-key`, `generic:bearer-token`, `generic:connection-string-password` |
+| profileCoverage.* | `pending-not-scored` | 11 | `linear:personal-api-key`, `slack:bot-token`, `stripe:restricted-key-live` |
+| reason | `policy-corpus-bounded` | 4 | `generic:bearer-token`, `generic:connection-string-password`, `generic:otp-seed` |
+| twinCoverage.* | `canonical-evidence-membership` | 1 | `sendgrid:api-key` |
+
+## Overview numbers
+
+The numbers the qualification overview page shows: the family count, the status counts and the stable counts by route (the per-family status, evidence counts and reasons are the `status` and `evidence` sections above).
+
+No value differs.
+
+## Review queue and ledger
+
+The differential review occurrences of the methods run against the legacy review ledger, per peer, through the generated mapping: occurrences, and how many a ledger decision settles.
+
+| Field | Cause | Differences | Examples |
+| --- | --- | ---: | --- |
+| occurrences | `review-occurrence-identity` | 2 | `flare-redact`, `openredaction` |
+| settled | `review-occurrence-identity` | 2 | `flare-redact`, `openredaction` |
 
 ## Per-fixture outcomes
 
@@ -72,9 +104,9 @@ Of the legacy-stable families the new path does not read stable, by what holds e
 ## Not compared
 
 - per-fixture outcomes, category shadow-scoring-authored: the legacy bench writes no report for it (calibration-only), so there is no legacy outcome.
-- review ledger decisions (applied through the mapping): the methods run has a review queue keyed by canonical occurrence ids; the legacy review ledger is keyed by legacy ids, and a decision applies to a canonical occurrence only through benchmarks/support/public-review-ledger-map.json (same case, peer, disagreement property and bytes): 4268 of 10739 canonical occurrences are mapped (4268 of 4268 legacy differential entries), 6471 are occurrences of peers the legacy run never scanned (unreviewed, and not gate-bearing) and 0 are unmatched for another reason. The 8845 legacy mutation review entries have no canonical counterpart (the canonical review queue holds differential occurrences only) and are not compared.
+- review ledger entries outside the mapping: the mapped decisions are compared per peer in the review section; the methods run has a review queue keyed by canonical occurrence ids; the legacy review ledger is keyed by legacy ids, and a decision applies to a canonical occurrence only through benchmarks/support/public-review-ledger-map.json (same case, peer, disagreement property and bytes): 4268 of 10739 canonical occurrences are mapped (4268 of 4268 legacy differential entries), 6471 are occurrences of peers the legacy run never scanned (unreviewed, and not gate-bearing) and 0 are unmatched for another reason. The 8845 legacy mutation review entries have no canonical counterpart (the canonical review queue holds differential occurrences only) and are not compared.
 - candidate-regression inputs and protected holdout: internal populations, not part of a public qualification view (docs/specs/qualification-inputs.md).
-- Next page data: the report, family and fixture pages of the Next app still read the legacy files; the new qualification pages (/evaluation/qualification/) read the view this report compares. Compare them by page-level numbers: distribution and per-family status above are the numbers those pages display.
+- Next page data: the report, family and fixture pages of the Next app still read the legacy files; the new qualification pages (/evaluation/qualification/) read the view this report compares, so the numbers they display are compared at the source: the overview numbers (distribution section), the support matrix, the per-family status and evidence facts (status and evidence sections), the known gaps and the per-case rows. What is not compared is a rendered page against a rendered page: there is no automated page-data diff, and the legacy pages are not a data source of this repository. The per-population, per-scanner counts of a family page are sums of the per-case outcomes compared one to one (outcomes section); the legacy path has no per-population denominator to compare them with, only the pooled counts the evidence section rebuilds from them.
 
 ## Unexplained differences
 

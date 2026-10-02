@@ -2542,6 +2542,2118 @@
           "note": "public-evidence-snapshot ids are canonical ids; the legacy slug does not resolve"
         }
       ]
+    },
+    "supportMatrix": {
+      "tally": {
+        "compared": 7509,
+        "equal": 7448,
+        "explained": 61,
+        "unexplained": 0,
+        "byCause": {
+          "canonical-evidence-membership": 27,
+          "policy-corpus-bounded": 8,
+          "pending-not-scored": 26
+        }
+      },
+      "differences": [
+        {
+          "subject": "aws:iam-user-access-key",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 6,
+          "next": 7,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.confusionAxes of aws-access-key"
+        },
+        {
+          "subject": "aws:iam-user-access-key",
+          "field": "fixtureProfile.controlAxes",
+          "legacy": 5,
+          "next": 6,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.controlAxes of aws-access-key"
+        },
+        {
+          "subject": "aws:iam-user-access-key",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 6,
+          "next": 7,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of aws-access-key"
+        },
+        {
+          "subject": "aws:iam-user-access-key",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 26,
+            "positiveCases": 6,
+            "benignControls": 8,
+            "twinPairs": 6,
+            "positiveContextAxes": 5,
+            "controlAxes": 5,
+            "confusionAxes": 6,
+            "positiveContextAxisIds": [
+              "#213a · aws-access-key · ci-config",
+              "#213a · aws-access-key · source-code",
+              "#254 · AWS documentation literals",
+              "Token formats",
+              "aws-access-key"
+            ],
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 8,
+            "confusionAxes": 7,
+            "confusionAxisIds": [
+              "aws-documented-example-keys",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:prefix"
+            ],
+            "controlAxes": 6,
+            "controlAxisIds": [
+              "aws-documented-example-keys",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 6,
+            "positiveContextAxes": 6,
+            "positiveContextAxisIds": [
+              "#213a · aws-access-key · ci-config",
+              "#213a · aws-access-key · source-code",
+              "#254 · AWS documentation literals",
+              "Token formats",
+              "aws-access-key",
+              "aws-example-keys-one-character-off"
+            ],
+            "totalFixtures": 26,
+            "twinPairs": 6
+          },
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of aws-access-key"
+        },
+        {
+          "subject": "generic:bearer-token",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 19,
+          "next": 16,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of bearer-token"
+        },
+        {
+          "subject": "generic:bearer-token",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 52,
+          "next": 49,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.totalFixtures of bearer-token"
+        },
+        {
+          "subject": "generic:bearer-token",
+          "field": "policyQualification",
+          "legacy": {
+            "profileId": "credential-policy-v1",
+            "contractVersion": 1,
+            "contractBounded": true,
+            "positiveCases": 16,
+            "positiveAxes": 13,
+            "benignCases": 19,
+            "benignAxes": 8,
+            "twinPairs": 14,
+            "spans": 16,
+            "outcomes": {
+              "EXACT": 16,
+              "COVERED": 0,
+              "OVERBROAD": 0,
+              "PARTIAL": 0,
+              "MISS": 0
+            },
+            "exactSpanMisses": 0,
+            "leakedSpans": 0,
+            "overbroadSpans": 0,
+            "collateralBytes": 0,
+            "positiveActions": {
+              "warn": 0,
+              "redact": 16,
+              "block": 0,
+              "allow": 0
+            },
+            "controlFalseAlarms": {
+              "warn": 0,
+              "redact": 0,
+              "block": 0,
+              "allow": 0
+            },
+            "unexpectedPositiveActions": 0,
+            "unresolvedActionCases": 0,
+            "publicConformanceCases": 4,
+            "publicConformanceFailures": 0,
+            "publicConformance": "pass",
+            "protectedHoldout": "not-run",
+            "candidateFrozen": false,
+            "failedGates": [
+              {
+                "code": "protected-holdout",
+                "actual": "not-run",
+                "required": "pass on frozen candidate"
+              }
+            ]
+          },
+          "next": {
+            "benignAxes": 1,
+            "benignCases": 1,
+            "candidateFrozen": false,
+            "collateralBytes": 0,
+            "contractBounded": true,
+            "contractVersion": 1,
+            "controlFalseAlarms": {
+              "allow": 0,
+              "block": 0,
+              "redact": 0,
+              "warn": 0
+            },
+            "exactSpanMisses": 0,
+            "failedGates": [
+              {
+                "actual": 2,
+                "code": "positive-cases",
+                "required": 6
+              },
+              {
+                "actual": 2,
+                "code": "positive-axes",
+                "required": 4
+              },
+              {
+                "actual": 1,
+                "code": "benign-cases",
+                "required": 8
+              },
+              {
+                "actual": 1,
+                "code": "benign-axes",
+                "required": 4
+              },
+              {
+                "actual": 1,
+                "code": "twin-pairs",
+                "required": 5
+              },
+              {
+                "actual": "not-run",
+                "code": "protected-holdout",
+                "required": "pass on frozen candidate"
+              }
+            ],
+            "leakedSpans": 0,
+            "outcomes": {
+              "COVERED": 0,
+              "EXACT": 2,
+              "MISS": 0,
+              "OVERBROAD": 0,
+              "PARTIAL": 0
+            },
+            "overbroadSpans": 0,
+            "positiveActions": {
+              "allow": 0,
+              "block": 0,
+              "redact": 2,
+              "warn": 0
+            },
+            "positiveAxes": 2,
+            "positiveCases": 2,
+            "profileId": "credential-policy-v1",
+            "protectedHoldout": "not-run",
+            "publicConformance": "pass",
+            "publicConformanceCases": 4,
+            "publicConformanceFailures": 0,
+            "spans": 2,
+            "twinPairs": 1,
+            "unexpectedPositiveActions": 0,
+            "unresolvedActionCases": 0
+          },
+          "verdict": "explained",
+          "cause": "policy-corpus-bounded",
+          "note": "follows evidence.policyQualification of bearer-token"
+        },
+        {
+          "subject": "generic:bearer-token",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 52,
+            "positiveCases": 5,
+            "benignControls": 19,
+            "twinPairs": 14,
+            "positiveContextAxes": 12,
+            "controlAxes": 6,
+            "confusionAxes": 9,
+            "positiveContextAxisIds": [
+              "#207 · bearer-token · ci-config",
+              "#207 · bearer-token · cli",
+              "#207 · bearer-token · header",
+              "#207 · bearer-token · log",
+              "#207 · bearer-token · prose",
+              "#207 · bearer-token · sdk-config",
+              "#207 · bearer-token · source-code",
+              "#207 · bearer-token · structured-file",
+              "#207 · bearer-token · tool-output",
+              "Authorization",
+              "Context",
+              "bearer-token"
+            ],
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:alphabet",
+              "twin:context",
+              "twin:length"
+            ]
+          },
+          "next": {
+            "benignControls": 19,
+            "confusionAxes": 9,
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:alphabet",
+              "twin:context",
+              "twin:length"
+            ],
+            "controlAxes": 6,
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 2,
+            "positiveContextAxes": 12,
+            "positiveContextAxisIds": [
+              "#207 · bearer-token · ci-config",
+              "#207 · bearer-token · cli",
+              "#207 · bearer-token · header",
+              "#207 · bearer-token · log",
+              "#207 · bearer-token · prose",
+              "#207 · bearer-token · sdk-config",
+              "#207 · bearer-token · source-code",
+              "#207 · bearer-token · structured-file",
+              "#207 · bearer-token · tool-output",
+              "Authorization",
+              "Context",
+              "bearer-token"
+            ],
+            "totalFixtures": 49,
+            "twinPairs": 14
+          },
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of bearer-token"
+        },
+        {
+          "subject": "generic:bearer-token",
+          "field": "profileCoverage.debt",
+          "legacy": [
+            {
+              "cell": "positiveCases",
+              "actual": 5,
+              "required": 6,
+              "shortfall": 1
+            }
+          ],
+          "next": [
+            {
+              "actual": 2,
+              "cell": "positiveCases",
+              "required": 6,
+              "shortfall": 4
+            }
+          ],
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of bearer-token"
+        },
+        {
+          "subject": "generic:bearer-token",
+          "field": "reason",
+          "legacy": "policy.protected-holdout: not-run (requires pass on frozen candidate)",
+          "next": "policy.positive-cases: 2 (requires 6) | policy.positive-axes: 2 (requires 4) | policy.benign-cases: 1 (requires 8) | policy.benign-axes: 1 (requires 4) | policy.twin-pairs: 1 (requires 5) | policy.protected-holdout: not-run (requires pass on frozen candidate)",
+          "verdict": "explained",
+          "cause": "policy-corpus-bounded",
+          "note": "new-only reason(s) policy.positive-cases, policy.positive-axes, policy.benign-cases, policy.benign-axes, policy.twin-pairs"
+        },
+        {
+          "subject": "generic:connection-string-password",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 7,
+          "next": 10,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.confusionAxes of connection-string"
+        },
+        {
+          "subject": "generic:connection-string-password",
+          "field": "fixtureProfile.controlAxes",
+          "legacy": 6,
+          "next": 9,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.controlAxes of connection-string"
+        },
+        {
+          "subject": "generic:connection-string-password",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 10,
+          "next": 13,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of connection-string"
+        },
+        {
+          "subject": "generic:connection-string-password",
+          "field": "policyQualification",
+          "legacy": {
+            "profileId": "credential-policy-v1",
+            "contractVersion": 1,
+            "contractBounded": true,
+            "positiveCases": 32,
+            "positiveAxes": 11,
+            "benignCases": 24,
+            "benignAxes": 11,
+            "twinPairs": 18,
+            "spans": 32,
+            "outcomes": {
+              "EXACT": 32,
+              "COVERED": 0,
+              "OVERBROAD": 0,
+              "PARTIAL": 0,
+              "MISS": 0
+            },
+            "exactSpanMisses": 0,
+            "leakedSpans": 0,
+            "overbroadSpans": 0,
+            "collateralBytes": 0,
+            "positiveActions": {
+              "warn": 0,
+              "redact": 32,
+              "block": 0,
+              "allow": 0
+            },
+            "controlFalseAlarms": {
+              "warn": 0,
+              "redact": 0,
+              "block": 0,
+              "allow": 0
+            },
+            "unexpectedPositiveActions": 0,
+            "unresolvedActionCases": 0,
+            "publicConformanceCases": 4,
+            "publicConformanceFailures": 0,
+            "publicConformance": "pass",
+            "protectedHoldout": "not-run",
+            "candidateFrozen": false,
+            "failedGates": [
+              {
+                "code": "protected-holdout",
+                "actual": "not-run",
+                "required": "pass on frozen candidate"
+              }
+            ]
+          },
+          "next": {
+            "benignAxes": 1,
+            "benignCases": 1,
+            "candidateFrozen": false,
+            "collateralBytes": 0,
+            "contractBounded": true,
+            "contractVersion": 1,
+            "controlFalseAlarms": {
+              "allow": 0,
+              "block": 0,
+              "redact": 0,
+              "warn": 0
+            },
+            "exactSpanMisses": 0,
+            "failedGates": [
+              {
+                "actual": 2,
+                "code": "positive-cases",
+                "required": 6
+              },
+              {
+                "actual": 2,
+                "code": "positive-axes",
+                "required": 4
+              },
+              {
+                "actual": 1,
+                "code": "benign-cases",
+                "required": 8
+              },
+              {
+                "actual": 1,
+                "code": "benign-axes",
+                "required": 4
+              },
+              {
+                "actual": 1,
+                "code": "twin-pairs",
+                "required": 5
+              },
+              {
+                "actual": "not-run",
+                "code": "protected-holdout",
+                "required": "pass on frozen candidate"
+              }
+            ],
+            "leakedSpans": 0,
+            "outcomes": {
+              "COVERED": 0,
+              "EXACT": 2,
+              "MISS": 0,
+              "OVERBROAD": 0,
+              "PARTIAL": 0
+            },
+            "overbroadSpans": 0,
+            "positiveActions": {
+              "allow": 0,
+              "block": 0,
+              "redact": 2,
+              "warn": 0
+            },
+            "positiveAxes": 2,
+            "positiveCases": 2,
+            "profileId": "credential-policy-v1",
+            "protectedHoldout": "not-run",
+            "publicConformance": "pass",
+            "publicConformanceCases": 4,
+            "publicConformanceFailures": 0,
+            "spans": 2,
+            "twinPairs": 1,
+            "unexpectedPositiveActions": 0,
+            "unresolvedActionCases": 0
+          },
+          "verdict": "explained",
+          "cause": "policy-corpus-bounded",
+          "note": "follows evidence.policyQualification of connection-string"
+        },
+        {
+          "subject": "generic:connection-string-password",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 74,
+            "positiveCases": 14,
+            "benignControls": 24,
+            "twinPairs": 18,
+            "positiveContextAxes": 9,
+            "controlAxes": 6,
+            "confusionAxes": 7,
+            "positiveContextAxisIds": [
+              "#255 · Tutorial URL passwords",
+              "#256 · Connection placeholders",
+              "#257 · Placeholder vocabulary",
+              "#379 · connection-string · cli",
+              "#379 · connection-string · env",
+              "#379 · connection-string · log",
+              "#379 · connection-string · source-code",
+              "#379 · connection-string · structured-file",
+              "connection-string"
+            ],
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:context"
+            ]
+          },
+          "next": {
+            "benignControls": 24,
+            "confusionAxes": 10,
+            "confusionAxisIds": [
+              "connection-uri-placeholder-passwords",
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "placeholder-vocabulary-values",
+              "public-identifier",
+              "reference",
+              "tutorial-default-url-passwords",
+              "twin:context"
+            ],
+            "controlAxes": 9,
+            "controlAxisIds": [
+              "connection-uri-placeholder-passwords",
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "placeholder-vocabulary-values",
+              "public-identifier",
+              "reference",
+              "tutorial-default-url-passwords"
+            ],
+            "positiveCases": 14,
+            "positiveContextAxes": 12,
+            "positiveContextAxisIds": [
+              "#255 · Tutorial URL passwords",
+              "#256 · Connection placeholders",
+              "#257 · Placeholder vocabulary",
+              "#379 · connection-string · cli",
+              "#379 · connection-string · env",
+              "#379 · connection-string · log",
+              "#379 · connection-string · source-code",
+              "#379 · connection-string · structured-file",
+              "connection-string",
+              "connection-uri-placeholder-lookalike-passwords",
+              "literal-url-passwords",
+              "placeholder-vocabulary-near-misses"
+            ],
+            "totalFixtures": 74,
+            "twinPairs": 18
+          },
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of connection-string"
+        },
+        {
+          "subject": "generic:connection-string-password",
+          "field": "reason",
+          "legacy": "policy.protected-holdout: not-run (requires pass on frozen candidate)",
+          "next": "policy.positive-cases: 2 (requires 6) | policy.positive-axes: 2 (requires 4) | policy.benign-cases: 1 (requires 8) | policy.benign-axes: 1 (requires 4) | policy.twin-pairs: 1 (requires 5) | policy.protected-holdout: not-run (requires pass on frozen candidate)",
+          "verdict": "explained",
+          "cause": "policy-corpus-bounded",
+          "note": "new-only reason(s) policy.positive-cases, policy.positive-axes, policy.benign-cases, policy.benign-axes, policy.twin-pairs"
+        },
+        {
+          "subject": "generic:otp-seed",
+          "field": "policyQualification",
+          "legacy": {
+            "profileId": "credential-policy-v1",
+            "contractVersion": 1,
+            "contractBounded": true,
+            "positiveCases": 9,
+            "positiveAxes": 4,
+            "benignCases": 8,
+            "benignAxes": 4,
+            "twinPairs": 7,
+            "spans": 9,
+            "outcomes": {
+              "EXACT": 9,
+              "COVERED": 0,
+              "OVERBROAD": 0,
+              "PARTIAL": 0,
+              "MISS": 0
+            },
+            "exactSpanMisses": 0,
+            "leakedSpans": 0,
+            "overbroadSpans": 0,
+            "collateralBytes": 0,
+            "positiveActions": {
+              "warn": 0,
+              "redact": 9,
+              "block": 0,
+              "allow": 0
+            },
+            "controlFalseAlarms": {
+              "warn": 0,
+              "redact": 0,
+              "block": 0,
+              "allow": 0
+            },
+            "unexpectedPositiveActions": 0,
+            "unresolvedActionCases": 0,
+            "publicConformanceCases": 7,
+            "publicConformanceFailures": 0,
+            "publicConformance": "pass",
+            "protectedHoldout": "not-run",
+            "candidateFrozen": false,
+            "failedGates": [
+              {
+                "code": "protected-holdout",
+                "actual": "not-run",
+                "required": "pass on frozen candidate"
+              }
+            ]
+          },
+          "next": {
+            "benignAxes": 3,
+            "benignCases": 3,
+            "candidateFrozen": false,
+            "collateralBytes": 0,
+            "contractBounded": true,
+            "contractVersion": 1,
+            "controlFalseAlarms": {
+              "allow": 0,
+              "block": 0,
+              "redact": 0,
+              "warn": 0
+            },
+            "exactSpanMisses": 0,
+            "failedGates": [
+              {
+                "actual": 3,
+                "code": "positive-cases",
+                "required": 6
+              },
+              {
+                "actual": 3,
+                "code": "positive-axes",
+                "required": 4
+              },
+              {
+                "actual": 3,
+                "code": "benign-cases",
+                "required": 8
+              },
+              {
+                "actual": 3,
+                "code": "benign-axes",
+                "required": 4
+              },
+              {
+                "actual": 1,
+                "code": "twin-pairs",
+                "required": 5
+              },
+              {
+                "actual": "not-run",
+                "code": "protected-holdout",
+                "required": "pass on frozen candidate"
+              }
+            ],
+            "leakedSpans": 0,
+            "outcomes": {
+              "COVERED": 0,
+              "EXACT": 3,
+              "MISS": 0,
+              "OVERBROAD": 0,
+              "PARTIAL": 0
+            },
+            "overbroadSpans": 0,
+            "positiveActions": {
+              "allow": 0,
+              "block": 0,
+              "redact": 3,
+              "warn": 0
+            },
+            "positiveAxes": 3,
+            "positiveCases": 3,
+            "profileId": "credential-policy-v1",
+            "protectedHoldout": "not-run",
+            "publicConformance": "pass",
+            "publicConformanceCases": 7,
+            "publicConformanceFailures": 0,
+            "spans": 3,
+            "twinPairs": 1,
+            "unexpectedPositiveActions": 0,
+            "unresolvedActionCases": 0
+          },
+          "verdict": "explained",
+          "cause": "policy-corpus-bounded",
+          "note": "follows evidence.policyQualification of otpauth-uri"
+        },
+        {
+          "subject": "generic:otp-seed",
+          "field": "reason",
+          "legacy": "policy.protected-holdout: not-run (requires pass on frozen candidate)",
+          "next": "policy.positive-cases: 3 (requires 6) | policy.positive-axes: 3 (requires 4) | policy.benign-cases: 3 (requires 8) | policy.benign-axes: 3 (requires 4) | policy.twin-pairs: 1 (requires 5) | policy.protected-holdout: not-run (requires pass on frozen candidate)",
+          "verdict": "explained",
+          "cause": "policy-corpus-bounded",
+          "note": "new-only reason(s) policy.positive-cases, policy.positive-axes, policy.benign-cases, policy.benign-axes, policy.twin-pairs"
+        },
+        {
+          "subject": "generic:unclassified-assignment-literal",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 5,
+          "next": 14,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.confusionAxes of generic-token"
+        },
+        {
+          "subject": "generic:unclassified-assignment-literal",
+          "field": "fixtureProfile.controlAxes",
+          "legacy": 4,
+          "next": 13,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.controlAxes of generic-token"
+        },
+        {
+          "subject": "generic:unclassified-assignment-literal",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 36,
+          "next": 45,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of generic-token"
+        },
+        {
+          "subject": "generic:unclassified-assignment-literal",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 79,
+          "next": 76,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of generic-token"
+        },
+        {
+          "subject": "generic:unclassified-assignment-literal",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 165,
+          "next": 162,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.totalFixtures of generic-token"
+        },
+        {
+          "subject": "generic:unclassified-assignment-literal",
+          "field": "policyQualification",
+          "legacy": {
+            "profileId": "credential-policy-v1",
+            "contractVersion": 1,
+            "contractBounded": true,
+            "positiveCases": 76,
+            "positiveAxes": 36,
+            "benignCases": 76,
+            "benignAxes": 18,
+            "twinPairs": 10,
+            "spans": 76,
+            "outcomes": {
+              "EXACT": 75,
+              "COVERED": 0,
+              "OVERBROAD": 0,
+              "PARTIAL": 0,
+              "MISS": 1
+            },
+            "exactSpanMisses": 1,
+            "leakedSpans": 1,
+            "overbroadSpans": 0,
+            "collateralBytes": 0,
+            "positiveActions": {
+              "warn": 7,
+              "redact": 68,
+              "block": 0,
+              "allow": 0
+            },
+            "controlFalseAlarms": {
+              "warn": 0,
+              "redact": 0,
+              "block": 0,
+              "allow": 0
+            },
+            "unexpectedPositiveActions": 0,
+            "unresolvedActionCases": 0,
+            "publicConformanceCases": 4,
+            "publicConformanceFailures": 0,
+            "publicConformance": "pass",
+            "protectedHoldout": "not-run",
+            "candidateFrozen": false,
+            "failedGates": [
+              {
+                "code": "exact-span",
+                "actual": 1,
+                "required": 0
+              },
+              {
+                "code": "leaked-span",
+                "actual": 1,
+                "required": 0
+              },
+              {
+                "code": "protected-holdout",
+                "actual": "not-run",
+                "required": "pass on frozen candidate"
+              }
+            ]
+          },
+          "next": {
+            "benignAxes": 1,
+            "benignCases": 1,
+            "candidateFrozen": false,
+            "collateralBytes": 0,
+            "contractBounded": true,
+            "contractVersion": 1,
+            "controlFalseAlarms": {
+              "allow": 0,
+              "block": 0,
+              "redact": 0,
+              "warn": 0
+            },
+            "exactSpanMisses": 0,
+            "failedGates": [
+              {
+                "actual": 2,
+                "code": "positive-cases",
+                "required": 6
+              },
+              {
+                "actual": 2,
+                "code": "positive-axes",
+                "required": 4
+              },
+              {
+                "actual": 1,
+                "code": "benign-cases",
+                "required": 8
+              },
+              {
+                "actual": 1,
+                "code": "benign-axes",
+                "required": 4
+              },
+              {
+                "actual": 1,
+                "code": "twin-pairs",
+                "required": 5
+              },
+              {
+                "actual": "not-run",
+                "code": "protected-holdout",
+                "required": "pass on frozen candidate"
+              }
+            ],
+            "leakedSpans": 0,
+            "outcomes": {
+              "COVERED": 0,
+              "EXACT": 2,
+              "MISS": 0,
+              "OVERBROAD": 0,
+              "PARTIAL": 0
+            },
+            "overbroadSpans": 0,
+            "positiveActions": {
+              "allow": 0,
+              "block": 0,
+              "redact": 1,
+              "warn": 1
+            },
+            "positiveAxes": 2,
+            "positiveCases": 2,
+            "profileId": "credential-policy-v1",
+            "protectedHoldout": "not-run",
+            "publicConformance": "pass",
+            "publicConformanceCases": 4,
+            "publicConformanceFailures": 0,
+            "spans": 2,
+            "twinPairs": 1,
+            "unexpectedPositiveActions": 0,
+            "unresolvedActionCases": 0
+          },
+          "verdict": "explained",
+          "cause": "policy-corpus-bounded",
+          "note": "follows evidence.policyQualification of generic-token"
+        },
+        {
+          "subject": "generic:unclassified-assignment-literal",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 165,
+            "positiveCases": 69,
+            "benignControls": 76,
+            "twinPairs": 10,
+            "positiveContextAxes": 35,
+            "controlAxes": 4,
+            "confusionAxes": 5,
+            "positiveContextAxisIds": [
+              "#1012a · aws-secret-access-key · control · near-miss",
+              "#207 · confluent-cloud-api-secret-legacy · control · near-miss",
+              "#207 · discord-bot-token · control · near-miss",
+              "#207 · heroku-api-key-legacy · control · near-miss",
+              "#207 · sentry-org-auth-token · control · near-miss",
+              "#207 · sentry-user-auth-token · control · near-miss",
+              "#207 · telegram-bot-token · control · near-miss",
+              "#207 · twilio-api-key-secret · control · near-miss",
+              "#207 · twilio-auth-token · control · near-miss",
+              "#213d · mailchimp-api-key · control · near-miss",
+              "#213d · mailgun-api-key · control · near-miss",
+              "#213d · postman-api-key · control · near-miss",
+              "#254 · AWS documentation literals",
+              "#257 · Placeholder vocabulary",
+              "#259 · mailgun-api-key-triplet · control · near-miss",
+              "#262 · Line boundaries",
+              "#263 · Fully delimited templates",
+              "#264 · Masked values",
+              "#265 · Nested YAML recall",
+              "#266 · Flow collections",
+              "#278 · Code reference exclusions",
+              "#280 · Secret-manager grammars",
+              "#464a · daytona-api-key · control · encoded-value",
+              "#464d · browserbase-api-key · control · near-miss",
+              "#464e · cerebras-api-key · control · near-miss",
+              "#464f · runpod-api-key · control · near-miss",
+              "#528b · polar-token · control · public-id",
+              "Generic fallback",
+              "Literal-secret positive controls",
+              "datadog-api-key",
+              "generic-token",
+              "heroku-api-key-legacy",
+              "mailchimp-api-key",
+              "mailgun-api-key",
+              "travisci-api-token"
+            ],
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "reference",
+              "twin:context"
+            ]
+          },
+          "next": {
+            "benignControls": 76,
+            "confusionAxes": 14,
+            "confusionAxisIds": [
+              "already-masked-values",
+              "aws-documented-example-keys",
+              "code-expression-credential-values",
+              "credential-key-ending-a-line",
+              "fully-delimited-template-expressions",
+              "near-miss",
+              "nested-yaml-schema-and-reference-passwords",
+              "ordinary-prose",
+              "placeholder",
+              "placeholder-vocabulary-values",
+              "reference",
+              "secret-manager-pointer-values",
+              "twin:context",
+              "yaml-flow-collection-secret-keys"
+            ],
+            "controlAxes": 13,
+            "controlAxisIds": [
+              "already-masked-values",
+              "aws-documented-example-keys",
+              "code-expression-credential-values",
+              "credential-key-ending-a-line",
+              "fully-delimited-template-expressions",
+              "near-miss",
+              "nested-yaml-schema-and-reference-passwords",
+              "ordinary-prose",
+              "placeholder",
+              "placeholder-vocabulary-values",
+              "reference",
+              "secret-manager-pointer-values",
+              "yaml-flow-collection-secret-keys"
+            ],
+            "positiveCases": 66,
+            "positiveContextAxes": 44,
+            "positiveContextAxisIds": [
+              "#1012a · aws-secret-access-key · control · near-miss",
+              "#207 · confluent-cloud-api-secret-legacy · control · near-miss",
+              "#207 · discord-bot-token · control · near-miss",
+              "#207 · heroku-api-key-legacy · control · near-miss",
+              "#207 · sentry-org-auth-token · control · near-miss",
+              "#207 · sentry-user-auth-token · control · near-miss",
+              "#207 · telegram-bot-token · control · near-miss",
+              "#207 · twilio-api-key-secret · control · near-miss",
+              "#207 · twilio-auth-token · control · near-miss",
+              "#213d · mailchimp-api-key · control · near-miss",
+              "#213d · mailgun-api-key · control · near-miss",
+              "#213d · postman-api-key · control · near-miss",
+              "#254 · AWS documentation literals",
+              "#257 · Placeholder vocabulary",
+              "#259 · mailgun-api-key-triplet · control · near-miss",
+              "#262 · Line boundaries",
+              "#263 · Fully delimited templates",
+              "#264 · Masked values",
+              "#265 · Nested YAML recall",
+              "#266 · Flow collections",
+              "#278 · Code reference exclusions",
+              "#280 · Secret-manager grammars",
+              "#464a · daytona-api-key · control · encoded-value",
+              "#464d · browserbase-api-key · control · near-miss",
+              "#464e · cerebras-api-key · control · near-miss",
+              "#464f · runpod-api-key · control · near-miss",
+              "#528b · polar-token · control · public-id",
+              "Generic fallback",
+              "Literal-secret positive controls",
+              "aws-example-keys-one-character-off",
+              "block-yaml-and-brace-prefixed-secret-literals",
+              "code-expression-lookalike-literals",
+              "credential-key-with-same-line-value",
+              "datadog-api-key",
+              "generic-token",
+              "heroku-api-key-legacy",
+              "mailchimp-api-key",
+              "mailgun-api-key",
+              "masks-ending-in-a-real-character",
+              "nested-yaml-literal-passwords",
+              "partially-delimited-template-expressions",
+              "placeholder-vocabulary-near-misses",
+              "secret-manager-grammar-imitations",
+              "travisci-api-token"
+            ],
+            "totalFixtures": 162,
+            "twinPairs": 10
+          },
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of generic-token"
+        },
+        {
+          "subject": "generic:unclassified-assignment-literal",
+          "field": "profileCoverage.cellsMet",
+          "legacy": [
+            "arrival-provisional",
+            "stable-documented"
+          ],
+          "next": [
+            "arrival-provisional",
+            "stable-documented",
+            "stable-empirical",
+            "context-constrained-empirical"
+          ],
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of generic-token"
+        },
+        {
+          "subject": "generic:unclassified-assignment-literal",
+          "field": "reason",
+          "legacy": "policy.exact-span: 1 (requires 0) | policy.leaked-span: 1 (requires 0) | policy.protected-holdout: not-run (requires pass on frozen candidate)",
+          "next": "policy.positive-cases: 2 (requires 6) | policy.positive-axes: 2 (requires 4) | policy.benign-cases: 1 (requires 8) | policy.benign-axes: 1 (requires 4) | policy.twin-pairs: 1 (requires 5) | policy.protected-holdout: not-run (requires pass on frozen candidate)",
+          "verdict": "explained",
+          "cause": "policy-corpus-bounded",
+          "note": "new-only reason(s) policy.positive-cases, policy.positive-axes, policy.benign-cases, policy.benign-axes, policy.twin-pairs; legacy-only policy.exact-span, policy.leaked-span"
+        },
+        {
+          "subject": "linear:personal-api-key",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 11,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of linear-token"
+        },
+        {
+          "subject": "linear:personal-api-key",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 27,
+          "next": 24,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.totalFixtures of linear-token"
+        },
+        {
+          "subject": "linear:personal-api-key",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 27,
+            "positiveCases": 6,
+            "benignControls": 11,
+            "twinPairs": 5,
+            "positiveContextAxes": 4,
+            "controlAxes": 4,
+            "confusionAxes": 5,
+            "positiveContextAxisIds": [
+              "#213a · linear-token · env",
+              "#213a · linear-token · header",
+              "#213a · linear-token · source-code",
+              "linear-token"
+            ],
+            "controlAxisIds": [
+              "near-miss",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "near-miss",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:length"
+            ]
+          },
+          "next": {
+            "benignControls": 11,
+            "confusionAxes": 5,
+            "confusionAxisIds": [
+              "near-miss",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:length"
+            ],
+            "controlAxes": 4,
+            "controlAxisIds": [
+              "near-miss",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 3,
+            "positiveContextAxes": 4,
+            "positiveContextAxisIds": [
+              "#213a · linear-token · env",
+              "#213a · linear-token · header",
+              "#213a · linear-token · source-code",
+              "linear-token"
+            ],
+            "totalFixtures": 24,
+            "twinPairs": 5
+          },
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of linear-token"
+        },
+        {
+          "subject": "linear:personal-api-key",
+          "field": "profileCoverage.cellsMet",
+          "legacy": [
+            "arrival-provisional",
+            "stable-documented"
+          ],
+          "next": [],
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of linear-token"
+        },
+        {
+          "subject": "linear:personal-api-key",
+          "field": "profileCoverage.debt",
+          "legacy": [],
+          "next": [
+            {
+              "actual": 3,
+              "cell": "positiveCases",
+              "required": 6,
+              "shortfall": 3
+            }
+          ],
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of linear-token"
+        },
+        {
+          "subject": "sendgrid:api-key",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 6,
+          "next": 7,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.confusionAxes of sendgrid-token"
+        },
+        {
+          "subject": "sendgrid:api-key",
+          "field": "fixtureProfile.controlAxes",
+          "legacy": 4,
+          "next": 5,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.controlAxes of sendgrid-token"
+        },
+        {
+          "subject": "sendgrid:api-key",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 9,
+          "next": 13,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of sendgrid-token"
+        },
+        {
+          "subject": "sendgrid:api-key",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 38,
+          "next": 32,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of sendgrid-token"
+        },
+        {
+          "subject": "sendgrid:api-key",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 68,
+          "next": 60,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.totalFixtures of sendgrid-token"
+        },
+        {
+          "subject": "sendgrid:api-key",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 18,
+          "next": 16,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.twinPairs of sendgrid-token"
+        },
+        {
+          "subject": "sendgrid:api-key",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 68,
+            "positiveCases": 22,
+            "benignControls": 12,
+            "twinPairs": 18,
+            "positiveContextAxes": 8,
+            "controlAxes": 4,
+            "confusionAxes": 6,
+            "positiveContextAxisIds": [
+              "Authorization",
+              "Documentation",
+              "Encoding",
+              "Generic fallback",
+              "Provider detection",
+              "SendGrid key",
+              "Structured text",
+              "sendgrid-token"
+            ],
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier"
+            ],
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "twin:boundary",
+              "twin:length"
+            ]
+          },
+          "next": {
+            "benignControls": 12,
+            "confusionAxes": 7,
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "sendgrid-near-miss-values",
+              "twin:boundary",
+              "twin:length"
+            ],
+            "controlAxes": 5,
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "sendgrid-near-miss-values"
+            ],
+            "positiveCases": 18,
+            "positiveContextAxes": 12,
+            "positiveContextAxisIds": [
+              "Authorization",
+              "Documentation",
+              "Encoding",
+              "Generic fallback",
+              "Provider detection",
+              "SendGrid key",
+              "Structured text",
+              "sendgrid-key-after-multibyte-text-and-crlf",
+              "sendgrid-key-in-json-and-quoted-env",
+              "sendgrid-key-in-markdown",
+              "sendgrid-key-in-provider-named-fields",
+              "sendgrid-token"
+            ],
+            "totalFixtures": 60,
+            "twinPairs": 16
+          },
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of sendgrid-token"
+        },
+        {
+          "subject": "sendgrid:api-key",
+          "field": "twinCoverage.pairs",
+          "legacy": 18,
+          "next": 16,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.twinPairs of sendgrid-token"
+        },
+        {
+          "subject": "slack:bot-token",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 28,
+          "next": 25,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of slack-token"
+        },
+        {
+          "subject": "slack:bot-token",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 47,
+          "next": 44,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.totalFixtures of slack-token"
+        },
+        {
+          "subject": "slack:bot-token",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 47,
+            "positiveCases": 26,
+            "benignControls": 13,
+            "twinPairs": 6,
+            "positiveContextAxes": 4,
+            "controlAxes": 4,
+            "confusionAxes": 6,
+            "positiveContextAxisIds": [
+              "#213a · slack-token · header",
+              "#213a · slack-token · source-code",
+              "Slack bot",
+              "slack-token"
+            ],
+            "controlAxisIds": [
+              "near-miss",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "near-miss",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:boundary",
+              "twin:prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 13,
+            "confusionAxes": 6,
+            "confusionAxisIds": [
+              "near-miss",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:boundary",
+              "twin:prefix"
+            ],
+            "controlAxes": 4,
+            "controlAxisIds": [
+              "near-miss",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 23,
+            "positiveContextAxes": 4,
+            "positiveContextAxisIds": [
+              "#213a · slack-token · header",
+              "#213a · slack-token · source-code",
+              "Slack bot",
+              "slack-token"
+            ],
+            "totalFixtures": 44,
+            "twinPairs": 6
+          },
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of slack-token"
+        },
+        {
+          "subject": "stripe:restricted-key-live",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 46,
+          "next": 43,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-live",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 79,
+          "next": 76,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.totalFixtures of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-live",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 79,
+            "positiveCases": 40,
+            "benignControls": 25,
+            "twinPairs": 8,
+            "positiveContextAxes": 10,
+            "controlAxes": 6,
+            "confusionAxes": 9,
+            "positiveContextAxisIds": [
+              "#213b · stripe-token · cli",
+              "#213b · stripe-token · sdk-config",
+              "#213b · stripe-token · source-code",
+              "#379 · stripe-token · container-config",
+              "#379 · stripe-token · env",
+              "#379 · stripe-token · header",
+              "#379 · stripe-token · log",
+              "#379 · stripe-token · structured-file",
+              "#379 · stripe-token · tool-output",
+              "stripe-token"
+            ],
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:boundary",
+              "twin:prefix",
+              "twin:public-prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 25,
+            "confusionAxes": 9,
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:boundary",
+              "twin:prefix",
+              "twin:public-prefix"
+            ],
+            "controlAxes": 6,
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 37,
+            "positiveContextAxes": 10,
+            "positiveContextAxisIds": [
+              "#213b · stripe-token · cli",
+              "#213b · stripe-token · sdk-config",
+              "#213b · stripe-token · source-code",
+              "#379 · stripe-token · container-config",
+              "#379 · stripe-token · env",
+              "#379 · stripe-token · header",
+              "#379 · stripe-token · log",
+              "#379 · stripe-token · structured-file",
+              "#379 · stripe-token · tool-output",
+              "stripe-token"
+            ],
+            "totalFixtures": 76,
+            "twinPairs": 8
+          },
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-test",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 46,
+          "next": 43,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-test",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 79,
+          "next": 76,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.totalFixtures of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-test",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 79,
+            "positiveCases": 40,
+            "benignControls": 25,
+            "twinPairs": 8,
+            "positiveContextAxes": 10,
+            "controlAxes": 6,
+            "confusionAxes": 9,
+            "positiveContextAxisIds": [
+              "#213b · stripe-token · cli",
+              "#213b · stripe-token · sdk-config",
+              "#213b · stripe-token · source-code",
+              "#379 · stripe-token · container-config",
+              "#379 · stripe-token · env",
+              "#379 · stripe-token · header",
+              "#379 · stripe-token · log",
+              "#379 · stripe-token · structured-file",
+              "#379 · stripe-token · tool-output",
+              "stripe-token"
+            ],
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:boundary",
+              "twin:prefix",
+              "twin:public-prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 25,
+            "confusionAxes": 9,
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:boundary",
+              "twin:prefix",
+              "twin:public-prefix"
+            ],
+            "controlAxes": 6,
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 37,
+            "positiveContextAxes": 10,
+            "positiveContextAxisIds": [
+              "#213b · stripe-token · cli",
+              "#213b · stripe-token · sdk-config",
+              "#213b · stripe-token · source-code",
+              "#379 · stripe-token · container-config",
+              "#379 · stripe-token · env",
+              "#379 · stripe-token · header",
+              "#379 · stripe-token · log",
+              "#379 · stripe-token · structured-file",
+              "#379 · stripe-token · tool-output",
+              "stripe-token"
+            ],
+            "totalFixtures": 76,
+            "twinPairs": 8
+          },
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-live",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 46,
+          "next": 43,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-live",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 79,
+          "next": 76,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.totalFixtures of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-live",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 79,
+            "positiveCases": 40,
+            "benignControls": 25,
+            "twinPairs": 8,
+            "positiveContextAxes": 10,
+            "controlAxes": 6,
+            "confusionAxes": 9,
+            "positiveContextAxisIds": [
+              "#213b · stripe-token · cli",
+              "#213b · stripe-token · sdk-config",
+              "#213b · stripe-token · source-code",
+              "#379 · stripe-token · container-config",
+              "#379 · stripe-token · env",
+              "#379 · stripe-token · header",
+              "#379 · stripe-token · log",
+              "#379 · stripe-token · structured-file",
+              "#379 · stripe-token · tool-output",
+              "stripe-token"
+            ],
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:boundary",
+              "twin:prefix",
+              "twin:public-prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 25,
+            "confusionAxes": 9,
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:boundary",
+              "twin:prefix",
+              "twin:public-prefix"
+            ],
+            "controlAxes": 6,
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 37,
+            "positiveContextAxes": 10,
+            "positiveContextAxisIds": [
+              "#213b · stripe-token · cli",
+              "#213b · stripe-token · sdk-config",
+              "#213b · stripe-token · source-code",
+              "#379 · stripe-token · container-config",
+              "#379 · stripe-token · env",
+              "#379 · stripe-token · header",
+              "#379 · stripe-token · log",
+              "#379 · stripe-token · structured-file",
+              "#379 · stripe-token · tool-output",
+              "stripe-token"
+            ],
+            "totalFixtures": 76,
+            "twinPairs": 8
+          },
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-test",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 46,
+          "next": 43,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-test",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 79,
+          "next": 76,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.totalFixtures of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-test",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 79,
+            "positiveCases": 40,
+            "benignControls": 25,
+            "twinPairs": 8,
+            "positiveContextAxes": 10,
+            "controlAxes": 6,
+            "confusionAxes": 9,
+            "positiveContextAxisIds": [
+              "#213b · stripe-token · cli",
+              "#213b · stripe-token · sdk-config",
+              "#213b · stripe-token · source-code",
+              "#379 · stripe-token · container-config",
+              "#379 · stripe-token · env",
+              "#379 · stripe-token · header",
+              "#379 · stripe-token · log",
+              "#379 · stripe-token · structured-file",
+              "#379 · stripe-token · tool-output",
+              "stripe-token"
+            ],
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:boundary",
+              "twin:prefix",
+              "twin:public-prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 25,
+            "confusionAxes": 9,
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:boundary",
+              "twin:prefix",
+              "twin:public-prefix"
+            ],
+            "controlAxes": 6,
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 37,
+            "positiveContextAxes": 10,
+            "positiveContextAxisIds": [
+              "#213b · stripe-token · cli",
+              "#213b · stripe-token · sdk-config",
+              "#213b · stripe-token · source-code",
+              "#379 · stripe-token · container-config",
+              "#379 · stripe-token · env",
+              "#379 · stripe-token · header",
+              "#379 · stripe-token · log",
+              "#379 · stripe-token · structured-file",
+              "#379 · stripe-token · tool-output",
+              "stripe-token"
+            ],
+            "totalFixtures": 76,
+            "twinPairs": 8
+          },
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of stripe-token"
+        },
+        {
+          "subject": "vercel:access-token",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 1,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveAxes of vercel-token"
+        },
+        {
+          "subject": "vercel:access-token",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 15,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of vercel-token"
+        },
+        {
+          "subject": "vercel:access-token",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 20,
+          "next": 5,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.totalFixtures of vercel-token"
+        },
+        {
+          "subject": "vercel:access-token",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 20,
+            "positiveCases": 15,
+            "benignControls": 5,
+            "twinPairs": 0,
+            "positiveContextAxes": 1,
+            "controlAxes": 3,
+            "confusionAxes": 3,
+            "positiveContextAxisIds": [
+              "vercel-token"
+            ],
+            "controlAxisIds": [
+              "near-miss",
+              "placeholder",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "near-miss",
+              "placeholder",
+              "reference"
+            ]
+          },
+          "next": {
+            "benignControls": 5,
+            "confusionAxes": 3,
+            "confusionAxisIds": [
+              "near-miss",
+              "placeholder",
+              "reference"
+            ],
+            "controlAxes": 3,
+            "controlAxisIds": [
+              "near-miss",
+              "placeholder",
+              "reference"
+            ],
+            "positiveCases": 0,
+            "positiveContextAxes": 0,
+            "positiveContextAxisIds": [],
+            "totalFixtures": 5,
+            "twinPairs": 0
+          },
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of vercel-token"
+        },
+        {
+          "subject": "vercel:access-token",
+          "field": "profileCoverage.debt",
+          "legacy": [
+            {
+              "cell": "totalFixtures",
+              "actual": 20,
+              "required": 24,
+              "shortfall": 4
+            },
+            {
+              "cell": "benignControls",
+              "actual": 5,
+              "required": 8,
+              "shortfall": 3
+            },
+            {
+              "cell": "twinPairs",
+              "actual": 0,
+              "required": 5,
+              "shortfall": 5
+            },
+            {
+              "cell": "positiveContextAxes",
+              "actual": 1,
+              "required": 4,
+              "shortfall": 3
+            },
+            {
+              "cell": "controlAxes",
+              "actual": 3,
+              "required": 4,
+              "shortfall": 1
+            }
+          ],
+          "next": [
+            {
+              "actual": 5,
+              "cell": "totalFixtures",
+              "required": 24,
+              "shortfall": 19
+            },
+            {
+              "actual": 0,
+              "cell": "positiveCases",
+              "required": 6,
+              "shortfall": 6
+            },
+            {
+              "actual": 5,
+              "cell": "benignControls",
+              "required": 8,
+              "shortfall": 3
+            },
+            {
+              "actual": 0,
+              "cell": "twinPairs",
+              "required": 5,
+              "shortfall": 5
+            },
+            {
+              "actual": 0,
+              "cell": "positiveContextAxes",
+              "required": 4,
+              "shortfall": 4
+            },
+            {
+              "actual": 3,
+              "cell": "controlAxes",
+              "required": 4,
+              "shortfall": 1
+            }
+          ],
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of vercel-token"
+        },
+        {
+          "subject": "vercel:access-token",
+          "field": "profileCoverage.requiredButEmptyAxisIds",
+          "legacy": [],
+          "next": [
+            "positiveContextAxes"
+          ],
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.positiveCases of vercel-token"
+        }
+      ]
+    },
+    "distribution": {
+      "tally": {
+        "compared": 8,
+        "equal": 8,
+        "explained": 0,
+        "unexplained": 0,
+        "byCause": {}
+      },
+      "differences": []
+    },
+    "review": {
+      "tally": {
+        "compared": 10,
+        "equal": 6,
+        "explained": 4,
+        "unexplained": 0,
+        "byCause": {
+          "review-occurrence-identity": 4
+        }
+      },
+      "differences": [
+        {
+          "subject": "flare-redact",
+          "field": "occurrences",
+          "legacy": "not run",
+          "next": 2695,
+          "verdict": "explained",
+          "cause": "review-occurrence-identity",
+          "note": "flare-redact was never scanned by the legacy run, so the legacy ledger holds no entry for it"
+        },
+        {
+          "subject": "flare-redact",
+          "field": "settled",
+          "legacy": "not run",
+          "next": 0,
+          "verdict": "explained",
+          "cause": "review-occurrence-identity",
+          "note": "flare-redact was never scanned by the legacy run, so the legacy ledger holds no entry for it"
+        },
+        {
+          "subject": "openredaction",
+          "field": "occurrences",
+          "legacy": "not run",
+          "next": 3776,
+          "verdict": "explained",
+          "cause": "review-occurrence-identity",
+          "note": "openredaction was never scanned by the legacy run, so the legacy ledger holds no entry for it"
+        },
+        {
+          "subject": "openredaction",
+          "field": "settled",
+          "legacy": "not run",
+          "next": 0,
+          "verdict": "explained",
+          "cause": "review-occurrence-identity",
+          "note": "openredaction was never scanned by the legacy run, so the legacy ledger holds no entry for it"
+        }
+      ]
     }
   },
   "statusRows": [
@@ -2549,6 +4661,8 @@
       "family": "ai21-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2558,6 +4672,8 @@
       "family": "anthropic-admin01-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2567,6 +4683,8 @@
       "family": "anthropic-api01-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2576,6 +4694,8 @@
       "family": "anthropic-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2585,6 +4705,8 @@
       "family": "apify-api-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2594,6 +4716,8 @@
       "family": "atlassian-api-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2603,6 +4727,8 @@
       "family": "aws-access-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2612,6 +4738,8 @@
       "family": "aws-bedrock-long-term-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2621,6 +4749,8 @@
       "family": "aws-bedrock-short-term-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2630,6 +4760,8 @@
       "family": "aws-secret-access-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2639,6 +4771,8 @@
       "family": "axiom-personal-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2648,6 +4782,8 @@
       "family": "axiom-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2657,6 +4793,8 @@
       "family": "azure-devops-personal-access-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2666,6 +4804,8 @@
       "family": "bearer-token",
       "legacy": "provisional",
       "next": "provisional",
+      "legacyProfile": null,
+      "nextProfile": null,
       "verdict": "equal",
       "causes": [
         "policy-corpus-bounded"
@@ -2673,15 +4813,14 @@
       "heldBackBy": [
         "policy-corpus-bounded"
       ],
-      "unattributedReasons": [
-        "policy.positive-axes",
-        "policy.benign-axes"
-      ]
+      "unattributedReasons": []
     },
     {
       "family": "bitwarden-secrets-manager-access-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2691,6 +4830,8 @@
       "family": "browserbase-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2700,6 +4841,8 @@
       "family": "cerebras-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2709,6 +4852,8 @@
       "family": "clickhouse-cloud-api-secret",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2718,6 +4863,8 @@
       "family": "clojars-deploy-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2727,6 +4874,8 @@
       "family": "cloudflare-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2736,6 +4885,8 @@
       "family": "cohere-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2745,6 +4896,8 @@
       "family": "composio-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2754,6 +4907,8 @@
       "family": "composio-org-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2763,6 +4918,8 @@
       "family": "composio-user-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2772,6 +4929,8 @@
       "family": "confluent-cloud-api-secret",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2781,6 +4940,8 @@
       "family": "confluent-cloud-api-secret-legacy",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2790,13 +4951,13 @@
       "family": "connection-string",
       "legacy": "provisional",
       "next": "provisional",
+      "legacyProfile": null,
+      "nextProfile": null,
       "verdict": "equal",
       "causes": [
-        "canonical-evidence-membership",
         "policy-corpus-bounded"
       ],
       "heldBackBy": [
-        "canonical-evidence-membership",
         "policy-corpus-bounded"
       ],
       "unattributedReasons": []
@@ -2805,6 +4966,8 @@
       "family": "convex-deployment-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2814,6 +4977,8 @@
       "family": "crates-io-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2823,6 +4988,8 @@
       "family": "crates-io-trusted-publishing-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2832,6 +4999,8 @@
       "family": "databricks-personal-access-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2841,6 +5010,8 @@
       "family": "datadog-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2850,6 +5021,8 @@
       "family": "datadog-application-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2859,6 +5032,8 @@
       "family": "datadog-application-key-legacy",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2868,6 +5043,8 @@
       "family": "daytona-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2877,6 +5054,8 @@
       "family": "deepgram-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2886,6 +5065,8 @@
       "family": "digitalocean-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2895,6 +5076,8 @@
       "family": "discord-bot-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2904,6 +5087,8 @@
       "family": "docker-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2913,6 +5098,8 @@
       "family": "doppler-audit-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2922,6 +5109,8 @@
       "family": "doppler-cli-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2931,6 +5120,8 @@
       "family": "doppler-personal-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2940,6 +5131,8 @@
       "family": "doppler-scim-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2949,6 +5142,8 @@
       "family": "doppler-service-account-identity-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2958,6 +5153,8 @@
       "family": "doppler-service-account-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2967,6 +5164,8 @@
       "family": "doppler-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2976,6 +5175,8 @@
       "family": "dynatrace-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2985,6 +5186,8 @@
       "family": "e2b-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -2994,6 +5197,8 @@
       "family": "elevenlabs-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3003,6 +5208,8 @@
       "family": "firebase-server-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3012,6 +5219,8 @@
       "family": "firecrawl-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3021,6 +5230,8 @@
       "family": "fireworks-ai-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3030,13 +5241,13 @@
       "family": "generic-token",
       "legacy": "provisional",
       "next": "provisional",
+      "legacyProfile": null,
+      "nextProfile": null,
       "verdict": "equal",
       "causes": [
-        "canonical-evidence-membership",
         "policy-corpus-bounded"
       ],
       "heldBackBy": [
-        "canonical-evidence-membership",
         "policy-corpus-bounded"
       ],
       "unattributedReasons": []
@@ -3045,6 +5256,8 @@
       "family": "github-fine-grained-pat",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3054,6 +5267,8 @@
       "family": "github-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3063,6 +5278,8 @@
       "family": "gitlab-runner-authentication-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3072,6 +5289,8 @@
       "family": "gitlab-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3081,6 +5300,8 @@
       "family": "google-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3090,6 +5311,8 @@
       "family": "google-oauth-client-secret",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3099,6 +5322,8 @@
       "family": "grafana-cloud-access-policy-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3108,6 +5333,8 @@
       "family": "grafana-service-account-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3117,6 +5344,8 @@
       "family": "groq-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3126,6 +5355,8 @@
       "family": "helicone-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3135,6 +5366,8 @@
       "family": "helicone-write-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3144,6 +5377,8 @@
       "family": "heroku-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3153,6 +5388,8 @@
       "family": "heroku-api-key-legacy",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3162,6 +5399,8 @@
       "family": "honeycomb-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3171,6 +5410,8 @@
       "family": "huggingface-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3180,6 +5421,8 @@
       "family": "inngest-signing-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3189,6 +5432,8 @@
       "family": "jwt",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3198,6 +5443,8 @@
       "family": "langfuse-secret-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3207,6 +5454,8 @@
       "family": "langsmith-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3216,6 +5465,8 @@
       "family": "linear-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3225,6 +5476,8 @@
       "family": "mailchimp-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3234,6 +5487,8 @@
       "family": "mailgun-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3243,6 +5498,8 @@
       "family": "microsoft-entra-client-secret",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3252,6 +5509,8 @@
       "family": "mistral-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3261,6 +5520,8 @@
       "family": "neon-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3270,6 +5531,8 @@
       "family": "netlify-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3279,6 +5542,8 @@
       "family": "new-relic-license-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3288,6 +5553,8 @@
       "family": "new-relic-user-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3297,6 +5564,8 @@
       "family": "notion-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3306,6 +5575,8 @@
       "family": "npm-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3315,6 +5586,8 @@
       "family": "nvidia-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3324,6 +5597,8 @@
       "family": "okta-api-token",
       "legacy": "provisional",
       "next": "provisional",
+      "legacyProfile": null,
+      "nextProfile": null,
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3333,6 +5608,8 @@
       "family": "onepassword-service-account-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3342,6 +5619,8 @@
       "family": "openai-admin-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3351,6 +5630,8 @@
       "family": "openai-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3360,6 +5641,8 @@
       "family": "openrouter-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3369,6 +5652,8 @@
       "family": "otpauth-uri",
       "legacy": "provisional",
       "next": "provisional",
+      "legacyProfile": null,
+      "nextProfile": null,
       "verdict": "equal",
       "causes": [
         "policy-corpus-bounded"
@@ -3376,15 +5661,14 @@
       "heldBackBy": [
         "policy-corpus-bounded"
       ],
-      "unattributedReasons": [
-        "policy.positive-axes",
-        "policy.benign-axes"
-      ]
+      "unattributedReasons": []
     },
     {
       "family": "paddle-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3394,6 +5678,8 @@
       "family": "perplexity-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3403,6 +5689,8 @@
       "family": "pinecone-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3412,6 +5700,8 @@
       "family": "polar-api-credential",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3421,6 +5711,8 @@
       "family": "polar-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3430,6 +5722,8 @@
       "family": "posthog-project-secret-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3439,6 +5733,8 @@
       "family": "posthog-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3448,6 +5744,8 @@
       "family": "postman-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3457,6 +5755,8 @@
       "family": "postman-collection-access-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3466,6 +5766,8 @@
       "family": "private-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3475,6 +5777,8 @@
       "family": "pulumi-access-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3484,6 +5788,8 @@
       "family": "pypi-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3493,6 +5799,8 @@
       "family": "replicate-api-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3502,6 +5810,8 @@
       "family": "resend-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3511,6 +5821,8 @@
       "family": "rubygems-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3520,6 +5832,8 @@
       "family": "runpod-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3529,6 +5843,8 @@
       "family": "sendgrid-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3538,6 +5854,8 @@
       "family": "sentry-org-auth-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3547,6 +5865,8 @@
       "family": "sentry-user-auth-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3556,6 +5876,8 @@
       "family": "shopify-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3565,6 +5887,8 @@
       "family": "slack-app-level-token",
       "legacy": "provisional",
       "next": "provisional",
+      "legacyProfile": null,
+      "nextProfile": null,
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3574,6 +5898,8 @@
       "family": "slack-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3583,6 +5909,8 @@
       "family": "slack-user-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3592,6 +5920,8 @@
       "family": "sonarqube-analysis-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3601,6 +5931,8 @@
       "family": "sonarqube-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3610,6 +5942,8 @@
       "family": "stripe-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3619,6 +5953,8 @@
       "family": "stripe-webhook-signing-secret",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3628,6 +5964,8 @@
       "family": "supabase-management-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3637,6 +5975,8 @@
       "family": "supabase-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3646,6 +5986,8 @@
       "family": "tavily-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3655,6 +5997,8 @@
       "family": "telegram-bot-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3664,6 +6008,8 @@
       "family": "terraform-cloud-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3673,6 +6019,8 @@
       "family": "together-ai-api-key",
       "legacy": "provisional",
       "next": "provisional",
+      "legacyProfile": null,
+      "nextProfile": null,
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3682,6 +6030,8 @@
       "family": "travisci-api-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3691,6 +6041,8 @@
       "family": "trigger-dev-personal-access-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3700,6 +6052,8 @@
       "family": "trigger-dev-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3709,6 +6063,8 @@
       "family": "twilio-api-key-secret",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3718,6 +6074,8 @@
       "family": "twilio-auth-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3727,6 +6085,8 @@
       "family": "vault-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3736,6 +6096,8 @@
       "family": "vercel-app-access-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3745,6 +6107,8 @@
       "family": "vercel-app-refresh-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3754,6 +6118,8 @@
       "family": "vercel-personal-access-token",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3763,6 +6129,8 @@
       "family": "vercel-token",
       "legacy": "pending",
       "next": "pending",
+      "legacyProfile": null,
+      "nextProfile": null,
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3772,6 +6140,8 @@
       "family": "wandb-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "documented",
+      "nextProfile": "documented",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
@@ -3781,12 +6151,46 @@
       "family": "xai-api-key",
       "legacy": "stable",
       "next": "stable",
+      "legacyProfile": "empirical",
+      "nextProfile": "empirical",
       "verdict": "equal",
       "causes": [],
       "heldBackBy": [],
       "unattributedReasons": []
     }
   ],
+  "matrix": {
+    "taxonomyFamilies": {
+      "legacy": 173,
+      "next": 173
+    },
+    "distribution": {
+      "legacy": {
+        "stable": 144,
+        "provisional": 7,
+        "pending": 5,
+        "unsupported": 17
+      },
+      "next": {
+        "pending": 5,
+        "provisional": 7,
+        "stable": 144,
+        "unsupported": 17
+      }
+    },
+    "stableDistribution": {
+      "legacy": {
+        "documented": 106,
+        "empirical": 38,
+        "policy-qualified": 0
+      },
+      "next": {
+        "documented": 106,
+        "empirical": 38,
+        "policy-qualified": 0
+      }
+    }
+  },
   "counterfactual": {
     "legacyStable": 127,
     "nextStable": 127,
@@ -4000,8 +6404,8 @@
       "reason": "the legacy bench writes no report for it (calibration-only), so there is no legacy outcome."
     },
     {
-      "area": "review ledger decisions (applied through the mapping)",
-      "reason": "the methods run has a review queue keyed by canonical occurrence ids; the legacy review ledger is keyed by legacy ids, and a decision applies to a canonical occurrence only through benchmarks/support/public-review-ledger-map.json (same case, peer, disagreement property and bytes): 4268 of 10739 canonical occurrences are mapped (4268 of 4268 legacy differential entries), 6471 are occurrences of peers the legacy run never scanned (unreviewed, and not gate-bearing) and 0 are unmatched for another reason. The 8845 legacy mutation review entries have no canonical counterpart (the canonical review queue holds differential occurrences only) and are not compared."
+      "area": "review ledger entries outside the mapping",
+      "reason": "the mapped decisions are compared per peer in the review section; the methods run has a review queue keyed by canonical occurrence ids; the legacy review ledger is keyed by legacy ids, and a decision applies to a canonical occurrence only through benchmarks/support/public-review-ledger-map.json (same case, peer, disagreement property and bytes): 4268 of 10739 canonical occurrences are mapped (4268 of 4268 legacy differential entries), 6471 are occurrences of peers the legacy run never scanned (unreviewed, and not gate-bearing) and 0 are unmatched for another reason. The 8845 legacy mutation review entries have no canonical counterpart (the canonical review queue holds differential occurrences only) and are not compared."
     },
     {
       "area": "candidate-regression inputs and protected holdout",
@@ -4009,24 +6413,25 @@
     },
     {
       "area": "Next page data",
-      "reason": "the report, family and fixture pages of the Next app still read the legacy files; the new qualification pages (/evaluation/qualification/) read the view this report compares. Compare them by page-level numbers: distribution and per-family status above are the numbers those pages display."
+      "reason": "the report, family and fixture pages of the Next app still read the legacy files; the new qualification pages (/evaluation/qualification/) read the view this report compares, so the numbers they display are compared at the source: the overview numbers (distribution section), the support matrix, the per-family status and evidence facts (status and evidence sections), the known gaps and the per-case rows. What is not compared is a rendered page against a rendered page: there is no automated page-data diff, and the legacy pages are not a data source of this repository. The per-population, per-scanner counts of a family page are sums of the per-case outcomes compared one to one (outcomes section); the legacy path has no per-population denominator to compare them with, only the pooled counts the evidence section rebuilds from them."
     }
   ],
   "summary": {
-    "compared": 35084,
-    "equal": 34744,
-    "explained": 340,
+    "compared": 42611,
+    "equal": 42206,
+    "explained": 405,
     "unexplained": 0,
     "byCause": {
-      "canonical-evidence-membership": 27,
+      "canonical-evidence-membership": 54,
       "legacy-id-rekey": 153,
-      "pending-not-scored": 9,
-      "policy-corpus-bounded": 4,
+      "pending-not-scored": 35,
+      "policy-corpus-bounded": 12,
+      "review-occurrence-identity": 4,
       "twin-scope-vocabulary": 147
     },
     "classes": {
-      "must-equal": 34744,
-      "expected-structural": 340,
+      "must-equal": 42206,
+      "expected-structural": 405,
       "unexplained": 0
     }
   },

@@ -19,11 +19,12 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { attributeCase, seedCaseId } from '../benchmarks/qualification/adapter.ts';
 import { ledgerSettledId } from '../benchmarks/qualification/ledger-rekey.ts';
+import { credentialDomain } from '../benchmarks/evaluation/domains/credential/contract.ts';
 import { loadProductInputs } from '../benchmarks/qualification/inputs.ts';
 import { readRunArtifact, type CaseResult, type Measurement, type RunArtifact } from '../benchmarks/qualification/run-artifact.ts';
 import {
-  CAUSES, PARITY_SCHEMA, compareFamilies, compareIdentity, compareKnownGaps, compareOutcomes, joinByKeys, renderMarkdown, summarise,
-  type CasePair, type CaseSide, type JoinResult, type Joinable, type LegacyFamily, type NextFamily, type Normalised, type ParityReport,
+  CAUSES, PARITY_SCHEMA, compareDistributions, compareFamilies, compareIdentity, compareKnownGaps, compareOutcomes, compareReview, compareSupportMatrix, joinByKeys, renderMarkdown, summarise,
+  type MatrixEntry, type ReviewSide, type CasePair, type CaseSide, type JoinResult, type Joinable, type LegacyFamily, type NextFamily, type Normalised, type ParityReport,
 } from '../benchmarks/qualification/parity.ts';
 
 const usage = 'Usage: qualification:parity --legacy-status <file> --legacy-results <dir> --view <file> --artifacts <dir> [--public-snapshot <file>] [--out <prefix>] [--strict]';
@@ -244,6 +245,44 @@ if (existsSync(methodsFile)) {
 }
 const families = compareFamilies(legacyFamilies, nextFamilies, { floorsPopulation: PUBLIC, adjustmentsByFamily, axisOverlay: Boolean(view.policy.axisOverlay), reviewByFamily });
 
+// -- support matrix, page-level numbers, review queue ------------------------------------------------------------------------
+// The legacy matrix is the one `npm run eval:matrix` writes: the same function over the same support status. The new one is the view's own field.
+const legacyMatrix = credentialDomain.qualification.buildSupportMatrix(legacyStatus);
+if (!view.supportMatrix) throw new Error('The view carries no supportMatrix; rebuild it with npm run qualification:view (docs/specs/qualification-adapter.md).');
+const supportMatrix = compareSupportMatrix(
+  legacyMatrix.families as unknown as MatrixEntry[], view.supportMatrix.families,
+  { distribution: legacyMatrix.distribution, stable: legacyMatrix.stableDistribution }, { distribution: view.supportMatrix.distribution, stable: view.supportMatrix.stableDistribution },
+  { evidence: families.evidence, status: families.status, statusRows: families.statusRows },
+);
+const distribution = compareDistributions(
+  { familyCount: legacyStatus.familyCount, distribution: legacyStatus.distribution, stable: { documented: legacyStatus.stableDistribution?.documented ?? 0, empirical: legacyStatus.stableDistribution?.empirical ?? 0, 'policy-qualified': legacyStatus.stableDistribution?.policyQualified ?? 0 } },
+  { familyCount: view.families.length, distribution: view.distribution, stable: view.stableDistribution },
+  families.statusRows,
+);
+// The review queue of the methods run against the legacy ledger, per peer, through the generated mapping: a legacy decision settles a canonical occurrence only by that mapping.
+const reviewLegacy: ReviewSide = {}, reviewNext: ReviewSide = {};
+let reviewMapped = 0;
+const reviewDerivation = product.ledgerRekey?.derivation;
+if (existsSync(methodsFile) && reviewDerivation) {
+  const queue = readRunArtifact(await readFile(methodsFile)).artifact.review_queue ?? [];
+  const mappedLegacy = new Map<string, Set<string>>();
+  for (const q of queue) {
+    if (q.method !== 'differential') continue;
+    const peer = String(q.peer ?? 'unknown');
+    const next = (reviewNext[peer] ??= { occurrences: 0, settled: 0 }) as { occurrences: number; settled: number };
+    next.occurrences++;
+    const settledId = ledgerSettledId(q.id, product.ledger, product.ledgerRekey);
+    if (['resolved', 'not-assertable'].includes(String(product.ledger.entries[settledId]?.status))) next.settled++;
+    const legacyId = product.ledgerRekey!.occurrences[q.id];
+    if (legacyId) { (mappedLegacy.get(peer) ?? mappedLegacy.set(peer, new Set()).get(peer)!).add(legacyId); reviewMapped++; }
+  }
+  for (const peer of Object.keys(reviewNext)) {
+    const ids = mappedLegacy.get(peer);
+    reviewLegacy[peer] = ids?.size ? { occurrences: ids.size, settled: [...ids].filter(id => ['resolved', 'not-assertable'].includes(String(product.ledger.entries[id]?.status))).length } : null;
+  }
+}
+const reviewSection = compareReview(reviewLegacy, reviewNext, { differential: reviewDerivation?.legacy.differential ?? 0, mapped: new Set(Object.values(product.ledgerRekey?.occurrences ?? {})).size }, reviewMapped);
+
 // -- identity ----------------------------------------------------------------------------------------------------------
 const nextVersions: Record<string, string | null> = {};
 for (const population of view.populations) for (const s of population.artifact.scanners) {
@@ -279,13 +318,13 @@ if (unrecorded.length) notCompared.push({ area: 'artifact identity', reason: `th
 if (nonCanonical.length) notCompared.push({ area: 'canonical run', reason: `the artifacts compared include non-canonical runs (${nonCanonical.join(', ')}). The canonical measurement is the linux-x64 CI run; rerun this report against its artifacts.` });
 if (hasMethodsRun) {
   const d = product.ledgerRekey?.derivation;
-  notCompared.push({ area: 'review ledger decisions (applied through the mapping)', reason: d
-    ? `the methods run has a review queue keyed by canonical occurrence ids; the legacy review ledger is keyed by legacy ids, and a decision applies to a canonical occurrence only through benchmarks/support/public-review-ledger-map.json (same case, peer, disagreement property and bytes): ${d.canonical.mapped} of ${d.canonical.occurrences} canonical occurrences are mapped (${d.legacy.mapped} of ${d.legacy.differential} legacy differential entries), ${d.canonical.unmatched['peer-not-in-legacy-run']} are occurrences of peers the legacy run never scanned (unreviewed, and not gate-bearing) and ${d.canonical.occurrences - d.canonical.mapped - d.canonical.unmatched['peer-not-in-legacy-run']} are unmatched for another reason. The ${Object.values(d.legacy.otherMethods).reduce((a, n) => a + n, 0)} legacy mutation review entries have no canonical counterpart (the canonical review queue holds differential occurrences only) and are not compared.`
+  notCompared.push({ area: 'review ledger entries outside the mapping', reason: d
+    ? `the mapped decisions are compared per peer in the review section; the methods run has a review queue keyed by canonical occurrence ids; the legacy review ledger is keyed by legacy ids, and a decision applies to a canonical occurrence only through benchmarks/support/public-review-ledger-map.json (same case, peer, disagreement property and bytes): ${d.canonical.mapped} of ${d.canonical.occurrences} canonical occurrences are mapped (${d.legacy.mapped} of ${d.legacy.differential} legacy differential entries), ${d.canonical.unmatched['peer-not-in-legacy-run']} are occurrences of peers the legacy run never scanned (unreviewed, and not gate-bearing) and ${d.canonical.occurrences - d.canonical.mapped - d.canonical.unmatched['peer-not-in-legacy-run']} are unmatched for another reason. The ${Object.values(d.legacy.otherMethods).reduce((a, n) => a + n, 0)} legacy mutation review entries have no canonical counterpart (the canonical review queue holds differential occurrences only) and are not compared.`
     : 'the methods run has a review queue keyed by canonical occurrence ids; the view carries no ledger mapping, so no legacy decision is applied to it (review-occurrence-identity).' });
 }
 else notCompared.push({ area: 'review queue and review ledger', reason: 'the view has no methods run, so the new path has no review queue to join with the ledger; the legacy ids also need the re-key (legacy-id-rekey). The methods-dependent evidence fields are compared as "not measured".' });
 notCompared.push({ area: 'candidate-regression inputs and protected holdout', reason: 'internal populations, not part of a public qualification view (docs/specs/qualification-inputs.md).' });
-notCompared.push({ area: 'Next page data', reason: 'the report, family and fixture pages of the Next app still read the legacy files; the new qualification pages (/evaluation/qualification/) read the view this report compares. Compare them by page-level numbers: distribution and per-family status above are the numbers those pages display.' });
+notCompared.push({ area: 'Next page data', reason: 'the report, family and fixture pages of the Next app still read the legacy files; the new qualification pages (/evaluation/qualification/) read the view this report compares, so the numbers they display are compared at the source: the overview numbers (distribution section), the support matrix, the per-family status and evidence facts (status and evidence sections), the known gaps and the per-case rows. What is not compared is a rendered page against a rendered page: there is no automated page-data diff, and the legacy pages are not a data source of this repository. The per-population, per-scanner counts of a family page are sums of the per-case outcomes compared one to one (outcomes section); the legacy path has no per-population denominator to compare them with, only the pooled counts the evidence section rebuilds from them.' });
 
 // -- recommendations --------------------------------------------------------------------------------------------------------------
 const cf = families.counterfactual;
@@ -319,9 +358,9 @@ const identities: Record<string, unknown> = {
   },
 };
 
-const sections = { identity: identity, membership: families.membership, status: families.status, evidence: families.evidence, outcomes: outcomes.section, knownGaps: gaps };
+const sections = { identity: identity, membership: families.membership, status: families.status, evidence: families.evidence, outcomes: outcomes.section, knownGaps: gaps, supportMatrix, distribution, review: reviewSection };
 const report: ParityReport = {
-  schema: PARITY_SCHEMA, identities, causes: CAUSES, sections, statusRows: families.statusRows, counterfactual: cf, heldBy: families.heldBy, outcomeGroups: outcomes.groups, joins, notCompared,
+  schema: PARITY_SCHEMA, identities, causes: CAUSES, sections, statusRows: families.statusRows, matrix: { taxonomyFamilies: { legacy: legacyMatrix.families.length, next: view.supportMatrix.families.length }, distribution: { legacy: legacyMatrix.distribution, next: view.supportMatrix.distribution }, stableDistribution: { legacy: legacyMatrix.stableDistribution, next: view.supportMatrix.stableDistribution } }, counterfactual: cf, heldBy: families.heldBy, outcomeGroups: outcomes.groups, joins, notCompared,
   summary: summarise(sections), recommendations,
 };
 

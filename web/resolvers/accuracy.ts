@@ -332,18 +332,49 @@ const capital = (s: string): string => s[0].toUpperCase() + s.slice(1);
 /** "TruffleHog’s", "Gitleaks’". */
 const possessive = (name: string): string => (name.endsWith('s') ? `${name}’` : `${name}’s`);
 
-/** The two columns of a difference list. A column whose `showAll` entry is false is cut to the first `GROUPS_SHOWN` providers. */
-export function differenceColumns(lists: DifferenceLists, q: 'r' | 'a', peerName: string, showAll: boolean[]): AccuracyDifferenceColumn[] {
-  const ok = QUESTIONS[q].okLabel;
-  const column = (title: string, groups: DifferenceGroup[], all: boolean): AccuracyDifferenceColumn => {
+/** The words of one question's lists: the expected answer, its past tense, and what the other tool's answer is called. */
+const DIRECTION: Record<'r' | 'a', { ok: string; did: string; not: string; partial: string }> = {
+  r: { ok: 'hidden', did: 'hid', not: 'not hidden', partial: ' (readable or only partly hidden)' },
+  a: { ok: 'left alone', did: 'left alone', not: 'flagged', partial: '' },
+};
+
+/** The line above the lists: what a list is, and what an empty one does and does not say. */
+export function differenceNote(q: 'r' | 'a', unit: 'file' | 'text' = 'file'): string {
+  const w = DIRECTION[q];
+  return `Each list holds the ${unit}s one tool ${w.did} and the other did not${w.partial}. A list is empty when every ${unit} one tool ${w.did}, the other ${w.did} too; that says nothing about the rest of its results, which are in its bar above.`;
+}
+
+/** What a zero means, with the count it comes from: all of `owner`'s own expected answers, which `other` gave too. */
+export function emptyDirection(q: 'r' | 'a', owner: string, other: string, ownerOk: number, unit: 'file' | 'text' = 'file'): string {
+  const w = DIRECTION[q];
+  if (ownerOk <= 0) return `None. ${owner} has no ${unit}s ${w.ok} here.`;
+  const held = ownerOk === 1 ? `The only ${unit} ${owner} ${w.did}` : `All ${int(ownerOk)} ${unit}s ${owner} ${w.did}`;
+  return `None. ${held}, ${other} ${w.did} too.`;
+}
+
+/** "Hidden by redact-secret, not hidden by Gitleaks": the same pattern in both directions. */
+export function differenceTitle(q: 'r' | 'a', by: string, other: string): string {
+  const w = DIRECTION[q];
+  return `${capital(w.ok)} by ${by}, ${w.not} by ${other}`;
+}
+
+/**
+ * The two columns of a difference list. A column whose `showAll` entry is false is cut to the first `GROUPS_SHOWN` providers.
+ * `ok` is each tool's own count of the expected answer, the first state of its bar.
+ */
+export function differenceColumns(lists: DifferenceLists, q: 'r' | 'a', peerName: string, showAll: boolean[], ok: { us: number; them: number }, unit: 'file' | 'text' = 'file'): AccuracyDifferenceColumn[] {
+  const column = (title: string, none: string, groups: DifferenceGroup[], all: boolean): AccuracyDifferenceColumn => {
     const shown = all ? groups : groups.slice(0, GROUPS_SHOWN);
     return {
-      title, total: int(groups.reduce((n, g) => n + g.files.length, 0)),
+      title, none, total: int(groups.reduce((n, g) => n + g.files.length, 0)),
       groups: shown.map(g => ({ name: g.name, count: int(g.files.length), files: g.files })),
       ...(shown.length < groups.length ? { more: `Show all ${int(groups.length)} providers` } : {}),
     };
   };
-  return [column(`${capital(ok)} by ${PRODUCT} only`, lists.onlyUs, !!showAll[0]), column(`${capital(ok)} by ${peerName} only`, lists.onlyThem, !!showAll[1])];
+  return [
+    column(differenceTitle(q, PRODUCT, peerName), emptyDirection(q, PRODUCT, peerName, ok.us, unit), lists.onlyUs, !!showAll[0]),
+    column(differenceTitle(q, peerName, PRODUCT), emptyDirection(q, peerName, PRODUCT, ok.them, unit), lists.onlyThem, !!showAll[1]),
+  ];
 }
 
 // ---- Result rows ----------------------------------------------------------------------
@@ -364,7 +395,11 @@ function resultRow(name: string, version: string, counts: number[], total: numbe
 
 export interface PairPanel { key: string; query: PairQuery; isDefault: boolean; props: AccuracyPairComparisonProps; differences: Record<string, DifferencesSlot> }
 /** What the island needs to list one question's differences. Absent when the two never differ. */
-export interface DifferencesSlot { peer: string; peerName: string; level: Level; scope: PairScope; q: 'r' | 'a'; summary: string }
+export interface DifferencesSlot {
+  peer: string; peerName: string; level: Level; scope: PairScope; q: 'r' | 'a'; summary: string;
+  /** Files each tool gave the expected answer for (the first bar state), over the same files as the bars. */
+  okUs: number; okThem: number;
+}
 
 interface Context {
   options: PairOptions;
@@ -496,7 +531,7 @@ function credentialsPanel(ctx: Context, query: PairQuery): PairPanel {
     question.results = [resultRow(PRODUCT, model.product.version, c.us, c.total, text, pct), resultRow(peer.name, peer.version, c.them, c.total, text, pct)];
     if (!pct) question.readout = `Fewer than ${FEW_FILES} files, so counts only.`;
     if (c.differing > 0) {
-      differences[id] = { peer: peer.id, peerName: peer.name, level: q.level, scope: q.scope, q: kindKey, summary: `Show the ${int(c.differing)} files with different results` };
+      differences[id] = { peer: peer.id, peerName: peer.name, level: q.level, scope: q.scope, q: kindKey, summary: `Show the ${int(c.differing)} files with different results`, okUs: c.us[0], okThem: c.them[0] };
     }
     return question;
   });
@@ -564,9 +599,15 @@ function piiPanel(ctx: Context, query: PairQuery): PairPanel {
     };
     const onlyUs = usable.filter(l => l.us === true && l.them === false).map(l => l.label);
     const onlyThem = usable.filter(l => l.us === false && l.them === true).map(l => l.label);
-    const flat = (title: string, labels: string[]): AccuracyDifferenceColumn => ({ title, total: int(labels.length), groups: labels.length ? [{ name: '', count: int(labels.length), files: labels.map(label => ({ slug: label })) }] : [] });
+    const flat = (title: string, none: string, labels: string[]): AccuracyDifferenceColumn => ({ title, none, total: int(labels.length), groups: labels.length ? [{ name: '', count: int(labels.length), files: labels.map(label => ({ slug: label })) }] : [] });
     const differences: AccuracyDifferencesData | undefined = onlyUs.length || onlyThem.length
-      ? { columns: [flat('Hidden by redact-secret only', onlyUs), flat(`Hidden by ${name} only`, onlyThem)], none: 'None here.' } : undefined;
+      ? {
+        note: differenceNote('r', 'text'),
+        columns: [
+          flat(differenceTitle('r', PRODUCT, name), emptyDirection('r', PRODUCT, name, tally(l => l.us)[0], 'text'), onlyUs),
+          flat(differenceTitle('r', name, PRODUCT), emptyDirection('r', name, PRODUCT, tally(l => l.them)[0], 'text'), onlyThem),
+        ],
+      } : undefined;
     return {
       id: `${key}.${w.id}`, position: `${i + 1} / ${workloads.length}`, title: text.title,
       description: `${int(w.lines.length)} texts. ${text.description}`, expect: text.expect,

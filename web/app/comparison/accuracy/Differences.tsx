@@ -5,7 +5,7 @@ import { AccuracyDifferences } from '../../../components/comparison';
 import { Disclosure } from '../../../components/disclosure';
 import { RetryNote, Skeleton, SkeletonBlock } from '../../../components/feedback';
 import { useBuildData } from '../../../lib/build-data';
-import { differenceColumns, differencesOf, isDiffFileOf, type DiffSource, type DifferencesSlot } from '../../../resolvers/accuracy';
+import { differenceColumns, differenceNote, differencesOf, isDiffFileOf, type DiffSource, type DifferencesSlot } from '../../../resolvers/accuracy';
 import { failureText } from '../../report/dataFailure';
 
 const Source = createContext<DiffSource | null>(null);
@@ -42,8 +42,8 @@ export function Differences({ slot }: { slot: DifferencesSlot }) {
       {problem && <RetryNote title={problem.title} retryLabel={problem.retryLabel} onRetry={problem.reload ? () => window.location.reload() : load.retry}>{problem.detail}</RetryNote>}
       {lists && (
         <AccuracyDifferences
-          columns={differenceColumns(lists, slot.q, slot.peerName, all)}
-          none="None here."
+          columns={differenceColumns(lists, slot.q, slot.peerName, all, { us: slot.okUs, them: slot.okThem })}
+          note={differenceNote(slot.q)}
           onShowAll={column => setAll(held => held.map((v, i) => v || i === column))}
         />
       )}

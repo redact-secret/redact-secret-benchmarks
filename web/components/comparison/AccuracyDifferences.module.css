@@ -5,6 +5,13 @@
     gap: var(--space-6);
   }
 
+  .note {
+    margin: 0 0 var(--space-4);
+    max-width: 70ch;
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
   .column {
     display: grid;
     gap: var(--space-2);
@@ -22,7 +29,14 @@
     border-bottom: var(--rule-strong) solid var(--ink);
   }
 
-  .title span {
+  .titleText {
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  .total {
+    flex: none;
+    white-space: nowrap;
     align-self: end;
     font: var(--text-mono-small);
     color: var(--ink-muted);

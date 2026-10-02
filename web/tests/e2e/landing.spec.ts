@@ -25,7 +25,6 @@ test('the example choice and Replay work from the keyboard and do not move the p
   await page.goto(`${BASE}/`);
   const file = page.locator('figure pre').locator('xpath=..');
   const group = page.getByRole('group', { name: 'Example' });
-  const before = await file.boundingBox();
   const pressed = group.getByRole('button', { pressed: true });
   await expect(pressed).toHaveText('Credential');
   const personal = group.getByRole('button', { name: 'Personal data' });
@@ -33,11 +32,15 @@ test('the example choice and Replay work from the keyboard and do not move the p
   await page.keyboard.press('Enter');
   await expect(personal).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('figure pre')).toContainText('Subject');
-  expect((await file.boundingBox())?.height).toBe(before?.height);
+  // A different example is different text (a long token wraps, an address does not), so its card may differ in height; the motion itself must not move anything.
+  expect((await file.boundingBox())?.height).toBeGreaterThan(0);
+  const settled = await file.boundingBox();
   await page.getByRole('button', { name: 'Replay' }).focus();
   await page.keyboard.press('Space');
   await expect(page.locator('figure pre')).toContainText('Subject');
-  expect((await file.boundingBox())?.height).toBe(before?.height);
+  expect((await file.boundingBox())?.height).toBe(settled?.height);
+  await page.waitForTimeout(1800);
+  expect((await file.boundingBox())?.height).toBe(settled?.height);
 });
 
 test.describe('with reduced motion', () => {

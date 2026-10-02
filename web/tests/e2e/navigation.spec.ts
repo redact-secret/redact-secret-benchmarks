@@ -79,7 +79,7 @@ test.describe('phone navigation', () => {
   test('the bar navigates, and at the end of a long page the footer is not hidden behind it', async ({ page }) => {
     await page.goto(`${BASE}/report/families/`);
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    const footer = page.getByRole('contentinfo').locator('p');
+    const footer = page.getByRole('contentinfo').locator('p').last();
     const bar = (await page.getByRole('navigation', { name: 'Primary, bottom bar' }).boundingBox())!;
     const foot = (await footer.boundingBox())!;
     expect(foot.y + foot.height).toBeLessThanOrEqual(bar.y + 2);

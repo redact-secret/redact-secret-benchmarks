@@ -33,7 +33,7 @@ test.describe('/evaluation/scanner', () => {
     await summary.click();
     await expect(page.locator('details[open] pre').first()).toBeVisible();
     const hrefs = await page.locator('main a[href]').evaluateAll(a => a.map(x => (x as HTMLAnchorElement).getAttribute('href') ?? ''));
-    for (const href of hrefs) expect(href, `link ${href}`).toMatch(/^(#|\/next\/)/);
+    for (const href of hrefs) expect(href, `link ${href}`).toMatch(/^(#|\/(report|comparison|evaluation)\/)/);
   });
 
   test('the page names no scanner as better, faster or recommended', async ({ page }) => {

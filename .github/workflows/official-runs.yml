@@ -1,8 +1,9 @@
 name: Official credential-eval runs
 # Runs credential-eval officially, once per qualification population (#604), and builds the qualification view from the
-# artifacts (#605). Manual only: it builds a private engine and runs five scanners, so it is never part of push or pull
-# request validation. The pins are benchmarks/official-runs.json; the steps are credential-eval
-# docs/consumers/benchmarks-quickstart.md. Spec: docs/specs/official-runs.md.
+# artifacts (#605). The floors population is run twice: a plain measurement and a methods run (#636). Manual only: it
+# builds a private engine and runs five scanners, so it is never part of push or pull request validation. The pins are
+# benchmarks/official-runs.json; the steps are credential-eval docs/consumers/benchmarks-quickstart.md.
+# Spec: docs/specs/official-runs.md.
 #
 # Safety: dispatch only (never pull_request_target); contents: read; the engine token is a GitHub App token scoped to
 # redact-secret/credential-eval with contents: read, minted in the job that needs it and never echoed; no checkout keeps
@@ -78,8 +79,18 @@ jobs:
           node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
           --out "official-out/$POPULATION" --runs 2
-      - name: Remove the byte copies the check made
-        run: rm -f "official-out/$POPULATION"/artifact-[0-9]*.json
+      - name: Methods run, twice, with the determinism check (floors population only)
+        if: matrix.population == 'public-evidence-snapshot'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POPULATION: ${{ matrix.population }}
+          NODE_OPTIONS: --max-old-space-size=5120
+        run: >
+          node --import tsx scripts/run-official-credential-eval.ts
+          --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
+          --out "official-out/$POPULATION" --runs 2 --methods
+      - name: Remove the byte copies the checks made
+        run: rm -f "official-out/$POPULATION"/artifact-[0-9]*.json "official-out/$POPULATION"/methods/artifact-[0-9]*.json
         env:
           POPULATION: ${{ matrix.population }}
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -111,6 +122,8 @@ jobs:
         run: |
           for dir in official-in/official-run-*; do mv "$dir" "official-in/${dir#official-in/official-run-}"; done
       - name: Build the qualification view from the artifacts
+        env:
+          NODE_OPTIONS: --max-old-space-size=5120
         run: npm run qualification:view -- --artifacts official-in --out qualification-out/qualification-v1.json
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:

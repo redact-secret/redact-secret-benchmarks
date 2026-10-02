@@ -98,3 +98,31 @@ test('the two product populations never share a case, a category or a denominato
   assert.equal(policy.snapshot.cases.filter(c => ids.has(c.id)).length, 0);
   assert.notEqual(regression.corpusDigest, policy.corpusDigest);
 });
+
+test('the methods run is pinned: the gates it feeds, the reference, the seed and the evaluation evidence digest are checked', () => {
+  const mutate = change => { const r = clone(); change(r); return officialRunProblems(r, { ...context, evaluationEvidenceDigest: r.methodsRun?.evaluationEvidence?.digest }); };
+  assert.deepEqual(mutate(() => {}), []);
+  assert.ok(mutate(r => { delete r.methodsRun; }).some(p => /methodsRun is required/.test(p)));
+  assert.ok(mutate(r => { r.methodsRun.methods = ['metamorphic', 'mutation']; }).some(p => /must include differential/.test(p)));
+  assert.ok(mutate(r => { r.methodsRun.methods = ['mutation', 'metamorphic', 'differential']; }).some(p => /sorted, unique/.test(p)));
+  assert.ok(mutate(r => { r.methodsRun.population = 'regression-corpus'; }).some(p => /floors population/.test(p)));
+  assert.ok(mutate(r => { r.methodsRun.reference = 'nobody'; }).some(p => /not a pinned scanner/.test(p)));
+  assert.ok(mutate(r => { r.methodsRun.seed = 'path'; }).some(p => /seed of case-id or legacy-category/.test(p)));
+  assert.ok(officialRunProblems(clone(), { ...context, evaluationEvidenceDigest: `sha256:${'3'.repeat(64)}` }).some(p => /evaluation evidence file has digest/.test(p)));
+});
+
+test('a recorded methods run must be the pinned methodsRun, with its own id, and a duplicate id is refused', () => {
+  const base = clone();
+  const plain = base.runs.find(r => r.population === 'public-evidence-snapshot');
+  assert.ok(plain, 'a public run is recorded');
+  const methods = { ...structuredClone(plain), id: `${plain.population}+methods@${plain.platform}`, kind: 'methods', methods: [...base.methodsRun.methods], evaluation: { reference: base.methodsRun.reference, seed: base.methodsRun.seed, evidenceDigest: base.methodsRun.evaluationEvidence.digest } };
+  const check = (change = () => {}) => { const r = clone(); r.runs = [...r.runs.filter(x => x.id !== methods.id), structuredClone(methods)]; change(r.runs.find(x => x.id === methods.id), r); return officialRunProblems(r, context); };
+  assert.deepEqual(check(), []);
+  assert.ok(check(run => { run.methods = ['mutation']; }).some(p => /methods differ from the pinned/.test(p)));
+  assert.ok(check(run => { run.evaluation.seed = 'legacy-category'; }).some(p => /evaluation .* differs from the pinned methodsRun/.test(p)));
+  assert.ok(check(run => { run.id = plain.id; }).some(p => /duplicate run id/.test(p)));
+  assert.ok(check(run => { run.population = 'policy-corpus'; run.id = `policy-corpus+methods@${run.platform}`; }).some(p => /pinned methodsRun population only/.test(p)));
+  assert.ok(check(run => { delete run.kind; }).some(p => /id must be <population>@<platform>/.test(p)));
+  // The pinned darwin configuration hash belongs to the plain measurement; a methods run has its own config_hash.
+  assert.ok(!check(run => { run.configHash = `sha256:${'4'.repeat(64)}`; }).some(p => /configHash differs from the pinned/.test(p)));
+});

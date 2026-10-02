@@ -3,7 +3,11 @@
  * The steps are credential-eval docs/consumers/benchmarks-quickstart.md; the pins are benchmarks/official-runs.json.
  *
  *   node --import tsx scripts/run-official-credential-eval.ts --population <id> --engine-dir <checkout at the pinned tag>
- *     --platform <linux-x64|darwin-arm64> --out <dir> [--runs 2] [--evidence-dir <dir with the public release assets>]
+ *     --platform <linux-x64|darwin-arm64> --out <dir> [--runs 2] [--evidence-dir <dir with the public release assets>] [--methods]
+ *
+ * `--methods` makes the methods run of the floors population (docs/specs/official-runs.md, "The methods run"): the same
+ * evidence and configuration as the plain run plus `--methods`, `--reference`, `--seed` and the product evaluation evidence
+ * file pinned in the registry `methodsRun`. It writes <out>/methods/artifact.json and <out>/methods/run-record.json.
  *
  * It refuses, before reading any measurement, when the engine, a scanner, the evidence or a product corpus differs from
  * the registry. It runs the engine `--runs` times (default 2) and accepts the artifact only when every run exits 0, is
@@ -13,7 +17,8 @@
 import { spawnSync, execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync, copyFileSync } from 'node:fs';
 import path from 'node:path';
-import { sha256Digest } from '../benchmarks/qualification/canonical.ts';
+import { canonical, sha256Digest } from '../benchmarks/qualification/canonical.ts';
+import { buildEvaluationEvidence } from '../benchmarks/qualification/evaluation-evidence.ts';
 import { exportPopulation, PRODUCT_POPULATIONS, type ProductPopulation } from '../benchmarks/qualification/population-snapshot.ts';
 import { bindingProblems, readRunArtifact, type RunArtifact } from '../benchmarks/qualification/run-artifact.ts';
 
@@ -25,11 +30,25 @@ const fail = (message: string): never => { console.error(`official run refused: 
 const populationId = option('population') ?? fail('--population is required');
 const engineDir = path.resolve(option('engine-dir') ?? fail('--engine-dir is required'));
 const platform = option('platform') ?? fail('--platform is required');
-const out = path.resolve(option('out') ?? fail('--out is required'));
+const methodsMode = args.includes('--methods');
+const baseOut = path.resolve(option('out') ?? fail('--out is required'));
+const out = methodsMode ? path.join(baseOut, 'methods') : baseOut;
 const runs = Number(option('runs', '2'));
 if (!Number.isInteger(runs) || runs < 2) fail('--runs must be at least 2: an official artifact needs a determinism check');
 
 const population = registry.populations.find((p: { id: string }) => p.id === populationId) ?? fail(`unknown population ${populationId}`);
+
+// The methods run: its selection and the evaluation evidence are pinned in the registry, and the evidence file must be what the product contracts derive.
+const methodsRun = registry.methodsRun as { population: string; methods: string[]; reference: string; seed: string; evaluationEvidence: { file: string; digest: string } } | undefined;
+let evaluationEvidenceFile = '';
+if (methodsMode) {
+  if (!methodsRun) fail('the registry pins no methods run (methodsRun)');
+  else if (methodsRun.population !== populationId) fail(`the methods run is pinned for ${methodsRun.population}, not ${populationId}`);
+  evaluationEvidenceFile = path.resolve(new URL('..', import.meta.url).pathname, methodsRun!.evaluationEvidence.file);
+  const onDisk = sha256Digest(canonical(JSON.parse(readFileSync(evaluationEvidenceFile, 'utf8'))));
+  if (onDisk !== methodsRun!.evaluationEvidence.digest) fail(`${methodsRun!.evaluationEvidence.file} has digest ${onDisk}, the registry pins ${methodsRun!.evaluationEvidence.digest}`);
+  if (sha256Digest(canonical(buildEvaluationEvidence())) !== onDisk) fail(`${methodsRun!.evaluationEvidence.file} is stale against the product contracts; run npm run qualification:evidence`);
+}
 const configFile = registry.config.platforms[platform]?.file ?? fail(`no run configuration pinned for platform ${platform}`);
 const configPath = path.join(engineDir, 'configs/official', configFile);
 const binary = path.join(engineDir, 'target/release/credential-eval');
@@ -56,6 +75,7 @@ if (probe('gitleaks', ['version']) !== registry.scanners.find((s: { id: string }
 // 3. Population inputs.
 const pin = population.evidence;
 const inputs: { corpus: string; manifest: string; tag: string; manifestDigest: string } = { corpus: '', manifest: '', tag: pin.release.tag, manifestDigest: pin.release.manifestDigest };
+if (methodsMode && (PRODUCT_POPULATIONS as readonly string[]).includes(populationId)) fail('a methods run is made for the floors population only');
 if ((PRODUCT_POPULATIONS as readonly string[]).includes(populationId)) {
   const exported = await exportPopulation(populationId as ProductPopulation);
   const identity = exported.snapshot.identity as { source: string; revision: string; corpus_digest: string };
@@ -69,7 +89,7 @@ if ((PRODUCT_POPULATIONS as readonly string[]).includes(populationId)) {
   inputs.corpus = path.join(dir, 'credential-eval-corpus-snapshot.json');
   inputs.manifest = path.join(dir, 'release-manifest.json');
 } else {
-  const dir = path.resolve(option('evidence-dir', path.join(out, 'evidence'))!);
+  const dir = path.resolve(option('evidence-dir', path.join(baseOut, 'evidence'))!);
   mkdirSync(dir, { recursive: true });
   if (!existsSync(path.join(dir, 'release-manifest.json')))
     execFileSync('gh', ['release', 'download', pin.release.tag, '-R', pin.source === 'credential-evidence' ? 'redact-secret/credential-evidence' : pin.source, '-D', dir,
@@ -83,38 +103,50 @@ if ((PRODUCT_POPULATIONS as readonly string[]).includes(populationId)) {
 const artifacts: string[] = [];
 for (let n = 1; n <= runs; n++) {
   const artifact = path.join(out, `artifact-${n}.json`);
+  // A methods run is not given --require-complete: the engine then also exits 3 for a recorded operator generation attempt that errored, which
+  // is a fact about the generated variants, not a scanner that did not measure. Scanner completeness is checked on the artifact below.
+  const methodArgs = methodsMode ? ['--methods', methodsRun!.methods.join(','), '--reference', methodsRun!.reference, '--seed', methodsRun!.seed, '--evidence', evaluationEvidenceFile] : ['--require-complete'];
   const result = spawnSync(binary, ['run', '--run-class', 'official', '--corpus', inputs.corpus, '--evidence-release', inputs.tag, '--evidence-manifest', inputs.manifest,
-    '--evidence-manifest-digest', inputs.manifestDigest, '--config', configPath, '--node-dir', path.join(engineDir, 'adapters/node'), '--jobs', '4', '--require-complete', '--out', artifact],
+    '--evidence-manifest-digest', inputs.manifestDigest, '--config', configPath, '--node-dir', path.join(engineDir, 'adapters/node'), '--jobs', '4', ...methodArgs, '--out', artifact],
   { stdio: ['ignore', 'inherit', 'inherit'] });
   if (result.status !== 0) fail(`credential-eval run ${n} exited ${result.status}; no artifact is accepted`);
   artifacts.push(artifact);
 }
 
-// 5. Accept only schema-valid artifacts that bind to the population and agree semantically.
-const accepted = artifacts.map(file => readRunArtifact(readFileSync(file)));
-const first = accepted[0];
-for (const [i, a] of accepted.entries()) {
+// 5. Accept only schema-valid artifacts that bind to the population and agree semantically. They are read one at a time: a methods
+// artifact is a few hundred MB, and only the first one's identity is kept.
+interface Kept { manifest: RunArtifact['manifest']; caseCounts: Record<string, number>; artifactDigest: string; semanticDigest: string }
+let first: Kept | undefined;
+for (const [i, file] of artifacts.entries()) {
+  const a = readRunArtifact(readFileSync(file));
   const problems = bindingProblems(a.artifact, pin, { engineVersion: registry.engine.version, protocol: registry.engine.protocol });
   if (problems.length) fail(`artifact ${i + 1} is not accepted for ${populationId}: ${problems.join('; ')}`);
-  if (a.semanticDigest !== first.semanticDigest) fail(`run ${i + 1} has semantic digest ${a.semanticDigest}, run 1 has ${first.semanticDigest}: the measurement is not reproducible`);
+  if (methodsMode) {
+    const ran = [...a.artifact.manifest.methods.map(m => m.id)].sort().join(',');
+    if (ran !== [...methodsRun!.methods].sort().join(',')) fail(`artifact ${i + 1} ran methods ${ran}, the registry pins ${methodsRun!.methods.join(',')}`);
+  } else if (a.artifact.manifest.methods.length) fail(`artifact ${i + 1} ran methods; the plain run measures none`);
+  if (first && a.semanticDigest !== first.semanticDigest) fail(`run ${i + 1} has semantic digest ${a.semanticDigest}, run 1 has ${first.semanticDigest}: the measurement is not reproducible`);
+  first ??= { manifest: a.artifact.manifest, caseCounts: Object.fromEntries(a.artifact.scanners.map(x => [x.scanner, x.cases.length])), artifactDigest: a.artifactDigest, semanticDigest: a.semanticDigest };
 }
+if (!first) fail('no artifact was produced');
 copyFileSync(artifacts[0], path.join(out, 'artifact.json'));
-const artifact: RunArtifact = first.artifact;
+const kept = first!;
 const record = {
   schema: 'redact-secret-benchmarks/official-run-record/v1',
   population: populationId, platform,
   benchmarkRevision: execFileSync('/usr/bin/git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
-  engine: { ...artifact.manifest.engine, revision, protocol: artifact.manifest.protocol_version },
-  runClass: artifact.manifest.run_class, publication: artifact.manifest.publication,
-  evidence: artifact.manifest.evidence, configHash: artifact.manifest.config_hash,
-  artifact: { digest: first.artifactDigest, semanticDigest: first.semanticDigest, schemaDigest: sha256Digest(readFileSync(new URL('../schemas/credential-eval-run-artifact-v1.json', import.meta.url))) },
+  engine: { ...kept.manifest.engine, revision, protocol: kept.manifest.protocol_version },
+  runClass: kept.manifest.run_class, publication: kept.manifest.publication,
+  evidence: kept.manifest.evidence, configHash: kept.manifest.config_hash,
+  artifact: { digest: kept.artifactDigest, semanticDigest: kept.semanticDigest, schemaDigest: sha256Digest(readFileSync(new URL('../schemas/credential-eval-run-artifact-v1.json', import.meta.url))) },
   determinism: { runs, semanticDigestsEqual: true },
-  scanners: artifact.manifest.scanners.map(s => ({
+  ...(methodsMode ? { kind: 'methods', methods: [...methodsRun!.methods].sort(), evaluation: { reference: methodsRun!.reference, seed: methodsRun!.seed, evidenceDigest: methodsRun!.evaluationEvidence.digest } } : {}),
+  scanners: kept.manifest.scanners.map(s => ({
     id: s.id, version: s.version, build: s.build ?? null, mode: s.mode, adapter: s.adapter, configurationHash: s.configuration_hash,
     executableSha256: s.provenance?.components?.find(c => c.kind === 'executable')?.sha256 ?? null,
     packageIntegrity: s.provenance?.components?.find(c => c.kind === 'npm-package')?.integrity ?? null,
   })),
-  caseCounts: Object.fromEntries(artifact.scanners.map(s => [s.scanner, s.cases.length])),
+  caseCounts: kept.caseCounts,
 };
 writeFileSync(path.join(out, 'run-record.json'), `${JSON.stringify(record, null, 2)}\n`);
-console.log(`${populationId} (${platform}): official/${artifact.manifest.publication}, ${runs} runs, semantic digest ${first.semanticDigest}, artifact ${first.artifactDigest}`);
+console.log(`${populationId}${methodsMode ? ' methods run' : ''} (${platform}): official/${kept.manifest.publication}, ${runs} runs, semantic digest ${kept.semanticDigest}, artifact ${kept.artifactDigest}`);

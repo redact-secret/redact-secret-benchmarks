@@ -17,7 +17,7 @@ import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
-import { detectorsOf } from '../benchmarks/qualification/adapter.ts';
+import { detectorsOf, seedCaseId } from '../benchmarks/qualification/adapter.ts';
 import { loadProductInputs } from '../benchmarks/qualification/inputs.ts';
 import { readRunArtifact, type CaseResult, type Measurement, type RunArtifact } from '../benchmarks/qualification/run-artifact.ts';
 import {
@@ -149,9 +149,11 @@ const outcomes = compareOutcomes(pairs);
 const legacyFamilies: LegacyFamily[] = legacyStatus.families.map((f: any) => ({
   family: f.family, status: f.status, reasons: f.reasons, evidenceTier: f.evidenceTier ?? null, evidenceBasis: f.evidenceBasis ?? null,
   qualificationProfile: f.qualificationProfile ?? null, taxonomyFamilies: f.taxonomyFamilies, evidence: f.evidence,
+  axisIds: f.fixtureProfile?.cells ? { positiveContext: f.fixtureProfile.cells.positiveContextAxisIds, control: f.fixtureProfile.cells.controlAxisIds, confusion: f.fixtureProfile.cells.confusionAxisIds } : undefined,
 }));
 const nextFamilies: NextFamily[] = view.families.map((f: any) => ({
   family: f.family, taxonomyFamilies: f.taxonomyFamilies.map((t: any) => t.id), evidence: f.evidence,
+  axisIds: f.fixtureProfile?.cells ? { positiveContext: f.fixtureProfile.cells.positiveContextAxisIds, control: f.fixtureProfile.cells.controlAxisIds, confusion: f.fixtureProfile.cells.confusionAxisIds } : undefined,
   status: { value: f.status.value, reasons: f.status.reasons, evidenceTier: f.status.evidenceTier ?? null, evidenceBasis: f.status.evidenceBasis ?? null, qualificationProfile: f.status.qualificationProfile ?? null, methodsNotRun: f.status.methodsNotRun },
   populations: f.populations.map((p: any) => {
     const c = p.scanners.find((s: any) => s.scanner === SCANNER)?.counts;
@@ -194,7 +196,22 @@ const adjustmentsByFamily: Record<string, Record<string, Record<string, number>>
     }
   }
 }
-const families = compareFamilies(legacyFamilies, nextFamilies, { floorsPopulation: PUBLIC, adjustmentsByFamily });
+// The differential review occurrences of the methods run, per family, with how many canonical ids the review ledger holds.
+const reviewByFamily: Record<string, { occurrences: number; inLedger: number; byPeer: Record<string, number> }> = {};
+const methodsFile = path.join(artifactsDir, PUBLIC, 'methods/artifact.json');
+if (existsSync(methodsFile)) {
+  const methods = readRunArtifact(await readFile(methodsFile)).artifact;
+  const detectorsOfSeed = new Map(nextCases.filter(c => c.population === PUBLIC).map(c => [c.key, c.detectors]));
+  for (const q of methods.review_queue ?? []) {
+    if (q.method !== 'differential') continue;
+    for (const d of detectorsOfSeed.get(seedCaseId(q.case_id, 'differential')) ?? []) {
+      const row = (reviewByFamily[d] ??= { occurrences: 0, inLedger: 0, byPeer: {} });
+      row.occurrences++; if (product.ledger.entries[q.id]) row.inLedger++;
+      const peer = String(q.peer ?? 'unknown'); row.byPeer[peer] = (row.byPeer[peer] ?? 0) + 1;
+    }
+  }
+}
+const families = compareFamilies(legacyFamilies, nextFamilies, { floorsPopulation: PUBLIC, adjustmentsByFamily, axisOverlay: Boolean(view.policy.axisOverlay), reviewByFamily });
 
 // -- identity ----------------------------------------------------------------------------------------------------------
 const nextVersions: Record<string, string | null> = {};
@@ -218,21 +235,33 @@ const gaps = compareKnownGaps(
 for (const id of legacyCategoriesWithoutReport) notCompared.push({ area: `per-fixture outcomes, category ${id}`, reason: 'the legacy bench writes no report for it (calibration-only), so there is no legacy outcome.' });
 // Which recorded run each compared artifact is. A comparison against a non-canonical run says so; darwin and linux runs are never mixed.
 const registry = await readJson(path.join(root, 'benchmarks/official-runs.json'));
-const platformOf = (population: string, semanticDigest: string) => registry.runs.find((r: any) => r.population === population && r.artifact.semanticDigest === semanticDigest);
-const basis = view.populations.map((p: any) => ({ population: p.population, run: platformOf(p.population, p.artifact.semanticDigest) }));
+const hasMethodsRun = view.populations.some((p: any) => p.methodsArtifact);
+const recorded = (artifact: { semanticDigest: string }, population: string, kind: 'plain' | 'methods') =>
+  registry.runs.find((r: any) => r.population === population && (r.kind === 'methods') === (kind === 'methods') && r.artifact.semanticDigest === artifact.semanticDigest);
+const basis = view.populations.flatMap((p: any) => [
+  { population: p.population, run: recorded(p.artifact, p.population, 'plain') },
+  ...(p.methodsArtifact ? [{ population: `${p.population} methods run`, run: recorded(p.methodsArtifact, p.population, 'methods') }] : []),
+]);
 const unrecorded = basis.filter((b: any) => !b.run).map((b: any) => b.population);
 const nonCanonical = basis.filter((b: any) => b.run && !b.run.canonical).map((b: any) => b.run.id);
 if (unrecorded.length) notCompared.push({ area: 'artifact identity', reason: `the artifact of ${unrecorded.join(', ')} is not a run recorded in benchmarks/official-runs.json (its semantic digest matches no recorded run), so its provenance is not established.` });
 if (nonCanonical.length) notCompared.push({ area: 'canonical run', reason: `the artifacts compared include non-canonical runs (${nonCanonical.join(', ')}). The canonical measurement is the linux-x64 CI run; rerun this report against its artifacts.` });
-notCompared.push({ area: 'review queue and review ledger', reason: 'the official configuration runs no methods, so the new path has no review queue to join with the ledger; the legacy ids also need the re-key (legacy-id-rekey). The methods-dependent evidence fields are compared as "not measured".' });
+if (hasMethodsRun) notCompared.push({ area: 'review ledger decisions', reason: 'the methods run has a review queue, keyed by canonical occurrence ids; the review ledger is keyed by legacy ids, so no ledger decision is applied to it (review-occurrence-identity). The per-family counts of occurrences and of how many canonical ids the ledger holds are in the status attribution. The legacy mutation review entries (the legacy queue held mutation variants that need review, the new queue holds differential occurrences only) are not compared.' });
+else notCompared.push({ area: 'review queue and review ledger', reason: 'the view has no methods run, so the new path has no review queue to join with the ledger; the legacy ids also need the re-key (legacy-id-rekey). The methods-dependent evidence fields are compared as "not measured".' });
 notCompared.push({ area: 'candidate-regression inputs and protected holdout', reason: 'internal populations, not part of a public qualification view (docs/specs/qualification-inputs.md).' });
 notCompared.push({ area: 'Next page data', reason: 'the report, family and fixture pages of the Next app still read the legacy files; the new qualification pages (/evaluation/qualification/) read the view this report compares. Compare them by page-level numbers: distribution and per-family status above are the numbers those pages display.' });
 
 // -- recommendations --------------------------------------------------------------------------------------------------------------
 const cf = families.counterfactual;
+const heldSummary = Object.entries(families.heldBy).map(([causes, n]) => `${n} by ${causes}`).join('; ') || 'none';
+const review = Object.values(reviewByFamily);
+const peerTotals: Record<string, number> = {};
+for (const r of review) for (const [peer, n] of Object.entries(r.byPeer)) peerTotals[peer] = (peerTotals[peer] ?? 0) + n;
 const recommendations = [
-  `Methods: ${cf.heldOnlyByMethods} of ${cf.legacyStable} legacy-stable families are held at provisional by methods.notRun alone. A methods-enabled official configuration (a new config_hash and re-run of the three populations) is needed before cutover for those and for the ${cf.heldByMethodsAndOthers} held by it and another cause. It is not sufficient: ${cf.heldWithoutMethods} are held by other causes, so running the methods alone would restore ${cf.heldOnlyByMethods} at most. Not applied: it changes the pinned configuration and needs a product decision and an ADR.`,
-  'Axes: the public snapshot carries a case group (a scenario id) but not the source context the legacy axes counted. The evidence release materialised-fixtures manifest records the context per case id. Carrying it into the adapter (population-policy.json axes.positiveContext) or into the credential-eval snapshot grouping is a decision for benchmarks and credential-evidence. Not applied.',
+  `Status: the legacy path reads ${cf.legacyStable} stable families and the new path ${cf.nextStable}. Held back (legacy-stable families the new path does not read stable): ${heldSummary}. Not applied: nothing here changes a status.`,
+  hasMethodsRun
+    ? `Review ledger: every differential occurrence of the methods run is keyed by a canonical id and the ledger is keyed by legacy ids (${review.reduce((a, r) => a + r.inLedger, 0)} of ${review.reduce((a, r) => a + r.occurrences, 0)} family-attributed occurrences are in the ledger; per peer ${JSON.stringify(peerTotals)}). Two decisions are needed: re-key the ledger decisions to the canonical occurrence ids of the pinned peers, and decide whether the differential gate reads the peers the legacy run scanned (gitleaks, trufflehog) or every pinned peer (flare-redact and openredaction add occurrences no one has reviewed). Not applied: both change which disagreements a status depends on.`
+    : 'Methods: the view has no methods run. A methods run of the floors population (docs/specs/official-runs.md, "The methods run") is needed before the metamorphic, mutation and differential gates are measured.',
   'Policy corpus: the T3 route floors read the 19-case policy corpus alone. Whether the floors, the corpus or the route change is a product policy decision. Not applied.',
   'Twin scope: confirm with credential-eval how a twin control is scoped (case family against the finding family) before the new path decides twin discrimination; every differing control in this report is a twin whose finding is present on both sides.',
   'Re-key: resolve the legacy-id re-key (qualification-inputs.json populations[0].rekey) with the evidence release id map, then apply the legacy review-ledger decisions and disputed properties to canonical ids, so the ledger joins are measured instead of listed.',
@@ -246,13 +275,15 @@ const identities: Record<string, unknown> = {
   },
   new: {
     publication: view.publication, policyRevision: view.policy.revision, adapter: view.adapter, scanners: nextVersions, distribution: view.distribution, stableDistribution: view.stableDistribution,
-    populations: view.populations.map((p: any) => ({ run: platformOf(p.population, p.artifact.semanticDigest)?.id ?? 'not recorded', population: p.population, role: p.role, runClass: p.runClass, semanticDigest: p.artifact.semanticDigest, configHash: p.artifact.configHash, evidenceTag: p.artifact.evidence.release?.tag, methods: p.artifact.methods, caseCount: p.artifact.caseCount })),
+    populations: view.populations.map((p: any) => ({ run: recorded(p.artifact, p.population, 'plain')?.id ?? 'not recorded', population: p.population, role: p.role, runClass: p.runClass, semanticDigest: p.artifact.semanticDigest, configHash: p.artifact.configHash, evidenceTag: p.artifact.evidence.release?.tag, methods: p.artifact.methods, caseCount: p.artifact.caseCount,
+      ...(p.methodsArtifact ? { methodsRun: { run: recorded(p.methodsArtifact, p.population, 'methods')?.id ?? 'not recorded', semanticDigest: p.methodsArtifact.semanticDigest, configHash: p.methodsArtifact.configHash, methods: p.methodsArtifact.methods, caseCount: p.methodsArtifact.caseCount } } : {}) })),
+    axisOverlay: view.policy.axisOverlay ?? null,
   },
 };
 
 const sections = { identity: identity, membership: families.membership, status: families.status, evidence: families.evidence, outcomes: outcomes.section, knownGaps: gaps };
 const report: ParityReport = {
-  schema: PARITY_SCHEMA, identities, causes: CAUSES, sections, statusRows: families.statusRows, counterfactual: cf, outcomeGroups: outcomes.groups, joins, notCompared,
+  schema: PARITY_SCHEMA, identities, causes: CAUSES, sections, statusRows: families.statusRows, counterfactual: cf, heldBy: families.heldBy, outcomeGroups: outcomes.groups, joins, notCompared,
   summary: summarise(sections), recommendations,
 };
 
@@ -261,6 +292,6 @@ await mkdir(path.dirname(prefix), { recursive: true });
 await writeFile(`${prefix}.json`, `${JSON.stringify(report, null, 2)}\n`);
 await writeFile(`${prefix}.md`, renderMarkdown(report));
 const s = report.summary;
-console.log(`Compared ${s.compared}: ${s.equal} equal, ${s.explained} expected-structural, ${s.unexplained} unexplained. Status counterfactual ${JSON.stringify(cf)}`);
+console.log(`Compared ${s.compared}: ${s.equal} equal, ${s.explained} expected-structural, ${s.unexplained} unexplained. Status counterfactual ${JSON.stringify(cf)}; held back ${JSON.stringify(families.heldBy)}`);
 console.log(`Wrote ${path.relative(process.cwd(), prefix)}.json and .md`);
 if (flag('strict') && s.unexplained > 0) { console.error(`${s.unexplained} unexplained difference(s)`); process.exit(1); }

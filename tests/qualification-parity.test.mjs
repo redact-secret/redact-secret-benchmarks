@@ -218,3 +218,40 @@ test('every cause names a change and an owner, and its confirmation is stated', 
     ids.add(cause.id);
   }
 });
+
+test('with the axis overlay, an axis difference is attributed by comparing axis ids, never assumed to be the snapshot vocabulary', () => {
+  const ids = (positive, control = ['a', 'b']) => ({ positiveContext: positive, control, confusion: control });
+  const withOverlay = { ...options, axisOverlay: true };
+  // The new side holds one axis id the legacy side lacks: a case with no legacy counterpart, which needs the membership adjustment as evidence.
+  const extra = adjustments => compareFamilies([legacy('fam-a', { axisIds: ids(['x']) }, { positiveAxes: 1 })], [next('fam-a', { axisIds: ids(['x', 'y']) }, { positiveAxes: 2 })], { ...withOverlay, adjustmentsByFamily: adjustments });
+  assert.equal(diffs(extra({ 'fam-a': { 'canonical-evidence-membership': { totalFixtures: -1 } } }).evidence, 'positiveAxes')[0].cause, 'canonical-evidence-membership');
+  assert.equal(diffs(extra({}).evidence, 'positiveAxes')[0].verdict, 'unexplained');
+  // The legacy side holds an id the new side lacks: regression or policy cases of the family explain it; so does a pending fixture the adapter does not score.
+  const split = [{ population: FLOORS, role: 'floors-and-gates', cases: 30, pending: 0, notMeasured: 0, positives: 10, benign: 8, twinPairs: 6 }, { population: 'pop-gates', role: 'gates', cases: 2, pending: 0, notMeasured: 0, positives: 2, benign: 0, twinPairs: 0 }];
+  const missing = (populations, adjustments = {}) => compareFamilies([legacy('fam-a', { axisIds: ids(['x', 'y']) }, { positiveAxes: 2 })], [next('fam-a', { axisIds: ids(['x']) }, { positiveAxes: 1 }, {}, populations)], { ...withOverlay, adjustmentsByFamily: adjustments });
+  assert.equal(diffs(missing(split).evidence, 'positiveAxes')[0].cause, 'population-separation');
+  assert.equal(diffs(missing(undefined, { 'fam-a': { 'pending-not-scored': { totalFixtures: 1 } } }).evidence, 'positiveAxes')[0].cause, 'pending-not-scored');
+  assert.equal(diffs(missing(undefined).evidence, 'positiveAxes')[0].verdict, 'unexplained');
+  // Without the overlay the snapshot vocabulary still explains any axis difference, as before.
+  assert.equal(diffs(compareFamilies([legacy('fam-a', {}, { positiveAxes: 11 })], [next('fam-a', {}, { positiveAxes: 1 })], options).evidence, 'positiveAxes')[0].cause, 'axis-vocabulary');
+  // And a status reason about axes inherits the attributed cause, or none when the overlay is on and the evidence difference is unexplained.
+  assert.equal(causeOfReason('documented.minimumPositiveAxes', undefined, { axis: 'population-separation', overlay: true }), 'population-separation');
+  assert.equal(causeOfReason('documented.minimumPositiveAxes', undefined, { overlay: true }), undefined);
+});
+
+test('a differential count is a review-occurrence-identity difference only when no canonical occurrence id is in the ledger', () => {
+  const reasons = ['differential.unresolvedContractDisagreements: 3 > 0 — text'];
+  const run = review => compareFamilies([legacy()], [next('fam-a', {}, { differentialUnresolvedContractDisagreements: 3 }, { value: 'provisional', qualificationProfile: null, reasons })], { ...options, reviewByFamily: review });
+  const none = run({ 'fam-a': { occurrences: 3, inLedger: 0, byPeer: { 'peer-one': 2, 'peer-two': 1 } } });
+  const [d] = diffs(none.evidence, 'differentialUnresolvedContractDisagreements');
+  assert.equal(d.cause, 'review-occurrence-identity');
+  assert.match(d.note, /3 differential occurrence\(s\) \(peer-one 2, peer-two 1\)/);
+  assert.deepEqual(none.statusRows[0].causes, ['review-occurrence-identity']);
+  assert.deepEqual(none.heldBy, { 'review-occurrence-identity': 1 });
+  // A partly re-keyed ledger, or no queue at all, is not this cause: it stays unexplained and the status is held by an unattributed reason.
+  assert.equal(diffs(run({ 'fam-a': { occurrences: 3, inLedger: 1, byPeer: {} } }).evidence, 'differentialUnresolvedContractDisagreements')[0].verdict, 'unexplained');
+  const unknown = run(undefined);
+  assert.equal(unknown.statusRows[0].verdict, 'unexplained');
+  assert.deepEqual(unknown.heldBy, { unattributed: 1 });
+  assert.ok(CAUSES.some(c => c.id === 'review-occurrence-identity'));
+});

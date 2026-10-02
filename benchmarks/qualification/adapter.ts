@@ -5,9 +5,10 @@ import type { Tier } from '../types.ts';
 import type { Taxonomy } from '../support/taxonomy.ts';
 import type { ReviewLedger } from '../engine/review-ledger.ts';
 import { canonical } from './canonical.ts';
+import { contextGroup, type AxisOverlay } from './axis-overlay.ts';
 import {
   bindingProblems, byId, countCase, emptyCounts, OUTCOMES, readRunArtifact, UNASSIGNED,
-  type CaseResult, type EvidencePin, type FamilyCounts, type Outcome, type RunArtifact, type ScannerRun,
+  type CaseResult, type EvidencePin, type FamilyCounts, type Outcome, type ReadArtifact, type RunArtifact, type ScannerRun,
 } from './run-artifact.ts';
 
 /**
@@ -28,12 +29,13 @@ export type PopulationRole = 'floors-and-gates' | 'gates' | 'policy-route';
 export interface CombinationPolicy {
   schemaVersion: 1; id: string; scanner: string;
   populations: Record<string, { role: PopulationRole; rationale: string }>;
-  axes: { positiveContext: 'group'; benignControl: 'taxonomy-else-group' };
-  methods: { required: string[]; whenNotRun: 'block-stable' };
+  axes: { positiveContext: 'overlay-else-group'; benignControl: 'overlay-else-taxonomy-else-group' };
+  methods: { required: string[]; whenNotRun: 'block-stable'; source: 'methods-run' };
   rules: string[];
 }
 export interface PopulationRegistryEntry { id: string; source: string; runClass: 'public' | 'internal'; publishable: boolean; evidence: EvidencePin }
-export interface ArtifactInput { population: string; bytes: Buffer; caseMetadata?: Record<string, CaseMetadata> }
+/** `methodsBytes` is the methods run of the same population (docs/specs/official-runs.md, "The methods run"): a second artifact over the same evidence, whose cases are generated variants. Only the floors population carries one. */
+export interface ArtifactInput { population: string; bytes: Buffer; caseMetadata?: Record<string, CaseMetadata>; methodsBytes?: Buffer }
 export interface CaseMetadata { group: string; contextAxis?: string; expectedAction?: string; policyConformance?: boolean }
 
 export interface ContractFacts { tier: Tier; providerSource?: unknown; supportedContext?: string[]; unprobeable?: unknown; fixtureProfile?: ProfileId }
@@ -66,6 +68,8 @@ export interface ProductInputs {
   knownGaps: KnownGapRecord[];
   policy: CombinationPolicy;
   policyRevision: PolicyRevision;
+  /** The product-owned axis overlay of the floors population (benchmarks/support/public-axis-overlay.json), bound to its snapshot by corpus digest. */
+  axisOverlay?: AxisOverlay;
   holdoutReceipt?: PolicyHoldoutReceipt;
 }
 
@@ -85,7 +89,10 @@ export interface ArtifactIdentity {
 const byteOrder = (a: string, b: string) => Buffer.compare(Buffer.from(a), Buffer.from(b));
 const sorted = <T>(items: Iterable<T>, key: (item: T) => string = String as unknown as (item: T) => string) => [...items].sort((a, b) => byteOrder(key(a), key(b)));
 
-interface Loaded { input: ArtifactInput; entry: PopulationRegistryEntry; role: PopulationRole; artifact: RunArtifact; identity: ArtifactIdentity; publishable: boolean }
+interface Loaded { input: ArtifactInput; entry: PopulationRegistryEntry; role: PopulationRole; artifact: RunArtifact; identity: ArtifactIdentity; publishable: boolean; methods?: { artifact: RunArtifact; identity: ArtifactIdentity } }
+
+/** The seed case a methods-run row belongs to: the evaluation case id is `<corpus case id>--<method>`. */
+export const seedCaseId = (caseId: string, method: string) => (caseId.endsWith(`--${method}`) ? caseId.slice(0, -`--${method}`.length) : caseId);
 
 /** Resolve a case to the product detector families it belongs to: its own targets, plus its family (a detector id, or a taxonomy family served by detectors). */
 export function detectorsOf(c: CaseResult, detectorIds: Set<string>, taxonomyDetectors: Map<string, string[]>): string[] {
@@ -98,21 +105,44 @@ export function detectorsOf(c: CaseResult, detectorIds: Set<string>, taxonomyDet
   return [...out];
 }
 
+function identityOf(read: ReadArtifact): ArtifactIdentity {
+  const m = read.artifact.manifest;
+  return {
+    artifactDigest: read.artifactDigest, semanticDigest: read.semanticDigest, schema: read.artifact.schema,
+    engine: m.engine, protocolVersion: m.protocol_version, configHash: m.config_hash, evidence: m.evidence,
+    engineRunClass: m.run_class, publication: m.publication, methods: sorted(m.methods.map(x => x.id)),
+    caseCount: read.artifact.scanners[0]?.cases.length ?? 0,
+    scanners: sorted(m.scanners, s => s.id).map(s => ({
+      id: s.id, version: s.version, mode: s.mode, build: s.build ?? null, adapter: s.adapter, configurationHash: s.configuration_hash,
+      status: read.artifact.scanners.find(r => r.scanner === s.id)?.status ?? 'absent',
+    })),
+  };
+}
+
 const productRun = (artifact: RunArtifact, scanner: string): ScannerRun => {
   const run = artifact.scanners.find(s => s.scanner === scanner);
   if (!run) throw new Error(`Artifact has no ${scanner} scanner run`);
   return run;
 };
 
-function fixtureCells(cases: CaseResult[]): { cells: FixtureCells; positiveCases: number; positiveAxes: number; contextTwinPairs: number; confusionAxes: number; benignAxisIds: string[]; benignCases: number } {
+/**
+ * The floor cells of one population's cases. With the product axis overlay (#636) a counted case is named by the axis the
+ * product authored for it: its source-context group (positives) and its reviewed benign taxonomy (controls). A case the
+ * overlay does not name keeps the snapshot's own vocabulary; an overlay `null` is a control with no reviewed axis.
+ */
+function fixtureCells(cases: CaseResult[], overlay?: AxisOverlay): { cells: FixtureCells; positiveCases: number; positiveAxes: number; contextTwinPairs: number; confusionAxes: number; benignAxisIds: string[]; benignCases: number } {
   const scored = cases.filter(c => c.measurement.type !== 'pending' && c.measurement.type !== 'not-measured');
   const isSecret = (c: CaseResult) => c.expected.some(e => e.role === 'secret');
   const twins = scored.filter(c => c.twin_of);
   const paired = new Set(twins.map(c => c.twin_of!));
   const positives = scored.filter(c => !c.twin_of && isSecret(c));
   const controls = scored.filter(c => !c.twin_of && !isSecret(c));
-  const controlAxisIds = sorted(new Set(controls.map(c => c.taxonomy ?? c.group)));
-  const positiveContextAxisIds = sorted(new Set(positives.map(c => c.group)));
+  const controlAxis = (c: CaseResult) => (overlay && Object.hasOwn(overlay.controls, c.case_id) ? overlay.controls[c.case_id] : c.taxonomy ?? c.group);
+  // The legacy classifier counted two things: the fixture-profile cell by fixture group alone, and `positiveAxes` by `<category>/<group>`.
+  const contextAxis = (c: CaseResult) => (overlay && Object.hasOwn(overlay.contexts, c.case_id) ? overlay.contexts[c.case_id] : c.group);
+  const controlAxisIds = sorted(new Set(controls.map(controlAxis).filter((axis): axis is string => axis !== null)));
+  const positiveContextAxisIds = sorted(new Set(positives.map(c => (overlay && Object.hasOwn(overlay.contexts, c.case_id) ? contextGroup(overlay.contexts[c.case_id]) : c.group))));
+  const positiveCategoryAxes = new Set(positives.map(contextAxis));
   const mutationKinds = new Set(twins.map(c => c.twin_mutation_kind ?? 'unspecified'));
   const confusionAxisIds = sorted(new Set([...controlAxisIds, ...[...mutationKinds].map(kind => `twin:${kind}`)]));
   return {
@@ -121,7 +151,7 @@ function fixtureCells(cases: CaseResult[]): { cells: FixtureCells; positiveCases
       positiveContextAxes: positiveContextAxisIds.length, controlAxes: controlAxisIds.length, confusionAxes: confusionAxisIds.length,
       positiveContextAxisIds, controlAxisIds, confusionAxisIds,
     },
-    positiveCases: positives.length, positiveAxes: positiveContextAxisIds.length,
+    positiveCases: positives.length, positiveAxes: positiveCategoryAxes.size,
     contextTwinPairs: twins.filter(c => c.twin_mutation_kind === 'context').length,
     confusionAxes: new Set([...controlAxisIds, ...mutationKinds]).size,
     benignAxisIds: controlAxisIds, benignCases: controls.length,
@@ -218,18 +248,26 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
     const read = readRunArtifact(input.bytes);
     const problems = bindingProblems(read.artifact, entry.evidence, { engineVersion: engine.version, protocol: engine.protocol });
     if (problems.length) throw new Error(`Artifact for ${input.population} is not accepted: ${problems.join('; ')}`);
-    const m = read.artifact.manifest;
-    const identity: ArtifactIdentity = {
-      artifactDigest: read.artifactDigest, semanticDigest: read.semanticDigest, schema: read.artifact.schema,
-      engine: m.engine, protocolVersion: m.protocol_version, configHash: m.config_hash, evidence: m.evidence,
-      engineRunClass: m.run_class, publication: m.publication, methods: sorted(m.methods.map(x => x.id)),
-      caseCount: read.artifact.scanners[0]?.cases.length ?? 0,
-      scanners: sorted(m.scanners, s => s.id).map(s => ({
-        id: s.id, version: s.version, mode: s.mode, build: s.build ?? null, adapter: s.adapter, configurationHash: s.configuration_hash,
-        status: read.artifact.scanners.find(r => r.scanner === s.id)?.status ?? 'absent',
-      })),
-    };
-    loaded.push({ input, entry, role, artifact: read.artifact, identity, publishable: entry.publishable });
+    const identity = identityOf(read);
+    if (role === 'floors-and-gates' && identity.methods.length) throw new Error(`The ${input.population} artifact lists methods (${identity.methods.join(', ')}); the floors come from a plain run, whose cases are the corpus cases. Supply the methods run separately (methodsBytes)`);
+    let methods: Loaded['methods'];
+    if (input.methodsBytes) {
+      if (role !== 'floors-and-gates') throw new Error(`A methods run was supplied for ${input.population}, which is not the floors population; only the floors population carries one`);
+      const run = readRunArtifact(input.methodsBytes);
+      const methodsProblems = bindingProblems(run.artifact, entry.evidence, { engineVersion: engine.version, protocol: engine.protocol });
+      if (methodsProblems.length) throw new Error(`Methods run for ${input.population} is not accepted: ${methodsProblems.join('; ')}`);
+      if (!run.artifact.manifest.methods.length) throw new Error(`The methods run for ${input.population} lists no method in manifest.methods; it is a plain run`);
+      // The same scanners must have produced both artifacts: a methods run over other builds or other scanner configurations measures something else.
+      const plain = new Map(read.artifact.manifest.scanners.map(x => [x.id, x]));
+      for (const x of run.artifact.manifest.scanners) {
+        const other = plain.get(x.id);
+        if (!other || other.version !== x.version || other.configuration_hash !== x.configuration_hash || (other.build ?? null) !== (x.build ?? null))
+          throw new Error(`Methods run for ${input.population}: scanner ${x.id} differs from the plain run (version, configuration or build)`);
+      }
+      if (plain.size !== run.artifact.manifest.scanners.length) throw new Error(`Methods run for ${input.population} measures a different scanner set than the plain run`);
+      methods = { artifact: run.artifact, identity: identityOf(run) };
+    }
+    loaded.push({ input, entry, role, artifact: read.artifact, identity, publishable: entry.publishable, methods });
   }
   const floorsPopulation = Object.entries(policy.populations).find(([, p]) => p.role === 'floors-and-gates')![0];
   const policyPopulation = Object.entries(policy.populations).find(([, p]) => p.role === 'policy-route')?.[0];
@@ -237,6 +275,14 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
   loaded.sort((a, b) => byteOrder(a.input.population, b.input.population));
   if (product.holdoutReceipt && policyPopulation && loaded.find(l => l.input.population === policyPopulation)!.identity.scanners.find(s => s.id === policy.scanner)?.build !== 'candidate')
     throw new Error('A policy holdout receipt can only qualify an immutable candidate run');
+
+  const floorsArtifact = loaded.find(l => l.input.population === floorsPopulation)!;
+  const floorsOverlay = product.axisOverlay;
+  if (floorsOverlay) {
+    if (floorsOverlay.population !== floorsPopulation) throw new Error(`The axis overlay is for ${floorsOverlay.population}, the floors population is ${floorsPopulation}`);
+    if (floorsOverlay.snapshot.corpusDigest !== floorsArtifact.artifact.manifest.evidence.corpus_digest)
+      throw new Error(`The axis overlay is derived from corpus ${floorsOverlay.snapshot.corpusDigest}, the ${floorsPopulation} artifact ran ${floorsArtifact.artifact.manifest.evidence.corpus_digest}; regenerate it (npm run qualification:axis-overlay)`);
+  }
 
   const scannerIds = sorted(new Set(loaded.flatMap(l => l.artifact.scanners.map(s => s.scanner))));
   const detectorIds = new Set(product.families);
@@ -274,11 +320,10 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
     const contract = product.contracts[family];
     const empirical = product.empirical(family);
     const productCases = (population: string) => perPopulation.get(population)?.byDetector.get(policy.scanner)?.get(family) ?? [];
-    const productRun_ = (population: string) => perPopulation.get(population)!.run.get(policy.scanner)!;
 
     // Floors and the cells come from the floors population alone. Nothing is pooled across populations.
     const floorsCases = productCases(floorsPopulation);
-    const measured = fixtureCells(floorsCases);
+    const measured = fixtureCells(floorsCases, floorsOverlay);
     const floorsCounts = countsFor(floorsPopulation, policy.scanner, family) ?? emptyCounts();
 
     // Zero-tolerance gates read every gate-bearing population on its own; the classifier receives the worst one, never a sum.
@@ -288,12 +333,17 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
     });
     const worst = (key: 'twinFailures' | 'benignFalseAlarms') => Math.max(0, ...gateRows.map(r => r[key]));
 
-    // Methods the run did not execute cannot be evaluated; they never read as zero failures.
-    const floorsMethods = new Set(loaded.find(l => l.input.population === floorsPopulation)!.identity.methods);
+    // Methods the run did not execute cannot be evaluated; they never read as zero failures. The methods run, when there is one, is a
+    // second artifact of the floors population: its cases are generated variants, so a family's methods evidence is attributed through the
+    // seed case of each assertion or review occurrence (`<case id>--<method>`) to the same floors cases that carry the floors.
+    const methodsSource = floorsArtifact.methods;
+    const floorsMethods = new Set(methodsSource?.identity.methods ?? []);
     const methodsNotRun = policy.methods.required.filter(method => !floorsMethods.has(method));
-    const assertionFailures = (method: string) => (productRun_(floorsPopulation).assertions ?? []).filter(a => a.method === method && a.status === 'fail' && floorsCases.some(c => c.case_id === a.case_id)).length;
-    const unresolvedInQueue = (method: string) => (loaded.find(l => l.input.population === floorsPopulation)!.artifact.review_queue ?? [])
-      .filter(q => q.method === method && floorsCases.some(c => c.case_id === q.case_id) && !ledgerSettled(q.id)).length;
+    const floorsIds = new Set(floorsCases.map(c => c.case_id));
+    const methodsRun = methodsSource?.artifact.scanners.find(s => s.scanner === policy.scanner);
+    const assertionFailures = (method: string) => (methodsRun?.assertions ?? []).filter(a => a.method === method && a.status === 'fail' && floorsIds.has(seedCaseId(a.case_id, method))).length;
+    const unresolvedInQueue = (method: string) => (methodsSource?.artifact.review_queue ?? [])
+      .filter(q => q.method === method && floorsIds.has(seedCaseId(q.case_id, method)) && !ledgerSettled(q.id)).length;
     const metamorphicCriticalFailures = floorsMethods.has('metamorphic') ? assertionFailures('metamorphic') : 0;
     const mutationUnresolvedCritical = floorsMethods.has('mutation') ? assertionFailures('mutation') + unresolvedInQueue('mutation') : 0;
     const differentialUnresolved = floorsMethods.has('differential') ? unresolvedInQueue('differential') : 0;
@@ -324,7 +374,7 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
     let status: SupportStatus = assessed.status, qualificationProfile: QualificationProfile | null = assessed.qualificationProfile, reasons = [...assessed.reasons];
     if (status === 'stable' && methodsNotRun.length && policy.methods.whenNotRun === 'block-stable') {
       status = 'provisional'; qualificationProfile = null;
-      reasons.push(`methods.notRun: ${methodsNotRun.join(', ')} did not run in the ${floorsPopulation} artifact (manifest.methods lists ${[...floorsMethods].join(', ') || 'none'}), so their stable gates are unmeasured; unmeasured is not zero failures`);
+      reasons.push(`methods.notRun: ${methodsNotRun.join(', ')} did not run for ${floorsPopulation} (${methodsSource ? `its methods run lists ${[...floorsMethods].join(', ')}` : 'no methods run is supplied'}), so their stable gates are unmeasured; unmeasured is not zero failures`);
     }
     const { fixtureProfile, ...scored } = evidence;
     return {
@@ -359,7 +409,7 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
   const stableDistribution = { documented: 0, empirical: 0, 'policy-qualified': 0 };
   for (const f of families) if (f.status.value === 'stable' && f.status.qualificationProfile) stableDistribution[f.status.qualificationProfile]++;
 
-  const publication = loaded.every(l => l.identity.publication === 'public' && l.publishable) ? 'public' : 'internal';
+  const publication = loaded.every(l => l.identity.publication === 'public' && (l.methods?.identity.publication ?? 'public') === 'public' && l.publishable) ? 'public' : 'internal';
   return {
     schema: VIEW_SCHEMA,
     adapter: ADAPTER,
@@ -368,10 +418,12 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
       id: policy.id, revision: product.policyRevision.revision, components: product.policyRevision.components, scanner: policy.scanner,
       populations: Object.fromEntries(Object.entries(policy.populations).map(([id, p]) => [id, p.role])), methodsRequired: policy.methods.required,
       criteria: product.criteria, fixtureProfilesVersion: product.profiles.profilesVersion, rules: policy.rules,
+      ...(floorsOverlay ? { axisOverlay: { id: floorsOverlay.id, population: floorsOverlay.population, corpusDigest: floorsOverlay.snapshot.corpusDigest, contexts: Object.keys(floorsOverlay.contexts).length, controls: Object.keys(floorsOverlay.controls).length } } : {}),
     },
     populations: loaded.map<PopulationView>(l => ({
       population: l.input.population, role: l.role, denominator: l.input.population,
       runClass: l.identity.publication === 'public' && l.publishable ? 'public' : 'internal', artifact: l.identity,
+      ...(l.methods ? { methodsArtifact: l.methods.identity } : {}),
     })).map(view => ({
       ...view,
       unattributed: scannerIds.filter(id => perPopulation.get(view.population)!.unattributed.has(id)).map(id => ({ scanner: id, counts: perPopulation.get(view.population)!.unattributed.get(id)! })),

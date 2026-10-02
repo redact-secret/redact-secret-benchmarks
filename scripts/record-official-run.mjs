@@ -24,13 +24,15 @@ const record = JSON.parse(await readFile(file, 'utf8'));
 if (record.schema !== 'redact-secret-benchmarks/official-run-record/v1') throw new Error('Not an official run record');
 
 const canonical = Boolean(registry.config.platforms[record.platform]?.canonical);
+const methods = record.kind === 'methods';
 const entry = {
-  id: `${record.population}@${record.platform}`,
+  id: `${record.population}${methods ? '+methods' : ''}@${record.platform}`,
   population: record.population,
+  ...(methods ? { kind: 'methods', methods: record.methods, evaluation: record.evaluation } : {}),
   platform: record.platform,
   canonical,
   purpose: canonical
-    ? 'canonical measurement: the linux-x64 official run of .github/workflows/official-runs.yml'
+    ? `canonical ${methods ? 'methods run' : 'measurement'}: the linux-x64 official run of .github/workflows/official-runs.yml`
     : 'local verification of the pins and the determinism check; the canonical measurement is the linux-x64 CI run (.github/workflows/official-runs.yml)',
   recordedOn: date,
   benchmarkRevision: record.benchmarkRevision,
@@ -51,7 +53,9 @@ const entry = {
 const runs = [...registry.runs.filter(run => run.id !== entry.id), entry].sort((a, b) => (a.id < b.id ? -1 : 1));
 const schemaBytes = await readFile(new URL('../schemas/credential-eval-run-artifact-v1.json', import.meta.url));
 const inputs = JSON.parse(await readFile(new URL('../benchmarks/qualification-inputs.json', import.meta.url), 'utf8'));
-const problems = officialRunProblems({ ...registry, runs }, { schemaDigest: `sha256:${createHash('sha256').update(schemaBytes).digest('hex')}`, inputs });
+const { canonical, sha256Digest } = await import('../benchmarks/qualification/canonical.ts');
+const evaluationEvidenceDigest = sha256Digest(canonical(JSON.parse(await readFile(new URL(registry.methodsRun.evaluationEvidence.file, new URL('../', import.meta.url)), 'utf8'))));
+const problems = officialRunProblems({ ...registry, runs }, { schemaDigest: `sha256:${createHash('sha256').update(schemaBytes).digest('hex')}`, inputs, evaluationEvidenceDigest });
 if (problems.length) throw new Error(`The run record does not match the pins:\n  - ${problems.join('\n  - ')}`);
 
 const head = text.slice(0, text.indexOf('  "runs": ['));

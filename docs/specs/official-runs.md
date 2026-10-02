@@ -18,6 +18,7 @@ identity of everything it used; it asserts nothing about the product and emits n
 | RunArtifact schema | `schemas/credential-eval-run-artifact-v1.json`, vendored from the engine tag, digest pinned |
 | Configuration | `credential-public-v1` at the engine tag: `credential-public-v1.json` (linux-x64, canonical) and `credential-public-v1.darwin-arm64.json` (local reproduction) |
 | Scanners | gitleaks 8.30.1, TruffleHog 3.97.4 (archive and executable digests per platform), `@redact-secret/core` 0.1.0-beta.12 (the published release), flare-redact 1.6.1, `@openredaction/core` 1.1.5 (npm integrity) |
+| Methods run | `methodsRun` of the registry: the methods (`differential`, `metamorphic`, `mutation`), the differential reference (`redact-secret`), the seed convention (`case-id`) and the product evaluation evidence file `benchmarks/qualification/evaluation-evidence.json` with its digest (see "The methods run") |
 | Public population | evidence release `snapshot-2026.10.01.2`, manifest digest, `records-tree-sha256:` revision and corpus digest |
 | Product populations | `regression-<12 hex>` and `policy-<12 hex>`: the corpus digest, the release manifest digest and the tag, all content-addressed |
 
@@ -39,6 +40,37 @@ case id, with `source` `redact-secret-benchmarks/regression|policy`, `evidence_s
 `case-metadata.json` carries product policy facts (expected action, conformance flag, context axis) keyed by case id; it
 is never part of the snapshot.
 
+## The methods run
+
+The stable gates for metamorphic robustness, unresolved mutation findings and unresolved differential disagreements are measured by
+evaluation methods, which credential-eval runs over generated variants of the corpus cases. They are not part of the plain
+measurement, and they cannot be: a run with methods replaces the corpus cases by the generated variants (`<case id>--<method>--<variant>`)
+and publishes no per-group figures, so the floors (counts of the corpus cases) can only come from a plain run. The methods run is
+therefore a second official run of the floors population, over the same evidence release and the same configuration, and it is a
+second artifact, never merged with the plain one.
+
+How it is configured is not up to this repository: credential-eval refuses a configuration file that names methods ("the
+configuration names evaluation methods; select them with `--methods`"), so no pinned configuration can enable them. The selection is
+on the command line, and every part of it enters the artifact's `config_hash`:
+
+| Part | Pin (registry `methodsRun`) |
+| --- | --- |
+| methods | `differential`, `metamorphic`, `mutation`. `twin` and `benign` are not selected: the stable gates read none of them, twins are authored cases already measured by the plain run, and the `benign` method refuses a control without a reviewed taxonomy, which the public snapshot does not carry |
+| differential reference | `redact-secret` (the product scanner; every other pinned scanner is a peer) |
+| seed convention | `case-id`: operators derive seeded choices from the canonical case id. The legacy convention (`legacy-category`) names a case by its legacy category, which the public snapshot does not carry, so legacy and canonical runs generate different mutation variants |
+| evaluation evidence | `benchmarks/qualification/evaluation-evidence.json`, derived from the product contracts by `npm run qualification:evidence` (family patterns, the segment layouts of the structural operator, the four named value validators, the benign taxonomy vocabulary, the family allowlist rule) and pinned by digest. `official-runs:check --bindings` refuses a stale file |
+
+The scanners, pins and configuration file are the plain run's (`credential-public-v1` at the engine tag), so no change to
+credential-eval and no new engine tag is needed. The scanner configuration hashes are equal between the two artifacts; the adapter
+requires it. The driver (`--methods`) runs the engine twice, without `--require-complete`: with methods the engine also exits 3 for a
+recorded operator generation error (six `authored.twin` transformations of mutation seeds fail to generate and produce no variant), which is a
+fact about the generated variants, not a scanner that did not measure. Scanner completeness, the evidence binding, the methods run and the equal semantic
+digests are checked on the artifact. The methods artifact is a few hundred MB; the CI step raises the Node heap and reads each artifact in turn.
+
+The methods run is recorded in `runs[]` as `public-evidence-snapshot+methods@<platform>` with `kind: methods`, its `methods`, its
+`evaluation` (reference, seed, evidence digest) and its own `config_hash`. A review occurrence of the methods run is keyed by a canonical id;
+the review ledger holds legacy ids, so no occurrence reads settled (qualification-adapter.md, "The methods run").
+
 ## How a run is made
 
 CI (canonical): dispatch `.github/workflows/official-runs.yml`. Per population, in a linux-x64 job: the registry gate
@@ -46,6 +78,9 @@ with `--bindings`; the engine built at the pinned tag with a GitHub App token sc
 read); the peer scanners provisioned at their pinned digests (`scripts/provision-official-peers.mjs`); the npm scanners
 installed without install scripts from the engine lockfile; then `scripts/run-official-credential-eval.ts`. The
 artifact, its run record and the inputs are uploaded as a build artifact. A job after them builds the qualification view.
+
+The public job runs the driver a second time with `--methods` (writing `<out>/methods/`); the view job lays the artifacts out as
+`<dir>/<population>/artifact.json` and `<dir>/public-evidence-snapshot/methods/artifact.json`.
 
 Locally (verification): build the engine at the pinned tag, put pinned `trufflehog` and `gitleaks` first on `PATH`
 (`node scripts/provision-official-peers.mjs --platform darwin-arm64 --out <dir>`), then run the driver. TruffleHog
@@ -80,6 +115,8 @@ product qualification.
 
 ## Not covered here
 
+- Methods runs of the regression and policy populations: the adapter reads methods from the floors population only (the legacy
+  path pooled them; the population policy does not), so none is made.
 - Candidate-regression inputs: they need a named candidate build; there is none, so there is no artifact yet.
 - The protected holdout: it stays outside credential-eval (a specialized runner and an aggregate receipt).
 - The canonical linux-x64 run is recorded: CI run 36933982377 of `official-runs.yml` ran all three populations with every

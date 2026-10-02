@@ -4,7 +4,8 @@
  *   npm run qualification:view -- --artifacts <dir> [--out public/results/qualification-v1.json] [--holdout-receipt <aggregate.json>]
  *
  * <dir> holds one directory per population (the output directories of scripts/run-official-credential-eval.ts):
- * <dir>/<population>/artifact.json, and for a product population <dir>/<population>/inputs/case-metadata.json.
+ * <dir>/<population>/artifact.json, and for a product population <dir>/<population>/inputs/case-metadata.json. The floors
+ * population also carries its methods run, <dir>/<population>/methods/artifact.json, when one was made (docs/specs/official-runs.md).
  * The output is validated against schemas/qualification-view-v1.json before it is written, and is byte-identical for the
  * same artifacts and product inputs. It reads no legacy evaluator output. Spec: docs/specs/qualification-adapter.md.
  */
@@ -35,6 +36,7 @@ for (const id of Object.keys(product.policy.populations)) {
     population: id,
     bytes: await readFile(path.join(folder, 'artifact.json')),
     caseMetadata: await readFile(metadataFile, 'utf8').then(JSON.parse, () => undefined),
+    methodsBytes: await readFile(path.join(folder, 'methods/artifact.json')).catch(() => undefined),
   });
 }
 

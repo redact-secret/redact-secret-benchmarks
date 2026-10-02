@@ -40,8 +40,9 @@ narrows the pattern but the root cause has not been confirmed with the owner (li
 | Cause | Structural change |
 | --- | --- |
 | `population-separation` | One pooled denominator became one denominator per population; floors read the public snapshot alone. |
-| `axis-vocabulary` | The snapshot names a case group by scenario, not by source context, and has no benign taxonomy, so axis counts are not the legacy fixture axes. |
-| `methods-not-run` | The official configuration runs no metamorphic, mutation or differential method; those gates are unmeasured, never zero. |
+| `axis-vocabulary` | The snapshot names a case group by scenario, not by source context, and has no benign taxonomy, so axis counts are not the legacy fixture axes. Applies to a view built without the product axis overlay; with it, an axis difference is attributed to the cause its axis ids show (`population-separation`, `canonical-evidence-membership`, `pending-not-scored` or `fixture-attribution`) and is otherwise unexplained. |
+| `methods-not-run` | The view has no methods run, so the metamorphic, mutation and differential gates are unmeasured, never zero. |
+| `review-occurrence-identity` | The methods run's review queue is keyed by canonical occurrence ids and covers every pinned peer, including peers the legacy run never scanned; the review ledger is keyed by legacy ids. Recognised only when the family has differential occurrences and none of their canonical ids is in the ledger. |
 | `policy-corpus-bounded` | The T3 route reads the bounded policy corpus alone, where the legacy path pooled every T3 fixture of the family. |
 | `legacy-id-rekey` | Legacy fixture, ledger and disputed-property ids do not resolve to canonical ids until the re-key. |
 | `twin-scope-vocabulary` | A twin is scoped by the product contract in the legacy lattice and by the case family in the evidence snapshot, so the twin can belong to another family and its flagged or co-detected verdict can differ. Inferred. |
@@ -76,14 +77,21 @@ it was flagged and whether it was co-detected. A pending case is pending on both
 ## Status is compared explicitly
 
 The new view reads no stable family while the legacy path reads many. The report does not hide this: each family's status is
-compared, each reason the new path adds is attributed, and a counterfactual says how many legacy-stable families are held back
-only by `methods.notRun`, by it and another cause, or by other causes alone. Whether a methods-enabled configuration, an axis
-decision or a policy decision is needed before cutover is a recommendation the report states and does not apply.
+compared, each reason the new path adds is attributed, and the report lists the legacy-stable families the new path does not read
+stable by the cause set that holds each back (`heldBy`), and flags a reason no rule recognises as unattributed. Whether a
+ledger re-key, a peer-set decision or a policy decision is needed before cutover is a recommendation the report states and does not
+apply.
+
+An axis difference is attributed only by comparing the axis ids of both sides when the view was built with the axis overlay: an id
+only the new side names needs the `canonical-evidence-membership` or `fixture-attribution` adjustment as evidence, and an id only the
+legacy side names needs regression or policy cases of the family (`population-separation`), a pending fixture (`pending-not-scored`)
+or an attribution move. A review-occurrence difference is attributed only when the methods run holds differential occurrences of the
+family and none of their ids is in the ledger.
 
 ## Not compared, and why
 
-Listed in the report, never silent: legacy categories with no suite report (calibration-only), the review queue and ledger joins
-(no methods ran, and legacy ids need the re-key), the internal populations (candidate regression, protected holdout) and a run
+Listed in the report, never silent: legacy categories with no suite report (calibration-only), the review ledger decisions (the
+methods run's occurrences are canonical ids and the ledger holds legacy ids, so none is applied), the internal populations (candidate regression, protected holdout) and a run
 that is not a recorded canonical run of `benchmarks/official-runs.json`.
 
 ## Regenerating
@@ -95,7 +103,7 @@ npm run eval:classify                     # results-output/support-status.json
 
 # new path: the canonical artifacts of the official-runs workflow
 gh run download <run> -n official-run-public-evidence-snapshot -n official-run-regression-corpus -n official-run-policy-corpus -D <dir>
-npm run qualification:view -- --artifacts <dir>
+npm run qualification:view -- --artifacts <dir>   # <dir>/public-evidence-snapshot/methods/artifact.json is the methods run
 
 npm run qualification:parity -- --legacy-status results-output/support-status.json --legacy-results public/results \
   --view public/results/qualification-v1.json --artifacts <dir> \

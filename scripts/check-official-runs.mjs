@@ -18,7 +18,7 @@ const POPULATIONS = ['public-evidence-snapshot', 'regression-corpus', 'policy-co
 const PRODUCT = ['regression-corpus', 'policy-corpus'];
 
 /** Pure consistency check of a parsed registry. `schemaDigest` is the digest of the vendored RunArtifact schema; `inputs` is the parsed qualification-inputs manifest. */
-export function officialRunProblems(registry, { schemaDigest, inputs }) {
+export function officialRunProblems(registry, { schemaDigest, inputs, evaluationEvidenceDigest }) {
   const problems = [];
   const e = registry.engine ?? {};
   if (registry.schemaVersion !== 1) problems.push('schemaVersion must be 1');
@@ -64,10 +64,36 @@ export function officialRunProblems(registry, { schemaDigest, inputs }) {
     }
   }
 
+  // The methods run: a second official run of the floors population with the evaluation methods selected on the command line (a
+  // configuration that names methods is refused by the engine) and the product evaluation evidence file pinned by digest.
+  const methodsRun = registry.methodsRun;
+  if (!methodsRun) problems.push('methodsRun is required: the pinned selection of the methods run');
+  else {
+    if (methodsRun.population !== 'public-evidence-snapshot') problems.push('methodsRun.population must be the floors population, public-evidence-snapshot');
+    if (!Array.isArray(methodsRun.methods) || !methodsRun.methods.length || methodsRun.methods.join(',') !== [...new Set(methodsRun.methods)].sort().join(',')) problems.push('methodsRun.methods must be sorted, unique and non-empty');
+    for (const method of ['metamorphic', 'mutation', 'differential']) if (!(methodsRun.methods ?? []).includes(method)) problems.push(`methodsRun.methods must include ${method}: the stable gates read it`);
+    if (!methodsRun.reference || !['case-id', 'legacy-category'].includes(methodsRun.seed)) problems.push('methodsRun needs a reference scanner and a seed of case-id or legacy-category');
+    if (!scanners.some(s => s.id === methodsRun.reference)) problems.push(`methodsRun.reference ${methodsRun.reference} is not a pinned scanner`);
+    if (!methodsRun.evaluationEvidence?.file || !DIGEST.test(methodsRun.evaluationEvidence?.digest ?? '')) problems.push('methodsRun.evaluationEvidence needs a file and a sha256 digest');
+    if (evaluationEvidenceDigest && evaluationEvidenceDigest !== methodsRun.evaluationEvidence?.digest) problems.push(`the evaluation evidence file has digest ${evaluationEvidenceDigest}, methodsRun pins ${methodsRun.evaluationEvidence?.digest}`);
+  }
+
+  const runIds = new Set();
   for (const run of registry.runs ?? []) {
     const at = `run ${run.id}`;
+    if (runIds.has(run.id)) problems.push(`${at}: duplicate run id`);
+    runIds.add(run.id);
     const population = populations.find(p => p.id === run.population);
     if (!population) { problems.push(`${at}: unknown population ${run.population}`); continue; }
+    const isMethods = run.kind === 'methods';
+    if (run.id !== `${run.population}${isMethods ? '+methods' : ''}@${run.platform}`) problems.push(`${at}: id must be <population>${isMethods ? '+methods' : ''}@<platform>`);
+    if (isMethods) {
+      if (!methodsRun || run.population !== methodsRun.population) problems.push(`${at}: a methods run is recorded for the pinned methodsRun population only`);
+      else {
+        if (JSON.stringify(run.methods) !== JSON.stringify(methodsRun.methods)) problems.push(`${at}: methods differ from the pinned methodsRun.methods`);
+        if (run.evaluation?.evidenceDigest !== methodsRun.evaluationEvidence?.digest || run.evaluation?.reference !== methodsRun.reference || run.evaluation?.seed !== methodsRun.seed) problems.push(`${at}: evaluation (reference, seed, evidence digest) differs from the pinned methodsRun`);
+      }
+    } else if (run.kind !== undefined) problems.push(`${at}: unknown kind ${run.kind}`);
     if (!PLATFORMS.includes(run.platform)) problems.push(`${at}: unknown platform ${run.platform}`);
     if (run.canonical !== Boolean(registry.config?.platforms?.[run.platform]?.canonical)) problems.push(`${at}: canonical must be true exactly for the canonical platform`);
     if (run.engine?.version !== e.version || run.engine?.revision !== e.revision || run.engine?.protocol !== e.protocol) problems.push(`${at}: engine differs from the pinned engine`);
@@ -81,7 +107,7 @@ export function officialRunProblems(registry, { schemaDigest, inputs }) {
     if (!DIGEST.test(run.artifact?.semanticDigest ?? '') || !DIGEST.test(run.artifact?.byteDigest ?? '') || run.artifact?.schemaDigest !== schemaDigest) problems.push(`${at}: artifact needs semanticDigest, byteDigest and the pinned schemaDigest`);
     if (!(run.determinism?.runs >= 2) || run.determinism?.semanticDigestsEqual !== true) problems.push(`${at}: an official artifact needs at least two runs with equal semantic digests`);
     if (!DIGEST.test(run.configHash ?? '')) problems.push(`${at}: configHash is required`);
-    const pinnedConfig = registry.config?.platforms?.[run.platform]?.configHash;
+    const pinnedConfig = isMethods ? undefined : registry.config?.platforms?.[run.platform]?.configHash;
     if (typeof pinnedConfig === 'string' && pinnedConfig !== run.configHash) problems.push(`${at}: configHash differs from the pinned ${pinnedConfig}`);
     for (const s of scanners) {
       const got = (run.scanners ?? []).find(x => x.id === s.id);
@@ -99,9 +125,13 @@ const readJson = async path => JSON.parse(await readFile(new URL(path, root), 'u
 
 export async function checkOfficialRuns({ bindings = false } = {}) {
   const [registry, inputs, schemaBytes] = await Promise.all([readJson('benchmarks/official-runs.json'), readJson('benchmarks/qualification-inputs.json'), readFile(new URL('schemas/credential-eval-run-artifact-v1.json', root))]);
-  const problems = officialRunProblems(registry, { schemaDigest: `sha256:${createHash('sha256').update(schemaBytes).digest('hex')}`, inputs });
+  const { canonical, sha256Digest } = await import('../benchmarks/qualification/canonical.ts');
+  const evaluationEvidenceDigest = sha256Digest(canonical(await readJson(registry.methodsRun?.evaluationEvidence?.file ?? 'benchmarks/qualification/evaluation-evidence.json')));
+  const problems = officialRunProblems(registry, { schemaDigest: `sha256:${createHash('sha256').update(schemaBytes).digest('hex')}`, inputs, evaluationEvidenceDigest });
   if (bindings) {
     const { exportPopulation } = await import('../benchmarks/qualification/population-snapshot.ts');
+    const { evaluationEvidenceDigest: derived } = await import('../benchmarks/qualification/evaluation-evidence.ts');
+    if (derived() !== evaluationEvidenceDigest) problems.push(`the evaluation evidence file is stale against the product contracts (derived ${derived()}, committed ${evaluationEvidenceDigest}); run npm run qualification:evidence`);
     for (const id of PRODUCT) {
       const pin = registry.populations.find(p => p.id === id)?.evidence;
       const built = await exportPopulation(id);

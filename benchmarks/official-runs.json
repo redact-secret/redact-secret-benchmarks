@@ -18,6 +18,14 @@
       "darwin-arm64": { "file": "credential-public-v1.darwin-arm64.json", "canonical": false, "configHash": "sha256:042691470c89d6ae4b088dcb1ed941be33c499bb2269b18e60ffb137e19aa5d7" }
     }
   },
+  "methodsRun": {
+    "population": "public-evidence-snapshot",
+    "note": "The methods run is a second official run of the floors population over the same evidence and the same configuration. credential-eval refuses a configuration that names methods, so the methods, the differential reference, the seed convention and the evaluation evidence file are selected on the command line and enter the run's config_hash. The evaluation evidence is the product contract table (patterns, segment rules, validators, benign taxonomy vocabulary), derived from the product contracts by npm run qualification:evidence and pinned here by digest. The benign and twin methods are not selected: the stable gates read metamorphic, mutation and differential, and the public snapshot carries no benign taxonomy for the benign method to accept.",
+    "methods": ["differential", "metamorphic", "mutation"],
+    "reference": "redact-secret",
+    "seed": "case-id",
+    "evaluationEvidence": { "file": "benchmarks/qualification/evaluation-evidence.json", "digest": "sha256:1af8d70c6891eddf749f741364b35ba0c46d510a888d7e39111be04ec2c49c91" }
+  },
   "scanners": [
     { "id": "flare-redact", "kind": "npm", "version": "1.6.1", "package": "flare-redact", "integrity": "sha512-13Htu6VPk2ttxcoVOP909pXao6orrIBAMS/qWdhQn3/BS5AxSB5fpyqaPZnRGJhfBAM2M9T+RE662hxEpv6nGQ==" },
     {

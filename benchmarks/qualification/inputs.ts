@@ -9,6 +9,7 @@ import { policyCredentialProfile } from '../support/policy-qualified.ts';
 import { taxonomy } from '../support/taxonomy.ts';
 import { ADAPTER, type CombinationPolicy, type ContractFacts, type KnownGapRecord, type PolicyRevision, type PopulationRegistryEntry, type ProductInputs } from './adapter.ts';
 import { canonical, sha256Hex } from './canonical.ts';
+import { AXIS_OVERLAY_FILE, axisOverlayProblems, type AxisOverlay } from './axis-overlay.ts';
 
 /**
  * Product-owned inputs of the adapter, read from this repository (#605). Each is data or a table another gate already
@@ -24,6 +25,7 @@ export const POLICY_FILES = [
   'benchmarks/support/empirical-observations.json',
   'benchmarks/support/taxonomy.json',
   'benchmarks/support/population-policy.json',
+  'benchmarks/support/public-axis-overlay.json',
   'benchmarks/review-ledger.json',
 ] as const;
 export const CONTRACTS_COMPONENT = 'benchmarks/evaluation/domains/credential/assessment.ts#contracts';
@@ -59,7 +61,9 @@ export async function loadRegistry() {
 }
 
 export async function loadProductInputs(): Promise<ProductInputs> {
-  const [policy, ledger, gaps] = await Promise.all([readJson('benchmarks/support/population-policy.json'), readJson('benchmarks/review-ledger.json'), readJson('benchmarks/known-gaps.json')]);
+  const [policy, ledger, gaps, axisOverlay] = await Promise.all([readJson('benchmarks/support/population-policy.json'), readJson('benchmarks/review-ledger.json'), readJson('benchmarks/known-gaps.json'), readJson(AXIS_OVERLAY_FILE)]);
+  const overlayProblems = axisOverlayProblems(axisOverlay);
+  if (overlayProblems.length) throw new Error(`${AXIS_OVERLAY_FILE} is invalid: ${overlayProblems.join('; ')}`);
   const knownGaps: KnownGapRecord[] = gaps.issues.map((issue: { id: string; number?: number; status: string; kind?: string; fixtures?: string[] }) =>
     ({ id: issue.id, number: issue.number, status: issue.status, kind: issue.kind, fixtures: issue.fixtures ?? [] }));
   return {
@@ -71,7 +75,7 @@ export async function loadProductInputs(): Promise<ProductInputs> {
     profiles: validateFixtureProfiles(fixtureProfiles),
     policyCriteria: policyCredentialProfile.criteria as ProductInputs['policyCriteria'],
     policyContracts: policyCredentialProfile.families as unknown as ProductInputs['policyContracts'],
-    ledger, knownGaps, policy: policy as CombinationPolicy,
+    ledger, knownGaps, policy: policy as CombinationPolicy, axisOverlay: axisOverlay as AxisOverlay,
     policyRevision: await loadPolicyRevision(),
   };
 }

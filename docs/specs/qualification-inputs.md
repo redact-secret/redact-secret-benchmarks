@@ -80,6 +80,7 @@ inputs as in the table above. The rest are not populations:
 | --- | --- | --- | --- |
 | `benchmarks/support/empirical-observations.json` | T2 corroboration overlay | redact-secret | remain product-owned |
 | `benchmarks/support/status-criteria.json` | status floors | redact-secret | remain product-owned |
+| `benchmarks/support/public-axis-overlay.json` | source-context and benign-taxonomy axis of each counted public case (#636), generated from the legacy development fixtures, bound to the pinned snapshot by corpus digest | redact-secret | remain product-owned (never part of credential-evidence) |
 | `benchmarks/review-ledger.json` | review-ledger joins the qualification adapter reads (docs/specs/qualification-adapter.md) | benchmarks | remain in place (benchmark-owned, read by the adapter) |
 | `benchmarks/fixture-index.json` | legacy fixture identity digest | benchmarks | compatibility-only |
 | `peer-observations/` | peer snapshots keyed to legacy ids | benchmarks | compatibility-only |
@@ -112,7 +113,12 @@ carrying an evidence class. Qualification, owned here, supplies the route and th
    `public-evidence-snapshot` denominator with their new class and are not re-labelled.
 3. The policy-qualified route stays limited to the four named families and still needs the policy corpus and a
    protected holdout on the same frozen candidate.
-4. A T2/T3 reclassification during migration, a per-fixture family override or a fixture moving between
+4. The public axis overlay is product policy, not evidence. It names the axis (source context of a positive, reviewed
+   benign taxonomy of a control) a counted public case falls in, from the product's own authored fixtures, because the
+   snapshot carries a scenario group and no benign taxonomy. It changes no evidence class, outcome or count, it is a
+   component of the policy revision, and credential-evidence's evidence classes are untouched
+   ([qualification-adapter.md](qualification-adapter.md#the-public-axis-overlay)).
+5. A T2/T3 reclassification during migration, a per-fixture family override or a fixture moving between
    populations may not change a family's route or status by itself. A change needs an entry in
    `supportStatusChanges` with the family, an explicit product-policy reason, a decision record and the product
    policy revision; the gate refuses an entry without them. The list is empty.

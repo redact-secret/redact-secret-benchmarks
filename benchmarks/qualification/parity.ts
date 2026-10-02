@@ -25,8 +25,9 @@ export interface Cause { id: string; change: string; confirmation: Confirmation;
 /** The structural changes that may explain a difference. A difference can be attributed only to one of these. */
 export const CAUSES: Cause[] = [
   { id: 'population-separation', change: 'The legacy path pooled the development, regression and policy fixtures of a family in one denominator. The new path measures each population on its own and reads floors from the public evidence snapshot alone (benchmarks/support/population-policy.json).', confirmation: 'confirmed', owner: 'benchmarks' },
-  { id: 'axis-vocabulary', change: 'The public snapshot names a case group by scenario, not by source context, and has no benign taxonomy, so positive and control axis counts are not the legacy fixture axes (population-policy.json axes).', confirmation: 'confirmed', owner: 'benchmarks and credential-evidence' },
-  { id: 'methods-not-run', change: 'The official credential-eval configuration runs no metamorphic, mutation or differential method, so those gates are unmeasured and a family that would be stable is held at provisional (methods.notRun).', confirmation: 'confirmed', owner: 'benchmarks' },
+  { id: 'axis-vocabulary', change: 'The public snapshot names a case group by scenario, not by source context, and has no benign taxonomy, so positive and control axis counts are not the legacy fixture axes. Applies only to a view built without the product axis overlay (population-policy.json axes); with the overlay, an axis difference is attributed to the population or membership cause it checks.', confirmation: 'confirmed', owner: 'benchmarks and credential-evidence' },
+  { id: 'methods-not-run', change: 'The qualification view was built without a methods run, so the metamorphic, mutation and differential gates are unmeasured and a family that would be stable is held at provisional (methods.notRun).', confirmation: 'confirmed', owner: 'benchmarks' },
+  { id: 'review-occurrence-identity', change: 'The review queue of the methods run is keyed by canonical occurrence ids and holds the occurrences of every pinned peer, including peers the legacy run never scanned; the committed review ledger is keyed by legacy ids of a three-scanner legacy run. A canonical occurrence id absent from the ledger reads unresolved, so a differential disagreement cannot read settled until the ledger is re-keyed and the peer set is decided.', confirmation: 'confirmed', owner: 'benchmarks' },
   { id: 'policy-corpus-bounded', change: 'The T3 policy route reads the policy corpus alone (a bounded contract), where the legacy path pooled every T3 fixture of the family.', confirmation: 'confirmed', owner: 'product policy' },
   { id: 'legacy-id-rekey', change: 'Legacy fixture ids, ledger ids and disputed-property ids are legacy hashes or slugs; the public snapshot has canonical ids. Stored per-fixture inputs keyed by legacy ids do not resolve until the re-key.', confirmation: 'confirmed', owner: 'benchmarks' },
   { id: 'twin-scope-vocabulary', change: 'A twin control is scoped to its declared family, and a finding of another known family is co-detection, not a flag. The legacy path scoped a twin by the product contract of the positive it mutates (a detector id); the evidence snapshot gives the twin its own family (a taxonomy id), so the twin can belong to another family and the same finding can swap between flagged and co-detected.', confirmation: 'inferred', owner: 'credential-eval' },
@@ -86,14 +87,16 @@ export function compareIdentity(legacy: ScannerVersions, next: ScannerVersions):
 // ---------------------------------------------------------------------------------------------------------------
 // Families: membership, status and the evidence behind it.
 
+/** The axis ids a family's counted cases fall in (the `fixtureProfile.cells` of either path). */
+export interface AxisIds { positiveContext: string[]; control: string[]; confusion: string[] }
 export interface LegacyFamily {
   family: string; status: string; reasons: string[]; evidenceTier: string | null; evidenceBasis: string | null; qualificationProfile: string | null;
-  taxonomyFamilies: string[]; evidence: Record<string, unknown>;
+  taxonomyFamilies: string[]; evidence: Record<string, unknown>; axisIds?: AxisIds;
 }
 export interface PopulationCounts { population: string; role: string; cases: number; pending: number; notMeasured: number; positives: number; benign: number; twinPairs: number }
 export interface NextFamily {
   family: string; taxonomyFamilies: string[]; status: { value: string; reasons: string[]; evidenceTier: string | null; evidenceBasis: string | null; qualificationProfile: string | null; methodsNotRun: string[] };
-  evidence: Record<string, unknown>;
+  evidence: Record<string, unknown>; axisIds?: AxisIds;
   /** The redact-secret counts of each population (the adapter's `families[].populations[].scanners[]`), already reduced to the fields below. */
   populations: PopulationCounts[];
 }
@@ -134,6 +137,10 @@ export interface FamilyOptions {
    * amounts sum to it exactly.
    */
   adjustmentsByFamily?: Record<string, Record<string, Partial<Record<string, number>>>>;
+  /** The view was built with the product axis overlay: an axis difference is then attributed by comparing axis ids, not assumed to be the snapshot vocabulary. */
+  axisOverlay?: boolean;
+  /** Per family, the differential review occurrences of the methods run attributed to it, how many of their canonical ids the review ledger holds, and the occurrences per peer. */
+  reviewByFamily?: Record<string, { occurrences: number; inLedger: number; byPeer: Record<string, number> }>;
 }
 
 export interface StatusRow {
@@ -146,12 +153,15 @@ export interface FamilyReport {
   statusRows: StatusRow[];
   /** Families the legacy path calls stable that the new path does not, split by what holds them back. */
   counterfactual: { legacyStable: number; nextStable: number; heldOnlyByMethods: number; heldByMethodsAndOthers: number; heldWithoutMethods: number };
+  /** The legacy-stable families the new path does not read stable, by the cause set that holds them back (sorted, joined by ` + `; `unattributed` when a reason has no cause). */
+  heldBy: Record<string, number>;
 }
 
 /** Which structural cause owns a status reason the new path adds. `undefined` means no rule recognises it. */
-export function causeOfReason(code: string, countCause: string | undefined): string | undefined {
+export function causeOfReason(code: string, countCause: string | undefined, resolved: { axis?: string; review?: string; overlay?: boolean } = {}): string | undefined {
   if (/^methods\./.test(code)) return 'methods-not-run';
-  if (/PositiveAxes|ControlAxes|positive-axes|benign-axes|benign\.minimumAxes|minimumAxes|^fixtureProfile/.test(code)) return 'axis-vocabulary';
+  if (/^differential\./.test(code)) return resolved.review;
+  if (/PositiveAxes|ControlAxes|positive-axes|benign-axes|benign\.minimumAxes|minimumAxes|^fixtureProfile/.test(code)) return resolved.overlay ? resolved.axis : (resolved.axis ?? 'axis-vocabulary');
   if (/^policy\./.test(code) && code !== 'policy.protected-holdout') return 'policy-corpus-bounded';
   if (/minimumBenignCases|benign\.minimumCases|minimumPositiveCases|minimumTwinPairs|minimumFixtures/.test(code)) return countCause;
   return undefined;
@@ -162,6 +172,7 @@ export function compareFamilies(legacy: LegacyFamily[], next: NextFamily[], opti
   const L = new Map(legacy.map(f => [f.family, f])), N = new Map(next.map(f => [f.family, f]));
   const statusRows: StatusRow[] = [];
   const counter = { legacyStable: 0, nextStable: 0, heldOnlyByMethods: 0, heldByMethodsAndOthers: 0, heldWithoutMethods: 0 };
+  const heldBy: Record<string, number> = {};
 
   for (const id of [...new Set([...L.keys(), ...N.keys()])].sort()) {
     const l = L.get(id), n = N.get(id);
@@ -188,13 +199,43 @@ export function compareFamilies(legacy: LegacyFamily[], next: NextFamily[], opti
         return undefined;
       });
     }
-    for (const field of AXIS_EVIDENCE) evidence.compare(id, field, l.evidence[field], n.evidence[field], () => ({ cause: 'axis-vocabulary' }));
-    // A method that did not run is unmeasured, never zero: equal numbers do not make the comparison.
+    // Axis differences. Without the overlay the snapshot vocabulary explains them. With it, the axis ids on both sides say which kind of
+    // difference each is: an id only the new side names comes from a case with no legacy counterpart (the overlay names none for it), and an
+    // id only the legacy side names can come from a regression or policy fixture the floors population does not carry.
+    let axisCause: string | undefined;
+    const axisIdsOf = (side: AxisIds | undefined, field: string) => (!side ? undefined : field === 'positiveAxes' ? side.positiveContext : field === 'confusionAxes' ? side.confusion : side.control);
+    const otherPopulationCases = n.populations.filter(p => p.population !== options.floorsPopulation).reduce((a, p) => a + p.cases, 0);
+    const moved = (cause: string) => Object.values(options.adjustmentsByFamily?.[id]?.[cause] ?? {}).some(v => v !== 0);
+    const attributionShift = moved('fixture-attribution') || moved('twin-scope-vocabulary');
+    for (const field of AXIS_EVIDENCE) {
+      evidence.compare(id, field, l.evidence[field], n.evidence[field], () => {
+        if (!options.axisOverlay) return (axisCause ??= 'axis-vocabulary', { cause: 'axis-vocabulary' });
+        const ids = { legacy: axisIdsOf(l.axisIds, field), next: axisIdsOf(n.axisIds, field) };
+        if (!ids.legacy || !ids.next) return undefined;
+        const extra = ids.next.filter(x => !ids.legacy!.includes(x)), missing = ids.legacy.filter(x => !ids.next!.includes(x));
+        if (!extra.length && !missing.length) return undefined;
+        // An axis id only the legacy side names is a fixture the floors population does not count: one of the regression or policy populations (the legacy path pooled them), or a pending (T0) fixture the adapter does not score, or one
+        // the legacy path attributed to this family and the adapter attributes elsewhere. An id only the new side names is a case with no legacy counterpart, or an attribution move.
+        const missingCause = missing.length ? (otherPopulationCases > 0 ? 'population-separation' : moved('pending-not-scored') ? 'pending-not-scored' : attributionShift ? 'fixture-attribution' : undefined) : undefined;
+        const extraCause = extra.length ? (moved('canonical-evidence-membership') ? 'canonical-evidence-membership' : attributionShift ? 'fixture-attribution' : undefined) : undefined;
+        if ((missing.length && !missingCause) || (extra.length && !extraCause)) return undefined;
+        const cause = missingCause ?? extraCause!;
+        return (axisCause ??= cause, { cause, note: `${extra.length ? `${extra.length} axis id(s) only on the new side (${extraCause})` : ''}${extra.length && missing.length ? '; ' : ''}${missing.length ? `${missing.length} only on the legacy side (${missingCause})` : ''}` });
+      });
+    }
+    // A method that did not run is unmeasured, never zero: equal numbers do not make the comparison. A method that ran is compared; the
+    // differential count is attributed when no canonical occurrence id is in the review ledger (the ledger is keyed by legacy ids).
+    let reviewCause: string | undefined;
     for (const [field, method] of Object.entries(METHOD_EVIDENCE)) {
       if (n.status.methodsNotRun.includes(method)) {
         evidence.tally.compared++;
-        evidence.record(id, field, l.evidence[field], 'not measured', { cause: 'methods-not-run', note: `${method} did not run in the official configuration` });
-      } else evidence.compare(id, field, l.evidence[field], n.evidence[field]);
+        evidence.record(id, field, l.evidence[field], 'not measured', { cause: 'methods-not-run', note: `${method} did not run in the qualification view` });
+      } else evidence.compare(id, field, l.evidence[field], n.evidence[field], () => {
+        const review = options.reviewByFamily?.[id];
+        if (method !== 'differential' || !review || review.occurrences === 0 || review.inLedger !== 0) return undefined;
+        const peers = Object.entries(review.byPeer).sort().map(([peer, count]) => `${peer} ${count}`).join(', ');
+        return (reviewCause ??= 'review-occurrence-identity', { cause: 'review-occurrence-identity', note: `${review.occurrences} differential occurrence(s) (${peers}), none of whose canonical ids is in the review ledger` });
+      });
     }
     evidence.compare(id, 'policyQualification', l.evidence.policyQualification, n.evidence.policyQualification, () => ({ cause: 'policy-corpus-bounded' }));
     evidence.compare(id, 'evidenceTier', l.evidenceTier, n.status.evidenceTier);
@@ -205,7 +246,7 @@ export function compareFamilies(legacy: LegacyFamily[], next: NextFamily[], opti
     const legacyCodes = new Set(l.reasons.map(reasonCode));
     const added = n.status.reasons.map(reasonCode).filter(code => !legacyCodes.has(code));
     const causes = new Set<string>(), unattributed: string[] = [];
-    for (const code of added) { const cause = causeOfReason(code, countCause); if (cause) causes.add(cause); else unattributed.push(code); }
+    for (const code of added) { const cause = causeOfReason(code, countCause, { axis: axisCause, review: reviewCause, overlay: options.axisOverlay }); if (cause) causes.add(cause); else unattributed.push(code); }
     status.tally.compared++;
     let verdict: Verdict = 'equal';
     if (l.status !== n.status.value || n.status.qualificationProfile !== l.qualificationProfile) {
@@ -217,11 +258,13 @@ export function compareFamilies(legacy: LegacyFamily[], next: NextFamily[], opti
         if (causes.size === 1 && causes.has('methods-not-run') && unattributed.length === 0) counter.heldOnlyByMethods++;
         else if (causes.has('methods-not-run')) counter.heldByMethodsAndOthers++;
         else counter.heldWithoutMethods++;
+        const key = unattributed.length || !causes.size ? 'unattributed' : [...causes].sort().join(' + ');
+        heldBy[key] = (heldBy[key] ?? 0) + 1;
       }
     } else status.tally.equal++;
     statusRows.push({ family: id, legacy: l.status, next: n.status.value, verdict, causes: [...causes].sort(), heldBackBy: [...causes].sort(), unattributedReasons: unattributed });
   }
-  return { membership: membership.section(), status: status.section(), evidence: evidence.section(), statusRows, counterfactual: counter };
+  return { membership: membership.section(), status: status.section(), evidence: evidence.section(), statusRows, counterfactual: counter, heldBy: Object.fromEntries(Object.entries(heldBy).sort()) };
 }
 
 // ---------------------------------------------------------------------------------------------------------------
@@ -354,6 +397,7 @@ export interface ParityReport {
   sections: { identity: Section; membership: Section; status: Section; evidence: Section; outcomes: Section; knownGaps: Section };
   statusRows: StatusRow[];
   counterfactual: FamilyReport['counterfactual'];
+  heldBy: FamilyReport['heldBy'];
   outcomeGroups: OutcomeReport['groups'];
   joins: Record<string, { byTier: number[]; pairs: number; unmatchedLegacy: number; unmatchedNext: number; ambiguousLegacy: number; ambiguousNext: number }>;
   /** Comparisons that could not be made, with the reason. Never silent. */
@@ -389,10 +433,11 @@ export function renderMarkdown(report: ParityReport): string {
   const cf = report.counterfactual;
   lines.push('## Status', '');
   lines.push(`The legacy path reads ${cf.legacyStable} stable families; the new path reads ${cf.nextStable}. Support status is compared family by family (\`status\` section above); each family the new path holds below the legacy status is attributed to the reasons it adds.`, '');
-  lines.push('Of the legacy-stable families the new path does not read stable:', '');
-  lines.push(`- ${cf.heldOnlyByMethods} are held back only by \`methods.notRun\` (the unmeasured methods): a configuration that runs the methods would change them.`);
-  lines.push(`- ${cf.heldByMethodsAndOthers} are held back by \`methods.notRun\` and by at least one other cause.`);
-  lines.push(`- ${cf.heldWithoutMethods} are held back by other causes alone (the causes in the table below), so running the methods would not change them.`, '');
+  lines.push('Of the legacy-stable families the new path does not read stable, by what holds each back:', '');
+  const heldTotal = Object.values(report.heldBy ?? {}).reduce((a, b) => a + b, 0);
+  if (heldTotal === 0) lines.push('- none.'); else for (const [causes, count] of Object.entries(report.heldBy)) lines.push(`- ${count}: ${causes === 'unattributed' ? '**unattributed** (a reason no rule recognises)' : `\`${causes.split(' + ').join('` + `')}\``}`);
+  lines.push('');
+  if (cf.heldOnlyByMethods + cf.heldByMethodsAndOthers > 0) lines.push(`${cf.heldOnlyByMethods} of them are held back only by \`methods.notRun\` (the view has no methods run for them), ${cf.heldByMethodsAndOthers} by it and another cause.`, '');
   const differing = report.statusRows.filter(r => r.verdict !== 'equal');
   const byCauseSet = new Map<string, number>();
   for (const r of differing) { const key = `${r.legacy} -> ${r.next} | ${r.causes.join(' + ') || 'no cause'}${r.unattributedReasons.length ? ` | unattributed: ${r.unattributedReasons.join('; ')}` : ''}`; byCauseSet.set(key, (byCauseSet.get(key) ?? 0) + 1); }

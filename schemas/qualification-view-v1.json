@@ -107,6 +107,38 @@
           "items": {
             "type": "string"
           }
+        },
+        "axisOverlay": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "population",
+            "corpusDigest",
+            "contexts",
+            "controls"
+          ],
+          "description": "The product-owned axis overlay the floors were counted with (benchmarks/support/public-axis-overlay.json); its digest is a policy component.",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "population": {
+              "type": "string"
+            },
+            "corpusDigest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "contexts": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "controls": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
         }
       }
     },
@@ -147,6 +179,10 @@
           },
           "artifact": {
             "$ref": "#/$defs/artifactIdentity"
+          },
+          "methodsArtifact": {
+            "$ref": "#/$defs/artifactIdentity",
+            "description": "The methods run of the floors population: a second official artifact over the same evidence whose cases are generated variants. Absent when no methods run was made."
           },
           "unattributed": {
             "type": "array",

@@ -7,7 +7,9 @@ Evidence: [qualification-parity.md](qualification-parity.md) and its report `doc
 
 This is a decision record. It deletes, retires and switches nothing. The legacy path stays the authority for credential
 qualification and the existing site stays as it is. State below is read from the #607 report, built from the canonical
-linux-x64 official runs (CI run 36933982377); a new official run or a repin makes it stale and the report is regenerated.
+linux-x64 official runs (CI run 36948851341, the three populations and the methods run of #636; run 36933982377 made the same
+three plain runs and their semantic digests are equal); a new official run or a repin makes it stale and the report is
+regenerated.
 
 ## Cutover criteria
 
@@ -15,20 +17,30 @@ Authority for credential qualification moves from the legacy path to the new pat
 
 | # | Criterion | State | Evidence and what is missing |
 | --- | --- | --- | --- |
-| 1 | Pinned official evidence, eval and scanner identities | Met | `benchmarks/official-runs.json` pins the engine, schema, configuration, five scanners and three populations; `npm run official-runs:check` passes; the canonical runs are recorded. |
-| 2 | Deterministic official RunArtifacts | Met | Each population ran twice per job with equal semantic digests; the canonical linux-x64 run is recorded; the view rebuilt locally from the downloaded canonical artifacts is byte-identical to the CI view. |
+| 1 | Pinned official evidence, eval and scanner identities | Met | `benchmarks/official-runs.json` pins the engine, schema, configuration, five scanners and three populations, and (#636) the methods run: its methods, reference, seed and the product evaluation evidence file by digest. `npm run official-runs:check` passes; the canonical runs are recorded, the methods run included. |
+| 2 | Deterministic official RunArtifacts | Met | Each population ran twice per job with equal semantic digests, the methods run too; a second CI run of the three plain runs (36948851341) has the same semantic digests as the first (36933982377); the view rebuilt locally from the downloaded canonical artifacts is byte-identical to the CI view. |
 | 3 | Product-owned regression and policy populations preserved | Met | Both are populations of the view with their own denominators and roles; every scanner's outcome on every regression and policy case equals the legacy outcome in the #607 report. |
-| 4 | No unexplained qualification verdict drift | **Unmet** | Every difference is attributed to a structural cause except one count difference (below), but the verdicts differ: the legacy path reads 127 stable families and the new path reads none. Each cause is a decision still to be taken (criterion 5). |
-| 5 | One published release qualified end to end through the new path | **Unmet** | `@redact-secret/core` 0.1.0-beta.12 ran end to end (official runs, adapter, view, Next pages), but the result is not accepted: 13 legacy-stable families are held at provisional by the unmeasured methods alone, 114 by the axis vocabulary of the public snapshot, so running the methods would restore at most 13. A methods-enabled configuration (new `config_hash`) and an axis decision are needed; neither is applied here. |
+| 4 | No unexplained qualification verdict drift | **Unmet** | 0 unexplained differences (35,024 compared, 34,369 equal, 655 attributed; `--strict` passes). The verdicts still differ: the legacy path reads 127 stable families and the new path reads none, and every one of the 127 is held back by `review-occurrence-identity` (below), 9 of them also by a floor that the public snapshot alone does not meet (8 `fixture-attribution`, 1 `population-separation`). Attributed is not accepted: the cause is a decision still to be taken (criterion 5). |
+| 5 | One published release qualified end to end through the new path | **Unmet** | `@redact-secret/core` 0.1.0-beta.12 ran end to end (official runs and methods run, adapter, view, Next pages) with the axis overlay and the methods measured, and the result is not accepted: 0 stable against 127. Of the legacy-stable families, 118 are held only by `differential.unresolvedContractDisagreements` and 9 by it and a floor. The axis vocabulary no longer holds any family alone, and the methods gates are measured (no family is held by `metamorphic.criticalFailures` or `mutation.unresolvedCritical`). What holds them is the review ledger: it is keyed by legacy ids, so none of the 10,739 canonical differential occurrences (gitleaks 1,811, trufflehog 2,457, flare-redact 2,695, openredaction 3,776) is in it, and the methods run covers two peers the legacy run never scanned. Needed, not applied: re-key the ledger decisions to canonical occurrence ids, and decide which peers the differential gate reads. |
 | 6 | Next credential pages built from new outputs | **Unmet** | `/evaluation/qualification/` and its family pages are built solely from the view (#606). The report, provider, family and fixture pages still read the legacy files, and the view carries counts, not per-fixture rows, so a fixture page cannot be built from it. |
 | 7 | Rollback path to the legacy pipeline | **Unmet** (designed, not built) | Nothing has been switched, so the legacy path is intact. The authority switch below does not exist yet. |
 
-Open item against criterion 4: the report lists one family whose scored-case count differs between the paths and no rule
-attributes (`elevenlabs-api-key`, `totalFixtures`). It must be explained or fixed before the criterion can be met.
+The count difference the first #607 report left unexplained (`elevenlabs-api-key`, `totalFixtures`) was resolved in #635, and
+`benchmarks/qualification-inputs.json` now records `benchmarks/review-ledger.json` as product-owned, read by the adapter. What
+remains for criterion 4 is not an unexplained difference but the decisions behind the attributed ones.
 
-A further open item: `benchmarks/qualification-inputs.json` records `benchmarks/review-ledger.json` as `compatibility-only`,
-"not read by the new path", but the adapter reads it (a component of the policy revision and the ledger joins). The record is
-stale against #605 and is corrected when the re-key lands.
+### Where the 127 stand after #636
+
+| Held back by | Families | Note |
+| --- | ---: | --- |
+| `review-occurrence-identity` only | 118 | their floors, axes and gates hold; no differential occurrence is settled in the ledger |
+| `review-occurrence-identity` and `fixture-attribution` | 8 | the legacy path attributed fixtures to the family that the adapter attributes elsewhere, so a benign-case or axis floor is not met on the public snapshot: `digitalocean-token`, `docker-token`, `gitlab-token`, `npm-token`, `pulumi-access-token`, `shopify-token`, `terraform-cloud-token`, `vault-token` |
+| `review-occurrence-identity` and `population-separation` | 1 | `sendgrid-token`: a control axis only the legacy side names, and the family has regression cases |
+
+The eight families that are not stable on the legacy path read the same status on the new path. The new differences that are
+legitimate rather than defects of the new path: the floors population is the public snapshot alone (the legacy path pooled the
+regression and policy fixtures), pending fixtures are not scored, a fixture can be attributed to another family, the
+methods run uses the canonical-id seed (not the legacy category seed), and it scans two peers the legacy run did not.
 
 ## Authority switch and rollback (design only)
 

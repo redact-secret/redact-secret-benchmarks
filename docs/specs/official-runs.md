@@ -69,7 +69,7 @@ digests are checked on the artifact. The methods artifact is a few hundred MB; t
 
 The methods run is recorded in `runs[]` as `public-evidence-snapshot+methods@<platform>` with `kind: methods`, its `methods`, its
 `evaluation` (reference, seed, evidence digest) and its own `config_hash`. A review occurrence of the methods run is keyed by a canonical id;
-the review ledger holds legacy ids, so no occurrence reads settled (qualification-adapter.md, "The methods run").
+a legacy review decision applies only through the generated mapping `benchmarks/support/public-review-ledger-map.json` (qualification-adapter.md, "The review-ledger re-key").
 
 ## How a run is made
 
@@ -125,6 +125,6 @@ product qualification.
   `runs[]`. CI run 36948851341 (#636) ran the same three plain runs again, with the same semantic digests and `config_hash`
   (the measurement is reproducible across runs), and the methods run, recorded as `public-evidence-snapshot+methods@linux-x64`:
   every scanner complete, equal semantic digests across its two engine runs, 32,297 generated variants per scanner, 10,739
-  differential review occurrences (none of whose canonical ids is in the review ledger), and 46 failed assertions of
+  differential review occurrences (settled by a legacy decision only through the re-key mapping), and 46 failed assertions of
   `redact-secret` (35 metamorphic, 11 mutation), none attributed to a product detector family (untargeted fixtures and the `exa:api-key` policy fixtures). The darwin-arm64 entries remain local verification runs and are never compared with a linux run; the qualification
   view and the #607 comparison read the canonical artifacts.

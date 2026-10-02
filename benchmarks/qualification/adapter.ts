@@ -6,6 +6,7 @@ import type { Taxonomy } from '../support/taxonomy.ts';
 import type { ReviewLedger } from '../engine/review-ledger.ts';
 import { canonical } from './canonical.ts';
 import { contextGroup, type AxisOverlay } from './axis-overlay.ts';
+import { ledgerSettledId, type LedgerRekey } from './ledger-rekey.ts';
 import {
   bindingProblems, byId, countCase, emptyCounts, OUTCOMES, readRunArtifact, UNASSIGNED,
   type CaseResult, type EvidencePin, type FamilyCounts, type Outcome, type ReadArtifact, type RunArtifact, type ScannerRun,
@@ -30,9 +31,13 @@ export interface CombinationPolicy {
   schemaVersion: 1; id: string; scanner: string;
   populations: Record<string, { role: PopulationRole; rationale: string }>;
   axes: { positiveContext: 'overlay-else-group'; benignControl: 'overlay-else-taxonomy-else-group' };
-  methods: { required: string[]; whenNotRun: 'block-stable'; source: 'methods-run' };
+  methods: { required: string[]; whenNotRun: 'block-stable'; source: 'methods-run'; differential: { peers: string[]; rationale: string } };
+  /** How a case the snapshot attributes to no product detector is attributed, in order (#638). The legacy path scoped a fixture to its declared targets. */
+  attribution: { fallback: AttributionStep[]; rationale: string };
   rules: string[];
 }
+export const ATTRIBUTION_STEPS = ['overlay-detectors', 'twin-parent'] as const;
+export type AttributionStep = typeof ATTRIBUTION_STEPS[number];
 export interface PopulationRegistryEntry { id: string; source: string; runClass: 'public' | 'internal'; publishable: boolean; evidence: EvidencePin }
 /** `methodsBytes` is the methods run of the same population (docs/specs/official-runs.md, "The methods run"): a second artifact over the same evidence, whose cases are generated variants. Only the floors population carries one. */
 export interface ArtifactInput { population: string; bytes: Buffer; caseMetadata?: Record<string, CaseMetadata>; methodsBytes?: Buffer }
@@ -65,6 +70,8 @@ export interface ProductInputs {
   policyCriteria: PolicyCriteria;
   policyContracts: Record<string, PolicyContract>;
   ledger: ReviewLedger;
+  /** The legacy review-ledger decisions mapped to the canonical occurrence ids of the pinned methods run (benchmarks/support/public-review-ledger-map.json). */
+  ledgerRekey?: LedgerRekey;
   knownGaps: KnownGapRecord[];
   policy: CombinationPolicy;
   policyRevision: PolicyRevision;
@@ -103,6 +110,37 @@ export function detectorsOf(c: CaseResult, detectorIds: Set<string>, taxonomyDet
     else for (const detector of taxonomyDetectors.get(c.family) ?? []) if (detectorIds.has(detector)) out.add(detector);
   }
   return [...out];
+}
+
+export type AttributionSource = 'snapshot' | 'overlay-detectors' | 'twin-parent' | 'none';
+export interface AttributionContext {
+  detectorIds: Set<string>; taxonomyDetectors: Map<string, string[]>;
+  /** The overlay's legacy targets, for the floors population only. */
+  overlayDetectors?: Record<string, string[]>; fallback: readonly AttributionStep[];
+  /** The population's cases of the same scanner by id, to find a twin's parent. */
+  byId: Map<string, CaseResult>;
+}
+
+/**
+ * The product detector families a case belongs to. First what the snapshot names (its targets, its family, or the taxonomy family
+ * a detector serves). Where it names none, the policy's fallback, in order: the overlay's legacy targets of the case (the legacy path
+ * scoped a fixture to its declared targets), then the detectors of the case's twin parent (a twin is scoped to the family it twins).
+ * Deterministic: a pure function of the case, its parent and the overlay. A case that still maps to none is unattributed, never dropped.
+ */
+export function attributeCase(c: CaseResult, ctx: AttributionContext, steps: readonly AttributionStep[] = ctx.fallback): { detectors: string[]; source: AttributionSource } {
+  const own = detectorsOf(c, ctx.detectorIds, ctx.taxonomyDetectors);
+  if (own.length) return { detectors: own, source: 'snapshot' };
+  for (const step of steps) {
+    if (step === 'overlay-detectors') {
+      const named = (ctx.overlayDetectors?.[c.case_id] ?? []).filter(d => ctx.detectorIds.has(d));
+      if (named.length) return { detectors: named, source: 'overlay-detectors' };
+    } else if (step === 'twin-parent' && c.twin_of) {
+      const parent = ctx.byId.get(c.twin_of);
+      const inherited = parent ? attributeCase(parent, ctx, steps.filter(x => x !== 'twin-parent')).detectors : [];
+      if (inherited.length) return { detectors: inherited, source: 'twin-parent' };
+    }
+  }
+  return { detectors: [], source: 'none' };
 }
 
 function identityOf(read: ReadArtifact): ArtifactIdentity {
@@ -228,6 +266,12 @@ export function validateCombinationPolicy(policy: CombinationPolicy, registry: P
   const roles = Object.values(policy.populations).map(p => p.role);
   if (roles.filter(r => r === 'floors-and-gates').length !== 1) throw new Error('The population policy needs exactly one floors-and-gates population');
   if (roles.filter(r => r === 'policy-route').length > 1) throw new Error('The population policy allows at most one policy-route population');
+  const peers = policy.methods?.differential?.peers;
+  if (!Array.isArray(peers) || !peers.length || peers.some(p => typeof p !== 'string' || !p) || new Set(peers).size !== peers.length || peers.includes(policy.scanner))
+    throw new Error('The population policy needs methods.differential.peers: a non-empty list of distinct peer scanner ids, never the reference scanner itself');
+  const steps = policy.attribution?.fallback;
+  if (!Array.isArray(steps) || steps.some(x => !(ATTRIBUTION_STEPS as readonly string[]).includes(x)) || new Set(steps).size !== steps.length)
+    throw new Error(`The population policy needs attribution.fallback: distinct steps from ${ATTRIBUTION_STEPS.join(', ')}`);
   for (const id of Object.keys(policy.populations)) if (!registry.some(p => p.id === id)) throw new Error(`The population policy names ${id}, which is not in the population registry`);
 }
 
@@ -288,9 +332,13 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
   const detectorIds = new Set(product.families);
   const taxonomyDetectors = new Map(product.taxonomy.families.map(f => [f.id, f.detectors]));
   const detectorTaxonomy = (detector: string) => product.taxonomy.families.filter(f => f.detectors.includes(detector));
-  const ledgerSettled = (id: string) => ['resolved', 'not-assertable'].includes(product.ledger.entries[id]?.status as string);
+  // A canonical occurrence is settled by its own ledger row, or by the legacy decision the re-key maps it to (never by a guess).
+  const ledgerSettled = (id: string) => ['resolved', 'not-assertable'].includes(product.ledger.entries[ledgerSettledId(id, product.ledger, product.ledgerRekey)]?.status as string);
+  const gatePeers = new Set(policy.methods.differential.peers);
 
   // Per population, per scanner: cases grouped by detector, with the unattributed remainder kept visible.
+  const sourceOfCase = new Map<string, AttributionSource>();
+  const unmapped = new Set<string>();
   const perPopulation = new Map<string, { run: Map<string, ScannerRun>; byDetector: Map<string, Map<string, CaseResult[]>>; counts: Map<string, Map<string, FamilyCounts>>; unattributed: Map<string, FamilyCounts> }>();
   for (const l of loaded) {
     const runs = new Map(l.artifact.scanners.map(s => [s.scanner, s]));
@@ -300,8 +348,10 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
       if (!run) continue;
       const index = byId(run), perDetector = new Map<string, FamilyCounts>(), rest = emptyCounts();
       const own = new Map<string, CaseResult[]>();
+      const ctx: AttributionContext = { detectorIds, taxonomyDetectors, overlayDetectors: l.input.population === floorsPopulation ? floorsOverlay?.detectors : undefined, fallback: policy.attribution.fallback, byId: index };
       for (const c of run.cases) {
-        const detectors = detectorsOf(c, detectorIds, taxonomyDetectors);
+        const { detectors, source } = attributeCase(c, ctx);
+        if (scanner === policy.scanner) { sourceOfCase.set(`${l.input.population}\u0000${c.case_id}`, source); if (!detectors.length && c.family && c.family !== UNASSIGNED) unmapped.add(`${l.input.population}:${c.family}`); }
         if (!detectors.length) countCase(rest, c, index);
         for (const detector of detectors) {
           if (!perDetector.has(detector)) perDetector.set(detector, emptyCounts());
@@ -342,11 +392,25 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
     const floorsIds = new Set(floorsCases.map(c => c.case_id));
     const methodsRun = methodsSource?.artifact.scanners.find(s => s.scanner === policy.scanner);
     const assertionFailures = (method: string) => (methodsRun?.assertions ?? []).filter(a => a.method === method && a.status === 'fail' && floorsIds.has(seedCaseId(a.case_id, method))).length;
-    const unresolvedInQueue = (method: string) => (methodsSource?.artifact.review_queue ?? [])
-      .filter(q => q.method === method && floorsIds.has(seedCaseId(q.case_id, method)) && !ledgerSettled(q.id)).length;
+    // The differential gate reads the peers the policy names (the legacy gate's peers); the others are measured and reported, never gate-bearing.
+    const unresolvedInQueue = (method: string, peerScope?: Set<string>) => (methodsSource?.artifact.review_queue ?? [])
+      .filter(q => q.method === method && floorsIds.has(seedCaseId(q.case_id, method)) && !ledgerSettled(q.id) && (!peerScope || gatePeers.has(String(q.peer)))).length;
+    const differentialReview = floorsMethods.has('differential') ? (() => {
+      const byPeer = new Map<string, { occurrences: number; settled: number }>();
+      for (const q of methodsSource?.artifact.review_queue ?? []) {
+        if (q.method !== 'differential' || !floorsIds.has(seedCaseId(q.case_id, 'differential'))) continue;
+        const row = byPeer.get(String(q.peer)) ?? { occurrences: 0, settled: 0 };
+        row.occurrences++; if (ledgerSettled(q.id)) row.settled++;
+        byPeer.set(String(q.peer), row);
+      }
+      return {
+        gatePeers: [...gatePeers].sort(byteOrder),
+        peers: sorted(byPeer.keys()).map(peer => ({ peer, gateBearing: gatePeers.has(peer), occurrences: byPeer.get(peer)!.occurrences, settled: byPeer.get(peer)!.settled, unresolved: byPeer.get(peer)!.occurrences - byPeer.get(peer)!.settled })),
+      };
+    })() : null;
     const metamorphicCriticalFailures = floorsMethods.has('metamorphic') ? assertionFailures('metamorphic') : 0;
     const mutationUnresolvedCritical = floorsMethods.has('mutation') ? assertionFailures('mutation') + unresolvedInQueue('mutation') : 0;
-    const differentialUnresolved = floorsMethods.has('differential') ? unresolvedInQueue('differential') : 0;
+    const differentialUnresolved = floorsMethods.has('differential') ? unresolvedInQueue('differential', gatePeers) : 0;
     const criticalFailures = metamorphicCriticalFailures + mutationUnresolvedCritical + differentialUnresolved;
 
     const tier = contract?.tier ?? null;
@@ -385,6 +449,8 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
       evidence: scored,
       fixtureProfile: fixtureProfileReport(fixtureProfile!.claim, fixtureProfile!.cells, product.profiles),
       gates: gateRows,
+      differential: differentialReview,
+      attribution: floorsCases.reduce((a, c) => { a[sourceOfCase.get(`${floorsPopulation}\u0000${c.case_id}`) ?? 'snapshot']++; return a; }, { snapshot: 0, 'overlay-detectors': 0, 'twin-parent': 0 } as Record<string, number>),
       populations: loaded.map(l => ({
         population: l.input.population, role: l.role,
         scanners: scannerIds.filter(id => perPopulation.get(l.input.population)!.run.has(id)).map(id => ({ scanner: id, counts: countsFor(l.input.population, id, family) ?? emptyCounts() })),
@@ -416,9 +482,10 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
     publication,
     policy: {
       id: policy.id, revision: product.policyRevision.revision, components: product.policyRevision.components, scanner: policy.scanner,
-      populations: Object.fromEntries(Object.entries(policy.populations).map(([id, p]) => [id, p.role])), methodsRequired: policy.methods.required,
+      populations: Object.fromEntries(Object.entries(policy.populations).map(([id, p]) => [id, p.role])), methodsRequired: policy.methods.required, differentialPeers: [...policy.methods.differential.peers].sort(byteOrder), attributionFallback: policy.attribution.fallback,
+      ...(product.ledgerRekey ? { ledgerRekey: { id: product.ledgerRekey.id, population: product.ledgerRekey.population, corpusDigest: product.ledgerRekey.snapshot.corpusDigest, occurrences: Object.keys(product.ledgerRekey.occurrences).length } } : {}),
       criteria: product.criteria, fixtureProfilesVersion: product.profiles.profilesVersion, rules: policy.rules,
-      ...(floorsOverlay ? { axisOverlay: { id: floorsOverlay.id, population: floorsOverlay.population, corpusDigest: floorsOverlay.snapshot.corpusDigest, contexts: Object.keys(floorsOverlay.contexts).length, controls: Object.keys(floorsOverlay.controls).length } } : {}),
+      ...(floorsOverlay ? { axisOverlay: { id: floorsOverlay.id, population: floorsOverlay.population, corpusDigest: floorsOverlay.snapshot.corpusDigest, contexts: Object.keys(floorsOverlay.contexts).length, controls: Object.keys(floorsOverlay.controls).length, detectors: Object.keys(floorsOverlay.detectors).length } } : {}),
     },
     populations: loaded.map<PopulationView>(l => ({
       population: l.input.population, role: l.role, denominator: l.input.population,
@@ -437,7 +504,7 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
     families,
     undetected: product.taxonomy.families.filter(f => f.detectors.length === 0).map(f => ({ id: f.id, provider: f.provider, name: f.name, supportStatus: f.supportStatus ?? null })).sort((a, b) => byteOrder(a.id, b.id)),
     knownGaps,
-    unmappedFamilies: sorted(new Set(loaded.flatMap(l => perPopulation.get(l.input.population)!.run.get(policy.scanner)?.cases.filter(c => !detectorsOf(c, detectorIds, taxonomyDetectors).length && c.family && c.family !== UNASSIGNED).map(c => `${l.input.population}:${c.family}`) ?? []))),
+    unmappedFamilies: sorted(unmapped),
   };
 }
 

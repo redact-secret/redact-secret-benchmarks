@@ -59,7 +59,9 @@
         "methodsRequired",
         "criteria",
         "fixtureProfilesVersion",
-        "rules"
+        "rules",
+        "differentialPeers",
+        "attributionFallback"
       ],
       "properties": {
         "id": {
@@ -116,7 +118,8 @@
             "population",
             "corpusDigest",
             "contexts",
-            "controls"
+            "controls",
+            "detectors"
           ],
           "description": "The product-owned axis overlay the floors were counted with (benchmarks/support/public-axis-overlay.json); its digest is a policy component.",
           "properties": {
@@ -135,6 +138,54 @@
               "minimum": 0
             },
             "controls": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "detectors": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "differentialPeers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The peer scanners whose differential occurrences the gate reads (population-policy.json methods.differential.peers). Other peers are measured and reported (families[].differential), never gate-bearing."
+        },
+        "attributionFallback": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "overlay-detectors",
+              "twin-parent"
+            ]
+          },
+          "description": "How a case the snapshot attributes to no product detector is attributed, in order (population-policy.json attribution.fallback)."
+        },
+        "ledgerRekey": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "population",
+            "corpusDigest",
+            "occurrences"
+          ],
+          "description": "The legacy review-ledger decisions mapped to canonical occurrence ids (benchmarks/support/public-review-ledger-map.json); its digest is a policy component.",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "population": {
+              "type": "string"
+            },
+            "corpusDigest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "occurrences": {
               "type": "integer",
               "minimum": 0
             }
@@ -264,7 +315,9 @@
           "evidence",
           "fixtureProfile",
           "gates",
-          "populations"
+          "populations",
+          "differential",
+          "attribution"
         ],
         "properties": {
           "family": {
@@ -529,6 +582,88 @@
                     "$ref": "#/$defs/scannerCounts"
                   }
                 }
+              }
+            }
+          },
+          "differential": {
+            "description": "The differential review occurrences of the methods run attributed to the family, per peer. Only gate-bearing peers count toward the stable gate; null when the methods run did not run differential.",
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "gatePeers",
+                  "peers"
+                ],
+                "properties": {
+                  "gatePeers": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "peers": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "peer",
+                        "gateBearing",
+                        "occurrences",
+                        "settled",
+                        "unresolved"
+                      ],
+                      "properties": {
+                        "peer": {
+                          "type": "string"
+                        },
+                        "gateBearing": {
+                          "type": "boolean"
+                        },
+                        "occurrences": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "settled": {
+                          "type": "integer",
+                          "minimum": 0
+                        },
+                        "unresolved": {
+                          "type": "integer",
+                          "minimum": 0
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          },
+          "attribution": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "snapshot",
+              "overlay-detectors",
+              "twin-parent"
+            ],
+            "description": "How the floors population cases of the family were attributed to it: by what the snapshot names, by the overlay legacy targets, or through the twin parent.",
+            "properties": {
+              "snapshot": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "overlay-detectors": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "twin-parent": {
+                "type": "integer",
+                "minimum": 0
               }
             }
           }

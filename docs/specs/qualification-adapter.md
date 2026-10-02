@@ -63,9 +63,29 @@ the seed case of each row: an assertion or review occurrence is keyed by the eva
 family when its seed case id is one of the family's floors cases. A required method the methods run does not list is unmeasured
 (`methods.notRun`); with no methods run, all three are. The view records the methods artifact as `populations[].methodsArtifact`.
 
-A review occurrence settles through `review-ledger.json` by its canonical id. The ledger is keyed by legacy ids, so no canonical
-occurrence reads settled until the ledger is re-keyed; a family with a differential occurrence therefore reads
-`differential.unresolvedContractDisagreements`. This is recorded rather than worked around (parity cause `review-occurrence-identity`).
+A review occurrence settles through `review-ledger.json` by the legacy decision the review-ledger re-key (next section) maps its canonical
+id to; an occurrence the mapping does not name is unreviewed and reads unresolved. The differential gate counts only the occurrences of the
+peers named in `population-policy.json` `methods.differential.peers` (gitleaks and trufflehog, the peers the legacy gate read); the occurrences
+of every other peer are measured and listed per family (`families[].differential`) and are not gate-bearing until reviewed
+([ADR](../decisions/2026-10-01-gate-the-differential-on-the-legacy-peers-and-measure-the-others.md)).
+
+## The review-ledger re-key
+
+The legacy ledger holds decisions keyed by legacy occurrence ids; the methods run's review queue is keyed by canonical ids
+(`sha256:<hex>`); neither can be recomputed from the other. `benchmarks/support/public-review-ledger-map.json`
+(`npm run qualification:ledger-rekey -- --snapshot <file> --methods-run <artifact.json>`, `--check`, `--validate`) maps a canonical
+occurrence to a legacy ledger id, and **only** when both name the same case, peer scanner, disagreement property, variant and bytes: the
+legacy fixture is joined to the canonical case by the content join of the parity report (SHA-256 of the content, expected spans, fixture name,
+one to one), then the legacy regression fixtures are joined to the cases still unpaired (the evidence release publishes some fixtures the
+legacy path held in its regression corpus; this stage only identifies a case and no population count reads it); the legacy
+`evidence.input.contentHash` equals the canonical variant's `content_digest`; and the legacy kind `redact-secret-only` is read as the
+canonical `reference-only` (the one renamed kind). The mapping holds identity only: the legacy ledger stays the source of every status and
+note, an `open` legacy decision stays unresolved, and an occurrence with no mapping is unreviewed. `derivation` counts what did not map, by
+reason (a peer the legacy run never scanned, a case the join does not pair, no legacy occurrence of that property, bytes that differ, an
+ambiguous key), and the legacy mutation entries, which have no canonical counterpart (the canonical queue holds differential occurrences
+only). It is validated (one to one with the ledger, counts reconcile), bound to the snapshot's corpus digest and to the canonical methods run's
+semantic digest, and a component of the policy revision
+([ADR](../decisions/2026-10-01-apply-the-legacy-review-decisions-to-canonical-occurrences-by-content.md)).
 
 ## The public axis overlay
 
@@ -76,7 +96,8 @@ by `npm run qualification:axis-overlay -- --snapshot <file>` from the legacy dev
 ordered content keys as the parity report (never hand-authored). `contexts[id]` is `<legacy category>/<fixture group>`: the whole
 value is the axis the legacy `positiveAxes` counted, the group after the first `/` is the fixture-profile cell axis. `controls[id]` is
 the legacy control axis of a scored, non-twin control, `null` for one with no reviewed axis. A case the overlay does not name keeps
-the snapshot's own group or taxonomy. The overlay names axes only: it changes no evidence class, outcome or measured count, and a
+the snapshot's own group or taxonomy. The overlay also carries `detectors[id]`, the product detectors the legacy path scoped the fixture to
+(its `targets`), used only for attribution (below). The overlay names axes and attribution only: it changes no evidence class, outcome or measured count, and a
 public evidence class is still never a support status. It is bound to the snapshot by `snapshot.corpusDigest` (the adapter refuses an
 artifact of another corpus), it is a component of the policy revision, and the view records it as `policy.axisOverlay`.
 
@@ -84,8 +105,15 @@ artifact of another corpus), it is a component of the policy revision, and the v
 
 The public snapshot names taxonomy families (`provider:family`); the product populations name detector ids. A case belongs
 to a product detector family when its `targets` name one, or its `family` is a detector id, or its `family` is a taxonomy
-family served by a detector (`benchmarks/support/taxonomy.json`). A case that maps to none is counted under the
-population's `unattributed` counts, and its family is listed in `unmappedFamilies`; it is never dropped.
+family served by a detector (`benchmarks/support/taxonomy.json`). Where the snapshot names none (some public cases carry neither a family nor a
+target), the policy's `attribution.fallback` applies in order: the overlay's `detectors` of the case (the legacy targets; floors population
+only), then the detectors of its twin parent. What the snapshot names always wins. A case no step attributes is counted under the
+population's `unattributed` counts, and its family is listed in `unmappedFamilies`; it is never dropped. `families[].attribution` counts the
+floors cases of a family by source (`snapshot`, `overlay-detectors`, `twin-parent`)
+([ADR](../decisions/2026-10-01-attribute-public-cases-by-the-legacy-targets-and-keep-floors-per-population.md)). Floors stay per population: the legacy
+pooled count of a family with regression fixtures is a legitimate difference (`population-separation`), never reproduced by pooling. A
+cross-provider twin the snapshot gives no family is scoped by no one in the engine, which reads a finding of another known detector as
+flagged; the adapter does not re-score it (`twin-scope-vocabulary`).
 
 ## Derivation of the status inputs
 
@@ -102,7 +130,7 @@ has no source the field is stated as such.
 | `twinPairs` | twin controls whose positive was scored, in the floors population |
 | `twinFailures` | pairs that did not discriminate (a positive span not EXACT or COVERED, or the twin flagged), worst population |
 | `benignFalseAlarms` | flagged non-twin controls, worst population |
-| `metamorphicCriticalFailures`, `mutationUnresolvedCritical`, `differentialUnresolvedContractDisagreements` | the methods run's `assertions` and `review_queue[]`, attributed through the seed case and joined with the ledger, only when the method is in its `manifest.methods`; otherwise unmeasured |
+| `metamorphicCriticalFailures`, `mutationUnresolvedCritical`, `differentialUnresolvedContractDisagreements` | the methods run's `assertions` and `review_queue[]`, attributed through the seed case and joined with the ledger through the re-key mapping (differential: the gate peers only), only when the method is in its `manifest.methods`; otherwise unmeasured |
 | `policyQualification` | the policy-route population's cases, the product `expectedAction`, `policyConformance` and `contextAxis` keyed by case id, the holdout receipt, and the criteria of `policy-qualified-credentials.json` |
 | `fixtureProfile` | claim from the contract, cells from the floors population |
 
@@ -118,7 +146,7 @@ Unmeasured methods fail closed: if a required method (`metamorphic`, `mutation`,
 | family counts and floors | floors population cells; thresholds are `status-criteria.json` and `fixture-profiles.json`, unchanged | derived; axis vocabulary differs, see Parity gaps |
 | twin, benign requirements | per-case twin and benign measurements | derived |
 | mutation, metamorphic, differential requirements | the methods run's assertions and review queue | measured by the methods run (#636); unmeasured without one |
-| review-ledger joins | occurrence `id` looked up in `review-ledger.json` | needs the re-key (#607): legacy ids are legacy hashes, so a queue entry reads unresolved |
+| review-ledger joins | occurrence `id` mapped to a legacy ledger id by `public-review-ledger-map.json`, then looked up in `review-ledger.json` | applied for the peers both paths scanned (#638); the other peers' occurrences are unreviewed |
 | known-gap evidence joins | `knownGaps[]`: a record's fixtures matched to cases by id in each population | product populations share the legacy ids; public ids differ until the re-key |
 | source-report identities | `populations[].artifact` and `policy.revision` | replaces `scannerObservations`, `fixtureIndex`, `revision` |
 | status distribution, stable profiles | `distribution`, `stableDistribution` | computed from `families[].status` |
@@ -128,9 +156,8 @@ Unmeasured methods fail closed: if a required method (`metamorphic`, `mutation`,
 Compared against the legacy path, with each difference attributed to a structural cause, in
 [qualification-parity.md](qualification-parity.md) and `docs/generated/qualification-parity.md`.
 
-1. **Methods.** Measured by the methods run (#636). The remaining gap is the review ledger: a differential occurrence is keyed by a
-   canonical id and the legacy ledger holds legacy ids, and the methods run covers peers the legacy run never scanned, so a
-   family with a differential occurrence stays provisional until the ledger is re-keyed and the peer set for the gate is decided.
+1. **Methods.** Measured by the methods run (#636). The legacy review decisions apply through the generated mapping, and the differential
+   gate reads the legacy peers (#638); the occurrences of the two other pinned peers are unreviewed and reported, not gate-bearing.
 2. **Axes.** The public snapshot has no benign taxonomy and its group vocabulary is credential-evidence's. The product axis
    overlay (above) names the legacy axes for the cases it joins; what remains differs because the floors population is the
    public snapshot alone (the legacy path pooled the regression and policy fixtures), because pending fixtures are not scored,
@@ -139,16 +166,19 @@ Compared against the legacy path, with each difference attributed to a structura
    legacy path pooled every T3 fixture targeting the family. Whether the floors or the corpus change is a product policy
    decision.
 4. **Disputed properties** (`disputedProperty`) are keyed by legacy fixture ids and are not applied to the public
-   population until the re-key.
+   population until the legacy-id re-key of known gaps and fixtures (the review ledger has its own mapping).
 5. **Taxonomy families with no detector** appear in the public snapshot and are reported in `unmappedFamilies`.
-6. **Ledger ids** as above.
+6. **Ledger ids** are mapped by content (above); the known-gap and fixture ids still wait for the evidence release id map.
+7. **Floors per population and twin scope.** A family whose legacy floor pooled regression fixtures reads its public-snapshot floor
+   (`population-separation`), and a cross-provider twin the snapshot gives no family reads flagged where the legacy twin read co-detected
+   (`twin-scope-vocabulary`); both are attributed in the parity report, not reproduced.
 
 ## Product policy revision
 
 `policy.revision` is `rs-policy-<adapter version>:sha256:<hex>`: the SHA-256 of the canonical JSON of
 `{adapter, components}`, where each component is one benchmark-owned qualification input and its digest is of its parsed
 content: `status-criteria.json`, `fixture-profiles.json`, `policy-qualified-credentials.json`,
-`empirical-observations.json`, `taxonomy.json`, `population-policy.json`, `public-axis-overlay.json`, `review-ledger.json`, and the contract facts of
+`empirical-observations.json`, `taxonomy.json`, `population-policy.json`, `public-axis-overlay.json`, `review-ledger.json`, `public-review-ledger-map.json`, and the contract facts of
 `assessment.ts` (tiers, provider sources, patterns, supported contexts; validator functions excluded).
 Whitespace and key order do not move it. A threshold, route, tier, record, taxonomy entry, ledger decision or population
 role does. A re-measurement of unchanged inputs does not. `supportStatusChanges` in `qualification-inputs.json` cite this
@@ -160,14 +190,14 @@ Top level: `schema` (`redact-secret/qualification-view/v1`), `adapter`, `publica
 `populations`, `scanners`, `distribution`, `stableDistribution`, `families`, `undetected`, `knownGaps`, `unmappedFamilies`.
 
 - `policy`: `revision`, `components[]` (path, digest), `criteria` (the thresholds as applied), `populations` (roles),
-  `methodsRequired`, `rules`, and `axisOverlay` (the overlay the floors were counted with: id, population, corpus digest, entry counts).
+  `methodsRequired`, `differentialPeers`, `attributionFallback`, `rules`, `ledgerRekey` (the mapping: id, population, corpus digest, occurrences mapped) and `axisOverlay` (the overlay the floors were counted with: id, population, corpus digest, entry counts).
 - `populations[]`: `population`, `role`, `denominator`, `runClass`, `artifact` (digests, engine, protocol, `configHash`,
   `evidence`, publication, `methods`, scanners with version, build, mode and configuration hash), `methodsArtifact` (the same identity
   for the floors population's methods run, when there is one), `unattributed[]`
   (per-scanner counts), `aggregates[]` (the engine's published `groups` and `byTarget`, verbatim, withheld figures kept).
 - `families[]` (one per scored product detector family, sorted): `taxonomyFamilies[]`, `contract`, `status`
   (`value`, `reasons`, `qualificationProfile`, `evidenceTier`, `evidenceBasis`, `methodsNotRun`), `evidence`
-  (`FamilySupportEvidence`), `fixtureProfile`, `gates[]` (per gate-bearing population), and `populations[]` each with
+  (`FamilySupportEvidence`), `fixtureProfile`, `gates[]` (per gate-bearing population), `differential` (per peer: occurrences, settled, unresolved, `gateBearing`; null when the methods run did not run differential), `attribution` (floors cases by source), and `populations[]` each with
   `scanners[]` of `{scanner, counts}`. `counts` are `cases`, `pending`, `notMeasured`, `positives` (`must-redact`,
   `policy`: spans, outcomes, leaked and collateral bytes), `benign` (`cases`, `flagged`, `findings`) and `twins`
   (`pairs`, `discriminated`, `flagged`, `coDetected`).

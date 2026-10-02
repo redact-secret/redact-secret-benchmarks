@@ -17,7 +17,8 @@ import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
-import { detectorsOf, seedCaseId } from '../benchmarks/qualification/adapter.ts';
+import { attributeCase, seedCaseId } from '../benchmarks/qualification/adapter.ts';
+import { ledgerSettledId } from '../benchmarks/qualification/ledger-rekey.ts';
 import { loadProductInputs } from '../benchmarks/qualification/inputs.ts';
 import { readRunArtifact, type CaseResult, type Measurement, type RunArtifact } from '../benchmarks/qualification/run-artifact.ts';
 import {
@@ -103,7 +104,7 @@ for (const category of categories) {
 }
 
 // -- new side ------------------------------------------------------------------------------------------------------
-interface NextCase extends Joinable { population: string; detectors: string[]; tier: string; kind: string; twin: boolean }
+interface NextCase extends Joinable { population: string; detectors: string[]; tier: string; kind: string; twin: boolean; family?: string }
 const nextCases: NextCase[] = [];
 const artifacts = new Map<string, RunArtifact>();
 const notCompared: ParityReport['notCompared'] = [];
@@ -129,7 +130,8 @@ for (const population of Object.keys(product.policy.populations)) {
   for (const [id, scanners] of perScanner) {
     const c = cases.get(id)!;
     const h = hashes.get(id);
-    nextCases.push({ key: id, scanners, joinKeys: population === PUBLIC ? (h ? contentKeys(h.hash, h.expected, id) : [`unjoinable:${id}`]) : [id], population, tier: c.tier, kind: c.kind, twin: Boolean(c.twin_of), detectors: detectorsOf(c, detectorIds, taxonomyDetectors) });
+    nextCases.push({ key: id, scanners, joinKeys: population === PUBLIC ? (h ? contentKeys(h.hash, h.expected, id) : [`unjoinable:${id}`]) : [id], population, tier: c.tier, kind: c.kind, twin: Boolean(c.twin_of), family: c.family,
+      detectors: attributeCase(c, { detectorIds, taxonomyDetectors, overlayDetectors: population === PUBLIC ? product.axisOverlay?.detectors : undefined, fallback: product.policy.attribution.fallback, byId: cases }).detectors });
   }
 }
 
@@ -180,6 +182,12 @@ const adjustmentsByFamily: Record<string, Record<string, Record<string, number>>
       for (const d of l.detectors) { add(d, 'pending-not-scored', 'totalFixtures', 1); add(d, 'pending-not-scored', n.kind === 'must-not-flag' ? 'benignCases' : 'positiveCases', 1); }
       continue;
     }
+    // A twin the snapshot gives no family to cannot be scoped by the engine (credential-eval scopes a twin by its own family), so it reads a
+    // finding of another known detector as flagged where the legacy twin read it as co-detected: the legacy twin was not flagged and the new one is.
+    if (kind === 'twin' && !n.family) {
+      const ls = pair.legacy.scanners[SCANNER], ns = pair.next.scanners[SCANNER];
+      if (ls?.kind === 'control' && ns?.kind === 'control' && ns.flagged && !ls.flagged) for (const d of n.detectors) add(d, 'twin-scope-vocabulary', 'twinFailures', -1);
+    }
     for (const d of new Set([...l.detectors, ...n.detectors])) {
       const delta = Number(l.detectors.includes(d)) - Number(n.detectors.includes(d));
       if (!delta) continue;
@@ -206,7 +214,7 @@ if (existsSync(methodsFile)) {
     if (q.method !== 'differential') continue;
     for (const d of detectorsOfSeed.get(seedCaseId(q.case_id, 'differential')) ?? []) {
       const row = (reviewByFamily[d] ??= { occurrences: 0, inLedger: 0, byPeer: {} });
-      row.occurrences++; if (product.ledger.entries[q.id]) row.inLedger++;
+      row.occurrences++; if (Object.hasOwn(product.ledger.entries, ledgerSettledId(q.id, product.ledger, product.ledgerRekey))) row.inLedger++;
       const peer = String(q.peer ?? 'unknown'); row.byPeer[peer] = (row.byPeer[peer] ?? 0) + 1;
     }
   }
@@ -246,7 +254,12 @@ const unrecorded = basis.filter((b: any) => !b.run).map((b: any) => b.population
 const nonCanonical = basis.filter((b: any) => b.run && !b.run.canonical).map((b: any) => b.run.id);
 if (unrecorded.length) notCompared.push({ area: 'artifact identity', reason: `the artifact of ${unrecorded.join(', ')} is not a run recorded in benchmarks/official-runs.json (its semantic digest matches no recorded run), so its provenance is not established.` });
 if (nonCanonical.length) notCompared.push({ area: 'canonical run', reason: `the artifacts compared include non-canonical runs (${nonCanonical.join(', ')}). The canonical measurement is the linux-x64 CI run; rerun this report against its artifacts.` });
-if (hasMethodsRun) notCompared.push({ area: 'review ledger decisions', reason: 'the methods run has a review queue, keyed by canonical occurrence ids; the review ledger is keyed by legacy ids, so no ledger decision is applied to it (review-occurrence-identity). The per-family counts of occurrences and of how many canonical ids the ledger holds are in the status attribution. The legacy mutation review entries (the legacy queue held mutation variants that need review, the new queue holds differential occurrences only) are not compared.' });
+if (hasMethodsRun) {
+  const d = product.ledgerRekey?.derivation;
+  notCompared.push({ area: 'review ledger decisions (applied through the mapping)', reason: d
+    ? `the methods run has a review queue keyed by canonical occurrence ids; the legacy review ledger is keyed by legacy ids, and a decision applies to a canonical occurrence only through benchmarks/support/public-review-ledger-map.json (same case, peer, disagreement property and bytes): ${d.canonical.mapped} of ${d.canonical.occurrences} canonical occurrences are mapped (${d.legacy.mapped} of ${d.legacy.differential} legacy differential entries), ${d.canonical.unmatched['peer-not-in-legacy-run']} are occurrences of peers the legacy run never scanned (unreviewed, and not gate-bearing) and ${d.canonical.occurrences - d.canonical.mapped - d.canonical.unmatched['peer-not-in-legacy-run']} are unmatched for another reason. The ${Object.values(d.legacy.otherMethods).reduce((a, n) => a + n, 0)} legacy mutation review entries have no canonical counterpart (the canonical review queue holds differential occurrences only) and are not compared.`
+    : 'the methods run has a review queue keyed by canonical occurrence ids; the view carries no ledger mapping, so no legacy decision is applied to it (review-occurrence-identity).' });
+}
 else notCompared.push({ area: 'review queue and review ledger', reason: 'the view has no methods run, so the new path has no review queue to join with the ledger; the legacy ids also need the re-key (legacy-id-rekey). The methods-dependent evidence fields are compared as "not measured".' });
 notCompared.push({ area: 'candidate-regression inputs and protected holdout', reason: 'internal populations, not part of a public qualification view (docs/specs/qualification-inputs.md).' });
 notCompared.push({ area: 'Next page data', reason: 'the report, family and fixture pages of the Next app still read the legacy files; the new qualification pages (/evaluation/qualification/) read the view this report compares. Compare them by page-level numbers: distribution and per-family status above are the numbers those pages display.' });
@@ -260,11 +273,11 @@ for (const r of review) for (const [peer, n] of Object.entries(r.byPeer)) peerTo
 const recommendations = [
   `Status: the legacy path reads ${cf.legacyStable} stable families and the new path ${cf.nextStable}. Held back (legacy-stable families the new path does not read stable): ${heldSummary}. Not applied: nothing here changes a status.`,
   hasMethodsRun
-    ? `Review ledger: every differential occurrence of the methods run is keyed by a canonical id and the ledger is keyed by legacy ids (${review.reduce((a, r) => a + r.inLedger, 0)} of ${review.reduce((a, r) => a + r.occurrences, 0)} family-attributed occurrences are in the ledger; per peer ${JSON.stringify(peerTotals)}). Two decisions are needed: re-key the ledger decisions to the canonical occurrence ids of the pinned peers, and decide whether the differential gate reads the peers the legacy run scanned (gitleaks, trufflehog) or every pinned peer (flare-redact and openredaction add occurrences no one has reviewed). Not applied: both change which disagreements a status depends on.`
+    ? `Review ledger: ${review.reduce((a, r) => a + r.inLedger, 0)} of ${review.reduce((a, r) => a + r.occurrences, 0)} family-attributed differential occurrences of the methods run are settled by a legacy decision through the generated mapping; per peer, occurrences ${JSON.stringify(peerTotals)}. The differential gate reads the peers named in benchmarks/support/population-policy.json (${(view.policy.differentialPeers ?? []).join(', ') || 'every peer'}); the other peers are measured and listed per family (families[].differential) and are not gate-bearing until reviewed. Applied by product policy (docs/decisions, #638); nothing here changes a status.`
     : 'Methods: the view has no methods run. A methods run of the floors population (docs/specs/official-runs.md, "The methods run") is needed before the metamorphic, mutation and differential gates are measured.',
   'Policy corpus: the T3 route floors read the 19-case policy corpus alone. Whether the floors, the corpus or the route change is a product policy decision. Not applied.',
-  'Twin scope: confirm with credential-eval how a twin control is scoped (case family against the finding family) before the new path decides twin discrimination; every differing control in this report is a twin whose finding is present on both sides.',
-  'Re-key: resolve the legacy-id re-key (qualification-inputs.json populations[0].rekey) with the evidence release id map, then apply the legacy review-ledger decisions and disputed properties to canonical ids, so the ledger joins are measured instead of listed.',
+  'Twin scope: credential-eval scopes a twin by the twin\'s own family, and the snapshot gives a cross-provider twin none, so the engine reads a finding of another known detector as flagged where the legacy twin read it as co-detected (twin-scope-vocabulary). The adapter does not re-score it. Either credential-evidence carries a family on such a twin, or credential-eval scopes a twin by its parent\'s family; neither is decided in this repository.',
+  'Re-key: the review-ledger decisions are mapped to canonical occurrence ids by content (public-review-ledger-map.json). The legacy-id re-key of known gaps and disputed properties (qualification-inputs.json populations[0].rekey) with the evidence release id map is still open.',
 ];
 
 const identities: Record<string, unknown> = {
@@ -278,6 +291,7 @@ const identities: Record<string, unknown> = {
     populations: view.populations.map((p: any) => ({ run: recorded(p.artifact, p.population, 'plain')?.id ?? 'not recorded', population: p.population, role: p.role, runClass: p.runClass, semanticDigest: p.artifact.semanticDigest, configHash: p.artifact.configHash, evidenceTag: p.artifact.evidence.release?.tag, methods: p.artifact.methods, caseCount: p.artifact.caseCount,
       ...(p.methodsArtifact ? { methodsRun: { run: recorded(p.methodsArtifact, p.population, 'methods')?.id ?? 'not recorded', semanticDigest: p.methodsArtifact.semanticDigest, configHash: p.methodsArtifact.configHash, methods: p.methodsArtifact.methods, caseCount: p.methodsArtifact.caseCount } } : {}) })),
     axisOverlay: view.policy.axisOverlay ?? null,
+    ledgerRekey: view.policy.ledgerRekey ?? null, differentialPeers: view.policy.differentialPeers ?? null, attributionFallback: view.policy.attributionFallback ?? null,
   },
 };
 

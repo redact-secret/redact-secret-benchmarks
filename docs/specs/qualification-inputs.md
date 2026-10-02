@@ -80,8 +80,9 @@ inputs as in the table above. The rest are not populations:
 | --- | --- | --- | --- |
 | `benchmarks/support/empirical-observations.json` | T2 corroboration overlay | redact-secret | remain product-owned |
 | `benchmarks/support/status-criteria.json` | status floors | redact-secret | remain product-owned |
-| `benchmarks/support/public-axis-overlay.json` | source-context and benign-taxonomy axis of each counted public case (#636), generated from the legacy development fixtures, bound to the pinned snapshot by corpus digest | redact-secret | remain product-owned (never part of credential-evidence) |
-| `benchmarks/review-ledger.json` | review-ledger joins the qualification adapter reads (docs/specs/qualification-adapter.md) | benchmarks | remain in place (benchmark-owned, read by the adapter) |
+| `benchmarks/support/public-axis-overlay.json` | source-context and benign-taxonomy axis of each counted public case (#636) and the legacy detector targets of a case the snapshot leaves unnamed (#638), generated from the legacy development fixtures, bound to the pinned snapshot by corpus digest | redact-secret | remain product-owned (never part of credential-evidence) |
+| `benchmarks/review-ledger.json` | review-ledger joins the qualification adapter reads (docs/specs/qualification-adapter.md); the source of every review decision | benchmarks | remain in place (benchmark-owned, read by the adapter) |
+| `benchmarks/support/public-review-ledger-map.json` | the legacy review decisions mapped to the canonical differential occurrences of the pinned methods run (#638), generated, one to one with the ledger, bound to the snapshot and the canonical methods run | benchmarks | remain product-owned (identity only; the decisions stay in the ledger) |
 | `benchmarks/fixture-index.json` | legacy fixture identity digest | benchmarks | compatibility-only |
 | `peer-observations/` | peer snapshots keyed to legacy ids | benchmarks | compatibility-only |
 | `benchmarks/pin-manifest.json` | legacy corpus hashes | benchmarks | compatibility-only |

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildQualificationView, serializeView, detectorsOf } from '../benchmarks/qualification/adapter.ts';
+import { buildQualificationView, serializeView, detectorsOf, attributeCase } from '../benchmarks/qualification/adapter.ts';
 import { policyRevision } from '../benchmarks/qualification/inputs.ts';
 import { canonical } from '../benchmarks/qualification/canonical.ts';
 import { readRunArtifact, semanticDigestOf, familyCounts } from '../benchmarks/qualification/run-artifact.ts';
@@ -75,7 +75,8 @@ const product = (overrides = {}) => ({
   empirical: () => ({ observationCount: 0, observationSubjects: 0, observationIssuanceDates: 0, corroborationReferences: 0, corroborationOwners: 0, corroborationClasses: [], unresolvedContradictions: 0, boundedContradictions: 0, uncertainty: null, supportedContexts: [], empiricalMode: null, supportsBareValues: false }),
   criteria: lowered(), profiles: fixtureProfiles, policyCriteria: {}, policyContracts: {}, ledger: { schemaVersion: 2, entries: {} }, knownGaps: [],
   policy: { schemaVersion: 1, id: 'synthetic-policy', scanner: 'redact-secret', populations: Object.fromEntries(Object.entries(POPULATIONS).map(([id, role]) => [id, { role, rationale: 'synthetic' }])),
-    axes: { positiveContext: 'overlay-else-group', benignControl: 'overlay-else-taxonomy-else-group' }, methods: { required: METHODS, whenNotRun: 'block-stable', source: 'methods-run' }, rules: ['synthetic'] },
+    axes: { positiveContext: 'overlay-else-group', benignControl: 'overlay-else-taxonomy-else-group' }, methods: { required: METHODS, whenNotRun: 'block-stable', source: 'methods-run', differential: { peers: ['peer-one'], rationale: 'synthetic' } },
+    attribution: { fallback: ['overlay-detectors', 'twin-parent'], rationale: 'synthetic' }, rules: ['synthetic'] },
   policyRevision: policyRevision([{ path: 'a', digest: DIGEST(1) }]), ...overrides,
 });
 
@@ -83,11 +84,11 @@ const product = (overrides = {}) => ({
  * The methods run of pop-a: its cases are generated variants (`<case id>--<method>--<variant>`), its assertions and review
  * occurrences are keyed by the evaluation case id `<case id>--<method>`. `failures` and `queue` are seed case ids.
  */
-const methodsRun = ({ methods = METHODS, failures = [], queue = [], queueIds = [] } = {}) => artifact('pop-a', familyCases('a', 'prov:fam').map(c => ({ ...c, case_id: `${c.case_id}--differential--canonical` })), {
+const methodsRun = ({ methods = METHODS, failures = [], queue = [], queueIds = [], queuePeers = [] } = {}) => artifact('pop-a', familyCases('a', 'prov:fam').map(c => ({ ...c, case_id: `${c.case_id}--differential--canonical` })), {
   methods,
   mutate: doc => {
     doc.scanners.find(s => s.scanner === 'redact-secret').assertions = failures.map(([id, method]) => ({ case_id: `${id}--${method}`, method, assertion: 'same-detection', status: 'fail' }));
-    doc.review_queue = queue.map((id, i) => ({ id: queueIds[i] ?? DIGEST(500 + i), case_id: `${id}--differential`, method: 'differential', variant: 'canonical', reference: 'redact-secret', peer: 'peer-one', disagreement: 'reference-only' }));
+    doc.review_queue = queue.map((id, i) => ({ id: queueIds[i] ?? DIGEST(500 + i), case_id: `${id}--differential`, method: 'differential', variant: 'canonical', reference: 'redact-secret', peer: queuePeers[i] ?? 'peer-one', disagreement: 'reference-only' }));
   },
 });
 const inputs = (options = {}) => [
@@ -299,8 +300,8 @@ test('the product axis overlay names the axis of a counted case, changes no coun
   const base = family(build({ methods: true }));
   const overlay = {
     schemaVersion: 1, id: 'credential-public-axis-overlay-v1', population: 'pop-a', owner: 'redact-secret-benchmarks', note: 'synthetic',
-    snapshot: { corpusDigest: registry[0].evidence.corpusDigest, cases: 5 }, derivation: { join: 'j', contextAxis: 'c', controlAxis: 'c', joinedCases: 5, unjoinedCases: 0 },
-    contexts: { 'a-p1': 'cat-x/ctx-one', 'a-p2': 'cat-y/ctx-one' },
+    snapshot: { corpusDigest: registry[0].evidence.corpusDigest, cases: 5 }, derivation: { join: 'j', contextAxis: 'c', controlAxis: 'c', detectors: 'd', joinedCases: 5, unjoinedCases: 0 },
+    contexts: { 'a-p1': 'cat-x/ctx-one', 'a-p2': 'cat-y/ctx-one' }, detectors: {},
     controls: { 'a-b1': 'placeholder', 'a-b2': null },
   };
   const view = build({ methods: true }, product({ axisOverlay: overlay }));
@@ -313,7 +314,7 @@ test('the product axis overlay names the axis of a counted case, changes no coun
   assert.equal(base.fixtureProfile.cells.positiveContextAxes, 2);
   // It names axes only: every measured count is unchanged.
   for (const key of ['positiveCases', 'totalFixtures', 'benignCases', 'twinPairs', 'twinFailures', 'benignFalseAlarms']) assert.equal(f.evidence[key], base.evidence[key], key);
-  assert.deepEqual(view.policy.axisOverlay, { id: overlay.id, population: 'pop-a', corpusDigest: overlay.snapshot.corpusDigest, contexts: 2, controls: 2 });
+  assert.deepEqual(view.policy.axisOverlay, { id: overlay.id, population: 'pop-a', corpusDigest: overlay.snapshot.corpusDigest, contexts: 2, controls: 2, detectors: 0 });
   assert.deepEqual(validateQualificationView(view), []);
   // A case the overlay does not name keeps the snapshot's own vocabulary.
   const partial = family(build({ methods: true }, product({ axisOverlay: { ...overlay, contexts: { 'a-p1': 'cat-x/ctx-one' }, controls: {} } })));
@@ -322,4 +323,89 @@ test('the product axis overlay names the axis of a counted case, changes no coun
   // It is bound to one snapshot, and to the floors population.
   assert.throws(() => build({ methods: true }, product({ axisOverlay: { ...overlay, snapshot: { ...overlay.snapshot, corpusDigest: DIGEST(999) } } })), /axis overlay is derived from corpus/);
   assert.throws(() => build({ methods: true }, product({ axisOverlay: { ...overlay, population: 'pop-b' } })), /axis overlay is for pop-b/);
+});
+
+// -- #638: the review-ledger re-key, the differential peer scope and the attribution of a case the snapshot attributes to no detector ----------------
+
+const rekey = occurrences => ({ schemaVersion: 1, id: 'credential-public-review-ledger-rekey-v1', population: 'pop-a', owner: 'redact-secret-benchmarks', note: 'synthetic', snapshot: { corpusDigest: DIGEST(1), cases: 5 }, methodsRun: { run: 'r', semanticDigest: DIGEST(2) }, derivation: {}, occurrences });
+const LEGACY = 'a'.repeat(64);
+
+test('a legacy decision settles a canonical occurrence only through the mapping, and an open decision stays open', () => {
+  const run = methodsRun({ queue: ['a-b1'], queueIds: [DIGEST(900)] });
+  const ledger = status => ({ schemaVersion: 2, entries: { [LEGACY]: { status } } });
+  // No mapping: the canonical id is in no ledger row, so it is unresolved.
+  assert.equal(family(build({ methods: run }, product({ ledger: ledger('resolved') }))).evidence.differentialUnresolvedContractDisagreements, 1);
+  // Mapped to a resolved or not-assertable decision: settled, with the legacy ledger as the only source of the decision.
+  for (const settled of ['resolved', 'not-assertable']) assert.equal(family(build({ methods: run }, product({ ledger: ledger(settled), ledgerRekey: rekey({ [DIGEST(900)]: LEGACY }) }))).evidence.differentialUnresolvedContractDisagreements, 0, settled);
+  // The mapping carries no decision: an open legacy decision is still unresolved, and a canonical id the mapping does not name is too.
+  assert.equal(family(build({ methods: run }, product({ ledger: ledger('open'), ledgerRekey: rekey({ [DIGEST(900)]: LEGACY }) }))).evidence.differentialUnresolvedContractDisagreements, 1);
+  assert.equal(family(build({ methods: run }, product({ ledger: ledger('resolved'), ledgerRekey: rekey({ [DIGEST(901)]: LEGACY }) }))).evidence.differentialUnresolvedContractDisagreements, 1);
+  const view = build({ methods: run }, product({ ledger: ledger('resolved'), ledgerRekey: rekey({ [DIGEST(900)]: LEGACY }) }));
+  assert.deepEqual(view.policy.ledgerRekey, { id: 'credential-public-review-ledger-rekey-v1', population: 'pop-a', corpusDigest: DIGEST(1), occurrences: 1 });
+  assert.deepEqual(validateQualificationView(view), []);
+});
+
+test('the differential gate reads the policy peers; other peers are measured and reported, never gate-bearing', () => {
+  const queue = ['a-b1', 'a-b2'];
+  const run = methodsRun({ queue, queueIds: [DIGEST(900), DIGEST(901)], queuePeers: ['peer-one', 'peer-two'] });
+  const f = family(build({ methods: run }));
+  // peer-two is not a gate peer: its unresolved occurrence is listed and does not count.
+  assert.equal(f.evidence.differentialUnresolvedContractDisagreements, 1);
+  assert.deepEqual(f.differential.gatePeers, ['peer-one']);
+  assert.deepEqual(f.differential.peers, [
+    { peer: 'peer-one', gateBearing: true, occurrences: 1, settled: 0, unresolved: 1 },
+    { peer: 'peer-two', gateBearing: false, occurrences: 1, settled: 0, unresolved: 1 },
+  ]);
+  // Only the non-gate peer unresolved: the family can be stable.
+  const onlyOther = family(build({ methods: methodsRun({ queue: ['a-b1'], queueIds: [DIGEST(900)], queuePeers: ['peer-two'] }) }));
+  assert.equal(onlyOther.evidence.differentialUnresolvedContractDisagreements, 0);
+  assert.equal(onlyOther.status.value, 'stable');
+  assert.equal(onlyOther.differential.peers[0].unresolved, 1);
+  // Widening the policy peers makes that occurrence gate-bearing; the policy is the only thing that changed.
+  const wide = product(); wide.policy.methods.differential.peers = ['peer-one', 'peer-two'];
+  assert.equal(family(build({ methods: methodsRun({ queue: ['a-b1'], queueIds: [DIGEST(900)], queuePeers: ['peer-two'] }) }, wide)).status.value, 'provisional');
+  // Without a differential method there is nothing to report.
+  assert.equal(family(build({ methods: methodsRun({ methods: ['metamorphic', 'mutation'] }) })).differential, null);
+  // The policy must name its peers, never the reference.
+  const bad = product(); bad.policy.methods.differential.peers = [];
+  assert.throws(() => build({ methods: true }, bad), /methods\.differential\.peers/);
+  const self = product(); self.policy.methods.differential.peers = ['redact-secret'];
+  assert.throws(() => build({ methods: true }, self), /never the reference scanner/);
+});
+
+test('a case the snapshot attributes to no detector is attributed by the policy fallback, in order, and counted by source', () => {
+  const ids = new Set(['synthetic-token', 'other-token']);
+  const map = new Map([['prov:fam', ['synthetic-token']]]);
+  const nameless = (id, extra = {}) => ({ case_id: id, family: undefined, targets: undefined, ...extra });
+  const parent = nameless('parent', { family: 'prov:fam' });
+  const byId = new Map([['parent', parent]]);
+  const ctx = (fallback, overlayDetectors) => ({ detectorIds: ids, taxonomyDetectors: map, overlayDetectors, fallback, byId });
+  // The snapshot's own attribution wins, and no fallback runs.
+  assert.deepEqual(attributeCase(parent, ctx(['overlay-detectors', 'twin-parent'], { parent: ['other-token'] })), { detectors: ['synthetic-token'], source: 'snapshot' });
+  // Nothing named: the overlay's legacy targets, filtered to product detectors, then the twin parent.
+  assert.deepEqual(attributeCase(nameless('x'), ctx(['overlay-detectors', 'twin-parent'], { x: ['other-token', 'not-a-detector'] })), { detectors: ['other-token'], source: 'overlay-detectors' });
+  assert.deepEqual(attributeCase(nameless('t', { twin_of: 'parent' }), ctx(['overlay-detectors', 'twin-parent'], {})), { detectors: ['synthetic-token'], source: 'twin-parent' });
+  assert.deepEqual(attributeCase(nameless('t', { twin_of: 'parent' }), ctx(['overlay-detectors', 'twin-parent'], { t: ['other-token'] })), { detectors: ['other-token'], source: 'overlay-detectors' });
+  // The policy decides which steps run; a case no step attributes stays unattributed.
+  assert.deepEqual(attributeCase(nameless('t', { twin_of: 'parent' }), ctx([], {})), { detectors: [], source: 'none' });
+  assert.deepEqual(attributeCase(nameless('t', { twin_of: 'parent' }), ctx(['overlay-detectors'], {})), { detectors: [], source: 'none' });
+  assert.deepEqual(attributeCase(nameless('t', { twin_of: 'missing' }), ctx(['twin-parent'], {})), { detectors: [], source: 'none' });
+  // A twin's parent is attributed by the same fallback (a twin of a twin does not chain through twin-parent).
+  const chained = new Map([['p2', nameless('p2', { twin_of: 'p1' })], ['p1', nameless('p1', { family: 'prov:fam' })]]);
+  assert.deepEqual(attributeCase(nameless('t', { twin_of: 'p2' }), { ...ctx(['twin-parent'], {}), byId: chained }), { detectors: [], source: 'none' });
+});
+
+test('a case attributed through the overlay counts in its family, is counted by source, and is not unmapped', () => {
+  const overlay = { schemaVersion: 1, id: 'credential-public-axis-overlay-v1', population: 'pop-a', owner: 'redact-secret-benchmarks', note: 'synthetic',
+    snapshot: { corpusDigest: registry[0].evidence.corpusDigest, cases: 6 }, derivation: { join: 'j', contextAxis: 'c', controlAxis: 'c', detectors: 'd', joinedCases: 6, unjoinedCases: 0 },
+    contexts: {}, controls: {}, detectors: { 'a-nameless': ['synthetic-token'] } };
+  const cases = [...familyCases('a', 'prov:fam'), control('a-nameless', undefined, { group: 'axis-c' })];
+  const without = build({ a: cases, methods: true });
+  const withOverlay = build({ a: cases, methods: true }, product({ axisOverlay: overlay }));
+  assert.equal(family(withOverlay).evidence.benignCases, family(without).evidence.benignCases + 1);
+  assert.deepEqual(family(withOverlay).attribution, { snapshot: 5, 'overlay-detectors': 1, 'twin-parent': 0 });
+  assert.deepEqual(family(without).attribution, { snapshot: 5, 'overlay-detectors': 0, 'twin-parent': 0 });
+  // It is attributed to the floors population only: the same id in another population is not.
+  assert.equal(family(withOverlay).populations.find(p => p.population === 'pop-b').scanners[0].counts.cases, 5);
+  assert.deepEqual(validateQualificationView(withOverlay), []);
 });

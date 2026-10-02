@@ -42,7 +42,7 @@ narrows the pattern but the root cause has not been confirmed with the owner (li
 | `population-separation` | One pooled denominator became one denominator per population; floors read the public snapshot alone. |
 | `axis-vocabulary` | The snapshot names a case group by scenario, not by source context, and has no benign taxonomy, so axis counts are not the legacy fixture axes. Applies to a view built without the product axis overlay; with it, an axis difference is attributed to the cause its axis ids show (`population-separation`, `canonical-evidence-membership`, `pending-not-scored` or `fixture-attribution`) and is otherwise unexplained. |
 | `methods-not-run` | The view has no methods run, so the metamorphic, mutation and differential gates are unmeasured, never zero. |
-| `review-occurrence-identity` | The methods run's review queue is keyed by canonical occurrence ids and covers every pinned peer, including peers the legacy run never scanned; the review ledger is keyed by legacy ids. Recognised only when the family has differential occurrences and none of their canonical ids is in the ledger. |
+| `review-occurrence-identity` | The methods run's review queue is keyed by canonical occurrence ids and covers every pinned peer, including peers the legacy run never scanned; the review ledger is keyed by legacy ids. Recognised only when the family has differential occurrences and none of their canonical ids is in the ledger or its generated mapping; with the mapping (#638) it does not arise for the peers both paths scanned. |
 | `policy-corpus-bounded` | The T3 route reads the bounded policy corpus alone, where the legacy path pooled every T3 fixture of the family. |
 | `legacy-id-rekey` | Legacy fixture, ledger and disputed-property ids do not resolve to canonical ids until the re-key. |
 | `twin-scope-vocabulary` | A twin is scoped by the product contract in the legacy lattice and by the case family in the evidence snapshot, so the twin can belong to another family and its flagged or co-detected verdict can differ. Inferred. |
@@ -80,7 +80,8 @@ The new view reads no stable family while the legacy path reads many. The report
 compared, each reason the new path adds is attributed, and the report lists the legacy-stable families the new path does not read
 stable by the cause set that holds each back (`heldBy`), and flags a reason no rule recognises as unattributed. Whether a
 ledger re-key, a peer-set decision or a policy decision is needed before cutover is a recommendation the report states and does not
-apply.
+apply. The review re-key and the differential peer scope are decided and applied (#638); the report shows their effect (occurrences per peer, how many a
+legacy decision settles).
 
 An axis difference is attributed only by comparing the axis ids of both sides when the view was built with the axis overlay: an id
 only the new side names needs the `canonical-evidence-membership` or `fixture-attribution` adjustment as evidence, and an id only the
@@ -90,8 +91,8 @@ family and none of their ids is in the ledger.
 
 ## Not compared, and why
 
-Listed in the report, never silent: legacy categories with no suite report (calibration-only), the review ledger decisions (the
-methods run's occurrences are canonical ids and the ledger holds legacy ids, so none is applied), the internal populations (candidate regression, protected holdout) and a run
+Listed in the report, never silent: legacy categories with no suite report (calibration-only), the legacy mutation review entries (the canonical review queue holds
+differential occurrences only) and the unmapped review occurrences (the peers the legacy run never scanned), the internal populations (candidate regression, protected holdout) and a run
 that is not a recorded canonical run of `benchmarks/official-runs.json`.
 
 ## Regenerating

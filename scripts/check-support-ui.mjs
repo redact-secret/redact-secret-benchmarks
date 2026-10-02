@@ -29,8 +29,12 @@ import { providerDossiersProblem, PROVIDER_STAGES, DOSSIER_VERDICTS } from '../s
 import { buildProviderDossiers, defaultInputs, STAGES } from '../benchmarks/generate-provider-dossiers.ts';
 import { taxonomy } from '../benchmarks/support/taxonomy.ts';
 import fixtureIndex from '../benchmarks/fixture-index.json' with { type: 'json' };
+import { findingTypeSource } from '../benchmarks/support/finding-types.ts';
+import { buildPiiMatrixSection } from '../benchmarks/support/pii-families.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
+/** The PII section a generated matrix carries (#647), read once from the committed aggregate records. */
+const piiSection = await buildPiiMatrixSection(fileURLToPath(new URL('../', import.meta.url)));
 const read = async file => JSON.parse(await readFile(path.join(root, file), 'utf8'));
 const sorted = values => [...values].sort();
 const titleCase = value => value.slice(0, 1).toUpperCase() + value.slice(1);
@@ -53,7 +57,7 @@ function probeMatrix(status, vocabulary) {
     empiricalEvidence: { observations: 0, subjects: 0, issuanceDates: 0, corroborationReferences: 0, corroborationOwners: 0, corroborationClasses: [], contradictions: 0, boundedContradictions: 0, uncertainty: null, supportedContexts: [], mode: null, supportsBareValues: true },
     fixtureProfile: { positiveCases: 6, positiveAxes: 4, benignCases: 8, controlAxes: 4, twinPairs: 5, totalFixtures: 24, contextTwinPairs: 0, confusionAxes: 4 },
     profileCoverage,
-    detectors: ['probe-detector'], reason: status === 'stable' ? null : `probe: ${status}`,
+    detectors: ['probe-detector'], findingTypes: null, reason: status === 'stable' ? null : `probe: ${status}`,
   }));
   const distribution = Object.fromEntries(vocabulary.map(key => [key, key === status ? families.length : 0]));
   const stableDistribution = { documented: status === 'stable' ? families.length : 0, empirical: 0 };
@@ -63,6 +67,7 @@ function probeMatrix(status, vocabulary) {
       fixtureIndex: fixtureIndex.identity, taxonomyDigest: fixtureIndex.sources.taxonomy.digest,
       scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: '2026-09-20T00:00:00.000Z', sourceRunId: 'probe-run' } } },
     providerCount: taxonomy.providers.length, familyCount: families.length, distribution, stableDistribution, families,
+    findingTypeSource, ...structuredClone(piiSection),
   };
 }
 

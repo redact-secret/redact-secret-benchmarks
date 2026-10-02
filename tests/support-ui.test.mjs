@@ -7,6 +7,7 @@ import { taxonomy } from '../benchmarks/support/taxonomy.ts';
 import { statusCriteria } from '../benchmarks/support/status.ts';
 import { parseRoute, isAppPath } from '../src/model.mjs';
 import fixtureIndex from '../benchmarks/fixture-index.json' with { type: 'json' };
+import { withMatrixExtras } from './support-matrix-extras.mjs';
 import { credentialSupportPage, piiSupportPage, piiSupportQueryOf, supportDomainOf, supportDomainUnavailablePage } from '../src/pages/pii-support.ts';
 
 const text = html => html.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, ' ');
@@ -41,13 +42,13 @@ function matrixOf(statusFor) {
   });
   const distribution = Object.fromEntries(SUPPORT_STATUSES.map(status => [status, families.filter(f => f.status === status).length]));
   const stableDistribution = { documented: families.filter(f => f.status === 'stable').length, empirical: 0 };
-  return {
+  return withMatrixExtras({
     schemaVersion: 1, taxonomySchemaVersion: taxonomy.schemaVersion,
     sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T09:00:00.000Z', runId: 'abcdef1234', revision: 'f'.repeat(40), dirty: false, criteriaSchemaVersion: 1,
       fixtureIndex: fixtureIndex.identity, taxonomyDigest: fixtureIndex.sources.taxonomy.digest,
       scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: '2026-09-20T09:00:00.000Z', sourceRunId: 'abcdef1234' } } },
     providerCount: taxonomy.providers.length, familyCount: families.length, distribution, stableDistribution, families,
-  };
+  });
 }
 /** The default view: detector-bearing families provisional, detectorless families unsupported. */
 const mixed = () => matrixOf(family => (family.detectors.length ? 'provisional' : 'unsupported'));

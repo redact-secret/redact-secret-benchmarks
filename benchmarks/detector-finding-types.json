@@ -1,0 +1,373 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "repository": "redact-secret/redact-secret",
+    "revision": "4227160c4dac402d7add53d3f8fe990f693912c1",
+    "path": "docs/coverage/detector-inventory.json",
+    "sha256": "c12822510bfd456ac409c999cc1a13363a47cef0847347f66de448c2e9555c62"
+  },
+  "note": "Finding types per registered detector, copied from the core detector inventory at one revision. A detector with several types is a shared detector; the support matrix keys each row by these types (docs/specs/support-matrix.md).",
+  "detectors": {
+    "ai21-api-key": [
+      "ai21_api_key"
+    ],
+    "anthropic-token": [
+      "anthropic_admin_api_key",
+      "anthropic_api_key",
+      "anthropic_enterprise_api_key"
+    ],
+    "apify-api-token": [
+      "apify_api_token"
+    ],
+    "atlassian-api-token": [
+      "atlassian_api_token"
+    ],
+    "aws-access-key": [
+      "aws_access_key_id"
+    ],
+    "aws-bedrock-long-term-api-key": [
+      "aws_bedrock_long_term_api_key"
+    ],
+    "aws-bedrock-short-term-api-key": [
+      "aws_bedrock_short_term_api_key"
+    ],
+    "aws-secret-access-key": [
+      "aws_secret_access_key"
+    ],
+    "axiom-token": [
+      "axiom_api_token",
+      "axiom_personal_token"
+    ],
+    "azure-devops-personal-access-token": [
+      "azure_devops_personal_access_token"
+    ],
+    "bearer-token": [
+      "bearer_token"
+    ],
+    "bitwarden-secrets-manager-access-token": [
+      "bitwarden_secrets_manager_access_token"
+    ],
+    "browserbase-api-key": [
+      "browserbase_api_key"
+    ],
+    "cerebras-api-key": [
+      "cerebras_api_key"
+    ],
+    "clickhouse-cloud-api-secret": [
+      "clickhouse_cloud_api_secret"
+    ],
+    "clojars-deploy-token": [
+      "clojars_deploy_token"
+    ],
+    "cloudflare-token": [
+      "cloudflare_api_token"
+    ],
+    "cohere-api-key": [
+      "cohere_api_key"
+    ],
+    "composio-api-key": [
+      "composio_org_api_key",
+      "composio_project_api_key",
+      "composio_user_api_key"
+    ],
+    "confluent-cloud-api-secret": [
+      "confluent_cloud_api_secret"
+    ],
+    "confluent-cloud-api-secret-legacy": [
+      "confluent_cloud_api_secret_legacy"
+    ],
+    "connection-string": [
+      "connection_string_password"
+    ],
+    "convex-deployment-key": [
+      "convex_deployment_key"
+    ],
+    "crates-io-token": [
+      "crates_io_api_token",
+      "crates_io_trusted_publishing_token"
+    ],
+    "databricks-personal-access-token": [
+      "databricks_personal_access_token"
+    ],
+    "datadog-api-key": [
+      "datadog_api_key"
+    ],
+    "datadog-application-key": [
+      "datadog_application_key"
+    ],
+    "datadog-application-key-legacy": [
+      "datadog_application_key_legacy"
+    ],
+    "daytona-api-key": [
+      "daytona_api_key"
+    ],
+    "deepgram-api-key": [
+      "deepgram_api_key"
+    ],
+    "digitalocean-token": [
+      "digitalocean_token"
+    ],
+    "discord-bot-token": [
+      "discord_bot_token"
+    ],
+    "docker-token": [
+      "docker_token"
+    ],
+    "doppler-token": [
+      "doppler_audit_token",
+      "doppler_cli_token",
+      "doppler_personal_token",
+      "doppler_scim_token",
+      "doppler_service_account_identity_token",
+      "doppler_service_account_token",
+      "doppler_service_token"
+    ],
+    "dynatrace-token": [
+      "dynatrace_token"
+    ],
+    "e2b-api-key": [
+      "e2b_api_key"
+    ],
+    "elevenlabs-api-key": [
+      "elevenlabs_api_key"
+    ],
+    "firebase-server-key": [
+      "firebase_server_key"
+    ],
+    "firecrawl-api-key": [
+      "firecrawl_api_key"
+    ],
+    "fireworks-ai-api-key": [
+      "fireworks_ai_api_key"
+    ],
+    "generic-token": [
+      "authorization_credential",
+      "contextual_secret",
+      "vendor_prefixed_credential"
+    ],
+    "github-token": [
+      "github_app_installation_token",
+      "github_app_refresh_token",
+      "github_app_user_to_server_token",
+      "github_fine_grained_personal_access_token",
+      "github_oauth_token",
+      "github_token"
+    ],
+    "gitlab-runner-authentication-token": [
+      "gitlab_runner_authentication_token"
+    ],
+    "gitlab-token": [
+      "gitlab_token"
+    ],
+    "google-api-key": [
+      "google_api_key"
+    ],
+    "google-oauth-client-secret": [
+      "google_oauth_client_secret"
+    ],
+    "grafana-cloud-access-policy-token": [
+      "grafana_cloud_access_policy_token"
+    ],
+    "grafana-service-account-token": [
+      "grafana_service_account_token"
+    ],
+    "groq-api-key": [
+      "groq_api_key"
+    ],
+    "helicone-api-key": [
+      "helicone_api_key",
+      "helicone_write_api_key"
+    ],
+    "heroku-api-key": [
+      "heroku_api_key"
+    ],
+    "heroku-api-key-legacy": [
+      "heroku_api_key_legacy"
+    ],
+    "honeycomb-api-key": [
+      "honeycomb_ingest_key"
+    ],
+    "huggingface-token": [
+      "huggingface_token"
+    ],
+    "inngest-signing-key": [
+      "inngest_signing_key"
+    ],
+    "jwt": [
+      "jwt"
+    ],
+    "langfuse-secret-key": [
+      "langfuse_secret_key"
+    ],
+    "langsmith-api-key": [
+      "langsmith_api_key"
+    ],
+    "linear-token": [
+      "linear_token"
+    ],
+    "mailchimp-api-key": [
+      "mailchimp_api_key"
+    ],
+    "mailgun-api-key": [
+      "mailgun_api_key"
+    ],
+    "microsoft-entra-client-secret": [
+      "microsoft_entra_client_secret"
+    ],
+    "mistral-api-key": [
+      "mistral_api_key"
+    ],
+    "neon-api-key": [
+      "neon_api_key"
+    ],
+    "netlify-token": [
+      "netlify_personal_access_token"
+    ],
+    "new-relic-license-key": [
+      "new_relic_license_key"
+    ],
+    "new-relic-user-api-key": [
+      "new_relic_user_api_key"
+    ],
+    "notion-token": [
+      "notion_integration_token"
+    ],
+    "npm-token": [
+      "npm_access_token"
+    ],
+    "nvidia-api-key": [
+      "nvidia_api_key"
+    ],
+    "okta-api-token": [
+      "okta_api_token"
+    ],
+    "onepassword-service-account-token": [
+      "onepassword_service_account_token"
+    ],
+    "openai-token": [
+      "openai_admin_api_key",
+      "openai_api_key"
+    ],
+    "openrouter-api-key": [
+      "openrouter_api_key"
+    ],
+    "otpauth-uri": [
+      "otpauth_secret"
+    ],
+    "paddle-api-key": [
+      "paddle_api_key"
+    ],
+    "perplexity-api-key": [
+      "perplexity_api_key"
+    ],
+    "pinecone-api-key": [
+      "pinecone_api_key"
+    ],
+    "polar-token": [
+      "polar_api_credential",
+      "polar_organization_access_token"
+    ],
+    "posthog-token": [
+      "posthog_personal_api_key",
+      "posthog_project_secret_api_key"
+    ],
+    "postman-api-key": [
+      "postman_api_key"
+    ],
+    "postman-collection-access-key": [
+      "postman_collection_access_key"
+    ],
+    "private-key": [
+      "private_key"
+    ],
+    "pulumi-access-token": [
+      "pulumi_access_token"
+    ],
+    "pypi-token": [
+      "pypi_api_token"
+    ],
+    "replicate-api-token": [
+      "replicate_api_token"
+    ],
+    "resend-api-key": [
+      "resend_api_key"
+    ],
+    "rubygems-api-key": [
+      "rubygems_api_key"
+    ],
+    "runpod-api-key": [
+      "runpod_api_key"
+    ],
+    "sendgrid-token": [
+      "sendgrid_api_key"
+    ],
+    "sentry-org-auth-token": [
+      "sentry_org_auth_token"
+    ],
+    "sentry-user-auth-token": [
+      "sentry_user_auth_token"
+    ],
+    "shopify-token": [
+      "shopify_access_token"
+    ],
+    "slack-token": [
+      "slack_app_level_token",
+      "slack_token",
+      "slack_user_token"
+    ],
+    "sonarqube-token": [
+      "sonarqube_analysis_token",
+      "sonarqube_user_token"
+    ],
+    "stripe-token": [
+      "stripe_credential",
+      "stripe_webhook_signing_secret"
+    ],
+    "supabase-management-token": [
+      "supabase_personal_access_token"
+    ],
+    "supabase-token": [
+      "supabase_secret_key"
+    ],
+    "tavily-api-key": [
+      "tavily_api_key"
+    ],
+    "telegram-bot-token": [
+      "telegram_bot_token"
+    ],
+    "terraform-cloud-token": [
+      "terraform_cloud_token"
+    ],
+    "together-ai-api-key": [
+      "together_ai_api_key"
+    ],
+    "travisci-api-token": [
+      "travisci_api_token"
+    ],
+    "trigger-dev-token": [
+      "trigger_dev_personal_access_token",
+      "trigger_dev_secret_api_key"
+    ],
+    "twilio-api-key-secret": [
+      "twilio_api_key_secret"
+    ],
+    "twilio-auth-token": [
+      "twilio_auth_token"
+    ],
+    "vault-token": [
+      "vault_token"
+    ],
+    "vercel-token": [
+      "vercel_app_access_token",
+      "vercel_app_refresh_token",
+      "vercel_personal_access_token",
+      "vercel_token"
+    ],
+    "wandb-api-key": [
+      "wandb_api_key"
+    ],
+    "xai-api-key": [
+      "xai_api_key"
+    ]
+  }
+}

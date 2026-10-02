@@ -173,3 +173,21 @@ test('collectKnownGapCommits gathers every unique fix and candidate commit from 
     if (issue.candidate.sourceCommit) assert.ok(commits.includes(issue.candidate.sourceCommit));
   }
 });
+
+test('pin consistency check flags runtime-comparison snapshots that do not follow the pin (#562)', () => {
+  const pinned = {
+    registrySourceRevision: 'a'.repeat(40),
+    inventoryRedactSecretRevision: 'a'.repeat(40),
+    inventoryRedactSecretVersion: '0.1.0-beta.12',
+    packageVersion: '0.1.0-beta.12',
+    performanceCriteriaVerifiedCommit: 'a'.repeat(40),
+  };
+  const snapshot = { file: 'evidence/562/runtime-comparison-default.json', version: '0.1.0-beta.12', kind: 'published-npm-package', commit: 'a'.repeat(40) };
+  assert.deepEqual(checkPinConsistency({ ...pinned, runtimeComparisonSnapshots: [snapshot] }), []);
+  assert.deepEqual(checkPinConsistency(pinned), [], 'no snapshots supplied means nothing to compare');
+  const stale = checkPinConsistency({ ...pinned, runtimeComparisonSnapshots: [{ ...snapshot, version: '0.1.0-beta.11', kind: 'local-source-build', commit: 'c'.repeat(40) }] });
+  assert.equal(stale.length, 3);
+  assert.match(stale.join('\n'), /measured redact-secret 0\.1\.0-beta\.11, but package\.json pins @redact-secret\/core 0\.1\.0-beta\.12/);
+  assert.match(stale.join('\n'), /local-source-build, not the published package/);
+  assert.match(stale.join('\n'), /records product commit c+/);
+});

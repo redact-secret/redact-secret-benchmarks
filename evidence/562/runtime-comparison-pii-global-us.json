@@ -19,24 +19,25 @@
       "pii:us:ssn"
     ]
   },
-  "generatedAt": "2026-09-30T15:40:00.123Z",
+  "generatedAt": "2026-10-02T18:09:52.306Z",
   "runner": {
     "platform": "linux",
-    "arch": "x64",
+    "arch": "arm64",
     "node": "v22.22.2",
-    "cpuModel": "AMD EPYC 7763 64-Core Processor",
+    "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
     "cpuLimit": 4,
     "emulated": false,
-    "imageDigest": "sha256:31f4db51a50c074e9a7cf5fdea7d2cba70e85ba2427bf451fe5b492de256099c"
+    "imageDigest": "sha256:3ba29480f9c28aa224a964992778d25f09ed198a23975c363c99acad80cbfa91"
   },
   "tools": [
     {
       "id": "redact-secret",
-      "version": "0.1.0-beta.11",
+      "version": "0.1.0-beta.12",
       "provenance": {
-        "kind": "local-source-build",
+        "kind": "published-npm-package",
+        "package": "@redact-secret/core",
         "piiActivation": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2",
-        "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2"
+        "commit": "4227160c4dac402d7add53d3f8fe990f693912c1"
       }
     },
     {
@@ -59,9 +60,9 @@
   "methodologyNotes": [
     "Informational only: no pass/fail verdict, no ranking assertion (this repository measures and records; see AGENTS.md Boundary rule).",
     "OpenRedaction's detect() is Promise-returning (asynchronous); flare-redact's redact() and redact-secret's scanAndRedact() are synchronous. Each is timed with performance.now() around the actual call, awaited where applicable, so the OpenRedaction figures include at least one Node event-loop microtask tick that the other two tools' figures do not.",
-    "redact-secret is measured from a local-source-build native addon (main branch at the pinned commit), not the published @redact-secret/core npm package: PII selection is not in any published release yet. This run used the PII + US setting (pii:global, pii:us). flare-redact and OpenRedaction are measured from their published npm packages at their package defaults, so their columns do not change with the setting; they are timed in every setting's run as a reference for how much the machine varied between runs.",
+    "redact-secret is measured from the published @redact-secret/core npm package 0.1.0-beta.12 (the pinned release, built from product commit 4227160c4dac402d7add53d3f8fe990f693912c1), not a local build; PII is selected through initialize({ pii }). This run used the PII + US setting (pii:global, pii:us). flare-redact and OpenRedaction are measured from their published npm packages at their package defaults, so their columns do not change with the setting; they are timed in every setting's run as a reference for how much the machine varied between runs.",
     "Workloads are the ones in qualification/runtime-comparison-v2.json: validator-heavy and multilingual-context are the v1 workloads rendered byte-identically, the others are new and synthetic. Credential values are generated from a seed at run time and never stored; a value that reaches a recorded outcome is replaced by its index.",
-    "One setting is measured per process because the native add-on accepts one PII selection per process. The tools run in-process, interleaved round-robin per workload, after two discarded warmup calls each, and each time is the median of the recorded samples.",
+    "One setting is measured per process because redact-secret accepts one PII selection per process. The tools run in-process, interleaved round-robin per workload, after two discarded warmup calls each, and each time is the median of the recorded samples.",
     "Outcomes come from one untimed call per distinct line, outside the timed calls. A value counts as hidden when it no longer appears verbatim in the returned text. Outcomes are recorded, never graded."
   ],
   "observations": [
@@ -72,58 +73,58 @@
       "workloadCommitment": "bd9b6618538fa2b06baa4b9882e2c8c81fc878b3fa337ea35b1fbb7fadb5094e",
       "samples": [
         {
-          "redactMs": 367.005,
-          "bytesPerSecond": 357140
+          "redactMs": 29.423,
+          "bytesPerSecond": 4454790
         },
         {
-          "redactMs": 364.963,
-          "bytesPerSecond": 359138
+          "redactMs": 24.925,
+          "bytesPerSecond": 5258717
         },
         {
-          "redactMs": 365.528,
-          "bytesPerSecond": 358582
+          "redactMs": 25.009,
+          "bytesPerSecond": 5240967
         },
         {
-          "redactMs": 365.234,
-          "bytesPerSecond": 358871
+          "redactMs": 23.11,
+          "bytesPerSecond": 5671698
         },
         {
-          "redactMs": 365.182,
-          "bytesPerSecond": 358922
+          "redactMs": 26.085,
+          "bytesPerSecond": 5024787
         },
         {
-          "redactMs": 365.557,
-          "bytesPerSecond": 358554
+          "redactMs": 23.285,
+          "bytesPerSecond": 5628971
         },
         {
-          "redactMs": 365.129,
-          "bytesPerSecond": 358974
+          "redactMs": 25.258,
+          "bytesPerSecond": 5189412
         },
         {
-          "redactMs": 365.196,
-          "bytesPerSecond": 358908
+          "redactMs": 24.084,
+          "bytesPerSecond": 5442323
         },
         {
-          "redactMs": 366.031,
-          "bytesPerSecond": 358089
+          "redactMs": 26.062,
+          "bytesPerSecond": 5029174
         },
         {
-          "redactMs": 365.444,
-          "bytesPerSecond": 358665
+          "redactMs": 25.026,
+          "bytesPerSecond": 5237494
         },
         {
-          "redactMs": 365.647,
-          "bytesPerSecond": 358466
+          "redactMs": 29.943,
+          "bytesPerSecond": 4377408
         },
         {
-          "redactMs": 365.816,
-          "bytesPerSecond": 358300
+          "redactMs": 29.11,
+          "bytesPerSecond": 4502671
         }
       ],
       "summary": {
-        "medianMs": 365.444,
-        "p95Ms": 367.005,
-        "medianBytesPerSecond": 358582
+        "medianMs": 25.026,
+        "p95Ms": 29.943,
+        "medianBytesPerSecond": 5189412
       }
     },
     {
@@ -133,58 +134,58 @@
       "workloadCommitment": "bd9b6618538fa2b06baa4b9882e2c8c81fc878b3fa337ea35b1fbb7fadb5094e",
       "samples": [
         {
-          "redactMs": 10.58,
-          "bytesPerSecond": 12388848
+          "redactMs": 14.823,
+          "bytesPerSecond": 8842624
         },
         {
-          "redactMs": 9.868,
-          "bytesPerSecond": 13282080
+          "redactMs": 12.118,
+          "bytesPerSecond": 10816604
         },
         {
-          "redactMs": 16.121,
-          "bytesPerSecond": 8130482
+          "redactMs": 16.659,
+          "bytesPerSecond": 7867919
         },
         {
-          "redactMs": 8.266,
-          "bytesPerSecond": 15857340
+          "redactMs": 8.949,
+          "bytesPerSecond": 14646962
         },
         {
-          "redactMs": 8.143,
-          "bytesPerSecond": 16096483
+          "redactMs": 12.955,
+          "bytesPerSecond": 10117126
         },
         {
-          "redactMs": 8.103,
-          "bytesPerSecond": 16175436
+          "redactMs": 10.249,
+          "bytesPerSecond": 12788292
         },
         {
-          "redactMs": 8.454,
-          "bytesPerSecond": 15504334
+          "redactMs": 9.8,
+          "bytesPerSecond": 13374238
         },
         {
-          "redactMs": 8.131,
-          "bytesPerSecond": 16119588
+          "redactMs": 9.71,
+          "bytesPerSecond": 13499126
         },
         {
-          "redactMs": 8.209,
-          "bytesPerSecond": 15966375
+          "redactMs": 9.72,
+          "bytesPerSecond": 13484542
         },
         {
-          "redactMs": 8.423,
-          "bytesPerSecond": 15560839
+          "redactMs": 9.756,
+          "bytesPerSecond": 13435359
         },
         {
-          "redactMs": 8.295,
-          "bytesPerSecond": 15802273
+          "redactMs": 11.997,
+          "bytesPerSecond": 10925626
         },
         {
-          "redactMs": 9.559,
-          "bytesPerSecond": 13712268
+          "redactMs": 11.385,
+          "bytesPerSecond": 11512271
         }
       ],
       "summary": {
-        "medianMs": 8.295,
-        "p95Ms": 16.121,
-        "medianBytesPerSecond": 15560839
+        "medianMs": 10.249,
+        "p95Ms": 16.659,
+        "medianBytesPerSecond": 11512271
       }
     },
     {
@@ -194,58 +195,58 @@
       "workloadCommitment": "bd9b6618538fa2b06baa4b9882e2c8c81fc878b3fa337ea35b1fbb7fadb5094e",
       "samples": [
         {
-          "redactMs": 473.441,
-          "bytesPerSecond": 276850
+          "redactMs": 536.724,
+          "bytesPerSecond": 244208
         },
         {
-          "redactMs": 772.476,
-          "bytesPerSecond": 169678
+          "redactMs": 800.785,
+          "bytesPerSecond": 163679
         },
         {
-          "redactMs": 770.867,
-          "bytesPerSecond": 170032
+          "redactMs": 886.172,
+          "bytesPerSecond": 147908
         },
         {
-          "redactMs": 784.717,
-          "bytesPerSecond": 167031
+          "redactMs": 957.658,
+          "bytesPerSecond": 136867
         },
         {
-          "redactMs": 778.963,
-          "bytesPerSecond": 168265
+          "redactMs": 868.949,
+          "bytesPerSecond": 150840
         },
         {
-          "redactMs": 780.963,
-          "bytesPerSecond": 167834
+          "redactMs": 756.042,
+          "bytesPerSecond": 173366
         },
         {
-          "redactMs": 796.095,
-          "bytesPerSecond": 164644
+          "redactMs": 847.492,
+          "bytesPerSecond": 154659
         },
         {
-          "redactMs": 787.726,
-          "bytesPerSecond": 166393
+          "redactMs": 790.677,
+          "bytesPerSecond": 165772
         },
         {
-          "redactMs": 808.374,
-          "bytesPerSecond": 162143
+          "redactMs": 793.481,
+          "bytesPerSecond": 165186
         },
         {
-          "redactMs": 777.558,
-          "bytesPerSecond": 168569
+          "redactMs": 877.445,
+          "bytesPerSecond": 149379
         },
         {
-          "redactMs": 790.71,
-          "bytesPerSecond": 165765
+          "redactMs": 968.891,
+          "bytesPerSecond": 135280
         },
         {
-          "redactMs": 789.951,
-          "bytesPerSecond": 165924
+          "redactMs": 1115.695,
+          "bytesPerSecond": 117480
         }
       ],
       "summary": {
-        "medianMs": 780.963,
-        "p95Ms": 808.374,
-        "medianBytesPerSecond": 167031
+        "medianMs": 847.492,
+        "p95Ms": 1115.695,
+        "medianBytesPerSecond": 150840
       }
     },
     {
@@ -255,58 +256,58 @@
       "workloadCommitment": "58dccc015f59d25b4a875eaeafc5c64e010e9616caa05338e812940d3ec105ad",
       "samples": [
         {
-          "redactMs": 75.307,
-          "bytesPerSecond": 1257790
+          "redactMs": 10.819,
+          "bytesPerSecond": 8755238
         },
         {
-          "redactMs": 75.404,
-          "bytesPerSecond": 1256160
+          "redactMs": 11.027,
+          "bytesPerSecond": 8589890
         },
         {
-          "redactMs": 75.247,
-          "bytesPerSecond": 1258781
+          "redactMs": 11.243,
+          "bytesPerSecond": 8424829
         },
         {
-          "redactMs": 75.318,
-          "bytesPerSecond": 1257605
+          "redactMs": 12.899,
+          "bytesPerSecond": 7343015
         },
         {
-          "redactMs": 75.24,
-          "bytesPerSecond": 1258899
+          "redactMs": 12.888,
+          "bytesPerSecond": 7349496
         },
         {
-          "redactMs": 75.392,
-          "bytesPerSecond": 1256367
+          "redactMs": 11.399,
+          "bytesPerSecond": 8309197
         },
         {
-          "redactMs": 75.277,
-          "bytesPerSecond": 1258286
+          "redactMs": 11.08,
+          "bytesPerSecond": 8548833
         },
         {
-          "redactMs": 75.591,
-          "bytesPerSecond": 1253063
+          "redactMs": 10.819,
+          "bytesPerSecond": 8754968
         },
         {
-          "redactMs": 76.516,
-          "bytesPerSecond": 1237918
+          "redactMs": 11.491,
+          "bytesPerSecond": 8243271
         },
         {
-          "redactMs": 75.445,
-          "bytesPerSecond": 1255486
+          "redactMs": 10.929,
+          "bytesPerSecond": 8667147
         },
         {
-          "redactMs": 75.333,
-          "bytesPerSecond": 1257358
+          "redactMs": 9.797,
+          "bytesPerSecond": 9668266
         },
         {
-          "redactMs": 75.345,
-          "bytesPerSecond": 1257158
+          "redactMs": 9.617,
+          "bytesPerSecond": 9849737
         }
       ],
       "summary": {
-        "medianMs": 75.333,
-        "p95Ms": 76.516,
-        "medianBytesPerSecond": 1257158
+        "medianMs": 11.027,
+        "p95Ms": 12.899,
+        "medianBytesPerSecond": 8548833
       }
     },
     {
@@ -316,58 +317,58 @@
       "workloadCommitment": "58dccc015f59d25b4a875eaeafc5c64e010e9616caa05338e812940d3ec105ad",
       "samples": [
         {
-          "redactMs": 3.866,
-          "bytesPerSecond": 24497981
+          "redactMs": 4.333,
+          "bytesPerSecond": 21862666
         },
         {
-          "redactMs": 3.914,
-          "bytesPerSecond": 24201661
+          "redactMs": 4.057,
+          "bytesPerSecond": 23346340
         },
         {
-          "redactMs": 3.878,
-          "bytesPerSecond": 24425377
+          "redactMs": 4.235,
+          "bytesPerSecond": 22365776
         },
         {
-          "redactMs": 3.977,
-          "bytesPerSecond": 23818025
+          "redactMs": 4.914,
+          "bytesPerSecond": 19274559
         },
         {
-          "redactMs": 3.909,
-          "bytesPerSecond": 24229141
+          "redactMs": 5.302,
+          "bytesPerSecond": 17864114
         },
         {
-          "redactMs": 3.878,
-          "bytesPerSecond": 24424187
+          "redactMs": 3.872,
+          "bytesPerSecond": 24463334
         },
         {
-          "redactMs": 4.584,
-          "bytesPerSecond": 20664957
+          "redactMs": 4.456,
+          "bytesPerSecond": 21254348
         },
         {
-          "redactMs": 3.885,
-          "bytesPerSecond": 24379591
+          "redactMs": 3.808,
+          "bytesPerSecond": 24872042
         },
         {
-          "redactMs": 3.943,
-          "bytesPerSecond": 24025273
+          "redactMs": 4.314,
+          "bytesPerSecond": 21955571
         },
         {
-          "redactMs": 3.919,
-          "bytesPerSecond": 24167451
+          "redactMs": 4.588,
+          "bytesPerSecond": 20645350
         },
         {
-          "redactMs": 3.869,
-          "bytesPerSecond": 24481164
+          "redactMs": 3.741,
+          "bytesPerSecond": 25319156
         },
         {
-          "redactMs": 3.893,
-          "bytesPerSecond": 24330763
+          "redactMs": 3.529,
+          "bytesPerSecond": 26843629
         }
       ],
       "summary": {
-        "medianMs": 3.893,
-        "p95Ms": 4.584,
-        "medianBytesPerSecond": 24229141
+        "medianMs": 4.235,
+        "p95Ms": 5.302,
+        "medianBytesPerSecond": 21955571
       }
     },
     {
@@ -377,58 +378,58 @@
       "workloadCommitment": "58dccc015f59d25b4a875eaeafc5c64e010e9616caa05338e812940d3ec105ad",
       "samples": [
         {
-          "redactMs": 561.117,
-          "bytesPerSecond": 168806
+          "redactMs": 556.208,
+          "bytesPerSecond": 170296
         },
         {
-          "redactMs": 557.641,
-          "bytesPerSecond": 169858
+          "redactMs": 638.958,
+          "bytesPerSecond": 148241
         },
         {
-          "redactMs": 566.606,
-          "bytesPerSecond": 167171
+          "redactMs": 584.659,
+          "bytesPerSecond": 162009
         },
         {
-          "redactMs": 569.407,
-          "bytesPerSecond": 166348
+          "redactMs": 691.139,
+          "bytesPerSecond": 137049
         },
         {
-          "redactMs": 573.828,
-          "bytesPerSecond": 165067
+          "redactMs": 640.239,
+          "bytesPerSecond": 147945
         },
         {
-          "redactMs": 569.284,
-          "bytesPerSecond": 166384
+          "redactMs": 564.628,
+          "bytesPerSecond": 167756
         },
         {
-          "redactMs": 557.07,
-          "bytesPerSecond": 170032
+          "redactMs": 567.054,
+          "bytesPerSecond": 167039
         },
         {
-          "redactMs": 573.928,
-          "bytesPerSecond": 165038
+          "redactMs": 621.76,
+          "bytesPerSecond": 152342
         },
         {
-          "redactMs": 567.917,
-          "bytesPerSecond": 166785
+          "redactMs": 826.165,
+          "bytesPerSecond": 114650
         },
         {
-          "redactMs": 569.806,
-          "bytesPerSecond": 166232
+          "redactMs": 623.091,
+          "bytesPerSecond": 152016
         },
         {
-          "redactMs": 566.407,
-          "bytesPerSecond": 167230
+          "redactMs": 496.841,
+          "bytesPerSecond": 190644
         },
         {
-          "redactMs": 571.628,
-          "bytesPerSecond": 165702
+          "redactMs": 829.346,
+          "bytesPerSecond": 114210
         }
       ],
       "summary": {
-        "medianMs": 567.917,
-        "p95Ms": 573.928,
-        "medianBytesPerSecond": 166384
+        "medianMs": 621.76,
+        "p95Ms": 829.346,
+        "medianBytesPerSecond": 152016
       }
     },
     {
@@ -438,58 +439,58 @@
       "workloadCommitment": "1ed7f90e905ac555a30e2ad9873ec0479bb0ad58a6bed633212b620f823551b4",
       "samples": [
         {
-          "redactMs": 20.251,
-          "bytesPerSecond": 7433250
+          "redactMs": 12.261,
+          "bytesPerSecond": 12277143
         },
         {
-          "redactMs": 20.361,
-          "bytesPerSecond": 7393038
+          "redactMs": 12.764,
+          "bytesPerSecond": 11793246
         },
         {
-          "redactMs": 20.233,
-          "bytesPerSecond": 7439563
+          "redactMs": 15.927,
+          "bytesPerSecond": 9451318
         },
         {
-          "redactMs": 20.357,
-          "bytesPerSecond": 7394340
+          "redactMs": 22.257,
+          "bytesPerSecond": 6763036
         },
         {
-          "redactMs": 20.308,
-          "bytesPerSecond": 7412157
+          "redactMs": 12.509,
+          "bytesPerSecond": 12033816
         },
         {
-          "redactMs": 20.354,
-          "bytesPerSecond": 7395582
+          "redactMs": 13.912,
+          "bytesPerSecond": 10819753
         },
         {
-          "redactMs": 20.599,
-          "bytesPerSecond": 7307640
+          "redactMs": 14.741,
+          "bytesPerSecond": 10211201
         },
         {
-          "redactMs": 20.273,
-          "bytesPerSecond": 7424899
+          "redactMs": 14.229,
+          "bytesPerSecond": 10579083
         },
         {
-          "redactMs": 20.314,
-          "bytesPerSecond": 7410138
+          "redactMs": 14.654,
+          "bytesPerSecond": 10272348
         },
         {
-          "redactMs": 20.325,
-          "bytesPerSecond": 7406003
+          "redactMs": 14.921,
+          "bytesPerSecond": 10088051
         },
         {
-          "redactMs": 20.54,
-          "bytesPerSecond": 7328369
+          "redactMs": 14.574,
+          "bytesPerSecond": 10328619
         },
         {
-          "redactMs": 20.333,
-          "bytesPerSecond": 7403022
+          "redactMs": 14.715,
+          "bytesPerSecond": 10229446
         }
       ],
       "summary": {
-        "medianMs": 20.325,
-        "p95Ms": 20.599,
-        "medianBytesPerSecond": 7403022
+        "medianMs": 14.574,
+        "p95Ms": 22.257,
+        "medianBytesPerSecond": 10272348
       }
     },
     {
@@ -499,58 +500,58 @@
       "workloadCommitment": "1ed7f90e905ac555a30e2ad9873ec0479bb0ad58a6bed633212b620f823551b4",
       "samples": [
         {
-          "redactMs": 7.692,
-          "bytesPerSecond": 19569832
+          "redactMs": 8.388,
+          "bytesPerSecond": 17944834
         },
         {
-          "redactMs": 8.432,
-          "bytesPerSecond": 17851726
+          "redactMs": 9.88,
+          "bytesPerSecond": 15236013
         },
         {
-          "redactMs": 7.654,
-          "bytesPerSecond": 19666199
+          "redactMs": 12.111,
+          "bytesPerSecond": 12428945
         },
         {
-          "redactMs": 7.866,
-          "bytesPerSecond": 19136250
+          "redactMs": 17.062,
+          "bytesPerSecond": 8822197
         },
         {
-          "redactMs": 7.927,
-          "bytesPerSecond": 18988741
+          "redactMs": 8.722,
+          "bytesPerSecond": 17259086
         },
         {
-          "redactMs": 7.909,
-          "bytesPerSecond": 19031376
+          "redactMs": 9.201,
+          "bytesPerSecond": 16359591
         },
         {
-          "redactMs": 8.981,
-          "bytesPerSecond": 16760851
+          "redactMs": 9.112,
+          "bytesPerSecond": 16520510
         },
         {
-          "redactMs": 7.745,
-          "bytesPerSecond": 19434940
+          "redactMs": 10.196,
+          "bytesPerSecond": 14763980
         },
         {
-          "redactMs": 7.793,
-          "bytesPerSecond": 19316599
+          "redactMs": 10.896,
+          "bytesPerSecond": 13814873
         },
         {
-          "redactMs": 7.837,
-          "bytesPerSecond": 19207668
+          "redactMs": 10.78,
+          "bytesPerSecond": 13964122
         },
         {
-          "redactMs": 7.731,
-          "bytesPerSecond": 19470451
+          "redactMs": 9.881,
+          "bytesPerSecond": 15233444
         },
         {
-          "redactMs": 7.877,
-          "bytesPerSecond": 19109289
+          "redactMs": 10.093,
+          "bytesPerSecond": 14914099
         }
       ],
       "summary": {
-        "medianMs": 7.837,
-        "p95Ms": 8.981,
-        "medianBytesPerSecond": 19136250
+        "medianMs": 9.881,
+        "p95Ms": 17.062,
+        "medianBytesPerSecond": 14914099
       }
     },
     {
@@ -560,58 +561,58 @@
       "workloadCommitment": "1ed7f90e905ac555a30e2ad9873ec0479bb0ad58a6bed633212b620f823551b4",
       "samples": [
         {
-          "redactMs": 820.601,
-          "bytesPerSecond": 183436
+          "redactMs": 787.727,
+          "bytesPerSecond": 191092
         },
         {
-          "redactMs": 827.536,
-          "bytesPerSecond": 181899
+          "redactMs": 940.795,
+          "bytesPerSecond": 160001
         },
         {
-          "redactMs": 835.65,
-          "bytesPerSecond": 180133
+          "redactMs": 1350.743,
+          "bytesPerSecond": 111441
         },
         {
-          "redactMs": 840.193,
-          "bytesPerSecond": 179159
+          "redactMs": 954.348,
+          "bytesPerSecond": 157729
         },
         {
-          "redactMs": 834.831,
-          "bytesPerSecond": 180310
+          "redactMs": 800.765,
+          "bytesPerSecond": 187980
         },
         {
-          "redactMs": 892.192,
-          "bytesPerSecond": 168717
+          "redactMs": 805.578,
+          "bytesPerSecond": 186857
         },
         {
-          "redactMs": 870.035,
-          "bytesPerSecond": 173014
+          "redactMs": 981.798,
+          "bytesPerSecond": 153319
         },
         {
-          "redactMs": 826.753,
-          "bytesPerSecond": 182071
+          "redactMs": 1236.531,
+          "bytesPerSecond": 121734
         },
         {
-          "redactMs": 828.415,
-          "bytesPerSecond": 181706
+          "redactMs": 904.142,
+          "bytesPerSecond": 166487
         },
         {
-          "redactMs": 827.616,
-          "bytesPerSecond": 181881
+          "redactMs": 914.33,
+          "bytesPerSecond": 164632
         },
         {
-          "redactMs": 843.666,
-          "bytesPerSecond": 178421
+          "redactMs": 948.367,
+          "bytesPerSecond": 158723
         },
         {
-          "redactMs": 811.061,
-          "bytesPerSecond": 185594
+          "redactMs": 1042.081,
+          "bytesPerSecond": 144449
         }
       ],
       "summary": {
-        "medianMs": 828.415,
-        "p95Ms": 892.192,
-        "medianBytesPerSecond": 180310
+        "medianMs": 940.795,
+        "p95Ms": 1350.743,
+        "medianBytesPerSecond": 158723
       }
     },
     {
@@ -621,58 +622,58 @@
       "workloadCommitment": "7a2834ae836d129ecd9c0ab072cfbca242ab8c5ea7255c707123bf0cab173bad",
       "samples": [
         {
-          "redactMs": 796.433,
-          "bytesPerSecond": 369648
+          "redactMs": 26.59,
+          "bytesPerSecond": 11071814
         },
         {
-          "redactMs": 796.602,
-          "bytesPerSecond": 369570
+          "redactMs": 32.175,
+          "bytesPerSecond": 9150020
         },
         {
-          "redactMs": 797.175,
-          "bytesPerSecond": 369304
+          "redactMs": 32.641,
+          "bytesPerSecond": 9019435
         },
         {
-          "redactMs": 797.77,
-          "bytesPerSecond": 369028
+          "redactMs": 28.815,
+          "bytesPerSecond": 10217004
         },
         {
-          "redactMs": 796.818,
-          "bytesPerSecond": 369470
+          "redactMs": 22.148,
+          "bytesPerSecond": 13292272
         },
         {
-          "redactMs": 798.691,
-          "bytesPerSecond": 368603
+          "redactMs": 34.033,
+          "bytesPerSecond": 8650481
         },
         {
-          "redactMs": 796.656,
-          "bytesPerSecond": 369545
+          "redactMs": 28.095,
+          "bytesPerSecond": 10478702
         },
         {
-          "redactMs": 797.11,
-          "bytesPerSecond": 369334
+          "redactMs": 34.994,
+          "bytesPerSecond": 8412881
         },
         {
-          "redactMs": 797.372,
-          "bytesPerSecond": 369213
+          "redactMs": 36.544,
+          "bytesPerSecond": 8056125
         },
         {
-          "redactMs": 797.475,
-          "bytesPerSecond": 369165
+          "redactMs": 34.337,
+          "bytesPerSecond": 8573831
         },
         {
-          "redactMs": 797.79,
-          "bytesPerSecond": 369019
+          "redactMs": 30.305,
+          "bytesPerSecond": 9714528
         },
         {
-          "redactMs": 797.125,
-          "bytesPerSecond": 369327
+          "redactMs": 35.929,
+          "bytesPerSecond": 8193967
         }
       ],
       "summary": {
-        "medianMs": 797.125,
-        "p95Ms": 798.691,
-        "medianBytesPerSecond": 369304
+        "medianMs": 32.175,
+        "p95Ms": 36.544,
+        "medianBytesPerSecond": 9019435
       }
     },
     {
@@ -682,58 +683,58 @@
       "workloadCommitment": "7a2834ae836d129ecd9c0ab072cfbca242ab8c5ea7255c707123bf0cab173bad",
       "samples": [
         {
-          "redactMs": 17.244,
-          "bytesPerSecond": 17073034
+          "redactMs": 13.835,
+          "bytesPerSecond": 21279364
         },
         {
-          "redactMs": 14.954,
-          "bytesPerSecond": 19686849
+          "redactMs": 15.991,
+          "bytesPerSecond": 18410404
         },
         {
-          "redactMs": 13.972,
-          "bytesPerSecond": 21070758
+          "redactMs": 15.31,
+          "bytesPerSecond": 19229313
         },
         {
-          "redactMs": 14.617,
-          "bytesPerSecond": 20141355
+          "redactMs": 14.273,
+          "bytesPerSecond": 20626538
         },
         {
-          "redactMs": 13.827,
-          "bytesPerSecond": 21291071
+          "redactMs": 11.622,
+          "bytesPerSecond": 25331268
         },
         {
-          "redactMs": 13.84,
-          "bytesPerSecond": 21271404
+          "redactMs": 17.508,
+          "bytesPerSecond": 16815211
         },
         {
-          "redactMs": 14.025,
-          "bytesPerSecond": 20990921
+          "redactMs": 15.141,
+          "bytesPerSecond": 19444001
         },
         {
-          "redactMs": 13.845,
-          "bytesPerSecond": 21263547
+          "redactMs": 16.882,
+          "bytesPerSecond": 17438994
         },
         {
-          "redactMs": 15.014,
-          "bytesPerSecond": 19607936
+          "redactMs": 15.988,
+          "bytesPerSecond": 18413666
         },
         {
-          "redactMs": 13.836,
-          "bytesPerSecond": 21277932
+          "redactMs": 16.917,
+          "bytesPerSecond": 17402399
         },
         {
-          "redactMs": 15.964,
-          "bytesPerSecond": 18441379
+          "redactMs": 15.126,
+          "bytesPerSecond": 19462533
         },
         {
-          "redactMs": 13.898,
-          "bytesPerSecond": 21183334
+          "redactMs": 17.118,
+          "bytesPerSecond": 17198439
         }
       ],
       "summary": {
-        "medianMs": 13.972,
-        "p95Ms": 17.244,
-        "medianBytesPerSecond": 20990921
+        "medianMs": 15.31,
+        "p95Ms": 17.508,
+        "medianBytesPerSecond": 18413666
       }
     },
     {
@@ -743,58 +744,58 @@
       "workloadCommitment": "7a2834ae836d129ecd9c0ab072cfbca242ab8c5ea7255c707123bf0cab173bad",
       "samples": [
         {
-          "redactMs": 1742.993,
-          "bytesPerSecond": 168905
+          "redactMs": 1818.838,
+          "bytesPerSecond": 161862
         },
         {
-          "redactMs": 1740.695,
-          "bytesPerSecond": 169128
+          "redactMs": 2112.708,
+          "bytesPerSecond": 139347
         },
         {
-          "redactMs": 1775.416,
-          "bytesPerSecond": 165820
+          "redactMs": 1817.795,
+          "bytesPerSecond": 161954
         },
         {
-          "redactMs": 1808.778,
-          "bytesPerSecond": 162762
+          "redactMs": 1577.014,
+          "bytesPerSecond": 186682
         },
         {
-          "redactMs": 1767.227,
-          "bytesPerSecond": 166589
+          "redactMs": 2186.074,
+          "bytesPerSecond": 134671
         },
         {
-          "redactMs": 1778.36,
-          "bytesPerSecond": 165546
+          "redactMs": 2268.507,
+          "bytesPerSecond": 129777
         },
         {
-          "redactMs": 1773.034,
-          "bytesPerSecond": 166043
+          "redactMs": 2438.021,
+          "bytesPerSecond": 120754
         },
         {
-          "redactMs": 1795.42,
-          "bytesPerSecond": 163973
+          "redactMs": 2775.453,
+          "bytesPerSecond": 106073
         },
         {
-          "redactMs": 1783.4,
-          "bytesPerSecond": 165078
+          "redactMs": 2250.412,
+          "bytesPerSecond": 130820
         },
         {
-          "redactMs": 1845.714,
-          "bytesPerSecond": 159505
+          "redactMs": 2207.138,
+          "bytesPerSecond": 133385
         },
         {
-          "redactMs": 1760.006,
-          "bytesPerSecond": 167272
+          "redactMs": 1806.185,
+          "bytesPerSecond": 162996
         },
         {
-          "redactMs": 1749.45,
-          "bytesPerSecond": 168281
+          "redactMs": 2079.977,
+          "bytesPerSecond": 141540
         }
       ],
       "summary": {
-        "medianMs": 1773.034,
-        "p95Ms": 1845.714,
-        "medianBytesPerSecond": 165820
+        "medianMs": 2112.708,
+        "p95Ms": 2775.453,
+        "medianBytesPerSecond": 134671
       }
     },
     {
@@ -804,58 +805,58 @@
       "workloadCommitment": "d915910086e0d5cb3cd0d47489e10b55774fc5282acccfae8909d4a933310952",
       "samples": [
         {
-          "redactMs": 68.213,
-          "bytesPerSecond": 2461926
+          "redactMs": 8.472,
+          "bytesPerSecond": 19822767
         },
         {
-          "redactMs": 68.344,
-          "bytesPerSecond": 2457234
+          "redactMs": 8.792,
+          "bytesPerSecond": 19100458
         },
         {
-          "redactMs": 68.122,
-          "bytesPerSecond": 2465233
+          "redactMs": 7.715,
+          "bytesPerSecond": 21766174
         },
         {
-          "redactMs": 68.37,
-          "bytesPerSecond": 2456276
+          "redactMs": 7.778,
+          "bytesPerSecond": 21590227
         },
         {
-          "redactMs": 68.137,
-          "bytesPerSecond": 2464692
+          "redactMs": 7.622,
+          "bytesPerSecond": 22034025
         },
         {
-          "redactMs": 68.271,
-          "bytesPerSecond": 2459847
+          "redactMs": 7.273,
+          "bytesPerSecond": 23091788
         },
         {
-          "redactMs": 68.367,
-          "bytesPerSecond": 2456392
+          "redactMs": 6.33,
+          "bytesPerSecond": 26531746
         },
         {
-          "redactMs": 68.22,
-          "bytesPerSecond": 2461665
+          "redactMs": 6.312,
+          "bytesPerSecond": 26605303
         },
         {
-          "redactMs": 69.281,
-          "bytesPerSecond": 2423984
+          "redactMs": 6.868,
+          "bytesPerSecond": 24451802
         },
         {
-          "redactMs": 68.498,
-          "bytesPerSecond": 2451693
+          "redactMs": 6.242,
+          "bytesPerSecond": 26904378
         },
         {
-          "redactMs": 68.144,
-          "bytesPerSecond": 2464427
+          "redactMs": 6.359,
+          "bytesPerSecond": 26409014
         },
         {
-          "redactMs": 68.549,
-          "bytesPerSecond": 2449871
+          "redactMs": 6.254,
+          "bytesPerSecond": 26851862
         }
       ],
       "summary": {
-        "medianMs": 68.271,
-        "p95Ms": 69.281,
-        "medianBytesPerSecond": 2457234
+        "medianMs": 6.868,
+        "p95Ms": 8.792,
+        "medianBytesPerSecond": 23091788
       }
     },
     {
@@ -865,58 +866,58 @@
       "workloadCommitment": "d915910086e0d5cb3cd0d47489e10b55774fc5282acccfae8909d4a933310952",
       "samples": [
         {
-          "redactMs": 6.298,
-          "bytesPerSecond": 26664291
+          "redactMs": 6.135,
+          "bytesPerSecond": 27374176
         },
         {
-          "redactMs": 7.015,
-          "bytesPerSecond": 23941148
+          "redactMs": 6.305,
+          "bytesPerSecond": 26636953
         },
         {
-          "redactMs": 6.238,
-          "bytesPerSecond": 26920508
+          "redactMs": 5.658,
+          "bytesPerSecond": 29682471
         },
         {
-          "redactMs": 6.316,
-          "bytesPerSecond": 26587650
+          "redactMs": 5.525,
+          "bytesPerSecond": 30397950
         },
         {
-          "redactMs": 6.873,
-          "bytesPerSecond": 24432751
+          "redactMs": 5.044,
+          "bytesPerSecond": 33296686
         },
         {
-          "redactMs": 6.259,
-          "bytesPerSecond": 26832808
+          "redactMs": 5.007,
+          "bytesPerSecond": 33543593
         },
         {
-          "redactMs": 6.237,
-          "bytesPerSecond": 26924013
+          "redactMs": 4.419,
+          "bytesPerSecond": 38005318
         },
         {
-          "redactMs": 6.966,
-          "bytesPerSecond": 24107250
+          "redactMs": 4.491,
+          "bytesPerSecond": 37395281
         },
         {
-          "redactMs": 6.238,
-          "bytesPerSecond": 26921587
+          "redactMs": 4.876,
+          "bytesPerSecond": 34440759
         },
         {
-          "redactMs": 6.382,
-          "bytesPerSecond": 26315909
+          "redactMs": 4.473,
+          "bytesPerSecond": 37542279
         },
         {
-          "redactMs": 7.292,
-          "bytesPerSecond": 23029977
+          "redactMs": 4.438,
+          "bytesPerSecond": 37838695
         },
         {
-          "redactMs": 6.286,
-          "bytesPerSecond": 26717203
+          "redactMs": 4.43,
+          "bytesPerSecond": 37912013
         }
       ],
       "summary": {
-        "medianMs": 6.298,
-        "p95Ms": 7.292,
-        "medianBytesPerSecond": 26587650
+        "medianMs": 4.876,
+        "p95Ms": 6.305,
+        "medianBytesPerSecond": 33543593
       }
     },
     {
@@ -926,58 +927,58 @@
       "workloadCommitment": "d915910086e0d5cb3cd0d47489e10b55774fc5282acccfae8909d4a933310952",
       "samples": [
         {
-          "redactMs": 321.122,
-          "bytesPerSecond": 522966
+          "redactMs": 317.424,
+          "bytesPerSecond": 529059
         },
         {
-          "redactMs": 316.411,
-          "bytesPerSecond": 530752
+          "redactMs": 293.682,
+          "bytesPerSecond": 571829
         },
         {
-          "redactMs": 321.7,
-          "bytesPerSecond": 522026
+          "redactMs": 286.79,
+          "bytesPerSecond": 585571
         },
         {
-          "redactMs": 319.498,
-          "bytesPerSecond": 525625
+          "redactMs": 286.352,
+          "bytesPerSecond": 586467
         },
         {
-          "redactMs": 315.653,
-          "bytesPerSecond": 532027
+          "redactMs": 289.84,
+          "bytesPerSecond": 579409
         },
         {
-          "redactMs": 318.842,
-          "bytesPerSecond": 526706
+          "redactMs": 254.877,
+          "bytesPerSecond": 658890
         },
         {
-          "redactMs": 312.531,
-          "bytesPerSecond": 537341
+          "redactMs": 249.483,
+          "bytesPerSecond": 673137
         },
         {
-          "redactMs": 319.097,
-          "bytesPerSecond": 526285
+          "redactMs": 242.848,
+          "bytesPerSecond": 691527
         },
         {
-          "redactMs": 319.573,
-          "bytesPerSecond": 525501
+          "redactMs": 258.022,
+          "bytesPerSecond": 650858
         },
         {
-          "redactMs": 320.727,
-          "bytesPerSecond": 523610
+          "redactMs": 241.864,
+          "bytesPerSecond": 694341
         },
         {
-          "redactMs": 319.533,
-          "bytesPerSecond": 525567
+          "redactMs": 236.404,
+          "bytesPerSecond": 710378
         },
         {
-          "redactMs": 330.891,
-          "bytesPerSecond": 507527
+          "redactMs": 246.169,
+          "bytesPerSecond": 682198
         }
       ],
       "summary": {
-        "medianMs": 319.498,
-        "p95Ms": 330.891,
-        "medianBytesPerSecond": 525567
+        "medianMs": 254.877,
+        "p95Ms": 317.424,
+        "medianBytesPerSecond": 650858
       }
     },
     {
@@ -987,58 +988,58 @@
       "workloadCommitment": "fc34156b399fe79a908e8a1813e9745be15bf10fa942fdc1215aa237318fc712",
       "samples": [
         {
-          "redactMs": 594.556,
-          "bytesPerSecond": 490854
+          "redactMs": 22.018,
+          "bytesPerSecond": 13254635
         },
         {
-          "redactMs": 595.58,
-          "bytesPerSecond": 490010
+          "redactMs": 22.017,
+          "bytesPerSecond": 13255087
         },
         {
-          "redactMs": 595.426,
-          "bytesPerSecond": 490136
+          "redactMs": 37.848,
+          "bytesPerSecond": 7710835
         },
         {
-          "redactMs": 595.871,
-          "bytesPerSecond": 489771
+          "redactMs": 35.812,
+          "bytesPerSecond": 8149186
         },
         {
-          "redactMs": 595.133,
-          "bytesPerSecond": 490378
+          "redactMs": 35.003,
+          "bytesPerSecond": 8337462
         },
         {
-          "redactMs": 595.508,
-          "bytesPerSecond": 490069
+          "redactMs": 36.861,
+          "bytesPerSecond": 7917401
         },
         {
-          "redactMs": 596.924,
-          "bytesPerSecond": 488907
+          "redactMs": 33.325,
+          "bytesPerSecond": 8757466
         },
         {
-          "redactMs": 595.873,
-          "bytesPerSecond": 489769
+          "redactMs": 34.052,
+          "bytesPerSecond": 8570338
         },
         {
-          "redactMs": 595.374,
-          "bytesPerSecond": 490179
+          "redactMs": 33.378,
+          "bytesPerSecond": 8743604
         },
         {
-          "redactMs": 595.384,
-          "bytesPerSecond": 490171
+          "redactMs": 34.008,
+          "bytesPerSecond": 8581626
         },
         {
-          "redactMs": 595.138,
-          "bytesPerSecond": 490374
+          "redactMs": 33.153,
+          "bytesPerSecond": 8802724
         },
         {
-          "redactMs": 595.441,
-          "bytesPerSecond": 490125
+          "redactMs": 36.857,
+          "bytesPerSecond": 7918152
         }
       ],
       "summary": {
-        "medianMs": 595.426,
-        "p95Ms": 596.924,
-        "medianBytesPerSecond": 490125
+        "medianMs": 34.008,
+        "p95Ms": 37.848,
+        "medianBytesPerSecond": 8570338
       }
     },
     {
@@ -1048,58 +1049,58 @@
       "workloadCommitment": "fc34156b399fe79a908e8a1813e9745be15bf10fa942fdc1215aa237318fc712",
       "samples": [
         {
-          "redactMs": 9.442,
-          "bytesPerSecond": 30908513
+          "redactMs": 8.263,
+          "bytesPerSecond": 35319960
         },
         {
-          "redactMs": 11.186,
-          "bytesPerSecond": 26088880
+          "redactMs": 8.429,
+          "bytesPerSecond": 34621443
         },
         {
-          "redactMs": 9.347,
-          "bytesPerSecond": 31221383
+          "redactMs": 11.39,
+          "bytesPerSecond": 25622757
         },
         {
-          "redactMs": 9.371,
-          "bytesPerSecond": 31142472
+          "redactMs": 14.559,
+          "bytesPerSecond": 20045217
         },
         {
-          "redactMs": 10.152,
-          "bytesPerSecond": 28747430
+          "redactMs": 12.99,
+          "bytesPerSecond": 22466151
         },
         {
-          "redactMs": 9.43,
-          "bytesPerSecond": 30947822
+          "redactMs": 15.87,
+          "bytesPerSecond": 18389704
         },
         {
-          "redactMs": 9.611,
-          "bytesPerSecond": 30365412
+          "redactMs": 14.75,
+          "bytesPerSecond": 19785316
         },
         {
-          "redactMs": 9.362,
-          "bytesPerSecond": 31173076
+          "redactMs": 13.572,
+          "bytesPerSecond": 21502500
         },
         {
-          "redactMs": 9.348,
-          "bytesPerSecond": 31218534
+          "redactMs": 13.007,
+          "bytesPerSecond": 22437867
         },
         {
-          "redactMs": 9.387,
-          "bytesPerSecond": 31090451
+          "redactMs": 15.042,
+          "bytesPerSecond": 19401461
         },
         {
-          "redactMs": 9.362,
-          "bytesPerSecond": 31172866
+          "redactMs": 13.082,
+          "bytesPerSecond": 22309297
         },
         {
-          "redactMs": 9.361,
-          "bytesPerSecond": 31177305
+          "redactMs": 16.108,
+          "bytesPerSecond": 18117658
         }
       ],
       "summary": {
-        "medianMs": 9.371,
-        "p95Ms": 11.186,
-        "medianBytesPerSecond": 31090451
+        "medianMs": 13.082,
+        "p95Ms": 16.108,
+        "medianBytesPerSecond": 21502500
       }
     },
     {
@@ -1109,58 +1110,58 @@
       "workloadCommitment": "fc34156b399fe79a908e8a1813e9745be15bf10fa942fdc1215aa237318fc712",
       "samples": [
         {
-          "redactMs": 1194.267,
-          "bytesPerSecond": 244367
+          "redactMs": 1070.143,
+          "bytesPerSecond": 272711
         },
         {
-          "redactMs": 1214.944,
-          "bytesPerSecond": 240209
+          "redactMs": 1213.653,
+          "bytesPerSecond": 240464
         },
         {
-          "redactMs": 1199.36,
-          "bytesPerSecond": 243330
+          "redactMs": 2173.337,
+          "bytesPerSecond": 134282
         },
         {
-          "redactMs": 1242.438,
-          "bytesPerSecond": 234893
+          "redactMs": 1716.015,
+          "bytesPerSecond": 170068
         },
         {
-          "redactMs": 1328.505,
-          "bytesPerSecond": 219675
+          "redactMs": 1899.492,
+          "bytesPerSecond": 153641
         },
         {
-          "redactMs": 1245.878,
-          "bytesPerSecond": 234244
+          "redactMs": 1847.703,
+          "bytesPerSecond": 157947
         },
         {
-          "redactMs": 1361.788,
-          "bytesPerSecond": 214306
+          "redactMs": 1874.681,
+          "bytesPerSecond": 155675
         },
         {
-          "redactMs": 1199.09,
-          "bytesPerSecond": 243385
+          "redactMs": 1788.295,
+          "bytesPerSecond": 163195
         },
         {
-          "redactMs": 1164.132,
-          "bytesPerSecond": 250693
+          "redactMs": 1766.396,
+          "bytesPerSecond": 165218
         },
         {
-          "redactMs": 1223.929,
-          "bytesPerSecond": 238445
+          "redactMs": 1720.353,
+          "bytesPerSecond": 169640
         },
         {
-          "redactMs": 1200.819,
-          "bytesPerSecond": 243034
+          "redactMs": 1715.336,
+          "bytesPerSecond": 170136
         },
         {
-          "redactMs": 1219.035,
-          "bytesPerSecond": 239403
+          "redactMs": 1853.342,
+          "bytesPerSecond": 157467
         }
       ],
       "summary": {
-        "medianMs": 1214.944,
-        "p95Ms": 1361.788,
-        "medianBytesPerSecond": 239403
+        "medianMs": 1766.396,
+        "p95Ms": 2173.337,
+        "medianBytesPerSecond": 163195
       }
     }
   ],
@@ -1994,5 +1995,5 @@
       ]
     }
   ],
-  "artifactCommitment": "5dac5512227af43e43e2e1a6ca66d759147f6cfafa2df85c2636e6fddf874e8d"
+  "artifactCommitment": "88edceb8d01fa311ebede8770edb93c096595c1757c568665c486f204e6432da"
 }

@@ -58,7 +58,11 @@ for (const { peer, setting, html: chunk } of chunks) {
   if (!report) { if (!panel.includes('Not measured yet')) fail(`/comparison/performance/ ${key} has no report and must say "Not measured yet"`); continue; }
   if (!panel.includes(report.generatedAt.slice(0, 10))) fail(`/comparison/performance/ ${key} does not state the run date`);
   for (const t of report.tools.filter(t => t.id === 'redact-secret' || t.id === peer)) if (!panel.includes(t.version)) fail(`/comparison/performance/ ${key} does not state ${t.id} ${t.version}`);
-  if (!panel.includes('local build · unreleased')) fail(`/comparison/performance/ ${key} does not state the local unreleased build`);
+  // The build chip follows the report: a published package reads "npm", a local build of the pinned commit reads "local build · unreleased".
+  const kind = report.tools.find(t => t.id === 'redact-secret').provenance.kind;
+  const chip = kind === 'local-source-build' ? 'local build · unreleased' : 'npm';
+  if (!panel.includes(chip)) fail(`/comparison/performance/ ${key} does not state the redact-secret build as "${chip}" (${kind})`);
+  if (kind !== 'local-source-build' && panel.includes('local build · unreleased')) fail(`/comparison/performance/ ${key} calls a published redact-secret a local unreleased build`);
 
   // The noise figure: the largest movement of this peer's median between the committed runs.
   const runs = Object.values(reports);

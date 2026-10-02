@@ -192,6 +192,18 @@ them. To re-pin after a detector change:
 4. Update the two hard-coded accepted-summary paths in `src/pages/performance.ts`
    (the `import accepted from '../../evidence/<dir>/summary.json'` and the path in
    the "Measured columns" sentence), or `tests/pages.test.mjs` fails (#581).
+5. Re-measure the runtime comparison (#562): run
+   `scripts/run-runtime-comparison-docker.sh --out-dir=evidence/562` (default
+   `--source=published`: the `@redact-secret/core` release `package.json` pins),
+   replace the three `evidence/562/runtime-comparison-*.json` snapshots, and
+   update `evidence/562/README.md`. The Next app's `/comparison/` pages read
+   those files, and publish does not re-run the measurement, so a missed step
+   leaves them naming the old version. `npm run pins:check` (the network-free
+   part, also `pins:check:local`) and `tests/runtime-comparison.test.mjs` fail
+   when a snapshot's redact-secret version, build kind (it must be
+   `published-npm-package`) or commit differs from the pin. Timings are
+   machine-bound: the report records the host, and a run on a new host is not
+   compared with the previous one.
 
 `performance:criteria:check` refuses a `verificationPath` that is not an
 ACCEPTED evaluation of `verifiedCommit` under the same criteria id and fixed

@@ -78,6 +78,12 @@ test('the write guard mirrors #513 for evidence/562 only', () => {
   assert.equal(runtimeComparisonWriteRefusal({ ...base, ref: 'b', emulated: true, outPath: '/r/public/x.json' }), null);
 });
 
+const publishedTool = report => ({
+  ...report,
+  tools: report.tools.map(t => t.id === 'redact-secret' ? { ...t, provenance: { kind: 'published-npm-package', package: '@redact-secret/core', commit: 'b'.repeat(40) } } : t),
+  methodologyNotes: ['OpenRedaction is asynchronous (a Promise-returning detect()).', 'redact-secret is measured from the published @redact-secret/core npm package 0.0.0-test, not a local build.', 'Outcomes are recorded, never graded.'],
+});
+
 function syntheticReport(settingId = 'pii-global', mutate = report => report) {
   const setting = plan.settings.find(s => s.id === settingId);
   const families = setting.selectors.length ? ['pii:global:email', 'pii:global:phone'] : [];
@@ -134,4 +140,24 @@ test('the committed snapshots, when present, validate and belong to this plan', 
     assert.equal(report.runner.emulated, false, 'an emulated run is a smoke check and is never committed');
   }
   if (files.length) assert.deepEqual(files.sort(), SETTING_IDS.map(id => `runtime-comparison-${id}.json`).sort(), 'all three settings or none');
+});
+
+test('a report measured from the published package validates, and names the package in its provenance and notes (#562)', () => {
+  for (const id of SETTING_IDS) assert.doesNotThrow(() => validateRuntimeComparisonReport(syntheticReport(id, publishedTool)));
+  assert.throws(() => validateRuntimeComparisonReport(syntheticReport('default', r => ({ ...publishedTool(r), methodologyNotes: ['asynchronous OpenRedaction', 'x', 'y'] }))), /published package/);
+  assert.throws(() => validateRuntimeComparisonReport(syntheticReport('default', r => ({ ...publishedTool(r), tools: publishedTool(r).tools.map(t => t.id === 'redact-secret' ? { ...t, provenance: { ...t.provenance, package: 'other' } } : t) }))), /published package/);
+  assert.throws(() => validateRuntimeComparisonReport(syntheticReport('default', r => ({ ...publishedTool(r), tools: publishedTool(r).tools.map(t => t.id === 'redact-secret' ? { ...t, provenance: { ...t.provenance, kind: 'something-else' } } : t) }))), /local-build caveats/);
+});
+
+test('the committed snapshots measured the pinned published release, not a local build (#562)', async () => {
+  const dir = new URL('../evidence/562/', import.meta.url);
+  const manifest = JSON.parse(await readFile(new URL('../benchmarks/pin-manifest.json', import.meta.url), 'utf8'));
+  const files = (await readdir(dir)).filter(name => /^runtime-comparison-.+\.json$/.test(name));
+  assert.equal(files.length, SETTING_IDS.length);
+  for (const name of files) {
+    const tool = JSON.parse(await readFile(new URL(name, dir), 'utf8')).tools.find(t => t.id === 'redact-secret');
+    assert.equal(tool.provenance.kind, 'published-npm-package', `${name} must be re-measured against the published package`);
+    assert.equal(tool.version, manifest.pins.packageVersion, `${name} version differs from pin-manifest packageVersion: re-measure (scripts/run-runtime-comparison-docker.sh)`);
+    assert.equal(tool.provenance.commit, manifest.pins.redactSecretRevision, `${name} commit differs from pin-manifest redactSecretRevision`);
+  }
 });

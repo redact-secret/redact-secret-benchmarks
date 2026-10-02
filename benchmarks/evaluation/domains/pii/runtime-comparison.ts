@@ -200,7 +200,14 @@ export function validateRuntimeComparisonReport(value: unknown) {
       !/^[a-f0-9]{40}$/.test(redactSecret?.provenance?.commit ?? ''))
     throw new Error('runtime-comparison report tool roster must be the three tools with versions and the product commit');
   if (!Array.isArray(report.methodologyNotes) || report.methodologyNotes.length < 3 || report.methodologyNotes.some((n: unknown) => typeof n !== 'string' || !n) ||
-      !report.methodologyNotes.some((n: string) => /async|asynchronous|promise/i.test(n)) || !report.methodologyNotes.some((n: string) => /local.source.build|not.*published|main branch/i.test(n)))
+      !report.methodologyNotes.some((n: string) => /async|asynchronous|promise/i.test(n)))
+    throw new Error('runtime-comparison report must state the async/sync and redact-secret local-build caveats');
+  // The build kind redact-secret was measured from (#562): a published @redact-secret/core release, or a local build of the pinned commit.
+  const kind = redactSecret.provenance?.kind;
+  if (kind === 'published-npm-package') {
+    if (redactSecret.provenance.package !== '@redact-secret/core' || !report.methodologyNotes.some((n: string) => /published @redact-secret\/core npm package/i.test(n)))
+      throw new Error('runtime-comparison report measured from the published package must name @redact-secret/core in its provenance and notes');
+  } else if (kind !== 'local-source-build' || !report.methodologyNotes.some((n: string) => /local.source.build|not.*published|main branch/i.test(n)))
     throw new Error('runtime-comparison report must state the async/sync and redact-secret local-build caveats');
 
   const keys = plan.tools.flatMap((t: any) => plan.workloads.map((w: any) => `${t.id}/${w.id}`)).sort();

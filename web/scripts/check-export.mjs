@@ -169,6 +169,13 @@ const mbs = n => (n / 1e6).toFixed(1);
 const SETTINGS = ['default', 'pii-global', 'pii-global-us'];
 const plan2 = await readJson('qualification/runtime-comparison-v2.json');
 const reports = {};
+// The build chip follows the report: a published package reads "npm", a local build of the pinned commit reads "local build · unreleased".
+function checkBuildChip(report) {
+  const kind = report.tools.find(t => t.id === 'redact-secret').provenance.kind;
+  const local = kind === 'local-source-build';
+  if (!runtimePage.includes(local ? 'local build · unreleased' : 'npm')) fail(`/comparison/runtime/ does not state the redact-secret build as ${local ? 'a local unreleased build' : 'the npm package'} (${kind})`);
+  if (!local && runtimePage.includes('local build · unreleased')) fail('/comparison/runtime/ calls a published redact-secret a local unreleased build');
+}
 for (const id of SETTINGS) { try { reports[id] = await readJson(`evidence/562/runtime-comparison-${id}.json`); } catch { /* not committed */ } }
 let snapshot;
 try { snapshot = await readJson('evidence/429/peer-pii-runtime-throughput.json'); } catch { /* not committed */ }
@@ -246,7 +253,7 @@ if (Object.keys(reports).length) {
   const pii = reports['pii-global'] ?? Object.values(reports)[0];
   for (const t of pii.tools) if (!runtimePage.includes(t.version)) fail(`/comparison/runtime/ does not state ${t.id} ${t.version}`);
   if (!runtimePage.includes(newest.slice(0, 10))) fail('/comparison/runtime/ does not state the run date');
-  if (!runtimePage.includes('local build · unreleased')) fail('/comparison/runtime/ does not state that redact-secret was a local unreleased build');
+  checkBuildChip(pii);
   const measuredTexts = new Set(Object.values(reports).flatMap(r => r.observations.map(o => o.workload))).size;
   if (!hub.includes(newest.slice(0, 10)) || !hub.includes(`${measuredTexts} test texts`)) fail('/comparison/ does not state the runtime run date and test-text count');
   if (!checkedQuestions) fail('/comparison/runtime/: no measured question was checked against the snapshots');
@@ -260,7 +267,7 @@ if (Object.keys(reports).length) {
   }
   for (const t of snapshot.tools) if (!runtimePage.includes(t.version)) fail(`/comparison/runtime/ does not state ${t.id} ${t.version}`);
   if (!runtimePage.includes(snapshot.generatedAt.slice(0, 10))) fail('/comparison/runtime/ does not state the run date');
-  if (!runtimePage.includes('local build · unreleased')) fail('/comparison/runtime/ does not state that redact-secret was a local unreleased build');
+  checkBuildChip(snapshot);
   if (!hub.includes(snapshot.generatedAt.slice(0, 10)) || !hub.includes(`${new Set(snapshot.observations.map(o => o.workload)).size} test texts`)) fail('/comparison/ does not state the runtime run date and test-text count');
 }
 // A panel with a measurement has one panel per view, keyed analysis-domain-view; one without has a single panel, keyed analysis-domain.

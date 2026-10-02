@@ -7,6 +7,21 @@ export interface PinFacts {
   packageVersion: string;
   /** `performance-criteria.json` `baseline.verifiedCommit`: the latest ACCEPTED evaluation against the unchanged thresholds. */
   performanceCriteriaVerifiedCommit: string;
+  /**
+   * What each committed `evidence/562/runtime-comparison-*.json` snapshot recorded for redact-secret (#562). Optional so a caller
+   * that has no snapshots (or a test of the other pins) omits it; the real `pins:check` always supplies it.
+   */
+  runtimeComparisonSnapshots?: RuntimeComparisonSnapshotFacts[];
+}
+
+export interface RuntimeComparisonSnapshotFacts {
+  file: string;
+  /** The redact-secret tool's `version` in the report. */
+  version: string;
+  /** The redact-secret tool's `provenance.kind` in the report. */
+  kind: string;
+  /** The redact-secret tool's `provenance.commit` in the report. */
+  commit: string;
 }
 
 export interface AncestryFacts {
@@ -34,6 +49,17 @@ export function checkPinConsistency(facts: PinFacts): string[] {
   }
   if (facts.performanceCriteriaVerifiedCommit !== facts.inventoryRedactSecretRevision) {
     failures.push(`benchmarks/performance-criteria.json baseline.verifiedCommit (${facts.performanceCriteriaVerifiedCommit}) does not match detector-inventory.json redactSecretRevision (${facts.inventoryRedactSecretRevision}) -- #150: the pinned core revision needs an ACCEPTED performance evaluation`);
+  }
+  for (const snapshot of facts.runtimeComparisonSnapshots ?? []) {
+    if (snapshot.kind !== 'published-npm-package') {
+      failures.push(`${snapshot.file} measured redact-secret as ${snapshot.kind}, not the published package: re-run scripts/run-runtime-comparison-docker.sh (#562)`);
+    }
+    if (snapshot.version !== facts.packageVersion) {
+      failures.push(`${snapshot.file} measured redact-secret ${snapshot.version}, but package.json pins @redact-secret/core ${facts.packageVersion}: re-measure with scripts/run-runtime-comparison-docker.sh and replace evidence/562 (#562)`);
+    }
+    if (snapshot.commit !== facts.inventoryRedactSecretRevision) {
+      failures.push(`${snapshot.file} records product commit ${snapshot.commit}, but the pin is ${facts.inventoryRedactSecretRevision}: re-measure and replace evidence/562 (#562)`);
+    }
   }
   return failures;
 }

@@ -1,6 +1,7 @@
 import { cx } from '../../../lib/cx';
 import { SegmentedNav } from '../../nav';
 import { Breadcrumb, PageHead } from '../../page';
+import { PipelineStamp } from '../../qualification/PipelineStamp';
 import { DomainCoverage } from './DomainCoverage';
 import { DomainGlance } from './DomainGlance';
 import { DomainMethod } from './DomainMethod';
@@ -18,7 +19,7 @@ export interface DomainViewProps extends DomainViewData {
  * status, how to read the numbers, sources. `/evaluation/pii/` and `/evaluation/credential/` render this with their
  * own data and nothing else, so what differs between them is the ledger, never the design.
  */
-export function DomainView({ head, glance, method, coverage, status, reading, className }: DomainViewProps) {
+export function DomainView({ head, pipeline, glance, method, coverage, status, reading, className }: DomainViewProps) {
   return (
     <div className={cx(styles.view, className)}>
       <PageHead
@@ -29,6 +30,7 @@ export function DomainView({ head, glance, method, coverage, status, reading, cl
         meta={head.meta}
         actions={<SegmentedNav label={head.pairLabel} items={head.pair} currentHref={head.currentHref} />}
       />
+      {pipeline && <PipelineStamp {...pipeline} />}
       <DomainGlance items={glance} />
       <DomainMethod {...method} />
       <DomainCoverage {...coverage} />

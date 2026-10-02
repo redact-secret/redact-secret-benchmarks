@@ -197,6 +197,18 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   a view without `cases` is incompatible. `scripts/check-export-qualification.mjs` rereads the view and recounts every row on the built pages (without a view it checks the pages say so). The tests build synthetic views (`tests/unit/qualification-data.ts`, put in each state with an overlay root). Decision:
   `docs/decisions/2026-10-01-show-the-qualification-view-beside-the-existing-report.md` and
   `docs/decisions/2026-10-01-carry-per-case-rows-in-the-qualification-view-and-page-them-by-scope.md`.
+- **Which pipeline the credential pages are built from (#608).** One committed value, `benchmarks/qualification-authority.json` (`legacy` or `new`), read by `services/authority.ts` and nowhere else in the app;
+  every page asks `services/credential-source.ts`, which returns the same `Catalog`, `MeasuredRun` and fixture bytes from the legacy corpora and run files or from the qualification view (`services/credential-bridge.ts`),
+  so the report, provider, family, detector, suite, rows and fixture pages and `/evaluation/credential/` render either without knowing which (`resolvers/pages.ts` has one `context()` for them and a `legacyContext()` for the
+  comparison pages, which stay on the legacy files as the oracle). Rules: nothing infers the value (no environment variable, no fallback to the other pipeline); under `new` a view that is absent, stale or not the authorised one
+  gives no number, only the reason and the commands; every report page opens with a `PipelineStamp` (`RunNotes` renders it, so a page with a run state has one) and never shows a number without it; a fact the view does not hold (a fixture's bytes, where a
+  scanner's ranges are) is stated as not recorded, never filled in; the bridge computes the accounted rates over the view's case rows with the legacy accounting, no other maths. A build that publishes sets `WEB_REQUIRE_QUALIFICATION=1` (the same variable `check-export-qualification.mjs` reads; the service refuses an unusable view with it).
+  Tests: `tests/unit/overlay.ts` pins every overlay root, and `setup.ts` pins the default root, to `legacy` unless a test chooses (`authorityFile('new')`), so the suite means the same before and after the switch and the legacy path
+  stays under test; the new path's tests use a synthetic view (`tests/unit/qualification-data.ts`) and assert no ledger value. `check:routes` recounts the pages against the legacy files under `legacy` (`check-export.mjs`,
+  `check-export-rows.mjs`) and against the view under `new` (`check-export-credential.mjs`, also checking every report page's stamp and, with no view, that every page says so). CI has no view, so its browser checks run on the legacy
+  pipeline's export built with `node scripts/with-authority.mjs legacy -- <command>` (it flips the value for the command and restores it) and the committed state is built and recounted last; locally, run the full checks on both
+  values (`with-authority.mjs`) and, for `new`, with a view built into `public/results/`. Decision:
+  `docs/decisions/2026-10-02-switch-credential-qualification-authority-to-the-new-path.md`; spec: `docs/specs/qualification-cutover.md`.
 - `/evaluation/scanner/` (#612) shows the scanners the benchmark ran with and each one's environment: pins, install checksums, configuration and
   platform from the validated peer snapshots (`services/scanners.ts`), the mode line and host from the run, `outOfScope` from the registry. Blocks are
   `Scanner*` in `components/evaluation/scanner/` (a folder of folders is a section; each phase of `/evaluation` has its own). A fact the repository does not
@@ -279,7 +291,8 @@ Playwright tests that opened `?show=leaked` and expected a pager found zero leak
 - **Verify on the final base, locally, before the merge:**
   1. `git fetch origin && git rebase origin/develop` (or merge it) right before you push, not when you branched.
   2. From `web/`: `npm run check`, `npm run test:coverage` and, on a fresh `npm run build`, `npm run test:e2e`. Run the
-     root checks CI runs too if you touched anything outside `web/`.
+     root checks CI runs too if you touched anything outside `web/`. The committed authority is `new` and `check`, `check:layout` and `test:e2e` need data pages: run them with a view in
+     `public/results/` (the committed value) and on the legacy pipeline (`node scripts/with-authority.mjs legacy -- npm run check`), as the web job and `check:docker` do for the browser checks.
      Prefer the Docker run for this final verification: `npm run check:docker` (every step of the web CI job after
      install), or `npm run check:layout:docker` / `npm run test:e2e:docker` for one of the two browser checks. It runs in
      the official Playwright image pinned to the repo's Playwright version (`mcr.microsoft.com/playwright:v<version>-noble`),

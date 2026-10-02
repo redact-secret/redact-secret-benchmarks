@@ -31,6 +31,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { checkTarget, pickWorkers } from './layout-check-lib.mjs';
+import { readAuthority, stampOf } from './lib/authority.mjs';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const basePath = process.env.BASE_PATH ?? '/next';
@@ -44,7 +45,17 @@ const ROUTES = ['report', 'report/?level=T2', 'report/?level=T3&peers=1', 'repor
 // The real family pages (#556): the family with the most fixtures (paged rows), one with a few, and one with none.
 const repoRoot = path.resolve(webRoot, '..');
 const taxonomy = JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/support/taxonomy.json'), 'utf8'));
-const index = JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/fixture-index.json'), 'utf8'));
+// Which pages hold data depends on the pipeline the export was built from (#608): the fixtures of the legacy corpora under `legacy`, the cases of the
+// qualification view under `new` (none without a view). The routes below are read from the same source the export was built from.
+// The routes must follow the export being served, not the committed value: CI builds the legacy export for the browser checks while the committed
+// value is `new`. The stamp on /report/ names the pipeline the export was built from; the committed value is the fallback when there is no export yet.
+const builtFrom = stampOf(await readFile(path.join(webRoot, 'out/report/index.html'), 'utf8').catch(() => ''));
+const authority = builtFrom?.pipeline ?? await readAuthority(repoRoot);
+let view;
+if (authority === 'new') { try { view = JSON.parse(await readFile(path.join(repoRoot, 'public/results/qualification-v1.json'), 'utf8')); } catch { /* no view */ } }
+const viewCases = view?.populations.find(p => p.role === 'floors-and-gates')?.cases ?? [];
+const slugsOfIndex = authority === 'new' ? viewCases.map(c => ({ slug: c.id, familyIds: c.family && taxonomy.families.some(f => f.id === c.family) ? [c.family] : [] })) : JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/fixture-index.json'), 'utf8')).fixtures;
+const index = { fixtures: slugsOfIndex };
 const perFamily = new Map();
 for (const f of index.fixtures) for (const id of f.familyIds) perFamily.set(id, (perFamily.get(id) ?? 0) + 1);
 const slugOf = id => id.replace(':', '--');
@@ -54,19 +65,31 @@ const none = taxonomy.families.find(f => !perFamily.has(f.id))?.id;
 for (const id of [largest, small, none]) if (id) ROUTES.push(`report/families/${slugOf(id)}`);
 if (largest) ROUTES.push(`report/families/${slugOf(largest)}/?page=2`);
 // #589: a family with a long dossier (notes, open questions, look-alikes, six sources, seven research issues), and one with several peer rules.
-ROUTES.push('report/families/github--fine-grained-personal-access-token');
+if (authority === 'legacy') ROUTES.push('report/families/github--fine-grained-personal-access-token');
 // The rows, suite, fixture, detector and findings pages (#559), and the level and scanner controls (#560).
 ROUTES.push('report/rows/T1', 'report/rows/T2/?show=leaked&scanners=product', 'report/rows/T3/?show=flagged', 'report/fixtures', 'report/detectors', 'report/detectors/?show=signal', 'report/findings', 'report/families/?level=T2', 'report/providers/?level=T3');
 if (largest) ROUTES.push(`report/families/${slugOf(largest)}/?scanners=all&level=T1`);
-const detectors = JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/detectors.json'), 'utf8')).detectors;
+const detectors = authority === 'new' ? [...new Set(viewCases.flatMap(c => c.detectors))].sort().map(id => ({ id })) : JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/detectors.json'), 'utf8')).detectors;
+if (!detectors.length) detectors.push(...JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/detectors.json'), 'utf8')).detectors.slice(0, 1));
 ROUTES.push(`report/detectors/${detectors[0].id}`, `report/detectors/${detectors.at(-1).id}`);
-const suites = JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/categories.json'), 'utf8')).filter(c => !c.calibrationOnly);
+const suites = authority === 'new' ? (viewCases.length ? [...new Set(viewCases.map(c => c.id.split('--')[0]))].sort().map(id => ({ id })) : [{ id: 'no-view' }]) : JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/categories.json'), 'utf8')).filter(c => !c.calibrationOnly);
 // A fixture page: the first fixture of a small suite, and the largest single fixture of the corpus (a 72 KB line-heavy input).
 const firstOf = new Map();
 for (const f of index.fixtures) { const [category, ...rest] = f.slug.split('--'); if (!firstOf.has(category)) firstOf.set(category, rest.join('--')); }
-const smallSuite = suites.find(c => c.id === 'common-formats') ?? suites[0];
-ROUTES.push(`report/fixtures/${smallSuite.id}`, `report/fixtures/${smallSuite.id}/?fixture=${firstOf.get(smallSuite.id)}`, 'report/fixtures/context-edges');
-try {
+let smallSuite = suites.find(c => c.id === 'common-formats') ?? suites[0];
+if (authority === 'new') {
+  // The fixture-loading skeleton cannot know a family's breadcrumb, so the state checks use a fixture no family owns (the same crumbs as the skeleton);
+  // a fixture with a long family and provider name is still laid out by the page checks.
+  const unowned = viewCases.find(c => !index.fixtures.find(f => f.slug === c.id)?.familyIds.length);
+  if (unowned) { smallSuite = { id: unowned.id.split('--')[0] }; firstOf.set(smallSuite.id, unowned.id.split('--').slice(1).join('--')); }
+}
+ROUTES.push(`report/fixtures/${smallSuite.id}`, ...(firstOf.get(smallSuite.id) ? [`report/fixtures/${smallSuite.id}/?fixture=${firstOf.get(smallSuite.id)}`] : []));
+if (authority === 'new') {
+  // A fixture of the view with a near-twin: the page that names its twin without the bytes.
+  const twin = viewCases.find(c => c.twinOf);
+  if (twin) ROUTES.push(`report/fixtures/${twin.id.split('--')[0]}/?fixture=${twin.id.split('--').slice(1).join('--')}`);
+} else ROUTES.push('report/fixtures/context-edges');
+if (authority === 'legacy') try {
   const corpus = JSON.parse(await readFile(path.join(repoRoot, 'fixtures/generated/context-edges.json'), 'utf8'));
   const big = corpus.fixtures.reduce((a, b) => (b.content.length > a.content.length ? b : a));
   ROUTES.push(`report/fixtures/context-edges/?fixture=${big.id}`);
@@ -86,6 +109,8 @@ const STATES = [
     { name: 'fixture error', route: `report/fixtures/${smallSuite.id}/?fixture=${firstFixture}`, abort: true, wait: '[data-fixture-state="error"]' },
   ] : []),
 ];
+// A new-pipeline export with no view has no rows or fixture files to hold back: its pages are checked as pages, and the no-view text by check:routes.
+if (authority === 'new' && !viewCases.length) STATES.length = 0;
 // The accuracy pair page (#570): every switch that changes what is drawn, each peer, both data views, the gated and shown policy level and the narrowest scope.
 ROUTES.push('comparison/accuracy', 'comparison/accuracy/?with=trufflehog&level=T2', 'comparison/accuracy/?with=flare-redact&scope=listed', 'comparison/accuracy/?with=openredaction&level=T3',
   'comparison/accuracy/?level=T3&peers=1', 'comparison/accuracy/?with=openredaction&level=T3&scope=listed&peers=1', 'comparison/accuracy/?data=pii', 'comparison/accuracy/?data=pii&with=openredaction');

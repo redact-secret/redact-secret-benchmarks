@@ -245,6 +245,11 @@ The rows are additive: removing `cases` from a view gives the view the adapter w
 A view without `cases` is refused by the Next reader as incompatible, with the command that rebuilds it. The size is about 6 MB for the canonical populations (about 300 KB compressed), generated and never committed
 ([ADR](../decisions/2026-10-01-carry-per-case-rows-in-the-qualification-view-and-page-them-by-scope.md)).
 
+**Who reads the view, and when (#608).** `/evaluation/qualification/…` always. When `benchmarks/qualification-authority.json` says `new`, the Next credential report pages too: `web/services/credential-bridge.ts` reads the
+report population's `cases` (the one the population policy gives the floors and gates), `artifact` and `methodsArtifact`, and `distribution` and `stableDistribution`, and only when the view is the one the authorisation names (its
+policy revision and every population's semantic digest). No field was added to the view for this; a page that needs a field the view lacks adds it additively and schema-validated, as the case rows were. Read path and rollback:
+[`qualification-cutover.md`](qualification-cutover.md#authority-read-path).
+
 ## Tests
 
 `tests/qualification-adapter.test.mjs` builds synthetic artifacts and asserts the rules relative to what it built:

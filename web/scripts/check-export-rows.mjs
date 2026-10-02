@@ -25,12 +25,18 @@ import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
+import { readAuthority } from './lib/authority.mjs';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(webRoot, 'out');
 const basePath = process.env.BASE_PATH ?? '/next';
 const repoRoot = path.resolve(webRoot, '..');
 const readJson = async rel => JSON.parse(await readFile(path.join(repoRoot, rel), 'utf8'));
+// Under authority `new` the same pages are built from the qualification view and recounted by check-export-credential.mjs.
+if ((await readAuthority(repoRoot)) === 'new') {
+  console.log('report row pages: the authority is new, so check-export-credential.mjs recounts them against the qualification view');
+  process.exit(0);
+}
 const problems = [];
 const fail = message => problems.push(message);
 let peerCells = 0;

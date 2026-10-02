@@ -192,8 +192,10 @@ test.describe('feature filter (?rows=)', () => {
 
 test.describe('one fixture (?fixture=)', () => {
   test('opening a fixture from the list shows its page; Back returns to the list as it was; Forward returns to the fixture', async ({ page }) => {
-    await page.goto(`${BASE}/report/fixtures/${SUITE}/?q=github`);
-    await expect(page.getByRole('searchbox', { name: 'Find' })).toHaveValue('github');
+    // The find term is read from the export (the first word of a fixture id the suite holds), not a word one corpus happens to contain.
+    const term = FIXTURE.split('-')[0];
+    await page.goto(`${BASE}/report/fixtures/${SUITE}/?q=${encodeURIComponent(term)}`);
+    await expect(page.getByRole('searchbox', { name: 'Find' })).toHaveValue(term);
     const link = page.locator('main table a[href*="?fixture="]').first();
     const href = (await link.getAttribute('href'))!;
     await link.click();

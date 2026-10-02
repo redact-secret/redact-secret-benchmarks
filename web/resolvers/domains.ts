@@ -9,6 +9,7 @@ import type { CoverageNotRecorded, CoverageRow, CoverageTable, DefinitionRow, Do
 import type { CredentialEvaluation, PiiEvaluation, PiiFamilyRecord, PiiViewCounts, PiiViewId, SupportRecord } from '../services/domains';
 import { count, int, isoDate } from './format';
 import { modeText } from './report';
+import { resolvePipelineStamp } from './run';
 
 export type DomainId = 'pii' | 'credential';
 export const DOMAIN_HREF: Record<DomainId, string> = { credential: '/evaluation/credential/', pii: '/evaluation/pii/' };
@@ -429,6 +430,7 @@ export function resolveCredentialView(input: CredentialEvaluation): DomainViewDa
   );
 
   return {
+    pipeline: resolvePipelineStamp(input.pipeline),
     head: {
       domain: 'credential',
       eyebrow: 'Evaluation · Credential',

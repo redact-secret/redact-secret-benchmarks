@@ -1,3 +1,4 @@
+import type { PipelineStampProps } from '../../qualification/types';
 /**
  * The data the evaluation-domain blocks take (#611). Every value is already formatted text: a block never derives
  * a count, rate or status from another prop. `resolvers/domains.ts` reads the ledger and hands the result over, one
@@ -97,6 +98,8 @@ export interface DomainHeadData {
 
 export interface DomainViewData {
   head: DomainHeadData;
+  /** Which pipeline produced the credential numbers (#608). Only the credential page has one: the PII domain has a single pipeline. */
+  pipeline?: PipelineStampProps;
   glance: GlanceItem[];
   method: DomainMethodData;
   coverage: DomainCoverageData;

@@ -1,5 +1,5 @@
 /** Synthetic story data: made-up populations, families, digests and counts. Nothing here is a ledger value. */
-import type { CaseRowProps, CaseSection, CountsRow, QualificationCasesProps, FamilyRow, GapRow, PopulationRow, QualificationFamilyProps, QualificationOverviewProps, QualificationUnavailableProps, ScannerRow } from './types';
+import type { CaseRowProps, CaseSection, CountsRow, QualificationCasesProps, FamilyRow, GapRow, PopulationRow, QualificationFamilyProps, QualificationOverviewProps, PipelineStampProps, QualificationUnavailableProps, ScannerRow } from './types';
 
 export const populationRows: PopulationRow[] = [
   { id: 'evidence-population', role: 'floors and gates', runClass: 'public', evidence: 'example-evidence · snapshot-0000.00.00', corpusDigest: 'sha256:aaaaaaaaaaaa', configHash: 'sha256:cccccccccccc', semanticDigest: 'sha256:111111111111', engine: 'example-eval 0.0.1 · protocol 1', methods: 'None run', cases: '120' },
@@ -183,4 +183,26 @@ export const cases: QualificationCasesProps = {
   empty: 'No population holds a case in this scope.',
   pager: { page: 1, pageCount: 2, nextHref: '/evaluation/qualification/families/alpha-token/cases/2/' },
   back: { href: '/evaluation/qualification/families/alpha-token/', label: 'Back to alpha-token' },
+};
+
+export const pipelineStampNew: PipelineStampProps = {
+  pipeline: 'new', role: 'authority', title: 'Built from the new pipeline',
+  text: 'The new pipeline is the authority for credential qualification. These numbers are read from the qualification view derived from the official credential-eval run of one population.',
+  facts: [
+    { term: 'Authority', value: 'new' }, { term: 'Population', value: 'example-population', code: true }, { term: 'Engine', value: 'example-eval 0.0.1' },
+    { term: 'Evidence', value: 'example-evidence · snapshot-0000.00.00' }, { term: 'Run', value: 'sha256:111111111111', code: true },
+  ],
+  link: { label: 'Every population and its qualification', href: '/evaluation/qualification/' },
+};
+export const pipelineStampLegacy: PipelineStampProps = {
+  pipeline: 'legacy', role: 'authority', title: 'Built from the legacy pipeline',
+  text: 'The legacy pipeline is the authority for credential qualification. These numbers are read from the committed fixture corpora and the run the benchmark wrote.',
+  facts: [{ term: 'Authority', value: 'legacy' }, { term: 'Source', value: 'committed fixture corpora and the benchmark run' }],
+  link: { label: 'The new pipeline qualification, beside it', href: '/evaluation/qualification/' },
+};
+export const pipelineStampOracle: PipelineStampProps = {
+  ...pipelineStampLegacy,
+  role: 'oracle', title: 'Built from the legacy pipeline, kept as the oracle',
+  text: 'The new pipeline is the authority for credential qualification. This page compares scanners on the legacy pipeline run, which is kept intact for a bounded period.',
+  facts: [{ term: 'Authority', value: 'new' }, { term: 'This page', value: 'legacy pipeline' }],
 };

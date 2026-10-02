@@ -72,6 +72,8 @@ export type BuiltFixture = {
   detectors: string[]; issue?: number; mutation?: string; mutationKind?: string;
   /** Authored where the corpus has one: where in a file the fixture sits (`sdk-config`), the action a policy fixture expects. */
   contextAxis?: string; expectedAction?: string;
+  /** `false` when the source carries no bytes for the fixture (the qualification view carries none, by design): `content` is then empty and the page says the bytes are not recorded. */
+  contentRecorded?: false;
   assessment: { kind: Kind; tier: Tier; contract?: string; reason?: string; sources?: string[] };
 };
 
@@ -163,11 +165,49 @@ export async function loadCatalogSources(): Promise<CatalogSources> {
   return { categories, hashes, fixtures };
 }
 
+/** The committed taxonomy, validated: product-owned, so both authorities read it. */
+export function loadTaxonomy(): Promise<Taxonomy> {
+  return once('taxonomy', async () => {
+    const taxonomy = await readJson<Taxonomy>('benchmarks/support/taxonomy.json');
+    const issues = taxonomyProblems(taxonomy);
+    if (issues.length) throw new Error(`benchmarks/support/taxonomy.json is invalid: ${issues.join('; ')}`);
+    return taxonomy;
+  });
+}
+
+/** The detector registry (`benchmarks/detectors.json`): ids and titles, the one list of detector names both authorities draw titles from. */
+export function loadDetectorTitles(): Promise<Map<string, string>> {
+  return once('detector-titles', async () => new Map((await readJson<DetectorRegistry>('benchmarks/detectors.json')).detectors.map(d => [d.id, d.title])));
+}
+
+export interface CatalogParts {
+  fixtures: CatalogFixture[];
+  taxonomy: Taxonomy;
+  suites: CatalogSuite[];
+  detectors: CatalogDetector[];
+  scenarioTitles: Map<string, string>;
+}
+
+/** Index a set of fixtures, suites and detectors into the `Catalog` the resolvers read. Both authorities build theirs here. */
+export function assembleCatalog({ fixtures, taxonomy, suites, detectors, scenarioTitles }: CatalogParts): Catalog {
+  const providerById = new Map(taxonomy.providers.map(p => [p.id, p]));
+  const familyById = new Map(taxonomy.families.map(f => [f.id, f]));
+  const fixturesByFamily = new Map<string, CatalogFixture[]>();
+  for (const f of fixtures) for (const id of f.familyIds) (fixturesByFamily.get(id) ?? fixturesByFamily.set(id, []).get(id)!).push(f);
+  const fixturesByDetector = new Map<string, CatalogFixture[]>(detectors.map(d => [d.id, []]));
+  for (const f of fixtures) for (const id of f.detectors) fixturesByDetector.get(id)?.push(f);
+  const fixturesBySuite = new Map<string, CatalogFixture[]>(suites.map(s => [s.id, []]));
+  for (const f of fixtures) fixturesBySuite.get(f.category)?.push(f);
+  return {
+    fixtures, bySlug: new Map(fixtures.map(f => [f.slug, f])), taxonomy, providerById, familyById, fixturesByFamily,
+    detectorCount: detectors.length, suites, detectors, fixturesByDetector, fixturesBySuite, scenarioTitles,
+  };
+}
+
 export function loadCatalog(): Promise<Catalog> {
   return once('catalog', async () => {
     const { fixtures: built, index, taxonomy, registry, suites, scenarios } = await loadSources();
     const semantic = new Map(index.fixtures.map(entry => [entry.slug, entry]));
-    const providerById = new Map(taxonomy.providers.map(p => [p.id, p]));
     const familyById = new Map(taxonomy.families.map(f => [f.id, f]));
 
     const fixtures: CatalogFixture[] = built.map(f => {
@@ -187,18 +227,9 @@ export function loadCatalog(): Promise<Catalog> {
       };
     });
 
-    const fixturesByFamily = new Map<string, CatalogFixture[]>();
-    for (const f of fixtures) for (const id of f.familyIds) (fixturesByFamily.get(id) ?? fixturesByFamily.set(id, []).get(id)!).push(f);
-    const fixturesByDetector = new Map<string, CatalogFixture[]>(registry.detectors.map(d => [d.id, []]));
-    for (const f of fixtures) for (const id of f.detectors) fixturesByDetector.get(id)!.push(f);
-    const fixturesBySuite = new Map<string, CatalogFixture[]>(suites.map(s => [s.id, []]));
-    for (const f of fixtures) fixturesBySuite.get(f.category)!.push(f);
-
-    return {
-      fixtures, bySlug: new Map(fixtures.map(f => [f.slug, f])), taxonomy, providerById, familyById, fixturesByFamily,
-      detectorCount: registry.detectors.length,
-      suites, detectors: registry.detectors.map(d => ({ id: d.id, title: d.title })), fixturesByDetector, fixturesBySuite,
+    return assembleCatalog({
+      fixtures, taxonomy, suites, detectors: registry.detectors.map(d => ({ id: d.id, title: d.title })),
       scenarioTitles: new Map(scenarios.map(s => [s.id, s.title])),
-    };
+    });
   });
 }

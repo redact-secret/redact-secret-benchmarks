@@ -70,6 +70,8 @@ jobs:
         run: npm run qualification-inputs:check
       - name: The official-run registry pins the engine, scanners and population evidence, and every recorded run matches (#604)
         run: npm run official-runs:check
+      - name: The qualification authority is one valid committed value, and the new path is still authorised when it is the authority (#608)
+        run: npm run authority:check
       - name: Every taxonomy provider and family has a dossier entry (#473)
         run: npm run dossiers:check
       - name: Peer scanner rules map to real taxonomy families, and the peer registry ranks nothing (#558)
@@ -146,8 +148,13 @@ jobs:
         working-directory: web
       - run: npm run typecheck
         working-directory: web
-      - name: Static export builds and contains the six routes (#547)
-        run: npm run build && npm run check:routes
+      # The committed qualification authority (#608) is `new`, and CI has no qualification view (it is derived from the manual official
+      # runs, never committed), so the credential pages as committed have no data to test in a browser. The browser checks below
+      # therefore run on the export of the legacy pipeline, built by flipping the one committed value in this runner's checkout only
+      # (web/scripts/with-authority.mjs restores it): the oracle and rollback state stays built and tested on every change. The
+      # committed state is built and recounted at the end of this job.
+      - name: Static export of the legacy pipeline (the oracle) builds and contains the six routes (#547, #608)
+        run: node scripts/with-authority.mjs legacy -- sh -c 'npm run build && npm run check:routes'
         working-directory: web
         env:
           WEB_REQUIRE_RUN: '1'
@@ -196,6 +203,14 @@ jobs:
           for _ in $(seq 1 600); do [ -f "$RUNNER_TEMP/e2e.status" ] && break; sleep 2; done
           cat "$RUNNER_TEMP/e2e.log"
           [ "$(cat "$RUNNER_TEMP/e2e.status" 2>/dev/null)" = "0" ]
+      - name: The committed authority builds as committed and says what it has, with no qualification view (#608)
+        # Last, because it replaces the export the browser checks above ran on. Without a view every credential report page names the
+        # new pipeline and says no view backs the build; check:routes recounts exactly that. WEB_REQUIRE_QUALIFICATION is set by a workflow
+        # that publishes the new pipeline, where a missing view must fail the build instead.
+        run: npm run build && npm run check:routes
+        working-directory: web
+        env:
+          WEB_REQUIRE_RUN: '1'
       - name: Playwright traces of the failures
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

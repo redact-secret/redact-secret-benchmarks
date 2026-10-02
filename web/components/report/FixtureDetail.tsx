@@ -42,17 +42,27 @@ export function FixtureDetail({ fixture: f, className }: FixtureDetailProps) {
 
       {f.runProblem && <EmptyState title="No scanner results for these bytes">{f.runProblem}</EmptyState>}
 
-      <Section title="The input and what came back" description="The exact file the scanners read, and the ranges redact-secret reported drawn over it. The values in it are synthetic test data." headingLevel={2}>
+      <Section
+        title={f.input ? 'The input and what came back' : 'What the benchmark expects and what came back'}
+        description={f.input ? 'The exact file the scanners read, and the ranges redact-secret reported drawn over it. The values in it are synthetic test data.' : 'The expected spans and the outcome each scanner recorded for them. The values in the file are synthetic test data.'}
+        headingLevel={2}
+      >
         <Stack gap="lg">
-          <div className={styles.pane}>
-            <p className={styles.label}>Input<small>what the benchmark expects</small></p>
-            <FixtureFileView file={f.input} />
-          </div>
-          <div className={styles.pane}>
-            <p className={styles.label}>redact-secret output<small>the reported ranges drawn over the input</small></p>
-            {f.output ? <FixtureFileView file={f.output} /> : <EmptyState title="No output recorded">{f.outputNote}</EmptyState>}
-          </div>
-          <FixtureKey items={f.key} />
+          {f.input ? (
+            <>
+              <div className={styles.pane}>
+                <p className={styles.label}>Input<small>what the benchmark expects</small></p>
+                <FixtureFileView file={f.input} />
+              </div>
+              <div className={styles.pane}>
+                <p className={styles.label}>redact-secret output<small>the reported ranges drawn over the input</small></p>
+                {f.output ? <FixtureFileView file={f.output} /> : <EmptyState title="No output recorded">{f.outputNote}</EmptyState>}
+              </div>
+              <FixtureKey items={f.key} />
+            </>
+          ) : (
+            <EmptyState title="The bytes are not recorded">{f.bytesNote}</EmptyState>
+          )}
           <div className={styles.pane}>
             <FixtureSpans rows={f.spans} />
             <p className={styles.lede}>{f.spansLede}</p>

@@ -159,3 +159,15 @@ export interface QualificationUnavailableProps {
   reason: string;
   commands: string[];
 }
+
+/** Which pipeline produced the numbers on a credential page (#608). Every value is formatted by `resolvers/run.ts`. */
+export interface PipelineStampProps {
+  pipeline: 'legacy' | 'new';
+  /** `authority` when the committed value names this pipeline; `oracle` when the page is built from the other one, kept for comparison. */
+  role: 'authority' | 'oracle';
+  title: string;
+  text: string;
+  facts: { term: string; value: string; code?: boolean }[];
+  link?: { label: string; href: string };
+  className?: string;
+}

@@ -13,8 +13,18 @@ export const REAL_ROOT = path.resolve(import.meta.dirname, '../../..');
 const made: string[] = [];
 afterAll(() => { for (const dir of made.splice(0)) rmSync(dir, { recursive: true, force: true }); });
 
-/** A root where each `overrides` path is replaced by the given text, or removed when `null`. */
+export const AUTHORITY_FILE = 'benchmarks/qualification-authority.json';
+
+/** The committed authority file with only its value changed: what a test puts in a root to choose the pipeline (#608). */
+export const authorityFile = (authority: 'legacy' | 'new'): string => JSON.stringify({ ...JSON.parse(readFileSync(path.join(REAL_ROOT, AUTHORITY_FILE), 'utf8')), authority });
+
+/**
+ * A root where each `overrides` path is replaced by the given text, or removed when `null`. Unless the test names the authority file
+ * itself, the root is pinned to the legacy pipeline: the tests that use an overlay exercise the legacy data path, and they must do so
+ * whichever value is committed, so the committed value is what flips (and the legacy path stays under test after the switch).
+ */
 export function overlay(overrides: Record<string, string | null>): string {
+  if (!(AUTHORITY_FILE in overrides)) overrides = { ...overrides, [AUTHORITY_FILE]: authorityFile('legacy') };
   const root = mkdtempSync(path.join(tmpdir(), 'web-overlay-'));
   made.push(root);
   const keys = Object.keys(overrides);

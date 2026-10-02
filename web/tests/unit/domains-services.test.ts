@@ -115,7 +115,9 @@ describe('engine qualification', () => {
 
 describe('credential evaluation', () => {
   test('joins the run, the catalog, the findings, and names the profiles the run recorded', async () => {
-    const credential = await (await domains()).loadCredentialEvaluation();
+    // The legacy join is what this test describes; the committed authority is `new`, which reads a qualification view that CI does not build.
+    const authority = { ...JSON.parse(readFileSync(`${REAL}/benchmarks/qualification-authority.json`, 'utf8')), authority: 'legacy' };
+    const credential = await (await domains(overlay({ 'benchmarks/qualification-authority.json': JSON.stringify(authority) }))).loadCredentialEvaluation();
     expect(credential.catalog.fixtures.length).toBeGreaterThan(0);
     expect(credential.findings.issues.length).toBeGreaterThan(0);
     if (credential.run.state === 'measured') expect(credential.profiles?.evaluationProfile).toBeTruthy();

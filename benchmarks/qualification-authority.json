@@ -1,0 +1,25 @@
+{
+  "schema": "redact-secret/qualification-authority/v1",
+  "authority": "new",
+  "legacy": {
+    "role": "oracle",
+    "oracle": {
+      "exitCondition": "At least one further published release is qualified through the new path and compared with the legacy path (parity report regenerated, 0 unexplained), the rollback has been rehearsed against that release, and a removal PR lists each legacy file's callers first.",
+      "decision": "docs/decisions/2026-10-02-switch-credential-qualification-authority-to-the-new-path.md"
+    }
+  },
+  "new": {
+    "release": "@redact-secret/core@0.1.0-beta.12",
+    "acceptedOn": "2026-10-02",
+    "acceptedBy": "owner of the benchmarks repository",
+    "policyRevision": "rs-policy-1:sha256:d41e02b0c82f3ac5c1f7d038fb9321fec3adbd0611a313fc880bdf1b417658c3",
+    "semanticDigests": {
+      "policy-corpus": "sha256:1424acdfaaafb217df82ec8f6746a8eaa36aeaffffcff42821c7609b89bbce76",
+      "public-evidence-snapshot": "sha256:0cd8f6201847efa4ddfa9230d1731be1e66ac201549a9ceb765afcb5de0b447b",
+      "public-evidence-snapshot+methods": "sha256:9e7439a1d2823089693f4dbb2fbb43d8639e72fce185deeaca1a04e3a533d3cb",
+      "regression-corpus": "sha256:934519ac992518a3b17c7a99b81ea2488e9e3974b7199820f977f151c52d2ce0"
+    },
+    "parityReport": "docs/generated/qualification-parity.json",
+    "decision": "docs/decisions/2026-10-02-switch-credential-qualification-authority-to-the-new-path.md"
+  }
+}

@@ -1,3 +1,4 @@
+export { PipelineStamp } from './PipelineStamp';
 export { QualificationCases } from './QualificationCases';
 export { QualificationFamily } from './QualificationFamily';
 export { QualificationOverview, StatusWordBadge } from './QualificationOverview';

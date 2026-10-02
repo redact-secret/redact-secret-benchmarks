@@ -160,7 +160,8 @@ async function main() {
       await mkdir(path.resolve(out), { recursive: true });
       const tarball = path.join(path.resolve(out), archive.release.asset);
       const members = expectedFiles(registry, platform).map(f => f.rel).sort();
-      run('tar', ['-czf', tarball, '-C', layout, ...members]);
+      // COPYFILE_DISABLE keeps macOS tar from adding `._*` metadata members, which the fetch refuses (the first staging publish failed on them).
+      run('tar', ['-czf', tarball, '-C', layout, ...members], { env: { ...process.env, COPYFILE_DISABLE: '1' } });
       await unpack(tarball, path.join(scratch, 'roundtrip'), registry, platform);
       console.log(`Wrote ${tarball}, verified against the registry.`);
       console.log(`Keep it (once, by a maintainer):\n  gh release create ${archive.release.tag} ${tarball} --repo redact-secret/redact-secret-benchmarks --target develop --title "Official run artifacts (CI run ${id})" --notes "The canonical ${platform} RunArtifacts recorded in benchmarks/official-runs.json, kept past the 90-day build artifact retention. Verified by byte digest at every use."`);

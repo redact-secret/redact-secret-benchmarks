@@ -31,7 +31,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright';
 import { checkTarget, pickWorkers } from './layout-check-lib.mjs';
-import { readAuthority } from './lib/authority.mjs';
+import { readAuthority, stampOf } from './lib/authority.mjs';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const basePath = process.env.BASE_PATH ?? '/next';
@@ -47,7 +47,10 @@ const repoRoot = path.resolve(webRoot, '..');
 const taxonomy = JSON.parse(await readFile(path.join(repoRoot, 'benchmarks/support/taxonomy.json'), 'utf8'));
 // Which pages hold data depends on the pipeline the export was built from (#608): the fixtures of the legacy corpora under `legacy`, the cases of the
 // qualification view under `new` (none without a view). The routes below are read from the same source the export was built from.
-const authority = await readAuthority(repoRoot);
+// The routes must follow the export being served, not the committed value: CI builds the legacy export for the browser checks while the committed
+// value is `new`. The stamp on /report/ names the pipeline the export was built from; the committed value is the fallback when there is no export yet.
+const builtFrom = stampOf(await readFile(path.join(webRoot, 'out/report/index.html'), 'utf8').catch(() => ''));
+const authority = builtFrom?.pipeline ?? await readAuthority(repoRoot);
 let view;
 if (authority === 'new') { try { view = JSON.parse(await readFile(path.join(repoRoot, 'public/results/qualification-v1.json'), 'utf8')); } catch { /* no view */ } }
 const viewCases = view?.populations.find(p => p.role === 'floors-and-gates')?.cases ?? [];
@@ -106,6 +109,8 @@ const STATES = [
     { name: 'fixture error', route: `report/fixtures/${smallSuite.id}/?fixture=${firstFixture}`, abort: true, wait: '[data-fixture-state="error"]' },
   ] : []),
 ];
+// A new-pipeline export with no view has no rows or fixture files to hold back: its pages are checked as pages, and the no-view text by check:routes.
+if (authority === 'new' && !viewCases.length) STATES.length = 0;
 // The accuracy pair page (#570): every switch that changes what is drawn, each peer, both data views, the gated and shown policy level and the narrowest scope.
 ROUTES.push('comparison/accuracy', 'comparison/accuracy/?with=trufflehog&level=T2', 'comparison/accuracy/?with=flare-redact&scope=listed', 'comparison/accuracy/?with=openredaction&level=T3',
   'comparison/accuracy/?level=T3&peers=1', 'comparison/accuracy/?with=openredaction&level=T3&scope=listed&peers=1', 'comparison/accuracy/?data=pii', 'comparison/accuracy/?data=pii&with=openredaction');

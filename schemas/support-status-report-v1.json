@@ -107,7 +107,7 @@
           "status": { "enum": ["stable", "provisional", "pending", "unsupported"] },
           "qualificationProfile": { "enum": ["documented", "empirical", "policy-qualified", null] },
           "evidenceTier": { "enum": ["T0", "T1", "T2", "T3", null] },
-          "evidenceBasis": { "enum": ["provider-documented", "independently-corroborated", "empirically-observed", "project-policy", "none"] },
+          "evidenceBasis": { "enum": ["provider-documented", "corroborated", "empirically-observed", "project-policy", "none"] },
           "reasons": { "type": "array", "items": { "type": "string" } },
           "taxonomyFamilies": { "type": "array", "items": { "type": "string" } },
           "evidence": {
@@ -120,7 +120,7 @@
               "detectors": { "type": "array", "items": { "type": "string" } },
               "positiveContractTier": { "enum": ["T0", "T1", "T2", "T3", null] },
               "hasProviderSource": { "type": "boolean" },
-              "evidenceBasis": { "enum": ["provider-documented", "independently-corroborated", "empirically-observed", "project-policy", "none"] },
+              "evidenceBasis": { "enum": ["provider-documented", "corroborated", "empirically-observed", "project-policy", "none"] },
               "observationCount": { "type": "integer", "minimum": 0 },
               "observationSubjects": { "type": "integer", "minimum": 0 },
               "observationIssuanceDates": { "type": "integer", "minimum": 0 },

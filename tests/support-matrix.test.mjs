@@ -9,6 +9,7 @@ import { taxonomy, familiesForDetector } from '../benchmarks/support/taxonomy.ts
 import { contracts } from '../benchmarks/lib/assessment.ts';
 import fixtureIndex from '../benchmarks/fixture-index.json' with { type: 'json' };
 import { fixtureProfileReport } from '../benchmarks/support/profiles.ts';
+import { withMatrixExtras } from './support-matrix-extras.mjs';
 
 const read = async path => JSON.parse(await readFile(new URL(`../${path}`, import.meta.url), 'utf8'));
 const schema = await read('schemas/support-matrix-v1.json');
@@ -132,13 +133,13 @@ test('throws before projection when semantic-index or taxonomy identities are st
 
 test('a synthetic full matrix satisfies its schema', () => {
   const { distribution, stableDistribution, families } = buildSupportMatrix(fullStatusReport());
-  const matrix = {
+  const matrix = withMatrixExtras({
     schemaVersion: 1, taxonomySchemaVersion: taxonomy.schemaVersion,
     sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T00:00:00.000Z', runId: 'test-run', revision: 'abc123', dirty: false, criteriaSchemaVersion: 1,
       fixtureIndex: fixtureIndex.identity, taxonomyDigest: fixtureIndex.sources.taxonomy.digest,
       scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: '2026-09-20T00:00:00.000Z', sourceRunId: 'test-run' } } },
     providerCount: taxonomy.providers.length, familyCount: families.length, distribution, stableDistribution, families,
-  };
+  });
   assert.ok(validate(matrix), JSON.stringify(validate.errors));
 });
 

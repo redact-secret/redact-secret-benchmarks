@@ -7,6 +7,7 @@ import { taxonomy } from '../benchmarks/support/taxonomy.ts';
 import { statusCriteria } from '../benchmarks/support/status.ts';
 import { parseRoute, isAppPath } from '../src/model.mjs';
 import fixtureIndex from '../benchmarks/fixture-index.json' with { type: 'json' };
+import { withMatrixExtras } from './support-matrix-extras.mjs';
 import { credentialSupportPage, piiSupportPage, piiSupportQueryOf, supportDomainOf, supportDomainUnavailablePage } from '../src/pages/pii-support.ts';
 
 const text = html => html.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, ' ');
@@ -41,13 +42,13 @@ function matrixOf(statusFor) {
   });
   const distribution = Object.fromEntries(SUPPORT_STATUSES.map(status => [status, families.filter(f => f.status === status).length]));
   const stableDistribution = { documented: families.filter(f => f.status === 'stable').length, empirical: 0 };
-  return {
+  return withMatrixExtras({
     schemaVersion: 1, taxonomySchemaVersion: taxonomy.schemaVersion,
     sourceReport: { schemaVersion: 1, generatedAt: '2026-09-20T09:00:00.000Z', runId: 'abcdef1234', revision: 'f'.repeat(40), dirty: false, criteriaSchemaVersion: 1,
       fixtureIndex: fixtureIndex.identity, taxonomyDigest: fixtureIndex.sources.taxonomy.digest,
       scannerObservations: { 'redact-secret': { source: 'fresh', observedAt: '2026-09-20T09:00:00.000Z', sourceRunId: 'abcdef1234' } } },
     providerCount: taxonomy.providers.length, familyCount: families.length, distribution, stableDistribution, families,
-  };
+  });
 }
 /** The default view: detector-bearing families provisional, detectorless families unsupported. */
 const mixed = () => matrixOf(family => (family.detectors.length ? 'provisional' : 'unsupported'));
@@ -153,7 +154,7 @@ test('empirical stable is labeled explicitly, retains T2, and is counted separat
 test('corroborated empirical stable shows its basis, and a basis its records cannot carry is refused', () => {
   const matrix = mixed();
   const entry = matrix.families.find(family => family.detectors.length);
-  Object.assign(entry, { status: 'stable', reason: null, evidenceTier: 'T2', evidenceBasis: 'independently-corroborated', qualificationProfile: 'empirical', providerSource: null });
+  Object.assign(entry, { status: 'stable', reason: null, evidenceTier: 'T2', evidenceBasis: 'corroborated', qualificationProfile: 'empirical', providerSource: null });
   entry.empiricalEvidence = { observations: 0, subjects: 0, issuanceDates: 0, corroborationReferences: 4, corroborationOwners: 3, corroborationClasses: ['peer-scanner-rule', 'provider-owned-code'], contradictions: 0, boundedContradictions: 1, uncertainty: 'Corroborated, never provider-issued.', supportedContexts: ['assignment'], mode: 'shape', supportsBareValues: true };
   matrix.distribution.provisional--;
   matrix.distribution.stable++;
@@ -162,7 +163,7 @@ test('corroborated empirical stable shows its basis, and a basis its records can
   const plain = text(supportPage(matrix, null));
   assert.ok(plain.includes('Stable · Empirically qualified'));
   assert.ok(plain.includes('T2 · Tool-corroborated'), 'the tier stays T2');
-  assert.ok(plain.includes('Corroborated by external sources (no provider-issued observation required) independently-corroborated'));
+  assert.ok(plain.includes('Evidence basis Corroborated corroborated'));
   assert.ok(plain.includes('4 references · 3 owners · peer-scanner-rule, provider-owned-code · 0 unresolved / 1 bounded contradictions'));
   assert.ok(plain.includes('0 observations · 0 subjects · 0 issuance dates'));
   const thin = structuredClone(matrix);

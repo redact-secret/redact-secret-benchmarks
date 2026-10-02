@@ -5,13 +5,16 @@ import type { SupportMatrixEntry } from '../benchmarks/support/matrix.ts';
 import { statusCriteria, type SupportStatus } from '../benchmarks/support/status.ts';
 import { fixtureProfiles } from '../benchmarks/support/profiles.ts';
 import fixtureIndex from '../benchmarks/fixture-index.json';
+import detectorFindingTypes from '../benchmarks/detector-finding-types.json';
+import type { FindingTypeKey, FindingTypeSource } from '../benchmarks/support/finding-types.ts';
+import type { PiiMatrixSection } from '../benchmarks/support/pii-families.ts';
 
 /** An empirical entry's basis must be one its recorded evidence can carry, never an asserted label. */
 function empiricalBasisHolds(entry: SupportMatrixEntry): boolean {
   const e = entry.empiricalEvidence, s = statusCriteria.stable.empirical;
   if (!e || e.contradictions > s.unresolvedContradictions.value) return false;
   if (entry.evidenceBasis === 'empirically-observed') return e.observations >= s.minimumObservations.value && e.subjects >= s.minimumSubjects.value && e.issuanceDates >= s.minimumIssuanceDates.value;
-  if (entry.evidenceBasis === 'independently-corroborated') return e.corroborationReferences >= s.corroborated.minimumReferences.value && e.corroborationOwners >= s.corroborated.minimumOwners.value;
+  if (entry.evidenceBasis === 'corroborated') return e.corroborationReferences >= s.corroborated.minimumReferences.value && e.corroborationOwners >= s.corroborated.minimumOwners.value;
   return false;
 }
 
@@ -42,8 +45,17 @@ export interface SupportMatrixFile {
   familyCount: number;
   distribution: Record<SupportStatus, number>;
   stableDistribution: { documented: number; empirical: number; 'policy-qualified'?: number };
-  families: SupportMatrixEntry[];
+  families: SupportMatrixFileEntry[];
+  /** Revision of the product detector inventory the rows' `findingTypes` were read from (#647). */
+  findingTypeSource: FindingTypeSource;
+  /** The opt-in PII families and the one qualification they come from; apart from, and never counted in, the credential families (#647). */
+  piiQualification: PiiMatrixSection['piiQualification'];
+  piiDistribution: PiiMatrixSection['piiDistribution'];
+  piiFamilies: PiiMatrixSection['piiFamilies'];
 }
+
+/** One published family row: the build's entry plus its finding-type key (`null` when no recorded source grounds one). */
+export type SupportMatrixFileEntry = SupportMatrixEntry & { findingTypes: FindingTypeKey[] | null };
 
 /**
  * The only support vocabulary the UI may render, taken from the artifact's own
@@ -59,6 +71,43 @@ export function countStatuses(families: SupportMatrixEntry[]): Record<SupportSta
   const counts = Object.fromEntries(SUPPORT_STATUSES.map(status => [status, 0])) as Record<SupportStatus, number>;
   for (const entry of families) counts[entry.status]++;
   return counts;
+}
+
+const snapshotTypes = detectorFindingTypes.detectors as Record<string, string[]>;
+
+/** A finding-type key names only (detector, type) pairs the product inventory holds, and an empty row has none (#647). */
+function findingTypesProblem(entry: SupportMatrixFileEntry): string | null {
+  if (entry.findingTypes === null) return null;
+  if (!entry.detectors.length) return entry.findingTypes.length ? `Support matrix entry ${entry.family} has no detector but a finding-type key` : null;
+  if (!entry.findingTypes.length) return `Support matrix entry ${entry.family} has a detector but an empty finding-type key`;
+  for (const key of entry.findingTypes) {
+    if (!snapshotTypes[key.detector]?.includes(key.type)) return `Support matrix entry ${entry.family} keys a finding type the product inventory does not hold: ${key.detector} ${key.type}`;
+    if (key.basis !== 'arrival-finding-type-table' && key.detector !== entry.detectors[0]) return `Support matrix entry ${entry.family} keys another detector's finding type`;
+  }
+  return null;
+}
+
+/**
+ * The PII rows stay apart from the credential families, carry only what the recorded qualification can, and never read as
+ * re-qualified until a requalification names a core commit (#647).
+ */
+function piiFamiliesProblem(matrix: SupportMatrixFile): string | null {
+  const rows = matrix.piiFamilies;
+  if (new Set(rows.map(row => row.family)).size !== rows.length) return 'Support matrix repeats a PII family';
+  const counted = { stable: 0, provisional: 0, pending: 0, unsupported: 0 };
+  for (const row of rows) counted[row.status]++;
+  if (SUPPORT_STATUSES.some(status => matrix.piiDistribution[status] !== counted[status])) return 'Support matrix PII distribution does not recount from its PII families';
+  const credential = new Set(matrix.families.map(entry => entry.family));
+  for (const row of rows) {
+    if (credential.has(row.family)) return `Support matrix lists PII family ${row.family} among the credential families`;
+    const protectedMet = row.gates.protected.state === 'met';
+    if (row.status === 'provisional' && (!protectedMet || row.failedGates.length || row.gates.public.notMet.length || row.gates.public.unresolved.length)) return `Support matrix PII family ${row.family} is provisional with a gate not met`;
+    if (row.status === 'pending' && protectedMet && !row.failedGates.length) return `Support matrix PII family ${row.family} is pending with no failed gate`;
+    if (protectedMet === row.failedGates.includes('protected-partition')) return `Support matrix PII family ${row.family} disagrees with its protected gate`;
+  }
+  const q = matrix.piiQualification;
+  if ((q.requalification.requalifiedOnCoreCommit === null) !== (q.requalification.state === 'not-requalified')) return 'Support matrix PII requalification state disagrees with its core commit';
+  return null;
 }
 
 /**
@@ -93,6 +142,8 @@ export function supportMatrixProblem(value: unknown): string | null {
     if (matrix.stableDistribution.documented !== stableProfiles.documented || matrix.stableDistribution.empirical !== stableProfiles.empirical ||
         (matrix.stableDistribution['policy-qualified'] ?? 0) !== stableProfiles['policy-qualified'] ||
         stableProfiles.documented + stableProfiles.empirical + stableProfiles['policy-qualified'] !== counted.stable) return 'Support matrix stable distribution does not recount from its families';
+    const piiIssue = piiFamiliesProblem(matrix);
+    if (piiIssue) return piiIssue;
     const known = new Map(taxonomy.families.map(f => [f.id, f]));
     if (matrix.families.length !== known.size || matrix.providerCount !== taxonomy.providers.length) return 'Stale support matrix: the taxonomy changed';
     for (const entry of matrix.families) {
@@ -105,11 +156,13 @@ export function supportMatrixProblem(value: unknown): string | null {
       if (entry.detectors.length && !entry.profileCoverage) return `Support matrix entry ${entry.family} has a detector but no fixture profile coverage`;
       if (entry.profileCoverage && entry.profileCoverage.profilesVersion !== fixtureProfiles.profilesVersion) return `Support matrix entry ${entry.family} was measured under different fixture profiles`;
       if (!entry.detectors.length && (entry.evidenceTier || entry.evidenceBasis !== 'none' || entry.qualificationProfile || entry.twinCoverage || entry.unresolvedCriticalItems || entry.empiricalEvidence || entry.policyQualification || entry.fixtureProfile || entry.profileCoverage)) return `Support matrix entry ${entry.family} has no detector but carries evidence`;
+      const keyIssue = findingTypesProblem(entry);
+      if (keyIssue) return keyIssue;
       if (entry.detectors.length && !entry.evidenceTier) return `Support matrix entry ${entry.family} has a detector but no format evidence tier`;
       if (entry.status === 'stable' && !entry.qualificationProfile) return `Support matrix entry ${entry.family} is stable without a qualification profile`;
       if (entry.status !== 'stable' && entry.qualificationProfile) return `Support matrix entry ${entry.family} is not stable but carries a qualification profile`;
       // Empirical stable stays T2, on a basis its own records carry: provider-issued
-      // observations, or independent corroboration (#177 as amended 2026-09-24).
+      // observations, or corroboration (#177 as amended 2026-09-24).
       if (entry.qualificationProfile === 'empirical' && (entry.evidenceTier !== 'T2' || !empiricalBasisHolds(entry))) return `Support matrix entry ${entry.family} masquerades as empirically qualified`;
       if (entry.qualificationProfile === 'documented' && entry.evidenceTier !== 'T1') return `Support matrix entry ${entry.family} masquerades as documented`;
       if (entry.qualificationProfile === 'policy-qualified' && (entry.evidenceTier !== 'T3' || entry.evidenceBasis !== 'project-policy' ||

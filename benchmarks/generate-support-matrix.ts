@@ -4,6 +4,8 @@ import { fileURLToPath } from 'node:url';
 import type { SupportStatusReport } from './support/matrix.ts';
 import { credentialDomain } from './evaluation/domains/credential/contract.ts';
 import { taxonomy } from './support/taxonomy.ts';
+import { findingTypeSource, findingTypesFor } from './support/finding-types.ts';
+import { buildPiiMatrixSection } from './support/pii-families.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 
@@ -45,7 +47,13 @@ async function main() {
     familyCount: families.length,
     distribution,
     stableDistribution,
-    families,
+    // The finding-type key (#647) is added here, not in `buildSupportMatrix`: it is a join key derived from the product's finding
+    // types, not a status input, so the qualification view's matrix (compared leaf by leaf in the parity report) is unchanged.
+    families: families.map(family => ({ ...family, findingTypes: findingTypesFor(family.detectors) })),
+    findingTypeSource,
+    // The six opt-in PII families at their Beta.11 qualification (#647). Beside the credential families, never counted in
+    // `providerCount`, `familyCount`, `distribution` or `stableDistribution`.
+    ...(await buildPiiMatrixSection(root)),
   };
   const target = path.resolve(root, typeof options.output === 'string' ? options.output : 'results-output/support-matrix.json');
   await mkdir(path.dirname(target), { recursive: true });

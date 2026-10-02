@@ -96,6 +96,7 @@ function floors(): string {
 function legend(matrix: SupportMatrixFile): string {
   return `<section class="section"><h2 class="h2-compact">What each status means</h2>
     <p class="small">Each status below is decided from evidence by <code>classifyFamilySupport</code> and carried into the matrix verbatim; none of it is typed into this page. A family's status moves when its evidence moves.</p>
+    <p class="small"><b>Corroborated:</b> checked against other tools and community sources; the comparison is run by this project.</p>
     ${statusesOf(matrix).map(status => {
       const copy = SUPPORT_STATUS_COPY[status];
       return `<span id="status-${e(status)}"></span><div class="chg" data-support-status="${e(status)}">${statusMark(copy.kind, copy.word)}<span>${e(copy.meaning)}<small>${e(copy.rationale)}</small></span><span class="d">${families(matrix.distribution[status])}</span></div>`;

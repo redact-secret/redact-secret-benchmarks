@@ -21,13 +21,13 @@ import { policyGateReasons, type PolicyBehaviorAggregate } from './policy-qualif
  * necessary for `stable`; it is never sufficient on its own.
  */
 export type SupportStatus = 'stable' | 'provisional' | 'pending' | 'unsupported';
-export type EvidenceBasis = 'provider-documented' | 'independently-corroborated' | 'empirically-observed' | 'project-policy' | 'none';
+export type EvidenceBasis = 'provider-documented' | 'corroborated' | 'empirically-observed' | 'project-policy' | 'none';
 export type QualificationProfile = 'documented' | 'empirical' | 'policy-qualified';
 
 /** Reader-facing names for each evidence basis; the UI shows the machine value beside it. */
 export const EVIDENCE_BASIS_LABEL: Record<EvidenceBasis, string> = {
   'provider-documented': 'Provider-documented',
-  'independently-corroborated': 'Corroborated by external sources (no provider-issued observation required)',
+  corroborated: 'Corroborated',
   'empirically-observed': 'Provider-issued observations',
   'project-policy': 'Project policy',
   none: 'None',
@@ -216,7 +216,7 @@ export function empiricalRoute(evidence: RouteEvidence, criteria: StatusCriteria
 }
 
 /** The evidence basis a T2 route implies: observations only when the #205 bar is met; otherwise corroboration, the T2 default. */
-export const basisForRoute = (route: EmpiricalRoute): EvidenceBasis => route.route === 'observed' ? 'empirically-observed' : 'independently-corroborated';
+export const basisForRoute = (route: EmpiricalRoute): EvidenceBasis => route.route === 'observed' ? 'empirically-observed' : 'corroborated';
 
 function qualificationFailures(evidence: FamilySupportEvidence, criteria: StatusCriteria): { profile: QualificationProfile | null; reasons: string[] } {
   const check = (reasons: string[], id: string, point: number, threshold: Threshold) => {
@@ -235,7 +235,7 @@ function qualificationFailures(evidence: FamilySupportEvidence, criteria: Status
   if (evidence.positiveContractTier === 'T2') {
     const p = criteria.stable.empirical, reasons: string[] = [];
     const route = empiricalRoute(evidence, criteria);
-    if (evidence.evidenceBasis !== 'empirically-observed' && evidence.evidenceBasis !== 'independently-corroborated')
+    if (evidence.evidenceBasis !== 'empirically-observed' && evidence.evidenceBasis !== 'corroborated')
       reasons.push(`empirical.evidenceBasis: ${evidence.evidenceBasis} — ${p.rationale}`);
     else if (evidence.evidenceBasis !== basisForRoute(route))
       reasons.push(`empirical.evidenceBasis: ${evidence.evidenceBasis} does not match the evidence (${basisForRoute(route)}) — a basis is derived from the records, never asserted`);

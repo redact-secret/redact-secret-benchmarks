@@ -134,7 +134,7 @@ test('empirical profiles: T2 meeting every cell stays provisional without corrob
   assert.equal(result.status, 'provisional');
   assert.ok(result.reasons.some(r => /empirical.corroborated.minimumReferences: 0 < 3/.test(r)), 'no corroboration, no qualifying route');
   assert.ok(!result.reasons.some(r => /not enforced yet/.test(r)), 'the #177/#205 gates are enforced by the classifier now');
-  const corroborated = { corroborationReferences: 3, corroborationOwners: 3, corroborationClasses: ['peer-scanner-rule', 'provider-example'], evidenceBasis: 'independently-corroborated', uncertainty: 'Corroborated only.', supportedContexts: ['assignment'], empiricalMode: 'shape', positiveCases: 10, positiveAxes: 6, controlAxes: 5, benignAxes: 5, totalFixtures: 40 };
+  const corroborated = { corroborationReferences: 3, corroborationOwners: 3, corroborationClasses: ['peer-scanner-rule', 'provider-example'], evidenceBasis: 'corroborated', uncertainty: 'Corroborated only.', supportedContexts: ['assignment'], empiricalMode: 'shape', positiveCases: 10, positiveAxes: 6, controlAxes: 5, benignAxes: 5, totalFixtures: 40 };
   assert.equal(classifyFamilySupport({ ...t2, ...corroborated, ...meets }).status, 'stable', 'the claimed profile, corroboration and zero failures qualify it');
   assert.ok(!result.reasons.some(r => /requires T2 evidence/.test(r)), 'T2 satisfies the empirical tier requirement');
   const t1 = classifyFamilySupport({ ...evidence(), ...meets });

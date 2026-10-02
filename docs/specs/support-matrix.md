@@ -76,6 +76,54 @@ measured fixture cells, axis counts, the profiles whose cells are met, and the
 remaining debt against its target profile; `null` when no detector exists, and
 absent from artifacts generated before profiles existed.
 
+## Finding-type key (#647)
+
+Every family carries `findingTypes`, the `(detector, type, basis)` pairs its evidence covers, so a shared detector joins to its
+rows per finding type. A matrix row is keyed by a detector id that is a registered product detector or an arrival family the
+adapter labels by finding type; 16 registered detectors emit several types, and two rows can share one detector.
+
+| Row | `findingTypes` | `basis` |
+| --- | --- | --- |
+| No detector | `[]` (nothing is emitted) | none |
+| `detectors[0]` is the value of `arrivalFindingTypes[d][t]` (`scanners/families.mjs`) | `[{ detector: d, type: t }]` | `arrival-finding-type-table` |
+| `detectors[0]` is a registered detector with one finding type | that type | `sole-type-of-detector` |
+| `detectors[0]` is a registered detector with several types | the types `arrivalFindingTypes[detector]` does not take away, which `findingFamily` leaves under the detector id | `remaining-types-of-detector` |
+| none of the above | `null`: unset, never guessed | none |
+
+Sources are `benchmarks/detector-finding-types.json` (the core's `docs/coverage/detector-inventory.json` at one recorded
+revision, `findingTypeSource` in the matrix) and the reviewed `arrivalFindingTypes` table
+([decision](../decisions/2026-09-24-map-product-finding-types-to-arrival-families.md)). Fixture content and scanner output
+are not sources. At the Beta.12 revision `4227160c` all 129 detector-bearing rows are grounded (104 sole, 25 table, 23
+remainder) and the 141 finding types are all owned by some row; no row is unset. Rows that share a detector carry the same
+remainder. Refresh the snapshot with `node scripts/refresh-detector-finding-types.mjs --core=<checkout> --revision=<sha>`
+whenever `benchmarks/detectors.json` moves to a new product revision; `--check` fails when it is stale.
+
+The key is added by `benchmarks/generate-support-matrix.ts`, not by `buildSupportMatrix`, so the qualification view's matrix
+(compared leaf by leaf in the parity report) is unchanged.
+
+## PII rows (#647)
+
+`piiQualification`, `piiDistribution` and `piiFamilies` carry the six opt-in PII families beside the credential families. They are
+never counted in `providerCount`, `familyCount`, `distribution` or `stableDistribution` (the PII domain keeps its own
+denominator), and no page renders them.
+
+- **Source.** The reviewed `pii-v1` projection `benchmarks/evaluation/domains/pii/protected-support-bindings-v1.json` (entry
+  `beta11-8b6a5fd-pii-protected`), checked field by field against the published aggregate protected disposition
+  `evidence/901/428/core-8b6a5fde52ec/pii-beta11-protected-disposition-v2.json` and the freeze next to it
+  (`benchmarks/support/pii-families.ts`). A disagreement throws. The binder `bindPiiProtectedSupport` is not called: it re-derives the
+  disposition from the sealed protected partition, which the matrix generator never opens.
+- **Statuses.** `provisional` for network-address, email, payment-card, IBAN and phone (country code `+1`, NANP, only); `pending` for
+  us-ssn (United States only), failed gate `protected-partition` with reason `protected-gates-not-met:identity-only-classification`.
+  Each row also carries the 20 public gates met, the accepted `profile-cost` tradeoff, and the epoch, aggregate and trust commitments.
+  None is `stable`; the schema fixes `stable` and `unsupported` at 0.
+- **Identity.** `piiQualification.qualifiedAt` is core `8b6a5fde52ecb4dfce13f09c7a947062d21483c7`, epoch `17dae942ee4b` (the name of
+  the sealed partition's record, read as a string), population plan set `b11-population-v2`; `benchmarks.recordRevision` is the
+  benchmarks merge `be0fb9f3` that put the record on `develop`, and `freezeBaseRevision` is the benchmarks revision the freeze was
+  built on.
+- **Not re-qualified.** `requalification.state` is `not-requalified` and `requalifiedOnCoreCommit` is `null`. The statuses describe
+  the Beta.11 code; the core email, IBAN, phone, payment-card and us-ssn code changed afterwards. Re-qualification on a later core
+  commit sets the commit and the state together, and the model refuses one without the other.
+
 ## Failing loudly
 
 `buildSupportMatrix` throws, rather than defaulting an unclassifiable entry to

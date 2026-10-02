@@ -103,7 +103,7 @@ Qualification fails closed. A family stays provisional on any of these:
 Observations, when present, are validated exactly as #205 defines. A partial
 observation set neither qualifies a family nor blocks it. The evidence basis
 reads `empirically-observed` only once the observation bar is met, and
-`independently-corroborated` otherwise. The tier stays T2 either way.
+`corroborated` otherwise. The tier stays T2 either way.
 
 Contradictions stay committed and visible in the family record. Resolve a
 discrepancy in the evidence rather than deleting the dissenting observation or

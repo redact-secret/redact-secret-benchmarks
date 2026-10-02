@@ -63,6 +63,7 @@ public plugin compatibility remain outside this initial implementation.
 ```text
 benchmarks/categories.json     Case suites and corpus registry
 benchmarks/detectors.json      Core detector taxonomy snapshot
+benchmarks/detector-finding-types.json Finding types per detector, from the core inventory (matrix finding-type key)
 benchmarks/fixture-detectors.json Explicit fixture-to-detector assignments
 benchmarks/run.ts             Materialization, execution, provenance, atomic reports
 benchmarks/lib/lattice.ts     Per-span outcome lattice, byte accounting, v1.0 group aggregation (frozen scorer)

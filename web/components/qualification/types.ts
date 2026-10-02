@@ -73,6 +73,8 @@ export interface QualificationOverviewProps {
   populations: { title: string; description: string; rows: PopulationRow[] };
   scanners: { title: string; description: string; rows: ScannerRow[] };
   families: { title: string; description: string; rows: FamilyRow[]; undetected: { title: string; text: string; items: string[] } };
+  /** The cases no detector family claims, per population, on pages of their own. */
+  unattributed: { title: string; description: string; href: string; label: string };
   gaps: { title: string; description: string; rows: GapRow[] };
 }
 
@@ -95,6 +97,55 @@ export interface QualificationFamilyProps {
   evidence: { title: string; description: string; facts: IdentityItem[] };
   gates: { title: string; description: string; rows: { key: string; population: string; twins: string; benign: string }[] };
   observations: { title: string; description: string; rows: CountsRow[]; empty: string };
+  /** The family's case rows, per population (#606), on pages of their own. */
+  cases: { title: string; description: string; href: string; label: string };
+}
+
+/** One scanner's word for one case. `state` carries the dashed "not measured" and "pending" looks; a word is never only a colour. */
+export interface CaseCell {
+  scanner: string;
+  /** "EXACT", "EXACT 2 · MISS 1", "Flagged", "Not flagged", "Pending", "Not measured" or "Not run". */
+  word: string;
+  state: 'measured' | 'pending' | 'not-measured';
+}
+
+export interface CaseRowProps {
+  key: string;
+  id: string;
+  kind: string;
+  tier: string;
+  group: string;
+  /** The artifact's own label for the case, never a support status. "Not recorded" when it carries none. */
+  evidenceClass: string;
+  cells: CaseCell[];
+  /** The case's own facts and what each scanner recorded, shown when the row is opened. */
+  detail: IdentityItem[];
+}
+
+export interface CaseSection {
+  id: string;
+  role: string;
+  /** "Cases 1 to 100 of this population for this scope": a count of one population, never a sum. */
+  range: string;
+  /** Where the population's evidence came from, so every row can be traced to a run. */
+  identity: IdentityItem[];
+  rows: CaseRowProps[];
+}
+
+export interface QualificationCasesProps {
+  breadcrumb: Crumb[];
+  eyebrow: string;
+  title: string;
+  lede: string;
+  meta: MetaItem[];
+  note: { title: string; text: string };
+  /** Scanner column order. */
+  scanners: string[];
+  sections: CaseSection[];
+  /** Shown when no population has a case in this scope. */
+  empty: string;
+  pager: { page: number; pageCount: number; previousHref?: string; nextHref?: string };
+  back: { href: string; label: string };
 }
 
 export interface QualificationUnavailableProps {

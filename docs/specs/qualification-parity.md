@@ -111,7 +111,8 @@ npm run qualification:parity -- --legacy-status results-output/support-status.js
   --public-snapshot <dir>/public-evidence-snapshot/evidence/credential-eval-corpus-snapshot.json [--strict]
 ```
 
-The same inputs write the same bytes: no clock, host or path is in the report. The report names each compared artifact's
+The same inputs write the same bytes: no clock, host or path is in the report. The report reads the view's counts, families and per-population artifact identities; the per-case rows the view
+gained for #606 (`populations[].cases`) are not read, and regenerating the report from the same canonical artifacts after they were added reproduced it byte for byte. The report names each compared artifact's
 recorded run and says so when one is not a canonical run. Re-run it after a new official run or a repin; a different
 configuration (for example one that runs the methods) is a different comparison, not a re-verification.
 

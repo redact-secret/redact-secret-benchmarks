@@ -35,8 +35,25 @@ export interface ScannerCounts {
 export interface PopulationSlice { population: string; role: string; scanners: { scanner: string; counts: ScannerCounts }[] }
 export interface GateRow { population: string; twinPairs: number; twinFailures: number; benignCases: number; benignFalseAlarms: number }
 export interface ArtifactScanner { id: string; version: string | null; mode: string; build: string | null; configurationHash: string; status: string }
+/** One scanner's measurement of one case as the artifact recorded it (the adapter's `CaseScannerResult`). A field that does not apply to the measurement is absent. */
+export interface CaseScannerResult {
+  scanner: string; measurement: 'positive' | 'control' | 'pending' | 'not-measured'; observed: number;
+  outcomes?: Outcome[]; leakedBytes?: number; collateralBytes?: number;
+  flagged?: boolean; findings?: number; coDetected?: boolean; status?: string;
+}
+/** One corpus case of a population (the adapter's `CaseRow`). No case content is carried. */
+export interface CaseRow {
+  id: string; path: string; kind: 'must-redact' | 'must-not-flag' | 'policy'; tier: string; group: string;
+  family: string | null; taxonomy: string | null; evidenceClass: string | null; targets: string[];
+  twinOf: string | null; twinMutationKind: string | null;
+  detectors: string[]; attribution: 'snapshot' | 'overlay-detectors' | 'twin-parent' | 'none';
+  expected: { start: number; end: number; role: string; envelope?: { start: number; end: number } }[];
+  results: CaseScannerResult[];
+}
 export interface PopulationView {
   population: string; role: string; denominator: string; runClass: 'public' | 'internal';
+  /** Every case of the population with each scanner's measurement, sorted by id (#606). */
+  cases: CaseRow[];
   artifact: {
     artifactDigest: string; semanticDigest: string; configHash: string; protocolVersion: string; engineRunClass?: string; publication?: string;
     engine: { name: string; version: string }; methods: string[]; caseCount: number;
@@ -87,6 +104,10 @@ export function qualificationShapeProblem(value: unknown): string | null {
   if (!Array.isArray(value.populations) || value.populations.length === 0) return 'populations is empty';
   for (const p of value.populations) {
     if (!object(p) || typeof p.population !== 'string' || !object(p.artifact) || !object(p.artifact.evidence) || !Array.isArray(p.artifact.scanners) || !Array.isArray(p.artifact.methods)) return 'a population has no artifact identity';
+    if (!Array.isArray(p.cases)) return `population ${p.population} has no cases: the view predates the case rows, rebuild it with npm run qualification:view`;
+    for (const c of p.cases) {
+      if (!object(c) || typeof c.id !== 'string' || typeof c.kind !== 'string' || !Array.isArray(c.detectors) || !Array.isArray(c.expected) || !Array.isArray(c.results) || c.results.some((r: unknown) => !object(r) || typeof (r as Record<string, unknown>).scanner !== 'string' || typeof (r as Record<string, unknown>).measurement !== 'string')) return `population ${p.population} has a case row that is not readable`;
+    }
   }
   if (!Array.isArray(value.scanners) || !object(value.distribution) || !object(value.stableDistribution)) return 'scanners or the status distribution is missing';
   if (!Array.isArray(value.families) || !Array.isArray(value.undetected) || !Array.isArray(value.knownGaps) || !Array.isArray(value.unmappedFamilies)) return 'families, undetected, knownGaps or unmappedFamilies is missing';

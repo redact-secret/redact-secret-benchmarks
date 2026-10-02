@@ -201,9 +201,27 @@ Top level: `schema` (`redact-secret/qualification-view/v1`), `adapter`, `publica
   `scanners[]` of `{scanner, counts}`. `counts` are `cases`, `pending`, `notMeasured`, `positives` (`must-redact`,
   `policy`: spans, outcomes, leaked and collateral bytes), `benign` (`cases`, `flagged`, `findings`) and `twins`
   (`pairs`, `discriminated`, `flagged`, `coDetected`).
+- `populations[].cases[]` (#606, additive within v1): every corpus case of the population, sorted by id, with what the artifact recorded and what each scanner did, for the Next case pages
+  (see "Case rows"). No count or status is derived from it.
 - `undetected[]`: taxonomy families with no detector. `knownGaps[]`: the join described above.
 
 A page that shows a count shows it with its population. No field is a sum across populations or scanners.
+
+## Case rows
+
+`populations[].cases[]` has one row per case of the population's artifact, keyed by `(population, id)` (the same id in two populations is two rows), sorted by id:
+`id`, `path`, `kind`, `tier`, `group`, `family` (the corpus's own family, a taxonomy family or detector id, not the product family), `taxonomy`, `evidenceClass`, `targets`, `twinOf`,
+`twinMutationKind`, `expected` (start, end, role and the envelope when the corpus records one), `detectors` and `attribution` (the product detector families the case counts under and which
+step of the attribution made it: `snapshot`, `overlay-detectors`, `twin-parent` or `none`; empty `detectors` is an unattributed case), and `results[]`, one entry per scanner that ran the population in
+`scanners` order.
+
+A result is the artifact's own measurement and is never re-scored: `measurement` (`positive`, `control`, `pending`, `not-measured`), `observed` (findings reported), and only the fields that measurement has:
+`outcomes`, `leakedBytes`, `collateralBytes` for a positive; `flagged`, `findings` and `coDetected` for a control; `status` (the scanner status that prevented the measurement) for a case that was not measured. A field that does
+not apply is absent, so a pending or unmeasured case never reads as zero. The evidence class is the artifact's label and is never a support status or a route. No case content is carried.
+
+The rows are additive: removing `cases` from a view gives the view the adapter wrote before them, value for value, and the policy revision does not change (`adapter.version` stays 1; the schema tag stays `v1`).
+A view without `cases` is refused by the Next reader as incompatible, with the command that rebuilds it. The size is about 6 MB for the canonical populations (about 300 KB compressed), generated and never committed
+([ADR](../decisions/2026-10-01-carry-per-case-rows-in-the-qualification-view-and-page-them-by-scope.md)).
 
 ## Tests
 

@@ -16,13 +16,13 @@ export type Measurement =
   | { type: 'positive'; span_outcomes: Outcome[]; leaked_bytes: number; collateral_bytes: number }
   | { type: 'control'; flagged: boolean; findings: number; co_detected?: boolean }
   | { type: 'pending' }
-  | { type: 'not-measured'; reason?: string };
+  | { type: 'not-measured'; status?: string };
 export interface ObservedFinding { start: number; end: number; family?: string | null; action?: string | null }
 export interface CaseResult {
   case_id: string; path: string; kind: 'must-redact' | 'must-not-flag' | 'policy'; tier: 'T0' | 'T1' | 'T2' | 'T3'; group: string;
   family?: string | null; targets?: string[]; taxonomy?: string | null; evidence_class?: string | null;
   twin_of?: string | null; twin_mutation_kind?: string | null;
-  expected: { start: number; end: number; role: string }[]; actual: ObservedFinding[]; measurement: Measurement;
+  expected: { start: number; end: number; role: string; envelope?: { start: number; end: number } }[]; actual: ObservedFinding[]; measurement: Measurement;
 }
 export interface ScannerIdentity {
   id: string; version: string | null; mode: string; adapter: { id: string; version: string }; configuration_hash: string;

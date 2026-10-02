@@ -60,7 +60,7 @@ const gapColumns: DataTableColumn<GapRow>[] = [
  * one population at a time. The support status is the product's own qualification and is shown apart from the scanner
  * observations on each family page; no count here is a sum across populations or scanners.
  */
-export function QualificationOverview({ breadcrumb, eyebrow, title, lede, meta, boundary, summary, identity, populations, scanners, families, gaps }: QualificationOverviewProps) {
+export function QualificationOverview({ breadcrumb, eyebrow, title, lede, meta, boundary, summary, identity, populations, scanners, families, unattributed, gaps }: QualificationOverviewProps) {
   return (
     <Stack gap="xl" className={styles.overview}>
       <PageHead before={<Breadcrumb items={breadcrumb} />} eyebrow={eyebrow} title={title} lede={lede} meta={meta} />
@@ -91,6 +91,11 @@ export function QualificationOverview({ breadcrumb, eyebrow, title, lede, meta, 
           <h3 className={styles.h3}>{families.undetected.title}</h3>
           <p className={styles.muted}>{families.undetected.text}</p>
           {families.undetected.items.length > 0 && <p className={styles.chips}>{families.undetected.items.map(i => <Chip key={i}>{i}</Chip>)}</p>}
+        </div>
+        <div className={cx(styles.undetected)}>
+          <h3 className={styles.h3}>{unattributed.title}</h3>
+          <p className={styles.muted}>{unattributed.description}</p>
+          <p className={styles.muted}><Link href={unattributed.href}>{unattributed.label}</Link></p>
         </div>
       </Section>
 

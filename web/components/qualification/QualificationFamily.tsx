@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { DataTable, KeyValueList } from '../data';
 import type { DataTableColumn } from '../data';
 import { Chip, Note, StatusBadge } from '../feedback';
@@ -31,7 +32,7 @@ const gateColumns: DataTableColumn<QualificationFamilyProps['gates']['rows'][num
  * the scanners' observations follow, per population and per scanner, as counts that carry no status. "Not measured" is a
  * dashed state, never a zero or a miss, and a population with no case for the family says so rather than showing zeros.
  */
-export function QualificationFamily({ breadcrumb, eyebrow, title, lede, meta, status, evidence, gates, observations }: QualificationFamilyProps) {
+export function QualificationFamily({ breadcrumb, eyebrow, title, lede, meta, status, evidence, gates, observations, cases }: QualificationFamilyProps) {
   return (
     <Stack gap="xl" className={styles.family}>
       <PageHead before={<Breadcrumb items={breadcrumb} />} eyebrow={eyebrow} title={title} lede={lede} meta={meta} />
@@ -63,6 +64,10 @@ export function QualificationFamily({ breadcrumb, eyebrow, title, lede, meta, st
 
       <Section title={observations.title} description={observations.description}>
         <DataTable<CountsRow> columns={countColumns} rows={observations.rows} getRowKey={r => r.key} caption={observations.title} wide empty={observations.empty} />
+      </Section>
+
+      <Section title={cases.title} description={cases.description}>
+        <p className={styles.muted}><Link href={cases.href}>{cases.label}</Link></p>
       </Section>
     </Stack>
   );

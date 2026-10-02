@@ -205,7 +205,8 @@
           "runClass",
           "artifact",
           "unattributed",
-          "aggregates"
+          "aggregates",
+          "cases"
         ],
         "properties": {
           "population": {
@@ -268,6 +269,13 @@
                   "type": "object"
                 }
               }
+            }
+          },
+          "cases": {
+            "type": "array",
+            "description": "Every case of the population with each scanner's own measurement, sorted by id (#606). Additive within v1: no count or status above is derived from it; it feeds the Next case pages only.",
+            "items": {
+              "$ref": "#/$defs/caseRow"
             }
           }
         }
@@ -1145,6 +1153,222 @@
               "type": "integer"
             }
           }
+        }
+      }
+    },
+    "caseResult": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One scanner's measurement of one case as the RunArtifact recorded it. A field that does not apply to the measurement is absent. A pending case and a case that was not measured are their own words, never a miss and never a pass.",
+      "required": [
+        "scanner",
+        "measurement",
+        "observed"
+      ],
+      "properties": {
+        "scanner": {
+          "type": "string"
+        },
+        "measurement": {
+          "enum": [
+            "positive",
+            "control",
+            "pending",
+            "not-measured"
+          ]
+        },
+        "outcomes": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "EXACT",
+              "COVERED",
+              "OVERBROAD",
+              "PARTIAL",
+              "MISS"
+            ]
+          },
+          "description": "A positive case: one outcome per expected span. Absent for other measurements."
+        },
+        "leakedBytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "collateralBytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "flagged": {
+          "type": "boolean",
+          "description": "A control only: whether the scanner flagged it."
+        },
+        "findings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "coDetected": {
+          "type": "boolean"
+        },
+        "observed": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Findings the scanner reported on the case."
+        },
+        "status": {
+          "type": "string",
+          "description": "A case that was not measured: the scanner status that prevented the measurement, as the artifact names it."
+        }
+      }
+    },
+    "caseRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One corpus case of a population (#606), keyed by (population, id). Evidence class is the artifact's own label and never a support status; detectors and attribution are the adapter's product attribution. No case content is carried.",
+      "required": [
+        "id",
+        "path",
+        "kind",
+        "tier",
+        "group",
+        "family",
+        "taxonomy",
+        "evidenceClass",
+        "targets",
+        "twinOf",
+        "twinMutationKind",
+        "detectors",
+        "attribution",
+        "expected",
+        "results"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string",
+          "description": "The case's path inside the population's corpus."
+        },
+        "kind": {
+          "enum": [
+            "must-redact",
+            "must-not-flag",
+            "policy"
+          ]
+        },
+        "tier": {
+          "enum": [
+            "T0",
+            "T1",
+            "T2",
+            "T3"
+          ]
+        },
+        "group": {
+          "type": "string"
+        },
+        "family": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "The family the corpus names (a taxonomy family or a detector id), not the product family."
+        },
+        "taxonomy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "evidenceClass": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "twinOf": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "twinMutationKind": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "detectors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The product detector families the case counts under; empty for an unattributed case."
+        },
+        "attribution": {
+          "enum": [
+            "snapshot",
+            "overlay-detectors",
+            "twin-parent",
+            "none"
+          ]
+        },
+        "expected": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "start",
+              "end",
+              "role"
+            ],
+            "properties": {
+              "start": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "end": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "role": {
+                "type": "string"
+              },
+              "envelope": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "start",
+                  "end"
+                ],
+                "properties": {
+                  "start": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "end": {
+                    "type": "integer",
+                    "minimum": 0
+                  }
+                },
+                "description": "The span of the surrounding assignment or block, when the corpus records one."
+              }
+            }
+          }
+        },
+        "results": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/caseResult"
+          },
+          "description": "One entry per scanner that ran the population."
         }
       }
     }

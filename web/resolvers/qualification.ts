@@ -10,6 +10,8 @@ import { int } from './format';
 
 export const QUALIFICATION_HREF = '/evaluation/qualification/';
 export const qualificationFamilyHref = (family: string): string => `${QUALIFICATION_HREF}families/${family}/`;
+export const qualificationCasesHref = (family: string, page: number): string => `${QUALIFICATION_HREF}families/${family}/cases/${page}/`;
+export const qualificationUnattributedHref = (page: number): string => `${QUALIFICATION_HREF}unattributed/${page}/`;
 
 const PRODUCT = 'redact-secret';
 const shortDigest = (digest: string): string => {
@@ -154,6 +156,12 @@ export function resolveQualificationOverview(view: QualificationView): Qualifica
         items: view.undetected.map(u => u.id),
       },
     },
+    unattributed: {
+      title: 'Cases no detector family claims',
+      description: 'A case that maps to no product detector family stays in its population’s unattributed counts and is listed on its own pages, never dropped.',
+      href: qualificationUnattributedHref(1),
+      label: 'Open the unattributed cases',
+    },
     gaps: { title: 'Known-gap inputs', description: 'Each record’s fixtures matched to cases by id, per population. A public fixture keeps its legacy id until the re-key, so it matches nothing here.', rows: gapRows },
   };
 }
@@ -240,6 +248,12 @@ export function resolveQualificationFamily(view: QualificationView, slug: string
       description: 'What each scanner recorded for this family, per population. These are counts and carry no support status; a case that is pending or not measured is not a miss.',
       rows,
       empty: 'No scanner recorded a case for this family.',
+    },
+    cases: {
+      title: 'Cases',
+      description: 'Each case of this family, per population, with what every scanner recorded for it and the case’s own facts.',
+      href: qualificationCasesHref(family.family, 1),
+      label: `Open the cases of ${family.family}`,
     },
   };
 }

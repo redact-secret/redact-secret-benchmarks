@@ -6,7 +6,7 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { canonical, sha256Digest } from '../../../benchmarks/qualification/canonical';
-import type { FamilyView, PopulationSlice, QualificationView, ScannerCounts } from '../../services/qualification';
+import type { CaseRow, CaseScannerResult, FamilyView, PopulationSlice, QualificationView, ScannerCounts } from '../../services/qualification';
 import { REAL_ROOT } from './overlay';
 
 const real = (file: string) => JSON.parse(readFileSync(path.join(REAL_ROOT, file), 'utf8'));
@@ -26,7 +26,32 @@ export const slice = (population: string, role: string, scanners: string[], over
   population, role, scanners: scanners.map((scanner, i) => ({ scanner, counts: counts(i === 0 ? over : {}) })),
 });
 
+const caseRow = (id: string, over: Partial<CaseRow>, results: CaseScannerResult[]): CaseRow => ({
+  id, path: `synthetic/${id}.md`, kind: 'must-redact', tier: 'T1', group: 'synthetic-group', family: null, taxonomy: null, evidenceClass: 'synthetic-class',
+  targets: [], twinOf: null, twinMutationKind: null, detectors: [], attribution: 'snapshot', expected: [{ start: 3, end: 9, role: 'secret' }], results, ...over,
+});
+
+/** Synthetic case rows: two scanners, every measurement kind, one case no family claims, and `extra` more cases of family-a (to cross a page). */
+export function syntheticCases(population: string, scanners: string[], extra = 0): CaseRow[] {
+  const both = (make: (scanner: string, i: number) => CaseScannerResult) => scanners.map(make);
+  const positive = (outcomes: CaseScannerResult['outcomes']) => (scanner: string, i: number): CaseScannerResult => ({ scanner, measurement: 'positive', observed: 1, outcomes: i === 0 ? outcomes : ['MISS'], leakedBytes: i === 0 ? 0 : 6, collateralBytes: 0 });
+  const rows = [
+    caseRow(`${population}--a-positive`, { detectors: ['family-a'], family: 'a:key' }, both(positive(['EXACT']))),
+    caseRow(`${population}--a-two-spans`, { detectors: ['family-a'], expected: [{ start: 1, end: 4, role: 'secret', envelope: { start: 0, end: 8 } }, { start: 10, end: 12, role: 'companion' }] }, both(positive(['EXACT', 'MISS']))),
+    caseRow(`${population}--a-control`, { detectors: ['family-a'], kind: 'must-not-flag', expected: [], twinOf: `${population}--a-positive`, twinMutationKind: 'synthetic-mutation' },
+      both((scanner, i) => ({ scanner, measurement: 'control', observed: 1, flagged: i === 1, findings: i === 1 ? 1 : 0, coDetected: i === 1 }))),
+    caseRow(`${population}--a-pending`, { detectors: ['family-a'], tier: 'T0' }, both(scanner => ({ scanner, measurement: 'pending', observed: 0 }))),
+    caseRow(`${population}--a-unmeasured`, { detectors: ['family-a'] }, both(scanner => ({ scanner, measurement: 'not-measured', observed: 0, status: 'timeout' }))),
+    caseRow(`${population}--b-positive`, { detectors: ['family-b'], attribution: 'twin-parent' }, both(positive(['COVERED']))),
+    caseRow(`${population}--orphan`, { detectors: [], attribution: 'none', family: 'orphan:key' }, both(positive(['MISS']))),
+    ...Array.from({ length: extra }, (_, i) => caseRow(`${population}--a-extra-${String(i).padStart(4, '0')}`, { detectors: ['family-a'] }, both(positive(['EXACT'])))),
+  ];
+  return rows.sort((a, b) => (a.id < b.id ? -1 : 1));
+}
+
 export interface SyntheticOptions {
+  /** More cases of family-a in every population, so its cases cross a page. */
+  extraCases?: number;
   statuses?: Record<string, 'stable' | 'provisional' | 'pending' | 'unsupported'>;
   methodsNotRun?: string[];
   scannerBuild?: 'released' | 'candidate';
@@ -59,7 +84,7 @@ export function syntheticView(options: SyntheticOptions = {}): QualificationView
     publication: 'public',
     policy: { revision: `rs-policy-1:sha256:${'0'.repeat(64)}`, components, methodsRequired: ['metamorphic', 'mutation', 'differential'], populations: roles },
     populations: registry.populations.map((p: any) => ({
-      population: p.id, role: roles[p.id], denominator: p.id, runClass: 'public',
+      population: p.id, role: roles[p.id], denominator: p.id, runClass: 'public', cases: syntheticCases(p.id, scanners, options.extraCases ?? 0),
       artifact: {
         artifactDigest: `sha256:${'a'.repeat(64)}`, semanticDigest: `sha256:${'b'.repeat(64)}`, configHash: `sha256:${'c'.repeat(64)}`, protocolVersion: registry.engine.protocol,
         engine: { name: 'synthetic-engine', version: registry.engine.version }, methods: [], caseCount: 12,

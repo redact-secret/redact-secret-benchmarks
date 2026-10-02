@@ -5,7 +5,7 @@
  * every case of every population is on exactly one page of each scope that claims it (the cases whose `detectors` name a
  * family, or the unattributed cases), in the view's order, in its own population's section, with each scanner's word as the
  * view's result says it, and no page exists past the last. Without a usable view (the normal state in CI) the pages must
- * say so and carry no case row. The page size below is the resolver's `QUALIFICATION_CASE_PAGE_ROWS`; if they drift, the
+ * say so and carry no case row (`WEB_REQUIRE_QUALIFICATION=1`, set by the publish workflow, refuses that state instead). The page size below is the resolver's `QUALIFICATION_CASE_PAGE_ROWS`; if they drift, the
  * page counts disagree and this check fails.
  */
 import { existsSync } from 'node:fs';
@@ -25,6 +25,11 @@ const overview = await read('evaluation/qualification/index.html');
 const ready = overview.includes('Support status of the detector families');
 
 if (!ready) {
+  // A publish (publish-site.yml sets this) must not ship the "view not built" state: that state is for CI without a view only.
+  if (process.env.WEB_REQUIRE_QUALIFICATION === '1') {
+    console.error('WEB_REQUIRE_QUALIFICATION=1 but the qualification overview is not ready: the view is absent, incompatible or stale (npm run qualification:view).');
+    process.exit(1);
+  }
   for (const rel of ['evaluation/qualification/unattributed/1/index.html', 'evaluation/qualification/families/view-unavailable/cases/1/index.html']) {
     if (!existsSync(out(rel))) { fail(`${rel} is missing: with no usable view the case routes keep one page that says so`); continue; }
     const html = await read(rel);

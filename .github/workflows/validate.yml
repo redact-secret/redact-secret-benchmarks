@@ -111,8 +111,8 @@ jobs:
         run: git diff --exit-code
 
   # The redesigned site (#547): a self-contained package in web/ with its own
-  # lockfile. It builds to web/out and web/storybook-static, never to dist/, and
-  # publish-site.yml does not run it, so what develop and main publish is unchanged.
+  # lockfile. It builds to web/out and web/storybook-static, never to dist/. publish-site.yml
+  # builds its own export (with the qualification view, #602) and publishes it under /next/ only.
   web:
     runs-on: ubuntu-latest
     permissions:

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  CAUSES, causeOfReason, compareFamilies, compareIdentity, compareKnownGaps, compareOutcomes, joinByKeys, reasonCode, renderMarkdown, summarise,
+  CAUSES, causeOfReason, compareDistributions, compareFamilies, compareIdentity, compareKnownGaps, compareOutcomes, compareReview, compareSupportMatrix, joinByKeys, reasonCode, renderMarkdown, summarise,
 } from '../benchmarks/qualification/parity.ts';
 
 // Synthetic only. Nothing here reads the ledger, a committed report or a count from the corpus: a repin re-keys those.
@@ -194,15 +194,93 @@ test('known gaps: ids and status must equal; a legacy fixture that does not reso
   assert.equal(drift.differences[0].field, 'status');
 });
 
+const totals = (distribution = { stable: 1, provisional: 0, pending: 0, unsupported: 0 }, stable = { documented: 1, empirical: 0, 'policy-qualified': 0 }) => ({ distribution, stable });
+const entry = (family = 'p:f', over = {}) => ({
+  provider: 'p', family, familyName: 'F', status: 'stable', evidenceTier: 'T1', evidenceBasis: 'provider-documented', qualificationProfile: 'documented',
+  providerSource: { url: 'u' }, corroboratingScanners: ['x'], twinCoverage: { pairs: 6, failures: 0, unprobeable: null },
+  unresolvedCriticalItems: { metamorphic: 0, mutation: 0, differential: 0 }, empiricalEvidence: { observations: 0, contradictions: 0 },
+  policyQualification: null, fixtureProfile: { positiveCases: 10, totalFixtures: 30, positiveAxes: 5 }, detectors: ['fam-a'], reason: null,
+  profileCoverage: { claimed: 'c', cells: { totalFixtures: 30 }, cellsMet: ['c'], debt: [] }, ...over,
+});
+/** The matrix is a projection of the family comparison: build both from the same synthetic sides. */
+const matrixOf = (legacySide, nextSide, legacyEntries, nextEntries, legacyTotals = totals(), nextTotals = totals()) => {
+  const families = compareFamilies(legacySide, nextSide, options);
+  return compareSupportMatrix(legacyEntries, nextEntries, legacyTotals, nextTotals, { evidence: families.evidence, status: families.status, statusRows: families.statusRows });
+};
+
+test('support matrix: equal entries are all equal, key order is not a value, and nothing is invented', () => {
+  const a = entry(), b = { ...entry(), profileCoverage: { debt: [], cellsMet: ['c'], cells: { totalFixtures: 30 }, claimed: 'c' } };
+  const section = matrixOf([legacy()], [next()], [a], [b]);
+  assert.equal(section.tally.explained + section.tally.unexplained, 0);
+  assert.equal(section.tally.equal, section.tally.compared);
+});
+
+test('support matrix: a figure is attributed only through the evidence difference it projects, and one with none is unexplained', () => {
+  // The family comparison explains a count difference by the population split; the matrix projects the same figure.
+  const split = [
+    { population: FLOORS, role: 'floors-and-gates', cases: 30, pending: 0, notMeasured: 0, positives: 10, benign: 8, twinPairs: 6 },
+    { population: 'pop-gates', role: 'gates', cases: 5, pending: 0, notMeasured: 0, positives: 3, benign: 2, twinPairs: 0 },
+  ];
+  const l = legacy('fam-a', {}, { totalFixtures: 35 }), n = next('fam-a', {}, {}, {}, split);
+  const attributed = matrixOf([l], [n], [entry('p:f', { fixtureProfile: { positiveCases: 10, totalFixtures: 35, positiveAxes: 5 } })], [entry()]);
+  const [d] = attributed.differences;
+  assert.deepEqual([d.field, d.verdict, d.cause], ['fixtureProfile.totalFixtures', 'explained', 'population-separation']);
+  // A figure that differs where the evidence does not is not attributed, and neither is a product-owned fact.
+  const bare = matrixOf([legacy()], [next()], [entry('p:f', { fixtureProfile: { positiveCases: 10, totalFixtures: 31, positiveAxes: 5 } })], [entry()]);
+  assert.equal(bare.differences[0].verdict, 'unexplained');
+  const owned = matrixOf([legacy()], [next()], [entry('p:f', { corroboratingScanners: ['x', 'y'] })], [entry()]);
+  assert.deepEqual(owned.differences.map(x => [x.field, x.verdict]), [['corroboratingScanners', 'unexplained']]);
+});
+
+test('support matrix: a status that drops is attributed through the status comparison, and the counts are explained only when the entries sum to them', () => {
+  const reasons = ['methods.notRun: metamorphic did not run'];
+  const l = legacy(), n = next('fam-a', {}, {}, { value: 'provisional', qualificationProfile: null, reasons, methodsNotRun: ['metamorphic'] });
+  const drop = { status: 'provisional', qualificationProfile: null, reason: reasons.join(' | ') };
+  const dropped = matrixOf([l], [n], [entry()], [entry('p:f', drop)], totals(), totals({ stable: 0, provisional: 1, pending: 0, unsupported: 0 }, { documented: 0, empirical: 0, 'policy-qualified': 0 }));
+  const byField = Object.fromEntries(dropped.differences.map(d => [d.field, d]));
+  assert.equal(byField.status.cause, 'methods-not-run');
+  assert.equal(byField['distribution.stable'].cause, 'methods-not-run');
+  assert.equal(byField['distribution.provisional'].cause, 'methods-not-run');
+  assert.equal(byField['stableDistribution.documented'].cause, 'methods-not-run');
+  assert.equal(dropped.tally.unexplained, 0);
+  // A count that moved by more than the attributed entries show is not explained.
+  const off = matrixOf([l], [n], [entry()], [entry('p:f', drop)], totals(), totals({ stable: 0, provisional: 2, pending: 0, unsupported: 0 }));
+  assert.equal(off.differences.find(d => d.field === 'distribution.provisional').verdict, 'unexplained');
+});
+
+test('support matrix: a family on one side only is a difference, and an undetected family has nothing to attribute', () => {
+  const undetected = entry('p:none', { status: 'unsupported', evidenceTier: null, evidenceBasis: 'none', qualificationProfile: null, detectors: [], reason: 'no format' });
+  const section = matrixOf([legacy()], [next()], [entry(), undetected], [entry(), { ...undetected, reason: 'a different reason' }]);
+  assert.ok(section.differences.some(d => d.subject === 'matrix' && d.field === 'taxonomy families' || d.subject === 'p:none' && d.field === 'reason'));
+  assert.ok(section.differences.every(d => d.verdict === 'unexplained'));
+});
+
+test('overview numbers: the family and status counts are compared, and a count is explained only by the attributed status changes', () => {
+  const rows = [{ family: 'fam-a', legacy: 'stable', next: 'provisional', legacyProfile: 'documented', nextProfile: null, verdict: 'explained', causes: ['methods-not-run'] }];
+  const section = compareDistributions({ familyCount: 3, ...totals({ stable: 3, provisional: 0, pending: 0, unsupported: 0 }, { documented: 3, empirical: 0, 'policy-qualified': 0 }) }, { familyCount: 3, ...totals({ stable: 2, provisional: 1, pending: 0, unsupported: 0 }, { documented: 2, empirical: 0, 'policy-qualified': 0 }) }, rows);
+  assert.equal(section.tally.unexplained, 0);
+  assert.deepEqual(section.differences.map(d => d.field), ['distribution.provisional', 'distribution.stable', 'stableDistribution.documented']);
+  const unrelated = compareDistributions({ familyCount: 3, ...totals({ stable: 3, provisional: 0, pending: 0, unsupported: 0 }) }, { familyCount: 2, ...totals({ stable: 2, provisional: 0, pending: 0, unsupported: 0 }) }, []);
+  assert.ok(unrelated.differences.every(d => d.verdict === 'unexplained'));
+});
+
+test('review: a peer the legacy run never scanned is the occurrence identity, every other value must equal', () => {
+  const section = compareReview({ a: { occurrences: 4, settled: 3 }, b: null }, { a: { occurrences: 4, settled: 3 }, b: { occurrences: 7, settled: 0 } }, { differential: 4, mapped: 4 }, 4);
+  assert.deepEqual(section.differences.map(d => [d.subject, d.field, d.verdict, d.cause]), [['b', 'occurrences', 'explained', 'review-occurrence-identity'], ['b', 'settled', 'explained', 'review-occurrence-identity']]);
+  const drift = compareReview({ a: { occurrences: 4, settled: 3 } }, { a: { occurrences: 4, settled: 2 } }, { differential: 5, mapped: 4 }, 4);
+  assert.deepEqual(drift.differences.map(d => d.verdict), ['unexplained', 'unexplained']);
+});
+
+
 test('summary and report: three classes add up, the markdown is deterministic and names an unexplained difference', () => {
   const families = compareFamilies([legacy('fam-a', {}, { positiveAxes: 11, corroborationReferences: 1 })], [next('fam-a', {}, { positiveAxes: 1 })], options);
   const outcomes = compareOutcomes([pair({ s: control({ flagged: true }) }, { s: control({ coDetected: true }) })]);
-  const sections = { identity: compareIdentity({ a: '1' }, { a: '1' }), membership: families.membership, status: families.status, evidence: families.evidence, outcomes: outcomes.section, knownGaps: compareKnownGaps([], [], { populationOf: () => undefined, inLegacyRun: () => false, sharedIdPopulations: [] }) };
+  const sections = { identity: compareIdentity({ a: '1' }, { a: '1' }), membership: families.membership, status: families.status, evidence: families.evidence, outcomes: outcomes.section, knownGaps: compareKnownGaps([], [], { populationOf: () => undefined, inLegacyRun: () => false, sharedIdPopulations: [] }), supportMatrix: compareSupportMatrix([], [], totals(), totals(), { evidence: families.evidence, status: families.status, statusRows: families.statusRows }), distribution: compareDistributions({ familyCount: 1, ...totals() }, { familyCount: 1, ...totals() }, []), review: compareReview({}, {}, { differential: 0, mapped: 0 }, 0) };
   const summary = summarise(sections);
   assert.equal(summary.compared, summary.equal + summary.explained + summary.unexplained);
   assert.equal(summary.classes.unexplained, summary.unexplained);
   assert.ok(Object.keys(summary.byCause).every(id => CAUSES.some(c => c.id === id)));
-  const report = { schema: 's', identities: { legacy: 'x' }, causes: CAUSES, sections, statusRows: families.statusRows, counterfactual: families.counterfactual, outcomeGroups: outcomes.groups, joins: { pop: { byTier: [1], pairs: 1, unmatchedLegacy: 0, unmatchedNext: 0, ambiguousLegacy: 0, ambiguousNext: 0 } }, notCompared: [{ area: 'a', reason: 'r' }], summary, recommendations: ['do not apply'] };
+  const report = { schema: 's', identities: { legacy: 'x' }, causes: CAUSES, sections, statusRows: families.statusRows, matrix: { taxonomyFamilies: { legacy: 0, next: 0 }, distribution: { legacy: {}, next: {} }, stableDistribution: { legacy: {}, next: {} } }, counterfactual: families.counterfactual, outcomeGroups: outcomes.groups, joins: { pop: { byTier: [1], pairs: 1, unmatchedLegacy: 0, unmatchedNext: 0, ambiguousLegacy: 0, ambiguousNext: 0 } }, notCompared: [{ area: 'a', reason: 'r' }], summary, recommendations: ['do not apply'] };
   const markdown = renderMarkdown(report);
   assert.equal(markdown, renderMarkdown(report));
   assert.match(markdown, /corroborationReferences/);

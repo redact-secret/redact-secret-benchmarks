@@ -15,6 +15,7 @@
     "distribution",
     "stableDistribution",
     "families",
+    "supportMatrix",
     "undetected",
     "knownGaps",
     "unmappedFamilies"
@@ -815,6 +816,260 @@
                   }
                 }
               }
+            }
+          }
+        }
+      }
+    },
+    "supportMatrix": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The support matrix (#607): one entry per taxonomy family (provider x credential family), each carrying the status and evidence of the detector family that decided it, derived from `families[]` and the product taxonomy. The same projection as the legacy eval:matrix output. A taxonomy family with no detector is unsupported or pending with its recorded reason.",
+      "required": [
+        "distribution",
+        "stableDistribution",
+        "families"
+      ],
+      "properties": {
+        "distribution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "stable",
+            "provisional",
+            "pending",
+            "unsupported"
+          ],
+          "properties": {
+            "stable": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "provisional": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "pending": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "unsupported": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "stableDistribution": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "documented",
+            "empirical",
+            "policy-qualified"
+          ],
+          "properties": {
+            "documented": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "empirical": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "policy-qualified": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "families": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "provider",
+              "family",
+              "familyName",
+              "status",
+              "evidenceTier",
+              "evidenceBasis",
+              "qualificationProfile",
+              "providerSource",
+              "corroboratingScanners",
+              "twinCoverage",
+              "unresolvedCriticalItems",
+              "empiricalEvidence",
+              "policyQualification",
+              "fixtureProfile",
+              "detectors",
+              "reason",
+              "profileCoverage"
+            ],
+            "properties": {
+              "provider": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "family": {
+                "type": "string"
+              },
+              "familyName": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "stable",
+                  "provisional",
+                  "pending",
+                  "unsupported"
+                ]
+              },
+              "evidenceTier": {
+                "enum": [
+                  "T0",
+                  "T1",
+                  "T2",
+                  "T3",
+                  null
+                ]
+              },
+              "evidenceBasis": {
+                "type": "string"
+              },
+              "qualificationProfile": {
+                "enum": [
+                  "documented",
+                  "empirical",
+                  "policy-qualified",
+                  null
+                ]
+              },
+              "providerSource": {},
+              "corroboratingScanners": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "twinCoverage": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": false,
+                "required": [
+                  "pairs",
+                  "failures",
+                  "unprobeable"
+                ],
+                "properties": {
+                  "pairs": {
+                    "type": "integer"
+                  },
+                  "failures": {
+                    "type": "integer"
+                  },
+                  "unprobeable": {}
+                }
+              },
+              "unresolvedCriticalItems": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": false,
+                "required": [
+                  "metamorphic",
+                  "mutation",
+                  "differential"
+                ],
+                "properties": {
+                  "metamorphic": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "mutation": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "differential": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                }
+              },
+              "empiricalEvidence": {
+                "type": [
+                  "object",
+                  "null"
+                ]
+              },
+              "policyQualification": {},
+              "fixtureProfile": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": false,
+                "required": [
+                  "positiveCases",
+                  "positiveAxes",
+                  "benignCases",
+                  "controlAxes",
+                  "twinPairs",
+                  "totalFixtures",
+                  "contextTwinPairs",
+                  "confusionAxes"
+                ],
+                "properties": {
+                  "positiveCases": {
+                    "type": "integer"
+                  },
+                  "positiveAxes": {
+                    "type": "integer"
+                  },
+                  "benignCases": {
+                    "type": "integer"
+                  },
+                  "controlAxes": {
+                    "type": "integer"
+                  },
+                  "twinPairs": {
+                    "type": "integer"
+                  },
+                  "totalFixtures": {
+                    "type": "integer"
+                  },
+                  "contextTwinPairs": {
+                    "type": "integer"
+                  },
+                  "confusionAxes": {
+                    "type": "integer"
+                  }
+                }
+              },
+              "detectors": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "reason": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "profileCoverage": {}
             }
           }
         }

@@ -548,3 +548,46 @@ test('a stale twin-scope map is refused: another corpus, a public twin that has 
 test('the policy must name a gate-bearing population other than the floors population to scope twins', () => {
   for (const scopedBy of ['pop-a', 'pop-c', 'pop-zzz']) assert.throws(() => build({ methods: true }, withAxisFloor(1, { twinScope: { scopedBy, rationale: 'x' } })), /twinScope\.scopedBy/);
 });
+
+test('the support matrix is derived from the view: one entry per taxonomy family, status carried from the deciding detector, undetected families keep their reason', () => {
+  const p = product({
+    taxonomy: { schemaVersion: 1, sourceNote: '', providers: [], families: [
+      { id: 'prov:fam', provider: 'prov', name: 'Fam', detectors: ['synthetic-token'] },
+      { id: 'prov:other', provider: 'prov', name: 'Other', detectors: ['synthetic-token'] },
+      { id: 'prov:none', provider: 'prov', name: 'None', detectors: [], note: 'no format to detect' },
+      { id: 'prov:blocked', provider: null, name: 'Blocked', detectors: [], sources: ['https://example.invalid/doc'], supportStatus: 'pending' },
+    ] },
+    contracts: { 'synthetic-token': { tier: 'T1', providerSource: { url: 'https://example.invalid/doc' }, corroboration: [{ tool: 'b-tool' }, { tool: 'a-tool' }, { tool: 'a-tool' }] } },
+  });
+  const view = build({ methods: true }, p);
+  assert.deepEqual(validateQualificationView(JSON.parse(serializeView(view))), []);
+  const matrix = view.supportMatrix, f = family(view);
+  assert.deepEqual(matrix.families.map(e => e.family), ['prov:blocked', 'prov:fam', 'prov:none', 'prov:other']);
+  for (const id of ['prov:fam', 'prov:other']) {
+    const e = matrix.families.find(x => x.family === id);
+    assert.equal(e.status, f.status.value);
+    assert.equal(e.qualificationProfile, f.status.qualificationProfile);
+    assert.deepEqual(e.detectors, ['synthetic-token']);
+    assert.deepEqual(e.corroboratingScanners, ['a-tool', 'b-tool']);
+    assert.equal(e.fixtureProfile.totalFixtures, f.evidence.totalFixtures);
+    assert.equal(e.twinCoverage.pairs, f.evidence.twinPairs);
+    assert.deepEqual(e.profileCoverage, f.fixtureProfile);
+  }
+  const none = matrix.families.find(e => e.family === 'prov:none'), blocked = matrix.families.find(e => e.family === 'prov:blocked');
+  assert.deepEqual([none.status, none.reason, none.detectors, none.fixtureProfile], ['unsupported', 'no format to detect', [], null]);
+  assert.deepEqual([blocked.status, blocked.reason], ['pending', 'Provider source: https://example.invalid/doc.']);
+  assert.equal(matrix.distribution[f.status.value] + matrix.distribution.unsupported + matrix.distribution.pending, matrix.families.length);
+  assert.equal(matrix.stableDistribution[f.status.qualificationProfile], 2);
+});
+
+test('the support matrix shows an unmeasured method as null, never as zero, and refuses a family it cannot place', () => {
+  const view = build();
+  const [entry] = view.supportMatrix.families;
+  assert.equal(entry.status, 'provisional');
+  assert.deepEqual(entry.unresolvedCriticalItems, { metamorphic: null, mutation: null, differential: null });
+  assert.deepEqual(build({ methods: true }).supportMatrix.families[0].unresolvedCriticalItems, { metamorphic: 0, mutation: 0, differential: 0 });
+  const orphan = product({ taxonomy: { schemaVersion: 1, sourceNote: '', providers: [], families: [{ id: 'prov:fam', provider: 'prov', name: 'Fam', detectors: ['synthetic-token'] }, { id: 'prov:x', provider: 'prov', name: 'X', detectors: ['missing-detector'] }] } });
+  assert.throws(() => build({ methods: true }, orphan), /holds no scored family/);
+  const bare = product({ taxonomy: { schemaVersion: 1, sourceNote: '', providers: [], families: [{ id: 'prov:fam', provider: 'prov', name: 'Fam', detectors: ['synthetic-token'] }, { id: 'prov:y', provider: 'prov', name: 'Y', detectors: [] }] } });
+  assert.throws(() => build({ methods: true }, bare), /no detector and no note or sources/);
+});

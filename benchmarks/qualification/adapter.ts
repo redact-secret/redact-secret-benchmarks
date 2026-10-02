@@ -8,6 +8,7 @@ import { canonical } from './canonical.ts';
 import { contextGroup, type AxisOverlay } from './axis-overlay.ts';
 import { ledgerSettledId, type LedgerRekey } from './ledger-rekey.ts';
 import type { TwinScopeMap } from './twin-scope.ts';
+import { buildViewSupportMatrix } from './support-matrix.ts';
 import {
   bindingProblems, byId, countCase, emptyCounts, OUTCOMES, readRunArtifact, UNASSIGNED,
   type CaseResult, type EvidencePin, type FamilyCounts, type Outcome, type ReadArtifact, type RunArtifact, type ScannerRun,
@@ -52,7 +53,7 @@ export interface ArtifactInput { population: string; bytes: Buffer; caseMetadata
 /** `axisCategory` is the category a case is a byte-for-byte copy of (the project twin-scope corpus), so a copy names the axis of its original. */
 export interface CaseMetadata { group: string; contextAxis?: string; expectedAction?: string; policyConformance?: boolean; axisCategory?: string }
 
-export interface ContractFacts { tier: Tier; providerSource?: unknown; supportedContext?: string[]; unprobeable?: unknown; fixtureProfile?: ProfileId }
+export interface ContractFacts { tier: Tier; providerSource?: unknown; corroboration?: { tool: string }[]; supportedContext?: string[]; unprobeable?: unknown; fixtureProfile?: ProfileId }
 export interface EmpiricalFacts {
   observationCount: number; observationSubjects: number; observationIssuanceDates: number;
   corroborationReferences: number; corroborationOwners: number; corroborationClasses: string[];
@@ -647,6 +648,7 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
     scanners: scannerIds,
     distribution, stableDistribution,
     families,
+    supportMatrix: buildViewSupportMatrix(families, product.taxonomy.families, detector => product.contracts[detector]),
     undetected: product.taxonomy.families.filter(f => f.detectors.length === 0).map(f => ({ id: f.id, provider: f.provider, name: f.name, supportStatus: f.supportStatus ?? null })).sort((a, b) => byteOrder(a.id, b.id)),
     knownGaps,
     unmappedFamilies: sorted(unmapped),

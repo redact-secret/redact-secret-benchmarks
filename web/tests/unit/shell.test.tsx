@@ -18,8 +18,9 @@ import { THEME_ATTRIBUTE, THEME_STORAGE_KEY, theme } from '../../theme/theme';
 import { failureText as dataFailure } from '../../app/report/dataFailure';
 import { ROUTES } from '../../lib/routes';
 
+const html = renderToStaticMarkup(await RootLayout({ children: <p>page body</p> }));
+
 describe('root layout', () => {
-  const html = renderToStaticMarkup(<RootLayout><p>page body</p></RootLayout>);
 
   test('is an English document whose body holds the page and the theme script runs before it', () => {
     expect(html).toMatch(/^<html lang="en"/);
@@ -30,8 +31,9 @@ describe('root layout', () => {
     expect(html).toContain(THEME_ATTRIBUTE);
   });
 
-  test('keeps the preview out of search indexes and asks for both colour schemes', () => {
-    expect(metadata.robots).toEqual({ index: false, follow: false });
+  test('is indexable (staging noindex is the host header, not the build) and asks for both colour schemes', () => {
+    expect(metadata.robots).toBeUndefined();
+    expect(metadata.icons).toEqual({ icon: '/favicon.svg' });
     expect(viewport).toMatchObject({ width: 'device-width', colorScheme: 'light dark' });
     expect(metadata.title).toMatchObject({ default: expect.stringContaining('Benchmarks'), template: expect.stringContaining('%s') });
   });
@@ -43,6 +45,7 @@ describe('AppChrome', () => {
     render(<AppChrome><p>content</p></AppChrome>);
     expect(screen.getByRole('main')).toHaveTextContent('content');
     expect(screen.getByRole('contentinfo')).toHaveTextContent('does not assert product output');
+    expect(within(screen.getByRole('navigation', { name: 'Footer' })).getAllByRole('link').length).toBeGreaterThanOrEqual(4);
     expect(screen.getAllByRole('navigation').length).toBeGreaterThanOrEqual(1);
     const current = screen.getAllByRole('link', { current: 'page' });
     expect(current.length).toBeGreaterThan(0);
@@ -71,10 +74,13 @@ describe('pages around the routes', () => {
     expect(links).toEqual(expect.arrayContaining(['All families', 'All providers', 'Report']));
   });
 
-  test('the preview home lists every route', () => {
-    render(<Home />);
-    const list = screen.getByRole('list');
-    expect(within(list).getAllByRole('link')).toHaveLength(ROUTES.length);
+  test('the root is the landing page: one h1, the three questions, the rules, and no redirect', async () => {
+    render(await Home());
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
+    const questions = screen.getByRole('navigation', { name: 'What the benchmark answers' });
+    expect(within(questions).getAllByRole('link').map(a => a.getAttribute('href'))).toEqual(['/report', '/comparison/performance', '/evaluation'].map(h => expect.stringMatching(new RegExp(`^${h}/?$`))));
+    expect(screen.getByRole('list', { name: 'The rules of the benchmark' })).toBeInTheDocument();
+    expect(document.head.querySelector('meta[http-equiv="refresh"]')).toBeNull();
   });
 });
 

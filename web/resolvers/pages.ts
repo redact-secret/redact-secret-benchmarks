@@ -49,6 +49,7 @@ import type { DomainViewData } from '../components/evaluation/domain';
 import { loadRcSources } from '../services/candidate';
 import { resolveRcPage, type RcPage } from './rc';
 import { resolveScanners } from './scanners';
+import { buildLine, resolveLanding, type LandingData } from './landing';
 import { loadScannerEnvironment } from '../services/scanners';
 import type { ScannerOverviewProps } from '../components/evaluation/scanner';
 import type { EvidenceLevelLink, HubTileData } from '../components/report/types';
@@ -551,4 +552,26 @@ export async function resolveReleaseCandidatePage(): Promise<RcPage> {
 export async function resolveScannerPage(): Promise<ScannerOverviewProps> {
   const [environment, profiles, { run, catalog }, runtime] = await Promise.all([loadScannerEnvironment(), loadPeerProfiles(), loadLegacySource(), loadPeerRuntime()]);
   return resolveScanners({ environment, profiles, run: run.state === 'measured' ? run : undefined, runtime, productDetectors: catalog.detectors.length || null });
+}
+
+// ---- / (the landing page) and the footer's run line ------------------------------------------------------------------------
+
+export type { LandingData };
+
+/** The landing page: the credential family count and the personal-data kind count the pages were built from; a count that is not there is left out of the copy. */
+export async function resolveLandingPage(): Promise<LandingData> {
+  const [{ catalog, rows }, pii] = await Promise.all([context(), loadPiiEvaluation()]);
+  const families = resolveFamilyList(catalog, rows).totals.families;
+  const kinds = pii.state === 'recorded' ? pii.families.length : 0;
+  return resolveLanding({ families: families > 0 ? families : null, piiKinds: kinds > 0 ? kinds : null });
+}
+
+/** The line in the footer of every page: the product version, the input count and the run date of the run behind the pages; null without a measured run. */
+export async function resolveSiteBuild(): Promise<string | null> {
+  const { catalog, measured } = await context();
+  if (!measured) return null;
+  return buildLine({
+    version: measured.productVersion, candidateCommit: measured.mode === 'candidate' ? measured.candidate?.sourceCommit ?? null : null,
+    inputs: catalog.fixtures.length > 0 ? catalog.fixtures.length : null, generatedAt: measured.generatedAt,
+  });
 }

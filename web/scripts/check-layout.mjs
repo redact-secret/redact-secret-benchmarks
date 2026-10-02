@@ -34,7 +34,8 @@ import { checkTarget, pickWorkers } from './layout-check-lib.mjs';
 import { readAuthority, stampOf } from './lib/authority.mjs';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const basePath = process.env.BASE_PATH ?? '/next';
+const basePath = process.env.BASE_PATH ?? '';
+const STORYBOOK = '/__storybook__';
 const WIDTHS = [320, 375, 768];
 const MAX_WORD = 24;
 const ROUTES = ['report', 'report/?level=T2', 'report/?level=T3&peers=1', 'report/providers', 'report/providers/?q=github&show=signal', 'report/families', 'report/families/?show=empty', 'comparison', 'comparison/feature', 'comparison/runtime', 'comparison/runtime/?view=speed', 'comparison/runtime/?view=accuracy', 'comparison/runtime/?analysis=internal&domain=pii', 'comparison/runtime/?analysis=external&domain=credentials',
@@ -116,12 +117,14 @@ ROUTES.push('comparison/accuracy', 'comparison/accuracy/?with=trufflehog&level=T
   'comparison/accuracy/?level=T3&peers=1', 'comparison/accuracy/?with=openredaction&level=T3&scope=listed&peers=1', 'comparison/accuracy/?data=pii', 'comparison/accuracy/?data=pii&with=openredaction');
 // The Evaluation overview and its six method pages (epic #543 follow-up, P1): every page of the section's first phase.
 ROUTES.push('evaluation', ...['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => `evaluation/method/${m}`));
-const PAGE_ONLY = ['404.html'];
+// The landing page is the root (`''`), which the route list's trailing-slash rule would write as `//`.
+const PAGE_ONLY = ['', '404.html'];
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.png': 'image/png', '.txt': 'text/plain' };
 
-/** Serves storybook-static at `/` and the static export at BASE_PATH. */
+/** Serves the static export at BASE_PATH (the site root by default) and storybook-static under /__storybook__, so neither can answer for the other. */
 function serve() {
-  const roots = [[basePath || '/', path.join(webRoot, 'out')], ['/', path.join(webRoot, 'storybook-static')]];
+  // Storybook first: the export may own `/`, and `/__storybook__` must not fall into it.
+  const roots = [[STORYBOOK, path.join(webRoot, 'storybook-static')], [basePath || '/', path.join(webRoot, 'out')]];
   const server = http.createServer(async (req, res) => {
     const url = decodeURIComponent(new URL(req.url, 'http://x').pathname);
     for (const [prefix, root] of roots) {
@@ -134,7 +137,7 @@ function serve() {
         const body = await readFile(file);
         res.writeHead(200, { 'content-type': TYPES[path.extname(file)] ?? 'application/octet-stream' });
         return res.end(body);
-      } catch { if (prefix !== '/') break; /* a missing file under the export never falls back to Storybook */ }
+      } catch { break; /* a missing file never falls back to the other root */ }
     }
     res.writeHead(404).end('not found');
   });
@@ -154,7 +157,7 @@ async function main() {
   } catch { console.error('storybook-static/index.json is missing; run npm run build-storybook first'); process.exitCode = 1; }
 
   const targets = [
-    ...stories.map(id => ({ name: `story ${id}`, url: `${origin}/iframe.html?id=${id}&viewMode=story`, ready: 'body.sb-show-main', header: false })),
+    ...stories.map(id => ({ name: `story ${id}`, url: `${origin}${STORYBOOK}/iframe.html?id=${id}&viewMode=story`, ready: 'body.sb-show-main', header: false })),
     ...ROUTES.map(r => ({ name: `page /${r}`, url: `${origin}${basePath}/${r.includes('?') ? r.replace('?', '/?').replace('//', '/') : `${r}/`}`, ready: /[?&]fixture=/.test(r) ? '[data-fixture-ready]' : 'main', header: true })),
     ...PAGE_ONLY.map(r => ({ name: `page /${r}`, url: `${origin}${basePath}/${r}`, ready: 'main', header: true })),
     ...STATES.map(state => ({ ...state, name: `page /${state.route} (${state.name})`, url: `${origin}${basePath}/${state.route.replace('?', '/?').replace('//', '/')}`, header: true })),

@@ -1,0 +1,62 @@
+@layer components {
+  .footer {
+    border-top: var(--hairline) solid var(--ink);
+    padding: var(--space-4) clamp(var(--space-4), 4vw, var(--space-16)) var(--space-6);
+  }
+
+  .inner {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-2) var(--space-6);
+    align-items: center;
+    font: var(--text-small);
+    color: var(--ink-muted);
+  }
+
+  .links {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-6);
+    font-weight: 600;
+  }
+
+  .links a {
+    color: var(--ink);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .links a:hover {
+      color: var(--link);
+    }
+  }
+
+  .legal,
+  .build {
+    margin: 0;
+  }
+
+  .build {
+    font: var(--text-mono-small);
+    text-align: right;
+  }
+
+  @media (max-width: 860px) {
+    .inner {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .build {
+      text-align: left;
+    }
+  }
+
+  /* Room for the fixed tab bar on a phone, so the last line is never under it. */
+  @media (max-width: 720px) {
+    .footer {
+      padding-bottom: calc(var(--space-6) + var(--tabs-h) + env(safe-area-inset-bottom, 0));
+    }
+  }
+}

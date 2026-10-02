@@ -28,9 +28,9 @@ afterEach(() => {
 
 describe('dataUrl', () => {
   test('puts a build-emitted path under the base path and the data directory', () => {
-    expect(lib.dataUrl(PATH)).toBe('/next/data/rows/level/T1/rows.json');
-    expect(lib.dataUrl('fixtures/example-suite/records.json')).toBe('/next/data/fixtures/example-suite/records.json');
-    expect(lib.dataUrl('comparison/accuracy/differences.json')).toBe('/next/data/comparison/accuracy/differences.json');
+    expect(lib.dataUrl(PATH)).toBe('/data/rows/level/T1/rows.json');
+    expect(lib.dataUrl('fixtures/example-suite/records.json')).toBe('/data/fixtures/example-suite/records.json');
+    expect(lib.dataUrl('comparison/accuracy/differences.json')).toBe('/data/comparison/accuracy/differences.json');
   });
 
   test.each(['https://evil.example/x.json', '../secrets.json', 'rows/level/T1/rows.json?x=1', 'rows/other/T1/rows.json', '/rows/level/T1/rows.json', ''])('refuses %j', path => {
@@ -42,7 +42,7 @@ describe('loadBuildData', () => {
   test('sends one same-origin GET with no credentials, and caches the answer for the session', async () => {
     fetchMock.mockResolvedValue(ok({ n: [1] }));
     await expect(lib.loadBuildData(PATH, isNumbers)).resolves.toEqual({ n: [1] });
-    expect(fetchMock).toHaveBeenCalledWith('/next/data/rows/level/T1/rows.json', { method: 'GET', credentials: 'omit', mode: 'same-origin', referrerPolicy: 'no-referrer' });
+    expect(fetchMock).toHaveBeenCalledWith('/data/rows/level/T1/rows.json', { method: 'GET', credentials: 'omit', mode: 'same-origin', referrerPolicy: 'no-referrer' });
     expect(lib.peekBuildData(PATH)).toEqual({ n: [1] });
     await lib.loadBuildData(PATH, isNumbers);
     expect(fetchMock).toHaveBeenCalledTimes(1);

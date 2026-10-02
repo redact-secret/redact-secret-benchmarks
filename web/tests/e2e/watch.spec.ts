@@ -33,7 +33,7 @@ test.describe('console watch', () => {
   test('the unused-preload advice is not recorded, the same text for a script is', async ({ page, watch }) => {
     await page.goto(`${BASE}/report/`);
     await page.evaluate(() => {
-      const text = (file: string) => `The resource ${location.origin}/next/_next/static/chunks/${file} was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate \`as\` value and it is preloaded intentionally.`;
+      const text = (file: string) => `The resource ${location.origin}/_next/static/chunks/${file} was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate \`as\` value and it is preloaded intentionally.`;
       console.warn(text('x.css'));
       console.warn(text('x.js'));
     });

@@ -1,12 +1,15 @@
 ---
 decision_id: decision-publish-the-next-export-under-next-with-the-qualification-view-built-from-archived-official-runs
-status: accepted
+status: superseded
+superseded_by: decision-serve-the-next-export-at-the-site-root
 scope: benchmarks
 title: Publish the Next export under /next/ beside the existing site, with the qualification view built from archived official runs
 decided_at: 2026-10-02
 ---
 
 # Publish the Next export under /next/ beside the existing site, with the qualification view built from archived official runs
+
+> Superseded by [serve the Next export at the site root](2026-10-02-serve-the-next-export-at-the-site-root.md): publishing under `/next/` was a mistake. Points 1 to 4 and 6 (the view, the archive, the registry, the failing publish, least privilege) stand; point 5 (only `/next/` is added) and the `/next/` routing blocker are replaced.
 
 ## Context
 

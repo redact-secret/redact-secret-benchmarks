@@ -1,12 +1,12 @@
-// Static export of the redesigned site (#547). Output goes to web/out, never to
-// the repository's dist/. publish-site.yml moves it to dist/next (#602), so it is
-// served under /next/ and nothing outside that prefix can change.
+// Static export of the site (#547). Output goes to web/out, never to the repository's dist/.
+// publish-site.yml assembles web/out as the site root, beside the measured public/results (#602).
 //
-// BASE_PATH is where the site is served. It defaults to /next, the preview prefix
-// decided in docs/decisions/2026-09-30-...; cutover builds with BASE_PATH= (empty).
+// BASE_PATH is where the site is served. It defaults to empty: the app is the root of the site
+// (docs/decisions/2026-10-02-serve-the-next-export-at-the-site-root.md, which supersedes the /next prefix).
+// Set BASE_PATH=/prefix only to serve a copy under a prefix; nothing in the repository does.
 import path from 'node:path';
 
-const basePath = process.env.BASE_PATH ?? '/next';
+const basePath = process.env.BASE_PATH ?? '';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {

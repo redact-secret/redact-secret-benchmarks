@@ -11,8 +11,8 @@
  *    on the lists and on a family page, recounted from the rows' tiers and the index;
  *  - the rows, suite, detector and findings pages (#559): every route exists, states its
  *    counts, and every figure links to its rows;
- *  - every link on those pages stays inside the app (the export is served under /next/):
- *    none points at the existing site;
+ *  - every link on those pages stays inside the app (the export is the site root): every
+ *    internal link names a page or file of the export, so none points at a legacy route;
  *  - the build-emitted data files (web/app/data/): exactly the files the pages ask for, each
  *    holding the rows or records the ledger has (ids, scanner columns, outcome words, flags, levels,
  *    corpus bytes and expected spans), and the first page in each table's HTML is the first page of
@@ -26,10 +26,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { readAuthority } from './lib/authority.mjs';
+import { linkResolves } from './lib/links.mjs';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const out = path.join(webRoot, 'out');
-const basePath = process.env.BASE_PATH ?? '/next';
+const basePath = process.env.BASE_PATH ?? '';
 const repoRoot = path.resolve(webRoot, '..');
 const readJson = async rel => JSON.parse(await readFile(path.join(repoRoot, rel), 'utf8'));
 // Under authority `new` the same pages are built from the qualification view and recounted by check-export-credential.mjs.
@@ -93,7 +94,7 @@ const internalLinks = html => [...html.matchAll(/<a\b[^>]*\shref="([^"]+)"/g)].m
 const linkPages = ['report', 'report/detectors', 'report/findings', 'report/fixtures', 'report/rows/T1', 'report/providers', 'report/families', `report/families/${slugOf(taxonomy.families[0].id)}`, `report/detectors/${detectors.detectors[0].id}`, `report/fixtures/${categories[0].id}`];
 for (const route of linkPages) {
   const html = await readHtml(route);
-  for (const href of internalLinks(html)) if (!href.startsWith(`${basePath}/`)) fail(`/${route}/ links ${href}, outside the app (${basePath}/)`);
+  for (const href of internalLinks(html)) if (!(await linkResolves(path.join(webRoot, 'out'), basePath, href))) fail(`/${route}/ links ${href}, which is not a page or file of the export`);
 }
 
 if (run) {

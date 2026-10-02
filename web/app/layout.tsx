@@ -6,6 +6,7 @@ import '../theme/layers.css';
 import '../theme/measures.css';
 import { THEME_ATTRIBUTE, THEME_STORAGE_KEY } from '../theme/theme';
 import { ThemeRoot } from '../theme/ThemeRoot';
+import { resolveSiteBuild } from '../resolvers/pages';
 import { AppChrome } from './AppChrome';
 import '../../src/tokens.css';
 import './globals.css';
@@ -13,12 +14,14 @@ import './globals.css';
 export const metadata: Metadata = {
   title: { default: 'Redact Secret Benchmarks', template: '%s | Redact Secret Benchmarks' },
   description: 'What the redact-secret benchmark ledger records, and how it compares. Measured, never ranked.',
-  // The preview build is not the published site; keep it out of indexes.
-  robots: { index: false, follow: false },
+  // No `robots` meta: this is the published site. Staging is kept out of indexes by CloudFront's X-Robots-Tag header,
+  // so the same build is indexable on production. public/robots.txt allows crawling.
+  icons: { icon: '/favicon.svg' },
 };
 export const viewport: Viewport = { width: 'device-width', initialScale: 1, viewportFit: 'cover', colorScheme: 'light dark' };
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default async function RootLayout({ children }: { children: ReactNode }) {
+  const build = await resolveSiteBuild();
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -35,7 +38,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <InitColorSchemeScript attribute={THEME_ATTRIBUTE} modeStorageKey={THEME_STORAGE_KEY} defaultMode="system" />
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeRoot>
-            <AppChrome>{children}</AppChrome>
+            <AppChrome build={build}>{children}</AppChrome>
           </ThemeRoot>
         </AppRouterCacheProvider>
       </body>

@@ -24,7 +24,7 @@ const handlers = {
 
 /** What the browser would get for a build-emitted data URL, produced by the route handlers. */
 async function served(url: string): Promise<Response> {
-  const path = url.replace('/next/data/', '');
+  const path = url.replace('/data/', '');
   const rows = /^rows\/([^/]+)\/([^/]+)\/rows\.json$/.exec(path);
   if (rows) return (await handlers.rows()).GET(new Request('http://x'), { params: Promise.resolve({ kind: rows[1], id: rows[2] }) });
   const records = /^fixtures\/([^/]+)\/records\.json$/.exec(path);
@@ -140,7 +140,7 @@ describe('rows table (RowsView)', () => {
     await waitFor(() => expect(screen.getByRole('status').textContent).not.toBe('Loading rows…'));
     expect(document.querySelector('[aria-busy="true"]')).toBeNull();
     expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(fetchMock.mock.calls[0][0]).toBe('/next/data/rows/level/T1/rows.json');
+    expect(fetchMock.mock.calls[0][0]).toBe('/data/rows/level/T1/rows.json');
   });
 
   test('a failed load says why, keeps the first page readable and retries on request', async () => {
@@ -233,7 +233,7 @@ describe('a fixture of a suite (?fixture=)', () => {
   const suite = 'common-formats';
 
   async function aFixtureId() {
-    const file = (await (await served(`/next/data/fixtures/${suite}/records.json`)).json()) as { records: { id: string }[] };
+    const file = (await (await served(`/data/fixtures/${suite}/records.json`)).json()) as { records: { id: string }[] };
     return file.records[0].id;
   }
 
@@ -297,7 +297,7 @@ describe('accuracy: the lists of differing files load when one is opened', () =>
     const first = closed[0];
     await user.click(first.querySelector('summary')!);
     await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1));
-    expect(fetchMock.mock.calls[0][0]).toBe('/next/data/comparison/accuracy/differences.json');
+    expect(fetchMock.mock.calls[0][0]).toBe('/data/comparison/accuracy/differences.json');
     await waitFor(() => expect(within(first).queryByRole('status')).toBeNull());
   });
 });

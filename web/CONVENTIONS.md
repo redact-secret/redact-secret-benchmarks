@@ -97,12 +97,14 @@ neutral: state what the ledger records, never that a product is good or bad
 
 ## Deployment
 
-`publish-site.yml` builds this app and publishes it under `/next/` beside the existing site, on staging (`develop`) and, through `npm run go-production`, production
-(decision: `docs/decisions/2026-10-02-publish-the-next-export-under-next-with-the-qualification-view-built-from-archived-official-runs.md`). It is a deployment, not the
-authority switch: no legacy page is removed or re-pointed. The publish builds the qualification view first (from the archived canonical RunArtifacts, checked against
-`benchmarks/official-runs.json`), builds the export with `WEB_REQUIRE_RUN=1 WEB_REQUIRE_QUALIFICATION=1` and runs `check:routes`; the second variable makes the "view not built" state a failure,
-so it applies to publish only and CI keeps building without a view. Only `dist/next/` is added to the synced tree. Keep `BASE_PATH` at its `/next` default there, and keep every
-link inside `/next/` (`check:routes` fails one that leaves it). The CloudFront function of the benchmarks stacks must route `/next/...` as directory pages (`<path>/index.html`) for these pages to be reachable.
+`publish-site.yml` builds this app and publishes it as the **root of the site**, on staging (`develop`) and, through `npm run go-production`, production
+(decision: `docs/decisions/2026-10-02-serve-the-next-export-at-the-site-root.md`, which supersedes the `/next/` preview). The legacy Vite UI is no longer built or published; its source
+stays as the oracle. The publish builds the qualification view first (from the archived canonical RunArtifacts, checked against `benchmarks/official-runs.json`), builds the export with
+`BASE_PATH=` (empty, the default), `WEB_REQUIRE_RUN=1 WEB_REQUIRE_QUALIFICATION=1` and runs `check:routes`; the second variable makes the "view not built" state a failure, so it applies to
+publish only and CI keeps building without a view. `node scripts/assemble-site.mjs` then makes `dist/`: the export at `/` and `public/results/` at `/results/` (the same step runs in the `web` job,
+so the publication guards scan what ships). Keep `BASE_PATH` empty and every link root-relative (`check:routes` fails a link that is not a page or file of the export, and a `/next/` string anywhere). Do not add a
+`robots` meta: staging's `noindex` is CloudFront's `X-Robots-Tag`, and the same build is production. The CloudFront function of the benchmarks stacks must route `<path>/` to `<path>/index.html` and redirect legacy URLs
+by `benchmarks/legacy-url-redirects.json` (`docs/specs/legacy-url-redirects.md`).
 
 ## Data layer: services, resolvers, pages
 
@@ -183,9 +185,9 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
   `scanners/peer-registry.json` and `scanners/peer-rule-families.json` (validated by
   `npm run peer-rules:check` and again by `services/peers.ts`); the peer columns state what a scanner's
   rules target and what was recorded, never which scanner is better. Every link on a report page stays
-  inside the app (`check:routes` fails a link that leaves `/next/`).
+  inside the app (`check:routes` fails a link that is not a page or file of the export).
 - `/evaluation/qualification/` and `/evaluation/qualification/families/<family>/` (#606) show the qualification view the adapter derived from the official
-  credential-eval runs (`public/results/qualification-v1.json`, `npm run qualification:view`), beside the existing pages, which keep reading the legacy files.
+  credential-eval runs (`public/results/qualification-v1.json`, `npm run qualification:view`), beside the report pages' legacy files (the oracle).
   `services/qualification.ts` returns `ready`, `not-built` (the normal state in CI), `incompatible` or `stale` (built from other pins than
   `benchmarks/official-runs.json` or a changed policy file) and a view that is not `ready` shows no number, only why and the commands; with no usable view the
   family route keeps one `view-unavailable` page because `output: export` refuses a dynamic route with no params. Blocks are in `components/qualification/`.

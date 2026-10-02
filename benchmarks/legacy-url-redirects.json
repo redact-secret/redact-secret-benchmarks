@@ -1,0 +1,45 @@
+{
+  "schema": "redact-secret/legacy-url-redirects/v1",
+  "description": "Where each legacy site URL goes now that the Next export is the site root. First matching rule wins. Mirrored by the CloudFront viewer-request function in redact-secret-sites; validated by tests/legacy-url-redirects.test.mjs against src/model.mjs (parseRoute) and the routes of web/app.",
+  "status": 301,
+  "paths": "A request path without its trailing slash is matched; a `to` ends in a slash because the export serves directories. `match` is an anchored JavaScript regular expression over the path; `to` substitutes {name} from its named groups. `ID` is [a-z0-9-]+.",
+  "kept": [
+    { "path": "/", "reason": "The landing page of the new site. The legacy `/` redirected to /report; it no longer does." }
+  ],
+  "rules": [
+    { "id": "report", "from": "/report", "match": "^/report$", "to": "/report/", "decision": "Same page, trailing slash only." },
+    { "id": "benchmark", "from": "/benchmark", "match": "^/benchmark$", "to": "/report/", "decision": "Legacy already redirected it to /report." },
+    { "id": "benchmark-id", "from": "/benchmark/:id", "match": "^/benchmark/(?<id>[a-z0-9-]+)$", "to": "/report/", "decision": "The legacy page served a detector or a suite depending on a list only the app knew; an edge function cannot tell which, and guessing sends half the bookmarks to a 404. The report hub links both." },
+    { "id": "coverage", "from": "/coverage", "match": "^/coverage$", "to": "/report/families/", "decision": "The coverage page listed families by provider; /report/families/ is the family list with the same counts." },
+    { "id": "coverage-gaps", "from": "/coverage-gaps", "match": "^/coverage-gaps$", "to": "/report/families/", "decision": "Legacy redirected it to /coverage, so it follows /coverage." },
+    { "id": "coverage-detector", "from": "/coverage/detectors/:id", "match": "^/coverage/detectors/(?<id>[a-z0-9-]+)$", "to": "/report/detectors/{id}/", "decision": "Detector pages exist under the report with the same ids." },
+    { "id": "coverage-family", "from": "/coverage/:provider::family", "match": "^/coverage/(?<provider>[a-z0-9-]+):(?<family>[a-z0-9-]+)$", "to": "/report/families/{provider}--{family}/", "decision": "A family id is provider:family; its page slug replaces the colon with two hyphens (familySlug in web/resolvers/families.ts)." },
+    { "id": "coverage-id", "from": "/coverage/:id", "match": "^/coverage/(?<id>[a-z0-9-]+)$", "to": "/report/detectors/{id}/", "decision": "Legacy redirected /coverage/:id to /coverage/detectors/:id." },
+    { "id": "evaluation-detector", "from": "/evaluation/detector/:id", "match": "^/evaluation/detector/(?<id>[a-z0-9-]+)$", "to": "/report/detectors/{id}/", "decision": "Legacy redirected it to /coverage/detectors/:id." },
+    { "id": "support", "from": "/support", "match": "^/support$", "to": "/report/families/", "decision": "No support page exists in the new site; each family page carries its recorded status and evidence, so the family list is the closest entrance. /evaluation/qualification/ shows the derived support status per population but is a different question." },
+    { "id": "support-providers", "from": "/support/providers", "match": "^/support/providers$", "to": "/report/providers/", "decision": "The providers roadmap's successor is the provider list, which carries each provider's dossier." },
+    { "id": "evaluation", "from": "/evaluation", "match": "^/evaluation$", "to": "/evaluation/", "decision": "Same path; the legacy /evaluation redirected to /evaluation/credentials, the new /evaluation/ is the hub of the evaluation pages." },
+    { "id": "evaluation-credentials", "from": "/evaluation/credentials", "match": "^/evaluation/credentials$", "to": "/evaluation/credential/", "decision": "The new route is singular." },
+    { "id": "evaluation-pii", "from": "/evaluation/pii", "match": "^/evaluation/pii$", "to": "/evaluation/pii/", "decision": "Same page, trailing slash only." },
+    { "id": "evaluation-reviews", "from": "/evaluation/reviews", "match": "^/evaluation/(?:reviews|failures)$", "to": "/evaluation/", "decision": "Legacy sent both to /workbench, which is /evaluation/ now." },
+    { "id": "evaluation-operators", "from": "/evaluation/operators", "match": "^/evaluation/operators$", "to": "/evaluation/method/mutation/", "decision": "Legacy sent it to the mutation method." },
+    { "id": "evaluation-method", "from": "/evaluation/method/:id", "match": "^/evaluation/method/(?<id>twin|benign|metamorphic|mutation|differential|holdout)$", "to": "/evaluation/method/{id}/", "decision": "Same path; trailing slash only. An id that is not one of the six methods is not matched and stays a 404, as it was." },
+    { "id": "performance", "from": "/performance", "match": "^/performance$", "to": "/comparison/performance/", "decision": "The performance page is now one of the comparison pages." },
+    { "id": "how-to-read", "from": "/how-to-read", "match": "^/(?:how-to-read|methodology)$", "to": "/comparison/", "decision": "There is no how-to-read page; the comparison overview is where a reader is told which question each page answers. /methodology followed /how-to-read in the legacy table." },
+    { "id": "scenario", "from": "/scenarios/:id", "match": "^/scenarios/(?<id>[a-z0-9-]+)$", "to": "/report/", "decision": "Scenarios have no page in the new site; the report hub is the entrance to every group of fixtures." },
+    { "id": "suite", "from": "/suites/:id", "match": "^/suites/(?<id>[a-z0-9-]+)$", "to": "/report/fixtures/{id}/", "decision": "A suite is a fixture group page; the ids are the same." },
+    { "id": "fixture", "from": "/fixture/:category--:rest", "match": "^/fixture/(?<category>[a-z0-9]+(?:-[a-z0-9]+)*?)--(?<rest>[a-z0-9-]+)$", "to": "/report/fixtures/{category}/?fixture={rest}", "decision": "A legacy fixture slug is `<category>--<id>`; a fixture is opened on its suite page with ?fixture=<id> (fixtureHref in the web app). Split at the first `--`." },
+    { "id": "pending", "from": "/pending", "match": "^/pending$", "to": "/evaluation/", "decision": "Legacy sent it to the t0-fixtures review class, which has no page; the evaluation hub is the nearest." },
+    { "id": "workbench", "from": "/workbench", "match": "^/workbench$", "to": "/evaluation/", "decision": "Evaluation replaces the Workbench." },
+    { "id": "workbench-changes", "from": "/workbench/changes", "match": "^/workbench/changes$", "to": "/evaluation/rc/", "decision": "The Changes page compared a candidate with the release; /evaluation/rc/ is that comparison." },
+    { "id": "workbench-qualification", "from": "/workbench/qualification", "match": "^/workbench/qualification$", "to": "/evaluation/qualification/", "decision": "The qualification page of the evaluation section." },
+    { "id": "workbench-review", "from": "/workbench/review/:id", "match": "^/workbench/review/(?<id>[a-z0-9-]+)$", "to": "/evaluation/", "decision": "The review queue has no page in the new site; the findings page lists reviewed findings but not the queue, so the hub is the honest target." },
+    { "id": "workbench-method", "from": "/workbench/method/:id", "match": "^/workbench/method/(?<id>twin|benign|metamorphic|mutation|differential|holdout)$", "to": "/evaluation/method/{id}/", "decision": "The method pages kept their ids." }
+  ],
+  "retiredPrefix": {
+    "from": "/next/*",
+    "match": "^/next(?<rest>/.*)?$",
+    "to": "{rest}",
+    "decision": "The preview prefix of the previous decision. Strip it and keep the query; the result is a route of the export, or the root (when rest is empty), and is then redirected again if it is a legacy path."
+  }
+}

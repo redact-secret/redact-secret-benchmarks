@@ -79,7 +79,7 @@ test.describe('phone navigation', () => {
   test('the bar navigates, and at the end of a long page the footer is not hidden behind it', async ({ page }) => {
     await page.goto(`${BASE}/report/families/`);
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    const footer = page.getByRole('contentinfo').locator('p');
+    const footer = page.getByRole('contentinfo').locator('p').last();
     const bar = (await page.getByRole('navigation', { name: 'Primary, bottom bar' }).boundingBox())!;
     const foot = (await footer.boundingBox())!;
     expect(foot.y + foot.height).toBeLessThanOrEqual(bar.y + 2);
@@ -106,9 +106,16 @@ test.describe('addresses the export does not contain', () => {
     await expect(page).toHaveURL(`${BASE}/report/providers/`);
   });
 
-  test('a path outside the base path is a 404 too', async ({ page }) => {
-    const response = await page.goto('/report/');
+  test('the retired /next/ prefix is not in the export (the host redirects it)', async ({ page }) => {
+    const response = await page.goto('/next/report/');
     expect(response?.status()).toBe(404);
+  });
+
+  test('robots.txt allows crawling and the favicon is served', async ({ request }) => {
+    const robots = await request.get('/robots.txt');
+    expect(robots.status()).toBe(200);
+    expect(await robots.text()).toMatch(/^User-agent: \*\s+Allow: \/\s*$/);
+    expect((await request.get('/favicon.svg')).status()).toBe(200);
   });
 });
 

@@ -61,7 +61,8 @@
         "fixtureProfilesVersion",
         "rules",
         "differentialPeers",
-        "attributionFallback"
+        "attributionFallback",
+        "axisCoverage"
       ],
       "properties": {
         "id": {
@@ -186,6 +187,53 @@
               "pattern": "^sha256:[0-9a-f]{64}$"
             },
             "occurrences": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "axisCoverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "populations"
+          ],
+          "description": "The populations whose axis labels are unioned into a family axis floor (benchmarks/support/population-policy.json axisCoverage). Counts are never summed.",
+          "properties": {
+            "populations": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "twinScope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "id",
+            "population",
+            "scopedBy",
+            "corpusDigest",
+            "twins"
+          ],
+          "description": "The twin-scope map: public twins the snapshot gives no family, gated through the project case that carries them with their parent family (benchmarks/support/public-twin-scope-map.json); its digest is a policy component.",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "population": {
+              "type": "string"
+            },
+            "scopedBy": {
+              "type": "string"
+            },
+            "corpusDigest": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$"
+            },
+            "twins": {
               "type": "integer",
               "minimum": 0
             }
@@ -325,7 +373,8 @@
           "gates",
           "populations",
           "differential",
-          "attribution"
+          "attribution",
+          "axisCoverage"
         ],
         "properties": {
           "family": {
@@ -542,7 +591,9 @@
                 "twinPairs",
                 "twinFailures",
                 "benignCases",
-                "benignFalseAlarms"
+                "benignFalseAlarms",
+                "twinPairsScopedElsewhere",
+                "twinFailuresScopedElsewhere"
               ],
               "properties": {
                 "population": {
@@ -559,6 +610,16 @@
                 },
                 "benignFalseAlarms": {
                   "type": "integer"
+                },
+                "twinPairsScopedElsewhere": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Twin pairs of this population the twin-scope map takes out of its gate because a project population measures them with the parent family."
+                },
+                "twinFailuresScopedElsewhere": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "description": "Of those, the pairs the engine read as not discriminating in this population. Reported, not gate-bearing."
                 }
               }
             }
@@ -672,6 +733,87 @@
               "twin-parent": {
                 "type": "integer",
                 "minimum": 0
+              }
+            }
+          },
+          "axisCoverage": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "positiveContext",
+              "control",
+              "confusion"
+            ],
+            "description": "The axes the family floors were judged on, each with the populations that supplied it. Coverage is the union of labels across the policy axisCoverage populations; counts are never summed.",
+            "properties": {
+              "positiveContext": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "axis",
+                    "populations"
+                  ],
+                  "properties": {
+                    "axis": {
+                      "type": "string"
+                    },
+                    "populations": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "control": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "axis",
+                    "populations"
+                  ],
+                  "properties": {
+                    "axis": {
+                      "type": "string"
+                    },
+                    "populations": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              },
+              "confusion": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "axis",
+                    "populations"
+                  ],
+                  "properties": {
+                    "axis": {
+                      "type": "string"
+                    },
+                    "populations": {
+                      "type": "array",
+                      "minItems": 1,
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
               }
             }
           }

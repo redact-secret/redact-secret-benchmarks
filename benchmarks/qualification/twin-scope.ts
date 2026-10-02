@@ -1,0 +1,98 @@
+import { createHash } from 'node:crypto';
+import { readFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+import { canonical } from './canonical.ts';
+import { joinByKeys, type Joinable } from './parity.ts';
+import { exportPopulation } from './population-snapshot.ts';
+
+/**
+ * The twin-scope map of the public evidence snapshot (#602, docs/specs/qualification-inputs.md).
+ *
+ * credential-eval scopes a control by the `family` its case carries. A cross-provider twin of the public snapshot (a value that wears another
+ * provider's key class, for example an `sk-ant-api01-` value twinning an `sk-ant-admin01-` positive) carries none, so the engine cannot tell a
+ * finding of the twin's parent family from the finding of another detector, and reads any finding as flagged. The legacy path scoped such a twin
+ * by its parent's contract and read a finding of another detector as co-detected. The product therefore carries the same twins itself, byte for
+ * byte, each with its parent's family, in the `twin-scope-regressions` category of the regression corpus (a project-owned, qualification-only
+ * category), and the engine measures them there.
+ *
+ * This file names, per public twin the snapshot gives no family, the project case that carries the same bytes. It is DERIVED by an exact content join
+ * (SHA-256 of the content, expected spans and fixture name, one to one), never hand-authored. The adapter reads it to take such a twin out of the
+ * public population's twin gate: its gate verdict is the project case's, measured with the family the engine needs. Counts and denominators stay per
+ * population (a pair is counted in the public population as published and again in the regression population under its own id; nothing is summed),
+ * the public evidence class and the public measurement are untouched, and a family-less public twin that is not in this map keeps counting in the gate.
+ */
+export const TWIN_SCOPE_FILE = 'benchmarks/support/public-twin-scope-map.json';
+export const TWIN_SCOPE_ID = 'credential-public-twin-scope-map-v1';
+export const TWIN_SCOPE_POPULATION = 'public-evidence-snapshot';
+export const TWIN_SCOPE_SCOPED_BY = 'regression-corpus';
+
+export interface TwinScopeMap {
+  schemaVersion: 1;
+  id: typeof TWIN_SCOPE_ID;
+  population: typeof TWIN_SCOPE_POPULATION;
+  scopedBy: typeof TWIN_SCOPE_SCOPED_BY;
+  owner: 'redact-secret-benchmarks';
+  note: string;
+  snapshot: { corpusDigest: string; cases: number };
+  derivation: { join: string; familyLessTwins: number; mapped: number; categories: string[] };
+  /** Public case id to the project case id that carries the same bytes with the parent's family. */
+  twins: Record<string, string>;
+}
+
+interface SnapshotCase { id: string; content: string; expected: { start: number; end: number }[]; grouping: { family?: string }; twin?: unknown }
+export interface PublicSnapshotLike { identity: { corpus_digest: string }; cases: SnapshotCase[] }
+
+const root = fileURLToPath(new URL('../../', import.meta.url));
+const sha256 = (value: string) => createHash('sha256').update(value).digest('hex');
+const byteOrder = (a: string, b: string) => Buffer.compare(Buffer.from(a), Buffer.from(b));
+const suffixOf = (key: string) => key.slice(key.indexOf('--') + 2);
+const exactKey = (c: { id: string; content: string; expected: { start: number; end: number }[] }) => `${sha256(c.content)}|${JSON.stringify(c.expected.map(e => [e.start, e.end]))}|${suffixOf(c.id)}`;
+
+/** The regression corpus categories only the qualification path measures (corpora/regression/manifest.json). */
+export async function qualificationCategories(): Promise<string[]> {
+  const manifest = JSON.parse(await readFile(path.join(root, 'corpora/regression/manifest.json'), 'utf8'));
+  return [...(manifest.qualificationCategories ?? [])];
+}
+
+/** Derive the map of one public snapshot. Deterministic: the same snapshot and fixtures write the same bytes. */
+export async function buildTwinScopeMap(snapshot: PublicSnapshotLike): Promise<TwinScopeMap> {
+  const categories = await qualificationCategories();
+  const project = (await exportPopulation(TWIN_SCOPE_SCOPED_BY)).snapshot.cases as unknown as SnapshotCase[];
+  const projectTwins = project.filter(c => c.twin && c.grouping.family && categories.some(category => c.id.startsWith(`${category}--`)));
+  const familyLess = snapshot.cases.filter(c => c.twin && !c.grouping.family);
+  const joinable = (c: SnapshotCase): Joinable => ({ key: c.id, scanners: {}, joinKeys: [exactKey(c)] });
+  const joined = joinByKeys(TWIN_SCOPE_POPULATION, projectTwins.map(joinable), familyLess.map(joinable));
+  const twins = Object.fromEntries(joined.pairs.map(p => [p.next.key, p.legacy.key]).sort(([a], [b]) => byteOrder(a, b)));
+  return {
+    schemaVersion: 1, id: TWIN_SCOPE_ID, population: TWIN_SCOPE_POPULATION, scopedBy: TWIN_SCOPE_SCOPED_BY, owner: 'redact-secret-benchmarks',
+    note: 'Product-owned, generated by npm run qualification:twin-scope from the public snapshot and the project twin-scope corpus; never hand-edited. Names, for a public cross-provider twin the snapshot gives no family, the project case that carries the same bytes with its parent\'s family. It changes no evidence class, outcome or measured count. Not part of credential-evidence.',
+    snapshot: { corpusDigest: snapshot.identity.corpus_digest, cases: snapshot.cases.length },
+    derivation: {
+      join: 'exact content key (sha256(content)|expected spans|fixture name), one to one, between the public twins with no family and the project twin cases that carry a family',
+      familyLessTwins: familyLess.length, mapped: joined.pairs.length, categories,
+    },
+    twins,
+  };
+}
+
+export const serializeTwinScopeMap = (map: TwinScopeMap) => `${canonical(map)}\n`;
+
+/** Structural validation of a parsed map, without the snapshot. Returns problems. */
+export function twinScopeMapProblems(map: unknown): string[] {
+  const m = map as Partial<TwinScopeMap> | null;
+  if (!m || typeof m !== 'object') return ['the twin-scope map is not an object'];
+  const problems: string[] = [];
+  if (m.schemaVersion !== 1 || m.id !== TWIN_SCOPE_ID || m.population !== TWIN_SCOPE_POPULATION || m.scopedBy !== TWIN_SCOPE_SCOPED_BY || m.owner !== 'redact-secret-benchmarks') problems.push('schemaVersion, id, population, scopedBy and owner must be the map identity');
+  if (!/^sha256:[a-f0-9]{64}$/.test(m.snapshot?.corpusDigest ?? '')) problems.push('snapshot.corpusDigest must be sha256:<64 hex>');
+  if (!m.twins || typeof m.twins !== 'object') return [...problems, 'twins is a required object'];
+  const entries = Object.entries(m.twins);
+  const projects = entries.map(([, project]) => project);
+  if (entries.some(([pub, project]) => typeof pub !== 'string' || typeof project !== 'string' || !pub || !project)) problems.push('every twin entry maps a public case id to a project case id');
+  if (new Set(projects).size !== projects.length) problems.push('two public twins map to one project case; the mapping is one to one');
+  if (entries.some(([pub, project]) => pub === project)) problems.push('a public id and its project id are different populations\' ids');
+  if (m.derivation && (m.derivation.mapped !== entries.length || m.derivation.mapped > m.derivation.familyLessTwins)) problems.push('derivation.mapped must equal the entries and not exceed the family-less public twins');
+  if (m.derivation && !m.derivation.categories?.length) problems.push('derivation.categories must name the project twin-scope categories');
+  if (projects.some(project => m.derivation && !m.derivation.categories.some(category => project.startsWith(`${category}--`)))) problems.push('every project id belongs to a twin-scope category');
+  return problems;
+}

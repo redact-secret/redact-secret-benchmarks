@@ -76,7 +76,8 @@ const product = (overrides = {}) => ({
   criteria: lowered(), profiles: fixtureProfiles, policyCriteria: {}, policyContracts: {}, ledger: { schemaVersion: 2, entries: {} }, knownGaps: [],
   policy: { schemaVersion: 1, id: 'synthetic-policy', scanner: 'redact-secret', populations: Object.fromEntries(Object.entries(POPULATIONS).map(([id, role]) => [id, { role, rationale: 'synthetic' }])),
     axes: { positiveContext: 'overlay-else-group', benignControl: 'overlay-else-taxonomy-else-group' }, methods: { required: METHODS, whenNotRun: 'block-stable', source: 'methods-run', differential: { peers: ['peer-one'], rationale: 'synthetic' } },
-    attribution: { fallback: ['overlay-detectors', 'twin-parent'], rationale: 'synthetic' }, rules: ['synthetic'] },
+    attribution: { fallback: ['overlay-detectors', 'twin-parent'], rationale: 'synthetic' },
+    axisCoverage: { populations: ['pop-a', 'pop-b'], rationale: 'synthetic' }, twinScope: { scopedBy: 'pop-b', rationale: 'synthetic' }, rules: ['synthetic'] },
   policyRevision: policyRevision([{ path: 'a', digest: DIGEST(1) }]), ...overrides,
 });
 
@@ -297,14 +298,16 @@ test('a method that the methods run does not list is unmeasured, and a bad metho
 });
 
 test('the product axis overlay names the axis of a counted case, changes no count, and is bound to its snapshot', () => {
-  const base = family(build({ methods: true }));
+  // Axis coverage is the floors population's alone here (the union over populations has its own tests below), so the overlay's effect is isolated.
+  const floorsOnly = (overrides = {}) => { const p = product(overrides); p.policy.axisCoverage = { populations: ['pop-a'], rationale: 'synthetic' }; return p; };
+  const base = family(build({ methods: true }, floorsOnly()));
   const overlay = {
     schemaVersion: 1, id: 'credential-public-axis-overlay-v1', population: 'pop-a', owner: 'redact-secret-benchmarks', note: 'synthetic',
     snapshot: { corpusDigest: registry[0].evidence.corpusDigest, cases: 5 }, derivation: { join: 'j', contextAxis: 'c', controlAxis: 'c', detectors: 'd', joinedCases: 5, unjoinedCases: 0 },
     contexts: { 'a-p1': 'cat-x/ctx-one', 'a-p2': 'cat-y/ctx-one' }, detectors: {},
     controls: { 'a-b1': 'placeholder', 'a-b2': null },
   };
-  const view = build({ methods: true }, product({ axisOverlay: overlay }));
+  const view = build({ methods: true }, floorsOnly({ axisOverlay: overlay }));
   const f = family(view);
   // Both positives name one fixture group, so the profile cell collapses from two (the snapshot groups) to one, while `positiveAxes` counts the
   // legacy `<category>/<group>` axes (two categories); the null control counts toward no axis.
@@ -317,7 +320,7 @@ test('the product axis overlay names the axis of a counted case, changes no coun
   assert.deepEqual(view.policy.axisOverlay, { id: overlay.id, population: 'pop-a', corpusDigest: overlay.snapshot.corpusDigest, contexts: 2, controls: 2, detectors: 0 });
   assert.deepEqual(validateQualificationView(view), []);
   // A case the overlay does not name keeps the snapshot's own vocabulary.
-  const partial = family(build({ methods: true }, product({ axisOverlay: { ...overlay, contexts: { 'a-p1': 'cat-x/ctx-one' }, controls: {} } })));
+  const partial = family(build({ methods: true }, floorsOnly({ axisOverlay: { ...overlay, contexts: { "a-p1": "cat-x/ctx-one" }, controls: {} } })));
   assert.deepEqual(partial.fixtureProfile.cells.positiveContextAxisIds, ['axis-2', 'ctx-one']);
   assert.deepEqual(partial.evidence.benignAxisIds, ['axis-a', 'axis-b']);
   // It is bound to one snapshot, and to the floors population.
@@ -445,4 +448,103 @@ test('case rows list every case of each population with each scanner as the arti
   assert.equal(build({ a: cases, methods: true }).policy.revision, view.policy.revision);
   assert.deepEqual(withoutCases.distribution, view.distribution);
   assert.deepEqual(validateQualificationView(view), []);
+});
+
+// -- axis coverage (#602): a floor is judged on the union of axis labels, never on summed counts --------------------------------------------------------
+
+const withAxisFloor = (n, policyPatch = {}) => {
+  const p = product();
+  p.criteria = lowered();
+  p.criteria.stable.documented.minimumControlAxes.value = n; p.criteria.stable.benign.minimumAxes.value = n;
+  p.policy = { ...p.policy, ...policyPatch };
+  return p;
+};
+/** Two benign axes in pop-a (`axis-a`, `axis-b`) and a third (`axis-c`) only in pop-b. */
+const oneAxisMore = () => [...familyCases('b', 'synthetic-token'), control('b-extra', 'synthetic-token', { group: 'axis-c' })];
+
+test('an axis floor is judged on the union of axis labels across the policy populations; counts are never summed', () => {
+  const union = family(build({ b: oneAxisMore(), methods: true }, withAxisFloor(3)));
+  assert.equal(union.status.value, 'stable');
+  assert.deepEqual(union.evidence.benignAxisIds, ['axis-a', 'axis-b', 'axis-c']);
+  assert.equal(union.evidence.controlAxes, 3);
+  // The case counts are the floors population's own: pop-b's extra control adds an axis and no case.
+  const floors = union.populations.find(p => p.population === 'pop-a').scanners.find(s => s.scanner === 'redact-secret').counts;
+  assert.equal(union.evidence.benignCases, floors.benign.cases);
+  assert.equal(union.evidence.totalFixtures, floors.cases);
+  // Which population supplied each axis is recorded, and a label two populations carry names both.
+  const supplied = Object.fromEntries(union.axisCoverage.control.map(a => [a.axis, a.populations]));
+  assert.deepEqual(supplied, { 'axis-a': ['pop-a', 'pop-b'], 'axis-b': ['pop-a', 'pop-b'], 'axis-c': ['pop-b'] });
+  assert.deepEqual(union.fixtureProfile.cells.controlAxisIds, ['axis-a', 'axis-b', 'axis-c']);
+});
+
+test('a population the policy does not name supplies no axis', () => {
+  const alone = family(build({ b: oneAxisMore(), methods: true }, withAxisFloor(3, { axisCoverage: { populations: ['pop-a'], rationale: 'synthetic' } })));
+  assert.equal(alone.status.value, 'provisional');
+  assert.equal(alone.evidence.controlAxes, 2);
+  assert.ok(alone.axisCoverage.control.every(a => a.populations.join() === 'pop-a'));
+  assert.ok(alone.status.reasons.some(r => /minimumControlAxes|minimumAxes/.test(r)));
+});
+
+test('a product population names a positive context by its category and fixture group, or by the category it copies', () => {
+  const b = [unit('b-p1', 'synthetic-token', { group: 'cat-b' }), unit('b-p2', 'synthetic-token', { group: 'cat-b' })];
+  const input = inputs({ b, methods: true });
+  input.find(i => i.population === 'pop-b').caseMetadata = { 'b-p1': { group: 'env' }, 'b-p2': { group: 'env', axisCategory: 'orig-cat' } };
+  const f = family(buildQualificationView({ registry, engine, artifacts: input, product: product() }));
+  // Cell axes are the fixture group, so `env` is one axis for both; the legacy `<category>/<group>` count sees the copy under its original's category.
+  assert.ok(f.fixtureProfile.cells.positiveContextAxisIds.includes('env'));
+  assert.deepEqual(f.axisCoverage.positiveContext.find(a => a.axis === 'env').populations, ['pop-b']);
+  const without = family(build({ b: [unit('b-p1', 'synthetic-token', { group: 'cat-b' })], methods: true }));
+  assert.equal(f.evidence.positiveAxes, without.evidence.positiveAxes + 1); // `cat-b/env` and `orig-cat/env` against one `cat-b` label
+});
+
+test('the policy must name axis coverage that includes the floors population', () => {
+  assert.throws(() => build({ methods: true }, withAxisFloor(1, { axisCoverage: { populations: ['pop-b'], rationale: 'x' } })), /axisCoverage\.populations/);
+  assert.throws(() => build({ methods: true }, withAxisFloor(1, { axisCoverage: { populations: ['pop-a', 'pop-zzz'], rationale: 'x' } })), /axisCoverage\.populations/);
+});
+
+// -- twin scope (#602): a public twin the snapshot gives no family is gated through the project case that carries it with its parent's family ------------
+
+/** A twin of `a-p1` with no family of its own, which the engine could not scope and read as flagged. */
+const unscopedTwin = (id, extra = {}) => control(id, undefined, { twin_of: 'a-p1', twin_mutation_kind: 'prefix', measurement: { type: 'control', flagged: true, findings: 1, co_detected: false }, ...extra });
+const scopeMap = (twins, patch = {}) => ({ schemaVersion: 1, id: 'synthetic-map', population: 'pop-a', scopedBy: 'pop-b', owner: 'redact-secret-benchmarks', snapshot: { corpusDigest: DIGEST(1), cases: 0 }, twins, ...patch });
+const projectTwin = (id, flagged = false) => control(id, 'synthetic-token', { twin_of: 'b-p1', twin_mutation_kind: 'prefix', measurement: { type: 'control', flagged, findings: 1, co_detected: !flagged } });
+
+test('a family-less public twin the map names is gated through its project case: the public verdict is reported, not gate-bearing', () => {
+  const a = [...familyCases('a', 'prov:fam'), unscopedTwin('a-tx')];
+  const b = [...familyCases('b', 'synthetic-token'), projectTwin('b-tx')];
+  const without = family(build({ a, b, methods: true }));
+  assert.equal(without.evidence.twinFailures, 1);
+  assert.equal(without.status.value, 'provisional');
+  const mapped = family(build({ a, b, methods: true }, product({ twinScope: scopeMap({ 'a-tx': 'b-tx' }) })));
+  assert.equal(mapped.evidence.twinFailures, 0);
+  assert.equal(mapped.status.value, 'stable');
+  const [publicGate, projectGate] = mapped.gates;
+  assert.equal(publicGate.twinFailures, 0);
+  assert.equal(publicGate.twinPairsScopedElsewhere, 1);
+  assert.equal(publicGate.twinFailuresScopedElsewhere, 1);
+  assert.equal(projectGate.twinPairs, 2); // its own pairs, counted in its own denominator and never added to the public ones
+  assert.equal(mapped.evidence.twinPairs, publicGate.twinPairs); // the floor still counts the public pair as published
+});
+
+test('the project case decides: a project twin that fails still blocks the family, and an unmapped family-less twin keeps counting', () => {
+  const a = [...familyCases('a', 'prov:fam'), unscopedTwin('a-tx'), unscopedTwin('a-ty')];
+  const b = [...familyCases('b', 'synthetic-token'), projectTwin('b-tx', true)];
+  const failing = family(build({ a, b, methods: true }, product({ twinScope: scopeMap({ 'a-tx': 'b-tx' }) })));
+  assert.deepEqual(failing.gates.map(g => g.twinFailures), [1, 1]); // a-ty still fails in pop-a; b-tx fails in pop-b
+  const onlyUnmapped = family(build({ a, b: [...familyCases('b', 'synthetic-token'), projectTwin('b-tx')], methods: true }, product({ twinScope: scopeMap({ 'a-tx': 'b-tx' }) })));
+  assert.deepEqual(onlyUnmapped.gates.map(g => g.twinFailures), [1, 0]);
+  assert.equal(onlyUnmapped.status.value, 'provisional');
+});
+
+test('a stale twin-scope map is refused: another corpus, a public twin that has a family, a project case that has none or is absent', () => {
+  const a = [...familyCases('a', 'prov:fam'), unscopedTwin('a-tx')], b = [...familyCases('b', 'synthetic-token'), projectTwin('b-tx')];
+  const run = twins => build({ a, b, methods: true }, product({ twinScope: scopeMap(twins) }));
+  assert.throws(() => build({ a, b, methods: true }, product({ twinScope: scopeMap({ 'a-tx': 'b-tx' }, { snapshot: { corpusDigest: DIGEST(99), cases: 0 } }) })), /derived from corpus/);
+  assert.throws(() => run({ 'a-t1': 'b-tx' }), /not a pop-a twin without a family/);
+  assert.throws(() => run({ 'a-tx': 'b-nowhere' }), /not a pop-b twin with a family/);
+  assert.throws(() => run({ 'a-tx': 'b-p1' }), /not a pop-b twin with a family/);
+});
+
+test('the policy must name a gate-bearing population other than the floors population to scope twins', () => {
+  for (const scopedBy of ['pop-a', 'pop-c', 'pop-zzz']) assert.throws(() => build({ methods: true }, withAxisFloor(1, { twinScope: { scopedBy, rationale: 'x' } })), /twinScope\.scopedBy/);
 });

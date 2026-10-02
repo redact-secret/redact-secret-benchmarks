@@ -2,6 +2,7 @@ import { readFile, realpath } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { buildCorpora } from '../../fixtures/generated/build.mjs';
+import { buildTwinScopeCorpus, TWIN_SCOPE_CATEGORY } from '../../fixtures/generated/twin-scope.mjs';
 import { validateCorpus } from '../lib/scoring.ts';
 import { classifyFixture, controlAxis, validateAssessment, validateContracts } from '../evaluation/domains/credential/assessment.ts';
 import type { Corpus, Fixture } from '../types.ts';
@@ -32,7 +33,7 @@ const root = fileURLToPath(new URL('../../', import.meta.url));
 const byteOrder = (a: string, b: string) => Buffer.compare(Buffer.from(a), Buffer.from(b));
 
 /** Product-side metadata keyed by case id. Policy facts never enter the snapshot (qualification-boundary 3.8). */
-export interface CaseMetadata { group: string; contextAxis?: string; expectedAction?: string; policyConformance?: boolean }
+export interface CaseMetadata { group: string; contextAxis?: string; expectedAction?: string; policyConformance?: boolean; axisCategory?: string }
 
 export interface PopulationExport {
   population: ProductPopulation;
@@ -53,7 +54,10 @@ export async function populationCategories(population: ProductPopulation): Promi
   if (population === 'regression-corpus') {
     const manifest = JSON.parse(await readFile(path.join(root, 'corpora/regression/manifest.json'), 'utf8'));
     if (manifest.schemaVersion !== 1 || manifest.visibility !== 'regression' || !Array.isArray(manifest.categories)) throw new Error('Invalid regression corpus manifest');
-    return [...manifest.categories];
+    // `qualificationCategories` are measured by the qualification path only: the legacy partitions and categories.json do not list them.
+    const extra = manifest.qualificationCategories ?? [];
+    if (!Array.isArray(extra) || extra.some((id: unknown) => typeof id !== 'string' || manifest.categories.includes(id))) throw new Error('Invalid regression corpus manifest: qualificationCategories');
+    return [...manifest.categories, ...extra];
   }
   const inputs = JSON.parse(await readFile(path.join(root, 'benchmarks/qualification-inputs.json'), 'utf8'));
   const category = inputs.populations.find((p: { id: string }) => p.id === 'policy-corpus')?.currentLocation?.category;
@@ -66,6 +70,7 @@ const CASE_ID = /^[a-z0-9][a-z0-9-]*$/;
 export async function exportPopulation(population: ProductPopulation): Promise<PopulationExport> {
   validateContracts();
   const categories = await populationCategories(population);
+  const qualificationOnly = new Set<string>(population === 'regression-corpus' ? (JSON.parse(await readFile(path.join(root, 'corpora/regression/manifest.json'), 'utf8')).qualificationCategories ?? []) : []);
   const catalog: { id: string; corpus: string; calibrationOnly?: boolean }[] = JSON.parse(await readFile(path.join(root, 'benchmarks/categories.json'), 'utf8'));
   const detectorMap: Record<string, string[]> = JSON.parse(await readFile(path.join(root, 'benchmarks/fixture-detectors.json'), 'utf8'));
   const generated: Record<string, Corpus> = buildCorpora();
@@ -75,11 +80,12 @@ export async function exportPopulation(population: ProductPopulation): Promise<P
 
   for (const id of categories) {
     const category = catalog.find(c => c.id === id);
-    if (!category) throw new Error(`Population ${population} names unknown category ${id}`);
-    if (category.calibrationOnly) throw new Error(`Category ${id} is calibration-only and cannot be a measured population`);
-    let input = generated[id];
+    // A qualification-only category is built here (fixtures/generated/twin-scope.mjs) and is in no legacy catalog; every other category must be in the catalog.
+    if (!category && !(id === TWIN_SCOPE_CATEGORY && qualificationOnly.has(id))) throw new Error(`Population ${population} names unknown category ${id}`);
+    if (category?.calibrationOnly) throw new Error(`Category ${id} is calibration-only and cannot be a measured population`);
+    let input = id === TWIN_SCOPE_CATEGORY ? buildTwinScopeCorpus() : generated[id];
     if (!input) {
-      const source = path.resolve(root, category.corpus);
+      const source = path.resolve(root, category!.corpus);
       if (!storage.some(directory => source.startsWith(directory))) throw new Error(`Corpus of ${id} points outside fixture storage`);
       input = JSON.parse(await readFile(await realpath(source), 'utf8'));
     }
@@ -112,6 +118,7 @@ export async function exportPopulation(population: ProductPopulation): Promise<P
       });
       metadata[caseId] = {
         group: f.group,
+        ...(f.copyOf ? { axisCategory: f.copyOf } : {}),
         ...(f.contextAxis ? { contextAxis: f.contextAxis } : {}),
         ...(f.expectedAction ? { expectedAction: f.expectedAction } : {}),
         ...(f.policyConformance ? { policyConformance: true } : {}),

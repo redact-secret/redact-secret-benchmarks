@@ -469,7 +469,12 @@ const always = () => true;
 const detectorFamily = (f: Fixture) => f.detectors?.[0];
 /** The contract a fixture is authored against: its registry detector, else its Beta.8 arrival target. */
 const targetFamily = (f: Fixture) => f.detectors?.[0] ?? f.arrivalTargets?.[0];
-const isBeta8 = (category: string) => category.startsWith('beta8-');
+/**
+ * A category whose fixtures are byte-for-byte copies of Beta.8 fixtures is classified by the Beta.8 rules, so a copy keeps the
+ * tier and contract of its original: `twin-scope-regressions` (fixtures/generated/twin-scope.mjs), measured by the qualification path only.
+ */
+const BETA8_COPIES = new Set(['twin-scope-regressions']);
+const isBeta8 = (category: string) => category.startsWith('beta8-') || BETA8_COPIES.has(category);
 /**
  * Beta.8 corpora (#207–#212) name each control's axis by id suffix, one row
  * per `AXES` value, so a control counts toward exactly one reviewed axis.

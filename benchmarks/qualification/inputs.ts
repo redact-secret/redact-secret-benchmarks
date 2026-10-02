@@ -10,6 +10,7 @@ import { taxonomy } from '../support/taxonomy.ts';
 import { ADAPTER, type CombinationPolicy, type ContractFacts, type KnownGapRecord, type PolicyRevision, type PopulationRegistryEntry, type ProductInputs } from './adapter.ts';
 import { canonical, sha256Hex } from './canonical.ts';
 import { AXIS_OVERLAY_FILE, axisOverlayProblems, type AxisOverlay } from './axis-overlay.ts';
+import { TWIN_SCOPE_FILE, twinScopeMapProblems, type TwinScopeMap } from './twin-scope.ts';
 import { LEDGER_REKEY_FILE, ledgerRekeyProblems, type LedgerRekey } from './ledger-rekey.ts';
 
 /**
@@ -27,6 +28,7 @@ export const POLICY_FILES = [
   'benchmarks/support/taxonomy.json',
   'benchmarks/support/population-policy.json',
   'benchmarks/support/public-axis-overlay.json',
+  'benchmarks/support/public-twin-scope-map.json',
   'benchmarks/review-ledger.json',
   'benchmarks/support/public-review-ledger-map.json',
 ] as const;
@@ -63,7 +65,9 @@ export async function loadRegistry() {
 }
 
 export async function loadProductInputs(): Promise<ProductInputs> {
-  const [policy, ledger, gaps, axisOverlay, ledgerRekey] = await Promise.all([readJson('benchmarks/support/population-policy.json'), readJson('benchmarks/review-ledger.json'), readJson('benchmarks/known-gaps.json'), readJson(AXIS_OVERLAY_FILE), readJson(LEDGER_REKEY_FILE)]);
+  const [policy, ledger, gaps, axisOverlay, ledgerRekey, twinScope] = await Promise.all([readJson('benchmarks/support/population-policy.json'), readJson('benchmarks/review-ledger.json'), readJson('benchmarks/known-gaps.json'), readJson(AXIS_OVERLAY_FILE), readJson(LEDGER_REKEY_FILE), readJson(TWIN_SCOPE_FILE)]);
+  const twinScopeProblems = twinScopeMapProblems(twinScope);
+  if (twinScopeProblems.length) throw new Error(`${TWIN_SCOPE_FILE} is invalid: ${twinScopeProblems.join('; ')}`);
   const overlayProblems = axisOverlayProblems(axisOverlay);
   if (overlayProblems.length) throw new Error(`${AXIS_OVERLAY_FILE} is invalid: ${overlayProblems.join('; ')}`);
   const rekeyProblems = ledgerRekeyProblems(ledgerRekey, ledger);
@@ -79,7 +83,7 @@ export async function loadProductInputs(): Promise<ProductInputs> {
     profiles: validateFixtureProfiles(fixtureProfiles),
     policyCriteria: policyCredentialProfile.criteria as ProductInputs['policyCriteria'],
     policyContracts: policyCredentialProfile.families as unknown as ProductInputs['policyContracts'],
-    ledger, ledgerRekey: ledgerRekey as LedgerRekey, knownGaps, policy: policy as CombinationPolicy, axisOverlay: axisOverlay as AxisOverlay,
+    ledger, ledgerRekey: ledgerRekey as LedgerRekey, knownGaps, policy: policy as CombinationPolicy, axisOverlay: axisOverlay as AxisOverlay, twinScope: twinScope as TwinScopeMap,
     policyRevision: await loadPolicyRevision(),
   };
 }

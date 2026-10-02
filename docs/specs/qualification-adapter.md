@@ -43,7 +43,7 @@ or erase the source population. One invalid artifact stops the view; it is never
 
 1. A case is keyed by `(population, case_id)`. The same id in two populations is two rows.
 2. Counts are never summed, averaged or pooled. Every population keeps its own denominator (`denominator` equals its id).
-3. Floors and cells come from the `floors-and-gates` population alone.
+3. Floor and cell COUNTS come from the `floors-and-gates` population alone; the axis labels they read are the union across `axisCoverage` populations (below).
 4. A zero-tolerance gate (twin failures, benign false alarms) is evaluated in each gate-bearing population. The classifier
    receives the worst population; `families[].gates` shows every population's value side by side.
 5. The route (documented T1, empirical T2, policy-qualified T3) is read from the product contract and empirical overlays,
@@ -113,7 +113,28 @@ floors cases of a family by source (`snapshot`, `overlay-detectors`, `twin-paren
 ([ADR](../decisions/2026-10-01-attribute-public-cases-by-the-legacy-targets-and-keep-floors-per-population.md)). Floors stay per population: the legacy
 pooled count of a family with regression fixtures is a legitimate difference (`population-separation`), never reproduced by pooling. A
 cross-provider twin the snapshot gives no family is scoped by no one in the engine, which reads a finding of another known detector as
-flagged; the adapter does not re-score it (`twin-scope-vocabulary`).
+flagged; the adapter does not re-score it (`twin-scope-vocabulary`; the twin gate reads its project counterpart, see Twin scope).
+
+## Axis coverage
+
+An axis floor (`positiveAxes`, `controlAxes`, `benignAxes`, `confusionAxes` and the fixture-profile positive-context, control and confusion cells) is judged on the
+union of the axis labels across the populations `population-policy.json` `axisCoverage.populations` names (#641,
+[ADR](../decisions/2026-10-02-judge-axis-floors-on-the-union-of-axis-labels-across-populations.md)). Only labels are unioned. `positiveCases`, `benignCases`,
+`twinPairs`, `totalFixtures` and every case cell are the floors population's count alone, and the zero-tolerance gates are unchanged. A label is the legacy
+classifier's: a control's reviewed axis, a positive's `<category>/<fixture group>` (the fixture group for the cell). The public population gets it from the axis
+overlay; a product population from its own case taxonomy and case metadata (`group`, and `axisCategory` for a byte-for-byte copy, which names its original's category so a
+copy adds no label). `families[].axisCoverage` lists, per covered axis, the populations that supplied it. The rule applies to every family.
+
+## Twin scope
+
+credential-eval scopes a control by the `family` its case carries. A public cross-provider twin the snapshot gives no family cannot be scoped, so the engine reads a finding of
+another known detector as flagged. The project carries the same twins with their parent's family (`twin-scope-regressions`, regression population) and the engine reads
+them as co-detected, as the legacy path did. `benchmarks/support/public-twin-scope-map.json` (`npm run qualification:twin-scope -- --snapshot <file>`, `--check`, `--validate`)
+maps each such public twin to the project case with the same content (exact content join, one to one, bound to the snapshot's corpus digest, a policy component).
+`population-policy.json` `twinScope.scopedBy` names the population that measures them. In the public population's gate row a mapped twin is not gate-bearing: it is shown
+(`gates[].twinPairsScopedElsewhere`, `twinFailuresScopedElsewhere`) and the project case is counted in the regression population's own gate row; the classifier still receives the
+worst population. The floor counts the public pair as published. The adapter refuses a map that names a case an artifact lacks, a public twin that has a family, or a project case
+that has none, and does not re-score any verdict.
 
 ## Derivation of the status inputs
 
@@ -169,16 +190,16 @@ Compared against the legacy path, with each difference attributed to a structura
    population until the legacy-id re-key of known gaps and fixtures (the review ledger has its own mapping).
 5. **Taxonomy families with no detector** appear in the public snapshot and are reported in `unmappedFamilies`.
 6. **Ledger ids** are mapped by content (above); the known-gap and fixture ids still wait for the evidence release id map.
-7. **Floors per population and twin scope.** A family whose legacy floor pooled regression fixtures reads its public-snapshot floor
-   (`population-separation`), and a cross-provider twin the snapshot gives no family reads flagged where the legacy twin read co-detected
-   (`twin-scope-vocabulary`); both are attributed in the parity report, not reproduced.
+7. **Counts per population, axes by union, twin scope.** A family whose legacy floor pooled regression fixtures reads its public-snapshot COUNTS (`population-separation`)
+   but its axis coverage across populations (#641). A cross-provider twin the snapshot gives no family still reads flagged in the public population where the legacy twin read co-detected
+   (`twin-scope-vocabulary`, confirmed): the twin gate reads the project twin-scope case instead. Both are attributed in the parity report.
 
 ## Product policy revision
 
 `policy.revision` is `rs-policy-<adapter version>:sha256:<hex>`: the SHA-256 of the canonical JSON of
 `{adapter, components}`, where each component is one benchmark-owned qualification input and its digest is of its parsed
 content: `status-criteria.json`, `fixture-profiles.json`, `policy-qualified-credentials.json`,
-`empirical-observations.json`, `taxonomy.json`, `population-policy.json`, `public-axis-overlay.json`, `review-ledger.json`, `public-review-ledger-map.json`, and the contract facts of
+`empirical-observations.json`, `taxonomy.json`, `population-policy.json`, `public-axis-overlay.json`, `public-twin-scope-map.json`, `review-ledger.json`, `public-review-ledger-map.json`, and the contract facts of
 `assessment.ts` (tiers, provider sources, patterns, supported contexts; validator functions excluded).
 Whitespace and key order do not move it. A threshold, route, tier, record, taxonomy entry, ledger decision or population
 role does. A re-measurement of unchanged inputs does not. `supportStatusChanges` in `qualification-inputs.json` cite this
@@ -190,14 +211,14 @@ Top level: `schema` (`redact-secret/qualification-view/v1`), `adapter`, `publica
 `populations`, `scanners`, `distribution`, `stableDistribution`, `families`, `undetected`, `knownGaps`, `unmappedFamilies`.
 
 - `policy`: `revision`, `components[]` (path, digest), `criteria` (the thresholds as applied), `populations` (roles),
-  `methodsRequired`, `differentialPeers`, `attributionFallback`, `rules`, `ledgerRekey` (the mapping: id, population, corpus digest, occurrences mapped) and `axisOverlay` (the overlay the floors were counted with: id, population, corpus digest, entry counts).
+  `methodsRequired`, `differentialPeers`, `attributionFallback`, `axisCoverage` (the populations whose axis labels are unioned), `twinScope` (the twin-scope map: id, scoping population, corpus digest, twins mapped), `rules`, `ledgerRekey` (the mapping: id, population, corpus digest, occurrences mapped) and `axisOverlay` (the overlay the floors were counted with: id, population, corpus digest, entry counts).
 - `populations[]`: `population`, `role`, `denominator`, `runClass`, `artifact` (digests, engine, protocol, `configHash`,
   `evidence`, publication, `methods`, scanners with version, build, mode and configuration hash), `methodsArtifact` (the same identity
   for the floors population's methods run, when there is one), `unattributed[]`
   (per-scanner counts), `aggregates[]` (the engine's published `groups` and `byTarget`, verbatim, withheld figures kept).
 - `families[]` (one per scored product detector family, sorted): `taxonomyFamilies[]`, `contract`, `status`
   (`value`, `reasons`, `qualificationProfile`, `evidenceTier`, `evidenceBasis`, `methodsNotRun`), `evidence`
-  (`FamilySupportEvidence`), `fixtureProfile`, `gates[]` (per gate-bearing population), `differential` (per peer: occurrences, settled, unresolved, `gateBearing`; null when the methods run did not run differential), `attribution` (floors cases by source), and `populations[]` each with
+  (`FamilySupportEvidence`), `fixtureProfile`, `gates[]` (per gate-bearing population, with the twin pairs and failures scoped elsewhere), `axisCoverage` (per covered axis, the supplying populations), `differential` (per peer: occurrences, settled, unresolved, `gateBearing`; null when the methods run did not run differential), `attribution` (floors cases by source), and `populations[]` each with
   `scanners[]` of `{scanner, counts}`. `counts` are `cases`, `pending`, `notMeasured`, `positives` (`must-redact`,
   `policy`: spans, outcomes, leaked and collateral bytes), `benign` (`cases`, `flagged`, `findings`) and `twins`
   (`pairs`, `discriminated`, `flagged`, `coDetected`).

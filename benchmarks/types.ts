@@ -24,6 +24,8 @@ export interface Fixture {
   policyConformance?: boolean;
   /** Explicit family identity required by the credential-policy holdout domain. */
   policyFamily?: 'bearer-token' | 'connection-string' | 'otpauth-uri' | 'generic-token';
+  /** The category this fixture is a byte-for-byte copy of (fixtures/generated/twin-scope.mjs), so a copy names the axis of its original, not a new one. */
+  copyOf?: string;
 }
 export interface Corpus { fixtures: Fixture[]; schemaVersion?: number; reviewStatus?: string; scope?: string; references?: unknown; milestoneReview?: unknown }
 /** `action` (#95, docs/decisions/2026-09-21-add-untargeted-benign-corpus.md Decision 3): the product

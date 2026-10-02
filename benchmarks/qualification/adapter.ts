@@ -7,6 +7,7 @@ import type { ReviewLedger } from '../engine/review-ledger.ts';
 import { canonical } from './canonical.ts';
 import { contextGroup, type AxisOverlay } from './axis-overlay.ts';
 import { ledgerSettledId, type LedgerRekey } from './ledger-rekey.ts';
+import type { TwinScopeMap } from './twin-scope.ts';
 import {
   bindingProblems, byId, countCase, emptyCounts, OUTCOMES, readRunArtifact, UNASSIGNED,
   type CaseResult, type EvidencePin, type FamilyCounts, type Outcome, type ReadArtifact, type RunArtifact, type ScannerRun,
@@ -34,6 +35,13 @@ export interface CombinationPolicy {
   methods: { required: string[]; whenNotRun: 'block-stable'; source: 'methods-run'; differential: { peers: string[]; rationale: string } };
   /** How a case the snapshot attributes to no product detector is attributed, in order (#638). The legacy path scoped a fixture to its declared targets. */
   attribution: { fallback: AttributionStep[]; rationale: string };
+  /**
+   * Which populations' axis LABELS count toward a family's axis floors (#602). Counts and denominators never leave their population: only the
+   * set of distinct axis labels is a union, so a floor is judged on the coverage the product's evidence has across its populations.
+   */
+  axisCoverage: { populations: string[]; rationale: string };
+  /** Twins the public snapshot gives no family are gated through the product population that carries them with their parent's family (#602). */
+  twinScope: { scopedBy: string; rationale: string };
   rules: string[];
 }
 export const ATTRIBUTION_STEPS = ['overlay-detectors', 'twin-parent'] as const;
@@ -41,7 +49,8 @@ export type AttributionStep = typeof ATTRIBUTION_STEPS[number];
 export interface PopulationRegistryEntry { id: string; source: string; runClass: 'public' | 'internal'; publishable: boolean; evidence: EvidencePin }
 /** `methodsBytes` is the methods run of the same population (docs/specs/official-runs.md, "The methods run"): a second artifact over the same evidence, whose cases are generated variants. Only the floors population carries one. */
 export interface ArtifactInput { population: string; bytes: Buffer; caseMetadata?: Record<string, CaseMetadata>; methodsBytes?: Buffer }
-export interface CaseMetadata { group: string; contextAxis?: string; expectedAction?: string; policyConformance?: boolean }
+/** `axisCategory` is the category a case is a byte-for-byte copy of (the project twin-scope corpus), so a copy names the axis of its original. */
+export interface CaseMetadata { group: string; contextAxis?: string; expectedAction?: string; policyConformance?: boolean; axisCategory?: string }
 
 export interface ContractFacts { tier: Tier; providerSource?: unknown; supportedContext?: string[]; unprobeable?: unknown; fixtureProfile?: ProfileId }
 export interface EmpiricalFacts {
@@ -77,6 +86,8 @@ export interface ProductInputs {
   policyRevision: PolicyRevision;
   /** The product-owned axis overlay of the floors population (benchmarks/support/public-axis-overlay.json), bound to its snapshot by corpus digest. */
   axisOverlay?: AxisOverlay;
+  /** The public twins the snapshot gives no family, mapped to the project cases that carry them with their parent's family (benchmarks/support/public-twin-scope-map.json). */
+  twinScope?: TwinScopeMap;
   holdoutReceipt?: PolicyHoldoutReceipt;
 }
 
@@ -188,36 +199,77 @@ const productRun = (artifact: RunArtifact, scanner: string): ScannerRun => {
   return run;
 };
 
+/** The axis labels one population's scored cases name, by the three legacy vocabularies. */
+interface AxisLabels { context: Set<string>; contextGroup: Set<string>; control: Set<string>; mutationKinds: Set<string> }
+interface AxisSource { population: string; cases: CaseResult[]; overlay?: AxisOverlay; metadata?: Record<string, CaseMetadata> }
+
+const scoredCases = (cases: CaseResult[]) => cases.filter(c => c.measurement.type !== 'pending' && c.measurement.type !== 'not-measured');
+const isSecretCase = (c: CaseResult) => c.expected.some(e => e.role === 'secret');
+
 /**
- * The floor cells of one population's cases. With the product axis overlay (#636) a counted case is named by the axis the
- * product authored for it: its source-context group (positives) and its reviewed benign taxonomy (controls). A case the
- * overlay does not name keeps the snapshot's own vocabulary; an overlay `null` is a control with no reviewed axis.
+ * The axis labels of one population. With the product axis overlay (#636) a counted case is named by the axis the product authored for it:
+ * its source-context group (positives) and its reviewed benign taxonomy (controls). A case the overlay does not name keeps the population's own
+ * vocabulary (the snapshot's group and taxonomy, or for a product population the category and fixture group its case metadata carries); an
+ * overlay `null` is a control with no reviewed axis.
  */
-function fixtureCells(cases: CaseResult[], overlay?: AxisOverlay): { cells: FixtureCells; positiveCases: number; positiveAxes: number; contextTwinPairs: number; confusionAxes: number; benignAxisIds: string[]; benignCases: number } {
-  const scored = cases.filter(c => c.measurement.type !== 'pending' && c.measurement.type !== 'not-measured');
-  const isSecret = (c: CaseResult) => c.expected.some(e => e.role === 'secret');
+function axisLabels({ cases, overlay, metadata }: AxisSource): AxisLabels {
+  const scored = scoredCases(cases);
+  const twins = scored.filter(c => c.twin_of);
+  const positives = scored.filter(c => !c.twin_of && isSecretCase(c));
+  const controls = scored.filter(c => !c.twin_of && !isSecretCase(c));
+  const named = (map: Record<string, unknown> | undefined, id: string) => Boolean(map) && Object.hasOwn(map!, id);
+  // The legacy classifier counted two things: the fixture-profile cell by fixture group alone, and `positiveAxes` by `<category>/<group>`.
+  // A product population's case names its category (`group`) and, in its case metadata, the fixture group.
+  const contextAxis = (c: CaseResult) => (named(overlay?.contexts, c.case_id) ? overlay!.contexts[c.case_id] : metadata ? `${metadata[c.case_id]?.axisCategory ?? c.group}/${metadata[c.case_id]?.group ?? c.group}` : c.group);
+  const contextCell = (c: CaseResult) => (named(overlay?.contexts, c.case_id) ? contextGroup(overlay!.contexts[c.case_id]) : metadata?.[c.case_id]?.group ?? c.group);
+  const controlAxis = (c: CaseResult) => (named(overlay?.controls, c.case_id) ? overlay!.controls[c.case_id] : c.taxonomy ?? c.group);
+  return {
+    context: new Set(positives.map(contextAxis)),
+    contextGroup: new Set(positives.map(contextCell)),
+    control: new Set(controls.map(controlAxis).filter((axis): axis is string => axis !== null)),
+    mutationKinds: new Set(twins.map(c => c.twin_mutation_kind ?? 'unspecified')),
+  };
+}
+
+export interface AxisSupplier { axis: string; populations: string[] }
+/** Which populations supplied each covered axis of a family: the same ids the fixture-profile cells and the control and confusion floors count. */
+export interface AxisCoverage { positiveContext: AxisSupplier[]; control: AxisSupplier[]; confusion: AxisSupplier[] }
+
+/**
+ * The floor cells of a family. Case COUNTS (cases, positives, controls, twin pairs, fixtures) are the floors population's alone and are never
+ * summed with another population's. Axis COVERAGE is the union of the axis labels of the populations the policy names (`axisCoverage`): an axis is
+ * covered when any of those populations carries a scored case in it, and the view records which population supplied each (`coverage`).
+ */
+function fixtureCells(floors: AxisSource, supplemental: AxisSource[]): { cells: FixtureCells; positiveCases: number; positiveAxes: number; contextTwinPairs: number; confusionAxes: number; benignAxisIds: string[]; benignCases: number; coverage: AxisCoverage } {
+  const scored = scoredCases(floors.cases);
   const twins = scored.filter(c => c.twin_of);
   const paired = new Set(twins.map(c => c.twin_of!));
-  const positives = scored.filter(c => !c.twin_of && isSecret(c));
-  const controls = scored.filter(c => !c.twin_of && !isSecret(c));
-  const controlAxis = (c: CaseResult) => (overlay && Object.hasOwn(overlay.controls, c.case_id) ? overlay.controls[c.case_id] : c.taxonomy ?? c.group);
-  // The legacy classifier counted two things: the fixture-profile cell by fixture group alone, and `positiveAxes` by `<category>/<group>`.
-  const contextAxis = (c: CaseResult) => (overlay && Object.hasOwn(overlay.contexts, c.case_id) ? overlay.contexts[c.case_id] : c.group);
-  const controlAxisIds = sorted(new Set(controls.map(controlAxis).filter((axis): axis is string => axis !== null)));
-  const positiveContextAxisIds = sorted(new Set(positives.map(c => (overlay && Object.hasOwn(overlay.contexts, c.case_id) ? contextGroup(overlay.contexts[c.case_id]) : c.group))));
-  const positiveCategoryAxes = new Set(positives.map(contextAxis));
-  const mutationKinds = new Set(twins.map(c => c.twin_mutation_kind ?? 'unspecified'));
-  const confusionAxisIds = sorted(new Set([...controlAxisIds, ...[...mutationKinds].map(kind => `twin:${kind}`)]));
+  const positives = scored.filter(c => !c.twin_of && isSecretCase(c));
+  const controls = scored.filter(c => !c.twin_of && !isSecretCase(c));
+  const labels = [floors, ...supplemental].map(source => ({ population: source.population, ...axisLabels(source) }));
+  const pickContext = (l: AxisLabels) => l.context, pickCell = (l: AxisLabels) => l.contextGroup, pickControl = (l: AxisLabels) => l.control;
+  const pickConfusion = (l: AxisLabels) => new Set([...l.control, ...[...l.mutationKinds].map(kind => `twin:${kind}`)]);
+  const union = (pick: (l: AxisLabels) => Set<string>) => sorted(new Set(labels.flatMap(l => [...pick(l)])));
+  const suppliers = (pick: (l: AxisLabels) => Set<string>) => (axis: string): AxisSupplier => ({ axis, populations: labels.filter(l => pick(l).has(axis)).map(l => l.population) });
+  const controlAxisIds = union(pickControl);
+  const positiveContextAxisIds = union(pickCell);
+  const confusionAxisIds = union(pickConfusion);
+  const mutationKinds = new Set(labels.flatMap(l => [...l.mutationKinds]));
   return {
     cells: {
       totalFixtures: scored.length, positiveCases: positives.filter(c => !paired.has(c.case_id)).length, benignControls: controls.length, twinPairs: twins.length,
       positiveContextAxes: positiveContextAxisIds.length, controlAxes: controlAxisIds.length, confusionAxes: confusionAxisIds.length,
       positiveContextAxisIds, controlAxisIds, confusionAxisIds,
     },
-    positiveCases: positives.length, positiveAxes: positiveCategoryAxes.size,
+    positiveCases: positives.length, positiveAxes: union(pickContext).length,
     contextTwinPairs: twins.filter(c => c.twin_mutation_kind === 'context').length,
     confusionAxes: new Set([...controlAxisIds, ...mutationKinds]).size,
     benignAxisIds: controlAxisIds, benignCases: controls.length,
+    coverage: {
+      positiveContext: positiveContextAxisIds.map(suppliers(pickCell)),
+      control: controlAxisIds.map(suppliers(pickControl)),
+      confusion: confusionAxisIds.map(suppliers(pickConfusion)),
+    },
   };
 }
 
@@ -298,6 +350,13 @@ export function validateCombinationPolicy(policy: CombinationPolicy, registry: P
   if (!Array.isArray(steps) || steps.some(x => !(ATTRIBUTION_STEPS as readonly string[]).includes(x)) || new Set(steps).size !== steps.length)
     throw new Error(`The population policy needs attribution.fallback: distinct steps from ${ATTRIBUTION_STEPS.join(', ')}`);
   for (const id of Object.keys(policy.populations)) if (!registry.some(p => p.id === id)) throw new Error(`The population policy names ${id}, which is not in the population registry`);
+  const floors = Object.entries(policy.populations).find(([, p]) => p.role === 'floors-and-gates')![0];
+  const coverage = policy.axisCoverage?.populations;
+  if (!Array.isArray(coverage) || !coverage.length || new Set(coverage).size !== coverage.length || !coverage.includes(floors) || coverage.some(id => !policy.populations[id]))
+    throw new Error(`The population policy needs axisCoverage.populations: distinct populations of the policy that include the floors population ${floors}`);
+  const scopedBy = policy.twinScope?.scopedBy;
+  if (!scopedBy || scopedBy === floors || policy.populations[scopedBy]?.role !== 'gates')
+    throw new Error('The population policy needs twinScope.scopedBy: a gate-bearing population other than the floors population');
 }
 
 const scannerResult = (scanner: string, c: CaseResult): CaseScannerResult => {
@@ -371,6 +430,26 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
       throw new Error(`The axis overlay is derived from corpus ${floorsOverlay.snapshot.corpusDigest}, the ${floorsPopulation} artifact ran ${floorsArtifact.artifact.manifest.evidence.corpus_digest}; regenerate it (npm run qualification:axis-overlay)`);
   }
 
+  // The twin-scope map (#602): a public twin the snapshot gives no family is measured by the project population that carries it with its parent's
+  // family. A stale map (another corpus, a case an artifact does not carry, a public twin that does carry a family) is refused, never skipped.
+  const twinScope = product.twinScope;
+  const scopedPublicTwins = new Set<string>();
+  if (twinScope) {
+    if (twinScope.population !== floorsPopulation || twinScope.scopedBy !== policy.twinScope.scopedBy)
+      throw new Error(`The twin-scope map is for ${twinScope.population} scoped by ${twinScope.scopedBy}; the policy has ${floorsPopulation} scoped by ${policy.twinScope.scopedBy}`);
+    if (twinScope.snapshot.corpusDigest !== floorsArtifact.artifact.manifest.evidence.corpus_digest)
+      throw new Error(`The twin-scope map is derived from corpus ${twinScope.snapshot.corpusDigest}, the ${floorsPopulation} artifact ran ${floorsArtifact.artifact.manifest.evidence.corpus_digest}; regenerate it (npm run qualification:twin-scope)`);
+    const publicCases = byId(productRun(floorsArtifact.artifact, policy.scanner));
+    const scopingCases = byId(productRun(loaded.find(l => l.input.population === twinScope.scopedBy)!.artifact, policy.scanner));
+    for (const [publicId, projectId] of Object.entries(twinScope.twins)) {
+      const pub = publicCases.get(publicId), project = scopingCases.get(projectId);
+      if (!pub?.twin_of || pub.family) throw new Error(`The twin-scope map names ${publicId}, which is not a ${floorsPopulation} twin without a family; regenerate it (npm run qualification:twin-scope)`);
+      if (!project?.twin_of || !project.family) throw new Error(`The twin-scope map names ${projectId}, which is not a ${twinScope.scopedBy} twin with a family; regenerate it (npm run qualification:twin-scope)`);
+      scopedPublicTwins.add(publicId);
+    }
+  }
+  const floorsIndex = byId(productRun(floorsArtifact.artifact, policy.scanner));
+
   const scannerIds = sorted(new Set(loaded.flatMap(l => l.artifact.scanners.map(s => s.scanner))));
   const detectorIds = new Set(product.families);
   const taxonomyDetectors = new Map(product.taxonomy.families.map(f => [f.id, f.detectors]));
@@ -423,13 +502,25 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
 
     // Floors and the cells come from the floors population alone. Nothing is pooled across populations.
     const floorsCases = productCases(floorsPopulation);
-    const measured = fixtureCells(floorsCases, floorsOverlay);
+    // Counts stay the floors population's. Axis labels are the union over the populations the policy names (docs/specs/qualification-adapter.md, "Axis coverage").
+    const measured = fixtureCells({ population: floorsPopulation, cases: floorsCases, overlay: floorsOverlay },
+      loaded.filter(l => l.input.population !== floorsPopulation && policy.axisCoverage.populations.includes(l.input.population))
+        .map(l => ({ population: l.input.population, cases: productCases(l.input.population), metadata: l.input.caseMetadata })));
     const floorsCounts = countsFor(floorsPopulation, policy.scanner, family) ?? emptyCounts();
+    // A public twin the snapshot gives no family is gated through the project case that carries it with its parent's family (twin-scope map). The
+    // engine's verdict on the unscoped copy is shown (`twinFailuresScopedElsewhere`) and is not gate-bearing; every other twin keeps counting.
+    const scopedTwinCounts = emptyCounts();
+    for (const c of floorsCases) if (scopedPublicTwins.has(c.case_id)) countCase(scopedTwinCounts, c, floorsIndex);
 
     // Zero-tolerance gates read every gate-bearing population on its own; the classifier receives the worst one, never a sum.
     const gateRows = loaded.filter(l => l.role !== 'policy-route').map(l => {
       const c = countsFor(l.input.population, policy.scanner, family) ?? emptyCounts();
-      return { population: l.input.population, twinPairs: c.twins.pairs, twinFailures: c.twins.pairs - c.twins.discriminated, benignCases: c.benign.cases, benignFalseAlarms: c.benign.flagged };
+      const elsewhere = l.input.population === floorsPopulation ? scopedTwinCounts.twins : { pairs: 0, discriminated: 0 };
+      return {
+        population: l.input.population, twinPairs: c.twins.pairs, twinFailures: c.twins.pairs - c.twins.discriminated - (elsewhere.pairs - elsewhere.discriminated),
+        twinPairsScopedElsewhere: elsewhere.pairs, twinFailuresScopedElsewhere: elsewhere.pairs - elsewhere.discriminated,
+        benignCases: c.benign.cases, benignFalseAlarms: c.benign.flagged,
+      };
     });
     const worst = (key: 'twinFailures' | 'benignFalseAlarms') => Math.max(0, ...gateRows.map(r => r[key]));
 
@@ -499,6 +590,7 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
       evidence: scored,
       fixtureProfile: fixtureProfileReport(fixtureProfile!.claim, fixtureProfile!.cells, product.profiles),
       gates: gateRows,
+      axisCoverage: measured.coverage,
       differential: differentialReview,
       attribution: floorsCases.reduce((a, c) => { a[sourceOfCase.get(`${floorsPopulation}\u0000${c.case_id}`) ?? 'snapshot']++; return a; }, { snapshot: 0, 'overlay-detectors': 0, 'twin-parent': 0 } as Record<string, number>),
       populations: loaded.map(l => ({
@@ -535,6 +627,8 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
       populations: Object.fromEntries(Object.entries(policy.populations).map(([id, p]) => [id, p.role])), methodsRequired: policy.methods.required, differentialPeers: [...policy.methods.differential.peers].sort(byteOrder), attributionFallback: policy.attribution.fallback,
       ...(product.ledgerRekey ? { ledgerRekey: { id: product.ledgerRekey.id, population: product.ledgerRekey.population, corpusDigest: product.ledgerRekey.snapshot.corpusDigest, occurrences: Object.keys(product.ledgerRekey.occurrences).length } } : {}),
       criteria: product.criteria, fixtureProfilesVersion: product.profiles.profilesVersion, rules: policy.rules,
+      axisCoverage: { populations: [...policy.axisCoverage.populations].sort(byteOrder) },
+      ...(twinScope ? { twinScope: { id: twinScope.id, population: twinScope.population, scopedBy: twinScope.scopedBy, corpusDigest: twinScope.snapshot.corpusDigest, twins: Object.keys(twinScope.twins).length } } : {}),
       ...(floorsOverlay ? { axisOverlay: { id: floorsOverlay.id, population: floorsOverlay.population, corpusDigest: floorsOverlay.snapshot.corpusDigest, contexts: Object.keys(floorsOverlay.contexts).length, controls: Object.keys(floorsOverlay.controls).length, detectors: Object.keys(floorsOverlay.detectors).length } } : {}),
     },
     populations: loaded.map<PopulationView>(l => ({

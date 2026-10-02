@@ -52,7 +52,7 @@
         "kind": "repo-partition",
         "manifest": "corpora/regression/manifest.json",
         "catalog": "benchmarks/categories.json",
-        "paths": ["corpora/regression/manifest.json", "fixtures/generated/regressions.mjs", "fixtures/generated/closed-milestone.mjs"]
+        "paths": ["corpora/regression/manifest.json", "fixtures/generated/regressions.mjs", "fixtures/generated/closed-milestone.mjs", "fixtures/generated/twin-scope.mjs"]
       },
       "pin": {
         "sourceRevision": { "state": "resolved-at-run", "from": "benchmark repository HEAD" },
@@ -137,6 +137,8 @@
     { "path": "benchmarks/support/status-criteria.json", "population": null, "role": "overlay", "owner": "redact-secret", "disposition": "remain-product-owned" },
     { "path": "benchmarks/review-ledger.json", "population": null, "role": "overlay", "owner": "benchmarks", "disposition": "remain-product-owned" },
     { "path": "benchmarks/support/public-axis-overlay.json", "population": null, "role": "overlay", "owner": "redact-secret", "disposition": "remain-product-owned" },
+    { "path": "benchmarks/support/public-twin-scope-map.json", "population": null, "role": "overlay", "owner": "redact-secret", "disposition": "remain-product-owned" },
+    { "path": "fixtures/generated/twin-scope.mjs", "population": "regression-corpus", "owner": "redact-secret", "disposition": "remain-product-owned" },
     { "path": "benchmarks/support/public-review-ledger-map.json", "population": null, "role": "overlay", "owner": "benchmarks", "disposition": "remain-product-owned" },
     { "path": "benchmarks/fixture-index.json", "population": null, "role": "identity", "owner": "benchmarks", "disposition": "obsolete-compatibility-only" },
     { "path": "peer-observations", "population": null, "role": "identity", "owner": "benchmarks", "disposition": "obsolete-compatibility-only" },

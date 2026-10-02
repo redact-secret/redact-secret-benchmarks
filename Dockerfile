@@ -23,6 +23,17 @@ RUN echo "${REDACT_SECRET_REF}" | grep -Eq '^[a-f0-9]{40}$' \
 WORKDIR /product/bindings/node
 RUN npm install --no-audit --no-fund && npm run build
 
+# `--target published` (#562): the runtime comparison measures the published @redact-secret/core package that npm ci installs from
+# the lockfile, so nothing is built from product source. The platform follows the build host: no add-on is native here.
+FROM ${NODE_IMAGE} AS published
+ARG REDACT_SECRET_REF
+ENV REDACT_SECRET_REF=${REDACT_SECRET_REF}
+WORKDIR /bench
+COPY package.json package-lock.json ./
+RUN npm ci --ignore-scripts --no-audit --no-fund
+COPY . .
+ENTRYPOINT ["npm", "run", "peer-pii-runtime-throughput", "--"]
+
 FROM --platform=linux/amd64 ${NODE_IMAGE}
 ARG REDACT_SECRET_REF
 ENV REDACT_SECRET_REF=${REDACT_SECRET_REF} REDACT_SECRET_NODE_ADDON_PATH=/addon/redact-secret.linux-x64-gnu.node

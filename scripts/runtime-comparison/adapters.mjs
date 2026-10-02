@@ -32,6 +32,25 @@ function loadRedactSecret(nodeAddonPath, selectors) {
   };
 }
 
+// The published @redact-secret/core package (#562): PII selection is an `initialize` option there. `initialize` runs once per
+// process with one selection, so one setting is measured per process here too. scanAndRedact is synchronous after initialize.
+async function loadPublishedRedactSecret(selectors) {
+  const core = await import('@redact-secret/core');
+  const installed = await packageVersion('@redact-secret/core');
+  if (core.VERSION !== installed) throw new Error(`redact-secret-adapter: @redact-secret/core reports ${core.VERSION} but node_modules holds ${installed}`);
+  await core.initialize({ pii: selectors });
+  const activation = core.piiActivation();
+  const expected = `selectors=${selectors.length ? selectors.join(',') : 'off'};`;
+  if (!activation.includes(expected)) throw new Error(`redact-secret-adapter: unexpected PII activation identity: ${activation}`);
+  return {
+    id: 'redact-secret',
+    version: core.VERSION,
+    provenance: { kind: 'published-npm-package', package: '@redact-secret/core', piiActivation: activation },
+    async: false,
+    redact: text => core.scanAndRedact(text).text,
+  };
+}
+
 async function loadFlareRedact() {
   const { redact } = await import('flare-redact');
   return { id: 'flare-redact', version: await packageVersion('flare-redact'), provenance: { kind: 'published-npm-package', package: 'flare-redact' }, async: false, redact: text => redact(text) };
@@ -43,9 +62,10 @@ async function loadOpenRedaction() {
   return { id: 'openredaction', version: await packageVersion('@openredaction/core'), provenance: { kind: 'published-npm-package', package: '@openredaction/core' }, async: true, redact: async text => (await detector.detect(text)).redacted };
 }
 
-export async function loadAdapters({ selectors, redactSecretAddonPath }) {
+// `source: 'published'` measures the npm package in node_modules; the default `'local-source-build'` loads a native add-on.
+export async function loadAdapters({ selectors, redactSecretAddonPath, source = 'local-source-build' }) {
   const [redactSecret, flareRedact, openRedaction] = await Promise.all([
-    loadRedactSecret(redactSecretAddonPath ?? process.env.REDACT_SECRET_NODE_ADDON_PATH ?? path.join(root, '..', 'redact-secret', 'bindings', 'node', 'redact-secret.linux-x64-gnu.node'), selectors),
+    source === 'published' ? loadPublishedRedactSecret(selectors) : loadRedactSecret(redactSecretAddonPath ?? process.env.REDACT_SECRET_NODE_ADDON_PATH ?? path.join(root, '..', 'redact-secret', 'bindings', 'node', 'redact-secret.linux-x64-gnu.node'), selectors),
     loadFlareRedact(),
     loadOpenRedaction(),
   ]);

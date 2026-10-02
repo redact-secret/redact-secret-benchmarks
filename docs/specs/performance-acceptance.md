@@ -158,6 +158,15 @@ matches the commit `benchmarks/pin-manifest.json` pins — a pin with no
 ACCEPTED evaluation behind it is exactly the drift #150 found (evaluated
 revision matching evidence, but not the current pin).
 
+Registry drift is judged on the registry, not on paths
+([`decision-detect-registry-drift-semantically-not-by-path`](../decisions/2026-10-02-detect-registry-drift-semantically-not-by-path.md),
+#631): `pins:check` compares the ordered detector ids in the product's
+`detectors/mod.rs` at the pinned commit and at `main`, so an
+implementation-only detector change on `main` does not fail it. A registry
+change does, and so does any change that needs a re-pin below. Whether
+unreleased implementation changes are fast enough is decided when a commit is
+pinned or released, by an evaluation at that commit, not by the pin-drift job.
+
 ## Re-pinning without recalibrating
 
 Per
@@ -180,6 +189,9 @@ them. To re-pin after a detector change:
    changes), then run
    `npm run performance:criteria -- --verified-commit <sha> --verification-path evidence/603/verified-<short>/acceptance.json`
    and `npm run pins:manifest`.
+4. Update the two hard-coded accepted-summary paths in `src/pages/performance.ts`
+   (the `import accepted from '../../evidence/<dir>/summary.json'` and the path in
+   the "Measured columns" sentence), or `tests/pages.test.mjs` fails (#581).
 
 `performance:criteria:check` refuses a `verificationPath` that is not an
 ACCEPTED evaluation of `verifiedCommit` under the same criteria id and fixed

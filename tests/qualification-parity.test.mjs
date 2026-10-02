@@ -255,3 +255,22 @@ test('a differential count is a review-occurrence-identity difference only when 
   assert.deepEqual(unknown.heldBy, { unattributed: 1 });
   assert.ok(CAUSES.some(c => c.id === 'review-occurrence-identity'));
 });
+
+test('a twin-failure difference is attributed to the twin scope only when the matched twins show it exactly, and holds the status through its cause', () => {
+  const held = { status: { value: 'provisional', reasons: ['twinFailures: 2 > 0 — A twin failure is a recorded false negative'], evidenceTier: 'T1', evidenceBasis: 'provider-documented', qualificationProfile: null, methodsNotRun: [] } };
+  const adjust = amount => ({ ...options, adjustmentsByFamily: { 'fam-a': { 'twin-scope-vocabulary': { twinFailures: amount } } } });
+  // The new path reads two twin failures the legacy path read as co-detected: residual legacy - new = -2, and two matched twins show it.
+  const explained = compareFamilies([legacy()], [next('fam-a', held, { twinFailures: 2 })], adjust(-2));
+  const [d] = diffs(explained.evidence, 'twinFailures');
+  assert.equal(d.verdict, 'explained');
+  assert.equal(d.cause, 'twin-scope-vocabulary');
+  assert.deepEqual(explained.statusRows[0].causes, ['twin-scope-vocabulary']);
+  assert.deepEqual(explained.heldBy, { 'twin-scope-vocabulary': 1 });
+  // An amount that does not sum to the residual, or no adjustment at all, is never attributed.
+  assert.equal(diffs(compareFamilies([legacy()], [next('fam-a', held, { twinFailures: 2 })], adjust(-1)).evidence, 'twinFailures')[0].verdict, 'unexplained');
+  const bare = compareFamilies([legacy()], [next('fam-a', held, { twinFailures: 2 })], options);
+  assert.equal(diffs(bare.evidence, 'twinFailures')[0].verdict, 'unexplained');
+  assert.deepEqual(bare.statusRows[0].unattributedReasons, ['twinFailures']);
+  assert.equal(causeOfReason('twinFailures', undefined), undefined);
+  assert.equal(causeOfReason('twinFailures', 'twin-scope-vocabulary'), 'twin-scope-vocabulary');
+});

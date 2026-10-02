@@ -24,7 +24,7 @@
     },
     "new": {
       "publication": "public",
-      "policyRevision": "rs-policy-1:sha256:aca9582072d64682f3e7e7c22ea46392eb1946145ac98798c55889200ffccdbb",
+      "policyRevision": "rs-policy-1:sha256:07d84e52dd0573961ea9cb0709f426727ec5479dbca40cecaeda70e8e93393d2",
       "adapter": {
         "id": "credential-eval-run-artifact",
         "version": 1
@@ -38,13 +38,13 @@
       },
       "distribution": {
         "pending": 1,
-        "provisional": 134,
-        "stable": 0,
+        "provisional": 11,
+        "stable": 123,
         "unsupported": 0
       },
       "stableDistribution": {
-        "documented": 0,
-        "empirical": 0,
+        "documented": 85,
+        "empirical": 38,
         "policy-qualified": 0
       },
       "populations": [
@@ -97,9 +97,24 @@
         "contexts": 2354,
         "controls": 2075,
         "corpusDigest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
+        "detectors": 5466,
         "id": "credential-public-axis-overlay-v1",
         "population": "public-evidence-snapshot"
-      }
+      },
+      "ledgerRekey": {
+        "corpusDigest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
+        "id": "credential-public-review-ledger-rekey-v1",
+        "occurrences": 4268,
+        "population": "public-evidence-snapshot"
+      },
+      "differentialPeers": [
+        "gitleaks",
+        "trufflehog"
+      ],
+      "attributionFallback": [
+        "overlay-detectors",
+        "twin-parent"
+      ]
     }
   },
   "causes": [
@@ -123,7 +138,7 @@
     },
     {
       "id": "review-occurrence-identity",
-      "change": "The review queue of the methods run is keyed by canonical occurrence ids and holds the occurrences of every pinned peer, including peers the legacy run never scanned; the committed review ledger is keyed by legacy ids of a three-scanner legacy run. A canonical occurrence id absent from the ledger reads unresolved, so a differential disagreement cannot read settled until the ledger is re-keyed and the peer set is decided.",
+      "change": "The review queue of the methods run is keyed by canonical occurrence ids and holds the occurrences of every pinned peer, including peers the legacy run never scanned; the committed review ledger is keyed by legacy ids of a three-scanner legacy run. A canonical occurrence id the ledger and its generated mapping (benchmarks/support/public-review-ledger-map.json) do not hold reads unresolved. Recognised only for a view built without that mapping, where no decision can apply; with it, an occurrence of a peer the legacy run never scanned stays unreviewed and is not gate-bearing (population-policy.json methods.differential.peers).",
       "confirmation": "confirmed",
       "owner": "benchmarks"
     },
@@ -141,7 +156,7 @@
     },
     {
       "id": "twin-scope-vocabulary",
-      "change": "A twin control is scoped to its declared family, and a finding of another known family is co-detection, not a flag. The legacy path scoped a twin by the product contract of the positive it mutates (a detector id); the evidence snapshot gives the twin its own family (a taxonomy id), so the twin can belong to another family and the same finding can swap between flagged and co-detected.",
+      "change": "A twin control is scoped to its declared family, and a finding of another known family is co-detection, not a flag. The legacy path scoped a twin by the product contract of the positive it mutates (a detector id); the evidence snapshot gives the twin its own family (a taxonomy id), so the twin can belong to another family and the same finding can swap between flagged and co-detected. A cross-provider twin has no family at all in the snapshot, so the engine cannot scope it and reads a finding of another known detector as flagged; recognised from the matched cases (the new twin is flagged with no family, the legacy twin was not). The adapter does not re-score it.",
       "confirmation": "inferred",
       "owner": "credential-eval"
     },
@@ -159,7 +174,7 @@
     },
     {
       "id": "fixture-attribution",
-      "change": "The legacy path attributed a fixture to its declared contract and targets; the adapter attributes a case to the detectors named by its targets, its family, or the taxonomy family it belongs to.",
+      "change": "The legacy path attributed a fixture to its declared contract and targets; the adapter attributes a case to the detectors named by its targets, its family, or the taxonomy family it belongs to and, where the snapshot names none, to the legacy targets the product overlay carries, then to its twin parent (population-policy.json attribution). What remains is a case the legacy path scoped to a family the overlay does not carry (no legacy counterpart) or that the legacy path attributed to a detector the adapter attributes elsewhere.",
       "confirmation": "inferred",
       "owner": "benchmarks"
     }
@@ -188,33 +203,23 @@
     "status": {
       "tally": {
         "compared": 135,
-        "equal": 8,
-        "explained": 127,
+        "equal": 131,
+        "explained": 4,
         "unexplained": 0,
         "byCause": {
-          "review-occurrence-identity": 118,
-          "fixture-attribution": 8,
+          "twin-scope-vocabulary": 3,
           "population-separation": 1
         }
       },
       "differences": [
-        {
-          "subject": "ai21-api-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
         {
           "subject": "anthropic-admin01-key",
           "field": "status",
           "legacy": "stable/documented",
           "next": "provisional",
           "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
+          "cause": "twin-scope-vocabulary",
+          "note": "new-only reasons: twin-scope-vocabulary"
         },
         {
           "subject": "anthropic-api01-key",
@@ -222,395 +227,8 @@
           "legacy": "stable/documented",
           "next": "provisional",
           "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "anthropic-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "apify-api-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "atlassian-api-token",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "aws-access-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "aws-bedrock-long-term-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "aws-bedrock-short-term-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "aws-secret-access-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "axiom-personal-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "axiom-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "azure-devops-personal-access-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "bitwarden-secrets-manager-access-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "browserbase-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "cerebras-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "clickhouse-cloud-api-secret",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "clojars-deploy-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "cloudflare-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "cohere-api-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "composio-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "composio-org-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "composio-user-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "confluent-cloud-api-secret-legacy",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "confluent-cloud-api-secret",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "convex-deployment-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "crates-io-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "crates-io-trusted-publishing-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "databricks-personal-access-token",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "datadog-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "datadog-application-key-legacy",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "datadog-application-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "daytona-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "deepgram-api-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "digitalocean-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "new-only reasons: fixture-attribution, review-occurrence-identity"
-        },
-        {
-          "subject": "discord-bot-token",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "docker-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "new-only reasons: fixture-attribution, review-occurrence-identity"
-        },
-        {
-          "subject": "doppler-audit-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "doppler-cli-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "doppler-personal-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "doppler-scim-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "doppler-service-account-identity-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "doppler-service-account-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "doppler-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "dynatrace-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "e2b-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
+          "cause": "twin-scope-vocabulary",
+          "note": "new-only reasons: twin-scope-vocabulary"
         },
         {
           "subject": "elevenlabs-api-key",
@@ -618,494 +236,8 @@
           "legacy": "stable/documented",
           "next": "provisional",
           "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "firebase-server-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "firecrawl-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "fireworks-ai-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "github-fine-grained-pat",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "github-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "gitlab-runner-authentication-token",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "gitlab-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "new-only reasons: fixture-attribution, review-occurrence-identity"
-        },
-        {
-          "subject": "google-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "google-oauth-client-secret",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "grafana-cloud-access-policy-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "grafana-service-account-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "groq-api-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "helicone-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "helicone-write-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "heroku-api-key-legacy",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "heroku-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "honeycomb-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "huggingface-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "inngest-signing-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "jwt",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "langfuse-secret-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "langsmith-api-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "linear-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "mailchimp-api-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "mailgun-api-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "microsoft-entra-client-secret",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "mistral-api-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "neon-api-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "netlify-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "new-relic-license-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "new-relic-user-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "notion-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "npm-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "new-only reasons: fixture-attribution, review-occurrence-identity"
-        },
-        {
-          "subject": "nvidia-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "onepassword-service-account-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "openai-admin-api-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "openai-token",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "openrouter-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "paddle-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "perplexity-api-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "pinecone-api-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "polar-api-credential",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "polar-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "posthog-project-secret-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "posthog-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "postman-api-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "postman-collection-access-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "private-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "pulumi-access-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "new-only reasons: fixture-attribution, review-occurrence-identity"
-        },
-        {
-          "subject": "pypi-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "replicate-api-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "resend-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "rubygems-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "runpod-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
+          "cause": "twin-scope-vocabulary",
+          "note": "new-only reasons: twin-scope-vocabulary"
         },
         {
           "subject": "sendgrid-token",
@@ -1114,341 +246,42 @@
           "next": "provisional",
           "verdict": "explained",
           "cause": "population-separation",
-          "note": "new-only reasons: population-separation, review-occurrence-identity"
-        },
-        {
-          "subject": "sentry-org-auth-token",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "sentry-user-auth-token",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "shopify-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "new-only reasons: fixture-attribution, review-occurrence-identity"
-        },
-        {
-          "subject": "slack-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "slack-user-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "sonarqube-analysis-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "sonarqube-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "stripe-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "stripe-webhook-signing-secret",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "supabase-management-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "supabase-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "tavily-api-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "telegram-bot-token",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "terraform-cloud-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "new-only reasons: fixture-attribution, review-occurrence-identity"
-        },
-        {
-          "subject": "travisci-api-token",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "trigger-dev-personal-access-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "trigger-dev-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "twilio-api-key-secret",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "twilio-auth-token",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "vault-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "new-only reasons: fixture-attribution, review-occurrence-identity"
-        },
-        {
-          "subject": "vercel-app-access-token",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "vercel-app-refresh-token",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "vercel-personal-access-token",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "wandb-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
-        },
-        {
-          "subject": "xai-api-key",
-          "field": "status",
-          "legacy": "stable/empirical",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "new-only reasons: review-occurrence-identity"
+          "note": "new-only reasons: population-separation"
         }
       ]
     },
     "evidence": {
       "tally": {
         "compared": 4455,
-        "equal": 4227,
-        "explained": 228,
+        "equal": 4413,
+        "explained": 42,
         "unexplained": 0,
         "byCause": {
-          "review-occurrence-identity": 135,
-          "twin-scope-vocabulary": 6,
+          "twin-scope-vocabulary": 3,
           "canonical-evidence-membership": 15,
           "population-separation": 11,
           "policy-corpus-bounded": 4,
-          "fixture-attribution": 51,
-          "pending-not-scored": 6
+          "pending-not-scored": 9
         }
       },
       "differences": [
         {
-          "subject": "ai21-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 101,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "101 differential occurrence(s) (flare-redact 26, gitleaks 20, openredaction 29, trufflehog 26), none of whose canonical ids is in the review ledger"
-        },
-        {
           "subject": "anthropic-admin01-key",
-          "field": "differentialUnresolvedContractDisagreements",
+          "field": "twinFailures",
           "legacy": 0,
-          "next": 64,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "64 differential occurrence(s) (flare-redact 20, gitleaks 4, openredaction 21, trufflehog 19), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "anthropic-admin01-key",
-          "field": "totalFixtures",
-          "legacy": 39,
-          "next": 37,
+          "next": 2,
           "verdict": "explained",
           "cause": "twin-scope-vocabulary",
-          "note": "residual 2 = 2 twin-scope-vocabulary"
-        },
-        {
-          "subject": "anthropic-admin01-key",
-          "field": "twinPairs",
-          "legacy": 8,
-          "next": 6,
-          "verdict": "explained",
-          "cause": "twin-scope-vocabulary",
-          "note": "residual 2 = 2 twin-scope-vocabulary"
+          "note": "residual -2 = -2 twin-scope-vocabulary"
         },
         {
           "subject": "anthropic-api01-key",
-          "field": "differentialUnresolvedContractDisagreements",
+          "field": "twinFailures",
           "legacy": 0,
-          "next": 73,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "73 differential occurrence(s) (flare-redact 18, gitleaks 16, openredaction 21, trufflehog 18), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "anthropic-api01-key",
-          "field": "totalFixtures",
-          "legacy": 37,
-          "next": 35,
+          "next": 2,
           "verdict": "explained",
           "cause": "twin-scope-vocabulary",
-          "note": "residual 2 = 2 twin-scope-vocabulary"
-        },
-        {
-          "subject": "anthropic-api01-key",
-          "field": "twinPairs",
-          "legacy": 7,
-          "next": 5,
-          "verdict": "explained",
-          "cause": "twin-scope-vocabulary",
-          "note": "residual 2 = 2 twin-scope-vocabulary"
-        },
-        {
-          "subject": "anthropic-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 50,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "50 differential occurrence(s) (flare-redact 10, gitleaks 8, openredaction 20, trufflehog 12), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "apify-api-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 68,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "68 differential occurrence(s) (flare-redact 20, gitleaks 17, openredaction 24, trufflehog 7), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "atlassian-api-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 67,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "67 differential occurrence(s) (flare-redact 21, gitleaks 6, openredaction 26, trufflehog 14), none of whose canonical ids is in the review ledger"
+          "note": "residual -2 = -2 twin-scope-vocabulary"
         },
         {
           "subject": "aws-access-key",
@@ -1498,78 +331,6 @@
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "1 axis id(s) only on the new side (canonical-evidence-membership)"
-        },
-        {
-          "subject": "aws-access-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 37,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "37 differential occurrence(s) (flare-redact 10, gitleaks 6, openredaction 9, trufflehog 12), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "aws-bedrock-long-term-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 75,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "75 differential occurrence(s) (flare-redact 20, gitleaks 5, openredaction 30, trufflehog 20), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "aws-bedrock-short-term-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 73,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "73 differential occurrence(s) (flare-redact 15, gitleaks 19, openredaction 24, trufflehog 15), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "aws-secret-access-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 100,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "100 differential occurrence(s) (flare-redact 27, gitleaks 18, openredaction 31, trufflehog 24), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "axiom-personal-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 58,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "58 differential occurrence(s) (flare-redact 14, gitleaks 13, openredaction 17, trufflehog 14), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "axiom-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 83,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "83 differential occurrence(s) (flare-redact 21, gitleaks 18, openredaction 23, trufflehog 21), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "azure-devops-personal-access-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 53,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "53 differential occurrence(s) (flare-redact 13, gitleaks 11, openredaction 16, trufflehog 13), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "bearer-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 86,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "86 differential occurrence(s) (flare-redact 21, gitleaks 15, openredaction 34, trufflehog 16), none of whose canonical ids is in the review ledger"
         },
         {
           "subject": "bearer-token",
@@ -1663,11 +424,6 @@
                 "required": 5
               },
               {
-                "actual": 86,
-                "code": "critical-failure",
-                "required": 0
-              },
-              {
                 "actual": "not-run",
                 "code": "protected-holdout",
                 "required": "pass on frozen candidate"
@@ -1731,114 +487,6 @@
           "note": "residual -4 = -4 canonical-evidence-membership"
         },
         {
-          "subject": "bitwarden-secrets-manager-access-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 108,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "108 differential occurrence(s) (flare-redact 25, gitleaks 25, openredaction 33, trufflehog 25), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "browserbase-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 87,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "87 differential occurrence(s) (flare-redact 20, gitleaks 18, openredaction 29, trufflehog 20), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "cerebras-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 115,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "115 differential occurrence(s) (flare-redact 29, gitleaks 25, openredaction 32, trufflehog 29), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "clickhouse-cloud-api-secret",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 85,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "85 differential occurrence(s) (flare-redact 26, gitleaks 7, openredaction 27, trufflehog 25), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "clojars-deploy-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 72,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "72 differential occurrence(s) (flare-redact 20, gitleaks 8, openredaction 24, trufflehog 20), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "cloudflare-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 26,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "26 differential occurrence(s) (flare-redact 8, gitleaks 8, openredaction 10), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "cohere-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 129,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "129 differential occurrence(s) (flare-redact 37, gitleaks 12, openredaction 43, trufflehog 37), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "composio-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 115,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "115 differential occurrence(s) (flare-redact 30, gitleaks 23, openredaction 32, trufflehog 30), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "composio-org-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 90,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "90 differential occurrence(s) (flare-redact 23, gitleaks 19, openredaction 25, trufflehog 23), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "composio-user-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 92,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "92 differential occurrence(s) (flare-redact 23, gitleaks 19, openredaction 27, trufflehog 23), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "confluent-cloud-api-secret-legacy",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 127,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "127 differential occurrence(s) (flare-redact 32, gitleaks 23, openredaction 40, trufflehog 32), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "confluent-cloud-api-secret",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 70,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "70 differential occurrence(s) (flare-redact 17, gitleaks 17, openredaction 19, trufflehog 17), none of whose canonical ids is in the review ledger"
-        },
-        {
           "subject": "connection-string",
           "field": "benignAxes",
           "legacy": 6,
@@ -1890,15 +538,6 @@
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "3 axis id(s) only on the new side (canonical-evidence-membership)"
-        },
-        {
-          "subject": "connection-string",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 179,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "179 differential occurrence(s) (flare-redact 49, gitleaks 32, openredaction 54, trufflehog 44), none of whose canonical ids is in the review ledger"
         },
         {
           "subject": "connection-string",
@@ -1992,11 +631,6 @@
                 "required": 5
               },
               {
-                "actual": 179,
-                "code": "critical-failure",
-                "required": 0
-              },
-              {
                 "actual": "not-run",
                 "code": "protected-holdout",
                 "required": "pass on frozen candidate"
@@ -2033,371 +667,13 @@
           "cause": "policy-corpus-bounded"
         },
         {
-          "subject": "convex-deployment-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 92,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "92 differential occurrence(s) (flare-redact 22, gitleaks 22, openredaction 26, trufflehog 22), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "crates-io-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 85,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "85 differential occurrence(s) (flare-redact 21, gitleaks 18, openredaction 25, trufflehog 21), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "crates-io-trusted-publishing-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 69,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "69 differential occurrence(s) (flare-redact 17, gitleaks 15, openredaction 20, trufflehog 17), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "databricks-personal-access-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 57,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "57 differential occurrence(s) (flare-redact 7, gitleaks 4, openredaction 30, trufflehog 16), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "datadog-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 80,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "80 differential occurrence(s) (flare-redact 27, gitleaks 3, openredaction 29, trufflehog 21), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "datadog-application-key-legacy",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 75,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "75 differential occurrence(s) (flare-redact 22, gitleaks 8, openredaction 23, trufflehog 22), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "datadog-application-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 60,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "60 differential occurrence(s) (flare-redact 13, gitleaks 19, openredaction 15, trufflehog 13), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "daytona-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 105,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "105 differential occurrence(s) (flare-redact 26, gitleaks 22, openredaction 31, trufflehog 26), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "deepgram-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 132,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "132 differential occurrence(s) (flare-redact 37, gitleaks 32, openredaction 45, trufflehog 18), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "digitalocean-token",
-          "field": "benignAxes",
-          "legacy": 4,
-          "next": 2,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "2 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "digitalocean-token",
-          "field": "benignAxisIds",
-          "legacy": [
-            "near-miss",
-            "placeholder",
-            "public-identifier",
-            "reference"
-          ],
-          "next": [
-            "near-miss",
-            "placeholder"
-          ],
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "2 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "digitalocean-token",
-          "field": "benignCases",
-          "legacy": 10,
-          "next": 5,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 5 = 5 fixture-attribution"
-        },
-        {
-          "subject": "digitalocean-token",
-          "field": "confusionAxes",
-          "legacy": 6,
-          "next": 4,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "2 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "digitalocean-token",
-          "field": "controlAxes",
-          "legacy": 4,
-          "next": 2,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "2 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "digitalocean-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 36,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "36 differential occurrence(s) (flare-redact 12, gitleaks 2, openredaction 20, trufflehog 2), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "digitalocean-token",
-          "field": "totalFixtures",
-          "legacy": 39,
-          "next": 34,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 5 = 5 fixture-attribution"
-        },
-        {
-          "subject": "discord-bot-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 82,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "82 differential occurrence(s) (flare-redact 11, gitleaks 14, openredaction 31, trufflehog 26), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "docker-token",
-          "field": "benignAxes",
-          "legacy": 4,
-          "next": 2,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "2 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "docker-token",
-          "field": "benignAxisIds",
-          "legacy": [
-            "near-miss",
-            "placeholder",
-            "public-identifier",
-            "reference"
-          ],
-          "next": [
-            "near-miss",
-            "placeholder"
-          ],
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "2 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "docker-token",
-          "field": "benignCases",
-          "legacy": 8,
-          "next": 4,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 4 = 4 fixture-attribution"
-        },
-        {
-          "subject": "docker-token",
-          "field": "confusionAxes",
-          "legacy": 6,
-          "next": 4,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "2 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "docker-token",
-          "field": "controlAxes",
-          "legacy": 4,
-          "next": 2,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "2 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "docker-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 51,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "51 differential occurrence(s) (flare-redact 16, gitleaks 16, openredaction 16, trufflehog 3), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "docker-token",
-          "field": "totalFixtures",
-          "legacy": 40,
-          "next": 36,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 4 = 4 fixture-attribution"
-        },
-        {
-          "subject": "doppler-audit-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 94,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "94 differential occurrence(s) (flare-redact 21, gitleaks 21, openredaction 31, trufflehog 21), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "doppler-cli-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 78,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "78 differential occurrence(s) (flare-redact 8, gitleaks 17, openredaction 32, trufflehog 21), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "doppler-personal-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 77,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "77 differential occurrence(s) (flare-redact 8, gitleaks 16, openredaction 32, trufflehog 21), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "doppler-scim-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 91,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "91 differential occurrence(s) (flare-redact 21, gitleaks 17, openredaction 32, trufflehog 21), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "doppler-service-account-identity-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 91,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "91 differential occurrence(s) (flare-redact 21, gitleaks 17, openredaction 32, trufflehog 21), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "doppler-service-account-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 94,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "94 differential occurrence(s) (flare-redact 22, gitleaks 17, openredaction 33, trufflehog 22), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "doppler-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 86,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "86 differential occurrence(s) (flare-redact 10, gitleaks 25, openredaction 41, trufflehog 10), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "dynatrace-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 82,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "82 differential occurrence(s) (flare-redact 22, gitleaks 11, openredaction 27, trufflehog 22), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "e2b-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 97,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "97 differential occurrence(s) (flare-redact 25, gitleaks 18, openredaction 29, trufflehog 25), none of whose canonical ids is in the review ledger"
-        },
-        {
           "subject": "elevenlabs-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
+          "field": "twinFailures",
           "legacy": 0,
-          "next": 68,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "68 differential occurrence(s) (flare-redact 21, gitleaks 14, openredaction 20, trufflehog 13), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "elevenlabs-api-key",
-          "field": "totalFixtures",
-          "legacy": 35,
-          "next": 33,
+          "next": 2,
           "verdict": "explained",
           "cause": "twin-scope-vocabulary",
-          "note": "residual 2 = 2 twin-scope-vocabulary"
-        },
-        {
-          "subject": "elevenlabs-api-key",
-          "field": "twinPairs",
-          "legacy": 7,
-          "next": 5,
-          "verdict": "explained",
-          "cause": "twin-scope-vocabulary",
-          "note": "residual 2 = 2 twin-scope-vocabulary"
-        },
-        {
-          "subject": "firebase-server-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 83,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "83 differential occurrence(s) (flare-redact 18, gitleaks 19, openredaction 28, trufflehog 18), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "firecrawl-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 117,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "117 differential occurrence(s) (flare-redact 30, gitleaks 20, openredaction 37, trufflehog 30), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "fireworks-ai-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 52,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "52 differential occurrence(s) (flare-redact 15, gitleaks 4, openredaction 18, trufflehog 15), none of whose canonical ids is in the review ledger"
+          "note": "residual -2 = -2 twin-scope-vocabulary"
         },
         {
           "subject": "generic-token",
@@ -2452,15 +728,6 @@
           "verdict": "explained",
           "cause": "population-separation",
           "note": "9 axis id(s) only on the new side (canonical-evidence-membership); 1 only on the legacy side (population-separation)"
-        },
-        {
-          "subject": "generic-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 257,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "257 differential occurrence(s) (flare-redact 77, gitleaks 24, openredaction 80, trufflehog 76), none of whose canonical ids is in the review ledger"
         },
         {
           "subject": "generic-token",
@@ -2564,11 +831,6 @@
                 "required": 5
               },
               {
-                "actual": 257,
-                "code": "critical-failure",
-                "required": 0
-              },
-              {
                 "actual": "not-run",
                 "code": "protected-holdout",
                 "required": "pass on frozen candidate"
@@ -2632,222 +894,6 @@
           "note": "residual -71 = -71 canonical-evidence-membership"
         },
         {
-          "subject": "github-fine-grained-pat",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 80,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "80 differential occurrence(s) (flare-redact 22, gitleaks 8, openredaction 27, trufflehog 23), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "github-token",
-          "field": "benignCases",
-          "legacy": 15,
-          "next": 9,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 6 = 6 fixture-attribution"
-        },
-        {
-          "subject": "github-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 109,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "109 differential occurrence(s) (flare-redact 30, gitleaks 6, openredaction 38, trufflehog 35), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "github-token",
-          "field": "totalFixtures",
-          "legacy": 131,
-          "next": 125,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 6 = 6 fixture-attribution"
-        },
-        {
-          "subject": "gitlab-runner-authentication-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 86,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "86 differential occurrence(s) (flare-redact 22, gitleaks 12, openredaction 29, trufflehog 23), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "gitlab-token",
-          "field": "benignCases",
-          "legacy": 8,
-          "next": 7,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 1 = 1 fixture-attribution"
-        },
-        {
-          "subject": "gitlab-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 22,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "22 differential occurrence(s) (flare-redact 3, openredaction 16, trufflehog 3), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "gitlab-token",
-          "field": "totalFixtures",
-          "legacy": 26,
-          "next": 25,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 1 = 1 fixture-attribution"
-        },
-        {
-          "subject": "google-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 19,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "19 differential occurrence(s) (flare-redact 1, gitleaks 2, openredaction 3, trufflehog 13), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "google-oauth-client-secret",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 85,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "85 differential occurrence(s) (flare-redact 21, gitleaks 18, openredaction 25, trufflehog 21), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "grafana-cloud-access-policy-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 82,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "82 differential occurrence(s) (flare-redact 24, gitleaks 7, openredaction 27, trufflehog 24), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "grafana-service-account-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 77,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "77 differential occurrence(s) (flare-redact 24, gitleaks 1, openredaction 28, trufflehog 24), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "groq-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 56,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "56 differential occurrence(s) (flare-redact 10, gitleaks 6, openredaction 32, trufflehog 8), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "helicone-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 113,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "113 differential occurrence(s) (flare-redact 31, gitleaks 26, openredaction 29, trufflehog 27), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "helicone-write-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 90,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "90 differential occurrence(s) (flare-redact 22, gitleaks 21, openredaction 25, trufflehog 22), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "heroku-api-key-legacy",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 103,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "103 differential occurrence(s) (flare-redact 26, gitleaks 21, openredaction 34, trufflehog 22), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "heroku-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 39,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "39 differential occurrence(s) (flare-redact 14, gitleaks 2, openredaction 18, trufflehog 5), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "honeycomb-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 85,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "85 differential occurrence(s) (flare-redact 21, gitleaks 18, openredaction 25, trufflehog 21), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "huggingface-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 26,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "26 differential occurrence(s) (flare-redact 5, gitleaks 9, openredaction 11, trufflehog 1), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "inngest-signing-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 100,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "100 differential occurrence(s) (flare-redact 23, gitleaks 18, openredaction 37, trufflehog 22), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "jwt",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 20,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "20 differential occurrence(s) (flare-redact 1, gitleaks 4, openredaction 6, trufflehog 9), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "langfuse-secret-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 65,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "65 differential occurrence(s) (flare-redact 8, gitleaks 10, openredaction 28, trufflehog 19), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "langsmith-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 68,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "68 differential occurrence(s) (flare-redact 26, gitleaks 8, openredaction 26, trufflehog 8), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "linear-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 25,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "25 differential occurrence(s) (flare-redact 4, gitleaks 6, openredaction 11, trufflehog 4), none of whose canonical ids is in the review ledger"
-        },
-        {
           "subject": "linear-token",
           "field": "positiveCases",
           "legacy": 11,
@@ -2864,177 +910,6 @@
           "verdict": "explained",
           "cause": "pending-not-scored",
           "note": "residual 3 = 3 pending-not-scored"
-        },
-        {
-          "subject": "mailchimp-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 91,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "91 differential occurrence(s) (flare-redact 36, gitleaks 7, openredaction 35, trufflehog 13), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "mailgun-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 61,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "61 differential occurrence(s) (flare-redact 27, gitleaks 2, openredaction 21, trufflehog 11), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "microsoft-entra-client-secret",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 73,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "73 differential occurrence(s) (flare-redact 27, gitleaks 10, openredaction 29, trufflehog 7), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "mistral-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 129,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "129 differential occurrence(s) (flare-redact 34, gitleaks 23, openredaction 38, trufflehog 34), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "neon-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 82,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "82 differential occurrence(s) (flare-redact 23, gitleaks 10, openredaction 26, trufflehog 23), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "netlify-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 28,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "28 differential occurrence(s) (flare-redact 7, gitleaks 6, openredaction 11, trufflehog 4), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "new-relic-license-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 57,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "57 differential occurrence(s) (flare-redact 19, gitleaks 10, openredaction 24, trufflehog 4), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "new-relic-user-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 46,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "46 differential occurrence(s) (flare-redact 7, gitleaks 5, openredaction 27, trufflehog 7), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "notion-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 35,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "35 differential occurrence(s) (flare-redact 5, gitleaks 5, openredaction 19, trufflehog 6), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "npm-token",
-          "field": "benignCases",
-          "legacy": 8,
-          "next": 7,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 1 = 1 fixture-attribution"
-        },
-        {
-          "subject": "npm-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 1,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "1 differential occurrence(s) (openredaction 1), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "npm-token",
-          "field": "totalFixtures",
-          "legacy": 24,
-          "next": 23,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 1 = 1 fixture-attribution"
-        },
-        {
-          "subject": "nvidia-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 70,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "70 differential occurrence(s) (flare-redact 21, gitleaks 17, openredaction 24, trufflehog 8), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "okta-api-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 76,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "76 differential occurrence(s) (flare-redact 19, gitleaks 6, openredaction 36, trufflehog 15), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "onepassword-service-account-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 94,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "94 differential occurrence(s) (flare-redact 22, gitleaks 22, openredaction 28, trufflehog 22), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "openai-admin-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 85,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "85 differential occurrence(s) (flare-redact 28, gitleaks 24, openredaction 28, trufflehog 5), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "openai-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 83,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "83 differential occurrence(s) (flare-redact 26, gitleaks 13, openredaction 25, trufflehog 19), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "openrouter-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 38,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "38 differential occurrence(s) (flare-redact 7, gitleaks 4, openredaction 21, trufflehog 6), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "otpauth-uri",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 45,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "45 differential occurrence(s) (flare-redact 9, gitleaks 9, openredaction 18, trufflehog 9), none of whose canonical ids is in the review ledger"
         },
         {
           "subject": "otpauth-uri",
@@ -3128,11 +1003,6 @@
                 "required": 5
               },
               {
-                "actual": 45,
-                "code": "critical-failure",
-                "required": 0
-              },
-              {
                 "actual": "not-run",
                 "code": "protected-holdout",
                 "required": "pass on frozen candidate"
@@ -3167,228 +1037,6 @@
           },
           "verdict": "explained",
           "cause": "policy-corpus-bounded"
-        },
-        {
-          "subject": "paddle-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 92,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "92 differential occurrence(s) (flare-redact 22, gitleaks 17, openredaction 31, trufflehog 22), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "perplexity-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 66,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "66 differential occurrence(s) (flare-redact 11, openredaction 29, trufflehog 26), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "pinecone-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 72,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "72 differential occurrence(s) (flare-redact 27, gitleaks 7, openredaction 30, trufflehog 8), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "polar-api-credential",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 66,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "66 differential occurrence(s) (flare-redact 16, gitleaks 15, openredaction 19, trufflehog 16), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "polar-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 88,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "88 differential occurrence(s) (flare-redact 22, gitleaks 20, openredaction 24, trufflehog 22), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "posthog-project-secret-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 88,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "88 differential occurrence(s) (flare-redact 22, gitleaks 16, openredaction 28, trufflehog 22), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "posthog-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 87,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "87 differential occurrence(s) (flare-redact 25, gitleaks 19, openredaction 30, trufflehog 13), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "postman-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 23,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "23 differential occurrence(s) (openredaction 17, trufflehog 6), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "postman-collection-access-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 75,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "75 differential occurrence(s) (flare-redact 18, gitleaks 12, openredaction 27, trufflehog 18), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "private-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 40,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "40 differential occurrence(s) (openredaction 17, trufflehog 23), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "pulumi-access-token",
-          "field": "benignAxes",
-          "legacy": 5,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "5 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "pulumi-access-token",
-          "field": "benignAxisIds",
-          "legacy": [
-            "near-miss",
-            "ordinary-prose",
-            "placeholder",
-            "public-identifier",
-            "reference"
-          ],
-          "next": [],
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "5 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "pulumi-access-token",
-          "field": "benignCases",
-          "legacy": 8,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 8 = 8 fixture-attribution"
-        },
-        {
-          "subject": "pulumi-access-token",
-          "field": "confusionAxes",
-          "legacy": 7,
-          "next": 2,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "5 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "pulumi-access-token",
-          "field": "controlAxes",
-          "legacy": 5,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "5 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "pulumi-access-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 18,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "18 differential occurrence(s) (flare-redact 9, openredaction 9), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "pulumi-access-token",
-          "field": "positiveAxes",
-          "legacy": 4,
-          "next": 1,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "3 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "pulumi-access-token",
-          "field": "positiveCases",
-          "legacy": 12,
-          "next": 9,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 3 = 3 fixture-attribution"
-        },
-        {
-          "subject": "pulumi-access-token",
-          "field": "totalFixtures",
-          "legacy": 26,
-          "next": 15,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 11 = 11 fixture-attribution"
-        },
-        {
-          "subject": "pypi-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 20,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "20 differential occurrence(s) (flare-redact 9, gitleaks 4, openredaction 7), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "replicate-api-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 44,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "44 differential occurrence(s) (flare-redact 7, gitleaks 7, openredaction 24, trufflehog 6), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "resend-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 94,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "94 differential occurrence(s) (flare-redact 24, gitleaks 20, openredaction 25, trufflehog 25), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "rubygems-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 58,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "58 differential occurrence(s) (flare-redact 22, gitleaks 2, openredaction 28, trufflehog 6), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "runpod-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 80,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "80 differential occurrence(s) (flare-redact 20, gitleaks 17, openredaction 23, trufflehog 20), none of whose canonical ids is in the review ledger"
         },
         {
           "subject": "sendgrid-token",
@@ -3437,15 +1085,6 @@
         },
         {
           "subject": "sendgrid-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 68,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "68 differential occurrence(s) (flare-redact 24, gitleaks 1, openredaction 19, trufflehog 24), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "sendgrid-token",
           "field": "positiveAxes",
           "legacy": 9,
           "next": 7,
@@ -3481,123 +1120,6 @@
           "note": "residual -9 = -9 canonical-evidence-membership"
         },
         {
-          "subject": "sentry-org-auth-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 100,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "100 differential occurrence(s) (flare-redact 26, gitleaks 20, openredaction 29, trufflehog 25), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "sentry-user-auth-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 61,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "61 differential occurrence(s) (flare-redact 25, gitleaks 1, openredaction 29, trufflehog 6), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "shopify-token",
-          "field": "benignAxes",
-          "legacy": 6,
-          "next": 1,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "5 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "shopify-token",
-          "field": "benignAxisIds",
-          "legacy": [
-            "encoded-value",
-            "near-miss",
-            "ordinary-prose",
-            "placeholder",
-            "public-identifier",
-            "reference"
-          ],
-          "next": [
-            "placeholder"
-          ],
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "5 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "shopify-token",
-          "field": "benignCases",
-          "legacy": 8,
-          "next": 2,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 6 = 6 fixture-attribution"
-        },
-        {
-          "subject": "shopify-token",
-          "field": "confusionAxes",
-          "legacy": 8,
-          "next": 3,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "5 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "shopify-token",
-          "field": "controlAxes",
-          "legacy": 6,
-          "next": 1,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "5 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "shopify-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 18,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "18 differential occurrence(s) (openredaction 12, trufflehog 6), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "shopify-token",
-          "field": "totalFixtures",
-          "legacy": 27,
-          "next": 21,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 6 = 6 fixture-attribution"
-        },
-        {
-          "subject": "slack-app-level-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 83,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "83 differential occurrence(s) (flare-redact 25, gitleaks 5, openredaction 29, trufflehog 24), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "slack-token",
-          "field": "benignCases",
-          "legacy": 13,
-          "next": 12,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 1 = 1 fixture-attribution"
-        },
-        {
-          "subject": "slack-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 85,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "85 differential occurrence(s) (flare-redact 23, gitleaks 14, openredaction 28, trufflehog 20), none of whose canonical ids is in the review ledger"
-        },
-        {
           "subject": "slack-token",
           "field": "positiveCases",
           "legacy": 28,
@@ -3610,367 +1132,28 @@
           "subject": "slack-token",
           "field": "totalFixtures",
           "legacy": 47,
-          "next": 43,
+          "next": 44,
           "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 4 = 1 fixture-attribution + 3 pending-not-scored"
-        },
-        {
-          "subject": "slack-user-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 55,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "55 differential occurrence(s) (flare-redact 17, gitleaks 2, openredaction 21, trufflehog 15), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "sonarqube-analysis-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 67,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "67 differential occurrence(s) (flare-redact 16, gitleaks 14, openredaction 21, trufflehog 16), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "sonarqube-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 88,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "88 differential occurrence(s) (flare-redact 23, gitleaks 13, openredaction 29, trufflehog 23), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "stripe-token",
-          "field": "benignCases",
-          "legacy": 25,
-          "next": 8,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 17 = 17 fixture-attribution"
-        },
-        {
-          "subject": "stripe-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 51,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "51 differential occurrence(s) (flare-redact 4, gitleaks 4, openredaction 29, trufflehog 14), none of whose canonical ids is in the review ledger"
+          "cause": "pending-not-scored",
+          "note": "residual 3 = 3 pending-not-scored"
         },
         {
           "subject": "stripe-token",
           "field": "positiveCases",
           "legacy": 46,
-          "next": 25,
+          "next": 43,
           "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 21 = 18 fixture-attribution + 3 pending-not-scored"
+          "cause": "pending-not-scored",
+          "note": "residual 3 = 3 pending-not-scored"
         },
         {
           "subject": "stripe-token",
           "field": "totalFixtures",
           "legacy": 79,
-          "next": 41,
+          "next": 76,
           "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 38 = 35 fixture-attribution + 3 pending-not-scored"
-        },
-        {
-          "subject": "stripe-webhook-signing-secret",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 62,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "62 differential occurrence(s) (flare-redact 3, gitleaks 17, openredaction 25, trufflehog 17), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "supabase-management-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 38,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "38 differential occurrence(s) (flare-redact 12, gitleaks 9, openredaction 13, trufflehog 4), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "supabase-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 56,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "56 differential occurrence(s) (flare-redact 13, gitleaks 13, openredaction 17, trufflehog 13), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "tavily-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 104,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "104 differential occurrence(s) (flare-redact 27, gitleaks 21, openredaction 30, trufflehog 26), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "telegram-bot-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 75,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "75 differential occurrence(s) (flare-redact 11, gitleaks 21, openredaction 30, trufflehog 13), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "terraform-cloud-token",
-          "field": "benignAxes",
-          "legacy": 5,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "5 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "terraform-cloud-token",
-          "field": "benignAxisIds",
-          "legacy": [
-            "near-miss",
-            "ordinary-prose",
-            "placeholder",
-            "public-identifier",
-            "reference"
-          ],
-          "next": [],
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "5 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "terraform-cloud-token",
-          "field": "benignCases",
-          "legacy": 8,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 8 = 8 fixture-attribution"
-        },
-        {
-          "subject": "terraform-cloud-token",
-          "field": "confusionAxes",
-          "legacy": 7,
-          "next": 2,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "5 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "terraform-cloud-token",
-          "field": "controlAxes",
-          "legacy": 5,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "5 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "terraform-cloud-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 26,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "26 differential occurrence(s) (flare-redact 9, gitleaks 3, openredaction 11, trufflehog 3), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "terraform-cloud-token",
-          "field": "positiveAxes",
-          "legacy": 4,
-          "next": 1,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "3 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "terraform-cloud-token",
-          "field": "positiveCases",
-          "legacy": 12,
-          "next": 9,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 3 = 3 fixture-attribution"
-        },
-        {
-          "subject": "terraform-cloud-token",
-          "field": "totalFixtures",
-          "legacy": 26,
-          "next": 15,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 11 = 11 fixture-attribution"
-        },
-        {
-          "subject": "together-ai-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 118,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "118 differential occurrence(s) (flare-redact 30, gitleaks 22, openredaction 36, trufflehog 30), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "travisci-api-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 74,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "74 differential occurrence(s) (flare-redact 22, gitleaks 12, openredaction 32, trufflehog 8), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "trigger-dev-personal-access-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 67,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "67 differential occurrence(s) (flare-redact 16, gitleaks 12, openredaction 23, trufflehog 16), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "trigger-dev-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 126,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "126 differential occurrence(s) (flare-redact 29, gitleaks 26, openredaction 42, trufflehog 29), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "twilio-api-key-secret",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 92,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "92 differential occurrence(s) (flare-redact 27, gitleaks 10, openredaction 31, trufflehog 24), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "twilio-auth-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 124,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "124 differential occurrence(s) (flare-redact 33, gitleaks 20, openredaction 42, trufflehog 29), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "vault-token",
-          "field": "benignAxes",
-          "legacy": 6,
-          "next": 1,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "5 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "vault-token",
-          "field": "benignAxisIds",
-          "legacy": [
-            "encoded-value",
-            "near-miss",
-            "ordinary-prose",
-            "placeholder",
-            "public-identifier",
-            "reference"
-          ],
-          "next": [
-            "placeholder"
-          ],
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "5 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "vault-token",
-          "field": "benignCases",
-          "legacy": 8,
-          "next": 2,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 6 = 6 fixture-attribution"
-        },
-        {
-          "subject": "vault-token",
-          "field": "confusionAxes",
-          "legacy": 9,
-          "next": 4,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "5 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "vault-token",
-          "field": "controlAxes",
-          "legacy": 6,
-          "next": 1,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "5 only on the legacy side (fixture-attribution)"
-        },
-        {
-          "subject": "vault-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 35,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "35 differential occurrence(s) (flare-redact 2, gitleaks 9, openredaction 14, trufflehog 10), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "vault-token",
-          "field": "totalFixtures",
-          "legacy": 28,
-          "next": 22,
-          "verdict": "explained",
-          "cause": "fixture-attribution",
-          "note": "residual 6 = 6 fixture-attribution"
-        },
-        {
-          "subject": "vercel-app-access-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 101,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "101 differential occurrence(s) (flare-redact 25, gitleaks 23, openredaction 28, trufflehog 25), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "vercel-app-refresh-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 103,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "103 differential occurrence(s) (flare-redact 25, gitleaks 23, openredaction 30, trufflehog 25), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "vercel-personal-access-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 102,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "102 differential occurrence(s) (flare-redact 25, gitleaks 23, openredaction 29, trufflehog 25), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "vercel-token",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 60,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "60 differential occurrence(s) (flare-redact 15, gitleaks 15, openredaction 15, trufflehog 15), none of whose canonical ids is in the review ledger"
+          "cause": "pending-not-scored",
+          "note": "residual 3 = 3 pending-not-scored"
         },
         {
           "subject": "vercel-token",
@@ -3998,24 +1181,6 @@
           "verdict": "explained",
           "cause": "pending-not-scored",
           "note": "residual 15 = 15 pending-not-scored"
-        },
-        {
-          "subject": "wandb-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 70,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "70 differential occurrence(s) (flare-redact 19, gitleaks 18, openredaction 24, trufflehog 9), none of whose canonical ids is in the review ledger"
-        },
-        {
-          "subject": "xai-api-key",
-          "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 0,
-          "next": 58,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "58 differential occurrence(s) (flare-redact 11, gitleaks 9, openredaction 30, trufflehog 8), none of whose canonical ids is in the review ledger"
         }
       ]
     },
@@ -5426,14 +2591,10 @@
     {
       "family": "ai21-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
@@ -5442,10 +2603,10 @@
       "next": "provisional",
       "verdict": "explained",
       "causes": [
-        "review-occurrence-identity"
+        "twin-scope-vocabulary"
       ],
       "heldBackBy": [
-        "review-occurrence-identity"
+        "twin-scope-vocabulary"
       ],
       "unattributedReasons": []
     },
@@ -5455,141 +2616,101 @@
       "next": "provisional",
       "verdict": "explained",
       "causes": [
-        "review-occurrence-identity"
+        "twin-scope-vocabulary"
       ],
       "heldBackBy": [
-        "review-occurrence-identity"
+        "twin-scope-vocabulary"
       ],
       "unattributedReasons": []
     },
     {
       "family": "anthropic-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "apify-api-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "atlassian-api-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "aws-access-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "aws-bedrock-long-term-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "aws-bedrock-short-term-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "aws-secret-access-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "axiom-personal-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "axiom-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "azure-devops-personal-access-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
@@ -5599,170 +2720,120 @@
       "verdict": "equal",
       "causes": [
         "policy-corpus-bounded",
-        "population-separation",
-        "review-occurrence-identity"
+        "population-separation"
       ],
       "heldBackBy": [
         "policy-corpus-bounded",
-        "population-separation",
-        "review-occurrence-identity"
+        "population-separation"
       ],
       "unattributedReasons": []
     },
     {
       "family": "bitwarden-secrets-manager-access-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "browserbase-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "cerebras-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "clickhouse-cloud-api-secret",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "clojars-deploy-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "cloudflare-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "cohere-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "composio-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "composio-org-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "composio-user-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "confluent-cloud-api-secret",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "confluent-cloud-api-secret-legacy",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
@@ -5772,291 +2843,201 @@
       "verdict": "equal",
       "causes": [
         "canonical-evidence-membership",
-        "policy-corpus-bounded",
-        "review-occurrence-identity"
+        "policy-corpus-bounded"
       ],
       "heldBackBy": [
         "canonical-evidence-membership",
-        "policy-corpus-bounded",
-        "review-occurrence-identity"
+        "policy-corpus-bounded"
       ],
       "unattributedReasons": []
     },
     {
       "family": "convex-deployment-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "crates-io-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "crates-io-trusted-publishing-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "databricks-personal-access-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "datadog-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "datadog-application-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "datadog-application-key-legacy",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "daytona-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "deepgram-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "digitalocean-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "fixture-attribution",
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "fixture-attribution",
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "discord-bot-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "docker-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "fixture-attribution",
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "fixture-attribution",
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "doppler-audit-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "doppler-cli-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "doppler-personal-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "doppler-scim-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "doppler-service-account-identity-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "doppler-service-account-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "doppler-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "dynatrace-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "e2b-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
@@ -6065,50 +3046,38 @@
       "next": "provisional",
       "verdict": "explained",
       "causes": [
-        "review-occurrence-identity"
+        "twin-scope-vocabulary"
       ],
       "heldBackBy": [
-        "review-occurrence-identity"
+        "twin-scope-vocabulary"
       ],
       "unattributedReasons": []
     },
     {
       "family": "firebase-server-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "firecrawl-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "fireworks-ai-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
@@ -6118,421 +3087,291 @@
       "verdict": "equal",
       "causes": [
         "policy-corpus-bounded",
-        "population-separation",
-        "review-occurrence-identity"
+        "population-separation"
       ],
       "heldBackBy": [
         "policy-corpus-bounded",
-        "population-separation",
-        "review-occurrence-identity"
+        "population-separation"
       ],
       "unattributedReasons": []
     },
     {
       "family": "github-fine-grained-pat",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "github-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "gitlab-runner-authentication-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "gitlab-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "fixture-attribution",
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "fixture-attribution",
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "google-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "google-oauth-client-secret",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "grafana-cloud-access-policy-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "grafana-service-account-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "groq-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "helicone-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "helicone-write-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "heroku-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "heroku-api-key-legacy",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "honeycomb-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "huggingface-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "inngest-signing-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "jwt",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "langfuse-secret-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "langsmith-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "linear-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "mailchimp-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "mailgun-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "microsoft-entra-client-secret",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "mistral-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "neon-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "netlify-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "new-relic-license-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "new-relic-user-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "notion-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "npm-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "fixture-attribution",
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "fixture-attribution",
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "nvidia-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
@@ -6540,64 +3379,44 @@
       "legacy": "provisional",
       "next": "provisional",
       "verdict": "equal",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "onepassword-service-account-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "openai-admin-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "openai-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "openrouter-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
@@ -6606,12 +3425,10 @@
       "next": "provisional",
       "verdict": "equal",
       "causes": [
-        "policy-corpus-bounded",
-        "review-occurrence-identity"
+        "policy-corpus-bounded"
       ],
       "heldBackBy": [
-        "policy-corpus-bounded",
-        "review-occurrence-identity"
+        "policy-corpus-bounded"
       ],
       "unattributedReasons": [
         "policy.positive-axes",
@@ -6621,211 +3438,145 @@
     {
       "family": "paddle-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "perplexity-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "pinecone-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "polar-api-credential",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "polar-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "posthog-project-secret-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "posthog-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "postman-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "postman-collection-access-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "private-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "pulumi-access-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "fixture-attribution",
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "fixture-attribution",
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "pypi-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "replicate-api-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "resend-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "rubygems-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "runpod-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
@@ -6834,54 +3585,38 @@
       "next": "provisional",
       "verdict": "explained",
       "causes": [
-        "population-separation",
-        "review-occurrence-identity"
+        "population-separation"
       ],
       "heldBackBy": [
-        "population-separation",
-        "review-occurrence-identity"
+        "population-separation"
       ],
       "unattributedReasons": []
     },
     {
       "family": "sentry-org-auth-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "sentry-user-auth-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "shopify-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "fixture-attribution",
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "fixture-attribution",
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
@@ -6889,157 +3624,107 @@
       "legacy": "provisional",
       "next": "provisional",
       "verdict": "equal",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "slack-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "slack-user-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "sonarqube-analysis-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "sonarqube-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "stripe-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "stripe-webhook-signing-secret",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "supabase-management-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "supabase-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "tavily-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "telegram-bot-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "terraform-cloud-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "fixture-attribution",
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "fixture-attribution",
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
@@ -7047,131 +3732,89 @@
       "legacy": "provisional",
       "next": "provisional",
       "verdict": "equal",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "travisci-api-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "trigger-dev-personal-access-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "trigger-dev-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "twilio-api-key-secret",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "twilio-auth-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "vault-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "fixture-attribution",
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "fixture-attribution",
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "vercel-app-access-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "vercel-app-refresh-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "vercel-personal-access-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
@@ -7186,41 +3829,32 @@
     {
       "family": "wandb-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "xai-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "review-occurrence-identity"
-      ],
-      "heldBackBy": [
-        "review-occurrence-identity"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     }
   ],
   "counterfactual": {
     "legacyStable": 127,
-    "nextStable": 0,
+    "nextStable": 123,
     "heldOnlyByMethods": 0,
     "heldByMethodsAndOthers": 0,
-    "heldWithoutMethods": 127
+    "heldWithoutMethods": 4
   },
   "heldBy": {
-    "fixture-attribution + review-occurrence-identity": 8,
-    "population-separation + review-occurrence-identity": 1,
-    "review-occurrence-identity": 118
+    "population-separation": 1,
+    "twin-scope-vocabulary": 3
   },
   "outcomeGroups": [
     {
@@ -7417,8 +4051,8 @@
       "reason": "the legacy bench writes no report for it (calibration-only), so there is no legacy outcome."
     },
     {
-      "area": "review ledger decisions",
-      "reason": "the methods run has a review queue, keyed by canonical occurrence ids; the review ledger is keyed by legacy ids, so no ledger decision is applied to it (review-occurrence-identity). The per-family counts of occurrences and of how many canonical ids the ledger holds are in the status attribution. The legacy mutation review entries (the legacy queue held mutation variants that need review, the new queue holds differential occurrences only) are not compared."
+      "area": "review ledger decisions (applied through the mapping)",
+      "reason": "the methods run has a review queue keyed by canonical occurrence ids; the legacy review ledger is keyed by legacy ids, and a decision applies to a canonical occurrence only through benchmarks/support/public-review-ledger-map.json (same case, peer, disagreement property and bytes): 4268 of 10739 canonical occurrences are mapped (4268 of 4268 legacy differential entries), 6471 are occurrences of peers the legacy run never scanned (unreviewed, and not gate-bearing) and 0 are unmatched for another reason. The 8845 legacy mutation review entries have no canonical counterpart (the canonical review queue holds differential occurrences only) and are not compared."
     },
     {
       "area": "candidate-regression inputs and protected holdout",
@@ -7431,30 +4065,28 @@
   ],
   "summary": {
     "compared": 35024,
-    "equal": 34369,
-    "explained": 655,
+    "equal": 34678,
+    "explained": 346,
     "unexplained": 0,
     "byCause": {
       "canonical-evidence-membership": 15,
-      "fixture-attribution": 59,
       "legacy-id-rekey": 153,
-      "pending-not-scored": 6,
+      "pending-not-scored": 9,
       "policy-corpus-bounded": 4,
       "population-separation": 12,
-      "review-occurrence-identity": 253,
       "twin-scope-vocabulary": 153
     },
     "classes": {
-      "must-equal": 34369,
-      "expected-structural": 655,
+      "must-equal": 34678,
+      "expected-structural": 346,
       "unexplained": 0
     }
   },
   "recommendations": [
-    "Status: the legacy path reads 127 stable families and the new path 0. Held back (legacy-stable families the new path does not read stable): 8 by fixture-attribution + review-occurrence-identity; 1 by population-separation + review-occurrence-identity; 118 by review-occurrence-identity. Not applied: nothing here changes a status.",
-    "Review ledger: every differential occurrence of the methods run is keyed by a canonical id and the ledger is keyed by legacy ids (0 of 10196 family-attributed occurrences are in the ledger; per peer {\"openredaction\":3505,\"trufflehog\":2361,\"flare-redact\":2591,\"gitleaks\":1739}). Two decisions are needed: re-key the ledger decisions to the canonical occurrence ids of the pinned peers, and decide whether the differential gate reads the peers the legacy run scanned (gitleaks, trufflehog) or every pinned peer (flare-redact and openredaction add occurrences no one has reviewed). Not applied: both change which disagreements a status depends on.",
+    "Status: the legacy path reads 127 stable families and the new path 123. Held back (legacy-stable families the new path does not read stable): 1 by population-separation; 3 by twin-scope-vocabulary. Not applied: nothing here changes a status.",
+    "Review ledger: 4142 of 10307 family-attributed differential occurrences of the methods run are settled by a legacy decision through the generated mapping; per peer, occurrences {\"openredaction\":3548,\"trufflehog\":2383,\"flare-redact\":2617,\"gitleaks\":1759}. The differential gate reads the peers named in benchmarks/support/population-policy.json (gitleaks, trufflehog); the other peers are measured and listed per family (families[].differential) and are not gate-bearing until reviewed. Applied by product policy (docs/decisions, #638); nothing here changes a status.",
     "Policy corpus: the T3 route floors read the 19-case policy corpus alone. Whether the floors, the corpus or the route change is a product policy decision. Not applied.",
-    "Twin scope: confirm with credential-eval how a twin control is scoped (case family against the finding family) before the new path decides twin discrimination; every differing control in this report is a twin whose finding is present on both sides.",
-    "Re-key: resolve the legacy-id re-key (qualification-inputs.json populations[0].rekey) with the evidence release id map, then apply the legacy review-ledger decisions and disputed properties to canonical ids, so the ledger joins are measured instead of listed."
+    "Twin scope: credential-eval scopes a twin by the twin's own family, and the snapshot gives a cross-provider twin none, so the engine reads a finding of another known detector as flagged where the legacy twin read it as co-detected (twin-scope-vocabulary). The adapter does not re-score it. Either credential-evidence carries a family on such a twin, or credential-eval scopes a twin by its parent's family; neither is decided in this repository.",
+    "Re-key: the review-ledger decisions are mapped to canonical occurrence ids by content (public-review-ledger-map.json). The legacy-id re-key of known gaps and disputed properties (qualification-inputs.json populations[0].rekey) with the evidence release id map is still open."
   ]
 }

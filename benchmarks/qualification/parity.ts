@@ -27,13 +27,13 @@ export const CAUSES: Cause[] = [
   { id: 'population-separation', change: 'The legacy path pooled the development, regression and policy fixtures of a family in one denominator. The new path measures each population on its own and reads floors from the public evidence snapshot alone (benchmarks/support/population-policy.json).', confirmation: 'confirmed', owner: 'benchmarks' },
   { id: 'axis-vocabulary', change: 'The public snapshot names a case group by scenario, not by source context, and has no benign taxonomy, so positive and control axis counts are not the legacy fixture axes. Applies only to a view built without the product axis overlay (population-policy.json axes); with the overlay, an axis difference is attributed to the population or membership cause it checks.', confirmation: 'confirmed', owner: 'benchmarks and credential-evidence' },
   { id: 'methods-not-run', change: 'The qualification view was built without a methods run, so the metamorphic, mutation and differential gates are unmeasured and a family that would be stable is held at provisional (methods.notRun).', confirmation: 'confirmed', owner: 'benchmarks' },
-  { id: 'review-occurrence-identity', change: 'The review queue of the methods run is keyed by canonical occurrence ids and holds the occurrences of every pinned peer, including peers the legacy run never scanned; the committed review ledger is keyed by legacy ids of a three-scanner legacy run. A canonical occurrence id absent from the ledger reads unresolved, so a differential disagreement cannot read settled until the ledger is re-keyed and the peer set is decided.', confirmation: 'confirmed', owner: 'benchmarks' },
+  { id: 'review-occurrence-identity', change: 'The review queue of the methods run is keyed by canonical occurrence ids and holds the occurrences of every pinned peer, including peers the legacy run never scanned; the committed review ledger is keyed by legacy ids of a three-scanner legacy run. A canonical occurrence id the ledger and its generated mapping (benchmarks/support/public-review-ledger-map.json) do not hold reads unresolved. Recognised only for a view built without that mapping, where no decision can apply; with it, an occurrence of a peer the legacy run never scanned stays unreviewed and is not gate-bearing (population-policy.json methods.differential.peers).', confirmation: 'confirmed', owner: 'benchmarks' },
   { id: 'policy-corpus-bounded', change: 'The T3 policy route reads the policy corpus alone (a bounded contract), where the legacy path pooled every T3 fixture of the family.', confirmation: 'confirmed', owner: 'product policy' },
   { id: 'legacy-id-rekey', change: 'Legacy fixture ids, ledger ids and disputed-property ids are legacy hashes or slugs; the public snapshot has canonical ids. Stored per-fixture inputs keyed by legacy ids do not resolve until the re-key.', confirmation: 'confirmed', owner: 'benchmarks' },
-  { id: 'twin-scope-vocabulary', change: 'A twin control is scoped to its declared family, and a finding of another known family is co-detection, not a flag. The legacy path scoped a twin by the product contract of the positive it mutates (a detector id); the evidence snapshot gives the twin its own family (a taxonomy id), so the twin can belong to another family and the same finding can swap between flagged and co-detected.', confirmation: 'inferred', owner: 'credential-eval' },
+  { id: 'twin-scope-vocabulary', change: 'A twin control is scoped to its declared family, and a finding of another known family is co-detection, not a flag. The legacy path scoped a twin by the product contract of the positive it mutates (a detector id); the evidence snapshot gives the twin its own family (a taxonomy id), so the twin can belong to another family and the same finding can swap between flagged and co-detected. A cross-provider twin has no family at all in the snapshot, so the engine cannot scope it and reads a finding of another known detector as flagged; recognised from the matched cases (the new twin is flagged with no family, the legacy twin was not). The adapter does not re-score it.', confirmation: 'inferred', owner: 'credential-eval' },
   { id: 'pending-not-scored', change: 'A T0 (pending) non-twin fixture has no scored outcome in credential-eval, so the adapter excludes it from the floor counts; the legacy path counted it as a fixture of its family. A T0 twin is not in this cause: the legacy path drops T0 twins, so neither side counts it.', confirmation: 'confirmed', owner: 'benchmarks' },
   { id: 'canonical-evidence-membership', change: 'The evidence snapshot holds fixtures with no legacy counterpart (intended canonical-evidence change): they count in the new floors and in no legacy count.', confirmation: 'confirmed', owner: 'credential-evidence' },
-  { id: 'fixture-attribution', change: 'The legacy path attributed a fixture to its declared contract and targets; the adapter attributes a case to the detectors named by its targets, its family, or the taxonomy family it belongs to.', confirmation: 'inferred', owner: 'benchmarks' },
+  { id: 'fixture-attribution', change: 'The legacy path attributed a fixture to its declared contract and targets; the adapter attributes a case to the detectors named by its targets, its family, or the taxonomy family it belongs to and, where the snapshot names none, to the legacy targets the product overlay carries, then to its twin parent (population-policy.json attribution). What remains is a case the legacy path scoped to a family the overlay does not carry (no legacy counterpart) or that the legacy path attributed to a detector the adapter attributes elsewhere.', confirmation: 'inferred', owner: 'benchmarks' },
 ];
 const CAUSE_IDS = new Set(CAUSES.map(c => c.id));
 
@@ -163,7 +163,7 @@ export function causeOfReason(code: string, countCause: string | undefined, reso
   if (/^differential\./.test(code)) return resolved.review;
   if (/PositiveAxes|ControlAxes|positive-axes|benign-axes|benign\.minimumAxes|minimumAxes|^fixtureProfile/.test(code)) return resolved.overlay ? resolved.axis : (resolved.axis ?? 'axis-vocabulary');
   if (/^policy\./.test(code) && code !== 'policy.protected-holdout') return 'policy-corpus-bounded';
-  if (/minimumBenignCases|benign\.minimumCases|minimumPositiveCases|minimumTwinPairs|minimumFixtures/.test(code)) return countCause;
+  if (/minimumBenignCases|benign\.minimumCases|minimumPositiveCases|minimumTwinPairs|minimumFixtures|^twinFailures$|^benignFalseAlarms$/.test(code)) return countCause;
   return undefined;
 }
 
@@ -189,6 +189,13 @@ export function compareFamilies(legacy: LegacyFamily[], next: NextFamily[], opti
       evidence.compare(id, field, l.evidence[field], n.evidence[field], () => {
         const legacyValue = l.evidence[field], nextValue = n.evidence[field];
         if (typeof legacyValue !== 'number' || typeof nextValue !== 'number') return undefined;
+        if (field === 'twinFailures' || field === 'benignFalseAlarms') {
+          // The new path takes the worst gate-bearing population and the legacy path pooled, so only what the matched cases show can explain it.
+          const residual = legacyValue - nextValue;
+          const parts = Object.entries(options.adjustmentsByFamily?.[id] ?? {}).map(([cause, fields]) => ({ cause, amount: fields[field] ?? 0 })).filter(p => p.amount !== 0);
+          if (parts.length && parts.reduce((a, p) => a + p.amount, 0) === residual) return (countCause ??= parts[0].cause, { cause: parts[0].cause, note: `residual ${residual} = ${parts.map(p => `${p.amount} ${p.cause}`).join(' + ')}` });
+          return undefined;
+        }
         const others = n.populations.filter(p => p.population !== options.floorsPopulation).map(p => contribution(field, p));
         if (others.some(v => v === undefined) || !floors) return undefined;
         const rebuilt = nextValue + (others as number[]).reduce((a, b) => a + b, 0);

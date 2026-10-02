@@ -2,10 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { AXIS_OVERLAY_FILE, axisOverlayProblems, buildAxisOverlay, contextGroup, serializeAxisOverlay } from '../benchmarks/qualification/axis-overlay.ts';
+import { AXIS_OVERLAY_FILE, axisOverlayProblems, buildAxisOverlay, contextGroup, joinLegacyToSnapshot, serializeAxisOverlay } from '../benchmarks/qualification/axis-overlay.ts';
 import { buildEvaluationEvidence, evaluationEvidenceDigest, serializeEvaluationEvidence, EVALUATION_EVIDENCE_FILE } from '../benchmarks/qualification/evaluation-evidence.ts';
 import { canonical } from '../benchmarks/qualification/canonical.ts';
-import { controlAxis } from '../benchmarks/evaluation/domains/credential/assessment.ts';
+import { controlAxis, scoredContractIds } from '../benchmarks/evaluation/domains/credential/assessment.ts';
 
 // Structure and derivation only. No axis value, count or digest read from a committed file is asserted: a new snapshot or fixture
 // re-keys them, and `npm run qualification:axis-overlay -- --check` (with the snapshot) is what holds the committed overlay.
@@ -53,6 +53,48 @@ test('the overlay is derived by content join: a positive gets its category and g
   assert.equal(serializeAxisOverlay(await buildAxisOverlay({ ...snapshot, cases: [...snapshot.cases].reverse() })), serializeAxisOverlay(overlay));
 });
 
+test('the overlay carries the legacy targets of a joined case as its detector attribution, product detectors only', async () => {
+  const { positive, control } = await sample();
+  const targetsOf = async ({ category, fixture }) => {
+    const fixtureDetectors = await read('benchmarks/fixture-detectors.json');
+    return [...new Set([...(fixtureDetectors[`${category}--${fixture.id}`] ?? fixture.detectors ?? []), ...(fixture.arrivalTargets ?? [])].filter(d => scoredContractIds.includes(d)))].sort();
+  };
+  const overlay = await buildAxisOverlay({
+    identity: { corpus_digest: `sha256:${'a'.repeat(64)}` },
+    cases: [caseOf(positive, 'canonical-positive'), caseOf(control, 'canonical-control'), { id: 'canonical-new', path: 'n.txt', content: 'no legacy fixture has this exact content\n', expected: [], grouping: { kind: 'must-not-flag', tier: 'T1', group: 's' } }],
+  });
+  for (const [id, sampled] of [['canonical-positive', positive], ['canonical-control', control]]) {
+    const targets = await targetsOf(sampled);
+    if (targets.length) assert.deepEqual(overlay.detectors[id], targets, id); else assert.ok(!(id in overlay.detectors), id);
+  }
+  assert.ok(!('canonical-new' in overlay.detectors), 'a case no legacy fixture joins is attributed nothing');
+  assert.ok(Object.values(overlay.detectors).every(list => list.every(d => scoredContractIds.includes(d))));
+  assert.deepEqual(axisOverlayProblems(overlay), []);
+});
+
+test('the identity join pairs a development fixture first and a legacy regression fixture second, one to one, and names no axis for the second', async () => {
+  const { positive } = await sample();
+  const categories = await read('benchmarks/categories.json');
+  const regression = (await read('corpora/regression/manifest.json')).categories;
+  const regressionFixture = [];
+  for (const category of categories.filter(c => regression.includes(c.id))) {
+    const corpus = await read(category.corpus);
+    if (corpus.fixtures.length) { regressionFixture.push({ category: category.id, fixture: corpus.fixtures[0] }); break; }
+  }
+  assert.ok(regressionFixture.length, 'a regression fixture to sample');
+  const snapshot = {
+    identity: { corpus_digest: `sha256:${'a'.repeat(64)}` },
+    cases: [caseOf(positive, 'canonical-positive'), caseOf(regressionFixture[0], 'canonical-regression'), { id: 'canonical-new', path: 'n.txt', content: 'no legacy fixture has this exact content\n', expected: [], grouping: { kind: 'must-not-flag', tier: 'T1', group: 's' } }],
+  };
+  const joined = await joinLegacyToSnapshot(snapshot);
+  assert.equal(joined.get(`${positive.category}--${positive.fixture.id}`), 'canonical-positive');
+  assert.equal(joined.get(`${regressionFixture[0].category}--${regressionFixture[0].fixture.id}`), 'canonical-regression');
+  assert.ok(![...joined.values()].includes('canonical-new'));
+  // The regression join identifies a case only: the overlay (axes, attribution) is still derived from the development fixtures alone.
+  const overlay = await buildAxisOverlay(snapshot);
+  assert.ok(!('canonical-regression' in overlay.contexts) && !('canonical-regression' in overlay.controls) && !('canonical-regression' in overlay.detectors));
+});
+
 test('an overlay that is not well formed is refused', async () => {
   const { positive } = await sample();
   const good = await buildAxisOverlay({ identity: { corpus_digest: `sha256:${'a'.repeat(64)}` }, cases: [caseOf(positive, 'c1')] });
@@ -63,6 +105,10 @@ test('an overlay that is not well formed is refused', async () => {
   assert.ok(mutate(o => { o.snapshot.corpusDigest = 'x'; }).some(p => /corpusDigest/.test(p)));
   assert.ok(mutate(o => { o.owner = 'credential-evidence'; }).some(p => /identity/.test(p)));
   assert.ok(mutate(o => { o.controls.c2 = 'pending'; }).some(p => /not a reviewed control axis/.test(p)), 'pending is no axis');
+  assert.ok(mutate(o => { o.detectors.c1 = ['not-a-detector']; }).some(p => /detectors\[c1\]/.test(p)));
+  assert.ok(mutate(o => { o.detectors.c1 = []; }).some(p => /detectors\[c1\]/.test(p)));
+  assert.ok(mutate(o => { o.detectors.c1 = [scoredContractIds[1], scoredContractIds[0]].sort().reverse(); }).some(p => /sorted, unique/.test(p)));
+  assert.ok(mutate(o => { delete o.detectors; }).some(p => /detectors is a required object/.test(p)));
   assert.deepEqual(axisOverlayProblems(null), ['the overlay is not an object']);
 });
 

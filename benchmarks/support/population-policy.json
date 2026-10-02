@@ -23,13 +23,22 @@
   "methods": {
     "required": ["metamorphic", "mutation", "differential"],
     "whenNotRun": "block-stable",
-    "source": "methods-run"
+    "source": "methods-run",
+    "differential": {
+      "peers": ["gitleaks", "trufflehog"],
+      "rationale": "The differential gate reads the peers the legacy gate read: gitleaks and trufflehog, each against the redact-secret reference. flare-redact and openredaction are measured by the methods run and reported per family (families[].differential), but are not gate-bearing: the legacy gate never read them, no one has reviewed their disagreements, and counting them would add occurrences with no decision to a gate that never had them, which changes the qualification semantics. A peer joins this list only through a reviewed decision of its own."
+    }
+  },
+  "attribution": {
+    "fallback": ["overlay-detectors", "twin-parent"],
+    "rationale": "A public case is attributed to the product detectors its snapshot targets, family or taxonomy family name. Where the snapshot names none, the legacy rule applies: a fixture was scoped to the detectors in its declared targets, which the product-owned overlay carries per case (benchmarks/support/public-axis-overlay.json detectors); then a twin is scoped to the family it twins (the detectors of its parent). A case that still maps to none stays unattributed and is counted, never dropped. Populations are never pooled to reach a floor: floors read the floors-and-gates population alone."
   },
   "rules": [
     "One artifact is one population. Counts stay per population, keyed by (population, case id), and are never summed, averaged or pooled into one rate.",
     "Floors and fixture-profile cells are read from the floors-and-gates population only.",
     "A zero-tolerance gate (twin failures, benign false alarms) is evaluated in each gate-bearing population on its own; the classifier receives the worst population, never a sum.",
     "The policy-route population feeds only the T3 policy-qualified route.",
+    "The differential gate reads the peers named in methods.differential.peers; a differential occurrence of another peer is measured and reported but never counts toward the gate. A legacy review decision applies to a canonical occurrence only through the generated mapping (benchmarks/support/public-review-ledger-map.json): same case, same peer, same disagreement property, same bytes; an unmapped occurrence is unreviewed.",
     "A method that did not run is unmeasured, never zero failures. The methods come from the methods run, a second official artifact of the floors-and-gates population (manifest.methods), attributed to a family through the seed case of each assertion or review occurrence; a family that would be stable is held at provisional until every required method has run.",
     "A counted case is named by the axis the product authored for it: the public axis overlay (benchmarks/support/public-axis-overlay.json, generated from the legacy development fixtures, bound to one snapshot by corpus digest) gives the source-context group of a positive and the benign taxonomy of a control; a case the overlay does not name keeps the snapshot's own group or taxonomy. The overlay changes no evidence class, outcome or count, and the evidence class of a case is never a support status.",
     "The route (documented, empirical, policy-qualified) is read from the product contract and empirical overlays, never from the evidence class a case carries.",

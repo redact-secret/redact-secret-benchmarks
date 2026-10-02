@@ -19,35 +19,45 @@ three sets of times show how far the machine moved between runs.
 
 ## Source identities
 
-- Benchmark source: `redact-secret/redact-secret-benchmarks` branch `workbench/562-563-runtime-outcomes` at `8de4ed8d`,
-  run by the `peer-pii-runtime-throughput` workflow with `measurement=runtime-comparison-v2` (Actions run 36737678224).
-- Benchmark lockfile SHA-256: `06a6ba659e9ae2d42ee49f0f11e13d682ed242539c89b6bb455c29cdb089c51f` (flare-redact 1.6.1,
-  `@openredaction/core` 1.1.5), the same lockfile as `evidence/429`.
-- redact-secret: `redact-secret/redact-secret` commit `da69ebf5090e0fb9519eb07829ff46001ede0de2` (`pin-manifest.json`
-  `redactSecretRevision`), `bindings/node` built with `napi build --platform --release` inside the pinned Docker image,
-  reporting version `0.1.0-beta.11`. Image ID: `sha256:31f4db51a50c074e9a7cf5fdea7d2cba70e85ba2427bf451fe5b492de256099c`.
+- Benchmark source: `redact-secret/redact-secret-benchmarks`, measured from a checkout of `origin/develop` at `58d058e6` plus the
+  `--source=published` runner of this change (Refs #562). Plan `qualification/runtime-comparison-v2.json` is unchanged.
+- Benchmark lockfile SHA-256: `3c54b9d24ede4940e1c028737c40787ac4ffa8ffc15d394f45bfa80c38e78bc8` (flare-redact 1.6.1,
+  `@openredaction/core` 1.1.5, `@redact-secret/core` 0.1.0-beta.12); the peers are the same versions as `evidence/429`.
+- redact-secret: the **published** `@redact-secret/core` `0.1.0-beta.12` from npm (mode `published`, provenance kind
+  `published-npm-package`), installed by `npm ci` from `package-lock.json`; nothing is built from product source. Its recorded
+  `commit` is the pinned release source `4227160c4dac402d7add53d3f8fe990f693912c1` (`pin-manifest.json`
+  `redactSecretRevision`). PII is selected through `initialize({ pii })`, one selection per process. Image ID:
+  `sha256:3ba29480f9c28aa224a964992778d25f09ed198a23975c363c99acad80cbfa91`.
 - Plan commitment `522434d8ed797641d1070e2fec5db6cfb8e7afc4290c101b77b2d5db4e75a4eb`.
-- Report `artifactCommitment`: `default` `6fdf7e78bcce279c56c34ef168a68d354ea69abdfc78142ee6b3ebe39dbe0e2a`,
-  `pii-global` `43078983a4f7bf0701075ecbdc08f0820937a360a18261e909ea9fec36e77ac4`,
-  `pii-global-us` `5dac5512227af43e43e2e1a6ca66d759147f6cfafa2df85c2636e6fddf874e8d`.
+- Report `artifactCommitment`: `default` `b94abc4a8397483dd50fe134627394942ecdbbdf865654721c8095eeae6ef70a`,
+  `pii-global` `7ee73a593e79363018edcd5f0cfb63d392fd1e888bb20353cb6d4154fb838c23`,
+  `pii-global-us` `88edceb8d01fa311ebede8770edb93c096595c1757c568665c486f204e6432da`.
 
 ## Environment
 
-GitHub Actions `ubuntu-24.04`, native linux x64 (not emulated), AMD EPYC 7763, container limited to 4 CPUs, Node v22.22.2.
-`evidence/429` ran on an AMD EPYC 9V74, so a time for the same tool and workload differs a little between the two directories
-(different runner hardware and a different run); compare within one directory. The runner is shared infrastructure, so absolute
-numbers carry noise. All three libraries ran in one Node process per setting, interleaved round-robin. The three settings ran one
-after another in separate containers on the same runner, minutes apart.
+Generated 2026-10-02 on a developer laptop: Apple M4 (macOS 26), Docker Desktop 28.3.3, a native `linux/arm64` container (not
+emulated; nothing here is platform-native: redact-secret ships WebAssembly and both peers are JavaScript), Node v22.22.2,
+container limited to 4 CPUs. The container only sees a virtual CPU, so the runner records the host through `HOST_CPU_MODEL`
+(`Apple M4 (Docker Desktop linux/arm64 VM)`). The laptop was not idle and the container runs in a VM, so absolute numbers carry
+more noise than a CI runner's. Timings are machine-bound: the previous snapshots (a local beta.11 build on an AMD EPYC 7763,
+linux/amd64) are a different build on different hardware and are not comparable with these. Compare within one directory
+and one run. All three libraries ran in one Node process per setting, interleaved round-robin. The three settings ran one after
+another in separate containers on the same machine.
 
 ## Reproduce
 
 ```sh
-scripts/run-runtime-comparison-docker.sh --out-dir=evidence/562
+HOST_CPU_MODEL="<the machine>" scripts/run-runtime-comparison-docker.sh --out-dir=evidence/562
 ```
 
-Run on a native amd64 host, or dispatch the `peer-pii-runtime-throughput` workflow with `measurement=runtime-comparison-v2`
-and copy its `runtime-comparison` artifact here. The measurement refuses to write this directory from an emulated host or
-from a product commit other than the pin.
+The default `--source=published` measures the `@redact-secret/core` release `package.json` pins; `--source=local-build` builds
+the add-on from the pinned commit instead (the mode of the earlier beta.11 snapshots). Run on any host Docker runs natively, or
+dispatch the `peer-pii-runtime-throughput` workflow with `measurement=runtime-comparison-v2` and copy its `runtime-comparison`
+artifact here. The measurement refuses to write this directory from an emulated host, from a product commit other than the pin,
+or (published) from a package version other than `pin-manifest.json` `packageVersion`.
+
+After a re-pin these snapshots must be replaced: `npm run pins:check` and `tests/runtime-comparison.test.mjs` fail while a
+snapshot's version, build kind or commit differs from the pin (`docs/specs/performance-acceptance.md`, "Re-pinning").
 
 `tests/runtime-comparison.test.mjs` validates these files with `validatePeerRuntimeThroughputReport`. A plan, workload or summary
 change that makes one stale fails CI, and the fix is a fresh run, not an edit.

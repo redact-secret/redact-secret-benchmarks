@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import {
   checkPinConsistency, checkPinAncestry, collectKnownGapCommits, extractRegistryIds, PRODUCT_REPO, PRODUCT_BRANCH, REGISTRY_PATH,
@@ -30,7 +30,15 @@ async function main() {
     read('benchmarks/known-gaps.json'),
     read('benchmarks/performance-criteria.json'),
   ]);
+  // The runtime-comparison snapshots the site reads (#562): their redact-secret identity must follow the pin.
+  const snapshotDir = new URL('evidence/562/', root);
+  const runtimeComparisonSnapshots = [];
+  for (const name of (await readdir(snapshotDir)).filter(n => /^runtime-comparison-.+\.json$/.test(n)).sort()) {
+    const tool = JSON.parse(await readFile(new URL(name, snapshotDir), 'utf8')).tools.find(t => t.id === 'redact-secret');
+    runtimeComparisonSnapshots.push({ file: `evidence/562/${name}`, version: tool.version, kind: tool.provenance.kind, commit: tool.provenance.commit });
+  }
   const facts = {
+    runtimeComparisonSnapshots,
     registrySourceRevision: registry.sourceRevision,
     inventoryRedactSecretRevision: inventory.redactSecretRevision,
     inventoryRedactSecretVersion: inventory.redactSecretVersion,

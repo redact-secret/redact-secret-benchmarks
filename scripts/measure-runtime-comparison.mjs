@@ -3,7 +3,9 @@
 // workloads. One process measures one setting; scripts/run-runtime-comparison-docker.sh runs all three.
 //
 // Usage: node --import tsx scripts/measure-runtime-comparison.mjs --setting=<default|pii-global|pii-global-us> --out=<path>
-//   [--redact-secret-addon=<path>]
+//   [--redact-secret-addon=<path>] [--source=published|local-source-build]
+// --source=published (the default) measures the @redact-secret/core package in node_modules at the version the pin names;
+// local-source-build measures a native add-on built from the pinned commit (REDACT_SECRET_NODE_ADDON_PATH).
 // The environment comes from the Docker runner, as for #429: REDACT_SECRET_REF, IMAGE_DIGEST, CPU_LIMIT, EMULATED.
 import { performance } from 'node:perf_hooks';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -20,12 +22,14 @@ import {
 const root = fileURLToPath(new URL('..', import.meta.url));
 const args = {};
 for (const argument of process.argv.slice(2)) {
-  const match = /^--(setting|out|redact-secret-addon)=(.+)$/.exec(argument);
+  const match = /^--(setting|out|redact-secret-addon|source)=(.+)$/.exec(argument);
   if (!match) throw new Error(`Unrecognized argument: ${argument}`);
   args[match[1]] = match[2];
 }
 if (!SETTING_IDS.includes(args.setting)) throw new Error(`--setting must be one of ${SETTING_IDS.join(', ')}`);
 const setting = plan.settings.find(s => s.id === args.setting);
+const source = args.source ?? 'published';
+if (!['published', 'local-source-build'].includes(source)) throw new Error('--source must be published or local-source-build');
 if (!args.out) throw new Error('--out=<path> is required');
 
 const need = name => process.env[name] || (() => { throw new Error(`${name} is not set: run this through scripts/run-runtime-comparison-docker.sh`); })();
@@ -35,6 +39,7 @@ const imageDigest = need('IMAGE_DIGEST');
 const cpuLimit = Number(need('CPU_LIMIT'));
 const emulated = need('EMULATED') === 'true';
 const outPath = path.resolve(args.out);
+const pinnedVersion = JSON.parse(await readFile(path.join(root, 'benchmarks/pin-manifest.json'), 'utf8')).pins.packageVersion;
 const refusal = runtimeComparisonWriteRefusal({ ref: productRef, pinRef, emulated, outPath, root });
 if (refusal) throw new Error(refusal);
 if (emulated) console.warn('WARNING: emulated run; timings are a smoke check only and must not be committed.');
@@ -49,7 +54,9 @@ async function timeCall(adapter, text) {
 
 const TOOL_IDS = plan.tools.map(t => t.id);
 console.log(`Setting ${setting.id} (${setting.selectors.join(', ') || 'no PII'})`);
-const adapters = await loadAdapters({ selectors: setting.selectors, redactSecretAddonPath: args['redact-secret-addon'] });
+const adapters = await loadAdapters({ selectors: setting.selectors, redactSecretAddonPath: args['redact-secret-addon'], source });
+if (source === 'published' && adapters['redact-secret'].version !== pinnedVersion && /^evidence[\\/]562[\\/]/.test(path.relative(root, outPath)))
+  throw new Error(`refusing to write evidence/562: @redact-secret/core ${adapters['redact-secret'].version} differs from pin-manifest packageVersion ${pinnedVersion}`);
 for (const id of TOOL_IDS) console.log(`  ${id}: ${adapters[id].version} (${adapters[id].provenance.kind})`);
 const activation = adapters['redact-secret'].provenance.piiActivation;
 const families = /(?:^|;)families=([^;]*)/.exec(activation)?.[1].split(',').filter(Boolean) ?? [];
@@ -90,14 +97,17 @@ const report = {
   planCommitment: plan.contentCommitment,
   setting: { id: setting.id, selectors: setting.selectors, activation, families },
   generatedAt: new Date().toISOString(),
-  runner: { platform: process.platform, arch: process.arch, node: process.version, cpuModel: os.cpus()[0]?.model ?? 'unknown', cpuLimit, emulated, imageDigest },
+  runner: { platform: process.platform, arch: process.arch, node: process.version, cpuModel: process.env.HOST_CPU_MODEL || os.cpus()[0]?.model || 'unknown', cpuLimit, emulated, imageDigest },
   tools: TOOL_IDS.map(id => ({ id, version: adapters[id].version, provenance: id === 'redact-secret' ? { ...adapters[id].provenance, commit: productRef } : adapters[id].provenance })),
   methodologyNotes: [
     'Informational only: no pass/fail verdict, no ranking assertion (this repository measures and records; see AGENTS.md Boundary rule).',
     "OpenRedaction's detect() is Promise-returning (asynchronous); flare-redact's redact() and redact-secret's scanAndRedact() are synchronous. Each is timed with performance.now() around the actual call, awaited where applicable, so the OpenRedaction figures include at least one Node event-loop microtask tick that the other two tools' figures do not.",
-    `redact-secret is measured from a local-source-build native addon (main branch at the pinned commit), not the published @redact-secret/core npm package: PII selection is not in any published release yet. This run used the ${setting.label} setting (${setting.selectors.join(', ') || 'no PII selectors'}). flare-redact and OpenRedaction are measured from their published npm packages at their package defaults, so their columns do not change with the setting; they are timed in every setting's run as a reference for how much the machine varied between runs.`,
+    (source === 'published'
+      ? `redact-secret is measured from the published @redact-secret/core npm package ${adapters['redact-secret'].version} (the pinned release, built from product commit ${productRef}), not a local build; PII is selected through initialize({ pii }). This run used`
+      : `redact-secret is measured from a local-source-build native addon (main branch at the pinned commit), not the published @redact-secret/core npm package. This run used`) +
+    ` the ${setting.label} setting (${setting.selectors.join(', ') || 'no PII selectors'}). flare-redact and OpenRedaction are measured from their published npm packages at their package defaults, so their columns do not change with the setting; they are timed in every setting's run as a reference for how much the machine varied between runs.`,
     'Workloads are the ones in qualification/runtime-comparison-v2.json: validator-heavy and multilingual-context are the v1 workloads rendered byte-identically, the others are new and synthetic. Credential values are generated from a seed at run time and never stored; a value that reaches a recorded outcome is replaced by its index.',
-    'One setting is measured per process because the native add-on accepts one PII selection per process. The tools run in-process, interleaved round-robin per workload, after two discarded warmup calls each, and each time is the median of the recorded samples.',
+    'One setting is measured per process because redact-secret accepts one PII selection per process. The tools run in-process, interleaved round-robin per workload, after two discarded warmup calls each, and each time is the median of the recorded samples.',
     'Outcomes come from one untimed call per distinct line, outside the timed calls. A value counts as hidden when it no longer appears verbatim in the returned text. Outcomes are recorded, never graded.',
   ],
   observations,

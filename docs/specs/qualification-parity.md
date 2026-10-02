@@ -63,6 +63,9 @@ the evidence class a case carries.
 | evidence | `families[].evidence` | view `families[].evidence` and per-population counts |
 | outcomes | per-suite `rows` of `npm run bench` | per-case results of each RunArtifact |
 | known gaps | `benchmarks/known-gaps.json` and the legacy run | view `knownGaps[]` |
+| support matrix | `buildSupportMatrix` over the legacy support status (what `npm run eval:matrix` writes) | view `supportMatrix` |
+| overview numbers | the legacy support status `familyCount`, `distribution` and `stableDistribution` | view `families[]`, `distribution`, `stableDistribution` (what the qualification overview page shows) |
+| review queue and ledger | the legacy review ledger, through the generated mapping (`public-review-ledger-map.json`) | the methods run's differential review queue |
 
 Outcomes are joined case by case. A product population (regression, policy) joins by case id, which is the legacy
 `category--fixture` slug, except the project twin-scope copies (#641): they have no legacy fixture of their own, so each is compared with the development fixture it copies (`<copyOf>--<fixture>`) and none counts in a legacy count of the regression population. The public population has canonical ids, so it joins by content: the SHA-256 of the case bytes with
@@ -73,6 +76,14 @@ evidence release's own id map is not needed. It needs the evidence snapshot the 
 
 Per case and scanner the compared value is the positive span outcomes, or for a control whether anything was observed, whether
 it was flagged and whether it was co-detected. A pending case is pending on both sides.
+
+## The support matrix
+
+The matrix is one entry per taxonomy family (provider x credential family), each carrying the status and evidence of the detector family that decided it. The legacy side is `buildSupportMatrix` over the legacy support status, the function `npm run eval:matrix` runs. The new side is the view's `supportMatrix`, a first-class field of the view (docs/specs/qualification-adapter.md), so a consumer reads it without recomputing it. Every leaf of every entry is compared, and the status counts and the stable counts by route.
+
+An entry projects the evidence of its detector family, so the comparison attributes a matrix difference only through the difference the family comparison found in that evidence: a fixture-profile figure through the count difference of the same name, a twin or critical-item figure through its evidence field, the policy aggregate through its own, a fixture-profile cell through the counts and axes it is built from, a status through the status comparison. A difference whose evidence field shows none is unexplained, and so is a product-owned fact (provider, name, corroborating scanners, provider source, supported contexts) that differs. A reason differs in the codes the new path adds, which the status comparison attributes; in a policy gate code only the legacy side names (a gate the pooled T3 fixtures failed and the bounded policy corpus does not, shown by the policy aggregate differing); or in the figures of a code both name, which follow a count difference. Key order is not a value. The status counts are sums of entry statuses: a difference is explained only when the attributed status changes of the entries add up to it exactly.
+
+The same rule compares the page-level numbers of the qualification overview (the family count, the status counts and the stable counts by route) and, per peer, the review queue against the legacy ledger: the occurrences of the methods run and how many a decision settles. A peer the legacy run never scanned has no legacy entry, which is `review-occurrence-identity`; the mapped peers must be equal.
 
 ## Status is compared explicitly
 
@@ -91,8 +102,8 @@ family and none of their ids is in the ledger.
 
 ## Not compared, and why
 
-Listed in the report, never silent: legacy categories with no suite report (calibration-only), the legacy mutation review entries (the canonical review queue holds
-differential occurrences only) and the unmapped review occurrences (the peers the legacy run never scanned), the internal populations (candidate regression, protected holdout) and a run
+Listed in the report, never silent: a rendered page against a rendered page (no automated page-data diff exists, and the legacy pages are not a data source of this repository; the numbers they display are compared at their source), the per-population per-scanner counts of a family page (sums of the per-case outcomes compared one to one; the legacy path has no per-population denominator), legacy categories with no suite report (calibration-only), the legacy mutation review entries (the canonical review queue holds
+differential occurrences only) and the review occurrences outside the mapping (compared per peer above; the peers the legacy run never scanned have no legacy entry), the internal populations (candidate regression, protected holdout) and a run
 that is not a recorded canonical run of `benchmarks/official-runs.json`.
 
 ## Regenerating
@@ -120,5 +131,5 @@ configuration (for example one that runs the methods) is a different comparison,
 
 `tests/qualification-parity.test.mjs` builds both sides synthetically and asserts the rules relative to what it built: the three
 classes, exact reconciliation, the unmeasured-method rule, status attribution, the content join and its refusal to guess, the
-twin pattern and its limits. No ledger value, family count or digest read from the committed tree is asserted, because a repin
+twin pattern and its limits, the matrix attribution through the evidence it projects, the sums of the status counts and the review peers. `tests/qualification-adapter.test.mjs` builds the view's `supportMatrix` from synthetic inputs. No ledger value, family count or digest read from the committed tree is asserted, because a repin
 re-keys them.

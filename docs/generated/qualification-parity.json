@@ -24,7 +24,7 @@
     },
     "new": {
       "publication": "public",
-      "policyRevision": "rs-policy-1:sha256:07d84e52dd0573961ea9cb0709f426727ec5479dbca40cecaeda70e8e93393d2",
+      "policyRevision": "rs-policy-1:sha256:d41e02b0c82f3ac5c1f7d038fb9321fec3adbd0611a313fc880bdf1b417658c3",
       "adapter": {
         "id": "credential-eval-run-artifact",
         "version": 1
@@ -38,12 +38,12 @@
       },
       "distribution": {
         "pending": 1,
-        "provisional": 11,
-        "stable": 123,
+        "provisional": 7,
+        "stable": 127,
         "unsupported": 0
       },
       "stableDistribution": {
-        "documented": 85,
+        "documented": 89,
         "empirical": 38,
         "policy-qualified": 0
       },
@@ -86,11 +86,11 @@
           "population": "regression-corpus",
           "role": "gates",
           "runClass": "public",
-          "semanticDigest": "sha256:3ae82ce183fece78cd10edb5434085a57f31023e36ea3732a21a5eb6375bb252",
+          "semanticDigest": "sha256:934519ac992518a3b17c7a99b81ea2488e9e3974b7199820f977f151c52d2ce0",
           "configHash": "sha256:dcac1afaf04439497ab4e629a030d63754b71516941e7d5c8ac276e566191990",
-          "evidenceTag": "regression-a9439702e833",
+          "evidenceTag": "regression-b7b236c5ad1a",
           "methods": [],
-          "caseCount": 141
+          "caseCount": 153
         }
       ],
       "axisOverlay": {
@@ -100,6 +100,20 @@
         "detectors": 5466,
         "id": "credential-public-axis-overlay-v1",
         "population": "public-evidence-snapshot"
+      },
+      "axisCoverage": {
+        "populations": [
+          "policy-corpus",
+          "public-evidence-snapshot",
+          "regression-corpus"
+        ]
+      },
+      "twinScope": {
+        "corpusDigest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
+        "id": "credential-public-twin-scope-map-v1",
+        "population": "public-evidence-snapshot",
+        "scopedBy": "regression-corpus",
+        "twins": 6
       },
       "ledgerRekey": {
         "corpusDigest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
@@ -120,7 +134,7 @@
   "causes": [
     {
       "id": "population-separation",
-      "change": "The legacy path pooled the development, regression and policy fixtures of a family in one denominator. The new path measures each population on its own and reads floors from the public evidence snapshot alone (benchmarks/support/population-policy.json).",
+      "change": "The legacy path pooled the development, regression and policy fixtures of a family in one denominator. The new path measures each population on its own and counts floors from the public evidence snapshot alone (benchmarks/support/population-policy.json); a family's axis floors are judged on the union of axis labels across the populations the policy names (axisCoverage), so a pooled COUNT differs and an axis the product's other populations carry is covered.",
       "confirmation": "confirmed",
       "owner": "benchmarks"
     },
@@ -156,8 +170,8 @@
     },
     {
       "id": "twin-scope-vocabulary",
-      "change": "A twin control is scoped to its declared family, and a finding of another known family is co-detection, not a flag. The legacy path scoped a twin by the product contract of the positive it mutates (a detector id); the evidence snapshot gives the twin its own family (a taxonomy id), so the twin can belong to another family and the same finding can swap between flagged and co-detected. A cross-provider twin has no family at all in the snapshot, so the engine cannot scope it and reads a finding of another known detector as flagged; recognised from the matched cases (the new twin is flagged with no family, the legacy twin was not). The adapter does not re-score it.",
-      "confirmation": "inferred",
+      "change": "A twin control is scoped to its declared family, and a finding of another known family is co-detection, not a flag. The legacy path scoped a twin by the product contract of the positive it mutates (a detector id); the evidence snapshot gives the twin its own family (a taxonomy id), so the twin can belong to another family and the same finding can swap between flagged and co-detected. A cross-provider twin has no family at all in the snapshot, so the engine cannot scope it and reads a finding of another known detector as flagged; recognised from the matched cases (the new twin is flagged with no family, the legacy twin was not). The adapter does not re-score it. Confirmed by the project twin-scope corpus (#602): the same bytes carried with the parent's family (twin-scope-regressions, a product regression-corpus addition) are read as co-detected, as the legacy path read them, so the public engine verdict on the unscoped copy stays a difference of the public population and the twin gate reads the project case (population-policy.json twinScope).",
+      "confirmation": "confirmed",
       "owner": "credential-eval"
     },
     {
@@ -203,86 +217,26 @@
     "status": {
       "tally": {
         "compared": 135,
-        "equal": 131,
-        "explained": 4,
+        "equal": 135,
+        "explained": 0,
         "unexplained": 0,
-        "byCause": {
-          "twin-scope-vocabulary": 3,
-          "population-separation": 1
-        }
+        "byCause": {}
       },
-      "differences": [
-        {
-          "subject": "anthropic-admin01-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "twin-scope-vocabulary",
-          "note": "new-only reasons: twin-scope-vocabulary"
-        },
-        {
-          "subject": "anthropic-api01-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "twin-scope-vocabulary",
-          "note": "new-only reasons: twin-scope-vocabulary"
-        },
-        {
-          "subject": "elevenlabs-api-key",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "twin-scope-vocabulary",
-          "note": "new-only reasons: twin-scope-vocabulary"
-        },
-        {
-          "subject": "sendgrid-token",
-          "field": "status",
-          "legacy": "stable/documented",
-          "next": "provisional",
-          "verdict": "explained",
-          "cause": "population-separation",
-          "note": "new-only reasons: population-separation"
-        }
-      ]
+      "differences": []
     },
     "evidence": {
       "tally": {
         "compared": 4455,
-        "equal": 4413,
-        "explained": 42,
+        "equal": 4415,
+        "explained": 40,
         "unexplained": 0,
         "byCause": {
-          "twin-scope-vocabulary": 3,
-          "canonical-evidence-membership": 15,
-          "population-separation": 11,
+          "canonical-evidence-membership": 27,
           "policy-corpus-bounded": 4,
           "pending-not-scored": 9
         }
       },
       "differences": [
-        {
-          "subject": "anthropic-admin01-key",
-          "field": "twinFailures",
-          "legacy": 0,
-          "next": 2,
-          "verdict": "explained",
-          "cause": "twin-scope-vocabulary",
-          "note": "residual -2 = -2 twin-scope-vocabulary"
-        },
-        {
-          "subject": "anthropic-api01-key",
-          "field": "twinFailures",
-          "legacy": 0,
-          "next": 2,
-          "verdict": "explained",
-          "cause": "twin-scope-vocabulary",
-          "note": "residual -2 = -2 twin-scope-vocabulary"
-        },
         {
           "subject": "aws-access-key",
           "field": "benignAxes",
@@ -328,6 +282,15 @@
           "field": "controlAxes",
           "legacy": 5,
           "next": 6,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "1 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "aws-access-key",
+          "field": "positiveAxes",
+          "legacy": 6,
+          "next": 7,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "1 axis id(s) only on the new side (canonical-evidence-membership)"
@@ -458,15 +421,6 @@
           },
           "verdict": "explained",
           "cause": "policy-corpus-bounded"
-        },
-        {
-          "subject": "bearer-token",
-          "field": "positiveAxes",
-          "legacy": 13,
-          "next": 12,
-          "verdict": "explained",
-          "cause": "population-separation",
-          "note": "1 only on the legacy side (population-separation)"
         },
         {
           "subject": "bearer-token",
@@ -667,22 +621,22 @@
           "cause": "policy-corpus-bounded"
         },
         {
-          "subject": "elevenlabs-api-key",
-          "field": "twinFailures",
-          "legacy": 0,
-          "next": 2,
+          "subject": "connection-string",
+          "field": "positiveAxes",
+          "legacy": 10,
+          "next": 13,
           "verdict": "explained",
-          "cause": "twin-scope-vocabulary",
-          "note": "residual -2 = -2 twin-scope-vocabulary"
+          "cause": "canonical-evidence-membership",
+          "note": "3 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "generic-token",
           "field": "benignAxes",
           "legacy": 4,
-          "next": 12,
+          "next": 13,
           "verdict": "explained",
-          "cause": "population-separation",
-          "note": "9 axis id(s) only on the new side (canonical-evidence-membership); 1 only on the legacy side (population-separation)"
+          "cause": "canonical-evidence-membership",
+          "note": "9 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "generic-token",
@@ -701,6 +655,7 @@
             "fully-delimited-template-expressions",
             "near-miss",
             "nested-yaml-schema-and-reference-passwords",
+            "ordinary-prose",
             "placeholder",
             "placeholder-vocabulary-values",
             "reference",
@@ -708,26 +663,26 @@
             "yaml-flow-collection-secret-keys"
           ],
           "verdict": "explained",
-          "cause": "population-separation",
-          "note": "9 axis id(s) only on the new side (canonical-evidence-membership); 1 only on the legacy side (population-separation)"
+          "cause": "canonical-evidence-membership",
+          "note": "9 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "generic-token",
           "field": "confusionAxes",
           "legacy": 5,
-          "next": 13,
+          "next": 14,
           "verdict": "explained",
-          "cause": "population-separation",
-          "note": "9 axis id(s) only on the new side (canonical-evidence-membership); 1 only on the legacy side (population-separation)"
+          "cause": "canonical-evidence-membership",
+          "note": "9 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "generic-token",
           "field": "controlAxes",
           "legacy": 4,
-          "next": 12,
+          "next": 13,
           "verdict": "explained",
-          "cause": "population-separation",
-          "note": "9 axis id(s) only on the new side (canonical-evidence-membership); 1 only on the legacy side (population-separation)"
+          "cause": "canonical-evidence-membership",
+          "note": "9 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "generic-token",
@@ -870,10 +825,10 @@
           "subject": "generic-token",
           "field": "positiveAxes",
           "legacy": 36,
-          "next": 35,
+          "next": 45,
           "verdict": "explained",
-          "cause": "population-separation",
-          "note": "9 axis id(s) only on the new side (canonical-evidence-membership); 10 only on the legacy side (population-separation)"
+          "cause": "canonical-evidence-membership",
+          "note": "9 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "generic-token",
@@ -1042,10 +997,10 @@
           "subject": "sendgrid-token",
           "field": "benignAxes",
           "legacy": 4,
-          "next": 3,
+          "next": 5,
           "verdict": "explained",
-          "cause": "population-separation",
-          "note": "1 axis id(s) only on the new side (canonical-evidence-membership); 2 only on the legacy side (population-separation)"
+          "cause": "canonical-evidence-membership",
+          "note": "1 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "sendgrid-token",
@@ -1058,39 +1013,41 @@
           ],
           "next": [
             "near-miss",
+            "ordinary-prose",
+            "placeholder",
             "public-identifier",
             "sendgrid-near-miss-values"
           ],
           "verdict": "explained",
-          "cause": "population-separation",
-          "note": "1 axis id(s) only on the new side (canonical-evidence-membership); 2 only on the legacy side (population-separation)"
+          "cause": "canonical-evidence-membership",
+          "note": "1 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "sendgrid-token",
           "field": "confusionAxes",
           "legacy": 6,
-          "next": 5,
+          "next": 7,
           "verdict": "explained",
-          "cause": "population-separation",
-          "note": "1 axis id(s) only on the new side (canonical-evidence-membership); 2 only on the legacy side (population-separation)"
+          "cause": "canonical-evidence-membership",
+          "note": "1 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "sendgrid-token",
           "field": "controlAxes",
           "legacy": 4,
-          "next": 3,
+          "next": 5,
           "verdict": "explained",
-          "cause": "population-separation",
-          "note": "1 axis id(s) only on the new side (canonical-evidence-membership); 2 only on the legacy side (population-separation)"
+          "cause": "canonical-evidence-membership",
+          "note": "1 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "sendgrid-token",
           "field": "positiveAxes",
           "legacy": 9,
-          "next": 7,
+          "next": 13,
           "verdict": "explained",
-          "cause": "population-separation",
-          "note": "4 axis id(s) only on the new side (canonical-evidence-membership); 6 only on the legacy side (population-separation)"
+          "cause": "canonical-evidence-membership",
+          "note": "4 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "sendgrid-token",
@@ -1186,8 +1143,8 @@
     },
     "outcomes": {
       "tally": {
-        "compared": 29750,
-        "equal": 29603,
+        "compared": 29810,
+        "equal": 29663,
         "explained": 147,
         "unexplained": 0,
         "byCause": {
@@ -2600,27 +2557,19 @@
     {
       "family": "anthropic-admin01-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "twin-scope-vocabulary"
-      ],
-      "heldBackBy": [
-        "twin-scope-vocabulary"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
       "family": "anthropic-api01-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "twin-scope-vocabulary"
-      ],
-      "heldBackBy": [
-        "twin-scope-vocabulary"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
@@ -2719,14 +2668,15 @@
       "next": "provisional",
       "verdict": "equal",
       "causes": [
-        "policy-corpus-bounded",
-        "population-separation"
+        "policy-corpus-bounded"
       ],
       "heldBackBy": [
-        "policy-corpus-bounded",
-        "population-separation"
+        "policy-corpus-bounded"
       ],
-      "unattributedReasons": []
+      "unattributedReasons": [
+        "policy.positive-axes",
+        "policy.benign-axes"
+      ]
     },
     {
       "family": "bitwarden-secrets-manager-access-token",
@@ -3043,14 +2993,10 @@
     {
       "family": "elevenlabs-api-key",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "twin-scope-vocabulary"
-      ],
-      "heldBackBy": [
-        "twin-scope-vocabulary"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
@@ -3086,12 +3032,12 @@
       "next": "provisional",
       "verdict": "equal",
       "causes": [
-        "policy-corpus-bounded",
-        "population-separation"
+        "canonical-evidence-membership",
+        "policy-corpus-bounded"
       ],
       "heldBackBy": [
-        "policy-corpus-bounded",
-        "population-separation"
+        "canonical-evidence-membership",
+        "policy-corpus-bounded"
       ],
       "unattributedReasons": []
     },
@@ -3582,14 +3528,10 @@
     {
       "family": "sendgrid-token",
       "legacy": "stable",
-      "next": "provisional",
-      "verdict": "explained",
-      "causes": [
-        "population-separation"
-      ],
-      "heldBackBy": [
-        "population-separation"
-      ],
+      "next": "stable",
+      "verdict": "equal",
+      "causes": [],
+      "heldBackBy": [],
       "unattributedReasons": []
     },
     {
@@ -3847,15 +3789,12 @@
   ],
   "counterfactual": {
     "legacyStable": 127,
-    "nextStable": 123,
+    "nextStable": 127,
     "heldOnlyByMethods": 0,
     "heldByMethodsAndOthers": 0,
-    "heldWithoutMethods": 4
+    "heldWithoutMethods": 0
   },
-  "heldBy": {
-    "population-separation": 1,
-    "twin-scope-vocabulary": 3
-  },
+  "heldBy": {},
   "outcomeGroups": [
     {
       "scanner": "flare-redact",
@@ -4043,6 +3982,16 @@
       "unmatchedNext": 0,
       "ambiguousLegacy": 0,
       "ambiguousNext": 0
+    },
+    "regression-corpus (project twin-scope copies)": {
+      "byTier": [
+        12
+      ],
+      "pairs": 12,
+      "unmatchedLegacy": 0,
+      "unmatchedNext": 0,
+      "ambiguousLegacy": 0,
+      "ambiguousNext": 0
     }
   },
   "notCompared": [
@@ -4064,29 +4013,28 @@
     }
   ],
   "summary": {
-    "compared": 35024,
-    "equal": 34678,
-    "explained": 346,
+    "compared": 35084,
+    "equal": 34744,
+    "explained": 340,
     "unexplained": 0,
     "byCause": {
-      "canonical-evidence-membership": 15,
+      "canonical-evidence-membership": 27,
       "legacy-id-rekey": 153,
       "pending-not-scored": 9,
       "policy-corpus-bounded": 4,
-      "population-separation": 12,
-      "twin-scope-vocabulary": 153
+      "twin-scope-vocabulary": 147
     },
     "classes": {
-      "must-equal": 34678,
-      "expected-structural": 346,
+      "must-equal": 34744,
+      "expected-structural": 340,
       "unexplained": 0
     }
   },
   "recommendations": [
-    "Status: the legacy path reads 127 stable families and the new path 123. Held back (legacy-stable families the new path does not read stable): 1 by population-separation; 3 by twin-scope-vocabulary. Not applied: nothing here changes a status.",
+    "Status: the legacy path reads 127 stable families and the new path 127. Held back (legacy-stable families the new path does not read stable): none. Not applied: nothing here changes a status.",
     "Review ledger: 4142 of 10307 family-attributed differential occurrences of the methods run are settled by a legacy decision through the generated mapping; per peer, occurrences {\"openredaction\":3548,\"trufflehog\":2383,\"flare-redact\":2617,\"gitleaks\":1759}. The differential gate reads the peers named in benchmarks/support/population-policy.json (gitleaks, trufflehog); the other peers are measured and listed per family (families[].differential) and are not gate-bearing until reviewed. Applied by product policy (docs/decisions, #638); nothing here changes a status.",
     "Policy corpus: the T3 route floors read the 19-case policy corpus alone. Whether the floors, the corpus or the route change is a product policy decision. Not applied.",
-    "Twin scope: credential-eval scopes a twin by the twin's own family, and the snapshot gives a cross-provider twin none, so the engine reads a finding of another known detector as flagged where the legacy twin read it as co-detected (twin-scope-vocabulary). The adapter does not re-score it. Either credential-evidence carries a family on such a twin, or credential-eval scopes a twin by its parent's family; neither is decided in this repository.",
+    "Twin scope: credential-eval scopes a twin by the twin's own family, and the snapshot gives a cross-provider twin none, so the engine reads a finding of another known detector as flagged where the legacy twin read it as co-detected (twin-scope-vocabulary). The adapter does not re-score it. The product carries those twins itself with their parent's family (the twin-scope-regressions category of the regression corpus, 6 public twins mapped by content); the engine reads each as co-detected, as the legacy path did, and the twin gate reads that verdict. The public population's own verdict is unchanged and listed per family (gates[].twinFailuresScopedElsewhere). A request that credential-evidence give a cross-provider twin its parent's family would remove the difference at the source; it is not needed for the qualification.",
     "Re-key: the review-ledger decisions are mapped to canonical occurrence ids by content (public-review-ledger-map.json). The legacy-id re-key of known gaps and disputed properties (qualification-inputs.json populations[0].rekey) with the evidence release id map is still open."
   ]
 }

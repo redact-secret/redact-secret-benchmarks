@@ -29,7 +29,14 @@
     border-bottom: var(--rule-strong) solid var(--ink);
   }
 
-  .title span {
+  .titleText {
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  .total {
+    flex: none;
+    white-space: nowrap;
     align-self: end;
     font: var(--text-mono-small);
     color: var(--ink-muted);

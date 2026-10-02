@@ -13,8 +13,8 @@ function Column({ column, onShowAll }: { column: AccuracyDifferenceColumn; onSho
   return (
     <section className={styles.column}>
       <h4 className={styles.title}>
-        {column.title}
-        <span>{column.total}</span>
+        <span className={styles.titleText}>{column.title}</span>
+        <span className={styles.total}>{column.total}</span>
       </h4>
       {column.groups.length === 0 ? (
         <p className={styles.none}>{column.none}</p>

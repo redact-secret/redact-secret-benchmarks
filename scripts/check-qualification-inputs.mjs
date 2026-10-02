@@ -96,6 +96,11 @@ export async function checkQualificationInputs() {
     .map(path => readFile(new URL(path, root), 'utf8').then(JSON.parse)));
   const overlap = development.categories.filter(id => regression.categories.includes(id));
   if (overlap.length > 0) problems.push(`corpora development and regression partitions overlap: ${overlap.join(', ')}`);
+  // Qualification-only categories (#602) are measured by the qualification path alone: no legacy partition or catalog lists them, so the legacy path never loads them.
+  for (const id of regression.qualificationCategories ?? []) {
+    if (development.categories.includes(id) || regression.categories.includes(id)) problems.push(`regression corpus: qualification-only category ${id} is also listed in a legacy partition`);
+    if (catalog.some(category => category.id === id)) problems.push(`regression corpus: qualification-only category ${id} is in benchmarks/categories.json, which the legacy path reads`);
+  }
   const policy = manifest.populations.find(p => p.id === 'policy-corpus')?.currentLocation?.category;
   if (policy && !catalog.some(category => category.id === policy)) problems.push(`policy-corpus: category ${policy} is not in benchmarks/categories.json`);
   return problems;

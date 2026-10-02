@@ -112,6 +112,11 @@ const snapshotFile = option('public-snapshot');
 let snapshot: { identity: { corpus_digest: string }; cases: { id: string; content: string; expected: { start: number; end: number }[] }[] } | undefined;
 if (snapshotFile) snapshot = await readJson(resolve(snapshotFile));
 
+// The project twin-scope copies (#602) are byte-identical copies of development fixtures the legacy path measures in the public population, so they have no
+// legacy fixture of their own: each is compared with its original (`<copyOf>--<fixture>`), and none is a legacy count of the regression population.
+const COPIES = 'regression-corpus (project twin-scope copies)';
+const copyMetadata: Record<string, { axisCategory?: string }> = await readJson(path.join(artifactsDir, REGRESSION, 'inputs/case-metadata.json')).catch(() => ({}));
+const copySlug = (id: string) => (copyMetadata[id]?.axisCategory ? `${copyMetadata[id].axisCategory}--${suffixOf(id)}` : undefined);
 for (const population of Object.keys(product.policy.populations)) {
   const bytes = await readFile(path.join(artifactsDir, population, 'artifact.json'));
   const { artifact } = readRunArtifact(bytes);
@@ -130,7 +135,8 @@ for (const population of Object.keys(product.policy.populations)) {
   for (const [id, scanners] of perScanner) {
     const c = cases.get(id)!;
     const h = hashes.get(id);
-    nextCases.push({ key: id, scanners, joinKeys: population === PUBLIC ? (h ? contentKeys(h.hash, h.expected, id) : [`unjoinable:${id}`]) : [id], population, tier: c.tier, kind: c.kind, twin: Boolean(c.twin_of), family: c.family,
+    const copyOf = population === REGRESSION ? copySlug(id) : undefined;
+    nextCases.push({ key: id, scanners, joinKeys: population === PUBLIC ? (h ? contentKeys(h.hash, h.expected, id) : [`unjoinable:${id}`]) : [copyOf ?? id], population: copyOf ? COPIES : population, tier: c.tier, kind: c.kind, twin: Boolean(c.twin_of), family: c.family,
       detectors: attributeCase(c, { detectorIds, taxonomyDetectors, overlayDetectors: population === PUBLIC ? product.axisOverlay?.detectors : undefined, fallback: product.policy.attribution.fallback, byId: cases }).detectors });
   }
 }
@@ -138,9 +144,13 @@ for (const population of Object.keys(product.policy.populations)) {
 const joins: ParityReport['joins'] = {};
 const pairs: CasePair[] = [];
 let publicJoin: JoinResult | undefined;
-for (const population of [PUBLIC, REGRESSION, POLICY]) {
+for (const population of [PUBLIC, REGRESSION, POLICY, COPIES]) {
   if (population === PUBLIC && !snapshot) { notCompared.push({ area: 'per-fixture outcomes, public-evidence-snapshot', reason: 'no --public-snapshot was given, so the legacy fixtures cannot be matched to canonical ids (the artifact carries no content). Provide the evidence release asset credential-eval-corpus-snapshot.json.' }); continue; }
-  const result = joinByKeys(population, legacyCases.filter(c => c.population === population), nextCases.filter(c => c.population === population));
+  // A copy's legacy counterpart is the development fixture it copies (legacy population PUBLIC), joined by slug.
+  const copiedSlugs = new Set(nextCases.filter(c => c.population === COPIES).flatMap(c => c.joinKeys));
+  const legacySide = population === COPIES ? legacyCases.filter(c => c.population === PUBLIC && copiedSlugs.has(c.key)).map(c => ({ ...c, population: COPIES, joinKeys: [c.key] })) : legacyCases.filter(c => c.population === population);
+  if (population === COPIES && !copiedSlugs.size) continue;
+  const result = joinByKeys(population, legacySide, nextCases.filter(c => c.population === population));
   if (population === PUBLIC) publicJoin = result;
   pairs.push(...result.pairs);
   joins[population] = { byTier: result.byTier, pairs: result.pairs.length, unmatchedLegacy: result.unmatchedLegacy.length, unmatchedNext: result.unmatchedNext.length, ambiguousLegacy: result.ambiguous.legacy, ambiguousNext: result.ambiguous.next };
@@ -153,13 +163,26 @@ const legacyFamilies: LegacyFamily[] = legacyStatus.families.map((f: any) => ({
   qualificationProfile: f.qualificationProfile ?? null, taxonomyFamilies: f.taxonomyFamilies, evidence: f.evidence,
   axisIds: f.fixtureProfile?.cells ? { positiveContext: f.fixtureProfile.cells.positiveContextAxisIds, control: f.fixtureProfile.cells.controlAxisIds, confusion: f.fixtureProfile.cells.confusionAxisIds } : undefined,
 }));
+// What the project twin-scope copies add to the regression population's counts of each family. The legacy path has no such fixtures (it measures the
+// originals in the public population), so they are taken out of the regression contribution before the legacy pooled counts are rebuilt.
+const copyCounts: Record<string, { cases: number; pending: number; notMeasured: number; positives: number; benign: number; twinPairs: number }> = {};
+for (const c of nextCases.filter(c => c.population === COPIES)) {
+  const n = c.scanners[SCANNER];
+  for (const d of c.detectors) {
+    const row = (copyCounts[d] ??= { cases: 0, pending: 0, notMeasured: 0, positives: 0, benign: 0, twinPairs: 0 });
+    row.cases++;
+    if (n?.kind === 'pending') row.pending++; else if (n?.kind === 'not-measured') row.notMeasured++; else if (n?.kind === 'positive') row.positives++;
+    else if (n?.kind === 'control') { if (c.twin) row.twinPairs++; else row.benign++; }
+  }
+}
 const nextFamilies: NextFamily[] = view.families.map((f: any) => ({
   family: f.family, taxonomyFamilies: f.taxonomyFamilies.map((t: any) => t.id), evidence: f.evidence,
   axisIds: f.fixtureProfile?.cells ? { positiveContext: f.fixtureProfile.cells.positiveContextAxisIds, control: f.fixtureProfile.cells.controlAxisIds, confusion: f.fixtureProfile.cells.confusionAxisIds } : undefined,
   status: { value: f.status.value, reasons: f.status.reasons, evidenceTier: f.status.evidenceTier ?? null, evidenceBasis: f.status.evidenceBasis ?? null, qualificationProfile: f.status.qualificationProfile ?? null, methodsNotRun: f.status.methodsNotRun },
   populations: f.populations.map((p: any) => {
     const c = p.scanners.find((s: any) => s.scanner === SCANNER)?.counts;
-    return { population: p.population, role: p.role, cases: c.cases, pending: c.pending, notMeasured: c.notMeasured, positives: c.positives['must-redact'].cases + c.positives.policy.cases, benign: c.benign.cases, twinPairs: c.twins.pairs };
+    const copied = p.population === REGRESSION ? copyCounts[f.family] : undefined;
+    return { population: p.population, role: p.role, cases: c.cases - (copied?.cases ?? 0), pending: c.pending - (copied?.pending ?? 0), notMeasured: c.notMeasured - (copied?.notMeasured ?? 0), positives: c.positives['must-redact'].cases + c.positives.policy.cases - (copied?.positives ?? 0), benign: c.benign.cases - (copied?.benign ?? 0), twinPairs: c.twins.pairs - (copied?.twinPairs ?? 0) };
   }),
 }));
 
@@ -184,7 +207,7 @@ const adjustmentsByFamily: Record<string, Record<string, Record<string, number>>
     }
     // A twin the snapshot gives no family to cannot be scoped by the engine (credential-eval scopes a twin by its own family), so it reads a
     // finding of another known detector as flagged where the legacy twin read it as co-detected: the legacy twin was not flagged and the new one is.
-    if (kind === 'twin' && !n.family) {
+    if (kind === 'twin' && !n.family && !product.twinScope?.twins[n.key]) {
       const ls = pair.legacy.scanners[SCANNER], ns = pair.next.scanners[SCANNER];
       if (ls?.kind === 'control' && ns?.kind === 'control' && ns.flagged && !ls.flagged) for (const d of n.detectors) add(d, 'twin-scope-vocabulary', 'twinFailures', -1);
     }
@@ -276,7 +299,7 @@ const recommendations = [
     ? `Review ledger: ${review.reduce((a, r) => a + r.inLedger, 0)} of ${review.reduce((a, r) => a + r.occurrences, 0)} family-attributed differential occurrences of the methods run are settled by a legacy decision through the generated mapping; per peer, occurrences ${JSON.stringify(peerTotals)}. The differential gate reads the peers named in benchmarks/support/population-policy.json (${(view.policy.differentialPeers ?? []).join(', ') || 'every peer'}); the other peers are measured and listed per family (families[].differential) and are not gate-bearing until reviewed. Applied by product policy (docs/decisions, #638); nothing here changes a status.`
     : 'Methods: the view has no methods run. A methods run of the floors population (docs/specs/official-runs.md, "The methods run") is needed before the metamorphic, mutation and differential gates are measured.',
   'Policy corpus: the T3 route floors read the 19-case policy corpus alone. Whether the floors, the corpus or the route change is a product policy decision. Not applied.',
-  'Twin scope: credential-eval scopes a twin by the twin\'s own family, and the snapshot gives a cross-provider twin none, so the engine reads a finding of another known detector as flagged where the legacy twin read it as co-detected (twin-scope-vocabulary). The adapter does not re-score it. Either credential-evidence carries a family on such a twin, or credential-eval scopes a twin by its parent\'s family; neither is decided in this repository.',
+  `Twin scope: credential-eval scopes a twin by the twin's own family, and the snapshot gives a cross-provider twin none, so the engine reads a finding of another known detector as flagged where the legacy twin read it as co-detected (twin-scope-vocabulary). The adapter does not re-score it. The product carries those twins itself with their parent's family (the twin-scope-regressions category of the regression corpus, ${(view.policy.twinScope?.twins ?? 0)} public twins mapped by content); the engine reads each as co-detected, as the legacy path did, and the twin gate reads that verdict. The public population's own verdict is unchanged and listed per family (gates[].twinFailuresScopedElsewhere). A request that credential-evidence give a cross-provider twin its parent's family would remove the difference at the source; it is not needed for the qualification.`,
   'Re-key: the review-ledger decisions are mapped to canonical occurrence ids by content (public-review-ledger-map.json). The legacy-id re-key of known gaps and disputed properties (qualification-inputs.json populations[0].rekey) with the evidence release id map is still open.',
 ];
 
@@ -291,6 +314,7 @@ const identities: Record<string, unknown> = {
     populations: view.populations.map((p: any) => ({ run: recorded(p.artifact, p.population, 'plain')?.id ?? 'not recorded', population: p.population, role: p.role, runClass: p.runClass, semanticDigest: p.artifact.semanticDigest, configHash: p.artifact.configHash, evidenceTag: p.artifact.evidence.release?.tag, methods: p.artifact.methods, caseCount: p.artifact.caseCount,
       ...(p.methodsArtifact ? { methodsRun: { run: recorded(p.methodsArtifact, p.population, 'methods')?.id ?? 'not recorded', semanticDigest: p.methodsArtifact.semanticDigest, configHash: p.methodsArtifact.configHash, methods: p.methodsArtifact.methods, caseCount: p.methodsArtifact.caseCount } } : {}) })),
     axisOverlay: view.policy.axisOverlay ?? null,
+    axisCoverage: view.policy.axisCoverage ?? null, twinScope: view.policy.twinScope ?? null,
     ledgerRekey: view.policy.ledgerRekey ?? null, differentialPeers: view.policy.differentialPeers ?? null, attributionFallback: view.policy.attributionFallback ?? null,
   },
 };

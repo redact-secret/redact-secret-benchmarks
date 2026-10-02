@@ -39,13 +39,13 @@ narrows the pattern but the root cause has not been confirmed with the owner (li
 
 | Cause | Structural change |
 | --- | --- |
-| `population-separation` | One pooled denominator became one denominator per population; floors read the public snapshot alone. |
+| `population-separation` | One pooled denominator became one denominator per population; floor COUNTS read the public snapshot alone, while axis floors read the union of axis labels across populations (#641). |
 | `axis-vocabulary` | The snapshot names a case group by scenario, not by source context, and has no benign taxonomy, so axis counts are not the legacy fixture axes. Applies to a view built without the product axis overlay; with it, an axis difference is attributed to the cause its axis ids show (`population-separation`, `canonical-evidence-membership`, `pending-not-scored` or `fixture-attribution`) and is otherwise unexplained. |
 | `methods-not-run` | The view has no methods run, so the metamorphic, mutation and differential gates are unmeasured, never zero. |
 | `review-occurrence-identity` | The methods run's review queue is keyed by canonical occurrence ids and covers every pinned peer, including peers the legacy run never scanned; the review ledger is keyed by legacy ids. Recognised only when the family has differential occurrences and none of their canonical ids is in the ledger or its generated mapping; with the mapping (#638) it does not arise for the peers both paths scanned. |
 | `policy-corpus-bounded` | The T3 route reads the bounded policy corpus alone, where the legacy path pooled every T3 fixture of the family. |
 | `legacy-id-rekey` | Legacy fixture, ledger and disputed-property ids do not resolve to canonical ids until the re-key. |
-| `twin-scope-vocabulary` | A twin is scoped by the product contract in the legacy lattice and by the case family in the evidence snapshot, so the twin can belong to another family and its flagged or co-detected verdict can differ. Inferred. |
+| `twin-scope-vocabulary` | A twin is scoped by the product contract in the legacy lattice and by the case family in the evidence snapshot, so the twin can belong to another family and its flagged or co-detected verdict can differ. Confirmed (#641): the project twin-scope corpus carries the same bytes with the parent's family and the engine reads them as co-detected, as the legacy path did; the public engine verdict on the unscoped copy remains a reported difference and the twin gate reads the project case. |
 | `pending-not-scored` | A T0 non-twin fixture has no scored outcome in credential-eval and is excluded from floor counts; the legacy path counted it. A T0 twin is not counted by either side (the legacy lattice drops it). |
 | `canonical-evidence-membership` | The snapshot holds fixtures with no legacy counterpart (an intended canonical-evidence change). |
 | `fixture-attribution` | The legacy path attributed a fixture by its declared contract and targets; the adapter by targets, family or taxonomy family. Inferred. |
@@ -65,7 +65,7 @@ the evidence class a case carries.
 | known gaps | `benchmarks/known-gaps.json` and the legacy run | view `knownGaps[]` |
 
 Outcomes are joined case by case. A product population (regression, policy) joins by case id, which is the legacy
-`category--fixture` slug. The public population has canonical ids, so it joins by content: the SHA-256 of the case bytes with
+`category--fixture` slug, except the project twin-scope copies (#641): they have no legacy fixture of their own, so each is compared with the development fixture it copies (`<copyOf>--<fixture>`) and none counts in a legacy count of the regression population. The public population has canonical ids, so it joins by content: the SHA-256 of the case bytes with
 its expected ranges and fixture name, loosened one key at a time, and a pair is made only when the key is held by exactly one
 case on each side. Content shared by several cases is counted as ambiguous and never guessed. This is a derived re-key; the
 evidence release's own id map is not needed. It needs the evidence snapshot the public artifact was run on

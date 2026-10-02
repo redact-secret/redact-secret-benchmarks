@@ -30,7 +30,7 @@ executable digest differs from its pin (exit 4, no artifact). Every scanner runs
 | Population | Input | Owner | Run class |
 | --- | --- | --- | --- |
 | `public-evidence-snapshot` | credential-evidence release asset `credential-eval-corpus-snapshot.json`, verified against `release-manifest.json` | credential-evidence | `public` |
-| `regression-corpus` | `npm run qualification:export -- --population regression-corpus` (categories of `corpora/regression/manifest.json`) | redact-secret | `public` (a candidate run would be `internal`) |
+| `regression-corpus` | `npm run qualification:export -- --population regression-corpus` (categories of `corpora/regression/manifest.json`, and its `qualificationCategories`: the project twin-scope category, #641) | redact-secret | `public` (a candidate run would be `internal`) |
 | `policy-corpus` | `npm run qualification:export -- --population policy-corpus` (category `policy-qualified-credentials`) | redact-secret | `public` (a candidate run would be `internal`) |
 
 A product snapshot is the authored fixtures projected the way credential-eval's legacy exporter projected them, sorted by

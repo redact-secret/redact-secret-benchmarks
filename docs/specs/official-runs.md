@@ -113,6 +113,20 @@ Artifacts are not committed (the public one is 28 MB). The canonical artifact is
 with its run record; its digests are the committed record. Candidate and internal artifacts are never published outside
 product qualification.
 
+## Where the publish build gets the artifacts
+
+The CI build artifacts expire after 90 days (those of run 36964984990 on 2026-12-30), and `publish-site.yml` builds the qualification view the
+published Next pages read (decision: [publish the Next export under /next/](../decisions/2026-10-02-publish-the-next-export-under-next-with-the-qualification-view-built-from-archived-official-runs.md)).
+So the canonical linux-x64 artifacts are also kept as one release asset of this repository, named by `benchmarks/official-run-archive.json`
+(tag `official-runs-<ci run id>`, `official-run-artifacts.tar.gz`: `<population>/artifact.json` and `public-evidence-snapshot/methods/artifact.json`).
+
+- Keep a run (a maintainer, once per recorded run, after the registry records it): `node scripts/official-run-archive.mjs pack --run <ci run id> --out <dir>`
+  downloads that run's build artifacts, refuses them unless every file hashes to the `byteDigest` the registry records, writes the tarball and prints the
+  `gh release create` command. Then set `release.tag` and `source.ciRun` in `benchmarks/official-run-archive.json` in the same PR as the registry entry.
+- Use it: `node scripts/official-run-archive.mjs fetch --out <dir>` (the publish workflow's first step) and `verify --dir <dir>`. The registry is the authority: exact members, exact
+  digests, fail closed. The product populations' `case-metadata.json` is not archived; `npm run qualification:export` writes it from the checkout, byte-identical to the CI run's input.
+- The view built from them (`npm run qualification:view`) is byte-identical to the view the CI run built.
+
 ## Not covered here
 
 - Methods runs of the regression and policy populations: the adapter reads methods from the floors population only (the legacy

@@ -95,6 +95,15 @@ neutral: state what the ledger records, never that a product is good or bad
    Storybook build, and the Playwright layout check: `PW_CHANNEL=chrome` uses an
    installed Chrome, otherwise `npx playwright install chromium`) and `node --import tsx --test tests/web-tokens.test.mjs` from the root.
 
+## Deployment
+
+`publish-site.yml` builds this app and publishes it under `/next/` beside the existing site, on staging (`develop`) and, through `npm run go-production`, production
+(decision: `docs/decisions/2026-10-02-publish-the-next-export-under-next-with-the-qualification-view-built-from-archived-official-runs.md`). It is a deployment, not the
+authority switch: no legacy page is removed or re-pointed. The publish builds the qualification view first (from the archived canonical RunArtifacts, checked against
+`benchmarks/official-runs.json`), builds the export with `WEB_REQUIRE_RUN=1 WEB_REQUIRE_QUALIFICATION=1` and runs `check:routes`; the second variable makes the "view not built" state a failure,
+so it applies to publish only and CI keeps building without a view. Only `dist/next/` is added to the synced tree. Keep `BASE_PATH` at its `/next` default there, and keep every
+link inside `/next/` (`check:routes` fails one that leaves it). The CloudFront function of the benchmarks stacks must route `/next/...` as directory pages (`<path>/index.html`) for these pages to be reachable.
+
 ## Data layer: services, resolvers, pages
 
 Decision: `docs/decisions/2026-09-30-load-web-data-through-services-and-resolvers.md`.

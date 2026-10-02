@@ -1,6 +1,6 @@
 // Static export of the redesigned site (#547). Output goes to web/out, never to
-// the repository's dist/, which is what publish-site.yml syncs; nothing here can
-// change what develop or main publish today.
+// the repository's dist/. publish-site.yml moves it to dist/next (#602), so it is
+// served under /next/ and nothing outside that prefix can change.
 //
 // BASE_PATH is where the site is served. It defaults to /next, the preview prefix
 // decided in docs/decisions/2026-09-30-...; cutover builds with BASE_PATH= (empty).

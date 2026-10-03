@@ -5,39 +5,39 @@
     {
       "id": "redact-secret",
       "name": "redact-secret",
-      "version": "0.1.0-beta.12",
+      "version": "0.1.0-beta.13",
       "package": "@redact-secret/core",
       "facts": {
         "runsIn": "Node.js 20, 22, 24; browsers and Cloudflare Workers through WebAssembly",
         "dependencies": "1 dependency (@redact-secret/wasm); 8 optional platform add-ons",
         "install": {
-          "measuredOn": "2026-10-01",
+          "measuredOn": "2026-10-03",
           "method": "npm pack --dry-run --json",
           "note": "core, WebAssembly and one platform add-on (linux x64 glibc)",
           "packages": [
             {
               "name": "@redact-secret/core",
-              "version": "0.1.0-beta.12",
-              "packedBytes": 42155,
-              "unpackedBytes": 160541
+              "version": "0.1.0-beta.13",
+              "packedBytes": 43292,
+              "unpackedBytes": 165012
             },
             {
               "name": "@redact-secret/wasm",
-              "version": "0.1.0-beta.12",
-              "packedBytes": 974104,
-              "unpackedBytes": 2825820
+              "version": "0.1.0-beta.13",
+              "packedBytes": 976401,
+              "unpackedBytes": 2823406
             },
             {
               "name": "@redact-secret/node-linux-x64-gnu",
-              "version": "0.1.0-beta.12",
-              "packedBytes": 729348,
-              "unpackedBytes": 1734573
+              "version": "0.1.0-beta.13",
+              "packedBytes": 720811,
+              "unpackedBytes": 1699901
             }
           ]
         },
         "sources": [
-          "https://unpkg.com/@redact-secret/core@0.1.0-beta.12/README.md",
-          "https://unpkg.com/@redact-secret/core@0.1.0-beta.12/package.json"
+          "https://unpkg.com/@redact-secret/core@0.1.0-beta.13/README.md",
+          "https://unpkg.com/@redact-secret/core@0.1.0-beta.13/package.json"
         ]
       }
     },
@@ -109,7 +109,7 @@
               "note": "Node.js 20, 22 and 24; native add-on with WebAssembly fallback",
               "source": {
                 "kind": "doc",
-                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.12/README.md"
+                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.13/README.md"
               },
               "tested": true,
               "test": "node.redact-secret"
@@ -145,7 +145,7 @@
               "note": "WebAssembly build; needs ES2022",
               "source": {
                 "kind": "doc",
-                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.12/README.md"
+                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -177,7 +177,7 @@
               "note": "Cloudflare Workers is supported; Vercel Edge is not",
               "source": {
                 "kind": "doc",
-                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.12/README.md"
+                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -206,7 +206,7 @@
               "note": "PyPI package",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -235,7 +235,7 @@
               "note": "crates.io crate; the core is written in Rust",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -263,7 +263,7 @@
               "mark": "no",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -292,7 +292,7 @@
               "note": "Checks files and staged diffs; redacts one file or standard input",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/docs/guides/cli.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/docs/guides/cli.md"
               }
             },
             "flare-redact": {
@@ -322,7 +322,7 @@
               "note": "Runs inside your process",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -354,10 +354,10 @@
           "cells": {
             "redact-secret": {
               "mark": "yes",
-              "note": "152 credential families from 76 providers",
+              "note": "173 credential families from 92 providers",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -387,7 +387,7 @@
               "note": "Opt-in personal-data switch; provisional",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -417,7 +417,7 @@
               "note": "Opt-in; +1 / NANP numbers only",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/docs/guides/cli.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/docs/guides/cli.md"
               }
             },
             "flare-redact": {
@@ -447,7 +447,7 @@
               "note": "Opt-in network address family",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/docs/guides/cli.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/docs/guides/cli.md"
               }
             },
             "flare-redact": {
@@ -477,7 +477,7 @@
               "note": "US Social Security numbers only, opt-in, pending",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -506,7 +506,7 @@
               "mark": "no",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -536,7 +536,7 @@
               "note": "Declarative rulesets: data, no code callbacks",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/docs/guides/rulesets.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/docs/guides/rulesets.md"
               }
             },
             "flare-redact": {
@@ -572,7 +572,7 @@
               "literal": true,
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               },
               "tested": true,
               "test": "look.redact-secret"
@@ -610,7 +610,7 @@
               "note": "Placeholder formatter sees finding metadata, not the value",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -640,7 +640,7 @@
               "note": "Same input, same output; one placeholder per value is not stated",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -667,10 +667,10 @@
           "cells": {
             "redact-secret": {
               "mark": "partly",
-              "note": "Separate opt-in vault package, alpha",
+              "note": "Separate opt-in vault package; in-memory packages beta, persistent server profile alpha",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -700,7 +700,7 @@
               "note": "Policy: redact, block, warn or allow",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -735,7 +735,7 @@
               "note": "Same result as scanning it whole",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/docs/guides/streaming.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/docs/guides/streaming.md"
               },
               "tested": true,
               "test": "chunks.redact-secret"
@@ -769,7 +769,7 @@
               "note": "Pino and Python logging adapters, separate packages",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -799,7 +799,7 @@
               "note": "OpenTelemetry span processor, separate package",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -826,10 +826,10 @@
           "cells": {
             "redact-secret": {
               "mark": "partly",
-              "note": "MCP adapter, alpha, separate package",
+              "note": "MCP and AI-context packages, separate repository; not covered by Stable contract 1",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -859,7 +859,7 @@
               "note": "Works on text",
               "source": {
                 "kind": "doc",
-                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.12/README.md"
+                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -888,7 +888,7 @@
               "mark": "no",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -918,7 +918,7 @@
               "note": "Synchronous call after one initialize()",
               "source": {
                 "kind": "doc",
-                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.12/README.md"
+                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.13/README.md"
               },
               "tested": true,
               "test": "sync.redact-secret"
@@ -959,7 +959,7 @@
               "note": "Findings carry position and type only",
               "source": {
                 "kind": "doc",
-                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.12/README.md"
+                "ref": "https://unpkg.com/@redact-secret/core@0.1.0-beta.13/README.md"
               },
               "tested": true,
               "test": "leak.redact-secret"
@@ -995,7 +995,7 @@
               "note": "Stated",
               "source": {
                 "kind": "doc",
-                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+                "ref": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
               }
             },
             "flare-redact": {
@@ -1022,27 +1022,27 @@
   "sources": [
     {
       "name": "redact-secret",
-      "detail": "0.1.0-beta.12 (the published @redact-secret/core, tag v0.1.0-beta.12): the package README, the repository README and its guides at that tag. Adapters and the vault ship as separate packages and say so in the cell.",
+      "detail": "0.1.0-beta.13 (the published @redact-secret/core, tag v0.1.0-beta.13): the package README, the repository README and its guides at that tag. Adapters and the vault ship as separate packages and say so in the cell.",
       "links": [
         {
           "label": "Package README",
-          "href": "https://unpkg.com/@redact-secret/core@0.1.0-beta.12/README.md"
+          "href": "https://unpkg.com/@redact-secret/core@0.1.0-beta.13/README.md"
         },
         {
           "label": "Repository README",
-          "href": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/README.md"
+          "href": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/README.md"
         },
         {
           "label": "CLI guide",
-          "href": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/docs/guides/cli.md"
+          "href": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/docs/guides/cli.md"
         },
         {
           "label": "Rulesets guide",
-          "href": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/docs/guides/rulesets.md"
+          "href": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/docs/guides/rulesets.md"
         },
         {
           "label": "Streaming guide",
-          "href": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.12/docs/guides/streaming.md"
+          "href": "https://github.com/redact-secret/redact-secret/blob/v0.1.0-beta.13/docs/guides/streaming.md"
         }
       ]
     },

@@ -1,0 +1,410 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-beta11-operational",
+  "supportClaims": false,
+  "issue": "redact-secret/redact-secret-benchmarks#428",
+  "role": "final",
+  "sourceCommit": "401158d09a677b110fa60209256ba184b1f08f8f",
+  "freezeCommitment": "e40fc2add8e0e91d416292db48b4bacd1c5e7fa2277b7d9d6d9f89cf87e59127",
+  "contract": "qualification/pii-national-id-arrival-v1.json#operational",
+  "contractCommitment": "6355010b003998948153507ba81515db94f89a350f55211fbc65c9d0086b3311",
+  "workloadCommitment": "1dec3cb6542bec8f57014ecfb7c03d9555947bafbe13be88eefb402c99a8840d",
+  "runtime": {
+    "node": "v22.16.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "runtimeComparisons": [
+    {
+      "surface": "node-addon",
+      "profile": "credentials-only",
+      "samples": 10,
+      "metrics": {
+        "initialize": {
+          "baselineMedian": 1.7928750000000022,
+          "candidateMedian": 1.7544590000000007,
+          "delta": -0.03841600000000156,
+          "relative": -0.021427037579307823,
+          "pass": true
+        },
+        "wholeInput": {
+          "baselineMedian": 0.23829200000000128,
+          "candidateMedian": 0.19954099999999997,
+          "delta": -0.03875100000000131,
+          "relative": -0.162619810988204,
+          "pass": true
+        },
+        "incrementalLineCalls": {
+          "baselineMedian": 0.1518340000000009,
+          "candidateMedian": 0.07141599999999926,
+          "delta": -0.08041800000000165,
+          "relative": -0.5296442167103624,
+          "pass": true
+        }
+      }
+    },
+    {
+      "surface": "node-addon",
+      "profile": "pii-global",
+      "samples": 10,
+      "metrics": {
+        "initialize": {
+          "baselineMedian": 1.3454999999999977,
+          "candidateMedian": 1.3625420000000013,
+          "delta": 0.017042000000003554,
+          "relative": 0.012665923448534807,
+          "pass": true
+        },
+        "wholeInput": {
+          "baselineMedian": 0.1886669999999988,
+          "candidateMedian": 0.15812500000000185,
+          "delta": -0.03054199999999696,
+          "relative": -0.16188310621357818,
+          "pass": true
+        },
+        "incrementalLineCalls": {
+          "baselineMedian": 0.11616699999999724,
+          "candidateMedian": 0.05862499999999926,
+          "delta": -0.057541999999997984,
+          "relative": -0.4953386073497581,
+          "pass": true
+        }
+      }
+    },
+    {
+      "surface": "node-addon",
+      "profile": "pii-family-us-ssn",
+      "samples": 10,
+      "metrics": {
+        "initialize": {
+          "baselineMedian": 1.1784589999999984,
+          "candidateMedian": 1.2224579999999996,
+          "delta": 0.04399900000000123,
+          "relative": 0.03733604648104117,
+          "pass": true
+        },
+        "wholeInput": {
+          "baselineMedian": 0.1582909999999984,
+          "candidateMedian": 0.17450000000000188,
+          "delta": 0.01620900000000347,
+          "relative": 0.10240001010798866,
+          "pass": true
+        },
+        "incrementalLineCalls": {
+          "baselineMedian": 0.10329199999999972,
+          "candidateMedian": 0.06791700000000134,
+          "delta": -0.03537499999999838,
+          "relative": -0.3424756999573876,
+          "pass": true
+        }
+      }
+    },
+    {
+      "surface": "node-addon",
+      "profile": "pii-us",
+      "samples": 10,
+      "metrics": {
+        "initialize": {
+          "baselineMedian": 1.5222920000000002,
+          "candidateMedian": 1.5007920000000006,
+          "delta": -0.02149999999999963,
+          "relative": -0.014123440180989998,
+          "pass": true
+        },
+        "wholeInput": {
+          "baselineMedian": 0.21429200000000037,
+          "candidateMedian": 0.22350000000000136,
+          "delta": 0.009208000000000993,
+          "relative": 0.042969406230755125,
+          "pass": true
+        },
+        "incrementalLineCalls": {
+          "baselineMedian": 0.13491699999999796,
+          "candidateMedian": 0.087333000000001,
+          "delta": -0.04758399999999696,
+          "relative": -0.35269091367283356,
+          "pass": true
+        }
+      }
+    },
+    {
+      "surface": "node-wasm",
+      "profile": "credentials-only",
+      "samples": 10,
+      "metrics": {
+        "initialize": {
+          "baselineMedian": 25.498708000000004,
+          "candidateMedian": 25.042792,
+          "delta": -0.45591600000000554,
+          "relative": -0.017879964741743207,
+          "pass": true
+        },
+        "wholeInput": {
+          "baselineMedian": 9.451166999999998,
+          "candidateMedian": 6.897917000000007,
+          "delta": -2.5532499999999914,
+          "relative": -0.2701518235790344,
+          "pass": true
+        },
+        "incrementalLineCalls": {
+          "baselineMedian": 0.38262499999999733,
+          "candidateMedian": 0.1865839999999963,
+          "delta": -0.19604100000000102,
+          "relative": -0.5123580529238874,
+          "pass": true
+        }
+      }
+    },
+    {
+      "surface": "node-wasm",
+      "profile": "pii-global",
+      "samples": 10,
+      "metrics": {
+        "initialize": {
+          "baselineMedian": 19.571125,
+          "candidateMedian": 20.725208,
+          "delta": 1.154083,
+          "relative": 0.05896865918540708,
+          "pass": true
+        },
+        "wholeInput": {
+          "baselineMedian": 8.777500000000003,
+          "candidateMedian": 6.8188749999999985,
+          "delta": -1.958625000000005,
+          "relative": -0.22314155511250403,
+          "pass": true
+        },
+        "incrementalLineCalls": {
+          "baselineMedian": 0.3230000000000004,
+          "candidateMedian": 0.15995900000000063,
+          "delta": -0.16304099999999977,
+          "relative": -0.504770897832816,
+          "pass": true
+        }
+      }
+    },
+    {
+      "surface": "node-wasm",
+      "profile": "pii-family-us-ssn",
+      "samples": 10,
+      "metrics": {
+        "initialize": {
+          "baselineMedian": 14.298417,
+          "candidateMedian": 14.890916999999998,
+          "delta": 0.5924999999999976,
+          "relative": 0.04143815360819296,
+          "pass": true
+        },
+        "wholeInput": {
+          "baselineMedian": 6.209458000000005,
+          "candidateMedian": 5.815415999999999,
+          "delta": -0.394042000000006,
+          "relative": -0.06345835659086602,
+          "pass": true
+        },
+        "incrementalLineCalls": {
+          "baselineMedian": 0.21454200000000156,
+          "candidateMedian": 0.13683400000000034,
+          "delta": -0.07770800000000122,
+          "relative": -0.3622041371852628,
+          "pass": true
+        }
+      }
+    },
+    {
+      "surface": "node-wasm",
+      "profile": "pii-us",
+      "samples": 10,
+      "metrics": {
+        "initialize": {
+          "baselineMedian": 19.348875,
+          "candidateMedian": 19.635875000000002,
+          "delta": 0.2870000000000026,
+          "relative": 0.014832903721792745,
+          "pass": true
+        },
+        "wholeInput": {
+          "baselineMedian": 8.386958999999997,
+          "candidateMedian": 7.414375,
+          "delta": -0.9725839999999977,
+          "relative": -0.1159638433906733,
+          "pass": true
+        },
+        "incrementalLineCalls": {
+          "baselineMedian": 0.27866699999999867,
+          "candidateMedian": 0.17220900000000228,
+          "delta": -0.10645799999999639,
+          "relative": -0.3820258588207319,
+          "pass": true
+        }
+      }
+    }
+  ],
+  "sizes": {
+    "baseline": {
+      "packed": {
+        "core": 40554,
+        "node": 589745,
+        "wasm": 559573
+      },
+      "wasmPayloads": [
+        {
+          "file": "redact_secret_wasm_bg.wasm",
+          "role": "default-full",
+          "sha256": "25b5c211a591d3a7ea997a748e1c741b35bbf9cba694dcb5731d70cb7c1bc23c",
+          "raw": 730002,
+          "gzip": 270899,
+          "brotli": 214552
+        },
+        {
+          "file": "redact_secret_wasm_common_bg.wasm",
+          "role": "default-common",
+          "sha256": "e46080bb280be665d3ba52759823a75beabeca4098ee5c1b8690a0db0c4d394a",
+          "raw": 730074,
+          "gzip": 270896,
+          "brotli": 214732
+        }
+      ]
+    },
+    "candidate": {
+      "packed": {
+        "core": 43292,
+        "node": 672273,
+        "wasm": 978463
+      },
+      "wasmPayloads": [
+        {
+          "file": "redact_secret_wasm_bg.wasm",
+          "role": "default-full",
+          "sha256": "70e7dd81888ce7dd412c2892b1add73ae1e4337e04d284c7ead9e2451bbc5709",
+          "raw": 599386,
+          "gzip": 206903,
+          "brotli": 161145
+        },
+        {
+          "file": "redact_secret_wasm_common_bg.wasm",
+          "role": "default-common",
+          "sha256": "16e8f4ab68c76376f5581a5847ba2c11316e3a63d5b142ba73656248ff033d7d",
+          "raw": 410543,
+          "gzip": 143778,
+          "brotli": 115132
+        },
+        {
+          "file": "redact_secret_wasm_common_pii_bg.wasm",
+          "role": "pii",
+          "sha256": "77ac452770081b1b008ce570306f5ecc64dbb2504fb293ad945686556866f6ff",
+          "raw": 709458,
+          "gzip": 266487,
+          "brotli": 212902
+        },
+        {
+          "file": "redact_secret_wasm_pii_bg.wasm",
+          "role": "pii",
+          "sha256": "21e72d024195f25d3792b8d032476bb5e0c8747f074d60285221cf18b3e54658",
+          "raw": 898153,
+          "gzip": 330052,
+          "brotli": 258279
+        }
+      ]
+    }
+  },
+  "sizeBudgetRows": [
+    {
+      "id": "size/wasm/full/gzip",
+      "source": "ci-qualification run 37093118224 wasm-web/redact_secret_wasm_bg.wasm gzip-9",
+      "baselineValue": 137639,
+      "candidateValue": 206697,
+      "allowedIncrease": 6882,
+      "delta": 69058,
+      "status": "regression"
+    },
+    {
+      "id": "size/wasm/common/gzip",
+      "source": "ci-qualification run 37093118224 wasm-web-common/redact_secret_wasm_common_bg.wasm gzip-9",
+      "baselineValue": 100058,
+      "candidateValue": 142866,
+      "allowedIncrease": 5003,
+      "delta": 42808,
+      "status": "regression"
+    },
+    {
+      "id": "size/npm/core/packed",
+      "source": "local npm pack",
+      "baselineValue": 39461,
+      "candidateValue": 43292,
+      "allowedIncrease": 4096,
+      "delta": 3831,
+      "status": "within"
+    },
+    {
+      "id": "size/npm/wasm/packed",
+      "source": "local npm pack",
+      "baselineValue": 254413,
+      "candidateValue": 978463,
+      "allowedIncrease": 12721,
+      "delta": 724050,
+      "status": "regression"
+    },
+    {
+      "id": "size/npm/node-darwin-arm64/packed",
+      "source": "local npm pack",
+      "baselineValue": 424514,
+      "candidateValue": 672273,
+      "allowedIncrease": 21226,
+      "delta": 247759,
+      "status": "regression"
+    },
+    {
+      "id": "size/wasm/pii/redact_secret_wasm_common_pii_bg.wasm/gzip",
+      "source": "ci-qualification wasm-web-common",
+      "baselineValue": null,
+      "candidateValue": 265752,
+      "allowedIncrease": null,
+      "delta": null,
+      "status": "no-frozen-budget"
+    },
+    {
+      "id": "size/wasm/pii/redact_secret_wasm_pii_bg.wasm/gzip",
+      "source": "ci-qualification wasm-web",
+      "baselineValue": null,
+      "candidateValue": 329901,
+      "allowedIncrease": null,
+      "delta": null,
+      "status": "no-frozen-budget"
+    }
+  ],
+  "wasmSplit": {
+    "status": "met",
+    "builds": [
+      {
+        "glue": "redact_secret_wasm.js",
+        "piiBuild": false,
+        "piiSelectorResult": "PII_SELECTOR_UNAVAILABLE",
+        "activationMatchesFrozenV2": null,
+        "pass": true
+      },
+      {
+        "glue": "redact_secret_wasm_common.js",
+        "piiBuild": false,
+        "piiSelectorResult": "PII_SELECTOR_UNAVAILABLE",
+        "activationMatchesFrozenV2": null,
+        "pass": true
+      },
+      {
+        "glue": "redact_secret_wasm_pii.js",
+        "piiBuild": true,
+        "piiSelectorResult": "activated",
+        "activationMatchesFrozenV2": true,
+        "pass": true
+      },
+      {
+        "glue": "redact_secret_wasm_common_pii.js",
+        "piiBuild": true,
+        "piiSelectorResult": "activated",
+        "activationMatchesFrozenV2": true,
+        "pass": true
+      }
+    ]
+  },
+  "artifactCommitment": "1fbc701e7ec96b1099ce47ef49243ca24612149ae8e62d21a20b5ab280fc1867"
+}

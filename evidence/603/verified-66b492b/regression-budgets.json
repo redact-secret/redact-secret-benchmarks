@@ -11,7 +11,7 @@
       "../performance-output/quickstart-bundle.json"
     ]
   },
-  "status": "regression",
+  "status": "accepted",
   "dimensions": {
     "latency": {
       "within-budget": 10,
@@ -36,8 +36,8 @@
     },
     "size": {
       "within-budget": 0,
-      "regression": 3,
-      "accepted-tradeoff": 0,
+      "regression": 0,
+      "accepted-tradeoff": 3,
       "invalid-measurement": 0,
       "not-evaluated": 25
     },
@@ -1357,9 +1357,9 @@
       "baseline": 1,
       "unit": "ratio",
       "allowedChange": 0.25,
-      "candidate": 1.1258278145712723,
-      "change": 0.12582781457127235,
-      "relativeChange": 0.12582781457127235,
+      "candidate": 1.1300813008159707,
+      "change": 0.1300813008159707,
+      "relativeChange": 0.1300813008159707,
       "verdict": "within-budget"
     },
     {
@@ -1369,9 +1369,9 @@
       "baseline": 1,
       "unit": "ratio",
       "allowedChange": 0.25,
-      "candidate": 1.2288135593293077,
-      "change": 0.2288135593293077,
-      "relativeChange": 0.2288135593293077,
+      "candidate": 1.1809523809545983,
+      "change": 0.1809523809545983,
+      "relativeChange": 0.1809523809545983,
       "verdict": "within-budget"
     },
     {
@@ -1380,10 +1380,10 @@
       "profile": "linux-x64-release",
       "baseline": 1,
       "unit": "ratio",
-      "allowedChange": 0.9340399657020497,
-      "candidate": 0.9513253093073338,
-      "change": -0.04867469069266617,
-      "relativeChange": -0.04867469069266617,
+      "allowedChange": 1.0271965699852148,
+      "candidate": 0.927205660674858,
+      "change": -0.07279433932514201,
+      "relativeChange": -0.07279433932514201,
       "verdict": "within-budget"
     },
     {
@@ -1392,10 +1392,10 @@
       "profile": "linux-x64-release",
       "baseline": 1,
       "unit": "ratio",
-      "allowedChange": 0.9443040054543037,
-      "candidate": 0.9651613201747736,
-      "change": -0.03483867982522637,
-      "relativeChange": -0.03483867982522637,
+      "allowedChange": 1.122474922507143,
+      "candidate": 1.0099428828635724,
+      "change": 0.009942882863572367,
+      "relativeChange": 0.009942882863572367,
       "verdict": "within-budget"
     },
     {
@@ -1404,10 +1404,10 @@
       "profile": "linux-x64-release",
       "baseline": 1,
       "unit": "ratio",
-      "allowedChange": 0.38976849894889026,
-      "candidate": 1.068404956218277,
-      "change": 0.06840495621827691,
-      "relativeChange": 0.06840495621827691,
+      "allowedChange": 0.4458763018752005,
+      "candidate": 1.0416321391205419,
+      "change": 0.04163213912054187,
+      "relativeChange": 0.04163213912054187,
       "verdict": "within-budget"
     },
     {
@@ -1416,10 +1416,10 @@
       "profile": "linux-x64-release",
       "baseline": 1,
       "unit": "ratio",
-      "allowedChange": 0.3946437373393352,
-      "candidate": 1.0674023878313983,
-      "change": 0.06740238783139829,
-      "relativeChange": 0.06740238783139829,
+      "allowedChange": 0.456075692146171,
+      "candidate": 1.0422918989327141,
+      "change": 0.04229189893271412,
+      "relativeChange": 0.04229189893271412,
       "verdict": "within-budget"
     },
     {
@@ -1428,10 +1428,10 @@
       "profile": "linux-x64-release",
       "baseline": 1,
       "unit": "ratio",
-      "allowedChange": 2.225008427219418,
-      "candidate": 1.150044555793755,
-      "change": 0.15004455579375509,
-      "relativeChange": 0.15004455579375509,
+      "allowedChange": 2.6146627673329266,
+      "candidate": 1.1680639860272424,
+      "change": 0.16806398602724237,
+      "relativeChange": 0.16806398602724237,
       "verdict": "within-budget"
     },
     {
@@ -1440,10 +1440,10 @@
       "profile": "linux-x64-release",
       "baseline": 1,
       "unit": "ratio",
-      "allowedChange": 2.3143915811691844,
-      "candidate": 1.1607333381164093,
-      "change": 0.16073333811640933,
-      "relativeChange": 0.16073333811640933,
+      "allowedChange": 2.662346565639489,
+      "candidate": 1.1598619307071059,
+      "change": 0.15986193070710586,
+      "relativeChange": 0.15986193070710586,
       "verdict": "within-budget"
     },
     {
@@ -1452,10 +1452,10 @@
       "profile": "linux-x64-release",
       "baseline": 1,
       "unit": "ratio",
-      "allowedChange": 122.84257723727043,
-      "candidate": 1.8331797801117866,
-      "change": 0.8331797801117866,
-      "relativeChange": 0.8331797801117866,
+      "allowedChange": 127.43723716069836,
+      "candidate": 1.5456225309035299,
+      "change": 0.5456225309035299,
+      "relativeChange": 0.5456225309035299,
       "verdict": "within-budget"
     },
     {
@@ -1464,10 +1464,10 @@
       "profile": "linux-x64-release",
       "baseline": 1,
       "unit": "ratio",
-      "allowedChange": 156.2011871290222,
-      "candidate": 2.031318338019369,
-      "change": 1.0313183380193691,
-      "relativeChange": 1.0313183380193691,
+      "allowedChange": 169.664065151001,
+      "candidate": 2.267645062775704,
+      "change": 1.267645062775704,
+      "relativeChange": 1.267645062775704,
       "verdict": "within-budget"
     },
     {
@@ -1477,9 +1477,9 @@
       "baseline": 1,
       "unit": "ratio",
       "allowedChange": 0.1,
-      "candidate": 0.16972477064220184,
-      "change": -0.8302752293577982,
-      "relativeChange": -0.8302752293577982,
+      "candidate": 0.16625615763532497,
+      "change": -0.833743842364675,
+      "relativeChange": -0.833743842364675,
       "verdict": "within-budget"
     },
     {
@@ -1489,9 +1489,9 @@
       "baseline": 1,
       "unit": "ratio",
       "allowedChange": 0.3,
-      "candidate": 0.3739495798321794,
-      "change": -0.6260504201678205,
-      "relativeChange": -0.6260504201678205,
+      "candidate": 0.28761061946932287,
+      "change": -0.7123893805306771,
+      "relativeChange": -0.7123893805306771,
       "verdict": "within-budget"
     },
     {
@@ -1501,9 +1501,9 @@
       "baseline": 1,
       "unit": "ratio",
       "allowedChange": 0.1,
-      "candidate": 0.13076041692216495,
-      "change": -0.869239583077835,
-      "relativeChange": -0.869239583077835,
+      "candidate": 0.13131963865606913,
+      "change": -0.8686803613439309,
+      "relativeChange": -0.8686803613439309,
       "verdict": "within-budget"
     },
     {
@@ -1513,9 +1513,9 @@
       "baseline": 1,
       "unit": "ratio",
       "allowedChange": 0.1,
-      "candidate": 0.18734366486308376,
-      "change": -0.8126563351369163,
-      "relativeChange": -0.8126563351369163,
+      "candidate": 0.19325352963362297,
+      "change": -0.806746470366377,
+      "relativeChange": -0.806746470366377,
       "verdict": "within-budget"
     },
     {
@@ -1525,9 +1525,9 @@
       "baseline": 1,
       "unit": "ratio",
       "allowedChange": 0.1,
-      "candidate": 0.11196239606405267,
-      "change": -0.8880376039359473,
-      "relativeChange": -0.8880376039359473,
+      "candidate": 0.1112084464584846,
+      "change": -0.8887915535415154,
+      "relativeChange": -0.8887915535415154,
       "verdict": "within-budget"
     },
     {
@@ -1537,9 +1537,9 @@
       "baseline": 1,
       "unit": "ratio",
       "allowedChange": 0.1,
-      "candidate": 0.08645866889477274,
-      "change": -0.9135413311052273,
-      "relativeChange": -0.9135413311052273,
+      "candidate": 0.08696404312376903,
+      "change": -0.913035956876231,
+      "relativeChange": -0.913035956876231,
       "verdict": "within-budget"
     },
     {
@@ -1549,9 +1549,9 @@
       "baseline": 1,
       "unit": "ratio",
       "allowedChange": 0.1,
-      "candidate": 0.11549278756589751,
-      "change": -0.8845072124341025,
-      "relativeChange": -0.8845072124341025,
+      "candidate": 0.11745390170561058,
+      "change": -0.8825460982943895,
+      "relativeChange": -0.8825460982943895,
       "verdict": "within-budget"
     },
     {
@@ -1561,9 +1561,9 @@
       "baseline": 1,
       "unit": "ratio",
       "allowedChange": 0.1,
-      "candidate": 0.08469657106041906,
-      "change": -0.9153034289395809,
-      "relativeChange": -0.9153034289395809,
+      "candidate": 0.08370235124997935,
+      "change": -0.9162976487500206,
+      "relativeChange": -0.9162976487500206,
       "verdict": "within-budget"
     },
     {
@@ -1573,9 +1573,9 @@
       "baseline": 1,
       "unit": "ratio",
       "allowedChange": 0.1,
-      "candidate": 0.10496403345296482,
-      "change": -0.8950359665470352,
-      "relativeChange": -0.8950359665470352,
+      "candidate": 0.10279682829416148,
+      "change": -0.8972031717058385,
+      "relativeChange": -0.8972031717058385,
       "verdict": "within-budget"
     },
     {
@@ -1585,9 +1585,9 @@
       "baseline": 1,
       "unit": "ratio",
       "allowedChange": 0.1,
-      "candidate": 0.07811726149525082,
-      "change": -0.9218827385047492,
-      "relativeChange": -0.9218827385047492,
+      "candidate": 0.07493965767805272,
+      "change": -0.9250603423219472,
+      "relativeChange": -0.9250603423219472,
       "verdict": "within-budget"
     },
     {
@@ -1621,9 +1621,9 @@
       "baseline": 3284992,
       "unit": "bytes",
       "allowedChange": 1048576,
-      "candidate": 3403776,
-      "change": 118784,
-      "relativeChange": 0.03615960099750624,
+      "candidate": 3588096,
+      "change": 303104,
+      "relativeChange": 0.09226932668329177,
       "verdict": "within-budget"
     },
     {
@@ -1633,9 +1633,9 @@
       "baseline": 3244032,
       "unit": "bytes",
       "allowedChange": 1048576,
-      "candidate": 3395584,
-      "change": 151552,
-      "relativeChange": 0.04671717171717172,
+      "candidate": 3575808,
+      "change": 331776,
+      "relativeChange": 0.10227272727272728,
       "verdict": "within-budget"
     },
     {
@@ -1645,9 +1645,9 @@
       "baseline": 2348439,
       "unit": "bytes",
       "allowedChange": 1048576,
-      "candidate": 2356499,
-      "change": 8060,
-      "relativeChange": 0.003432067002804842,
+      "candidate": 2356053,
+      "change": 7614,
+      "relativeChange": 0.0032421536177861124,
       "verdict": "within-budget"
     },
     {
@@ -1657,9 +1657,9 @@
       "baseline": 21724840,
       "unit": "bytes",
       "allowedChange": 2172484,
-      "candidate": 16357184,
-      "change": -5367656,
-      "relativeChange": -0.24707459295442452,
+      "candidate": 16255488,
+      "change": -5469352,
+      "relativeChange": -0.2517556861178264,
       "verdict": "within-budget"
     },
     {
@@ -1669,9 +1669,9 @@
       "baseline": 97259520,
       "unit": "bytes",
       "allowedChange": 9725952,
-      "candidate": 96169984,
-      "change": -1089536,
-      "relativeChange": -0.011202358391240261,
+      "candidate": 96538624,
+      "change": -720896,
+      "relativeChange": -0.007412086755106339,
       "verdict": "within-budget"
     },
     {
@@ -1681,9 +1681,9 @@
       "baseline": 2316568,
       "unit": "bytes",
       "allowedChange": 1048576,
-      "candidate": 2419439,
-      "change": 102871,
-      "relativeChange": 0.04440663947701945,
+      "candidate": 2364668,
+      "change": 48100,
+      "relativeChange": 0.020763474242931786,
       "verdict": "within-budget"
     },
     {
@@ -1693,9 +1693,9 @@
       "baseline": 7470936,
       "unit": "bytes",
       "allowedChange": 1120640.4,
-      "candidate": 7700216,
-      "change": 229280,
-      "relativeChange": 0.030689594985153133,
+      "candidate": 7615992,
+      "change": 145056,
+      "relativeChange": 0.019416041042246916,
       "verdict": "within-budget"
     },
     {
@@ -1705,9 +1705,9 @@
       "baseline": 68087808,
       "unit": "bytes",
       "allowedChange": 10213171.2,
-      "candidate": 67788800,
-      "change": -299008,
-      "relativeChange": -0.004391505745052036,
+      "candidate": 67596288,
+      "change": -491520,
+      "relativeChange": -0.007218913553510196,
       "verdict": "within-budget"
     },
     {
@@ -1717,9 +1717,9 @@
       "baseline": 21368832,
       "unit": "bytes",
       "allowedChange": 2136883.2,
-      "candidate": 21880832,
-      "change": 512000,
-      "relativeChange": 0.023960130343109065,
+      "candidate": 21905408,
+      "change": 536576,
+      "relativeChange": 0.0251102165995783,
       "verdict": "within-budget"
     },
     {
@@ -1765,9 +1765,9 @@
       "baseline": 3870720,
       "unit": "bytes",
       "allowedChange": 1048576,
-      "candidate": 3919872,
-      "change": 49152,
-      "relativeChange": 0.012698412698412698,
+      "candidate": 4063232,
+      "change": 192512,
+      "relativeChange": 0.04973544973544974,
       "verdict": "within-budget"
     },
     {
@@ -1777,9 +1777,9 @@
       "baseline": 3911680,
       "unit": "bytes",
       "allowedChange": 1048576,
-      "candidate": 3428352,
-      "change": -483328,
-      "relativeChange": -0.12356020942408377,
+      "candidate": 3538944,
+      "change": -372736,
+      "relativeChange": -0.09528795811518324,
       "verdict": "within-budget"
     },
     {
@@ -1793,8 +1793,8 @@
       "candidate": 214214,
       "change": 69713,
       "relativeChange": 0.4824395678922637,
-      "verdict": "regression",
-      "reason": "breach without an accepted tradeoff in benchmarks/accepted-regressions.json"
+      "verdict": "accepted-tradeoff",
+      "acceptedBy": "beta13-66b492b-quickstart-bundle-gzip"
     },
     {
       "id": "size/cli/aarch64-apple-darwin",
@@ -2132,8 +2132,8 @@
       "candidate": 142866,
       "change": 42808,
       "relativeChange": 0.42783185752263686,
-      "verdict": "regression",
-      "reason": "breach without an accepted tradeoff in benchmarks/accepted-regressions.json"
+      "verdict": "accepted-tradeoff",
+      "acceptedBy": "beta13-66b492b-wasm-common-gzip"
     },
     {
       "id": "size/wasm/full/gzip",
@@ -2146,150 +2146,150 @@
       "candidate": 206697,
       "change": 69058,
       "relativeChange": 0.5017327937575833,
-      "verdict": "regression",
-      "reason": "breach without an accepted tradeoff in benchmarks/accepted-regressions.json"
+      "verdict": "accepted-tradeoff",
+      "acceptedBy": "beta13-66b492b-wasm-full-gzip"
     }
   ],
   "informational": [
     {
       "id": "initialization/browser-wasm/scale-logs-medium-fixed4096/initialization-p95",
       "baseline": 17.399999999965075,
-      "candidate": 17.600000000034925,
+      "candidate": 16,
       "unit": "milliseconds",
-      "relativeChange": 0.01149425287760053
+      "relativeChange": -0.0804597701130969
     },
     {
       "id": "initialization/browser-wasm/scale-logs-small-whole/initialization-p95",
       "baseline": 13.099999999976717,
-      "candidate": 16,
+      "candidate": 14.5,
       "unit": "milliseconds",
-      "relativeChange": 0.22137404580369746
+      "relativeChange": 0.10687022900960086
     },
     {
       "id": "initialization/cli/scale-logs-medium-fixed4096/initialization-p95",
       "baseline": 2.8320870000000014,
-      "candidate": 2.3329279999999954,
+      "candidate": 1.9996459999999985,
       "unit": "milliseconds",
-      "relativeChange": -0.17625129454003552
+      "relativeChange": -0.2939320013827268
     },
     {
       "id": "initialization/cli/scale-logs-small-whole/initialization-p95",
       "baseline": 2.6162920000000014,
-      "candidate": 2.341458000000003,
+      "candidate": 1.9284379999999999,
       "unit": "milliseconds",
-      "relativeChange": -0.1050471430558968
+      "relativeChange": -0.26291178507597823
     },
     {
       "id": "initialization/node/scale-logs-medium-fixed4096/initialization-p95",
       "baseline": 6.395963999999992,
-      "candidate": 6.123587999999984,
+      "candidate": 4.773975000000007,
       "unit": "milliseconds",
-      "relativeChange": -0.042585605547499794
+      "relativeChange": -0.25359570504148976
     },
     {
       "id": "initialization/node/scale-logs-small-whole/initialization-p95",
       "baseline": 6.092246000000003,
-      "candidate": 6.202154000000007,
+      "candidate": 4.9825699999999955,
       "unit": "milliseconds",
-      "relativeChange": 0.01804063722968574
+      "relativeChange": -0.18214563233329828
     },
     {
       "id": "initialization/python/scale-logs-medium-fixed4096/initialization-p95",
       "baseline": 1.026253,
-      "candidate": 1.039264,
+      "candidate": 0.907694,
       "unit": "milliseconds",
-      "relativeChange": 0.012678160258727589
+      "relativeChange": -0.11552609346817999
     },
     {
       "id": "initialization/python/scale-logs-small-whole/initialization-p95",
       "baseline": 0.970198,
-      "candidate": 1.039915,
+      "candidate": 0.895776,
       "unit": "milliseconds",
-      "relativeChange": 0.07185852784689306
+      "relativeChange": -0.07670805340765496
     },
     {
       "id": "initialization/rust-core/scale-logs-medium-fixed4096/initialization-p95",
       "baseline": 0.027922000000000002,
-      "candidate": 0.06944,
+      "candidate": 0.055634,
       "unit": "milliseconds",
-      "relativeChange": 1.4869278704963826
+      "relativeChange": 0.9924790487787407
     },
     {
       "id": "initialization/rust-core/scale-logs-small-whole/initialization-p95",
       "baseline": 0.028283,
-      "candidate": 0.06532099999999999,
+      "candidate": 0.057948,
       "unit": "milliseconds",
-      "relativeChange": 1.3095499063041398
+      "relativeChange": 1.048863274758689
     },
     {
       "id": "latency/browser-wasm/scale-logs-medium-fixed4096/processing-p95",
       "baseline": 115.5,
-      "candidate": 19.400000000023283,
+      "candidate": 15.5,
       "unit": "milliseconds",
-      "relativeChange": -0.8320346320344305
+      "relativeChange": -0.8658008658008658
     },
     {
       "id": "latency/browser-wasm/scale-logs-small-whole/processing-p95",
       "baseline": 35.29999999998836,
-      "candidate": 9.700000000011642,
+      "candidate": 6.5,
       "unit": "milliseconds",
-      "relativeChange": -0.7252124645888147
+      "relativeChange": -0.8158640226628288
     },
     {
       "id": "latency/cli/scale-logs-medium-fixed4096/processing-p95",
       "baseline": 85.56273599999997,
-      "candidate": 13.12539000000001,
+      "candidate": 9.972923000000009,
       "unit": "milliseconds",
-      "relativeChange": -0.8465992251580172
+      "relativeChange": -0.8834431498310198
     },
     {
       "id": "latency/cli/scale-logs-small-whole/processing-p95",
       "baseline": 23.399737000000016,
-      "candidate": 5.237949999999998,
+      "candidate": 4.122568999999999,
       "unit": "milliseconds",
-      "relativeChange": -0.77615346702401
+      "relativeChange": -0.8238198574625007
     },
     {
       "id": "latency/node/scale-logs-medium-fixed4096/processing-p95",
       "baseline": 90.48937000000001,
-      "candidate": 10.876915999999994,
+      "candidate": 8.285859999999985,
       "unit": "milliseconds",
-      "relativeChange": -0.8797989642319314
+      "relativeChange": -0.9084327805575397
     },
     {
       "id": "latency/node/scale-logs-small-whole/processing-p95",
       "baseline": 15.847566,
-      "candidate": 1.6665979999999934,
+      "candidate": 1.2737380000000087,
       "unit": "milliseconds",
-      "relativeChange": -0.8948357116796363
+      "relativeChange": -0.9196256384103396
     },
     {
       "id": "latency/python/scale-logs-medium-fixed4096/processing-p95",
       "baseline": 81.351337,
-      "candidate": 10.608376,
+      "candidate": 8.090955,
       "unit": "milliseconds",
-      "relativeChange": -0.8695980128759285
+      "relativeChange": -0.9005430605276961
     },
     {
       "id": "latency/python/scale-logs-small-whole/processing-p95",
       "baseline": 15.89261,
-      "candidate": 1.624964,
+      "candidate": 1.25551,
       "unit": "milliseconds",
-      "relativeChange": -0.8977534841665403
+      "relativeChange": -0.9210003894892028
     },
     {
       "id": "latency/rust-core/scale-logs-medium-fixed4096/processing-p95",
       "baseline": 79.303971,
-      "candidate": 10.404397,
+      "candidate": 7.7362899999999994,
       "unit": "milliseconds",
-      "relativeChange": -0.8688035810968406
+      "relativeChange": -0.9024476340535331
     },
     {
       "id": "latency/rust-core/scale-logs-small-whole/processing-p95",
       "baseline": 18.380934,
-      "candidate": 1.652636,
+      "candidate": 1.241269,
       "unit": "milliseconds",
-      "relativeChange": -0.9100896613849981
+      "relativeChange": -0.932469753713277
     }
   ],
   "pending": [

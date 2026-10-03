@@ -58,6 +58,40 @@ and the `41fc366` run (35868842776) are superseded here; its verdict is still re
 above and in the decision records.
 
 
+### Verified at `66b492b`, not re-derived (published 0.1.0-beta.13)
+
+Product `main` `66b492bdff5e6751fc6b5409266916346ed7c723` is the release source
+of `0.1.0-beta.13` (tag `v0.1.0-beta.13`). Against the measured candidate
+`401158d` it changes only files under `docs/`, and `detectors/mod.rs` has not
+changed since `4227160`, so `detectors.json` moves its `sourceRevision` only.
+[Run 37118767833](https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37118767833)
+(`performance-evaluation.yml` on `workbench/repin-beta13-published`, candidate
+`66b492b`, 14 interleaved rounds) reads **ACCEPTED** on both verdicts: RC
+acceptance against the unchanged criteria, and the regression budgets read
+latency 10/10, initialization 10/10, memory 16/16 within budget, with three
+accepted tradeoffs, no regression and no invalid measurement. Runner: AMD EPYC
+9V74, 4 logical CPUs, image `ubuntu24 20260927.320.1`. An earlier 6-round run on
+`develop` (37118371501) read the same sizes as `regression` only because the
+entries below were not yet on that ref; it is not frozen.
+
+The three size rows are the Beta.13 growth accepted at candidate `401158d`,
+re-keyed to this commit through the `beta13-66b492b-*` entries in
+`benchmarks/accepted-regressions.json` (byte-identical measured values):
+
+| Trigger | Baseline (0.1.0-beta.8) | Measured at 66b492b | Change | Entry |
+| --- | ---: | ---: | ---: | --- |
+| `size/wasm/full/gzip` | 137,639 | 206,697 | +50.2% | `beta13-66b492b-wasm-full-gzip` |
+| `size/wasm/common/gzip` | 100,058 | 142,866 | +42.8% | `beta13-66b492b-wasm-common-gzip` |
+| `size/browser-bundle/quickstart/gzip` | 144,501 | 214,214 | +48.2% | `beta13-66b492b-quickstart-bundle-gzip` |
+
+The thresholds are not re-derived. The run is frozen in
+[`verified-66b492b/`](verified-66b492b/) and advances only
+`baseline.verifiedCommit`.
+
+Reproduce: dispatch `performance-evaluation.yml` with
+`candidate_revision=66b492bdff5e6751fc6b5409266916346ed7c723` and `rounds=14`; the
+artifact is `performance-evaluation-66b492bdff5e6751fc6b5409266916346ed7c723`.
+
 ### Verified at `4227160`, not re-derived (published 0.1.0-beta.12)
 
 Product `main` `4227160c4dac402d7add53d3f8fe990f693912c1` is the release source

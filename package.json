@@ -71,6 +71,7 @@
     "qualification-inputs:check": "node scripts/check-qualification-inputs.mjs",
     "official-runs:check": "node --import tsx scripts/check-official-runs.mjs",
     "authority:check": "node --import tsx scripts/check-qualification-authority.mjs",
+    "pii:migration:check": "node scripts/check-pii-eval-migration.mjs",
     "official-runs:record": "node --import tsx scripts/record-official-run.mjs",
     "qualification:axis-overlay": "node --import tsx scripts/build-axis-overlay.ts",
     "qualification:twin-scope": "node --import tsx scripts/build-twin-scope-map.ts",

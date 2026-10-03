@@ -39,6 +39,18 @@ type PopulationInput = { report: PiiPopulationReport; rows?: PiiAccountingRow[];
 type PopulationComparisonInput = { baseline: PiiPopulationReport; candidate: PiiPopulationReport;
   baselineRows: PiiAccountingRow[]; candidateRows: PiiAccountingRow[]; contract?: PiiPopulationContract;
   evidence?: PiiBenignCollisionEvidence; validation?: PiiPopulationValidationOptions };
+export interface PiiEvalMeasurement {
+  schema: 'pii-eval-consumer-report/1'; complete: true; decision: 'none'; pooling: 'none'; rejections: [];
+  build: { repository: 'redact-secret/pii-eval'; commit: string; cargoLockSha256: string; binarySha256: string;
+    sourceArchiveSha256: string; binding: 'out-of-band-build-provenance' };
+  populations: Array<{ label: string; populationId: string; artifactDigest: string; file: string; status: 'accepted';
+    population: { populationId: string; populationVersion: number; populationDigest: string; visibility: 'public-synthetic' };
+    populationCounts: { authoredCases: number; variants: number; occurrences: number };
+    scanners: Array<{ scannerId: string; status: 'complete'; identity: Record<string, unknown>; metrics: unknown[] }>;
+    unavailable: { familyProjection: 'schema-1.1-does-not-carry'; populationViews: 'schema-1.1-does-not-carry';
+      languageBreakdown: 'schema-1.1-does-not-carry'; controlClassBreakdown: 'schema-1.1-does-not-carry';
+      officialOrExploratoryMode: 'schema-1.1-does-not-carry' } }>;
+}
 export interface PiiSupportBuildOptions {
   registry?: PiiSupportRegistry;
   populations?: readonly PopulationInput[];
@@ -46,6 +58,8 @@ export interface PiiSupportBuildOptions {
   product?: PiiTrustedProductBinding;
   /** A reviewed v2 protected-disposition entry, already re-derived from committed evidence by `bindPiiProtectedSupport`. */
   protectedRoute?: PiiProtectedRoute;
+  /** Strictly validated scanner-neutral evidence. It cannot change a family verdict while schema 1.1 lacks family projections. */
+  piiEvalMeasurement?: PiiEvalMeasurement;
 }
 export interface PiiSupportMatrixV2 {
   schemaVersion: 2; reportType: 'pii-support-matrix'; supportClaims: false; domain: 'pii'; evaluationProfile: 'pii-v1';
@@ -65,6 +79,7 @@ export interface PiiSupportMatrixV2 {
       baselineFailed: number; candidateFailed: number; failedDelta: number; regressed: boolean }>;
   }>;
   distribution: Record<PiiSupportStatus, number>;
+  piiEvalMeasurement?: PiiEvalMeasurement;
   protectedRoute?: PiiProtectedRoute;
   families: Array<PiiSupportFamily & {
     activation: { state: 'not-measured' | 'available' | 'unavailable' | 'explicitly-unsupported'; selector: string; activationIdentity: string | null; productArtifactCommitment: string | null };
@@ -84,6 +99,66 @@ const familyId = (value: unknown) => typeof value === 'string' && /^pii:(?:globa
 const canonical = (value: unknown): unknown => Array.isArray(value) ? value.map(canonical) : value && typeof value === 'object' ?
   Object.fromEntries(Object.entries(value).filter(([, child]) => child !== undefined).sort(([a], [b]) => a.localeCompare(b)).map(([key, child]) => [key, canonical(child)])) : value;
 const selector = (family: string) => `pii:family:${family.slice('pii:'.length)}`;
+const digest = (value: unknown) => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
+const PII_EVAL_METRICS = [
+  'benign-suppression-rate', 'context-discrimination-rate', 'jurisdiction-collision-rate', 'measurable-share',
+  'non-sensitive-flag-rate', 'range-collateral-rate', 'sensitive-miss-rate', 'type-miss-rate',
+  'wrong-family-rate', 'wrong-jurisdiction-rate',
+] as const;
+
+function validPiiEvalIdentity(value: Record<string, unknown>, scannerId: string) {
+  if (!exact(value, ['activationDigest', 'adapter', 'artifactDigest', 'configurationDigest', 'product', 'scannerId', 'scannerVersion']) ||
+      value.scannerId !== scannerId || !digest(value.activationDigest) || !digest(value.artifactDigest) || !digest(value.configurationDigest) ||
+      typeof value.scannerVersion !== 'string' || !value.scannerVersion || !exact(value.adapter, ['adapterId', 'adapterVersion', 'normalizationVersion'])) return false;
+  const adapter = value.adapter as Record<string, unknown>;
+  if (typeof adapter.adapterId !== 'string' || typeof adapter.adapterVersion !== 'string' ||
+      !Number.isInteger(adapter.normalizationVersion) || (adapter.normalizationVersion as number) < 0) return false;
+  const product = value.product as Record<string, unknown>;
+  return exact(product, ['kind']) && product.kind === 'released' ||
+    exact(product, ['candidateDigest', 'kind']) && product.kind === 'candidate' && digest(product.candidateDigest) && product.candidateDigest === value.artifactDigest;
+}
+
+function validScaledDecimal(value: unknown) {
+  if (!exact(value, ['mantissa', 'scale'])) return false;
+  const decimal = value as Record<string, unknown>;
+  return Number.isSafeInteger(decimal.mantissa) && (decimal.mantissa as number) >= 0 &&
+    Number.isSafeInteger(decimal.scale) && (decimal.scale as number) >= 0 && (decimal.scale as number) <= 18 &&
+    (decimal.mantissa as number) <= 10 ** (decimal.scale as number);
+}
+
+function validPiiEvalMetric(value: unknown) {
+  if (!exact(value, ['counts', 'effectiveN', 'metric', 'status', 'value'])) return false;
+  const row = value as Record<string, unknown>, metric = row.metric as Record<string, unknown>, counts = row.counts as Record<string, unknown>;
+  const countFields = ['eligible', 'measured', 'notApplicable', 'notMeasured', 'numerator', 'total', 'unresolved'];
+  if (!exact(metric, ['id', 'version']) || !PII_EVAL_METRICS.includes(metric.id as typeof PII_EVAL_METRICS[number]) || metric.version !== 1 ||
+      !exact(counts, countFields) || countFields.some(field => !Number.isSafeInteger(counts[field]) || (counts[field] as number) < 0) ||
+      !Number.isSafeInteger(row.effectiveN) || (row.effectiveN as number) < 0 ||
+      !['measured', 'partial', 'unresolved', 'not-measured', 'not-applicable'].includes(row.status as string) ||
+      counts.total !== (counts.eligible as number) + (counts.notApplicable as number) ||
+      counts.eligible !== (counts.measured as number) + (counts.unresolved as number) + (counts.notMeasured as number) ||
+      (counts.numerator as number) > (counts.measured as number)) return false;
+  const result = row.value as Record<string, unknown>;
+  return exact(result, ['bound', 'point', 'state']) && result.state === 'measured' && validScaledDecimal(result.point) && validScaledDecimal(result.bound) ||
+    exact(result, ['reason', 'state']) && result.state === 'withheld' &&
+      ['zero-denominator', 'insufficient-evidence'].includes(result.reason as string);
+}
+
+function validatePiiEvalMeasurement(value: PiiEvalMeasurement): PiiEvalMeasurement {
+  const unavailable = 'schema-1.1-does-not-carry';
+  if (value.schema !== 'pii-eval-consumer-report/1' || value.complete !== true || value.decision !== 'none' || value.pooling !== 'none' ||
+      value.rejections.length !== 0 || value.build.repository !== 'redact-secret/pii-eval' || !/^[a-f0-9]{40}$/.test(value.build.commit) ||
+      ![value.build.cargoLockSha256, value.build.binarySha256, value.build.sourceArchiveSha256].every(digest) ||
+      value.build.binding !== 'out-of-band-build-provenance' || !value.populations.length ||
+      new Set(value.populations.map(row => row.populationId)).size !== value.populations.length || value.populations.some(row =>
+        row.status !== 'accepted' || row.populationId !== row.population.populationId || row.population.visibility !== 'public-synthetic' ||
+        !digest(row.artifactDigest) || !Number.isInteger(row.population.populationVersion) || !digest(row.population.populationDigest) ||
+        Object.values(row.populationCounts).some(count => !Number.isInteger(count) || count < 0) || !row.scanners.length ||
+        row.scanners.some(scanner => scanner.status !== 'complete' || !validPiiEvalIdentity(scanner.identity, scanner.scannerId) ||
+          scanner.metrics.length !== 10 || new Set(scanner.metrics.map(metric => (metric as { metric?: { id?: string } }).metric?.id)).size !== 10 ||
+          scanner.metrics.some(metric => !validPiiEvalMetric(metric))) ||
+        Object.values(row.unavailable).some(state => state !== unavailable))) throw new Error('Invalid pii-eval measurement evidence');
+  return structuredClone(value);
+}
 
 function validateFamily(row: PiiSupportFamily) {
   const jurisdiction = row.scope === 'global' ? null : /^jurisdiction:([A-Z]{2})$/.exec(row.scope)?.[1] ?? null;
@@ -157,6 +232,7 @@ function assemble(options: PiiSupportBuildOptions): PiiSupportMatrixV2 {
     inputs = options.populations ?? defaultPopulations();
   const product = options.product ? validatePiiProductBinding(options.product, registry.families.map(row => row.family)) : null;
   const route = options.protectedRoute ? structuredClone(options.protectedRoute) : null;
+  const piiEvalMeasurement = options.piiEvalMeasurement ? validatePiiEvalMeasurement(options.piiEvalMeasurement) : null;
   if (route) {
     const reviewed = piiReviewedProtectedRoute(route.id);
     if (!reviewed || JSON.stringify(canonical(reviewed)) !== JSON.stringify(canonical(route))) throw new Error('PII protected route is not a reviewed binding');
@@ -224,7 +300,8 @@ function assemble(options: PiiSupportBuildOptions): PiiSupportMatrixV2 {
     registryCommitment: registry.contentCommitment, activationContract: { ...PII_ACTIVATION_CONTRACT, productArtifact: product ? 'trusted' : 'not-measured',
       productSourceCommit: product?.sourceCommit ?? null, productArtifactCommitment: product?.artifactCommitment ?? null,
       candidateEvidenceCommitment: product?.candidateEvidenceCommitment ?? null, activationArtifactCommitment: product?.activationArtifactCommitment ?? null },
-    populationReports, populationComparisons, distribution, ...(route ? { protectedRoute: route } : {}), families, artifactCommitment: '0'.repeat(64) };
+    populationReports, populationComparisons, distribution, ...(route ? { protectedRoute: route } : {}),
+    ...(piiEvalMeasurement ? { piiEvalMeasurement } : {}), families, artifactCommitment: '0'.repeat(64) };
   matrix.artifactCommitment = piiSupportMatrixV2Commitment(matrix);
   return matrix;
 }
@@ -244,8 +321,9 @@ export function validatePiiSupportMatrixV2(value: unknown, bindings?: PiiSupport
       new Set(matrix.families.map(row => row.family)).size !== matrix.families.length ||
       Object.entries(matrix.distribution).some(([status, count]) => matrix.families.filter(row => row.status.state === status).length !== count) ||
       matrix.families.some(row => row.activation.selector !== selector(row.family) || row.status.profile.id !== 'pii-v1' || row.status.profile.version !== 1) ||
-      /RAW-CANARY|SYNTHETIC-PERSON-ID|"(?:content|candidate|seed|fixture|path|raw|caseId|variant)"/i.test(JSON.stringify(matrix)))
+      /RAW-CANARY|SYNTHETIC-PERSON-ID|"(?:content|candidate|seed|fixture|path|raw|caseId|variant)"\s*:/i.test(JSON.stringify(matrix)))
     throw new Error('Inconsistent or unsafe PII support-matrix v2');
+  if (matrix.piiEvalMeasurement) validatePiiEvalMeasurement(matrix.piiEvalMeasurement);
   const hasPopulationClaim = matrix.populationReports.some(row => row.status === 'measured' || row.status === 'partial') ||
     matrix.families.some(row => row.populationEvidence.some(entry => entry.status === 'measured' || entry.status === 'partial'));
   const publicComparisonBinding = matrix.populationComparisons.every(comparison => comparison.status === 'compared' && comparison.candidateObservation &&
@@ -261,7 +339,8 @@ export function validatePiiSupportMatrixV2(value: unknown, bindings?: PiiSupport
     const routeValue = (matrix as { protectedRoute?: unknown }).protectedRoute;
     const reviewedRoute = routeValue === undefined ? undefined : piiReviewedProtectedRoute((routeValue as { id?: unknown })?.id);
     if (reviewedRoute === null) throw new Error('PII protected route is not a reviewed binding');
-    const canonicalEmpty = assemble({ registry, ...(reviewedRoute ? { protectedRoute: reviewedRoute } : {}) });
+    const canonicalEmpty = assemble({ registry, ...(reviewedRoute ? { protectedRoute: reviewedRoute } : {}),
+      ...(matrix.piiEvalMeasurement ? { piiEvalMeasurement: matrix.piiEvalMeasurement } : {}) });
     const withoutComparisons = (candidate: PiiSupportMatrixV2) => {
       const { populationComparisons: _comparisons, artifactCommitment: _commitment, ...rest } = candidate; return rest;
     };

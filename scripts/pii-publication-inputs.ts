@@ -4,6 +4,7 @@ import { piiBenignCollisionEvidence } from '../benchmarks/evaluation/domains/pii
 import { piiPopulationContract, type PiiPopulationReport } from '../benchmarks/evaluation/domains/pii/populations.ts';
 import type { PiiAccountingRow } from '../benchmarks/evaluation/domains/pii/accounting.ts';
 import type { PiiTrustedProductBinding } from '../benchmarks/evaluation/domains/pii/product-binding.ts';
+import type { PiiEvalMeasurement } from '../benchmarks/evaluation/domains/pii/support-v2.ts';
 
 /**
  * Inputs one PII support publication may bind. Both describe one product: the
@@ -13,6 +14,17 @@ import type { PiiTrustedProductBinding } from '../benchmarks/evaluation/domains/
  * Anything else stays not-measured rather than describing another build.
  */
 export interface PiiMeasuredProduct { sourceCommit: string; coreSha256: string }
+
+/** Validate public pii-eval artifacts independently and project only their scanner-neutral evidence. */
+export async function piiEvalMeasurementFrom(pinsFile: string, artifactFiles: string[]): Promise<PiiEvalMeasurement> {
+  if (!artifactFiles.length) throw new Error('At least one pii-eval artifact is required');
+  const { loadPins, consume } = await import('../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs');
+  const pins = loadPins(await readFile(pinsFile, 'utf8'));
+  const artifacts = await Promise.all(artifactFiles.map(async file => ({ name: path.basename(file), text: await readFile(file, 'utf8') })));
+  const report = consume(pins, artifacts);
+  if (!report.complete) throw new Error(`pii-eval artifact validation failed: ${report.rejections.flatMap((row: any) => row.reasons.map((reason: any) => reason.code)).join(',') || 'pinned population missing'}`);
+  return report as PiiEvalMeasurement;
+}
 
 const EVIDENCE_FILES = { candidateEvidence: 'candidate-evidence-v1.json', activationArtifact: 'pii-activation-evidence-v1.json',
   qualificationArtifact: 'pii-family-qualification-v1.json' } as const;

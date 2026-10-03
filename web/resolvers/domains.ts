@@ -17,7 +17,7 @@ export const DOMAIN_HREF: Record<DomainId, string> = { credential: '/evaluation/
 const REPO = 'https://github.com/redact-secret/redact-secret-benchmarks';
 const blob = (path: string): string => `${REPO}/blob/develop/${path}`;
 const issue = (number: number) => ({ number, href: `${REPO}/issues/${number}` });
-const ISSUES = { activation: 615, population: 616, methods: 617, metrics: 618, policyHoldout: 619, accuracyCorpus: 576 } as const;
+const ISSUES = { activation: 615, population: 616, methods: 617, metrics: 618, policyHoldout: 619, accuracyCorpus: 576, piiEval: 665 } as const;
 
 const pair = [{ label: 'Credential', href: DOMAIN_HREF.credential }, { label: 'PII', href: DOMAIN_HREF.pii }];
 /** The first crumb is the Evaluation hub (#614). */
@@ -125,6 +125,7 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
   const families = recorded?.families ?? [];
   const jurisdictional = families.filter(f => f.jurisdiction !== null);
   const protectedTotal = families.length > 0 && families.every(f => f.protectedRun.cases !== null) ? families.reduce((sum, f) => sum + (f.protectedRun.cases ?? 0), 0) : null;
+  const piiEval = recorded?.piiEvalMeasurement ?? null;
 
   const glance: GlanceItem[] = [
     {
@@ -199,6 +200,13 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
         recorded.populationComparisons.every(c => c.verdict === 'not-measured')
           ? { id: 'population', label: 'Population comparison', status: 'not-measured', statusWord: 'Not measured', detail: 'No bound baseline and candidate bundle is published.', link: { label: `#${ISSUES.population}`, href: issue(ISSUES.population).href, external: true } }
           : { id: 'population', label: 'Population comparison', status: 'info', statusWord: 'Recorded', value: recorded.populationComparisons.map(c => `${c.id}: ${c.verdict}`).join(', '), detail: 'A bound comparison is published.' },
+        piiEval
+          ? { id: 'pii-eval', label: 'pii-eval artifact', status: 'info', statusWord: 'Validated',
+              value: `${int(piiEval.populations.length)} public ${piiEval.populations.length === 1 ? 'population' : 'populations'} · 10 metrics each`,
+              detail: `Schema 1.1 preserves every numerator, denominator, interval and withheld state. Family/view, language, control-class and official/exploratory projections are unavailable in that schema, so this evidence does not change a family status. Engine ${piiEval.build.commit.slice(0, 12)}; binary ${piiEval.build.binarySha256.slice(0, 12)}.`,
+              link: { label: `#${ISSUES.piiEval}`, href: issue(ISSUES.piiEval).href, external: true } }
+          : { id: 'pii-eval', label: 'pii-eval artifact', status: 'not-measured', statusWord: 'Not recorded',
+              detail: 'No validated public-synthetic pii-eval artifact is bound to this publication.', link: { label: `#${ISSUES.piiEval}`, href: issue(ISSUES.piiEval).href, external: true } },
         { id: 'stable', label: 'Stable', status: recorded.distribution.stable > 0 ? 'info' : 'not-measured', statusWord: recorded.distribution.stable > 0 ? 'Recorded' : 'None recorded', value: `${int(recorded.distribution.stable)} ${recorded.distribution.stable === 1 ? 'family' : 'families'}`, detail: `The ${recorded.route.id} route cannot give stable.` },
       ],
     });
@@ -240,7 +248,9 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
       methods: piiStatic.methods,
       metrics: {
         summary: `The ${int(recorded?.metrics.length ?? 10)} pii-v1 metrics`,
-        text: `Each metric is read against its own population. None is combined with another or with a credential metric. Their values are not on this page (#${ISSUES.metrics}).`,
+        text: piiEval
+          ? `Each validated pii-eval population keeps all ten numerator/denominator and interval or withheld results separate. Schema 1.1 has no family/view projection, so those values are not presented as family qualification (#${ISSUES.metrics}).`
+          : `Each metric is read against its own population. None is combined with another or with a credential metric. Their values are not on this page (#${ISSUES.metrics}).`,
         rows: (recorded?.metrics ?? []).map(m => ({ id: m.id, population: m.population, counts: `${m.numerator}, of ${m.denominator}`, better: m.direction === 'upper' ? 'Lower' : 'Higher' })),
       },
       recorded: {

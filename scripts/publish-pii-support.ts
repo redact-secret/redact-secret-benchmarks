@@ -5,15 +5,16 @@ import { fileURLToPath } from 'node:url';
 import { evaluationProblem } from '../src/evaluation-model.ts';
 import { supportMatrixProblem } from '../src/support-model.ts';
 import { buildPiiSupportMatrixV2, validatePiiSupportMatrixV2, type PiiSupportBuildOptions } from '../benchmarks/evaluation/domains/pii/support-v2.ts';
-import { populationBindingsFrom, productEvidenceFor, type PiiMeasuredProduct } from './pii-publication-inputs.ts';
+import { piiEvalMeasurementFrom, populationBindingsFrom, productEvidenceFor, type PiiMeasuredProduct } from './pii-publication-inputs.ts';
 import { bindPiiProtectedSupport } from '../benchmarks/evaluation/domains/pii/protected-support-binding.ts';
 import { buildEvaluationDomainsV2, evaluationDomainsV2Problem } from '../src/evaluation-domains-v2.ts';
 import { publishArtifactAndIndex } from './atomic-publication.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const options = Object.fromEntries(process.argv.slice(2).map(arg => {
-  const match = /^--(evaluation|credential-support|pii-directory|output|population-bundle|population-mode|product-commit|product-core|evidence-root)=(.+)$/.exec(arg);
-  if (!match) throw new Error('Usage: npm run eval:publish:pii-support -- [--evaluation=...] [--credential-support=...] [--pii-directory=...] [--output=...] [--product-commit=<sha> --product-core=<core.tgz>] (--population-bundle=... | --population-mode=not-measured)');
+const args = process.argv.slice(2), piiEvalArtifacts = args.flatMap(arg => /^--pii-eval-artifact=(.+)$/.exec(arg)?.[1] ?? []);
+const options = Object.fromEntries(args.filter(arg => !arg.startsWith('--pii-eval-artifact=')).map(arg => {
+  const match = /^--(evaluation|credential-support|pii-directory|output|population-bundle|population-mode|product-commit|product-core|evidence-root|pii-eval-pins)=(.+)$/.exec(arg);
+  if (!match) throw new Error('Usage: npm run eval:publish:pii-support -- [--evaluation=...] [--credential-support=...] [--pii-directory=...] [--output=...] [--product-commit=<sha> --product-core=<core.tgz>] [--pii-eval-pins=<pins> --pii-eval-artifact=<artifact>...] (--population-bundle=... | --population-mode=not-measured)');
   return [match[1], match[2]];
 }));
 const location = (key: string, fallback: string) => path.resolve(root, options[key] ?? fallback);
@@ -31,10 +32,12 @@ if (hasBundle === (options['population-mode'] === 'not-measured'))
   throw new Error('Choose exactly one of --population-bundle or --population-mode=not-measured');
 if (!hasBundle && options['population-mode'] !== 'not-measured') throw new Error('Unknown PII population publication mode');
 if (Boolean(options['product-commit']) !== Boolean(options['product-core'])) throw new Error('Pass --product-commit and --product-core together');
+if (Boolean(options['pii-eval-pins']) !== Boolean(piiEvalArtifacts.length)) throw new Error('Pass --pii-eval-pins and at least one --pii-eval-artifact together');
 // The one product this publication measured (staging's qualified candidate). Production measures the release and passes none.
 const product: PiiMeasuredProduct | null = options['product-commit'] ? { sourceCommit: options['product-commit'],
   coreSha256: createHash('sha256').update(await readFile(location('product-core', ''))).digest('hex') } : null;
 const bindings: PiiSupportBuildOptions = {};
+if (options['pii-eval-pins']) bindings.piiEvalMeasurement = await piiEvalMeasurementFrom(location('pii-eval-pins', ''), piiEvalArtifacts.map(file => path.resolve(root, file)));
 if (product) {
   const recorded = await productEvidenceFor(product, location('evidence-root', 'evidence'));
   if (recorded) { bindings.product = recorded.binding; console.log(`PII product activation: bound ${path.relative(root, recorded.directory)} for ${product.sourceCommit}`); }

@@ -72,6 +72,7 @@
     "official-runs:check": "node --import tsx scripts/check-official-runs.mjs",
     "authority:check": "node --import tsx scripts/check-qualification-authority.mjs",
     "pii:migration:check": "node scripts/check-pii-eval-migration.mjs",
+    "pii:artifact:check": "node benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs --pins tests/fixtures/pii-eval/pins.json tests/fixtures/pii-eval/population-a-v2.public-synthetic-artifact.json tests/fixtures/pii-eval/population-b-v1.public-synthetic-artifact.json",
     "official-runs:record": "node --import tsx scripts/record-official-run.mjs",
     "qualification:axis-overlay": "node --import tsx scripts/build-axis-overlay.ts",
     "qualification:twin-scope": "node --import tsx scripts/build-twin-scope-map.ts",

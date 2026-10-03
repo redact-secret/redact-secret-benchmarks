@@ -33,10 +33,23 @@ That run is not benchmark population acceptance. The benchmark record separately
 
 Protected evidence is never read from private-ledger. The benchmark consumer accepts only bounded canonical custodian envelopes with signed v2 destination binding and a valid current feed. A signature establishes origin and integrity, not independent ground truth; the projection's configuration is not signed because the projection contract does not contain it.
 
+## Public artifact consumer
+
+`benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs` is benchmark-owned and imports no evaluator implementation. It validates the exact upstream 1.1 JSON Schema, strict JSON structure and bounds, the upstream semantic-digest construction, engine/build provenance, candidate-versus-release identity, scanner/configuration/activation/population/manifest pins, completeness, supersession and all ten metrics. Populations and their denominators remain separate. The accepted projection can be bound to `pii-support-matrix-v2` by `scripts/publish-pii-support.ts`; it is committed by the matrix digest and read back by the Next service.
+
+The pinned local build at `pii-eval` `6157cbc5918b3888c8e84b1884719ea8f3278b36` produced:
+
+- Cargo.lock SHA-256 `e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a`;
+- source archive SHA-256 `e86756f8a556af326c712f1abdaca3624fdae2f59dd924a497791892c2b0b6e1`;
+- macOS local verification binary SHA-256 `532b51347ae8696d444d7cf35b11ce00f975444a29f8ebc22a59f78c120bce26`.
+
+That binary hash identifies this reproducible local verification only; it is not a canonical Linux Actions artifact. CI validates committed synthetic artifacts and policy, but does not execute a measurement run. Schema 1.1 lacks family/view projections, language/control-class breakdowns, population views and official/exploratory mode, so the matrix and UI show those fields as explicitly unavailable and the artifact cannot change a family verdict.
+
 ## Commands
 
 ```sh
 npm run pii:migration:check
+npm run pii:artifact:check
 npm test -- --test-name-pattern='PII migration'
 
 # At the pinned pii-eval checkout, scanner-free parity evidence:
@@ -45,6 +58,14 @@ cargo test -p pii-eval-cli --locked --test oracle_parity --test oracle_parity_cl
 # A local immutable engine build when cross-repository artifact access is unavailable:
 cargo build --release --locked
 shasum -a 256 Cargo.lock target/release/pii-eval
+git archive --format=tar 6157cbc5918b3888c8e84b1884719ea8f3278b36 | shasum -a 256
+
+# Bind already-produced, pinned public artifacts to a candidate publication.
+npm run eval:publish:pii-support -- \
+  --pii-eval-pins=tests/fixtures/pii-eval/pins.json \
+  --pii-eval-artifact=tests/fixtures/pii-eval/population-a-v2.public-synthetic-artifact.json \
+  --pii-eval-artifact=tests/fixtures/pii-eval/population-b-v1.public-synthetic-artifact.json \
+  --population-mode=not-measured
 ```
 
 Cross-repository Actions artifacts require an explicit token or GitHub App installation with `actions:read` on the private `pii-eval` repository; another repository's `GITHUB_TOKEN` is insufficient. No credential or access setting is created by this integration.

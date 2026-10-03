@@ -1,0 +1,10 @@
+version: 2
+
+# The pin files record public commit ids (a 40-hex `revision`) that GitGuardian's
+# generic detector reads as secrets. They hold no credentials. Fixtures, baselines
+# and evidence stay scanned.
+secret:
+  ignored_paths:
+    - benchmarks/pin-manifest.json
+    - benchmarks/detector-inventory.json
+    - benchmarks/detectors.json

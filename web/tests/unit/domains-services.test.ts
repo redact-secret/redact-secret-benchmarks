@@ -9,7 +9,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { PII_METRIC_IDS } from '../../../benchmarks/evaluation/domains/pii/profile';
 import { piiCurrentProtectedRoute } from '../../../benchmarks/evaluation/domains/pii/support-semantics';
 import { buildPiiSupportMatrixV2 } from '../../../benchmarks/evaluation/domains/pii/support-v2';
-import { piiEvalMeasurementFrom } from '../../../scripts/pii-publication-inputs';
+import { custodianConformanceFrom, piiEvalMeasurementFrom } from '../../../scripts/pii-publication-inputs';
 import { buildEvaluationDomainsV2, domainDescriptorV2 } from '../../../src/evaluation-domains-v2';
 import { REAL_ROOT as REAL, overlay } from './overlay';
 
@@ -60,7 +60,8 @@ describe('PII evaluation', () => {
       `${REAL}/tests/fixtures/pii-eval/population-a-v2.public-synthetic-artifact.json`,
       `${REAL}/tests/fixtures/pii-eval/population-b-v1.public-synthetic-artifact.json`,
     ]);
-    const matrix = buildPiiSupportMatrixV2({ piiEvalMeasurement: measurement });
+    const custodianConformance = await custodianConformanceFrom(`${REAL}/tests/fixtures/custodian/synthetic-pii-bundle.json`);
+    const matrix = buildPiiSupportMatrixV2({ piiEvalMeasurement: measurement, custodianConformance });
     const index = buildEvaluationDomainsV2(matrix.artifactCommitment);
     const descriptor = domainDescriptorV2(index, 'pii');
     if (!descriptor?.support.href) throw new Error('PII descriptor did not bind its support artifact');
@@ -72,6 +73,7 @@ describe('PII evaluation', () => {
     if (pii.state !== 'recorded') throw new Error(pii.reason);
     expect(pii.piiEvalMeasurement?.complete).toBe(true);
     expect(pii.piiEvalMeasurement?.populations.every(population => population.scanners[0].metrics.length === 10)).toBe(true);
+    expect(pii.custodianConformance).toMatchObject({ syntheticConformance: true, supportClaims: false, qualification: 'not-live-support-evidence' });
   });
 });
 

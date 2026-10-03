@@ -51,6 +51,16 @@ export interface PiiEvalMeasurement {
       languageBreakdown: 'schema-1.1-does-not-carry'; controlClassBreakdown: 'schema-1.1-does-not-carry';
       officialOrExploratoryMode: 'schema-1.1-does-not-carry' } }>;
 }
+export interface CustodianConformance {
+  schema: 'redact-secret-benchmarks.custodian-conformance/1'; syntheticConformance: true; supportClaims: false;
+  source: { repository: 'redact-secret/private-custodian'; commit: string }; bundleSha256: string;
+  candidateDigest: string; configurationDigest: string; configurationBinding: 'bridge-request-only-not-signed-projection'; destination: string;
+  feed: { feedId: string; sequence: number; freshUntil: number };
+  projections: Array<{ digest: string; projectionId: string; receiptId: string; population: Record<string, unknown>;
+    policy: Record<string, unknown>; standing: 'valid'; destinationBinding: 'destination-bound'; attestation: Record<string, unknown>;
+    cells: Array<{ metric: string; stratum: string; value: { state: 'suppressed' } | { state: 'reported'; numerator: number; denominator: number } }> }>;
+  qualification: 'not-live-support-evidence'; reason: 'synthetic-signature-conformance-is-not-independent-ground-truth';
+}
 export interface PiiSupportBuildOptions {
   registry?: PiiSupportRegistry;
   populations?: readonly PopulationInput[];
@@ -60,6 +70,8 @@ export interface PiiSupportBuildOptions {
   protectedRoute?: PiiProtectedRoute;
   /** Strictly validated scanner-neutral evidence. It cannot change a family verdict while schema 1.1 lacks family projections. */
   piiEvalMeasurement?: PiiEvalMeasurement;
+  /** Synthetic signature/revocation conformance only. It is never live protected support evidence. */
+  custodianConformance?: CustodianConformance;
 }
 export interface PiiSupportMatrixV2 {
   schemaVersion: 2; reportType: 'pii-support-matrix'; supportClaims: false; domain: 'pii'; evaluationProfile: 'pii-v1';
@@ -80,6 +92,7 @@ export interface PiiSupportMatrixV2 {
   }>;
   distribution: Record<PiiSupportStatus, number>;
   piiEvalMeasurement?: PiiEvalMeasurement;
+  custodianConformance?: CustodianConformance;
   protectedRoute?: PiiProtectedRoute;
   families: Array<PiiSupportFamily & {
     activation: { state: 'not-measured' | 'available' | 'unavailable' | 'explicitly-unsupported'; selector: string; activationIdentity: string | null; productArtifactCommitment: string | null };
@@ -160,6 +173,20 @@ function validatePiiEvalMeasurement(value: PiiEvalMeasurement): PiiEvalMeasureme
   return structuredClone(value);
 }
 
+function validateCustodianConformance(value: CustodianConformance): CustodianConformance {
+  if (value.schema !== 'redact-secret-benchmarks.custodian-conformance/1' || value.syntheticConformance !== true || value.supportClaims !== false ||
+      value.source.repository !== 'redact-secret/private-custodian' || !/^[a-f0-9]{40}$/.test(value.source.commit) || !digest(value.bundleSha256) ||
+      !/^sha256:[a-f0-9]{64}$/.test(value.candidateDigest) || !/^sha256:[a-f0-9]{64}$/.test(value.configurationDigest) ||
+      value.configurationBinding !== 'bridge-request-only-not-signed-projection' || !value.projections.length ||
+      value.qualification !== 'not-live-support-evidence' || value.reason !== 'synthetic-signature-conformance-is-not-independent-ground-truth' ||
+      value.projections.some(projection => projection.standing !== 'valid' || projection.destinationBinding !== 'destination-bound' ||
+        projection.attestation.ground_truth !== 'not_established' || projection.attestation.organisational_independence !== 'not_claimed' ||
+        projection.cells.some(cell => cell.value.state === 'reported' &&
+          (!Number.isSafeInteger(cell.value.numerator) || !Number.isSafeInteger(cell.value.denominator) || cell.value.numerator < 0 ||
+            cell.value.denominator < 0 || cell.value.numerator > cell.value.denominator)))) throw new Error('Invalid custodian conformance evidence');
+  return structuredClone(value);
+}
+
 function validateFamily(row: PiiSupportFamily) {
   const jurisdiction = row.scope === 'global' ? null : /^jurisdiction:([A-Z]{2})$/.exec(row.scope)?.[1] ?? null;
   if (!exact(row, ['family', 'displayName', 'identityDomain', 'familyContractVersion', 'scope', 'jurisdiction', 'qualificationProfile', 'authority', 'contextObligation', 'validatorApplicable']) ||
@@ -233,6 +260,7 @@ function assemble(options: PiiSupportBuildOptions): PiiSupportMatrixV2 {
   const product = options.product ? validatePiiProductBinding(options.product, registry.families.map(row => row.family)) : null;
   const route = options.protectedRoute ? structuredClone(options.protectedRoute) : null;
   const piiEvalMeasurement = options.piiEvalMeasurement ? validatePiiEvalMeasurement(options.piiEvalMeasurement) : null;
+  const custodianConformance = options.custodianConformance ? validateCustodianConformance(options.custodianConformance) : null;
   if (route) {
     const reviewed = piiReviewedProtectedRoute(route.id);
     if (!reviewed || JSON.stringify(canonical(reviewed)) !== JSON.stringify(canonical(route))) throw new Error('PII protected route is not a reviewed binding');
@@ -301,7 +329,8 @@ function assemble(options: PiiSupportBuildOptions): PiiSupportMatrixV2 {
       productSourceCommit: product?.sourceCommit ?? null, productArtifactCommitment: product?.artifactCommitment ?? null,
       candidateEvidenceCommitment: product?.candidateEvidenceCommitment ?? null, activationArtifactCommitment: product?.activationArtifactCommitment ?? null },
     populationReports, populationComparisons, distribution, ...(route ? { protectedRoute: route } : {}),
-    ...(piiEvalMeasurement ? { piiEvalMeasurement } : {}), families, artifactCommitment: '0'.repeat(64) };
+    ...(piiEvalMeasurement ? { piiEvalMeasurement } : {}), ...(custodianConformance ? { custodianConformance } : {}),
+    families, artifactCommitment: '0'.repeat(64) };
   matrix.artifactCommitment = piiSupportMatrixV2Commitment(matrix);
   return matrix;
 }
@@ -324,6 +353,7 @@ export function validatePiiSupportMatrixV2(value: unknown, bindings?: PiiSupport
       /RAW-CANARY|SYNTHETIC-PERSON-ID|"(?:content|candidate|seed|fixture|path|raw|caseId|variant)"\s*:/i.test(JSON.stringify(matrix)))
     throw new Error('Inconsistent or unsafe PII support-matrix v2');
   if (matrix.piiEvalMeasurement) validatePiiEvalMeasurement(matrix.piiEvalMeasurement);
+  if (matrix.custodianConformance) validateCustodianConformance(matrix.custodianConformance);
   const hasPopulationClaim = matrix.populationReports.some(row => row.status === 'measured' || row.status === 'partial') ||
     matrix.families.some(row => row.populationEvidence.some(entry => entry.status === 'measured' || entry.status === 'partial'));
   const publicComparisonBinding = matrix.populationComparisons.every(comparison => comparison.status === 'compared' && comparison.candidateObservation &&
@@ -340,7 +370,8 @@ export function validatePiiSupportMatrixV2(value: unknown, bindings?: PiiSupport
     const reviewedRoute = routeValue === undefined ? undefined : piiReviewedProtectedRoute((routeValue as { id?: unknown })?.id);
     if (reviewedRoute === null) throw new Error('PII protected route is not a reviewed binding');
     const canonicalEmpty = assemble({ registry, ...(reviewedRoute ? { protectedRoute: reviewedRoute } : {}),
-      ...(matrix.piiEvalMeasurement ? { piiEvalMeasurement: matrix.piiEvalMeasurement } : {}) });
+      ...(matrix.piiEvalMeasurement ? { piiEvalMeasurement: matrix.piiEvalMeasurement } : {}),
+      ...(matrix.custodianConformance ? { custodianConformance: matrix.custodianConformance } : {}) });
     const withoutComparisons = (candidate: PiiSupportMatrixV2) => {
       const { populationComparisons: _comparisons, artifactCommitment: _commitment, ...rest } = candidate; return rest;
     };

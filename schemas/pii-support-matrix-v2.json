@@ -30,10 +30,52 @@
     } },
     "protectedRoute": { "$ref": "#/$defs/protectedRoute" },
     "piiEvalMeasurement": { "$ref": "#/$defs/piiEvalMeasurement" },
+    "custodianConformance": { "$ref": "#/$defs/custodianConformance" },
     "families": { "type": "array", "items": { "$ref": "#/$defs/familyRow" } },
     "artifactCommitment": { "$ref": "#/$defs/digest" }
   },
   "$defs": {
+    "custodianConformance": { "type": "object", "additionalProperties": false,
+      "required": ["schema", "syntheticConformance", "supportClaims", "source", "bundleSha256", "candidateDigest", "configurationDigest", "configurationBinding", "destination", "feed", "projections", "qualification", "reason"], "properties": {
+        "schema": { "const": "redact-secret-benchmarks.custodian-conformance/1" }, "syntheticConformance": { "const": true }, "supportClaims": { "const": false },
+        "source": { "type": "object", "additionalProperties": false, "required": ["repository", "commit"], "properties": {
+          "repository": { "const": "redact-secret/private-custodian" }, "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" } } },
+        "bundleSha256": { "$ref": "#/$defs/digest" }, "candidateDigest": { "$ref": "#/$defs/custodianDigest" },
+        "configurationDigest": { "$ref": "#/$defs/custodianDigest" }, "configurationBinding": { "const": "bridge-request-only-not-signed-projection" },
+        "destination": { "$ref": "#/$defs/slug" },
+        "feed": { "type": "object", "additionalProperties": false, "required": ["feedId", "sequence", "freshUntil"], "properties": {
+          "feedId": { "type": "string", "pattern": "^fed_[a-z0-9]{16,64}$" }, "sequence": { "type": "integer", "minimum": 1 },
+          "freshUntil": { "type": "integer", "minimum": 0 } } },
+        "projections": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/custodianProjection" } },
+        "qualification": { "const": "not-live-support-evidence" },
+        "reason": { "const": "synthetic-signature-conformance-is-not-independent-ground-truth" }
+      } },
+    "custodianProjection": { "type": "object", "additionalProperties": false,
+      "required": ["digest", "projectionId", "receiptId", "population", "policy", "standing", "destinationBinding", "attestation", "cells"], "properties": {
+        "digest": { "$ref": "#/$defs/custodianDigest" }, "projectionId": { "type": "string", "pattern": "^prj_[a-z0-9]{16,64}$" },
+        "receiptId": { "type": "string", "pattern": "^rcp_[a-z0-9]{16,64}$" }, "population": { "$ref": "#/$defs/custodianPopulation" },
+        "policy": { "$ref": "#/$defs/custodianPolicy" }, "standing": { "const": "valid" }, "destinationBinding": { "const": "destination-bound" },
+        "attestation": { "$ref": "#/$defs/custodianAttestation" }, "cells": { "type": "array", "maxItems": 256, "items": { "$ref": "#/$defs/custodianCell" } }
+      } },
+    "custodianDigest": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "custodianPopulation": { "oneOf": [
+      { "type": "object", "additionalProperties": false, "required": ["kind", "id"], "properties": { "kind": { "const": "opaque" }, "id": { "type": "string", "pattern": "^ppr_[a-z0-9]{16,64}$" } } },
+      { "type": "object", "additionalProperties": false, "required": ["kind", "key_id", "commitment"], "properties": { "kind": { "const": "keyed" }, "key_id": { "type": "string", "pattern": "^key_[a-z0-9]{16,64}$" }, "commitment": { "type": "string", "pattern": "^hmac-sha256:[a-f0-9]{64}$" } } }
+    ] },
+    "custodianPolicy": { "type": "object", "additionalProperties": false, "required": ["domain", "kind", "name", "version"], "properties": {
+      "domain": { "const": "pii" }, "kind": { "const": "disclosure" }, "name": { "$ref": "#/$defs/slug" }, "version": { "type": "integer", "minimum": 1 } } },
+    "custodianAttestation": { "type": "object", "additionalProperties": false,
+      "required": ["independence", "role_separation", "organisational_independence", "authorship", "review", "ground_truth"], "properties": {
+        "independence": { "enum": ["public-control", "custodian-declared", "procedural-separation"] },
+        "role_separation": { "enum": ["single_operator_procedural", "distinct_principals"] }, "organisational_independence": { "const": "not_claimed" },
+        "authorship": { "enum": ["project_authored", "external_authored"] }, "review": { "enum": ["project_reviewed", "external_reviewed"] },
+        "ground_truth": { "const": "not_established" }
+      } },
+    "custodianCell": { "type": "object", "additionalProperties": false, "required": ["metric", "stratum", "value"], "properties": {
+      "metric": { "$ref": "#/$defs/slug" }, "stratum": { "$ref": "#/$defs/slug" }, "value": { "oneOf": [
+        { "type": "object", "additionalProperties": false, "required": ["state"], "properties": { "state": { "const": "suppressed" } } },
+        { "type": "object", "additionalProperties": false, "required": ["state", "numerator", "denominator"], "properties": { "state": { "const": "reported" }, "numerator": { "type": "integer", "minimum": 0 }, "denominator": { "type": "integer", "minimum": 0 } } }
+      ] } } },
     "piiEvalMeasurement": { "type": "object", "additionalProperties": false,
       "required": ["schema", "complete", "decision", "pooling", "build", "populations", "rejections"], "properties": {
         "schema": { "const": "pii-eval-consumer-report/1" }, "complete": { "const": true }, "decision": { "const": "none" }, "pooling": { "const": "none" },

@@ -93,6 +93,14 @@ describe('PII view', () => {
     expect(row.detail).toContain('does not change a family status');
   });
 
+  test('custodian conformance is visibly synthetic and never described as protected qualification', () => {
+    const custodianConformance = { projections: [{}], feed: { sequence: 2 } };
+    const row = rowsOf(resolvePiiView(pii({ custodianConformance }))).find(item => item.id === 'custodian-conformance');
+    expect(row.statusWord).toBe('Synthetic only');
+    expect(row.detail).toContain('not live protected evidence');
+    expect(row.detail).toContain('not signed in the projection');
+  });
+
   test('a view that is not bound is Not recorded in its cells, and a family with no protected count hides the total', () => {
     const v = resolvePiiView(pii({ families: [family('pii:global:a', { views: null, protectedRun: { state: 'not-recorded', reason: 'not-recorded', cases: null } })] }));
     expect(v.coverage.tables[0].rows[0].cells.every(c => c.figure === null)).toBe(true);

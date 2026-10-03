@@ -33,6 +33,12 @@ That run is not benchmark population acceptance. The benchmark record separately
 
 Protected evidence is never read from private-ledger. The benchmark consumer accepts only bounded canonical custodian envelopes with signed v2 destination binding and a valid current feed. A signature establishes origin and integrity, not independent ground truth; the projection's configuration is not signed because the projection contract does not contain it.
 
+`benchmarks/evaluation/domains/pii/custodian-consumer.mjs` implements that consumer at private-custodian `23f75304d4cf53fc8604379255bbf058f642daeb`. It strictly parses the bridge request/manifest, v2 projection and revocation envelopes; reproduces `custodian-canonical-json/1`; verifies Ed25519 with out-of-band key domain, purpose, validity and revocation pins; requires the signed destination; and checks exact domain, candidate, population, disclosure policy and feed identities. Feed sequence, replay, fork, previous-link, freshness, revocation, supersession and projection expiry are stateful, and every feed update re-evaluates accepted projections.
+
+The request/response, v2 projection and revocation schema SHA-256 pins and both upstream golden-vector hashes are recorded in `benchmarks/pii-eval-migration.json`. The synthetic bundle itself is pinned there as `d2dea176a0d785c8cdefa7403d72baa408410d853989fc03f46c4351642db508`.
+
+The committed bundle is public synthetic data signed by disposable test keys. Its support-matrix projection is always marked `syntheticConformance=true`, `supportClaims=false` and `qualification=not-live-support-evidence`; binding it cannot change any family status. The request's configuration digest is recorded as `bridge-request-only-not-signed-projection`, never described as a signed projection field. A real protected consumer remains blocked on a custodian catalog/transport, production v2 signing-key authorization and cross-repository artifact access; no protected run, private-ledger read or production key is part of this integration.
+
 ## Public artifact consumer
 
 `benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs` is benchmark-owned and imports no evaluator implementation. It validates the exact upstream 1.1 JSON Schema, strict JSON structure and bounds, the upstream semantic-digest construction, engine/build provenance, candidate-versus-release identity, scanner/configuration/activation/population/manifest pins, completeness, supersession and all ten metrics. Populations and their denominators remain separate. The accepted projection can be bound to `pii-support-matrix-v2` by `scripts/publish-pii-support.ts`; it is committed by the matrix digest and read back by the Next service.
@@ -50,6 +56,7 @@ That binary hash identifies this reproducible local verification only; it is not
 ```sh
 npm run pii:migration:check
 npm run pii:artifact:check
+npm run pii:custodian:check
 npm test -- --test-name-pattern='PII migration'
 
 # At the pinned pii-eval checkout, scanner-free parity evidence:

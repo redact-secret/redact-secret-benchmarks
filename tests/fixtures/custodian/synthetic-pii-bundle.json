@@ -1,0 +1,155 @@
+{
+  "schema": "redact-secret-benchmarks.synthetic-custodian-bundle/1",
+  "pins": {
+    "schema": "redact-secret-benchmarks.custodian-pins/1",
+    "source": { "repository": "redact-secret/private-custodian", "commit": "23f75304d4cf53fc8604379255bbf058f642daeb" },
+    "domain": "pii",
+    "feedId": "fed_piiintegration000001",
+    "destination": "benchmarks-pii",
+    "candidate": "sha256:eb3b4a9cdbd8920989f9d6c780a3ae4be78ed5fd55fd8c34f03a99089c7328ab",
+    "config": "sha256:29e2d9ad7695767a7a832dd29f9fa0652ec7ad8b8dc96f1ecf5a04be2c1da0fd",
+    "acceptedPopulations": [{ "kind": "opaque", "id": "ppr_piiintegration000001" }],
+    "acceptedPolicies": [{ "domain": "pii", "kind": "disclosure", "name": "synthetic-pii-v1", "version": 1 }],
+    "keys": [
+      {
+        "keyId": "key_projection00000001",
+        "publicKey": "407czYaYgsIzExJlzz2jNT38w-424bQ9Y6Ct5v9udoY",
+        "domains": ["private-custodian/v2/public-projection"],
+        "purposes": ["public-projection"],
+        "validFrom": 1800000000,
+        "validUntil": 2000000000
+      },
+      {
+        "keyId": "key_revocation00000001",
+        "publicKey": "A2i7oUhzvI-6M1NaJtGZqhdfZJKdc48KBKesG_Uxomg",
+        "domains": ["private-custodian/v1/revocation-envelope"],
+        "purposes": ["revocation-feed"],
+        "validFrom": 1800000000,
+        "validUntil": 2000000000
+      }
+    ]
+  },
+  "initial": {
+    "now": 1900000000,
+    "request": {
+      "schema": "private-custodian.bridge-request/1",
+      "domain": "pii",
+      "candidate": "sha256:eb3b4a9cdbd8920989f9d6c780a3ae4be78ed5fd55fd8c34f03a99089c7328ab",
+      "config": "sha256:29e2d9ad7695767a7a832dd29f9fa0652ec7ad8b8dc96f1ecf5a04be2c1da0fd",
+      "feed_id": "fed_piiintegration000001",
+      "known_sequence": 0,
+      "populations": [{ "kind": "opaque", "id": "ppr_piiintegration000001" }]
+    },
+    "manifest": {
+      "schema": "private-custodian.bridge-response/1",
+      "request_digest": "sha256:055efd43fc95512fe624f8d6f812bdea94be588e0dd7ab01bdb355645dcb4e5b",
+      "feed_id": "fed_piiintegration000001",
+      "destination": "benchmarks-pii",
+      "projections": ["sha256:b99a023f374697c5d22538fe70851ad49503f9f2563a97d3840895ba42402dda"],
+      "first_sequence": 1,
+      "last_sequence": 1
+    },
+    "projections": [
+      {
+        "payload": {
+          "schema": "private-custodian.public-projection/2",
+          "projection_id": "prj_piiintegration000001",
+          "receipt_id": "rcp_piiintegration000001",
+          "destination": "benchmarks-pii",
+          "domain": "pii",
+          "population": { "kind": "opaque", "id": "ppr_piiintegration000001" },
+          "candidate": "sha256:eb3b4a9cdbd8920989f9d6c780a3ae4be78ed5fd55fd8c34f03a99089c7328ab",
+          "engine": { "digest": "sha256:948aaf663c2b9ccac68ed9c35c5b379606818ad8c37498ff40ea076dc7ed6419", "name": "pii-eval", "version": "0.0.0" },
+          "protocol": { "domain": "pii", "name": "pii-v1", "version": "2" },
+          "scope_kind": "population_epoch",
+          "disclosure_policy": { "domain": "pii", "kind": "disclosure", "name": "synthetic-pii-v1", "version": 1 },
+          "attestation": {
+            "independence": "custodian-declared",
+            "role_separation": "single_operator_procedural",
+            "organisational_independence": "not_claimed",
+            "authorship": "project_authored",
+            "review": "project_reviewed",
+            "ground_truth": "not_established"
+          },
+          "cells": [
+            { "metric": "non-sensitive-flag-rate", "stratum": "pii-global-email", "value": { "state": "reported", "numerator": 0, "denominator": 20 } },
+            { "metric": "sensitive-miss-rate", "stratum": "pii-global-email", "value": { "state": "reported", "numerator": 1, "denominator": 20 } },
+            { "metric": "wrong-family-rate", "stratum": "pii-us-ssn", "value": { "state": "suppressed" } }
+          ],
+          "issued_at": 1899999900,
+          "fresh_until": 1900007200,
+          "revocation_feed": { "feed_id": "fed_piiintegration000001", "min_sequence": 1 }
+        },
+        "signature": {
+          "key_id": "key_projection00000001",
+          "algorithm": "ed25519",
+          "value": "5PLDGNtmEtUtw2LHdXeRfOrPQpBkBCPCgH4rTMY1e3DaZ8yFo6AhcRJpkSbWjron2nZ8jZOPJVhKr9DKDDvGDQ"
+        }
+      }
+    ],
+    "revocations": [
+      {
+        "payload": {
+          "schema": "private-custodian.revocation-envelope/1",
+          "feed_id": "fed_piiintegration000001",
+          "sequence": 1,
+          "issued_at": 1899999950,
+          "fresh_until": 1900003600,
+          "entries": []
+        },
+        "signature": {
+          "key_id": "key_revocation00000001",
+          "algorithm": "ed25519",
+          "value": "OevBkqVWywoiK8B5Zty6aYTiy82VXdxsmqzjtGIkMbaHiJHOivUOsM0j8glnp_IMfDIV_yTV4zIo5ziKb5OUCg"
+        }
+      }
+    ]
+  },
+  "revocationUpdate": {
+    "now": 1900000200,
+    "request": {
+      "schema": "private-custodian.bridge-request/1",
+      "domain": "pii",
+      "candidate": "sha256:eb3b4a9cdbd8920989f9d6c780a3ae4be78ed5fd55fd8c34f03a99089c7328ab",
+      "config": "sha256:29e2d9ad7695767a7a832dd29f9fa0652ec7ad8b8dc96f1ecf5a04be2c1da0fd",
+      "feed_id": "fed_piiintegration000001",
+      "known_sequence": 1,
+      "populations": [{ "kind": "opaque", "id": "ppr_piiintegration000001" }]
+    },
+    "manifest": {
+      "schema": "private-custodian.bridge-response/1",
+      "request_digest": "sha256:3ce228ca6c0f2bcb9ffef8059536231f4b3cc2f3999460b368ab804b7e63d6c4",
+      "feed_id": "fed_piiintegration000001",
+      "destination": "benchmarks-pii",
+      "projections": [],
+      "first_sequence": 2,
+      "last_sequence": 2
+    },
+    "projections": [],
+    "revocations": [
+      {
+        "payload": {
+          "schema": "private-custodian.revocation-envelope/1",
+          "feed_id": "fed_piiintegration000001",
+          "sequence": 2,
+          "previous": "sha256:1662402801cc5e2e1fcae14cb6d986bc8b16ca8fb17d1dddafdbbb1a03ca766c",
+          "issued_at": 1900000100,
+          "fresh_until": 1900003700,
+          "entries": [
+            {
+              "target": { "target": "projection", "projection_id": "prj_piiintegration000001" },
+              "action": { "action": "revoked" },
+              "reason": "error_correction",
+              "effective_at": 1900000100
+            }
+          ]
+        },
+        "signature": {
+          "key_id": "key_revocation00000001",
+          "algorithm": "ed25519",
+          "value": "IG4ITmUISdEe_VIozcIAky3ZgGNGkBBUr2aYP3U8Ifh9oTkAbCTHsLjDkIyRrakG1bE_VPTyXHyB3UTFBt6yAw"
+        }
+      }
+    ]
+  }
+}

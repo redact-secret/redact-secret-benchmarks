@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "reportType": "pii-eval-migration-acceptance",
+  "supportClaims": false,
+  "authorityChanged": false,
+  "pins": {
+    "benchmarksDevelop": "dd7674b22cd2989fb510b2f533ac32b6b172bf1e",
+    "oracle": "4b846967346505baca11e0b98cab1475fbce6773",
+    "piiEvalSource": "6157cbc5918b3888c8e84b1884719ea8f3278b36",
+    "piiEvalParityEvidence": "6bb0e750fb165d3b32620a51eb6ba0ca172202c8",
+    "piiEvalConsumerHandoff": "6646dd210b0928e3e4228496a45fbd99ad6b8536",
+    "piiEvalCargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+    "privateCustodian": "ae949fd0f08c8abef7dec5567aa2ba10f85dd1ab",
+    "privateLedger": "47f72be29dbb25e249451560eddc5f7043fadd20"
+  },
+  "engine": {
+    "name": "pii-eval",
+    "version": "0.0.0",
+    "artifactSchema": { "id": "pii-eval.public-synthetic-artifact", "version": "1.1" },
+    "protocol": { "id": "pii-v1", "revision": 2, "matching": "pii-v1-canonical", "accounting": "pii-v1-canonical-accounting", "statistics": "pii-v1-wilson-exact" },
+    "compatibilityProtocol": { "id": "pii-v1", "revision": 1, "matching": "legacy-first-overlap", "accounting": "legacy-accounting" },
+    "methods": [
+      { "id": "type-validation", "version": 2 },
+      { "id": "context-discrimination", "version": 2 },
+      { "id": "pii-benign", "version": 3 },
+      { "id": "jurisdiction-collision", "version": 3 },
+      { "id": "mutation", "version": 1 },
+      { "id": "reference-differential", "version": 1 },
+      { "id": "schema-only", "version": 1 }
+    ],
+    "metrics": ["type-miss-rate", "wrong-family-rate", "wrong-jurisdiction-rate", "sensitive-miss-rate", "non-sensitive-flag-rate", "context-discrimination-rate", "benign-suppression-rate", "jurisdiction-collision-rate", "range-collateral-rate", "measurable-share"],
+    "mechanics": { "minDenominator": 4, "replays": 2, "intervalZ": { "mantissa": 196, "scale": 2 }, "intervalPrecision": 6 },
+    "outcomeAxes": ["typeIdentity", "sensitivityContext"]
+  },
+  "scanner": {
+    "id": "redact-secret-core",
+    "adapter": { "id": "redact-secret-core-node", "version": "1.0.0", "normalizationVersion": 1 },
+    "releasedVersion": "0.1.0-beta.12",
+    "releasedTreeSha256": "726421636189573bc76024ecf23ec6bd1d71fef6d8272e5da1b3967dee036d03",
+    "configuration": { "detectorProfile": "full", "findingSource": "pii-domain-only", "offsetUnit": "utf16-code-units", "sanitizedOutput": true },
+    "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+    "activation": ["pii:global", "pii:us"],
+    "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3"
+  },
+  "upstreamParity": {
+    "population": "parity-synthetic",
+    "inputSha256": "f4ed904849e028c415490d852d0e655b8fc0b2331264b758c1922d641fd44333",
+    "oracleExportSha256": "338a3f466a4c9157a557c2084b83a466d5dea39893f2a79dc54c117301036082",
+    "reportSha256": "fd6cd0ce0d0e535965f59a62816741d215a8af8ec22effddcf71b9d9940dc478",
+    "cases": 37,
+    "variants": 54,
+    "compatibilityDifferences": 0,
+    "canonicalClassifications": { "intentional-contract-change": 85, "old-bug": 32, "compatibility-behavior": 85, "new-bug": 0, "unresolved": 0, "unexplained": 0 },
+    "deterministicSemanticDigest": true
+  },
+  "benchmarkPopulations": {
+    "planSet": "b11-population-v2",
+    "candidate": {
+      "kind": "candidate",
+      "sourceCommit": "401158d09a677b110fa60209256ba184b1f08f8f",
+      "version": "0.1.0-beta.13",
+      "artifactSetCommitment": "a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5"
+    },
+    "report": {
+      "path": "evidence/901/428/core-401158d09a67/pii-beta11-report-v2.json",
+      "sha256": "f1413ad3f7674c9b28d4dd62e2fc8f2b739eaeec76338c373cc508dcef90e59e"
+    },
+    "observation": {
+      "path": "evidence/901/428/core-401158d09a67/pii-beta11-observation-v2.json",
+      "sha256": "74d2c16dcf68c35b615ca96848f73fcc9eb4911350c582fcf0c680ecb198903f"
+    },
+    "plans": [
+      { "family": "pii:global:network-address", "path": "benchmarks/evaluation/domains/pii/network-address-population-plan-v2.json", "sha256": "a88583c4957cc1127a0a098ab2eb2c9fbe424fb908dc919ab23cb0e5a676ec5b" },
+      { "family": "pii:global:email", "path": "benchmarks/evaluation/domains/pii/email-population-plan-v3.json", "sha256": "7d7f06097369cac94456cc4a0bbfa11d14753b84a636393c21029108806dbd88" },
+      { "family": "pii:global:payment-card", "path": "benchmarks/evaluation/domains/pii/card-iban-stress/payment-card-stress-v2.json", "sha256": "b99ac5c9f78374424250e4fcdd0f889320ce7be3e7be5d1e31c6644e7e8b5b15" },
+      { "family": "pii:global:iban", "path": "benchmarks/evaluation/domains/pii/card-iban-stress/iban-stress-v2.json", "sha256": "69be8af4dbb1da127b19fe581828f62eaad5b220d67d8fe2809fd809f23d170f" },
+      { "family": "pii:us:ssn", "path": "benchmarks/evaluation/domains/pii/us-ssn-stress-v3.json", "sha256": "51179c9ea7d688043f91db44df68e5e1bf7fc6076b244ffd768716a1a5de6e22" },
+      { "family": "pii:global:phone", "path": "benchmarks/evaluation/domains/pii/phone-stress-v3.json", "sha256": "548a7504af661b926d3e187526ffd123af1780a8b34c3915602b710f4102f389" }
+    ],
+    "views": [
+      { "id": "oracle-plan", "cases": 146, "scoredCases": 146, "unscoredCases": 0 },
+      { "id": "qualification-plan", "cases": 266, "scoredCases": 265, "unscoredCases": 1 },
+      { "id": "diagnostic-balanced", "cases": 477, "scoredCases": 477, "unscoredCases": 0 },
+      { "id": "benign-heavy-stress", "cases": 299, "scoredCases": 299, "unscoredCases": 0 }
+    ]
+  },
+  "acceptance": {
+    "ownershipAndContracts": "accepted",
+    "genericCompatibilityParity": "accepted",
+    "benchmarkPopulationDualRun": "blocked-schema-1.2",
+    "reason": "pii-eval schema 1.1 does not carry benchmark population views or per-family projections, so the frozen benchmark observations cannot be represented as equivalent four-population engine artifacts without an additive upstream contract."
+  }
+}

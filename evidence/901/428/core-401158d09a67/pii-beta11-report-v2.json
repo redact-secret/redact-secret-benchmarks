@@ -405,7 +405,8 @@
         "candidateValue": 206697,
         "allowedIncrease": 6882,
         "delta": 69058,
-        "status": "regression"
+        "status": "regression",
+        "acceptedBy": "beta13-401158d-wasm-full-gzip"
       },
       {
         "id": "size/wasm/common/gzip",
@@ -414,7 +415,8 @@
         "candidateValue": 142866,
         "allowedIncrease": 5003,
         "delta": 42808,
-        "status": "regression"
+        "status": "regression",
+        "acceptedBy": "beta13-401158d-wasm-common-gzip"
       },
       {
         "id": "size/npm/core/packed",
@@ -1435,7 +1437,7 @@
         {
           "id": "size-regression-budget",
           "status": "not-met",
-          "reason": "size/wasm/full/gzip 206697 B vs beta.8 137639 B (+69058, allowed +6882); size/wasm/common/gzip 142866 B vs beta.8 100058 B (+42808, allowed +5003); size/npm/wasm/packed 978463 B vs beta.8 254413 B (+724050, allowed +12721); size/npm/node-darwin-arm64/packed 672273 B vs beta.8 424514 B (+247759, allowed +21226)"
+          "reason": "size/npm/wasm/packed 978463 B vs beta.8 254413 B (+724050, allowed +12721); size/npm/node-darwin-arm64/packed 672273 B vs beta.8 424514 B (+247759, allowed +21226)"
         },
         {
           "id": "profile-cost",
@@ -2440,7 +2442,7 @@
         {
           "id": "size-regression-budget",
           "status": "not-met",
-          "reason": "size/wasm/full/gzip 206697 B vs beta.8 137639 B (+69058, allowed +6882); size/wasm/common/gzip 142866 B vs beta.8 100058 B (+42808, allowed +5003); size/npm/wasm/packed 978463 B vs beta.8 254413 B (+724050, allowed +12721); size/npm/node-darwin-arm64/packed 672273 B vs beta.8 424514 B (+247759, allowed +21226)"
+          "reason": "size/npm/wasm/packed 978463 B vs beta.8 254413 B (+724050, allowed +12721); size/npm/node-darwin-arm64/packed 672273 B vs beta.8 424514 B (+247759, allowed +21226)"
         },
         {
           "id": "profile-cost",
@@ -3447,7 +3449,7 @@
         {
           "id": "size-regression-budget",
           "status": "not-met",
-          "reason": "size/wasm/full/gzip 206697 B vs beta.8 137639 B (+69058, allowed +6882); size/wasm/common/gzip 142866 B vs beta.8 100058 B (+42808, allowed +5003); size/npm/wasm/packed 978463 B vs beta.8 254413 B (+724050, allowed +12721); size/npm/node-darwin-arm64/packed 672273 B vs beta.8 424514 B (+247759, allowed +21226)"
+          "reason": "size/npm/wasm/packed 978463 B vs beta.8 254413 B (+724050, allowed +12721); size/npm/node-darwin-arm64/packed 672273 B vs beta.8 424514 B (+247759, allowed +21226)"
         },
         {
           "id": "profile-cost",
@@ -4406,7 +4408,7 @@
         {
           "id": "size-regression-budget",
           "status": "not-met",
-          "reason": "size/wasm/full/gzip 206697 B vs beta.8 137639 B (+69058, allowed +6882); size/wasm/common/gzip 142866 B vs beta.8 100058 B (+42808, allowed +5003); size/npm/wasm/packed 978463 B vs beta.8 254413 B (+724050, allowed +12721); size/npm/node-darwin-arm64/packed 672273 B vs beta.8 424514 B (+247759, allowed +21226)"
+          "reason": "size/npm/wasm/packed 978463 B vs beta.8 254413 B (+724050, allowed +12721); size/npm/node-darwin-arm64/packed 672273 B vs beta.8 424514 B (+247759, allowed +21226)"
         },
         {
           "id": "profile-cost",
@@ -5482,7 +5484,7 @@
         {
           "id": "size-regression-budget",
           "status": "not-met",
-          "reason": "size/wasm/full/gzip 206697 B vs beta.8 137639 B (+69058, allowed +6882); size/wasm/common/gzip 142866 B vs beta.8 100058 B (+42808, allowed +5003); size/npm/wasm/packed 978463 B vs beta.8 254413 B (+724050, allowed +12721); size/npm/node-darwin-arm64/packed 672273 B vs beta.8 424514 B (+247759, allowed +21226)"
+          "reason": "size/npm/wasm/packed 978463 B vs beta.8 254413 B (+724050, allowed +12721); size/npm/node-darwin-arm64/packed 672273 B vs beta.8 424514 B (+247759, allowed +21226)"
         },
         {
           "id": "profile-cost",
@@ -6482,7 +6484,7 @@
         {
           "id": "size-regression-budget",
           "status": "not-met",
-          "reason": "size/wasm/full/gzip 206697 B vs beta.8 137639 B (+69058, allowed +6882); size/wasm/common/gzip 142866 B vs beta.8 100058 B (+42808, allowed +5003); size/npm/wasm/packed 978463 B vs beta.8 254413 B (+724050, allowed +12721); size/npm/node-darwin-arm64/packed 672273 B vs beta.8 424514 B (+247759, allowed +21226)"
+          "reason": "size/npm/wasm/packed 978463 B vs beta.8 254413 B (+724050, allowed +12721); size/npm/node-darwin-arm64/packed 672273 B vs beta.8 424514 B (+247759, allowed +21226)"
         },
         {
           "id": "profile-cost",
@@ -6521,5 +6523,5 @@
     }
   ],
   "domainAccounting": "PII only; credential findings are counted as credentialFindingCases and never enter a PII numerator or denominator",
-  "artifactCommitment": "ff594e945b12b90efc704dd67ff70d2781ba6efb5f8350d35c9e981fa82001d1"
+  "artifactCommitment": "4ee9afe008a2c53b606243f18d9548d621a7c9b40add7006c67c86f68c25a847"
 }

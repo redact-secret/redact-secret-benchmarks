@@ -1,0 +1,72 @@
+{
+  "artifactSchema": {
+    "id": "pii-eval.public-synthetic-artifact",
+    "version": "1.1"
+  },
+  "build": {
+    "repository": "redact-secret/pii-eval",
+    "commit": "6157cbc5918b3888c8e84b1884719ea8f3278b36",
+    "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+    "binarySha256": "cfa5776ff3c70b8231b068d9b0691e3bdf16ea6f11210f64bd13aa891193ec8f",
+    "sourceArchiveSha256": "e86756f8a556af326c712f1abdaca3624fdae2f59dd924a497791892c2b0b6e1"
+  },
+  "engine": {
+    "name": "pii-eval",
+    "version": "0.0.0"
+  },
+  "populations": [
+    {
+      "artifactDigest": "4ca9ee610ddc98b0153a44bab6540331c9d24cb09c2c3f0a49170ffc5d55d421",
+      "label": "synthetic-demo-population",
+      "manifestDigest": "dc4dc533fa6d18c021d069583430eadcbd5604ca24d0db7b884f82e1da01f9ed",
+      "population": {
+        "populationDigest": "c5249874335d21c02447bac23954d70e20748899f16a43efc56c5568a34a3bae",
+        "populationId": "synthetic-demo-population",
+        "populationVersion": 1,
+        "visibility": "public-synthetic"
+      },
+      "retiredArtifactDigests": [],
+      "retiredManifestDigests": [],
+      "runClass": "public-synthetic",
+      "scanners": [
+        {
+          "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+          "adapter": {
+            "adapterId": "redact-secret-core-node",
+            "adapterVersion": "1.0.0",
+            "normalizationVersion": 1
+          },
+          "artifactDigest": "35442b4205465fd400852079fa1620eae869ddc2b3ea5f849a4bd92406fb8737",
+          "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+          "product": {
+            "candidateDigest": "35442b4205465fd400852079fa1620eae869ddc2b3ea5f849a4bd92406fb8737",
+            "kind": "candidate"
+          },
+          "scannerId": "redact-secret-core",
+          "scannerVersion": "0.1.0-beta.12"
+        }
+      ]
+    }
+  ],
+  "protocol": {
+    "accounting": "pii-v1",
+    "id": "pii-v1",
+    "rules": {
+      "accounting": {
+        "id": "pii-v1-canonical-accounting",
+        "revision": 2
+      },
+      "matching": {
+        "id": "pii-v1-canonical",
+        "revision": 2
+      },
+      "statistics": {
+        "id": "pii-v1-wilson-exact",
+        "revision": 1
+      }
+    },
+    "version": 2
+  },
+  "requireComplete": true,
+  "schema": "pii-eval-consumer-pins/1"
+}

@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { mkdir, mkdtemp, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import YAML from 'yaml';
 import { expectedFiles, tarMembersProblems, verifyDirectory } from '../scripts/official-run-archive.mjs';
 
 // Structure only, on synthetic registries and bytes: no digest, run id or count read from the committed registry is asserted
@@ -97,8 +98,8 @@ test('publish-site.yml fetches the artifacts first, builds the view and the expo
   assert.match(assemble, /npm run blind:check-public/);
   assert.doesNotMatch(workflow, /dist\/next|dist\/assets|next\/_next/, 'nothing is placed under /next/ or synced from the legacy assets');
   assert.match(workflow, /aws s3 sync dist\/_next\/static "s3:\/\/\$bucket\/_next\/static"/);
-  const jobPermissions = workflow.slice(workflow.indexOf('    permissions:\n      contents: read'), workflow.indexOf('    env:\n      AWS_REGION'));
-  assert.equal(jobPermissions.trim().split('\n').length, 3, 'the job still has only contents: read and id-token: write');
+  assert.deepEqual(YAML.parse(workflow).jobs.publish.permissions, { contents: 'read', 'id-token': 'write' },
+    'the publisher job still has only contents: read and id-token: write');
   assert.match(workflow, /--exclude '_next\/static\/\*'/);
   assert.match(workflow, /aws s3 sync dist "s3:\/\/\$bucket" --only-show-errors --delete/, 'the final sync clears the legacy index.html');
 });

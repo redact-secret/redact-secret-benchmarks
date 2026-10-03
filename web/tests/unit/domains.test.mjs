@@ -101,6 +101,33 @@ describe('PII view', () => {
     expect(row.detail).toContain('not signed in the projection');
   });
 
+  test('public measurement survives absent protected evidence without showing product support or protected counts', () => {
+    const value = pii();
+    const measurement = { populations: [{}], build: { commit: 'a'.repeat(40), binarySha256: 'b'.repeat(64) } };
+    const view = resolvePiiView({ state: 'public-recorded', profile: value.profile, metrics: value.metrics,
+      piiEvalMeasurement: measurement, custodianConformance: null, protectedReason: 'Protected binding did not validate.' });
+    expect(rowsOf(view).find(row => row.id === 'pii-eval').statusWord).toBe('Validated');
+    expect(rowsOf(view).find(row => row.id === 'protected-evidence').detail).toContain('did not validate');
+    expect(rowsOf(view).some(row => row.id === 'family-status')).toBe(false);
+    expect(view.glance.every(item => item.value === null)).toBe(true);
+    expect(view.head.meta.find(item => item.label === 'Mode').value).toBe('Public synthetic only');
+  });
+
+  test('public metric rows retain effective N and withheld reasons without computing a rate', () => {
+    const measurement = { populations: [{ populationId: 'synthetic', scanners: [{ scannerId: 'scanner', metrics: [
+      { metric: { id: 'measurable-share' }, status: 'partial', effectiveN: 6,
+        counts: { numerator: 5, measured: 5, eligible: 6, unresolved: 1, notMeasured: 0 },
+        value: { state: 'measured', point: { mantissa: 833333, scale: 6 }, bound: { mantissa: 436491, scale: 6 } } },
+      { metric: { id: 'type-miss-rate' }, status: 'measured', effectiveN: 3,
+        counts: { numerator: 1, measured: 3, eligible: 3, unresolved: 0, notMeasured: 0 },
+        value: { state: 'withheld', reason: 'insufficient-evidence' } },
+    ] }] }], build: { commit: 'a'.repeat(40), binarySha256: 'b'.repeat(64) } };
+    const rows = rowsOf(resolvePiiView(pii({ piiEvalMeasurement: measurement })));
+    expect(rows.find(row => row.label === 'measurable-share').value).toBe('5 / 6 effective N');
+    expect(rows.find(row => row.label === 'measurable-share').detail).toContain('0.833333, interval bound 0.436491');
+    expect(rows.find(row => row.label === 'type-miss-rate')).toMatchObject({ statusWord: 'Withheld', detail: expect.stringContaining('insufficient-evidence') });
+  });
+
   test('a view that is not bound is Not recorded in its cells, and a family with no protected count hides the total', () => {
     const v = resolvePiiView(pii({ families: [family('pii:global:a', { views: null, protectedRun: { state: 'not-recorded', reason: 'not-recorded', cases: null } })] }));
     expect(v.coverage.tables[0].rows[0].cells.every(c => c.figure === null)).toBe(true);

@@ -159,12 +159,18 @@ describe('rows table (RowsView)', () => {
 
   test('offline: the note says so, and the load comes back by itself when the connection does', async () => {
     visit('/report/rows/T1/?q=a');
-    vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(false);
+    const online = vi.spyOn(navigator, 'onLine', 'get').mockReturnValue(false);
+    const addListener = vi.spyOn(window, 'addEventListener');
     fetchMock.mockRejectedValueOnce(new TypeError('Failed to fetch'));
     await renderPage(LEVEL, { level: 'T1' });
     expect(await screen.findByText('You are offline')).toBeInTheDocument();
-    act(() => { window.dispatchEvent(new Event('online')); });
+    // The error text is committed before the hook's passive effect installs the recovery listener.
+    // Dispatch only after registration; a slow coverage worker must not lose this synthetic event.
+    await waitFor(() => expect(addListener).toHaveBeenCalledWith('online', expect.any(Function)));
+    online.mockReturnValue(true);
+    await act(async () => { window.dispatchEvent(new Event('online')); });
     await waitFor(() => expect(screen.queryByRole('alert')).toBeNull());
+    expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 
   test('a rows file from another build is refused with an offer to reload, not retry', async () => {

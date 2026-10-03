@@ -74,6 +74,8 @@ jobs:
         run: npm run authority:check
       - name: Public pii-eval artifacts retain pinned identity, complete per-population accounting and exact semantic digests (#665)
         run: npm run pii:artifact:check > /dev/null
+      - name: Public pii-eval transport pins bind one exact staging run and artifact set (#665)
+        run: npm run pii:artifact-source:check
       - name: Synthetic custodian projections remain destination-bound and revocation removes their standing (#665)
         run: npm run pii:custodian:check
       - name: Every taxonomy provider and family has a dossier entry (#473)

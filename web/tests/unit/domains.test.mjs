@@ -84,6 +84,15 @@ describe('PII view', () => {
     expect(better.find(r => r.id === 'stable').status).toBe('info');
   });
 
+  test('validated pii-eval evidence is named without filling schema 1.1 projection gaps or changing status', () => {
+    const measurement = { complete: true, populations: [{}, {}], build: { commit: 'a'.repeat(40), binarySha256: 'b'.repeat(64) } };
+    const row = rowsOf(resolvePiiView(pii({ piiEvalMeasurement: measurement }))).find(item => item.id === 'pii-eval');
+    expect(row.statusWord).toBe('Validated');
+    expect(row.value).toContain('2 public populations');
+    expect(row.detail).toContain('unavailable');
+    expect(row.detail).toContain('does not change a family status');
+  });
+
   test('a view that is not bound is Not recorded in its cells, and a family with no protected count hides the total', () => {
     const v = resolvePiiView(pii({ families: [family('pii:global:a', { views: null, protectedRun: { state: 'not-recorded', reason: 'not-recorded', cases: null } })] }));
     expect(v.coverage.tables[0].rows[0].cells.every(c => c.figure === null)).toBe(true);

@@ -8,6 +8,9 @@ import { readFileSync } from 'node:fs';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { PII_METRIC_IDS } from '../../../benchmarks/evaluation/domains/pii/profile';
 import { piiCurrentProtectedRoute } from '../../../benchmarks/evaluation/domains/pii/support-semantics';
+import { buildPiiSupportMatrixV2 } from '../../../benchmarks/evaluation/domains/pii/support-v2';
+import { piiEvalMeasurementFrom } from '../../../scripts/pii-publication-inputs';
+import { buildEvaluationDomainsV2, domainDescriptorV2 } from '../../../src/evaluation-domains-v2';
 import { REAL_ROOT as REAL, overlay } from './overlay';
 
 async function domains(root: string = REAL) {
@@ -50,6 +53,25 @@ describe('PII evaluation', () => {
     const dir = piiCurrentProtectedRoute()!.evidenceDirectory;
     const pii = await (await domains(overlay({ [`${dir}/pii-beta11-protected-disposition-v2.json`]: null }))).loadPiiEvaluation();
     expect(pii).toMatchObject({ state: 'not-recorded', reason: expect.stringContaining('did not validate') });
+  });
+
+  test('a published support artifact exposes validated pii-eval evidence without changing family policy', async () => {
+    const measurement = await piiEvalMeasurementFrom(`${REAL}/tests/fixtures/pii-eval/pins.json`, [
+      `${REAL}/tests/fixtures/pii-eval/population-a-v2.public-synthetic-artifact.json`,
+      `${REAL}/tests/fixtures/pii-eval/population-b-v1.public-synthetic-artifact.json`,
+    ]);
+    const matrix = buildPiiSupportMatrixV2({ piiEvalMeasurement: measurement });
+    const index = buildEvaluationDomainsV2(matrix.artifactCommitment);
+    const descriptor = domainDescriptorV2(index, 'pii');
+    if (!descriptor?.support.href) throw new Error('PII descriptor did not bind its support artifact');
+    const href = descriptor.support.href;
+    const pii = await (await domains(overlay({
+      'public/results/evaluation-domains-v2.json': JSON.stringify(index),
+      [`public${href}`]: JSON.stringify(matrix),
+    }))).loadPiiEvaluation();
+    if (pii.state !== 'recorded') throw new Error(pii.reason);
+    expect(pii.piiEvalMeasurement?.complete).toBe(true);
+    expect(pii.piiEvalMeasurement?.populations.every(population => population.scanners[0].metrics.length === 10)).toBe(true);
   });
 });
 

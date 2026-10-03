@@ -29,10 +29,41 @@
       "stable": { "type": "integer", "minimum": 0 }, "unsupported": { "type": "integer", "minimum": 0 }
     } },
     "protectedRoute": { "$ref": "#/$defs/protectedRoute" },
+    "piiEvalMeasurement": { "$ref": "#/$defs/piiEvalMeasurement" },
     "families": { "type": "array", "items": { "$ref": "#/$defs/familyRow" } },
     "artifactCommitment": { "$ref": "#/$defs/digest" }
   },
   "$defs": {
+    "piiEvalMeasurement": { "type": "object", "additionalProperties": false,
+      "required": ["schema", "complete", "decision", "pooling", "build", "populations", "rejections"], "properties": {
+        "schema": { "const": "pii-eval-consumer-report/1" }, "complete": { "const": true }, "decision": { "const": "none" }, "pooling": { "const": "none" },
+        "rejections": { "type": "array", "maxItems": 0 },
+        "build": { "type": "object", "additionalProperties": false,
+          "required": ["repository", "commit", "cargoLockSha256", "binarySha256", "sourceArchiveSha256", "binding"], "properties": {
+            "repository": { "const": "redact-secret/pii-eval" }, "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+            "cargoLockSha256": { "$ref": "#/$defs/digest" }, "binarySha256": { "$ref": "#/$defs/digest" },
+            "sourceArchiveSha256": { "$ref": "#/$defs/digest" }, "binding": { "const": "out-of-band-build-provenance" }
+          } },
+        "populations": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/piiEvalPopulation" } }
+      } },
+    "piiEvalPopulation": { "type": "object", "additionalProperties": false,
+      "required": ["label", "populationId", "artifactDigest", "file", "status", "population", "populationCounts", "scanners", "unavailable"], "properties": {
+        "label": { "$ref": "#/$defs/slug" }, "populationId": { "type": "string", "minLength": 1, "maxLength": 128 }, "artifactDigest": { "$ref": "#/$defs/digest" },
+        "file": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,199}$" }, "status": { "const": "accepted" },
+        "population": { "type": "object", "additionalProperties": false, "required": ["populationId", "populationVersion", "populationDigest", "visibility"], "properties": {
+          "populationId": { "type": "string", "minLength": 1, "maxLength": 128 }, "populationVersion": { "type": "integer", "minimum": 1 },
+          "populationDigest": { "$ref": "#/$defs/digest" }, "visibility": { "const": "public-synthetic" } } },
+        "populationCounts": { "type": "object", "additionalProperties": false, "required": ["authoredCases", "variants", "occurrences"], "properties": {
+          "authoredCases": { "type": "integer", "minimum": 0 }, "variants": { "type": "integer", "minimum": 0 }, "occurrences": { "type": "integer", "minimum": 0 } } },
+        "scanners": { "type": "array", "minItems": 1, "items": { "type": "object", "additionalProperties": false,
+          "required": ["scannerId", "status", "identity", "metrics"], "properties": { "scannerId": { "type": "string", "minLength": 1 }, "status": { "const": "complete" },
+            "identity": { "type": "object" }, "metrics": { "type": "array", "minItems": 10, "maxItems": 10 } } } },
+        "unavailable": { "type": "object", "additionalProperties": false,
+          "required": ["familyProjection", "populationViews", "languageBreakdown", "controlClassBreakdown", "officialOrExploratoryMode"], "properties": {
+            "familyProjection": { "const": "schema-1.1-does-not-carry" }, "populationViews": { "const": "schema-1.1-does-not-carry" },
+            "languageBreakdown": { "const": "schema-1.1-does-not-carry" }, "controlClassBreakdown": { "const": "schema-1.1-does-not-carry" },
+            "officialOrExploratoryMode": { "const": "schema-1.1-does-not-carry" } } }
+      } },
     "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
     "repoFile": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._/-]{0,199}$" },
     "protectedRoute": { "type": "object", "additionalProperties": false,

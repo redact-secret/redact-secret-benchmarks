@@ -20,6 +20,8 @@ import { PII_JURISDICTION_STANDARD } from '../../benchmarks/evaluation/domains/p
 import { piiCurrentProtectedRoute } from '../../benchmarks/evaluation/domains/pii/support-semantics';
 import { loadPiiProtectedSupportEvidence, validatePiiProtectedSupportBinding } from '../../benchmarks/evaluation/domains/pii/protected-support-binding';
 import { buildPiiSupportMatrixV2, validatePiiSupportMatrixV2 } from '../../benchmarks/evaluation/domains/pii/support-v2';
+import type { PiiEvalMeasurement } from '../../benchmarks/evaluation/domains/pii/support-v2';
+import { domainDescriptorV2, evaluationDomainsV2Problem } from '../../src/evaluation-domains-v2';
 import type { Catalog } from './catalog';
 import { loadCredentialSource, type CredentialPipeline } from './credential-source';
 import { loadFindings } from './findings';
@@ -70,6 +72,7 @@ export type PiiEvaluation =
       costAcceptance: { cells: number; sizeRows: number } | null;
       languages: string[];
       jurisdictionStandard: { id: string; codeCount: number };
+      piiEvalMeasurement: PiiEvalMeasurement | null;
     }
   | { state: 'not-recorded'; reason: string };
 
@@ -89,11 +92,24 @@ function viewsOf(report: { artifactCommitment?: string; families?: RawReportFami
   return out;
 }
 
+async function loadPublishedPiiEvalMeasurement(): Promise<PiiEvalMeasurement | null> {
+  const index = await readJsonIfPresent<unknown>('public/results/evaluation-domains-v2.json');
+  if (!index) return null;
+  const problem = evaluationDomainsV2Problem(index), descriptor = domainDescriptorV2(index, 'pii');
+  if (problem || !descriptor?.support.href || !descriptor.support.artifactCommitment) throw new Error(problem ?? 'PII support publication is incomplete');
+  const match = /^\/results\/(pii-support-matrix-v2-[a-f0-9]{64}\.json)$/.exec(descriptor.support.href);
+  if (!match) throw new Error('PII support publication path is unsafe');
+  const matrix = validatePiiSupportMatrixV2(await readJsonIfPresent<unknown>(`public/results/${match[1]}`));
+  if (matrix.artifactCommitment !== descriptor.support.artifactCommitment) throw new Error('PII support publication commitment differs from its index');
+  return matrix.piiEvalMeasurement ?? null;
+}
+
 export function loadPiiEvaluation(): Promise<PiiEvaluation> {
   return once('pii-evaluation', async () => {
     const binding = piiCurrentProtectedRoute();
     if (!binding) return { state: 'not-recorded', reason: 'No reviewed PII protected binding is registered.' } satisfies PiiEvaluation;
     try {
+      const piiEvalMeasurement = await loadPublishedPiiEvalMeasurement();
       const evidence = await loadPiiProtectedSupportEvidence(REPO_ROOT, binding);
       const route = validatePiiProtectedSupportBinding(binding, evidence);
       const matrix = validatePiiSupportMatrixV2(buildPiiSupportMatrixV2({ protectedRoute: route }), { protectedRoute: route });
@@ -140,6 +156,7 @@ export function loadPiiEvaluation(): Promise<PiiEvaluation> {
         costAcceptance: accepted ? { cells: accepted.cells, sizeRows: accepted.sizeRows } : null,
         languages: [...PII_CONTEXT_LANGUAGES],
         jurisdictionStandard: { id: PII_JURISDICTION_STANDARD.id, codeCount: PII_JURISDICTION_STANDARD.codeCount },
+        piiEvalMeasurement,
       } satisfies PiiEvaluation;
     } catch (error) {
       // A binding that does not validate is never shown in part. The reason names the failing check, never a value.

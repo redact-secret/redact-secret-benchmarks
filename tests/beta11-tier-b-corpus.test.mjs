@@ -56,7 +56,7 @@ test('every contract traces to its #860 handoff at the frozen product revision',
     const refs = contracts[id].references;
     assert.ok(refs.includes(`https://github.com/redact-secret/redact-secret/blob/${HANDOFF_REVISION}/docs/audits/evidence/860/${file}`), `${id}: handoff permalink`);
     assert.ok(refs.includes(`https://github.com/redact-secret/redact-secret/issues/${productIssue}`), `${id}: product issue`);
-    assert.ok(refs.includes('https://github.com/redact-secret/redact-secret-benchmarks/issues/436'), `${id}: #436`);
+    assert.ok(refs.some(ref => ref === 'https://github.com/redact-secret/redact-secret-benchmarks/issues/436'), `${id}: #436`);
   }
 });
 

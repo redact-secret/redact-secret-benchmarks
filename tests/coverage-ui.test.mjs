@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createServer } from 'vite';
 
-const text = html => html.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/\s+/g, ' ');
+const text = html => html.replace(/<[^>]+>/g, ' ').replace(/&#39;/g, "'").replace(/&amp;/g, '&').replace(/\s+/g, ' ');
 const server = await createServer({ configFile: false, server: { middlewareMode: true, hmr: false }, appType: 'custom' });
 const coverage = await server.ssrLoadModule('/src/pages/coverage.ts');
 const { fixtures } = await server.ssrLoadModule('/src/catalog.ts');

@@ -70,6 +70,8 @@ jobs:
         run: npm run qualification-inputs:check
       - name: The official-run registry pins the engine, scanners and population evidence, and every recorded run matches (#604)
         run: npm run official-runs:check
+      - name: The evidence adoption record is consistent with the active pins and carries no fabricated acceptance (#690)
+        run: npm run adoption:check
       - name: The qualification authority is one valid committed value, and the new path is still authorised when it is the authority (#608)
         run: npm run authority:check
       - name: Public pii-eval artifacts retain pinned identity, complete per-population accounting and exact semantic digests (#665)

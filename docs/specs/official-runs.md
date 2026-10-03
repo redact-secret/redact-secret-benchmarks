@@ -103,6 +103,8 @@ and is marked non-canonical.
 
 ## What is recorded
 
+`historicalRuns[]` (#690) holds the runs of an earlier pin, kept as receipts after a repin (`status: historical`, `supersededBy`); `runs[]` must match the current pins and the authority reads it only. See [evidence-adoption.md](evidence-adoption.md).
+
 `runs[]` in the registry carries, per population and platform: the benchmark revision the run was made at, the engine
 identity (name, version, commit, protocol), run class and publication, `config_hash`, the full `manifest.evidence`
 identity, the artifact's semantic digest and byte digest, the schema digest, the determinism result, each scanner's

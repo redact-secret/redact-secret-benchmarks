@@ -6,7 +6,8 @@ import { figure, directionWord, withheldReason, interval, scaleMax, statusMark, 
 const read = async path => JSON.parse(await readFile(new URL('../' + path, import.meta.url), 'utf8'));
 const categories = (await read('benchmarks/categories.json')).filter(category => !category.calibrationOnly);
 const fixtures = (await Promise.all(categories.map(async c => (await read(c.corpus)).fixtures.map(f => ({ ...f, slug: `${c.id}--${f.id}` }))))).flat();
-const text = html => html.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+const stripTags = html => { let previous; do { previous = html; html = html.replace(/<[^>]+>/g, ''); } while (html !== previous); return html; };
+const text = html => stripTags(html).replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
 
 test('Figure: the direction word follows the published direction', () => {
   assert.equal(directionWord('upper'), 'at most');

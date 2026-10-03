@@ -10,7 +10,7 @@ import fixtureIndex from '../benchmarks/fixture-index.json' with { type: 'json' 
 import { withMatrixExtras } from './support-matrix-extras.mjs';
 import { credentialSupportPage, piiSupportPage, piiSupportQueryOf, supportDomainOf, supportDomainUnavailablePage } from '../src/pages/pii-support.ts';
 
-const text = html => html.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/\s+/g, ' ');
+const text = html => html.replace(/<[^>]+>/g, ' ').replace(/&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/\s+/g, ' ');
 const detected = taxonomy.families.filter(f => f.detectors.length);
 const undetected = taxonomy.families.filter(f => !f.detectors.length);
 const profileCoverage = {

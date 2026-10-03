@@ -68,9 +68,9 @@ export function build436a({ fixture, synthetic }) {
   const upperAt = k["x-api-key-header"].indexOf("|") + 11;
   c.twin(T, "x-api-key-header", "uppercase-hex-byte", put("x-api-key-header", refuse(at(k["x-api-key-header"], upperAt, "A"))), "alphabet: one body byte as uppercase hex, which const_hex::encode never emits", "alphabet", "http");
   c.twin(T, "json-api-key", "g-in-body", put("json-api-key", refuse(at(k["json-api-key"], k["json-api-key"].indexOf("|") + 20, "g"))), "alphabet: one body byte replaced by g, outside hex", "alphabet", "json");
-  c.twin(T, "sdk-kwarg", "double-separator", put("sdk-kwarg", refuse(k["sdk-kwarg"].replace("|", "||"))), "boundary: || in place of the single | join", "boundary", "py");
+  c.twin(T, "sdk-kwarg", "double-separator", put("sdk-kwarg", refuse(k["sdk-kwarg"].replaceAll("|", "||"))), "boundary: || in place of the single | join", "boundary", "py");
   c.twin(T, "chat-paste", "underscore-name", put("chat-paste", refuse(k["chat-paste"].replace(/^prod:([a-z]+)-([a-z]+)-/, "prod:$1_$2_"))), "boundary: a cloud name with _ in place of -, outside the CLI name grammar", "boundary", "txt");
-  c.twin(T, "bare-prose", "space-before-separator", put("bare-prose", refuse(k["bare-prose"].replace("|", " |"))), "boundary: a space between the name and the | join, so | follows no name byte", "boundary", "md");
+  c.twin(T, "bare-prose", "space-before-separator", put("bare-prose", refuse(k["bare-prose"].replaceAll("|", " |"))), "boundary: a space between the name and the | join, so | follows no name byte", "boundary", "md");
   c.twin(T, "curl-authorization-convex", "trailing-glue", curlConvex(refuse(`${k["curl-authorization-convex"]}_x`)), "boundary: _x glued after the hex body", "boundary", "sh");
 
   const pub = cloud("public");

@@ -1401,5 +1401,86 @@
     },
     "decidedAt": "2026-10-03",
     "decidedBy": "milocosmopolitan (explicit maintainer approval given in the Beta.13 chain orchestration session on 2026-10-03 to accept exactly this metric for candidate 401158d, on the evidence of runs 37093955815, 37097499497 and 37097776536 and the 0027da0 precedent at 1.397; nothing else is accepted)"
+  },
+  {
+    "id": "beta13-66b492b-wasm-full-gzip",
+    "triggerId": "size/wasm/full/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "66b492bdff5e6751fc6b5409266916346ed7c723"
+    },
+    "measured": {
+      "baseline": 137639,
+      "candidate": 206697,
+      "unit": "bytes"
+    },
+    "rationale": "The same Beta.13 size growth already accepted for the Beta.13 candidate 401158d (entry beta13-401158d-wasm-full-gzip, 206,697 bytes, byte-identical measured value), re-keyed to the release source commit 66b492b (the peeled v0.1.0-beta.13 tag, which differs from 401158d only under docs/: the readiness record, the release rehearsal coverage table and audit evidence). Measured by performance-evaluation.yml run 37118371501: 206,697 bytes against the baseline of 137,639. This is not a new tradeoff: it is the same growth accepted for Beta.12 and for the 0027da0 and 401158d candidates, applied to the same row at the commit the release ships.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "The Beta.13 stable-readiness work: the accepted 0.1.x contract and ruleset tightening (#1182, #1184), the no-unsafe rule for core and CLI (#1151), the documentation and PII-status gates, and the performance cards, with latency and memory inside budget in run 37093955815 (10 of 10 latency and 16 of 16 memory triggers within budget).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1189",
+        "https://github.com/redact-secret/redact-secret/pull/1190",
+        "https://github.com/redact-secret/redact-secret/pull/1192",
+        "https://github.com/redact-secret/redact-secret/pull/1193",
+        "https://github.com/redact-secret/redact-secret/pull/1194"
+      ]
+    },
+    "decidedAt": "2026-10-03",
+    "decidedBy": "milocosmopolitan (the maintainer approval of 2026-10-03 for this exact size growth at candidate core 401158d, re-keyed to the release source commit 66b492b on the evidence of run 37118371501, which measured byte-identical values; same re-keying as entry beta12-4227160-wasm-full-gzip for Beta.12)"
+  },
+  {
+    "id": "beta13-66b492b-wasm-common-gzip",
+    "triggerId": "size/wasm/common/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "66b492bdff5e6751fc6b5409266916346ed7c723"
+    },
+    "measured": {
+      "baseline": 100058,
+      "candidate": 142866,
+      "unit": "bytes"
+    },
+    "rationale": "The same Beta.13 size growth already accepted for the Beta.13 candidate 401158d (entry beta13-401158d-wasm-common-gzip, 142,866 bytes, byte-identical measured value), re-keyed to the release source commit 66b492b (the peeled v0.1.0-beta.13 tag, which differs from 401158d only under docs/: the readiness record, the release rehearsal coverage table and audit evidence). Measured by performance-evaluation.yml run 37118371501: 142,866 bytes against the baseline of 100,058. This is not a new tradeoff: it is the same growth accepted for Beta.12 and for the 0027da0 and 401158d candidates, applied to the same row at the commit the release ships.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "The Beta.13 stable-readiness work: the accepted 0.1.x contract and ruleset tightening (#1182, #1184), the no-unsafe rule for core and CLI (#1151), the documentation and PII-status gates, and the performance cards, with latency and memory inside budget in run 37093955815 (10 of 10 latency and 16 of 16 memory triggers within budget).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1189",
+        "https://github.com/redact-secret/redact-secret/pull/1190",
+        "https://github.com/redact-secret/redact-secret/pull/1192",
+        "https://github.com/redact-secret/redact-secret/pull/1193",
+        "https://github.com/redact-secret/redact-secret/pull/1194"
+      ]
+    },
+    "decidedAt": "2026-10-03",
+    "decidedBy": "milocosmopolitan (the maintainer approval of 2026-10-03 for this exact size growth at candidate core 401158d, re-keyed to the release source commit 66b492b on the evidence of run 37118371501, which measured byte-identical values; same re-keying as entry beta12-4227160-wasm-common-gzip for Beta.12)"
+  },
+  {
+    "id": "beta13-66b492b-quickstart-bundle-gzip",
+    "triggerId": "size/browser-bundle/quickstart/gzip",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "66b492bdff5e6751fc6b5409266916346ed7c723"
+    },
+    "measured": {
+      "baseline": 144501,
+      "candidate": 214214,
+      "unit": "bytes"
+    },
+    "rationale": "The same Beta.13 size growth already accepted for the Beta.13 candidate 401158d (entry beta13-401158d-quickstart-bundle-gzip, 214,214 bytes, byte-identical measured value), re-keyed to the release source commit 66b492b (the peeled v0.1.0-beta.13 tag, which differs from 401158d only under docs/: the readiness record, the release rehearsal coverage table and audit evidence). Measured by performance-evaluation.yml run 37118371501: 214,214 bytes against the baseline of 144,501. This is not a new tradeoff: it is the same growth accepted for Beta.12 and for the 0027da0 and 401158d candidates, applied to the same row at the commit the release ships.",
+    "benefit": {
+      "kind": "safety",
+      "summary": "The Beta.13 stable-readiness work: the accepted 0.1.x contract and ruleset tightening (#1182, #1184), the no-unsafe rule for core and CLI (#1151), the documentation and PII-status gates, and the performance cards, with latency and memory inside budget in run 37093955815 (10 of 10 latency and 16 of 16 memory triggers within budget).",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/1189",
+        "https://github.com/redact-secret/redact-secret/pull/1190",
+        "https://github.com/redact-secret/redact-secret/pull/1192",
+        "https://github.com/redact-secret/redact-secret/pull/1193",
+        "https://github.com/redact-secret/redact-secret/pull/1194"
+      ]
+    },
+    "decidedAt": "2026-10-03",
+    "decidedBy": "milocosmopolitan (the maintainer approval of 2026-10-03 for this exact size growth at candidate core 401158d, re-keyed to the release source commit 66b492b on the evidence of run 37118371501, which measured byte-identical values; same re-keying as entry beta12-4227160-quickstart-bundle-gzip for Beta.12)"
   }
 ]

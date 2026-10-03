@@ -1,7 +1,7 @@
 import { escapeHtml as e } from '../components';
 import criteria from '../../benchmarks/performance-criteria.json';
 import operational from '../../benchmarks/operational-evidence.json';
-import accepted from '../../evidence/603/verified-4227160/summary.json';
+import accepted from '../../evidence/603/verified-66b492b/summary.json';
 import type { AcceptanceCriteria, PerformanceCriterion } from '../../benchmarks/lib/performance-acceptance.ts';
 import type { CompleteAssessment } from '../../benchmarks/lib/performance-schema.ts';
 import { measuredRows, workloadGuidance, type MeasuredRow } from '../../benchmarks/lib/measured-performance.ts';
@@ -51,7 +51,7 @@ function row(criterion: PerformanceCriterion): string {
 /** The measured source line and the workload guidance, both derived from the pinned accepted run (#405). */
 function measuredSource(): string {
   const identities = [...new Set([...MEASURED.values()].map(r => `${r.surface} ${r.artifactIdentity}`))].sort();
-  return `Measured columns are the accepted run's own summary (<code>evidence/603/verified-4227160/summary.json</code>): product commit <code>${e(ACCEPTED.sourceCommit ?? '')}</code>, ${n(ACCEPTED.repetitions)} repetitions, environment <code>${e(DATA.environment.id)}</code>, artifacts ${identities.map(i => `<code>${e(i)}</code>`).join(', ')} — read the same way the floors are, so it cannot drift from what CI accepted. A floor is half the observed minimum throughput of the run it was derived from, rounded down: a regression tripwire, not the product's speed.`;
+  return `Measured columns are the accepted run's own summary (<code>evidence/603/verified-66b492b/summary.json</code>): product commit <code>${e(ACCEPTED.sourceCommit ?? '')}</code>, ${n(ACCEPTED.repetitions)} repetitions, environment <code>${e(DATA.environment.id)}</code>, artifacts ${identities.map(i => `<code>${e(i)}</code>`).join(', ')} — read the same way the floors are, so it cannot drift from what CI accepted. A floor is half the observed minimum throughput of the run it was derived from, rounded down: a regression tripwire, not the product's speed.`;
 }
 
 function guidance(): string {

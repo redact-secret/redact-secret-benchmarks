@@ -83,7 +83,17 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  pii-public-synthetic:
+    if: ${{ (inputs.environment || (github.ref_name == 'main' && 'production' || 'staging')) == 'staging' }}
+    uses: ./.github/workflows/pii-public-synthetic.yml
+    permissions:
+      contents: read
+    secrets:
+      PII_EVAL_APP_PRIVATE_KEY: ${{ secrets.PII_EVAL_APP_PRIVATE_KEY }}
+
   publish:
+    needs: pii-public-synthetic
+    if: ${{ !cancelled() && (needs.pii-public-synthetic.result == 'success' || needs.pii-public-synthetic.result == 'skipped') }}
     name: Publish to ${{ inputs.environment || (github.ref_name == 'main' && 'production' || 'staging') }}
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment || (github.ref_name == 'main' && 'production' || 'staging') }}
@@ -102,6 +112,8 @@ jobs:
           exit 1
 
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          persist-credentials: false
 
       - uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
         with:
@@ -112,6 +124,13 @@ jobs:
             web/package-lock.json
 
       - run: npm ci
+
+      - name: Receive verified public-synthetic measurement from isolated job
+        if: env.TARGET == 'staging'
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: verified-pii-public-synthetic
+          path: ${{ runner.temp }}/pii-eval-public
 
       # The Next qualification pages need the canonical official RunArtifacts (#602).
       # Fetched first so a missing or altered artifact fails before anything slow runs.
@@ -345,16 +364,21 @@ jobs:
           # evidence recorded for exactly that product (evidence/<n>/) binds;
           # production measures the release and binds none.
           product_args=()
+          pii_eval_args=()
           if [ "$TARGET" = staging ]; then
             product_args=(--product-commit="$PRODUCT_COMMIT" --product-core="$CORE_PACKAGE")
+            pii_eval_args=(
+              --pii-eval-pins=benchmarks/pii-eval-public-synthetic-pins.json
+              --pii-eval-artifact="$RUNNER_TEMP/pii-eval-public/public-synthetic-artifact.json"
+            )
           fi
           population_bundle=results-output/pii/population-release-v1.json
           if [ -s "$population_bundle" ]; then
-            npm run eval:publish:pii-support -- "${product_args[@]}" --population-bundle="$population_bundle"
+            npm run eval:publish:pii-support -- "${product_args[@]}" "${pii_eval_args[@]}" --population-bundle="$population_bundle"
           else
             # No bundle: measured PII populations were skipped (for example, #515: core main equals the published release).
             echo "::notice::PII populations not measured for this publish: no comparison bundle was written (candidate equals the published release; no comparison)."
-            npm run eval:publish:pii-support -- "${product_args[@]}" --population-mode=not-measured
+            npm run eval:publish:pii-support -- "${product_args[@]}" "${pii_eval_args[@]}" --population-mode=not-measured
           fi
 
       # The qualification view the Next pages read (public/results/qualification-v1.json, never committed). Same

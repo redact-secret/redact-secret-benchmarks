@@ -121,12 +121,28 @@ const vocabulary = (title: string, meanings: Record<string, string>) => ({ title
 
 export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
   const recorded = pii.state === 'recorded' ? pii : null;
-  const modeLine = recorded ? `${modeWord(recorded.mode)}, core ${recorded.core.commit.slice(0, 7)}` : 'Not recorded';
+  const publicRecorded = pii.state === 'recorded' || pii.state === 'public-recorded' ? pii : null;
+  const modeLine = recorded ? `${modeWord(recorded.mode)}, core ${recorded.core.commit.slice(0, 7)}` :
+    pii.state === 'public-recorded' ? 'Public synthetic only' : 'Not recorded';
   const families = recorded?.families ?? [];
   const jurisdictional = families.filter(f => f.jurisdiction !== null);
   const protectedTotal = families.length > 0 && families.every(f => f.protectedRun.cases !== null) ? families.reduce((sum, f) => sum + (f.protectedRun.cases ?? 0), 0) : null;
-  const piiEval = recorded?.piiEvalMeasurement ?? null;
-  const custodian = recorded?.custodianConformance ?? null;
+  const piiEval = publicRecorded?.piiEvalMeasurement ?? null;
+  const custodian = publicRecorded?.custodianConformance ?? null;
+  const piiEvalRow: StatusRowData = piiEval
+    ? { id: 'pii-eval', label: 'pii-eval artifact', status: 'info', statusWord: 'Validated',
+        value: `${int(piiEval.populations.length)} public ${piiEval.populations.length === 1 ? 'population' : 'populations'} · 10 metrics each`,
+        detail: `Schema 1.1 preserves every numerator, denominator, interval and withheld state. Family/view, language, control-class and official/exploratory projections are unavailable in that schema, so this evidence does not change a family status. Engine ${piiEval.build.commit.slice(0, 12)}; binary ${piiEval.build.binarySha256.slice(0, 12)}.`,
+        link: { label: `#${ISSUES.piiEval}`, href: issue(ISSUES.piiEval).href, external: true } }
+    : { id: 'pii-eval', label: 'pii-eval artifact', status: 'not-measured', statusWord: 'Not recorded',
+        detail: 'No validated public-synthetic pii-eval artifact is bound to this publication.', link: { label: `#${ISSUES.piiEval}`, href: issue(ISSUES.piiEval).href, external: true } };
+  const custodianRow: StatusRowData = custodian
+    ? { id: 'custodian-conformance', label: 'Custodian conformance', status: 'info', statusWord: 'Synthetic only',
+        value: `${int(custodian.projections.length)} destination-bound projection`,
+        detail: `Disposable test keys and public synthetic data verified through feed sequence ${int(custodian.feed.sequence)}. This proves signature, destination and revocation handling only; it is not live protected evidence, independent ground truth or a support qualification. Configuration is bound by the bridge request, not signed in the projection.`,
+        link: { label: `#${ISSUES.piiEval}`, href: issue(ISSUES.piiEval).href, external: true } }
+    : { id: 'custodian-conformance', label: 'Custodian conformance', status: 'not-measured', statusWord: 'Not recorded',
+        detail: 'No public synthetic custodian conformance bundle is bound to this publication.', link: { label: `#${ISSUES.piiEval}`, href: issue(ISSUES.piiEval).href, external: true } };
 
   const glance: GlanceItem[] = [
     {
@@ -201,21 +217,18 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
         recorded.populationComparisons.every(c => c.verdict === 'not-measured')
           ? { id: 'population', label: 'Population comparison', status: 'not-measured', statusWord: 'Not measured', detail: 'No bound baseline and candidate bundle is published.', link: { label: `#${ISSUES.population}`, href: issue(ISSUES.population).href, external: true } }
           : { id: 'population', label: 'Population comparison', status: 'info', statusWord: 'Recorded', value: recorded.populationComparisons.map(c => `${c.id}: ${c.verdict}`).join(', '), detail: 'A bound comparison is published.' },
-        piiEval
-          ? { id: 'pii-eval', label: 'pii-eval artifact', status: 'info', statusWord: 'Validated',
-              value: `${int(piiEval.populations.length)} public ${piiEval.populations.length === 1 ? 'population' : 'populations'} · 10 metrics each`,
-              detail: `Schema 1.1 preserves every numerator, denominator, interval and withheld state. Family/view, language, control-class and official/exploratory projections are unavailable in that schema, so this evidence does not change a family status. Engine ${piiEval.build.commit.slice(0, 12)}; binary ${piiEval.build.binarySha256.slice(0, 12)}.`,
-              link: { label: `#${ISSUES.piiEval}`, href: issue(ISSUES.piiEval).href, external: true } }
-          : { id: 'pii-eval', label: 'pii-eval artifact', status: 'not-measured', statusWord: 'Not recorded',
-              detail: 'No validated public-synthetic pii-eval artifact is bound to this publication.', link: { label: `#${ISSUES.piiEval}`, href: issue(ISSUES.piiEval).href, external: true } },
-        custodian
-          ? { id: 'custodian-conformance', label: 'Custodian conformance', status: 'info', statusWord: 'Synthetic only',
-              value: `${int(custodian.projections.length)} destination-bound projection`,
-              detail: `Disposable test keys and public synthetic data verified through feed sequence ${int(custodian.feed.sequence)}. This proves signature, destination and revocation handling only; it is not live protected evidence, independent ground truth or a support qualification. Configuration is bound by the bridge request, not signed in the projection.`,
-              link: { label: `#${ISSUES.piiEval}`, href: issue(ISSUES.piiEval).href, external: true } }
-          : { id: 'custodian-conformance', label: 'Custodian conformance', status: 'not-measured', statusWord: 'Not recorded',
-              detail: 'No public synthetic custodian conformance bundle is bound to this publication.', link: { label: `#${ISSUES.piiEval}`, href: issue(ISSUES.piiEval).href, external: true } },
+        piiEvalRow,
+        custodianRow,
         { id: 'stable', label: 'Stable', status: recorded.distribution.stable > 0 ? 'info' : 'not-measured', statusWord: recorded.distribution.stable > 0 ? 'Recorded' : 'None recorded', value: `${int(recorded.distribution.stable)} ${recorded.distribution.stable === 1 ? 'family' : 'families'}`, detail: `The ${recorded.route.id} route cannot give stable.` },
+      ],
+    });
+  } else if (pii.state === 'public-recorded') {
+    status.push({
+      title: 'Public synthetic measurement',
+      rows: [
+        piiEvalRow,
+        custodianRow,
+        { id: 'protected-evidence', label: 'Protected evidence', status: 'not-measured', statusWord: 'Not recorded', detail: pii.protectedReason },
       ],
     });
   } else {
@@ -223,6 +236,33 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
       title: 'Not measured yet',
       rows: [{ id: 'evidence', label: 'PII evidence', status: 'not-measured', statusWord: 'Not recorded', detail: pii.state === 'not-recorded' ? pii.reason : 'No PII record is bound.' }],
     });
+  }
+  if (piiEval) {
+    for (const population of piiEval.populations) {
+      for (const scanner of population.scanners ?? []) {
+        const productKind = (scanner.identity?.product as { kind?: string } | undefined)?.kind ?? 'Not recorded';
+        const fixed = (value: { mantissa: number; scale: number }) => {
+          const digits = String(value.mantissa).padStart(value.scale + 1, '0');
+          return value.scale ? `${digits.slice(0, -value.scale)}.${digits.slice(-value.scale)}` : digits;
+        };
+        status.push({
+          title: `${population.populationId} · ${scanner.scannerId} ${String(scanner.identity?.scannerVersion ?? '')} · ${productKind} · public synthetic`,
+          rows: scanner.metrics.map(raw => {
+            // The service accepts these rows only after the strict public schema and semantic consumer validate them.
+            const metric = raw as { metric: { id: string }; status: string; effectiveN: number;
+              counts: { numerator: number; measured: number; eligible: number; unresolved: number; notMeasured: number };
+              value: { state: 'withheld'; reason: string } | { state: 'measured'; point: { mantissa: number; scale: number }; bound: { mantissa: number; scale: number } } };
+            return {
+              id: `${population.populationId}:${scanner.scannerId}:${metric.metric.id}`, label: metric.metric.id,
+              status: metric.value.state === 'withheld' ? 'not-measured' as const : 'info' as const,
+              statusWord: metric.value.state === 'withheld' ? 'Withheld' : metric.status,
+              value: `${int(metric.counts.numerator)} / ${int(metric.effectiveN)} effective N`,
+              detail: `${metric.value.state === 'withheld' ? metric.value.reason : `Point ${fixed(metric.value.point)}, interval bound ${fixed(metric.value.bound)}`}. Measured ${int(metric.counts.measured)}, eligible ${int(metric.counts.eligible)}, unresolved ${int(metric.counts.unresolved)}, not measured ${int(metric.counts.notMeasured)}. Population and scanner counts remain separate; no qualification verdict.`,
+            };
+          }),
+        });
+      }
+    }
   }
   status.push({
     title: 'Known gaps',
@@ -240,8 +280,8 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
       title: 'How PII is evaluated',
       lede: 'The benchmark checks whether a value is found as the right kind of personal data, and whether a value that looks like personal data is sensitive where it sits. It records what happened. It does not grade a product.',
       meta: [
-        { label: 'Evaluation profile', value: recorded?.profile.evaluationProfile ?? 'Not recorded' },
-        { label: 'Accounting', value: recorded?.profile.domainAccountingVersion ?? 'Not recorded' },
+        { label: 'Evaluation profile', value: publicRecorded?.profile.evaluationProfile ?? 'Not recorded' },
+        { label: 'Accounting', value: publicRecorded?.profile.domainAccountingVersion ?? 'Not recorded' },
         { label: 'Mode', value: modeLine },
         { label: 'Support claims', value: 'None' },
       ],
@@ -259,7 +299,7 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
         text: piiEval
           ? `Each validated pii-eval population keeps all ten numerator/denominator and interval or withheld results separate. Schema 1.1 has no family/view projection, so those values are not presented as family qualification (#${ISSUES.metrics}).`
           : `Each metric is read against its own population. None is combined with another or with a credential metric. Their values are not on this page (#${ISSUES.metrics}).`,
-        rows: (recorded?.metrics ?? []).map(m => ({ id: m.id, population: m.population, counts: `${m.numerator}, of ${m.denominator}`, better: m.direction === 'upper' ? 'Lower' : 'Higher' })),
+        rows: (publicRecorded?.metrics ?? []).map(m => ({ id: m.id, population: m.population, counts: `${m.numerator}, of ${m.denominator}`, better: m.direction === 'upper' ? 'Lower' : 'Higher' })),
       },
       recorded: {
         title: 'Recorded, not graded',

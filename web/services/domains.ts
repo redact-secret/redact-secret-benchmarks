@@ -5,7 +5,8 @@
  * names. This is the route the production publish binds (`scripts/publish-pii-support.ts`, no product activation record),
  * so no `public/results` file and no product artifact is needed. The binding is validated by the same function the
  * publish uses (`validatePiiProtectedSupportBinding`); a binding that does not validate yields `not-recorded`, never a
- * partial page. Case counts per family and view come from the frozen Beta.11 report that binding commits to.
+ * partial protected page. Independently validated published public-synthetic measurements remain visible when the
+ * protected binding fails. Case counts per family and view come from the frozen Beta.11 report that binding commits to.
  *
  * Credential: the support record (`evidence/<n>/<commit>/support-status-<mode>.json`) whose package version matches the
  * run's, the engine qualification record, and the known-gaps ledger. The catalog and the run come from the existing
@@ -75,6 +76,14 @@ export type PiiEvaluation =
       piiEvalMeasurement: PiiEvalMeasurement | null;
       custodianConformance: CustodianConformance | null;
     }
+  | {
+      state: 'public-recorded';
+      profile: { id: string; version: number; evaluationProfile: string; domainAccountingVersion: string };
+      metrics: PiiMetricDefinition[];
+      piiEvalMeasurement: PiiEvalMeasurement | null;
+      custodianConformance: CustodianConformance | null;
+      protectedReason: string;
+    }
   | { state: 'not-recorded'; reason: string };
 
 interface RawView { view: string; cases: number; sensitive: { cases: number }; nonSensitive: { cases: number }; notEstablished: { cases: number } }
@@ -107,10 +116,25 @@ async function loadPublishedPiiEvidence(): Promise<{ piiEvalMeasurement: PiiEval
 
 export function loadPiiEvaluation(): Promise<PiiEvaluation> {
   return once('pii-evaluation', async () => {
-    const binding = piiCurrentProtectedRoute();
-    if (!binding) return { state: 'not-recorded', reason: 'No reviewed PII protected binding is registered.' } satisfies PiiEvaluation;
+    let published: Awaited<ReturnType<typeof loadPublishedPiiEvidence>>;
     try {
-      const { piiEvalMeasurement, custodianConformance } = await loadPublishedPiiEvidence();
+      published = await loadPublishedPiiEvidence();
+    } catch (error) {
+      return { state: 'not-recorded', reason: `The published PII artifact did not validate: ${(error as Error).message}` } satisfies PiiEvaluation;
+    }
+    const profile = { id: piiV1Profile.id, version: piiV1Profile.version, evaluationProfile: piiV1Profile.evaluationProfile,
+      domainAccountingVersion: piiV1Profile.domainAccountingVersion };
+    const metrics = PII_METRIC_IDS.map(id => {
+      const [population, numerator, denominator] = PII_METRIC_LABELS[id];
+      const metric = piiV1Profile.metrics[id];
+      return { id, population, numerator, denominator, direction: metric.direction, applicability: metric.applicability };
+    });
+    const publicOnly = (protectedReason: string): PiiEvaluation => published.piiEvalMeasurement || published.custodianConformance
+      ? { state: 'public-recorded', profile, metrics, ...published, protectedReason }
+      : { state: 'not-recorded', reason: protectedReason };
+    const binding = piiCurrentProtectedRoute();
+    if (!binding) return publicOnly('No reviewed PII protected binding is registered.');
+    try {
       const evidence = await loadPiiProtectedSupportEvidence(REPO_ROOT, binding);
       const route = validatePiiProtectedSupportBinding(binding, evidence);
       const matrix = validatePiiSupportMatrixV2(buildPiiSupportMatrixV2({ protectedRoute: route }), { protectedRoute: route });
@@ -144,25 +168,21 @@ export function loadPiiEvaluation(): Promise<PiiEvaluation> {
         mode: candidate.released ? 'published' : 'candidate',
         core: { commit: route.coreCommit, versionString: candidate.versionString ?? null },
         route: { id: route.id, record: route.record, maximumStatus: route.maximumStatus },
-        profile: { id: piiV1Profile.id, version: piiV1Profile.version, evaluationProfile: piiV1Profile.evaluationProfile, domainAccountingVersion: piiV1Profile.domainAccountingVersion },
+        profile,
         distribution: { ...matrix.distribution },
         families,
         productActivation: matrix.activationContract.productArtifact,
         populationComparisons: matrix.populationComparisons.map(c => ({ id: c.id, verdict: c.verdict })),
-        metrics: PII_METRIC_IDS.map(id => {
-          const [population, numerator, denominator] = PII_METRIC_LABELS[id];
-          const metric = piiV1Profile.metrics[id];
-          return { id, population, numerator, denominator, direction: metric.direction, applicability: metric.applicability };
-        }),
+        metrics,
         costAcceptance: accepted ? { cells: accepted.cells, sizeRows: accepted.sizeRows } : null,
         languages: [...PII_CONTEXT_LANGUAGES],
         jurisdictionStandard: { id: PII_JURISDICTION_STANDARD.id, codeCount: PII_JURISDICTION_STANDARD.codeCount },
-        piiEvalMeasurement,
-        custodianConformance,
+        ...published,
       } satisfies PiiEvaluation;
     } catch (error) {
-      // A binding that does not validate is never shown in part. The reason names the failing check, never a value.
-      return { state: 'not-recorded', reason: `The PII protected binding did not validate: ${(error as Error).message}` } satisfies PiiEvaluation;
+      // Protected product evidence stays fail-closed. Independently validated public-synthetic measurement may still be
+      // shown as measurement, never as a family status or support claim.
+      return publicOnly(`The PII protected binding did not validate: ${(error as Error).message}`);
     }
   });
 }

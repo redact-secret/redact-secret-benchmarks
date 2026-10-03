@@ -1,0 +1,58 @@
+{
+  "schema": "redact-secret-benchmarks.pii-eval-artifact-source/1",
+  "environment": "staging",
+  "supportClaims": false,
+  "app": {
+    "id": "5178533",
+    "owner": "redact-secret",
+    "repository": "pii-eval",
+    "secret": "PII_EVAL_APP_PRIVATE_KEY",
+    "permissions": {
+      "actions": "read",
+      "contents": "read"
+    }
+  },
+  "repository": {
+    "fullName": "redact-secret/pii-eval",
+    "id": 1402099636
+  },
+  "workflow": {
+    "id": 373630868,
+    "path": ".github/workflows/ci.yml",
+    "event": "push",
+    "branch": "main",
+    "runId": 37129550754,
+    "runAttempt": 1,
+    "headSha": "6157cbc5918b3888c8e84b1884719ea8f3278b36",
+    "conclusion": "success"
+  },
+  "artifacts": {
+    "engine": {
+      "id": 11276785421,
+      "name": "pii-eval-engine-6157cbc5918b3888c8e84b1884719ea8f3278b36-linux-x86_64",
+      "sizeInBytes": 1322701,
+      "archiveSha256": "011e4d61bff80b7a04e46e644a3d1799dac8f7ecb23e4ae4044b9a72cacc75eb",
+      "expiresAt": "2026-11-02T14:26:50Z",
+      "members": {
+        "SHA256SUMS": "2d6a867b9dc2643343d6ea49591ba24439304a83ef3be60fc7cc6f97ac0d869f",
+        "build-info.json": "06c7d2a7e2f4003aea348d24c285e3a91a180ed09ddc9f433f05ff8d9e2eefe7",
+        "pii-eval": "cfa5776ff3c70b8231b068d9b0691e3bdf16ea6f11210f64bd13aa891193ec8f"
+      }
+    },
+    "measurement": {
+      "id": 11276237723,
+      "name": "pii-eval-run-37129550754-1",
+      "sizeInBytes": 7042,
+      "archiveSha256": "ffd37c2582700964b4494ffa60cb222707189e9ee036d654b5e4c9f829cac78f",
+      "expiresAt": "2026-10-17T14:27:06Z",
+      "members": {
+        "run/manifest.json": "95b9305a6152a7b9b1eb10c6e39485b3f762b21475310aa1ebb82e634bc6728e",
+        "run/observation-redact-secret-core.json": "f7aa16ba09044d5a0027e3a6e5a06cd98b7938e70afa6439a69e0fa437a69ba5",
+        "run/public-synthetic-artifact.json": "0172b38720f5f7d870336b13f83d0bfe413a69808b2e6f28afc341b04c4b57e8",
+        "run/run-artifact.json": "b46e4c40927c56c05121b3be500a93da4fc1fb272921667dcd3edb96e76f56fd"
+      }
+    }
+  },
+  "publicArtifactMember": "run/public-synthetic-artifact.json",
+  "pins": "benchmarks/pii-eval-public-synthetic-pins.json"
+}

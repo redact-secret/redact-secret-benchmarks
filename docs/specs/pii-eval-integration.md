@@ -76,3 +76,42 @@ npm run eval:publish:pii-support -- \
 ```
 
 Cross-repository Actions artifacts require an explicit token or GitHub App installation with `actions:read` on the private `pii-eval` repository; another repository's `GITHUB_TOKEN` is insufficient. No credential or access setting is created by this integration.
+
+## Staging public-synthetic artifact delivery
+
+`pii-public-synthetic.yml` is a reusable and explicitly dispatchable workflow. App `5178533` uses the existing
+`PII_EVAL_APP_PRIVATE_KEY` secret to mint an installation token scoped to `redact-secret/pii-eval`, Actions and contents
+read only. Its isolated job has no publisher OIDC permission, no protected inputs and no scanner execution. It verifies
+the pinned engine binary but does not execute it. Only the public projection and sanitized transport receipt are uploaded
+to the calling run. `publish-site.yml` calls it on staging and passes the downloaded projection through the existing
+benchmark-owned semantic consumer and atomic publisher. Production skips the job and receives no PII App secret.
+
+The exact transport pins are `benchmarks/pii-eval-public-synthetic-source.json`; semantic bindings are
+`benchmarks/pii-eval-public-synthetic-pins.json`. They bind successful push run `37129550754`, attempt 1, engine commit
+`6157cbc5918b3888c8e84b1884719ea8f3278b36`, engine artifact `11276785421`, measurement artifact `11276237723`, upload
+archive digests, exact member rosters and byte digests, build-info and Cargo.lock provenance. A replacement, rerun, fork,
+expired artifact or absent population fails closed. No latest-run fallback exists. The measurement artifact expires at
+`2026-10-17T14:27:06Z`; reviewed repinning or durable upstream artifact delivery is required before that date.
+
+This run measures upstream `synthetic-demo-population` (3 authored cases, 6 variants), candidate scanner beta.12.
+It is separate from the staging site's product candidate and the four benchmark-owned populations in #664. It provides
+transport and consumer evidence only: family policy, support verdicts, thresholds, credential outputs and PII authority
+remain unchanged. The UI retains public measurement when protected binding fails, hides all unvalidated protected
+family/count/status facts, and presents each scanner/population's exact effective N and withheld states separately.
+
+```sh
+npm run pii:artifact-source:check
+# Read-only token required; do not put it in an engine/scanner environment.
+GH_TOKEN=<installation-token> node scripts/fetch-pii-eval-public-synthetic.mjs fetch --out=/tmp/pii-public
+npm run eval:publish:pii-support -- \
+  --pii-eval-pins=benchmarks/pii-eval-public-synthetic-pins.json \
+  --pii-eval-artifact=/tmp/pii-public/public-synthetic-artifact.json \
+  --population-mode=not-measured
+```
+
+Local verification at the exact pins successfully downloaded and verified both archives through existing read-only
+GitHub authentication. The hosted workflow separately proves App installation access. If that token cannot access
+pii-eval, the prerequisite is an existing App installation on that repository with Actions/contents read and the secret
+available to benchmarks; this implementation neither creates credentials nor changes installation settings.
+The publish-site mirror in `redact-secret/redact-secret-sites/docs/upstream/redact-secret-benchmarks--publish-site.yml`
+must be synchronized by its owner after this benchmark PR lands.

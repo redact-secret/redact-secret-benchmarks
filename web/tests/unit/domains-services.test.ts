@@ -26,7 +26,7 @@ const STATUSES = ['pending', 'provisional', 'stable', 'unsupported'];
 describe('PII evaluation', () => {
   test('is rebuilt from the reviewed binding: families, a distribution that recounts, views bound to the report', async () => {
     const pii = await (await domains()).loadPiiEvaluation();
-    if (pii.state !== 'recorded') throw new Error(`the committed PII binding did not validate: ${pii.reason}`);
+    if (pii.state !== 'recorded') throw new Error(`the committed PII binding did not validate: ${pii.state}`);
     expect(pii.families.length).toBeGreaterThan(0);
     for (const family of pii.families) {
       expect(family.id.startsWith('pii:')).toBe(true);
@@ -70,10 +70,23 @@ describe('PII evaluation', () => {
       'public/results/evaluation-domains-v2.json': JSON.stringify(index),
       [`public${href}`]: JSON.stringify(matrix),
     }))).loadPiiEvaluation();
-    if (pii.state !== 'recorded') throw new Error(pii.reason);
+    if (pii.state !== 'recorded') throw new Error(pii.state);
     expect(pii.piiEvalMeasurement?.complete).toBe(true);
     expect(pii.piiEvalMeasurement?.populations.every(population => population.scanners[0].metrics.length === 10)).toBe(true);
     expect(pii.custodianConformance).toMatchObject({ syntheticConformance: true, supportClaims: false, qualification: 'not-live-support-evidence' });
+
+    const dir = piiCurrentProtectedRoute()!.evidenceDirectory;
+    const publicOnly = await (await domains(overlay({
+      'public/results/evaluation-domains-v2.json': JSON.stringify(index),
+      [`public${href}`]: JSON.stringify(matrix),
+      [`${dir}/pii-beta11-protected-disposition-v2.json`]: null,
+    }))).loadPiiEvaluation();
+    expect(publicOnly.state).toBe('public-recorded');
+    if (publicOnly.state !== 'public-recorded') throw new Error(publicOnly.state);
+    expect(publicOnly.piiEvalMeasurement).toEqual(pii.piiEvalMeasurement);
+    expect(publicOnly.protectedReason).toContain('did not validate');
+    expect(publicOnly).not.toHaveProperty('families');
+    expect(publicOnly).not.toHaveProperty('distribution');
   });
 });
 

@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { piiBenignCollisionEvidence } from '../benchmarks/evaluation/domains/pii/benign-collision-evidence.ts';
@@ -5,6 +6,7 @@ import { piiPopulationContract, type PiiPopulationReport } from '../benchmarks/e
 import type { PiiAccountingRow } from '../benchmarks/evaluation/domains/pii/accounting.ts';
 import type { PiiTrustedProductBinding } from '../benchmarks/evaluation/domains/pii/product-binding.ts';
 import type { PiiEvalMeasurement } from '../benchmarks/evaluation/domains/pii/support-v2.ts';
+import type { CustodianConformance } from '../benchmarks/evaluation/domains/pii/support-v2.ts';
 
 /**
  * Inputs one PII support publication may bind. Both describe one product: the
@@ -24,6 +26,18 @@ export async function piiEvalMeasurementFrom(pinsFile: string, artifactFiles: st
   const report = consume(pins, artifacts);
   if (!report.complete) throw new Error(`pii-eval artifact validation failed: ${report.rejections.flatMap((row: any) => row.reasons.map((reason: any) => reason.code)).join(',') || 'pinned population missing'}`);
   return report as PiiEvalMeasurement;
+}
+
+/** Verify a public synthetic custodian bridge bundle. It is conformance evidence, never a live support input. */
+export async function custodianConformanceFrom(bundleFile: string): Promise<CustodianConformance> {
+  const bytes = await readFile(bundleFile), bundle = JSON.parse(bytes.toString('utf8'));
+  if (bundle?.schema !== 'redact-secret-benchmarks.synthetic-custodian-bundle/1') throw new Error('Invalid synthetic custodian bundle');
+  const { canonicalize, conformanceReport } = await import('../benchmarks/evaluation/domains/pii/custodian-consumer.mjs');
+  const part = bundle.initial;
+  const report = conformanceReport(bundle.pins, canonicalize(part.request), {
+    manifest: canonicalize(part.manifest), projections: part.projections.map(canonicalize), revocations: part.revocations.map(canonicalize),
+  }, part.now);
+  return { ...report, bundleSha256: createHash('sha256').update(bytes).digest('hex') } as CustodianConformance;
 }
 
 const EVIDENCE_FILES = { candidateEvidence: 'candidate-evidence-v1.json', activationArtifact: 'pii-activation-evidence-v1.json',

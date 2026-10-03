@@ -126,6 +126,7 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
   const jurisdictional = families.filter(f => f.jurisdiction !== null);
   const protectedTotal = families.length > 0 && families.every(f => f.protectedRun.cases !== null) ? families.reduce((sum, f) => sum + (f.protectedRun.cases ?? 0), 0) : null;
   const piiEval = recorded?.piiEvalMeasurement ?? null;
+  const custodian = recorded?.custodianConformance ?? null;
 
   const glance: GlanceItem[] = [
     {
@@ -207,6 +208,13 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
               link: { label: `#${ISSUES.piiEval}`, href: issue(ISSUES.piiEval).href, external: true } }
           : { id: 'pii-eval', label: 'pii-eval artifact', status: 'not-measured', statusWord: 'Not recorded',
               detail: 'No validated public-synthetic pii-eval artifact is bound to this publication.', link: { label: `#${ISSUES.piiEval}`, href: issue(ISSUES.piiEval).href, external: true } },
+        custodian
+          ? { id: 'custodian-conformance', label: 'Custodian conformance', status: 'info', statusWord: 'Synthetic only',
+              value: `${int(custodian.projections.length)} destination-bound projection`,
+              detail: `Disposable test keys and public synthetic data verified through feed sequence ${int(custodian.feed.sequence)}. This proves signature, destination and revocation handling only; it is not live protected evidence, independent ground truth or a support qualification. Configuration is bound by the bridge request, not signed in the projection.`,
+              link: { label: `#${ISSUES.piiEval}`, href: issue(ISSUES.piiEval).href, external: true } }
+          : { id: 'custodian-conformance', label: 'Custodian conformance', status: 'not-measured', statusWord: 'Not recorded',
+              detail: 'No public synthetic custodian conformance bundle is bound to this publication.', link: { label: `#${ISSUES.piiEval}`, href: issue(ISSUES.piiEval).href, external: true } },
         { id: 'stable', label: 'Stable', status: recorded.distribution.stable > 0 ? 'info' : 'not-measured', statusWord: recorded.distribution.stable > 0 ? 'Recorded' : 'None recorded', value: `${int(recorded.distribution.stable)} ${recorded.distribution.stable === 1 ? 'family' : 'families'}`, detail: `The ${recorded.route.id} route cannot give stable.` },
       ],
     });

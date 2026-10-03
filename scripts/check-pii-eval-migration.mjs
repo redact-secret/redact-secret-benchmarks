@@ -4,6 +4,9 @@ import { readFile } from 'node:fs/promises';
 const file = new URL('../benchmarks/pii-eval-migration.json', import.meta.url);
 const record = JSON.parse(await readFile(file, 'utf8'));
 const digest = async path => createHash('sha256').update(await readFile(new URL(`../${path}`, import.meta.url))).digest('hex');
+const digestCanonicalFixture = async path => createHash('sha256')
+  .update((await readFile(new URL(`../${path}`, import.meta.url), 'utf8')).trimEnd())
+  .digest('hex');
 const fail = message => { throw new Error(`PII migration acceptance invalid: ${message}`); };
 
 if (record.schemaVersion !== 1 || record.reportType !== 'pii-eval-migration-acceptance' || record.supportClaims !== false || record.authorityChanged !== false)
@@ -25,6 +28,20 @@ if (JSON.stringify(record.benchmarkPopulations?.views?.map(row => [row.id, row.c
   fail('population identities or counts');
 for (const item of [record.benchmarkPopulations.report, record.benchmarkPopulations.observation, ...record.benchmarkPopulations.plans]) {
   if (await digest(item.path) !== item.sha256) fail(`digest drift at ${item.path}`);
+}
+if (!/^[0-9a-f]{40}$/.test(record.pins?.privateCustodian) || !/^[0-9a-f]{40}$/.test(record.pins?.privateLedger))
+  fail('custodian or ledger source pin');
+const custodianFixtures = [
+  ['tests/fixtures/custodian/golden/public-projection-v2.canonical.json', record.pins.custodianProjectionV2GoldenSha256],
+  ['tests/fixtures/custodian/golden/revocation-envelope.canonical.json', record.pins.custodianRevocationGoldenSha256],
+];
+for (const [path, expected] of custodianFixtures) {
+  if (!/^[0-9a-f]{64}$/.test(expected) || await digestCanonicalFixture(path) !== expected) fail(`custodian golden drift at ${path}`);
+}
+if (await digest('tests/fixtures/custodian/synthetic-pii-bundle.json') !== record.pins.custodianSyntheticBundleSha256)
+  fail('custodian synthetic bundle drift');
+for (const key of ['custodianProjectionV2SchemaSha256', 'custodianRevocationSchemaSha256', 'custodianBridgeRequestSchemaSha256', 'custodianBridgeResponseSchemaSha256']) {
+  if (!/^[0-9a-f]{64}$/.test(record.pins[key])) fail(`missing immutable ${key}`);
 }
 if (record.acceptance?.benchmarkPopulationDualRun !== 'blocked-schema-1.2' || !record.acceptance?.reason?.includes('schema 1.1'))
   fail('missing explicit schema blocker');

@@ -74,6 +74,8 @@ jobs:
         run: npm run authority:check
       - name: Public pii-eval artifacts retain pinned identity, complete per-population accounting and exact semantic digests (#665)
         run: npm run pii:artifact:check > /dev/null
+      - name: Synthetic custodian projections remain destination-bound and revocation removes their standing (#665)
+        run: npm run pii:custodian:check
       - name: Every taxonomy provider and family has a dossier entry (#473)
         run: npm run dossiers:check
       - name: Peer scanner rules map to real taxonomy families, and the peer registry ranks nothing (#558)

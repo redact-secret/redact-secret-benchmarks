@@ -1377,5 +1377,29 @@
     },
     "decidedAt": "2026-10-03",
     "decidedBy": "milocosmopolitan (explicit maintainer approval of 2026-10-03 to re-key the Beta.13 size tradeoffs accepted for 0027da0 to candidate core 401158d, on the evidence of run 37093955815, which measured byte-identical values; re-keyed to the Beta.13 candidate commit)"
+  },
+  {
+    "id": "beta13-401158d-browser-wasm-scale-logs-small-whole-init-ratio",
+    "triggerId": "initialization/browser-wasm/scale-logs-small-whole/initialization-ratio",
+    "baselineId": "0.1.0-beta.8",
+    "candidate": {
+      "sourceCommit": "401158d09a677b110fa60209256ba184b1f08f8f"
+    },
+    "measured": {
+      "baseline": 1,
+      "candidate": 1.5000000000067684,
+      "unit": "ratio"
+    },
+    "rationale": "The browser-WebAssembly initialization ratio on scale-logs-small-whole was accepted at 1.488 for Beta.10 (entry beta10-browser-wasm-scale-logs-small-whole-phone-detector-init) for the phone-detector initialization cost, and at 1.3967 for the Beta.13 candidate 0027da0 (entry beta13-0027da0-browser-wasm-scale-logs-small-whole-init-ratio, run 37058097493). The Beta.13 candidate 401158d (redact-secret main after PRs #1193 and #1194, which add only API-contract documentation, guides, the changelog and audit-evidence text on top of 0027da0; the product source under crates, packages, bindings and conformance is identical to 0027da0) measured this row at 1.2097 in performance-evaluation.yml run 37093955815 (within budget), 1.5000 in run 37097499497 and 1.4400 in run 37097776536 (both breaching the 1.25 budget, baseline 1), with no other initialization, latency or memory trigger breaching in any of them. The code under test is identical across all three runs and the 0027da0 precedent, so the spread 1.21 to 1.50 is run-to-run variance of a small same-job paired ratio on a shared runner (a 1 ms-scale initialization), not a change in the product: the cost is the already-accepted phone-detector initialization, and the value recorded here is the highest observed. The ratio is a same-job paired ratio, so the runner machine class cancels out. It does not cover any growth beyond the measured value: a later breach at a different source commit needs its own entry and is judged afresh. The budget definition is unchanged.",
+    "benefit": {
+      "kind": "detection",
+      "summary": "Adds the `pii:global:phone` family: conservative E.164/NANP phone-number identity structure (`+1` and NANP display forms only), gated by the same required-context sensitivity policy as every other PII family, with English and Korean field-label/context entries and conformance fixtures.",
+      "links": [
+        "https://github.com/redact-secret/redact-secret/pull/895",
+        "https://github.com/redact-secret/redact-secret/issues/880"
+      ]
+    },
+    "decidedAt": "2026-10-03",
+    "decidedBy": "milocosmopolitan (explicit maintainer approval given in the Beta.13 chain orchestration session on 2026-10-03 to accept exactly this metric for candidate 401158d, on the evidence of runs 37093955815, 37097499497 and 37097776536 and the 0027da0 precedent at 1.397; nothing else is accepted)"
   }
 ]

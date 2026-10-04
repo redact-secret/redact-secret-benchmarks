@@ -72,11 +72,40 @@ export function engineCandidateProblems(record, { pin, exists }) {
   return problems;
 }
 
+/** A newer evidence release rides next to the accepted adoption as `evidenceCandidate` (#690): never the active pin, never accepted by this repository's files. */
+/** The identity digest of a registered product candidate's bytes: sha256 over `name sha256` lines of its packages, sorted. The same bytes give the same digest on any evidence. */
+export const packagesDigest = packages => `sha256:${createHash('sha256').update([...packages].map(p => `${p.name} ${p.sha256}`).sort().join('\n') + '\n').digest('hex')}`;
+
+export function evidenceCandidateProblems(record, { pin, exists, productCandidates }) {
+  const ec = record.evidenceCandidate;
+  if (ec === undefined) return [];
+  const problems = [];
+  if (record.state !== 'accepted') problems.push('an evidence candidate rides next to an accepted adoption');
+  if (ec.evidenceRelease === pin.evidenceRelease) problems.push('an evidence candidate is a newer release than the active pin');
+  if (!/^snapshot-\d{4}\.\d{2}\.\d{2}(\.\d+)?$/.test(ec.evidenceRelease ?? '')) problems.push('evidenceCandidate.evidenceRelease must be a snapshot tag');
+  for (const key of ['manifestDigest', 'snapshotDigest', 'adoptionKey']) if (!DIGEST.test(ec[key] ?? '')) problems.push(`evidenceCandidate.${key} must be sha256:<64 hex>`);
+  if (!/^v\d+\.\d+\.\d+/.test(ec.engine?.tag ?? '') || !/^[0-9a-f]{40}$/.test(ec.engine?.revision ?? '')) problems.push('evidenceCandidate.engine needs a tag and a 40-hex revision');
+  if (ec.engineCompatibility?.compatible !== true) problems.push('evidenceCandidate.engineCompatibility must be compatible');
+  if (ec.ownerAcceptance !== null) problems.push('an evidence candidate carries no owner acceptance (ownerAcceptance must be null)');
+  if (!ec.changeReport || !exists(ec.changeReport)) problems.push(`evidenceCandidate.changeReport ${ec.changeReport} does not exist`);
+  // The product candidate measured on this evidence is the same registered bytes as on the accepted evidence (identity recorded here, bytes in benchmarks/product-candidates.json).
+  for (const pc of ec.productCandidates ?? []) {
+    const registered = productCandidates?.candidates?.find(c => c.id === pc.id);
+    if (!registered) problems.push(`evidenceCandidate.productCandidates names ${pc.id}, which benchmarks/product-candidates.json does not register`);
+    else {
+      if (registered.product.commit !== pc.commit) problems.push(`evidenceCandidate.productCandidates ${pc.id}: commit ${pc.commit} is not the registered ${registered.product.commit}`);
+      if (packagesDigest(registered.packages) !== pc.packagesDigest) problems.push(`evidenceCandidate.productCandidates ${pc.id}: packagesDigest is not the registered packages' (the candidate must be the same bytes on every evidence)`);
+    }
+  }
+  if (ec.acceptance && (!exists(ec.acceptance.patch) || !exists(ec.acceptance.report))) problems.push('evidenceCandidate.acceptance names a patch or report that does not exist');
+  return problems;
+}
+
 export function checkEvidenceAdoption() {
   const inputs = readJson('benchmarks/qualification-inputs.json');
   const record = readJson('benchmarks/evidence-adoption.json');
-  const context = { pin: inputs.populations.find(p => p.id === 'public-evidence-snapshot').pin, exists: p => existsSync(new URL(p, root)), read: p => readFileSync(new URL(p, root), 'utf8') };
-  return [...evidenceAdoptionProblems(record, context), ...engineCandidateProblems(record, context)];
+  const context = { pin: inputs.populations.find(p => p.id === 'public-evidence-snapshot').pin, exists: p => existsSync(new URL(p, root)), read: p => readFileSync(new URL(p, root), 'utf8'), productCandidates: readJson('benchmarks/product-candidates.json') };
+  return [...evidenceAdoptionProblems(record, context), ...engineCandidateProblems(record, context), ...evidenceCandidateProblems(record, context)];
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

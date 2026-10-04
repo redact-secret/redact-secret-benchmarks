@@ -16,6 +16,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { readRunArtifact } from '../benchmarks/qualification/run-artifact.ts';
+import { controlFor } from './candidate-control.mjs';
 import { candidateOf, readRegistry } from './install-product-candidate.mjs';
 
 const args = process.argv.slice(2);
@@ -24,7 +25,7 @@ const need = (name: string) => option(name) ?? (() => { throw new Error(`--${nam
 const control = path.resolve(need('control')), candidateDir = path.resolve(need('candidate')), out = path.resolve(need('out'));
 const candidateId = need('candidate-id');
 const registered = candidateOf(readRegistry(), candidateId);
-const adoption = JSON.parse(readFileSync(new URL('../benchmarks/evidence-adoption.json', import.meta.url), 'utf8')).engineCandidate;
+const adoption = controlFor(JSON.parse(readFileSync(new URL('../benchmarks/evidence-adoption.json', import.meta.url), 'utf8')), { evidenceTag: option('evidence-tag'), manifestDigest: option('evidence-manifest-digest') });
 const PRODUCT = 'redact-secret';
 
 interface Finding { start: number; end: number; family?: string; action?: string }

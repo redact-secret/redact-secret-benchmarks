@@ -267,5 +267,71 @@
       "staging": null,
       "production": null
     }
+  },
+  "evidenceCandidate": {
+    "evidenceRelease": "snapshot-2026.10.04.4",
+    "sourceRevision": "20c18bdb679aedc341c067c3ce0e3fa5eff17f52",
+    "manifestDigest": "sha256:f75a46f855e6daf82fbd94bf6f13e187e5b110a4e473b9045e7db47a74b65f1f",
+    "snapshotDigest": "sha256:9870d50f7d626f0b2b39c39f94fb706d93b6ef73577e2e1e25e3052e58fed57c",
+    "evidenceSchema": "credential-evidence/schema/1.7.0",
+    "evidenceRevision": "records-tree-sha256:964793dcbc10f76cbae5eecc6feb4d8cad71d8f4c42e844503e655ef5ba6e4df",
+    "adoptionKey": "sha256:551cb320ab485ca70a69fcfb28d05f509be13d9b64018c599ab96ce67f8536a4",
+    "engine": {
+      "tag": "v0.1.0-alpha.5",
+      "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d"
+    },
+    "engineCompatibility": {
+      "compatible": true,
+      "cases": 6519
+    },
+    "supersedes": {
+      "evidenceRelease": "snapshot-2026.10.04.3",
+      "manifestDigest": "sha256:690ed57312d576fd6a614d40de10efe8bbc89431693aa4fbaa99979d69c0da8a"
+    },
+    "engineChange": {
+      "from": {
+        "tag": "v0.1.0-alpha.4",
+        "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33"
+      },
+      "to": {
+        "tag": "v0.1.0-alpha.5",
+        "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d"
+      },
+      "runArtifactSchemaSha256": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
+      "note": "Applied only at acceptance, by candidate.acceptance.patch; the active registry stays on the previous engine and the old accepted runs until the owner accepts."
+    },
+    "changeSummary": {
+      "old": 6449,
+      "new": 6519,
+      "added": 70,
+      "removed": 0,
+      "changed": 5,
+      "unchanged": 6444
+    },
+    "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.04.4.json",
+    "replay": {
+      "state": "pending",
+      "via": ".github/workflows/official-runs.yml after the acceptance repin",
+      "recordedRuns": []
+    },
+    "ownerAcceptance": null,
+    "deployment": {
+      "staging": null,
+      "production": null
+    },
+    "product": {
+      "package": "@redact-secret/core",
+      "version": "0.1.0-beta.13",
+      "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ="
+    },
+    "productCandidates": [
+      {
+        "id": "core-main-1e45cecf",
+        "registry": "benchmarks/product-candidates.json",
+        "commit": "1e45cecf674344726e59bd35a37f28ba1966a06e",
+        "packagesDigest": "sha256:a9609bb8b9c426a3659d0e90b1bc7c04681646e32c71fdb323fdfc145e59ed41",
+        "note": "The same registered, unpublished product bytes are measured on this evidence as on the accepted one (the 2x2 design: docs/specs/product-candidate-replay.md); never published, never an accepted run."
+      }
+    ]
   }
 }

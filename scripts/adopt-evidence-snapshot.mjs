@@ -131,6 +131,11 @@ function preflight() {
     if (ec && !supersede) return finish('conflict', 5, `A different engine candidate (${ec.engine.tag}, ${ec.product.version}) is recorded; pass --supersede to replace it.`);
     return finish('ready', 0, `Ready: ${tag} (the accepted pin) is readable by ${engine.tag}; engine candidate ${engine.tag} with @redact-secret/core ${product.version}${ec ? ' supersedes the recorded one' : ''}. Key ${key.slice(0, 12)}.`);
   }
+  if (adoption.state === 'accepted' && adoption.evidenceCandidate) {
+    if (adoption.evidenceCandidate.adoptionKey === `sha256:${key}`) return finish('already-prepared', 0, `Adoption ${key.slice(0, 12)} of ${tag} is already recorded as the evidence candidate; nothing to do.`);
+    if (!supersede) return finish('conflict', 5, `A different evidence candidate (${adoption.evidenceCandidate.evidenceRelease}) is recorded next to the accepted adoption; pass --supersede to replace it.`);
+    report.supersedes = { evidenceRelease: adoption.evidenceCandidate.evidenceRelease, adoptionKey: adoption.evidenceCandidate.adoptionKey };
+  }
   if (adoption.state === 'candidate') {
     if (adoption.candidate.adoptionKey === `sha256:${key}`) return finish('already-prepared', 0, `Adoption ${key.slice(0, 12)} of ${tag} is already recorded as the candidate; nothing to do.`);
     if (supersede) { report.supersedes = { evidenceRelease: adoption.candidate.evidenceRelease, adoptionKey: adoption.candidate.adoptionKey }; return finish('ready', 0, `Ready: ${tag} is verified and readable by ${engine.tag}; it supersedes the recorded candidate ${adoption.candidate.evidenceRelease} (${adoption.candidate.adoptionKey.slice(0, 19)}). Adoption key ${key.slice(0, 12)}.`); }
@@ -168,7 +173,12 @@ function prepare() {
   const removed = [];
   if (old?.acceptance) for (const f of [old.acceptance.patch, old.acceptance.patchDigestFile]) if (f && existsSync(path.join(root, f))) { rmSync(path.join(root, f)); removed.push(f); }
   if (options['removed-list']) writeFileSync(options['removed-list'], removed.map(f => `${f}\n`).join(''));
-  writeJson(ADOPTION_FILE, record);
+  // After an acceptance the accepted adoption stays as the record (it is the active pin's); a newer evidence release rides next to it as `evidenceCandidate`, superseding a recorded one
+  // only with --supersede, and the engine candidate on the accepted evidence is untouched.
+  if (adoption.state === 'accepted') {
+    if (adoption.evidenceCandidate && adoption.evidenceCandidate.adoptionKey !== record.candidate.adoptionKey && !supersede) { console.error(`A different evidence candidate (${adoption.evidenceCandidate.evidenceRelease}) is recorded; pass --supersede to replace it.`); process.exit(5); }
+    writeJson(ADOPTION_FILE, { ...adoption, evidenceCandidate: { ...record.candidate, product: { package: product.package, version: product.version, integrity: product.integrity }, ...(adoption.evidenceCandidate && supersede ? { supersedesEvidenceCandidate: { evidenceRelease: adoption.evidenceCandidate.evidenceRelease, adoptionKey: adoption.evidenceCandidate.adoptionKey } } : {}) } });
+  } else writeJson(ADOPTION_FILE, record);
   writeJson(record.candidate.changeReport, {
     schema: 'redact-secret/evidence-adoption-change-report/v1', evidenceRelease: tag, previous: record.candidate.supersedes, adoptionKey: record.candidate.adoptionKey,
     scope: 'Corpus evidence only: scanner and configuration pins are unchanged'+(engine.tag !== registry.engine.tag ? `; the engine moves from ${registry.engine.tag} to ${engine.tag}, so a later difference is the corpus and the engine together and is reported apart by the replay` : ', and so is the engine, so any later difference in results is the changed corpus, not a product version')+'.',
@@ -207,8 +217,8 @@ function prepareEngineCandidate(next) {
 }
 
 function repin() {
-  if (adoption.state !== 'candidate') usage('there is no candidate adoption to accept');
-  const c = adoption.candidate;
+  const c = adoption.state === 'candidate' ? adoption.candidate : adoption.state === 'accepted' ? adoption.evidenceCandidate : undefined;
+  if (!c) usage('there is no candidate adoption to accept');
   const date = options['superseded-on'] ?? usage('--superseded-on YYYY-MM-DD is required (the owner acceptance date)');
   const result = repinPopulation({ registry, inputs, population: POPULATION, candidate: c, supersededOn: date });
   writeJson('benchmarks/official-runs.json', result.registry);

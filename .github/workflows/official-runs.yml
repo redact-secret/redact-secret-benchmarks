@@ -31,6 +31,16 @@ on:
         required: false
         default: ''
         type: string
+      evidence_tag:
+        description: With `candidate`, measure a NEW evidence snapshot (for example snapshot-2026.10.20) instead of the accepted one (#698). The same registered product bytes on that release of credential-evidence; the control is that adoption's recorded replay of the published build. Needs evidence_manifest_digest.
+        required: false
+        default: ''
+        type: string
+      evidence_manifest_digest:
+        description: The expected sha256 of the evidence_tag release-manifest.json, sha256:<64 hex> (from the release notes / release:verify).
+        required: false
+        default: ''
+        type: string
 permissions:
   contents: read
 concurrency:
@@ -51,6 +61,8 @@ jobs:
       PLATFORM: linux-x64
       ATTRIBUTION: ${{ inputs.attribution }}
       CANDIDATE: ${{ inputs.candidate }}
+      EVIDENCE_TAG: ${{ inputs.evidence_tag }}
+      EVIDENCE_DIGEST: ${{ inputs.evidence_manifest_digest }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
@@ -60,6 +72,13 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: A new evidence snapshot is named completely, for a candidate only, and its adoption record holds the control
+        if: ${{ inputs.evidence_tag != '' || inputs.evidence_manifest_digest != '' }}
+        run: |
+          [ -n "$CANDIDATE" ] || { echo "::error::evidence_tag measures a product candidate: name one"; exit 1; }
+          [[ "$EVIDENCE_TAG" =~ ^snapshot-[0-9]{4}\.[0-9]{2}\.[0-9]{2}(\.[0-9]+)?$ ]] || { echo "::error::evidence_tag must be a snapshot tag"; exit 1; }
+          [[ "$EVIDENCE_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]] || { echo "::error::evidence_manifest_digest must be sha256:<64 hex>"; exit 1; }
+          node scripts/candidate-control.mjs --evidence-tag "$EVIDENCE_TAG" --manifest-digest "$EVIDENCE_DIGEST" --field engine.tag
       - name: A candidate is registered and unpublished, its release holds the registered bytes, and it is not an attribution run
         if: ${{ inputs.candidate != '' }}
         env:
@@ -75,7 +94,7 @@ jobs:
       - name: Read the engine pin
         id: engine
         run: |
-          echo "tag=$(if [ -n "$CANDIDATE" ]; then node -p "require('./benchmarks/evidence-adoption.json').engineCandidate.engine.tag"; else node -p "require('./benchmarks/official-runs.json').engine.tag"; fi)" >> "$GITHUB_OUTPUT"
+          echo "tag=$(if [ -n "$CANDIDATE" ]; then node scripts/candidate-control.mjs ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --manifest-digest "$EVIDENCE_DIGEST"} --field engine.tag; else node -p "require('./benchmarks/official-runs.json').engine.tag"; fi)" >> "$GITHUB_OUTPUT"
       - name: Mint a read-only token for the engine repository
         id: engine-token
         uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2.2.2
@@ -116,7 +135,7 @@ jobs:
         run: >
           node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
-          --out "official-out/$POPULATION" --runs 2 ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE"}
+          --out "official-out/$POPULATION" --runs 2 ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
       - name: Methods run, twice, with the determinism check (floors population only)
         if: matrix.population == 'public-evidence-snapshot'
         env:
@@ -126,7 +145,7 @@ jobs:
         run: >
           node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
-          --out "official-out/$POPULATION" --runs 2 --methods ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE"}
+          --out "official-out/$POPULATION" --runs 2 --methods ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
       - name: Remove the byte copies the checks made
         run: rm -f "official-out/$POPULATION"/artifact-[0-9]*.json "official-out/$POPULATION"/methods/artifact-[0-9]*.json
         env:
@@ -219,6 +238,8 @@ jobs:
       contents: read
     env:
       CANDIDATE: ${{ inputs.candidate }}
+      EVIDENCE_TAG: ${{ inputs.evidence_tag }}
+      EVIDENCE_DIGEST: ${{ inputs.evidence_manifest_digest }}
       GH_TOKEN: ${{ github.token }}
       NODE_OPTIONS: --max-old-space-size=5120
     steps:
@@ -256,15 +277,15 @@ jobs:
         run: for dir in replay-in/candidate-run-*; do mv "$dir" "replay-in/${dir#replay-in/candidate-run-}"; done
       - name: Fetch the control (the engine candidate's replay of the published product) and verify its digest against the adoption record
         run: |
-          release="$(node -p "require('./benchmarks/evidence-adoption.json').engineCandidate.replay.archive.release")"
-          digest="$(node -p "require('./benchmarks/evidence-adoption.json').engineCandidate.replay.archive.sha256")"
+          release="$(node scripts/candidate-control.mjs ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --manifest-digest "$EVIDENCE_DIGEST"} --field archive.release)"
+          digest="$(node scripts/candidate-control.mjs ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --manifest-digest "$EVIDENCE_DIGEST"} --field archive.sha256)"
           node scripts/replay-archive.mjs fetch --release "$release" --sha256 "$digest" --out control-in
       - name: Fetch the pinned public snapshot (the case inputs of the sanitized view)
-        run: node scripts/fetch-pinned-public-snapshot.mjs --out snapshot-in
+        run: node scripts/fetch-pinned-public-snapshot.mjs --out snapshot-in ${EVIDENCE_TAG:+--tag "$EVIDENCE_TAG" --manifest-digest "$EVIDENCE_DIGEST"}
       - name: The effect report (strict comparison keyed by semantic ids; findings, sanitized views and repeat-run agreement of both sides) and the triage rules with the candidate's verified fixes
         run: >
           node scripts/candidate-replay-pipeline.mjs --control control-in --candidate replay-in --candidate-id "$CANDIDATE"
-          --snapshot snapshot-in/credential-eval-corpus-snapshot.json --out report-out
+          --snapshot snapshot-in/credential-eval-corpus-snapshot.json --out report-out ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}
       - name: Summary
         run: |
           { echo "### Product candidate replay: ${CANDIDATE}"; cat report-out/candidate-effect.md; } >> "$GITHUB_STEP_SUMMARY"

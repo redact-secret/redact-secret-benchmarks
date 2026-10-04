@@ -232,3 +232,20 @@ test('an engine candidate on the identical evidence rides next to the accepted a
   assert.ok(engineCandidateProblems({ state: 'accepted', engineCandidate: { ...record, snapshotDigest: `sha256:${'0'.repeat(64)}` } }, ctx).some(p => /identical evidence/.test(p)));
   assert.ok(engineCandidateProblems({ state: 'candidate', engineCandidate: record }, ctx).some(p => /accepted adoption/.test(p)));
 });
+
+test('an evidence candidate rides next to the accepted adoption and carries the same registered product candidate bytes (#690, #698)', async () => {
+  const { evidenceCandidateProblems, packagesDigest } = await import('../scripts/check-evidence-adoption.mjs');
+  const D = c => `sha256:${c.repeat(64)}`;
+  const packages = [{ name: 'a', sha256: D('1') }, { name: 'b', sha256: D('2') }];
+  const registry = { candidates: [{ id: 'core-x', product: { commit: 'c'.repeat(40) }, packages }] };
+  const record = { state: 'accepted', evidenceCandidate: { evidenceRelease: 'snapshot-2026.10.04.4', manifestDigest: D('3'), snapshotDigest: D('4'), adoptionKey: D('5'), engine: { tag: 'v0.1.0-alpha.5', revision: 'd'.repeat(40) }, engineCompatibility: { compatible: true }, ownerAcceptance: null, changeReport: 'r.json', productCandidates: [{ id: 'core-x', commit: 'c'.repeat(40), packagesDigest: packagesDigest(packages) }] } };
+  const ctx = { pin: { evidenceRelease: 'snapshot-2026.10.04.3' }, exists: () => true, productCandidates: registry };
+  assert.deepEqual(evidenceCandidateProblems(record, ctx), []);
+  assert.equal(packagesDigest([...packages].reverse()), packagesDigest(packages), 'order does not matter');
+  const bad = (change) => evidenceCandidateProblems({ ...record, evidenceCandidate: { ...record.evidenceCandidate, ...change } }, ctx);
+  assert.ok(bad({ ownerAcceptance: { acceptedBy: 'x' } }).some(p => /no owner acceptance/.test(p)));
+  assert.ok(bad({ evidenceRelease: 'snapshot-2026.10.04.3' }).some(p => /newer release/.test(p)));
+  assert.ok(bad({ productCandidates: [{ id: 'core-x', commit: 'c'.repeat(40), packagesDigest: D('9') }] }).some(p => /same bytes/.test(p)));
+  assert.ok(bad({ productCandidates: [{ id: 'nope', commit: 'c'.repeat(40), packagesDigest: D('9') }] }).some(p => /does not register/.test(p)));
+  assert.ok(evidenceCandidateProblems({ ...record, state: 'candidate' }, ctx).some(p => /accepted adoption/.test(p)));
+});

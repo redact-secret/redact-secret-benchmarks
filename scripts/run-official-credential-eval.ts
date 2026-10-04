@@ -3,7 +3,7 @@
  * The steps are credential-eval docs/consumers/benchmarks-quickstart.md; the pins are benchmarks/official-runs.json.
  *
  *   node --import tsx scripts/run-official-credential-eval.ts --population <id> --engine-dir <checkout at the pinned tag>
- *     --platform <linux-x64|darwin-arm64> --out <dir> [--runs 2] [--evidence-dir <dir with the public release assets>] [--methods] [--attribution <id> | --candidate <id>]
+ *     --platform <linux-x64|darwin-arm64> --out <dir> [--runs 2] [--evidence-dir <dir with the public release assets>] [--methods] [--attribution <id> | --candidate <id> [--evidence-tag <tag> --evidence-manifest-digest sha256:<hex>]]
  *
  * `--attribution <id>` (#697) makes an ATTRIBUTION run: the same engine, evidence and population, scanning the product build the registry's `attributionRuns[<id>]`
  * names (the previous published release, with the engine's own configuration file and Node shim directory for it, which are always used together). It exists to
@@ -30,6 +30,8 @@ import { canonical, sha256Digest } from '../benchmarks/qualification/canonical.t
 import { buildEvaluationEvidence } from '../benchmarks/qualification/evaluation-evidence.ts';
 import { exportPopulation, PRODUCT_POPULATIONS, type ProductPopulation } from '../benchmarks/qualification/population-snapshot.ts';
 import { bindingProblems, readRunArtifact, type RunArtifact } from '../benchmarks/qualification/run-artifact.ts';
+import { controlFor } from './candidate-control.mjs';
+import { releaseIdentityProblems } from './evidence-adoption.mjs';
 import { candidateOf, install as installCandidate, readRegistry as readCandidateRegistry, verifyLoaded } from './install-product-candidate.mjs';
 
 const registry = JSON.parse(readFileSync(new URL('../benchmarks/official-runs.json', import.meta.url), 'utf8'));
@@ -39,6 +41,7 @@ const fail = (message: string): never => { console.error(`official run refused: 
 
 const attributionId = option('attribution');
 const candidateId = option('candidate');
+const evidenceTag = option('evidence-tag'), evidenceManifestDigest = option('evidence-manifest-digest');
 if (attributionId && candidateId) fail('--attribution and --candidate are exclusive');
 type Attribution = { configs: Record<string, string>; nodeDir: string; scanners: Record<string, { version: string; integrity: string }> };
 const attribution: Attribution | undefined = attributionId === undefined ? undefined : (registry.attributionRuns?.[attributionId] ?? fail(`the registry pins no attribution run ${attributionId}`));
@@ -66,9 +69,16 @@ if (methodsMode) {
 }
 // A candidate run replays on the adoption's engine candidate (benchmarks/evidence-adoption.json), which is not the registry's accepted engine.
 const adoption = candidateId ? JSON.parse(readFileSync(new URL('../benchmarks/evidence-adoption.json', import.meta.url), 'utf8')) : undefined;
-const engineCandidate = adoption?.engineCandidate as { engine: { tag: string; revision: string }; product: { version: string; integrity: string }; evidenceRelease: string; manifestDigest: string } | undefined;
+let engineCandidate: { engine: { tag: string; revision: string }; product: { version: string; integrity: string }; evidenceRelease: string; manifestDigest: string } | undefined;
+try { engineCandidate = candidateId ? controlFor(adoption, { evidenceTag, manifestDigest: evidenceManifestDigest, requireArchive: false }) as typeof engineCandidate : undefined; } catch (error) { fail((error as Error).message); }
 if (candidateId && !engineCandidate) fail('benchmarks/evidence-adoption.json records no engineCandidate to replay a product candidate on');
-if (candidateId && (engineCandidate!.evidenceRelease !== registry.populations.find((p: { id: string }) => p.id === 'public-evidence-snapshot')?.evidence.release.tag)) fail('the engineCandidate evidence is not the registry pin: a product candidate is measured on the accepted evidence');
+if (candidateId && !evidenceTag && (engineCandidate!.evidenceRelease !== registry.populations.find((p: { id: string }) => p.id === 'public-evidence-snapshot')?.evidence.release.tag)) fail('the engineCandidate evidence is not the registry pin: a product candidate is measured on the accepted evidence');
+// A candidate is measured on the accepted evidence, or, with --evidence-tag and --evidence-manifest-digest (a new snapshot, #698 phase 2), on that release of credential-evidence
+// instead: the same registered product bytes, the engine candidate's engine, verified against the manifest digest the caller names (never against the registry pin).
+if (!!evidenceTag !== !!evidenceManifestDigest) fail('--evidence-tag and --evidence-manifest-digest go together');
+if (evidenceTag && !candidateId) fail('--evidence-tag is for a product candidate run: an official run measures the registry pin');
+if (evidenceTag && !/^snapshot-\d{4}\.\d{2}\.\d{2}(\.\d+)?$/.test(evidenceTag)) fail(`--evidence-tag ${evidenceTag} is not a snapshot tag`);
+if (evidenceManifestDigest && !/^sha256:[0-9a-f]{64}$/.test(evidenceManifestDigest)) fail('--evidence-manifest-digest must be sha256:<64 hex>');
 const expectedEngine = engineCandidate ? { revision: engineCandidate.engine.revision, version: engineCandidate.engine.tag.replace(/^v/, '') } : { revision: registry.engine.revision, version: registry.engine.version };
 const candidate = candidateId ? candidateOf(readCandidateRegistry(), candidateId) : undefined;
 const configFile = (attribution ? attribution.configs[platform] : registry.config.platforms[platform]?.file) ?? fail(`no run configuration pinned for platform ${platform}`);
@@ -111,6 +121,7 @@ if (probe('gitleaks', ['version']) !== registry.scanners.find((s: { id: string }
 
 // 3. Population inputs.
 const pin = population.evidence;
+let bindPin = pin; // the pin the artifact must bind to: the registry's, or the named release's own identity (a new snapshot, candidate runs only)
 const inputs: { corpus: string; manifest: string; tag: string; manifestDigest: string } = { corpus: '', manifest: '', tag: pin.release.tag, manifestDigest: pin.release.manifestDigest };
 if (methodsMode && (PRODUCT_POPULATIONS as readonly string[]).includes(populationId)) fail('a methods run is made for the floors population only');
 if ((PRODUCT_POPULATIONS as readonly string[]).includes(populationId)) {
@@ -129,11 +140,19 @@ if ((PRODUCT_POPULATIONS as readonly string[]).includes(populationId)) {
   const dir = path.resolve(option('evidence-dir', path.join(baseOut, 'evidence'))!);
   mkdirSync(dir, { recursive: true });
   if (!existsSync(path.join(dir, 'release-manifest.json')))
-    execFileSync('gh', ['release', 'download', pin.release.tag, '-R', pin.source === 'credential-evidence' ? 'redact-secret/credential-evidence' : pin.source, '-D', dir,
+    execFileSync('gh', ['release', 'download', evidenceTag ?? pin.release.tag, '-R', pin.source === 'credential-evidence' ? 'redact-secret/credential-evidence' : pin.source, '-D', dir,
       '-p', 'release-manifest.json', '-p', 'release-manifest.json.sha256', '-p', 'credential-eval-corpus-snapshot.json'], { stdio: 'inherit' });
   inputs.corpus = path.join(dir, 'credential-eval-corpus-snapshot.json');
   inputs.manifest = path.join(dir, 'release-manifest.json');
-  if (sha256Digest(readFileSync(inputs.manifest)) !== pin.release.manifestDigest) fail(`release manifest digest differs from the pinned ${pin.release.manifestDigest}`);
+  if (evidenceTag) {
+    // A new snapshot: the identity of the release as the adoption preflight checks it (manifest digest, asset bytes, records tree, schema, case count).
+    const manifestBytes = readFileSync(inputs.manifest), snapshotBytes = readFileSync(inputs.corpus);
+    const problems = releaseIdentityProblems({ tag: evidenceTag, expectedManifestDigest: evidenceManifestDigest, manifestBytes, manifest: JSON.parse(manifestBytes.toString('utf8')), snapshotBytes, snapshot: JSON.parse(snapshotBytes.toString('utf8')) });
+    if (problems.length) fail(`${evidenceTag} is not the release ${evidenceManifestDigest}: ${problems.join('; ')}`);
+    inputs.tag = evidenceTag; inputs.manifestDigest = evidenceManifestDigest!;
+    const identity = JSON.parse(snapshotBytes.toString('utf8')).identity as { source: string; revision: string; evidence_schema: string; corpus_digest: string };
+    bindPin = { ...pin, source: pin.source, revision: identity.revision, evidenceSchema: identity.evidence_schema, corpusDigest: identity.corpus_digest, release: { tag: evidenceTag, manifestDigest: evidenceManifestDigest! } };
+  } else if (sha256Digest(readFileSync(inputs.manifest)) !== pin.release.manifestDigest) fail(`release manifest digest differs from the pinned ${pin.release.manifestDigest}`);
 }
 
 // 4. Run the engine; any exit but 0 is a failed job.
@@ -156,7 +175,7 @@ interface Kept { manifest: RunArtifact['manifest']; caseCounts: Record<string, n
 let first: Kept | undefined;
 for (const [i, file] of artifacts.entries()) {
   const a = readRunArtifact(readFileSync(file));
-  const problems = bindingProblems(a.artifact, pin, { engineVersion: expectedEngine.version, protocol: registry.engine.protocol })
+  const problems = bindingProblems(a.artifact, bindPin, { engineVersion: expectedEngine.version, protocol: registry.engine.protocol })
     // A candidate is exploratory by construction: the class is checked for what it must be instead of being refused.
     .filter(problem => !(candidate && problem.startsWith('run_class is')));
   if (candidate && (a.artifact.manifest.run_class !== 'exploratory' || a.artifact.manifest.publication !== 'internal')) problems.push(`a product candidate run is exploratory and internal, this artifact is ${a.artifact.manifest.run_class}/${a.artifact.manifest.publication}`);
@@ -180,6 +199,7 @@ const record = {
   evidence: kept.manifest.evidence, configHash: kept.manifest.config_hash,
   artifact: { digest: kept.artifactDigest, semanticDigest: kept.semanticDigest, schemaDigest: sha256Digest(readFileSync(new URL('../schemas/credential-eval-run-artifact-v1.json', import.meta.url))) },
   determinism: { runs, semanticDigestsEqual: true },
+  ...(evidenceTag && !(PRODUCT_POPULATIONS as readonly string[]).includes(populationId) ? { evidenceOverride: { tag: evidenceTag, manifestDigest: evidenceManifestDigest } } : {}),
   ...(candidate ? { productCandidate: { id: candidateId, commit: candidate.product.commit, version: candidate.product.version, published: false, packages: candidate.packages.map(x => ({ name: x.name, sha256: x.sha256 })), control: engineCandidate!.product, receipt: 'product-candidate-receipt.json' } } : {}),
   ...(attributionId ? { attribution: { id: attributionId, configFile, nodeDir: attribution!.nodeDir } } : {}),
   ...(methodsMode ? { kind: 'methods', methods: [...methodsRun!.methods].sort(), evaluation: { reference: methodsRun!.reference, seed: methodsRun!.seed, evidenceDigest: methodsRun!.evaluationEvidence.digest } } : {}),

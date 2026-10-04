@@ -6,7 +6,7 @@
     "manifestDigest": "sha256:2557a72ae8dec3ca6d734a6c87b6db9cb4881543541693a4555fdfd9f7ba26d8"
   },
   "adoptionKey": "sha256:9869634aef42001110c9d923ddd898e2347e8e5744508f471822763f701e3f45",
-  "scope": "Corpus evidence only: scanner, engine and configuration pins are unchanged, so any later difference in results is the changed corpus, not a product version.",
+  "scope": "Corpus evidence plus an engine bump: the scanner pins and configuration files are unchanged, but the replay runs on credential-eval v0.1.0-alpha.3 (previously v0.1.0-alpha.1), a product-version effect reported apart from the corpus change in replay.engineEffect and replay.corpusEffect.",
   "diff": {
     "cases": {
       "old": 5950,
@@ -4926,7 +4926,872 @@
     }
   },
   "replay": {
-    "state": "pending",
-    "note": "Outcome drift, added-case outcomes, unmeasured/errors and qualification changes are added from the official replay (adopt-evidence-snapshot.mjs compare-runs)."
+    "state": "compared",
+    "scope": "The replay changes two things at once: the corpus (snapshot-2026.10.04) and the engine (credential-eval v0.1.0-alpha.3, with scanner versions and configurations fixed). They are reported apart: corpusEffect holds the engine fixed, engineEffect holds the corpus fixed. A larger denominator is not an improvement. Decoded and fragment semantics are NOT measured (credential-eval#34, credential-evidence#150); cases the engine could not map are unmeasured, never zero detections, and in no denominator.",
+    "corpusEffect": {
+      "note": "previous population versus candidate population, both on the new engine; common cases apart from added cases",
+      "scanners": {
+        "flare-redact": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5944,
+          "commonDrift": {
+            "control:flagged -> control:clear": 6
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 114,
+            "control:flagged": 2,
+            "pending": 115,
+            "positive:EXACT": 162,
+            "positive:EXACT,EXACT": 18,
+            "positive:EXACT,EXACT,EXACT": 12,
+            "positive:EXACT,EXACT,MISS": 1,
+            "positive:MISS": 46,
+            "positive:MISS,MISS": 2,
+            "positive:MISS,MISS,MISS": 1,
+            "positive:OVERBROAD": 19,
+            "positive:OVERBROAD,OVERBROAD": 1,
+            "positive:PARTIAL": 6
+          },
+          "unmeasured": 0
+        },
+        "gitleaks": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5946,
+          "commonDrift": {
+            "control:flagged -> control:clear": 4
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 108,
+            "control:flagged": 8,
+            "not-measured": 10,
+            "pending": 106,
+            "positive:EXACT": 148,
+            "positive:EXACT,EXACT": 13,
+            "positive:EXACT,EXACT,EXACT": 9,
+            "positive:EXACT,MISS": 3,
+            "positive:MISS": 82,
+            "positive:MISS,EXACT": 3,
+            "positive:MISS,MISS": 2,
+            "positive:MISS,MISS,MISS": 5,
+            "positive:PARTIAL": 2
+          },
+          "unmeasured": 10
+        },
+        "openredaction": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5948,
+          "commonDrift": {
+            "control:flagged -> control:clear": 2
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 63,
+            "control:flagged": 53,
+            "pending": 115,
+            "positive:EXACT": 130,
+            "positive:EXACT,EXACT": 7,
+            "positive:EXACT,EXACT,EXACT": 4,
+            "positive:EXACT,EXACT,PARTIAL": 1,
+            "positive:EXACT,OVERBROAD": 6,
+            "positive:EXACT,OVERBROAD,OVERBROAD": 6,
+            "positive:MISS": 73,
+            "positive:MISS,MISS": 1,
+            "positive:MISS,OVERBROAD": 6,
+            "positive:MISS,OVERBROAD,OVERBROAD": 3,
+            "positive:MISS,PARTIAL": 1,
+            "positive:OVERBROAD": 24,
+            "positive:PARTIAL": 6
+          },
+          "unmeasured": 0
+        },
+        "redact-secret": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5944,
+          "commonDrift": {
+            "control:flagged -> control:clear": 6
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 114,
+            "control:flagged": 2,
+            "pending": 115,
+            "positive:EXACT": 211,
+            "positive:EXACT,EXACT": 20,
+            "positive:EXACT,EXACT,EXACT": 13,
+            "positive:MISS": 15,
+            "positive:MISS,EXACT": 1,
+            "positive:MISS,MISS,MISS": 1,
+            "positive:PARTIAL": 7
+          },
+          "unmeasured": 0
+        },
+        "trufflehog": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5946,
+          "commonDrift": {
+            "control:flagged -> control:clear": 4
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 115,
+            "control:flagged": 1,
+            "pending": 115,
+            "positive:EXACT": 8,
+            "positive:MISS": 220,
+            "positive:MISS,MISS": 21,
+            "positive:MISS,MISS,MISS": 14,
+            "positive:OVERBROAD": 5
+          },
+          "unmeasured": 0
+        }
+      }
+    },
+    "engineEffect": {
+      "note": "previous population on the previous engine (accepted run) versus on the new engine; the same cases",
+      "scanners": {
+        "flare-redact": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5950,
+          "commonDrift": {},
+          "addedCaseOutcomes": {},
+          "unmeasured": 0
+        },
+        "gitleaks": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5950,
+          "commonDrift": {},
+          "addedCaseOutcomes": {},
+          "unmeasured": 0
+        },
+        "openredaction": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5950,
+          "commonDrift": {},
+          "addedCaseOutcomes": {},
+          "unmeasured": 0
+        },
+        "redact-secret": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5950,
+          "commonDrift": {},
+          "addedCaseOutcomes": {},
+          "unmeasured": 0
+        },
+        "trufflehog": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5950,
+          "commonDrift": {},
+          "addedCaseOutcomes": {},
+          "unmeasured": 0
+        }
+      }
+    },
+    "combined": {
+      "note": "previous accepted run versus candidate replay: both effects together",
+      "scanners": {
+        "flare-redact": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5944,
+          "commonDrift": {
+            "control:flagged -> control:clear": 6
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 114,
+            "control:flagged": 2,
+            "pending": 115,
+            "positive:EXACT": 162,
+            "positive:EXACT,EXACT": 18,
+            "positive:EXACT,EXACT,EXACT": 12,
+            "positive:EXACT,EXACT,MISS": 1,
+            "positive:MISS": 46,
+            "positive:MISS,MISS": 2,
+            "positive:MISS,MISS,MISS": 1,
+            "positive:OVERBROAD": 19,
+            "positive:OVERBROAD,OVERBROAD": 1,
+            "positive:PARTIAL": 6
+          },
+          "unmeasured": 0
+        },
+        "gitleaks": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5946,
+          "commonDrift": {
+            "control:flagged -> control:clear": 4
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 108,
+            "control:flagged": 8,
+            "not-measured": 10,
+            "pending": 106,
+            "positive:EXACT": 148,
+            "positive:EXACT,EXACT": 13,
+            "positive:EXACT,EXACT,EXACT": 9,
+            "positive:EXACT,MISS": 3,
+            "positive:MISS": 82,
+            "positive:MISS,EXACT": 3,
+            "positive:MISS,MISS": 2,
+            "positive:MISS,MISS,MISS": 5,
+            "positive:PARTIAL": 2
+          },
+          "unmeasured": 10
+        },
+        "openredaction": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5948,
+          "commonDrift": {
+            "control:flagged -> control:clear": 2
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 63,
+            "control:flagged": 53,
+            "pending": 115,
+            "positive:EXACT": 130,
+            "positive:EXACT,EXACT": 7,
+            "positive:EXACT,EXACT,EXACT": 4,
+            "positive:EXACT,EXACT,PARTIAL": 1,
+            "positive:EXACT,OVERBROAD": 6,
+            "positive:EXACT,OVERBROAD,OVERBROAD": 6,
+            "positive:MISS": 73,
+            "positive:MISS,MISS": 1,
+            "positive:MISS,OVERBROAD": 6,
+            "positive:MISS,OVERBROAD,OVERBROAD": 3,
+            "positive:MISS,PARTIAL": 1,
+            "positive:OVERBROAD": 24,
+            "positive:PARTIAL": 6
+          },
+          "unmeasured": 0
+        },
+        "redact-secret": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5944,
+          "commonDrift": {
+            "control:flagged -> control:clear": 6
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 114,
+            "control:flagged": 2,
+            "pending": 115,
+            "positive:EXACT": 211,
+            "positive:EXACT,EXACT": 20,
+            "positive:EXACT,EXACT,EXACT": 13,
+            "positive:MISS": 15,
+            "positive:MISS,EXACT": 1,
+            "positive:MISS,MISS,MISS": 1,
+            "positive:PARTIAL": 7
+          },
+          "unmeasured": 0
+        },
+        "trufflehog": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5946,
+          "commonDrift": {
+            "control:flagged -> control:clear": 4
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 115,
+            "control:flagged": 1,
+            "pending": 115,
+            "positive:EXACT": 8,
+            "positive:MISS": 220,
+            "positive:MISS,MISS": 21,
+            "positive:MISS,MISS,MISS": 14,
+            "positive:OVERBROAD": 5
+          },
+          "unmeasured": 0
+        }
+      }
+    },
+    "unmeasured": {
+      "plain": {
+        "candidate": [
+          {
+            "scanner": "flare-redact",
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          {
+            "scanner": "gitleaks",
+            "unmeasured": 10,
+            "reasons": {
+              "scanner output could not be mapped to ranges: Ambiguous or unmappable scanner finding": 5,
+              "scanner output could not be mapped to ranges: Unsupported decoded Gitleaks finding": 5
+            }
+          },
+          {
+            "scanner": "openredaction",
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          {
+            "scanner": "redact-secret",
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          {
+            "scanner": "trufflehog",
+            "unmeasured": 0,
+            "reasons": {}
+          }
+        ],
+        "previousPopulationOnNewEngine": [
+          {
+            "scanner": "flare-redact",
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          {
+            "scanner": "gitleaks",
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          {
+            "scanner": "openredaction",
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          {
+            "scanner": "redact-secret",
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          {
+            "scanner": "trufflehog",
+            "unmeasured": 0,
+            "reasons": {}
+          }
+        ]
+      },
+      "plainCases": {
+        "gitleaks": [
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-three-layers-in-env",
+            "reason": "scanner output could not be mapped to ranges: Unsupported decoded Gitleaks finding"
+          },
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+            "reason": "scanner output could not be mapped to ranges: Unsupported decoded Gitleaks finding"
+          },
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+            "reason": "scanner output could not be mapped to ranges: Unsupported decoded Gitleaks finding"
+          },
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-hex-lower-in-env",
+            "reason": "scanner output could not be mapped to ranges: Ambiguous or unmappable scanner finding"
+          },
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-hex-lower-of-base64-standard-padded-in-env",
+            "reason": "scanner output could not be mapped to ranges: Unsupported decoded Gitleaks finding"
+          },
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-hex-lower-of-hex-lower-in-env",
+            "reason": "scanner output could not be mapped to ranges: Ambiguous or unmappable scanner finding"
+          },
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-hex-mixed-in-env",
+            "reason": "scanner output could not be mapped to ranges: Ambiguous or unmappable scanner finding"
+          },
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-hex-upper-in-env",
+            "reason": "scanner output could not be mapped to ranges: Ambiguous or unmappable scanner finding"
+          },
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-hex-upper-in-json",
+            "reason": "scanner output could not be mapped to ranges: Ambiguous or unmappable scanner finding"
+          },
+          {
+            "case_id": "structured-credential-files-authored--kubeconfig-client-key-data-encoded-pem",
+            "reason": "scanner output could not be mapped to ranges: Unsupported decoded Gitleaks finding"
+          }
+        ]
+      }
+    },
+    "methods": {
+      "candidate": {
+        "flare-redact": {
+          "status": "complete",
+          "variants": 35322,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 14003,
+            "mutation:fail": 2793,
+            "metamorphic:pass": 25032,
+            "mutation:pass": 4554,
+            "mutation:review-required": 170,
+            "metamorphic:review-required": 1080
+          }
+        },
+        "gitleaks": {
+          "status": "complete",
+          "variants": 35322,
+          "unmeasuredVariants": 60,
+          "unmeasuredVariantsBySeedSuffix": {
+            "canonical": 30,
+            "context-indent": 10,
+            "context-unicode-prefix": 10,
+            "encoding-crlf": 10
+          },
+          "assertionsByMethodAndStatus": {
+            "metamorphic:pass": 31164,
+            "mutation:pass": 5812,
+            "mutation:fail": 1534,
+            "metamorphic:fail": 7864,
+            "mutation:review-required": 161,
+            "metamorphic:review-required": 1017
+          }
+        },
+        "openredaction": {
+          "status": "complete",
+          "variants": 35322,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 21987,
+            "mutation:fail": 4364,
+            "metamorphic:pass": 17048,
+            "mutation:pass": 2983,
+            "mutation:review-required": 170,
+            "metamorphic:review-required": 1080
+          }
+        },
+        "redact-secret": {
+          "status": "complete",
+          "variants": 35322,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:pass": 38811,
+            "mutation:pass": 7309,
+            "mutation:review-required": 170,
+            "metamorphic:review-required": 1080,
+            "metamorphic:fail": 224,
+            "mutation:fail": 38
+          }
+        },
+        "trufflehog": {
+          "status": "complete",
+          "variants": 35322,
+          "unmeasuredVariants": 1,
+          "unmeasuredVariantsBySeedSuffix": {
+            "context-unicode-prefix": 1
+          },
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 13493,
+            "mutation:fail": 2618,
+            "metamorphic:pass": 25540,
+            "mutation:pass": 4729,
+            "mutation:review-required": 170,
+            "metamorphic:review-required": 1080
+          }
+        }
+      },
+      "previousPopulationOnNewEngine": {
+        "flare-redact": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 13443,
+            "mutation:fail": 2712,
+            "metamorphic:pass": 22846,
+            "mutation:pass": 4237,
+            "mutation:review-required": 55,
+            "metamorphic:review-required": 277
+          }
+        },
+        "gitleaks": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:pass": 29229,
+            "mutation:pass": 5531,
+            "mutation:fail": 1418,
+            "metamorphic:fail": 7060,
+            "mutation:review-required": 55,
+            "metamorphic:review-required": 277
+          }
+        },
+        "openredaction": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 20355,
+            "mutation:fail": 4123,
+            "metamorphic:pass": 15934,
+            "mutation:pass": 2826,
+            "mutation:review-required": 55,
+            "metamorphic:review-required": 277
+          }
+        },
+        "redact-secret": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:pass": 36254,
+            "mutation:pass": 6938,
+            "mutation:review-required": 55,
+            "metamorphic:fail": 35,
+            "mutation:fail": 11,
+            "metamorphic:review-required": 277
+          }
+        },
+        "trufflehog": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 11624,
+            "mutation:fail": 2353,
+            "metamorphic:pass": 24665,
+            "mutation:pass": 4596,
+            "mutation:review-required": 55,
+            "metamorphic:review-required": 277
+          }
+        }
+      },
+      "previousAccepted": {
+        "flare-redact": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 13443,
+            "mutation:fail": 2712,
+            "metamorphic:pass": 22846,
+            "mutation:pass": 4237,
+            "mutation:review-required": 55,
+            "metamorphic:review-required": 277
+          }
+        },
+        "gitleaks": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:pass": 29229,
+            "mutation:pass": 5531,
+            "mutation:fail": 1418,
+            "metamorphic:fail": 7060,
+            "mutation:review-required": 55,
+            "metamorphic:review-required": 277
+          }
+        },
+        "openredaction": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 20355,
+            "mutation:fail": 4123,
+            "metamorphic:pass": 15934,
+            "mutation:pass": 2826,
+            "mutation:review-required": 55,
+            "metamorphic:review-required": 277
+          }
+        },
+        "redact-secret": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:pass": 36254,
+            "mutation:pass": 6938,
+            "mutation:review-required": 55,
+            "metamorphic:fail": 35,
+            "mutation:fail": 11,
+            "metamorphic:review-required": 277
+          }
+        },
+        "trufflehog": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 11624,
+            "mutation:fail": 2353,
+            "metamorphic:pass": 24665,
+            "mutation:pass": 4596,
+            "mutation:review-required": 55,
+            "metamorphic:review-required": 277
+          }
+        }
+      }
+    },
+    "runs": {
+      "candidate": {
+        "policy-corpus": {
+          "ciRun": "37177431252",
+          "platform": "linux-x64",
+          "benchmarkRevision": "6d65a3fa1842fb44dcbf68fa476fee3355d8689e",
+          "engine": {
+            "name": "credential-eval",
+            "version": "0.1.0-alpha.3",
+            "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+            "protocol": "credential-eval-protocol/1"
+          },
+          "configHash": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
+          "semanticDigest": "sha256:661d2288c5286cf10f53c88a37503cf6f8777039b43e9d32d005df6ce5aed504",
+          "byteDigest": "sha256:ae6dd72d6ca3e0f522e9696c24d7e93d5dbf89cc7cc8ffb7d73e34bd1883c87d",
+          "determinism": {
+            "runs": 2,
+            "semanticDigestsEqual": true
+          },
+          "corpusDigest": "sha256:37293aba657dc6b6034f568206b5cdf717f9eac1e0f8e4fbfeeff363f162f1be",
+          "caseCounts": {
+            "flare-redact": 19,
+            "gitleaks": 19,
+            "openredaction": 19,
+            "redact-secret": 19,
+            "trufflehog": 19
+          }
+        },
+        "public-evidence-snapshot+methods": {
+          "ciRun": "37177431252",
+          "platform": "linux-x64",
+          "benchmarkRevision": "6d65a3fa1842fb44dcbf68fa476fee3355d8689e",
+          "engine": {
+            "name": "credential-eval",
+            "version": "0.1.0-alpha.3",
+            "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+            "protocol": "credential-eval-protocol/1"
+          },
+          "configHash": "sha256:f2660c2cfa87e2476064836d0205431c04433d7eb37b7a60b0cc0bc5623fe36c",
+          "semanticDigest": "sha256:c6a932117fa652d6a76b27a7274f18da5d8abf4264f0eb12192f8a965c63658a",
+          "byteDigest": "sha256:65189e89de7adb4eb6fd9e98b026ea4cd20112353ba87fff4be5473aa7cd12e4",
+          "determinism": {
+            "runs": 2,
+            "semanticDigestsEqual": true
+          },
+          "corpusDigest": "sha256:5c0041813197670c5233d0db113171f9ee4493056c8f69e20f6ad0c8a28cfeb0",
+          "caseCounts": {
+            "flare-redact": 35322,
+            "gitleaks": 35322,
+            "openredaction": 35322,
+            "redact-secret": 35322,
+            "trufflehog": 35322
+          }
+        },
+        "public-evidence-snapshot": {
+          "ciRun": "37177431252",
+          "platform": "linux-x64",
+          "benchmarkRevision": "6d65a3fa1842fb44dcbf68fa476fee3355d8689e",
+          "engine": {
+            "name": "credential-eval",
+            "version": "0.1.0-alpha.3",
+            "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+            "protocol": "credential-eval-protocol/1"
+          },
+          "configHash": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
+          "semanticDigest": "sha256:d9e8bfc5ff601aac167dddb1e21c8b8df55f2db8e7bdc9e58f2845cb91d206f6",
+          "byteDigest": "sha256:aa37285a5033323656d40edfd823b2a34966adddedb7d0d32c478e06b4198dd5",
+          "determinism": {
+            "runs": 2,
+            "semanticDigestsEqual": true
+          },
+          "corpusDigest": "sha256:5c0041813197670c5233d0db113171f9ee4493056c8f69e20f6ad0c8a28cfeb0",
+          "caseCounts": {
+            "flare-redact": 6449,
+            "gitleaks": 6449,
+            "openredaction": 6449,
+            "redact-secret": 6449,
+            "trufflehog": 6449
+          }
+        },
+        "regression-corpus": {
+          "ciRun": "37177431252",
+          "platform": "linux-x64",
+          "benchmarkRevision": "6d65a3fa1842fb44dcbf68fa476fee3355d8689e",
+          "engine": {
+            "name": "credential-eval",
+            "version": "0.1.0-alpha.3",
+            "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+            "protocol": "credential-eval-protocol/1"
+          },
+          "configHash": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
+          "semanticDigest": "sha256:7f52a4c0a071ad5f8c8c3d4c3fd894c972dc196b2d33ca08243749a4cf66ba72",
+          "byteDigest": "sha256:02d97470d6a0f30ac2fd471e2a946eefc65de9664ff96278976d47c5e483bcc3",
+          "determinism": {
+            "runs": 2,
+            "semanticDigestsEqual": true
+          },
+          "corpusDigest": "sha256:b7b236c5ad1afc9377d05ca3f3738cebdaad15fbdaa3a492e3059770f04285f6",
+          "caseCounts": {
+            "flare-redact": 153,
+            "gitleaks": 153,
+            "openredaction": 153,
+            "redact-secret": 153,
+            "trufflehog": 153
+          }
+        }
+      },
+      "previousPopulationOnNewEngine": {
+        "policy-corpus": {
+          "ciRun": "37174899727",
+          "platform": "linux-x64",
+          "benchmarkRevision": "cb4bf2705d21b0ab3bffe1c8550550cf9bb650eb",
+          "engine": {
+            "name": "credential-eval",
+            "version": "0.1.0-alpha.3",
+            "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+            "protocol": "credential-eval-protocol/1"
+          },
+          "configHash": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
+          "semanticDigest": "sha256:661d2288c5286cf10f53c88a37503cf6f8777039b43e9d32d005df6ce5aed504",
+          "byteDigest": "sha256:02a5c10a8ff300f95ee5f45f7c17bfeddb5c3af255ea1b0ae0c3bd2ee3978160",
+          "determinism": {
+            "runs": 2,
+            "semanticDigestsEqual": true
+          },
+          "corpusDigest": "sha256:37293aba657dc6b6034f568206b5cdf717f9eac1e0f8e4fbfeeff363f162f1be",
+          "caseCounts": {
+            "flare-redact": 19,
+            "gitleaks": 19,
+            "openredaction": 19,
+            "redact-secret": 19,
+            "trufflehog": 19
+          }
+        },
+        "public-evidence-snapshot+methods": {
+          "ciRun": "37174899727",
+          "platform": "linux-x64",
+          "benchmarkRevision": "cb4bf2705d21b0ab3bffe1c8550550cf9bb650eb",
+          "engine": {
+            "name": "credential-eval",
+            "version": "0.1.0-alpha.3",
+            "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+            "protocol": "credential-eval-protocol/1"
+          },
+          "configHash": "sha256:f2660c2cfa87e2476064836d0205431c04433d7eb37b7a60b0cc0bc5623fe36c",
+          "semanticDigest": "sha256:10a45ab503c18989474ca9ca22719739a0b143c957970991a94a55afd91cd53d",
+          "byteDigest": "sha256:c7bd023148ab9d5724a7c2c41efc207911eb54e0ad59cf5b2a768756e3fa25ba",
+          "determinism": {
+            "runs": 2,
+            "semanticDigestsEqual": true
+          },
+          "corpusDigest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
+          "caseCounts": {
+            "flare-redact": 32297,
+            "gitleaks": 32297,
+            "openredaction": 32297,
+            "redact-secret": 32297,
+            "trufflehog": 32297
+          }
+        },
+        "public-evidence-snapshot": {
+          "ciRun": "37174899727",
+          "platform": "linux-x64",
+          "benchmarkRevision": "cb4bf2705d21b0ab3bffe1c8550550cf9bb650eb",
+          "engine": {
+            "name": "credential-eval",
+            "version": "0.1.0-alpha.3",
+            "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+            "protocol": "credential-eval-protocol/1"
+          },
+          "configHash": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
+          "semanticDigest": "sha256:d9ba92ef41eea99049461ea7b3cca5ad85486b82447e6d2b212f638dc91647ae",
+          "byteDigest": "sha256:b367f1c9e8cbb3a868283f2973a8ef4d52872202c6aba80c0c4df62edd12d644",
+          "determinism": {
+            "runs": 2,
+            "semanticDigestsEqual": true
+          },
+          "corpusDigest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
+          "caseCounts": {
+            "flare-redact": 5950,
+            "gitleaks": 5950,
+            "openredaction": 5950,
+            "redact-secret": 5950,
+            "trufflehog": 5950
+          }
+        },
+        "regression-corpus": {
+          "ciRun": "37174899727",
+          "platform": "linux-x64",
+          "benchmarkRevision": "cb4bf2705d21b0ab3bffe1c8550550cf9bb650eb",
+          "engine": {
+            "name": "credential-eval",
+            "version": "0.1.0-alpha.3",
+            "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+            "protocol": "credential-eval-protocol/1"
+          },
+          "configHash": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
+          "semanticDigest": "sha256:7f52a4c0a071ad5f8c8c3d4c3fd894c972dc196b2d33ca08243749a4cf66ba72",
+          "byteDigest": "sha256:dd8e26084f5ae9ad6dd6de00ebff168942fe3520c5115b115cb39a3d6d7990ac",
+          "determinism": {
+            "runs": 2,
+            "semanticDigestsEqual": true
+          },
+          "corpusDigest": "sha256:b7b236c5ad1afc9377d05ca3f3738cebdaad15fbdaa3a492e3059770f04285f6",
+          "caseCounts": {
+            "flare-redact": 153,
+            "gitleaks": 153,
+            "openredaction": 153,
+            "redact-secret": 153,
+            "trufflehog": 153
+          }
+        }
+      }
+    },
+    "authorityRenewalData": {
+      "note": "Prepared for the owner. qualification-authority.json is not edited by the adoption; renewing it is the owner's reviewed commit after acceptance.",
+      "semanticDigests": {
+        "policy-corpus": "sha256:661d2288c5286cf10f53c88a37503cf6f8777039b43e9d32d005df6ce5aed504",
+        "public-evidence-snapshot": "sha256:d9e8bfc5ff601aac167dddb1e21c8b8df55f2db8e7bdc9e58f2845cb91d206f6",
+        "public-evidence-snapshot+methods": "sha256:c6a932117fa652d6a76b27a7274f18da5d8abf4264f0eb12192f8a965c63658a",
+        "regression-corpus": "sha256:7f52a4c0a071ad5f8c8c3d4c3fd894c972dc196b2d33ca08243749a4cf66ba72"
+      },
+      "engine": {
+        "name": "credential-eval",
+        "version": "0.1.0-alpha.3",
+        "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+        "protocol": "credential-eval-protocol/1"
+      },
+      "configHash": {
+        "plain": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
+        "methods": "sha256:f2660c2cfa87e2476064836d0205431c04433d7eb37b7a60b0cc0bc5623fe36c"
+      },
+      "policyRevision": "to be derived on the acceptance branch from the qualification view",
+      "release": "to be set by the owner to the product release the accepted view qualifies"
+    }
   }
 }

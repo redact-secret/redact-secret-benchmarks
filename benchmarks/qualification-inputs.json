@@ -11,27 +11,39 @@
       "id": "public-evidence-snapshot",
       "owner": "credential-evidence",
       "ownerKind": "external-repo",
-      "runClasses": ["public"],
+      "runClasses": [
+        "public"
+      ],
       "denominator": "public-evidence-snapshot",
       "disposition": "migrate-to-credential-evidence",
       "currentLocation": {
         "kind": "legacy-oracle",
         "note": "Until cutover (#608) the legacy path reads the development partition below, authored in this repo. It is the oracle, not the new population.",
-        "paths": ["corpora/development/manifest.json", "benchmarks/categories.json", "benchmarks/fixture-index.json"]
+        "paths": [
+          "corpora/development/manifest.json",
+          "benchmarks/categories.json",
+          "benchmarks/fixture-index.json"
+        ]
       },
       "pin": {
         "sourceRepository": "redact-secret/credential-evidence",
-        "evidenceRelease": "snapshot-2026.10.01.2",
-        "sourceRevision": "a5362d6cfe644dcf069858ef9bd9cad4d7a96c4a",
-        "manifestDigest": "sha256:2557a72ae8dec3ca6d734a6c87b6db9cb4881543541693a4555fdfd9f7ba26d8",
-        "snapshotDigest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
+        "evidenceRelease": "snapshot-2026.10.04",
+        "sourceRevision": "32224d40e4456fa3ed80f444a90c346323de5f10",
+        "manifestDigest": "sha256:c82b2f005c7e499c06e8851356f63a80ecad923e11ea284b0429c01fac1e4da8",
+        "snapshotDigest": "sha256:5c0041813197670c5233d0db113171f9ee4493056c8f69e20f6ad0c8a28cfeb0",
         "legacyReference": "1020d2b5",
         "evalProtocol": "credential-eval-protocol/1",
         "evalVersion": "v0.1.0-alpha.1",
         "evalRevision": "379e677",
         "evalConfig": "configs/official/credential-public-v1.json",
-        "runArtifact": { "state": "resolved-at-run", "from": "benchmarks/official-runs.json runs[] for this population; the canonical record is the linux-x64 CI run of .github/workflows/official-runs.yml (#604)" },
-        "productPolicyRevision": { "state": "resolved-at-run", "from": "policy.revision of the qualification view: the adapter stamp over the benchmark-owned qualification inputs (#605, docs/specs/qualification-adapter.md)" }
+        "runArtifact": {
+          "state": "resolved-at-run",
+          "from": "benchmarks/official-runs.json runs[] for this population; the canonical record is the linux-x64 CI run of .github/workflows/official-runs.yml (#604)"
+        },
+        "productPolicyRevision": {
+          "state": "resolved-at-run",
+          "from": "policy.revision of the qualification view: the adapter stamp over the benchmark-owned qualification inputs (#605, docs/specs/qualification-adapter.md)"
+        }
       },
       "rekey": {
         "from": "legacy fixture ids, paths and the legacy fixture-index identity digest",
@@ -45,28 +57,51 @@
       "id": "regression-corpus",
       "owner": "redact-secret",
       "ownerKind": "product",
-      "runClasses": ["public", "internal"],
+      "runClasses": [
+        "public",
+        "internal"
+      ],
       "denominator": "regression-corpus",
       "disposition": "remain-product-owned",
       "currentLocation": {
         "kind": "repo-partition",
         "manifest": "corpora/regression/manifest.json",
         "catalog": "benchmarks/categories.json",
-        "paths": ["corpora/regression/manifest.json", "fixtures/generated/regressions.mjs", "fixtures/generated/closed-milestone.mjs", "fixtures/generated/twin-scope.mjs"]
+        "paths": [
+          "corpora/regression/manifest.json",
+          "fixtures/generated/regressions.mjs",
+          "fixtures/generated/closed-milestone.mjs",
+          "fixtures/generated/twin-scope.mjs"
+        ]
       },
       "pin": {
-        "sourceRevision": { "state": "resolved-at-run", "from": "benchmark repository HEAD" },
-        "corpusDigest": { "state": "resolved-at-run", "from": "benchmarks/pin-manifest.json#corpusHashes" },
+        "sourceRevision": {
+          "state": "resolved-at-run",
+          "from": "benchmark repository HEAD"
+        },
+        "corpusDigest": {
+          "state": "resolved-at-run",
+          "from": "benchmarks/pin-manifest.json#corpusHashes"
+        },
         "evalProtocol": "credential-eval-protocol/1",
-        "runArtifact": { "state": "resolved-at-run", "from": "benchmarks/official-runs.json runs[] for this population; the canonical record is the linux-x64 CI run of .github/workflows/official-runs.yml (#604)" },
-        "productPolicyRevision": { "state": "resolved-at-run", "from": "policy.revision of the qualification view: the adapter stamp over the benchmark-owned qualification inputs (#605, docs/specs/qualification-adapter.md)" }
+        "runArtifact": {
+          "state": "resolved-at-run",
+          "from": "benchmarks/official-runs.json runs[] for this population; the canonical record is the linux-x64 CI run of .github/workflows/official-runs.yml (#604)"
+        },
+        "productPolicyRevision": {
+          "state": "resolved-at-run",
+          "from": "policy.revision of the qualification view: the adapter stamp over the benchmark-owned qualification inputs (#605, docs/specs/qualification-adapter.md)"
+        }
       }
     },
     {
       "id": "policy-corpus",
       "owner": "redact-secret",
       "ownerKind": "product",
-      "runClasses": ["public", "internal"],
+      "runClasses": [
+        "public",
+        "internal"
+      ],
       "denominator": "policy-corpus",
       "disposition": "remain-product-owned",
       "currentLocation": {
@@ -74,76 +109,227 @@
         "category": "policy-qualified-credentials",
         "contract": "benchmarks/support/policy-qualified-credentials.json",
         "note": "Today this category is listed in the development partition, so the legacy path counts it with the evidence population. The new path separates it. T3 / project-policy fixtures inside the public snapshot are evidence-class data, not this population.",
-        "paths": ["fixtures/generated/policy-qualified-credentials.mjs", "benchmarks/support/policy-qualified-credentials.json"]
+        "paths": [
+          "fixtures/generated/policy-qualified-credentials.mjs",
+          "benchmarks/support/policy-qualified-credentials.json"
+        ]
       },
       "pin": {
-        "sourceRevision": { "state": "resolved-at-run", "from": "benchmark repository HEAD" },
-        "corpusDigest": { "state": "resolved-at-run", "from": "benchmarks/pin-manifest.json#corpusHashes" },
+        "sourceRevision": {
+          "state": "resolved-at-run",
+          "from": "benchmark repository HEAD"
+        },
+        "corpusDigest": {
+          "state": "resolved-at-run",
+          "from": "benchmarks/pin-manifest.json#corpusHashes"
+        },
         "evalProtocol": "credential-eval-protocol/1",
-        "runArtifact": { "state": "resolved-at-run", "from": "benchmarks/official-runs.json runs[] for this population; the canonical record is the linux-x64 CI run of .github/workflows/official-runs.yml (#604)" },
-        "productPolicyRevision": { "state": "resolved-at-run", "from": "policy.revision of the qualification view: the adapter stamp over the benchmark-owned qualification inputs (#605, docs/specs/qualification-adapter.md)" }
+        "runArtifact": {
+          "state": "resolved-at-run",
+          "from": "benchmarks/official-runs.json runs[] for this population; the canonical record is the linux-x64 CI run of .github/workflows/official-runs.yml (#604)"
+        },
+        "productPolicyRevision": {
+          "state": "resolved-at-run",
+          "from": "policy.revision of the qualification view: the adapter stamp over the benchmark-owned qualification inputs (#605, docs/specs/qualification-adapter.md)"
+        }
       }
     },
     {
       "id": "candidate-regression-inputs",
       "owner": "redact-secret",
       "ownerKind": "product",
-      "runClasses": ["internal"],
+      "runClasses": [
+        "internal"
+      ],
       "denominator": "candidate-regression-inputs",
       "disposition": "remain-product-owned",
       "currentLocation": {
         "kind": "repo-records",
         "note": "Only where a finding or external pack must be rerun against one named candidate. Candidate identity is part of every record.",
-        "paths": ["benchmarks/known-gaps.json", "adversarial/packs"]
+        "paths": [
+          "benchmarks/known-gaps.json",
+          "adversarial/packs"
+        ]
       },
       "pin": {
-        "sourceRevision": { "state": "resolved-at-run", "from": "candidate source commit" },
-        "corpusDigest": { "state": "resolved-at-run", "from": "known-gaps fixture corpus digests and adversarial intake records" },
-        "evalProtocol": { "state": "not-applicable", "reason": "run through eval:candidate, not credential-eval" },
-        "runArtifact": { "state": "resolved-at-run", "from": "an official internal run against one named candidate build (credential-eval --candidate-root, publication internal); no candidate is named until a release candidate exists, so there is no artifact to record yet" },
-        "productPolicyRevision": { "state": "resolved-at-run", "from": "policy.revision of the qualification view: the adapter stamp over the benchmark-owned qualification inputs (#605, docs/specs/qualification-adapter.md)" }
+        "sourceRevision": {
+          "state": "resolved-at-run",
+          "from": "candidate source commit"
+        },
+        "corpusDigest": {
+          "state": "resolved-at-run",
+          "from": "known-gaps fixture corpus digests and adversarial intake records"
+        },
+        "evalProtocol": {
+          "state": "not-applicable",
+          "reason": "run through eval:candidate, not credential-eval"
+        },
+        "runArtifact": {
+          "state": "resolved-at-run",
+          "from": "an official internal run against one named candidate build (credential-eval --candidate-root, publication internal); no candidate is named until a release candidate exists, so there is no artifact to record yet"
+        },
+        "productPolicyRevision": {
+          "state": "resolved-at-run",
+          "from": "policy.revision of the qualification view: the adapter stamp over the benchmark-owned qualification inputs (#605, docs/specs/qualification-adapter.md)"
+        }
       }
     },
     {
       "id": "protected-holdout",
       "owner": "holdout-custodian",
       "ownerKind": "custodian",
-      "runClasses": ["internal"],
+      "runClasses": [
+        "internal"
+      ],
       "denominator": "protected-holdout",
       "disposition": "specialized-protected-outside-credential-eval",
       "currentLocation": {
         "kind": "repo-metadata-only",
         "manifest": "holdout/manifest.json",
         "note": "Git carries only metadata and public conformance controls. Protected bytes live in the ignored holdout/generated/ and are never read by credential-eval or the development commands. The classifier consumes only an aggregate receipt.",
-        "paths": ["holdout/manifest.json", "holdout/README.md", "benchmarks/support/policy-holdout-receipt.ts"]
+        "paths": [
+          "holdout/manifest.json",
+          "holdout/README.md",
+          "benchmarks/support/policy-holdout-receipt.ts"
+        ]
       },
       "pin": {
-        "sourceRevision": { "state": "resolved-at-run", "from": "receipt benchmarkRevision" },
-        "corpusDigest": { "state": "resolved-at-run", "from": "receipt corpus hash (aggregate only)" },
-        "evalProtocol": { "state": "not-applicable", "reason": "protected lifecycle in holdout/, not credential-eval" },
-        "runArtifact": { "state": "resolved-at-run", "from": "policy holdout receipt" },
-        "productPolicyRevision": { "state": "resolved-at-run", "from": "policy.revision of the qualification view: the adapter stamp over the benchmark-owned qualification inputs (#605, docs/specs/qualification-adapter.md)" }
+        "sourceRevision": {
+          "state": "resolved-at-run",
+          "from": "receipt benchmarkRevision"
+        },
+        "corpusDigest": {
+          "state": "resolved-at-run",
+          "from": "receipt corpus hash (aggregate only)"
+        },
+        "evalProtocol": {
+          "state": "not-applicable",
+          "reason": "protected lifecycle in holdout/, not credential-eval"
+        },
+        "runArtifact": {
+          "state": "resolved-at-run",
+          "from": "policy holdout receipt"
+        },
+        "productPolicyRevision": {
+          "state": "resolved-at-run",
+          "from": "policy.revision of the qualification view: the adapter stamp over the benchmark-owned qualification inputs (#605, docs/specs/qualification-adapter.md)"
+        }
       }
     }
   ],
   "legacyInputs": [
-    { "path": "corpora/development/manifest.json", "population": "public-evidence-snapshot", "owner": "benchmarks", "disposition": "migrate-to-credential-evidence" },
-    { "path": "corpora/regression/manifest.json", "population": "regression-corpus", "owner": "redact-secret", "disposition": "remain-product-owned" },
-    { "path": "benchmarks/support/policy-qualified-credentials.json", "population": "policy-corpus", "owner": "redact-secret", "disposition": "remain-product-owned" },
-    { "path": "benchmarks/known-gaps.json", "population": "candidate-regression-inputs", "owner": "redact-secret", "disposition": "remain-product-owned" },
-    { "path": "adversarial/packs", "population": "candidate-regression-inputs", "owner": "redact-secret", "disposition": "remain-product-owned" },
-    { "path": "holdout/manifest.json", "population": "protected-holdout", "owner": "holdout-custodian", "disposition": "specialized-protected-outside-credential-eval" },
-    { "path": "benchmarks/support/empirical-observations.json", "population": null, "role": "overlay", "owner": "redact-secret", "disposition": "remain-product-owned" },
-    { "path": "benchmarks/support/status-criteria.json", "population": null, "role": "overlay", "owner": "redact-secret", "disposition": "remain-product-owned" },
-    { "path": "benchmarks/review-ledger.json", "population": null, "role": "overlay", "owner": "benchmarks", "disposition": "remain-product-owned" },
-    { "path": "benchmarks/support/public-axis-overlay.json", "population": null, "role": "overlay", "owner": "redact-secret", "disposition": "remain-product-owned" },
-    { "path": "benchmarks/support/public-twin-scope-map.json", "population": null, "role": "overlay", "owner": "redact-secret", "disposition": "remain-product-owned" },
-    { "path": "fixtures/generated/twin-scope.mjs", "population": "regression-corpus", "owner": "redact-secret", "disposition": "remain-product-owned" },
-    { "path": "benchmarks/support/public-review-ledger-map.json", "population": null, "role": "overlay", "owner": "benchmarks", "disposition": "remain-product-owned" },
-    { "path": "benchmarks/fixture-index.json", "population": null, "role": "identity", "owner": "benchmarks", "disposition": "obsolete-compatibility-only" },
-    { "path": "peer-observations", "population": null, "role": "identity", "owner": "benchmarks", "disposition": "obsolete-compatibility-only" },
-    { "path": "benchmarks/pin-manifest.json", "population": null, "role": "identity", "owner": "benchmarks", "disposition": "obsolete-compatibility-only" },
-    { "path": "qualification/suite-v1.json", "population": null, "role": "scanner-pins", "owner": "benchmarks", "disposition": "obsolete-compatibility-only" }
+    {
+      "path": "corpora/development/manifest.json",
+      "population": "public-evidence-snapshot",
+      "owner": "benchmarks",
+      "disposition": "migrate-to-credential-evidence"
+    },
+    {
+      "path": "corpora/regression/manifest.json",
+      "population": "regression-corpus",
+      "owner": "redact-secret",
+      "disposition": "remain-product-owned"
+    },
+    {
+      "path": "benchmarks/support/policy-qualified-credentials.json",
+      "population": "policy-corpus",
+      "owner": "redact-secret",
+      "disposition": "remain-product-owned"
+    },
+    {
+      "path": "benchmarks/known-gaps.json",
+      "population": "candidate-regression-inputs",
+      "owner": "redact-secret",
+      "disposition": "remain-product-owned"
+    },
+    {
+      "path": "adversarial/packs",
+      "population": "candidate-regression-inputs",
+      "owner": "redact-secret",
+      "disposition": "remain-product-owned"
+    },
+    {
+      "path": "holdout/manifest.json",
+      "population": "protected-holdout",
+      "owner": "holdout-custodian",
+      "disposition": "specialized-protected-outside-credential-eval"
+    },
+    {
+      "path": "benchmarks/support/empirical-observations.json",
+      "population": null,
+      "role": "overlay",
+      "owner": "redact-secret",
+      "disposition": "remain-product-owned"
+    },
+    {
+      "path": "benchmarks/support/status-criteria.json",
+      "population": null,
+      "role": "overlay",
+      "owner": "redact-secret",
+      "disposition": "remain-product-owned"
+    },
+    {
+      "path": "benchmarks/review-ledger.json",
+      "population": null,
+      "role": "overlay",
+      "owner": "benchmarks",
+      "disposition": "remain-product-owned"
+    },
+    {
+      "path": "benchmarks/support/public-axis-overlay.json",
+      "population": null,
+      "role": "overlay",
+      "owner": "redact-secret",
+      "disposition": "remain-product-owned"
+    },
+    {
+      "path": "benchmarks/support/public-twin-scope-map.json",
+      "population": null,
+      "role": "overlay",
+      "owner": "redact-secret",
+      "disposition": "remain-product-owned"
+    },
+    {
+      "path": "fixtures/generated/twin-scope.mjs",
+      "population": "regression-corpus",
+      "owner": "redact-secret",
+      "disposition": "remain-product-owned"
+    },
+    {
+      "path": "benchmarks/support/public-review-ledger-map.json",
+      "population": null,
+      "role": "overlay",
+      "owner": "benchmarks",
+      "disposition": "remain-product-owned"
+    },
+    {
+      "path": "benchmarks/fixture-index.json",
+      "population": null,
+      "role": "identity",
+      "owner": "benchmarks",
+      "disposition": "obsolete-compatibility-only"
+    },
+    {
+      "path": "peer-observations",
+      "population": null,
+      "role": "identity",
+      "owner": "benchmarks",
+      "disposition": "obsolete-compatibility-only"
+    },
+    {
+      "path": "benchmarks/pin-manifest.json",
+      "population": null,
+      "role": "identity",
+      "owner": "benchmarks",
+      "disposition": "obsolete-compatibility-only"
+    },
+    {
+      "path": "qualification/suite-v1.json",
+      "population": null,
+      "role": "scanner-pins",
+      "owner": "benchmarks",
+      "disposition": "obsolete-compatibility-only"
+    }
   ],
   "supportStatusChanges": []
 }

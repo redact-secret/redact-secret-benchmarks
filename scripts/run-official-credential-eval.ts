@@ -3,7 +3,11 @@
  * The steps are credential-eval docs/consumers/benchmarks-quickstart.md; the pins are benchmarks/official-runs.json.
  *
  *   node --import tsx scripts/run-official-credential-eval.ts --population <id> --engine-dir <checkout at the pinned tag>
- *     --platform <linux-x64|darwin-arm64> --out <dir> [--runs 2] [--evidence-dir <dir with the public release assets>] [--methods]
+ *     --platform <linux-x64|darwin-arm64> --out <dir> [--runs 2] [--evidence-dir <dir with the public release assets>] [--methods] [--attribution <id>]
+ *
+ * `--attribution <id>` (#697) makes an ATTRIBUTION run: the same engine, evidence and population, scanning the product build the registry's `attributionRuns[<id>]`
+ * names (the previous published release, with the engine's own configuration file and Node shim directory for it, which are always used together). It exists to
+ * separate a product effect from an engine or configuration effect; its artifacts are never the accepted runs and are never recorded in `runs[]`.
  *
  * `--methods` makes the methods run of the floors population (docs/specs/official-runs.md, "The methods run"): the same
  * evidence and configuration as the plain run plus `--methods`, `--reference`, `--seed` and the product evaluation evidence
@@ -27,6 +31,9 @@ const args = process.argv.slice(2);
 const option = (name: string, fallback?: string) => { const at = args.indexOf(`--${name}`); return at >= 0 ? args[at + 1] : fallback; };
 const fail = (message: string): never => { console.error(`official run refused: ${message}`); process.exit(4); };
 
+const attributionId = option('attribution');
+type Attribution = { configs: Record<string, string>; nodeDir: string; scanners: Record<string, { version: string; integrity: string }> };
+const attribution: Attribution | undefined = attributionId === undefined ? undefined : (registry.attributionRuns?.[attributionId] ?? fail(`the registry pins no attribution run ${attributionId}`));
 const populationId = option('population') ?? fail('--population is required');
 const engineDir = path.resolve(option('engine-dir') ?? fail('--engine-dir is required'));
 const platform = option('platform') ?? fail('--platform is required');
@@ -49,7 +56,10 @@ if (methodsMode) {
   if (onDisk !== methodsRun!.evaluationEvidence.digest) fail(`${methodsRun!.evaluationEvidence.file} has digest ${onDisk}, the registry pins ${methodsRun!.evaluationEvidence.digest}`);
   if (sha256Digest(canonical(buildEvaluationEvidence())) !== onDisk) fail(`${methodsRun!.evaluationEvidence.file} is stale against the product contracts; run npm run qualification:evidence`);
 }
-const configFile = registry.config.platforms[platform]?.file ?? fail(`no run configuration pinned for platform ${platform}`);
+const configFile = (attribution ? attribution.configs[platform] : registry.config.platforms[platform]?.file) ?? fail(`no run configuration pinned for platform ${platform}`);
+const nodeDir = path.join(engineDir, attribution?.nodeDir ?? 'adapters/node');
+// The scanners this run is pinned to: the registry's, with the attributed product build in place of the product pin.
+const runScanners: typeof registry.scanners = registry.scanners.map((s: { id: string }) => (attribution?.scanners[s.id] ? { ...s, ...attribution.scanners[s.id] } : s));
 const configPath = path.join(engineDir, 'configs/official', configFile);
 const binary = path.join(engineDir, 'target/release/credential-eval');
 mkdirSync(out, { recursive: true });
@@ -63,9 +73,10 @@ if (engineVersion !== expectedVersion) fail(`engine prints "${engineVersion}", e
 
 // 2. Scanner pins: read from the pinned configuration, and checked against the registry and the binaries on PATH.
 const config = JSON.parse(readFileSync(configPath, 'utf8'));
-for (const scanner of registry.scanners) {
+for (const scanner of runScanners) {
   const entry = config.scanners.find((s: { id: string }) => s.id === scanner.id);
   if (!entry?.pin || entry.pin.version !== scanner.version) fail(`configuration pins ${scanner.id} at ${entry?.pin?.version ?? 'nothing'}, the registry pins ${scanner.version}`);
+  if (scanner.kind === 'npm' && scanner.integrity && entry.pin.integrity !== scanner.integrity) fail(`configuration pins ${scanner.id} with integrity ${entry.pin.integrity ?? 'none'}, the registry pins ${scanner.integrity}`);
   if (scanner.kind === 'executable' && entry.pin.sha256 !== scanner.executableSha256[platform]) fail(`configuration pin for ${scanner.id} differs from the registry on ${platform}`);
 }
 const probe = (command: string, argv: string[]) => (spawnSync(command, argv, { encoding: 'utf8' }).stdout ?? '').trim();
@@ -107,7 +118,7 @@ for (let n = 1; n <= runs; n++) {
   // is a fact about the generated variants, not a scanner that did not measure. Scanner completeness is checked on the artifact below.
   const methodArgs = methodsMode ? ['--methods', methodsRun!.methods.join(','), '--reference', methodsRun!.reference, '--seed', methodsRun!.seed, '--evidence', evaluationEvidenceFile] : ['--require-complete'];
   const result = spawnSync(binary, ['run', '--run-class', 'official', '--corpus', inputs.corpus, '--evidence-release', inputs.tag, '--evidence-manifest', inputs.manifest,
-    '--evidence-manifest-digest', inputs.manifestDigest, '--config', configPath, '--node-dir', path.join(engineDir, 'adapters/node'), '--jobs', '4', ...methodArgs, '--out', artifact],
+    '--evidence-manifest-digest', inputs.manifestDigest, '--config', configPath, '--node-dir', nodeDir, '--jobs', '4', ...methodArgs, '--out', artifact],
   { stdio: ['ignore', 'inherit', 'inherit'] });
   if (result.status !== 0) fail(`credential-eval run ${n} exited ${result.status}; no artifact is accepted`);
   artifacts.push(artifact);
@@ -140,6 +151,7 @@ const record = {
   evidence: kept.manifest.evidence, configHash: kept.manifest.config_hash,
   artifact: { digest: kept.artifactDigest, semanticDigest: kept.semanticDigest, schemaDigest: sha256Digest(readFileSync(new URL('../schemas/credential-eval-run-artifact-v1.json', import.meta.url))) },
   determinism: { runs, semanticDigestsEqual: true },
+  ...(attributionId ? { attribution: { id: attributionId, configFile, nodeDir: attribution!.nodeDir } } : {}),
   ...(methodsMode ? { kind: 'methods', methods: [...methodsRun!.methods].sort(), evaluation: { reference: methodsRun!.reference, seed: methodsRun!.seed, evidenceDigest: methodsRun!.evaluationEvidence.digest } } : {}),
   scanners: kept.manifest.scanners.map(s => ({
     id: s.id, version: s.version, build: s.build ?? null, mode: s.mode, adapter: s.adapter, configurationHash: s.configuration_hash,

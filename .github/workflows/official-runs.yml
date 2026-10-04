@@ -16,6 +16,11 @@ on:
         required: false
         default: ''
         type: string
+      attribution:
+        description: Make an ATTRIBUTION run (#697) of the registry's attributionRuns entry (for example core-beta.12, the previous product release on the same engine and evidence). The scanner jobs upload artifacts named attribution-<id>-<population>; the view stage is skipped, because an attribution run is never the accepted one.
+        required: false
+        default: ''
+        type: string
 permissions:
   contents: read
 concurrency:
@@ -34,6 +39,7 @@ jobs:
         population: [public-evidence-snapshot, regression-corpus, policy-corpus]
     env:
       PLATFORM: linux-x64
+      ATTRIBUTION: ${{ inputs.attribution }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
@@ -75,9 +81,14 @@ jobs:
         run: |
           node scripts/provision-official-peers.mjs --platform "$PLATFORM" --out "$RUNNER_TEMP/peer-bin"
           echo "$RUNNER_TEMP/peer-bin" >> "$GITHUB_PATH"
+      - name: Read the Node shim directory (the attribution run's own, when one is made)
+        id: shim
+        run: |
+          [[ -z "$ATTRIBUTION" || "$ATTRIBUTION" =~ ^[A-Za-z0-9._-]+$ ]] || { echo "attribution must be an id such as core-beta.12"; exit 1; }
+          echo "dir=$(if [ -n "$ATTRIBUTION" ]; then node -p "require('./benchmarks/official-runs.json').attributionRuns['$ATTRIBUTION'].nodeDir"; else echo adapters/node; fi)" >> "$GITHUB_OUTPUT"
       - name: Install the npm scanners from the engine lockfile, without install scripts
         run: npm ci --ignore-scripts --no-audit --no-fund
-        working-directory: credential-eval/adapters/node
+        working-directory: credential-eval/${{ steps.shim.outputs.dir }}
       - name: Official run, twice, with the determinism check
         env:
           GH_TOKEN: ${{ github.token }}
@@ -85,7 +96,7 @@ jobs:
         run: >
           node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
-          --out "official-out/$POPULATION" --runs 2
+          --out "official-out/$POPULATION" --runs 2 ${ATTRIBUTION:+--attribution "$ATTRIBUTION"}
       - name: Methods run, twice, with the determinism check (floors population only)
         if: matrix.population == 'public-evidence-snapshot'
         env:
@@ -95,7 +106,7 @@ jobs:
         run: >
           node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
-          --out "official-out/$POPULATION" --runs 2 --methods
+          --out "official-out/$POPULATION" --runs 2 --methods ${ATTRIBUTION:+--attribution "$ATTRIBUTION"}
       - name: Remove the byte copies the checks made
         run: rm -f "official-out/$POPULATION"/artifact-[0-9]*.json "official-out/$POPULATION"/methods/artifact-[0-9]*.json
         env:
@@ -103,7 +114,7 @@ jobs:
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: ${{ !cancelled() }} # keep the plain artifact when the methods step fails
         with:
-          name: official-run-${{ matrix.population }}
+          name: ${{ inputs.attribution != '' && format('attribution-{0}-', inputs.attribution) || 'official-run-' }}${{ matrix.population }}
           path: official-out/${{ matrix.population }}
           if-no-files-found: error
           retention-days: 90
@@ -112,7 +123,7 @@ jobs:
     name: Qualification view
     needs: official-run
     # A skipped scanner job is the view-only retry (reuse_run_id); a failed one is not retried here.
-    if: ${{ !cancelled() && (needs.official-run.result == 'success' || needs.official-run.result == 'skipped') }}
+    if: ${{ !cancelled() && inputs.attribution == '' && (needs.official-run.result == 'success' || needs.official-run.result == 'skipped') }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:

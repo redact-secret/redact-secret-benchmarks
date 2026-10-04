@@ -1,0 +1,65 @@
+{
+  "schema": "redact-secret/evidence-adoption-change-report/v1",
+  "kind": "engine-product",
+  "evidenceRelease": "snapshot-2026.10.04.3",
+  "adoptionKey": "sha256:5ac282a790ac39c72c40abfff062a68fd7963f2d98785dd98da2f1ac2785c0fb",
+  "scope": "Identical evidence bytes (sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f). The engine moves from v0.1.0-alpha.4 to v0.1.0-alpha.5 and @redact-secret/core from 0.1.0-beta.12 to 0.1.0-beta.13; a later difference is an engine, configuration or product effect, separated by the attribution run (the previous product build on the new engine). Nothing is accepted.",
+  "engineChange": {
+    "from": {
+      "tag": "v0.1.0-alpha.4",
+      "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33"
+    },
+    "to": {
+      "tag": "v0.1.0-alpha.5",
+      "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d"
+    },
+    "runArtifactSchemaSha256": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809"
+  },
+  "productChange": {
+    "from": {
+      "version": "0.1.0-beta.12",
+      "integrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw=="
+    },
+    "to": {
+      "version": "0.1.0-beta.13",
+      "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+    }
+  },
+  "diff": {
+    "cases": {
+      "old": 6449,
+      "new": 6449,
+      "added": 0,
+      "removed": 0,
+      "changed": 0,
+      "unchanged": 6449
+    },
+    "added": [],
+    "removed": [],
+    "changed": [],
+    "addedByKind": {},
+    "addedByEvidenceClass": {},
+    "addedByGroup": {},
+    "changedFields": {},
+    "evidenceClassTransitions": {},
+    "diversity": {
+      "providers": {
+        "old": 95,
+        "new": 95,
+        "added": [],
+        "removed": []
+      },
+      "families": {
+        "old": 169,
+        "new": 169,
+        "addedFamilies": []
+      }
+    }
+  },
+  "replay": {
+    "state": "replayed",
+    "record": "benchmarks/evidence-adoption.json engineCandidate.replay",
+    "data": "docs/generated/evidence-adoption/engine-alpha.5/replay.json",
+    "result": "No case, outcome, assertion, review occurrence (by semantic key) or family status differs between the accepted alpha.4 + beta.12 runs, the alpha.5 + beta.12 attribution runs and the alpha.5 + beta.13 runs, in all four artifacts; only identity fields differ."
+  }
+}

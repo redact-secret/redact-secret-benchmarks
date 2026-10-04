@@ -9,6 +9,11 @@
  *     [--report docs/generated/evidence-adoption/<tag>.json] [--comparison docs/generated/evidence-adoption/<tag>.comparison.json] \
  *     [--out-json docs/generated/evidence-adoption/<tag>.triage-queue.json] [--out-md ...]
  *
+ * Replay of another engine/product build on the identical snapshot (#697): `--run-records <dir>` takes the expected semantic digests from <dir>/public-evidence-snapshot/run-record.json
+ * and <dir>/public-evidence-snapshot/methods/run-record.json instead of the registry (the artifacts of a candidate replay are not in the registry), `--remap-occurrence-ids` maps the
+ * comparison's unsettled gate occurrences to the engine's occurrence ids of THIS methods artifact by case, peer, property and variant (occurrence ids carry the product identity), and
+ * `--ci-run <url>` / `--archive-release <tag>` name where the artifacts are.
+ *
  * This is an export, not a decision: it classifies nothing, settles no review-ledger entry and restores no status (benchmarks/qualification/triage-queue.ts).
  * Deterministic: the same artifacts and snapshot write the same bytes.
  */
@@ -16,6 +21,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { buildTriageQueue } from '../benchmarks/qualification/triage-queue.ts';
 import { readRunArtifact } from '../benchmarks/qualification/run-artifact.ts';
+import { seedCaseId } from '../benchmarks/qualification/adapter.ts';
 import { sha256Digest } from '../benchmarks/qualification/canonical.ts';
 
 const args = process.argv.slice(2);
@@ -32,7 +38,9 @@ const snapshot = readJson(need('snapshot'));
 const plain = readRunArtifact(readFileSync(path.join(dir, 'public-evidence-snapshot/artifact.json')));
 const methods = readRunArtifact(readFileSync(path.join(dir, 'public-evidence-snapshot/methods/artifact.json')), { forceBytes: true });
 // Fail closed: the artifacts are the registry's canonical runs of the pinned snapshot, and the snapshot is the one they ran on.
-const recorded = (kind: string) => registry.runs.find((r: { population: string; kind?: string; canonical?: boolean }) => r.population === 'public-evidence-snapshot' && (r.kind ?? 'plain') === kind && r.canonical);
+const runRecords = option('run-records');
+const recordedByRecord = (kind: string) => { const f = path.resolve(runRecords!, kind === 'methods' ? 'public-evidence-snapshot/methods/run-record.json' : 'public-evidence-snapshot/run-record.json'); return { artifact: { semanticDigest: readJson(f).artifact.semanticDigest } }; };
+const recorded = (kind: string) => runRecords ? recordedByRecord(kind) : registry.runs.find((r: { population: string; kind?: string; canonical?: boolean }) => r.population === 'public-evidence-snapshot' && (r.kind ?? 'plain') === kind && r.canonical);
 for (const [label, read, kind] of [['plain', plain, 'plain'], ['methods', methods, 'methods']] as const) {
   const run = recorded(kind);
   if (!run || run.artifact.semanticDigest !== read.semanticDigest) throw new Error(`The ${label} artifact has semantic digest ${read.semanticDigest}; the registry records ${run?.artifact.semanticDigest ?? 'no canonical run'}`);
@@ -43,10 +51,19 @@ if (snapshot.identity.corpus_digest !== record.snapshotDigest) throw new Error(`
 const policy = readJson('benchmarks/support/population-policy.json');
 const moved = comparison.reviewStateEffect?.movedOutOfNotAssertable?.byKindAndTier ?? {};
 const movedControls = Object.entries(moved).filter(([k]) => k.startsWith('must-not-flag')).reduce((n, [, c]) => n + (c as number), 0);
+let unsettledGate = comparison.methods.unsettledGateOccurrences.items as Array<{ id: string; peer: string; case: string; variant: string; disagreement: string }>;
+if (args.includes('--remap-occurrence-ids')) {
+  const rq = (methods.artifact.review_queue ?? []) as unknown as Array<{ id: string; case_id: string; peer?: string; variant?: string; disagreement?: string; method: string }>;
+  unsettledGate = unsettledGate.map(u => {
+    const hits = rq.filter(q => q.method === 'differential' && q.peer === u.peer && seedCaseId(q.case_id, 'differential') === u.case && q.variant === u.variant && q.disagreement === u.disagreement);
+    if (hits.length !== 1) throw new Error(`Cannot map the unsettled gate occurrence ${u.id} (${u.case}, ${u.peer}, ${u.disagreement}, ${u.variant}) to one occurrence of this artifact (${hits.length} candidates)`);
+    return { ...u, id: hits[0].id };
+  });
+}
 const queue = buildTriageQueue({
-  source: { evidenceRelease: record.evidenceRelease, corpusDigest: record.snapshotDigest, manifestDigest: record.manifestDigest, ciRun: record.replay?.ciRun, archiveRelease: record.replay?.archive?.release, archiveSha256: record.replay?.archive?.sha256 },
+  source: { evidenceRelease: record.evidenceRelease, corpusDigest: record.snapshotDigest, manifestDigest: record.manifestDigest, ciRun: option('ci-run') ?? record.replay?.ciRun, archiveRelease: option('archive-release') ?? record.replay?.archive?.release, archiveSha256: record.replay?.archive?.sha256 },
   plain, methods, snapshotCases: snapshot.cases, addedIds: report.diff.added, maintainerOnlyIds: report.reviewState?.candidate?.maintainerOnlyFixtureIds ?? [],
-  unsettledGate: comparison.methods.unsettledGateOccurrences.items, reference: registry.methodsRun.reference, gatePeers: policy.methods.differential.peers,
+  unsettledGate, reference: registry.methodsRun.reference, gatePeers: policy.methods.differential.peers,
   disclosure: {
     maintainerOnlyFixtures: report.reviewState?.candidate?.fixtures?.maintainerOnly ?? 0, independentlyReviewed: report.reviewState?.candidate?.fixtures?.reviewed ?? 0,
     newlyScoredPositives: Object.values(moved as Record<string, number>).reduce((n, c) => n + c, 0) - movedControls, newlyScoredControls: movedControls,

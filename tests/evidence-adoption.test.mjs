@@ -216,3 +216,19 @@ test('the review state names maintainer-only fixtures by their Case or Scenario 
   assert.equal(summary.unattributedFixtures, 1);
   assert.deepEqual(reviewStateSummary({}, bundle, materialized), { present: false });
 });
+
+test('an engine candidate on the identical evidence rides next to the accepted adoption and carries no owner acceptance (#697)', async () => {
+  const { engineCandidateRecord } = await import('../scripts/evidence-adoption.mjs');
+  const { engineCandidateProblems } = await import('../scripts/check-evidence-adoption.mjs');
+  const pin = { evidenceRelease: 'snapshot-2026.10.04.3', manifestDigest: `sha256:${'a'.repeat(64)}`, snapshotDigest: `sha256:${'b'.repeat(64)}`, sourceRevision: 'c'.repeat(40) };
+  const engine = { tag: 'v0.1.0-alpha.5', revision: 'd'.repeat(40), runArtifactSchema: { sha256: `sha256:${'e'.repeat(64)}` } };
+  const registry = { engine: { tag: 'v0.1.0-alpha.4', revision: 'f'.repeat(40) } };
+  const product = { package: '@redact-secret/core', version: '0.1.0-beta.13', integrity: 'sha512-AAAA' };
+  const record = engineCandidateRecord({ pinned: pin, manifestDigest: pin.manifestDigest, key: '1'.repeat(64), compat: { compatible: true, cases: 3 }, registry, engine, product, previousProduct: { version: '0.1.0-beta.12', integrity: 'sha512-BBBB' } });
+  const ctx = { pin, exists: () => true };
+  assert.deepEqual(engineCandidateProblems({ state: 'accepted', engineCandidate: record }, ctx), []);
+  assert.equal(record.ownerAcceptance, null);
+  assert.ok(engineCandidateProblems({ state: 'accepted', engineCandidate: { ...record, ownerAcceptance: { acceptedBy: 'x' } } }, ctx).some(p => /no owner acceptance/.test(p)));
+  assert.ok(engineCandidateProblems({ state: 'accepted', engineCandidate: { ...record, snapshotDigest: `sha256:${'0'.repeat(64)}` } }, ctx).some(p => /identical evidence/.test(p)));
+  assert.ok(engineCandidateProblems({ state: 'candidate', engineCandidate: record }, ctx).some(p => /accepted adoption/.test(p)));
+});

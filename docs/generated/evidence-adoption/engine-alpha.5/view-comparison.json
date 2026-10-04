@@ -1,0 +1,36 @@
+{
+ "schema": "redact-secret/view-comparison/v1",
+ "from": "accepted view (CI run 37219004854: alpha.4 + beta.12 artifacts of run 37202404479, derived inputs)",
+ "to": "candidate view (CI run 37220835061: alpha.5 + beta.13, derived inputs)",
+ "families": 135,
+ "statusChanges": [],
+ "familiesWithAnyDifference": 0,
+ "distribution": {
+  "from": {
+   "pending": 1,
+   "provisional": 18,
+   "stable": 116,
+   "unsupported": 0
+  },
+  "to": {
+   "pending": 1,
+   "provisional": 18,
+   "stable": 116,
+   "unsupported": 0
+  }
+ },
+ "stableDistribution": {
+  "from": {
+   "documented": 82,
+   "empirical": 34,
+   "policy-qualified": 0
+  },
+  "to": {
+   "documented": 82,
+   "empirical": 34,
+   "policy-qualified": 0
+  }
+ },
+ "differingPaths": "populations[].artifact and methodsArtifact: engine.version, scanners[].version, configHash, artifactDigest, semanticDigest; policy.revision and the review-ledger re-key component digest (occurrence ids carry the product identity). Nothing else.",
+ "note": "A local rebuild of the accepted view differs from the CI view in 9 families fixtureProfile axis labels because gitignored legacy fixtures exist locally; the comparison therefore uses the CI views on both sides."
+}

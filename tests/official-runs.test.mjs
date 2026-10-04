@@ -126,3 +126,14 @@ test('a recorded methods run must be the pinned methodsRun, with its own id, and
   // The pinned darwin configuration hash belongs to the plain measurement; a methods run has its own config_hash.
   assert.ok(!check(run => { run.configHash = `sha256:${'4'.repeat(64)}`; }).some(p => /configHash differs from the pinned/.test(p)));
 });
+
+test('an attribution run is a dispatch input of the same workflow and driver, never the accepted run (#697)', async () => {
+  const workflow = (await readFile(new URL('../.github/workflows/official-runs.yml', import.meta.url), 'utf8')).replace(/^\s*#.*$/gm, '');
+  assert.match(workflow, /attribution:\n\s+description:/);
+  assert.match(workflow, /--attribution "\$ATTRIBUTION"/);
+  assert.match(workflow, /inputs\.attribution == ''/, 'the view stage is skipped for an attribution run');
+  assert.match(workflow, /\^\[A-Za-z0-9\._-\]\+\$/, 'the id is validated before it reaches a command');
+  const driver = await readFile(new URL('../scripts/run-official-credential-eval.ts', import.meta.url), 'utf8');
+  assert.match(driver, /the registry pins no attribution run/);
+  assert.match(driver, /node-dir', nodeDir/, 'the node directory follows the configuration');
+});

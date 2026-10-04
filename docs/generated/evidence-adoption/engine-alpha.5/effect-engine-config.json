@@ -1,0 +1,73 @@
+{
+ "schema": "redact-secret/replay-effect-comparison/v1",
+ "label": "A->B: alpha.4+beta.12 vs alpha.5+beta.12 (engine/config effect)",
+ "from": "/Users/minhokang/orca/workspaces/redact-secret-benchmarks/replay-work/accepted",
+ "to": "/Users/minhokang/orca/workspaces/redact-secret-benchmarks/replay-work/b12",
+ "unexplainedPathGroups": 0,
+ "populations": {
+  "regression-corpus/artifact.json": {
+   "semanticDigests": {
+    "from": "sha256:7c3593d168455a678ce58220f0f2ffd2d859450b18fd4aa3f1067fadf8c36dac",
+    "to": "sha256:200becac398cbf1309fac7693a81b3e67b7552dd07722c50c9e243fae9286551",
+    "equal": false
+   },
+   "differingLeaves": 2,
+   "identityPaths": {
+    "/manifest/config_hash": 1,
+    "/manifest/engine/version": 1
+   },
+   "outcomePaths": {},
+   "unexplainedPaths": {},
+   "outcomeCases": 0,
+   "outcomeCaseIds": []
+  },
+  "policy-corpus/artifact.json": {
+   "semanticDigests": {
+    "from": "sha256:a110e4568c2db8162e2402678f877df1ca16dc36fb9edacca9e4b23fa3274a14",
+    "to": "sha256:0bd1df64987b71c2689253a130e0bc57443941c28423cb2e07f7939e736902a5",
+    "equal": false
+   },
+   "differingLeaves": 2,
+   "identityPaths": {
+    "/manifest/config_hash": 1,
+    "/manifest/engine/version": 1
+   },
+   "outcomePaths": {},
+   "unexplainedPaths": {},
+   "outcomeCases": 0,
+   "outcomeCaseIds": []
+  },
+  "public-evidence-snapshot/artifact.json": {
+   "semanticDigests": {
+    "from": "sha256:d253e93cd6bf89053b83d12621ca59fe293741cce9304c9cf54c055108e8f4d9",
+    "to": "sha256:1c2813b38d63b7711780528175cdfe85839de83f2fdb3f0b93c2fa27a8eee234",
+    "equal": false
+   },
+   "differingLeaves": 2,
+   "identityPaths": {
+    "/manifest/config_hash": 1,
+    "/manifest/engine/version": 1
+   },
+   "outcomePaths": {},
+   "unexplainedPaths": {},
+   "outcomeCases": 0,
+   "outcomeCaseIds": []
+  },
+  "public-evidence-snapshot/methods/artifact.json": {
+   "semanticDigests": {
+    "from": "sha256:0e909c53f18bd399951540e6ea5edacfe51a330902e396138e639201cd541d04",
+    "to": "sha256:615cbb566457871ffb462103efba64db912db52a5e22e6d30a753aa7d5193361",
+    "equal": false
+   },
+   "differingLeaves": 2,
+   "identityPaths": {
+    "/manifest/config_hash": 1,
+    "/manifest/engine/version": 1
+   },
+   "outcomePaths": {},
+   "unexplainedPaths": {},
+   "outcomeCases": 0,
+   "outcomeCaseIds": []
+  }
+ }
+}

@@ -1,0 +1,514 @@
+diff --git a/benchmarks/official-runs.json b/benchmarks/official-runs.json
+index 33b68f7d..9149f3c3 100644
+--- a/benchmarks/official-runs.json
++++ b/benchmarks/official-runs.json
+@@ -4,9 +4,9 @@
+   "decision": "docs/decisions/2026-10-01-run-credential-eval-per-population-and-adapt-run-artifacts.md",
+   "engine": {
+     "repository": "redact-secret/credential-eval",
+-    "tag": "v0.1.0-alpha.4",
+-    "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33",
+-    "version": "0.1.0-alpha.4",
++    "tag": "v0.1.0-alpha.5",
++    "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
++    "version": "0.1.0-alpha.5",
+     "protocol": "credential-eval-protocol/1",
+     "runArtifactSchema": {
+       "path": "schemas/credential-eval-run-artifact-v1.json",
+@@ -81,9 +81,9 @@
+     {
+       "id": "redact-secret",
+       "kind": "npm",
+-      "version": "0.1.0-beta.12",
++      "version": "0.1.0-beta.13",
+       "package": "@redact-secret/core",
+-      "integrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw=="
++      "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+     },
+     {
+       "id": "trufflehog",
+@@ -149,471 +149,21 @@
+       }
+     }
+   ],
+-  "runs": [
+-    {
+-      "id": "policy-corpus@linux-x64",
+-      "population": "policy-corpus",
+-      "platform": "linux-x64",
+-      "canonical": true,
+-      "purpose": "canonical measurement: the linux-x64 official run of .github/workflows/official-runs.yml",
+-      "recordedOn": "2026-10-04",
+-      "benchmarkRevision": "9a22e6fd046ef98242987d3f727ae1e6d11df91e",
+-      "engine": {
+-        "name": "credential-eval",
+-        "version": "0.1.0-alpha.4",
+-        "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33",
+-        "protocol": "credential-eval-protocol/1"
+-      },
+-      "runClass": "public",
+-      "engineRunClass": "official",
+-      "publication": "public",
+-      "configHash": "sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16",
+-      "evidence": {
+-        "source": "redact-secret-benchmarks/policy",
+-        "revision": "corpus-sha256:37293aba657dc6b6034f568206b5cdf717f9eac1e0f8e4fbfeeff363f162f1be",
+-        "evidence_schema": "redact-secret-benchmarks/fixtures/v2",
+-        "corpus_digest": "sha256:37293aba657dc6b6034f568206b5cdf717f9eac1e0f8e4fbfeeff363f162f1be",
+-        "release": {
+-          "tag": "policy-37293aba657d",
+-          "manifest_digest": "sha256:336d79eadf7d9e19a3da1f42843f1c8cf00a8adcc1e946c794d6c9531f66a703"
+-        }
+-      },
+-      "artifact": {
+-        "semanticDigest": "sha256:a110e4568c2db8162e2402678f877df1ca16dc36fb9edacca9e4b23fa3274a14",
+-        "byteDigest": "sha256:9036367f50a0e915684dd612dba69072d8da87180f09f7645245ff2bd9a567e8",
+-        "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
+-        "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
+-      },
+-      "determinism": {
+-        "runs": 2,
+-        "semanticDigestsEqual": true
+-      },
+-      "scanners": [
+-        {
+-          "id": "flare-redact",
+-          "version": "1.6.1",
+-          "build": "released",
+-          "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+-          "adapter": {
+-            "id": "flare-redact",
+-            "version": "1"
+-          },
+-          "configurationHash": "sha256:f111f4606c9185205f16555c97493f82a9165e19afe05c38a9d4a4b399b36300",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-13Htu6VPk2ttxcoVOP909pXao6orrIBAMS/qWdhQn3/BS5AxSB5fpyqaPZnRGJhfBAM2M9T+RE662hxEpv6nGQ=="
+-        },
+-        {
+-          "id": "gitleaks",
+-          "version": "8.30.1",
+-          "build": "released",
+-          "mode": "Directory scan · default rules",
+-          "adapter": {
+-            "id": "gitleaks",
+-            "version": "2"
+-          },
+-          "configurationHash": "sha256:f091a51ed948545f0ef07b2c29940ef1f84af58262f0888b6433fb60ec4c7337",
+-          "executableSha256": "sha256:88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
+-          "packageIntegrity": null
+-        },
+-        {
+-          "id": "openredaction",
+-          "version": "1.1.5",
+-          "build": "released",
+-          "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+-          "adapter": {
+-            "id": "openredaction",
+-            "version": "1"
+-          },
+-          "configurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-SpQTBhVV4p3rmge818NH6iJiL/fvwFlDvhGaejoL0wbzY7jRHIhU5vEf3KzNARsIZmpCJV1eHdiavIjQyN1hXQ=="
+-        },
+-        {
+-          "id": "redact-secret",
+-          "version": "0.1.0-beta.12",
+-          "build": "released",
+-          "mode": "Published npm package · default detectors",
+-          "adapter": {
+-            "id": "redact-secret",
+-            "version": "3"
+-          },
+-          "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw=="
+-        },
+-        {
+-          "id": "trufflehog",
+-          "version": "3.97.4",
+-          "build": "released",
+-          "mode": "Filesystem scan · verification disabled",
+-          "adapter": {
+-            "id": "trufflehog",
+-            "version": "2"
+-          },
+-          "configurationHash": "sha256:d077d8241c93abc23a64c8f9278475c779e1beaaa302f0d43a072284f6cf1678",
+-          "executableSha256": "sha256:95c2a42bce979fce6dd73cc629b37ae4d72731b0dc16e047fba41a77bc765620",
+-          "packageIntegrity": null
+-        }
+-      ],
+-      "caseCounts": {
+-        "flare-redact": 19,
+-        "gitleaks": 19,
+-        "openredaction": 19,
+-        "redact-secret": 19,
+-        "trufflehog": 19
+-      }
+-    },
+-    {
+-      "id": "public-evidence-snapshot+methods@linux-x64",
+-      "population": "public-evidence-snapshot",
+-      "kind": "methods",
+-      "methods": [
+-        "differential",
+-        "metamorphic",
+-        "mutation"
+-      ],
+-      "evaluation": {
+-        "reference": "redact-secret",
+-        "seed": "case-id",
+-        "evidenceDigest": "sha256:1af8d70c6891eddf749f741364b35ba0c46d510a888d7e39111be04ec2c49c91"
+-      },
+-      "platform": "linux-x64",
+-      "canonical": true,
+-      "purpose": "canonical methods run: the linux-x64 official run of .github/workflows/official-runs.yml",
+-      "recordedOn": "2026-10-04",
+-      "benchmarkRevision": "9a22e6fd046ef98242987d3f727ae1e6d11df91e",
+-      "engine": {
+-        "name": "credential-eval",
+-        "version": "0.1.0-alpha.4",
+-        "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33",
+-        "protocol": "credential-eval-protocol/1"
+-      },
+-      "runClass": "public",
+-      "engineRunClass": "official",
+-      "publication": "public",
+-      "configHash": "sha256:eea835c2e088ff369ecae475d6daccf55917f6c14e2c6398ca804f146fc83f01",
+-      "evidence": {
+-        "source": "credential-evidence",
+-        "revision": "records-tree-sha256:dbfea28d29e427c28dff4054cbdda77e6c102541e56210e3cd253ddc63e9b154",
+-        "evidence_schema": "credential-evidence/schema/1.7.0",
+-        "corpus_digest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
+-        "release": {
+-          "tag": "snapshot-2026.10.04.3",
+-          "manifest_digest": "sha256:690ed57312d576fd6a614d40de10efe8bbc89431693aa4fbaa99979d69c0da8a"
+-        },
+-        "representation": "credential-eval/representation/1"
+-      },
+-      "artifact": {
+-        "semanticDigest": "sha256:0e909c53f18bd399951540e6ea5edacfe51a330902e396138e639201cd541d04",
+-        "byteDigest": "sha256:c4566578e169dfb28f6c4949911738f7a8030e35ff2eb1ac7571e002ec024645",
+-        "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
+-        "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
+-      },
+-      "determinism": {
+-        "runs": 2,
+-        "semanticDigestsEqual": true
+-      },
+-      "scanners": [
+-        {
+-          "id": "flare-redact",
+-          "version": "1.6.1",
+-          "build": "released",
+-          "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+-          "adapter": {
+-            "id": "flare-redact",
+-            "version": "1"
+-          },
+-          "configurationHash": "sha256:f111f4606c9185205f16555c97493f82a9165e19afe05c38a9d4a4b399b36300",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-13Htu6VPk2ttxcoVOP909pXao6orrIBAMS/qWdhQn3/BS5AxSB5fpyqaPZnRGJhfBAM2M9T+RE662hxEpv6nGQ=="
+-        },
+-        {
+-          "id": "gitleaks",
+-          "version": "8.30.1",
+-          "build": "released",
+-          "mode": "Directory scan · default rules",
+-          "adapter": {
+-            "id": "gitleaks",
+-            "version": "2"
+-          },
+-          "configurationHash": "sha256:f091a51ed948545f0ef07b2c29940ef1f84af58262f0888b6433fb60ec4c7337",
+-          "executableSha256": "sha256:88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
+-          "packageIntegrity": null
+-        },
+-        {
+-          "id": "openredaction",
+-          "version": "1.1.5",
+-          "build": "released",
+-          "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+-          "adapter": {
+-            "id": "openredaction",
+-            "version": "1"
+-          },
+-          "configurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-SpQTBhVV4p3rmge818NH6iJiL/fvwFlDvhGaejoL0wbzY7jRHIhU5vEf3KzNARsIZmpCJV1eHdiavIjQyN1hXQ=="
+-        },
+-        {
+-          "id": "redact-secret",
+-          "version": "0.1.0-beta.12",
+-          "build": "released",
+-          "mode": "Published npm package · default detectors",
+-          "adapter": {
+-            "id": "redact-secret",
+-            "version": "3"
+-          },
+-          "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw=="
+-        },
+-        {
+-          "id": "trufflehog",
+-          "version": "3.97.4",
+-          "build": "released",
+-          "mode": "Filesystem scan · verification disabled",
+-          "adapter": {
+-            "id": "trufflehog",
+-            "version": "2"
+-          },
+-          "configurationHash": "sha256:d077d8241c93abc23a64c8f9278475c779e1beaaa302f0d43a072284f6cf1678",
+-          "executableSha256": "sha256:95c2a42bce979fce6dd73cc629b37ae4d72731b0dc16e047fba41a77bc765620",
+-          "packageIntegrity": null
+-        }
+-      ],
+-      "caseCounts": {
+-        "flare-redact": 35322,
+-        "gitleaks": 35322,
+-        "openredaction": 35322,
+-        "redact-secret": 35322,
+-        "trufflehog": 35322
+-      }
+-    },
+-    {
+-      "id": "public-evidence-snapshot@linux-x64",
+-      "population": "public-evidence-snapshot",
+-      "platform": "linux-x64",
+-      "canonical": true,
+-      "purpose": "canonical measurement: the linux-x64 official run of .github/workflows/official-runs.yml",
+-      "recordedOn": "2026-10-04",
+-      "benchmarkRevision": "9a22e6fd046ef98242987d3f727ae1e6d11df91e",
+-      "engine": {
+-        "name": "credential-eval",
+-        "version": "0.1.0-alpha.4",
+-        "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33",
+-        "protocol": "credential-eval-protocol/1"
+-      },
+-      "runClass": "public",
+-      "engineRunClass": "official",
+-      "publication": "public",
+-      "configHash": "sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16",
+-      "evidence": {
+-        "source": "credential-evidence",
+-        "revision": "records-tree-sha256:dbfea28d29e427c28dff4054cbdda77e6c102541e56210e3cd253ddc63e9b154",
+-        "evidence_schema": "credential-evidence/schema/1.7.0",
+-        "corpus_digest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
+-        "release": {
+-          "tag": "snapshot-2026.10.04.3",
+-          "manifest_digest": "sha256:690ed57312d576fd6a614d40de10efe8bbc89431693aa4fbaa99979d69c0da8a"
+-        },
+-        "representation": "credential-eval/representation/1"
+-      },
+-      "artifact": {
+-        "semanticDigest": "sha256:d253e93cd6bf89053b83d12621ca59fe293741cce9304c9cf54c055108e8f4d9",
+-        "byteDigest": "sha256:1efe17925cc64f5addcbf6daff5c1d0006eceb8d9d8a69209f730390f1ef7f6a",
+-        "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
+-        "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
+-      },
+-      "determinism": {
+-        "runs": 2,
+-        "semanticDigestsEqual": true
+-      },
+-      "scanners": [
+-        {
+-          "id": "flare-redact",
+-          "version": "1.6.1",
+-          "build": "released",
+-          "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+-          "adapter": {
+-            "id": "flare-redact",
+-            "version": "1"
+-          },
+-          "configurationHash": "sha256:f111f4606c9185205f16555c97493f82a9165e19afe05c38a9d4a4b399b36300",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-13Htu6VPk2ttxcoVOP909pXao6orrIBAMS/qWdhQn3/BS5AxSB5fpyqaPZnRGJhfBAM2M9T+RE662hxEpv6nGQ=="
+-        },
+-        {
+-          "id": "gitleaks",
+-          "version": "8.30.1",
+-          "build": "released",
+-          "mode": "Directory scan · default rules",
+-          "adapter": {
+-            "id": "gitleaks",
+-            "version": "2"
+-          },
+-          "configurationHash": "sha256:f091a51ed948545f0ef07b2c29940ef1f84af58262f0888b6433fb60ec4c7337",
+-          "executableSha256": "sha256:88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
+-          "packageIntegrity": null
+-        },
+-        {
+-          "id": "openredaction",
+-          "version": "1.1.5",
+-          "build": "released",
+-          "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+-          "adapter": {
+-            "id": "openredaction",
+-            "version": "1"
+-          },
+-          "configurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-SpQTBhVV4p3rmge818NH6iJiL/fvwFlDvhGaejoL0wbzY7jRHIhU5vEf3KzNARsIZmpCJV1eHdiavIjQyN1hXQ=="
+-        },
+-        {
+-          "id": "redact-secret",
+-          "version": "0.1.0-beta.12",
+-          "build": "released",
+-          "mode": "Published npm package · default detectors",
+-          "adapter": {
+-            "id": "redact-secret",
+-            "version": "3"
+-          },
+-          "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw=="
+-        },
+-        {
+-          "id": "trufflehog",
+-          "version": "3.97.4",
+-          "build": "released",
+-          "mode": "Filesystem scan · verification disabled",
+-          "adapter": {
+-            "id": "trufflehog",
+-            "version": "2"
+-          },
+-          "configurationHash": "sha256:d077d8241c93abc23a64c8f9278475c779e1beaaa302f0d43a072284f6cf1678",
+-          "executableSha256": "sha256:95c2a42bce979fce6dd73cc629b37ae4d72731b0dc16e047fba41a77bc765620",
+-          "packageIntegrity": null
+-        }
+-      ],
+-      "caseCounts": {
+-        "flare-redact": 6449,
+-        "gitleaks": 6449,
+-        "openredaction": 6449,
+-        "redact-secret": 6449,
+-        "trufflehog": 6449
+-      }
+-    },
+-    {
+-      "id": "regression-corpus@linux-x64",
+-      "population": "regression-corpus",
+-      "platform": "linux-x64",
+-      "canonical": true,
+-      "purpose": "canonical measurement: the linux-x64 official run of .github/workflows/official-runs.yml",
+-      "recordedOn": "2026-10-04",
+-      "benchmarkRevision": "9a22e6fd046ef98242987d3f727ae1e6d11df91e",
+-      "engine": {
+-        "name": "credential-eval",
+-        "version": "0.1.0-alpha.4",
+-        "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33",
+-        "protocol": "credential-eval-protocol/1"
+-      },
+-      "runClass": "public",
+-      "engineRunClass": "official",
+-      "publication": "public",
+-      "configHash": "sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16",
+-      "evidence": {
+-        "source": "redact-secret-benchmarks/regression",
+-        "revision": "corpus-sha256:b7b236c5ad1afc9377d05ca3f3738cebdaad15fbdaa3a492e3059770f04285f6",
+-        "evidence_schema": "redact-secret-benchmarks/fixtures/v2",
+-        "corpus_digest": "sha256:b7b236c5ad1afc9377d05ca3f3738cebdaad15fbdaa3a492e3059770f04285f6",
+-        "release": {
+-          "tag": "regression-b7b236c5ad1a",
+-          "manifest_digest": "sha256:5cf63dd0aafdbff6752107c0d3a7e4be63938f1e4e6d30c92c15c5443cfb1080"
+-        }
+-      },
+-      "artifact": {
+-        "semanticDigest": "sha256:7c3593d168455a678ce58220f0f2ffd2d859450b18fd4aa3f1067fadf8c36dac",
+-        "byteDigest": "sha256:646c6ae910bb6a5d3f04037a851ef21081a87e2b32133c91e14e0abe66ff4e35",
+-        "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
+-        "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
+-      },
+-      "determinism": {
+-        "runs": 2,
+-        "semanticDigestsEqual": true
+-      },
+-      "scanners": [
+-        {
+-          "id": "flare-redact",
+-          "version": "1.6.1",
+-          "build": "released",
+-          "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+-          "adapter": {
+-            "id": "flare-redact",
+-            "version": "1"
+-          },
+-          "configurationHash": "sha256:f111f4606c9185205f16555c97493f82a9165e19afe05c38a9d4a4b399b36300",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-13Htu6VPk2ttxcoVOP909pXao6orrIBAMS/qWdhQn3/BS5AxSB5fpyqaPZnRGJhfBAM2M9T+RE662hxEpv6nGQ=="
+-        },
+-        {
+-          "id": "gitleaks",
+-          "version": "8.30.1",
+-          "build": "released",
+-          "mode": "Directory scan · default rules",
+-          "adapter": {
+-            "id": "gitleaks",
+-            "version": "2"
+-          },
+-          "configurationHash": "sha256:f091a51ed948545f0ef07b2c29940ef1f84af58262f0888b6433fb60ec4c7337",
+-          "executableSha256": "sha256:88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
+-          "packageIntegrity": null
+-        },
+-        {
+-          "id": "openredaction",
+-          "version": "1.1.5",
+-          "build": "released",
+-          "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+-          "adapter": {
+-            "id": "openredaction",
+-            "version": "1"
+-          },
+-          "configurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-SpQTBhVV4p3rmge818NH6iJiL/fvwFlDvhGaejoL0wbzY7jRHIhU5vEf3KzNARsIZmpCJV1eHdiavIjQyN1hXQ=="
+-        },
+-        {
+-          "id": "redact-secret",
++  "runs": [],
++  "attributionRuns": {
++    "core-beta.12": {
++      "purpose": "The previous published product release (beta.12) on the same engine, evidence and platform, to separate a product effect from an engine or configuration effect (#697). Never recorded in runs[].",
++      "configs": {
++        "linux-x64": "credential-public-v1.core-beta.12.json",
++        "darwin-arm64": "credential-public-v1.core-beta.12.darwin-arm64.json"
++      },
++      "nodeDir": "adapters/node-core-beta.12",
++      "scanners": {
++        "redact-secret": {
+           "version": "0.1.0-beta.12",
+-          "build": "released",
+-          "mode": "Published npm package · default detectors",
+-          "adapter": {
+-            "id": "redact-secret",
+-            "version": "3"
+-          },
+-          "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw=="
+-        },
+-        {
+-          "id": "trufflehog",
+-          "version": "3.97.4",
+-          "build": "released",
+-          "mode": "Filesystem scan · verification disabled",
+-          "adapter": {
+-            "id": "trufflehog",
+-            "version": "2"
+-          },
+-          "configurationHash": "sha256:d077d8241c93abc23a64c8f9278475c779e1beaaa302f0d43a072284f6cf1678",
+-          "executableSha256": "sha256:95c2a42bce979fce6dd73cc629b37ae4d72731b0dc16e047fba41a77bc765620",
+-          "packageIntegrity": null
++          "integrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw=="
+         }
+-      ],
+-      "caseCounts": {
+-        "flare-redact": 153,
+-        "gitleaks": 153,
+-        "openredaction": 153,
+-        "redact-secret": 153,
+-        "trufflehog": 153
+       }
+     }
+-  ]
++  }
+ }

@@ -268,6 +268,35 @@ export function candidateRecord({ tag, manifest, manifestDigest, snapshotIdentit
 }
 
 /**
+ * The engine candidate (#697): the evidence release is already the accepted pin, and what changes is the engine and the product build the
+ * replay scans (credential-eval alpha.4 measuring @redact-secret/core beta.12 became alpha.5 measuring beta.13). It is recorded next to the
+ * accepted adoption as `engineCandidate`, never in place of it: the accepted record, the active registry and the authority file stay as they are
+ * until the owner accepts. The corpus is the identical bytes, so a later difference is an engine, configuration or product effect, and the replay
+ * separates those with an attribution run (the previous product build on the new engine).
+ */
+export function engineCandidateRecord({ pinned, manifestDigest, key, compat, registry, engine, product, previousProduct, supersededCandidate = null }) {
+  return {
+    kind: 'engine-product',
+    evidenceRelease: pinned.evidenceRelease,
+    manifestDigest,
+    snapshotDigest: pinned.snapshotDigest,
+    sourceRevision: pinned.sourceRevision,
+    adoptionKey: `sha256:${key}`,
+    engine: { tag: engine.tag, revision: engine.revision },
+    engineChange: { from: { tag: registry.engine.tag, revision: registry.engine.revision }, to: { tag: engine.tag, revision: engine.revision }, runArtifactSchemaSha256: engine.runArtifactSchema.sha256 },
+    product: { package: product.package, version: product.version, integrity: product.integrity },
+    productChange: { from: { version: previousProduct.version, integrity: previousProduct.integrity }, to: { version: product.version, integrity: product.integrity } },
+    engineCompatibility: { compatible: compat.compatible, cases: compat.cases },
+    ...(supersededCandidate ? { supersedesCandidate: supersededCandidate } : {}),
+    changeReport: `docs/generated/evidence-adoption/${pinned.evidenceRelease}.engine-${engine.tag.replace(/^v0\.1\.0-/, '')}.json`,
+    replay: { state: 'pending', via: '.github/workflows/official-runs.yml on a transient replay branch (engine and product pins only), plus an attribution run of the previous product build', recordedRuns: [] },
+    note: 'The evidence bytes are identical to the accepted adoption. The active registry, vendored schemas, runs and authority stay on the accepted engine and product until the owner accepts this candidate; nothing here is an owner acceptance.',
+    ownerAcceptance: null,
+    deployment: { staging: null, production: null },
+  };
+}
+
+/**
  * The acceptance repin: move the floors population's pin to the candidate and keep every previous accepted run of that population
  * as a historical receipt (never relabelled as evidence of the new pin). Returns new copies; the authority file is not an input
  * or an output. The authority check stays red on that branch until the owner renews the authorisation, by design.

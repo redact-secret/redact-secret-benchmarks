@@ -192,5 +192,80 @@
         }
       }
     }
+  },
+  "engineCandidate": {
+    "kind": "engine-product",
+    "evidenceRelease": "snapshot-2026.10.04.3",
+    "manifestDigest": "sha256:690ed57312d576fd6a614d40de10efe8bbc89431693aa4fbaa99979d69c0da8a",
+    "snapshotDigest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
+    "sourceRevision": "3db9c428b2303a4b51106624d2f1a839bb94c795",
+    "adoptionKey": "sha256:5ac282a790ac39c72c40abfff062a68fd7963f2d98785dd98da2f1ac2785c0fb",
+    "engine": {
+      "tag": "v0.1.0-alpha.5",
+      "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d"
+    },
+    "engineChange": {
+      "from": {
+        "tag": "v0.1.0-alpha.4",
+        "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33"
+      },
+      "to": {
+        "tag": "v0.1.0-alpha.5",
+        "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d"
+      },
+      "runArtifactSchemaSha256": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809"
+    },
+    "product": {
+      "package": "@redact-secret/core",
+      "version": "0.1.0-beta.13",
+      "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+    },
+    "productChange": {
+      "from": {
+        "version": "0.1.0-beta.12",
+        "integrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw=="
+      },
+      "to": {
+        "version": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+      }
+    },
+    "engineCompatibility": {
+      "compatible": true,
+      "cases": 6449
+    },
+    "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.04.3.engine-alpha.5.json",
+    "replay": {
+      "state": "replayed",
+      "via": ".github/workflows/official-runs.yml dispatched on the transient replay branch replay/697-engine-alpha5-beta13 (revision 61695124: the repository at the reviewed code plus engine/product pins only; branch deleted after archiving), plain and methods, linux-x64, two engine runs each with equal semantic digests; plus an attribution run of beta.12 on the same engine",
+      "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37220835061",
+      "archive": {
+        "release": "official-runs-37220835061",
+        "sha256": "sha256:432ec4314a905ed0ec13e563eb08215a47d9172e45eba0fe0ce48ac4b31b4c66"
+      },
+      "attributionRun": {
+        "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37220850850",
+        "archive": {
+          "release": "attribution-runs-37220850850",
+          "sha256": "sha256:17f1096c8b969ccd0ee7183caa6724fe5a13c57260f85dc7a19d7b5f1fc4af08"
+        },
+        "product": "@redact-secret/core 0.1.0-beta.12"
+      },
+      "benchmarkRevision": "61695124dc753d21adc8c1a73132014a78848dc5",
+      "data": "docs/generated/evidence-adoption/engine-alpha.5/replay.json",
+      "engineConfigEffect": "docs/generated/evidence-adoption/engine-alpha.5/effect-engine-config.json",
+      "productEffect": "docs/generated/evidence-adoption/engine-alpha.5/effect-product.json",
+      "totalEffect": "docs/generated/evidence-adoption/engine-alpha.5/effect-total.json",
+      "viewComparison": "docs/generated/evidence-adoption/engine-alpha.5/view-comparison.json",
+      "triage": "docs/generated/evidence-adoption/engine-alpha.5/triage.json",
+      "candidateEffect": "docs/generated/evidence-adoption/engine-alpha.5/candidate-effect.json",
+      "result": "No case, outcome, assertion, review occurrence (by semantic key) or family status differs between the accepted alpha.4 + beta.12 runs, the alpha.5 + beta.12 attribution runs and the alpha.5 + beta.13 runs, in all four artifacts; only identity fields differ."
+    },
+    "note": "The evidence bytes are identical to the accepted adoption. The active registry, vendored schemas, runs and authority stay on the accepted engine and product until the owner accepts this candidate; nothing here is an owner acceptance.",
+    "ownerAcceptance": null,
+    "deployment": {
+      "staging": null,
+      "production": null
+    }
   }
 }

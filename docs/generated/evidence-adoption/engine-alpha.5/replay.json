@@ -1,0 +1,294 @@
+{
+ "schema": "redact-secret/engine-candidate-replay/v1",
+ "evidenceRelease": "snapshot-2026.10.04.3",
+ "manifestDigest": "sha256:690ed57312d576fd6a614d40de10efe8bbc89431693aa4fbaa99979d69c0da8a",
+ "corpusDigest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
+ "platform": "linux-x64",
+ "peers": {
+  "gitleaks": "8.30.1",
+  "trufflehog": "3.97.4"
+ },
+ "replayBranchRevision": "61695124dc753d21adc8c1a73132014a78848dc5",
+ "replayPinsPatch": "docs/generated/evidence-adoption/engine-alpha.5/replay-pins.patch",
+ "runs": {
+  "candidate-beta.13": {
+   "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37220835061",
+   "archiveRelease": "official-runs-37220835061",
+   "engine": "credential-eval v0.1.0-alpha.5 c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+   "artifacts": [
+    {
+     "population": "regression-corpus",
+     "kind": "plain",
+     "semanticDigest": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
+     "byteDigest": "sha256:79e9f157dedf4d05d98886c506a38bc3e281a557b6ffa140fa78aa00b5ec2670",
+     "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+     "determinism": {
+      "runs": 2,
+      "semanticDigestsEqual": true
+     },
+     "engine": {
+      "name": "credential-eval",
+      "version": "0.1.0-alpha.5",
+      "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+      "protocol": "credential-eval-protocol/1"
+     },
+     "benchmarkRevision": "61695124dc753d21adc8c1a73132014a78848dc5",
+     "product": {
+      "version": "0.1.0-beta.13",
+      "packageIntegrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+      "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2"
+     },
+     "caseCounts": {
+      "flare-redact": 153,
+      "gitleaks": 153,
+      "openredaction": 153,
+      "redact-secret": 153,
+      "trufflehog": 153
+     },
+     "attribution": null
+    },
+    {
+     "population": "policy-corpus",
+     "kind": "plain",
+     "semanticDigest": "sha256:9a6576c90e30907dee3b6e2b368d2791a29865fa8215790b0ef9cf6f75b66f9e",
+     "byteDigest": "sha256:72801d7e6b54ef437f6d361e0c3def3ed404736462ab1be3c8706b756cc5d13c",
+     "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+     "determinism": {
+      "runs": 2,
+      "semanticDigestsEqual": true
+     },
+     "engine": {
+      "name": "credential-eval",
+      "version": "0.1.0-alpha.5",
+      "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+      "protocol": "credential-eval-protocol/1"
+     },
+     "benchmarkRevision": "61695124dc753d21adc8c1a73132014a78848dc5",
+     "product": {
+      "version": "0.1.0-beta.13",
+      "packageIntegrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+      "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2"
+     },
+     "caseCounts": {
+      "flare-redact": 19,
+      "gitleaks": 19,
+      "openredaction": 19,
+      "redact-secret": 19,
+      "trufflehog": 19
+     },
+     "attribution": null
+    },
+    {
+     "population": "public-evidence-snapshot",
+     "kind": "plain",
+     "semanticDigest": "sha256:fd1cd68e6c27da8757028e17f3f0504497c766613e65f6d0e75dfdc1df552237",
+     "byteDigest": "sha256:1a33195414c6a9ecae700e13cf4c70f15e98871bc84eff7b10e956b35edea547",
+     "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+     "determinism": {
+      "runs": 2,
+      "semanticDigestsEqual": true
+     },
+     "engine": {
+      "name": "credential-eval",
+      "version": "0.1.0-alpha.5",
+      "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+      "protocol": "credential-eval-protocol/1"
+     },
+     "benchmarkRevision": "61695124dc753d21adc8c1a73132014a78848dc5",
+     "product": {
+      "version": "0.1.0-beta.13",
+      "packageIntegrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+      "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2"
+     },
+     "caseCounts": {
+      "flare-redact": 6449,
+      "gitleaks": 6449,
+      "openredaction": 6449,
+      "redact-secret": 6449,
+      "trufflehog": 6449
+     },
+     "attribution": null
+    },
+    {
+     "population": "public-evidence-snapshot",
+     "kind": "methods",
+     "semanticDigest": "sha256:27d4a77fb55aed3c3139e28ec053a5eeea2f3157749f448c54674b14e553155f",
+     "byteDigest": "sha256:31672ea47e167f9181f291cc0b2d89375dd31a99c32bdc508458aa6e01c46ed8",
+     "configHash": "sha256:d47d081ce5fb1265aeebe7fdee9fea27a3b01b2fa0e36ce6ee679706d2a924b2",
+     "determinism": {
+      "runs": 2,
+      "semanticDigestsEqual": true
+     },
+     "engine": {
+      "name": "credential-eval",
+      "version": "0.1.0-alpha.5",
+      "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+      "protocol": "credential-eval-protocol/1"
+     },
+     "benchmarkRevision": "61695124dc753d21adc8c1a73132014a78848dc5",
+     "product": {
+      "version": "0.1.0-beta.13",
+      "packageIntegrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+      "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2"
+     },
+     "caseCounts": {
+      "flare-redact": 35322,
+      "gitleaks": 35322,
+      "openredaction": 35322,
+      "redact-secret": 35322,
+      "trufflehog": 35322
+     },
+     "attribution": null
+    }
+   ]
+  },
+  "attribution-beta.12": {
+   "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37220850850",
+   "archiveRelease": "attribution-runs-37220850850",
+   "engine": "credential-eval v0.1.0-alpha.5 c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+   "artifacts": [
+    {
+     "population": "regression-corpus",
+     "kind": "plain",
+     "semanticDigest": "sha256:200becac398cbf1309fac7693a81b3e67b7552dd07722c50c9e243fae9286551",
+     "byteDigest": "sha256:283b2f9169e2044320d4d9f1d2744d9a5116dcf48681eb4803de05899bece842",
+     "configHash": "sha256:b987491d393a4758911d6b06553387e477769e627d2d7d6dd8060d8b869c94d0",
+     "determinism": {
+      "runs": 2,
+      "semanticDigestsEqual": true
+     },
+     "engine": {
+      "name": "credential-eval",
+      "version": "0.1.0-alpha.5",
+      "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+      "protocol": "credential-eval-protocol/1"
+     },
+     "benchmarkRevision": "61695124dc753d21adc8c1a73132014a78848dc5",
+     "product": {
+      "version": "0.1.0-beta.12",
+      "packageIntegrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw==",
+      "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2"
+     },
+     "caseCounts": {
+      "flare-redact": 153,
+      "gitleaks": 153,
+      "openredaction": 153,
+      "redact-secret": 153,
+      "trufflehog": 153
+     },
+     "attribution": {
+      "id": "core-beta.12",
+      "configFile": "credential-public-v1.core-beta.12.json",
+      "nodeDir": "adapters/node-core-beta.12"
+     }
+    },
+    {
+     "population": "policy-corpus",
+     "kind": "plain",
+     "semanticDigest": "sha256:0bd1df64987b71c2689253a130e0bc57443941c28423cb2e07f7939e736902a5",
+     "byteDigest": "sha256:915b544af9c038cd8791d7185b35f25138a3d6fead8987b1d685cb0d95441c6e",
+     "configHash": "sha256:b987491d393a4758911d6b06553387e477769e627d2d7d6dd8060d8b869c94d0",
+     "determinism": {
+      "runs": 2,
+      "semanticDigestsEqual": true
+     },
+     "engine": {
+      "name": "credential-eval",
+      "version": "0.1.0-alpha.5",
+      "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+      "protocol": "credential-eval-protocol/1"
+     },
+     "benchmarkRevision": "61695124dc753d21adc8c1a73132014a78848dc5",
+     "product": {
+      "version": "0.1.0-beta.12",
+      "packageIntegrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw==",
+      "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2"
+     },
+     "caseCounts": {
+      "flare-redact": 19,
+      "gitleaks": 19,
+      "openredaction": 19,
+      "redact-secret": 19,
+      "trufflehog": 19
+     },
+     "attribution": {
+      "id": "core-beta.12",
+      "configFile": "credential-public-v1.core-beta.12.json",
+      "nodeDir": "adapters/node-core-beta.12"
+     }
+    },
+    {
+     "population": "public-evidence-snapshot",
+     "kind": "plain",
+     "semanticDigest": "sha256:1c2813b38d63b7711780528175cdfe85839de83f2fdb3f0b93c2fa27a8eee234",
+     "byteDigest": "sha256:3514db52ea59008f10cf55f353456cbc37d062edd1c5db5d11876b1cfefa3db3",
+     "configHash": "sha256:b987491d393a4758911d6b06553387e477769e627d2d7d6dd8060d8b869c94d0",
+     "determinism": {
+      "runs": 2,
+      "semanticDigestsEqual": true
+     },
+     "engine": {
+      "name": "credential-eval",
+      "version": "0.1.0-alpha.5",
+      "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+      "protocol": "credential-eval-protocol/1"
+     },
+     "benchmarkRevision": "61695124dc753d21adc8c1a73132014a78848dc5",
+     "product": {
+      "version": "0.1.0-beta.12",
+      "packageIntegrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw==",
+      "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2"
+     },
+     "caseCounts": {
+      "flare-redact": 6449,
+      "gitleaks": 6449,
+      "openredaction": 6449,
+      "redact-secret": 6449,
+      "trufflehog": 6449
+     },
+     "attribution": {
+      "id": "core-beta.12",
+      "configFile": "credential-public-v1.core-beta.12.json",
+      "nodeDir": "adapters/node-core-beta.12"
+     }
+    },
+    {
+     "population": "public-evidence-snapshot",
+     "kind": "methods",
+     "semanticDigest": "sha256:615cbb566457871ffb462103efba64db912db52a5e22e6d30a753aa7d5193361",
+     "byteDigest": "sha256:dc8be118a46a3824ed3d1fb26529723913fd30348b66eac376fb577ed48919a0",
+     "configHash": "sha256:f844b74272802e8ea7ea5302936b9223c9e879686010487f9c38d138d5ef4e19",
+     "determinism": {
+      "runs": 2,
+      "semanticDigestsEqual": true
+     },
+     "engine": {
+      "name": "credential-eval",
+      "version": "0.1.0-alpha.5",
+      "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+      "protocol": "credential-eval-protocol/1"
+     },
+     "benchmarkRevision": "61695124dc753d21adc8c1a73132014a78848dc5",
+     "product": {
+      "version": "0.1.0-beta.12",
+      "packageIntegrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw==",
+      "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2"
+     },
+     "caseCounts": {
+      "flare-redact": 35322,
+      "gitleaks": 35322,
+      "openredaction": 35322,
+      "redact-secret": 35322,
+      "trufflehog": 35322
+     },
+     "attribution": {
+      "id": "core-beta.12",
+      "configFile": "credential-public-v1.core-beta.12.json",
+      "nodeDir": "adapters/node-core-beta.12"
+     }
+    }
+   ]
+  }
+ },
+ "historicalReceipts": "the alpha.4 + beta.12 accepted runs (37202404479, archive official-runs-37202404479) stay in benchmarks/official-runs.json runs[] unchanged"
+}

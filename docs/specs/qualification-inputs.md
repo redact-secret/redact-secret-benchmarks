@@ -61,7 +61,7 @@ A pin field is a value or one of three states: `pending` (names the issue that r
 | Source revision | `a5362d6cfe644dcf069858ef9bd9cad4d7a96c4a` |
 | Manifest digest | `sha256:2557a72ae8dec3ca6d734a6c87b6db9cb4881543541693a4555fdfd9f7ba26d8` |
 | credential-eval snapshot digest | `sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af` |
-| Engine | credential-eval `v0.1.0-alpha.2` (`bad2a4e`), protocol `credential-eval-protocol/1` |
+| Engine | credential-eval `v0.1.0-alpha.3` (`4b55535`), protocol `credential-eval-protocol/1` |
 | Legacy reference | `1020d2b5` |
 
 `snapshot-2026.10.01` is superseded and the gate refuses it. The product policy revision is the revision of

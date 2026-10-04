@@ -356,8 +356,8 @@ test('the differential gate reads the policy peers; other peers are measured and
   assert.equal(f.evidence.differentialUnresolvedContractDisagreements, 1);
   assert.deepEqual(f.differential.gatePeers, ['peer-one']);
   assert.deepEqual(f.differential.peers, [
-    { peer: 'peer-one', gateBearing: true, occurrences: 1, settled: 0, unresolved: 1 },
-    { peer: 'peer-two', gateBearing: false, occurrences: 1, settled: 0, unresolved: 1 },
+    { peer: 'peer-one', gateBearing: true, unmeasuredVariants: 0, occurrences: 1, settled: 0, unresolved: 1 },
+    { peer: 'peer-two', gateBearing: false, unmeasuredVariants: 0, occurrences: 1, settled: 0, unresolved: 1 },
   ]);
   // Only the non-gate peer unresolved: the family can be stable.
   const onlyOther = family(build({ methods: methodsRun({ queue: ['a-b1'], queueIds: [DIGEST(900)], queuePeers: ['peer-two'] }) }));
@@ -590,4 +590,13 @@ test('the support matrix shows an unmeasured method as null, never as zero, and 
   assert.throws(() => build({ methods: true }, orphan), /holds no scored family/);
   const bare = product({ taxonomy: { schemaVersion: 1, sourceNote: '', providers: [], families: [{ id: 'prov:fam', provider: 'prov', name: 'Fam', detectors: ['synthetic-token'] }, { id: 'prov:y', provider: 'prov', name: 'Y', detectors: [] }] } });
   assert.throws(() => build({ methods: true }, bare), /no detector and no note or sources/);
+});
+
+test('unmeasured cases are counted per scanner and reason, absent means zero, and never become detections', async () => {
+  const { unmeasuredByScanner } = await import('../benchmarks/qualification/run-artifact.ts');
+  const rows = unmeasuredByScanner({ scanners: [
+    { scanner: 'b', status: 'complete', cases: [] },
+    { scanner: 'a', status: 'complete', cases: [], unmeasured_cases: [{ case_id: 'x', reason: 'r1' }, { case_id: 'y', reason: 'r1' }, { case_id: 'z', reason: 'r2' }] },
+  ] });
+  assert.deepEqual(rows, [{ scanner: 'a', unmeasured: 3, reasons: { r1: 2, r2: 1 } }, { scanner: 'b', unmeasured: 0, reasons: {} }]);
 });

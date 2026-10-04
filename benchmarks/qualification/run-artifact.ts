@@ -4,7 +4,7 @@ import { canonical, parseKeepingNumbers, sha256Digest } from './canonical.ts';
 
 /**
  * A consumer of credential-eval RunArtifact v1 (#605). It reads the artifact only through its published schema
- * (schemas/credential-eval-run-artifact-v1.json, vendored from credential-eval tag v0.1.0-alpha.2): it imports no
+ * (schemas/credential-eval-run-artifact-v1.json, vendored from credential-eval tag v0.1.0-alpha.3): it imports no
  * credential-eval code, never re-scores a case and never reads `non_semantic` as evidence
  * (credential-eval docs/qualification-boundary.md section 4).
  */
@@ -29,8 +29,10 @@ export interface ScannerIdentity {
   build?: 'released' | 'candidate' | null; provenance?: { network?: string; components?: { kind: string; name: string; version?: string; sha256?: string; integrity?: string }[] } | null;
 }
 export interface Assertion { case_id: string; method: string; assertion: string; status: string; [key: string]: unknown }
+/** Completeness report (RunArtifact v1.2): cases a `complete` scanner could not map to ranges. They are in no denominator and never a miss. */
+export interface UnmeasuredCase { case_id: string; reason: string }
 export interface ScannerRun {
-  scanner: string; status: string; cases: CaseResult[]; assertions?: Assertion[];
+  scanner: string; status: string; cases: CaseResult[]; assertions?: Assertion[]; unmeasured_cases?: UnmeasuredCase[];
   aggregates: { groups: Record<string, unknown>; by_target?: Record<string, unknown>; resolution?: Record<string, unknown> };
   replays?: { count: number; agreed?: boolean } | null;
 }
@@ -164,4 +166,13 @@ export function familyCounts(run: ScannerRun): Map<string, FamilyCounts> {
     countCase(out.get(key)!, c, index);
   }
   return out;
+}
+
+/** Per scanner, how many cases (or, in a methods artifact, generated variants) it could not measure, and why. Absent `unmeasured_cases` is zero. Never read as zero detections. */
+export function unmeasuredByScanner(artifact: RunArtifact): { scanner: string; unmeasured: number; reasons: Record<string, number> }[] {
+  return artifact.scanners.map(run => {
+    const reasons: Record<string, number> = {};
+    for (const u of run.unmeasured_cases ?? []) reasons[u.reason] = (reasons[u.reason] ?? 0) + 1;
+    return { scanner: run.scanner, unmeasured: run.unmeasured_cases?.length ?? 0, reasons: Object.fromEntries(Object.entries(reasons).sort(([a], [b]) => (a < b ? -1 : 1))) };
+  }).sort((a, b) => (a.scanner < b.scanner ? -1 : 1));
 }

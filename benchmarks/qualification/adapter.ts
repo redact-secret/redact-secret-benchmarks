@@ -10,7 +10,7 @@ import { ledgerSettledId, type LedgerRekey } from './ledger-rekey.ts';
 import type { TwinScopeMap } from './twin-scope.ts';
 import { buildViewSupportMatrix } from './support-matrix.ts';
 import {
-  bindingProblems, byId, countCase, emptyCounts, OUTCOMES, readRunArtifact, UNASSIGNED,
+  bindingProblems, byId, countCase, emptyCounts, OUTCOMES, readRunArtifact, UNASSIGNED, unmeasuredByScanner,
   type CaseResult, type EvidencePin, type FamilyCounts, type Outcome, type ReadArtifact, type RunArtifact, type ScannerRun,
 } from './run-artifact.ts';
 
@@ -121,6 +121,8 @@ export interface CaseRow {
 export interface PopulationView {
   population: string; role: PopulationRole; runClass: 'public' | 'internal'; denominator: string;
   artifact: ArtifactIdentity;
+  /** Cases (and methods variants) a complete scanner could not map to ranges: in no denominator, never zero detections. */
+  unmeasured?: { cases: { scanner: string; unmeasured: number; reasons: Record<string, number> }[]; methodsVariants?: { scanner: string; unmeasured: number; reasons: Record<string, number> }[] };
 }
 export interface ArtifactIdentity {
   artifactDigest: string; semanticDigest: string; schema: string;
@@ -547,7 +549,7 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
       }
       return {
         gatePeers: [...gatePeers].sort(byteOrder),
-        peers: sorted(byPeer.keys()).map(peer => ({ peer, gateBearing: gatePeers.has(peer), occurrences: byPeer.get(peer)!.occurrences, settled: byPeer.get(peer)!.settled, unresolved: byPeer.get(peer)!.occurrences - byPeer.get(peer)!.settled })),
+        peers: sorted(byPeer.keys()).map(peer => ({ peer, gateBearing: gatePeers.has(peer), unmeasuredVariants: (methodsSource?.artifact.scanners.find(s => s.scanner === peer)?.unmeasured_cases ?? []).length, occurrences: byPeer.get(peer)!.occurrences, settled: byPeer.get(peer)!.settled, unresolved: byPeer.get(peer)!.occurrences - byPeer.get(peer)!.settled })),
       };
     })() : null;
     const metamorphicCriticalFailures = floorsMethods.has('metamorphic') ? assertionFailures('metamorphic') : 0;
@@ -636,6 +638,8 @@ export function buildQualificationView({ registry, engine, artifacts, product }:
       population: l.input.population, role: l.role, denominator: l.input.population,
       runClass: l.identity.publication === 'public' && l.publishable ? 'public' : 'internal', artifact: l.identity,
       ...(l.methods ? { methodsArtifact: l.methods.identity } : {}),
+      // Unmeasured is not zero: cases (and methods variants) a complete scanner could not map to ranges, in no denominator.
+      unmeasured: { cases: unmeasuredByScanner(l.artifact), ...(l.methods ? { methodsVariants: unmeasuredByScanner(l.methods.artifact) } : {}) },
     })).map(view => ({
       ...view,
       cases: caseRows.get(view.population)!,

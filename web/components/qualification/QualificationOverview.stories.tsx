@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { QualificationOverview } from './QualificationOverview';
-import { overview } from './storyData';
+import { overview, reviewDisclosure } from './storyData';
 
 const meta = {
   title: 'Evaluation/Qualification/QualificationOverview',
@@ -32,5 +32,8 @@ export const Empty: Story = {
     gaps: { ...overview.gaps, rows: [] },
   },
 };
+
+/** Fixtures behind the numbers carry the maintainer-reviewed label. */
+export const WithReviewDisclosure: Story = { args: { disclosure: reviewDisclosure } };
 
 export const Phone: Story = { globals: { viewport: { value: 'mobile1', isRotated: false } } };

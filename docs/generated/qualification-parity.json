@@ -24,7 +24,7 @@
     },
     "new": {
       "publication": "public",
-      "policyRevision": "rs-policy-1:sha256:d41e02b0c82f3ac5c1f7d038fb9321fec3adbd0611a313fc880bdf1b417658c3",
+      "policyRevision": "rs-policy-1:sha256:5615a8aa34a1cf593cff5913596f6745828cf168f67ba77ed305c4e4e4e0f6d3",
       "adapter": {
         "id": "credential-eval-run-artifact",
         "version": 1
@@ -38,13 +38,13 @@
       },
       "distribution": {
         "pending": 1,
-        "provisional": 7,
-        "stable": 127,
+        "provisional": 18,
+        "stable": 116,
         "unsupported": 0
       },
       "stableDistribution": {
-        "documented": 89,
-        "empirical": 38,
+        "documented": 82,
+        "empirical": 34,
         "policy-qualified": 0
       },
       "populations": [
@@ -53,8 +53,8 @@
           "population": "policy-corpus",
           "role": "policy-route",
           "runClass": "public",
-          "semanticDigest": "sha256:1424acdfaaafb217df82ec8f6746a8eaa36aeaffffcff42821c7609b89bbce76",
-          "configHash": "sha256:dcac1afaf04439497ab4e629a030d63754b71516941e7d5c8ac276e566191990",
+          "semanticDigest": "sha256:a110e4568c2db8162e2402678f877df1ca16dc36fb9edacca9e4b23fa3274a14",
+          "configHash": "sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16",
           "evidenceTag": "policy-37293aba657d",
           "methods": [],
           "caseCount": 19
@@ -64,21 +64,21 @@
           "population": "public-evidence-snapshot",
           "role": "floors-and-gates",
           "runClass": "public",
-          "semanticDigest": "sha256:0cd8f6201847efa4ddfa9230d1731be1e66ac201549a9ceb765afcb5de0b447b",
-          "configHash": "sha256:dcac1afaf04439497ab4e629a030d63754b71516941e7d5c8ac276e566191990",
-          "evidenceTag": "snapshot-2026.10.01.2",
+          "semanticDigest": "sha256:d253e93cd6bf89053b83d12621ca59fe293741cce9304c9cf54c055108e8f4d9",
+          "configHash": "sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16",
+          "evidenceTag": "snapshot-2026.10.04.3",
           "methods": [],
-          "caseCount": 5950,
+          "caseCount": 6449,
           "methodsRun": {
             "run": "public-evidence-snapshot+methods@linux-x64",
-            "semanticDigest": "sha256:9e7439a1d2823089693f4dbb2fbb43d8639e72fce185deeaca1a04e3a533d3cb",
-            "configHash": "sha256:6c9497ada23a16b61f0c82888f3ef6012b8686d1a41b076982821e3b54cf74fa",
+            "semanticDigest": "sha256:0e909c53f18bd399951540e6ea5edacfe51a330902e396138e639201cd541d04",
+            "configHash": "sha256:eea835c2e088ff369ecae475d6daccf55917f6c14e2c6398ca804f146fc83f01",
             "methods": [
               "differential",
               "metamorphic",
               "mutation"
             ],
-            "caseCount": 32297
+            "caseCount": 35322
           }
         },
         {
@@ -86,8 +86,8 @@
           "population": "regression-corpus",
           "role": "gates",
           "runClass": "public",
-          "semanticDigest": "sha256:934519ac992518a3b17c7a99b81ea2488e9e3974b7199820f977f151c52d2ce0",
-          "configHash": "sha256:dcac1afaf04439497ab4e629a030d63754b71516941e7d5c8ac276e566191990",
+          "semanticDigest": "sha256:7c3593d168455a678ce58220f0f2ffd2d859450b18fd4aa3f1067fadf8c36dac",
+          "configHash": "sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16",
           "evidenceTag": "regression-b7b236c5ad1a",
           "methods": [],
           "caseCount": 153
@@ -96,7 +96,7 @@
       "axisOverlay": {
         "contexts": 2354,
         "controls": 2075,
-        "corpusDigest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
+        "corpusDigest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
         "detectors": 5466,
         "id": "credential-public-axis-overlay-v1",
         "population": "public-evidence-snapshot"
@@ -109,14 +109,14 @@
         ]
       },
       "twinScope": {
-        "corpusDigest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
+        "corpusDigest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
         "id": "credential-public-twin-scope-map-v1",
         "population": "public-evidence-snapshot",
         "scopedBy": "regression-corpus",
-        "twins": 6
+        "twins": 0
       },
       "ledgerRekey": {
-        "corpusDigest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
+        "corpusDigest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
         "id": "credential-public-review-ledger-rekey-v1",
         "occurrences": 4268,
         "population": "public-evidence-snapshot"
@@ -182,7 +182,7 @@
     },
     {
       "id": "canonical-evidence-membership",
-      "change": "The evidence snapshot holds fixtures with no legacy counterpart (intended canonical-evidence change): they count in the new floors and in no legacy count.",
+      "change": "The evidence snapshot holds fixtures with no legacy counterpart (intended canonical-evidence change): they count in the new floors and in no legacy count, and their methods-run variants add review occurrences, failed assertions and unresolved differential disagreements no legacy count or ledger decision covers (#680). Recognised for a method figure only when the residual equals, exactly, the unsettled occurrences or failed assertions of the cases with no legacy counterpart; a review occurrence of such a case stays unreviewed until a decision is made for it.",
       "confirmation": "confirmed",
       "owner": "credential-evidence"
     },
@@ -217,23 +217,127 @@
     "status": {
       "tally": {
         "compared": 135,
-        "equal": 135,
-        "explained": 0,
+        "equal": 124,
+        "explained": 11,
         "unexplained": 0,
-        "byCause": {}
+        "byCause": {
+          "canonical-evidence-membership": 10,
+          "review-occurrence-identity": 1
+        }
       },
-      "differences": []
+      "differences": [
+        {
+          "subject": "aws-access-key",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reasons: canonical-evidence-membership"
+        },
+        {
+          "subject": "deepgram-api-key",
+          "field": "status",
+          "legacy": "stable/empirical",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reasons: canonical-evidence-membership"
+        },
+        {
+          "subject": "github-token",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reasons: canonical-evidence-membership"
+        },
+        {
+          "subject": "gitlab-token",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reasons: canonical-evidence-membership"
+        },
+        {
+          "subject": "google-api-key",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reasons: canonical-evidence-membership"
+        },
+        {
+          "subject": "heroku-api-key-legacy",
+          "field": "status",
+          "legacy": "stable/empirical",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reasons: canonical-evidence-membership"
+        },
+        {
+          "subject": "npm-token",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "review-occurrence-identity",
+          "note": "new-only reasons: review-occurrence-identity"
+        },
+        {
+          "subject": "sendgrid-token",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reasons: canonical-evidence-membership"
+        },
+        {
+          "subject": "stripe-token",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reasons: canonical-evidence-membership"
+        },
+        {
+          "subject": "twilio-api-key-secret",
+          "field": "status",
+          "legacy": "stable/empirical",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reasons: canonical-evidence-membership"
+        },
+        {
+          "subject": "twilio-auth-token",
+          "field": "status",
+          "legacy": "stable/empirical",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reasons: canonical-evidence-membership"
+        }
+      ]
     },
     "evidence": {
       "tally": {
         "compared": 4455,
-        "equal": 4415,
-        "explained": 40,
+        "equal": 4362,
+        "explained": 93,
         "unexplained": 0,
         "byCause": {
-          "canonical-evidence-membership": 27,
+          "canonical-evidence-membership": 79,
           "policy-corpus-bounded": 4,
-          "pending-not-scored": 9
+          "pending-not-scored": 9,
+          "review-occurrence-identity": 1
         }
       },
       "differences": [
@@ -288,12 +392,39 @@
         },
         {
           "subject": "aws-access-key",
-          "field": "positiveAxes",
-          "legacy": 6,
-          "next": 7,
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 0,
+          "next": 9,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "1 axis id(s) only on the new side (canonical-evidence-membership)"
+          "note": "residual 9 = 9 unsettled differential occurrence(s) of cases with no legacy counterpart"
+        },
+        {
+          "subject": "aws-access-key",
+          "field": "positiveAxes",
+          "legacy": 6,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "2 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "aws-access-key",
+          "field": "positiveCases",
+          "legacy": 12,
+          "next": 16,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -5 = -5 canonical-evidence-membership"
+        },
+        {
+          "subject": "aws-access-key",
+          "field": "totalFixtures",
+          "legacy": 26,
+          "next": 30,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -7 = -7 canonical-evidence-membership"
         },
         {
           "subject": "bearer-token",
@@ -444,10 +575,10 @@
           "subject": "connection-string",
           "field": "benignAxes",
           "legacy": 6,
-          "next": 9,
+          "next": 13,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "3 axis id(s) only on the new side (canonical-evidence-membership)"
+          "note": "7 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "connection-string",
@@ -461,6 +592,9 @@
             "reference"
           ],
           "next": [
+            "connection-passwords-empty-or-omitted",
+            "connection-passwords-supplied-by-reference",
+            "connection-public-metadata-without-password",
             "connection-uri-placeholder-passwords",
             "encoded-value",
             "near-miss",
@@ -469,29 +603,66 @@
             "placeholder-vocabulary-values",
             "public-identifier",
             "reference",
-            "tutorial-default-url-passwords"
+            "tutorial-default-url-passwords",
+            "url-authority-port-colon-and-empty-password"
           ],
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "3 axis id(s) only on the new side (canonical-evidence-membership)"
+          "note": "7 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "connection-string",
+          "field": "benignCases",
+          "legacy": 24,
+          "next": 41,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -31 = -31 canonical-evidence-membership"
         },
         {
           "subject": "connection-string",
           "field": "confusionAxes",
           "legacy": 7,
-          "next": 10,
+          "next": 14,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "3 axis id(s) only on the new side (canonical-evidence-membership)"
+          "note": "7 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "connection-string",
           "field": "controlAxes",
           "legacy": 6,
-          "next": 9,
+          "next": 13,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "3 axis id(s) only on the new side (canonical-evidence-membership)"
+          "note": "7 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "connection-string",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 0,
+          "next": 21,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 21 = 21 unsettled differential occurrence(s) of cases with no legacy counterpart"
+        },
+        {
+          "subject": "connection-string",
+          "field": "metamorphicCriticalFailures",
+          "legacy": 0,
+          "next": 7,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 7 = 7 failed metamorphic assertion(s) of cases with no legacy counterpart"
+        },
+        {
+          "subject": "connection-string",
+          "field": "mutationUnresolvedCritical",
+          "legacy": 0,
+          "next": 1,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 1 = 1 failed mutation assertion(s) of cases with no legacy counterpart"
         },
         {
           "subject": "connection-string",
@@ -585,6 +756,11 @@
                 "required": 5
               },
               {
+                "actual": 29,
+                "code": "critical-failure",
+                "required": 0
+              },
+              {
                 "actual": "not-run",
                 "code": "protected-holdout",
                 "required": "pass on frozen candidate"
@@ -624,19 +800,46 @@
           "subject": "connection-string",
           "field": "positiveAxes",
           "legacy": 10,
-          "next": 13,
+          "next": 19,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "3 axis id(s) only on the new side (canonical-evidence-membership)"
+          "note": "9 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "connection-string",
+          "field": "positiveCases",
+          "legacy": 32,
+          "next": 45,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -24 = -24 canonical-evidence-membership"
+        },
+        {
+          "subject": "connection-string",
+          "field": "totalFixtures",
+          "legacy": 74,
+          "next": 104,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -56 = -56 canonical-evidence-membership"
+        },
+        {
+          "subject": "deepgram-api-key",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 0,
+          "next": 1,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 1 = 1 unsettled differential occurrence(s) of cases with no legacy counterpart"
         },
         {
           "subject": "generic-token",
           "field": "benignAxes",
           "legacy": 4,
-          "next": 13,
+          "next": 14,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "9 axis id(s) only on the new side (canonical-evidence-membership)"
+          "note": "10 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "generic-token",
@@ -650,6 +853,7 @@
           "next": [
             "already-masked-values",
             "aws-documented-example-keys",
+            "benign-encoded-value",
             "code-expression-credential-values",
             "credential-key-ending-a-line",
             "fully-delimited-template-expressions",
@@ -664,25 +868,61 @@
           ],
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "9 axis id(s) only on the new side (canonical-evidence-membership)"
+          "note": "10 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "generic-token",
+          "field": "benignCases",
+          "legacy": 76,
+          "next": 85,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -54 = -54 canonical-evidence-membership"
         },
         {
           "subject": "generic-token",
           "field": "confusionAxes",
           "legacy": 5,
-          "next": 14,
+          "next": 15,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "9 axis id(s) only on the new side (canonical-evidence-membership)"
+          "note": "10 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "generic-token",
           "field": "controlAxes",
           "legacy": 4,
-          "next": 13,
+          "next": 14,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "9 axis id(s) only on the new side (canonical-evidence-membership)"
+          "note": "10 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "generic-token",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 0,
+          "next": 4,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 4 = 4 unsettled differential occurrence(s) of cases with no legacy counterpart"
+        },
+        {
+          "subject": "generic-token",
+          "field": "metamorphicCriticalFailures",
+          "legacy": 0,
+          "next": 238,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 238 = 238 failed metamorphic assertion(s) of cases with no legacy counterpart"
+        },
+        {
+          "subject": "generic-token",
+          "field": "mutationUnresolvedCritical",
+          "legacy": 0,
+          "next": 34,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 34 = 34 failed mutation assertion(s) of cases with no legacy counterpart"
         },
         {
           "subject": "generic-token",
@@ -786,6 +1026,11 @@
                 "required": 5
               },
               {
+                "actual": 276,
+                "code": "critical-failure",
+                "required": 0
+              },
+              {
                 "actual": "not-run",
                 "code": "protected-holdout",
                 "required": "pass on frozen candidate"
@@ -825,28 +1070,188 @@
           "subject": "generic-token",
           "field": "positiveAxes",
           "legacy": 36,
-          "next": 45,
+          "next": 48,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "9 axis id(s) only on the new side (canonical-evidence-membership)"
+          "note": "12 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "generic-token",
           "field": "positiveCases",
           "legacy": 79,
-          "next": 76,
+          "next": 112,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "residual -25 = -25 canonical-evidence-membership"
+          "note": "residual -61 = -61 canonical-evidence-membership"
         },
         {
           "subject": "generic-token",
           "field": "totalFixtures",
           "legacy": 165,
-          "next": 162,
+          "next": 207,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "residual -71 = -71 canonical-evidence-membership"
+          "note": "residual -116 = -116 canonical-evidence-membership"
+        },
+        {
+          "subject": "github-token",
+          "field": "benignAxes",
+          "legacy": 6,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "2 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "github-token",
+          "field": "benignAxisIds",
+          "legacy": [
+            "encoded-value",
+            "near-miss",
+            "ordinary-prose",
+            "placeholder",
+            "public-identifier",
+            "reference"
+          ],
+          "next": [
+            "encoded-value",
+            "github-app-and-installation-ids-in-json",
+            "installation-token-notation-and-header-name-in-prose",
+            "near-miss",
+            "ordinary-prose",
+            "placeholder",
+            "public-identifier",
+            "reference"
+          ],
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "2 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "github-token",
+          "field": "benignCases",
+          "legacy": 15,
+          "next": 17,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -2 = -2 canonical-evidence-membership"
+        },
+        {
+          "subject": "github-token",
+          "field": "confusionAxes",
+          "legacy": 8,
+          "next": 10,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "2 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "github-token",
+          "field": "controlAxes",
+          "legacy": 6,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "2 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "github-token",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 0,
+          "next": 88,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 88 = 88 unsettled differential occurrence(s) of cases with no legacy counterpart"
+        },
+        {
+          "subject": "github-token",
+          "field": "positiveAxes",
+          "legacy": 26,
+          "next": 39,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "13 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "github-token",
+          "field": "positiveCases",
+          "legacy": 71,
+          "next": 115,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -44 = -44 canonical-evidence-membership"
+        },
+        {
+          "subject": "github-token",
+          "field": "totalFixtures",
+          "legacy": 131,
+          "next": 178,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -47 = -47 canonical-evidence-membership"
+        },
+        {
+          "subject": "github-token",
+          "field": "twinPairs",
+          "legacy": 45,
+          "next": 46,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -1 = -1 canonical-evidence-membership"
+        },
+        {
+          "subject": "gitlab-token",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 0,
+          "next": 31,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 31 = 31 unsettled differential occurrence(s) of cases with no legacy counterpart"
+        },
+        {
+          "subject": "gitlab-token",
+          "field": "positiveAxes",
+          "legacy": 6,
+          "next": 16,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "10 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "gitlab-token",
+          "field": "positiveCases",
+          "legacy": 11,
+          "next": 42,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -31 = -31 canonical-evidence-membership"
+        },
+        {
+          "subject": "gitlab-token",
+          "field": "totalFixtures",
+          "legacy": 26,
+          "next": 57,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -31 = -31 canonical-evidence-membership"
+        },
+        {
+          "subject": "google-api-key",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 0,
+          "next": 3,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 3 = 3 unsettled differential occurrence(s) of cases with no legacy counterpart"
+        },
+        {
+          "subject": "heroku-api-key-legacy",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 0,
+          "next": 1,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 1 = 1 unsettled differential occurrence(s) of cases with no legacy counterpart"
         },
         {
           "subject": "linear-token",
@@ -865,6 +1270,42 @@
           "verdict": "explained",
           "cause": "pending-not-scored",
           "note": "residual 3 = 3 pending-not-scored"
+        },
+        {
+          "subject": "npm-token",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 0,
+          "next": 32,
+          "verdict": "explained",
+          "cause": "review-occurrence-identity",
+          "note": "52 differential occurrence(s) (flare-redact 1, gitleaks 1, openredaction 19, trufflehog 31), none of whose canonical ids is in the review ledger"
+        },
+        {
+          "subject": "npm-token",
+          "field": "positiveAxes",
+          "legacy": 5,
+          "next": 15,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "10 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "npm-token",
+          "field": "positiveCases",
+          "legacy": 10,
+          "next": 41,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -31 = -31 canonical-evidence-membership"
+        },
+        {
+          "subject": "npm-token",
+          "field": "totalFixtures",
+          "legacy": 24,
+          "next": 55,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -31 = -31 canonical-evidence-membership"
         },
         {
           "subject": "otpauth-uri",
@@ -997,10 +1438,10 @@
           "subject": "sendgrid-token",
           "field": "benignAxes",
           "legacy": 4,
-          "next": 5,
+          "next": 7,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "1 axis id(s) only on the new side (canonical-evidence-membership)"
+          "note": "3 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "sendgrid-token",
@@ -1012,6 +1453,8 @@
             "public-identifier"
           ],
           "next": [
+            "benign-encoded-value",
+            "credential-prefix-before-unrelated-line",
             "near-miss",
             "ordinary-prose",
             "placeholder",
@@ -1020,52 +1463,88 @@
           ],
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "1 axis id(s) only on the new side (canonical-evidence-membership)"
+          "note": "3 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "sendgrid-token",
+          "field": "benignCases",
+          "legacy": 12,
+          "next": 18,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -14 = -14 canonical-evidence-membership"
         },
         {
           "subject": "sendgrid-token",
           "field": "confusionAxes",
           "legacy": 6,
-          "next": 7,
+          "next": 9,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "1 axis id(s) only on the new side (canonical-evidence-membership)"
+          "note": "3 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "sendgrid-token",
           "field": "controlAxes",
           "legacy": 4,
-          "next": 5,
+          "next": 7,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "1 axis id(s) only on the new side (canonical-evidence-membership)"
+          "note": "3 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "sendgrid-token",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 0,
+          "next": 93,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 93 = 93 unsettled differential occurrence(s) of cases with no legacy counterpart"
+        },
+        {
+          "subject": "sendgrid-token",
+          "field": "metamorphicCriticalFailures",
+          "legacy": 0,
+          "next": 199,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 199 = 199 failed metamorphic assertion(s) of cases with no legacy counterpart"
+        },
+        {
+          "subject": "sendgrid-token",
+          "field": "mutationUnresolvedCritical",
+          "legacy": 0,
+          "next": 29,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 29 = 29 failed mutation assertion(s) of cases with no legacy counterpart"
         },
         {
           "subject": "sendgrid-token",
           "field": "positiveAxes",
           "legacy": 9,
-          "next": 13,
+          "next": 38,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "4 axis id(s) only on the new side (canonical-evidence-membership)"
+          "note": "29 axis id(s) only on the new side (canonical-evidence-membership)"
         },
         {
           "subject": "sendgrid-token",
           "field": "positiveCases",
           "legacy": 38,
-          "next": 32,
+          "next": 117,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "residual -24 = -24 canonical-evidence-membership"
+          "note": "residual -109 = -109 canonical-evidence-membership"
         },
         {
           "subject": "sendgrid-token",
           "field": "totalFixtures",
           "legacy": 68,
-          "next": 60,
+          "next": 151,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "residual -41 = -41 canonical-evidence-membership"
+          "note": "residual -132 = -132 canonical-evidence-membership"
         },
         {
           "subject": "sendgrid-token",
@@ -1096,21 +1575,174 @@
         },
         {
           "subject": "stripe-token",
+          "field": "benignAxes",
+          "legacy": 6,
+          "next": 10,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "4 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "stripe-token",
+          "field": "benignAxisIds",
+          "legacy": [
+            "encoded-value",
+            "near-miss",
+            "ordinary-prose",
+            "placeholder",
+            "public-identifier",
+            "reference"
+          ],
+          "next": [
+            "benign-lookalike",
+            "encoded-value",
+            "near-miss",
+            "ordinary-prose",
+            "placeholder",
+            "prose-mention",
+            "public-identifier",
+            "publishable-test-key-in-client-code",
+            "reference",
+            "templated-reference"
+          ],
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "4 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "stripe-token",
+          "field": "benignCases",
+          "legacy": 25,
+          "next": 46,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -21 = -21 canonical-evidence-membership"
+        },
+        {
+          "subject": "stripe-token",
+          "field": "confusionAxes",
+          "legacy": 9,
+          "next": 13,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "4 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "stripe-token",
+          "field": "controlAxes",
+          "legacy": 6,
+          "next": 10,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "4 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "stripe-token",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 0,
+          "next": 50,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 50 = 50 unsettled differential occurrence(s) of cases with no legacy counterpart"
+        },
+        {
+          "subject": "stripe-token",
+          "field": "positiveAxes",
+          "legacy": 11,
+          "next": 22,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "11 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "stripe-token",
           "field": "positiveCases",
           "legacy": 46,
-          "next": 43,
+          "next": 82,
           "verdict": "explained",
           "cause": "pending-not-scored",
-          "note": "residual 3 = 3 pending-not-scored"
+          "note": "residual -36 = 3 pending-not-scored + -39 canonical-evidence-membership"
         },
         {
           "subject": "stripe-token",
           "field": "totalFixtures",
           "legacy": 79,
-          "next": 76,
+          "next": 136,
           "verdict": "explained",
           "cause": "pending-not-scored",
-          "note": "residual 3 = 3 pending-not-scored"
+          "note": "residual -57 = 3 pending-not-scored + -60 canonical-evidence-membership"
+        },
+        {
+          "subject": "twilio-api-key-secret",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 0,
+          "next": 2,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 2 = 2 unsettled differential occurrence(s) of cases with no legacy counterpart"
+        },
+        {
+          "subject": "twilio-api-key-secret",
+          "field": "positiveAxes",
+          "legacy": 18,
+          "next": 19,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "1 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "twilio-api-key-secret",
+          "field": "positiveCases",
+          "legacy": 23,
+          "next": 25,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -2 = -2 canonical-evidence-membership"
+        },
+        {
+          "subject": "twilio-api-key-secret",
+          "field": "totalFixtures",
+          "legacy": 48,
+          "next": 50,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -2 = -2 canonical-evidence-membership"
+        },
+        {
+          "subject": "twilio-auth-token",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 0,
+          "next": 4,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual 4 = 4 unsettled differential occurrence(s) of cases with no legacy counterpart"
+        },
+        {
+          "subject": "twilio-auth-token",
+          "field": "positiveAxes",
+          "legacy": 24,
+          "next": 25,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "1 axis id(s) only on the new side (canonical-evidence-membership)"
+        },
+        {
+          "subject": "twilio-auth-token",
+          "field": "positiveCases",
+          "legacy": 28,
+          "next": 32,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -4 = -4 canonical-evidence-membership"
+        },
+        {
+          "subject": "twilio-auth-token",
+          "field": "totalFixtures",
+          "legacy": 60,
+          "next": 64,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -4 = -4 canonical-evidence-membership"
         },
         {
           "subject": "vercel-token",
@@ -1144,11 +1776,11 @@
     "outcomes": {
       "tally": {
         "compared": 29810,
-        "equal": 29663,
-        "explained": 147,
+        "equal": 29686,
+        "explained": 124,
         "unexplained": 0,
         "byCause": {
-          "twin-scope-vocabulary": 147
+          "twin-scope-vocabulary": 124
         }
       },
       "differences": []
@@ -2546,13 +3178,14 @@
     "supportMatrix": {
       "tally": {
         "compared": 7509,
-        "equal": 7448,
-        "explained": 61,
+        "equal": 7279,
+        "explained": 230,
         "unexplained": 0,
         "byCause": {
-          "canonical-evidence-membership": 27,
-          "policy-corpus-bounded": 8,
-          "pending-not-scored": 26
+          "canonical-evidence-membership": 197,
+          "policy-corpus-bounded": 6,
+          "pending-not-scored": 22,
+          "review-occurrence-identity": 5
         }
       },
       "differences": [
@@ -2578,10 +3211,28 @@
           "subject": "aws:iam-user-access-key",
           "field": "fixtureProfile.positiveAxes",
           "legacy": 6,
-          "next": 7,
+          "next": 8,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.positiveAxes of aws-access-key"
+        },
+        {
+          "subject": "aws:iam-user-access-key",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 12,
+          "next": 16,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of aws-access-key"
+        },
+        {
+          "subject": "aws:iam-user-access-key",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 26,
+          "next": 30,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.totalFixtures of aws-access-key"
         },
         {
           "subject": "aws:iam-user-access-key",
@@ -2638,22 +3289,95 @@
               "public-identifier",
               "reference"
             ],
-            "positiveCases": 6,
-            "positiveContextAxes": 6,
+            "positiveCases": 10,
+            "positiveContextAxes": 7,
             "positiveContextAxisIds": [
               "#213a · aws-access-key · ci-config",
               "#213a · aws-access-key · source-code",
               "#254 · AWS documentation literals",
               "Token formats",
               "aws-access-key",
-              "aws-example-keys-one-character-off"
+              "aws-example-keys-one-character-off",
+              "example-marker-inside-provider-shaped-value-not-published-by-provider"
             ],
-            "totalFixtures": 26,
+            "totalFixtures": 30,
             "twinPairs": 6
           },
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "follows evidence.positiveAxes of aws-access-key"
+          "note": "follows the status of aws-access-key"
+        },
+        {
+          "subject": "aws:iam-user-access-key",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of aws-access-key"
+        },
+        {
+          "subject": "aws:iam-user-access-key",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 9 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "aws:iam-user-access-key",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of aws-access-key"
+        },
+        {
+          "subject": "aws:iam-user-access-key",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 9,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of aws-access-key"
+        },
+        {
+          "subject": "deepgram:api-key",
+          "field": "qualificationProfile",
+          "legacy": "empirical",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of deepgram-api-key"
+        },
+        {
+          "subject": "deepgram:api-key",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 1 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "deepgram:api-key",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of deepgram-api-key"
+        },
+        {
+          "subject": "deepgram:api-key",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 1,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of deepgram-api-key"
         },
         {
           "subject": "generic:bearer-token",
@@ -2926,9 +3650,18 @@
         },
         {
           "subject": "generic:connection-string-password",
+          "field": "fixtureProfile.benignCases",
+          "legacy": 24,
+          "next": 41,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.benignCases of connection-string"
+        },
+        {
+          "subject": "generic:connection-string-password",
           "field": "fixtureProfile.confusionAxes",
           "legacy": 7,
-          "next": 10,
+          "next": 14,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.confusionAxes of connection-string"
@@ -2937,7 +3670,7 @@
           "subject": "generic:connection-string-password",
           "field": "fixtureProfile.controlAxes",
           "legacy": 6,
-          "next": 9,
+          "next": 13,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.controlAxes of connection-string"
@@ -2946,10 +3679,28 @@
           "subject": "generic:connection-string-password",
           "field": "fixtureProfile.positiveAxes",
           "legacy": 10,
-          "next": 13,
+          "next": 19,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.positiveAxes of connection-string"
+        },
+        {
+          "subject": "generic:connection-string-password",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 32,
+          "next": 45,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of connection-string"
+        },
+        {
+          "subject": "generic:connection-string-password",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 74,
+          "next": 104,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.totalFixtures of connection-string"
         },
         {
           "subject": "generic:connection-string-password",
@@ -3043,6 +3794,11 @@
                 "required": 5
               },
               {
+                "actual": 29,
+                "code": "critical-failure",
+                "required": 0
+              },
+              {
                 "actual": "not-run",
                 "code": "protected-holdout",
                 "required": "pass on frozen candidate"
@@ -3120,9 +3876,12 @@
             ]
           },
           "next": {
-            "benignControls": 24,
-            "confusionAxes": 10,
+            "benignControls": 41,
+            "confusionAxes": 14,
             "confusionAxisIds": [
+              "connection-passwords-empty-or-omitted",
+              "connection-passwords-supplied-by-reference",
+              "connection-public-metadata-without-password",
               "connection-uri-placeholder-passwords",
               "encoded-value",
               "near-miss",
@@ -3132,10 +3891,14 @@
               "public-identifier",
               "reference",
               "tutorial-default-url-passwords",
-              "twin:context"
+              "twin:context",
+              "url-authority-port-colon-and-empty-password"
             ],
-            "controlAxes": 9,
+            "controlAxes": 13,
             "controlAxisIds": [
+              "connection-passwords-empty-or-omitted",
+              "connection-passwords-supplied-by-reference",
+              "connection-public-metadata-without-password",
               "connection-uri-placeholder-passwords",
               "encoded-value",
               "near-miss",
@@ -3144,10 +3907,11 @@
               "placeholder-vocabulary-values",
               "public-identifier",
               "reference",
-              "tutorial-default-url-passwords"
+              "tutorial-default-url-passwords",
+              "url-authority-port-colon-and-empty-password"
             ],
-            "positiveCases": 14,
-            "positiveContextAxes": 12,
+            "positiveCases": 27,
+            "positiveContextAxes": 18,
             "positiveContextAxisIds": [
               "#255 · Tutorial URL passwords",
               "#256 · Connection placeholders",
@@ -3157,26 +3921,59 @@
               "#379 · connection-string · log",
               "#379 · connection-string · source-code",
               "#379 · connection-string · structured-file",
+              "connection-key-value-quoted-and-delimited-passwords",
               "connection-string",
+              "connection-uri-percent-encoded-password-spans",
               "connection-uri-placeholder-lookalike-passwords",
+              "connection-uri-unencoded-sub-delimiter-passwords",
               "literal-url-passwords",
-              "placeholder-vocabulary-near-misses"
+              "package-integrity-hashes-beside-a-literal-registry-password",
+              "placeholder-vocabulary-near-misses",
+              "url-userinfo-password-containing-colon",
+              "url-userinfo-percent-encoded-password"
             ],
-            "totalFixtures": 74,
+            "totalFixtures": 104,
             "twinPairs": 18
           },
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "follows evidence.positiveAxes of connection-string"
+          "note": "follows evidence.positiveCases of connection-string"
         },
         {
           "subject": "generic:connection-string-password",
           "field": "reason",
           "legacy": "policy.protected-holdout: not-run (requires pass on frozen candidate)",
-          "next": "policy.positive-cases: 2 (requires 6) | policy.positive-axes: 2 (requires 4) | policy.benign-cases: 1 (requires 8) | policy.benign-axes: 1 (requires 4) | policy.twin-pairs: 1 (requires 5) | policy.protected-holdout: not-run (requires pass on frozen candidate)",
+          "next": "policy.positive-cases: 2 (requires 6) | policy.positive-axes: 2 (requires 4) | policy.benign-cases: 1 (requires 8) | policy.benign-axes: 1 (requires 4) | policy.twin-pairs: 1 (requires 5) | policy.critical-failure: 29 (requires 0) | policy.protected-holdout: not-run (requires pass on frozen candidate) | metamorphic.criticalFailures: 7 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 1 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 21 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
           "verdict": "explained",
-          "cause": "policy-corpus-bounded",
-          "note": "new-only reason(s) policy.positive-cases, policy.positive-axes, policy.benign-cases, policy.benign-axes, policy.twin-pairs"
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) policy.positive-cases, policy.positive-axes, policy.benign-cases, policy.benign-axes, policy.twin-pairs, policy.critical-failure, metamorphic.criticalFailures, mutation.unresolvedCritical, differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "generic:connection-string-password",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 21,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of connection-string"
+        },
+        {
+          "subject": "generic:connection-string-password",
+          "field": "unresolvedCriticalItems.metamorphic",
+          "legacy": 0,
+          "next": 7,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.metamorphicCriticalFailures of connection-string"
+        },
+        {
+          "subject": "generic:connection-string-password",
+          "field": "unresolvedCriticalItems.mutation",
+          "legacy": 0,
+          "next": 1,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.mutationUnresolvedCritical of connection-string"
         },
         {
           "subject": "generic:otp-seed",
@@ -3317,9 +4114,18 @@
         },
         {
           "subject": "generic:unclassified-assignment-literal",
+          "field": "fixtureProfile.benignCases",
+          "legacy": 76,
+          "next": 85,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.benignCases of generic-token"
+        },
+        {
+          "subject": "generic:unclassified-assignment-literal",
           "field": "fixtureProfile.confusionAxes",
           "legacy": 5,
-          "next": 14,
+          "next": 15,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.confusionAxes of generic-token"
@@ -3328,7 +4134,7 @@
           "subject": "generic:unclassified-assignment-literal",
           "field": "fixtureProfile.controlAxes",
           "legacy": 4,
-          "next": 13,
+          "next": 14,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.controlAxes of generic-token"
@@ -3337,7 +4143,7 @@
           "subject": "generic:unclassified-assignment-literal",
           "field": "fixtureProfile.positiveAxes",
           "legacy": 36,
-          "next": 45,
+          "next": 48,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.positiveAxes of generic-token"
@@ -3346,7 +4152,7 @@
           "subject": "generic:unclassified-assignment-literal",
           "field": "fixtureProfile.positiveCases",
           "legacy": 79,
-          "next": 76,
+          "next": 112,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.positiveCases of generic-token"
@@ -3355,7 +4161,7 @@
           "subject": "generic:unclassified-assignment-literal",
           "field": "fixtureProfile.totalFixtures",
           "legacy": 165,
-          "next": 162,
+          "next": 207,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.totalFixtures of generic-token"
@@ -3462,6 +4268,11 @@
                 "required": 5
               },
               {
+                "actual": 276,
+                "code": "critical-failure",
+                "required": 0
+              },
+              {
                 "actual": "not-run",
                 "code": "protected-holdout",
                 "required": "pass on frozen candidate"
@@ -3561,11 +4372,12 @@
             ]
           },
           "next": {
-            "benignControls": 76,
-            "confusionAxes": 14,
+            "benignControls": 85,
+            "confusionAxes": 15,
             "confusionAxisIds": [
               "already-masked-values",
               "aws-documented-example-keys",
+              "benign-encoded-value",
               "code-expression-credential-values",
               "credential-key-ending-a-line",
               "fully-delimited-template-expressions",
@@ -3579,10 +4391,11 @@
               "twin:context",
               "yaml-flow-collection-secret-keys"
             ],
-            "controlAxes": 13,
+            "controlAxes": 14,
             "controlAxisIds": [
               "already-masked-values",
               "aws-documented-example-keys",
+              "benign-encoded-value",
               "code-expression-credential-values",
               "credential-key-ending-a-line",
               "fully-delimited-template-expressions",
@@ -3595,8 +4408,8 @@
               "secret-manager-pointer-values",
               "yaml-flow-collection-secret-keys"
             ],
-            "positiveCases": 66,
-            "positiveContextAxes": 44,
+            "positiveCases": 102,
+            "positiveContextAxes": 47,
             "positiveContextAxisIds": [
               "#1012a · aws-secret-access-key · control · near-miss",
               "#207 · confluent-cloud-api-secret-legacy · control · near-miss",
@@ -3630,10 +4443,13 @@
               "aws-example-keys-one-character-off",
               "block-yaml-and-brace-prefixed-secret-literals",
               "code-expression-lookalike-literals",
+              "credential-in-base64-or-hex-form",
+              "credential-in-nested-encoding-layers",
               "credential-key-with-same-line-value",
               "datadog-api-key",
               "generic-token",
               "heroku-api-key-legacy",
+              "literal-secrets-under-generic-credential-names",
               "mailchimp-api-key",
               "mailgun-api-key",
               "masks-ending-in-a-real-character",
@@ -3643,7 +4459,7 @@
               "secret-manager-grammar-imitations",
               "travisci-api-token"
             ],
-            "totalFixtures": 162,
+            "totalFixtures": 207,
             "twinPairs": 10
           },
           "verdict": "explained",
@@ -3671,10 +4487,1453 @@
           "subject": "generic:unclassified-assignment-literal",
           "field": "reason",
           "legacy": "policy.exact-span: 1 (requires 0) | policy.leaked-span: 1 (requires 0) | policy.protected-holdout: not-run (requires pass on frozen candidate)",
-          "next": "policy.positive-cases: 2 (requires 6) | policy.positive-axes: 2 (requires 4) | policy.benign-cases: 1 (requires 8) | policy.benign-axes: 1 (requires 4) | policy.twin-pairs: 1 (requires 5) | policy.protected-holdout: not-run (requires pass on frozen candidate)",
+          "next": "policy.positive-cases: 2 (requires 6) | policy.positive-axes: 2 (requires 4) | policy.benign-cases: 1 (requires 8) | policy.benign-axes: 1 (requires 4) | policy.twin-pairs: 1 (requires 5) | policy.critical-failure: 276 (requires 0) | policy.protected-holdout: not-run (requires pass on frozen candidate) | metamorphic.criticalFailures: 238 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 34 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 4 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
           "verdict": "explained",
-          "cause": "policy-corpus-bounded",
-          "note": "new-only reason(s) policy.positive-cases, policy.positive-axes, policy.benign-cases, policy.benign-axes, policy.twin-pairs; legacy-only policy.exact-span, policy.leaked-span"
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) policy.positive-cases, policy.positive-axes, policy.benign-cases, policy.benign-axes, policy.twin-pairs, policy.critical-failure, metamorphic.criticalFailures, mutation.unresolvedCritical, differential.unresolvedContractDisagreements; legacy-only policy.exact-span, policy.leaked-span"
+        },
+        {
+          "subject": "generic:unclassified-assignment-literal",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 4,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of generic-token"
+        },
+        {
+          "subject": "generic:unclassified-assignment-literal",
+          "field": "unresolvedCriticalItems.metamorphic",
+          "legacy": 0,
+          "next": 238,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.metamorphicCriticalFailures of generic-token"
+        },
+        {
+          "subject": "generic:unclassified-assignment-literal",
+          "field": "unresolvedCriticalItems.mutation",
+          "legacy": 0,
+          "next": 34,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.mutationUnresolvedCritical of generic-token"
+        },
+        {
+          "subject": "github:app-server-to-server-token",
+          "field": "fixtureProfile.benignCases",
+          "legacy": 15,
+          "next": 17,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.benignCases of github-token"
+        },
+        {
+          "subject": "github:app-server-to-server-token",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 8,
+          "next": 10,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.confusionAxes of github-token"
+        },
+        {
+          "subject": "github:app-server-to-server-token",
+          "field": "fixtureProfile.controlAxes",
+          "legacy": 6,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.controlAxes of github-token"
+        },
+        {
+          "subject": "github:app-server-to-server-token",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 26,
+          "next": 39,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of github-token"
+        },
+        {
+          "subject": "github:app-server-to-server-token",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 71,
+          "next": 115,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of github-token"
+        },
+        {
+          "subject": "github:app-server-to-server-token",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 131,
+          "next": 178,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.totalFixtures of github-token"
+        },
+        {
+          "subject": "github:app-server-to-server-token",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 45,
+          "next": 46,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.twinPairs of github-token"
+        },
+        {
+          "subject": "github:app-server-to-server-token",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 131,
+            "positiveCases": 28,
+            "benignControls": 15,
+            "twinPairs": 45,
+            "positiveContextAxes": 25,
+            "controlAxes": 6,
+            "confusionAxes": 8,
+            "positiveContextAxisIds": [
+              "#379 · github-token · cli",
+              "#379 · github-token · structured-file",
+              "#379 · github-token · tool-output",
+              "#379 · github-token · url",
+              "Boundaries",
+              "CRLF",
+              "Context",
+              "Documentation",
+              "Encoding",
+              "Environment",
+              "GitHub gho",
+              "GitHub ghp",
+              "GitHub ghr",
+              "GitHub ghs",
+              "GitHub ghu",
+              "JSON",
+              "Line endings",
+              "Long input",
+              "Multiple spans",
+              "Quoting",
+              "Source code",
+              "Structured text",
+              "Token formats",
+              "Unicode",
+              "github-token"
+            ],
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:length",
+              "twin:prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 17,
+            "confusionAxes": 10,
+            "confusionAxisIds": [
+              "encoded-value",
+              "github-app-and-installation-ids-in-json",
+              "installation-token-notation-and-header-name-in-prose",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:length",
+              "twin:prefix"
+            ],
+            "controlAxes": 8,
+            "controlAxisIds": [
+              "encoded-value",
+              "github-app-and-installation-ids-in-json",
+              "installation-token-notation-and-header-name-in-prose",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 71,
+            "positiveContextAxes": 38,
+            "positiveContextAxisIds": [
+              "#379 · github-token · cli",
+              "#379 · github-token · structured-file",
+              "#379 · github-token · tool-output",
+              "#379 · github-token · url",
+              "Boundaries",
+              "CRLF",
+              "Context",
+              "Documentation",
+              "Encoding",
+              "Environment",
+              "GitHub gho",
+              "GitHub ghp",
+              "GitHub ghr",
+              "GitHub ghs",
+              "GitHub ghu",
+              "JSON",
+              "Line endings",
+              "Long input",
+              "Multiple spans",
+              "Quoting",
+              "Source code",
+              "Structured text",
+              "Token formats",
+              "Unicode",
+              "app-installation-token-with-one-hour-lifetime-note",
+              "credential-after-long-input",
+              "crlf-line-endings",
+              "environment-assignment",
+              "github-token",
+              "markdown-and-comment-value",
+              "multibyte-text-offsets",
+              "multiple-credentials-per-input",
+              "opaque-installation-token-forty-characters-literal",
+              "partial-span-leakage",
+              "quoted-value-extent",
+              "stateless-jwt-installation-token-literal",
+              "structured-text-value",
+              "value-at-input-edges"
+            ],
+            "totalFixtures": 178,
+            "twinPairs": 46
+          },
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of github-token"
+        },
+        {
+          "subject": "github:app-server-to-server-token",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of github-token"
+        },
+        {
+          "subject": "github:app-server-to-server-token",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 88 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "github:app-server-to-server-token",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of github-token"
+        },
+        {
+          "subject": "github:app-server-to-server-token",
+          "field": "twinCoverage.pairs",
+          "legacy": 45,
+          "next": 46,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.twinPairs of github-token"
+        },
+        {
+          "subject": "github:app-server-to-server-token",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 88,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of github-token"
+        },
+        {
+          "subject": "github:app-user-to-server-token",
+          "field": "fixtureProfile.benignCases",
+          "legacy": 15,
+          "next": 17,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.benignCases of github-token"
+        },
+        {
+          "subject": "github:app-user-to-server-token",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 8,
+          "next": 10,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.confusionAxes of github-token"
+        },
+        {
+          "subject": "github:app-user-to-server-token",
+          "field": "fixtureProfile.controlAxes",
+          "legacy": 6,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.controlAxes of github-token"
+        },
+        {
+          "subject": "github:app-user-to-server-token",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 26,
+          "next": 39,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of github-token"
+        },
+        {
+          "subject": "github:app-user-to-server-token",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 71,
+          "next": 115,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of github-token"
+        },
+        {
+          "subject": "github:app-user-to-server-token",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 131,
+          "next": 178,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.totalFixtures of github-token"
+        },
+        {
+          "subject": "github:app-user-to-server-token",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 45,
+          "next": 46,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.twinPairs of github-token"
+        },
+        {
+          "subject": "github:app-user-to-server-token",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 131,
+            "positiveCases": 28,
+            "benignControls": 15,
+            "twinPairs": 45,
+            "positiveContextAxes": 25,
+            "controlAxes": 6,
+            "confusionAxes": 8,
+            "positiveContextAxisIds": [
+              "#379 · github-token · cli",
+              "#379 · github-token · structured-file",
+              "#379 · github-token · tool-output",
+              "#379 · github-token · url",
+              "Boundaries",
+              "CRLF",
+              "Context",
+              "Documentation",
+              "Encoding",
+              "Environment",
+              "GitHub gho",
+              "GitHub ghp",
+              "GitHub ghr",
+              "GitHub ghs",
+              "GitHub ghu",
+              "JSON",
+              "Line endings",
+              "Long input",
+              "Multiple spans",
+              "Quoting",
+              "Source code",
+              "Structured text",
+              "Token formats",
+              "Unicode",
+              "github-token"
+            ],
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:length",
+              "twin:prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 17,
+            "confusionAxes": 10,
+            "confusionAxisIds": [
+              "encoded-value",
+              "github-app-and-installation-ids-in-json",
+              "installation-token-notation-and-header-name-in-prose",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:length",
+              "twin:prefix"
+            ],
+            "controlAxes": 8,
+            "controlAxisIds": [
+              "encoded-value",
+              "github-app-and-installation-ids-in-json",
+              "installation-token-notation-and-header-name-in-prose",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 71,
+            "positiveContextAxes": 38,
+            "positiveContextAxisIds": [
+              "#379 · github-token · cli",
+              "#379 · github-token · structured-file",
+              "#379 · github-token · tool-output",
+              "#379 · github-token · url",
+              "Boundaries",
+              "CRLF",
+              "Context",
+              "Documentation",
+              "Encoding",
+              "Environment",
+              "GitHub gho",
+              "GitHub ghp",
+              "GitHub ghr",
+              "GitHub ghs",
+              "GitHub ghu",
+              "JSON",
+              "Line endings",
+              "Long input",
+              "Multiple spans",
+              "Quoting",
+              "Source code",
+              "Structured text",
+              "Token formats",
+              "Unicode",
+              "app-installation-token-with-one-hour-lifetime-note",
+              "credential-after-long-input",
+              "crlf-line-endings",
+              "environment-assignment",
+              "github-token",
+              "markdown-and-comment-value",
+              "multibyte-text-offsets",
+              "multiple-credentials-per-input",
+              "opaque-installation-token-forty-characters-literal",
+              "partial-span-leakage",
+              "quoted-value-extent",
+              "stateless-jwt-installation-token-literal",
+              "structured-text-value",
+              "value-at-input-edges"
+            ],
+            "totalFixtures": 178,
+            "twinPairs": 46
+          },
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of github-token"
+        },
+        {
+          "subject": "github:app-user-to-server-token",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of github-token"
+        },
+        {
+          "subject": "github:app-user-to-server-token",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 88 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "github:app-user-to-server-token",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of github-token"
+        },
+        {
+          "subject": "github:app-user-to-server-token",
+          "field": "twinCoverage.pairs",
+          "legacy": 45,
+          "next": 46,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.twinPairs of github-token"
+        },
+        {
+          "subject": "github:app-user-to-server-token",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 88,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of github-token"
+        },
+        {
+          "subject": "github:classic-personal-access-token",
+          "field": "fixtureProfile.benignCases",
+          "legacy": 15,
+          "next": 17,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.benignCases of github-token"
+        },
+        {
+          "subject": "github:classic-personal-access-token",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 8,
+          "next": 10,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.confusionAxes of github-token"
+        },
+        {
+          "subject": "github:classic-personal-access-token",
+          "field": "fixtureProfile.controlAxes",
+          "legacy": 6,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.controlAxes of github-token"
+        },
+        {
+          "subject": "github:classic-personal-access-token",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 26,
+          "next": 39,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of github-token"
+        },
+        {
+          "subject": "github:classic-personal-access-token",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 71,
+          "next": 115,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of github-token"
+        },
+        {
+          "subject": "github:classic-personal-access-token",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 131,
+          "next": 178,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.totalFixtures of github-token"
+        },
+        {
+          "subject": "github:classic-personal-access-token",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 45,
+          "next": 46,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.twinPairs of github-token"
+        },
+        {
+          "subject": "github:classic-personal-access-token",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 131,
+            "positiveCases": 28,
+            "benignControls": 15,
+            "twinPairs": 45,
+            "positiveContextAxes": 25,
+            "controlAxes": 6,
+            "confusionAxes": 8,
+            "positiveContextAxisIds": [
+              "#379 · github-token · cli",
+              "#379 · github-token · structured-file",
+              "#379 · github-token · tool-output",
+              "#379 · github-token · url",
+              "Boundaries",
+              "CRLF",
+              "Context",
+              "Documentation",
+              "Encoding",
+              "Environment",
+              "GitHub gho",
+              "GitHub ghp",
+              "GitHub ghr",
+              "GitHub ghs",
+              "GitHub ghu",
+              "JSON",
+              "Line endings",
+              "Long input",
+              "Multiple spans",
+              "Quoting",
+              "Source code",
+              "Structured text",
+              "Token formats",
+              "Unicode",
+              "github-token"
+            ],
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:length",
+              "twin:prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 17,
+            "confusionAxes": 10,
+            "confusionAxisIds": [
+              "encoded-value",
+              "github-app-and-installation-ids-in-json",
+              "installation-token-notation-and-header-name-in-prose",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:length",
+              "twin:prefix"
+            ],
+            "controlAxes": 8,
+            "controlAxisIds": [
+              "encoded-value",
+              "github-app-and-installation-ids-in-json",
+              "installation-token-notation-and-header-name-in-prose",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 71,
+            "positiveContextAxes": 38,
+            "positiveContextAxisIds": [
+              "#379 · github-token · cli",
+              "#379 · github-token · structured-file",
+              "#379 · github-token · tool-output",
+              "#379 · github-token · url",
+              "Boundaries",
+              "CRLF",
+              "Context",
+              "Documentation",
+              "Encoding",
+              "Environment",
+              "GitHub gho",
+              "GitHub ghp",
+              "GitHub ghr",
+              "GitHub ghs",
+              "GitHub ghu",
+              "JSON",
+              "Line endings",
+              "Long input",
+              "Multiple spans",
+              "Quoting",
+              "Source code",
+              "Structured text",
+              "Token formats",
+              "Unicode",
+              "app-installation-token-with-one-hour-lifetime-note",
+              "credential-after-long-input",
+              "crlf-line-endings",
+              "environment-assignment",
+              "github-token",
+              "markdown-and-comment-value",
+              "multibyte-text-offsets",
+              "multiple-credentials-per-input",
+              "opaque-installation-token-forty-characters-literal",
+              "partial-span-leakage",
+              "quoted-value-extent",
+              "stateless-jwt-installation-token-literal",
+              "structured-text-value",
+              "value-at-input-edges"
+            ],
+            "totalFixtures": 178,
+            "twinPairs": 46
+          },
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of github-token"
+        },
+        {
+          "subject": "github:classic-personal-access-token",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of github-token"
+        },
+        {
+          "subject": "github:classic-personal-access-token",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 88 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "github:classic-personal-access-token",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of github-token"
+        },
+        {
+          "subject": "github:classic-personal-access-token",
+          "field": "twinCoverage.pairs",
+          "legacy": 45,
+          "next": 46,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.twinPairs of github-token"
+        },
+        {
+          "subject": "github:classic-personal-access-token",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 88,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of github-token"
+        },
+        {
+          "subject": "github:oauth-access-token",
+          "field": "fixtureProfile.benignCases",
+          "legacy": 15,
+          "next": 17,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.benignCases of github-token"
+        },
+        {
+          "subject": "github:oauth-access-token",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 8,
+          "next": 10,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.confusionAxes of github-token"
+        },
+        {
+          "subject": "github:oauth-access-token",
+          "field": "fixtureProfile.controlAxes",
+          "legacy": 6,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.controlAxes of github-token"
+        },
+        {
+          "subject": "github:oauth-access-token",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 26,
+          "next": 39,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of github-token"
+        },
+        {
+          "subject": "github:oauth-access-token",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 71,
+          "next": 115,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of github-token"
+        },
+        {
+          "subject": "github:oauth-access-token",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 131,
+          "next": 178,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.totalFixtures of github-token"
+        },
+        {
+          "subject": "github:oauth-access-token",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 45,
+          "next": 46,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.twinPairs of github-token"
+        },
+        {
+          "subject": "github:oauth-access-token",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 131,
+            "positiveCases": 28,
+            "benignControls": 15,
+            "twinPairs": 45,
+            "positiveContextAxes": 25,
+            "controlAxes": 6,
+            "confusionAxes": 8,
+            "positiveContextAxisIds": [
+              "#379 · github-token · cli",
+              "#379 · github-token · structured-file",
+              "#379 · github-token · tool-output",
+              "#379 · github-token · url",
+              "Boundaries",
+              "CRLF",
+              "Context",
+              "Documentation",
+              "Encoding",
+              "Environment",
+              "GitHub gho",
+              "GitHub ghp",
+              "GitHub ghr",
+              "GitHub ghs",
+              "GitHub ghu",
+              "JSON",
+              "Line endings",
+              "Long input",
+              "Multiple spans",
+              "Quoting",
+              "Source code",
+              "Structured text",
+              "Token formats",
+              "Unicode",
+              "github-token"
+            ],
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:length",
+              "twin:prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 17,
+            "confusionAxes": 10,
+            "confusionAxisIds": [
+              "encoded-value",
+              "github-app-and-installation-ids-in-json",
+              "installation-token-notation-and-header-name-in-prose",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:length",
+              "twin:prefix"
+            ],
+            "controlAxes": 8,
+            "controlAxisIds": [
+              "encoded-value",
+              "github-app-and-installation-ids-in-json",
+              "installation-token-notation-and-header-name-in-prose",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 71,
+            "positiveContextAxes": 38,
+            "positiveContextAxisIds": [
+              "#379 · github-token · cli",
+              "#379 · github-token · structured-file",
+              "#379 · github-token · tool-output",
+              "#379 · github-token · url",
+              "Boundaries",
+              "CRLF",
+              "Context",
+              "Documentation",
+              "Encoding",
+              "Environment",
+              "GitHub gho",
+              "GitHub ghp",
+              "GitHub ghr",
+              "GitHub ghs",
+              "GitHub ghu",
+              "JSON",
+              "Line endings",
+              "Long input",
+              "Multiple spans",
+              "Quoting",
+              "Source code",
+              "Structured text",
+              "Token formats",
+              "Unicode",
+              "app-installation-token-with-one-hour-lifetime-note",
+              "credential-after-long-input",
+              "crlf-line-endings",
+              "environment-assignment",
+              "github-token",
+              "markdown-and-comment-value",
+              "multibyte-text-offsets",
+              "multiple-credentials-per-input",
+              "opaque-installation-token-forty-characters-literal",
+              "partial-span-leakage",
+              "quoted-value-extent",
+              "stateless-jwt-installation-token-literal",
+              "structured-text-value",
+              "value-at-input-edges"
+            ],
+            "totalFixtures": 178,
+            "twinPairs": 46
+          },
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of github-token"
+        },
+        {
+          "subject": "github:oauth-access-token",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of github-token"
+        },
+        {
+          "subject": "github:oauth-access-token",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 88 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "github:oauth-access-token",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of github-token"
+        },
+        {
+          "subject": "github:oauth-access-token",
+          "field": "twinCoverage.pairs",
+          "legacy": 45,
+          "next": 46,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.twinPairs of github-token"
+        },
+        {
+          "subject": "github:oauth-access-token",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 88,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of github-token"
+        },
+        {
+          "subject": "github:oauth-refresh-token",
+          "field": "fixtureProfile.benignCases",
+          "legacy": 15,
+          "next": 17,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.benignCases of github-token"
+        },
+        {
+          "subject": "github:oauth-refresh-token",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 8,
+          "next": 10,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.confusionAxes of github-token"
+        },
+        {
+          "subject": "github:oauth-refresh-token",
+          "field": "fixtureProfile.controlAxes",
+          "legacy": 6,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.controlAxes of github-token"
+        },
+        {
+          "subject": "github:oauth-refresh-token",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 26,
+          "next": 39,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of github-token"
+        },
+        {
+          "subject": "github:oauth-refresh-token",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 71,
+          "next": 115,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of github-token"
+        },
+        {
+          "subject": "github:oauth-refresh-token",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 131,
+          "next": 178,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.totalFixtures of github-token"
+        },
+        {
+          "subject": "github:oauth-refresh-token",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 45,
+          "next": 46,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.twinPairs of github-token"
+        },
+        {
+          "subject": "github:oauth-refresh-token",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 131,
+            "positiveCases": 28,
+            "benignControls": 15,
+            "twinPairs": 45,
+            "positiveContextAxes": 25,
+            "controlAxes": 6,
+            "confusionAxes": 8,
+            "positiveContextAxisIds": [
+              "#379 · github-token · cli",
+              "#379 · github-token · structured-file",
+              "#379 · github-token · tool-output",
+              "#379 · github-token · url",
+              "Boundaries",
+              "CRLF",
+              "Context",
+              "Documentation",
+              "Encoding",
+              "Environment",
+              "GitHub gho",
+              "GitHub ghp",
+              "GitHub ghr",
+              "GitHub ghs",
+              "GitHub ghu",
+              "JSON",
+              "Line endings",
+              "Long input",
+              "Multiple spans",
+              "Quoting",
+              "Source code",
+              "Structured text",
+              "Token formats",
+              "Unicode",
+              "github-token"
+            ],
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:length",
+              "twin:prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 17,
+            "confusionAxes": 10,
+            "confusionAxisIds": [
+              "encoded-value",
+              "github-app-and-installation-ids-in-json",
+              "installation-token-notation-and-header-name-in-prose",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:length",
+              "twin:prefix"
+            ],
+            "controlAxes": 8,
+            "controlAxisIds": [
+              "encoded-value",
+              "github-app-and-installation-ids-in-json",
+              "installation-token-notation-and-header-name-in-prose",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 71,
+            "positiveContextAxes": 38,
+            "positiveContextAxisIds": [
+              "#379 · github-token · cli",
+              "#379 · github-token · structured-file",
+              "#379 · github-token · tool-output",
+              "#379 · github-token · url",
+              "Boundaries",
+              "CRLF",
+              "Context",
+              "Documentation",
+              "Encoding",
+              "Environment",
+              "GitHub gho",
+              "GitHub ghp",
+              "GitHub ghr",
+              "GitHub ghs",
+              "GitHub ghu",
+              "JSON",
+              "Line endings",
+              "Long input",
+              "Multiple spans",
+              "Quoting",
+              "Source code",
+              "Structured text",
+              "Token formats",
+              "Unicode",
+              "app-installation-token-with-one-hour-lifetime-note",
+              "credential-after-long-input",
+              "crlf-line-endings",
+              "environment-assignment",
+              "github-token",
+              "markdown-and-comment-value",
+              "multibyte-text-offsets",
+              "multiple-credentials-per-input",
+              "opaque-installation-token-forty-characters-literal",
+              "partial-span-leakage",
+              "quoted-value-extent",
+              "stateless-jwt-installation-token-literal",
+              "structured-text-value",
+              "value-at-input-edges"
+            ],
+            "totalFixtures": 178,
+            "twinPairs": 46
+          },
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of github-token"
+        },
+        {
+          "subject": "github:oauth-refresh-token",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of github-token"
+        },
+        {
+          "subject": "github:oauth-refresh-token",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 88 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "github:oauth-refresh-token",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of github-token"
+        },
+        {
+          "subject": "github:oauth-refresh-token",
+          "field": "twinCoverage.pairs",
+          "legacy": 45,
+          "next": 46,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.twinPairs of github-token"
+        },
+        {
+          "subject": "github:oauth-refresh-token",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 88,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of github-token"
+        },
+        {
+          "subject": "gitlab:legacy-personal-access-token",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 6,
+          "next": 16,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of gitlab-token"
+        },
+        {
+          "subject": "gitlab:legacy-personal-access-token",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 11,
+          "next": 42,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of gitlab-token"
+        },
+        {
+          "subject": "gitlab:legacy-personal-access-token",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 26,
+          "next": 57,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.totalFixtures of gitlab-token"
+        },
+        {
+          "subject": "gitlab:legacy-personal-access-token",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 26,
+            "positiveCases": 6,
+            "benignControls": 8,
+            "twinPairs": 7,
+            "positiveContextAxes": 5,
+            "controlAxes": 5,
+            "confusionAxes": 7,
+            "positiveContextAxisIds": [
+              "#213b · gitlab-token · cli",
+              "#213b · gitlab-token · header",
+              "#213b · gitlab-token · url",
+              "GitLab PAT",
+              "gitlab-token"
+            ],
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:length",
+              "twin:prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 8,
+            "confusionAxes": 7,
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:length",
+              "twin:prefix"
+            ],
+            "controlAxes": 5,
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 37,
+            "positiveContextAxes": 15,
+            "positiveContextAxisIds": [
+              "#213b · gitlab-token · cli",
+              "#213b · gitlab-token · header",
+              "#213b · gitlab-token · url",
+              "GitLab PAT",
+              "credential-after-long-input",
+              "crlf-line-endings",
+              "environment-assignment",
+              "gitlab-token",
+              "markdown-and-comment-value",
+              "multibyte-text-offsets",
+              "multiple-credentials-per-input",
+              "partial-span-leakage",
+              "quoted-value-extent",
+              "structured-text-value",
+              "value-at-input-edges"
+            ],
+            "totalFixtures": 57,
+            "twinPairs": 7
+          },
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of gitlab-token"
+        },
+        {
+          "subject": "gitlab:legacy-personal-access-token",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of gitlab-token"
+        },
+        {
+          "subject": "gitlab:legacy-personal-access-token",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 31 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "gitlab:legacy-personal-access-token",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of gitlab-token"
+        },
+        {
+          "subject": "gitlab:legacy-personal-access-token",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 31,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of gitlab-token"
+        },
+        {
+          "subject": "google:generic-api-key",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of google-api-key"
+        },
+        {
+          "subject": "google:generic-api-key",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 3 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "google:generic-api-key",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of google-api-key"
+        },
+        {
+          "subject": "google:generic-api-key",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 3,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of google-api-key"
+        },
+        {
+          "subject": "heroku:legacy-api-key",
+          "field": "qualificationProfile",
+          "legacy": "empirical",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of heroku-api-key-legacy"
+        },
+        {
+          "subject": "heroku:legacy-api-key",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 1 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "heroku:legacy-api-key",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of heroku-api-key-legacy"
+        },
+        {
+          "subject": "heroku:legacy-api-key",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 1,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of heroku-api-key-legacy"
         },
         {
           "subject": "linear:personal-api-key",
@@ -3786,10 +6045,199 @@
           "note": "follows evidence.positiveCases of linear-token"
         },
         {
+          "subject": "matrix",
+          "field": "distribution.provisional",
+          "legacy": 7,
+          "next": 25,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "18 family status change(s) account for the difference (canonical-evidence-membership, review-occurrence-identity)"
+        },
+        {
+          "subject": "matrix",
+          "field": "distribution.stable",
+          "legacy": 144,
+          "next": 126,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "18 family status change(s) account for the difference (canonical-evidence-membership, review-occurrence-identity)"
+        },
+        {
+          "subject": "matrix",
+          "field": "stableDistribution.documented",
+          "legacy": 106,
+          "next": 92,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "14 family status change(s) account for the difference (canonical-evidence-membership, review-occurrence-identity)"
+        },
+        {
+          "subject": "matrix",
+          "field": "stableDistribution.empirical",
+          "legacy": 38,
+          "next": 34,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "4 family status change(s) account for the difference (canonical-evidence-membership)"
+        },
+        {
+          "subject": "npm:granular-access-token",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 5,
+          "next": 15,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of npm-token"
+        },
+        {
+          "subject": "npm:granular-access-token",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 10,
+          "next": 41,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of npm-token"
+        },
+        {
+          "subject": "npm:granular-access-token",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 24,
+          "next": 55,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.totalFixtures of npm-token"
+        },
+        {
+          "subject": "npm:granular-access-token",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 24,
+            "positiveCases": 8,
+            "benignControls": 8,
+            "twinPairs": 6,
+            "positiveContextAxes": 4,
+            "controlAxes": 5,
+            "confusionAxes": 8,
+            "positiveContextAxisIds": [
+              "#213a · npm-token · ci-config",
+              "#213a · npm-token · structured-file",
+              "npm token",
+              "npm-token"
+            ],
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:boundary",
+              "twin:length",
+              "twin:prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 8,
+            "confusionAxes": 8,
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:boundary",
+              "twin:length",
+              "twin:prefix"
+            ],
+            "controlAxes": 5,
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 39,
+            "positiveContextAxes": 14,
+            "positiveContextAxisIds": [
+              "#213a · npm-token · ci-config",
+              "#213a · npm-token · structured-file",
+              "credential-after-long-input",
+              "crlf-line-endings",
+              "environment-assignment",
+              "markdown-and-comment-value",
+              "multibyte-text-offsets",
+              "multiple-credentials-per-input",
+              "npm token",
+              "npm-token",
+              "partial-span-leakage",
+              "quoted-value-extent",
+              "structured-text-value",
+              "value-at-input-edges"
+            ],
+            "totalFixtures": 55,
+            "twinPairs": 6
+          },
+          "verdict": "explained",
+          "cause": "review-occurrence-identity",
+          "note": "follows the status of npm-token"
+        },
+        {
+          "subject": "npm:granular-access-token",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "review-occurrence-identity",
+          "note": "follows the status of npm-token"
+        },
+        {
+          "subject": "npm:granular-access-token",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 32 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "review-occurrence-identity",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "npm:granular-access-token",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "review-occurrence-identity",
+          "note": "follows the status of npm-token"
+        },
+        {
+          "subject": "npm:granular-access-token",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 32,
+          "verdict": "explained",
+          "cause": "review-occurrence-identity",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of npm-token"
+        },
+        {
+          "subject": "sendgrid:api-key",
+          "field": "fixtureProfile.benignCases",
+          "legacy": 12,
+          "next": 18,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.benignCases of sendgrid-token"
+        },
+        {
           "subject": "sendgrid:api-key",
           "field": "fixtureProfile.confusionAxes",
           "legacy": 6,
-          "next": 7,
+          "next": 9,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.confusionAxes of sendgrid-token"
@@ -3798,7 +6246,7 @@
           "subject": "sendgrid:api-key",
           "field": "fixtureProfile.controlAxes",
           "legacy": 4,
-          "next": 5,
+          "next": 7,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.controlAxes of sendgrid-token"
@@ -3807,7 +6255,7 @@
           "subject": "sendgrid:api-key",
           "field": "fixtureProfile.positiveAxes",
           "legacy": 9,
-          "next": 13,
+          "next": 38,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.positiveAxes of sendgrid-token"
@@ -3816,7 +6264,7 @@
           "subject": "sendgrid:api-key",
           "field": "fixtureProfile.positiveCases",
           "legacy": 38,
-          "next": 32,
+          "next": 117,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.positiveCases of sendgrid-token"
@@ -3825,7 +6273,7 @@
           "subject": "sendgrid:api-key",
           "field": "fixtureProfile.totalFixtures",
           "legacy": 68,
-          "next": 60,
+          "next": 151,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.totalFixtures of sendgrid-token"
@@ -3876,9 +6324,11 @@
             ]
           },
           "next": {
-            "benignControls": 12,
-            "confusionAxes": 7,
+            "benignControls": 18,
+            "confusionAxes": 9,
             "confusionAxisIds": [
+              "benign-encoded-value",
+              "credential-prefix-before-unrelated-line",
               "near-miss",
               "ordinary-prose",
               "placeholder",
@@ -3887,16 +6337,18 @@
               "twin:boundary",
               "twin:length"
             ],
-            "controlAxes": 5,
+            "controlAxes": 7,
             "controlAxisIds": [
+              "benign-encoded-value",
+              "credential-prefix-before-unrelated-line",
               "near-miss",
               "ordinary-prose",
               "placeholder",
               "public-identifier",
               "sendgrid-near-miss-values"
             ],
-            "positiveCases": 18,
-            "positiveContextAxes": 12,
+            "positiveCases": 103,
+            "positiveContextAxes": 37,
             "positiveContextAxisIds": [
               "Authorization",
               "Documentation",
@@ -3905,18 +6357,88 @@
               "Provider detection",
               "SendGrid key",
               "Structured text",
+              "credential-after-long-input",
+              "credential-bytes-divided-between-stream-chunks-intact",
+              "credential-in-base64-or-hex-form",
+              "credential-in-nested-encoding-layers",
+              "credential-split-across-concatenated-string-literals",
+              "credential-split-by-backslash-crlf-continuation",
+              "credential-split-by-backslash-newline-inside-single-quotes",
+              "credential-split-by-literal-line-break-in-plain-text",
+              "credential-split-by-markdown-paragraph-line-ending",
+              "credential-split-by-shell-backslash-newline",
+              "credential-split-by-string-literal-line-continuation",
+              "credential-with-escaped-line-break-text",
+              "crlf-line-endings",
+              "environment-assignment",
+              "markdown-and-comment-value",
+              "multibyte-text-offsets",
+              "multiple-credentials-per-input",
+              "partial-span-leakage",
+              "quoted-value-extent",
               "sendgrid-key-after-multibyte-text-and-crlf",
               "sendgrid-key-in-json-and-quoted-env",
               "sendgrid-key-in-markdown",
               "sendgrid-key-in-provider-named-fields",
-              "sendgrid-token"
+              "sendgrid-token",
+              "structured-text-value",
+              "unicode-invisible-beside-intact-credential",
+              "unicode-no-break-space-inside-credential-value",
+              "unicode-valid-utf8-chunked-inside-multibyte-sequence",
+              "unicode-zero-width-inserted-inside-credential",
+              "value-at-input-edges"
             ],
-            "totalFixtures": 60,
+            "totalFixtures": 151,
             "twinPairs": 16
           },
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "follows evidence.positiveCases of sendgrid-token"
+          "note": "follows the status of sendgrid-token"
+        },
+        {
+          "subject": "sendgrid:api-key",
+          "field": "profileCoverage.cellsMet",
+          "legacy": [
+            "arrival-provisional",
+            "stable-documented",
+            "context-constrained-empirical"
+          ],
+          "next": [
+            "arrival-provisional",
+            "stable-documented",
+            "stable-empirical",
+            "context-constrained-empirical"
+          ],
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of sendgrid-token"
+        },
+        {
+          "subject": "sendgrid:api-key",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of sendgrid-token"
+        },
+        {
+          "subject": "sendgrid:api-key",
+          "field": "reason",
+          "legacy": null,
+          "next": "metamorphic.criticalFailures: 199 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 29 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 93 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) metamorphic.criticalFailures, mutation.unresolvedCritical, differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "sendgrid:api-key",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of sendgrid-token"
         },
         {
           "subject": "sendgrid:api-key",
@@ -3926,6 +6448,33 @@
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.twinPairs of sendgrid-token"
+        },
+        {
+          "subject": "sendgrid:api-key",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 93,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of sendgrid-token"
+        },
+        {
+          "subject": "sendgrid:api-key",
+          "field": "unresolvedCriticalItems.metamorphic",
+          "legacy": 0,
+          "next": 199,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.metamorphicCriticalFailures of sendgrid-token"
+        },
+        {
+          "subject": "sendgrid:api-key",
+          "field": "unresolvedCriticalItems.mutation",
+          "legacy": 0,
+          "next": 29,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.mutationUnresolvedCritical of sendgrid-token"
         },
         {
           "subject": "slack:bot-token",
@@ -4012,9 +6561,45 @@
         },
         {
           "subject": "stripe:restricted-key-live",
+          "field": "fixtureProfile.benignCases",
+          "legacy": 25,
+          "next": 46,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.benignCases of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-live",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 9,
+          "next": 13,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.confusionAxes of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-live",
+          "field": "fixtureProfile.controlAxes",
+          "legacy": 6,
+          "next": 10,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.controlAxes of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-live",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 11,
+          "next": 22,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-live",
           "field": "fixtureProfile.positiveCases",
           "legacy": 46,
-          "next": 43,
+          "next": 82,
           "verdict": "explained",
           "cause": "pending-not-scored",
           "note": "follows evidence.positiveCases of stripe-token"
@@ -4023,7 +6608,7 @@
           "subject": "stripe:restricted-key-live",
           "field": "fixtureProfile.totalFixtures",
           "legacy": 79,
-          "next": 76,
+          "next": 136,
           "verdict": "explained",
           "cause": "pending-not-scored",
           "note": "follows evidence.totalFixtures of stripe-token"
@@ -4072,30 +6657,38 @@
             ]
           },
           "next": {
-            "benignControls": 25,
-            "confusionAxes": 9,
+            "benignControls": 46,
+            "confusionAxes": 13,
             "confusionAxisIds": [
+              "benign-lookalike",
               "encoded-value",
               "near-miss",
               "ordinary-prose",
               "placeholder",
+              "prose-mention",
               "public-identifier",
+              "publishable-test-key-in-client-code",
               "reference",
+              "templated-reference",
               "twin:boundary",
               "twin:prefix",
               "twin:public-prefix"
             ],
-            "controlAxes": 6,
+            "controlAxes": 10,
             "controlAxisIds": [
+              "benign-lookalike",
               "encoded-value",
               "near-miss",
               "ordinary-prose",
               "placeholder",
+              "prose-mention",
               "public-identifier",
-              "reference"
+              "publishable-test-key-in-client-code",
+              "reference",
+              "templated-reference"
             ],
-            "positiveCases": 37,
-            "positiveContextAxes": 10,
+            "positiveCases": 76,
+            "positiveContextAxes": 21,
             "positiveContextAxisIds": [
               "#213b · stripe-token · cli",
               "#213b · stripe-token · sdk-config",
@@ -4106,20 +6699,103 @@
               "#379 · stripe-token · log",
               "#379 · stripe-token · structured-file",
               "#379 · stripe-token · tool-output",
-              "stripe-token"
+              "environment-assignment",
+              "example-marker-inside-provider-shaped-value-not-published-by-provider",
+              "markdown-and-comment-value",
+              "multiple-credentials-per-input",
+              "partial-span-leakage",
+              "provider-secret-value-under-public-or-ordinary-labels",
+              "repeated-key-label-with-public-and-secret-values",
+              "sandbox-mode-secret-key-in-environment-assignment",
+              "source-code-string-literal",
+              "stripe-key-replaced-within-rotation-grace-period",
+              "stripe-token",
+              "structured-text-value"
             ],
-            "totalFixtures": 76,
+            "totalFixtures": 136,
             "twinPairs": 8
           },
           "verdict": "explained",
-          "cause": "pending-not-scored",
-          "note": "follows evidence.positiveCases of stripe-token"
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-live",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-live",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 50 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "stripe:restricted-key-live",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-live",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 50,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-test",
+          "field": "fixtureProfile.benignCases",
+          "legacy": 25,
+          "next": 46,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.benignCases of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-test",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 9,
+          "next": 13,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.confusionAxes of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-test",
+          "field": "fixtureProfile.controlAxes",
+          "legacy": 6,
+          "next": 10,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.controlAxes of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-test",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 11,
+          "next": 22,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of stripe-token"
         },
         {
           "subject": "stripe:restricted-key-test",
           "field": "fixtureProfile.positiveCases",
           "legacy": 46,
-          "next": 43,
+          "next": 82,
           "verdict": "explained",
           "cause": "pending-not-scored",
           "note": "follows evidence.positiveCases of stripe-token"
@@ -4128,7 +6804,7 @@
           "subject": "stripe:restricted-key-test",
           "field": "fixtureProfile.totalFixtures",
           "legacy": 79,
-          "next": 76,
+          "next": 136,
           "verdict": "explained",
           "cause": "pending-not-scored",
           "note": "follows evidence.totalFixtures of stripe-token"
@@ -4177,30 +6853,38 @@
             ]
           },
           "next": {
-            "benignControls": 25,
-            "confusionAxes": 9,
+            "benignControls": 46,
+            "confusionAxes": 13,
             "confusionAxisIds": [
+              "benign-lookalike",
               "encoded-value",
               "near-miss",
               "ordinary-prose",
               "placeholder",
+              "prose-mention",
               "public-identifier",
+              "publishable-test-key-in-client-code",
               "reference",
+              "templated-reference",
               "twin:boundary",
               "twin:prefix",
               "twin:public-prefix"
             ],
-            "controlAxes": 6,
+            "controlAxes": 10,
             "controlAxisIds": [
+              "benign-lookalike",
               "encoded-value",
               "near-miss",
               "ordinary-prose",
               "placeholder",
+              "prose-mention",
               "public-identifier",
-              "reference"
+              "publishable-test-key-in-client-code",
+              "reference",
+              "templated-reference"
             ],
-            "positiveCases": 37,
-            "positiveContextAxes": 10,
+            "positiveCases": 76,
+            "positiveContextAxes": 21,
             "positiveContextAxisIds": [
               "#213b · stripe-token · cli",
               "#213b · stripe-token · sdk-config",
@@ -4211,20 +6895,103 @@
               "#379 · stripe-token · log",
               "#379 · stripe-token · structured-file",
               "#379 · stripe-token · tool-output",
-              "stripe-token"
+              "environment-assignment",
+              "example-marker-inside-provider-shaped-value-not-published-by-provider",
+              "markdown-and-comment-value",
+              "multiple-credentials-per-input",
+              "partial-span-leakage",
+              "provider-secret-value-under-public-or-ordinary-labels",
+              "repeated-key-label-with-public-and-secret-values",
+              "sandbox-mode-secret-key-in-environment-assignment",
+              "source-code-string-literal",
+              "stripe-key-replaced-within-rotation-grace-period",
+              "stripe-token",
+              "structured-text-value"
             ],
-            "totalFixtures": 76,
+            "totalFixtures": 136,
             "twinPairs": 8
           },
           "verdict": "explained",
-          "cause": "pending-not-scored",
-          "note": "follows evidence.positiveCases of stripe-token"
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-test",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-test",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 50 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "stripe:restricted-key-test",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of stripe-token"
+        },
+        {
+          "subject": "stripe:restricted-key-test",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 50,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-live",
+          "field": "fixtureProfile.benignCases",
+          "legacy": 25,
+          "next": 46,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.benignCases of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-live",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 9,
+          "next": 13,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.confusionAxes of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-live",
+          "field": "fixtureProfile.controlAxes",
+          "legacy": 6,
+          "next": 10,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.controlAxes of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-live",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 11,
+          "next": 22,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of stripe-token"
         },
         {
           "subject": "stripe:secret-key-live",
           "field": "fixtureProfile.positiveCases",
           "legacy": 46,
-          "next": 43,
+          "next": 82,
           "verdict": "explained",
           "cause": "pending-not-scored",
           "note": "follows evidence.positiveCases of stripe-token"
@@ -4233,7 +7000,7 @@
           "subject": "stripe:secret-key-live",
           "field": "fixtureProfile.totalFixtures",
           "legacy": 79,
-          "next": 76,
+          "next": 136,
           "verdict": "explained",
           "cause": "pending-not-scored",
           "note": "follows evidence.totalFixtures of stripe-token"
@@ -4282,30 +7049,38 @@
             ]
           },
           "next": {
-            "benignControls": 25,
-            "confusionAxes": 9,
+            "benignControls": 46,
+            "confusionAxes": 13,
             "confusionAxisIds": [
+              "benign-lookalike",
               "encoded-value",
               "near-miss",
               "ordinary-prose",
               "placeholder",
+              "prose-mention",
               "public-identifier",
+              "publishable-test-key-in-client-code",
               "reference",
+              "templated-reference",
               "twin:boundary",
               "twin:prefix",
               "twin:public-prefix"
             ],
-            "controlAxes": 6,
+            "controlAxes": 10,
             "controlAxisIds": [
+              "benign-lookalike",
               "encoded-value",
               "near-miss",
               "ordinary-prose",
               "placeholder",
+              "prose-mention",
               "public-identifier",
-              "reference"
+              "publishable-test-key-in-client-code",
+              "reference",
+              "templated-reference"
             ],
-            "positiveCases": 37,
-            "positiveContextAxes": 10,
+            "positiveCases": 76,
+            "positiveContextAxes": 21,
             "positiveContextAxisIds": [
               "#213b · stripe-token · cli",
               "#213b · stripe-token · sdk-config",
@@ -4316,20 +7091,103 @@
               "#379 · stripe-token · log",
               "#379 · stripe-token · structured-file",
               "#379 · stripe-token · tool-output",
-              "stripe-token"
+              "environment-assignment",
+              "example-marker-inside-provider-shaped-value-not-published-by-provider",
+              "markdown-and-comment-value",
+              "multiple-credentials-per-input",
+              "partial-span-leakage",
+              "provider-secret-value-under-public-or-ordinary-labels",
+              "repeated-key-label-with-public-and-secret-values",
+              "sandbox-mode-secret-key-in-environment-assignment",
+              "source-code-string-literal",
+              "stripe-key-replaced-within-rotation-grace-period",
+              "stripe-token",
+              "structured-text-value"
             ],
-            "totalFixtures": 76,
+            "totalFixtures": 136,
             "twinPairs": 8
           },
           "verdict": "explained",
-          "cause": "pending-not-scored",
-          "note": "follows evidence.positiveCases of stripe-token"
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-live",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-live",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 50 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "stripe:secret-key-live",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-live",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 50,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-test",
+          "field": "fixtureProfile.benignCases",
+          "legacy": 25,
+          "next": 46,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.benignCases of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-test",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 9,
+          "next": 13,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.confusionAxes of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-test",
+          "field": "fixtureProfile.controlAxes",
+          "legacy": 6,
+          "next": 10,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.controlAxes of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-test",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 11,
+          "next": 22,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of stripe-token"
         },
         {
           "subject": "stripe:secret-key-test",
           "field": "fixtureProfile.positiveCases",
           "legacy": 46,
-          "next": 43,
+          "next": 82,
           "verdict": "explained",
           "cause": "pending-not-scored",
           "note": "follows evidence.positiveCases of stripe-token"
@@ -4338,7 +7196,7 @@
           "subject": "stripe:secret-key-test",
           "field": "fixtureProfile.totalFixtures",
           "legacy": 79,
-          "next": 76,
+          "next": 136,
           "verdict": "explained",
           "cause": "pending-not-scored",
           "note": "follows evidence.totalFixtures of stripe-token"
@@ -4387,30 +7245,38 @@
             ]
           },
           "next": {
-            "benignControls": 25,
-            "confusionAxes": 9,
+            "benignControls": 46,
+            "confusionAxes": 13,
             "confusionAxisIds": [
+              "benign-lookalike",
               "encoded-value",
               "near-miss",
               "ordinary-prose",
               "placeholder",
+              "prose-mention",
               "public-identifier",
+              "publishable-test-key-in-client-code",
               "reference",
+              "templated-reference",
               "twin:boundary",
               "twin:prefix",
               "twin:public-prefix"
             ],
-            "controlAxes": 6,
+            "controlAxes": 10,
             "controlAxisIds": [
+              "benign-lookalike",
               "encoded-value",
               "near-miss",
               "ordinary-prose",
               "placeholder",
+              "prose-mention",
               "public-identifier",
-              "reference"
+              "publishable-test-key-in-client-code",
+              "reference",
+              "templated-reference"
             ],
-            "positiveCases": 37,
-            "positiveContextAxes": 10,
+            "positiveCases": 76,
+            "positiveContextAxes": 21,
             "positiveContextAxisIds": [
               "#213b · stripe-token · cli",
               "#213b · stripe-token · sdk-config",
@@ -4421,14 +7287,399 @@
               "#379 · stripe-token · log",
               "#379 · stripe-token · structured-file",
               "#379 · stripe-token · tool-output",
-              "stripe-token"
+              "environment-assignment",
+              "example-marker-inside-provider-shaped-value-not-published-by-provider",
+              "markdown-and-comment-value",
+              "multiple-credentials-per-input",
+              "partial-span-leakage",
+              "provider-secret-value-under-public-or-ordinary-labels",
+              "repeated-key-label-with-public-and-secret-values",
+              "sandbox-mode-secret-key-in-environment-assignment",
+              "source-code-string-literal",
+              "stripe-key-replaced-within-rotation-grace-period",
+              "stripe-token",
+              "structured-text-value"
             ],
-            "totalFixtures": 76,
+            "totalFixtures": 136,
             "twinPairs": 8
           },
           "verdict": "explained",
-          "cause": "pending-not-scored",
-          "note": "follows evidence.positiveCases of stripe-token"
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-test",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-test",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 50 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "stripe:secret-key-test",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of stripe-token"
+        },
+        {
+          "subject": "stripe:secret-key-test",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 50,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of stripe-token"
+        },
+        {
+          "subject": "twilio:api-key-secret",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 18,
+          "next": 19,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of twilio-api-key-secret"
+        },
+        {
+          "subject": "twilio:api-key-secret",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 23,
+          "next": 25,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of twilio-api-key-secret"
+        },
+        {
+          "subject": "twilio:api-key-secret",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 48,
+          "next": 50,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.totalFixtures of twilio-api-key-secret"
+        },
+        {
+          "subject": "twilio:api-key-secret",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 48,
+            "positiveCases": 13,
+            "benignControls": 15,
+            "twinPairs": 10,
+            "positiveContextAxes": 18,
+            "controlAxes": 6,
+            "confusionAxes": 7,
+            "positiveContextAxisIds": [
+              "#207 · twilio-api-key-secret · basic-auth",
+              "#207 · twilio-api-key-secret · ci-config",
+              "#207 · twilio-api-key-secret · cli",
+              "#207 · twilio-api-key-secret · container-config",
+              "#207 · twilio-api-key-secret · env",
+              "#207 · twilio-api-key-secret · log",
+              "#207 · twilio-api-key-secret · prose",
+              "#207 · twilio-api-key-secret · sdk-config",
+              "#207 · twilio-api-key-secret · shell-export",
+              "#207 · twilio-api-key-secret · source-code",
+              "#207 · twilio-api-key-secret · structured-file",
+              "Boundaries",
+              "Documentation",
+              "Encoding",
+              "Quoting",
+              "Source code",
+              "Structured text",
+              "twilio-api-key-secret"
+            ],
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:context"
+            ]
+          },
+          "next": {
+            "benignControls": 15,
+            "confusionAxes": 7,
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:context"
+            ],
+            "controlAxes": 6,
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 15,
+            "positiveContextAxes": 19,
+            "positiveContextAxisIds": [
+              "#207 · twilio-api-key-secret · basic-auth",
+              "#207 · twilio-api-key-secret · ci-config",
+              "#207 · twilio-api-key-secret · cli",
+              "#207 · twilio-api-key-secret · container-config",
+              "#207 · twilio-api-key-secret · env",
+              "#207 · twilio-api-key-secret · log",
+              "#207 · twilio-api-key-secret · prose",
+              "#207 · twilio-api-key-secret · sdk-config",
+              "#207 · twilio-api-key-secret · shell-export",
+              "#207 · twilio-api-key-secret · source-code",
+              "#207 · twilio-api-key-secret · structured-file",
+              "Boundaries",
+              "Documentation",
+              "Encoding",
+              "Quoting",
+              "Source code",
+              "Structured text",
+              "twilio-api-key-secret",
+              "twilio-api-key-sid-and-secret-boundary"
+            ],
+            "totalFixtures": 50,
+            "twinPairs": 10
+          },
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of twilio-api-key-secret"
+        },
+        {
+          "subject": "twilio:api-key-secret",
+          "field": "qualificationProfile",
+          "legacy": "empirical",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of twilio-api-key-secret"
+        },
+        {
+          "subject": "twilio:api-key-secret",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 2 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "twilio:api-key-secret",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of twilio-api-key-secret"
+        },
+        {
+          "subject": "twilio:api-key-secret",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 2,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of twilio-api-key-secret"
+        },
+        {
+          "subject": "twilio:auth-token",
+          "field": "fixtureProfile.positiveAxes",
+          "legacy": 24,
+          "next": 25,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveAxes of twilio-auth-token"
+        },
+        {
+          "subject": "twilio:auth-token",
+          "field": "fixtureProfile.positiveCases",
+          "legacy": 28,
+          "next": 32,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.positiveCases of twilio-auth-token"
+        },
+        {
+          "subject": "twilio:auth-token",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 60,
+          "next": 64,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.totalFixtures of twilio-auth-token"
+        },
+        {
+          "subject": "twilio:auth-token",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 60,
+            "positiveCases": 16,
+            "benignControls": 20,
+            "twinPairs": 12,
+            "positiveContextAxes": 24,
+            "controlAxes": 6,
+            "confusionAxes": 7,
+            "positiveContextAxisIds": [
+              "#207 · twilio-auth-token · basic-auth",
+              "#207 · twilio-auth-token · ci-config",
+              "#207 · twilio-auth-token · cli",
+              "#207 · twilio-auth-token · container-config",
+              "#207 · twilio-auth-token · env",
+              "#207 · twilio-auth-token · log",
+              "#207 · twilio-auth-token · prose",
+              "#207 · twilio-auth-token · sdk-config",
+              "#207 · twilio-auth-token · shell-export",
+              "#207 · twilio-auth-token · source-code",
+              "#207 · twilio-auth-token · structured-file",
+              "#379 · twilio-auth-token · log",
+              "#379 · twilio-auth-token · prose",
+              "#379 · twilio-auth-token · source-code",
+              "#379 · twilio-auth-token · structured-file",
+              "#379 · twilio-auth-token · tool-output",
+              "#379 · twilio-auth-token · url",
+              "Boundaries",
+              "Documentation",
+              "Encoding",
+              "Quoting",
+              "Source code",
+              "Structured text",
+              "twilio-auth-token"
+            ],
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:context"
+            ]
+          },
+          "next": {
+            "benignControls": 20,
+            "confusionAxes": 7,
+            "confusionAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:context"
+            ],
+            "controlAxes": 6,
+            "controlAxisIds": [
+              "encoded-value",
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 20,
+            "positiveContextAxes": 25,
+            "positiveContextAxisIds": [
+              "#207 · twilio-auth-token · basic-auth",
+              "#207 · twilio-auth-token · ci-config",
+              "#207 · twilio-auth-token · cli",
+              "#207 · twilio-auth-token · container-config",
+              "#207 · twilio-auth-token · env",
+              "#207 · twilio-auth-token · log",
+              "#207 · twilio-auth-token · prose",
+              "#207 · twilio-auth-token · sdk-config",
+              "#207 · twilio-auth-token · shell-export",
+              "#207 · twilio-auth-token · source-code",
+              "#207 · twilio-auth-token · structured-file",
+              "#379 · twilio-auth-token · log",
+              "#379 · twilio-auth-token · prose",
+              "#379 · twilio-auth-token · source-code",
+              "#379 · twilio-auth-token · structured-file",
+              "#379 · twilio-auth-token · tool-output",
+              "#379 · twilio-auth-token · url",
+              "Boundaries",
+              "Documentation",
+              "Encoding",
+              "Quoting",
+              "Source code",
+              "Structured text",
+              "twilio-account-sid-and-auth-token-secret-boundary",
+              "twilio-auth-token"
+            ],
+            "totalFixtures": 64,
+            "twinPairs": 12
+          },
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of twilio-auth-token"
+        },
+        {
+          "subject": "twilio:auth-token",
+          "field": "qualificationProfile",
+          "legacy": "empirical",
+          "next": null,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of twilio-auth-token"
+        },
+        {
+          "subject": "twilio:auth-token",
+          "field": "reason",
+          "legacy": null,
+          "next": "differential.unresolvedContractDisagreements: 4 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "new-only reason(s) differential.unresolvedContractDisagreements"
+        },
+        {
+          "subject": "twilio:auth-token",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows the status of twilio-auth-token"
+        },
+        {
+          "subject": "twilio:auth-token",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 0,
+          "next": 4,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.differentialUnresolvedContractDisagreements of twilio-auth-token"
         },
         {
           "subject": "vercel:access-token",
@@ -4599,21 +7850,61 @@
     "distribution": {
       "tally": {
         "compared": 8,
-        "equal": 8,
-        "explained": 0,
+        "equal": 4,
+        "explained": 4,
         "unexplained": 0,
-        "byCause": {}
+        "byCause": {
+          "canonical-evidence-membership": 4
+        }
       },
-      "differences": []
+      "differences": [
+        {
+          "subject": "overview",
+          "field": "distribution.provisional",
+          "legacy": 7,
+          "next": 18,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "11 family status change(s) account for the difference (canonical-evidence-membership, review-occurrence-identity)"
+        },
+        {
+          "subject": "overview",
+          "field": "distribution.stable",
+          "legacy": 127,
+          "next": 116,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "11 family status change(s) account for the difference (canonical-evidence-membership, review-occurrence-identity)"
+        },
+        {
+          "subject": "overview",
+          "field": "stableDistribution.documented",
+          "legacy": 89,
+          "next": 82,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "7 family status change(s) account for the difference (canonical-evidence-membership, review-occurrence-identity)"
+        },
+        {
+          "subject": "overview",
+          "field": "stableDistribution.empirical",
+          "legacy": 38,
+          "next": 34,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "4 family status change(s) account for the difference (canonical-evidence-membership)"
+        }
+      ]
     },
     "review": {
       "tally": {
         "compared": 10,
-        "equal": 6,
-        "explained": 4,
+        "equal": 4,
+        "explained": 6,
         "unexplained": 0,
         "byCause": {
-          "review-occurrence-identity": 4
+          "review-occurrence-identity": 4,
+          "canonical-evidence-membership": 2
         }
       },
       "differences": [
@@ -4621,7 +7912,7 @@
           "subject": "flare-redact",
           "field": "occurrences",
           "legacy": "not run",
-          "next": 2695,
+          "next": 2785,
           "verdict": "explained",
           "cause": "review-occurrence-identity",
           "note": "flare-redact was never scanned by the legacy run, so the legacy ledger holds no entry for it"
@@ -4636,10 +7927,19 @@
           "note": "flare-redact was never scanned by the legacy run, so the legacy ledger holds no entry for it"
         },
         {
+          "subject": "gitleaks",
+          "field": "occurrences",
+          "legacy": 1811,
+          "next": 1951,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "140 occurrence(s) of cases with no legacy counterpart"
+        },
+        {
           "subject": "openredaction",
           "field": "occurrences",
           "legacy": "not run",
-          "next": 3776,
+          "next": 4044,
           "verdict": "explained",
           "cause": "review-occurrence-identity",
           "note": "openredaction was never scanned by the legacy run, so the legacy ledger holds no entry for it"
@@ -4652,6 +7952,15 @@
           "verdict": "explained",
           "cause": "review-occurrence-identity",
           "note": "openredaction was never scanned by the legacy run, so the legacy ledger holds no entry for it"
+        },
+        {
+          "subject": "trufflehog",
+          "field": "occurrences",
+          "legacy": 2457,
+          "next": 2745,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "288 occurrence(s) of cases with no legacy counterpart"
         }
       ]
     }
@@ -4726,12 +8035,16 @@
     {
       "family": "aws-access-key",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "documented",
-      "nextProfile": "documented",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "canonical-evidence-membership"
+      ],
+      "heldBackBy": [
+        "canonical-evidence-membership"
+      ],
       "unattributedReasons": []
     },
     {
@@ -4955,9 +8268,11 @@
       "nextProfile": null,
       "verdict": "equal",
       "causes": [
+        "canonical-evidence-membership",
         "policy-corpus-bounded"
       ],
       "heldBackBy": [
+        "canonical-evidence-membership",
         "policy-corpus-bounded"
       ],
       "unattributedReasons": []
@@ -5053,12 +8368,16 @@
     {
       "family": "deepgram-api-key",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "empirical",
-      "nextProfile": "empirical",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "canonical-evidence-membership"
+      ],
+      "heldBackBy": [
+        "canonical-evidence-membership"
+      ],
       "unattributedReasons": []
     },
     {
@@ -5245,9 +8564,11 @@
       "nextProfile": null,
       "verdict": "equal",
       "causes": [
+        "canonical-evidence-membership",
         "policy-corpus-bounded"
       ],
       "heldBackBy": [
+        "canonical-evidence-membership",
         "policy-corpus-bounded"
       ],
       "unattributedReasons": []
@@ -5266,12 +8587,16 @@
     {
       "family": "github-token",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "documented",
-      "nextProfile": "documented",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "canonical-evidence-membership"
+      ],
+      "heldBackBy": [
+        "canonical-evidence-membership"
+      ],
       "unattributedReasons": []
     },
     {
@@ -5288,23 +8613,31 @@
     {
       "family": "gitlab-token",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "documented",
-      "nextProfile": "documented",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "canonical-evidence-membership"
+      ],
+      "heldBackBy": [
+        "canonical-evidence-membership"
+      ],
       "unattributedReasons": []
     },
     {
       "family": "google-api-key",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "documented",
-      "nextProfile": "documented",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "canonical-evidence-membership"
+      ],
+      "heldBackBy": [
+        "canonical-evidence-membership"
+      ],
       "unattributedReasons": []
     },
     {
@@ -5387,12 +8720,16 @@
     {
       "family": "heroku-api-key-legacy",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "empirical",
-      "nextProfile": "empirical",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "canonical-evidence-membership"
+      ],
+      "heldBackBy": [
+        "canonical-evidence-membership"
+      ],
       "unattributedReasons": []
     },
     {
@@ -5574,12 +8911,16 @@
     {
       "family": "npm-token",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "documented",
-      "nextProfile": "documented",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "review-occurrence-identity"
+      ],
+      "heldBackBy": [
+        "review-occurrence-identity"
+      ],
       "unattributedReasons": []
     },
     {
@@ -5842,12 +9183,16 @@
     {
       "family": "sendgrid-token",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "documented",
-      "nextProfile": "documented",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "canonical-evidence-membership"
+      ],
+      "heldBackBy": [
+        "canonical-evidence-membership"
+      ],
       "unattributedReasons": []
     },
     {
@@ -5941,12 +9286,16 @@
     {
       "family": "stripe-token",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "documented",
-      "nextProfile": "documented",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "canonical-evidence-membership"
+      ],
+      "heldBackBy": [
+        "canonical-evidence-membership"
+      ],
       "unattributedReasons": []
     },
     {
@@ -6062,23 +9411,31 @@
     {
       "family": "twilio-api-key-secret",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "empirical",
-      "nextProfile": "empirical",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "canonical-evidence-membership"
+      ],
+      "heldBackBy": [
+        "canonical-evidence-membership"
+      ],
       "unattributedReasons": []
     },
     {
       "family": "twilio-auth-token",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "empirical",
-      "nextProfile": "empirical",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "canonical-evidence-membership"
+      ],
+      "heldBackBy": [
+        "canonical-evidence-membership"
+      ],
       "unattributedReasons": []
     },
     {
@@ -6173,8 +9530,8 @@
       },
       "next": {
         "pending": 5,
-        "provisional": 7,
-        "stable": 144,
+        "provisional": 25,
+        "stable": 126,
         "unsupported": 17
       }
     },
@@ -6185,35 +9542,24 @@
         "policy-qualified": 0
       },
       "next": {
-        "documented": 106,
-        "empirical": 38,
+        "documented": 92,
+        "empirical": 34,
         "policy-qualified": 0
       }
     }
   },
   "counterfactual": {
     "legacyStable": 127,
-    "nextStable": 127,
+    "nextStable": 116,
     "heldOnlyByMethods": 0,
     "heldByMethodsAndOthers": 0,
-    "heldWithoutMethods": 0
+    "heldWithoutMethods": 11
   },
-  "heldBy": {},
+  "heldBy": {
+    "canonical-evidence-membership": 10,
+    "review-occurrence-identity": 1
+  },
   "outcomeGroups": [
-    {
-      "scanner": "flare-redact",
-      "population": "public-evidence-snapshot",
-      "legacy": "control co-detected",
-      "next": "control flagged",
-      "count": 6,
-      "verdict": "explained",
-      "cause": "twin-scope-vocabulary",
-      "examples": [
-        "anthropic--anthropic-admin01-key-api01-prefix-twin",
-        "anthropic--anthropic-admin01-key-api03-prefix-twin",
-        "anthropic--anthropic-api01-key-admin01-prefix-twin"
-      ]
-    },
     {
       "scanner": "flare-redact",
       "population": "public-evidence-snapshot",
@@ -6233,13 +9579,13 @@
       "population": "public-evidence-snapshot",
       "legacy": "control co-detected",
       "next": "control flagged",
-      "count": 8,
+      "count": 4,
       "verdict": "explained",
       "cause": "twin-scope-vocabulary",
       "examples": [
-        "anthropic--anthropic-admin01-key-api03-prefix-twin",
-        "anthropic--anthropic-api01-key-api03-prefix-twin",
-        "cross-provider--elevenlabs-api-key-stripe-shaped-twin"
+        "mailgun--mailgun-api-key-triplet-merged-last-segments-twin",
+        "mailgun--mailgun-api-key-triplet-node-client-context-twin",
+        "mailgun--mailgun-api-key-triplet-python-client-context-twin"
       ]
     },
     {
@@ -6272,19 +9618,6 @@
     {
       "scanner": "openredaction",
       "population": "public-evidence-snapshot",
-      "legacy": "control co-detected",
-      "next": "control flagged",
-      "count": 2,
-      "verdict": "explained",
-      "cause": "twin-scope-vocabulary",
-      "examples": [
-        "anthropic--anthropic-api01-key-api03-prefix-twin",
-        "cross-provider--elevenlabs-api-key-stripe-test-shaped-twin"
-      ]
-    },
-    {
-      "scanner": "openredaction",
-      "population": "public-evidence-snapshot",
       "legacy": "control flagged",
       "next": "control co-detected",
       "count": 20,
@@ -6301,13 +9634,13 @@
       "population": "public-evidence-snapshot",
       "legacy": "control flagged",
       "next": "control flagged",
-      "count": 5,
+      "count": 4,
       "verdict": "explained",
       "cause": "twin-scope-vocabulary",
       "examples": [
         "aws--aws-secret-access-key-artifact-digest-actions-twin",
         "aws--aws-secret-access-key-equals-inside-twin",
-        "cross-provider--elevenlabs-api-key-stripe-shaped-twin"
+        "stripe--stripe-token-live-unicode-crlf-twin"
       ]
     },
     {
@@ -6315,27 +9648,12 @@
       "population": "public-evidence-snapshot",
       "legacy": "control co-detected",
       "next": "control flagged",
-      "count": 8,
+      "count": 2,
       "verdict": "explained",
       "cause": "twin-scope-vocabulary",
       "examples": [
-        "anthropic--anthropic-admin01-key-api01-prefix-twin",
-        "anthropic--anthropic-admin01-key-api03-prefix-twin",
-        "anthropic--anthropic-api01-key-admin01-prefix-twin"
-      ]
-    },
-    {
-      "scanner": "trufflehog",
-      "population": "public-evidence-snapshot",
-      "legacy": "control co-detected",
-      "next": "control flagged",
-      "count": 4,
-      "verdict": "explained",
-      "cause": "twin-scope-vocabulary",
-      "examples": [
-        "anthropic--anthropic-admin01-key-api03-prefix-twin",
-        "anthropic--anthropic-api01-key-admin01-prefix-twin",
-        "anthropic--anthropic-api01-key-api03-prefix-twin"
+        "mailgun--mailgun-api-key-triplet-merged-last-segments-twin",
+        "mailgun--mailgun-api-key-triplet-short-first-segment-twin"
       ]
     },
     {
@@ -6363,7 +9681,7 @@
       ],
       "pairs": 5790,
       "unmatchedLegacy": 0,
-      "unmatchedNext": 160,
+      "unmatchedNext": 659,
       "ambiguousLegacy": 0,
       "ambiguousNext": 0
     },
@@ -6405,7 +9723,7 @@
     },
     {
       "area": "review ledger entries outside the mapping",
-      "reason": "the mapped decisions are compared per peer in the review section; the methods run has a review queue keyed by canonical occurrence ids; the legacy review ledger is keyed by legacy ids, and a decision applies to a canonical occurrence only through benchmarks/support/public-review-ledger-map.json (same case, peer, disagreement property and bytes): 4268 of 10739 canonical occurrences are mapped (4268 of 4268 legacy differential entries), 6471 are occurrences of peers the legacy run never scanned (unreviewed, and not gate-bearing) and 0 are unmatched for another reason. The 8845 legacy mutation review entries have no canonical counterpart (the canonical review queue holds differential occurrences only) and are not compared."
+      "reason": "the mapped decisions are compared per peer in the review section; the methods run has a review queue keyed by canonical occurrence ids; the legacy review ledger is keyed by legacy ids, and a decision applies to a canonical occurrence only through benchmarks/support/public-review-ledger-map.json (same case, peer, disagreement property and bytes): 4268 of 11525 canonical occurrences are mapped (4268 of 4268 legacy differential entries), 6829 are occurrences of peers the legacy run never scanned (unreviewed, and not gate-bearing) and 428 are unmatched for another reason. The 8845 legacy mutation review entries have no canonical counterpart (the canonical review queue holds differential occurrences only) and are not compared."
     },
     {
       "area": "candidate-regression inputs and protected holdout",
@@ -6418,28 +9736,28 @@
   ],
   "summary": {
     "compared": 42611,
-    "equal": 42206,
-    "explained": 405,
+    "equal": 41990,
+    "explained": 621,
     "unexplained": 0,
     "byCause": {
-      "canonical-evidence-membership": 54,
+      "canonical-evidence-membership": 292,
       "legacy-id-rekey": 153,
-      "pending-not-scored": 35,
-      "policy-corpus-bounded": 12,
-      "review-occurrence-identity": 4,
-      "twin-scope-vocabulary": 147
+      "pending-not-scored": 31,
+      "policy-corpus-bounded": 10,
+      "review-occurrence-identity": 11,
+      "twin-scope-vocabulary": 124
     },
     "classes": {
-      "must-equal": 42206,
-      "expected-structural": 405,
+      "must-equal": 41990,
+      "expected-structural": 621,
       "unexplained": 0
     }
   },
   "recommendations": [
-    "Status: the legacy path reads 127 stable families and the new path 127. Held back (legacy-stable families the new path does not read stable): none. Not applied: nothing here changes a status.",
-    "Review ledger: 4142 of 10307 family-attributed differential occurrences of the methods run are settled by a legacy decision through the generated mapping; per peer, occurrences {\"openredaction\":3548,\"trufflehog\":2383,\"flare-redact\":2617,\"gitleaks\":1759}. The differential gate reads the peers named in benchmarks/support/population-policy.json (gitleaks, trufflehog); the other peers are measured and listed per family (families[].differential) and are not gate-bearing until reviewed. Applied by product policy (docs/decisions, #638); nothing here changes a status.",
+    "Status: the legacy path reads 127 stable families and the new path 116. Held back (legacy-stable families the new path does not read stable): 10 by canonical-evidence-membership; 1 by review-occurrence-identity. Not applied: nothing here changes a status.",
+    "Review ledger: 4142 of 10886 family-attributed differential occurrences of the methods run are settled by a legacy decision through the generated mapping; per peer, occurrences {\"openredaction\":3739,\"trufflehog\":2624,\"gitleaks\":1857,\"flare-redact\":2666}. The differential gate reads the peers named in benchmarks/support/population-policy.json (gitleaks, trufflehog); the other peers are measured and listed per family (families[].differential) and are not gate-bearing until reviewed. Applied by product policy (docs/decisions, #638); nothing here changes a status.",
     "Policy corpus: the T3 route floors read the 19-case policy corpus alone. Whether the floors, the corpus or the route change is a product policy decision. Not applied.",
-    "Twin scope: credential-eval scopes a twin by the twin's own family, and the snapshot gives a cross-provider twin none, so the engine reads a finding of another known detector as flagged where the legacy twin read it as co-detected (twin-scope-vocabulary). The adapter does not re-score it. The product carries those twins itself with their parent's family (the twin-scope-regressions category of the regression corpus, 6 public twins mapped by content); the engine reads each as co-detected, as the legacy path did, and the twin gate reads that verdict. The public population's own verdict is unchanged and listed per family (gates[].twinFailuresScopedElsewhere). A request that credential-evidence give a cross-provider twin its parent's family would remove the difference at the source; it is not needed for the qualification.",
+    "Twin scope: credential-eval scopes a twin by the twin's own family, and the snapshot gives a cross-provider twin none, so the engine reads a finding of another known detector as flagged where the legacy twin read it as co-detected (twin-scope-vocabulary). The adapter does not re-score it. The product carries those twins itself with their parent's family (the twin-scope-regressions category of the regression corpus, 0 public twins mapped by content); the engine reads each as co-detected, as the legacy path did, and the twin gate reads that verdict. The public population's own verdict is unchanged and listed per family (gates[].twinFailuresScopedElsewhere). A request that credential-evidence give a cross-provider twin its parent's family would remove the difference at the source; it is not needed for the qualification.",
     "Re-key: the review-ledger decisions are mapped to canonical occurrence ids by content (public-review-ledger-map.json). The legacy-id re-key of known gaps and disputed properties (qualification-inputs.json populations[0].rekey) with the evidence release id map is still open."
   ]
 }

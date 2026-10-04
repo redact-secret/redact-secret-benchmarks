@@ -7,8 +7,9 @@
  */
 import type { RunLoad } from '../services/run';
 import type { CredentialPipeline } from '../services/credential-source';
-import type { PipelineStampProps } from '../components/qualification/types';
-import { count } from './format';
+import type { PipelineStampProps, ReviewDisclosureProps } from '../components/qualification/types';
+import type { ReviewDisclosureData } from '../services/review-state';
+import { count, int } from './format';
 
 /** Every state carries the stamp that names the pipeline behind the page, so no number is shown without it (#608). */
 export type RunState =
@@ -25,6 +26,16 @@ const short = (digest: string): string => `${digest.slice(0, 19)}…`;
  * qualification. `builtFrom` is the pipeline the page was built from; it differs from the authority only for a page that stays on the
  * legacy files as the oracle (the comparison pages).
  */
+/** The owner's words (decision 2026-10-04-accept-snapshot-2026-10-04-3): the count comes from the data, the label and the note are fixed. */
+export function resolveReviewDisclosure(data: ReviewDisclosureData | undefined): ReviewDisclosureProps | undefined {
+  if (!data) return undefined;
+  return {
+    labels: { ko: '메인테이너 검토 (독립 검토 대기)', en: 'Maintainer-reviewed (independent review pending)' },
+    count: `${count(data.maintainerOnly, 'fixture')} of the ${int(data.total)} in evidence release ${data.evidenceRelease} carry this label. They are counted in the numbers on this page.`,
+    note: 'Passed the project’s own verification (source evidence, automated checks, recorded counter-arguments); not yet independently reviewed.',
+  };
+}
+
 export function resolvePipelineStamp(pipeline: CredentialPipeline, builtFrom: 'legacy' | 'new' = pipeline.authority): PipelineStampProps {
   const authorityFact = { term: 'Authority', value: pipeline.authority };
   const link = { label: 'Every population and its qualification', href: '/evaluation/qualification/' };
@@ -62,6 +73,7 @@ export function resolvePipelineStamp(pipeline: CredentialPipeline, builtFrom: 'l
       { term: 'Authorised for', value: view.release ?? '' },
     ],
     link,
+    ...(pipeline.reviewDisclosure ? { disclosure: resolveReviewDisclosure(pipeline.reviewDisclosure) } : {}),
   };
 }
 

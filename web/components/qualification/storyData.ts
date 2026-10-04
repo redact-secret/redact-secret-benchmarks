@@ -1,5 +1,5 @@
 /** Synthetic story data: made-up populations, families, digests and counts. Nothing here is a ledger value. */
-import type { CaseRowProps, CaseSection, CountsRow, QualificationCasesProps, FamilyRow, GapRow, PopulationRow, QualificationFamilyProps, QualificationOverviewProps, PipelineStampProps, QualificationUnavailableProps, ScannerRow } from './types';
+import type { CaseRowProps, CaseSection, CountsRow, QualificationCasesProps, FamilyRow, GapRow, PopulationRow, QualificationFamilyProps, QualificationOverviewProps, PipelineStampProps, ReviewDisclosureProps, QualificationUnavailableProps, ScannerRow } from './types';
 
 export const populationRows: PopulationRow[] = [
   { id: 'evidence-population', role: 'floors and gates', runClass: 'public', evidence: 'example-evidence · snapshot-0000.00.00', corpusDigest: 'sha256:aaaaaaaaaaaa', configHash: 'sha256:cccccccccccc', semanticDigest: 'sha256:111111111111', engine: 'example-eval 0.0.1 · protocol 1', methods: 'None run', cases: '120' },
@@ -193,6 +193,11 @@ export const pipelineStampNew: PipelineStampProps = {
     { term: 'Evidence', value: 'example-evidence · snapshot-0000.00.00' }, { term: 'Run', value: 'sha256:111111111111', code: true },
   ],
   link: { label: 'Every population and its qualification', href: '/evaluation/qualification/' },
+};
+export const reviewDisclosure: ReviewDisclosureProps = {
+  labels: { ko: '메인테이너 검토 (독립 검토 대기)', en: 'Maintainer-reviewed (independent review pending)' },
+  count: '7 fixtures of the 100 in evidence release snapshot-0000.00.00 carry this label. They are counted in the numbers on this page.',
+  note: 'Passed the project’s own verification (source evidence, automated checks, recorded counter-arguments); not yet independently reviewed.',
 };
 export const pipelineStampLegacy: PipelineStampProps = {
   pipeline: 'legacy', role: 'authority', title: 'Built from the legacy pipeline',

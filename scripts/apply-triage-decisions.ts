@@ -27,6 +27,15 @@ const summary = {
   byRule: tally(decided, r => r.decision.rule.replace(/^assertion\.follows-seed:.*/, 'assertion.follows-seed')),
   restingOnMaintainerOnly: { rootCauses: decided.filter(r => r.restsOnMaintainerOnlyDecision).length, byClassification: tally(decided.filter(r => r.restsOnMaintainerOnlyDecision), r => r.decision.classification ?? '(open)') },
   ledgerProposals: tally(decided.filter(r => r.decision.ledger), r => r.decision.ledger!.proposal),
+  // What the proposals would mean per product family if they were ledger rows. They are NOT rows: no status moves here, and a family also has to clear its other gates.
+  gateProposalsByProductFamily: (() => {
+    const m: Record<string, Record<string, number>> = {};
+    for (const r of decided.filter(x => x.decision.ledger)) for (const f of ((r as unknown as { productFamilies?: string[] }).productFamilies?.length ? (r as unknown as { productFamilies: string[] }).productFamilies : ['(no product family)'])) {
+      const row = (m[f] ??= { occurrences: 0, resolved: 0, 'not-assertable': 0, open: 0 });
+      row.occurrences += occ(r); row[r.decision.ledger!.proposal] += occ(r);
+    }
+    return Object.fromEntries(Object.entries(m).sort(([a], [b]) => (a < b ? -1 : 1)));
+  })(),
   openRootCauses: decided.filter(r => r.decision.status === 'open').length,
 };
 const out = { schema: 'redact-secret/triage-decisions/v1', queueSource: queue.source, identity: queue.identity, disclosure: queue.disclosure, candidate, summary,
@@ -44,6 +53,7 @@ if (option('out-md')) {
     '## By classification', '', t(['Classification', 'Root causes'], Object.entries(summary.byClassification)), '',
     '## By kind, classification and status', '', t(['Kind | classification | status', 'Root causes'], Object.entries(summary.byKindAndClassification)), '',
     '## By rule', '', t(['Rule', 'Root causes'], Object.entries(summary.byRule)), '',
+    '## Gate proposals by product family (not ledger rows; no status moves)', '', t(['Product family', 'Occurrences', 'Proposed resolved', 'Proposed not-assertable', 'Stay open'], Object.entries(summary.gateProposalsByProductFamily).map(([f, v]) => [f, v.occurrences, v.resolved, v['not-assertable'], v.open])), '',
     `Open root causes: ${summary.openRootCauses}. Ledger proposals: ${JSON.stringify(summary.ledgerProposals)}.`, '',
   ].join('\n'));
 }

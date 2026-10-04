@@ -1,0 +1,156 @@
+{
+ "commit": "0ecf3e5914a0bff1715e9eab49a9d40d9b22d518",
+ "pr": "redact-secret/redact-secret#1202",
+ "build": "unpublished: npm pack of core, darwin-arm64 node addon and wasm built from the commit (never published)",
+ "tarballSha256": {
+  "core": "8e281e2932b245c8d238f52076c08e6c00859edafdb3e1e202500bc176a73cec",
+  "nodeDarwinArm64": "02db5fa03077dd402df96425addb020480fdd9f551f8a12ea8bbf219a01f7dd9",
+  "wasm": "d47c9ed1f76b1cc84c88aed64413b0eae4c83213bc5eea7510e72899858da48f"
+ },
+ "replay": {
+  "engine": "credential-eval v0.1.0-alpha.5 (c1802a6b)",
+  "runClass": "exploratory (the official class refuses an unpinned build)",
+  "platform": "darwin-arm64",
+  "scanners": "redact-secret only (peers not run)",
+  "methods": "not run (plain only)",
+  "cases": 6449,
+  "controlBuild": "published @redact-secret/core 0.1.0-beta.13, same machine, same settings",
+  "artifactSha256": {
+   "beta13": "086dda7e9362c01391f2c0905345aff344c1110b0731fb875d537301bd1dea36",
+   "candidate": "97d43ca33465dfe73f9d93730b14a8004461258af83172ad467f7a5b536ac9a5"
+  }
+ },
+ "differingCases": [
+  {
+   "case_id": "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters",
+   "beta13": {
+    "measurement": {
+     "type": "positive",
+     "span_outcomes": [
+      "MISS"
+     ],
+     "leaked_bytes": 17,
+     "collateral_bytes": 0
+    },
+    "actual": []
+   },
+   "candidate": {
+    "measurement": {
+     "type": "positive",
+     "span_outcomes": [
+      "EXACT"
+     ],
+     "leaked_bytes": 0,
+     "collateral_bytes": 0
+    },
+    "actual": [
+     {
+      "start": 14,
+      "end": 31,
+      "family": "connection-string",
+      "action": "redact"
+     }
+    ]
+   }
+  }
+ ],
+ "fixed": [
+  "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters"
+ ],
+ "regressed": [],
+ "stillFailing": [
+  "authored-provider-neutral--pytest-fake-fixtures",
+  "authored-provider-neutral--terraform-apply-sensitive",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-json",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-url",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-three-layers-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-unpadded-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-padded-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-json",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-url",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-in-url",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-of-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-of-hex-lower-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-mixed-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-upper-in-env",
+  "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-upper-in-json",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-json",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-url",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-three-layers-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-json",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-url",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+  "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-in-url",
+  "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-of-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-of-hex-lower-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-hex-mixed-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-hex-upper-in-env",
+  "base64-hex-representation-projections--generic-literal-padding-edge-hex-upper-in-json",
+  "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-json",
+  "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-url",
+  "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-three-layers-in-env",
+  "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+  "base64-hex-representation-projections--sendgrid-key-hex-lower-in-env",
+  "base64-hex-representation-projections--sendgrid-key-hex-lower-in-url",
+  "base64-hex-representation-projections--sendgrid-key-hex-lower-of-base64-standard-padded-in-env",
+  "base64-hex-representation-projections--sendgrid-key-hex-lower-of-hex-lower-in-env",
+  "base64-hex-representation-projections--sendgrid-key-hex-mixed-in-env",
+  "base64-hex-representation-projections--sendgrid-key-hex-upper-in-env",
+  "base64-hex-representation-projections--sendgrid-key-hex-upper-in-json",
+  "cross-provider--base62-bearer-twin",
+  "cross-provider--base62-generic-key-twin",
+  "elevenlabs--elevenlabs-api-key-residency-suffix",
+  "exa--exa-api-key-js-positional",
+  "exa--exa-api-key-python-positional",
+  "exa--exa-api-key-your-key-here-placeholder",
+  "http-auth-carriers-authored--basic-empty-password",
+  "http-auth-carriers-authored--basic-rfc-published-example",
+  "http-auth-carriers-authored--basic-token-split-by-space",
+  "http-auth-carriers-authored--cookie-header-session-id-among-preferences",
+  "http-auth-carriers-authored--set-cookie-session-id-with-attributes",
+  "line-break-and-fragment-authored--key-split-across-javascript-added-literals",
+  "line-break-and-fragment-authored--key-split-across-python-adjacent-literals",
+  "line-break-and-fragment-authored--key-split-after-prefix-by-shell-continuation",
+  "line-break-and-fragment-authored--key-split-before-last-character-by-shell-continuation",
+  "line-break-and-fragment-authored--key-split-by-backslash-crlf-continuation",
+  "line-break-and-fragment-authored--key-split-by-backslash-newline-in-single-quotes",
+  "line-break-and-fragment-authored--key-split-by-double-quoted-shell-continuation",
+  "line-break-and-fragment-authored--key-split-by-javascript-literal-continuation",
+  "line-break-and-fragment-authored--key-split-by-literal-crlf",
+  "line-break-and-fragment-authored--key-split-by-literal-line-feed",
+  "line-break-and-fragment-authored--key-split-by-python-literal-continuation",
+  "line-break-and-fragment-authored--key-split-by-unquoted-shell-continuation",
+  "line-break-and-fragment-authored--key-split-in-three-javascript-added-literals",
+  "line-break-and-fragment-authored--key-with-literal-backslash-n-in-log-line",
+  "line-break-and-fragment-authored--key-wrapped-in-markdown-code-span",
+  "line-break-and-fragment-authored--key-wrapped-in-markdown-paragraph",
+  "mailgun--mailgun-api-key-triplet-merged-last-segments-twin",
+  "mailgun--mailgun-api-key-triplet-short-first-segment-twin",
+  "structured-credential-files-authored--documented-template-placeholders",
+  "structured-credential-files-authored--kubeconfig-client-key-data-encoded-pem",
+  "structured-credential-files-authored--kubeconfig-four-users-two-inline-secrets",
+  "structured-credential-files-authored--kubeconfig-inline-bearer-token",
+  "structured-credential-files-authored--netrc-quoted-password-with-spaces",
+  "structured-credential-files-authored--netrc-single-line-entry",
+  "structured-credential-files-authored--netrc-three-line-entry",
+  "structured-credential-files-authored--netrc-two-machines-and-default",
+  "structured-credential-files-authored--service-account-key-file-minified-json",
+  "structured-credential-files-authored--service-account-key-file-pretty-json",
+  "twilio-compound-credentials-authored--api-key-sid-alone",
+  "url-credential-boundaries-authored--cloud-storage-signed-url-in-prose",
+  "url-credential-boundaries-authored--s3-presigned-url-in-prose",
+  "url-credential-boundaries-authored--sas-token-in-config-line"
+ ],
+ "scope": "Plain measurement of the product scanner on the identical snapshot only. Methods (metamorphic, mutation, differential) were not replayed on the candidate, so no gate or status effect is claimed; the candidate effect is reported apart from beta.13."
+}

@@ -2,7 +2,7 @@
 
 Candidate: `@redact-secret/core` built from redact-secret 1e45cecf674344726e59bd35a37f28ba1966a06e (redact-secret/redact-secret#1202, redact-secret/redact-secret#1204), **unpublished**, exploratory/internal. Control: published 0.1.0-beta.13 (official-runs-37220835061). Same engine v0.1.0-alpha.5, evidence snapshot-2026.10.04.3, peers and configuration; only the product build differs.
 
-**Worsened: YES, see the regressed rows.** This is a measurement, not a decision: no ledger row, status or evidence expectation changes.
+**Worsened: no.** This is a measurement, not a decision: no ledger row, status or evidence expectation changes.
 
 | Population | Cases | Fixed | Regressed | Changed | Unchanged | Still failing | Peers identical | Repeat runs equal (control / candidate) |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
@@ -12,7 +12,7 @@ Candidate: `@redact-secret/core` built from redact-secret 1e45cecf674344726e59bd
 
 ## Methods run (floors population)
 
-Assertions of the product: control 47632, candidate 47632; fixed 32, regressed 0, still failing 1352. Review occurrences: control 11525, candidate 11520 (added 8, removed 13). Generated variant cases changed: 24 (fixed 24, regressed 0). Repeat runs equal: true / true.
+Assertions of the product: control 47632, candidate 47632; fixed 32, regressed 0, still failing 1352. Review occurrences: control 11525, candidate 11520 (added 8, of which 8 on cases the candidate fixed and 0 elsewhere; removed 13). Generated variant cases changed: 24 (fixed 24, regressed 0). Repeat runs equal: true / true.
 
 ## public-evidence-snapshot: differing cases
 

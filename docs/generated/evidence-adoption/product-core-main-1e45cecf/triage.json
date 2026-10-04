@@ -97,7 +97,7 @@
    "evidence": "snapshot-2026.10.04.3",
    "scope": "plain, methods (floors population), policy and regression populations; every scanner and the engine configuration as the control; only the product build differs"
   },
-  "worsened": true,
+  "worsened": false,
   "fixed": [
    "authored-provider-neutral--terraform-apply-sensitive",
    "exa--exa-api-key-your-key-here-placeholder",
@@ -585,7 +585,9 @@
       "authored-provider-neutral--terraform-apply-sensitive--differential|trufflehog|reference-only|canonical||differential",
       "authored-provider-neutral--terraform-apply-sensitive--differential|gitleaks|reference-only|canonical||differential",
       "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|flare-redact|peer-only|canonical||differential"
-     ]
+     ],
+     "addedOnFixedCases": 8,
+     "addedElsewhere": 0
     },
     "variantCases": {
      "changed": 24,

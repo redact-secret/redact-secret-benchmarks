@@ -1,10 +1,11 @@
 import { readFileSync } from 'node:fs';
 import Ajv2020 from 'ajv/dist/2020.js';
 import { canonical, parseKeepingNumbers, sha256Digest } from './canonical.ts';
+import { canonicalDigest, parseBuffer } from './large-json.ts';
 
 /**
  * A consumer of credential-eval RunArtifact v1 (#605). It reads the artifact only through its published schema
- * (schemas/credential-eval-run-artifact-v1.json, vendored from credential-eval tag v0.1.0-alpha.1): it imports no
+ * (schemas/credential-eval-run-artifact-v1.json, vendored from credential-eval tag v0.1.0-alpha.1; v1.2 additions are optional): it imports no
  * credential-eval code, never re-scores a case and never reads `non_semantic` as evidence
  * (credential-eval docs/qualification-boundary.md section 4).
  */
@@ -29,8 +30,10 @@ export interface ScannerIdentity {
   build?: 'released' | 'candidate' | null; provenance?: { network?: string; components?: { kind: string; name: string; version?: string; sha256?: string; integrity?: string }[] } | null;
 }
 export interface Assertion { case_id: string; method: string; assertion: string; status: string; [key: string]: unknown }
+/** Completeness report (RunArtifact v1.2): cases a `complete` scanner could not map to ranges. They are in no denominator and never a miss. */
+export interface UnmeasuredCase { case_id: string; reason: string }
 export interface ScannerRun {
-  scanner: string; status: string; cases: CaseResult[]; assertions?: Assertion[];
+  scanner: string; status: string; cases: CaseResult[]; assertions?: Assertion[]; unmeasured_cases?: UnmeasuredCase[];
   aggregates: { groups: Record<string, unknown>; by_target?: Record<string, unknown>; resolution?: Record<string, unknown> };
   replays?: { count: number; agreed?: boolean } | null;
 }
@@ -59,6 +62,8 @@ function validator() {
 
 export function runArtifactSchemaDigest(): string { return sha256Digest(readFileSync(RUN_ARTIFACT_SCHEMA_PATH)); }
 
+/** Above this size an artifact is read from its bytes, never converted to one string. */
+export const LARGE_ARTIFACT_BYTES = 200 * 1024 * 1024;
 export interface ReadArtifact { artifact: RunArtifact; artifactDigest: string; semanticDigest: string }
 
 /** Semantic digest as the engine computes it: canonical JSON of the artifact with `non_semantic` cleared to its default `{}`. */
@@ -69,16 +74,18 @@ export function semanticDigestOf(text: string): string {
 }
 
 /** Check the schema tag first, then validate the whole document; refuse anything unknown (consumer obligation 1). */
-export function readRunArtifact(bytes: Buffer): ReadArtifact {
-  const text = bytes.toString('utf8');
-  const artifact = JSON.parse(text) as RunArtifact;
+export function readRunArtifact(bytes: Buffer, options: { forceBytes?: boolean } = {}): ReadArtifact {
+  // A document close to the string limit (about 512 MiB; the alpha.3 methods artifact is more than 700 MB) is read from the bytes.
+  const large = options.forceBytes || bytes.length > LARGE_ARTIFACT_BYTES;
+  const text = large ? '' : bytes.toString('utf8');
+  const artifact = (large ? parseBuffer(bytes) : JSON.parse(text)) as RunArtifact;
   if (artifact?.schema !== RUN_ARTIFACT_SCHEMA_TAG) throw new Error(`Unsupported run artifact schema tag; expected ${RUN_ARTIFACT_SCHEMA_TAG}`);
   const validate = validator();
   if (!validate(artifact)) {
     const first = (validate.errors ?? []).slice(0, 3).map(e => `${e.instancePath || '/'} ${e.message}`).join('; ');
     throw new Error(`Run artifact does not match the v1 schema: ${first}`);
   }
-  return { artifact, artifactDigest: sha256Digest(bytes), semanticDigest: semanticDigestOf(text) };
+  return { artifact, artifactDigest: sha256Digest(bytes), semanticDigest: large ? `sha256:${canonicalDigest(bytes)}` : semanticDigestOf(text) };
 }
 
 /** What a population registry pins about the evidence an artifact must name (credential-eval multi-corpus-qualification.md section 6, rule 2). */
@@ -164,4 +171,13 @@ export function familyCounts(run: ScannerRun): Map<string, FamilyCounts> {
     countCase(out.get(key)!, c, index);
   }
   return out;
+}
+
+/** Per scanner, how many cases (or, in a methods artifact, generated variants) it could not measure, and why. Absent `unmeasured_cases` is zero. Never read as zero detections. */
+export function unmeasuredByScanner(artifact: RunArtifact): { scanner: string; unmeasured: number; reasons: Record<string, number> }[] {
+  return artifact.scanners.map(run => {
+    const reasons: Record<string, number> = {};
+    for (const u of run.unmeasured_cases ?? []) reasons[u.reason] = (reasons[u.reason] ?? 0) + 1;
+    return { scanner: run.scanner, unmeasured: run.unmeasured_cases?.length ?? 0, reasons: Object.fromEntries(Object.entries(reasons).sort(([a], [b]) => (a < b ? -1 : 1))) };
+  }).sort((a, b) => (a.scanner < b.scanner ? -1 : 1));
 }

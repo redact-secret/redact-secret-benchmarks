@@ -37,7 +37,16 @@ export function releaseIdentityProblems({ tag, expectedManifestDigest, manifestB
   if (identity.revision !== `records-tree-sha256:${manifest.sourceRevision?.recordsTree?.digest}`) problems.push('snapshot revision differs from the manifest records tree');
   if (identity.evidence_schema !== `credential-evidence/schema/${manifest.schemaRevision}`) problems.push('snapshot evidence schema differs from the manifest schema revision');
   if (!DIGEST.test(identity.corpus_digest ?? '')) problems.push('snapshot identity has no corpus_digest');
-  if (!Array.isArray(snapshot.cases) || snapshot.cases.length !== manifest.fixtures?.count) problems.push(`snapshot has ${snapshot.cases?.length} cases, the manifest counts ${manifest.fixtures?.count}`);
+  // A release may declare cases its eval export leaves out (evalExport.notExported, e.g. invalid UTF-8): the snapshot then holds
+  // `exported`, and materialized = exported + notExported.total must equal the manifest's fixture count.
+  const exp = manifest.evalExport;
+  let expectedCases = manifest.fixtures?.count;
+  if (exp) {
+    expectedCases = exp.exported;
+    if (exp.materialized !== manifest.fixtures?.count) problems.push(`evalExport materialized ${exp.materialized}, the manifest counts ${manifest.fixtures?.count}`);
+    if (exp.exported + (exp.notExported?.total ?? 0) !== exp.materialized) problems.push(`evalExport exported ${exp.exported} + not exported ${exp.notExported?.total ?? 0} is not ${exp.materialized}`);
+  }
+  if (!Array.isArray(snapshot.cases) || snapshot.cases.length !== expectedCases) problems.push(`snapshot has ${snapshot.cases?.length} cases, the manifest counts ${expectedCases}`);
   else if (new Set(snapshot.cases.map(c => c.id)).size !== snapshot.cases.length) problems.push('snapshot case ids are not unique');
   return problems;
 }

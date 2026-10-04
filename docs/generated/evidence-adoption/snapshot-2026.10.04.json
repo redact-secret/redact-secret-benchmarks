@@ -1,0 +1,5797 @@
+{
+  "schema": "redact-secret/evidence-adoption-change-report/v1",
+  "evidenceRelease": "snapshot-2026.10.04",
+  "previous": {
+    "evidenceRelease": "snapshot-2026.10.01.2",
+    "manifestDigest": "sha256:2557a72ae8dec3ca6d734a6c87b6db9cb4881543541693a4555fdfd9f7ba26d8"
+  },
+  "adoptionKey": "sha256:9869634aef42001110c9d923ddd898e2347e8e5744508f471822763f701e3f45",
+  "scope": "Corpus evidence plus an engine bump: the scanner pins and configuration files are unchanged, but the replay runs on credential-eval v0.1.0-alpha.3 (previously v0.1.0-alpha.1), a product-version effect reported apart from the corpus change in replay.engineEffect and replay.corpusEffect.",
+  "diff": {
+    "cases": {
+      "old": 5950,
+      "new": 6449,
+      "added": 499,
+      "removed": 0,
+      "changed": 235,
+      "unchanged": 5715
+    },
+    "added": [
+      "authored-conflicting-field-label-semantics--google-key-shape-under-firebase-config-label",
+      "authored-conflicting-field-label-semantics--google-key-shape-under-generative-api-env-label",
+      "authored-conflicting-field-label-semantics--google-key-shape-under-json-api-key-field",
+      "authored-conflicting-field-label-semantics--stripe-env-repeated-key-label-order-swapped",
+      "authored-conflicting-field-label-semantics--stripe-keys-array-repeated-key-label",
+      "authored-conflicting-field-label-semantics--stripe-nested-key-label-under-two-parents",
+      "authored-conflicting-field-label-semantics--stripe-publishable-under-client-secret-field",
+      "authored-conflicting-field-label-semantics--stripe-publishable-under-id-field",
+      "authored-conflicting-field-label-semantics--stripe-publishable-under-publishable-env-label",
+      "authored-conflicting-field-label-semantics--stripe-publishable-under-secret-key-env-label",
+      "authored-conflicting-field-label-semantics--stripe-secret-beside-public-visibility-flag",
+      "authored-conflicting-field-label-semantics--stripe-secret-under-name-field",
+      "authored-conflicting-field-label-semantics--stripe-secret-under-nested-display-label",
+      "authored-conflicting-field-label-semantics--stripe-secret-under-public-env-label",
+      "authored-conflicting-field-label-semantics--stripe-secret-under-publishable-label",
+      "authored-conflicting-field-label-semantics--supabase-publishable-under-description-field",
+      "authored-conflicting-field-label-semantics--supabase-publishable-under-public-env-label",
+      "authored-conflicting-field-label-semantics--supabase-publishable-under-service-role-env-label",
+      "authored-prefixless-key-shape-discrimination--git-commit-reference",
+      "authored-prefixless-key-shape-discrimination--hex-api-key-and-commit-name",
+      "authored-prefixless-key-shape-discrimination--hex-auth-token-and-trace-id",
+      "authored-prefixless-key-shape-discrimination--legacy-uuid-key-and-request-id",
+      "authored-prefixless-key-shape-discrimination--request-id-header-uuid",
+      "authored-prefixless-key-shape-discrimination--sdk-bump-commit-line",
+      "authored-prefixless-key-shape-discrimination--trace-context-header",
+      "authored-prefixless-key-shape-discrimination--uuid-under-generic-api-key-name",
+      "authored-prefixless-key-shape-discrimination--x-api-key-unattributed-host",
+      "aws-compound-credentials-authored--identifier-alone",
+      "aws-compound-credentials-authored--pair-credentials-file",
+      "aws-compound-credentials-authored--pair-secret-before-identifier-json",
+      "aws-compound-credentials-authored--pair-separated-lines-repeated-identifier",
+      "aws-compound-credentials-authored--secret-without-identifier-named-field",
+      "aws-compound-credentials-authored--session-token-alone",
+      "aws-compound-credentials-authored--temporary-triple-env",
+      "aws-compound-credentials-authored--temporary-triple-token-first-json",
+      "base64-hex-representation-bases--empty-input-sha256-digest-base",
+      "base64-hex-representation-bases--generic-literal-alphabet-edge-base",
+      "base64-hex-representation-bases--generic-literal-padding-edge-base",
+      "base64-hex-representation-bases--public-json-document-base",
+      "base64-hex-representation-bases--public-sentence-base",
+      "base64-hex-representation-bases--sendgrid-key-base",
+      "base64-hex-representation-bases--sendgrid-redacted-mask-base",
+      "base64-hex-representation-projections--empty-input-sha256-digest-base64-standard-padded-in-env",
+      "base64-hex-representation-projections--empty-input-sha256-digest-base64-url-safe-unpadded-in-json",
+      "base64-hex-representation-projections--empty-input-sha256-digest-hex-lower-in-env",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-env",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-json",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-url",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-three-layers-in-env",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-unpadded-in-env",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-padded-in-env",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-env",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-json",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-url",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-in-env",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-in-url",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-of-base64-standard-padded-in-env",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-of-hex-lower-in-env",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-mixed-in-env",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-upper-in-env",
+      "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-upper-in-json",
+      "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-env",
+      "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-json",
+      "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-url",
+      "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-three-layers-in-env",
+      "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-env",
+      "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-json",
+      "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-url",
+      "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+      "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+      "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-in-env",
+      "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-in-url",
+      "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-of-base64-standard-padded-in-env",
+      "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-of-hex-lower-in-env",
+      "base64-hex-representation-projections--generic-literal-padding-edge-hex-mixed-in-env",
+      "base64-hex-representation-projections--generic-literal-padding-edge-hex-upper-in-env",
+      "base64-hex-representation-projections--generic-literal-padding-edge-hex-upper-in-json",
+      "base64-hex-representation-projections--public-json-document-base64-standard-padded-in-env",
+      "base64-hex-representation-projections--public-json-document-base64-url-safe-unpadded-in-json",
+      "base64-hex-representation-projections--public-json-document-hex-lower-in-env",
+      "base64-hex-representation-projections--public-sentence-base64-standard-padded-in-env",
+      "base64-hex-representation-projections--public-sentence-base64-url-safe-unpadded-in-json",
+      "base64-hex-representation-projections--public-sentence-hex-lower-in-env",
+      "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-env",
+      "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-json",
+      "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-url",
+      "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-three-layers-in-env",
+      "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+      "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+      "base64-hex-representation-projections--sendgrid-key-hex-lower-in-env",
+      "base64-hex-representation-projections--sendgrid-key-hex-lower-in-url",
+      "base64-hex-representation-projections--sendgrid-key-hex-lower-of-base64-standard-padded-in-env",
+      "base64-hex-representation-projections--sendgrid-key-hex-lower-of-hex-lower-in-env",
+      "base64-hex-representation-projections--sendgrid-key-hex-mixed-in-env",
+      "base64-hex-representation-projections--sendgrid-key-hex-upper-in-env",
+      "base64-hex-representation-projections--sendgrid-key-hex-upper-in-json",
+      "base64-hex-representation-projections--sendgrid-redacted-mask-base64-standard-padded-in-env",
+      "base64-hex-representation-projections--sendgrid-redacted-mask-base64-url-safe-unpadded-in-json",
+      "base64-hex-representation-projections--sendgrid-redacted-mask-hex-lower-in-env",
+      "benign-control-and-near-neighbor-bases-authored--environment-interpolation-reference-base",
+      "benign-control-and-near-neighbor-bases-authored--kubernetes-secret-key-reference-base",
+      "benign-control-and-near-neighbor-bases-authored--personal-data-contact-line-base",
+      "benign-control-and-near-neighbor-bases-authored--prefix-prose-base",
+      "benign-control-and-near-neighbor-bases-authored--publishable-key-under-matching-label-base",
+      "benign-control-and-near-neighbor-bases-authored--regular-expression-source-base",
+      "benign-control-and-near-neighbor-bases-authored--secret-after-personal-data-contact-line-base",
+      "benign-control-and-near-neighbor-bases-authored--secret-after-prefix-prose-base",
+      "benign-control-and-near-neighbor-bases-authored--secret-beside-publishable-under-one-label-base",
+      "benign-control-and-near-neighbor-bases-authored--secret-literal-beside-kubernetes-reference-shape-base",
+      "benign-control-and-near-neighbor-bases-authored--secret-literal-in-reference-position-base",
+      "benign-control-and-near-neighbor-bases-authored--secret-literal-where-the-pattern-was-base",
+      "benign-control-and-near-neighbor-projections-generated--environment-interpolation-reference-in-english-prose",
+      "benign-control-and-near-neighbor-projections-generated--environment-interpolation-reference-in-korean-prose",
+      "benign-control-and-near-neighbor-projections-generated--environment-interpolation-reference-in-markdown-fence",
+      "benign-control-and-near-neighbor-projections-generated--kubernetes-secret-key-reference-in-english-prose",
+      "benign-control-and-near-neighbor-projections-generated--kubernetes-secret-key-reference-in-korean-prose",
+      "benign-control-and-near-neighbor-projections-generated--kubernetes-secret-key-reference-in-markdown-fence",
+      "benign-control-and-near-neighbor-projections-generated--personal-data-contact-line-in-english-prose",
+      "benign-control-and-near-neighbor-projections-generated--personal-data-contact-line-in-korean-prose",
+      "benign-control-and-near-neighbor-projections-generated--personal-data-contact-line-in-markdown-fence",
+      "benign-control-and-near-neighbor-projections-generated--prefix-prose-in-english-prose",
+      "benign-control-and-near-neighbor-projections-generated--prefix-prose-in-korean-prose",
+      "benign-control-and-near-neighbor-projections-generated--prefix-prose-in-markdown-fence",
+      "benign-control-and-near-neighbor-projections-generated--publishable-key-under-matching-label-in-english-prose",
+      "benign-control-and-near-neighbor-projections-generated--publishable-key-under-matching-label-in-korean-prose",
+      "benign-control-and-near-neighbor-projections-generated--publishable-key-under-matching-label-in-markdown-fence",
+      "benign-control-and-near-neighbor-projections-generated--regular-expression-source-in-english-prose",
+      "benign-control-and-near-neighbor-projections-generated--regular-expression-source-in-korean-prose",
+      "benign-control-and-near-neighbor-projections-generated--regular-expression-source-in-markdown-fence",
+      "benign-control-and-near-neighbor-projections-generated--secret-after-personal-data-contact-line-in-english-prose",
+      "benign-control-and-near-neighbor-projections-generated--secret-after-personal-data-contact-line-in-korean-prose",
+      "benign-control-and-near-neighbor-projections-generated--secret-after-personal-data-contact-line-in-markdown-fence",
+      "benign-control-and-near-neighbor-projections-generated--secret-after-prefix-prose-in-english-prose",
+      "benign-control-and-near-neighbor-projections-generated--secret-after-prefix-prose-in-korean-prose",
+      "benign-control-and-near-neighbor-projections-generated--secret-after-prefix-prose-in-markdown-fence",
+      "benign-control-and-near-neighbor-projections-generated--secret-beside-publishable-under-one-label-in-english-prose",
+      "benign-control-and-near-neighbor-projections-generated--secret-beside-publishable-under-one-label-in-korean-prose",
+      "benign-control-and-near-neighbor-projections-generated--secret-beside-publishable-under-one-label-in-markdown-fence",
+      "benign-control-and-near-neighbor-projections-generated--secret-literal-beside-kubernetes-reference-shape-in-english-prose",
+      "benign-control-and-near-neighbor-projections-generated--secret-literal-beside-kubernetes-reference-shape-in-korean-prose",
+      "benign-control-and-near-neighbor-projections-generated--secret-literal-beside-kubernetes-reference-shape-in-markdown-fence",
+      "benign-control-and-near-neighbor-projections-generated--secret-literal-in-reference-position-in-english-prose",
+      "benign-control-and-near-neighbor-projections-generated--secret-literal-in-reference-position-in-korean-prose",
+      "benign-control-and-near-neighbor-projections-generated--secret-literal-in-reference-position-in-markdown-fence",
+      "benign-control-and-near-neighbor-projections-generated--secret-literal-where-the-pattern-was-in-english-prose",
+      "benign-control-and-near-neighbor-projections-generated--secret-literal-where-the-pattern-was-in-korean-prose",
+      "benign-control-and-near-neighbor-projections-generated--secret-literal-where-the-pattern-was-in-markdown-fence",
+      "context-and-large-input-bases-authored--github-classic-pat-base-a",
+      "context-and-large-input-bases-authored--github-classic-pat-base-b",
+      "context-and-large-input-bases-authored--gitlab-legacy-pat-base-a",
+      "context-and-large-input-bases-authored--gitlab-legacy-pat-base-b",
+      "context-and-large-input-bases-authored--npm-granular-token-base-a",
+      "context-and-large-input-bases-authored--npm-granular-token-base-b",
+      "context-and-large-input-bases-authored--sendgrid-api-key-base-a",
+      "context-and-large-input-bases-authored--sendgrid-api-key-base-b",
+      "context-carrier-projections-generated--github-classic-pat-bare-value",
+      "context-carrier-projections-generated--github-classic-pat-bearer-header",
+      "context-carrier-projections-generated--github-classic-pat-bom-prefix",
+      "context-carrier-projections-generated--github-classic-pat-crlf-lines",
+      "context-carrier-projections-generated--github-classic-pat-emoji-prefix",
+      "context-carrier-projections-generated--github-classic-pat-json-field",
+      "context-carrier-projections-generated--github-classic-pat-korean-text-prefix",
+      "context-carrier-projections-generated--github-classic-pat-log-line",
+      "context-carrier-projections-generated--github-classic-pat-markdown-code-span",
+      "context-carrier-projections-generated--github-classic-pat-nbsp-before-value",
+      "context-carrier-projections-generated--github-classic-pat-shell-export-quoted",
+      "context-carrier-projections-generated--github-classic-pat-url-query",
+      "context-carrier-projections-generated--github-classic-pat-xml-element",
+      "context-carrier-projections-generated--github-classic-pat-yaml-scalar",
+      "context-carrier-projections-generated--gitlab-legacy-pat-bare-value",
+      "context-carrier-projections-generated--gitlab-legacy-pat-bearer-header",
+      "context-carrier-projections-generated--gitlab-legacy-pat-bom-prefix",
+      "context-carrier-projections-generated--gitlab-legacy-pat-crlf-lines",
+      "context-carrier-projections-generated--gitlab-legacy-pat-emoji-prefix",
+      "context-carrier-projections-generated--gitlab-legacy-pat-json-field",
+      "context-carrier-projections-generated--gitlab-legacy-pat-korean-text-prefix",
+      "context-carrier-projections-generated--gitlab-legacy-pat-log-line",
+      "context-carrier-projections-generated--gitlab-legacy-pat-markdown-code-span",
+      "context-carrier-projections-generated--gitlab-legacy-pat-nbsp-before-value",
+      "context-carrier-projections-generated--gitlab-legacy-pat-shell-export-quoted",
+      "context-carrier-projections-generated--gitlab-legacy-pat-url-query",
+      "context-carrier-projections-generated--gitlab-legacy-pat-xml-element",
+      "context-carrier-projections-generated--gitlab-legacy-pat-yaml-scalar",
+      "context-carrier-projections-generated--npm-granular-token-bare-value",
+      "context-carrier-projections-generated--npm-granular-token-bearer-header",
+      "context-carrier-projections-generated--npm-granular-token-bom-prefix",
+      "context-carrier-projections-generated--npm-granular-token-crlf-lines",
+      "context-carrier-projections-generated--npm-granular-token-emoji-prefix",
+      "context-carrier-projections-generated--npm-granular-token-json-field",
+      "context-carrier-projections-generated--npm-granular-token-korean-text-prefix",
+      "context-carrier-projections-generated--npm-granular-token-log-line",
+      "context-carrier-projections-generated--npm-granular-token-markdown-code-span",
+      "context-carrier-projections-generated--npm-granular-token-nbsp-before-value",
+      "context-carrier-projections-generated--npm-granular-token-shell-export-quoted",
+      "context-carrier-projections-generated--npm-granular-token-url-query",
+      "context-carrier-projections-generated--npm-granular-token-xml-element",
+      "context-carrier-projections-generated--npm-granular-token-yaml-scalar",
+      "context-carrier-projections-generated--sendgrid-api-key-bare-value",
+      "context-carrier-projections-generated--sendgrid-api-key-bearer-header",
+      "context-carrier-projections-generated--sendgrid-api-key-bom-prefix",
+      "context-carrier-projections-generated--sendgrid-api-key-crlf-lines",
+      "context-carrier-projections-generated--sendgrid-api-key-emoji-prefix",
+      "context-carrier-projections-generated--sendgrid-api-key-json-field",
+      "context-carrier-projections-generated--sendgrid-api-key-korean-text-prefix",
+      "context-carrier-projections-generated--sendgrid-api-key-log-line",
+      "context-carrier-projections-generated--sendgrid-api-key-markdown-code-span",
+      "context-carrier-projections-generated--sendgrid-api-key-nbsp-before-value",
+      "context-carrier-projections-generated--sendgrid-api-key-shell-export-quoted",
+      "context-carrier-projections-generated--sendgrid-api-key-url-query",
+      "context-carrier-projections-generated--sendgrid-api-key-xml-element",
+      "context-carrier-projections-generated--sendgrid-api-key-yaml-scalar",
+      "developer-artifact-lookalikes-authored--actions-cache-restore-log-key",
+      "developer-artifact-lookalikes-authored--actions-cache-step-key-input",
+      "developer-artifact-lookalikes-authored--go-mod-pseudo-version-requirement",
+      "developer-artifact-lookalikes-authored--go-sum-excerpt-with-goproxy-password",
+      "developer-artifact-lookalikes-authored--go-sum-module-and-go-mod-hashes",
+      "developer-artifact-lookalikes-authored--heroku-uuid-key-beside-integrity-attribute",
+      "developer-artifact-lookalikes-authored--npm-lock-integrity-sha512",
+      "developer-artifact-lookalikes-authored--oci-image-reference-pinned-by-digest",
+      "developer-artifact-lookalikes-authored--pip-requirements-hash-checking",
+      "developer-artifact-lookalikes-authored--pip-requirements-hashes-with-index-url-password",
+      "developer-artifact-lookalikes-authored--semver-full-commit-build-metadata",
+      "developer-artifact-lookalikes-authored--semver-sha-tagged-build-metadata",
+      "developer-artifact-lookalikes-authored--sri-script-tag-sha384",
+      "developer-artifact-lookalikes-authored--stored-api-key-fingerprint-field",
+      "developer-artifact-lookalikes-authored--twilio-token-beside-image-digest",
+      "developer-artifact-lookalikes-authored--webhook-signature-header-hmac-digest",
+      "developer-artifact-lookalikes-authored--webpack-contenthash-output-filenames",
+      "environment-and-test-values-authored--browser-bundle-publishable",
+      "environment-and-test-values-authored--env-assignment-sandbox-comment",
+      "environment-and-test-values-authored--installation-token-lifetime-note",
+      "environment-and-test-values-authored--json-config-sandbox-mode",
+      "environment-and-test-values-authored--stripe-rotated-key-note",
+      "environment-and-test-values-authored--sts-credentials-past-expiration",
+      "generic-connection-grammar-authored--ado-net-integrated-security",
+      "generic-connection-grammar-authored--ado-net-password-ends-at-semicolon",
+      "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters",
+      "generic-connection-grammar-authored--amqp-uri-encoded-percent-and-brackets",
+      "generic-connection-grammar-authored--amqps-host-and-encoded-vhost",
+      "generic-connection-grammar-authored--compose-braced-variable-in-postgresql-uri",
+      "generic-connection-grammar-authored--compose-required-variable-in-redis-uri",
+      "generic-connection-grammar-authored--kafka-jaas-plain-quoted-password",
+      "generic-connection-grammar-authored--libpq-empty-quoted-password",
+      "generic-connection-grammar-authored--libpq-host-database-user",
+      "generic-connection-grammar-authored--libpq-passfile-path",
+      "generic-connection-grammar-authored--libpq-quoted-value-with-space-and-escapes",
+      "generic-connection-grammar-authored--mongodb-srv-host-and-options-only",
+      "generic-connection-grammar-authored--mongodb-uri-encoded-at-and-colon",
+      "generic-connection-grammar-authored--mysql-key-value-empty-password",
+      "generic-connection-grammar-authored--mysql-key-value-quoted-password",
+      "generic-connection-grammar-authored--mysql-uri-encoded-slash-and-hash",
+      "generic-connection-grammar-authored--mysqlx-uri-empty-password",
+      "generic-connection-grammar-authored--oledb-empty-password-keyword",
+      "generic-connection-grammar-authored--postgresql-uri-user-only",
+      "generic-connection-grammar-authored--redis-cli-auth-from-environment",
+      "generic-connection-grammar-authored--redis-uri-default-user-no-password",
+      "generic-connection-grammar-authored--redis-uri-host-port-database",
+      "generic-connection-grammar-authored--redis-uri-password-only-with-dollar-and-semicolon",
+      "github-installation-token-authored--base-ids-json",
+      "github-installation-token-authored--base-no-app-id",
+      "github-installation-token-authored--base-opaque",
+      "github-installation-token-authored--base-prose-notation",
+      "github-installation-token-authored--base-stateless-a",
+      "github-installation-token-authored--base-stateless-b",
+      "github-installation-token-authored--base-unprefixed-jwt",
+      "github-installation-token-authored--mutation-incomplete-header-only",
+      "github-installation-token-authored--mutation-incomplete-no-signature",
+      "github-installation-token-authored--projection-opaque-crlf",
+      "github-installation-token-authored--projection-opaque-env",
+      "github-installation-token-authored--projection-opaque-json",
+      "github-installation-token-authored--projection-stateless-a-authorization",
+      "github-installation-token-authored--projection-stateless-a-crlf",
+      "github-installation-token-authored--projection-stateless-a-git-url",
+      "github-installation-token-authored--projection-stateless-a-json",
+      "github-installation-token-authored--projection-stateless-a-korean-emoji",
+      "github-installation-token-authored--projection-stateless-b-env",
+      "github-installation-token-authored--twin-body-35",
+      "http-auth-carriers-authored--authorization-and-proxy-authorization",
+      "http-auth-carriers-authored--authorization-basic-environment-reference",
+      "http-auth-carriers-authored--authorization-basic-placeholder",
+      "http-auth-carriers-authored--authorization-basic-scheme-only",
+      "http-auth-carriers-authored--authorization-values-joined-by-comma",
+      "http-auth-carriers-authored--basic-empty-password",
+      "http-auth-carriers-authored--basic-in-curl-header-argument",
+      "http-auth-carriers-authored--basic-in-request-headers",
+      "http-auth-carriers-authored--basic-lowercase-scheme-double-space",
+      "http-auth-carriers-authored--basic-password-with-colon",
+      "http-auth-carriers-authored--basic-rfc-published-example",
+      "http-auth-carriers-authored--basic-token-split-by-space",
+      "http-auth-carriers-authored--basic-token-url-safe-alphabet",
+      "http-auth-carriers-authored--basic-token-without-padding",
+      "http-auth-carriers-authored--basic-user-id-in-cleartext-beside-token",
+      "http-auth-carriers-authored--basic-utf8-password",
+      "http-auth-carriers-authored--cookie-header-opaque-application-state",
+      "http-auth-carriers-authored--cookie-header-preferences-only",
+      "http-auth-carriers-authored--cookie-header-session-id-among-preferences",
+      "http-auth-carriers-authored--proxy-authenticate-basic-challenge",
+      "http-auth-carriers-authored--proxy-authorization-basic",
+      "http-auth-carriers-authored--set-cookie-empty-session-value-expired",
+      "http-auth-carriers-authored--set-cookie-session-id-with-attributes",
+      "http-auth-carriers-authored--two-authorization-lines",
+      "http-auth-carriers-authored--www-authenticate-basic-challenge",
+      "large-and-repeated-input-projections-generated--github-classic-pat-head-of-1mib",
+      "large-and-repeated-input-projections-generated--github-classic-pat-head-of-256kib",
+      "large-and-repeated-input-projections-generated--github-classic-pat-head-of-64kib",
+      "large-and-repeated-input-projections-generated--github-classic-pat-middle-of-1mib",
+      "large-and-repeated-input-projections-generated--github-classic-pat-middle-of-256kib",
+      "large-and-repeated-input-projections-generated--github-classic-pat-middle-of-64kib",
+      "large-and-repeated-input-projections-generated--github-classic-pat-tail-of-1mib",
+      "large-and-repeated-input-projections-generated--github-classic-pat-tail-of-256kib",
+      "large-and-repeated-input-projections-generated--github-classic-pat-tail-of-64kib",
+      "large-and-repeated-input-projections-generated--github-classic-pat-three-occurrences-in-1mib",
+      "large-and-repeated-input-projections-generated--github-classic-pat-three-occurrences-in-256kib",
+      "large-and-repeated-input-projections-generated--github-classic-pat-three-occurrences-in-64kib",
+      "large-and-repeated-input-projections-generated--github-classic-pat-two-distinct-keys-in-1mib",
+      "large-and-repeated-input-projections-generated--github-classic-pat-two-distinct-keys-in-256kib",
+      "large-and-repeated-input-projections-generated--github-classic-pat-two-distinct-keys-in-64kib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-and-npm-granular-token-in-1mib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-and-npm-granular-token-in-256kib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-and-npm-granular-token-in-64kib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-head-of-1mib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-head-of-256kib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-head-of-64kib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-middle-of-1mib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-middle-of-256kib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-middle-of-64kib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-tail-of-1mib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-tail-of-256kib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-tail-of-64kib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-three-occurrences-in-1mib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-three-occurrences-in-256kib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-three-occurrences-in-64kib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-two-distinct-keys-in-1mib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-two-distinct-keys-in-256kib",
+      "large-and-repeated-input-projections-generated--gitlab-legacy-pat-two-distinct-keys-in-64kib",
+      "large-and-repeated-input-projections-generated--npm-granular-token-head-of-1mib",
+      "large-and-repeated-input-projections-generated--npm-granular-token-head-of-256kib",
+      "large-and-repeated-input-projections-generated--npm-granular-token-head-of-64kib",
+      "large-and-repeated-input-projections-generated--npm-granular-token-middle-of-1mib",
+      "large-and-repeated-input-projections-generated--npm-granular-token-middle-of-256kib",
+      "large-and-repeated-input-projections-generated--npm-granular-token-middle-of-64kib",
+      "large-and-repeated-input-projections-generated--npm-granular-token-tail-of-1mib",
+      "large-and-repeated-input-projections-generated--npm-granular-token-tail-of-256kib",
+      "large-and-repeated-input-projections-generated--npm-granular-token-tail-of-64kib",
+      "large-and-repeated-input-projections-generated--npm-granular-token-three-occurrences-in-1mib",
+      "large-and-repeated-input-projections-generated--npm-granular-token-three-occurrences-in-256kib",
+      "large-and-repeated-input-projections-generated--npm-granular-token-three-occurrences-in-64kib",
+      "large-and-repeated-input-projections-generated--npm-granular-token-two-distinct-keys-in-1mib",
+      "large-and-repeated-input-projections-generated--npm-granular-token-two-distinct-keys-in-256kib",
+      "large-and-repeated-input-projections-generated--npm-granular-token-two-distinct-keys-in-64kib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-and-github-classic-pat-in-1mib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-and-github-classic-pat-in-256kib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-and-github-classic-pat-in-64kib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-head-of-1mib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-head-of-256kib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-head-of-64kib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-middle-of-1mib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-middle-of-256kib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-middle-of-64kib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-tail-of-1mib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-tail-of-256kib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-tail-of-64kib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-three-occurrences-in-1mib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-three-occurrences-in-256kib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-three-occurrences-in-64kib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-two-distinct-keys-in-1mib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-two-distinct-keys-in-256kib",
+      "large-and-repeated-input-projections-generated--sendgrid-api-key-two-distinct-keys-in-64kib",
+      "line-break-and-fragment-authored--key-after-emoji-with-boundary-inside-emoji",
+      "line-break-and-fragment-authored--key-divided-mid-secret-by-byte-chunks",
+      "line-break-and-fragment-authored--key-split-across-javascript-added-literals",
+      "line-break-and-fragment-authored--key-split-across-python-adjacent-literals",
+      "line-break-and-fragment-authored--key-split-after-prefix-by-shell-continuation",
+      "line-break-and-fragment-authored--key-split-before-last-character-by-shell-continuation",
+      "line-break-and-fragment-authored--key-split-by-backslash-crlf-continuation",
+      "line-break-and-fragment-authored--key-split-by-backslash-newline-in-single-quotes",
+      "line-break-and-fragment-authored--key-split-by-double-quoted-shell-continuation",
+      "line-break-and-fragment-authored--key-split-by-javascript-literal-continuation",
+      "line-break-and-fragment-authored--key-split-by-literal-crlf",
+      "line-break-and-fragment-authored--key-split-by-literal-line-feed",
+      "line-break-and-fragment-authored--key-split-by-python-literal-continuation",
+      "line-break-and-fragment-authored--key-split-by-unquoted-shell-continuation",
+      "line-break-and-fragment-authored--key-split-in-three-javascript-added-literals",
+      "line-break-and-fragment-authored--key-with-json-escaped-line-feed",
+      "line-break-and-fragment-authored--key-with-literal-backslash-n-in-log-line",
+      "line-break-and-fragment-authored--key-wrapped-in-markdown-code-span",
+      "line-break-and-fragment-authored--key-wrapped-in-markdown-paragraph",
+      "line-break-and-fragment-authored--prefix-then-prose",
+      "line-break-and-fragment-authored--prefix-then-public-encoded-text",
+      "line-break-and-fragment-authored--public-digest-base",
+      "line-break-and-fragment-authored--public-digest-wrapped-at-32",
+      "line-break-and-fragment-authored--public-text-base64-base",
+      "line-break-and-fragment-authored--public-text-base64-wrapped-at-76",
+      "line-break-and-fragment-authored--sendgrid-key-base-first",
+      "line-break-and-fragment-authored--sendgrid-key-base-second",
+      "policy-ambiguous-assignment-bases-authored--access-token-equals-sample-base",
+      "policy-ambiguous-assignment-bases-authored--api-key-equals-example-word-run-base",
+      "policy-ambiguous-assignment-bases-authored--aws-key-id-shaped-body-of-example-marker-base",
+      "policy-ambiguous-assignment-bases-authored--password-equals-example-base",
+      "policy-ambiguous-assignment-bases-authored--stripe-shaped-body-of-example-marker-base",
+      "policy-ambiguous-assignment-bases-authored--yaml-secret-colon-sample-base",
+      "policy-ambiguous-assignment-projections-generated--access-token-equals-sample-in-english-prose",
+      "policy-ambiguous-assignment-projections-generated--access-token-equals-sample-in-korean-prose",
+      "policy-ambiguous-assignment-projections-generated--access-token-equals-sample-in-markdown-fence",
+      "policy-ambiguous-assignment-projections-generated--api-key-equals-example-word-run-in-english-prose",
+      "policy-ambiguous-assignment-projections-generated--api-key-equals-example-word-run-in-korean-prose",
+      "policy-ambiguous-assignment-projections-generated--api-key-equals-example-word-run-in-markdown-fence",
+      "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-english-prose",
+      "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-korean-prose",
+      "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-markdown-fence",
+      "policy-ambiguous-assignment-projections-generated--password-equals-example-in-english-prose",
+      "policy-ambiguous-assignment-projections-generated--password-equals-example-in-korean-prose",
+      "policy-ambiguous-assignment-projections-generated--password-equals-example-in-markdown-fence",
+      "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-english-prose",
+      "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-korean-prose",
+      "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-markdown-fence",
+      "policy-ambiguous-assignment-projections-generated--yaml-secret-colon-sample-in-english-prose",
+      "policy-ambiguous-assignment-projections-generated--yaml-secret-colon-sample-in-korean-prose",
+      "policy-ambiguous-assignment-projections-generated--yaml-secret-colon-sample-in-markdown-fence",
+      "sendgrid-unicode-authored--format-characters-text-base",
+      "sendgrid-unicode-authored--format-characters-text-utf16-pair-split",
+      "sendgrid-unicode-authored--key-a-after-cjk-and-emoji-byte-chunked-at-every-byte",
+      "sendgrid-unicode-authored--key-a-after-cjk-and-emoji-byte-chunked-inside-sequences",
+      "sendgrid-unicode-authored--key-a-after-cjk-and-emoji-utf16-pair-split",
+      "sendgrid-unicode-authored--key-a-after-leading-byte-order-mark",
+      "sendgrid-unicode-authored--key-a-after-zero-width-space-before-value",
+      "sendgrid-unicode-authored--key-a-base",
+      "sendgrid-unicode-authored--key-a-before-emoji",
+      "sendgrid-unicode-authored--key-a-in-fullwidth-compatibility-forms",
+      "sendgrid-unicode-authored--key-a-with-no-break-space-inside",
+      "sendgrid-unicode-authored--key-a-with-word-joiner-near-end",
+      "sendgrid-unicode-authored--key-a-with-zero-width-non-joiner-in-first-segment",
+      "sendgrid-unicode-authored--key-a-with-zero-width-space-in-second-segment",
+      "sendgrid-unicode-authored--key-b-after-emoji-with-variation-selector",
+      "sendgrid-unicode-authored--key-b-after-no-break-space-before-value",
+      "sendgrid-unicode-authored--key-b-after-second-emoji-utf16-pair-split",
+      "sendgrid-unicode-authored--key-b-after-two-byte-character-byte-chunked-inside-it",
+      "sendgrid-unicode-authored--key-b-base",
+      "sendgrid-unicode-authored--key-b-before-zero-width-non-joiner",
+      "sendgrid-unicode-authored--key-b-with-combining-acute-after-last-character",
+      "sendgrid-unicode-authored--key-b-with-two-different-zero-width-code-points",
+      "sendgrid-unicode-authored--key-b-with-zero-width-joiner-after-dot",
+      "sendgrid-unicode-authored--key-b-with-zero-width-space-between-every-character",
+      "sendgrid-unicode-authored--key-b-with-zero-width-space-chunked-inside-it",
+      "sendgrid-unicode-authored--key-name-identifier-with-zero-width-space",
+      "sendgrid-unicode-authored--non-ascii-identifiers-nfc-base",
+      "sendgrid-unicode-authored--non-ascii-identifiers-nfd",
+      "sendgrid-unicode-authored--release-notes-text-base",
+      "sendgrid-unicode-authored--release-notes-with-leading-byte-order-mark",
+      "structured-credential-files-authored--aws-config-file-profile-with-inline-secret",
+      "structured-credential-files-authored--aws-config-profile-references-only",
+      "structured-credential-files-authored--aws-credentials-file-two-profiles",
+      "structured-credential-files-authored--docker-config-credhelpers-reference",
+      "structured-credential-files-authored--docker-config-credsstore-reference",
+      "structured-credential-files-authored--docker-config-one-registry-auth",
+      "structured-credential-files-authored--docker-config-two-registries-auth",
+      "structured-credential-files-authored--documented-template-placeholders",
+      "structured-credential-files-authored--external-account-configuration-with-file-source",
+      "structured-credential-files-authored--kubeconfig-client-certificate-and-key-paths",
+      "structured-credential-files-authored--kubeconfig-client-key-data-encoded-pem",
+      "structured-credential-files-authored--kubeconfig-four-users-two-inline-secrets",
+      "structured-credential-files-authored--kubeconfig-inline-basic-auth-password",
+      "structured-credential-files-authored--kubeconfig-inline-bearer-token",
+      "structured-credential-files-authored--kubeconfig-token-file-reference",
+      "structured-credential-files-authored--kubeconfig-user-without-credential-fields",
+      "structured-credential-files-authored--netrc-machine-with-macro-and-no-password",
+      "structured-credential-files-authored--netrc-quoted-password-with-spaces",
+      "structured-credential-files-authored--netrc-single-line-entry",
+      "structured-credential-files-authored--netrc-three-line-entry",
+      "structured-credential-files-authored--netrc-two-machines-and-default",
+      "structured-credential-files-authored--npmrc-auth-token-environment-reference",
+      "structured-credential-files-authored--npmrc-auth-token-environment-reference-optional",
+      "structured-credential-files-authored--npmrc-scoped-base64-auth-string",
+      "structured-credential-files-authored--npmrc-scoped-file-path-settings",
+      "structured-credential-files-authored--npmrc-scoped-literal-auth-token",
+      "structured-credential-files-authored--service-account-key-file-minified-json",
+      "structured-credential-files-authored--service-account-key-file-pretty-json",
+      "twilio-compound-credentials-authored--account-sid-alone",
+      "twilio-compound-credentials-authored--account-sid-and-token-env",
+      "twilio-compound-credentials-authored--account-sid-with-placeholder-token",
+      "twilio-compound-credentials-authored--api-key-secret-before-sid",
+      "twilio-compound-credentials-authored--api-key-sid-alone",
+      "twilio-compound-credentials-authored--api-key-sid-and-secret-env",
+      "twilio-compound-credentials-authored--repeated-sid-separated-token",
+      "twilio-compound-credentials-authored--token-before-sid-basic-auth",
+      "twilio-compound-credentials-authored--token-without-sid-named-field",
+      "url-credential-boundaries-authored--amz-signature-placeholder",
+      "url-credential-boundaries-authored--blob-url-without-sas",
+      "url-credential-boundaries-authored--cloud-storage-object-url-unsigned",
+      "url-credential-boundaries-authored--cloud-storage-signed-url-in-prose",
+      "url-credential-boundaries-authored--empty-password-after-colon",
+      "url-credential-boundaries-authored--escaped-password-in-userinfo",
+      "url-credential-boundaries-authored--password-with-second-colon",
+      "url-credential-boundaries-authored--port-colon-without-userinfo",
+      "url-credential-boundaries-authored--s3-object-url-unsigned",
+      "url-credential-boundaries-authored--s3-presigned-url-in-prose",
+      "url-credential-boundaries-authored--sas-token-in-config-line"
+    ],
+    "removed": [],
+    "changed": [
+      {
+        "id": "anthropic--anthropic-admin01-key-api01-prefix-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "tool-corroborated",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "anthropic--anthropic-admin01-key-api03-prefix-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "tool-corroborated",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "anthropic--anthropic-api01-key-admin01-prefix-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "anthropic--anthropic-api01-key-allowlist-comment-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "anthropic--anthropic-api01-key-api03-prefix-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "anthropic--anthropic-api01-key-prefix-only-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-acli-login",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-airflow-connection",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-alphabet-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-compose-env",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-curl-basic",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-debug-log",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-env",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-header-only-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-jira-client",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-netrc",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-op-item-get",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-pipelines-variable",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-prefix-ci-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-prefix-only",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-prefix-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-python-client-yaml",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-settings-json",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-shell-export",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-short-body",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-ticket-paste",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "atlassian--atlassian-api-token-unprefixed-random-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "azure-devops--azure-devops-personal-access-token-azdo-marker-bare-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "azure-devops--azure-devops-personal-access-token-azdo-marker-quoted-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "azure-devops--azure-devops-personal-access-token-azdo-marker-signature-bare-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "azure-devops--azure-devops-personal-access-token-azdo-marker-signature-quoted-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "azure-devops--azure-devops-personal-access-token-azdo-marker-signature-unicode-crlf-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "azure-devops--azure-devops-personal-access-token-azdo-marker-unicode-crlf-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "azure-devops--azure-devops-personal-access-token-env-ext-pat-signature-offset-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "azure-devops--azure-devops-personal-access-token-git-remote-url-length-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "azure-devops--azure-devops-personal-access-token-missing-marker",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "azure-devops--azure-devops-personal-access-token-nuget-config-password-signature-case-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "azure-devops--azure-devops-personal-access-token-pipeline-ids-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "azure-devops--azure-devops-personal-access-token-short-body",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "browserbase--browserbase-api-key-hyphen-prefix-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "browserbase--browserbase-api-key-leading-glue-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "browserbase--browserbase-api-key-leading-underscore-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "browserbase--browserbase-api-key-prefix-at-eol-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "browserbase--browserbase-api-key-prefix-only",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "browserbase--browserbase-api-key-uppercase-prefix-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "crates-io--crates-io-token-body-31-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "crates-io--crates-io-token-body-33-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "crates-io--crates-io-token-hyphen-in-body-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "crates-io--crates-io-token-prefix-only",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "crates-io--crates-io-token-short-body",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "crates-io--crates-io-token-truncated-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "crates-io--crates-io-token-underscore-in-body-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "crates-io--crates-io-token-uppercase-prefix-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "crates-io--crates-io-trusted-publishing-token-body-31-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "crates-io--crates-io-trusted-publishing-token-body-33-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "crates-io--crates-io-trusted-publishing-token-hyphen-in-body-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "crates-io--crates-io-trusted-publishing-token-hyphen-separator-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "crates-io--crates-io-trusted-publishing-token-prefix-at-eol-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "crates-io--crates-io-trusted-publishing-token-truncated-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "crates-io--crates-io-trusted-publishing-token-uppercase-prefix-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "cross-provider--elevenlabs-api-key-stripe-shaped-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "tool-corroborated",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "cross-provider--elevenlabs-api-key-stripe-test-shaped-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "tool-corroborated",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "cross-provider--prefix-only",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-actions-env",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-bang-hmac-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-bang-id-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-bot-authorization",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-client-run",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-compose-env",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-config-json",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-dash-delimiter-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-encoded-user-id-encoded-value",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-env",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-interactions-public-key-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-missing-segment",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-plus-timestamp-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-short-final-segment",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-startup-log",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-three-segments-bare",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-three-segments-current-new-bot-bare",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-three-segments-current-new-bot-quoted",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-three-segments-current-new-bot-unicode-crlf",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-three-segments-current-reset-bot-bare",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-three-segments-current-reset-bot-quoted",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-three-segments-current-reset-bot-unicode-crlf",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-three-segments-quoted",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-three-segments-unicode-crlf",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "discord--discord-bot-token-underscore-delimiter-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-actions-env",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-compose-env",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-curl-send",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-dotted-body-cli-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-dotted-body-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-env",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-fcm-node",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-functions-config-get",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-handoff-note",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-head-only-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-impossible-head-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-java-constant",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-k8s-secret",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-laravel-fcm-config",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-long-head-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-missing-separator",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-prefix-only",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-push-yaml",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-raw-request",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-request-log",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-server-key-bare",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-server-key-bare-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-server-key-quoted",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-server-key-quoted-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-server-key-unicode-crlf",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-server-key-unicode-crlf-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-settings-json",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-shell-export",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-short-body",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-short-body-json-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-short-body-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "firebase--firebase-server-key-vapid-public-key-encoded-value",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--bearer-token-challenge-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--bearer-token-header-bare-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--bearer-token-header-quoted-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--bearer-token-header-unicode-crlf-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--bearer-token-missing-value",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--bearer-token-token-type-only-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--connection-string-at-in-path-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--connection-string-git-ssh-remote-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--connection-string-jdbc-user-param-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--connection-string-no-password",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--connection-string-user-only-uri-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--otpauth-uri-hotp-bare-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--otpauth-uri-hotp-quoted-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--otpauth-uri-hotp-unicode-crlf-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--otpauth-uri-missing-secret",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--otpauth-uri-query-order-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--otpauth-uri-totp-bare-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--otpauth-uri-totp-quoted-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--otpauth-uri-totp-unicode-crlf-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "generic--pem-label-only",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "github--short-github",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "gitlab--short-gitlab",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "npm--short-npm",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-actions-env",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-base64-model-encoded-value",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-bearer-curl",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-chat-message",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-cli-credentials",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-compose-env",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-curl-chat",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-debug-log",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-dotenv",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-embedding-model-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-inner-dash-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-key-shape-bare",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-key-shape-quoted",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-key-shape-unicode-crlf",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-mcp-config",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-missing-dash-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-package-name-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-pplx-export",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-prefix-letter-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-prefix-only",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-prefix-only-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-python-client",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-revoke-payload",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-secret-print",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-short-body",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-short-body-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-short-body-twin-wrong-length",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-twin-base-dotenv",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-twin-base-python",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-underscore-delimiter-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "perplexity--perplexity-api-key-uppercase-prefix-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "pinecone--pinecone-api-key-legacy-admin-key-object-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "pinecone--pinecone-api-key-legacy-project-id-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "pinecone--pinecone-api-key-legacy-service-account-id-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-api-credential-unknown-role-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-api-credential-uppercase-prefix-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-body-42-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-hyphen-in-body-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-identifier-name-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-prefix-only",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-short-body",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-truncated-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-underscore-in-body-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-uppercase-prefix-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "sendgrid--short-sendgrid",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-actions-env",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-api-curl",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-compose-env",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-dash-delimiter-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-dsn-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-env",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-half-body-in-prose-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-missing-delimiter-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-non-hex-cli-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-non-hex-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-org-prefix-hex-in-log-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-prefix-compose-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-prefix-only",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-prefix-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-script-constant",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-sentry-cli",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-sentryclirc",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-shape-1-bare",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-shape-1-quoted",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-shape-1-unicode-crlf",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-short-body",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-short-ci-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "sentry--sentry-user-auth-token-short-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "slack--short-slack",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-actions-env",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-bot-api-url",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-bot-yaml",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-compose-env",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-env",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-missing-delimiter-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-plus-body-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-prefix-only",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-ptb-builder",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "policy",
+          "must-redact"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          1,
+          1
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-short-body",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-short-body-docs-width-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-short-body-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-short-body-yaml-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-slash-body-env-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-slash-body-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-timestamp-colon-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "telegram--telegram-bot-token-underscore-delimiter-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "twilio--twilio-api-key-secret-request-signature-encoded-value",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "twilio--twilio-auth-token-messaging-service-sid-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "twilio--twilio-auth-token-missing-identifier",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "twilio--twilio-auth-token-package-md5-encoded-value",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "tool-corroborated"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "twilio--twilio-auth-token-phone-number-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "twilio--twilio-auth-token-signature-header-near-miss",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "provider-documented"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      }
+    ],
+    "addedByKind": {
+      "must-not-flag": 180,
+      "must-redact": 157,
+      "policy": 162
+    },
+    "addedByEvidenceClass": {
+      "project-policy": 220,
+      "provider-documented": 156,
+      "tool-corroborated": 11,
+      "unresolved": 112
+    },
+    "addedByGroup": {
+      "app-installation-token-with-one-hour-lifetime-note": 1,
+      "aws-access-key-id-without-secret-confidentiality": 1,
+      "aws-access-key-pair-secret-boundary": 4,
+      "aws-config-file-process-and-source-profile-references": 1,
+      "aws-credentials-file-multiple-profiles-with-secret-values": 2,
+      "aws-session-token-alone-confidentiality": 1,
+      "aws-temporary-credential-triple-secret-boundary": 2,
+      "aws-temporary-credentials-with-expiration-field": 1,
+      "azure-sas-token-in-blob-url": 1,
+      "bare-thirty-two-character-value-under-unattributed-auth-header": 1,
+      "base64-of-public-text": 2,
+      "benign-encoded-value": 12,
+      "benign-lookalike": 4,
+      "cache-key-and-content-hashed-filename-values": 3,
+      "cloud-storage-signed-url-bearer-query-string": 1,
+      "connection-key-value-quoted-and-delimited-passwords": 4,
+      "connection-passwords-empty-or-omitted": 6,
+      "connection-passwords-supplied-by-reference": 4,
+      "connection-public-metadata-without-password": 5,
+      "connection-uri-percent-encoded-password-spans": 3,
+      "connection-uri-unencoded-sub-delimiter-passwords": 2,
+      "content-digest-references-in-build-and-package-metadata": 5,
+      "credential-after-long-input": 36,
+      "credential-bytes-divided-between-stream-chunks-intact": 2,
+      "credential-in-base64-or-hex-form": 32,
+      "credential-in-nested-encoding-layers": 15,
+      "credential-prefix-before-unrelated-line": 2,
+      "credential-split-across-concatenated-string-literals": 3,
+      "credential-split-by-backslash-crlf-continuation": 1,
+      "credential-split-by-backslash-newline-inside-single-quotes": 1,
+      "credential-split-by-literal-line-break-in-plain-text": 2,
+      "credential-split-by-markdown-paragraph-line-ending": 2,
+      "credential-split-by-shell-backslash-newline": 4,
+      "credential-split-by-string-literal-line-continuation": 2,
+      "credential-with-escaped-line-break-text": 2,
+      "crlf-line-endings": 4,
+      "docker-config-auth-field-base64-username-password": 2,
+      "docker-config-credential-store-and-helper-references": 2,
+      "documented-public-key-value-under-matching-or-ordinary-labels": 4,
+      "documented-public-key-value-under-secret-like-labels": 3,
+      "environment-assignment": 16,
+      "external-account-credential-configuration-without-private-key": 1,
+      "git-object-name-on-a-line-naming-a-provider": 1,
+      "github-app-and-installation-ids-in-json": 1,
+      "google-api-key-shape-under-firebase-and-generic-labels": 3,
+      "hashes-commit-ids-and-uuids": 3,
+      "http-authorization-and-proxy-authorization-in-one-request": 1,
+      "http-basic-authorization-header-credentials": 3,
+      "http-basic-challenge-and-token-less-headers": 5,
+      "http-basic-empty-password-credentials": 1,
+      "http-basic-non-ascii-password-utf8": 1,
+      "http-basic-password-containing-colon": 1,
+      "http-basic-rfc-published-example-credentials": 1,
+      "http-basic-token-nonstandard-base64-forms": 3,
+      "http-basic-user-id-versus-password-scope": 1,
+      "http-cookie-header-session-identifier": 1,
+      "http-ordinary-cookies-and-opaque-application-state": 2,
+      "http-proxy-authorization-basic-credentials": 1,
+      "http-repeated-authorization-header-lines": 2,
+      "http-set-cookie-expired-empty-session-value": 1,
+      "http-set-cookie-session-identifier-value-span": 1,
+      "installation-token-body-shorter-than-documented-minimum": 1,
+      "installation-token-notation-and-header-name-in-prose": 1,
+      "installation-token-with-incomplete-jwt-segments": 2,
+      "installation-token-without-app-id-segment": 1,
+      "key-beside-same-shape-public-identifier": 5,
+      "kubeconfig-client-key-data-base64-pem": 1,
+      "kubeconfig-credential-file-references-and-absent-fields": 3,
+      "kubeconfig-inline-token-and-basic-auth-password": 2,
+      "kubeconfig-multiple-users-mixed-inline-and-referenced-credentials": 1,
+      "literal-secrets-under-generic-credential-names": 2,
+      "markdown-and-comment-value": 8,
+      "multibyte-text-offsets": 16,
+      "multiple-credentials-per-input": 34,
+      "netrc-machine-and-macro-entries-without-credential-tokens": 1,
+      "netrc-multiline-and-single-line-password-entries": 2,
+      "netrc-multiple-machines-and-default-entry-passwords": 1,
+      "netrc-quoted-password-containing-spaces": 1,
+      "npmrc-auth-setting-base64-string": 1,
+      "npmrc-auth-token-environment-reference": 2,
+      "npmrc-registry-scoped-literal-auth-token": 1,
+      "npmrc-tls-file-path-settings": 1,
+      "opaque-installation-token-forty-characters-literal": 4,
+      "ordinary-prose-code-and-numbers": 2,
+      "package-integrity-hashes-beside-a-literal-registry-password": 2,
+      "partial-span-leakage": 12,
+      "personal-data-shaped-values-under-credential-only-scope": 4,
+      "prose-mention": 4,
+      "provider-secret-value-under-public-or-ordinary-labels": 5,
+      "public-identifier": 4,
+      "publishable-test-key-in-client-code": 1,
+      "quoted-value-extent": 4,
+      "repeated-key-label-with-public-and-secret-values": 3,
+      "s3-presigned-url-bearer-query-string": 1,
+      "sandbox-mode-secret-key-in-environment-assignment": 2,
+      "secret-derived-hex-digests-in-developer-artifacts": 2,
+      "sendgrid-key-in-provider-named-fields": 5,
+      "sendgrid-near-miss-values": 1,
+      "service-account-key-file-documented-template-placeholders": 1,
+      "service-account-key-file-private-key-string": 2,
+      "signature-parameter-name-with-placeholder-value": 1,
+      "source-code-string-literal": 4,
+      "spec-defined-identifiers-with-key-shape": 3,
+      "stateless-jwt-installation-token-literal": 8,
+      "storage-object-url-without-signing-parameters": 3,
+      "stripe-key-replaced-within-rotation-grace-period": 1,
+      "structured-text-value": 16,
+      "templated-reference": 8,
+      "twilio-account-sid-and-auth-token-secret-boundary": 4,
+      "twilio-api-key-sid-and-secret-boundary": 2,
+      "twilio-sid-only-and-placeholder-token-near-neighbors": 3,
+      "unicode-credential-reading-depends-on-normalization": 3,
+      "unicode-format-characters-in-benign-text": 3,
+      "unicode-identifiers-near-credential-labels": 3,
+      "unicode-input-rejected-before-scanning": 3,
+      "unicode-invisible-beside-intact-credential": 6,
+      "unicode-valid-utf8-chunked-inside-multibyte-sequence": 4,
+      "unicode-zero-width-inserted-inside-credential": 6,
+      "unprefixed-jwt-beside-installation-token-shape": 1,
+      "unsettled-evidence-input": 24,
+      "url-authority-port-colon-and-empty-password": 2,
+      "url-userinfo-password-containing-colon": 1,
+      "url-userinfo-percent-encoded-password": 1,
+      "uuid-under-credential-name-without-provider-context": 1,
+      "value-at-input-edges": 4,
+      "version-strings-embedding-a-commit-hash-fragment": 3
+    },
+    "changedFields": {
+      "grouping": 235
+    },
+    "evidenceClassTransitions": {
+      "project-policy -> provider-documented": 100,
+      "project-policy -> tool-corroborated": 131
+    },
+    "diversity": {
+      "providers": {
+        "old": 93,
+        "new": 95,
+        "added": [
+          "azure-storage",
+          "kubernetes"
+        ],
+        "removed": []
+      },
+      "families": {
+        "old": 158,
+        "new": 169,
+        "addedFamilies": [
+          "aws:s3-presigned-url",
+          "aws:shared-credentials-file-entry",
+          "azure-storage:shared-access-signature-token",
+          "docker:registry-auth-config-entry",
+          "generic:http-basic-credentials",
+          "generic:http-session-cookie",
+          "generic:netrc-password",
+          "google:cloud-storage-signed-url",
+          "google:service-account-key-file",
+          "kubernetes:kubeconfig-user-credentials",
+          "npm:npmrc-registry-credential"
+        ]
+      }
+    }
+  },
+  "replay": {
+    "state": "compared",
+    "scope": "The replay changes two things at once: the corpus (snapshot-2026.10.04) and the engine (credential-eval v0.1.0-alpha.3, with scanner versions and configurations fixed). They are reported apart: corpusEffect holds the engine fixed, engineEffect holds the corpus fixed. A larger denominator is not an improvement. Decoded and fragment semantics are NOT measured (credential-eval#34, credential-evidence#150); cases the engine could not map are unmeasured, never zero detections, and in no denominator.",
+    "corpusEffect": {
+      "note": "previous population versus candidate population, both on the new engine; common cases apart from added cases",
+      "scanners": {
+        "flare-redact": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5944,
+          "commonDrift": {
+            "control:flagged -> control:clear": 6
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 114,
+            "control:flagged": 2,
+            "pending": 115,
+            "positive:EXACT": 162,
+            "positive:EXACT,EXACT": 18,
+            "positive:EXACT,EXACT,EXACT": 12,
+            "positive:EXACT,EXACT,MISS": 1,
+            "positive:MISS": 46,
+            "positive:MISS,MISS": 2,
+            "positive:MISS,MISS,MISS": 1,
+            "positive:OVERBROAD": 19,
+            "positive:OVERBROAD,OVERBROAD": 1,
+            "positive:PARTIAL": 6
+          },
+          "unmeasured": 0
+        },
+        "gitleaks": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5946,
+          "commonDrift": {
+            "control:flagged -> control:clear": 4
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 108,
+            "control:flagged": 8,
+            "not-measured": 10,
+            "pending": 106,
+            "positive:EXACT": 148,
+            "positive:EXACT,EXACT": 13,
+            "positive:EXACT,EXACT,EXACT": 9,
+            "positive:EXACT,MISS": 3,
+            "positive:MISS": 82,
+            "positive:MISS,EXACT": 3,
+            "positive:MISS,MISS": 2,
+            "positive:MISS,MISS,MISS": 5,
+            "positive:PARTIAL": 2
+          },
+          "unmeasured": 10
+        },
+        "openredaction": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5948,
+          "commonDrift": {
+            "control:flagged -> control:clear": 2
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 63,
+            "control:flagged": 53,
+            "pending": 115,
+            "positive:EXACT": 130,
+            "positive:EXACT,EXACT": 7,
+            "positive:EXACT,EXACT,EXACT": 4,
+            "positive:EXACT,EXACT,PARTIAL": 1,
+            "positive:EXACT,OVERBROAD": 6,
+            "positive:EXACT,OVERBROAD,OVERBROAD": 6,
+            "positive:MISS": 73,
+            "positive:MISS,MISS": 1,
+            "positive:MISS,OVERBROAD": 6,
+            "positive:MISS,OVERBROAD,OVERBROAD": 3,
+            "positive:MISS,PARTIAL": 1,
+            "positive:OVERBROAD": 24,
+            "positive:PARTIAL": 6
+          },
+          "unmeasured": 0
+        },
+        "redact-secret": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5944,
+          "commonDrift": {
+            "control:flagged -> control:clear": 6
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 114,
+            "control:flagged": 2,
+            "pending": 115,
+            "positive:EXACT": 211,
+            "positive:EXACT,EXACT": 20,
+            "positive:EXACT,EXACT,EXACT": 13,
+            "positive:MISS": 15,
+            "positive:MISS,EXACT": 1,
+            "positive:MISS,MISS,MISS": 1,
+            "positive:PARTIAL": 7
+          },
+          "unmeasured": 0
+        },
+        "trufflehog": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5946,
+          "commonDrift": {
+            "control:flagged -> control:clear": 4
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 115,
+            "control:flagged": 1,
+            "pending": 115,
+            "positive:EXACT": 8,
+            "positive:MISS": 220,
+            "positive:MISS,MISS": 21,
+            "positive:MISS,MISS,MISS": 14,
+            "positive:OVERBROAD": 5
+          },
+          "unmeasured": 0
+        }
+      }
+    },
+    "engineEffect": {
+      "note": "previous population on the previous engine (accepted run) versus on the new engine; the same cases",
+      "scanners": {
+        "flare-redact": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5950,
+          "commonDrift": {},
+          "addedCaseOutcomes": {},
+          "unmeasured": 0
+        },
+        "gitleaks": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5950,
+          "commonDrift": {},
+          "addedCaseOutcomes": {},
+          "unmeasured": 0
+        },
+        "openredaction": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5950,
+          "commonDrift": {},
+          "addedCaseOutcomes": {},
+          "unmeasured": 0
+        },
+        "redact-secret": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5950,
+          "commonDrift": {},
+          "addedCaseOutcomes": {},
+          "unmeasured": 0
+        },
+        "trufflehog": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5950,
+          "commonDrift": {},
+          "addedCaseOutcomes": {},
+          "unmeasured": 0
+        }
+      }
+    },
+    "combined": {
+      "note": "previous accepted run versus candidate replay: both effects together",
+      "scanners": {
+        "flare-redact": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5944,
+          "commonDrift": {
+            "control:flagged -> control:clear": 6
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 114,
+            "control:flagged": 2,
+            "pending": 115,
+            "positive:EXACT": 162,
+            "positive:EXACT,EXACT": 18,
+            "positive:EXACT,EXACT,EXACT": 12,
+            "positive:EXACT,EXACT,MISS": 1,
+            "positive:MISS": 46,
+            "positive:MISS,MISS": 2,
+            "positive:MISS,MISS,MISS": 1,
+            "positive:OVERBROAD": 19,
+            "positive:OVERBROAD,OVERBROAD": 1,
+            "positive:PARTIAL": 6
+          },
+          "unmeasured": 0
+        },
+        "gitleaks": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5946,
+          "commonDrift": {
+            "control:flagged -> control:clear": 4
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 108,
+            "control:flagged": 8,
+            "not-measured": 10,
+            "pending": 106,
+            "positive:EXACT": 148,
+            "positive:EXACT,EXACT": 13,
+            "positive:EXACT,EXACT,EXACT": 9,
+            "positive:EXACT,MISS": 3,
+            "positive:MISS": 82,
+            "positive:MISS,EXACT": 3,
+            "positive:MISS,MISS": 2,
+            "positive:MISS,MISS,MISS": 5,
+            "positive:PARTIAL": 2
+          },
+          "unmeasured": 10
+        },
+        "openredaction": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5948,
+          "commonDrift": {
+            "control:flagged -> control:clear": 2
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 63,
+            "control:flagged": 53,
+            "pending": 115,
+            "positive:EXACT": 130,
+            "positive:EXACT,EXACT": 7,
+            "positive:EXACT,EXACT,EXACT": 4,
+            "positive:EXACT,EXACT,PARTIAL": 1,
+            "positive:EXACT,OVERBROAD": 6,
+            "positive:EXACT,OVERBROAD,OVERBROAD": 6,
+            "positive:MISS": 73,
+            "positive:MISS,MISS": 1,
+            "positive:MISS,OVERBROAD": 6,
+            "positive:MISS,OVERBROAD,OVERBROAD": 3,
+            "positive:MISS,PARTIAL": 1,
+            "positive:OVERBROAD": 24,
+            "positive:PARTIAL": 6
+          },
+          "unmeasured": 0
+        },
+        "redact-secret": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5944,
+          "commonDrift": {
+            "control:flagged -> control:clear": 6
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 114,
+            "control:flagged": 2,
+            "pending": 115,
+            "positive:EXACT": 211,
+            "positive:EXACT,EXACT": 20,
+            "positive:EXACT,EXACT,EXACT": 13,
+            "positive:MISS": 15,
+            "positive:MISS,EXACT": 1,
+            "positive:MISS,MISS,MISS": 1,
+            "positive:PARTIAL": 7
+          },
+          "unmeasured": 0
+        },
+        "trufflehog": {
+          "status": "complete",
+          "previousStatus": "complete",
+          "commonCases": 5950,
+          "commonUnchanged": 5946,
+          "commonDrift": {
+            "control:flagged -> control:clear": 4
+          },
+          "addedCaseOutcomes": {
+            "control:clear": 115,
+            "control:flagged": 1,
+            "pending": 115,
+            "positive:EXACT": 8,
+            "positive:MISS": 220,
+            "positive:MISS,MISS": 21,
+            "positive:MISS,MISS,MISS": 14,
+            "positive:OVERBROAD": 5
+          },
+          "unmeasured": 0
+        }
+      }
+    },
+    "unmeasured": {
+      "plain": {
+        "candidate": [
+          {
+            "scanner": "flare-redact",
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          {
+            "scanner": "gitleaks",
+            "unmeasured": 10,
+            "reasons": {
+              "scanner output could not be mapped to ranges: Ambiguous or unmappable scanner finding": 5,
+              "scanner output could not be mapped to ranges: Unsupported decoded Gitleaks finding": 5
+            }
+          },
+          {
+            "scanner": "openredaction",
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          {
+            "scanner": "redact-secret",
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          {
+            "scanner": "trufflehog",
+            "unmeasured": 0,
+            "reasons": {}
+          }
+        ],
+        "previousPopulationOnNewEngine": [
+          {
+            "scanner": "flare-redact",
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          {
+            "scanner": "gitleaks",
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          {
+            "scanner": "openredaction",
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          {
+            "scanner": "redact-secret",
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          {
+            "scanner": "trufflehog",
+            "unmeasured": 0,
+            "reasons": {}
+          }
+        ]
+      },
+      "plainCases": {
+        "gitleaks": [
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-three-layers-in-env",
+            "reason": "scanner output could not be mapped to ranges: Unsupported decoded Gitleaks finding"
+          },
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+            "reason": "scanner output could not be mapped to ranges: Unsupported decoded Gitleaks finding"
+          },
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+            "reason": "scanner output could not be mapped to ranges: Unsupported decoded Gitleaks finding"
+          },
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-hex-lower-in-env",
+            "reason": "scanner output could not be mapped to ranges: Ambiguous or unmappable scanner finding"
+          },
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-hex-lower-of-base64-standard-padded-in-env",
+            "reason": "scanner output could not be mapped to ranges: Unsupported decoded Gitleaks finding"
+          },
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-hex-lower-of-hex-lower-in-env",
+            "reason": "scanner output could not be mapped to ranges: Ambiguous or unmappable scanner finding"
+          },
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-hex-mixed-in-env",
+            "reason": "scanner output could not be mapped to ranges: Ambiguous or unmappable scanner finding"
+          },
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-hex-upper-in-env",
+            "reason": "scanner output could not be mapped to ranges: Ambiguous or unmappable scanner finding"
+          },
+          {
+            "case_id": "base64-hex-representation-projections--sendgrid-key-hex-upper-in-json",
+            "reason": "scanner output could not be mapped to ranges: Ambiguous or unmappable scanner finding"
+          },
+          {
+            "case_id": "structured-credential-files-authored--kubeconfig-client-key-data-encoded-pem",
+            "reason": "scanner output could not be mapped to ranges: Unsupported decoded Gitleaks finding"
+          }
+        ]
+      }
+    },
+    "methods": {
+      "candidate": {
+        "flare-redact": {
+          "status": "complete",
+          "variants": 35322,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 14003,
+            "mutation:fail": 2793,
+            "metamorphic:pass": 25032,
+            "mutation:pass": 4554,
+            "mutation:review-required": 170,
+            "metamorphic:review-required": 1080
+          }
+        },
+        "gitleaks": {
+          "status": "complete",
+          "variants": 35322,
+          "unmeasuredVariants": 60,
+          "unmeasuredVariantsBySeedSuffix": {
+            "canonical": 30,
+            "context-indent": 10,
+            "context-unicode-prefix": 10,
+            "encoding-crlf": 10
+          },
+          "assertionsByMethodAndStatus": {
+            "metamorphic:pass": 31164,
+            "mutation:pass": 5812,
+            "mutation:fail": 1534,
+            "metamorphic:fail": 7864,
+            "mutation:review-required": 161,
+            "metamorphic:review-required": 1017
+          }
+        },
+        "openredaction": {
+          "status": "complete",
+          "variants": 35322,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 21987,
+            "mutation:fail": 4364,
+            "metamorphic:pass": 17048,
+            "mutation:pass": 2983,
+            "mutation:review-required": 170,
+            "metamorphic:review-required": 1080
+          }
+        },
+        "redact-secret": {
+          "status": "complete",
+          "variants": 35322,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:pass": 38811,
+            "mutation:pass": 7309,
+            "mutation:review-required": 170,
+            "metamorphic:review-required": 1080,
+            "metamorphic:fail": 224,
+            "mutation:fail": 38
+          }
+        },
+        "trufflehog": {
+          "status": "complete",
+          "variants": 35322,
+          "unmeasuredVariants": 1,
+          "unmeasuredVariantsBySeedSuffix": {
+            "context-unicode-prefix": 1
+          },
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 13493,
+            "mutation:fail": 2618,
+            "metamorphic:pass": 25540,
+            "mutation:pass": 4729,
+            "mutation:review-required": 170,
+            "metamorphic:review-required": 1080
+          }
+        }
+      },
+      "previousPopulationOnNewEngine": {
+        "flare-redact": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 13443,
+            "mutation:fail": 2712,
+            "metamorphic:pass": 22846,
+            "mutation:pass": 4237,
+            "mutation:review-required": 55,
+            "metamorphic:review-required": 277
+          }
+        },
+        "gitleaks": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:pass": 29229,
+            "mutation:pass": 5531,
+            "mutation:fail": 1418,
+            "metamorphic:fail": 7060,
+            "mutation:review-required": 55,
+            "metamorphic:review-required": 277
+          }
+        },
+        "openredaction": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 20355,
+            "mutation:fail": 4123,
+            "metamorphic:pass": 15934,
+            "mutation:pass": 2826,
+            "mutation:review-required": 55,
+            "metamorphic:review-required": 277
+          }
+        },
+        "redact-secret": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:pass": 36254,
+            "mutation:pass": 6938,
+            "mutation:review-required": 55,
+            "metamorphic:fail": 35,
+            "mutation:fail": 11,
+            "metamorphic:review-required": 277
+          }
+        },
+        "trufflehog": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 11624,
+            "mutation:fail": 2353,
+            "metamorphic:pass": 24665,
+            "mutation:pass": 4596,
+            "mutation:review-required": 55,
+            "metamorphic:review-required": 277
+          }
+        }
+      },
+      "previousAccepted": {
+        "flare-redact": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 13443,
+            "mutation:fail": 2712,
+            "metamorphic:pass": 22846,
+            "mutation:pass": 4237,
+            "mutation:review-required": 55,
+            "metamorphic:review-required": 277
+          }
+        },
+        "gitleaks": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:pass": 29229,
+            "mutation:pass": 5531,
+            "mutation:fail": 1418,
+            "metamorphic:fail": 7060,
+            "mutation:review-required": 55,
+            "metamorphic:review-required": 277
+          }
+        },
+        "openredaction": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 20355,
+            "mutation:fail": 4123,
+            "metamorphic:pass": 15934,
+            "mutation:pass": 2826,
+            "mutation:review-required": 55,
+            "metamorphic:review-required": 277
+          }
+        },
+        "redact-secret": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:pass": 36254,
+            "mutation:pass": 6938,
+            "mutation:review-required": 55,
+            "metamorphic:fail": 35,
+            "mutation:fail": 11,
+            "metamorphic:review-required": 277
+          }
+        },
+        "trufflehog": {
+          "status": "complete",
+          "variants": 32297,
+          "unmeasuredVariants": 0,
+          "unmeasuredVariantsBySeedSuffix": {},
+          "assertionsByMethodAndStatus": {
+            "metamorphic:fail": 11624,
+            "mutation:fail": 2353,
+            "metamorphic:pass": 24665,
+            "mutation:pass": 4596,
+            "mutation:review-required": 55,
+            "metamorphic:review-required": 277
+          }
+        }
+      }
+    },
+    "runs": {
+      "candidate": {
+        "policy-corpus": {
+          "ciRun": "37177431252",
+          "platform": "linux-x64",
+          "benchmarkRevision": "6d65a3fa1842fb44dcbf68fa476fee3355d8689e",
+          "engine": {
+            "name": "credential-eval",
+            "version": "0.1.0-alpha.3",
+            "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+            "protocol": "credential-eval-protocol/1"
+          },
+          "configHash": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
+          "semanticDigest": "sha256:661d2288c5286cf10f53c88a37503cf6f8777039b43e9d32d005df6ce5aed504",
+          "byteDigest": "sha256:ae6dd72d6ca3e0f522e9696c24d7e93d5dbf89cc7cc8ffb7d73e34bd1883c87d",
+          "determinism": {
+            "runs": 2,
+            "semanticDigestsEqual": true
+          },
+          "corpusDigest": "sha256:37293aba657dc6b6034f568206b5cdf717f9eac1e0f8e4fbfeeff363f162f1be",
+          "caseCounts": {
+            "flare-redact": 19,
+            "gitleaks": 19,
+            "openredaction": 19,
+            "redact-secret": 19,
+            "trufflehog": 19
+          }
+        },
+        "public-evidence-snapshot+methods": {
+          "ciRun": "37177431252",
+          "platform": "linux-x64",
+          "benchmarkRevision": "6d65a3fa1842fb44dcbf68fa476fee3355d8689e",
+          "engine": {
+            "name": "credential-eval",
+            "version": "0.1.0-alpha.3",
+            "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+            "protocol": "credential-eval-protocol/1"
+          },
+          "configHash": "sha256:f2660c2cfa87e2476064836d0205431c04433d7eb37b7a60b0cc0bc5623fe36c",
+          "semanticDigest": "sha256:c6a932117fa652d6a76b27a7274f18da5d8abf4264f0eb12192f8a965c63658a",
+          "byteDigest": "sha256:65189e89de7adb4eb6fd9e98b026ea4cd20112353ba87fff4be5473aa7cd12e4",
+          "determinism": {
+            "runs": 2,
+            "semanticDigestsEqual": true
+          },
+          "corpusDigest": "sha256:5c0041813197670c5233d0db113171f9ee4493056c8f69e20f6ad0c8a28cfeb0",
+          "caseCounts": {
+            "flare-redact": 35322,
+            "gitleaks": 35322,
+            "openredaction": 35322,
+            "redact-secret": 35322,
+            "trufflehog": 35322
+          }
+        },
+        "public-evidence-snapshot": {
+          "ciRun": "37177431252",
+          "platform": "linux-x64",
+          "benchmarkRevision": "6d65a3fa1842fb44dcbf68fa476fee3355d8689e",
+          "engine": {
+            "name": "credential-eval",
+            "version": "0.1.0-alpha.3",
+            "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+            "protocol": "credential-eval-protocol/1"
+          },
+          "configHash": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
+          "semanticDigest": "sha256:d9e8bfc5ff601aac167dddb1e21c8b8df55f2db8e7bdc9e58f2845cb91d206f6",
+          "byteDigest": "sha256:aa37285a5033323656d40edfd823b2a34966adddedb7d0d32c478e06b4198dd5",
+          "determinism": {
+            "runs": 2,
+            "semanticDigestsEqual": true
+          },
+          "corpusDigest": "sha256:5c0041813197670c5233d0db113171f9ee4493056c8f69e20f6ad0c8a28cfeb0",
+          "caseCounts": {
+            "flare-redact": 6449,
+            "gitleaks": 6449,
+            "openredaction": 6449,
+            "redact-secret": 6449,
+            "trufflehog": 6449
+          }
+        },
+        "regression-corpus": {
+          "ciRun": "37177431252",
+          "platform": "linux-x64",
+          "benchmarkRevision": "6d65a3fa1842fb44dcbf68fa476fee3355d8689e",
+          "engine": {
+            "name": "credential-eval",
+            "version": "0.1.0-alpha.3",
+            "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+            "protocol": "credential-eval-protocol/1"
+          },
+          "configHash": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
+          "semanticDigest": "sha256:7f52a4c0a071ad5f8c8c3d4c3fd894c972dc196b2d33ca08243749a4cf66ba72",
+          "byteDigest": "sha256:02d97470d6a0f30ac2fd471e2a946eefc65de9664ff96278976d47c5e483bcc3",
+          "determinism": {
+            "runs": 2,
+            "semanticDigestsEqual": true
+          },
+          "corpusDigest": "sha256:b7b236c5ad1afc9377d05ca3f3738cebdaad15fbdaa3a492e3059770f04285f6",
+          "caseCounts": {
+            "flare-redact": 153,
+            "gitleaks": 153,
+            "openredaction": 153,
+            "redact-secret": 153,
+            "trufflehog": 153
+          }
+        }
+      },
+      "previousPopulationOnNewEngine": {
+        "policy-corpus": {
+          "ciRun": "37174899727",
+          "platform": "linux-x64",
+          "benchmarkRevision": "cb4bf2705d21b0ab3bffe1c8550550cf9bb650eb",
+          "engine": {
+            "name": "credential-eval",
+            "version": "0.1.0-alpha.3",
+            "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+            "protocol": "credential-eval-protocol/1"
+          },
+          "configHash": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
+          "semanticDigest": "sha256:661d2288c5286cf10f53c88a37503cf6f8777039b43e9d32d005df6ce5aed504",
+          "byteDigest": "sha256:02a5c10a8ff300f95ee5f45f7c17bfeddb5c3af255ea1b0ae0c3bd2ee3978160",
+          "determinism": {
+            "runs": 2,
+            "semanticDigestsEqual": true
+          },
+          "corpusDigest": "sha256:37293aba657dc6b6034f568206b5cdf717f9eac1e0f8e4fbfeeff363f162f1be",
+          "caseCounts": {
+            "flare-redact": 19,
+            "gitleaks": 19,
+            "openredaction": 19,
+            "redact-secret": 19,
+            "trufflehog": 19
+          }
+        },
+        "public-evidence-snapshot+methods": {
+          "ciRun": "37174899727",
+          "platform": "linux-x64",
+          "benchmarkRevision": "cb4bf2705d21b0ab3bffe1c8550550cf9bb650eb",
+          "engine": {
+            "name": "credential-eval",
+            "version": "0.1.0-alpha.3",
+            "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+            "protocol": "credential-eval-protocol/1"
+          },
+          "configHash": "sha256:f2660c2cfa87e2476064836d0205431c04433d7eb37b7a60b0cc0bc5623fe36c",
+          "semanticDigest": "sha256:10a45ab503c18989474ca9ca22719739a0b143c957970991a94a55afd91cd53d",
+          "byteDigest": "sha256:c7bd023148ab9d5724a7c2c41efc207911eb54e0ad59cf5b2a768756e3fa25ba",
+          "determinism": {
+            "runs": 2,
+            "semanticDigestsEqual": true
+          },
+          "corpusDigest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
+          "caseCounts": {
+            "flare-redact": 32297,
+            "gitleaks": 32297,
+            "openredaction": 32297,
+            "redact-secret": 32297,
+            "trufflehog": 32297
+          }
+        },
+        "public-evidence-snapshot": {
+          "ciRun": "37174899727",
+          "platform": "linux-x64",
+          "benchmarkRevision": "cb4bf2705d21b0ab3bffe1c8550550cf9bb650eb",
+          "engine": {
+            "name": "credential-eval",
+            "version": "0.1.0-alpha.3",
+            "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+            "protocol": "credential-eval-protocol/1"
+          },
+          "configHash": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
+          "semanticDigest": "sha256:d9ba92ef41eea99049461ea7b3cca5ad85486b82447e6d2b212f638dc91647ae",
+          "byteDigest": "sha256:b367f1c9e8cbb3a868283f2973a8ef4d52872202c6aba80c0c4df62edd12d644",
+          "determinism": {
+            "runs": 2,
+            "semanticDigestsEqual": true
+          },
+          "corpusDigest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
+          "caseCounts": {
+            "flare-redact": 5950,
+            "gitleaks": 5950,
+            "openredaction": 5950,
+            "redact-secret": 5950,
+            "trufflehog": 5950
+          }
+        },
+        "regression-corpus": {
+          "ciRun": "37174899727",
+          "platform": "linux-x64",
+          "benchmarkRevision": "cb4bf2705d21b0ab3bffe1c8550550cf9bb650eb",
+          "engine": {
+            "name": "credential-eval",
+            "version": "0.1.0-alpha.3",
+            "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+            "protocol": "credential-eval-protocol/1"
+          },
+          "configHash": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
+          "semanticDigest": "sha256:7f52a4c0a071ad5f8c8c3d4c3fd894c972dc196b2d33ca08243749a4cf66ba72",
+          "byteDigest": "sha256:dd8e26084f5ae9ad6dd6de00ebff168942fe3520c5115b115cb39a3d6d7990ac",
+          "determinism": {
+            "runs": 2,
+            "semanticDigestsEqual": true
+          },
+          "corpusDigest": "sha256:b7b236c5ad1afc9377d05ca3f3738cebdaad15fbdaa3a492e3059770f04285f6",
+          "caseCounts": {
+            "flare-redact": 153,
+            "gitleaks": 153,
+            "openredaction": 153,
+            "redact-secret": 153,
+            "trufflehog": 153
+          }
+        }
+      }
+    },
+    "authorityRenewalData": {
+      "note": "Prepared for the owner. qualification-authority.json is not edited by the adoption; renewing it is the owner's reviewed commit after acceptance.",
+      "semanticDigests": {
+        "policy-corpus": "sha256:661d2288c5286cf10f53c88a37503cf6f8777039b43e9d32d005df6ce5aed504",
+        "public-evidence-snapshot": "sha256:d9e8bfc5ff601aac167dddb1e21c8b8df55f2db8e7bdc9e58f2845cb91d206f6",
+        "public-evidence-snapshot+methods": "sha256:c6a932117fa652d6a76b27a7274f18da5d8abf4264f0eb12192f8a965c63658a",
+        "regression-corpus": "sha256:7f52a4c0a071ad5f8c8c3d4c3fd894c972dc196b2d33ca08243749a4cf66ba72"
+      },
+      "engine": {
+        "name": "credential-eval",
+        "version": "0.1.0-alpha.3",
+        "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d",
+        "protocol": "credential-eval-protocol/1"
+      },
+      "configHash": {
+        "plain": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
+        "methods": "sha256:f2660c2cfa87e2476064836d0205431c04433d7eb37b7a60b0cc0bc5623fe36c"
+      },
+      "policyRevision": "to be derived on the acceptance branch from the qualification view",
+      "release": "to be set by the owner to the product release the accepted view qualifies"
+    }
+  }
+}

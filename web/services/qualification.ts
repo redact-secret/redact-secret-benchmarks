@@ -56,6 +56,8 @@ export interface PopulationView {
   cases: CaseRow[];
   /** The methods run of this population (metamorphic, mutation, differential), when one is pinned: its own identity, never merged into `artifact`. */
   methodsArtifact?: { semanticDigest: string; artifactDigest?: string; methods?: string[] };
+  /** Cases and methods variants a complete scanner could not map to ranges: in no denominator, never zero detections or misses (RunArtifact v1.2). */
+  unmeasured?: { cases: { scanner: string; unmeasured: number; reasons: Record<string, number> }[]; methodsVariants?: { scanner: string; unmeasured: number; reasons: Record<string, number> }[] };
   artifact: {
     artifactDigest: string; semanticDigest: string; configHash: string; protocolVersion: string; engineRunClass?: string; publication?: string;
     engine: { name: string; version: string }; methods: string[]; caseCount: number;

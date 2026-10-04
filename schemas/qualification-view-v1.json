@@ -326,6 +326,72 @@
             "items": {
               "$ref": "#/$defs/caseRow"
             }
+          },
+          "unmeasured": {
+            "type": "object",
+            "description": "Cases (and methods variants) a complete scanner could not map to ranges (RunArtifact v1.2 unmeasured_cases). They are in no denominator and are never zero detections or misses.",
+            "additionalProperties": false,
+            "required": [
+              "cases"
+            ],
+            "properties": {
+              "cases": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "scanner",
+                    "unmeasured",
+                    "reasons"
+                  ],
+                  "properties": {
+                    "scanner": {
+                      "type": "string"
+                    },
+                    "unmeasured": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "reasons": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    }
+                  }
+                }
+              },
+              "methodsVariants": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "scanner",
+                    "unmeasured",
+                    "reasons"
+                  ],
+                  "properties": {
+                    "scanner": {
+                      "type": "string"
+                    },
+                    "unmeasured": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "reasons": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "integer",
+                        "minimum": 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -705,6 +771,11 @@
                         "unresolved": {
                           "type": "integer",
                           "minimum": 0
+                        },
+                        "unmeasuredVariants": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "description": "Generated variants this peer could not measure in the methods run: no relation or comparison exists for them, so they are not occurrences and not agreement."
                         }
                       }
                     }

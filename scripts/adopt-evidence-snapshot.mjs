@@ -11,6 +11,9 @@
  *   not the registry's active pin (a snapshot that needs a newer engine). The record then carries `engineChange`; the active registry is untouched.
  *   Both take [--supersede]: a recorded candidate of another adoption is replaced (recorded as `supersedesCandidate`; its prepared acceptance
  *   patch is removed because it no longer matches the record) instead of exiting 5. The owner must be told to accept the new one.
+ *   Same-evidence adoption (#697): when --tag and --manifest-digest are the accepted pin and the engine or product build differs from the registry's (--engine-tag with
+ *   --engine-revision/--engine-run-schema, and/or --product-version with --product-integrity), the outcome is not already-pinned: the engine candidate is recorded next to the accepted
+ *   adoption as `engineCandidate` (never in place of it), with --supersede replacing a recorded one.
  *   compare-runs --report FILE --old OLD_ARTIFACT --new NEW_ARTIFACT
  *       Add outcome drift between two official replays to a change report, common cases apart from added cases.
  *   repin     [--superseded-on YYYY-MM-DD]
@@ -21,7 +24,7 @@ import { execFileSync } from 'node:child_process';
 import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { reviewStateSummary, representationSummary, adoptionBranch, adoptionKey, candidateRecord, diffRunArtifacts, diffSnapshots, incompatibilityMessage, releaseIdentityProblems, repinPopulation, sha256Digest, snapshotCompatibility } from './evidence-adoption.mjs';
+import { engineCandidateRecord, reviewStateSummary, representationSummary, adoptionBranch, adoptionKey, candidateRecord, diffRunArtifacts, diffSnapshots, incompatibilityMessage, releaseIdentityProblems, repinPopulation, sha256Digest, snapshotCompatibility } from './evidence-adoption.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const ADOPTION_FILE = 'benchmarks/evidence-adoption.json';
@@ -70,7 +73,12 @@ const engine = !engineOverride ? registry.engine : {
   ...registry.engine, tag: options['engine-tag'], revision: options['engine-revision'], version: options['engine-tag'].replace(/^v/, ''),
   runArtifactSchema: { ...registry.engine.runArtifactSchema, sha256: sha256Digest(readFileSync(options['engine-run-schema'])) },
 };
-const keyRegistry = { ...registry, engine };
+// The product build the replay scans, when it is not the registry's (#697): the same-evidence engine candidate.
+const productOverride = options['product-version'] !== undefined;
+if (productOverride && !/^sha512-[A-Za-z0-9+/=]+$/.test(options['product-integrity'] ?? '')) usage('--product-integrity (sha512-...) is required with --product-version');
+const activeProduct = registry.scanners.find(s => s.id === 'redact-secret');
+const product = productOverride ? { package: activeProduct.package, version: options['product-version'], integrity: options['product-integrity'] } : activeProduct;
+const keyRegistry = { ...registry, engine, scanners: registry.scanners.map(s => (s.id === 'redact-secret' ? { ...s, version: product.version, integrity: product.integrity } : s)) };
 const pinned = inputs.populations.find(p => p.id === POPULATION).pin;
 const adoption = existsSync(path.join(root, ADOPTION_FILE)) ? readJson(ADOPTION_FILE) : { schema: 'redact-secret/evidence-adoption/v1', state: 'none' };
 
@@ -89,7 +97,8 @@ function preflight() {
     (code === 0 ? console.log : console.error)(message ?? `${outcome}: ${tag}`);
     return code;
   };
-  if (tag === pinned.evidenceRelease) {
+  const engineCandidateMode = tag === pinned.evidenceRelease && expectedManifestDigest === pinned.manifestDigest && (engine.tag !== registry.engine.tag || product.version !== activeProduct.version);
+  if (tag === pinned.evidenceRelease && !engineCandidateMode) {
     if (expectedManifestDigest === pinned.manifestDigest) return finish('already-pinned', 0, `${tag} is already the pinned evidence release; nothing to adopt.`);
     return finish('identity-failed', 3, `${tag} is the pinned tag but ${expectedManifestDigest} is not its pinned manifest digest ${pinned.manifestDigest}: a release tag is immutable.`);
   }
@@ -115,6 +124,13 @@ function preflight() {
   report.compatibility = compat;
   if (!compat.compatible) return finish('incompatible', 4, incompatibilityMessage(compat, engine));
 
+  if (engineCandidateMode) {
+    if (adoption.state !== 'accepted') return finish('conflict', 5, `The evidence ${tag} is the pin but the adoption record is ${adoption.state}, not accepted; an engine candidate rides on an accepted adoption.`);
+    const ec = adoption.engineCandidate;
+    if (ec?.adoptionKey === `sha256:${key}`) return finish('already-prepared', 0, `Engine candidate ${key.slice(0, 12)} is already recorded; nothing to do.`);
+    if (ec && !supersede) return finish('conflict', 5, `A different engine candidate (${ec.engine.tag}, ${ec.product.version}) is recorded; pass --supersede to replace it.`);
+    return finish('ready', 0, `Ready: ${tag} (the accepted pin) is readable by ${engine.tag}; engine candidate ${engine.tag} with @redact-secret/core ${product.version}${ec ? ' supersedes the recorded one' : ''}. Key ${key.slice(0, 12)}.`);
+  }
   if (adoption.state === 'candidate') {
     if (adoption.candidate.adoptionKey === `sha256:${key}`) return finish('already-prepared', 0, `Adoption ${key.slice(0, 12)} of ${tag} is already recorded as the candidate; nothing to do.`);
     if (supersede) { report.supersedes = { evidenceRelease: adoption.candidate.evidenceRelease, adoptionKey: adoption.candidate.adoptionKey }; return finish('ready', 0, `Ready: ${tag} is verified and readable by ${engine.tag}; it supersedes the recorded candidate ${adoption.candidate.evidenceRelease} (${adoption.candidate.adoptionKey.slice(0, 19)}). Adoption key ${key.slice(0, 12)}.`); }
@@ -130,6 +146,7 @@ function prepare() {
   const tag = options.tag;
   const dir = path.resolve(options.dir ?? path.join(process.env.RUNNER_TEMP ?? '/tmp', `adopt-${tag}`));
   const next = assets(tag, dir);
+  if (tag === pinned.evidenceRelease) return prepareEngineCandidate(next);
   const previous = assets(pinned.evidenceRelease, path.resolve(options['previous-dir'] ?? path.join(process.env.RUNNER_TEMP ?? '/tmp', `adopt-${pinned.evidenceRelease}`)));
   if (sha256Digest(previous.manifestBytes) !== pinned.manifestDigest) { console.error('the previous release manifest differs from its pin'); process.exit(3); }
   const diff = diffSnapshots(previous.snapshot, next.snapshot);
@@ -171,6 +188,22 @@ function prepare() {
   ];
   if (options.summary) writeFileSync(options.summary, `${lines.join('\n')}\n`);
   console.log(lines.join('\n'));
+}
+
+function prepareEngineCandidate(next) {
+  const key = adoptionKey({ tag: options.tag, manifestDigest: options['manifest-digest'], snapshotDigest: next.snapshot.identity.corpus_digest, registry: keyRegistry });
+  const old = adoption.engineCandidate && supersede ? adoption.engineCandidate : null;
+  const supersededCandidate = old && { adoptionKey: old.adoptionKey, engine: old.engine, product: old.product, changeReport: old.changeReport, note: `Superseded before acceptance by engine candidate ${engine.tag} with ${product.version}.` };
+  const record = engineCandidateRecord({ pinned, manifestDigest: options['manifest-digest'], key, compat: lastReport.compatibility, registry, engine, product, previousProduct: activeProduct, supersededCandidate });
+  const diff = diffSnapshots(next.snapshot, next.snapshot);
+  writeJson(ADOPTION_FILE, { ...adoption, engineCandidate: record });
+  writeJson(record.changeReport, {
+    schema: 'redact-secret/evidence-adoption-change-report/v1', kind: 'engine-product', evidenceRelease: options.tag, adoptionKey: record.adoptionKey,
+    scope: `Identical evidence bytes (${pinned.snapshotDigest}). The engine moves from ${registry.engine.tag} to ${engine.tag} and @redact-secret/core from ${activeProduct.version} to ${product.version}; a later difference is an engine, configuration or product effect, separated by the attribution run (the previous product build on the new engine). Nothing is accepted.`,
+    engineChange: record.engineChange, productChange: record.productChange, diff,
+    replay: { state: 'pending', note: 'Filled from the official replay and the attribution run (docs/specs/evidence-adoption.md, "Engine candidate").' },
+  });
+  console.log(`Engine candidate recorded: ${engine.tag}, @redact-secret/core ${product.version}. Report: ${record.changeReport}. Owner acceptance: none.`);
 }
 
 function repin() {

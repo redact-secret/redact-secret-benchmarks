@@ -55,9 +55,28 @@ export function preparedAcceptanceProblems(acceptance, { exists, read }) {
   return problems;
 }
 
+/** The engine candidate (#697) rides next to an accepted adoption on the identical evidence; it is never accepted by this repository's files. */
+export function engineCandidateProblems(record, { pin, exists }) {
+  const ec = record.engineCandidate;
+  if (ec === undefined) return [];
+  const problems = [];
+  if (record.state !== 'accepted') problems.push('an engine candidate rides on an accepted adoption');
+  if (ec.kind !== 'engine-product') problems.push('engineCandidate.kind must be engine-product');
+  if (ec.evidenceRelease !== pin.evidenceRelease || ec.manifestDigest !== pin.manifestDigest || ec.snapshotDigest !== pin.snapshotDigest) problems.push('an engine candidate is on the identical evidence as the pin (release, manifest digest, snapshot digest)');
+  if (!DIGEST.test(ec.adoptionKey ?? '')) problems.push('engineCandidate.adoptionKey must be sha256:<64 hex>');
+  if (!/^v\d+\.\d+\.\d+/.test(ec.engine?.tag ?? '') || !/^[0-9a-f]{40}$/.test(ec.engine?.revision ?? '')) problems.push('engineCandidate.engine needs a tag and a 40-hex revision');
+  if (!ec.product?.version || !/^sha512-/.test(ec.product?.integrity ?? '')) problems.push('engineCandidate.product needs a version and a sha512 integrity');
+  if (ec.engineCompatibility?.compatible !== true) problems.push('engineCandidate.engineCompatibility must be compatible');
+  if (ec.ownerAcceptance !== null) problems.push('an engine candidate carries no owner acceptance (ownerAcceptance must be null)');
+  if (!ec.changeReport || !exists(ec.changeReport)) problems.push(`engineCandidate.changeReport ${ec.changeReport} does not exist`);
+  return problems;
+}
+
 export function checkEvidenceAdoption() {
   const inputs = readJson('benchmarks/qualification-inputs.json');
-  return evidenceAdoptionProblems(readJson('benchmarks/evidence-adoption.json'), { pin: inputs.populations.find(p => p.id === 'public-evidence-snapshot').pin, exists: p => existsSync(new URL(p, root)), read: p => readFileSync(new URL(p, root), 'utf8') });
+  const record = readJson('benchmarks/evidence-adoption.json');
+  const context = { pin: inputs.populations.find(p => p.id === 'public-evidence-snapshot').pin, exists: p => existsSync(new URL(p, root)), read: p => readFileSync(new URL(p, root), 'utf8') };
+  return [...evidenceAdoptionProblems(record, context), ...engineCandidateProblems(record, context)];
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

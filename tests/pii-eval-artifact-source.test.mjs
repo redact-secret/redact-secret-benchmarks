@@ -84,6 +84,16 @@ test('public workflow isolates App credentials and publisher consumes only stagi
   assert.equal(token.with['app-id'], source.app.id);
   assert.equal(token.with.repositories, source.app.repository);
   assert.equal(token.with['permission-actions'], 'read');
+  // #689: a failed mint is reported as missing App installation access, apart from artifact/pin validation, without broadening the token.
+  const job = dedicated.jobs['public-synthetic'];
+  assert.equal(token['continue-on-error'], true);
+  assert.deepEqual(job.env, { PII_EVAL_APP_ID: source.app.id, PII_EVAL_OWNER: source.app.owner, PII_EVAL_REPO: source.app.repository });
+  const preflight = job.steps.find(step => step.if === "steps.token.outcome != 'success'");
+  assert.match(preflight.run, /contents: read.*actions: read/);
+  assert.match(preflight.run, /PII_EVAL_APP_ID.*PII_EVAL_OWNER.*PII_EVAL_REPO/s);
+  assert.match(preflight.run, /not an artifact or pin validation failure/);
+  assert.doesNotMatch(preflight.run, /secrets\.|PRIVATE_KEY\}|\$\{PII_EVAL_APP_PRIVATE_KEY/);
+  assert.equal(job.steps.indexOf(preflight), job.steps.indexOf(token) + 1);
   const fetch = dedicated.jobs['public-synthetic'].steps.find(step => step.env?.GH_TOKEN);
   assert.match(fetch.run, /fetch-pii-eval-public-synthetic.mjs fetch/);
   assert.equal(dedicated.jobs['public-synthetic'].steps.filter(step => step.env?.GH_TOKEN).length, 1);

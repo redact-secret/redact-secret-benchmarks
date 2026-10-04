@@ -14,6 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+    env:
+      PII_EVAL_APP_ID: '5178533'
+      PII_EVAL_OWNER: redact-secret
+      PII_EVAL_REPO: pii-eval
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
@@ -25,6 +29,9 @@ jobs:
       - run: npm ci --ignore-scripts
       - name: Mint read-only pii-eval installation token
         id: token
+        # A failure here is an App installation or key problem, never an artifact or pin problem: the next step names it. Nothing
+        # about the key is printed, and the token is never broadened beyond one repository and two read permissions.
+        continue-on-error: true
         uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2.2.2
         with:
           app-id: '5178533'
@@ -33,10 +40,30 @@ jobs:
           repositories: pii-eval
           permission-actions: read
           permission-contents: read
+      - name: Report missing App installation access (distinct from artifact and pin validation)
+        if: steps.token.outcome != 'success'
+        run: |
+          {
+            echo "### pii-eval installation access is missing (not an artifact or pin failure)"
+            echo
+            echo "The installation token could not be minted, so no pii-eval artifact or pin was read or validated."
+            echo
+            echo "- GitHub App id: \`${PII_EVAL_APP_ID}\`"
+            echo "- Installation must cover: \`${PII_EVAL_OWNER}/${PII_EVAL_REPO}\` only (select repositories, not all)"
+            echo "- Permissions required: \`contents: read\` and \`actions: read\` (Metadata: read is implicit); nothing broader"
+            echo "- Also check that the \`PII_EVAL_APP_PRIVATE_KEY\` secret is this App's key and is visible to this repository"
+            echo "- Owner action: install or repair the App installation (#689), then rerun this job"
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "::error title=pii-eval App installation access missing::App ${PII_EVAL_APP_ID} has no usable installation on ${PII_EVAL_OWNER}/${PII_EVAL_REPO} (needs contents:read and actions:read) or PII_EVAL_APP_PRIVATE_KEY is not its key. This is not an artifact or pin validation failure; see #689."
+          exit 1
       - name: Download and verify exact engine and public measurement artifacts
         env:
           GH_TOKEN: ${{ steps.token.outputs.token }}
-        run: node scripts/fetch-pii-eval-public-synthetic.mjs fetch --out="$RUNNER_TEMP/pii-eval-public"
+        run: |
+          node scripts/fetch-pii-eval-public-synthetic.mjs fetch --out="$RUNNER_TEMP/pii-eval-public" || {
+            echo "::error title=pii-eval artifact or pin validation failed::the installation token was minted, so this is not an App access problem; the pinned artifacts did not verify"
+            exit 1
+          }
       # Only public projection and sanitized receipt cross the job boundary.
       # The engine is verified for provenance and never executed here.
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

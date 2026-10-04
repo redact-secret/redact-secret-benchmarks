@@ -118,6 +118,33 @@ export function officialRunProblems(registry, { schemaDigest, inputs, evaluation
       if (s.kind === 'npm' && got.packageIntegrity !== s.integrity && s.id === 'redact-secret') problems.push(`${at}: scanner ${s.id} package integrity differs from the pin`);
     }
   }
+  problems.push(...historicalRunProblems(registry));
+  return problems;
+}
+
+/**
+ * Historical receipts (#690): runs that were accepted evidence for an earlier pin, kept after a repin. They are receipts, not
+ * evidence of the current pin, so they live apart from runs[] (which must match the pins) and are never read as canonical by the
+ * authority check. Each must say what superseded it and must not be a run of the current pin.
+ */
+export function historicalRunProblems(registry) {
+  const problems = [];
+  const populations = registry.populations ?? [];
+  const seen = new Set();
+  for (const run of registry.historicalRuns ?? []) {
+    const at = `historical run ${run.id}`;
+    const key = `${run.id}|${run.evidence?.release?.manifest_digest}`;
+    if (seen.has(key)) problems.push(`${at}: duplicate historical receipt for the same evidence release`);
+    seen.add(key);
+    const population = populations.find(p => p.id === run.population);
+    if (!population) { problems.push(`${at}: unknown population ${run.population}`); continue; }
+    if (run.status !== 'historical') problems.push(`${at}: status must be "historical"`);
+    if (!DIGEST.test(run.supersededBy?.manifestDigest ?? '') || !run.supersededBy?.evidenceRelease || !run.supersededOn) problems.push(`${at}: supersededBy (evidenceRelease, manifestDigest) and supersededOn are required`);
+    if (!run.evidence?.release?.tag || !DIGEST.test(run.evidence?.release?.manifest_digest ?? '') || !DIGEST.test(run.evidence?.corpus_digest ?? '')) problems.push(`${at}: evidence needs release.tag, release.manifest_digest and corpus_digest`);
+    if (!DIGEST.test(run.artifact?.semanticDigest ?? '') || !DIGEST.test(run.artifact?.byteDigest ?? '')) problems.push(`${at}: artifact needs semanticDigest and byteDigest`);
+    if (run.evidence?.release?.manifest_digest === population.evidence?.release?.manifestDigest) problems.push(`${at}: its evidence is the population's current pin, so it belongs in runs[], not in the receipts`);
+    if (run.supersededBy?.manifestDigest === run.evidence?.release?.manifest_digest) problems.push(`${at}: a run cannot be superseded by its own evidence release`);
+  }
   return problems;
 }
 

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import Ajv2020 from 'ajv/dist/2020.js';
 import { canonical, parseKeepingNumbers, sha256Digest } from './canonical.ts';
+import { canonicalDigest, parseBuffer } from './large-json.ts';
 
 /**
  * A consumer of credential-eval RunArtifact v1 (#605). It reads the artifact only through its published schema
@@ -61,6 +62,8 @@ function validator() {
 
 export function runArtifactSchemaDigest(): string { return sha256Digest(readFileSync(RUN_ARTIFACT_SCHEMA_PATH)); }
 
+/** Above this size an artifact is read from its bytes, never converted to one string. */
+export const LARGE_ARTIFACT_BYTES = 200 * 1024 * 1024;
 export interface ReadArtifact { artifact: RunArtifact; artifactDigest: string; semanticDigest: string }
 
 /** Semantic digest as the engine computes it: canonical JSON of the artifact with `non_semantic` cleared to its default `{}`. */
@@ -71,16 +74,18 @@ export function semanticDigestOf(text: string): string {
 }
 
 /** Check the schema tag first, then validate the whole document; refuse anything unknown (consumer obligation 1). */
-export function readRunArtifact(bytes: Buffer): ReadArtifact {
-  const text = bytes.toString('utf8');
-  const artifact = JSON.parse(text) as RunArtifact;
+export function readRunArtifact(bytes: Buffer, options: { forceBytes?: boolean } = {}): ReadArtifact {
+  // A document close to the string limit (about 512 MiB; the alpha.3 methods artifact is more than 700 MB) is read from the bytes.
+  const large = options.forceBytes || bytes.length > LARGE_ARTIFACT_BYTES;
+  const text = large ? '' : bytes.toString('utf8');
+  const artifact = (large ? parseBuffer(bytes) : JSON.parse(text)) as RunArtifact;
   if (artifact?.schema !== RUN_ARTIFACT_SCHEMA_TAG) throw new Error(`Unsupported run artifact schema tag; expected ${RUN_ARTIFACT_SCHEMA_TAG}`);
   const validate = validator();
   if (!validate(artifact)) {
     const first = (validate.errors ?? []).slice(0, 3).map(e => `${e.instancePath || '/'} ${e.message}`).join('; ');
     throw new Error(`Run artifact does not match the v1 schema: ${first}`);
   }
-  return { artifact, artifactDigest: sha256Digest(bytes), semanticDigest: semanticDigestOf(text) };
+  return { artifact, artifactDigest: sha256Digest(bytes), semanticDigest: large ? `sha256:${canonicalDigest(bytes)}` : semanticDigestOf(text) };
 }
 
 /** What a population registry pins about the evidence an artifact must name (credential-eval multi-corpus-qualification.md section 6, rule 2). */

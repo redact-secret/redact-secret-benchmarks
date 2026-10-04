@@ -25,7 +25,7 @@ const view = ({ families, cases, revision = 'rs-policy-1:sha256:aa' }) => ({
 const run = (files, strict = false) => {
   const dir = mkdtempSync(path.join(tmpdir(), 'compare-views-'));
   const write = (name, value) => { const file = path.join(dir, name); writeFileSync(file, JSON.stringify(value)); return file; };
-  const args = ['--import', 'tsx', script, '--accepted', write('a.json', files.A), '--replay-old', write('b.json', files.B), '--candidate', write('c.json', files.C), '--report', write('r.json', { evidenceRelease: 'snapshot-test', diff: { added: files.added, evidenceClassTransitions: {} } }), '--out-json', path.join(dir, 'out.json'), '--out-md', path.join(dir, 'out.md'), ...(strict ? ['--strict'] : [])];
+  const args = ['--import', 'tsx', script, '--accepted', write('a.json', files.A), '--replay-old', write('b.json', files.B), '--candidate', write('c.json', files.C), '--report', write('r.json', { evidenceRelease: 'snapshot-test', diff: { added: files.added, evidenceClassTransitions: {} }, ...(files.report ?? {}) }), '--out-json', path.join(dir, 'out.json'), '--out-md', path.join(dir, 'out.md'), ...(files.superseded ? ['--superseded-comparison', write('s.json', files.superseded)] : []), ...(strict ? ['--strict'] : [])];
   const proc = spawnSync('node', args, { encoding: 'utf8' });
   return { status: proc.status, stderr: proc.stderr, out: proc.status === 0 || strict ? JSON.parse(readFileSync(path.join(dir, 'out.json'), 'utf8')) : null, md: readFileSync(path.join(dir, 'out.md'), 'utf8') };
 };
@@ -71,4 +71,28 @@ test('a common case whose outcome changes without a twin family assignment is un
   const { out } = run({ A: base, B: structuredClone(base), C: changed, added: [] });
   assert.equal(out.publicPopulation.commonCaseOutcomeDrift.cases, 1);
   assert.ok(out.unexplained.some(u => /common case c1 changed outcome/.test(u)));
+});
+
+test('the report separates the superseded candidate and the representation capability, and says unverified facts are unverified (#690)', () => {
+  const base = view({ families: [family('fam-a', {})], cases: [makeCase('c1')] });
+  const bucket = { 's': { fragment: { pending: 1, 'positive:exact': 2 } } };
+  const scanners = { s: { compared: 3, unchanged: 2, moves: { 'not-measured -> positive:exact': 1 }, movesByFactClass: {}, cases: {} } };
+  const superseded = { evidenceRelease: 'snapshot-old', views: { candidate: { distribution: { stable: 1, provisional: 1, pending: 0, unsupported: 0 }, supportMatrix: { stable: 1, provisional: 0, pending: 0, unsupported: 0 }, stableDistribution: {}, policyRevision: 'rs-policy-1:sha256:cc' } }, corpusEffect: { statusChanges: [{ family: 'fam-x' }], supportMatrixStatusChanges: [] } };
+  const report = {
+    representation: { casesWithFacts: 3, casesByTransformationOp: { fragment: 1 }, casesByEncodeCodec: {}, fragmentMechanisms: { a: 1 }, expectedSpansWithFragments: 1, expectedSpansWithDecoded: 0, decodedByCodec: {}, factsDigest: 'sha256:aa', notExported: { invalidUtf8: { total: 0 }, twinLineageNotExported: 0 } },
+    replay: { representationEffect: {
+      note: 'synthetic', engines: { previous: { manifestRepresentation: null }, candidate: { manifestRepresentation: { facts_digest: 'sha256:bb', decoded_spans: 2, decoded_verified: 1, decoded_unverified: 1 } } },
+      factClasses: { fragment: 3 }, unmeasuredPlain: { previousEngine: { s: { unmeasured: 1, reasons: {} } }, candidate: { s: { unmeasured: 0, reasons: {} } } },
+      mappedFindings: { previousEngine: { s: { findingsByMapping: {}, cases: 0, casesByOutcome: {} } }, candidate: { s: { findingsByMapping: { 'source-segment | layers 1 | base64': 1 }, cases: 1, casesByOutcome: { pending: 1 } } } },
+      outcomesByFactClass: { previousEngine: bucket, previousEngineNewCorpus: null, candidate: bucket }, engineEffect: { scanners }, corpusEffect: { changedExpectationCases: 0, scanners }, combined: { scanners },
+    } },
+  };
+  const { status, out, md } = run({ A: base, B: structuredClone(base), C: structuredClone(base), added: [], report, superseded }, true);
+  assert.equal(status, 0);
+  assert.deepEqual(out.supersededCandidate.familyStatusChangesOnlyThere, ['fam-x']);
+  assert.match(md, /Against the superseded candidate \(snapshot-old/);
+  assert.match(md, /Accept this candidate .*not the superseded one/);
+  assert.match(md, /DIFFERS from the release's/);
+  assert.match(md, /not-measured -> positive:exact 1/);
+  assert.match(md, /Still not measured/);
 });

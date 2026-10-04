@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import YAML from 'yaml';
-import { adoptionBranch, adoptionKey, candidateRecord, diffRunArtifacts, diffSnapshots, incompatibilityMessage, releaseIdentityProblems, repinPopulation, sha256Digest, snapshotCompatibility } from '../scripts/evidence-adoption.mjs';
+import { adoptionBranch, adoptionKey, candidateRecord, diffRunArtifacts, diffSnapshots, incompatibilityMessage, releaseIdentityProblems, representationSummary, reviewStateSummary, repinPopulation, sha256Digest, snapshotCompatibility } from '../scripts/evidence-adoption.mjs';
 import { evidenceAdoptionProblems } from '../scripts/check-evidence-adoption.mjs';
 import { historicalRunProblems, officialRunProblems } from '../scripts/check-official-runs.mjs';
 
@@ -154,4 +154,65 @@ test('the adoption workflow is dispatch-only, least-privilege, and opens a pull 
   for (const job of Object.values(wf.jobs)) for (const step of job.steps) if (step.run) assert.doesNotMatch(step.run, /\$\{\{ *inputs\./);
   // The authority file is never named: renewing it is the owner's separate change.
   assert.doesNotMatch(raw, /qualification-authority/);
+});
+
+test('a candidate read by a newer engine records the engine change, a superseded candidate and no acceptance (#690)', () => {
+  const pin = inputs.populations.find(p => p.id === 'public-evidence-snapshot').pin;
+  const engine = { ...registry.engine, tag: 'v9.9.9', revision: '9'.repeat(40), runArtifactSchema: { ...registry.engine.runArtifactSchema, sha256: `sha256:${'8'.repeat(64)}` } };
+  const args = { tag: candidate.evidenceRelease, manifest: { sourceRevision: { commit: candidate.sourceRevision } }, manifestDigest: candidate.manifestDigest, snapshotIdentity: { corpus_digest: candidate.snapshotDigest, evidence_schema: candidate.evidenceSchema, revision: candidate.evidenceRevision }, compat: { compatible: true, cases: 1 }, diff: { cases: {} }, registry, previous: { evidenceRelease: pin.evidenceRelease, manifestDigest: pin.manifestDigest } };
+  const plain = candidateRecord({ ...args, key: 'f'.repeat(64) });
+  assert.equal(plain.candidate.engineChange, undefined);
+  assert.equal(plain.candidate.supersedesCandidate, undefined);
+  const record = candidateRecord({ ...args, key: 'e'.repeat(64), engine, supersededCandidate: { evidenceRelease: 'snapshot-2000.01.01', adoptionKey: `sha256:${'d'.repeat(64)}` } });
+  assert.deepEqual(record.candidate.engine, { tag: 'v9.9.9', revision: '9'.repeat(40) });
+  assert.equal(record.candidate.engineChange.from.tag, registry.engine.tag);
+  assert.equal(record.candidate.engineChange.to.tag, 'v9.9.9');
+  assert.equal(record.candidate.engineChange.runArtifactSchemaSha256, `sha256:${'8'.repeat(64)}`);
+  assert.equal(record.candidate.supersedesCandidate.evidenceRelease, 'snapshot-2000.01.01');
+  assert.equal(record.candidate.ownerAcceptance, null);
+  assert.deepEqual(evidenceAdoptionProblems(record, { pin, exists: () => true }), []);
+  // The engine that reads the snapshot is part of the adoption key: the same snapshot read by another engine is another adoption.
+  const base = { tag: 'snapshot-2000.01.01', manifestDigest: `sha256:${'1'.repeat(64)}`, snapshotDigest: `sha256:${'2'.repeat(64)}` };
+  assert.notEqual(adoptionKey({ ...base, registry }), adoptionKey({ ...base, registry: { ...registry, engine } }));
+});
+
+test('representation facts are summarised by counts only and absent facts are reported as absent', () => {
+  const withFacts = { ...snapshot(makeCase('a', { representation: { derivation: { kind: 'authored-base' } } }),
+    makeCase('b', { representation: { input_validity: 'unpaired-surrogate-split', transformation: { steps: [{ op: 'encode', codec: 'base64' }, { op: 'fragment', mechanism: 'fixed-width-wrap' }] } }, expected: [{ start: 0, end: 1, fragments: [{ start: 0, end: 1 }], decoded: { via: [{ codec: 'strip-codepoints' }] } }] })) };
+  withFacts.identity = { ...withFacts.identity, representation: 'credential-eval/representation/1' };
+  const summary = representationSummary(withFacts, { evalExport: { representation: { facts_digest: `sha256:${'a'.repeat(64)}` }, materialized: 3, exported: 2, notExported: { total: 1 } } });
+  assert.equal(summary.present, true);
+  assert.equal(summary.casesWithFacts, 2);
+  assert.deepEqual(summary.casesByEncodeCodec, { 'encode:base64': 1 });
+  assert.deepEqual(summary.fragmentMechanisms, { 'fixed-width-wrap': 1 });
+  assert.equal(summary.expectedSpansWithFragments, 1);
+  assert.deepEqual(summary.decodedByCodec, { 'strip-codepoints': 1 });
+  assert.equal(summary.notExported.exported, 2);
+  assert.deepEqual(representationSummary(snapshot(makeCase('a')), {}), { present: false });
+});
+
+test('the adoption workflow can name the engine and supersede a candidate, still only through env and the script (#690)', async () => {
+  const wf = YAML.parse(await text('.github/workflows/adopt-evidence-snapshot.yml'));
+  assert.deepEqual(Object.keys(wf.on.workflow_dispatch.inputs).sort(), ['engine_tag', 'manifest_digest', 'supersede', 'tag']);
+  assert.equal(wf.on.workflow_dispatch.inputs.supersede.type, 'boolean');
+  assert.equal(wf.on.workflow_dispatch.inputs.supersede.default, false);
+  const prepare = wf.jobs.preflight.steps.find(s => s.id === 'prepare');
+  assert.match(prepare.run, /--engine-tag "\$ENGINE_TAG"/);
+  assert.match(prepare.run, /--supersede/);
+  assert.equal(prepare.env.GH_TOKEN, '${{ github.token }}');
+});
+
+test('the review state names maintainer-only fixtures by their Case or Scenario lifecycle and reports the rest as unattributed, never guessed (#690)', () => {
+  const manifest = { reviewState: { contract: 'x', rule: 'solo-maintainer-period', fixtures: { reviewed: 0 }, maintainerOnly: { fixtures: 3 } } };
+  const record = (kind, id, lifecycle) => ({ path: `records/${kind}s/${id}.json`, text: JSON.stringify({ kind, id, lifecycle }) });
+  const bundle = { records: [record('case', 'c1', 'maintainer-only'), record('scenario', 's1', 'maintainer-only'), record('case', 'c2', 'draft')] };
+  const materialized = { fixtures: [
+    { id: 'a', case: 'c1', target: { type: 'case', id: 'c1' }, expected: { outcome: 'must-flag' } },
+    { id: 'b', target: { type: 'scenario', id: 's1' }, expected: { outcome: 'must-not-flag' } },
+    { id: 'c', case: 'c2', target: { type: 'case', id: 'c2' }, expected: { outcome: 'must-flag' } },
+  ] };
+  const summary = reviewStateSummary(manifest, bundle, materialized);
+  assert.deepEqual(summary.maintainerOnlyFixtureIds, ['a', 'b']);
+  assert.equal(summary.unattributedFixtures, 1);
+  assert.deepEqual(reviewStateSummary({}, bundle, materialized), { present: false });
 });

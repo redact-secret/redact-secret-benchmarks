@@ -2,16 +2,16 @@
   "schema": "redact-secret/evidence-adoption/v1",
   "state": "candidate",
   "candidate": {
-    "evidenceRelease": "snapshot-2026.10.04",
-    "sourceRevision": "32224d40e4456fa3ed80f444a90c346323de5f10",
-    "manifestDigest": "sha256:c82b2f005c7e499c06e8851356f63a80ecad923e11ea284b0429c01fac1e4da8",
-    "snapshotDigest": "sha256:5c0041813197670c5233d0db113171f9ee4493056c8f69e20f6ad0c8a28cfeb0",
-    "evidenceSchema": "credential-evidence/schema/1.6.0",
-    "evidenceRevision": "records-tree-sha256:806545ba072686bb24c36fc88754e2e9b9a59239946d84c8a2b887ee03980432",
-    "adoptionKey": "sha256:9869634aef42001110c9d923ddd898e2347e8e5744508f471822763f701e3f45",
+    "evidenceRelease": "snapshot-2026.10.04.3",
+    "sourceRevision": "3db9c428b2303a4b51106624d2f1a839bb94c795",
+    "manifestDigest": "sha256:690ed57312d576fd6a614d40de10efe8bbc89431693aa4fbaa99979d69c0da8a",
+    "snapshotDigest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
+    "evidenceSchema": "credential-evidence/schema/1.7.0",
+    "evidenceRevision": "records-tree-sha256:dbfea28d29e427c28dff4054cbdda77e6c102541e56210e3cd253ddc63e9b154",
+    "adoptionKey": "sha256:7cb8b0148888bb01deb4744101c88954085edd6e42f5eaab88ae909fca09b6aa",
     "engine": {
-      "tag": "v0.1.0-alpha.3",
-      "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d"
+      "tag": "v0.1.0-alpha.4",
+      "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33"
     },
     "engineCompatibility": {
       "compatible": true,
@@ -21,36 +21,69 @@
       "evidenceRelease": "snapshot-2026.10.01.2",
       "manifestDigest": "sha256:2557a72ae8dec3ca6d734a6c87b6db9cb4881543541693a4555fdfd9f7ba26d8"
     },
+    "supersedesCandidate": {
+      "evidenceRelease": "snapshot-2026.10.04",
+      "manifestDigest": "sha256:c82b2f005c7e499c06e8851356f63a80ecad923e11ea284b0429c01fac1e4da8",
+      "adoptionKey": "sha256:9869634aef42001110c9d923ddd898e2347e8e5744508f471822763f701e3f45",
+      "engine": {
+        "tag": "v0.1.0-alpha.3",
+        "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d"
+      },
+      "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.04.json",
+      "report": "docs/generated/evidence-adoption/snapshot-2026.10.04.md",
+      "comparison": "docs/generated/evidence-adoption/snapshot-2026.10.04.comparison.json",
+      "removedAcceptancePatch": "docs/generated/evidence-adoption/snapshot-2026.10.04.acceptance.patch",
+      "note": "Superseded before acceptance by snapshot-2026.10.04.3. Its prepared acceptance patch is removed: the owner accepts the new candidate, never this one. Its report and data stay as history."
+    },
+    "engineChange": {
+      "from": {
+        "tag": "v0.1.0-alpha.1",
+        "revision": "379e677b8e92db93105d26eb1b7f8c84df6ee5fc"
+      },
+      "to": {
+        "tag": "v0.1.0-alpha.4",
+        "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33"
+      },
+      "runArtifactSchemaSha256": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
+      "note": "Applied only at acceptance, by candidate.acceptance.patch; the active registry stays on the previous engine and the old accepted runs until the owner accepts."
+    },
     "changeSummary": {
       "old": 5950,
       "new": 6449,
       "added": 499,
       "removed": 0,
-      "changed": 235,
-      "unchanged": 5715
+      "changed": 236,
+      "unchanged": 5714
     },
-    "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.04.json",
+    "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.04.3.json",
     "replay": {
       "state": "replayed",
-      "via": ".github/workflows/official-runs.yml dispatched on the exact commit; plain and methods, linux-x64, two runs each with equal semantic digests",
-      "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37177431252",
-      "benchmarkRevision": "6d65a3fa1842fb44dcbf68fa476fee3355d8689e",
+      "via": ".github/workflows/official-runs.yml dispatched on the exact commit; plain and methods, linux-x64, two engine runs each with equal semantic digests",
+      "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37202404479",
+      "benchmarkRevision": "9a22e6fd046ef98242987d3f727ae1e6d11df91e",
       "archive": {
-        "release": "official-runs-37177431252",
+        "release": "official-runs-37202404479",
         "asset": "official-run-artifacts.tar.gz",
-        "sha256": "sha256:4e0399e358bf6f17f491ee49fc82de6038bcfe86bd185c0fa81ee768a693df45"
+        "sha256": "sha256:68b0b9b4aaeadb5582ead6a13325e616935bc5e603a1f8fdaa75cb08ebdd4221"
       },
-      "attributionRun": {
-        "note": "previous population (snapshot-2026.10.01.2) on alpha.3, same workflow",
-        "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37174899727",
-        "benchmarkRevision": "cb4bf2705d21b0ab3bffe1c8550550cf9bb650eb"
-      },
+      "attributionRuns": [
+        {
+          "note": "previous population (snapshot-2026.10.01.2) on alpha.4, same workflow",
+          "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37197207092",
+          "benchmarkRevision": "52c2b725cdb627cf68c78b2c8bb7e0b00ad90ef2"
+        },
+        {
+          "note": "superseded candidate corpus (snapshot-2026.10.04) on alpha.4, plain run: the alpha.3 to alpha.4 engine effect on the same corpus",
+          "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37200076388",
+          "benchmarkRevision": "4d8d2adbcf64d22dcfe61d316e3618b9746dbf94"
+        }
+      ],
       "recordedRuns": [
         {
           "id": "policy-corpus@linux-x64",
-          "semanticDigest": "sha256:661d2288c5286cf10f53c88a37503cf6f8777039b43e9d32d005df6ce5aed504",
-          "byteDigest": "sha256:ae6dd72d6ca3e0f522e9696c24d7e93d5dbf89cc7cc8ffb7d73e34bd1883c87d",
-          "configHash": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
+          "semanticDigest": "sha256:a110e4568c2db8162e2402678f877df1ca16dc36fb9edacca9e4b23fa3274a14",
+          "byteDigest": "sha256:9036367f50a0e915684dd612dba69072d8da87180f09f7645245ff2bd9a567e8",
+          "configHash": "sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16",
           "caseCounts": {
             "flare-redact": 19,
             "gitleaks": 19,
@@ -60,23 +93,10 @@
           }
         },
         {
-          "id": "public-evidence-snapshot@linux-x64",
-          "semanticDigest": "sha256:d9e8bfc5ff601aac167dddb1e21c8b8df55f2db8e7bdc9e58f2845cb91d206f6",
-          "byteDigest": "sha256:aa37285a5033323656d40edfd823b2a34966adddedb7d0d32c478e06b4198dd5",
-          "configHash": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
-          "caseCounts": {
-            "flare-redact": 6449,
-            "gitleaks": 6449,
-            "openredaction": 6449,
-            "redact-secret": 6449,
-            "trufflehog": 6449
-          }
-        },
-        {
           "id": "public-evidence-snapshot+methods@linux-x64",
-          "semanticDigest": "sha256:c6a932117fa652d6a76b27a7274f18da5d8abf4264f0eb12192f8a965c63658a",
-          "byteDigest": "sha256:65189e89de7adb4eb6fd9e98b026ea4cd20112353ba87fff4be5473aa7cd12e4",
-          "configHash": "sha256:f2660c2cfa87e2476064836d0205431c04433d7eb37b7a60b0cc0bc5623fe36c",
+          "semanticDigest": "sha256:0e909c53f18bd399951540e6ea5edacfe51a330902e396138e639201cd541d04",
+          "byteDigest": "sha256:c4566578e169dfb28f6c4949911738f7a8030e35ff2eb1ac7571e002ec024645",
+          "configHash": "sha256:eea835c2e088ff369ecae475d6daccf55917f6c14e2c6398ca804f146fc83f01",
           "caseCounts": {
             "flare-redact": 35322,
             "gitleaks": 35322,
@@ -86,10 +106,23 @@
           }
         },
         {
+          "id": "public-evidence-snapshot@linux-x64",
+          "semanticDigest": "sha256:d253e93cd6bf89053b83d12621ca59fe293741cce9304c9cf54c055108e8f4d9",
+          "byteDigest": "sha256:1efe17925cc64f5addcbf6daff5c1d0006eceb8d9d8a69209f730390f1ef7f6a",
+          "configHash": "sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16",
+          "caseCounts": {
+            "flare-redact": 6449,
+            "gitleaks": 6449,
+            "openredaction": 6449,
+            "redact-secret": 6449,
+            "trufflehog": 6449
+          }
+        },
+        {
           "id": "regression-corpus@linux-x64",
-          "semanticDigest": "sha256:7f52a4c0a071ad5f8c8c3d4c3fd894c972dc196b2d33ca08243749a4cf66ba72",
-          "byteDigest": "sha256:02d97470d6a0f30ac2fd471e2a946eefc65de9664ff96278976d47c5e483bcc3",
-          "configHash": "sha256:bc57c1e3128ea14441c75fed96d913076bb2f36fd2600d1eac2dc8bd08683c88",
+          "semanticDigest": "sha256:7c3593d168455a678ce58220f0f2ffd2d859450b18fd4aa3f1067fadf8c36dac",
+          "byteDigest": "sha256:646c6ae910bb6a5d3f04037a851ef21081a87e2b32133c91e14e0abe66ff4e35",
+          "configHash": "sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16",
           "caseCounts": {
             "flare-redact": 153,
             "gitleaks": 153,
@@ -99,69 +132,58 @@
           }
         }
       ],
-      "report": "docs/generated/evidence-adoption/snapshot-2026.10.04.json (replay.*)"
+      "report": "docs/generated/evidence-adoption/snapshot-2026.10.04.3.json (replay.*)"
     },
     "ownerAcceptance": null,
     "deployment": {
       "staging": null,
       "production": null
     },
-    "engineChange": {
-      "from": {
-        "tag": "v0.1.0-alpha.1",
-        "revision": "379e677b8e92db93105d26eb1b7f8c84df6ee5fc"
-      },
-      "to": {
-        "tag": "v0.1.0-alpha.3",
-        "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d"
-      },
-      "runArtifactSchemaSha256": "sha256:35ae69511ca553c2f88589457f89e349750c93ef5cba012ca9236ba7ff48c238",
-      "note": "Applied only at acceptance, by candidate.acceptance.patch (engine pin, vendored RunArtifact schema v1.2, the linux-x64 config hash from the recorded runs, recorded runs of all three populations; the darwin-arm64 config hash is left resolved-at-run because the engine's darwin configuration changed in alpha.2 and alpha.3 and no darwin run exists on alpha.3): the active registry stays on alpha.1 and the old accepted runs until the owner accepts. The engine effect on the previous population is replay.engineEffect of the change report."
-    },
     "acceptance": {
       "note": "Prepared for the owner (#680). Nothing here is accepted: the active pins, runs, schema and authority file stay on the previous accepted evidence until the owner applies the patch and fills the OWNER-TO-SET fields. The patch applies to the commit that merges this candidate; the policy revision and the parity report in it are derived from the product inputs of that commit, so re-derive them if the product inputs change first.",
-      "report": "docs/generated/evidence-adoption/snapshot-2026.10.04.md",
-      "comparison": "docs/generated/evidence-adoption/snapshot-2026.10.04.comparison.json",
-      "patch": "docs/generated/evidence-adoption/snapshot-2026.10.04.acceptance.patch",
-      "patchDigestFile": "docs/generated/evidence-adoption/snapshot-2026.10.04.acceptance.patch.sha256",
-      "applies": "git apply docs/generated/evidence-adoption/snapshot-2026.10.04.acceptance.patch",
+      "report": "docs/generated/evidence-adoption/snapshot-2026.10.04.3.md",
+      "comparison": "docs/generated/evidence-adoption/snapshot-2026.10.04.3.comparison.json",
+      "patch": "docs/generated/evidence-adoption/snapshot-2026.10.04.3.acceptance.patch",
+      "patchDigestFile": "docs/generated/evidence-adoption/snapshot-2026.10.04.3.acceptance.patch.sha256",
+      "applies": "git apply docs/generated/evidence-adoption/snapshot-2026.10.04.3.acceptance.patch",
       "ownerFields": [
         "the authority file: new.acceptedOn and new.acceptedBy (the file is named in the patch and the spec, never here)",
         "benchmarks/evidence-adoption.json candidate.ownerAcceptance acceptedBy and acceptedOn",
-        "docs/decisions/2026-10-04-accept-snapshot-2026-10-04-on-credential-eval-alpha-3.md status (proposed to accepted) and its owner statement"
+        "docs/decisions/2026-10-04-accept-snapshot-2026-10-04-3-on-credential-eval-alpha-4.md status (proposed to accepted) and its owner statement"
       ],
+      "supersedesPreparedAcceptance": "The prepared acceptance of snapshot-2026.10.04 on alpha.3 (PR #693) is superseded and its patch removed: accept this candidate, not that one.",
       "candidateView": {
-        "sha256": "sha256:7b8a23ec198f0dacd57280de9bffbf32634a2e8fcdf808ec2f3bdcde06d20477",
-        "policyRevision": "rs-policy-1:sha256:a4000fc49c362d2c3a2bd1b5271176bb8ac8e23a59e7e9ee40d4ef6af652530e",
+        "sha256": "sha256:30cf0116abfd4773f443e22b9d37c6dd49ee2eb03051ac17b870715cd710875d",
+        "policyRevision": "rs-policy-1:sha256:5615a8aa34a1cf593cff5913596f6745828cf168f67ba77ed305c4e4e4e0f6d3",
         "distribution": {
-          "stable": 116,
-          "provisional": 18,
           "pending": 1,
+          "provisional": 18,
+          "stable": 116,
           "unsupported": 0
         },
         "supportMatrix": {
-          "stable": 126,
-          "provisional": 25,
           "pending": 5,
+          "provisional": 25,
+          "stable": 126,
           "unsupported": 17
         },
         "build": "On the acceptance branch with the archive fetched (node scripts/official-run-archive.mjs fetch --out <dir>) and each product population's case-metadata.json from npm run qualification:export: npm run qualification:view -- --artifacts <dir> --out <view.json>. The view is byte-identical for the same artifacts and inputs."
       },
       "derivedInputs": {
-        "snapshot": "credential-evidence release snapshot-2026.10.04, asset credential-eval-corpus-snapshot.json (gh release download snapshot-2026.10.04 -R redact-secret/credential-evidence)",
+        "snapshot": "credential-evidence release snapshot-2026.10.04.3, asset credential-eval-corpus-snapshot.json (gh release download snapshot-2026.10.04.3 -R redact-secret/credential-evidence)",
         "axisOverlay": {
           "file": "benchmarks/support/public-axis-overlay.json",
-          "sha256": "sha256:69b88f4477ea7611487e836c48a5b5a751769c0c6d1359fe9f03c0cbe85fdc85",
+          "sha256": "sha256:60ba76352bed66b62faf8cfbd3af81d4f87c986750ecf14a5df49b5c8cbe7619",
           "check": "npm run qualification:axis-overlay -- --snapshot <snapshot> --check"
         },
         "twinScope": {
           "file": "benchmarks/support/public-twin-scope-map.json",
-          "sha256": "sha256:6d0759b046de92d94888bd28a022e55203ba3d8550d84bc02b6fc654d9e84fc4",
+          "sha256": "sha256:42981bffc30dd3f1c53b7c53974bea5c8256b2262cabeecec13013b617ac0552",
           "check": "npm run qualification:twin-scope -- --snapshot <snapshot> --check"
         },
         "ledgerRekey": {
           "file": "benchmarks/support/public-review-ledger-map.json",
-          "sha256": "sha256:91e439528cd122b97198157165793a5845b4ab249569d03a25fade03929bb569",
+          "sha256": "sha256:ce94e96eb8d0cdc54cc6b917089b4d1f82861cab135bdbb26872f146e393f5cd",
           "check": "npm run qualification:ledger-rekey -- --snapshot <snapshot> --methods-run <dir>/public-evidence-snapshot/methods/artifact.json --check"
         }
       }

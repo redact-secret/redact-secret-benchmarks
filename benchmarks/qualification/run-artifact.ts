@@ -4,7 +4,7 @@ import { canonical, parseKeepingNumbers, sha256Digest } from './canonical.ts';
 
 /**
  * A consumer of credential-eval RunArtifact v1 (#605). It reads the artifact only through its published schema
- * (schemas/credential-eval-run-artifact-v1.json, vendored from credential-eval tag v0.1.0-alpha.1): it imports no
+ * (schemas/credential-eval-run-artifact-v1.json, vendored from credential-eval tag v0.1.0-alpha.2): it imports no
  * credential-eval code, never re-scores a case and never reads `non_semantic` as evidence
  * (credential-eval docs/qualification-boundary.md section 4).
  */

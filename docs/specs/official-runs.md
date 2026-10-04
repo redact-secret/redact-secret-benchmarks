@@ -14,7 +14,7 @@ identity of everything it used; it asserts nothing about the product and emits n
 
 | Pin | Value |
 | --- | --- |
-| Engine | credential-eval `v0.1.0-alpha.1`, commit `379e677b8e92db93105d26eb1b7f8c84df6ee5fc`, protocol `credential-eval-protocol/1` |
+| Engine | credential-eval `v0.1.0-alpha.2`, commit `bad2a4e47af3f2745f4f5de366d806092b970e35`, protocol `credential-eval-protocol/1` |
 | RunArtifact schema | `schemas/credential-eval-run-artifact-v1.json`, vendored from the engine tag, digest pinned |
 | Configuration | `credential-public-v1` at the engine tag: `credential-public-v1.json` (linux-x64, canonical) and `credential-public-v1.darwin-arm64.json` (local reproduction) |
 | Scanners | gitleaks 8.30.1, TruffleHog 3.97.4 (archive and executable digests per platform), `@redact-secret/core` 0.1.0-beta.12 (the published release), flare-redact 1.6.1, `@openredaction/core` 1.1.5 (npm integrity) |

@@ -4,13 +4,13 @@
   "decision": "docs/decisions/2026-10-01-run-credential-eval-per-population-and-adapt-run-artifacts.md",
   "engine": {
     "repository": "redact-secret/credential-eval",
-    "tag": "v0.1.0-alpha.1",
-    "revision": "379e677b8e92db93105d26eb1b7f8c84df6ee5fc",
-    "version": "0.1.0-alpha.1",
+    "tag": "v0.1.0-alpha.4",
+    "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33",
+    "version": "0.1.0-alpha.4",
     "protocol": "credential-eval-protocol/1",
     "runArtifactSchema": {
       "path": "schemas/credential-eval-run-artifact-v1.json",
-      "sha256": "sha256:938cc4f48660186716edb7b29b14f46a8a5ba20e2e4219f2d1f70b6d594751e2"
+      "sha256": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809"
     }
   },
   "config": {
@@ -28,7 +28,10 @@
       "darwin-arm64": {
         "file": "credential-public-v1.darwin-arm64.json",
         "canonical": false,
-        "configHash": "sha256:042691470c89d6ae4b088dcb1ed941be33c499bb2269b18e60ffb137e19aa5d7"
+        "configHash": {
+          "state": "resolved-at-run",
+          "from": "a darwin-arm64 verification run of the alpha.4 configuration (not recorded for #690; the alpha.1 hash no longer applies)"
+        }
       }
     }
   },
@@ -104,12 +107,12 @@
       "publishable": true,
       "evidence": {
         "source": "credential-evidence",
-        "revision": "records-tree-sha256:4cd72141c1deec4aef21c0f5b2d751c51eb3d7abe5088756219d99c93f464f50",
-        "evidenceSchema": "credential-evidence/schema/1.5.0",
-        "corpusDigest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
+        "revision": "records-tree-sha256:dbfea28d29e427c28dff4054cbdda77e6c102541e56210e3cd253ddc63e9b154",
+        "evidenceSchema": "credential-evidence/schema/1.7.0",
+        "corpusDigest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
         "release": {
-          "tag": "snapshot-2026.10.01.2",
-          "manifestDigest": "sha256:2557a72ae8dec3ca6d734a6c87b6db9cb4881543541693a4555fdfd9f7ba26d8"
+          "tag": "snapshot-2026.10.04.3",
+          "manifestDigest": "sha256:690ed57312d576fd6a614d40de10efe8bbc89431693aa4fbaa99979d69c0da8a"
         }
       }
     },
@@ -148,136 +151,23 @@
   ],
   "runs": [
     {
-      "id": "policy-corpus@darwin-arm64",
-      "population": "policy-corpus",
-      "platform": "darwin-arm64",
-      "canonical": false,
-      "purpose": "local verification of the pins and the determinism check; the canonical measurement is the linux-x64 CI run (.github/workflows/official-runs.yml)",
-      "recordedOn": "2026-10-01",
-      "benchmarkRevision": "5424f94341c7da62db906ebaff62747d2f534410",
-      "engine": {
-        "name": "credential-eval",
-        "version": "0.1.0-alpha.1",
-        "revision": "379e677b8e92db93105d26eb1b7f8c84df6ee5fc",
-        "protocol": "credential-eval-protocol/1"
-      },
-      "runClass": "public",
-      "engineRunClass": "official",
-      "publication": "public",
-      "configHash": "sha256:042691470c89d6ae4b088dcb1ed941be33c499bb2269b18e60ffb137e19aa5d7",
-      "evidence": {
-        "source": "redact-secret-benchmarks/policy",
-        "revision": "corpus-sha256:37293aba657dc6b6034f568206b5cdf717f9eac1e0f8e4fbfeeff363f162f1be",
-        "evidence_schema": "redact-secret-benchmarks/fixtures/v2",
-        "corpus_digest": "sha256:37293aba657dc6b6034f568206b5cdf717f9eac1e0f8e4fbfeeff363f162f1be",
-        "release": {
-          "tag": "policy-37293aba657d",
-          "manifest_digest": "sha256:336d79eadf7d9e19a3da1f42843f1c8cf00a8adcc1e946c794d6c9531f66a703"
-        }
-      },
-      "artifact": {
-        "semanticDigest": "sha256:1058aba373c757723c69de5da3cbb4a984674940d7dc66e1b8b7c1599b459df9",
-        "byteDigest": "sha256:94b4c4a9bdb0fa1432abbe6210f1f39b2bc03a16777e2dd943782e28c7533811",
-        "schemaDigest": "sha256:938cc4f48660186716edb7b29b14f46a8a5ba20e2e4219f2d1f70b6d594751e2",
-        "stored": "not committed; the CI run uploads the canonical artifact as a build artifact"
-      },
-      "determinism": {
-        "runs": 2,
-        "semanticDigestsEqual": true
-      },
-      "scanners": [
-        {
-          "id": "flare-redact",
-          "version": "1.6.1",
-          "build": "released",
-          "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
-          "adapter": {
-            "id": "flare-redact",
-            "version": "1"
-          },
-          "configurationHash": "sha256:f111f4606c9185205f16555c97493f82a9165e19afe05c38a9d4a4b399b36300",
-          "executableSha256": null,
-          "packageIntegrity": "sha512-13Htu6VPk2ttxcoVOP909pXao6orrIBAMS/qWdhQn3/BS5AxSB5fpyqaPZnRGJhfBAM2M9T+RE662hxEpv6nGQ=="
-        },
-        {
-          "id": "gitleaks",
-          "version": "8.30.1",
-          "build": "released",
-          "mode": "Directory scan · default rules",
-          "adapter": {
-            "id": "gitleaks",
-            "version": "2"
-          },
-          "configurationHash": "sha256:345a2161fd1fbfc563bd41fc39ee552bc4518c43e179c4b734f8e66f6afbeb39",
-          "executableSha256": "sha256:ba52fb1bfabbcde42f032afad3d6e0b19dff8ed105229a16e7caa338bbc0e84f",
-          "packageIntegrity": null
-        },
-        {
-          "id": "openredaction",
-          "version": "1.1.5",
-          "build": "released",
-          "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
-          "adapter": {
-            "id": "openredaction",
-            "version": "1"
-          },
-          "configurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
-          "executableSha256": null,
-          "packageIntegrity": "sha512-SpQTBhVV4p3rmge818NH6iJiL/fvwFlDvhGaejoL0wbzY7jRHIhU5vEf3KzNARsIZmpCJV1eHdiavIjQyN1hXQ=="
-        },
-        {
-          "id": "redact-secret",
-          "version": "0.1.0-beta.12",
-          "build": "released",
-          "mode": "Published npm package · default detectors",
-          "adapter": {
-            "id": "redact-secret",
-            "version": "3"
-          },
-          "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2",
-          "executableSha256": null,
-          "packageIntegrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw=="
-        },
-        {
-          "id": "trufflehog",
-          "version": "3.97.4",
-          "build": "released",
-          "mode": "Filesystem scan · verification disabled",
-          "adapter": {
-            "id": "trufflehog",
-            "version": "2"
-          },
-          "configurationHash": "sha256:676ffe13805b6a1b278ef549e090c4d2f39eab5648565b8d9d5c2980159c230f",
-          "executableSha256": "sha256:8c7af13e84f217bffd10aec09780fb7bbe59892187c99006291cef9c6f001beb",
-          "packageIntegrity": null
-        }
-      ],
-      "caseCounts": {
-        "flare-redact": 19,
-        "gitleaks": 19,
-        "openredaction": 19,
-        "redact-secret": 19,
-        "trufflehog": 19
-      }
-    },
-    {
       "id": "policy-corpus@linux-x64",
       "population": "policy-corpus",
       "platform": "linux-x64",
       "canonical": true,
       "purpose": "canonical measurement: the linux-x64 official run of .github/workflows/official-runs.yml",
-      "recordedOn": "2026-10-02",
-      "benchmarkRevision": "871a32656145f314ad8d595b2df57eaf3eebc4e4",
+      "recordedOn": "2026-10-04",
+      "benchmarkRevision": "9a22e6fd046ef98242987d3f727ae1e6d11df91e",
       "engine": {
         "name": "credential-eval",
-        "version": "0.1.0-alpha.1",
-        "revision": "379e677b8e92db93105d26eb1b7f8c84df6ee5fc",
+        "version": "0.1.0-alpha.4",
+        "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33",
         "protocol": "credential-eval-protocol/1"
       },
       "runClass": "public",
       "engineRunClass": "official",
       "publication": "public",
-      "configHash": "sha256:dcac1afaf04439497ab4e629a030d63754b71516941e7d5c8ac276e566191990",
+      "configHash": "sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16",
       "evidence": {
         "source": "redact-secret-benchmarks/policy",
         "revision": "corpus-sha256:37293aba657dc6b6034f568206b5cdf717f9eac1e0f8e4fbfeeff363f162f1be",
@@ -289,9 +179,9 @@
         }
       },
       "artifact": {
-        "semanticDigest": "sha256:1424acdfaaafb217df82ec8f6746a8eaa36aeaffffcff42821c7609b89bbce76",
-        "byteDigest": "sha256:1ce41eab83db6ca74e37e01282306797c85f27bb4b4c79b4a6ef990acc3f3a85",
-        "schemaDigest": "sha256:938cc4f48660186716edb7b29b14f46a8a5ba20e2e4219f2d1f70b6d594751e2",
+        "semanticDigest": "sha256:a110e4568c2db8162e2402678f877df1ca16dc36fb9edacca9e4b23fa3274a14",
+        "byteDigest": "sha256:9036367f50a0e915684dd612dba69072d8da87180f09f7645245ff2bd9a567e8",
+        "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
         "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
       },
       "determinism": {
@@ -321,7 +211,7 @@
             "id": "gitleaks",
             "version": "2"
           },
-          "configurationHash": "sha256:345a2161fd1fbfc563bd41fc39ee552bc4518c43e179c4b734f8e66f6afbeb39",
+          "configurationHash": "sha256:f091a51ed948545f0ef07b2c29940ef1f84af58262f0888b6433fb60ec4c7337",
           "executableSha256": "sha256:88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
           "packageIntegrity": null
         },
@@ -360,7 +250,7 @@
             "id": "trufflehog",
             "version": "2"
           },
-          "configurationHash": "sha256:676ffe13805b6a1b278ef549e090c4d2f39eab5648565b8d9d5c2980159c230f",
+          "configurationHash": "sha256:d077d8241c93abc23a64c8f9278475c779e1beaaa302f0d43a072284f6cf1678",
           "executableSha256": "sha256:95c2a42bce979fce6dd73cc629b37ae4d72731b0dc16e047fba41a77bc765620",
           "packageIntegrity": null
         }
@@ -390,32 +280,33 @@
       "platform": "linux-x64",
       "canonical": true,
       "purpose": "canonical methods run: the linux-x64 official run of .github/workflows/official-runs.yml",
-      "recordedOn": "2026-10-02",
-      "benchmarkRevision": "871a32656145f314ad8d595b2df57eaf3eebc4e4",
+      "recordedOn": "2026-10-04",
+      "benchmarkRevision": "9a22e6fd046ef98242987d3f727ae1e6d11df91e",
       "engine": {
         "name": "credential-eval",
-        "version": "0.1.0-alpha.1",
-        "revision": "379e677b8e92db93105d26eb1b7f8c84df6ee5fc",
+        "version": "0.1.0-alpha.4",
+        "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33",
         "protocol": "credential-eval-protocol/1"
       },
       "runClass": "public",
       "engineRunClass": "official",
       "publication": "public",
-      "configHash": "sha256:6c9497ada23a16b61f0c82888f3ef6012b8686d1a41b076982821e3b54cf74fa",
+      "configHash": "sha256:eea835c2e088ff369ecae475d6daccf55917f6c14e2c6398ca804f146fc83f01",
       "evidence": {
         "source": "credential-evidence",
-        "revision": "records-tree-sha256:4cd72141c1deec4aef21c0f5b2d751c51eb3d7abe5088756219d99c93f464f50",
-        "evidence_schema": "credential-evidence/schema/1.5.0",
-        "corpus_digest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
+        "revision": "records-tree-sha256:dbfea28d29e427c28dff4054cbdda77e6c102541e56210e3cd253ddc63e9b154",
+        "evidence_schema": "credential-evidence/schema/1.7.0",
+        "corpus_digest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
         "release": {
-          "tag": "snapshot-2026.10.01.2",
-          "manifest_digest": "sha256:2557a72ae8dec3ca6d734a6c87b6db9cb4881543541693a4555fdfd9f7ba26d8"
-        }
+          "tag": "snapshot-2026.10.04.3",
+          "manifest_digest": "sha256:690ed57312d576fd6a614d40de10efe8bbc89431693aa4fbaa99979d69c0da8a"
+        },
+        "representation": "credential-eval/representation/1"
       },
       "artifact": {
-        "semanticDigest": "sha256:9e7439a1d2823089693f4dbb2fbb43d8639e72fce185deeaca1a04e3a533d3cb",
-        "byteDigest": "sha256:f56fd57259588ef535826c68811b524b7500ee2c85a722ad8d2f6f9c98ec72fc",
-        "schemaDigest": "sha256:938cc4f48660186716edb7b29b14f46a8a5ba20e2e4219f2d1f70b6d594751e2",
+        "semanticDigest": "sha256:0e909c53f18bd399951540e6ea5edacfe51a330902e396138e639201cd541d04",
+        "byteDigest": "sha256:c4566578e169dfb28f6c4949911738f7a8030e35ff2eb1ac7571e002ec024645",
+        "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
         "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
       },
       "determinism": {
@@ -445,7 +336,7 @@
             "id": "gitleaks",
             "version": "2"
           },
-          "configurationHash": "sha256:345a2161fd1fbfc563bd41fc39ee552bc4518c43e179c4b734f8e66f6afbeb39",
+          "configurationHash": "sha256:f091a51ed948545f0ef07b2c29940ef1f84af58262f0888b6433fb60ec4c7337",
           "executableSha256": "sha256:88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
           "packageIntegrity": null
         },
@@ -484,130 +375,17 @@
             "id": "trufflehog",
             "version": "2"
           },
-          "configurationHash": "sha256:676ffe13805b6a1b278ef549e090c4d2f39eab5648565b8d9d5c2980159c230f",
+          "configurationHash": "sha256:d077d8241c93abc23a64c8f9278475c779e1beaaa302f0d43a072284f6cf1678",
           "executableSha256": "sha256:95c2a42bce979fce6dd73cc629b37ae4d72731b0dc16e047fba41a77bc765620",
           "packageIntegrity": null
         }
       ],
       "caseCounts": {
-        "flare-redact": 32297,
-        "gitleaks": 32297,
-        "openredaction": 32297,
-        "redact-secret": 32297,
-        "trufflehog": 32297
-      }
-    },
-    {
-      "id": "public-evidence-snapshot@darwin-arm64",
-      "population": "public-evidence-snapshot",
-      "platform": "darwin-arm64",
-      "canonical": false,
-      "purpose": "local verification of the pins and the determinism check; the canonical measurement is the linux-x64 CI run (.github/workflows/official-runs.yml)",
-      "recordedOn": "2026-10-01",
-      "benchmarkRevision": "5424f94341c7da62db906ebaff62747d2f534410",
-      "engine": {
-        "name": "credential-eval",
-        "version": "0.1.0-alpha.1",
-        "revision": "379e677b8e92db93105d26eb1b7f8c84df6ee5fc",
-        "protocol": "credential-eval-protocol/1"
-      },
-      "runClass": "public",
-      "engineRunClass": "official",
-      "publication": "public",
-      "configHash": "sha256:042691470c89d6ae4b088dcb1ed941be33c499bb2269b18e60ffb137e19aa5d7",
-      "evidence": {
-        "source": "credential-evidence",
-        "revision": "records-tree-sha256:4cd72141c1deec4aef21c0f5b2d751c51eb3d7abe5088756219d99c93f464f50",
-        "evidence_schema": "credential-evidence/schema/1.5.0",
-        "corpus_digest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
-        "release": {
-          "tag": "snapshot-2026.10.01.2",
-          "manifest_digest": "sha256:2557a72ae8dec3ca6d734a6c87b6db9cb4881543541693a4555fdfd9f7ba26d8"
-        }
-      },
-      "artifact": {
-        "semanticDigest": "sha256:babea44c2c5b79b13cefe32fec39534f24b593dc0da5279dbb2c940965e5410f",
-        "byteDigest": "sha256:9e9852c1143c34c969ab3b58ba0f4e6ec72f7cb4e682c2a14d7014354953eaa8",
-        "schemaDigest": "sha256:938cc4f48660186716edb7b29b14f46a8a5ba20e2e4219f2d1f70b6d594751e2",
-        "stored": "not committed; the CI run uploads the canonical artifact as a build artifact"
-      },
-      "determinism": {
-        "runs": 2,
-        "semanticDigestsEqual": true
-      },
-      "scanners": [
-        {
-          "id": "flare-redact",
-          "version": "1.6.1",
-          "build": "released",
-          "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
-          "adapter": {
-            "id": "flare-redact",
-            "version": "1"
-          },
-          "configurationHash": "sha256:f111f4606c9185205f16555c97493f82a9165e19afe05c38a9d4a4b399b36300",
-          "executableSha256": null,
-          "packageIntegrity": "sha512-13Htu6VPk2ttxcoVOP909pXao6orrIBAMS/qWdhQn3/BS5AxSB5fpyqaPZnRGJhfBAM2M9T+RE662hxEpv6nGQ=="
-        },
-        {
-          "id": "gitleaks",
-          "version": "8.30.1",
-          "build": "released",
-          "mode": "Directory scan · default rules",
-          "adapter": {
-            "id": "gitleaks",
-            "version": "2"
-          },
-          "configurationHash": "sha256:345a2161fd1fbfc563bd41fc39ee552bc4518c43e179c4b734f8e66f6afbeb39",
-          "executableSha256": "sha256:ba52fb1bfabbcde42f032afad3d6e0b19dff8ed105229a16e7caa338bbc0e84f",
-          "packageIntegrity": null
-        },
-        {
-          "id": "openredaction",
-          "version": "1.1.5",
-          "build": "released",
-          "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
-          "adapter": {
-            "id": "openredaction",
-            "version": "1"
-          },
-          "configurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
-          "executableSha256": null,
-          "packageIntegrity": "sha512-SpQTBhVV4p3rmge818NH6iJiL/fvwFlDvhGaejoL0wbzY7jRHIhU5vEf3KzNARsIZmpCJV1eHdiavIjQyN1hXQ=="
-        },
-        {
-          "id": "redact-secret",
-          "version": "0.1.0-beta.12",
-          "build": "released",
-          "mode": "Published npm package · default detectors",
-          "adapter": {
-            "id": "redact-secret",
-            "version": "3"
-          },
-          "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2",
-          "executableSha256": null,
-          "packageIntegrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw=="
-        },
-        {
-          "id": "trufflehog",
-          "version": "3.97.4",
-          "build": "released",
-          "mode": "Filesystem scan · verification disabled",
-          "adapter": {
-            "id": "trufflehog",
-            "version": "2"
-          },
-          "configurationHash": "sha256:676ffe13805b6a1b278ef549e090c4d2f39eab5648565b8d9d5c2980159c230f",
-          "executableSha256": "sha256:8c7af13e84f217bffd10aec09780fb7bbe59892187c99006291cef9c6f001beb",
-          "packageIntegrity": null
-        }
-      ],
-      "caseCounts": {
-        "flare-redact": 5950,
-        "gitleaks": 5950,
-        "openredaction": 5950,
-        "redact-secret": 5950,
-        "trufflehog": 5950
+        "flare-redact": 35322,
+        "gitleaks": 35322,
+        "openredaction": 35322,
+        "redact-secret": 35322,
+        "trufflehog": 35322
       }
     },
     {
@@ -616,32 +394,33 @@
       "platform": "linux-x64",
       "canonical": true,
       "purpose": "canonical measurement: the linux-x64 official run of .github/workflows/official-runs.yml",
-      "recordedOn": "2026-10-02",
-      "benchmarkRevision": "871a32656145f314ad8d595b2df57eaf3eebc4e4",
+      "recordedOn": "2026-10-04",
+      "benchmarkRevision": "9a22e6fd046ef98242987d3f727ae1e6d11df91e",
       "engine": {
         "name": "credential-eval",
-        "version": "0.1.0-alpha.1",
-        "revision": "379e677b8e92db93105d26eb1b7f8c84df6ee5fc",
+        "version": "0.1.0-alpha.4",
+        "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33",
         "protocol": "credential-eval-protocol/1"
       },
       "runClass": "public",
       "engineRunClass": "official",
       "publication": "public",
-      "configHash": "sha256:dcac1afaf04439497ab4e629a030d63754b71516941e7d5c8ac276e566191990",
+      "configHash": "sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16",
       "evidence": {
         "source": "credential-evidence",
-        "revision": "records-tree-sha256:4cd72141c1deec4aef21c0f5b2d751c51eb3d7abe5088756219d99c93f464f50",
-        "evidence_schema": "credential-evidence/schema/1.5.0",
-        "corpus_digest": "sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af",
+        "revision": "records-tree-sha256:dbfea28d29e427c28dff4054cbdda77e6c102541e56210e3cd253ddc63e9b154",
+        "evidence_schema": "credential-evidence/schema/1.7.0",
+        "corpus_digest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
         "release": {
-          "tag": "snapshot-2026.10.01.2",
-          "manifest_digest": "sha256:2557a72ae8dec3ca6d734a6c87b6db9cb4881543541693a4555fdfd9f7ba26d8"
-        }
+          "tag": "snapshot-2026.10.04.3",
+          "manifest_digest": "sha256:690ed57312d576fd6a614d40de10efe8bbc89431693aa4fbaa99979d69c0da8a"
+        },
+        "representation": "credential-eval/representation/1"
       },
       "artifact": {
-        "semanticDigest": "sha256:0cd8f6201847efa4ddfa9230d1731be1e66ac201549a9ceb765afcb5de0b447b",
-        "byteDigest": "sha256:0c1533b4f5e20aebc6798d82c30aaa139f73335ceb73084ba2abd40e4b8c5e2e",
-        "schemaDigest": "sha256:938cc4f48660186716edb7b29b14f46a8a5ba20e2e4219f2d1f70b6d594751e2",
+        "semanticDigest": "sha256:d253e93cd6bf89053b83d12621ca59fe293741cce9304c9cf54c055108e8f4d9",
+        "byteDigest": "sha256:1efe17925cc64f5addcbf6daff5c1d0006eceb8d9d8a69209f730390f1ef7f6a",
+        "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
         "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
       },
       "determinism": {
@@ -671,7 +450,7 @@
             "id": "gitleaks",
             "version": "2"
           },
-          "configurationHash": "sha256:345a2161fd1fbfc563bd41fc39ee552bc4518c43e179c4b734f8e66f6afbeb39",
+          "configurationHash": "sha256:f091a51ed948545f0ef07b2c29940ef1f84af58262f0888b6433fb60ec4c7337",
           "executableSha256": "sha256:88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
           "packageIntegrity": null
         },
@@ -710,17 +489,17 @@
             "id": "trufflehog",
             "version": "2"
           },
-          "configurationHash": "sha256:676ffe13805b6a1b278ef549e090c4d2f39eab5648565b8d9d5c2980159c230f",
+          "configurationHash": "sha256:d077d8241c93abc23a64c8f9278475c779e1beaaa302f0d43a072284f6cf1678",
           "executableSha256": "sha256:95c2a42bce979fce6dd73cc629b37ae4d72731b0dc16e047fba41a77bc765620",
           "packageIntegrity": null
         }
       ],
       "caseCounts": {
-        "flare-redact": 5950,
-        "gitleaks": 5950,
-        "openredaction": 5950,
-        "redact-secret": 5950,
-        "trufflehog": 5950
+        "flare-redact": 6449,
+        "gitleaks": 6449,
+        "openredaction": 6449,
+        "redact-secret": 6449,
+        "trufflehog": 6449
       }
     },
     {
@@ -729,18 +508,18 @@
       "platform": "linux-x64",
       "canonical": true,
       "purpose": "canonical measurement: the linux-x64 official run of .github/workflows/official-runs.yml",
-      "recordedOn": "2026-10-02",
-      "benchmarkRevision": "871a32656145f314ad8d595b2df57eaf3eebc4e4",
+      "recordedOn": "2026-10-04",
+      "benchmarkRevision": "9a22e6fd046ef98242987d3f727ae1e6d11df91e",
       "engine": {
         "name": "credential-eval",
-        "version": "0.1.0-alpha.1",
-        "revision": "379e677b8e92db93105d26eb1b7f8c84df6ee5fc",
+        "version": "0.1.0-alpha.4",
+        "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33",
         "protocol": "credential-eval-protocol/1"
       },
       "runClass": "public",
       "engineRunClass": "official",
       "publication": "public",
-      "configHash": "sha256:dcac1afaf04439497ab4e629a030d63754b71516941e7d5c8ac276e566191990",
+      "configHash": "sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16",
       "evidence": {
         "source": "redact-secret-benchmarks/regression",
         "revision": "corpus-sha256:b7b236c5ad1afc9377d05ca3f3738cebdaad15fbdaa3a492e3059770f04285f6",
@@ -752,9 +531,9 @@
         }
       },
       "artifact": {
-        "semanticDigest": "sha256:934519ac992518a3b17c7a99b81ea2488e9e3974b7199820f977f151c52d2ce0",
-        "byteDigest": "sha256:e4c0319992ea295f76555f78dee18017764e537c372ef22a467e0060a61059c8",
-        "schemaDigest": "sha256:938cc4f48660186716edb7b29b14f46a8a5ba20e2e4219f2d1f70b6d594751e2",
+        "semanticDigest": "sha256:7c3593d168455a678ce58220f0f2ffd2d859450b18fd4aa3f1067fadf8c36dac",
+        "byteDigest": "sha256:646c6ae910bb6a5d3f04037a851ef21081a87e2b32133c91e14e0abe66ff4e35",
+        "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
         "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
       },
       "determinism": {
@@ -784,7 +563,7 @@
             "id": "gitleaks",
             "version": "2"
           },
-          "configurationHash": "sha256:345a2161fd1fbfc563bd41fc39ee552bc4518c43e179c4b734f8e66f6afbeb39",
+          "configurationHash": "sha256:f091a51ed948545f0ef07b2c29940ef1f84af58262f0888b6433fb60ec4c7337",
           "executableSha256": "sha256:88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
           "packageIntegrity": null
         },
@@ -823,7 +602,7 @@
             "id": "trufflehog",
             "version": "2"
           },
-          "configurationHash": "sha256:676ffe13805b6a1b278ef549e090c4d2f39eab5648565b8d9d5c2980159c230f",
+          "configurationHash": "sha256:d077d8241c93abc23a64c8f9278475c779e1beaaa302f0d43a072284f6cf1678",
           "executableSha256": "sha256:95c2a42bce979fce6dd73cc629b37ae4d72731b0dc16e047fba41a77bc765620",
           "packageIntegrity": null
         }

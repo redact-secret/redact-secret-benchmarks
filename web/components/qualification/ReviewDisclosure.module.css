@@ -1,0 +1,28 @@
+@layer components {
+  .disclosure {
+    display: grid;
+    gap: var(--space-1);
+    border-top: var(--hairline) dashed var(--line);
+    padding-top: var(--space-2);
+    min-width: 0;
+  }
+
+  .labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: 0;
+    font: var(--text-small-strong);
+  }
+
+  .count,
+  .note {
+    margin: 0;
+    font: var(--text-small);
+    overflow-wrap: break-word;
+  }
+
+  .note {
+    color: var(--ink-muted);
+  }
+}

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { cx } from '../../lib/cx';
 import { Code } from '../text';
+import { ReviewDisclosure } from './ReviewDisclosure';
 import styles from './PipelineStamp.module.css';
 import type { PipelineStampProps } from './types';
 
@@ -9,7 +10,7 @@ import type { PipelineStampProps } from './types';
  * Every report page carries one, so a number is never seen without the name of the pipeline behind it. The words, facts and link
  * are passed in already formatted; the block derives nothing and never asserts what the numbers say about the product.
  */
-export function PipelineStamp({ pipeline, role, title, text, facts, link, className }: PipelineStampProps) {
+export function PipelineStamp({ pipeline, role, title, text, facts, link, disclosure, className }: PipelineStampProps) {
   return (
     <aside className={cx(styles.stamp, styles[pipeline], className)} aria-label="Where these numbers come from" data-pipeline={pipeline} data-role={role}>
       <p className={styles.head}>
@@ -28,6 +29,7 @@ export function PipelineStamp({ pipeline, role, title, text, facts, link, classN
           ))}
         </dl>
       )}
+      {disclosure && <ReviewDisclosure {...disclosure} />}
       {link && <p className={styles.link}><Link href={link.href}>{link.label}</Link></p>}
     </aside>
   );

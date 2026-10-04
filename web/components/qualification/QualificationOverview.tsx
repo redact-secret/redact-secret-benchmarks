@@ -5,6 +5,7 @@ import { Chip, Note, StatusBadge } from '../feedback';
 import { Stack, Section } from '../layout';
 import { Breadcrumb, PageHead } from '../page';
 import { Code } from '../text';
+import { ReviewDisclosure } from './ReviewDisclosure';
 import { cx } from '../../lib/cx';
 import styles from './QualificationOverview.module.css';
 import type { FamilyRow, GapRow, PopulationRow, QualificationOverviewProps, ScannerRow, StatusWord } from './types';
@@ -60,11 +61,12 @@ const gapColumns: DataTableColumn<GapRow>[] = [
  * one population at a time. The support status is the product's own qualification and is shown apart from the scanner
  * observations on each family page; no count here is a sum across populations or scanners.
  */
-export function QualificationOverview({ breadcrumb, eyebrow, title, lede, meta, boundary, summary, identity, populations, scanners, families, unattributed, gaps }: QualificationOverviewProps) {
+export function QualificationOverview({ breadcrumb, eyebrow, title, lede, meta, boundary, disclosure, summary, identity, populations, scanners, families, unattributed, gaps }: QualificationOverviewProps) {
   return (
     <Stack gap="xl" className={styles.overview}>
       <PageHead before={<Breadcrumb items={breadcrumb} />} eyebrow={eyebrow} title={title} lede={lede} meta={meta} />
       <Note tone="info" title={boundary.title}>{boundary.paragraphs.map(p => <p key={p}>{p}</p>)}</Note>
+      {disclosure && <ReviewDisclosure {...disclosure} />}
 
       <Section title={summary.title} description={summary.description}>
         <p className={styles.mode}>{summary.mode}</p>

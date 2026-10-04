@@ -1,6 +1,6 @@
 {
   "schema": "redact-secret/evidence-adoption/v1",
-  "state": "candidate",
+  "state": "accepted",
   "candidate": {
     "evidenceRelease": "snapshot-2026.10.04.3",
     "sourceRevision": "3db9c428b2303a4b51106624d2f1a839bb94c795",
@@ -134,13 +134,17 @@
       ],
       "report": "docs/generated/evidence-adoption/snapshot-2026.10.04.3.json (replay.*)"
     },
-    "ownerAcceptance": null,
+    "ownerAcceptance": {
+      "acceptedBy": "Milo Kang",
+      "acceptedOn": "2026-10-04",
+      "decision": "docs/decisions/2026-10-04-accept-snapshot-2026-10-04-3-on-credential-eval-alpha-4.md"
+    },
     "deployment": {
       "staging": null,
       "production": null
     },
     "acceptance": {
-      "note": "Prepared for the owner (#680). Nothing here is accepted: the active pins, runs, schema and authority file stay on the previous accepted evidence until the owner applies the patch and fills the OWNER-TO-SET fields. The patch applies to the commit that merges this candidate; the policy revision and the parity report in it are derived from the product inputs of that commit, so re-derive them if the product inputs change first.",
+      "note": "Prepared for the owner (#680) and applied on 2026-10-04 by the owner's acceptance (ownerAcceptance, the decision record). The patch applied to the commit that merges this candidate; the policy revision and the parity report in it are derived from the product inputs of that commit, so re-derive them if the product inputs change first.",
       "report": "docs/generated/evidence-adoption/snapshot-2026.10.04.3.md",
       "comparison": "docs/generated/evidence-adoption/snapshot-2026.10.04.3.comparison.json",
       "patch": "docs/generated/evidence-adoption/snapshot-2026.10.04.3.acceptance.patch",

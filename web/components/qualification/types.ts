@@ -60,6 +60,8 @@ export interface QualificationOverviewProps {
   lede: string;
   meta: MetaItem[];
   boundary: { title: string; paragraphs: string[] };
+  /** Present when fixtures of the evidence carry the maintainer-reviewed label. */
+  disclosure?: ReviewDisclosureProps;
   summary: {
     title: string;
     description: string;
@@ -161,6 +163,20 @@ export interface QualificationUnavailableProps {
 }
 
 /** Which pipeline produced the numbers on a credential page (#608). Every value is formatted by `resolvers/run.ts`. */
+/**
+ * The review state some fixtures of the evidence carry, said where the numbers are shown. The words are fixed by the owner's decision
+ * (docs/decisions/2026-10-04-accept-snapshot-2026-10-04-3-on-credential-eval-alpha-4.md); the count is passed in, read from the data.
+ */
+export interface ReviewDisclosureProps {
+  /** The label in each language, exactly as decided. */
+  labels: { ko: string; en: string };
+  /** How many fixtures carry it, already formatted, with what they are counted in. */
+  count: string;
+  /** The note that says what the label means, exactly as decided. */
+  note: string;
+  className?: string;
+}
+
 export interface PipelineStampProps {
   pipeline: 'legacy' | 'new';
   /** `authority` when the committed value names this pipeline; `oracle` when the page is built from the other one, kept for comparison. */
@@ -169,5 +185,6 @@ export interface PipelineStampProps {
   text: string;
   facts: { term: string; value: string; code?: boolean }[];
   link?: { label: string; href: string };
+  disclosure?: ReviewDisclosureProps;
   className?: string;
 }

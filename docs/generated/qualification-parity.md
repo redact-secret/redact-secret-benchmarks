@@ -7,23 +7,23 @@ This repository measures and records. This report states which numbers agree, wh
 ## Identities
 
 - legacy: `{"package":"@redact-secret/core@0.1.0-beta.12","fixtureIndex":"58f09c3544bf7238dcd076a7c1379681a302adef9ba66ee14dc801f95cfdbbdd","fixtureCount":5950,"taxonomyDigest":"7a210894da37b6641543d6faf7acf75d670eec74618111bd3311621fbf3844fc","scanners":{"redact-secret":"0.1.0-beta.12","gitleaks":"8.30.1","trufflehog":"3.97.4","flare-redact":"1.6.1","openredaction":"1.1.5"},"caseCount":18573,"familyCount":135,"distribution":{"stable":127,"provisional":7,"pending":1,"unsupported":0}}`
-- new: `{"publication":"public","policyRevision":"rs-policy-1:sha256:d41e02b0c82f3ac5c1f7d038fb9321fec3adbd0611a313fc880bdf1b417658c3","adapter":{"id":"credential-eval-run-artifact","version":1},"scanners":{"flare-redact":"1.6.1","gitleaks":"8.30.1","openredaction":"1.1.5","redact-secret":"0.1.0-beta.12","trufflehog":"3.97.4"},"distribution":{"pending":1,"provisional":7,"stable":127,"unsupported":0},"stableDistribution":{"documented":89,"empirical":38,"policy-qualified":0},"populations":[{"run":"policy-corpus@linux-x64","population":"policy-corpus","role":"policy-route","runClass":"public","semanticDigest":"sha256:1424acdfaaafb217df82ec8f6746a8eaa36aeaffffcff42821c7609b89bbce76","configHash":"sha256:dcac1afaf04439497ab4e629a030d63754b71516941e7d5c8ac276e566191990","evidenceTag":"policy-37293aba657d","methods":[],"caseCount":19},{"run":"public-evidence-snapshot@linux-x64","population":"public-evidence-snapshot","role":"floors-and-gates","runClass":"public","semanticDigest":"sha256:0cd8f6201847efa4ddfa9230d1731be1e66ac201549a9ceb765afcb5de0b447b","configHash":"sha256:dcac1afaf04439497ab4e629a030d63754b71516941e7d5c8ac276e566191990","evidenceTag":"snapshot-2026.10.01.2","methods":[],"caseCount":5950,"methodsRun":{"run":"public-evidence-snapshot+methods@linux-x64","semanticDigest":"sha256:9e7439a1d2823089693f4dbb2fbb43d8639e72fce185deeaca1a04e3a533d3cb","configHash":"sha256:6c9497ada23a16b61f0c82888f3ef6012b8686d1a41b076982821e3b54cf74fa","methods":["differential","metamorphic","mutation"],"caseCount":32297}},{"run":"regression-corpus@linux-x64","population":"regression-corpus","role":"gates","runClass":"public","semanticDigest":"sha256:934519ac992518a3b17c7a99b81ea2488e9e3974b7199820f977f151c52d2ce0","configHash":"sha256:dcac1afaf04439497ab4e629a030d63754b71516941e7d5c8ac276e566191990","evidenceTag":"regression-b7b236c5ad1a","methods":[],"caseCount":153}],"axisOverlay":{"contexts":2354,"controls":2075,"corpusDigest":"sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af","detectors":5466,"id":"credential-public-axis-overlay-v1","population":"public-evidence-snapshot"},"axisCoverage":{"populations":["policy-corpus","public-evidence-snapshot","regression-corpus"]},"twinScope":{"corpusDigest":"sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af","id":"credential-public-twin-scope-map-v1","population":"public-evidence-snapshot","scopedBy":"regression-corpus","twins":6},"ledgerRekey":{"corpusDigest":"sha256:1bc5a07b49dab7b8182f51bf11a65a9bb8a220adbd5216b364bc15b2d8e6a5af","id":"credential-public-review-ledger-rekey-v1","occurrences":4268,"population":"public-evidence-snapshot"},"differentialPeers":["gitleaks","trufflehog"],"attributionFallback":["overlay-detectors","twin-parent"]}`
+- new: `{"publication":"public","policyRevision":"rs-policy-1:sha256:5615a8aa34a1cf593cff5913596f6745828cf168f67ba77ed305c4e4e4e0f6d3","adapter":{"id":"credential-eval-run-artifact","version":1},"scanners":{"flare-redact":"1.6.1","gitleaks":"8.30.1","openredaction":"1.1.5","redact-secret":"0.1.0-beta.12","trufflehog":"3.97.4"},"distribution":{"pending":1,"provisional":18,"stable":116,"unsupported":0},"stableDistribution":{"documented":82,"empirical":34,"policy-qualified":0},"populations":[{"run":"policy-corpus@linux-x64","population":"policy-corpus","role":"policy-route","runClass":"public","semanticDigest":"sha256:a110e4568c2db8162e2402678f877df1ca16dc36fb9edacca9e4b23fa3274a14","configHash":"sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16","evidenceTag":"policy-37293aba657d","methods":[],"caseCount":19},{"run":"public-evidence-snapshot@linux-x64","population":"public-evidence-snapshot","role":"floors-and-gates","runClass":"public","semanticDigest":"sha256:d253e93cd6bf89053b83d12621ca59fe293741cce9304c9cf54c055108e8f4d9","configHash":"sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16","evidenceTag":"snapshot-2026.10.04.3","methods":[],"caseCount":6449,"methodsRun":{"run":"public-evidence-snapshot+methods@linux-x64","semanticDigest":"sha256:0e909c53f18bd399951540e6ea5edacfe51a330902e396138e639201cd541d04","configHash":"sha256:eea835c2e088ff369ecae475d6daccf55917f6c14e2c6398ca804f146fc83f01","methods":["differential","metamorphic","mutation"],"caseCount":35322}},{"run":"regression-corpus@linux-x64","population":"regression-corpus","role":"gates","runClass":"public","semanticDigest":"sha256:7c3593d168455a678ce58220f0f2ffd2d859450b18fd4aa3f1067fadf8c36dac","configHash":"sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16","evidenceTag":"regression-b7b236c5ad1a","methods":[],"caseCount":153}],"axisOverlay":{"contexts":2354,"controls":2075,"corpusDigest":"sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f","detectors":5466,"id":"credential-public-axis-overlay-v1","population":"public-evidence-snapshot"},"axisCoverage":{"populations":["policy-corpus","public-evidence-snapshot","regression-corpus"]},"twinScope":{"corpusDigest":"sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f","id":"credential-public-twin-scope-map-v1","population":"public-evidence-snapshot","scopedBy":"regression-corpus","twins":0},"ledgerRekey":{"corpusDigest":"sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f","id":"credential-public-review-ledger-rekey-v1","occurrences":4268,"population":"public-evidence-snapshot"},"differentialPeers":["gitleaks","trufflehog"],"attributionFallback":["overlay-detectors","twin-parent"]}`
 
 ## Summary
 
-42611 values compared: **42206 equal** (class 1, must-equal, held), **405 expected-structural** (class 2, each attributed to a cause), **0 unexplained** (class 3, to investigate).
+42611 values compared: **41990 equal** (class 1, must-equal, held), **621 expected-structural** (class 2, each attributed to a cause), **0 unexplained** (class 3, to investigate).
 
 | Area | Compared | Equal | Expected-structural | Unexplained |
 | --- | ---: | ---: | ---: | ---: |
 | identity | 5 | 5 | 0 | 0 |
 | membership | 270 | 270 | 0 | 0 |
-| status | 135 | 135 | 0 | 0 |
-| evidence | 4455 | 4415 | 40 | 0 |
-| outcomes | 29810 | 29663 | 147 | 0 |
+| status | 135 | 124 | 11 | 0 |
+| evidence | 4455 | 4362 | 93 | 0 |
+| outcomes | 29810 | 29686 | 124 | 0 |
 | knownGaps | 409 | 256 | 153 | 0 |
-| supportMatrix | 7509 | 7448 | 61 | 0 |
-| distribution | 8 | 8 | 0 | 0 |
-| review | 10 | 6 | 4 | 0 |
+| supportMatrix | 7509 | 7279 | 230 | 0 |
+| distribution | 8 | 4 | 4 | 0 |
+| review | 10 | 4 | 6 | 0 |
 
 ### Differences by cause
 
@@ -32,44 +32,61 @@ This repository measures and records. This report states which numbers agree, wh
 | `population-separation` | 0 | confirmed | The legacy path pooled the development, regression and policy fixtures of a family in one denominator. The new path measures each population on its own and counts floors from the public evidence snapshot alone (benchmarks/support/population-policy.json); a family's axis floors are judged on the union of axis labels across the populations the policy names (axisCoverage), so a pooled COUNT differs and an axis the product's other populations carry is covered. |
 | `axis-vocabulary` | 0 | confirmed | The public snapshot names a case group by scenario, not by source context, and has no benign taxonomy, so positive and control axis counts are not the legacy fixture axes. Applies only to a view built without the product axis overlay (population-policy.json axes); with the overlay, an axis difference is attributed to the population or membership cause it checks. |
 | `methods-not-run` | 0 | confirmed | The qualification view was built without a methods run, so the metamorphic, mutation and differential gates are unmeasured and a family that would be stable is held at provisional (methods.notRun). |
-| `review-occurrence-identity` | 4 | confirmed | The review queue of the methods run is keyed by canonical occurrence ids and holds the occurrences of every pinned peer, including peers the legacy run never scanned; the committed review ledger is keyed by legacy ids of a three-scanner legacy run. A canonical occurrence id the ledger and its generated mapping (benchmarks/support/public-review-ledger-map.json) do not hold reads unresolved. Recognised only for a view built without that mapping, where no decision can apply; with it, an occurrence of a peer the legacy run never scanned stays unreviewed and is not gate-bearing (population-policy.json methods.differential.peers). |
-| `policy-corpus-bounded` | 12 | confirmed | The T3 policy route reads the policy corpus alone (a bounded contract), where the legacy path pooled every T3 fixture of the family. |
+| `review-occurrence-identity` | 11 | confirmed | The review queue of the methods run is keyed by canonical occurrence ids and holds the occurrences of every pinned peer, including peers the legacy run never scanned; the committed review ledger is keyed by legacy ids of a three-scanner legacy run. A canonical occurrence id the ledger and its generated mapping (benchmarks/support/public-review-ledger-map.json) do not hold reads unresolved. Recognised only for a view built without that mapping, where no decision can apply; with it, an occurrence of a peer the legacy run never scanned stays unreviewed and is not gate-bearing (population-policy.json methods.differential.peers). |
+| `policy-corpus-bounded` | 10 | confirmed | The T3 policy route reads the policy corpus alone (a bounded contract), where the legacy path pooled every T3 fixture of the family. |
 | `legacy-id-rekey` | 153 | confirmed | Legacy fixture ids, ledger ids and disputed-property ids are legacy hashes or slugs; the public snapshot has canonical ids. Stored per-fixture inputs keyed by legacy ids do not resolve until the re-key. |
-| `twin-scope-vocabulary` | 147 | confirmed | A twin control is scoped to its declared family, and a finding of another known family is co-detection, not a flag. The legacy path scoped a twin by the product contract of the positive it mutates (a detector id); the evidence snapshot gives the twin its own family (a taxonomy id), so the twin can belong to another family and the same finding can swap between flagged and co-detected. A cross-provider twin has no family at all in the snapshot, so the engine cannot scope it and reads a finding of another known detector as flagged; recognised from the matched cases (the new twin is flagged with no family, the legacy twin was not). The adapter does not re-score it. Confirmed by the project twin-scope corpus (#602): the same bytes carried with the parent's family (twin-scope-regressions, a product regression-corpus addition) are read as co-detected, as the legacy path read them, so the public engine verdict on the unscoped copy stays a difference of the public population and the twin gate reads the project case (population-policy.json twinScope). |
-| `pending-not-scored` | 35 | confirmed | A T0 (pending) non-twin fixture has no scored outcome in credential-eval, so the adapter excludes it from the floor counts; the legacy path counted it as a fixture of its family. A T0 twin is not in this cause: the legacy path drops T0 twins, so neither side counts it. |
-| `canonical-evidence-membership` | 54 | confirmed | The evidence snapshot holds fixtures with no legacy counterpart (intended canonical-evidence change): they count in the new floors and in no legacy count. |
+| `twin-scope-vocabulary` | 124 | confirmed | A twin control is scoped to its declared family, and a finding of another known family is co-detection, not a flag. The legacy path scoped a twin by the product contract of the positive it mutates (a detector id); the evidence snapshot gives the twin its own family (a taxonomy id), so the twin can belong to another family and the same finding can swap between flagged and co-detected. A cross-provider twin has no family at all in the snapshot, so the engine cannot scope it and reads a finding of another known detector as flagged; recognised from the matched cases (the new twin is flagged with no family, the legacy twin was not). The adapter does not re-score it. Confirmed by the project twin-scope corpus (#602): the same bytes carried with the parent's family (twin-scope-regressions, a product regression-corpus addition) are read as co-detected, as the legacy path read them, so the public engine verdict on the unscoped copy stays a difference of the public population and the twin gate reads the project case (population-policy.json twinScope). |
+| `pending-not-scored` | 31 | confirmed | A T0 (pending) non-twin fixture has no scored outcome in credential-eval, so the adapter excludes it from the floor counts; the legacy path counted it as a fixture of its family. A T0 twin is not in this cause: the legacy path drops T0 twins, so neither side counts it. |
+| `canonical-evidence-membership` | 292 | confirmed | The evidence snapshot holds fixtures with no legacy counterpart (intended canonical-evidence change): they count in the new floors and in no legacy count, and their methods-run variants add review occurrences, failed assertions and unresolved differential disagreements no legacy count or ledger decision covers (#680). Recognised for a method figure only when the residual equals, exactly, the unsettled occurrences or failed assertions of the cases with no legacy counterpart; a review occurrence of such a case stays unreviewed until a decision is made for it. |
 | `fixture-attribution` | 0 | inferred | The legacy path attributed a fixture to its declared contract and targets; the adapter attributes a case to the detectors named by its targets, its family, or the taxonomy family it belongs to and, where the snapshot names none, to the legacy targets the product overlay carries, then to its twin parent (population-policy.json attribution). What remains is a case the legacy path scoped to a family the overlay does not carry (no legacy counterpart) or that the legacy path attributed to a detector the adapter attributes elsewhere. |
 
 ## Status
 
-The legacy path reads 127 stable families; the new path reads 127. Support status is compared family by family (`status` section above); each family the new path holds below the legacy status is attributed to the reasons it adds.
+The legacy path reads 127 stable families; the new path reads 116. Support status is compared family by family (`status` section above); each family the new path holds below the legacy status is attributed to the reasons it adds.
 
 Of the legacy-stable families the new path does not read stable, by what holds each back:
 
-- none.
+- 10: `canonical-evidence-membership`
+- 1: `review-occurrence-identity`
 
 | Status change | Causes | Families |
 | --- | --- | ---: |
+| stable -> provisional | canonical-evidence-membership | 10 |
+| stable -> provisional | review-occurrence-identity | 1 |
 
 ## Support matrix
 
-The support matrix is the provider x credential-family projection (one entry per taxonomy family) the legacy path writes with `npm run eval:matrix`; the new side is the view's `supportMatrix`, derived from the view's families and the product taxonomy. 173 taxonomy families on the legacy side, 173 on the new side. Status counts: legacy `{"stable":144,"provisional":7,"pending":5,"unsupported":17}`, new `{"pending":5,"provisional":7,"stable":144,"unsupported":17}`; stable by route: legacy `{"documented":106,"empirical":38,"policy-qualified":0}`, new `{"documented":106,"empirical":38,"policy-qualified":0}`. Every leaf of every entry is compared; a difference is attributed only through the difference the family comparison found in the evidence it projects.
+The support matrix is the provider x credential-family projection (one entry per taxonomy family) the legacy path writes with `npm run eval:matrix`; the new side is the view's `supportMatrix`, derived from the view's families and the product taxonomy. 173 taxonomy families on the legacy side, 173 on the new side. Status counts: legacy `{"stable":144,"provisional":7,"pending":5,"unsupported":17}`, new `{"pending":5,"provisional":25,"stable":126,"unsupported":17}`; stable by route: legacy `{"documented":106,"empirical":38,"policy-qualified":0}`, new `{"documented":92,"empirical":34,"policy-qualified":0}`. Every leaf of every entry is compared; a difference is attributed only through the difference the family comparison found in the evidence it projects.
 
 | Field | Cause | Differences | Examples |
 | --- | --- | ---: | --- |
-| fixtureProfile.* | `canonical-evidence-membership` | 19 | `aws:iam-user-access-key`, `generic:bearer-token`, `generic:connection-string-password` |
+| distribution.* | `canonical-evidence-membership` | 2 | `matrix` |
+| fixtureProfile.* | `canonical-evidence-membership` | 89 | `aws:iam-user-access-key`, `generic:bearer-token`, `generic:connection-string-password` |
 | fixtureProfile.* | `pending-not-scored` | 15 | `linear:personal-api-key`, `slack:bot-token`, `stripe:restricted-key-live` |
 | policyQualification | `policy-corpus-bounded` | 4 | `generic:bearer-token`, `generic:connection-string-password`, `generic:otp-seed` |
-| profileCoverage.* | `canonical-evidence-membership` | 7 | `aws:iam-user-access-key`, `generic:bearer-token`, `generic:connection-string-password` |
-| profileCoverage.* | `pending-not-scored` | 11 | `linear:personal-api-key`, `slack:bot-token`, `stripe:restricted-key-live` |
-| reason | `policy-corpus-bounded` | 4 | `generic:bearer-token`, `generic:connection-string-password`, `generic:otp-seed` |
-| twinCoverage.* | `canonical-evidence-membership` | 1 | `sendgrid:api-key` |
+| profileCoverage.* | `canonical-evidence-membership` | 20 | `aws:iam-user-access-key`, `generic:bearer-token`, `generic:connection-string-password` |
+| profileCoverage.* | `pending-not-scored` | 7 | `linear:personal-api-key`, `slack:bot-token`, `vercel:access-token` |
+| profileCoverage.* | `review-occurrence-identity` | 1 | `npm:granular-access-token` |
+| qualificationProfile | `canonical-evidence-membership` | 17 | `aws:iam-user-access-key`, `deepgram:api-key`, `github:app-server-to-server-token` |
+| qualificationProfile | `review-occurrence-identity` | 1 | `npm:granular-access-token` |
+| reason | `canonical-evidence-membership` | 19 | `aws:iam-user-access-key`, `deepgram:api-key`, `generic:connection-string-password` |
+| reason | `policy-corpus-bounded` | 2 | `generic:bearer-token`, `generic:otp-seed` |
+| reason | `review-occurrence-identity` | 1 | `npm:granular-access-token` |
+| stableDistribution.* | `canonical-evidence-membership` | 2 | `matrix` |
+| status | `canonical-evidence-membership` | 17 | `aws:iam-user-access-key`, `deepgram:api-key`, `github:app-server-to-server-token` |
+| status | `review-occurrence-identity` | 1 | `npm:granular-access-token` |
+| twinCoverage.* | `canonical-evidence-membership` | 6 | `github:app-server-to-server-token`, `github:app-user-to-server-token`, `github:classic-personal-access-token` |
+| unresolvedCriticalItems.* | `canonical-evidence-membership` | 25 | `aws:iam-user-access-key`, `deepgram:api-key`, `generic:connection-string-password` |
+| unresolvedCriticalItems.* | `review-occurrence-identity` | 1 | `npm:granular-access-token` |
 
 ## Overview numbers
 
 The numbers the qualification overview page shows: the family count, the status counts and the stable counts by route (the per-family status, evidence counts and reasons are the `status` and `evidence` sections above).
 
-No value differs.
+| Field | Cause | Differences | Examples |
+| --- | --- | ---: | --- |
+| distribution.* | `canonical-evidence-membership` | 2 | `overview` |
+| stableDistribution.* | `canonical-evidence-membership` | 2 | `overview` |
 
 ## Review queue and ledger
 
@@ -77,34 +94,32 @@ The differential review occurrences of the methods run against the legacy review
 
 | Field | Cause | Differences | Examples |
 | --- | --- | ---: | --- |
+| occurrences | `canonical-evidence-membership` | 2 | `gitleaks`, `trufflehog` |
 | occurrences | `review-occurrence-identity` | 2 | `flare-redact`, `openredaction` |
 | settled | `review-occurrence-identity` | 2 | `flare-redact`, `openredaction` |
 
 ## Per-fixture outcomes
 
-- public-evidence-snapshot: 5790 cases matched one to one (by key tier: 5736, 25, 29, 0), 0 legacy-only, 160 new-only, 0 legacy and 0 new cases share content with another case and are not compared.
+- public-evidence-snapshot: 5790 cases matched one to one (by key tier: 5736, 25, 29, 0), 0 legacy-only, 659 new-only, 0 legacy and 0 new cases share content with another case and are not compared.
 - regression-corpus: 141 cases matched one to one (by key tier: 141), 0 legacy-only, 0 new-only, 0 legacy and 0 new cases share content with another case and are not compared.
 - policy-corpus: 19 cases matched one to one (by key tier: 19), 0 legacy-only, 0 new-only, 0 legacy and 0 new cases share content with another case and are not compared.
 - regression-corpus (project twin-scope copies): 12 cases matched one to one (by key tier: 12), 0 legacy-only, 0 new-only, 0 legacy and 0 new cases share content with another case and are not compared.
 
 | Population | Scanner | Legacy | New | Cases | Verdict | Examples |
 | --- | --- | --- | --- | ---: | --- | --- |
-| public-evidence-snapshot | flare-redact | control co-detected | control flagged | 6 | `twin-scope-vocabulary` | `anthropic--anthropic-admin01-key-api01-prefix-twin`, `anthropic--anthropic-admin01-key-api03-prefix-twin`, `anthropic--anthropic-api01-key-admin01-prefix-twin` |
 | public-evidence-snapshot | flare-redact | control flagged | control co-detected | 36 | `twin-scope-vocabulary` | `anthropic--anthropic-token-api03-no-final-hyphen-prefix-twin`, `anthropic--anthropic-token-api03-plain-twin`, `anthropic--anthropic-token-api03-unicode-crlf-twin` |
-| public-evidence-snapshot | gitleaks | control co-detected | control flagged | 8 | `twin-scope-vocabulary` | `anthropic--anthropic-admin01-key-api03-prefix-twin`, `anthropic--anthropic-api01-key-api03-prefix-twin`, `cross-provider--elevenlabs-api-key-stripe-shaped-twin` |
+| public-evidence-snapshot | gitleaks | control co-detected | control flagged | 4 | `twin-scope-vocabulary` | `mailgun--mailgun-api-key-triplet-merged-last-segments-twin`, `mailgun--mailgun-api-key-triplet-node-client-context-twin`, `mailgun--mailgun-api-key-triplet-python-client-context-twin` |
 | public-evidence-snapshot | gitleaks | control flagged | control co-detected | 30 | `twin-scope-vocabulary` | `aws-bedrock--aws-bedrock-short-term-api-key-embedded-leading-twin`, `aws-bedrock--aws-bedrock-short-term-api-key-head-only-twin`, `aws-bedrock--aws-bedrock-short-term-api-key-urlsafe-body-twin` |
 | public-evidence-snapshot | gitleaks | control flagged | control flagged | 2 | `twin-scope-vocabulary` | `slack--slack-token-bot-plain-twin`, `slack--slack-token-bot-unicode-crlf-twin` |
-| public-evidence-snapshot | openredaction | control co-detected | control flagged | 2 | `twin-scope-vocabulary` | `anthropic--anthropic-api01-key-api03-prefix-twin`, `cross-provider--elevenlabs-api-key-stripe-test-shaped-twin` |
 | public-evidence-snapshot | openredaction | control flagged | control co-detected | 20 | `twin-scope-vocabulary` | `aws--aws-secret-access-key-key-shape-bare-twin`, `aws--aws-secret-access-key-key-shape-quoted-twin`, `aws--aws-secret-access-key-key-shape-unicode-crlf-twin` |
-| public-evidence-snapshot | openredaction | control flagged | control flagged | 5 | `twin-scope-vocabulary` | `aws--aws-secret-access-key-artifact-digest-actions-twin`, `aws--aws-secret-access-key-equals-inside-twin`, `cross-provider--elevenlabs-api-key-stripe-shaped-twin` |
-| public-evidence-snapshot | redact-secret | control co-detected | control flagged | 8 | `twin-scope-vocabulary` | `anthropic--anthropic-admin01-key-api01-prefix-twin`, `anthropic--anthropic-admin01-key-api03-prefix-twin`, `anthropic--anthropic-api01-key-admin01-prefix-twin` |
-| public-evidence-snapshot | trufflehog | control co-detected | control flagged | 4 | `twin-scope-vocabulary` | `anthropic--anthropic-admin01-key-api03-prefix-twin`, `anthropic--anthropic-api01-key-admin01-prefix-twin`, `anthropic--anthropic-api01-key-api03-prefix-twin` |
+| public-evidence-snapshot | openredaction | control flagged | control flagged | 4 | `twin-scope-vocabulary` | `aws--aws-secret-access-key-artifact-digest-actions-twin`, `aws--aws-secret-access-key-equals-inside-twin`, `stripe--stripe-token-live-unicode-crlf-twin` |
+| public-evidence-snapshot | redact-secret | control co-detected | control flagged | 2 | `twin-scope-vocabulary` | `mailgun--mailgun-api-key-triplet-merged-last-segments-twin`, `mailgun--mailgun-api-key-triplet-short-first-segment-twin` |
 | public-evidence-snapshot | trufflehog | control flagged | control co-detected | 26 | `twin-scope-vocabulary` | `apify--apify-api-token-trailing-hyphen-twin`, `deepgram--deepgram-api-key-id-named-compose-twin`, `deepgram--deepgram-api-key-id-named-env-twin` |
 
 ## Not compared
 
 - per-fixture outcomes, category shadow-scoring-authored: the legacy bench writes no report for it (calibration-only), so there is no legacy outcome.
-- review ledger entries outside the mapping: the mapped decisions are compared per peer in the review section; the methods run has a review queue keyed by canonical occurrence ids; the legacy review ledger is keyed by legacy ids, and a decision applies to a canonical occurrence only through benchmarks/support/public-review-ledger-map.json (same case, peer, disagreement property and bytes): 4268 of 10739 canonical occurrences are mapped (4268 of 4268 legacy differential entries), 6471 are occurrences of peers the legacy run never scanned (unreviewed, and not gate-bearing) and 0 are unmatched for another reason. The 8845 legacy mutation review entries have no canonical counterpart (the canonical review queue holds differential occurrences only) and are not compared.
+- review ledger entries outside the mapping: the mapped decisions are compared per peer in the review section; the methods run has a review queue keyed by canonical occurrence ids; the legacy review ledger is keyed by legacy ids, and a decision applies to a canonical occurrence only through benchmarks/support/public-review-ledger-map.json (same case, peer, disagreement property and bytes): 4268 of 11525 canonical occurrences are mapped (4268 of 4268 legacy differential entries), 6829 are occurrences of peers the legacy run never scanned (unreviewed, and not gate-bearing) and 428 are unmatched for another reason. The 8845 legacy mutation review entries have no canonical counterpart (the canonical review queue holds differential occurrences only) and are not compared.
 - candidate-regression inputs and protected holdout: internal populations, not part of a public qualification view (docs/specs/qualification-inputs.md).
 - Next page data: the report, family and fixture pages of the Next app still read the legacy files; the new qualification pages (/evaluation/qualification/) read the view this report compares, so the numbers they display are compared at the source: the overview numbers (distribution section), the support matrix, the per-family status and evidence facts (status and evidence sections), the known gaps and the per-case rows. What is not compared is a rendered page against a rendered page: there is no automated page-data diff, and the legacy pages are not a data source of this repository. The per-population, per-scanner counts of a family page are sums of the per-case outcomes compared one to one (outcomes section); the legacy path has no per-population denominator to compare them with, only the pooled counts the evidence section rebuilds from them.
 
@@ -114,8 +129,8 @@ None.
 
 ## Recommendations (not applied)
 
-- Status: the legacy path reads 127 stable families and the new path 127. Held back (legacy-stable families the new path does not read stable): none. Not applied: nothing here changes a status.
-- Review ledger: 4142 of 10307 family-attributed differential occurrences of the methods run are settled by a legacy decision through the generated mapping; per peer, occurrences {"openredaction":3548,"trufflehog":2383,"flare-redact":2617,"gitleaks":1759}. The differential gate reads the peers named in benchmarks/support/population-policy.json (gitleaks, trufflehog); the other peers are measured and listed per family (families[].differential) and are not gate-bearing until reviewed. Applied by product policy (docs/decisions, #638); nothing here changes a status.
+- Status: the legacy path reads 127 stable families and the new path 116. Held back (legacy-stable families the new path does not read stable): 10 by canonical-evidence-membership; 1 by review-occurrence-identity. Not applied: nothing here changes a status.
+- Review ledger: 4142 of 10886 family-attributed differential occurrences of the methods run are settled by a legacy decision through the generated mapping; per peer, occurrences {"openredaction":3739,"trufflehog":2624,"gitleaks":1857,"flare-redact":2666}. The differential gate reads the peers named in benchmarks/support/population-policy.json (gitleaks, trufflehog); the other peers are measured and listed per family (families[].differential) and are not gate-bearing until reviewed. Applied by product policy (docs/decisions, #638); nothing here changes a status.
 - Policy corpus: the T3 route floors read the 19-case policy corpus alone. Whether the floors, the corpus or the route change is a product policy decision. Not applied.
-- Twin scope: credential-eval scopes a twin by the twin's own family, and the snapshot gives a cross-provider twin none, so the engine reads a finding of another known detector as flagged where the legacy twin read it as co-detected (twin-scope-vocabulary). The adapter does not re-score it. The product carries those twins itself with their parent's family (the twin-scope-regressions category of the regression corpus, 6 public twins mapped by content); the engine reads each as co-detected, as the legacy path did, and the twin gate reads that verdict. The public population's own verdict is unchanged and listed per family (gates[].twinFailuresScopedElsewhere). A request that credential-evidence give a cross-provider twin its parent's family would remove the difference at the source; it is not needed for the qualification.
+- Twin scope: credential-eval scopes a twin by the twin's own family, and the snapshot gives a cross-provider twin none, so the engine reads a finding of another known detector as flagged where the legacy twin read it as co-detected (twin-scope-vocabulary). The adapter does not re-score it. The product carries those twins itself with their parent's family (the twin-scope-regressions category of the regression corpus, 0 public twins mapped by content); the engine reads each as co-detected, as the legacy path did, and the twin gate reads that verdict. The public population's own verdict is unchanged and listed per family (gates[].twinFailuresScopedElsewhere). A request that credential-evidence give a cross-provider twin its parent's family would remove the difference at the source; it is not needed for the qualification.
 - Re-key: the review-ledger decisions are mapped to canonical occurrence ids by content (public-review-ledger-map.json). The legacy-id re-key of known gaps and disputed properties (qualification-inputs.json populations[0].rekey) with the evidence release id map is still open.

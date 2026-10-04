@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite';
 import { PipelineStamp } from './PipelineStamp';
-import { pipelineStampLegacy, pipelineStampNew, pipelineStampOracle } from './storyData';
+import { pipelineStampLegacy, pipelineStampNew, pipelineStampOracle, reviewDisclosure } from './storyData';
 
 const meta = {
   title: 'Evaluation/Qualification/PipelineStamp',
@@ -19,6 +19,9 @@ export const LegacyAuthority: Story = { args: pipelineStampLegacy };
 
 /** A page that stays on the legacy files while the new pipeline is the authority (the comparison pages). */
 export const LegacyOracle: Story = { args: pipelineStampOracle };
+
+/** Some fixtures behind the numbers carry the maintainer-reviewed label: the count is data, the words are fixed. */
+export const WithReviewDisclosure: Story = { args: { disclosure: reviewDisclosure } };
 
 export const LongFacts: Story = {
   args: { facts: [{ term: 'Policy revision', value: `rs-policy-0:sha256:${'a'.repeat(64)}`, code: true }, { term: 'Population', value: 'a-population-with-a-very-long-identifier-that-keeps-going-and-going', code: true }] },

@@ -19,6 +19,7 @@ import { assembleCatalog, loadCatalog, loadDetectorTitles, loadFixtureBytes, loa
 import { bridgeQualificationView } from './credential-bridge';
 import { loadQualificationView, QUALIFICATION_COMMANDS, QUALIFICATION_FILE, type QualificationView } from './qualification';
 import { once, readJson } from './repo';
+import { loadReviewDisclosure, type ReviewDisclosureData } from './review-state';
 import { loadRun, type RunLoad } from './run';
 
 /** The one suite page a build without a usable qualification view keeps, so the export has a page for the route. */
@@ -46,6 +47,8 @@ export interface CredentialPipeline {
     release?: string;
     recordedOn?: string | null;
   };
+  /** Present when the accepted evidence release records fixtures in the `maintainer-only` review state (a disclosure, not a number of the view). */
+  reviewDisclosure?: ReviewDisclosureData;
 }
 
 export interface CredentialSource {
@@ -129,9 +132,10 @@ async function newSource(authority: QualificationAuthority): Promise<CredentialS
   const bridged = bridgeQualificationView(load.view, { taxonomy, detectorTitles, accounting, recordedOn: recorded?.recordedOn ?? null });
   if ('problem' in bridged) return unavailable(authority, 'incompatible', `${QUALIFICATION_FILE} cannot be read as a report: ${bridged.problem}.`);
   const { population } = bridged;
+  const reviewDisclosure = await loadReviewDisclosure(population.artifact.evidence.release?.tag);
   return {
     pipeline: {
-      authority: 'new', from: 'committed',
+      authority: 'new', from: 'committed', ...(reviewDisclosure ? { reviewDisclosure } : {}),
       view: {
         state: 'ready', commands: QUALIFICATION_COMMANDS, policyRevision: load.view.policy.revision, population: population.population,
         semanticDigest: population.artifact.semanticDigest, engine: `${population.artifact.engine.name} ${population.artifact.engine.version}`,

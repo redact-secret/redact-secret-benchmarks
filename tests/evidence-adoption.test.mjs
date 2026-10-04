@@ -247,5 +247,7 @@ test('an evidence candidate rides next to the accepted adoption and carries the 
   assert.ok(bad({ evidenceRelease: 'snapshot-2026.10.04.3' }).some(p => /newer release/.test(p)));
   assert.ok(bad({ productCandidates: [{ id: 'core-x', commit: 'c'.repeat(40), packagesDigest: D('9') }] }).some(p => /same bytes/.test(p)));
   assert.ok(bad({ productCandidates: [{ id: 'nope', commit: 'c'.repeat(40), packagesDigest: D('9') }] }).some(p => /does not register/.test(p)));
+  assert.ok(bad({ product: { version: '0.1.0-beta.13', integrity: `sha512-${'A'.repeat(86)}=` } }).some(p => /well-formed sha512/.test(p)), 'a truncated integrity is refused (the first candidate dispatch used one)');
+  assert.deepEqual(bad({ product: { version: '0.1.0-beta.13', integrity: `sha512-${'A'.repeat(86)}==` } }), []);
   assert.ok(evidenceCandidateProblems({ ...record, state: 'candidate' }, ctx).some(p => /accepted adoption/.test(p)));
 });

@@ -86,6 +86,7 @@ export function evidenceCandidateProblems(record, { pin, exists, productCandidat
   for (const key of ['manifestDigest', 'snapshotDigest', 'adoptionKey']) if (!DIGEST.test(ec[key] ?? '')) problems.push(`evidenceCandidate.${key} must be sha256:<64 hex>`);
   if (!/^v\d+\.\d+\.\d+/.test(ec.engine?.tag ?? '') || !/^[0-9a-f]{40}$/.test(ec.engine?.revision ?? '')) problems.push('evidenceCandidate.engine needs a tag and a 40-hex revision');
   if (ec.engineCompatibility?.compatible !== true) problems.push('evidenceCandidate.engineCompatibility must be compatible');
+  if (ec.product && (!ec.product.version || !/^sha512-[A-Za-z0-9+/]{86}==$/.test(ec.product.integrity ?? ''))) problems.push('evidenceCandidate.product needs a version and a well-formed sha512 integrity (86 base64 characters and ==)');
   if (ec.ownerAcceptance !== null) problems.push('an evidence candidate carries no owner acceptance (ownerAcceptance must be null)');
   if (!ec.changeReport || !exists(ec.changeReport)) problems.push(`evidenceCandidate.changeReport ${ec.changeReport} does not exist`);
   // The product candidate measured on this evidence is the same registered bytes as on the accepted evidence (identity recorded here, bytes in benchmarks/product-candidates.json).

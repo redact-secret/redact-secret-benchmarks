@@ -16,7 +16,7 @@ export type QualificationPage =
 export async function resolveQualificationPage(): Promise<QualificationPage> {
   const load = await loadQualificationView();
   if (load.state === 'ready') {
-    const tag = load.view.populations.map(p => p.artifact.evidence.release?.tag).find(Boolean);
+    const tag = load.view.populations.find(p => p.role === 'floors-and-gates')?.artifact.evidence.release?.tag;
     const disclosure = resolveReviewDisclosure(await loadReviewDisclosure(tag));
     return { state: 'ready', props: { ...resolveQualificationOverview(load.view), ...(disclosure ? { disclosure } : {}) } };
   }

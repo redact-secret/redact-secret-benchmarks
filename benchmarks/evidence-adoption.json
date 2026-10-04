@@ -1,4 +1,44 @@
 {
   "schema": "redact-secret/evidence-adoption/v1",
-  "state": "none"
+  "state": "candidate",
+  "candidate": {
+    "evidenceRelease": "snapshot-2026.10.04",
+    "sourceRevision": "32224d40e4456fa3ed80f444a90c346323de5f10",
+    "manifestDigest": "sha256:c82b2f005c7e499c06e8851356f63a80ecad923e11ea284b0429c01fac1e4da8",
+    "snapshotDigest": "sha256:5c0041813197670c5233d0db113171f9ee4493056c8f69e20f6ad0c8a28cfeb0",
+    "evidenceSchema": "credential-evidence/schema/1.6.0",
+    "evidenceRevision": "records-tree-sha256:806545ba072686bb24c36fc88754e2e9b9a59239946d84c8a2b887ee03980432",
+    "adoptionKey": "sha256:26c323134d37087af363c1af6ae1c957c7da142b758a29fae62818149757db20",
+    "engine": {
+      "tag": "v0.1.0-alpha.1",
+      "revision": "379e677b8e92db93105d26eb1b7f8c84df6ee5fc"
+    },
+    "engineCompatibility": {
+      "compatible": true,
+      "cases": 6449
+    },
+    "supersedes": {
+      "evidenceRelease": "snapshot-2026.10.01.2",
+      "manifestDigest": "sha256:2557a72ae8dec3ca6d734a6c87b6db9cb4881543541693a4555fdfd9f7ba26d8"
+    },
+    "changeSummary": {
+      "old": 5950,
+      "new": 6449,
+      "added": 499,
+      "removed": 0,
+      "changed": 235,
+      "unchanged": 5715
+    },
+    "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.04.json",
+    "replay": {
+      "state": "pending",
+      "via": ".github/workflows/official-runs.yml after the acceptance repin",
+      "recordedRuns": []
+    },
+    "ownerAcceptance": null,
+    "deployment": {
+      "staging": null,
+      "production": null
+    }
+  }
 }

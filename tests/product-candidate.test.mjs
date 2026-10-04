@@ -77,3 +77,43 @@ test('the registry gate refuses a published, official or malformed candidate and
     assert.deepEqual(problems(committed, record), []);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('a replay receipt is complete, bound to an archive digest and consistent with its verdict (#698)', async () => {
+  const { recordReplay, pickDispatchedRun, dataDir } = await import('../scripts/run-candidate-replay.mjs');
+  const registry = { candidates: [{ id: 'c1' }, { id: 'c2' }] };
+  const replay = { ciRun: 'https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/1', benchmarkRevision: 'b'.repeat(40), data: dataDir('c1'), worsened: false, fixed: 3, regressed: 0, archive: { release: 'candidate-runs-1', sha256: `sha256:${'0'.repeat(64)}` } };
+  const next = recordReplay(registry, 'c1', replay);
+  assert.equal(next.candidates[0].replay.state, 'replayed');
+  assert.equal(next.candidates[1].replay, undefined);
+  assert.throws(() => recordReplay(registry, 'c1', { ...replay, archive: { release: 'x', sha256: 'nope' } }), /archive release and its sha256/);
+  assert.throws(() => recordReplay(registry, 'c1', { ...replay, benchmarkRevision: 'main' }), /full commit/);
+  assert.throws(() => recordReplay(registry, 'c9', replay), /no product candidate/);
+  assert.throws(() => recordReplay(registry, 'c1', { ...replay, fixed: undefined }), /lacks fixed/);
+
+  const t = Date.parse('2026-10-04T12:00:00Z');
+  const runs = [
+    { databaseId: 1, event: 'workflow_dispatch', headBranch: 'b', headSha: 'x', createdAt: '2026-10-04T11:00:00Z' },
+    { databaseId: 2, event: 'push', headBranch: 'b', headSha: 'x', createdAt: '2026-10-04T12:00:01Z' },
+    { databaseId: 3, event: 'workflow_dispatch', headBranch: 'b', headSha: 'y', createdAt: '2026-10-04T12:00:01Z' },
+    { databaseId: 4, event: 'workflow_dispatch', headBranch: 'b', headSha: 'x', createdAt: '2026-10-04T12:00:02Z' },
+    { databaseId: 5, event: 'workflow_dispatch', headBranch: 'b', headSha: 'x', createdAt: '2026-10-04T12:00:03Z' },
+  ];
+  assert.equal(pickDispatchedRun(runs, { ref: 'b', sha: 'x', after: t }).databaseId, 5, 'the newest dispatch of this commit created after the request');
+  assert.equal(pickDispatchedRun(runs.slice(0, 3), { ref: 'b', sha: 'x', after: t }), undefined, 'an older run or another commit is never taken');
+});
+
+test('the registry gate verifies the shape of a recorded replay (#698)', () => {
+  const { dir, registry } = fixture();
+  try {
+    const adoption = { engineCandidate: { product: { version: '9.9.8' } } };
+    const replayed = structuredClone(registry);
+    replayed.candidates[0].replay = { state: 'replayed', ciRun: 'https://example.com/x', archive: { release: 'nope', sha256: 'bad' }, benchmarkRevision: 'abc', worsened: false, fixed: 1, regressed: 2, repeatRunsEqual: false, data: 'docs/none' };
+    const found = problems(replayed, adoption).join('\n');
+    assert.match(found, /replay.ciRun/);
+    assert.match(found, /replay.archive/);
+    assert.match(found, /benchmarkRevision/);
+    assert.match(found, /worsened is false but 2/);
+    assert.match(found, /repeat runs did not agree/);
+    assert.match(found, /candidate-effect.json/);
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});

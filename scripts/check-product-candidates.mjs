@@ -9,7 +9,7 @@
  * `--bindings` (needs `gh`): each registered tarball exists on the candidate's release with the registered size and digest.
  */
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
@@ -41,6 +41,17 @@ export function problems(registry, adoption) {
     }
     for (const required of ['@redact-secret/core', '@redact-secret/wasm']) if (!(c.packages ?? []).some(p => p.name === required && p.platform === null)) found.push(`${at}: no ${required} package`);
     if (!(c.packages ?? []).some(p => p.platform === c.platform && p.name.startsWith('@redact-secret/node-'))) found.push(`${at}: no node addon package for ${c.platform}`);
+    if (c.replay !== undefined) {
+      const r = c.replay;
+      if (r.state !== 'replayed') found.push(`${at}: replay.state must be replayed`);
+      if (!/^https:\/\/github\.com\/redact-secret\/redact-secret-benchmarks\/actions\/runs\/\d+$/.test(r.ciRun ?? '')) found.push(`${at}: replay.ciRun must be a run of the benchmarks repository`);
+      if (!/^candidate-runs-\d+$/.test(r.archive?.release ?? '') || !DIGEST.test(r.archive?.sha256 ?? '')) found.push(`${at}: replay.archive needs the candidate-runs-<run id> release and its sha256`);
+      if (!SHA.test(r.benchmarkRevision ?? '')) found.push(`${at}: replay.benchmarkRevision must be a full commit`);
+      if (typeof r.worsened !== 'boolean' || !Number.isInteger(r.fixed) || !Number.isInteger(r.regressed)) found.push(`${at}: replay.worsened, fixed and regressed must be recorded`);
+      if (r.worsened === false && r.regressed > 0) found.push(`${at}: replay.worsened is false but ${r.regressed} case(s) regressed`);
+      if (r.repeatRunsEqual !== true) found.push(`${at}: the repeat runs did not agree, so the replay is not recorded`);
+      if (!existsSync(path.join(root, r.data ?? '', 'candidate-effect.json'))) found.push(`${at}: replay.data ${r.data} holds no candidate-effect.json`);
+    }
     const control = adoption?.engineCandidate?.product;
     if (control && (c.control?.version !== control.version)) found.push(`${at}: control ${c.control?.version} is not the engine candidate's product pin ${control.version}`);
   }

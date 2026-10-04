@@ -125,7 +125,7 @@ So the canonical linux-x64 artifacts are also kept as one release asset of this 
 - Keep a run (a maintainer, once per recorded run, after the registry records it): `node scripts/official-run-archive.mjs pack --run <ci run id> --out <dir>`
   downloads that run's build artifacts, refuses them unless every file hashes to the `byteDigest` the registry records, writes the tarball and prints the
   `gh release create` command. Then set `release.tag` and `source.ciRun` in `benchmarks/official-run-archive.json` in the same PR as the registry entry.
-- Use it: `node scripts/official-run-archive.mjs fetch --out <dir>` (the publish workflow's first step) and `verify --dir <dir>`. The registry is the authority: exact members, exact
+- Use it: `node scripts/official-run-archive.mjs fetch --out <dir>` (the publish workflow's first step) and `verify --dir <dir>`. Each member is capped at 1 GiB (the alpha.3 methods artifact is 769 MB; it is hashed from a stream and read by `readRunArtifact` from its bytes). The registry is the authority: exact members, exact
   digests, fail closed. The product populations' `case-metadata.json` is not archived; `npm run qualification:export` writes it from the checkout, byte-identical to the CI run's input.
 - The view built from them (`npm run qualification:view`) is byte-identical to the view the CI run built.
 

@@ -23,7 +23,7 @@ import { credentialDomain } from '../benchmarks/evaluation/domains/credential/co
 import { loadProductInputs } from '../benchmarks/qualification/inputs.ts';
 import { readRunArtifact, type CaseResult, type Measurement, type RunArtifact } from '../benchmarks/qualification/run-artifact.ts';
 import {
-  CAUSES, PARITY_SCHEMA, compareDistributions, compareFamilies, compareIdentity, compareKnownGaps, compareOutcomes, compareReview, compareSupportMatrix, joinByKeys, renderMarkdown, summarise,
+  CAUSES, PARITY_SCHEMA, compareDistributions, compareFamilies, compareIdentity, compareKnownGaps, compareOutcomes, compareReview, compareSupportMatrix, joinByKeys, renderMarkdown, summarise, type ReviewOfFamily,
   type MatrixEntry, type ReviewSide, type CasePair, type CaseSide, type JoinResult, type Joinable, type LegacyFamily, type NextFamily, type Normalised, type ParityReport,
 } from '../benchmarks/qualification/parity.ts';
 
@@ -229,7 +229,9 @@ const adjustmentsByFamily: Record<string, Record<string, Record<string, number>>
   }
 }
 // The differential review occurrences of the methods run, per family, with how many canonical ids the review ledger holds.
-const reviewByFamily: Record<string, { occurrences: number; inLedger: number; byPeer: Record<string, number> }> = {};
+const reviewByFamily: Record<string, ReviewOfFamily> = {};
+const unjoinedSeeds = new Set<string>(publicJoin?.unmatchedNext ?? []);
+const unjoinedByPeer: Record<string, number> = {};
 const methodsFile = path.join(artifactsDir, PUBLIC, 'methods/artifact.json');
 if (existsSync(methodsFile)) {
   const methods = readRunArtifact(await readFile(methodsFile)).artifact;
@@ -240,7 +242,15 @@ if (existsSync(methodsFile)) {
       const row = (reviewByFamily[d] ??= { occurrences: 0, inLedger: 0, byPeer: {} });
       row.occurrences++; if (Object.hasOwn(product.ledger.entries, ledgerSettledId(q.id, product.ledger, product.ledgerRekey))) row.inLedger++;
       const peer = String(q.peer ?? 'unknown'); row.byPeer[peer] = (row.byPeer[peer] ?? 0) + 1;
+      // A gate-peer occurrence of a case the legacy path never had, with no decision: the residual `canonical-evidence-membership` explains.
+      const settled = ['resolved', 'not-assertable'].includes(String(product.ledger.entries[ledgerSettledId(q.id, product.ledger, product.ledgerRekey)]?.status));
+      if (unjoinedSeeds.has(seedCaseId(q.case_id, 'differential')) && !settled && !Object.hasOwn(product.ledgerRekey?.occurrences ?? {}, q.id) && (view.policy.differentialPeers ?? []).includes(peer)) row.unsettledUnjoined = (row.unsettledUnjoined ?? 0) + 1;
     }
+  }
+  // The reference scanner's failed assertions on cases the legacy path never had.
+  for (const x of methods.scanners.find(s => s.scanner === (view.policy.scanner ?? 'redact-secret'))?.assertions ?? []) {
+    if (x.status !== 'fail' || !unjoinedSeeds.has(seedCaseId(x.case_id, x.method))) continue;
+    for (const d of detectorsOfSeed.get(seedCaseId(x.case_id, x.method)) ?? []) { const row = (reviewByFamily[d] ??= { occurrences: 0, inLedger: 0, byPeer: {} }); row.failuresUnjoined ??= {}; row.failuresUnjoined[x.method] = (row.failuresUnjoined[x.method] ?? 0) + 1; }
   }
 }
 const families = compareFamilies(legacyFamilies, nextFamilies, { floorsPopulation: PUBLIC, adjustmentsByFamily, axisOverlay: Boolean(view.policy.axisOverlay), reviewByFamily });
@@ -271,6 +281,7 @@ if (existsSync(methodsFile) && reviewDerivation) {
     const peer = String(q.peer ?? 'unknown');
     const next = (reviewNext[peer] ??= { occurrences: 0, settled: 0 }) as { occurrences: number; settled: number };
     next.occurrences++;
+    if (unjoinedSeeds.has(seedCaseId(q.case_id, 'differential')) && !Object.hasOwn(product.ledgerRekey?.occurrences ?? {}, q.id)) unjoinedByPeer[peer] = (unjoinedByPeer[peer] ?? 0) + 1;
     const settledId = ledgerSettledId(q.id, product.ledger, product.ledgerRekey);
     if (['resolved', 'not-assertable'].includes(String(product.ledger.entries[settledId]?.status))) next.settled++;
     const legacyId = product.ledgerRekey!.occurrences[q.id];
@@ -281,7 +292,7 @@ if (existsSync(methodsFile) && reviewDerivation) {
     reviewLegacy[peer] = ids?.size ? { occurrences: ids.size, settled: [...ids].filter(id => ['resolved', 'not-assertable'].includes(String(product.ledger.entries[id]?.status))).length } : null;
   }
 }
-const reviewSection = compareReview(reviewLegacy, reviewNext, { differential: reviewDerivation?.legacy.differential ?? 0, mapped: new Set(Object.values(product.ledgerRekey?.occurrences ?? {})).size }, reviewMapped);
+const reviewSection = compareReview(reviewLegacy, reviewNext, { differential: reviewDerivation?.legacy.differential ?? 0, mapped: new Set(Object.values(product.ledgerRekey?.occurrences ?? {})).size }, reviewMapped, unjoinedByPeer);
 
 // -- identity ----------------------------------------------------------------------------------------------------------
 const nextVersions: Record<string, string | null> = {};

@@ -6,6 +6,7 @@
  *
  * Run: npm run adoption:check
  */
+import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 
@@ -13,8 +14,8 @@ const root = new URL('../', import.meta.url);
 const DIGEST = /^sha256:[0-9a-f]{64}$/;
 const readJson = path => JSON.parse(readFileSync(new URL(path, root), 'utf8'));
 
-/** Pure: `pin` is the floors population pin of benchmarks/qualification-inputs.json; `exists(path)` tells whether a repo file exists. */
-export function evidenceAdoptionProblems(record, { pin, exists }) {
+/** Pure: `pin` is the floors population pin of benchmarks/qualification-inputs.json; `exists(path)` tells whether a repo file exists; `read(path)` returns a repo file's text (only the prepared acceptance is checked through it). */
+export function evidenceAdoptionProblems(record, { pin, exists, read }) {
   const problems = [];
   if (record.schema !== 'redact-secret/evidence-adoption/v1') problems.push('schema must be redact-secret/evidence-adoption/v1');
   if (!['none', 'candidate', 'accepted'].includes(record.state)) { problems.push('state must be none, candidate or accepted'); return problems; }
@@ -25,6 +26,7 @@ export function evidenceAdoptionProblems(record, { pin, exists }) {
   if (!/^[0-9a-f]{40}$/.test(c.sourceRevision ?? '')) problems.push('candidate.sourceRevision must be a full 40-hex commit');
   if (c.engineCompatibility?.compatible !== true) problems.push('a candidate is recorded only after the engine compatibility preflight passed');
   if (!c.changeReport || !exists(c.changeReport)) problems.push(`candidate.changeReport ${c.changeReport} does not exist`);
+  if (c.acceptance) problems.push(...preparedAcceptanceProblems(c.acceptance, { exists, read }));
   const isPin = c.evidenceRelease === pin.evidenceRelease;
   if (record.state === 'candidate') {
     if (isPin) problems.push('a candidate is not the active pin; once pinned, the adoption is accepted or withdrawn');
@@ -37,9 +39,25 @@ export function evidenceAdoptionProblems(record, { pin, exists }) {
   return problems;
 }
 
+/**
+ * The prepared acceptance (#680): the owner report, its data and the patch the owner applies exist, the patch matches its recorded digest, and the patch never fills an
+ * owner field (every added acceptedBy or acceptedOn line is the OWNER-TO-SET placeholder, so the gates stay red until the owner decides).
+ */
+export function preparedAcceptanceProblems(acceptance, { exists, read }) {
+  const problems = [];
+  for (const f of ['report', 'comparison', 'patch', 'patchDigestFile']) if (!acceptance[f] || !exists(acceptance[f])) problems.push(`candidate.acceptance.${f} ${acceptance[f]} does not exist`);
+  if (problems.length || !read) return problems;
+  const patch = read(acceptance.patch);
+  const recorded = /^([0-9a-f]{64})\b/.exec(read(acceptance.patchDigestFile))?.[1];
+  const actual = createHash('sha256').update(patch).digest('hex');
+  if (recorded !== actual) problems.push(`candidate.acceptance.patch has sha256 ${actual}, ${acceptance.patchDigestFile} records ${recorded ?? 'none'}`);
+  for (const line of patch.split('\n')) if (/^\+/.test(line) && /"accepted(By|On)"/.test(line) && !line.includes('OWNER-TO-SET')) problems.push(`the prepared patch fills an owner field: ${line.slice(0, 120)}`);
+  return problems;
+}
+
 export function checkEvidenceAdoption() {
   const inputs = readJson('benchmarks/qualification-inputs.json');
-  return evidenceAdoptionProblems(readJson('benchmarks/evidence-adoption.json'), { pin: inputs.populations.find(p => p.id === 'public-evidence-snapshot').pin, exists: p => existsSync(new URL(p, root)) });
+  return evidenceAdoptionProblems(readJson('benchmarks/evidence-adoption.json'), { pin: inputs.populations.find(p => p.id === 'public-evidence-snapshot').pin, exists: p => existsSync(new URL(p, root)), read: p => readFileSync(new URL(p, root), 'utf8') });
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

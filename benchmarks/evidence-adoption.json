@@ -116,7 +116,55 @@
         "revision": "4b55535fbd6b8640a41aed3f15b5eaa6eaad132d"
       },
       "runArtifactSchemaSha256": "sha256:35ae69511ca553c2f88589457f89e349750c93ef5cba012ca9236ba7ff48c238",
-      "note": "Applied only at acceptance (engine pin, vendored RunArtifact schema v1.2, linux-x64 and darwin-arm64 config hashes, recorded runs of all three populations): the active registry stays on alpha.1 and the old accepted runs until the owner accepts. The engine effect on the previous population is replay.engineEffect of the change report."
+      "note": "Applied only at acceptance, by candidate.acceptance.patch (engine pin, vendored RunArtifact schema v1.2, the linux-x64 config hash from the recorded runs, recorded runs of all three populations; the darwin-arm64 config hash is left resolved-at-run because the engine's darwin configuration changed in alpha.2 and alpha.3 and no darwin run exists on alpha.3): the active registry stays on alpha.1 and the old accepted runs until the owner accepts. The engine effect on the previous population is replay.engineEffect of the change report."
+    },
+    "acceptance": {
+      "note": "Prepared for the owner (#680). Nothing here is accepted: the active pins, runs, schema and authority file stay on the previous accepted evidence until the owner applies the patch and fills the OWNER-TO-SET fields. The patch applies to the commit that merges this candidate; the policy revision and the parity report in it are derived from the product inputs of that commit, so re-derive them if the product inputs change first.",
+      "report": "docs/generated/evidence-adoption/snapshot-2026.10.04.md",
+      "comparison": "docs/generated/evidence-adoption/snapshot-2026.10.04.comparison.json",
+      "patch": "docs/generated/evidence-adoption/snapshot-2026.10.04.acceptance.patch",
+      "patchDigestFile": "docs/generated/evidence-adoption/snapshot-2026.10.04.acceptance.patch.sha256",
+      "applies": "git apply docs/generated/evidence-adoption/snapshot-2026.10.04.acceptance.patch",
+      "ownerFields": [
+        "the authority file: new.acceptedOn and new.acceptedBy (the file is named in the patch and the spec, never here)",
+        "benchmarks/evidence-adoption.json candidate.ownerAcceptance acceptedBy and acceptedOn",
+        "docs/decisions/2026-10-04-accept-snapshot-2026-10-04-on-credential-eval-alpha-3.md status (proposed to accepted) and its owner statement"
+      ],
+      "candidateView": {
+        "sha256": "sha256:7b8a23ec198f0dacd57280de9bffbf32634a2e8fcdf808ec2f3bdcde06d20477",
+        "policyRevision": "rs-policy-1:sha256:a4000fc49c362d2c3a2bd1b5271176bb8ac8e23a59e7e9ee40d4ef6af652530e",
+        "distribution": {
+          "stable": 116,
+          "provisional": 18,
+          "pending": 1,
+          "unsupported": 0
+        },
+        "supportMatrix": {
+          "stable": 126,
+          "provisional": 25,
+          "pending": 5,
+          "unsupported": 17
+        },
+        "build": "On the acceptance branch with the archive fetched (node scripts/official-run-archive.mjs fetch --out <dir>) and each product population's case-metadata.json from npm run qualification:export: npm run qualification:view -- --artifacts <dir> --out <view.json>. The view is byte-identical for the same artifacts and inputs."
+      },
+      "derivedInputs": {
+        "snapshot": "credential-evidence release snapshot-2026.10.04, asset credential-eval-corpus-snapshot.json (gh release download snapshot-2026.10.04 -R redact-secret/credential-evidence)",
+        "axisOverlay": {
+          "file": "benchmarks/support/public-axis-overlay.json",
+          "sha256": "sha256:69b88f4477ea7611487e836c48a5b5a751769c0c6d1359fe9f03c0cbe85fdc85",
+          "check": "npm run qualification:axis-overlay -- --snapshot <snapshot> --check"
+        },
+        "twinScope": {
+          "file": "benchmarks/support/public-twin-scope-map.json",
+          "sha256": "sha256:6d0759b046de92d94888bd28a022e55203ba3d8550d84bc02b6fc654d9e84fc4",
+          "check": "npm run qualification:twin-scope -- --snapshot <snapshot> --check"
+        },
+        "ledgerRekey": {
+          "file": "benchmarks/support/public-review-ledger-map.json",
+          "sha256": "sha256:91e439528cd122b97198157165793a5845b4ab249569d03a25fade03929bb569",
+          "check": "npm run qualification:ledger-rekey -- --snapshot <snapshot> --methods-run <dir>/public-evidence-snapshot/methods/artifact.json --check"
+        }
+      }
     }
   }
 }

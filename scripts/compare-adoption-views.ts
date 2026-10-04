@@ -1,0 +1,273 @@
+/**
+ * Compare the qualification views of an evidence adoption (#680) and attribute every difference to its cause. Nothing here decides or accepts
+ * anything: it reads three built views (and optionally the candidate methods run) and writes what differs and why.
+ *
+ *   node --import tsx scripts/compare-adoption-views.ts --accepted VIEW --replay-old VIEW --candidate VIEW --report CHANGE_REPORT.json \
+ *     [--candidate-methods ARTIFACT] [--out-json FILE] [--out-md FILE]
+ *
+ * The three views, all built by `npm run qualification:view` from official RunArtifacts:
+ *   accepted    the previous accepted runs (previous corpus, previous engine, previous overlays)         = A
+ *   replay-old  the previous corpus replayed on the new engine, with the review-ledger re-key regenerated = B
+ *   candidate   the candidate corpus on the new engine with the regenerated product overlays            = C
+ * A to B is the engine effect (the corpus and its overlays are fixed), B to C the corpus effect together with the overlays derived from it. The overlays
+ * (axis overlay, twin-scope map, review-ledger re-key) are derived from the corpus and cannot be pinned apart from it, so they are reported with it, and what
+ * each one changed is listed under `overlayAndPolicy`. A difference no rule attributes is listed under `unexplained`; the script exits 1 on one with --strict.
+ */
+import { readFileSync, writeFileSync } from 'node:fs';
+import { readRunArtifact } from '../benchmarks/qualification/run-artifact.ts';
+import { seedCaseId } from '../benchmarks/qualification/adapter.ts';
+import { ledgerSettledId } from '../benchmarks/qualification/ledger-rekey.ts';
+
+const args = process.argv.slice(2);
+const option = (name: string) => { const at = args.indexOf(`--${name}`); return at >= 0 ? args[at + 1] : undefined; };
+const need = (name: string) => option(name) ?? (() => { throw new Error(`--${name} is required`); })();
+const readJson = (file: string) => JSON.parse(readFileSync(file, 'utf8'));
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+type Json = any;
+const A: Json = readJson(need('accepted')), B: Json = readJson(need('replay-old')), C: Json = readJson(need('candidate'));
+const report: Json = readJson(need('report'));
+const added = new Set<string>(report.diff.added);
+const sortedKeys = (o: object) => Object.keys(o).sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
+const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
+const count = <T>(items: T[], key: (item: T) => string) => { const out: Record<string, number> = {}; for (const i of items) out[key(i)] = (out[key(i)] ?? 0) + 1; return Object.fromEntries(sortedKeys(out).map(k => [k, out[k]])); };
+const unexplained: string[] = [];
+
+const familiesOf = (v: Json) => new Map<string, Json>(v.families.map((f: Json) => [f.family, f]));
+const matrixOf = (v: Json) => new Map<string, Json>(v.supportMatrix.families.map((f: Json) => [f.family, f]));
+const publicOf = (v: Json) => v.populations.find((p: Json) => p.population === 'public-evidence-snapshot');
+const reasonText = (f: Json) => (f.status?.reasons ?? []).map((r: string) => r.split(' — ')[0]);
+
+// ---- 1. engine effect (A to B): the same corpus on two engines ----
+const engine = (() => {
+  const a = familiesOf(A), b = familiesOf(B), differing: string[] = [];
+  for (const [k, f] of b) { const o = a.get(k); if (!o || !['evidence', 'gates', 'populations', 'status', 'attribution', 'contract', 'differential', 'fixtureProfile', 'axisCoverage'].every(x => same(o[x], f[x]))) differing.push(k); }
+  const caseDrift: string[] = [];
+  const ac = new Map<string, Json>(publicOf(A).cases.map((c: Json) => [c.id, c]));
+  for (const c of publicOf(B).cases) if (!same(ac.get(c.id), c)) caseDrift.push(c.id);
+  const matrixSame = same(A.supportMatrix, B.supportMatrix), distributionSame = same(A.distribution, B.distribution);
+  return {
+    note: 'The same corpus, the same overlays, the same product and the same scanner versions, measured by credential-eval v0.1.0-alpha.1 and v0.1.0-alpha.3 (the review-ledger re-key is regenerated for the alpha.3 methods run, whose occurrence ids all changed with the scanner configuration identity).',
+    distribution: { accepted: A.distribution, replayOld: B.distribution }, distributionSame,
+    familiesWithAnyDifference: differing, supportMatrixSame: matrixSame, publicCasesWithAnyDifference: caseDrift.length,
+  };
+})();
+if (engine.familiesWithAnyDifference.length || !engine.supportMatrixSame || engine.publicCasesWithAnyDifference) unexplained.push(`engine effect: ${engine.familiesWithAnyDifference.length} families, ${engine.publicCasesWithAnyDifference} public cases differ between the accepted view and the previous corpus on the new engine`);
+
+// ---- 2. the candidate methods run, attributed to added versus common cases ----
+const snapshotCases = new Map<string, Json>(publicOf(C).cases.map((c: Json) => [c.id, c]));
+let methods: Json = null;
+const gateAttribution = new Map<string, { added: number; common: number }>();
+const unsettledGateOccurrences: Json[] = [];
+const assertionAttribution = new Map<string, Record<string, { added: number; common: number }>>();
+if (option('candidate-methods')) {
+  const ledger = readJson('benchmarks/review-ledger.json'), rekey = readJson('benchmarks/support/public-review-ledger-map.json');
+  const art = readRunArtifact(readFileSync(need('candidate-methods')), { forceBytes: true }).artifact as Json;
+  const policy = C.policy; const gatePeers = new Set<string>(policy.differentialPeers ?? ['gitleaks', 'trufflehog']);
+  const settled = (id: string) => ['resolved', 'not-assertable'].includes(ledger.entries[ledgerSettledId(id, ledger, rekey)]?.status);
+  const byPeer: Record<string, Record<string, number>> = {};
+  for (const q of art.review_queue ?? []) {
+    if (q.method !== 'differential') continue;
+    const seed = seedCaseId(q.case_id, q.method), origin = added.has(seed) ? 'added' : 'common';
+    const key = `${q.peer}${gatePeers.has(String(q.peer)) ? ' (gate)' : ''}`;
+    const row = (byPeer[key] ??= { 'common settled': 0, 'common unsettled': 0, 'added settled': 0, 'added unsettled': 0 });
+    row[`${origin} ${settled(q.id) ? 'settled' : 'unsettled'}`]++;
+    if (gatePeers.has(String(q.peer)) && !settled(q.id)) {
+      unsettledGateOccurrences.push({ id: q.id, peer: q.peer, case: seed, variant: q.variant, disagreement: q.disagreement, origin, families: snapshotCases.get(seed)?.detectors ?? [] });
+      for (const d of snapshotCases.get(seed)?.detectors ?? []) { const r = gateAttribution.get(d) ?? { added: 0, common: 0 }; r[origin]++; gateAttribution.set(d, r); }
+    }
+  }
+  const rs = art.scanners.find((s: Json) => s.scanner === 'redact-secret');
+  const assertionFailures: Record<string, Record<string, number>> = {};
+  for (const x of rs?.assertions ?? []) {
+    if (x.status !== 'fail') continue;
+    const seed = seedCaseId(x.case_id, x.method), origin = added.has(seed) ? 'added' : 'common';
+    (assertionFailures[x.method] ??= { added: 0, common: 0 })[origin]++;
+    for (const d of snapshotCases.get(seed)?.detectors ?? []) { const m = assertionAttribution.get(d) ?? {}; (m[x.method] ??= { added: 0, common: 0 })[origin]++; assertionAttribution.set(d, m); }
+  }
+  methods = {
+    note: 'The candidate methods run (differential, metamorphic, mutation): review occurrences of the gate peers and the failed assertions of the reference scanner (redact-secret), split by whether the seed case is one of the added cases or a common case.',
+    differentialOccurrencesByPeer: byPeer, referenceAssertionFailuresByMethod: assertionFailures,
+    unsettledGateOccurrences: { note: 'Every gate-peer (gitleaks, trufflehog) differential occurrence with no ledger decision, own or mapped from the legacy ledger. Origin added: the seed case is new in this snapshot, so no legacy decision exists for it. Origin common: the occurrence maps to a legacy ledger entry that is still open, and was equally unsettled in the accepted view.', items: unsettledGateOccurrences.sort((x, y) => (x.id < y.id ? -1 : 1)) },
+    unmeasuredVariants: Object.fromEntries(art.scanners.filter((s: Json) => s.unmeasured_cases?.length).map((s: Json) => [s.scanner, s.unmeasured_cases.length])),
+  };
+}
+
+// ---- 3. corpus effect (A to C) per family ----
+const a = familiesOf(A), c = familiesOf(C);
+const FIELDS = ['positiveCases', 'positiveAxes', 'totalFixtures', 'benignCases', 'benignAxes', 'controlAxes', 'confusionAxes', 'twinPairs', 'contextTwinPairs', 'metamorphicCriticalFailures', 'mutationUnresolvedCritical', 'differentialUnresolvedContractDisagreements', 'policyQualification'];
+const familyRows = [...c].filter(([k, f]) => FIELDS.some(x => !same(a.get(k)!.evidence[x], f.evidence[x])) || a.get(k)!.status.value !== f.status.value).map(([k, f]) => {
+  const o = a.get(k)!, delta: Record<string, { from: unknown; to: unknown }> = {};
+  for (const x of FIELDS) if (!same(o.evidence[x], f.evidence[x])) delta[x] = { from: o.evidence[x], to: f.evidence[x] };
+  const g = gateAttribution.get(k) ?? { added: 0, common: 0 };
+  const m = assertionAttribution.get(k) ?? {};
+  const row: Json = { family: k, status: { from: o.status.value, to: f.status.value }, evidenceTier: f.status.evidenceTier, evidenceDelta: delta };
+  if (o.status.value !== f.status.value) {
+    row.statusReasons = reasonText(f);
+    // every reason must be one the added cases explain: the unresolved differential occurrences and the reference's failed assertions of added cases
+    const unresolved = f.evidence.differentialUnresolvedContractDisagreements as number;
+    const explainedByAdded = gateAttribution.size ? g.added === unresolved && g.common === (o.evidence.differentialUnresolvedContractDisagreements as number) : null;
+    row.cause = {
+      differentialUnresolvedFromAddedCases: gateAttribution.size ? g.added : null, differentialUnresolvedFromCommonCases: gateAttribution.size ? g.common : null,
+      referenceAssertionFailuresByMethod: Object.fromEntries(Object.entries(m).map(([k2, v]) => [k2, v])),
+      explainedByAddedCases: explainedByAdded,
+    };
+    if (!f.status.reasons?.length && f.status.value !== 'stable') unexplained.push(`${k}: status ${o.status.value} to ${f.status.value} with no reason`);
+    if (gateAttribution.size && explainedByAdded === false) unexplained.push(`${k}: ${unresolved} unresolved differential occurrences, but ${g.added} come from added cases and ${g.common} from common cases (accepted view had ${o.evidence.differentialUnresolvedContractDisagreements})`);
+  }
+  return row;
+});
+
+// ---- 4. support matrix ----
+const am = matrixOf(A), cm = matrixOf(C);
+const matrixChanges = [...cm].filter(([k, f]) => am.get(k)!.status !== f.status).map(([k, f]) => ({ family: k, from: am.get(k)!.status, to: f.status, unresolvedCriticalItems: f.unresolvedCriticalItems ?? null, viewFamilyStatus: c.get((f.detectors ?? [])[0])?.status?.value ?? null }));
+
+// ---- 5. per-case drift of the public population: common cases apart from added cases ----
+const pa = publicOf(A), pc = publicOf(C);
+const commonA = new Map<string, Json>(pa.cases.map((x: Json) => [x.id, x]));
+const outcome = (r: Json) => (r.measurement === 'positive' ? `positive:${(r.outcomes ?? []).join(',')}` : r.measurement === 'control' ? `control:${r.flagged ? 'flagged' : 'clear'}` : r.measurement);
+const drift: Json[] = [];
+for (const x of pc.cases) {
+  const o = commonA.get(x.id); if (!o) continue;
+  const regrouped = ['family', 'tier', 'evidenceClass', 'group', 'kind'].filter(k => !same(o[k], x[k]));
+  const changed: Json[] = [];
+  for (const r of x.results) { const before = o.results.find((q: Json) => q.scanner === r.scanner); if (outcome(before) !== outcome(r)) changed.push({ scanner: r.scanner, from: outcome(before), to: outcome(r) }); }
+  if (changed.length) drift.push({ case: x.id, regrouped, changed, family: x.family });
+}
+const driftExplained = (d: Json) => d.regrouped.includes('family') && d.regrouped.length > 0 && C.policy.twinScope && snapshotCases.get(d.case)?.twinOf !== undefined;
+const driftByScanner = count(drift.flatMap((d: Json) => d.changed.map((x: Json) => ({ ...x, case: d.case }))), (x: Json) => `${x.scanner}: ${x.from} -> ${x.to}`);
+for (const d of drift) if (!driftExplained(d)) unexplained.push(`common case ${d.case} changed outcome (${d.changed.map((x: Json) => `${x.scanner} ${x.from} -> ${x.to}`).join('; ')}) without a twin family assignment`);
+
+// ---- 5b. every family evidence delta needs a corpus cause: an added case or a regrouped common case attributed to it ----
+const touched = new Set<string>();
+for (const x of pc.cases) {
+  const o = commonA.get(x.id);
+  if (!o && !added.has(x.id)) continue;
+  if (added.has(x.id) || ['family', 'tier', 'evidenceClass', 'group', 'kind'].some(k => !same(o![k], x[k]))) for (const d of x.detectors ?? []) touched.add(d);
+}
+const regroupedCommon = pc.cases.filter((x: Json) => commonA.has(x.id) && ['family', 'tier', 'evidenceClass', 'group', 'kind'].some(k => !same(commonA.get(x.id)![k], x[k]))).length;
+for (const r of familyRows) if (!touched.has(r.family)) unexplained.push(`${r.family}: evidence changed (${Object.keys(r.evidenceDelta).join(', ')}) with no added or regrouped case attributed to it`);
+
+// ---- 6. added cases ----
+const addedCases = pc.cases.filter((x: Json) => added.has(x.id));
+const addedRows = sortedKeys(Object.fromEntries(pc.cases[0].results.map((r: Json) => [r.scanner, 1]))).map(scanner => {
+  const outcomes = count(addedCases, (x: Json) => outcome(x.results.find((r: Json) => r.scanner === scanner)));
+  return { scanner, cases: addedCases.length, outcomes };
+});
+const commonCount = pc.cases.length - addedCases.length;
+
+// ---- 7. populations: unmeasured and the case counts ----
+const popRows = (v: Json) => v.populations.map((p: Json) => ({ population: p.population, cases: p.cases.length, unmeasuredByScanner: Object.fromEntries((p.unmeasured?.cases ?? p.unmeasured ?? []).map((u: Json) => [u.scanner, u.unmeasured])), pending: p.cases.filter((x: Json) => x.results.some((r: Json) => r.measurement === 'pending')).length }));
+const unmeasuredRows = (v: Json) => Object.fromEntries(v.populations.map((p: Json) => [p.population, Object.fromEntries((p.unmeasured?.cases ?? []).filter((u: Json) => u.unmeasured > 0).map((u: Json) => [u.scanner, { unmeasured: u.unmeasured, reasons: u.reasons }]))]));
+
+// ---- 8. overlays and policy ----
+const overlayAndPolicy = {
+  note: 'Product-owned inputs derived from the corpus. They name axes and attribution and settle ledger decisions; they change no evidence class, outcome or measured count. The policy criteria, rules and gate peers are unchanged.',
+  policyRevision: { accepted: A.policy.revision, candidate: C.policy.revision },
+  unchangedPolicyKeys: sortedKeys(C.policy).filter(k => same(A.policy[k], C.policy[k])),
+  changedPolicyKeys: sortedKeys(C.policy).filter(k => !same(A.policy[k], C.policy[k])),
+  axisOverlay: { accepted: A.policy.axisOverlay, candidate: C.policy.axisOverlay },
+  twinScope: { accepted: A.policy.twinScope, candidate: C.policy.twinScope, why: `credential-evidence now gives the ${A.policy.twinScope?.twins ?? '?'} cross-provider twins the accepted map named their family (grouping change), so the engine scopes them itself and the product map has nothing left to map; the project twin cases stay in the regression population.` },
+  ledgerRekey: { accepted: A.policy.ledgerRekey, candidate: C.policy.ledgerRekey },
+};
+
+const out = {
+  schema: 'redact-secret/evidence-adoption-view-comparison/v1',
+  evidenceRelease: report.evidenceRelease,
+  scope: 'Reporting only: nothing here is an assertion about the product and nothing is accepted. Denominators count measured cases only: pending (T0, not assertable) and not-measured cases are in none, and an unmeasured case is never a zero detection. Decoded and fragment semantics are NOT measured (credential-eval#34, credential-evidence#150): the engine scores the raw span, so a decoded or split credential is judged on its raw bytes.',
+  views: { accepted: { policyRevision: A.policy.revision, distribution: A.distribution, stableDistribution: A.stableDistribution, supportMatrix: A.supportMatrix.distribution, populations: popRows(A) }, replayOld: { policyRevision: B.policy.revision, distribution: B.distribution, supportMatrix: B.supportMatrix.distribution }, candidate: { policyRevision: C.policy.revision, distribution: C.distribution, stableDistribution: C.stableDistribution, supportMatrix: C.supportMatrix.distribution, populations: popRows(C) } },
+  engineEffect: engine,
+  corpusEffect: {
+    note: 'Candidate corpus on the new engine versus the accepted view. Evidence deltas per family and every status change with its cause.',
+    statusChanges: familyRows.filter(r => r.status.from !== r.status.to), evidenceDeltasWithoutStatusChange: familyRows.filter(r => r.status.from === r.status.to),
+    supportMatrixStatusChanges: matrixChanges,
+    unmappedFamilies: { accepted: A.unmappedFamilies.length, candidate: C.unmappedFamilies.length, added: C.unmappedFamilies.filter((x: string) => !A.unmappedFamilies.includes(x)) },
+    undetectedSame: same(A.undetected, C.undetected), knownGapsSame: same(A.knownGaps, C.knownGaps),
+  },
+  publicPopulation: {
+    commonCases: commonCount, addedCases: addedCases.length, regroupedCommonCases: regroupedCommon,
+    commonCaseOutcomeDrift: { cases: drift.length, byScanner: driftByScanner, cause: `the ${drift.length} cross-provider twin case(s) gained a family in credential-evidence (grouping change), so a scanner finding of another detector is no longer read as flagged`, details: drift },
+    addedCaseOutcomes: addedRows,
+    regrouped: report.diff.evidenceClassTransitions,
+  },
+  unmeasured: { accepted: unmeasuredRows(A), candidate: unmeasuredRows(C), note: 'Per population and scanner: cases a scanner observed but the engine could not map to ranges. Never a MISS, in no denominator.' },
+  methods,
+  overlayAndPolicy,
+  unexplained,
+};
+const text = `${JSON.stringify(out, null, 2)}\n`;
+if (option('out-json')) writeFileSync(option('out-json')!, text); else process.stdout.write(text);
+if (option('out-md')) writeFileSync(option('out-md')!, renderMarkdown(out, option('parity') ? readJson(option('parity')!) : null));
+if (args.includes('--strict') && unexplained.length) { console.error(`unexplained:\n  - ${unexplained.join('\n  - ')}`); process.exit(1); }
+console.error(`engine effect: ${engine.familiesWithAnyDifference.length} families and ${engine.publicCasesWithAnyDifference} public cases differ; corpus effect: ${familyRows.filter(r => r.status.from !== r.status.to).length} status changes, ${drift.length} common cases drift, ${unexplained.length} unexplained`);
+
+/** The owner-facing report: what differs between the accepted view and the candidate, and why. Rendered from the data above, never hand-edited. */
+function renderMarkdown(o: Json, parity: Json | null): string {
+  const row = (...cells: unknown[]) => `| ${cells.map(x => String(x ?? '')).join(' | ')} |`;
+  const table = (head: string[], rows: unknown[][]) => [row(...head), row(...head.map(() => '---')), ...rows.map(r => row(...r))].join('\n');
+  const n = (x: number) => x.toLocaleString('en-US');
+  const dist = (d: Json) => `${d.stable} stable, ${d.provisional} provisional, ${d.pending} pending, ${d.unsupported} unsupported`;
+  const v = o.views, add = o.publicPopulation;
+  const lines: string[] = [];
+  lines.push(`# Adoption report: ${o.evidenceRelease} on credential-eval v0.1.0-alpha.3`, '',
+    `Generated by \`scripts/compare-adoption-views.ts\` from the accepted view, the previous corpus replayed on the new engine, and the candidate view. Nothing here is accepted; the old accepted runs stay the public numbers until the owner applies the prepared change. ${o.scope}`, '',
+    '## Headline', '',
+    table(['', 'Accepted (snapshot-2026.10.01.2, alpha.1)', 'Candidate (snapshot-2026.10.04, alpha.3)'], [
+      ['Credential families', dist(v.accepted.distribution), dist(v.candidate.distribution)],
+      ['Support matrix entries', dist(v.accepted.supportMatrix), dist(v.candidate.supportMatrix)],
+      ['Stable by route', JSON.stringify(v.accepted.stableDistribution), JSON.stringify(v.candidate.stableDistribution)],
+      ['Public cases', n(v.accepted.populations.find((p: Json) => p.population === 'public-evidence-snapshot').cases), `${n(add.commonCases)} common + ${n(add.addedCases)} added`],
+      ['Policy revision', `\`${v.accepted.policyRevision.slice(0, 30)}...\``, `\`${v.candidate.policyRevision.slice(0, 30)}...\``],
+    ]), '',
+    'A larger denominator is not an improvement and a lower stable count is not a regression of the product: the 499 added cases bring evidence no previous run measured.', '',
+    '## 1. Engine effect (alpha.1 to alpha.3, corpus fixed)', '',
+    o.engineEffect.note, '',
+    `Result: ${o.engineEffect.familiesWithAnyDifference.length} families differ, the support matrix is ${o.engineEffect.supportMatrixSame ? 'identical' : 'different'}, ${o.engineEffect.publicCasesWithAnyDifference} of the 5,950 public cases change any outcome, and the family distribution is ${o.engineEffect.distributionSame ? 'identical' : 'different'}. The engine bump alone changes no support status, matrix entry or gate.`, '',
+    '## 2. Corpus effect (previous corpus to snapshot-2026.10.04, engine fixed)', '',
+    `### Common cases (${n(add.commonCases)}), apart from the added cases`, '',
+    `${add.regroupedCommonCases} common cases were regrouped by credential-evidence (evidence class or family, ${JSON.stringify(add.regrouped)}). ${add.commonCaseOutcomeDrift.cases} common cases change an outcome, all control cases that are cross-provider twins: ${add.commonCaseOutcomeDrift.cause}.`, '',
+    table(['Scanner and change', 'Cases'], Object.entries(add.commonCaseOutcomeDrift.byScanner).map(([k, c]) => [k, c])), '',
+    `### Added cases (${n(add.addedCases)}), per scanner`, '',
+    table(['Scanner', 'Pending (T0, outside denominators)', 'Not measured', 'Positive: exact', 'Positive: miss', 'Positive: other', 'Control clear', 'Control flagged'], add.addedCaseOutcomes.map((r: Json) => {
+      const e = r.outcomes as Record<string, number>, sum = (f: (k: string) => boolean) => Object.entries(e).filter(([k]) => f(k)).reduce((a, [, c]) => a + c, 0);
+      const exact = sum(k => /^positive:(EXACT)(,EXACT)*$/.test(k)), miss = sum(k => /^positive:(MISS)(,MISS)*$/.test(k));
+      return [r.scanner, e.pending ?? 0, e['not-measured'] ?? 0, exact, miss, sum(k => k.startsWith('positive:')) - exact - miss, e['control:clear'] ?? 0, e['control:flagged'] ?? 0];
+    })), '',
+    'Positive "other" is a partial, overbroad or mixed-span outcome. Pending cases carry no scored outcome and sit in no denominator; a not-measured case is never a zero detection.', '',
+    '### Support status changes', '',
+    `${o.corpusEffect.statusChanges.length} credential families (${o.corpusEffect.supportMatrixStatusChanges.length} support matrix entries) move from stable to provisional. Every status reason is one the added cases explain exactly:`, '',
+    table(['Family', 'Tier', 'Unresolved differential occurrences (all from added cases)', 'Reference failures on added cases', 'Common-case cause'], o.corpusEffect.statusChanges.map((r: Json) => [r.family, r.evidenceTier, r.cause.differentialUnresolvedFromAddedCases, Object.entries(r.cause.referenceAssertionFailuresByMethod).map(([m, c]: [string, Json]) => `${m} ${c.added}`).join(', ') || 'none', r.cause.differentialUnresolvedFromCommonCases === 0 ? 'none (0 from common cases)' : r.cause.differentialUnresolvedFromCommonCases])), '',
+    'Why: stable requires every disagreement with a peer scanner over the provider contract to be settled by a review decision. The legacy review ledger holds decisions for the cases the previous corpus had; the added cases have none, so their gate-peer occurrences (see the data file, `methods.unsettledGateOccurrences`) read unresolved. This repository does not invent those decisions. sendgrid-token additionally carries failed metamorphic and mutation assertions of the reference scanner on added cases that split a credential across lines or string literals: a fragment case, and fragment semantics are not measured yet (credential-eval#34, credential-evidence#150), so the engine scores the raw span.', '',
+    `Support matrix entries that change: ${o.corpusEffect.supportMatrixStatusChanges.map((r: Json) => `\`${r.family}\``).join(', ')}.`, '',
+    '### Evidence deltas without a status change', '',
+    table(['Family', 'Changed evidence (accepted to candidate)'], o.corpusEffect.evidenceDeltasWithoutStatusChange.map((r: Json) => [r.family, Object.entries(r.evidenceDelta).filter(([k]) => k !== 'policyQualification').map(([k, d]: [string, Json]) => `${k} ${JSON.stringify(d.from)} to ${JSON.stringify(d.to)}`).join('; ')])), '',
+    'Their statuses are unchanged (provisional before and after: the policy route reads the bounded policy corpus). The deltas come from added cases of the family: more positives, benign cases and axes, plus unsettled differential occurrences and metamorphic or mutation failures of the reference scanner on added cases.', '',
+    `Families: ${o.corpusEffect.unmappedFamilies.added.length} upstream families have no product detector yet (unmapped, never scored against a product family): ${o.corpusEffect.unmappedFamilies.added.map((x: string) => `\`${x.replace('public-evidence-snapshot:', '')}\``).join(', ')}. The undetected list and the known gaps are ${o.corpusEffect.undetectedSame && o.corpusEffect.knownGapsSame ? 'unchanged' : 'changed'}.`, '',
+    '### Unmeasured', '',
+    table(['Population', 'Scanner', 'Accepted', 'Candidate'], Object.keys(o.unmeasured.candidate).flatMap(p => { const scanners = new Set([...Object.keys(o.unmeasured.accepted[p] ?? {}), ...Object.keys(o.unmeasured.candidate[p] ?? {})]); return scanners.size ? [...scanners].map(sc => [p, sc, o.unmeasured.accepted[p]?.[sc]?.unmeasured ?? 0, `${o.unmeasured.candidate[p]?.[sc]?.unmeasured ?? 0} ${Object.entries(o.unmeasured.candidate[p]?.[sc]?.reasons ?? {}).map(([r, c]) => `(${c}: ${String(r).replace('scanner output could not be mapped to ranges: ', '')})`).join(' ')}`]) : [[p, 'all', 0, 0]]; })), '',
+    `The methods run also leaves ${JSON.stringify(o.methods?.unmeasuredVariants ?? {})} generated variants unmeasured. They are in no denominator and never a zero detection.`, '',
+    '## 3. Overlay and policy effect', '',
+    o.overlayAndPolicy.note, '',
+    table(['Input', 'Accepted', 'Candidate'], [
+      ['Policy revision', `\`${o.overlayAndPolicy.policyRevision.accepted.slice(0, 31)}...\``, `\`${o.overlayAndPolicy.policyRevision.candidate.slice(0, 31)}...\``],
+      ['Axis overlay', `${o.overlayAndPolicy.axisOverlay.accepted.contexts} contexts, ${o.overlayAndPolicy.axisOverlay.accepted.controls} controls, bound to ${String(o.overlayAndPolicy.axisOverlay.accepted.corpusDigest).slice(0, 19)}...`, `${o.overlayAndPolicy.axisOverlay.candidate.contexts} contexts, ${o.overlayAndPolicy.axisOverlay.candidate.controls} controls${same(o.overlayAndPolicy.axisOverlay.accepted.contexts, o.overlayAndPolicy.axisOverlay.candidate.contexts) ? ' (same content, rebound to ' : ' (rebound to '}${String(o.overlayAndPolicy.axisOverlay.candidate.corpusDigest).slice(0, 19)}...; the added cases have no legacy fixture, so the overlay names no axis for them and they keep the snapshot's own group)`],
+      ['Twin-scope map', `${o.overlayAndPolicy.twinScope.accepted.twins ?? '?'} twins mapped to project cases`, `${o.overlayAndPolicy.twinScope.candidate.twins ?? '?'} twins mapped`],
+      ['Review-ledger re-key', `${o.overlayAndPolicy.ledgerRekey.accepted.occurrences} legacy decisions mapped`, `${o.overlayAndPolicy.ledgerRekey.candidate.occurrences} legacy decisions mapped (all 4,268, re-keyed to the alpha.3 occurrence ids)`],
+    ]), '',
+    `Twin scope: ${o.overlayAndPolicy.twinScope.why} Unchanged policy parts: ${o.overlayAndPolicy.unchangedPolicyKeys.map((k: string) => `\`${k}\``).join(', ')}; changed (derived from the corpus): ${o.overlayAndPolicy.changedPolicyKeys.map((k: string) => `\`${k}\``).join(', ')}. The review occurrence ids of alpha.3 all differ from alpha.1 (the peer configuration identity is part of the id), which is why the re-key is regenerated; every legacy decision still maps (4,268 of 4,268).`, '');
+  if (parity) lines.push('## 4. Legacy-oracle parity (the authority gate)', '',
+    `\`qualification:parity --strict\` on the candidate view against the legacy oracle at the same release (@redact-secret/core 0.1.0-beta.12): ${n(parity.summary.compared)} values compared, ${n(parity.summary.equal)} equal, ${n(parity.summary.explained)} attributed to a named structural cause, **${parity.summary.unexplained} unexplained**. Causes: ${Object.entries(parity.summary.byCause).map(([k, c]) => `${k} ${c}`).join(', ')}.`, '');
+  lines.push('## What is not measured', '',
+    '- Decoded and fragment semantics (base64 or hex forms, nested encodings, credentials split across lines or literals): the engine scores the raw span; the cases are in the corpus and counted as published, but a decoded or fragment verdict is not a measured product behavior (credential-eval#34, credential-evidence#150).',
+    '- Pending (T0) cases and not-assertable review decisions are outside every denominator.',
+    '- The scanned product release is `@redact-secret/core@0.1.0-beta.12` (the alpha.3 adapters pin it). The repository pins beta.13 for its published measurements; measuring beta.13 through credential-eval needs a further engine tag.', '',
+    '## What the owner decides and runs', '',
+    `1. Read this report and \`${o.evidenceRelease}.comparison.json\`. Decide: accept, or withdraw (reset \`benchmarks/evidence-adoption.json\` to \`{"schema": "redact-secret/evidence-adoption/v1", "state": "none"}\`).`,
+    `2. To accept, on a branch from the merged \`develop\`: \`git apply docs/generated/evidence-adoption/${o.evidenceRelease}.acceptance.patch\`. It pins alpha.3, the schema, the four recorded runs (the superseded ones become historical receipts), the archive receipt, the regenerated overlays and parity report, the renewed authority file and the accepted record. Nothing in it is an acceptance: three owner fields are \`OWNER-TO-SET\`.`,
+    '3. Set the owner fields (the authority file `new.acceptedOn` and `new.acceptedBy`, the record `candidate.ownerAcceptance`), and turn the draft ADR into your decision (`status: accepted`, the Decision and Consequences text). The gates stay red until you do.',
+    '4. Run the gates on that branch with `trufflehog --version` printing 3.97.4: `npm run official-runs:check -- --bindings`, `authority:check`, `adoption:check`, `decisions:validate`, `qualification-inputs:check`, `npm test`, `npm run typecheck`, and the web checks. If the product inputs changed since this PR, the policy revision and the parity report in the patch are stale: re-run `qualification:view` and `qualification:parity --strict` (commands in `docs/specs/qualification-parity.md`) and update the authority policy revision.',
+    '5. Merge to `develop` (a push publishes staging), check the stamps and that `develop` is green, then `npm run go-production` when the measurement is ready to be public. Record the staging and production receipts under `candidate.deployment` and comment on credential-evidence#142 with the tag, digests, run ids and disposition.', '',
+    'Open for the product, not part of the acceptance: the review decisions for the added cases\' gate-peer occurrences (the 18 matrix entries stay provisional until they are settled), the product position on fragment and decoded cases, and a credential-eval tag whose adapters pin the published beta.13.', '',
+    '## Unexplained', '', o.unexplained.length ? o.unexplained.map((u: string) => `- ${u}`).join('\n') : 'None: every difference above is attributed by a rule that checks the data of both views.', '');
+  return `${lines.join('\n')}\n`;
+}

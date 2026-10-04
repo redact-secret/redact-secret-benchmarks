@@ -24,7 +24,8 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const MAX_ARTIFACT_BYTES = 512 * 1024 * 1024;
+// The alpha.3 methods artifact is 769 MB (credential-eval v0.1.0-alpha.3, 35,322 variants per scanner); it is hashed from a stream, never loaded whole.
+const MAX_ARTIFACT_BYTES = 1024 * 1024 * 1024;
 const DIGEST = /^sha256:[a-f0-9]{64}$/;
 
 /** What the archive must hold: one file per canonical run of the platform, at the digest the registry records. */

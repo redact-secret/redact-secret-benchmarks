@@ -125,6 +125,21 @@ test('the adoption record never carries a fabricated acceptance and a candidate 
   assert.match(evidenceAdoptionProblems(accepted, { pin, exists }).join(), /active pin/);
 });
 
+test('a prepared acceptance is checked for its files, its digest and for never filling an owner field (#680)', () => {
+  const pin = inputs.populations.find(p => p.id === 'public-evidence-snapshot').pin;
+  const patch = '+    "acceptedBy": "OWNER-TO-SET",\n+    "acceptedOn": "OWNER-TO-SET",\n';
+  const digest = createHash('sha256').update(patch).digest('hex');
+  const record = candidateRecord({ tag: candidate.evidenceRelease, manifest: { sourceRevision: { commit: candidate.sourceRevision } }, manifestDigest: candidate.manifestDigest, snapshotIdentity: { corpus_digest: candidate.snapshotDigest, evidence_schema: candidate.evidenceSchema, revision: candidate.evidenceRevision }, key: 'f'.repeat(64), compat: { compatible: true, cases: 1 }, diff: { cases: {} }, registry, previous: { evidenceRelease: pin.evidenceRelease, manifestDigest: pin.manifestDigest } });
+  record.candidate.acceptance = { report: 'r.md', comparison: 'c.json', patch: 'p.patch', patchDigestFile: 'p.sha' };
+  const files = { 'p.patch': patch, 'p.sha': `${digest}  p.patch\n` };
+  const run = (over = {}) => evidenceAdoptionProblems(record, { pin, exists: () => true, read: path => ({ ...files, ...over })[path] });
+  assert.deepEqual(run(), []);
+  assert.match(run({ 'p.sha': `${'0'.repeat(64)}  p.patch\n` }).join(), /records 0{64}/);
+  const filled = '+    "acceptedBy": "someone",\n';
+  assert.match(run({ 'p.patch': filled, 'p.sha': `${createHash('sha256').update(filled).digest('hex')}  p.patch\n` }).join(), /fills an owner field/);
+  assert.match(evidenceAdoptionProblems(record, { pin, exists: p => p !== 'p.patch', read: () => '' }).join(), /candidate\.acceptance\.patch p\.patch does not exist/);
+});
+
 test('the adoption workflow is dispatch-only, least-privilege, and opens a pull request only after a passing preflight', async () => {
   const raw = await text('.github/workflows/adopt-evidence-snapshot.yml');
   const wf = YAML.parse(raw);

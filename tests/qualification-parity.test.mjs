@@ -334,6 +334,32 @@ test('a differential count is a review-occurrence-identity difference only when 
   assert.ok(CAUSES.some(c => c.id === 'review-occurrence-identity'));
 });
 
+test('a methods-run residual is canonical-evidence-membership only when the cases with no legacy counterpart show it exactly (#680)', () => {
+  const reasons = ['differential.unresolvedContractDisagreements: 4 > 0 — text', 'metamorphic.criticalFailures: 3 > 0 — text', 'mutation.unresolvedCritical: 1 > 0 — text'];
+  const evidenceOver = { differentialUnresolvedContractDisagreements: 4, metamorphicCriticalFailures: 3, mutationUnresolvedCritical: 1 };
+  const run = review => compareFamilies([legacy()], [next('fam-a', {}, evidenceOver, { value: 'provisional', qualificationProfile: null, reasons })], { ...options, reviewByFamily: review });
+  const exact = run({ 'fam-a': { occurrences: 9, inLedger: 5, byPeer: {}, unsettledUnjoined: 4, failuresUnjoined: { metamorphic: 3, mutation: 1 } } });
+  for (const field of ['differentialUnresolvedContractDisagreements', 'metamorphicCriticalFailures', 'mutationUnresolvedCritical']) assert.equal(diffs(exact.evidence, field)[0].cause, 'canonical-evidence-membership', field);
+  assert.deepEqual(exact.statusRows[0].causes, ['canonical-evidence-membership']);
+  assert.equal(exact.statusRows[0].verdict, 'explained');
+  // One occurrence or failure more or less than the residual is not this cause, and the status stays held by an unattributed reason.
+  const off = run({ 'fam-a': { occurrences: 9, inLedger: 5, byPeer: {}, unsettledUnjoined: 3, failuresUnjoined: { metamorphic: 3, mutation: 2 } } });
+  assert.equal(diffs(off.evidence, 'differentialUnresolvedContractDisagreements')[0].verdict, 'unexplained');
+  assert.equal(diffs(off.evidence, 'mutationUnresolvedCritical')[0].verdict, 'unexplained');
+  assert.equal(off.statusRows[0].verdict, 'unexplained');
+  assert.equal(causeOfReason('metamorphic.criticalFailures', undefined, { method: { metamorphic: 'canonical-evidence-membership' } }), 'canonical-evidence-membership');
+  assert.equal(causeOfReason('mutation.unresolvedCritical', undefined, {}), undefined);
+});
+
+test('review: occurrences of cases the legacy path never had explain the occurrence residual of a mapped peer only when they are exactly the residual (#680)', () => {
+  const legacySide = { a: { occurrences: 4, settled: 3 } };
+  const nextSide = n => ({ a: { occurrences: n, settled: 3 } });
+  const exact = compareReview(legacySide, nextSide(7), { differential: 4, mapped: 4 }, 4, { a: 3 });
+  assert.equal(exact.differences.find(d => d.subject === 'a' && d.field === 'occurrences').cause, 'canonical-evidence-membership');
+  assert.equal(compareReview(legacySide, nextSide(7), { differential: 4, mapped: 4 }, 4, { a: 2 }).differences.find(d => d.subject === 'a' && d.field === 'occurrences').verdict, 'unexplained');
+  assert.equal(compareReview(legacySide, nextSide(7), { differential: 4, mapped: 4 }, 4).differences.find(d => d.subject === 'a' && d.field === 'occurrences').verdict, 'unexplained');
+});
+
 test('a twin-failure difference is attributed to the twin scope only when the matched twins show it exactly, and holds the status through its cause', () => {
   const held = { status: { value: 'provisional', reasons: ['twinFailures: 2 > 0 — A twin failure is a recorded false negative'], evidenceTier: 'T1', evidenceBasis: 'provider-documented', qualificationProfile: null, methodsNotRun: [] } };
   const adjust = amount => ({ ...options, adjustmentsByFamily: { 'fam-a': { 'twin-scope-vocabulary': { twinFailures: amount } } } });

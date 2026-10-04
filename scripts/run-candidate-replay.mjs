@@ -19,6 +19,7 @@ import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdir
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { buildReport } from './candidate-replay-pipeline.mjs';
 import { fetchArchive, listKept, pack, sha256File } from './replay-archive.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -76,7 +77,6 @@ function collect(id, runId) {
   try {
     const into = path.join(scratch, 'replay');
     for (const population of ['public-evidence-snapshot', 'regression-corpus', 'policy-corpus']) gh(['run', 'download', runId, '-R', REPOSITORY, '-n', `candidate-run-${population}`, '-D', path.join(into, population)]);
-    gh(['run', 'download', runId, '-R', REPOSITORY, '-n', 'candidate-replay-report', '-D', path.join(scratch, 'report')]);
     // Every artifact must say what it is: an exploratory, internal measurement of this candidate's registered bytes.
     const registry = readRegistry(), candidate = registry.candidates.find(c => c.id === id);
     for (const rel of ['public-evidence-snapshot', 'public-evidence-snapshot/methods', 'regression-corpus', 'policy-corpus']) {
@@ -84,6 +84,11 @@ function collect(id, runId) {
       if (record.runClass !== 'exploratory' || record.publication !== 'internal' || record.productCandidate?.id !== id || record.productCandidate?.commit !== candidate.product.commit) throw new Error(`${rel}/run-record.json is not an exploratory, internal run of candidate ${id}`);
       if (record.determinism?.semanticDigestsEqual !== true) throw new Error(`${rel}: the repeat runs did not agree`);
     }
+    // The report is rebuilt from the downloaded artifacts by the code the workflow's report job runs, so the committed data never depends on a CI-only step.
+    const adoption = JSON.parse(readFileSync(path.join(root, 'benchmarks/evidence-adoption.json'), 'utf8')).engineCandidate;
+    fetchArchive({ release: adoption.replay.archive.release, sha256: adoption.replay.archive.sha256, out: path.join(scratch, 'control'), repository: REPOSITORY });
+    run('node', ['scripts/fetch-pinned-public-snapshot.mjs', '--out', path.join(scratch, 'snapshot')], { stdio: 'inherit' });
+    buildReport({ control: path.join(scratch, 'control'), candidate: into, id, snapshot: path.join(scratch, 'snapshot/credential-eval-corpus-snapshot.json'), out: path.join(scratch, 'report') });
     const effect = JSON.parse(readFileSync(path.join(scratch, 'report/candidate-effect.json'), 'utf8'));
     // Idempotent: a release already made for this run (by an earlier collect) is verified and reused, never replaced.
     const tag = `candidate-runs-${runId}`;

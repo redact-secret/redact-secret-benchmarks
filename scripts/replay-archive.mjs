@@ -18,6 +18,8 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const KEEP = /(^|\/)(artifact\.json|run-record\.json|product-candidate-receipt\.json)$/;
+// macOS tar adds AppleDouble `._*` companions: never data, never extracted, never trusted.
+const APPLE_DOUBLE = /(^|\/)\._[^/]*$/;
 export const sha256File = file => `sha256:${createHash('sha256').update(readFileSync(file)).digest('hex')}`;
 
 export function listKept(dir) {
@@ -43,7 +45,7 @@ export function pack({ input, out, tag, notes }) {
     for (const f of files) { mkdirSync(path.dirname(path.join(stage, f)), { recursive: true }); copyFileSync(path.join(input, f), path.join(stage, f)); }
     const name = `${tag ?? 'replay'}.tar.gz`;
     const tarball = path.join(out, name);
-    execFileSync('tar', ['-czf', tarball, '-C', stage, ...files]);
+    execFileSync('tar', ['-czf', tarball, '-C', stage, ...files], { env: { ...process.env, COPYFILE_DISABLE: '1' } });
     const digest = sha256File(tarball);
     writeFileSync(`${tarball}.sha256`, `${digest.replace('sha256:', '')}  ${name}\n`);
     if (tag) execFileSync('gh', ['release', 'create', tag, tarball, `${tarball}.sha256`, '--title', tag, '--notes', notes ?? `Replay artifacts ${tag}; sha256 ${digest}. Never accepted runs and never public evidence.`], { stdio: 'inherit' });
@@ -66,11 +68,11 @@ export function fetchArchive({ release, sha256, out, repository }) {
 
 export function extractVerified(tarball, out) {
   const names = execFileSync('tar', ['-tzf', tarball], { encoding: 'utf8' }).split('\n').filter(Boolean);
-  for (const n of names) if (n.startsWith('/') || n.split('/').includes('..') || !(KEEP.test(n) || n.endsWith('/'))) throw new Error(`unexpected path in the archive: ${n}`);
+  for (const n of names) if (n.startsWith('/') || n.split('/').includes('..') || !(KEEP.test(n) || n.endsWith('/') || APPLE_DOUBLE.test(n))) throw new Error(`unexpected path in the archive: ${n}`);
   const listing = execFileSync('tar', ['-tvzf', tarball], { encoding: 'utf8' }).split('\n').filter(Boolean);
   if (listing.some(l => /^[lh]/.test(l))) throw new Error('the archive holds a link');
   mkdirSync(out, { recursive: true });
-  execFileSync('tar', ['-xzf', tarball, '-C', out]);
+  execFileSync('tar', ['-xzf', tarball, '-C', out, '--exclude', '._*']);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {

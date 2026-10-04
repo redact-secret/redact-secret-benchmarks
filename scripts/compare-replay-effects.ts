@@ -37,7 +37,7 @@ const IDENTITY = [
   /^\/manifest\/(run_class|publication)$/, /^\/manifest\/scanners\/\*\/build$/, // an exploratory product candidate against an official control (#698)
   /^\/review_queue\/\*\/(id|reference\/version|reference\/configurationHash|reference\/configuration_hash)$/
 ];
-const OUTCOME = [/^\/scanners\/\*\/aggregates\//, /^\/scanners\/\*\/cases\/\*\/(actual|measurement)(\/|$)/, /^\/scanners\/\*\/assertions\/\*\//, /^\/scanners\/\*\/(unmeasured_cases|findings)(\/|$)/, /^\/scanners\/\*\/status$/, /^\/review_queue\/\*\//, /^\/variants\//, /^\/comparisons\//];
+const OUTCOME = [/^\/scanners\/\*\/aggregates\//, /^\/scanners\/\*\/cases\/\*\/(actual|measurement)(\/|$)/, /^\/scanners\/\*\/assertions\/\*\//, /^\/scanners\/\*\/(unmeasured_cases|findings)(\/|$)/, /^\/scanners\/\*\/status$/, /^\/review_queue\/\*(\(added\)|\(removed\)|\/)/, /^\/variants\//, /^\/comparisons\//];
 const norm = (p: string) => p.replace(/\/\d+(?=\/|$)/g, '/*');
 
 interface Diff { path: string; norm: string; case?: string }

@@ -122,7 +122,12 @@ if (existsSync(ma) && existsSync(mb)) {
   const ra = rq(A), rb = rq(B);
   const added = [...rb].filter(k => !ra.has(k)), removed = [...ra].filter(k => !rb.has(k));
   const failingNow = [...assertionsB.values()].filter(a => a.status !== 'pass');
-  worsened ||= regressed.length > 0 || added.length > 0;
+  // A review occurrence that appears on a case the candidate fixed follows that fix (the reference now matches the evidence, so a peer that differs is the peer's divergence);
+  // one that appears anywhere else is a change nothing explains and counts as worse until adjudicated.
+  const seedOf = (k: string) => k.split('|')[0].replace(/--(differential|metamorphic|mutation)(--.*)?$/, '');
+  const fixedSet = new Set<string>(result['public-evidence-snapshot']?.fixed ?? []);
+  const addedOnFixed = added.filter(k => fixedSet.has(seedOf(k))), addedElsewhere = added.filter(k => !fixedSet.has(seedOf(k)));
+  worsened ||= regressed.length > 0 || addedElsewhere.length > 0;
   const recA = recordOf(control, 'public-evidence-snapshot/methods'), recB = recordOf(candidateDir, 'public-evidence-snapshot/methods');
   const casesA = new Map(product(A).cases.map(c => [c.case_id, c]));
   const caseChanges = product(B).cases.filter(c => !same({ a: casesA.get(c.case_id)?.actual, m: casesA.get(c.case_id)?.measurement }, { a: c.actual, m: c.measurement })).map(c => ({
@@ -131,7 +136,7 @@ if (existsSync(ma) && existsSync(mb)) {
   worsened ||= caseChanges.some(c => c.direction === 'regressed');
   result['methods'] = {
     assertions: { control: assertionsA.size, candidate: assertionsB.size, fixed: fixed.length, regressed: regressed.length, stillFailing: failingNow.length, fixedKeys: fixed.slice(0, 500), regressedKeys: regressed.slice(0, 500) },
-    reviewOccurrences: { control: ra.size, candidate: rb.size, added, removed },
+    reviewOccurrences: { control: ra.size, candidate: rb.size, added, removed, addedOnFixedCases: addedOnFixed.length, addedElsewhere: addedElsewhere.length },
     variantCases: { changed: caseChanges.length, fixed: caseChanges.filter(c => c.direction === 'fixed').length, regressed: caseChanges.filter(c => c.direction === 'regressed').length, changes: caseChanges.slice(0, 500) },
     repeat: { control: recA?.determinism ?? null, candidate: recB?.determinism ?? null, semanticDigest: { control: recA?.artifact?.semanticDigest ?? null, candidate: recB?.artifact?.semanticDigest ?? null } },
   };
@@ -162,7 +167,7 @@ const lines = [
 ];
 if (result.methods && !result.methods.skipped) {
   const x = result.methods;
-  lines.push('## Methods run (floors population)', '', `Assertions of the product: control ${x.assertions.control}, candidate ${x.assertions.candidate}; fixed ${x.assertions.fixed}, regressed ${x.assertions.regressed}, still failing ${x.assertions.stillFailing}. Review occurrences: control ${x.reviewOccurrences.control}, candidate ${x.reviewOccurrences.candidate} (added ${x.reviewOccurrences.added.length}, removed ${x.reviewOccurrences.removed.length}). Generated variant cases changed: ${x.variantCases.changed} (fixed ${x.variantCases.fixed}, regressed ${x.variantCases.regressed}). Repeat runs equal: ${x.repeat.control?.semanticDigestsEqual ?? '?'} / ${x.repeat.candidate?.semanticDigestsEqual ?? '?'}.`, '');
+  lines.push('## Methods run (floors population)', '', `Assertions of the product: control ${x.assertions.control}, candidate ${x.assertions.candidate}; fixed ${x.assertions.fixed}, regressed ${x.assertions.regressed}, still failing ${x.assertions.stillFailing}. Review occurrences: control ${x.reviewOccurrences.control}, candidate ${x.reviewOccurrences.candidate} (added ${x.reviewOccurrences.added.length}, of which ${x.reviewOccurrences.addedOnFixedCases} on cases the candidate fixed and ${x.reviewOccurrences.addedElsewhere} elsewhere; removed ${x.reviewOccurrences.removed.length}). Generated variant cases changed: ${x.variantCases.changed} (fixed ${x.variantCases.fixed}, regressed ${x.variantCases.regressed}). Repeat runs equal: ${x.repeat.control?.semanticDigestsEqual ?? '?'} / ${x.repeat.candidate?.semanticDigestsEqual ?? '?'}.`, '');
 }
 for (const p of POPULATIONS) {
   const r = result[p];

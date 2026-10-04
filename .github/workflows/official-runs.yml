@@ -238,20 +238,10 @@ jobs:
           node scripts/replay-archive.mjs fetch --release "$release" --sha256 "$digest" --out control-in
       - name: Fetch the pinned public snapshot (the case inputs of the sanitized view)
         run: node scripts/fetch-pinned-public-snapshot.mjs --out snapshot-in
-      - name: Every difference is an identity field or a per-case outcome (strict), keyed by semantic ids
+      - name: The effect report (strict comparison keyed by semantic ids; findings, sanitized views and repeat-run agreement of both sides) and the triage rules with the candidate's verified fixes
         run: >
-          node --import tsx scripts/compare-replay-effects.ts --from control-in --to replay-in
-          --label "product effect: published control to unpublished candidate $CANDIDATE" --out report-out/effect.json --strict
-      - name: The effect report, with the findings, the sanitized view and the repeat-run agreement of both sides
-        run: >
-          node --import tsx scripts/candidate-replay-report.ts --control control-in --candidate replay-in --candidate-id "$CANDIDATE"
+          node scripts/candidate-replay-pipeline.mjs --control control-in --candidate replay-in --candidate-id "$CANDIDATE"
           --snapshot snapshot-in/credential-eval-corpus-snapshot.json --out report-out
-      - name: Apply the triage rules with the candidate's verified fixes
-        run: >
-          node --import tsx scripts/apply-triage-decisions.ts
-          --queue docs/generated/evidence-adoption/snapshot-2026.10.04.3.triage-queue.json
-          --candidate report-out/candidate-effect.json --open-core-issue https://github.com/redact-secret/redact-secret/issues/1203
-          --out-json report-out/triage.json --out-md report-out/triage.md
       - name: Summary
         run: |
           { echo "### Product candidate replay: ${CANDIDATE}"; cat report-out/candidate-effect.md; } >> "$GITHUB_STEP_SUMMARY"

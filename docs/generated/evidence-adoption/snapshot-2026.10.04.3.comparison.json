@@ -1,7 +1,7 @@
 {
   "schema": "redact-secret/evidence-adoption-view-comparison/v1",
   "evidenceRelease": "snapshot-2026.10.04.3",
-  "scope": "Reporting only: nothing here is an assertion about the product and nothing is accepted. Denominators count measured cases only: pending (T0, not assertable) and not-measured cases are in none, and an unmeasured case is never a zero detection. Decoded and fragment semantics are NOT measured (credential-eval#34, credential-evidence#150): the engine scores the raw span, so a decoded or split credential is judged on its raw bytes.",
+  "scope": "Reporting only: nothing here is an assertion about the product. Denominators count measured cases only: pending (T0, not assertable) and not-measured cases are in none, and an unmeasured case is never a zero detection. Representation capability follows the engine contract (credential-eval representation/1): a bounded, re-derivable base64 or hex finding (up to four layers) is mapped to the whole original encoded segment and scored by the unchanged lattice; a fragmented expected span is scored on its enclosing range, and there is no fragment-aware scoring; decoded findings in other codecs (percent-encoding, UTF-16, escaped Unicode) and any mapping the engine cannot re-derive are unmeasured, never a miss and in no denominator (credential-eval#34, credential-evidence#150).",
   "views": {
     "accepted": {
       "policyRevision": "rs-policy-1:sha256:d41e02b0c82f3ac5c1f7d038fb9321fec3adbd0611a313fc880bdf1b417658c3",
@@ -9355,5 +9355,33 @@
       "notInTheEvalSnapshot": 0
     }
   },
-  "unexplained": []
+  "unexplained": [],
+  "adoptionState": {
+    "state": "accepted",
+    "accepted": true,
+    "evidenceRelease": "snapshot-2026.10.04.3",
+    "engine": "v0.1.0-alpha.4",
+    "ownerAcceptance": {
+      "acceptedBy": "Milo Kang",
+      "acceptedOn": "2026-10-04",
+      "decision": "docs/decisions/2026-10-04-accept-snapshot-2026-10-04-3-on-credential-eval-alpha-4.md"
+    },
+    "replay": {
+      "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37202404479",
+      "archive": {
+        "release": "official-runs-37202404479",
+        "asset": "official-run-artifacts.tar.gz",
+        "sha256": "sha256:68b0b9b4aaeadb5582ead6a13325e616935bc5e603a1f8fdaa75cb08ebdd4221"
+      },
+      "benchmarkRevision": "9a22e6fd046ef98242987d3f727ae1e6d11df91e"
+    },
+    "deployment": {
+      "staging": null,
+      "production": null
+    },
+    "product": {
+      "measured": "@redact-secret/core@0.1.0-beta.12",
+      "note": "alpha.4 measured core 0.1.0-beta.12 (the adapters of the engine tag pin it). Any claim about a later core release (for example beta.13) needs the pinned replay of this identical snapshot against that release (#697); nothing here is evidence about it."
+    }
+  }
 }

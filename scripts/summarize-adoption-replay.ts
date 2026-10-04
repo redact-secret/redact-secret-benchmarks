@@ -11,6 +11,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { diffRunArtifacts } from './evidence-adoption.mjs';
+import { REPRESENTATION_CAPABILITY } from './adoption-report-state.mjs';
 import { readRunArtifact, unmeasuredByScanner, type RunArtifact } from '../benchmarks/qualification/run-artifact.ts';
 
 const arg = (name: string) => { const i = process.argv.indexOf(`--${name}`); if (i < 0) throw new Error(`--${name} is required`); return process.argv[i + 1]; };
@@ -32,7 +33,7 @@ const methodsSummary = (a: RunArtifact) => Object.fromEntries(a.scanners.map(s =
 
 report.replay = {
   state: 'compared',
-  scope: `The replay changes two things at once: the corpus (${report.evidenceRelease}) and the engine (credential-eval ${engineTo}; scanner versions and the configuration file are fixed, but a newer engine can add an opt-in key to the official configuration, which changes the config hash). They are reported apart: corpusEffect holds the engine fixed, engineEffect holds the corpus fixed. A larger denominator is not an improvement. Decoded and fragment semantics are NOT measured (credential-eval#34, credential-evidence#150); cases the engine could not map are unmeasured, never zero detections, and in no denominator.`,
+  scope: `The replay changes two things at once: the corpus (${report.evidenceRelease}) and the engine (credential-eval ${engineTo}; scanner versions and the configuration file are fixed, but a newer engine can add an opt-in key to the official configuration, which changes the config hash). They are reported apart: corpusEffect holds the engine fixed, engineEffect holds the corpus fixed. A larger denominator is not an improvement. ${REPRESENTATION_CAPABILITY}`,
   corpusEffect: { note: 'previous population versus candidate population, both on the new engine; common cases apart from added cases', scanners: diffRunArtifacts(oldReplay, newReplay, { addedIds }) },
   engineEffect: { note: 'previous population on the previous engine (accepted run) versus on the new engine; the same cases', scanners: diffRunArtifacts(accepted, oldReplay, { addedIds: [] }) },
   combined: { note: 'previous accepted run versus candidate replay: both effects together', scanners: diffRunArtifacts(accepted, newReplay, { addedIds }) },

@@ -27,6 +27,8 @@ export interface ScannerInput {
   runtime: PeerRuntime | undefined;
   /** Detectors the product registers (`benchmarks/detectors.json`), or `null` when the catalog could not be read. */
   productDetectors: number | null;
+  /** The product's own out-of-scope statements and the revision its detector count was read at (#622). */
+  productScope?: { outOfScope: string[]; readAt: string; detectors: { count: number; revision: string } | null };
 }
 
 const short = (digest: string): string => `${digest.slice(0, 12)}…`;
@@ -152,13 +154,13 @@ function whereFacts(source: ScannerSource, run: MeasuredRun | undefined, scanner
   return out;
 }
 
-function rulesFacts(id: string, profile: PeerProfile | undefined, productDetectors: number | null): ScannerFact[] {
+function rulesFacts(id: string, profile: PeerProfile | undefined, productDetectors: number | null, scope?: ScannerInput['productScope']): ScannerFact[] {
   if (profile) {
     return [fact('Rules', int(profile.ruleCount), {
       note: `rule file ${profile.ruleFileVersion}${profile.ruleFilePath ? `, ${profile.ruleFilePath}` : ''} · ${int(profile.mappedRules)} are mapped to a taxonomy family`,
     })];
   }
-  if (id === PRODUCT) return [fact('Registered detectors', productDetectors === null ? null : int(productDetectors), { note: 'benchmarks/detectors.json' })];
+  if (id === PRODUCT) return [fact('Registered detectors', productDetectors === null ? null : int(productDetectors), { note: scope?.detectors ? `benchmarks/detectors.json, read at redact-secret ${scope.detectors.revision.slice(0, 12)}` : 'benchmarks/detectors.json' })];
   return [fact('Rules', null)];
 }
 
@@ -192,7 +194,7 @@ function profileOf(source: ScannerSource, input: ScannerInput, scanner: RunScann
     { title: 'Install and pin', facts: installFacts(source, scanner) },
     { title: 'How it ran', facts: ranFacts(source, scanner, tool) },
     { title: 'Where it ran', facts: whereFacts(source, run, scanner, runtime) },
-    { title: 'Rules', facts: rulesFacts(source.id, profile, productDetectors) },
+    { title: 'Rules', facts: rulesFacts(source.id, profile, productDetectors, input.productScope) },
   ];
   return {
     id: source.id,
@@ -202,7 +204,7 @@ function profileOf(source: ScannerSource, input: ScannerInput, scanner: RunScann
     description: profile?.description ?? null,
     groups,
     command: args ? { summary: 'Exact arguments', label: `${name} arguments`, text: args } : null,
-    outOfScope: profile?.outOfScope ?? null,
+    outOfScope: profile?.outOfScope ?? (source.id === PRODUCT ? input.productScope?.outOfScope ?? null : null),
     compared: comparedOn(source.id, kind, run, runtime),
   };
 }

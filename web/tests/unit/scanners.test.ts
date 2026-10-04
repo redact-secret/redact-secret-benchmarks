@@ -119,6 +119,16 @@ describe('the scanner page resolver', () => {
     expect(fact(page, 'gamma', 'Configuration')?.value).toBeNull();
   });
 
+  test('the product shows its own out-of-scope statements and the revision its detector count was read at, and a peer never borrows them (#622)', () => {
+    const productScope = { outOfScope: ['Encoded carriers: not decoded.'], readAt: 'a'.repeat(40), detectors: { count: 110, revision: '66b492bdff5e6751fc6b5409266916346ed7c723' } };
+    const page = resolveScanners(input({ productScope }));
+    expect(page.profiles.find(p => p.id === 'redact-secret')?.outOfScope).toEqual(['Encoded carriers: not decoded.']);
+    expect(page.profiles.find(p => p.id === 'alpha')?.outOfScope).toEqual(['alpha is not run in one way.']);
+    expect(fact(page, 'redact-secret', 'Registered detectors')).toMatchObject({ value: '11', note: 'benchmarks/detectors.json, read at redact-secret 66b492bdff5e' });
+    // Without the statement the page keeps saying so, and says it did not record one.
+    expect(resolveScanners(input()).profiles.find(p => p.id === 'redact-secret')?.outOfScope).toBeNull();
+  });
+
   test('the mode note names published or candidate, and the build a candidate measured', () => {
     expect(resolveScanners(input()).modeNote).toMatchObject({ mode: 'published' });
     const candidate = resolveScanners(input({ run: run({ mode: 'candidate', candidate: { sourceCommit: '0123456789abcdef', declaredVersion: '9.9.10-rc.1' } }) }));

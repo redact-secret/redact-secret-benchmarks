@@ -82,3 +82,20 @@ test('every peer family the map targets is a taxonomy family, and the targeted s
   }
   assert.equal((await peerInventories()).gitleaks.length, committed.scanners.gitleaks.ruleCount);
 });
+
+test('the product scope statement is validated like the peer registry: no judgement words, a named product revision, bounded statements (#622)', async () => {
+  const { productScopeProblems } = await import('../benchmarks/lib/peer-rule-families.ts');
+  const { readFileSync } = await import('node:fs');
+  const committed = JSON.parse(readFileSync(new URL('../scanners/product-scope.json', import.meta.url), 'utf8'));
+  assert.deepEqual(productScopeProblems(committed), []);
+  const bad = structuredClone(committed);
+  bad.readAt.revision = 'main';
+  bad.outOfScope = ['Misses the best credentials.', ''];
+  bad.sources = ['https://github.com/redact-secret/redact-secret/blob/main/docs/x.md'];
+  const found = productScopeProblems(bad).join('\n');
+  assert.match(found, /40-character/);
+  assert.match(found, /words a judgement/);
+  assert.match(found, /empty or over 200/);
+  assert.match(found, /40-hex permalink/);
+  assert.deepEqual(productScopeProblems({ schemaVersion: 2 }), ['product-scope.json: schemaVersion must be 1']);
+});

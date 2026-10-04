@@ -183,8 +183,8 @@ test('the checked-in adoption report agrees with the structured adoption record 
   if (adoption.state === 'none') return;
   const c = adoption.candidate;
   const md = read(c.changeReport.replace(/\.json$/, '.md'));
-  assert.match(md, new RegExp(`state \`${adoption.state}\``));
-  assert.match(md, new RegExp(`credential-eval ${c.engine.tag.replace(/\./g, '\\.')}`));
+  assert.ok(md.includes(`state \`${adoption.state}\``));
+  assert.ok(md.includes(`credential-eval ${c.engine.tag}`));
   if (c.replay?.ciRun) assert.ok(md.includes(c.replay.ciRun), 'the report names the recorded replay run');
   if (adoption.state === 'accepted') {
     assert.doesNotMatch(md, /Nothing here is accepted|Accept this candidate/);
@@ -194,6 +194,6 @@ test('the checked-in adoption report agrees with the structured adoption record 
     assert.match(md, /Nothing here is accepted/);
   }
   // A deployment receipt is shown only when the record holds one; an absent receipt is reported as absent, never invented.
-  for (const environment of ['staging', 'production']) assert.equal(new RegExp(`${environment}: not recorded in the adoption record`).test(md), !c.deployment?.[environment]);
+  for (const environment of ['staging', 'production']) assert.equal(md.includes(`${environment}: not recorded in the adoption record`), !c.deployment?.[environment]);
   assert.match(md, /Maintainer-reviewed \(independent review pending\)/);
 });

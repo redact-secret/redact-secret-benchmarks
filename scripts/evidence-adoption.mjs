@@ -146,6 +146,69 @@ export function diffSnapshots(oldSnapshot, newSnapshot) {
   };
 }
 
+/**
+ * What the release says about representation (credential-eval representation contract 1; credential-evidence#150): the facts' own digest and counts from the
+ * manifest, and what the cases carry, by transformation operation, codec, fragment mechanism, input validity and decoded-span codec. Counts only, no case content;
+ * a snapshot without facts yields `{ present: false }`. These are the release's facts, not a measurement: whether the engine scores them is the replay's finding.
+ */
+export function representationSummary(snapshot, manifest) {
+  const contract = snapshot.identity?.representation;
+  if (!contract) return { present: false };
+  const bump = (m, k) => m.set(k, (m.get(k) ?? 0) + 1);
+  const ops = new Map(), codecs = new Map(), mechanisms = new Map(), validity = new Map(), decoded = new Map(), derivation = new Map();
+  let withFacts = 0, fragmentedSpans = 0, decodedSpans = 0;
+  for (const c of snapshot.cases) {
+    const r = c.representation;
+    if (r) {
+      withFacts++;
+      if (r.input_validity) bump(validity, typeof r.input_validity === 'string' ? r.input_validity : JSON.stringify(r.input_validity));
+      if (r.derivation?.kind) bump(derivation, r.derivation.kind);
+      const seen = new Set();
+      for (const step of r.transformation?.steps ?? []) {
+        seen.add(step.op);
+        if (step.codec) seen.add(`${step.op}:${step.codec}`);
+        if (step.op === 'fragment') bump(mechanisms, step.mechanism);
+      }
+      for (const k of seen) bump(k.includes(':') ? codecs : ops, k);
+    }
+    for (const e of c.expected ?? []) {
+      if (e.fragments?.length) fragmentedSpans++;
+      if (e.decoded) { decodedSpans++; for (const via of Array.isArray(e.decoded.via) ? e.decoded.via : [e.decoded.via]) bump(decoded, via?.codec ?? JSON.stringify(via)); }
+    }
+  }
+  const obj = m => Object.fromEntries([...m].sort(([a], [b]) => (a < b ? -1 : 1)));
+  return {
+    present: true, contract, factsDigest: manifest.evalExport?.representation?.facts_digest ?? null, manifestCounts: manifest.evalExport?.representation ?? null,
+    casesWithFacts: withFacts, derivation: obj(derivation), inputValidity: obj(validity), casesByTransformationOp: obj(ops), casesByEncodeCodec: obj(codecs), fragmentMechanisms: obj(mechanisms),
+    expectedSpansWithFragments: fragmentedSpans, expectedSpansWithDecoded: decodedSpans, decodedByCodec: obj(decoded),
+    notExported: { materialized: manifest.evalExport?.materialized ?? null, exported: manifest.evalExport?.exported ?? null, invalidUtf8: manifest.evalExport?.notExported ?? null, twinLineageNotExported: manifest.evalExport?.twinLineageNotExported?.total ?? null },
+  };
+}
+
+/**
+ * The release's review state (credential-evidence ADR 0020, solo-maintainer period): `maintainer-only` means finalized by the sole maintainer, never reviewed and never
+ * independent validation. The eval snapshot carries none of it; the manifest counts it and the records carry it per Case and Scenario (`lifecycle`). Fixtures of a
+ * maintainer-only Case or Scenario are named by id here; a release count this derivation does not reach is reported as unattributed, never guessed.
+ */
+export function reviewStateSummary(manifest, bundle, materialized) {
+  const state = manifest.reviewState ?? null;
+  if (!state) return { present: false };
+  const lifecycle = { case: new Set(), scenario: new Set() };
+  for (const r of bundle?.records ?? []) {
+    if (!r.path?.startsWith('records/') || !r.text) continue;
+    let j; try { j = JSON.parse(r.text); } catch { continue; }
+    if (j.lifecycle === 'maintainer-only' && lifecycle[j.kind]) lifecycle[j.kind].add(j.id);
+  }
+  const ids = [], byOutcome = {};
+  for (const f of materialized?.fixtures ?? []) {
+    const owner = f.target?.type === 'scenario' ? lifecycle.scenario.has(f.target.id) : lifecycle.case.has(f.case ?? f.target?.id);
+    if (!owner) continue;
+    ids.push(f.id); byOutcome[f.expected?.outcome ?? '(none)'] = (byOutcome[f.expected?.outcome ?? '(none)'] ?? 0) + 1;
+  }
+  const declared = state.maintainerOnly?.fixtures ?? null;
+  return { present: true, contract: state.contract, rule: state.rule, note: state.note, fixtures: state.fixtures, maintainerOnly: state.maintainerOnly, attributedFixtures: ids.length, attributedByOutcome: byOutcome, unattributedFixtures: declared === null ? null : declared - ids.length, maintainerOnlyFixtureIds: ids.sort() };
+}
+
 /** Per-case outcome signature in a RunArtifact scanner result: unmeasured and pending are their own values, never a zero detection. */
 export function outcomeSignature(result) {
   const m = result.measurement ?? {};
@@ -177,7 +240,8 @@ export function diffRunArtifacts(oldArtifact, newArtifact, { addedIds = [] } = {
 }
 
 /** Candidate record written by `prepare`. Owner acceptance is always null: only an owner-authored change may set it. */
-export function candidateRecord({ tag, manifest, manifestDigest, snapshotIdentity, key, compat, diff, registry, previous }) {
+export function candidateRecord({ tag, manifest, manifestDigest, snapshotIdentity, key, compat, diff, registry, previous, engine = registry.engine, supersededCandidate = null }) {
+  const engineChanged = engine.tag !== registry.engine.tag;
   return {
     schema: 'redact-secret/evidence-adoption/v1',
     state: 'candidate',
@@ -189,9 +253,11 @@ export function candidateRecord({ tag, manifest, manifestDigest, snapshotIdentit
       evidenceSchema: snapshotIdentity.evidence_schema,
       evidenceRevision: snapshotIdentity.revision,
       adoptionKey: `sha256:${key}`,
-      engine: { tag: registry.engine.tag, revision: registry.engine.revision },
+      engine: { tag: engine.tag, revision: engine.revision },
       engineCompatibility: { compatible: compat.compatible, cases: compat.cases },
       supersedes: previous,
+      ...(supersededCandidate ? { supersedesCandidate: supersededCandidate } : {}),
+      ...(engineChanged ? { engineChange: { from: { tag: registry.engine.tag, revision: registry.engine.revision }, to: { tag: engine.tag, revision: engine.revision }, runArtifactSchemaSha256: engine.runArtifactSchema.sha256, note: 'Applied only at acceptance, by candidate.acceptance.patch; the active registry stays on the previous engine and the old accepted runs until the owner accepts.' } } : {}),
       changeSummary: diff.cases,
       changeReport: `docs/generated/evidence-adoption/${tag}.json`,
       replay: { state: 'pending', via: '.github/workflows/official-runs.yml after the acceptance repin', recordedRuns: [] },

@@ -17,6 +17,9 @@ const arg = (name: string) => { const i = process.argv.indexOf(`--${name}`); if 
 const report = JSON.parse(readFileSync(arg('report'), 'utf8'));
 const load = (dir: string, methods = false): RunArtifact => readRunArtifact(readFileSync(path.join(dir, methods ? 'methods/artifact.json' : 'artifact.json'))).artifact;
 const addedIds: string[] = report.diff.added;
+const arg2 = (name: string) => { const i = process.argv.indexOf(`--${name}`); return i < 0 ? undefined : process.argv[i + 1]; };
+const record = JSON.parse(readFileSync('benchmarks/evidence-adoption.json', 'utf8')).candidate ?? {};
+const engineTo: string = arg2('engine-to') ?? record.engine?.tag ?? 'the new engine';
 
 const accepted = load(arg('accepted')), oldReplay = load(arg('replay-old')), newReplay = load(arg('replay-new'));
 const methodsSummary = (a: RunArtifact) => Object.fromEntries(a.scanners.map(s => {
@@ -29,7 +32,7 @@ const methodsSummary = (a: RunArtifact) => Object.fromEntries(a.scanners.map(s =
 
 report.replay = {
   state: 'compared',
-  scope: 'The replay changes two things at once: the corpus (snapshot-2026.10.04) and the engine (credential-eval v0.1.0-alpha.3, with scanner versions and configurations fixed). They are reported apart: corpusEffect holds the engine fixed, engineEffect holds the corpus fixed. A larger denominator is not an improvement. Decoded and fragment semantics are NOT measured (credential-eval#34, credential-evidence#150); cases the engine could not map are unmeasured, never zero detections, and in no denominator.',
+  scope: `The replay changes two things at once: the corpus (${report.evidenceRelease}) and the engine (credential-eval ${engineTo}; scanner versions and the configuration file are fixed, but a newer engine can add an opt-in key to the official configuration, which changes the config hash). They are reported apart: corpusEffect holds the engine fixed, engineEffect holds the corpus fixed. A larger denominator is not an improvement. Decoded and fragment semantics are NOT measured (credential-eval#34, credential-evidence#150); cases the engine could not map are unmeasured, never zero detections, and in no denominator.`,
   corpusEffect: { note: 'previous population versus candidate population, both on the new engine; common cases apart from added cases', scanners: diffRunArtifacts(oldReplay, newReplay, { addedIds }) },
   engineEffect: { note: 'previous population on the previous engine (accepted run) versus on the new engine; the same cases', scanners: diffRunArtifacts(accepted, oldReplay, { addedIds: [] }) },
   combined: { note: 'previous accepted run versus candidate replay: both effects together', scanners: diffRunArtifacts(accepted, newReplay, { addedIds }) },

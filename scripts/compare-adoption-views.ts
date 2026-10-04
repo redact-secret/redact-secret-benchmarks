@@ -27,6 +27,12 @@ const readJson = (file: string) => JSON.parse(readFileSync(file, 'utf8'));
 type Json = any;
 const A: Json = readJson(need('accepted')), B: Json = readJson(need('replay-old')), C: Json = readJson(need('candidate'));
 const report: Json = readJson(need('report'));
+const record: Json = readJson('benchmarks/evidence-adoption.json').candidate ?? {};
+const engineTo: string = option('engine-to') ?? record.engine?.tag ?? 'the new engine';
+const engineFrom: string = option('engine-from') ?? record.engineChange?.from?.tag ?? 'the previous engine';
+const tagShort = (t: string) => t.replace(/^v0\.1\.0-/, '');
+const previousRelease: string = report.previous?.evidenceRelease ?? 'the previous release';
+const addedTotal: number = report.diff.added.length;
 const added = new Set<string>(report.diff.added);
 const sortedKeys = (o: object) => Object.keys(o).sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
@@ -47,7 +53,7 @@ const engine = (() => {
   for (const c of publicOf(B).cases) if (!same(ac.get(c.id), c)) caseDrift.push(c.id);
   const matrixSame = same(A.supportMatrix, B.supportMatrix), distributionSame = same(A.distribution, B.distribution);
   return {
-    note: 'The same corpus, the same overlays, the same product and the same scanner versions, measured by credential-eval v0.1.0-alpha.1 and v0.1.0-alpha.3 (the review-ledger re-key is regenerated for the alpha.3 methods run, whose occurrence ids all changed with the scanner configuration identity).',
+    note: `The same corpus, the same overlays, the same product and the same scanner versions, measured by credential-eval ${engineFrom} and ${engineTo} (the review-ledger re-key is regenerated for the ${tagShort(engineTo)} methods run, whose occurrence ids all changed with the scanner configuration identity).`,
     distribution: { accepted: A.distribution, replayOld: B.distribution }, distributionSame,
     familiesWithAnyDifference: differing, supportMatrixSame: matrixSame, publicCasesWithAnyDifference: caseDrift.length,
   };
@@ -171,6 +177,22 @@ const overlayAndPolicy = {
   ledgerRekey: { accepted: A.policy.ledgerRekey, candidate: C.policy.ledgerRekey },
 };
 
+// ---- 9. the superseded candidate (the same release family on the previous engine), from its own recorded comparison ----
+const supersededFile = option('superseded-comparison');
+const superseded: Json = supersededFile ? readJson(supersededFile) : null;
+const supersededCandidate = superseded && (() => {
+  const s = superseded.views.candidate, statusSet = (o: Json) => new Set<string>(o.corpusEffect.statusChanges.map((r: Json) => r.family)), matrixSet = (o: Json) => new Set<string>(o.corpusEffect.supportMatrixStatusChanges.map((r: Json) => r.family));
+  const before = statusSet(superseded), after = new Set<string>(familyRows.filter(r => r.status.from !== r.status.to).map(r => r.family));
+  const mBefore = matrixSet(superseded), mAfter = new Set<string>(matrixChanges.map(r => r.family));
+  const minus = (x: Set<string>, y: Set<string>) => [...x].filter(k => !y.has(k)).sort();
+  return {
+    evidenceRelease: superseded.evidenceRelease, engine: option('superseded-engine') ?? 'v0.1.0-alpha.3', note: 'The superseded candidate, from its recorded comparison (the same corpus family measured by the previous engine). The owner accepts this candidate, not that one.',
+    distribution: s.distribution, supportMatrix: s.supportMatrix, stableDistribution: s.stableDistribution, policyRevision: s.policyRevision,
+    familyStatusChangesOnlyThere: minus(before, after), familyStatusChangesOnlyHere: minus(after, before), matrixChangesOnlyThere: minus(mBefore, mAfter), matrixChangesOnlyHere: minus(mAfter, mBefore),
+    unmeasuredThere: superseded.unmeasured?.candidate ?? null,
+  };
+})();
+
 const out = {
   schema: 'redact-secret/evidence-adoption-view-comparison/v1',
   evidenceRelease: report.evidenceRelease,
@@ -193,6 +215,10 @@ const out = {
   unmeasured: { accepted: unmeasuredRows(A), candidate: unmeasuredRows(C), note: 'Per population and scanner: cases a scanner observed but the engine could not map to ranges. Never a MISS, in no denominator.' },
   methods,
   overlayAndPolicy,
+  supersededCandidate,
+  releaseRepresentation: report.representation ?? null,
+  representationEffect: report.replay?.representationEffect ?? null,
+  reviewStateEffect: report.replay?.reviewStateEffect ?? null,
   unexplained,
 };
 const text = `${JSON.stringify(out, null, 2)}\n`;
@@ -209,21 +235,21 @@ function renderMarkdown(o: Json, parity: Json | null): string {
   const dist = (d: Json) => `${d.stable} stable, ${d.provisional} provisional, ${d.pending} pending, ${d.unsupported} unsupported`;
   const v = o.views, add = o.publicPopulation;
   const lines: string[] = [];
-  lines.push(`# Adoption report: ${o.evidenceRelease} on credential-eval v0.1.0-alpha.3`, '',
+  lines.push(`# Adoption report: ${o.evidenceRelease} on credential-eval ${engineTo}`, '',
     `Generated by \`scripts/compare-adoption-views.ts\` from the accepted view, the previous corpus replayed on the new engine, and the candidate view. Nothing here is accepted; the old accepted runs stay the public numbers until the owner applies the prepared change. ${o.scope}`, '',
     '## Headline', '',
-    table(['', 'Accepted (snapshot-2026.10.01.2, alpha.1)', 'Candidate (snapshot-2026.10.04, alpha.3)'], [
+    table(['', `Accepted (${previousRelease}, ${tagShort(engineFrom)})`, `Candidate (${o.evidenceRelease}, ${tagShort(engineTo)})`], [
       ['Credential families', dist(v.accepted.distribution), dist(v.candidate.distribution)],
       ['Support matrix entries', dist(v.accepted.supportMatrix), dist(v.candidate.supportMatrix)],
       ['Stable by route', JSON.stringify(v.accepted.stableDistribution), JSON.stringify(v.candidate.stableDistribution)],
       ['Public cases', n(v.accepted.populations.find((p: Json) => p.population === 'public-evidence-snapshot').cases), `${n(add.commonCases)} common + ${n(add.addedCases)} added`],
       ['Policy revision', `\`${v.accepted.policyRevision.slice(0, 30)}...\``, `\`${v.candidate.policyRevision.slice(0, 30)}...\``],
     ]), '',
-    'A larger denominator is not an improvement and a lower stable count is not a regression of the product: the 499 added cases bring evidence no previous run measured.', '',
-    '## 1. Engine effect (alpha.1 to alpha.3, corpus fixed)', '',
+    `A larger denominator is not an improvement and a lower stable count is not a regression of the product: the ${n(addedTotal)} added cases bring evidence no previous run measured.`, '',
+    `## 1. Engine effect (${tagShort(engineFrom)} to ${tagShort(engineTo)}, corpus fixed)`, '',
     o.engineEffect.note, '',
-    `Result: ${o.engineEffect.familiesWithAnyDifference.length} families differ, the support matrix is ${o.engineEffect.supportMatrixSame ? 'identical' : 'different'}, ${o.engineEffect.publicCasesWithAnyDifference} of the 5,950 public cases change any outcome, and the family distribution is ${o.engineEffect.distributionSame ? 'identical' : 'different'}. The engine bump alone changes no support status, matrix entry or gate.`, '',
-    '## 2. Corpus effect (previous corpus to snapshot-2026.10.04, engine fixed)', '',
+    `Result: ${o.engineEffect.familiesWithAnyDifference.length} families differ, the support matrix is ${o.engineEffect.supportMatrixSame ? 'identical' : 'different'}, ${o.engineEffect.publicCasesWithAnyDifference} of the ${n(add.commonCases)} public cases change any outcome, and the family distribution is ${o.engineEffect.distributionSame ? 'identical' : 'different'}. The engine bump alone changes no support status, matrix entry or gate.`, '',
+    `## 2. Corpus effect (${previousRelease} to ${o.evidenceRelease}, engine fixed)`, '',
     `### Common cases (${n(add.commonCases)}), apart from the added cases`, '',
     `${add.regroupedCommonCases} common cases were regrouped by credential-evidence (evidence class or family, ${JSON.stringify(add.regrouped)}). ${add.commonCaseOutcomeDrift.cases} common cases change an outcome, all control cases that are cross-provider twins: ${add.commonCaseOutcomeDrift.cause}.`, '',
     table(['Scanner and change', 'Cases'], Object.entries(add.commonCaseOutcomeDrift.byScanner).map(([k, c]) => [k, c])), '',
@@ -252,22 +278,75 @@ function renderMarkdown(o: Json, parity: Json | null): string {
       ['Policy revision', `\`${o.overlayAndPolicy.policyRevision.accepted.slice(0, 31)}...\``, `\`${o.overlayAndPolicy.policyRevision.candidate.slice(0, 31)}...\``],
       ['Axis overlay', `${o.overlayAndPolicy.axisOverlay.accepted.contexts} contexts, ${o.overlayAndPolicy.axisOverlay.accepted.controls} controls, bound to ${String(o.overlayAndPolicy.axisOverlay.accepted.corpusDigest).slice(0, 19)}...`, `${o.overlayAndPolicy.axisOverlay.candidate.contexts} contexts, ${o.overlayAndPolicy.axisOverlay.candidate.controls} controls${same(o.overlayAndPolicy.axisOverlay.accepted.contexts, o.overlayAndPolicy.axisOverlay.candidate.contexts) ? ' (same content, rebound to ' : ' (rebound to '}${String(o.overlayAndPolicy.axisOverlay.candidate.corpusDigest).slice(0, 19)}...; the added cases have no legacy fixture, so the overlay names no axis for them and they keep the snapshot's own group)`],
       ['Twin-scope map', `${o.overlayAndPolicy.twinScope.accepted.twins ?? '?'} twins mapped to project cases`, `${o.overlayAndPolicy.twinScope.candidate.twins ?? '?'} twins mapped`],
-      ['Review-ledger re-key', `${o.overlayAndPolicy.ledgerRekey.accepted.occurrences} legacy decisions mapped`, `${o.overlayAndPolicy.ledgerRekey.candidate.occurrences} legacy decisions mapped (all 4,268, re-keyed to the alpha.3 occurrence ids)`],
+      ['Review-ledger re-key', `${o.overlayAndPolicy.ledgerRekey.accepted.occurrences} legacy decisions mapped`, `${o.overlayAndPolicy.ledgerRekey.candidate.occurrences} legacy decisions mapped (all 4,268, re-keyed to the ${tagShort(engineTo)} occurrence ids)`],
     ]), '',
-    `Twin scope: ${o.overlayAndPolicy.twinScope.why} Unchanged policy parts: ${o.overlayAndPolicy.unchangedPolicyKeys.map((k: string) => `\`${k}\``).join(', ')}; changed (derived from the corpus): ${o.overlayAndPolicy.changedPolicyKeys.map((k: string) => `\`${k}\``).join(', ')}. The review occurrence ids of alpha.3 all differ from alpha.1 (the peer configuration identity is part of the id), which is why the re-key is regenerated; every legacy decision still maps (4,268 of 4,268).`, '');
+    `Twin scope: ${o.overlayAndPolicy.twinScope.why} Unchanged policy parts: ${o.overlayAndPolicy.unchangedPolicyKeys.map((k: string) => `\`${k}\``).join(', ')}; changed (derived from the corpus): ${o.overlayAndPolicy.changedPolicyKeys.map((k: string) => `\`${k}\``).join(', ')}. The review occurrence ids of ${tagShort(engineTo)} all differ from ${tagShort(engineFrom)} (the peer configuration identity is part of the id), which is why the re-key is regenerated; every legacy decision still maps (4,268 of 4,268).`, '');
   if (parity) lines.push('## 4. Legacy-oracle parity (the authority gate)', '',
     `\`qualification:parity --strict\` on the candidate view against the legacy oracle at the same release (@redact-secret/core 0.1.0-beta.12): ${n(parity.summary.compared)} values compared, ${n(parity.summary.equal)} equal, ${n(parity.summary.explained)} attributed to a named structural cause, **${parity.summary.unexplained} unexplained**. Causes: ${Object.entries(parity.summary.byCause).map(([k, c]) => `${k} ${c}`).join(', ')}.`, '');
+  const sup = o.supersededCandidate, re = o.representationEffect, rel = o.releaseRepresentation;
+  if (sup) lines.push(`## ${parity ? 5 : 4}. Against the superseded candidate (${sup.evidenceRelease}, ${tagShort(sup.engine ?? 'previous engine')})`, '',
+    sup.note, '',
+    table(['', `Superseded candidate (${sup.evidenceRelease})`, `This candidate (${o.evidenceRelease}, ${tagShort(engineTo)})`], [
+      ['Credential families', dist(sup.distribution), dist(v.candidate.distribution)],
+      ['Support matrix entries', dist(sup.supportMatrix), dist(v.candidate.supportMatrix)],
+      ['Stable by route', JSON.stringify(sup.stableDistribution), JSON.stringify(v.candidate.stableDistribution)],
+    ]), '',
+    `Families whose status moves in one candidate only: ${[...sup.familyStatusChangesOnlyThere, ...sup.familyStatusChangesOnlyHere].length ? `superseded only ${JSON.stringify(sup.familyStatusChangesOnlyThere)}, this candidate only ${JSON.stringify(sup.familyStatusChangesOnlyHere)}` : 'none (the same families are provisional in both)'}. Matrix entries that differ: ${[...sup.matrixChangesOnlyThere, ...sup.matrixChangesOnlyHere].length ? `superseded only ${JSON.stringify(sup.matrixChangesOnlyThere)}, this candidate only ${JSON.stringify(sup.matrixChangesOnlyHere)}` : 'none'}. Policy revision: \`${String(sup.policyRevision).slice(0, 31)}...\` against \`${v.candidate.policyRevision.slice(0, 31)}...\`.`, '');
+  if (re) {
+    const cell = (b: Record<string, number> | undefined) => b ? Object.entries(b).map(([k, c]) => `${k.replace('positive:', '+').replace('control:', 'ctl ')} ${c}`).join(', ') : '';
+    const classRows = ['encode:base64', 'encode:hex', 'fragment', 'escape', 'normalize', 'insert-codepoints', 'chunked', 'expected-rejection:unpaired-surrogate-split', 'expected-span-with-fragments', 'expected-span-decoded-via:strip-codepoints'].filter(k => re.factClasses[k] !== undefined);
+    const scanners = Object.keys(re.outcomesByFactClass.candidate);
+    const mv = (x: Json) => Object.entries(x ?? {}).map(([k, c]) => `${k} ${c}`).join(', ') || 'none';
+    lines.push(`## ${parity ? 6 : 5}. Representation capability (credential-eval v1.3, ADR 0005; credential-eval#34, credential-evidence#150)`, '',
+      re.note, '',
+      `**Facts the release carries** (its own account, not a measurement): ${rel?.casesWithFacts} cases carry representation facts (${JSON.stringify(rel?.casesByTransformationOp)}; encodings ${JSON.stringify(rel?.casesByEncodeCodec)}; fragment mechanisms ${Object.keys(rel?.fragmentMechanisms ?? {}).length}), ${rel?.expectedSpansWithFragments} expected spans with fragments, ${rel?.expectedSpansWithDecoded} with a decoded fact (${JSON.stringify(rel?.decodedByCodec)}), ${rel?.inputValidity ? JSON.stringify(rel.inputValidity) : 'no'} input-validity facts, ${rel?.notExported?.invalidUtf8?.total ?? 0} invalid-UTF-8 cases not exported, ${rel?.notExported?.twinLineageNotExported ?? 0} twin lineages not written.`, '',
+      `**What the engine verified**: the run artifact's \`manifest.representation\` is ${JSON.stringify(re.engines.candidate.manifestRepresentation)}${re.engines.candidate.manifestRepresentation?.facts_digest === rel?.factsDigest ? ', and its facts digest equals the release\'s: the engine received exactly the facts the release declares' : ' (its facts digest DIFFERS from the release\'s)'}. Decoded spans verified by re-derivation: ${re.engines.candidate.manifestRepresentation?.decoded_verified} of ${re.engines.candidate.manifestRepresentation?.decoded_spans}; unverified (\`normalize\`): ${re.engines.candidate.manifestRepresentation?.decoded_unverified}. The previous engine (${tagShort(sup?.engine ?? 'alpha.3')}) did not read these facts and refused this snapshot.`, '',
+      '### Unmeasured and mapped findings (plain run)', '',
+      table(['Scanner', `Unmeasured (previous engine)`, `Unmeasured (${tagShort(engineTo)})`, `Cases with a mapped decoded finding (${tagShort(engineTo)})`, 'Their outcomes'], scanners.map(sc => [sc, re.unmeasuredPlain.previousEngine[sc].unmeasured, re.unmeasuredPlain.candidate[sc].unmeasured, re.mappedFindings.candidate[sc].cases, cell(re.mappedFindings.candidate[sc].casesByOutcome) || 'none'])), '',
+      `Mapped findings by bound (${tagShort(engineTo)}): ${Object.entries(re.mappedFindings.candidate).filter(([, m]: [string, Json]) => m.cases).map(([sc, m]: [string, Json]) => `${sc} ${JSON.stringify(m.findingsByMapping)}`).join('; ') || 'none'}. A mapped finding is placed on the whole encoded segment, scored by the unchanged lattice against the span as authored (never narrower), and only when the engine could re-derive the placement; everything else stays unmeasured. \`source-block\` and \`source-segment-extended\` are placements the engine made before the contract and now records.`, '',
+      '### Outcome changes of the same cases (plain run, all fact classes)', '',
+      table(['Comparison', ...scanners], [
+        ['Previous engine to this engine, the superseded corpus (engine effect)', ...scanners.map(sc => mv(re.engineEffect?.scanners?.[sc]?.moves))],
+        [`Superseded corpus to this corpus, ${tagShort(engineTo)} fixed (corpus effect, ${re.corpusEffect?.changedExpectationCases ?? '?'} cases changed an expected span)`, ...scanners.map(sc => mv(re.corpusEffect?.scanners?.[sc]?.moves))],
+        ['Both together (superseded candidate to this candidate)', ...scanners.map(sc => mv(re.combined.scanners[sc].moves))],
+      ]), '',
+      '### Outcomes by representation class (this candidate, plain run)', '',
+      'Buckets: `pending` and `not-measured` are in no denominator; `+exact`, `+miss`, `+other` are positive spans; `ctl` is a control that was clear or flagged.', '',
+      table(['Fact class (cases in the corpus)', ...scanners], classRows.map(k => [`${k} (${re.factClasses[k]})`, ...scanners.map(sc => cell(re.outcomesByFactClass.candidate[sc]?.[k]))])), '',
+      '### What now measures, and what still does not', '',
+      '- **Now measured by the engine** (where the table above shows it): base64 and hex segments of a gitleaks or trufflehog finding placed on the whole encoded segment (one to four layers), only when re-derivable; the gitleaks cases the previous engine could not place no longer sit in `unmeasured`. A pending (T0) case stays outside every denominator whatever the scanner reports.',
+      '- **Carried and validated, not scored**: fragments (a fragmented span is scored on its enclosing range; fragment-aware scoring is a protocol revision, not made), chunking boundaries, derivation and carrier facts, input validity (an expected rejection is non-asserting). Methods-run variants start from seeds without facts, so a variant never inherits a seed\'s decoded value or fragments.',
+      `- **Still not measured**: a decoded finding in another codec (percent-encoding, UTF-16, escaped Unicode) or deeper than four layers stays unmeasured, never a miss; the corpus carries no decoded fact in those codecs (decoded facts: ${JSON.stringify(rel?.decodedByCodec)}), so this release neither measures nor refutes them. \`normalize\` decoded facts are carried and not re-derivable (${re.engines.candidate.manifestRepresentation?.decoded_unverified} in this release).`, '');
+  }
+  const rs = o.reviewStateEffect;
+  if (rs) {
+    const scanners = Object.keys(rs.movedOutOfNotAssertable.outcomesByScanner);
+    const cell = (b: Record<string, number> | undefined) => b ? Object.entries(b).map(([k, c]) => `${k.replace('positive:', '+').replace('control:', 'ctl ')} ${c}`).join(', ') : '';
+    const fam = (rows: Record<string, { cases: number; scored: number }>) => Object.entries(rows).map(([k, v]) => `${k} ${v.scored}/${v.cases}`).join(', ') || 'none';
+    lines.push(`## ${4 + (parity ? 1 : 0) + (sup ? 1 : 0) + (re ? 1 : 0)}. Review state: fixtures moved out of not-assertable and maintainer-only fixtures (credential-evidence ADR 0020)`, '',
+      rs.note, '',
+      `**Release counts** (\`release-manifest.json\` \`reviewState\`, rule ${rs.release?.rule}): ${JSON.stringify(rs.release?.fixtures)} fixtures by state; **maintainer-only ${rs.release?.maintainerOnly?.fixtures}** (${JSON.stringify(rs.release?.maintainerOnly?.fixturesByOutcome)}; ${JSON.stringify(rs.release?.maintainerOnly?.records)} records, ${rs.release?.maintainerOnly?.decisions} decisions). **Zero fixtures are \`reviewed\`.** Of the maintainer-only fixtures, ${rs.release?.attributedFixtures} are attributed to eval cases here by the lifecycle of their Case or Scenario record; ${rs.release?.unattributedFixtures} must-not-flag fixtures the release counts are not reachable from the records and are not guessed (they may sit among the 5 not exported or at a finer level than the records state).`, '',
+      `**Moved out of not-assertable** (T0 in the superseded candidate's release, scored now): ${rs.movedOutOfNotAssertable.cases} cases (${JSON.stringify(rs.movedOutOfNotAssertable.byKindAndTier)}); ${rs.movedOutOfNotAssertable.movedIntoNotAssertable} moved the other way. Of these, ${rs.maintainerOnly.overlapWithMoved} are also maintainer-only: they are scored on one maintainer's decision.`, '',
+      table(['Cases (plain run)', ...scanners], [
+        [`Moved out of T0 (${rs.movedOutOfNotAssertable.cases})`, ...scanners.map(sc => cell(rs.movedOutOfNotAssertable.outcomesByScanner[sc]?.outcomes))],
+        [`Maintainer-only (${rs.maintainerOnly.cases}: ${JSON.stringify(rs.maintainerOnly.byKindAndTier)})`, ...scanners.map(sc => cell(rs.maintainerOnly.outcomesByScanner[sc]?.outcomes))],
+      ]), '',
+      `Families whose scored evidence includes maintainer-only fixtures (scored/total cases): ${fam(rs.maintainerOnly.byFamily)}. Families of the moved cases: ${fam(rs.movedOutOfNotAssertable.byFamily)}.`, '',
+      'Effect on denominators and gates: a moved case enters the denominators of the family it is grouped in (positives and controls of the plain run), and several of the families above are among those whose status moves in section 2 (the section-2 reasons are the unsettled gate-peer occurrences and the reference scanner\'s failed assertions of added cases; this report does not apportion a family\'s evidence between maintainer-only and other cases). This repository settles no review decision for a maintainer-only case and treats none as reviewed: the owner decides whether evidence resting on a single maintainer\'s decision should qualify a family, and the report does not hide it behind a count.', '');
+  }
   lines.push('## What is not measured', '',
-    '- Decoded and fragment semantics (base64 or hex forms, nested encodings, credentials split across lines or literals): the engine scores the raw span; the cases are in the corpus and counted as published, but a decoded or fragment verdict is not a measured product behavior (credential-eval#34, credential-evidence#150).',
-    '- Pending (T0) cases and not-assertable review decisions are outside every denominator.',
-    '- The scanned product release is `@redact-secret/core@0.1.0-beta.12` (the alpha.3 adapters pin it). The repository pins beta.13 for its published measurements; measuring beta.13 through credential-eval needs a further engine tag.', '',
+    '- Fragment-aware scoring and decoded semantics beyond what section ' + (parity ? 6 : 5) + ' lists as verified: the engine scores the enclosing range of a fragmented span and the whole segment of a mapped decoded finding (credential-eval#34, credential-evidence#150).',
+    '- Pending (T0) cases, expected rejections and not-assertable review decisions are outside every denominator; unmeasured cases are in none and are never zero detections.',
+    `- The scanned product release is \`@redact-secret/core@0.1.0-beta.12\` (the ${tagShort(engineTo)} adapters pin it). The repository pins beta.13 for its published measurements; measuring beta.13 through credential-eval needs a further engine tag.`, '',
     '## What the owner decides and runs', '',
+    ...(rs ? [`**Review state the owner must weigh: ${rs.release?.maintainerOnly?.fixtures} fixtures are maintainer-only (finalized by the sole maintainer, not reviewed, not independent validation), 0 are reviewed; ${rs.maintainerOnly.overlapWithMoved} of the ${rs.movedOutOfNotAssertable.cases} fixtures that moved out of not-assertable are among them.**`, ''] : []),
+    `**Accept this candidate (${o.evidenceRelease} on ${tagShort(engineTo)}), not the superseded one${sup ? ` (${sup.evidenceRelease} on ${tagShort(sup.engine ?? 'alpha.3')}, whose acceptance patch was removed)` : ''}.**`, '',
     `1. Read this report and \`${o.evidenceRelease}.comparison.json\`. Decide: accept, or withdraw (reset \`benchmarks/evidence-adoption.json\` to \`{"schema": "redact-secret/evidence-adoption/v1", "state": "none"}\`).`,
-    `2. To accept, on a branch from the merged \`develop\`: \`git apply docs/generated/evidence-adoption/${o.evidenceRelease}.acceptance.patch\`. It pins alpha.3, the schema, the four recorded runs (the superseded ones become historical receipts), the archive receipt, the regenerated overlays and parity report, the renewed authority file and the accepted record. Nothing in it is an acceptance: three owner fields are \`OWNER-TO-SET\`.`,
+    `2. To accept, on a branch from the merged \`develop\`: \`git apply docs/generated/evidence-adoption/${o.evidenceRelease}.acceptance.patch\`. It pins ${tagShort(engineTo)}, the schema, the four recorded runs (the superseded ones become historical receipts), the archive receipt, the regenerated overlays and parity report, the renewed authority file and the accepted record. Nothing in it is an acceptance: three owner fields are \`OWNER-TO-SET\`.`,
     '3. Set the owner fields (the authority file `new.acceptedOn` and `new.acceptedBy`, the record `candidate.ownerAcceptance`), and turn the draft ADR into your decision (`status: accepted`, the Decision and Consequences text). The gates stay red until you do.',
     '4. Run the gates on that branch with `trufflehog --version` printing 3.97.4: `npm run official-runs:check -- --bindings`, `authority:check`, `adoption:check`, `decisions:validate`, `qualification-inputs:check`, `npm test`, `npm run typecheck`, and the web checks. If the product inputs changed since this PR, the policy revision and the parity report in the patch are stale: re-run `qualification:view` and `qualification:parity --strict` (commands in `docs/specs/qualification-parity.md`) and update the authority policy revision.',
     '5. Merge to `develop` (a push publishes staging), check the stamps and that `develop` is green, then `npm run go-production` when the measurement is ready to be public. Record the staging and production receipts under `candidate.deployment` and comment on credential-evidence#142 with the tag, digests, run ids and disposition.', '',
-    'Open for the product, not part of the acceptance: the review decisions for the added cases\' gate-peer occurrences (the 18 matrix entries stay provisional until they are settled), the product position on fragment and decoded cases, and a credential-eval tag whose adapters pin the published beta.13.', '',
+    `Open for the product, not part of the acceptance: the review decisions for the added cases' gate-peer occurrences (the ${o.corpusEffect.supportMatrixStatusChanges.length} matrix entries that moved to provisional stay provisional until they are settled), the product position on fragment and decoded cases, and a credential-eval tag whose adapters pin the published beta.13.`, '',
     '## Unexplained', '', o.unexplained.length ? o.unexplained.map((u: string) => `- ${u}`).join('\n') : 'None: every difference above is attributed by a rule that checks the data of both views.', '');
   return `${lines.join('\n')}\n`;
 }

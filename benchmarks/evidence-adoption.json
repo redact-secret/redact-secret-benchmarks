@@ -310,9 +310,21 @@
     },
     "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.04.4.json",
     "replay": {
-      "state": "pending",
-      "via": ".github/workflows/official-runs.yml after the acceptance repin",
-      "recordedRuns": []
+      "state": "replayed",
+      "via": ".github/workflows/official-runs.yml dispatched on the transient replay branch replay/698-044-control-alpha5-beta13 (revision 5f20cb557ac35ddf916bee124ef02a716e06e917: the repository at the reviewed code plus the engine, product and evidence pins only, patch kept as docs/generated/evidence-adoption/snapshot-2026.10.04.4.replay-pins.patch; branch deleted after archiving), plain and methods, linux-x64, two engine runs each with equal semantic digests: the PUBLISHED @redact-secret/core 0.1.0-beta.13 on credential-eval alpha.5, the control of the product candidate 2x2",
+      "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37241828378",
+      "benchmarkRevision": "5f20cb557ac35ddf916bee124ef02a716e06e917",
+      "archive": {
+        "release": "official-runs-37241828378",
+        "sha256": "sha256:d4cd84b5470b11c047ce0e8e3f0e783bf8142acc895a420e5f3029d29182be36"
+      },
+      "semanticDigests": {
+        "public-evidence-snapshot": "sha256:d6186e9a18e02548c1bb03e688bff577c50e71682a4a20ea1cd57f8a6c4279c3",
+        "public-evidence-snapshot+methods": "sha256:0e847114bdcd9d3643ff4887bc7da11f692794765df8f19910d644bf4cce9755",
+        "regression-corpus": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
+        "policy-corpus": "sha256:9a6576c90e30907dee3b6e2b368d2791a29865fa8215790b0ef9cf6f75b66f9e"
+      },
+      "note": "An exploratory replay for the evidence candidate: never an accepted run; the view built by the same run is the candidate view of the acceptance package."
     },
     "ownerAcceptance": null,
     "deployment": {

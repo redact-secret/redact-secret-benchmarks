@@ -39,7 +39,7 @@ const out = {
 if (corrections.length === 0) throw new Error('no evidence proposal in the triage');
 writeFileSync(option('out-json') ?? (() => { throw new Error('--out-json is required'); })(), `${JSON.stringify(out, null, 1)}\n`);
 if (option('out-md')) {
-  const cell = (s: string) => s.replace(/\|/g, '\\|').replace(/\n/g, ' ');
+  const cell = (s: string) => s.replace(/\\/g, '\\\\').replace(/\|/g, '\\|').replace(/\n/g, ' '); // backslashes first, then the pipe (CodeQL js/incomplete-sanitization)
   writeFileSync(option('out-md')!, [
     '# Expectation corrections proposed to credential-evidence (#698, core #1203)', '',
     `**Maintainer-reviewed (independent review pending) / 메인테이너 검토 (독립 검토 대기)**: ${triage.disclosure.maintainerOnlyFixtures} maintainer-only fixtures, ${triage.disclosure.independentlyReviewed} independently reviewed. These are the product maintainers' proposals; the evidence owners decide, and the evidence is not edited here. Tracking: credential-evidence#221, redact-secret#1203 and PR #1204.`, '',

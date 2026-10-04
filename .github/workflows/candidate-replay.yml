@@ -1,0 +1,208 @@
+name: Product candidate replay
+# Measures a registered UNPUBLISHED product build (benchmarks/product-candidates.json) on the adopted evidence with the adoption's engine candidate (#698, #690): every
+# population (plain, policy, regression) and the floors methods run, all five scanners, the engine's own configuration, linux-x64, two engine runs each with equal
+# semantic digests. The control is the engine candidate's published-product replay, kept in its archive. Only the product build differs, so every difference is the
+# product's. The run class is exploratory and the publication internal (the engine refuses an unpinned build as official): nothing here is an accepted run or
+# public evidence. Manual only. Spec: docs/specs/product-candidate-replay.md.
+#
+# Safety: dispatch only (never pull_request_target); contents: read except the two jobs that say otherwise; the engine token is a GitHub App token scoped to
+# redact-secret/credential-eval with contents: read; no checkout keeps credentials; every action is pinned to a commit. The candidate is fetched only from the
+# registered release of this repository and refused unless every byte digest is the registered one.
+on:
+  workflow_dispatch:
+    inputs:
+      candidate:
+        description: The id of a candidate in benchmarks/product-candidates.json (for example core-main-1e45cecf).
+        required: true
+        type: string
+      archive:
+        description: Keep the replay artifacts as a release of this repository (candidate-runs-<run id>) after a passing report.
+        required: false
+        default: true
+        type: boolean
+permissions:
+  contents: read
+concurrency:
+  group: official-runs # one engine replay at a time, shared with official-runs.yml
+  cancel-in-progress: false
+
+jobs:
+  replay:
+    name: Candidate replay (${{ matrix.population }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        population: [public-evidence-snapshot, regression-corpus, policy-corpus]
+    env:
+      PLATFORM: linux-x64
+      CANDIDATE: ${{ inputs.candidate }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: The candidate is registered, unpublished and its release holds the registered bytes
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [[ "$CANDIDATE" =~ ^[a-z0-9][a-z0-9.-]*$ ]] || { echo "::error::candidate must be a registered id"; exit 1; }
+          node scripts/check-product-candidates.mjs --bindings
+          node -e "const r=require('./benchmarks/product-candidates.json'); if(!r.candidates.some(c=>c.id===process.env.CANDIDATE)){console.error('no such candidate');process.exit(1)}"
+      - name: The registry is consistent and each product corpus still matches its pin
+        run: npm run official-runs:check -- --bindings
+      - name: Read the engine candidate's pin
+        id: engine
+        run: |
+          echo "tag=$(node -p "require('./benchmarks/evidence-adoption.json').engineCandidate.engine.tag")" >> "$GITHUB_OUTPUT"
+      - name: Mint a read-only token for the engine repository
+        id: engine-token
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2.2.2
+        with:
+          app-id: ${{ vars.CREDENTIAL_EVAL_APP_ID }}
+          private-key: ${{ secrets.CREDENTIAL_EVAL_APP_PRIVATE_KEY }}
+          owner: redact-secret
+          repositories: credential-eval
+          permission-contents: read
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          repository: redact-secret/credential-eval
+          ref: ${{ steps.engine.outputs.tag }}
+          token: ${{ steps.engine-token.outputs.token }}
+          path: credential-eval
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # v1
+        with:
+          toolchain: stable
+      - name: Build the engine at the candidate's tag
+        run: cargo build --release --locked -p credential-eval-cli --manifest-path credential-eval/Cargo.toml
+      - name: Provision the peer scanners at their pinned digests
+        run: |
+          node scripts/provision-official-peers.mjs --platform "$PLATFORM" --out "$RUNNER_TEMP/peer-bin"
+          echo "$RUNNER_TEMP/peer-bin" >> "$GITHUB_PATH"
+      - name: Install the npm scanners from the engine lockfile, without install scripts
+        run: npm ci --ignore-scripts --no-audit --no-fund
+        working-directory: credential-eval/adapters/node
+      - name: Candidate replay, twice, with the determinism check (the product build is installed and byte-verified before anything is measured)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POPULATION: ${{ matrix.population }}
+        run: >
+          node --import tsx scripts/run-official-credential-eval.ts
+          --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
+          --out "official-out/$POPULATION" --runs 2 --candidate "$CANDIDATE"
+      - name: Methods run, twice, with the determinism check (floors population only)
+        if: matrix.population == 'public-evidence-snapshot'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POPULATION: ${{ matrix.population }}
+          NODE_OPTIONS: --max-old-space-size=5120
+        run: >
+          node --import tsx scripts/run-official-credential-eval.ts
+          --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
+          --out "official-out/$POPULATION" --runs 2 --methods --candidate "$CANDIDATE"
+      - name: Remove the byte copies the checks made
+        run: rm -f "official-out/$POPULATION"/artifact-[0-9]*.json "official-out/$POPULATION"/methods/artifact-[0-9]*.json
+        env:
+          POPULATION: ${{ matrix.population }}
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: ${{ !cancelled() }} # keep the plain artifact when the methods step fails
+        with:
+          name: candidate-run-${{ matrix.population }}
+          path: official-out/${{ matrix.population }}
+          if-no-files-found: error
+          retention-days: 90
+
+  report:
+    name: Effect report (candidate against the control)
+    needs: replay
+    if: ${{ !cancelled() && needs.replay.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+    env:
+      CANDIDATE: ${{ inputs.candidate }}
+      GH_TOKEN: ${{ github.token }}
+      NODE_OPTIONS: --max-old-space-size=5120
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: candidate-run-*
+          path: replay-in
+      - name: Lay the candidate artifacts out one directory per population
+        run: for dir in replay-in/candidate-run-*; do mv "$dir" "replay-in/${dir#replay-in/candidate-run-}"; done
+      - name: Fetch the control (the engine candidate's replay of the published product) and verify its digest against the adoption record
+        run: |
+          release="$(node -p "require('./benchmarks/evidence-adoption.json').engineCandidate.replay.archive.release")"
+          digest="$(node -p "require('./benchmarks/evidence-adoption.json').engineCandidate.replay.archive.sha256")"
+          node scripts/replay-archive.mjs fetch --release "$release" --sha256 "$digest" --out control-in
+      - name: Fetch the pinned public snapshot (the case inputs of the sanitized view)
+        run: node scripts/fetch-pinned-public-snapshot.mjs --out snapshot-in
+      - name: Every difference is an identity field or a per-case outcome (strict), keyed by semantic ids
+        run: >
+          node --import tsx scripts/compare-replay-effects.ts --from control-in --to replay-in
+          --label "product effect: published control to unpublished candidate $CANDIDATE" --out report-out/effect.json --strict
+      - name: The effect report, with the findings, the sanitized view and the repeat-run agreement of both sides
+        run: >
+          node --import tsx scripts/candidate-replay-report.ts --control control-in --candidate replay-in --candidate-id "$CANDIDATE"
+          --snapshot snapshot-in/credential-eval-corpus-snapshot.json --out report-out
+      - name: Apply the triage rules with the candidate's verified fixes
+        run: >
+          node --import tsx scripts/apply-triage-decisions.ts
+          --queue docs/generated/evidence-adoption/snapshot-2026.10.04.3.triage-queue.json
+          --candidate report-out/candidate-effect.json --open-core-issue https://github.com/redact-secret/redact-secret/issues/1203
+          --out-json report-out/triage.json --out-md report-out/triage.md
+      - name: Summary
+        run: |
+          { echo "### Product candidate replay: ${CANDIDATE}"; cat report-out/candidate-effect.md; } >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: candidate-replay-report
+          path: report-out
+          if-no-files-found: error
+          retention-days: 90
+
+  archive:
+    name: Keep the replay artifacts (a release of this repository, never an accepted run)
+    needs: report
+    if: ${{ inputs.archive }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      CANDIDATE: ${{ inputs.candidate }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: candidate-run-*
+          path: replay-in
+      - run: for dir in replay-in/candidate-run-*; do mv "$dir" "replay-in/${dir#replay-in/candidate-run-}"; done
+      - name: Pack and publish candidate-runs-<run id>
+        id: pack
+        run: |
+          out="$(node scripts/replay-archive.mjs pack --in replay-in --out archive-out --tag "candidate-runs-${GITHUB_RUN_ID}" --notes "Candidate replay ${CANDIDATE}: exploratory, internal artifacts of an unpublished build. Never accepted runs and never public evidence.")"
+          echo "$out"
+          echo "digest=$(echo "$out" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>console.log(JSON.parse(s.slice(s.indexOf('{'))).digest))")" >> "$GITHUB_OUTPUT"
+      - run: echo "candidate-runs-${GITHUB_RUN_ID} ${{ steps.pack.outputs.digest }}" >> "$GITHUB_STEP_SUMMARY"

@@ -30,3 +30,31 @@ test('a fix is claimed only when the candidate replay shows it, and encoded and 
   assert.equal(d.e.classification, 'unsupported-or-feature-scope');
   assert.equal(d.f.classification, 'unsupported-or-feature-scope');
 });
+
+test('the product\'s #1203 reading decides the base cases, claims a fix only on the candidate replay, and keeps evidence proposals apart (#698)', () => {
+  const seeds = {
+    fix: 'authored-provider-neutral--terraform-apply-sensitive', scope: 'structured-credential-files-authored--netrc-single-line-entry',
+    expect: 'twilio-compound-credentials-authored--api-key-sid-alone', follow: 'http-auth-carriers-authored--basic-empty-password',
+  };
+  const list = [
+    rc({ id: 'fix-gate', kind: 'gate-peer-differential-unsettled', seedCase: seeds.fix, peer: 'gitleaks', disagreement: 'reference-only', occurrences: [{ observed: { reference: { measurement: { type: 'control', flagged: true } }, peer: { measurement: { type: 'control', flagged: false } } } }] }),
+    rc({ id: 'scope', kind: 'core-positive-miss', seedCase: seeds.scope }),
+    rc({ id: 'scope-assert', kind: 'reference-assertion-failure', seedCase: seeds.scope }),
+    rc({ id: 'expect', kind: 'core-control-flagged', seedCase: seeds.expect }),
+    rc({ id: 'follow', kind: 'reference-assertion-failure', seedCase: seeds.follow }),
+  ];
+  const before = decide(list);
+  assert.equal(before['fix-gate'].classification, 'in-contract-product-bug');
+  assert.equal(before['fix-gate'].status, 'open', 'a fix is not claimed without a candidate replay');
+  assert.equal(before['fix-gate'].rule, 'gate-peer.follows-core-1203.fix');
+  assert.equal(before.scope.classification, 'unsupported-or-feature-scope');
+  assert.equal(before.scope.status, 'settled');
+  assert.equal(before['scope-assert'].rule, 'core-1203.unsupported-family');
+  assert.equal(before.expect.classification, 'expectation-or-contract-correction');
+  assert.match(before.expect.evidenceProposal, /SK/);
+  assert.equal(before.follow.evidenceProposal.startsWith('http-auth-carriers-authored--basic-empty-password'), true);
+  assert.equal(before.scope.evidenceProposal, undefined);
+  const after = decide(list, { candidate: { commit: 'c'.repeat(40), fixed: [seeds.fix], stillFailing: [] } });
+  assert.equal(after['fix-gate'].status, 'fixed-in-candidate');
+  assert.match(after['fix-gate'].disposition, /candidate replay/);
+});

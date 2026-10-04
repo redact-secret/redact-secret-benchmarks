@@ -5,7 +5,7 @@
  * request. Every step is idempotent and every refusal exits non-zero with the reason; nothing is accepted, no ledger row or status moves, and the evidence is not edited.
  *
  *   node scripts/run-candidate-replay.mjs all      --candidate <id> [--ref <branch>] [--no-pr]
- *   node scripts/run-candidate-replay.mjs dispatch --candidate <id> [--ref <branch>]            prints the run id
+ *   node scripts/run-candidate-replay.mjs dispatch --candidate <id> [--ref <branch>] [--reuse-run <id>]   prints the run id; --reuse-run rebuilds only the effect report from an earlier run's scanner artifacts
  *   node scripts/run-candidate-replay.mjs wait     --run <id>                                    exits non-zero unless the run succeeded
  *   node scripts/run-candidate-replay.mjs collect  --candidate <id> --run <id>                   download, archive, verify, write data, record
  *   node scripts/run-candidate-replay.mjs propose  --candidate <id>                              branch, commit, push, draft pull request
@@ -50,14 +50,14 @@ export function recordReplay(registry, id, replay) {
 
 export const dataDir = id => `docs/generated/evidence-adoption/product-${id}`;
 
-function dispatch(id, ref) {
+function dispatch(id, ref, reuse) {
   if (run('git', ['status', '--porcelain']).trim()) throw new Error('the working tree is not clean: the replay runs the pushed commit, so commit and push first');
   const sha = run('git', ['rev-parse', 'HEAD']).trim();
   const pushed = run('git', ['ls-remote', 'origin', `refs/heads/${ref}`]).split('\t')[0];
   if (pushed !== sha) throw new Error(`origin/${ref} is at ${pushed || 'nothing'}, HEAD is ${sha}: push first`);
-  run('node', ['scripts/check-product-candidates.mjs', '--bindings'], { stdio: 'inherit' });
+  run('node', ['scripts/check-product-candidates.mjs', '--bindings'], { stdio: ['ignore', 2, 2] });
   const after = Date.now();
-  gh(['workflow', 'run', WORKFLOW, '-R', REPOSITORY, '--ref', ref, '-f', `candidate=${id}`]);
+  gh(['workflow', 'run', WORKFLOW, '-R', REPOSITORY, '--ref', ref, '-f', `candidate=${id}`, ...(reuse ? ['-f', `reuse_candidate_run_id=${reuse}`] : [])]);
   for (let attempt = 0; attempt < 30; attempt += 1) {
     const runs = JSON.parse(gh(['run', 'list', '-R', REPOSITORY, '--workflow', WORKFLOW, '--branch', ref, '--limit', '10', '--json', 'databaseId,event,headBranch,headSha,createdAt']));
     const found = pickDispatchedRun(runs, { ref, sha, after });
@@ -134,15 +134,15 @@ if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.ar
   const id = option('candidate');
   try {
     const ref = option('ref') ?? run('git', ['branch', '--show-current']).trim();
-    if (command === 'dispatch') console.log(dispatch(id, ref));
+    if (command === 'dispatch') console.log(dispatch(id, ref, option('reuse-run')));
     else if (command === 'wait') wait(option('run'));
     else if (command === 'collect') console.log(JSON.stringify(collect(id, option('run'))));
     else if (command === 'propose') console.log(propose(id));
     else if (command === 'all') {
-      const runId = dispatch(id, ref);
+      const runId = dispatch(id, ref, option('reuse-run'));
       console.error(`dispatched run ${runId}`);
       wait(runId);
-      const result = collect(id, runId);
+      const result = collect(id, option('reuse-run') ?? runId);
       console.error(`collected: worsened=${result.effect.worsened}, fixed ${result.effect.fixed.length}, archive ${result.digest}`);
       if (!rest.includes('--no-pr')) console.log(propose(id));
     } else { console.error('usage: run-candidate-replay.mjs all|dispatch|wait|collect|propose --candidate <id> ...'); process.exit(2); }

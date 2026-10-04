@@ -7,19 +7,18 @@
  *   node scripts/replay-archive.mjs pack  --in <dir> --out <dir> [--tag <release tag> --notes <text>]   tar.gz of <dir>, its sha256, optionally as a release
  *   node scripts/replay-archive.mjs fetch --release <tag> --sha256 sha256:<64 hex> --out <dir>           download, verify the digest, extract
  *
- * `fetch` fails closed: a digest that differs, a link or an absolute or parent path in the tarball exits 1 and extracts nothing. `pack` keeps only
+ * `fetch` fails closed: a digest that differs, a link, a duplicate, an unexpected, absolute or parent path in the tarball exits 1 and extracts nothing. macOS AppleDouble members (basename `._*`) are skipped, never read or extracted; the digest still covers the original bytes. `pack` keeps only
  * <population>/artifact.json, <population>/run-record.json, <population>/methods/{artifact,run-record}.json and product-candidate-receipt.json files.
  */
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import { gunzipSync } from 'node:zlib';
 import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const KEEP = /(^|\/)(artifact\.json|run-record\.json|product-candidate-receipt\.json)$/;
-// macOS tar adds AppleDouble `._*` companions: never data, never extracted, never trusted.
-const APPLE_DOUBLE = /(^|\/)\._[^/]*$/;
 export const sha256File = file => `sha256:${createHash('sha256').update(readFileSync(file)).digest('hex')}`;
 
 export function listKept(dir) {
@@ -45,7 +44,9 @@ export function pack({ input, out, tag, notes }) {
     for (const f of files) { mkdirSync(path.dirname(path.join(stage, f)), { recursive: true }); copyFileSync(path.join(input, f), path.join(stage, f)); }
     const name = `${tag ?? 'replay'}.tar.gz`;
     const tarball = path.join(out, name);
-    execFileSync('tar', ['-czf', tarball, '-C', stage, ...files], { env: { ...process.env, COPYFILE_DISABLE: '1' } });
+    execFileSync('tar', ['-czf', tarball, '-C', stage, ...files], { env: { ...process.env, COPYFILE_DISABLE: '1' } }); // COPYFILE_DISABLE: macOS tar would add `._*` AppleDouble members
+    const appleDouble = readTarEntries(readFileSync(tarball)).filter(e => isAppleDouble(e.name));
+    if (appleDouble.length) throw new Error(`the new archive holds AppleDouble members: ${appleDouble.map(e => e.name).join(', ')}`);
     const digest = sha256File(tarball);
     writeFileSync(`${tarball}.sha256`, `${digest.replace('sha256:', '')}  ${name}\n`);
     if (tag) execFileSync('gh', ['release', 'create', tag, tarball, `${tarball}.sha256`, '--title', tag, '--notes', notes ?? `Replay artifacts ${tag}; sha256 ${digest}. Never accepted runs and never public evidence.`], { stdio: 'inherit' });
@@ -66,13 +67,48 @@ export function fetchArchive({ release, sha256, out, repository }) {
   } finally { rmSync(scratch, { recursive: true, force: true }); }
 }
 
+/** macOS tar adds `._<name>` AppleDouble metadata members. They are skipped (never read or extracted); everything else stays on the allowlist. */
+export const isAppleDouble = name => path.posix.basename(name.replace(/\/+$/, '')).startsWith('._');
+
+const field = (block, from, length) => { const raw = block.subarray(from, from + length); const end = raw.indexOf(0); return raw.subarray(0, end < 0 ? length : end).toString('utf8'); };
+const octal = (block, from, length) => parseInt(field(block, from, length).trim() || '0', 8);
+
+/** Members of a gzip tarball, read here rather than through `tar -t` (bsdtar hides `._*` members on macOS, GNU tar lists them), so every platform sees the same names. */
+export function readTarEntries(gz) {
+  const buf = gunzipSync(gz);
+  const entries = [];
+  let pax = {}; let longName;
+  for (let at = 0; at + 512 <= buf.length;) {
+    const header = buf.subarray(at, at + 512);
+    if (header.every(b => b === 0)) break;
+    const size = octal(header, 124, 12);
+    const type = String.fromCharCode(header[156] || 48);
+    const data = buf.subarray(at + 512, at + 512 + size);
+    at += 512 + Math.ceil(size / 512) * 512;
+    if (type === 'x') { for (let i = 0; i < data.length;) { const sp = data.indexOf(32, i); const len = parseInt(data.subarray(i, sp).toString(), 10); const [k, ...v] = data.subarray(sp + 1, i + len - 1).toString('utf8').split('='); pax[k] = v.join('='); i += len; } continue; }
+    if (type === 'g') continue;
+    if (type === 'L') { longName = data.toString('utf8').replace(/\0+$/, ''); continue; }
+    const prefix = field(header, 345, 155);
+    const name = pax.path ?? longName ?? (prefix ? `${prefix}/${field(header, 0, 100)}` : field(header, 0, 100));
+    entries.push({ name, type, data });
+    pax = {}; longName = undefined;
+  }
+  return entries;
+}
+
 export function extractVerified(tarball, out) {
-  const names = execFileSync('tar', ['-tzf', tarball], { encoding: 'utf8' }).split('\n').filter(Boolean);
-  for (const n of names) if (n.startsWith('/') || n.split('/').includes('..') || !(KEEP.test(n) || n.endsWith('/') || APPLE_DOUBLE.test(n))) throw new Error(`unexpected path in the archive: ${n}`);
-  const listing = execFileSync('tar', ['-tvzf', tarball], { encoding: 'utf8' }).split('\n').filter(Boolean);
-  if (listing.some(l => /^[lh]/.test(l))) throw new Error('the archive holds a link');
+  const kept = new Map();
+  for (const { name, type, data } of readTarEntries(readFileSync(tarball))) {
+    if (type !== '0' && type !== '5') throw new Error(`the archive holds a link or special entry: ${name}`);
+    if (name.startsWith('/') || name.split('/').includes('..')) throw new Error(`unexpected path in the archive: ${name}`);
+    if (type === '5') { if (!isAppleDouble(name)) continue; throw new Error(`unexpected path in the archive: ${name}`); }
+    if (isAppleDouble(name)) continue;
+    if (!KEEP.test(name)) throw new Error(`unexpected path in the archive: ${name}`);
+    if (kept.has(name)) throw new Error(`duplicate path in the archive: ${name}`);
+    kept.set(name, data);
+  }
   mkdirSync(out, { recursive: true });
-  execFileSync('tar', ['-xzf', tarball, '-C', out, '--exclude', '._*']);
+  for (const [name, data] of kept) { const target = path.join(out, name); mkdirSync(path.dirname(target), { recursive: true }); writeFileSync(target, data, { mode: 0o644 }); }
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {

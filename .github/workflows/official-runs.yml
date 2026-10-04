@@ -5,12 +5,29 @@ name: Official credential-eval runs
 # benchmarks/official-runs.json; the steps are credential-eval docs/consumers/benchmarks-quickstart.md.
 # Spec: docs/specs/official-runs.md.
 #
+# Two modes (#705). `full` (the default) is the official run described above. `diagnostic` is the fast product-candidate lane: it runs only the
+# product scanner over the regression and policy populations (the public population too only with include_public), as an EXPLORATORY, internal
+# run, one engine run per population, no methods, no peers; each population job uploads its findings and outcome receipt as soon as it ends, and
+# the summary states which scanners and methods did not run. Diagnostic artifacts are named diagnostic-<population>, are never read by the
+# qualification-view job, never recorded or archived, and cannot pass the official binding. Spec: docs/specs/official-runs.md, "The diagnostic lane".
+#
 # Safety: dispatch only (never pull_request_target); contents: read; the engine token is a GitHub App token scoped to
 # redact-secret/credential-eval with contents: read, minted in the job that needs it and never echoed; no checkout keeps
 # credentials; every action is pinned to a commit.
 on:
   workflow_dispatch:
     inputs:
+      mode:
+        description: full = the official run (all populations, all scanners, two engine runs, methods, the qualification view). diagnostic = the fast product-candidate lane (#705); exploratory and internal, never promotable.
+        required: false
+        default: full
+        type: choice
+        options: [full, diagnostic]
+      include_public:
+        description: Diagnostic mode only. Also run the public evidence population for the product (a separate job; it never delays the regression and policy receipts).
+        required: false
+        default: false
+        type: boolean
       reuse_run_id:
         description: Retry the view stage only (#699). The id of an earlier official-runs run whose scanner artifacts are valid; the scanner jobs are skipped and the view is built from that run's artifacts and the pinned snapshot of this commit.
         required: false
@@ -28,17 +45,41 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  plan:
+    name: Plan the populations (${{ inputs.mode }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      populations: ${{ steps.plan.outputs.populations }}
+    env:
+      MODE: ${{ inputs.mode }}
+      INCLUDE_PUBLIC: ${{ inputs.include_public }}
+      ATTRIBUTION: ${{ inputs.attribution }}
+      REUSE_RUN_ID: ${{ inputs.reuse_run_id }}
+    steps:
+      - id: plan
+        run: |
+          if [ "$MODE" = "diagnostic" ]; then
+            [ -z "$ATTRIBUTION" ] && [ -z "$REUSE_RUN_ID" ] || { echo "::error::a diagnostic run takes neither attribution nor reuse_run_id"; exit 1; }
+            if [ "$INCLUDE_PUBLIC" = "true" ]; then echo 'populations=["regression-corpus","policy-corpus","public-evidence-snapshot"]' >> "$GITHUB_OUTPUT"; else echo 'populations=["regression-corpus","policy-corpus"]' >> "$GITHUB_OUTPUT"; fi
+          else
+            [ "$INCLUDE_PUBLIC" != "true" ] || { echo "::error::include_public is for diagnostic mode; a full run always runs every population"; exit 1; }
+            echo 'populations=["public-evidence-snapshot","regression-corpus","policy-corpus"]' >> "$GITHUB_OUTPUT"
+          fi
+
   official-run:
-    name: Official run (${{ matrix.population }})
+    name: ${{ inputs.mode == 'diagnostic' && 'Diagnostic run' || 'Official run' }} (${{ matrix.population }})
+    needs: plan
     if: ${{ inputs.reuse_run_id == '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 180 # two plain and two methods runs; OpenRedaction's methods scan alone takes ~29 min of its 30-min per-scan limit (credential-eval ADR 0004)
     strategy:
       fail-fast: false
       matrix:
-        population: [public-evidence-snapshot, regression-corpus, policy-corpus]
+        population: ${{ fromJSON(needs.plan.outputs.populations) }}
     env:
       PLATFORM: linux-x64
+      MODE: ${{ inputs.mode }}
       ATTRIBUTION: ${{ inputs.attribution }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
@@ -78,6 +119,7 @@ jobs:
       - name: Build the engine at the pinned tag
         run: cargo build --release --locked -p credential-eval-cli --manifest-path credential-eval/Cargo.toml
       - name: Provision the peer scanners at their pinned digests
+        if: ${{ inputs.mode != 'diagnostic' }} # the diagnostic lane runs the product only; no peer is needed or waited for
         run: |
           node scripts/provision-official-peers.mjs --platform "$PLATFORM" --out "$RUNNER_TEMP/peer-bin"
           echo "$RUNNER_TEMP/peer-bin" >> "$GITHUB_PATH"
@@ -89,7 +131,23 @@ jobs:
       - name: Install the npm scanners from the engine lockfile, without install scripts
         run: npm ci --ignore-scripts --no-audit --no-fund
         working-directory: credential-eval/${{ steps.shim.outputs.dir }}
+      - name: Diagnostic run (product only, exploratory and internal)
+        if: ${{ inputs.mode == 'diagnostic' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POPULATION: ${{ matrix.population }}
+        run: >
+          node --import tsx scripts/run-official-credential-eval.ts
+          --mode diagnostic --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
+          --out "official-out/$POPULATION"
+      - name: Diagnostic scope and outcomes
+        if: ${{ inputs.mode == 'diagnostic' && !cancelled() }}
+        env:
+          POPULATION: ${{ matrix.population }}
+        run: |
+          if [ -f "official-out/$POPULATION/diagnostic-summary.md" ]; then cat "official-out/$POPULATION/diagnostic-summary.md" >> "$GITHUB_STEP_SUMMARY"; fi
       - name: Official run, twice, with the determinism check
+        if: ${{ inputs.mode != 'diagnostic' }}
         env:
           GH_TOKEN: ${{ github.token }}
           POPULATION: ${{ matrix.population }}
@@ -98,7 +156,7 @@ jobs:
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
           --out "official-out/$POPULATION" --runs 2 ${ATTRIBUTION:+--attribution "$ATTRIBUTION"}
       - name: Methods run, twice, with the determinism check (floors population only)
-        if: matrix.population == 'public-evidence-snapshot'
+        if: matrix.population == 'public-evidence-snapshot' && inputs.mode != 'diagnostic'
         env:
           GH_TOKEN: ${{ github.token }}
           POPULATION: ${{ matrix.population }}
@@ -114,16 +172,16 @@ jobs:
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         if: ${{ !cancelled() }} # keep the plain artifact when the methods step fails
         with:
-          name: ${{ inputs.attribution != '' && format('attribution-{0}-', inputs.attribution) || 'official-run-' }}${{ matrix.population }}
+          name: ${{ inputs.mode == 'diagnostic' && 'diagnostic-' || (inputs.attribution != '' && format('attribution-{0}-', inputs.attribution) || 'official-run-') }}${{ matrix.population }}
           path: official-out/${{ matrix.population }}
           if-no-files-found: error
           retention-days: 90
 
   qualification-view:
     name: Qualification view
-    needs: official-run
-    # A skipped scanner job is the view-only retry (reuse_run_id); a failed one is not retried here.
-    if: ${{ !cancelled() && inputs.attribution == '' && (needs.official-run.result == 'success' || needs.official-run.result == 'skipped') }}
+    needs: [plan, official-run]
+    # A skipped scanner job is the view-only retry (reuse_run_id); a failed one is not retried here. A diagnostic run builds no view (#705).
+    if: ${{ !cancelled() && inputs.mode != 'diagnostic' && inputs.attribution == '' && needs.plan.result == 'success' && (needs.official-run.result == 'success' || needs.official-run.result == 'skipped') }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:

@@ -129,6 +129,30 @@ So the canonical linux-x64 artifacts are also kept as one release asset of this 
   digests, fail closed. The product populations' `case-metadata.json` is not archived; `npm run qualification:export` writes it from the checkout, byte-identical to the CI run's input.
 - The view built from them (`npm run qualification:view`) is byte-identical to the view the CI run built.
 
+## The diagnostic lane
+
+Issue [#705](https://github.com/redact-secret/redact-secret-benchmarks/issues/705), under #704. Decision: [run a product-only exploratory diagnostic lane beside the full official run](../decisions/2026-10-04-run-a-product-only-exploratory-diagnostic-lane-beside-the-full-official-run.md).
+
+`official-runs.yml` has two modes, chosen by the `mode` input (default `full`).
+
+| | `full` (default) | `diagnostic` |
+| --- | --- | --- |
+| Purpose | official qualification | fast feedback on a product candidate |
+| Populations | public, regression, policy | regression and policy; public only with `include_public` |
+| Scanners | every pinned scanner | the product only (driver `--scanners`, the product is always included) |
+| Engine run | `official`, at least two runs, equal semantic digests | `exploratory`, one run by default |
+| Methods | the floors population's methods run | none; reported as unavailable |
+| Peers and differential | measured | not run; stated as unavailable, never inferred |
+| Class of the artifact | `official` / `public` or `internal` | `exploratory` / `internal`, promotion disallowed |
+| Artifact name | `official-run-<population>` | `diagnostic-<population>` |
+| Qualification view | built | skipped |
+
+The driver is `scripts/run-official-credential-eval.ts --mode diagnostic`. The engine configuration is the pinned one restricted to the selected scanners (`diagnostic-config.json` in the output directory); each selected scanner keeps the engine's own pin, and the engine verifies the evidence release as it does for an official run. The driver additionally refuses unless the engine commit, version and protocol, the population's evidence and the product build (version and package integrity) are the registry's pins, so a wrong candidate tarball, engine or evidence fails. The candidate is selected the way the replay selects it: by the pins of the branch the workflow runs on (evidence-adoption.md, "Engine candidate on identical evidence").
+
+Each population job writes, next to `artifact.json`, `diagnostic-record.json`, `diagnostic-summary.json` and `diagnostic-summary.md` (also appended to the job summary) and uploads them as soon as the population finishes, so regression and policy findings never wait for the public population or any peer. The summary states the scanners that ran and did not, the methods and peer comparison as unavailable with the reason, and outcome counts of the product scanner with the ids of the cases to look at (fixture ids, never values).
+
+A diagnostic artifact cannot reach an official path: `bindingProblems` accepts official artifacts only; the view job reads `official-run-*` only and does not run in diagnostic mode; `official-runs:record` refuses a diagnostic record; the archive holds only the registry's recorded digests. Dispatch with `attribution` or `reuse_run_id` is refused in diagnostic mode. A diagnostic number is never compared with an official one: its `config_hash` differs by construction.
+
 ## Not covered here
 
 - Methods runs of the regression and policy populations: the adapter reads methods from the floors population only (the legacy

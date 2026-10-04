@@ -37,6 +37,8 @@ adapter boundary that turns the artifacts into the status and the Next app's dat
 asked of credential-eval. Canonical runs are linux-x64 CI runs (`official-runs.yml`, dispatch only); a local darwin run is
 a verification, never compared with them. `trufflehog --version` must print the pinned 3.97.4 before any run.
 
+**Diagnostic lane (#705).** `official-runs.yml` input `mode: diagnostic` is the fast product-candidate lane: product scanner only, exploratory and internal, regression/policy first, peers and methods reported unavailable. It is never an official run, never recorded or archived, and never promoted. Spec: [`docs/specs/official-runs.md`](docs/specs/official-runs.md#the-diagnostic-lane).
+
 **Evidence adoption (#690).** A new credential-evidence snapshot is adopted with `adopt-evidence-snapshot.yml` (or `scripts/adopt-evidence-snapshot.mjs`): verify, engine-compatibility preflight, then a draft candidate PR that leaves pins, runs and authority untouched; the owner-accepted repin keeps old runs as `historicalRuns[]`. Never write the authority file or an owner acceptance on the owner's behalf. Spec: [`docs/specs/evidence-adoption.md`](docs/specs/evidence-adoption.md).
 
 **Authority (#608).** Which pipeline is the authority for credential qualification is one committed value,

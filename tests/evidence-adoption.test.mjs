@@ -26,7 +26,7 @@ test('an engine-unreadable snapshot (cases without content) is reported by rule 
   assert.match(compat.groups[0].rule, /missing required field 'content'/);
   assert.deepEqual([...compat.groups[0].caseIds].sort(), ['bad-utf8', 'large-must-flag']);
   const message = incompatibilityMessage(compat, registry.engine);
-  assert.match(message, new RegExp(registry.engine.tag.replace(/\./g, '\\.')));
+  assert.ok(message.includes(registry.engine.tag));
   assert.match(message, /No pin was changed and no pull request was opened/);
   assert.doesNotMatch(message, /content of/);
   assert.equal(snapshotCompatibility(snapshot(makeCase('a'), makeCase('b')), engineSchema).compatible, true);

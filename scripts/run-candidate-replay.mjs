@@ -85,7 +85,13 @@ function collect(id, runId) {
       if (record.determinism?.semanticDigestsEqual !== true) throw new Error(`${rel}: the repeat runs did not agree`);
     }
     const effect = JSON.parse(readFileSync(path.join(scratch, 'report/candidate-effect.json'), 'utf8'));
-    const archived = pack({ input: into, out: path.join(scratch, 'archive'), tag: `candidate-runs-${runId}`, notes: `Candidate replay ${id} (CI run ${runId}): exploratory, internal artifacts of an unpublished build. Never accepted runs and never public evidence.` });
+    // Idempotent: a release already made for this run (by an earlier collect) is verified and reused, never replaced.
+    const tag = `candidate-runs-${runId}`;
+    let existing = null;
+    try { existing = JSON.parse(gh(['release', 'view', tag, '-R', REPOSITORY, '--json', 'assets'], { stdio: ['ignore', 'pipe', 'ignore'] })).assets.find(a => a.name.endsWith('.tar.gz')); } catch { existing = null; }
+    const archived = existing
+      ? { digest: existing.digest, files: listKept(into) }
+      : pack({ input: into, out: path.join(scratch, 'archive'), tag, notes: `Candidate replay ${id} (CI run ${runId}): exploratory, internal artifacts of an unpublished build. Never accepted runs and never public evidence.` });
     // The archive must round-trip: what is fetched by its digest holds the same artifact bytes as what was packed.
     const check = path.join(scratch, 'roundtrip');
     fetchArchive({ release: `candidate-runs-${runId}`, sha256: archived.digest, out: check, repository: REPOSITORY });

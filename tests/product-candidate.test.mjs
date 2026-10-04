@@ -117,3 +117,14 @@ test('the registry gate verifies the shape of a recorded replay (#698)', () => {
     assert.match(found, /candidate-effect.json/);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('a replay on a new snapshot is recorded next to the accepted evidence\'s, keyed by the release tag, never in its place (#698)', async () => {
+  const { recordReplay } = await import('../scripts/run-candidate-replay.mjs');
+  const D = c => `sha256:${c.repeat(64)}`;
+  const receipt = { ciRun: 'https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/1', benchmarkRevision: 'a'.repeat(40), data: 'x', worsened: false, fixed: 4, regressed: 0, archive: { release: 'candidate-runs-1', sha256: D('1') } };
+  const registry = { candidates: [{ id: 'c1', replay: { state: 'replayed', keep: true } }] };
+  const next = recordReplay(registry, 'c1', receipt, 'snapshot-2026.10.04.4');
+  assert.deepEqual(next.candidates[0].replay, { state: 'replayed', keep: true });
+  assert.equal(next.candidates[0].evidenceReplays['snapshot-2026.10.04.4'].fixed, 4);
+  assert.equal(recordReplay(registry, 'c1', receipt).candidates[0].replay.fixed, 4);
+});

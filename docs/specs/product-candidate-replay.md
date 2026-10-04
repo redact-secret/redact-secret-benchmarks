@@ -39,6 +39,29 @@ node scripts/run-candidate-replay.mjs all --candidate core-main-1e45cecf   # on 
 
 `dispatch` (checks the push, the registry and its release, dispatches `official-runs.yml` with `candidate`, finds the run), `wait`, `collect` (downloads the artifacts and the report, checks each run record is exploratory, internal, this candidate and repeat-equal, archives them as `candidate-runs-<run id>`, fetches the archive by its digest and compares every artifact byte, writes `docs/generated/evidence-adoption/product-<id>/` and the registry receipt) and `propose` (commit, push, draft pull request) can be run alone; each is idempotent and refuses with the reason. The workflow stays `contents: read`; the release and the pull request use the maintainer's `gh` credentials.
 
+## A new evidence snapshot: the 2x2
+
+When credential-evidence releases a newer snapshot, the SAME registered product bytes are measured on it and the effects are separated (decision [record a newer evidence release](../decisions/2026-10-04-record-a-newer-evidence-release-as-an-evidence-candidate-and-separate-corpus-product-and-interaction-effects-in-a-2x2.md)).
+
+| | accepted evidence | new evidence |
+| --- | --- | --- |
+| control: published build | A (`engineCandidate.replay`) | C (`evidenceCandidate.replay`) |
+| candidate: unpublished build | B (`replay`) | D (`evidenceReplays[<tag>]`) |
+
+Corpus effect is A to C (and B to D), product effect is A to B and C to D, interaction is the product effect compared on the cases both corpora measure. Cases added or changed by the new snapshot exist only on the new side: their product effect cannot be separated from the corpus and is reported as such. `scripts/compare-candidate-2x2.ts` writes `two-by-two.json/.md` (plain, methods assertions, review occurrences, peers, the product-owned populations) and is strict: zero unexplained, or it exits 1. Every case carries whether the release records it as maintainer-only (ADR 0020); none is independently reviewed.
+
+```bash
+# 1. Verify and record the release as the evidence candidate (engine and published product as the pins). Nothing is accepted.
+node scripts/adopt-evidence-snapshot.mjs prepare --tag <snapshot tag> --manifest-digest sha256:<hex> \
+  --engine-tag v0.1.0-alpha.5 --engine-revision <40 hex> --engine-run-schema <run-artifact schema> --engine-schema <corpus-snapshot schema> \
+  --product-version 0.1.0-beta.13 --product-integrity sha512-... [--supersede]
+# 2. The control (C): replay the published build on it with a transient replay branch (pins: engine, product, `adopt-evidence-snapshot.mjs repin`), archive it and record `evidenceCandidate.replay`.
+# 3. The candidate (D), the same bytes as the registry says, then the 2x2, the data and the receipt:
+node scripts/run-candidate-replay.mjs all --candidate core-main-1e45cecf --evidence-tag <snapshot tag> --manifest-digest sha256:<hex>
+```
+
+`dispatch`, `collect` and `propose` take the same two options. The workflow inputs are `candidate`, `evidence_tag` and `evidence_manifest_digest` (the scanner jobs refuse an unrecorded adoption, a different manifest digest or a different release identity); `reuse_candidate_run_id` rebuilds the report alone from an earlier run's artifacts. The candidate registry's `evidenceReplays[<tag>]` holds the receipt; `npm run product-candidates:check` requires its 2x2 beside its data.
+
 ## Product scope (#622)
 
 `scanners/product-scope.json` holds the product's own out-of-scope statements, read at a named product revision and validated by `npm run peer-rules:check` (no judgement words, bounded, permalinked sources). The scanner page shows them for redact-secret and states the revision the registered-detector count was read at.

@@ -12,6 +12,7 @@ import { canonical, sha256Hex } from './canonical.ts';
 import { AXIS_OVERLAY_FILE, axisOverlayProblems, type AxisOverlay } from './axis-overlay.ts';
 import { TWIN_SCOPE_FILE, twinScopeMapProblems, type TwinScopeMap } from './twin-scope.ts';
 import { LEDGER_REKEY_FILE, ledgerRekeyProblems, type LedgerRekey } from './ledger-rekey.ts';
+import { readDerivedInputs } from './derived-inputs.ts';
 
 /**
  * Product-owned inputs of the adapter, read from this repository (#605). Each is data or a table another gate already
@@ -52,8 +53,11 @@ export function policyRevision(components: { path: string; digest: string }[]): 
   return { revision: `rs-policy-${ADAPTER.version}:sha256:${sha256Hex(canonical({ adapter: ADAPTER, components: sortedComponents }))}`, components: sortedComponents };
 }
 
-export async function loadPolicyRevision(): Promise<PolicyRevision> {
-  const components: { path: string; digest: string }[] = await Promise.all(POLICY_FILES.map(async file => ({ path: file, digest: `sha256:${sha256Hex(canonical(await readJson(file)))}` })));
+/** Parsed contents that stand in for a committed policy file (the snapshot-derived inputs of a candidate view, #699). */
+export type PolicyOverrides = Partial<Record<(typeof POLICY_FILES)[number], unknown>>;
+
+export async function loadPolicyRevision(overrides: PolicyOverrides = {}): Promise<PolicyRevision> {
+  const components: { path: string; digest: string }[] = await Promise.all(POLICY_FILES.map(async file => ({ path: file, digest: `sha256:${sha256Hex(canonical(file in overrides ? overrides[file] : await readJson(file)))}` })));
   components.push({ path: CONTRACTS_COMPONENT, digest: `sha256:${sha256Hex(canonical(contractFacts(contracts as unknown as Record<string, Record<string, unknown>>)))}` });
   return policyRevision(components);
 }
@@ -64,8 +68,17 @@ export async function loadRegistry() {
   return { registry, populations, engine: { version: registry.engine.version as string, protocol: registry.engine.protocol as string } };
 }
 
-export async function loadProductInputs(): Promise<ProductInputs> {
-  const [policy, ledger, gaps, axisOverlay, ledgerRekey, twinScope] = await Promise.all([readJson('benchmarks/support/population-policy.json'), readJson('benchmarks/review-ledger.json'), readJson('benchmarks/known-gaps.json'), readJson(AXIS_OVERLAY_FILE), readJson(LEDGER_REKEY_FILE), readJson(TWIN_SCOPE_FILE)]);
+/**
+ * `derivedInputsDir` (#699): the axis overlay, the twin-scope map and the review-ledger re-key of a candidate snapshot, derived into a directory by
+ * `npm run qualification:derive-inputs`. When given they replace the committed copies completely (none of the committed three is read, so an
+ * accepted population's overlay can never leak into a candidate view) and the policy revision is computed over them. The directory must hold a valid
+ * receipt and all three files; the adapter still refuses any of them that is bound to another corpus than the artifact.
+ */
+export async function loadProductInputs({ derivedInputsDir }: { derivedInputsDir?: string } = {}): Promise<ProductInputs> {
+  const ledgerForDerived = derivedInputsDir ? await readJson('benchmarks/review-ledger.json') : undefined;
+  const derived = derivedInputsDir ? await readDerivedInputs(derivedInputsDir, { ledger: ledgerForDerived }) : undefined;
+  const [policy, ledger, gaps, axisOverlay, ledgerRekey, twinScope] = await Promise.all([readJson('benchmarks/support/population-policy.json'), readJson('benchmarks/review-ledger.json'), readJson('benchmarks/known-gaps.json'),
+    derived ? derived.axisOverlay : readJson(AXIS_OVERLAY_FILE), derived ? derived.ledgerRekey : readJson(LEDGER_REKEY_FILE), derived ? derived.twinScope : readJson(TWIN_SCOPE_FILE)]);
   const twinScopeProblems = twinScopeMapProblems(twinScope);
   if (twinScopeProblems.length) throw new Error(`${TWIN_SCOPE_FILE} is invalid: ${twinScopeProblems.join('; ')}`);
   const overlayProblems = axisOverlayProblems(axisOverlay);
@@ -84,6 +97,6 @@ export async function loadProductInputs(): Promise<ProductInputs> {
     policyCriteria: policyCredentialProfile.criteria as ProductInputs['policyCriteria'],
     policyContracts: policyCredentialProfile.families as unknown as ProductInputs['policyContracts'],
     ledger, ledgerRekey: ledgerRekey as LedgerRekey, knownGaps, policy: policy as CombinationPolicy, axisOverlay: axisOverlay as AxisOverlay, twinScope: twinScope as TwinScopeMap,
-    policyRevision: await loadPolicyRevision(),
+    policyRevision: await loadPolicyRevision(derived ? { [AXIS_OVERLAY_FILE]: axisOverlay, [TWIN_SCOPE_FILE]: twinScope, [LEDGER_REKEY_FILE]: ledgerRekey } : {}),
   };
 }

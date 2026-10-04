@@ -77,7 +77,7 @@ CI (canonical): dispatch `.github/workflows/official-runs.yml`. Per population, 
 with `--bindings`; the engine built at the pinned tag with a GitHub App token scoped to `credential-eval` (contents
 read); the peer scanners provisioned at their pinned digests (`scripts/provision-official-peers.mjs`); the npm scanners
 installed without install scripts from the engine lockfile; then `scripts/run-official-credential-eval.ts`. The
-artifact, its run record and the inputs are uploaded as a build artifact. A job after them builds the qualification view.
+artifact, its run record and the inputs are uploaded as a build artifact. A job after them derives the snapshot-bound product inputs from the pinned snapshot and the methods artifact and builds the qualification view from them (docs/specs/evidence-adoption.md, "Derived inputs and the view stage"); `reuse_run_id` retries that job alone from an earlier run's artifacts.
 
 The public job runs the driver a second time with `--methods` (writing `<out>/methods/`); the view job lays the artifacts out as
 `<dir>/<population>/artifact.json` and `<dir>/public-evidence-snapshot/methods/artifact.json`.

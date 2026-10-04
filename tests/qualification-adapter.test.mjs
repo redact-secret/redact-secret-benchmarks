@@ -600,3 +600,24 @@ test('unmeasured cases are counted per scanner and reason, absent means zero, an
   ] });
   assert.deepEqual(rows, [{ scanner: 'a', unmeasured: 3, reasons: { r1: 2, r2: 1 } }, { scanner: 'b', unmeasured: 0, reasons: {} }]);
 });
+
+test('a changed corpus is refused with the accepted population\'s overlay and twin-scope map, and accepted with the ones regenerated for it (#699)', () => {
+  // The candidate corpus: the floors artifact ran another snapshot than the accepted overlays were derived from.
+  const candidate = DIGEST(777);
+  const candidateRegistry = registry.map(r => (r.id === 'pop-a' ? { ...r, evidence: { ...r.evidence, corpusDigest: candidate } } : r));
+  const candidateInputs = () => inputs({ methods: true }).map(i => (i.population === 'pop-a' ? { ...i, bytes: artifact('pop-a', familyCases('a', 'prov:fam'), { mutate: doc => { doc.manifest.evidence.corpus_digest = candidate; } }),
+    methodsBytes: artifact('pop-a', familyCases('a', 'prov:fam').map(c => ({ ...c, case_id: `${c.case_id}--differential--canonical` })), { methods: METHODS, mutate: doc => { doc.manifest.evidence.corpus_digest = candidate; } }) } : i));
+  const overlayFor = corpusDigest => ({ schemaVersion: 1, id: 'credential-public-axis-overlay-v1', population: 'pop-a', owner: 'redact-secret-benchmarks', note: 'synthetic',
+    snapshot: { corpusDigest, cases: 5 }, derivation: { join: 'j', contextAxis: 'c', controlAxis: 'c', detectors: 'd', joinedCases: 5, unjoinedCases: 0 }, contexts: { 'a-p1': 'cat-x/ctx-one' }, detectors: {}, controls: {} });
+  const twinsFor = corpusDigest => ({ schemaVersion: 1, id: 'credential-public-twin-scope-map-v1', population: 'pop-a', scopedBy: 'pop-b', owner: 'redact-secret-benchmarks', note: 'synthetic', snapshot: { corpusDigest, cases: 5 }, derivation: {}, twins: {} });
+  const view = p => buildQualificationView({ registry: candidateRegistry, engine, artifacts: candidateInputs(), product: p });
+  const accepted = registry[0].evidence.corpusDigest;
+  // Stale: the accepted population's overlay, then its twin-scope map, each refused with the command that regenerates it, before any view exists.
+  assert.throws(() => view(product({ axisOverlay: overlayFor(accepted) })), /axis overlay is derived from corpus .* regenerate it \(npm run qualification:axis-overlay\)/);
+  assert.throws(() => view(product({ axisOverlay: overlayFor(candidate), twinScope: twinsFor(accepted) })), /twin-scope map is derived from corpus .* regenerate it \(npm run qualification:twin-scope\)/);
+  // Regenerated for the candidate corpus: accepted, and the view names the candidate corpus (never the accepted one) in every input it was built from.
+  const built = view(product({ axisOverlay: overlayFor(candidate), twinScope: twinsFor(candidate) }));
+  assert.deepEqual(validateQualificationView(built), []);
+  assert.equal(built.policy.axisOverlay.corpusDigest, candidate);
+  assert.equal(built.policy.twinScope.corpusDigest, candidate);
+});

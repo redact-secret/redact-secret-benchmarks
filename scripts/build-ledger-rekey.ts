@@ -13,8 +13,9 @@
  */
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { buildLedgerRekey, ledgerRekeyProblems, LEDGER_REKEY_FILE, serializeLedgerRekey } from '../benchmarks/qualification/ledger-rekey.ts';
-import { joinLegacyToSnapshot, type SnapshotLike } from '../benchmarks/qualification/axis-overlay.ts';
+import { ledgerRekeyProblems, LEDGER_REKEY_FILE, serializeLedgerRekey } from '../benchmarks/qualification/ledger-rekey.ts';
+import { type SnapshotLike } from '../benchmarks/qualification/axis-overlay.ts';
+import { deriveLedgerRekey } from '../benchmarks/qualification/derived-inputs.ts';
 import { readRunArtifact } from '../benchmarks/qualification/run-artifact.ts';
 
 const args = process.argv.slice(2);
@@ -45,31 +46,7 @@ if (snapshot.identity.corpus_digest !== pinned) throw new Error(`The snapshot is
 const methods = readRunArtifact(await readFile(path.resolve(methodsFile)));
 if (methods.semanticDigest !== canonicalMethods.artifact.semanticDigest) throw new Error(`The methods artifact has semantic digest ${methods.semanticDigest}; ${canonicalMethods.id} records ${canonicalMethods.artifact.semanticDigest}`);
 
-// The legacy review queue, as scripts/check-review-queue-coverage.mjs computes it (peer observations are the committed, validated snapshots).
-const imp = (p: string) => import(path.join(root, p));
-const { scanners: available } = await imp('scanners/index.mjs');
-const { credentialDomain } = await imp('benchmarks/evaluation/domains/credential/contract.ts');
-const { runEvaluation } = await imp('benchmarks/engine/runner.ts');
-const { evaluationInputs } = await imp('benchmarks/engine/execution.ts');
-const peerObservations = await imp('benchmarks/lib/peer-observations.ts');
-const suite = await readJson(path.join(root, 'qualification/suite-v1.json'));
-const scanners = available.filter((s: { id: string }) => Object.hasOwn(suite.scanners, s.id));
-const operators = credentialDomain.createOperators(), engineMethods = credentialDomain.createMethods();
-const cases = (await credentialDomain.loadCases(operators)).map((c: any) => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
-const input = peerObservations.inputIdentity({
-  surface: 'evaluation/suite-development', suite: peerObservations.observationSuiteIdentity(suite),
-  corpus: cases.map((c: any) => ({ id: c.id, sourceHash: c.provenance.sourceHash, seed: c.provenance.seed })), fixtures: evaluationInputs(cases, engineMethods, operators).fixtures,
-  semanticIndex: await peerObservations.semanticIndexIdentity(root),
-});
-const reusedObservations = await Promise.all(scanners.filter((s: { id: string }) => s.id !== 'redact-secret').map(async (peer: any) => peerObservations.snapshotObservation(await peerObservations.readSnapshot(
-  peerObservations.snapshotPath(root, 'evaluation/suite-development', peer.id), { input, peer: await peerObservations.repositoryPeerIdentity(peer, root) }))));
-const legacy = await runEvaluation({ cases, methods: engineMethods, operators, scanners: scanners.filter((s: { id: string }) => s.id === 'redact-secret'), reusedObservations, ledger, normalizeFinding: credentialDomain.normalizeFinding });
-
-const map = buildLedgerRekey({
-  snapshot: { corpusDigest: snapshot.identity.corpus_digest, cases: snapshot.cases.length },
-  methodsRun: { run: canonicalMethods.id, semanticDigest: methods.semanticDigest, reviewQueue: methods.artifact.review_queue as any, variants: methods.artifact.variants as any },
-  legacyQueue: legacy.reviewQueue, joined: await joinLegacyToSnapshot(snapshot), ledger,
-});
+const { map } = await deriveLedgerRekey(snapshot, methods.artifact, methods.semanticDigest, canonicalMethods.id);
 const problems = ledgerRekeyProblems(map, ledger);
 if (problems.length) throw new Error(`The derived mapping is invalid:\n  - ${problems.join('\n  - ')}`);
 const bytes = serializeLedgerRekey(map);

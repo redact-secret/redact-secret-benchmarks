@@ -37,3 +37,7 @@ Rollback is reverting the acceptance commit, or setting the authority file's `au
 - The 18 provisional matrix entries stay provisional until a reviewer settles the added cases' occurrences. That work belongs to the product and to the independent review, not to this repository.
 - The public credential qualification pages say which pipeline is the authority and show how many fixtures carry the maintainer-reviewed label.
 - Open for production: `npm run go-production`, run when the owner asks for it.
+
+## Correction (#700)
+
+The Context above quotes 235 regrouped common cases. That figure belongs to the superseded candidate `snapshot-2026.10.04` (100 + 131 evidence-class transitions and 4 grouping-only changes). The accepted candidate `snapshot-2026.10.04.3` measures 236: 101 + 131 = 232 evidence-class transitions (one more `project-policy -> provider-documented` than before) and the same 4 grouping-only changes (family or twin family, class unchanged). The change report (`diff.cases.changed`), the adoption record (`changeSummary.changed`) and the regenerated adoption report all say 236. The acceptance itself is unchanged: it was made on `snapshot-2026.10.04.3`.

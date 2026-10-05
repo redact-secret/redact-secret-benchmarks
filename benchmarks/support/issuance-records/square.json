@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "provider": "square",
+  "issue": 584,
+  "rawValueRetained": false,
+  "note": "Structure only. A role stays \"pending issuance by the maintainer\" until he issues a key in the Square developer dashboard and runs `npm run issuance:square`; the value is never recorded.",
+  "roles": [
+    {
+      "role": "access-token",
+      "status": "pending issuance by the maintainer",
+      "family": "square-token",
+      "taxonomyFamily": "square:access-token",
+      "question": "total length (expect 64) and which of + = _ - occur",
+      "result": null
+    },
+    {
+      "role": "sandbox-access-token",
+      "status": "pending issuance by the maintainer",
+      "family": "square-token",
+      "taxonomyFamily": "square:access-token",
+      "question": "whether it also starts with EAAA, and its length",
+      "result": null
+    },
+    {
+      "role": "refresh-token",
+      "status": "pending issuance by the maintainer",
+      "family": "square-token",
+      "taxonomyFamily": "square:access-token",
+      "question": "whether EQAA is a real prefix, and its length (the ObtainToken reference shows EQAA + 60)",
+      "result": null
+    },
+    {
+      "role": "oauth-secret-production",
+      "status": "pending issuance by the maintainer",
+      "family": "square-oauth-application-secret",
+      "taxonomyFamily": "square:oauth-application-secret",
+      "question": "whether the sq0csp- body is 43 or 44 characters",
+      "result": null
+    },
+    {
+      "role": "oauth-secret-sandbox",
+      "status": "pending issuance by the maintainer",
+      "family": "square-oauth-application-secret",
+      "taxonomyFamily": "square:oauth-application-secret",
+      "question": "whether the sandbox-sq0csb- body is 43 characters",
+      "result": null
+    }
+  ]
+}

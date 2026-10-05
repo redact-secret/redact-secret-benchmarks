@@ -1,0 +1,36 @@
+{
+  "schema": "batch2-frozen-corpus-v1",
+  "issue": 739,
+  "corpusVersion": 1,
+  "sha256": "74fed38245503b63d55247f0da2da8e27a271de5467b3b06146ebef0c4f7a4f1",
+  "cases": 486,
+  "positives": 200,
+  "controls": 203,
+  "unsupported": 81,
+  "conflict": 2,
+  "families": 30,
+  "frozenBeforeAnyScan": true,
+  "expectationSources": {
+    "contract": {
+      "repo": "redact-secret/redact-secret",
+      "pr": 1231,
+      "merge": "a148dadf4a43b5441ed88386d055428b2e278f25",
+      "docs": [
+        "docs/audits/evidence/1223/README.md",
+        "docs/audits/evidence/1224/README.md",
+        "docs/audits/evidence/1225/README.md",
+        "docs/audits/evidence/1226/README.md"
+      ]
+    },
+    "handoff": {
+      "repo": "redact-secret/credential-evidence",
+      "commit": "005a7331cf90403bd4ce4abcb93bd8b085d315a9",
+      "doc": "docs/handoffs/batch-2-bounded-carriers.md"
+    }
+  },
+  "rowConflicts": {
+    "x:oauth1-access-token-secret": "oauth_token: the evidence handoff names it a public lookalike; the adopted contract (#1225) keeps the default that reads it as contextual_secret and asserts nothing for it. The secret-half expectation is not in conflict.",
+    "mongodb-atlas:programmatic-api-private-key": "readiness: the evidence handoff marks the row ready (a client-configured Digest input, no wire carrier); the adopted contract (#1226) treats no layout as named and starts it at P2. Only the controls both sides agree on were observed.",
+    "mongodb-atlas:database-user-password": "percent encoding in a connection-string password: the contract keeps escapes in the span; the evidence records it as unresolved. The password field and plain URI userinfo expectations are not in conflict."
+  }
+}

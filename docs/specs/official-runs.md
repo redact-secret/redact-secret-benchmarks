@@ -87,8 +87,14 @@ The public job runs the driver a second time with `--methods` (writing `<out>/me
 cached by runner OS/arch, release profile, `Cargo.lock`, toolchain file and engine tag; a hit saves dependency compilation only, and the
 driver still checks the engine commit, version and protocol. The floors job uploads its plain artifact as `early-plain-<population>` (14 days,
 never read by the view) before the slow methods run, so a slow or failing peer cannot hide it; the final `official-run-<population>` upload is
-unchanged and a failed methods step still leaves the plain evidence. Peer and methods sharding into separate jobs, and reuse of successful
-measurement receipts on retry (distinct from the view-only `reuse_run_id`), are not done: each fresh runner repeats provisioning and build
+unchanged and a failed methods step still leaves the plain evidence. **Retry receipts.** `retry_run_id` retries a failed official or attribution run: for each population, `scripts/retry-receipts.mjs` reads the earlier
+run's job and offers the plain and methods stages GitHub recorded as successful; their artifact (`official-run-<population>`) is downloaded and the driver
+(`--reuse-receipt`) accepts it only when `benchmarks/qualification/receipt-reuse.ts` finds the same population, platform, stage kind, engine revision,
+candidate, attribution, evidence release and methods selection, a determinism check at least as strong as this run's, and the digest its record names; the
+artifact is then bound to the current pins like a fresh one. Anything else measures fresh, and the run record says why (`receiptReuse`). A reused
+stage skips its engine runs, so a failed methods step does not repeat a passed plain measurement. This is neither the view-only `reuse_run_id` nor the
+observation reuse of the candidate replay; it is exclusive with both and with diagnostic mode, and a retry that reuses a receipt is still a run of this
+commit's pins, never a splice of artifacts. Peer and methods sharding into separate jobs is not done: each fresh runner repeats provisioning and build
 overhead, so they wait for a measured runner-minute and critical-path comparison from these summaries (#709 owns the accuracy/performance
 split).
 

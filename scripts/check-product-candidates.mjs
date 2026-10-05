@@ -53,8 +53,8 @@ export function problems(registry, adoption) {
       if (!existsSync(path.join(root, r.data ?? '', 'candidate-effect.json'))) found.push(`${at}: ${name}.data ${r.data} holds no candidate-effect.json`);
       if (name !== 'replay' && !existsSync(path.join(root, r.data ?? '', 'two-by-two.json'))) found.push(`${at}: ${name}.data ${r.data} holds no two-by-two.json`);
     }
-    const control = adoption?.engineCandidate?.product;
-    if (control && (c.control?.version !== control.version)) found.push(`${at}: control ${c.control?.version} is not the engine candidate's product pin ${control.version}`);
+    const control = adoption?.engineCandidate?.product ?? (adoption?.state === 'accepted' ? adoption.candidate?.product : undefined);
+    if (control && (c.control?.version !== control.version)) found.push(`${at}: control ${c.control?.version} is not the engine candidate's (or the accepted adoption's) product pin ${control.version}`);
   }
   return found;
 }

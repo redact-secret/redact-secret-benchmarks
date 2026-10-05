@@ -93,7 +93,10 @@ test('a repin keeps previous accepted runs as historical receipts and the regist
   assert.deepEqual(repinned.movedRunIds.sort(), floors.map(r => r.id).sort());
   assert.equal(repinned.registry.runs.some(r => r.population === 'public-evidence-snapshot'), false);
   assert.equal(repinned.registry.runs.length, registry.runs.length - floors.length);
-  assert.ok(repinned.registry.historicalRuns.every(r => r.status === 'historical' && r.supersededBy.manifestDigest === candidate.manifestDigest));
+  const moved = repinned.registry.historicalRuns.filter(r => r.supersededOn === '2000-01-02');
+  assert.equal(moved.length, floors.length);
+  assert.ok(moved.every(r => r.status === 'historical' && r.supersededBy.manifestDigest === candidate.manifestDigest));
+  assert.ok(repinned.registry.historicalRuns.every(r => r.status === 'historical'));
   assert.deepEqual(historicalRunProblems(repinned.registry), []);
   const schemaDigest = `sha256:${createHash('sha256').update(await readFile(new URL('../schemas/credential-eval-run-artifact-v1.json', import.meta.url))).digest('hex')}`;
   assert.deepEqual(officialRunProblems(repinned.registry, { schemaDigest, inputs: repinned.inputs }), []);

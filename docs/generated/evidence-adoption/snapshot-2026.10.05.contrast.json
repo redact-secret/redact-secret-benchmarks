@@ -1,0 +1,757 @@
+{
+ "schema": "redact-secret/snapshot-contrast/v1",
+ "disclosure": "Maintainer-reviewed (independent review pending) / 메인테이너 검토 (독립 검토 대기). A measurement by semantic id, not an assertion about the product.",
+ "tool": "scripts/contrast-snapshots.ts",
+ "comparisons": [
+  {
+   "kind": "control: published beta.13 on alpha.5",
+   "newer": "snapshot-2026.10.05 (run 37296823599)",
+   "older": "snapshot-2026.10.04.4 (run 37241828378)",
+   "differences": 161,
+   "explained": 161,
+   "unexplained": 0,
+   "regressions": 0,
+   "byCause": {
+    "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)": 161
+   },
+   "byPopulationAndKind": {
+    "public-evidence-snapshot case": 15,
+    "public-evidence-snapshot+methods case": 90,
+    "public-evidence-snapshot+methods assertion": 56
+   },
+   "plainCases": [
+    {
+     "scanner": "flare-redact",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive EXACT/EXACT/MISS collateral 40 leaked 138",
+     "after": "positive EXACT/EXACT/MISS leaked 138",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive MISS/MISS/MISS leaked 218",
+     "after": "positive MISS/MISS/MISS leaked 218",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "openredaction",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive EXACT/EXACT/PARTIAL collateral 20 leaked 98",
+     "after": "positive EXACT/EXACT/PARTIAL leaked 98",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "openredaction",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive PARTIAL collateral 64 leaked 2",
+     "after": "positive EXACT collateral 64",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "openredaction",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive PARTIAL collateral 73 leaked 2",
+     "after": "positive EXACT collateral 73",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive EXACT/EXACT/EXACT collateral 40",
+     "after": "positive EXACT/EXACT/EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive MISS/MISS/MISS leaked 218",
+     "after": "positive MISS/MISS/MISS leaked 218",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive MISS collateral 66 leaked 416",
+     "after": "positive MISS collateral 66 leaked 414",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive MISS collateral 66 leaked 416",
+     "after": "positive MISS collateral 66 leaked 414",
+     "expectedChanged": true
+    }
+   ]
+  },
+  {
+   "kind": "control: published beta.13 on alpha.5",
+   "newer": "snapshot-2026.10.05 (run 37296823599)",
+   "older": "snapshot-2026.10.04.3 (run 37220835061)",
+   "differences": 269,
+   "explained": 269,
+   "unexplained": 0,
+   "regressions": 0,
+   "byCause": {
+    "changed in snapshot-2026.10.04.4/.05 (expected)": 161,
+    "changed in snapshot-2026.10.04.4 (content)": 108
+   },
+   "byPopulationAndKind": {
+    "public-evidence-snapshot case": 27,
+    "public-evidence-snapshot+methods case": 162,
+    "public-evidence-snapshot+methods assertion": 80
+   },
+   "plainCases": [
+    {
+     "scanner": "flare-redact",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive EXACT/EXACT/MISS collateral 40 leaked 138",
+     "after": "positive EXACT/EXACT/MISS leaked 138",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "twilio-compound-credentials-authored--api-key-secret-before-sid",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "positive MISS leaked 32",
+     "after": "positive MISS leaked 32",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "twilio-compound-credentials-authored--api-key-sid-alone",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "twilio-compound-credentials-authored--api-key-sid-and-secret-env",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "positive MISS leaked 32",
+     "after": "positive MISS leaked 32",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive MISS/MISS/MISS leaked 218",
+     "after": "positive MISS/MISS/MISS leaked 218",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "twilio-compound-credentials-authored--api-key-secret-before-sid",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "positive EXACT",
+     "after": "positive EXACT",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "twilio-compound-credentials-authored--api-key-sid-alone",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "control flagged",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "twilio-compound-credentials-authored--api-key-sid-and-secret-env",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "positive EXACT",
+     "after": "positive EXACT",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive EXACT/EXACT/PARTIAL collateral 20 leaked 98",
+     "after": "positive EXACT/EXACT/PARTIAL leaked 98",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "openredaction",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive PARTIAL collateral 64 leaked 2",
+     "after": "positive EXACT collateral 64",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "openredaction",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive PARTIAL collateral 73 leaked 2",
+     "after": "positive EXACT collateral 73",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "openredaction",
+     "case": "twilio-compound-credentials-authored--api-key-secret-before-sid",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "positive MISS leaked 32",
+     "after": "positive MISS leaked 32",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "twilio-compound-credentials-authored--api-key-sid-alone",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "twilio-compound-credentials-authored--api-key-sid-and-secret-env",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "positive MISS leaked 32",
+     "after": "positive MISS leaked 32",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive EXACT/EXACT/EXACT collateral 40",
+     "after": "positive EXACT/EXACT/EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "twilio-compound-credentials-authored--api-key-secret-before-sid",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "positive EXACT",
+     "after": "positive EXACT",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "twilio-compound-credentials-authored--api-key-sid-alone",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "control flagged",
+     "after": "control clear",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "twilio-compound-credentials-authored--api-key-sid-and-secret-env",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "positive EXACT",
+     "after": "positive EXACT",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive MISS/MISS/MISS leaked 218",
+     "after": "positive MISS/MISS/MISS leaked 218",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive MISS collateral 66 leaked 416",
+     "after": "positive MISS collateral 66 leaked 414",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive MISS collateral 66 leaked 416",
+     "after": "positive MISS collateral 66 leaked 414",
+     "expectedChanged": true
+    }
+   ]
+  },
+  {
+   "kind": "candidate: unpublished core-main-1e45cecf (exploratory, internal)",
+   "newer": "snapshot-2026.10.05 (run 37304036245)",
+   "older": "snapshot-2026.10.04.4 (run 37253769074)",
+   "differences": 161,
+   "explained": 161,
+   "unexplained": 0,
+   "regressions": 0,
+   "byCause": {
+    "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)": 161
+   },
+   "byPopulationAndKind": {
+    "public-evidence-snapshot case": 15,
+    "public-evidence-snapshot+methods case": 90,
+    "public-evidence-snapshot+methods assertion": 56
+   },
+   "plainCases": [
+    {
+     "scanner": "flare-redact",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive EXACT/EXACT/MISS collateral 40 leaked 138",
+     "after": "positive EXACT/EXACT/MISS leaked 138",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive MISS/MISS/MISS leaked 218",
+     "after": "positive MISS/MISS/MISS leaked 218",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "openredaction",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive EXACT/EXACT/PARTIAL collateral 20 leaked 98",
+     "after": "positive EXACT/EXACT/PARTIAL leaked 98",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "openredaction",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive PARTIAL collateral 64 leaked 2",
+     "after": "positive EXACT collateral 64",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "openredaction",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive PARTIAL collateral 73 leaked 2",
+     "after": "positive EXACT collateral 73",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive EXACT/EXACT/EXACT collateral 40",
+     "after": "positive EXACT/EXACT/EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive MISS/MISS/MISS leaked 218",
+     "after": "positive MISS/MISS/MISS leaked 218",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive MISS collateral 66 leaked 416",
+     "after": "positive MISS collateral 66 leaked 414",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "expected spans corrected in credential-evidence #225 / ADR 0021 (changed in snapshot-2026.10.05)",
+     "before": "positive MISS collateral 66 leaked 416",
+     "after": "positive MISS collateral 66 leaked 414",
+     "expectedChanged": true
+    }
+   ]
+  },
+  {
+   "kind": "candidate: unpublished core-main-1e45cecf (exploratory, internal)",
+   "newer": "snapshot-2026.10.05 (run 37304036245)",
+   "older": "snapshot-2026.10.04.3 (run 37235723441)",
+   "differences": 269,
+   "explained": 269,
+   "unexplained": 0,
+   "regressions": 0,
+   "byCause": {
+    "changed in snapshot-2026.10.04.4/.05 (expected)": 161,
+    "changed in snapshot-2026.10.04.4 (content)": 108
+   },
+   "byPopulationAndKind": {
+    "public-evidence-snapshot case": 27,
+    "public-evidence-snapshot+methods case": 162,
+    "public-evidence-snapshot+methods assertion": 80
+   },
+   "plainCases": [
+    {
+     "scanner": "flare-redact",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive EXACT/EXACT/MISS collateral 40 leaked 138",
+     "after": "positive EXACT/EXACT/MISS leaked 138",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "twilio-compound-credentials-authored--api-key-secret-before-sid",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "positive MISS leaked 32",
+     "after": "positive MISS leaked 32",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "twilio-compound-credentials-authored--api-key-sid-alone",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "twilio-compound-credentials-authored--api-key-sid-and-secret-env",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "positive MISS leaked 32",
+     "after": "positive MISS leaked 32",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive MISS/MISS/MISS leaked 218",
+     "after": "positive MISS/MISS/MISS leaked 218",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "twilio-compound-credentials-authored--api-key-secret-before-sid",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "positive EXACT",
+     "after": "positive EXACT",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "twilio-compound-credentials-authored--api-key-sid-alone",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "control flagged",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "twilio-compound-credentials-authored--api-key-sid-and-secret-env",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "positive EXACT",
+     "after": "positive EXACT",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive EXACT/EXACT/PARTIAL collateral 20 leaked 98",
+     "after": "positive EXACT/EXACT/PARTIAL leaked 98",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "openredaction",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive PARTIAL collateral 64 leaked 2",
+     "after": "positive EXACT collateral 64",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "openredaction",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive PARTIAL collateral 73 leaked 2",
+     "after": "positive EXACT collateral 73",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "openredaction",
+     "case": "twilio-compound-credentials-authored--api-key-secret-before-sid",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "positive MISS leaked 32",
+     "after": "positive MISS leaked 32",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "twilio-compound-credentials-authored--api-key-sid-alone",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "twilio-compound-credentials-authored--api-key-sid-and-secret-env",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "positive MISS leaked 32",
+     "after": "positive MISS leaked 32",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive EXACT/EXACT/EXACT collateral 40",
+     "after": "positive EXACT/EXACT/EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive PARTIAL leaked 2",
+     "after": "positive EXACT",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "twilio-compound-credentials-authored--api-key-secret-before-sid",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "positive EXACT",
+     "after": "positive EXACT",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "twilio-compound-credentials-authored--api-key-sid-alone",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "control flagged",
+     "after": "control clear",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "twilio-compound-credentials-authored--api-key-sid-and-secret-env",
+     "cause": "changed in snapshot-2026.10.04.4 (content)",
+     "before": "positive EXACT",
+     "after": "positive EXACT",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive MISS/MISS/MISS leaked 218",
+     "after": "positive MISS/MISS/MISS leaked 218",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive MISS collateral 66 leaked 416",
+     "after": "positive MISS collateral 66 leaked 414",
+     "expectedChanged": true
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+     "cause": "changed in snapshot-2026.10.04.4/.05 (expected)",
+     "before": "positive MISS collateral 66 leaked 416",
+     "after": "positive MISS collateral 66 leaked 414",
+     "expectedChanged": true
+    }
+   ]
+  }
+ ]
+}

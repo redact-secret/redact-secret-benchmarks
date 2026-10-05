@@ -16,8 +16,12 @@ const DIGEST = /^sha256:[0-9a-f]{64}$/;
 export function controlFor(adoption, { evidenceTag, manifestDigest, requireArchive = true } = {}) {
   const ec = adoption.engineCandidate;
   if (!evidenceTag) {
-    if (!ec) throw new Error('benchmarks/evidence-adoption.json records no engineCandidate to replay a product candidate on');
-    return { ...ec, source: 'engineCandidate' };
+    if (ec) return { ...ec, source: 'engineCandidate' };
+    // The accepted evidence's own replay is the control once the adoption is accepted: the published product on the accepted engine (its replay copy holds the run records).
+    const accepted = adoption.state === 'accepted' ? adoption.candidate : undefined;
+    const copy = accepted?.replay?.replayCopy ?? accepted?.replay?.archive;
+    if (accepted && copy?.release && DIGEST.test(copy.sha256 ?? '') && accepted.engine?.tag && accepted.product?.version) return { ...accepted, replay: { ...accepted.replay, archive: copy }, source: 'candidate' };
+    throw new Error('benchmarks/evidence-adoption.json records no engineCandidate and no accepted replay to replay a product candidate on');
   }
   if (!DIGEST.test(manifestDigest ?? '')) throw new Error('--manifest-digest sha256:<64 hex> is required with --evidence-tag');
   const holder = [['evidenceCandidate', adoption.evidenceCandidate], ['candidate', adoption.candidate], ['engineCandidate', ec]].find(([, r]) => r?.evidenceRelease === evidenceTag);

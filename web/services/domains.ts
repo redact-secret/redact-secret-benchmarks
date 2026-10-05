@@ -24,6 +24,7 @@ import { buildPiiSupportMatrixV2, validatePiiSupportMatrixV2 } from '../../bench
 import type { CustodianConformance, PiiEvalMeasurement } from '../../benchmarks/evaluation/domains/pii/support-v2';
 import { domainDescriptorV2, evaluationDomainsV2Problem } from '../../benchmarks/shared/evaluation-domains-v2.ts';
 import type { Catalog } from './catalog';
+import { loadPiiAuthority, type PiiAuthority } from './pii-authority';
 import { loadCredentialSource, type CredentialPipeline } from './credential-source';
 import { loadFindings } from './findings';
 import { once, readJsonIfPresent, REPO_ROOT } from './repo';
@@ -58,7 +59,7 @@ export interface PiiFamilyRecord {
 
 export interface PiiMetricDefinition { id: string; population: string; numerator: string; denominator: string; direction: 'upper' | 'lower'; applicability: string }
 
-export type PiiEvaluation =
+export type PiiEvidence =
   | {
       state: 'recorded';
       mode: 'candidate' | 'published';
@@ -114,13 +115,13 @@ async function loadPublishedPiiEvidence(): Promise<{ piiEvalMeasurement: PiiEval
   return { piiEvalMeasurement: matrix.piiEvalMeasurement ?? null, custodianConformance: matrix.custodianConformance ?? null };
 }
 
-export function loadPiiEvaluation(): Promise<PiiEvaluation> {
-  return once('pii-evaluation', async () => {
+function loadPiiEvidence(): Promise<PiiEvidence> {
+  return once('pii-evidence', async () => {
     let published: Awaited<ReturnType<typeof loadPublishedPiiEvidence>>;
     try {
       published = await loadPublishedPiiEvidence();
     } catch (error) {
-      return { state: 'not-recorded', reason: `The published PII artifact did not validate: ${(error as Error).message}` } satisfies PiiEvaluation;
+      return { state: 'not-recorded', reason: `The published PII artifact did not validate: ${(error as Error).message}` } satisfies PiiEvidence;
     }
     const profile = { id: piiV1Profile.id, version: piiV1Profile.version, evaluationProfile: piiV1Profile.evaluationProfile,
       domainAccountingVersion: piiV1Profile.domainAccountingVersion };
@@ -129,7 +130,7 @@ export function loadPiiEvaluation(): Promise<PiiEvaluation> {
       const metric = piiV1Profile.metrics[id];
       return { id, population, numerator, denominator, direction: metric.direction, applicability: metric.applicability };
     });
-    const publicOnly = (protectedReason: string): PiiEvaluation => published.piiEvalMeasurement || published.custodianConformance
+    const publicOnly = (protectedReason: string): PiiEvidence => published.piiEvalMeasurement || published.custodianConformance
       ? { state: 'public-recorded', profile, metrics, ...published, protectedReason }
       : { state: 'not-recorded', reason: protectedReason };
     const binding = piiCurrentProtectedRoute();
@@ -178,12 +179,50 @@ export function loadPiiEvaluation(): Promise<PiiEvaluation> {
         languages: [...PII_CONTEXT_LANGUAGES],
         jurisdictionStandard: { id: PII_JURISDICTION_STANDARD.id, codeCount: PII_JURISDICTION_STANDARD.codeCount },
         ...published,
-      } satisfies PiiEvaluation;
+      } satisfies PiiEvidence;
     } catch (error) {
       // Protected product evidence stays fail-closed. Independently validated public-synthetic measurement may still be
       // shown as measurement, never as a family status or support claim.
       return publicOnly(`The PII protected binding did not validate: ${(error as Error).message}`);
     }
+  });
+}
+
+/** Which pipeline is the authority for the PII evaluation (#666), carried with it so every page says so. Independent of the credential authority. */
+export interface PiiAuthorityStamp {
+  authority: PiiAuthority;
+  from: 'committed' | 'default';
+  /** The legacy source of truth, or the oracle's role under `new`. */
+  source: string;
+  /** Exit criteria not yet met, by id; the number met is `total - unmet.length`. */
+  unmet: string[];
+  total: number;
+  decidedBy: string | null;
+  reviewOn: string | null;
+}
+
+export type PiiEvaluation = PiiEvidence & { authority: PiiAuthorityStamp };
+
+/**
+ * The PII evaluation under the committed PII authority. `legacy` shows the benchmark-scorer evidence as the authority and the pii-eval
+ * measurement as exploratory. `new` is refused without an owner authorisation record, and it never falls back to legacy: when the pii-eval
+ * artifacts carry no validated schema 1.2 projection the evaluation is not recorded and says why.
+ */
+export function loadPiiEvaluation(): Promise<PiiEvaluation> {
+  return once('pii-evaluation', async () => {
+    const state = await loadPiiAuthority();
+    const stamp: PiiAuthorityStamp = {
+      authority: state.authority, from: state.from, source: state.file?.legacy.source ?? 'No PII authority file is committed, so the legacy pipeline is the authority.',
+      unmet: state.unmet, total: state.total, decidedBy: state.file?.legacy.oracle.decidedBy ?? null, reviewOn: state.file?.legacy.oracle.reviewOn ?? null,
+    };
+    if (state.refusal) return { state: 'not-recorded', reason: state.refusal, authority: stamp } satisfies PiiEvaluation;
+    const evidence = await loadPiiEvidence();
+    if (state.authority === 'new') {
+      const measurement = evidence.state === 'not-recorded' ? null : evidence.piiEvalMeasurement;
+      if (!measurement || !measurement.populations.some(p => p.productProjection))
+        return { state: 'not-recorded', reason: 'The PII authority is new and no validated pii-eval schema 1.2 projection backs this build. There is no fallback to the legacy pipeline.', authority: stamp } satisfies PiiEvaluation;
+    }
+    return { ...evidence, authority: stamp } as PiiEvaluation;
   });
 }
 

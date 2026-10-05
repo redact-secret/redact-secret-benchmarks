@@ -110,6 +110,22 @@ for (const item of dual.artifacts) {
       pin.scanners[0].configurationDigest !== record.scanner.configurationDigest)
     fail(`population consumer pin for ${item.view}`);
 }
+// The linux replay: the canonical engine reproduces the committed artifacts' semantic digests and bytes (a darwin build made them).
+const linux = dual.linuxReplay;
+if (await digest(linux.path) !== linux.sha256) fail('linux replay receipt drift');
+const receipt = JSON.parse(await readFile(new URL(`../${linux.path}`, import.meta.url), 'utf8'));
+if (receipt.schema !== 'redact-secret-benchmarks.pii-population-engine-replay/1' || receipt.supportClaims !== false || receipt.authorityChanged !== false || receipt.scannersLaunched !== 0 ||
+    receipt.mode !== 'exploratory' || receipt.canonical !== true || receipt.engine.platform !== linux.platform || receipt.engine.binarySha256 !== linux.engineBinarySha256 ||
+    receipt.engine.binarySha256 !== popPins.build.binarySha256 || receipt.engine.commit !== record.pins.piiEvalProjection || receipt.engine.matchesPin !== true ||
+    linux.result !== 'equal' || receipt.verdict.allEqualSemanticDigest !== true || receipt.verdict.allReplaysByteIdentical !== true || receipt.verdict.allBytesEqualCommitted !== true ||
+    receipt.populations.length !== dual.artifacts.length)
+  fail('linux replay receipt');
+for (const item of dual.artifacts) {
+  const row = receipt.populations.find(entry => entry.view === item.view);
+  if (!row || row.semanticDigestReplayed !== item.semanticDigest || row.semanticDigestCommitted !== item.semanticDigest || row.artifactSha256Replayed !== item.sha256 ||
+      !row.equalSemanticDigest || !row.bytesEqualCommitted || !row.replaysByteIdentical)
+    fail(`linux replay differs from the committed artifact for ${item.view}`);
+}
 const binding = record.publicationBinding;
 const source = JSON.parse(await readFile(new URL(`../${binding.transportPins}`, import.meta.url), 'utf8'));
 if (source.workflow.runId !== binding.ciRun.runId || source.workflow.headSha !== binding.ciRun.headSha || source.workflow.headSha !== record.pins.piiEvalProjection ||

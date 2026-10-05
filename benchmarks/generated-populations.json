@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "spec": "docs/specs/generated-populations.md",
+  "decision": "docs/decisions/2026-10-05-separate-public-evidence-materialization-from-product-corpus-generation.md",
+  "note": "Who owns each category fixtures/generated/build.mjs writes. The ids are the population ids of benchmarks/qualification-inputs.json. Every generated category is in exactly one population; a category named by no list belongs to the one population marked `remainder`. This file asserts ownership only: no count, digest or fixture is recorded here (hashes stay in benchmarks/generated-corpora.json).",
+  "populations": [
+    {
+      "id": "regression-corpus",
+      "owner": "redact-secret",
+      "ownership": "product",
+      "categories": ["sendgrid-regressions", "milestone-6-closed"],
+      "qualificationOnlyCategories": ["twin-scope-regressions"],
+      "retirement": "none: the regression corpus stays product-owned"
+    },
+    {
+      "id": "policy-corpus",
+      "owner": "redact-secret",
+      "ownership": "product",
+      "categories": ["policy-qualified-credentials"],
+      "qualificationOnlyCategories": [],
+      "retirement": "none: the policy corpus stays product-owned"
+    },
+    {
+      "id": "public-evidence-snapshot",
+      "owner": "credential-evidence",
+      "ownership": "legacy-oracle",
+      "remainder": true,
+      "qualificationOnlyCategories": [],
+      "canonicalSource": "the pinned credential-evidence snapshot named by benchmarks/official-runs.json (public-evidence-snapshot), verified and read by npm run evidence:materialize and npm run evidence:public-check",
+      "retirement": "the generator rules stay until the oracle exit (docs/specs/qualification-cutover.md, Gate O) and the legacy removal (#660); nothing here is deleted by #659"
+    }
+  ]
+}

@@ -35,7 +35,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   try {
     const c = controlFor(JSON.parse(readFileSync(new URL('benchmarks/evidence-adoption.json', root), 'utf8')), { evidenceTag: option('evidence-tag') || undefined, manifestDigest: option('manifest-digest'), requireArchive: String(option('field')).startsWith('archive.') });
     const field = option('field') ?? (() => { throw new Error('--field is required'); })();
-    const value = field === 'queue' ? `docs/generated/evidence-adoption/${c.evidenceRelease}.triage-queue.json` : field.split('.').reduce((o, k) => o?.[k], c);
+    const value = field === 'queue' ? `docs/generated/evidence-adoption/${c.evidenceRelease}.triage-queue.json` : (field.startsWith('archive.') ? `replay.${field}` : field).split('.').reduce((o, k) => o?.[k], c);
     if (value === undefined) throw new Error(`no ${field} in the control record`);
     console.log(value);
   } catch (error) { console.error(`candidate control refused: ${error.message}`); process.exit(1); }

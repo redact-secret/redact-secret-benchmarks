@@ -26,3 +26,11 @@ test('a new snapshot needs its adoption record, its manifest digest and the reco
   assert.throws(() => controlFor(noArchive, { evidenceTag: 'snapshot-2026.10.04.4', manifestDigest: D('2') }), /no replay archive/);
   assert.equal(controlFor(noArchive, { evidenceTag: 'snapshot-2026.10.04.4', manifestDigest: D('2'), requireArchive: false }).engine.tag, 'v0.1.0-alpha.5');
 });
+
+test('the CLI fields the workflow reads resolve on the real record (archive.release and archive.sha256 are the recorded replay archive)', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const out = f => execFileSync('node', ['scripts/candidate-control.mjs', '--field', f], { encoding: 'utf8' }).trim();
+  assert.match(out('archive.release'), /^official-runs-\d+$/);
+  assert.match(out('archive.sha256'), /^sha256:[0-9a-f]{64}$/);
+  assert.match(out('engine.tag'), /^v\d+\.\d+\.\d+/);
+});

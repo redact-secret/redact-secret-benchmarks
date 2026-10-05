@@ -89,7 +89,17 @@
         "populations": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/piiEvalPopulation" } }
       } },
     "piiEvalPopulation": { "type": "object", "additionalProperties": false,
-      "required": ["label", "populationId", "artifactDigest", "file", "status", "population", "populationCounts", "scanners", "unavailable"], "properties": {
+      "required": ["label", "populationId", "artifactDigest", "file", "status", "schemaVersion", "population", "populationCounts", "productBinding", "scanners"],
+      "oneOf": [
+        { "required": ["unavailable"], "properties": { "schemaVersion": { "const": "1.1" }, "unavailable": true, "productProjection": false } },
+        { "required": ["productProjection"], "properties": { "schemaVersion": { "const": "1.2" }, "productProjection": true, "unavailable": false } }
+      ],
+      "properties": {
+        "schemaVersion": { "enum": ["1.1", "1.2"] },
+        "productBinding": { "type": "object", "additionalProperties": false, "required": ["state", "candidateSourceCommit"], "properties": {
+          "state": { "enum": ["measures-publication-product", "other-product", "publication-product-not-measured"] },
+          "candidateSourceCommit": { "oneOf": [{ "type": "null" }, { "type": "string", "pattern": "^[a-f0-9]{40}$" }] } } },
+        "productProjection": { "$ref": "#/$defs/piiEvalProjection" },
         "label": { "$ref": "#/$defs/slug" }, "populationId": { "type": "string", "minLength": 1, "maxLength": 128 }, "artifactDigest": { "$ref": "#/$defs/digest" },
         "file": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,199}$" }, "status": { "const": "accepted" },
         "population": { "type": "object", "additionalProperties": false, "required": ["populationId", "populationVersion", "populationDigest", "visibility"], "properties": {
@@ -106,6 +116,28 @@
             "languageBreakdown": { "const": "schema-1.1-does-not-carry" }, "controlClassBreakdown": { "const": "schema-1.1-does-not-carry" },
             "officialOrExploratoryMode": { "const": "schema-1.1-does-not-carry" } } }
       } },
+    "piiEvalView": { "enum": ["benign-heavy-stress", "diagnostic-balanced", "oracle-plan", "qualification-plan"] },
+    "piiEvalCounts": { "type": "object", "additionalProperties": false, "required": ["authoredCases", "occurrences", "variants"], "properties": {
+      "authoredCases": { "type": "integer", "minimum": 0 }, "occurrences": { "type": "integer", "minimum": 0 }, "variants": { "type": "integer", "minimum": 0 } } },
+    "piiEvalMetrics": { "type": "array", "minItems": 10, "maxItems": 10 },
+    "piiEvalStratum": { "type": "object", "additionalProperties": false, "required": ["counts", "metrics"], "properties": {
+      "counts": { "$ref": "#/$defs/piiEvalCounts" }, "metrics": { "$ref": "#/$defs/piiEvalMetrics" }, "language": { "type": "string", "minLength": 2, "maxLength": 35 },
+      "controlClass": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,79}$" } } },
+    "piiEvalProjection": { "type": "object", "additionalProperties": false, "required": ["requiredViews", "rosterDigest", "rows"], "properties": {
+      "requiredViews": { "type": "array", "minItems": 1, "maxItems": 4, "items": { "$ref": "#/$defs/piiEvalView" } },
+      "rosterDigest": { "$ref": "#/$defs/digest" },
+      "rows": { "type": "array", "minItems": 1, "maxItems": 256, "items": { "type": "object", "additionalProperties": false,
+        "required": ["family", "view", "mode", "binding", "counts", "methodCoverage", "metrics"], "properties": {
+          "family": { "type": "string", "pattern": "^pii:(global|[a-z]{2}):[a-z0-9]+(-[a-z0-9]+)*$" }, "view": { "$ref": "#/$defs/piiEvalView" }, "mode": { "enum": ["exploratory", "official"] },
+          "binding": { "type": "object", "additionalProperties": false, "required": ["scannerId", "configurationDigest", "activationDigest", "product", "population"], "properties": {
+            "scannerId": { "type": "string", "minLength": 1 }, "configurationDigest": { "$ref": "#/$defs/digest" }, "activationDigest": { "$ref": "#/$defs/digest" },
+            "product": { "type": "object" }, "population": { "type": "object" } } },
+          "counts": { "$ref": "#/$defs/piiEvalCounts" },
+          "methodCoverage": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["method", "cases", "variants"], "properties": {
+            "method": { "type": "object" }, "cases": { "type": "integer", "minimum": 0 }, "variants": { "type": "integer", "minimum": 0 } } } },
+          "metrics": { "$ref": "#/$defs/piiEvalMetrics" },
+          "byLanguage": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/piiEvalStratum" } },
+          "byControlClass": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/piiEvalStratum" } } } } } } },
     "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
     "repoFile": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._/-]{0,199}$" },
     "protectedRoute": { "type": "object", "additionalProperties": false,

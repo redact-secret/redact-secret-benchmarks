@@ -5,10 +5,11 @@
  * ledger value. Every other state is produced by an overlay of that tree with one file changed, using synthetic content.
  */
 import { readFileSync } from 'node:fs';
+import { readFile } from 'node:fs/promises';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
 import { PII_METRIC_IDS } from '../../../benchmarks/evaluation/domains/pii/profile';
 import { piiCurrentProtectedRoute } from '../../../benchmarks/evaluation/domains/pii/support-semantics';
-import { buildPiiSupportMatrixV2 } from '../../../benchmarks/evaluation/domains/pii/support-v2';
+import { buildPiiSupportMatrixV2, validatePiiSupportMatrixV2 } from '../../../benchmarks/evaluation/domains/pii/support-v2';
 import { custodianConformanceFrom, piiEvalMeasurementFrom } from '../../../scripts/pii-publication-inputs';
 import { buildEvaluationDomainsV2, domainDescriptorV2 } from '../../../src/evaluation-domains-v2';
 import { REAL_ROOT as REAL, overlay } from './overlay';
@@ -87,6 +88,37 @@ describe('PII evaluation', () => {
     expect(publicOnly.protectedReason).toContain('did not validate');
     expect(publicOnly).not.toHaveProperty('families');
     expect(publicOnly).not.toHaveProperty('distribution');
+  });
+
+  test('a published support artifact carries the schema 1.2 projection of the four populations and binds a candidate only to its own commit', async () => {
+    const files = ['oracle-plan', 'qualification-plan', 'diagnostic-balanced', 'benign-heavy-stress']
+      .map(view => `${REAL}/benchmarks/pii-eval-population-dual-run/${view}.public-synthetic-artifact.json`);
+    const pins = [`${REAL}/benchmarks/pii-eval-public-synthetic-pins.json`, `${REAL}/benchmarks/pii-eval-population-pins.json`];
+    const copy = `${REAL}/tests/fixtures/pii-eval/ci-37340150108-projection.public-synthetic-artifact.json`;
+    const candidate = JSON.parse(await readFile(pins[1], 'utf8')).populations[0].scanners[0].candidateSourceCommit as string;
+    const measurement = await piiEvalMeasurementFrom(pins, [copy, ...files], { sourceCommit: candidate, coreSha256: 'e'.repeat(64) });
+    expect(measurement.populations).toHaveLength(files.length + 1);
+    expect(measurement.populations.every(row => row.schemaVersion === '1.2' && row.productProjection && !row.unavailable)).toBe(true);
+    const states = Object.fromEntries(measurement.populations.map(row => [row.populationId, row.productBinding.state]));
+    expect(states['synthetic-demo-population']).toBe('other-product');
+    expect(Object.values(states).filter(state => state === 'measures-publication-product')).toHaveLength(files.length);
+    const released = await piiEvalMeasurementFrom(pins, [copy, ...files], null);
+    expect(released.populations.every(row => row.productBinding.state === 'publication-product-not-measured')).toBe(true);
+    const another = await piiEvalMeasurementFrom(pins, [copy, ...files], { sourceCommit: '1'.repeat(40), coreSha256: 'e'.repeat(64) });
+    expect(another.populations.every(row => row.productBinding.state === 'other-product')).toBe(true);
+    const baseline = buildPiiSupportMatrixV2();
+    const matrix = buildPiiSupportMatrixV2({ piiEvalMeasurement: measurement });
+    expect(matrix.distribution).toEqual(baseline.distribution);
+    expect(matrix.families).toEqual(baseline.families);
+    const index = buildEvaluationDomainsV2(matrix.artifactCommitment);
+    const href = domainDescriptorV2(index, 'pii')!.support.href!;
+    const pii = await (await domains(overlay({ 'public/results/evaluation-domains-v2.json': JSON.stringify(index), [`public${href}`]: JSON.stringify(matrix) }))).loadPiiEvaluation();
+    const shown = pii.state === 'recorded' || pii.state === 'public-recorded' ? pii.piiEvalMeasurement : null;
+    expect(shown?.populations.map(row => row.productProjection?.rows.length)).toEqual(measurement.populations.map(row => row.productProjection?.rows.length));
+    // The same matrix, edited, is refused when it is read back.
+    const edited = structuredClone(matrix);
+    edited.piiEvalMeasurement!.populations[1].productProjection!.rows.push(structuredClone(edited.piiEvalMeasurement!.populations[1].productProjection!.rows[0]));
+    expect(() => validatePiiSupportMatrixV2(edited)).toThrow();
   });
 });
 

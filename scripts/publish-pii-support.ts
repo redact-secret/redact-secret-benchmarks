@@ -12,8 +12,9 @@ import { publishArtifactAndIndex } from './atomic-publication.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const args = process.argv.slice(2), piiEvalArtifacts = args.flatMap(arg => /^--pii-eval-artifact=(.+)$/.exec(arg)?.[1] ?? []);
-const options = Object.fromEntries(args.filter(arg => !arg.startsWith('--pii-eval-artifact=')).map(arg => {
-  const match = /^--(evaluation|credential-support|pii-directory|output|population-bundle|population-mode|product-commit|product-core|evidence-root|pii-eval-pins|custodian-bundle)=(.+)$/.exec(arg);
+const piiEvalPinFiles = args.flatMap(arg => /^--pii-eval-pins=(.+)$/.exec(arg)?.[1] ?? []);
+const options = Object.fromEntries(args.filter(arg => !arg.startsWith('--pii-eval-artifact=') && !arg.startsWith('--pii-eval-pins=')).map(arg => {
+  const match = /^--(evaluation|credential-support|pii-directory|output|population-bundle|population-mode|product-commit|product-core|evidence-root|custodian-bundle)=(.+)$/.exec(arg);
   if (!match) throw new Error('Usage: npm run eval:publish:pii-support -- [--evaluation=...] [--credential-support=...] [--pii-directory=...] [--output=...] [--product-commit=<sha> --product-core=<core.tgz>] [--pii-eval-pins=<pins> --pii-eval-artifact=<artifact>...] [--custodian-bundle=<public-synthetic-bundle>] (--population-bundle=... | --population-mode=not-measured)');
   return [match[1], match[2]];
 }));
@@ -32,12 +33,12 @@ if (hasBundle === (options['population-mode'] === 'not-measured'))
   throw new Error('Choose exactly one of --population-bundle or --population-mode=not-measured');
 if (!hasBundle && options['population-mode'] !== 'not-measured') throw new Error('Unknown PII population publication mode');
 if (Boolean(options['product-commit']) !== Boolean(options['product-core'])) throw new Error('Pass --product-commit and --product-core together');
-if (Boolean(options['pii-eval-pins']) !== Boolean(piiEvalArtifacts.length)) throw new Error('Pass --pii-eval-pins and at least one --pii-eval-artifact together');
+if (Boolean(piiEvalPinFiles.length) !== Boolean(piiEvalArtifacts.length)) throw new Error('Pass --pii-eval-pins (one or more) and at least one --pii-eval-artifact together');
 // The one product this publication measured (staging's qualified candidate). Production measures the release and passes none.
 const product: PiiMeasuredProduct | null = options['product-commit'] ? { sourceCommit: options['product-commit'],
   coreSha256: createHash('sha256').update(await readFile(location('product-core', ''))).digest('hex') } : null;
 const bindings: PiiSupportBuildOptions = {};
-if (options['pii-eval-pins']) bindings.piiEvalMeasurement = await piiEvalMeasurementFrom(location('pii-eval-pins', ''), piiEvalArtifacts.map(file => path.resolve(root, file)));
+if (piiEvalPinFiles.length) bindings.piiEvalMeasurement = await piiEvalMeasurementFrom(piiEvalPinFiles.map(file => path.resolve(root, file)), piiEvalArtifacts.map(file => path.resolve(root, file)), product);
 if (options['custodian-bundle']) bindings.custodianConformance = await custodianConformanceFrom(location('custodian-bundle', ''));
 if (product) {
   const recorded = await productEvidenceFor(product, location('evidence-root', 'evidence'));

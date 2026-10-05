@@ -26,7 +26,10 @@
   "engine": {
     "name": "pii-eval",
     "version": "0.0.0",
-    "artifactSchema": { "id": "pii-eval.public-synthetic-artifact", "version": "1.2", "readableVersions": ["1.1", "1.2"] },
+    "artifactSchema": { "id": "pii-eval.public-synthetic-artifact", "version": "1.2", "readableVersions": ["1.1", "1.2"],
+      "schemaFiles": {
+        "1.1": { "path": "schemas/pii-eval-public-synthetic-artifact-v1.1.json", "sha256": "5368839ea48cce9a868dfece2dcb2c80ed39c8aab522daccdc8dcc8a8ded57ec", "upstreamCommit": "6157cbc5918b3888c8e84b1884719ea8f3278b36" },
+        "1.2": { "path": "schemas/pii-eval-public-synthetic-artifact-v1.2.json", "sha256": "58238767e9901feffa5544edbc7fba47a3d1aaae99f873137029217cc1064f69", "upstreamCommit": "212d500de90ce97461275be1e8b9dd8acd663fb3" } } },
     "protocol": { "id": "pii-v1", "revision": 2, "matching": "pii-v1-canonical", "accounting": "pii-v1-canonical-accounting", "statistics": "pii-v1-wilson-exact" },
     "compatibilityProtocol": { "id": "pii-v1", "revision": 1, "matching": "legacy-first-overlap", "accounting": "legacy-accounting" },
     "methods": [
@@ -117,7 +120,15 @@
     "unexplainedDifferences": 0,
     "classifiedDifferences": { "compatibility": ["0007/D1", "0007/D4"], "intentionalContractChange": [], "oldBug": [], "newBug": [], "unresolved": [] },
     "determinism": { "replays": 3, "equalSemanticDigest": true },
-    "mode": "exploratory"
+    "mode": "exploratory",
+    "consumerPins": "benchmarks/pii-eval-population-pins.json"
+  },
+  "publicationBinding": {
+    "ciRun": { "repository": "redact-secret/pii-eval", "runId": 37340150108, "headSha": "212d500de90ce97461275be1e8b9dd8acd663fb3", "engineArtifactId": 11358475612, "measurementArtifactId": 11357099796 },
+    "transportPins": "benchmarks/pii-eval-public-synthetic-source.json",
+    "durableCopy": "tests/fixtures/pii-eval/ci-37340150108-projection.public-synthetic-artifact.json",
+    "stagingOnly": true,
+    "candidateBinding": "a candidate population is bound to a publication's product only when its pin names exactly that source commit; otherwise it is another product"
   },
   "acceptance": {
     "ownershipAndContracts": "accepted",

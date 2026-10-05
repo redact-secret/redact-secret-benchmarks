@@ -21,38 +21,49 @@
     "path": ".github/workflows/ci.yml",
     "event": "push",
     "branch": "main",
-    "runId": 37129550754,
+    "runId": 37340150108,
     "runAttempt": 1,
-    "headSha": "6157cbc5918b3888c8e84b1884719ea8f3278b36",
+    "headSha": "212d500de90ce97461275be1e8b9dd8acd663fb3",
     "conclusion": "success"
   },
   "artifacts": {
     "engine": {
-      "id": 11276785421,
-      "name": "pii-eval-engine-6157cbc5918b3888c8e84b1884719ea8f3278b36-linux-x86_64",
-      "sizeInBytes": 1322701,
-      "archiveSha256": "011e4d61bff80b7a04e46e644a3d1799dac8f7ecb23e4ae4044b9a72cacc75eb",
-      "expiresAt": "2026-11-02T14:26:50Z",
+      "id": 11358475612,
+      "name": "pii-eval-engine-212d500de90ce97461275be1e8b9dd8acd663fb3-linux-x86_64",
+      "sizeInBytes": 1428421,
+      "archiveSha256": "4fed2c9b4145b216c4ed58869a222c1fe9ce890280cb809fa6ee585074c7a3e1",
+      "expiresAt": "2026-11-04T16:22:30Z",
       "members": {
-        "SHA256SUMS": "2d6a867b9dc2643343d6ea49591ba24439304a83ef3be60fc7cc6f97ac0d869f",
-        "build-info.json": "06c7d2a7e2f4003aea348d24c285e3a91a180ed09ddc9f433f05ff8d9e2eefe7",
-        "pii-eval": "cfa5776ff3c70b8231b068d9b0691e3bdf16ea6f11210f64bd13aa891193ec8f"
+        "SHA256SUMS": "4a3a6ed6697cb4d5c5d21c3ecca2b4fc74f3c85357b55b52bafb29c53550109f",
+        "build-info.json": "2d1b380390b13db32fef56bdb1301936ce1d2a14acf67b6c4b6ecdf9af8fba20",
+        "pii-eval": "b2902d58e8fba5199fedca235c2b81264cd44c8ae9db4c33f07379722297e9af"
       }
     },
     "measurement": {
-      "id": 11276237723,
-      "name": "pii-eval-run-37129550754-1",
-      "sizeInBytes": 7042,
-      "archiveSha256": "ffd37c2582700964b4494ffa60cb222707189e9ee036d654b5e4c9f829cac78f",
-      "expiresAt": "2026-10-17T14:27:06Z",
+      "id": 11357099796,
+      "name": "pii-eval-run-37340150108-1-projection",
+      "sizeInBytes": 8655,
+      "archiveSha256": "e849a68da5c2aaad02aee9e15e15f229d88203ec29af80bc6ea425126959dadb",
+      "expiresAt": "2026-10-19T16:22:45Z",
       "members": {
         "run/manifest.json": "95b9305a6152a7b9b1eb10c6e39485b3f762b21475310aa1ebb82e634bc6728e",
         "run/observation-redact-secret-core.json": "f7aa16ba09044d5a0027e3a6e5a06cd98b7938e70afa6439a69e0fa437a69ba5",
-        "run/public-synthetic-artifact.json": "0172b38720f5f7d870336b13f83d0bfe413a69808b2e6f28afc341b04c4b57e8",
+        "run/public-synthetic-artifact.json": "7aa019de7ea28d57162187b37af2a2e7497156df31f5d556b182edfb988e900a",
         "run/run-artifact.json": "b46e4c40927c56c05121b3be500a93da4fc1fb272921667dcd3edb96e76f56fd"
       }
     }
   },
   "publicArtifactMember": "run/public-synthetic-artifact.json",
-  "pins": "benchmarks/pii-eval-public-synthetic-pins.json"
+  "pins": "benchmarks/pii-eval-public-synthetic-pins.json",
+  "buildInfo": {
+    "binaryBytes": 4387176,
+    "binaryVersion": "pii-eval 0.0.0 (bootstrap)",
+    "target": "linux-x86_64",
+    "rustc": "rustc 1.98.1 (48a229cea 2026-09-01)",
+    "rustToolchainFileSha256": "887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167"
+  },
+  "durableCopy": {
+    "path": "tests/fixtures/pii-eval/ci-37340150108-projection.public-synthetic-artifact.json",
+    "member": "run/public-synthetic-artifact.json"
+  }
 }

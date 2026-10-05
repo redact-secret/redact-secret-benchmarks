@@ -29,6 +29,7 @@ test('the workflow exposes the plain artifact before the methods run, caches the
   const early = yml.indexOf('name: early-plain-');
   assert.ok(early > 0 && early < yml.indexOf('Methods run, twice'), 'the plain artifact is uploaded before the methods step');
   assert.match(yml, /key: engine-build-.*hashFiles\('credential-eval\/Cargo\.lock'.*steps\.engine\.outputs\.tag/);
+  assert.ok(!/STAGE_TIMINGS: \$\{\{/.test(yml), 'the runner context is invalid in job-level env; the timing file is set through GITHUB_ENV');
   assert.match(yml, /stage-timing-summary\.mjs/);
   assert.match(yml, /pattern: official-run-\*/, 'the view still reads only the final official-run artifacts');
 });

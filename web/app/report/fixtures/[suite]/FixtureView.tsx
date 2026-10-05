@@ -33,7 +33,9 @@ export function FixtureSkeleton({ suiteTitle, suiteHref, id }: { suiteTitle: str
     <Stack gap="lg">
       <PageHead
         before={<Breadcrumb items={id ? [...crumbsOf(suiteTitle, suiteHref), { label: id }] : crumbsOf(suiteTitle, suiteHref)} />}
-        eyebrow={suiteTitle.toUpperCase()}
+        // One short line, as the loaded page's eyebrow is ("FIXTURE · MUST NOT FLAG"): a suite id can be long enough to wrap at a phone width, and the page would
+        // then move up when the fixture arrives. The suite is in the breadcrumb.
+        eyebrow="FIXTURE"
         title={id ?? ' '}
         meta={[{ value: ' ' }]}
       />

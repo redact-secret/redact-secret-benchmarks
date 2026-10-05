@@ -34,6 +34,11 @@ import { checkTarget, pickWorkers } from './layout-check-lib.mjs';
 import { readAuthority, stampOf } from './lib/authority.mjs';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+// LAYOUT_SELECT (#656): a JSON `{ routes: [address prefix], stories: [story file] }` from scripts/ci-plan.mjs restricts the run to the pages and stories a
+// change can reach; `{ all: true }`, an empty value or an unreadable one is every story and page. The routes below are still built from the whole export.
+const select = (() => { try { const v = JSON.parse(process.env.LAYOUT_SELECT || 'null'); return v && !v.all && Array.isArray(v.routes) && Array.isArray(v.stories) ? v : null; } catch { return null; } })();
+// `a/b` is that page; `a/b/*` is the pages below it (a dynamic segment).
+const routeSelected = route => !select || select.routes.some(entry => { const r = route.split('?')[0].replace(/^\/+|\/+$/g, ''); return entry.endsWith('*') ? r.startsWith(entry.slice(0, -1)) : r === entry; });
 const basePath = process.env.BASE_PATH ?? '';
 const STORYBOOK = '/__storybook__';
 const WIDTHS = [320, 375, 768];
@@ -153,14 +158,14 @@ async function main() {
   let stories = [];
   try {
     const index = JSON.parse(await readFile(path.join(webRoot, 'storybook-static', 'index.json'), 'utf8'));
-    stories = Object.values(index.entries).filter(e => e.type === 'story').map(e => e.id);
+    stories = Object.values(index.entries).filter(e => e.type === 'story' && (!select || select.stories.includes(e.importPath))).map(e => e.id);
   } catch { console.error('storybook-static/index.json is missing; run npm run build-storybook first'); process.exitCode = 1; }
 
   const targets = [
     ...stories.map(id => ({ name: `story ${id}`, url: `${origin}${STORYBOOK}/iframe.html?id=${id}&viewMode=story`, ready: 'body.sb-show-main', header: false })),
-    ...ROUTES.map(r => ({ name: `page /${r}`, url: `${origin}${basePath}/${r.includes('?') ? r.replace('?', '/?').replace('//', '/') : `${r}/`}`, ready: /[?&]fixture=/.test(r) ? '[data-fixture-ready]' : 'main', header: true })),
-    ...PAGE_ONLY.map(r => ({ name: `page /${r}`, url: `${origin}${basePath}/${r}`, ready: 'main', header: true })),
-    ...STATES.map(state => ({ ...state, name: `page /${state.route} (${state.name})`, url: `${origin}${basePath}/${state.route.replace('?', '/?').replace('//', '/')}`, header: true })),
+    ...ROUTES.filter(routeSelected).map(r => ({ name: `page /${r}`, url: `${origin}${basePath}/${r.includes('?') ? r.replace('?', '/?').replace('//', '/') : `${r}/`}`, ready: /[?&]fixture=/.test(r) ? '[data-fixture-ready]' : 'main', header: true })),
+    ...PAGE_ONLY.filter(routeSelected).map(r => ({ name: `page /${r}`, url: `${origin}${basePath}/${r}`, ready: 'main', header: true })),
+    ...STATES.filter(state => routeSelected(state.route)).map(state => ({ ...state, name: `page /${state.route} (${state.name})`, url: `${origin}${basePath}/${state.route.replace('?', '/?').replace('//', '/')}`, header: true })),
   ];
 
   const failures = [];
@@ -179,7 +184,7 @@ async function main() {
     console.error(`${failures.length} layout problem(s):\n${failures.sort().map(f => `  ${f}`).join('\n')}`);
     process.exitCode = 1;
   } else {
-    console.log(`layout ok: ${targets.length} stories and pages (${STATES.length} of them loading, loaded and error states) at ${WIDTHS.join('/')}px, no page overflow, no mid-word breaks, no shift when data arrives`);
+    console.log(`layout ok${select ? ` (selected: ${select.routes.length} route prefix(es), ${select.stories.length} story file(s))` : ''}: ${targets.length} stories and pages (${targets.filter(t => t.gate || t.abort).length} of them loading, loaded and error states) at ${WIDTHS.join('/')}px, no page overflow, no mid-word breaks, no shift when data arrives`);
   }
 }
 

@@ -101,6 +101,11 @@ export const FIXTURE = fixture;
 export const FAMILY = dirs('report/families')[0];
 export const DETECTOR = dirs('report/detectors')[0];
 
+// WEB_BROWSER_SELECT (#656): the JSON `{ routes: [...] }` of scripts/ci-plan.mjs restricts the page matrix to the routes a change can reach. `a/b` is that page,
+// `a/b/*` the pages below it; `{ "all": true }`, nothing or an unreadable value is every route. The other specs name their own pages and always run.
+const select: { routes: string[] } | null = (() => { try { const v = JSON.parse(process.env.WEB_BROWSER_SELECT || 'null'); return v && !v.all && Array.isArray(v.routes) ? v : null; } catch { return null; } })();
+const selected = (route: string) => !select || select.routes.some(entry => { const r = route.split('?')[0].replace(/^\/+|\/+$/g, ''); return entry.endsWith('*') ? r.startsWith(entry.slice(0, -1)) : r === entry; });
+
 /** Every kind of page the site has, with the address variants that change what is drawn. */
 export const ROUTES: string[] = [
   '/', '/report/', '/report/?level=T2', '/report/?level=T3&peers=1',
@@ -116,7 +121,7 @@ export const ROUTES: string[] = [
   '/evaluation/credential/', '/evaluation/pii/',
   '/evaluation/rc/', '/evaluation/scanner/', '/evaluation/qualification/', '/evaluation/qualification/unattributed/1/',
   '/evaluation/', ...['twin', 'benign', 'metamorphic', 'mutation', 'differential', 'holdout'].map(m => `/evaluation/method/${m}/`),
-].map(route => `${BASE}${route}`);
+].filter(selected).map(route => `${BASE}${route}`);
 
 /** Resolves with the page's own links, so a test can follow the real hrefs rather than guess them. */
 export const hrefs = (page: import('@playwright/test').Page, selector: string) => page.locator(selector).evaluateAll(links => links.map(a => (a as HTMLAnchorElement).getAttribute('href')));

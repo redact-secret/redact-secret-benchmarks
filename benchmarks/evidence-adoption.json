@@ -269,13 +269,13 @@
     }
   },
   "evidenceCandidate": {
-    "evidenceRelease": "snapshot-2026.10.04.4",
-    "sourceRevision": "20c18bdb679aedc341c067c3ce0e3fa5eff17f52",
-    "manifestDigest": "sha256:f75a46f855e6daf82fbd94bf6f13e187e5b110a4e473b9045e7db47a74b65f1f",
-    "snapshotDigest": "sha256:9870d50f7d626f0b2b39c39f94fb706d93b6ef73577e2e1e25e3052e58fed57c",
+    "evidenceRelease": "snapshot-2026.10.05",
+    "sourceRevision": "225f7ae74a986a40fe857371b393ebfdb7d2268a",
+    "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef",
+    "snapshotDigest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
     "evidenceSchema": "credential-evidence/schema/1.7.0",
-    "evidenceRevision": "records-tree-sha256:964793dcbc10f76cbae5eecc6feb4d8cad71d8f4c42e844503e655ef5ba6e4df",
-    "adoptionKey": "sha256:0d0b84ba2fd343237e6d155276bee2ccb9019c0ee200e7fdc42e5cc871b0c74f",
+    "evidenceRevision": "records-tree-sha256:924cd5b9b068e0d5ec5039bce962c63a484cb7fdec61b8b1e6603b1c530884b7",
+    "adoptionKey": "sha256:ca0c493e352d0bb592a5f8a3d45ef68ad4810607b8a60af3a0509ac7cd709f01",
     "engine": {
       "tag": "v0.1.0-alpha.5",
       "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d"
@@ -305,26 +305,14 @@
       "new": 6519,
       "added": 70,
       "removed": 0,
-      "changed": 5,
-      "unchanged": 6444
+      "changed": 8,
+      "unchanged": 6441
     },
-    "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.04.4.json",
+    "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.05.json",
     "replay": {
-      "state": "replayed",
-      "via": ".github/workflows/official-runs.yml dispatched on the transient replay branch replay/698-044-control-alpha5-beta13 (revision 5f20cb557ac35ddf916bee124ef02a716e06e917: the repository at the reviewed code plus the engine, product and evidence pins only, patch kept as docs/generated/evidence-adoption/snapshot-2026.10.04.4.replay-pins.patch; branch deleted after archiving), plain and methods, linux-x64, two engine runs each with equal semantic digests: the PUBLISHED @redact-secret/core 0.1.0-beta.13 on credential-eval alpha.5, the control of the product candidate 2x2",
-      "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37241828378",
-      "benchmarkRevision": "5f20cb557ac35ddf916bee124ef02a716e06e917",
-      "archive": {
-        "release": "official-runs-37241828378",
-        "sha256": "sha256:d4cd84b5470b11c047ce0e8e3f0e783bf8142acc895a420e5f3029d29182be36"
-      },
-      "semanticDigests": {
-        "public-evidence-snapshot": "sha256:d6186e9a18e02548c1bb03e688bff577c50e71682a4a20ea1cd57f8a6c4279c3",
-        "public-evidence-snapshot+methods": "sha256:0e847114bdcd9d3643ff4887bc7da11f692794765df8f19910d644bf4cce9755",
-        "regression-corpus": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
-        "policy-corpus": "sha256:9a6576c90e30907dee3b6e2b368d2791a29865fa8215790b0ef9cf6f75b66f9e"
-      },
-      "note": "An exploratory replay for the evidence candidate: never an accepted run; the view built by the same run is the candidate view of the acceptance package."
+      "state": "pending",
+      "via": ".github/workflows/official-runs.yml after the acceptance repin",
+      "recordedRuns": []
     },
     "ownerAcceptance": null,
     "deployment": {
@@ -336,73 +324,9 @@
       "version": "0.1.0-beta.13",
       "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
     },
-    "productCandidates": [
-      {
-        "id": "core-main-1e45cecf",
-        "registry": "benchmarks/product-candidates.json",
-        "commit": "1e45cecf674344726e59bd35a37f28ba1966a06e",
-        "packagesDigest": "sha256:a9609bb8b9c426a3659d0e90b1bc7c04681646e32c71fdb323fdfc145e59ed41",
-        "note": "The same registered, unpublished product bytes are measured on this evidence as on the accepted one (the 2x2 design: docs/specs/product-candidate-replay.md); never published, never an accepted run."
-      }
-    ],
-    "acceptance": {
-      "status": "PREPARED, NOT APPLIED. The owner holds the acceptance of the engine candidate until a core release; nothing here moves a pin, a run, the authority file or a ledger row.",
-      "note": "Prepared for the owner (#680, #690, #698). The patch applies to the commit that merges this candidate; it records the replay of the PUBLISHED @redact-secret/core 0.1.0-beta.13 on credential-eval alpha.5 as the runs (CI run 37241828378), not the unpublished core build 1e45cecf, which is not part of it.",
-      "report": "docs/generated/evidence-adoption/snapshot-2026.10.04.4.md",
-      "ownerReport": "docs/generated/evidence-adoption/snapshot-2026.10.04.4.acceptance.md",
-      "comparison": "docs/generated/evidence-adoption/snapshot-2026.10.04.4.comparison.json",
-      "patch": "docs/generated/evidence-adoption/snapshot-2026.10.04.4.acceptance.patch",
-      "patchDigestFile": "docs/generated/evidence-adoption/snapshot-2026.10.04.4.acceptance.patch.sha256",
-      "applies": "git apply docs/generated/evidence-adoption/snapshot-2026.10.04.4.acceptance.patch",
-      "ownerFields": [
-        "the authority file: new.acceptedOn and new.acceptedBy (named in the patch and the spec, never edited here)",
-        "benchmarks/evidence-adoption.json candidate.ownerAcceptance acceptedBy and acceptedOn",
-        "docs/decisions/2026-10-04-accept-snapshot-2026-10-04-4-on-credential-eval-alpha-5.md status (proposed to accepted), decided_at and its owner statement"
-      ],
-      "ownerDecisions": [
-        "accept the engine candidate alpha.5 with the published beta.13 on snapshot-2026.10.04.4, or keep holding it until the core release",
-        "publish a core release carrying PRs #1202 and #1204 (the unpublished build 1e45cecf), or not",
-        "the 13 provisional product-scope statements of scanners/product-scope.json (#622)",
-        "the ledger proposals of the triage (kept on hold; no ledger row is edited)",
-        "whether the legacy oracle exit condition needs a parity report at beta.13 (the patch does not regenerate it: no legacy run exists for beta.13)"
-      ],
-      "registryArchive": {
-        "release": "official-runs-registry-37241828378",
-        "asset": "official-runs-37241828378.tar.gz",
-        "note": "The runs in the patch, in the registry archive format (verified: node scripts/official-run-archive.mjs fetch/verify against the patched registry). A release asset of this repository, not an accepted run."
-      },
-      "candidateView": {
-        "sha256": "sha256:d4ed43bf0dc7632a5e65e8ecbd9f8c6e79164a12aede3b2b66515b214bc179d9",
-        "policyRevision": "rs-policy-1:sha256:cf37ff861d5abf1d8b4ad7224a7aa7e097161acbfb693353471994fd407517dc",
-        "distribution": {
-          "pending": 1,
-          "provisional": 19,
-          "stable": 115,
-          "unsupported": 0
-        },
-        "supportMatrix": {
-          "pending": 5,
-          "provisional": 26,
-          "stable": 125,
-          "unsupported": 17
-        },
-        "build": "The qualification-view artifact of CI run 37241828378 (the view stage of the replay), built from the archived artifacts and the inputs derived from the snapshot."
-      },
-      "derivedInputs": {
-        "snapshot": "credential-evidence release snapshot-2026.10.04.4, asset credential-eval-corpus-snapshot.json (gh release download snapshot-2026.10.04.4 -R redact-secret/credential-evidence)",
-        "axisOverlay": {
-          "file": "benchmarks/support/public-axis-overlay.json",
-          "check": "npm run qualification:axis-overlay -- --snapshot <snapshot> --check"
-        },
-        "twinScope": {
-          "file": "benchmarks/support/public-twin-scope-map.json",
-          "check": "npm run qualification:twin-scope -- --snapshot <snapshot> --check"
-        },
-        "ledgerRekey": {
-          "file": "benchmarks/support/public-review-ledger-map.json",
-          "check": "npm run qualification:ledger-rekey -- --snapshot <snapshot> --methods-run <dir>/public-evidence-snapshot/methods/artifact.json --check"
-        }
-      }
+    "supersedesEvidenceCandidate": {
+      "evidenceRelease": "snapshot-2026.10.04.4",
+      "adoptionKey": "sha256:0d0b84ba2fd343237e6d155276bee2ccb9019c0ee200e7fdc42e5cc871b0c74f"
     }
   }
 }

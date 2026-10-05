@@ -198,6 +198,25 @@ const overlayAndPolicy = {
   ledgerRekey: { accepted: A.policy.ledgerRekey, candidate: C.policy.ledgerRekey },
 };
 
+// ---- 8b. the owner's ledger settlements (#698): the candidate view versus the same runs read with the settlements applied ----
+const finalFile = option('final');
+const ledgerEffect = finalFile ? (() => {
+  const F: Json = readJson(finalFile), f = familiesOf(F);
+  const rows = [...f].filter(([k, x]) => x.status.value !== c.get(k)!.status.value || !same(x.evidence.differentialUnresolvedContractDisagreements, c.get(k)!.evidence.differentialUnresolvedContractDisagreements)).map(([k, x]) => ({
+    family: k, status: { from: c.get(k)!.status.value, to: x.status.value }, differentialUnresolved: { from: c.get(k)!.evidence.differentialUnresolvedContractDisagreements, to: x.evidence.differentialUnresolvedContractDisagreements }, remainingReasons: x.status.value === 'stable' ? [] : reasonText(x),
+  }));
+  for (const r of rows) {
+    if (r.status.from !== r.status.to && !(r.differentialUnresolved.to < r.differentialUnresolved.from)) unexplained.push(`${r.family}: status ${r.status.from} to ${r.status.to} by the ledger settlements, but its unresolved differential occurrences did not fall (${r.differentialUnresolved.from} to ${r.differentialUnresolved.to})`);
+  }
+  for (const [k, x] of f) if (!same(x.evidence, c.get(k)!.evidence) && !rows.some(r => r.family === k)) {
+    const delta = FIELDS.filter(y => !same(x.evidence[y], c.get(k)!.evidence[y]));
+    if (delta.length) unexplained.push(`${k}: the ledger settlements changed ${delta.join(', ')}, which only the differential count may change`);
+  }
+  const am2 = matrixOf(F);
+  const matrix = [...am2].filter(([k, x]) => cm.get(k)!.status !== x.status).map(([k, x]) => ({ family: k, from: cm.get(k)!.status, to: x.status }));
+  return { note: 'The same official runs, read with the owner-decided review settlements applied (benchmarks/review-ledger.json rows keyed by the accepted run\'s occurrence ids; scripts/apply-ledger-settlements.ts). Only the differential gate can move.', policyRevision: { candidateWithoutSettlements: C.policy.revision, final: F.policy.revision }, distribution: { candidateWithoutSettlements: C.distribution, final: F.distribution }, supportMatrix: { candidateWithoutSettlements: C.supportMatrix.distribution, final: F.supportMatrix.distribution }, stableDistribution: { candidateWithoutSettlements: C.stableDistribution, final: F.stableDistribution }, familyChanges: rows, supportMatrixStatusChanges: matrix, finalVsAccepted: { statusChanges: [...f].filter(([k, x]) => x.status.value !== a.get(k)!.status.value).map(([k, x]) => ({ family: k, from: a.get(k)!.status.value, to: x.status.value })) } };
+})() : null;
+
 // ---- 9. the superseded candidate (the same release family on the previous engine), from its own recorded comparison ----
 const supersededFile = option('superseded-comparison');
 const superseded: Json = supersededFile ? readJson(supersededFile) : null;
@@ -237,6 +256,7 @@ const out = {
   unmeasured: { accepted: unmeasuredRows(A), candidate: unmeasuredRows(C), note: 'Per population and scanner: cases a scanner observed but the engine could not map to ranges. Never a MISS, in no denominator.' },
   methods,
   overlayAndPolicy,
+  ledgerEffect,
   supersededCandidate,
   releaseRepresentation: report.representation ?? null,
   representationEffect: report.replay?.representationEffect ?? null,
@@ -270,11 +290,12 @@ function renderMarkdown(o: Json, parity: Json | null): string {
     '## Status', '', ...statusLines(st, { previousRelease, reviewRelease }), '',
     '## Headline', '',
     table(['', `${L.base} (${previousRelease}, ${tagShort(engineFrom)})`, `${L.current} (${o.evidenceRelease}, ${tagShort(engineTo)})`], [
-      ['Credential families', dist(v.accepted.distribution), dist(v.candidate.distribution)],
-      ['Support matrix entries', dist(v.accepted.supportMatrix), dist(v.candidate.supportMatrix)],
-      ['Stable by route', JSON.stringify(v.accepted.stableDistribution), JSON.stringify(v.candidate.stableDistribution)],
+      ['Credential families', dist(v.accepted.distribution), dist(o.ledgerEffect ? o.ledgerEffect.distribution.final : v.candidate.distribution)],
+      ['Support matrix entries', dist(v.accepted.supportMatrix), dist(o.ledgerEffect ? o.ledgerEffect.supportMatrix.final : v.candidate.supportMatrix)],
+      ['Stable by route', JSON.stringify(v.accepted.stableDistribution), JSON.stringify(o.ledgerEffect ? o.ledgerEffect.stableDistribution.final : v.candidate.stableDistribution)],
+      ...(o.ledgerEffect ? [['Credential families without the owner\'s ledger settlements (section 2b)', '', dist(v.candidate.distribution)]] : []),
       ['Public cases', n(v.accepted.populations.find((p: Json) => p.population === 'public-evidence-snapshot').cases), `${n(add.commonCases)} common + ${n(add.addedCases)} added`],
-      ['Policy revision', `\`${v.accepted.policyRevision.slice(0, 30)}...\``, `\`${v.candidate.policyRevision.slice(0, 30)}...\``],
+      ['Policy revision', `\`${v.accepted.policyRevision.slice(0, 30)}...\``, `\`${(o.ledgerEffect ? o.ledgerEffect.policyRevision.final : v.candidate.policyRevision).slice(0, 30)}...\``],
     ]), '',
     `A larger denominator is not an improvement and a lower stable count is not a regression of the product: the ${n(addedTotal)} added cases bring evidence no previous run measured.`, '',
     `## 1. Engine effect (${tagShort(engineFrom)} to ${tagShort(engineTo)}, corpus fixed)`, '',
@@ -303,6 +324,19 @@ function renderMarkdown(o: Json, parity: Json | null): string {
     '### Unmeasured', '',
     table(['Population', 'Scanner', L.base, L.current], Object.keys(o.unmeasured.candidate).flatMap(p => { const scanners = new Set([...Object.keys(o.unmeasured.accepted[p] ?? {}), ...Object.keys(o.unmeasured.candidate[p] ?? {})]); return scanners.size ? [...scanners].map(sc => [p, sc, o.unmeasured.accepted[p]?.[sc]?.unmeasured ?? 0, `${o.unmeasured.candidate[p]?.[sc]?.unmeasured ?? 0} ${Object.entries(o.unmeasured.candidate[p]?.[sc]?.reasons ?? {}).map(([r, c]) => `(${c}: ${String(r).replace('scanner output could not be mapped to ranges: ', '')})`).join(' ')}`]) : [[p, 'all', 0, 0]]; })), '',
     `The methods run also leaves ${JSON.stringify(o.methods?.unmeasuredVariants ?? {})} generated variants unmeasured. They are in no denominator and never a zero detection.`, '',
+    ...(o.ledgerEffect ? [
+      '## 2b. Ledger settlements (owner decision, #698)', '',
+      `${o.ledgerEffect.note} Maintainer-reviewed (independent review pending) / ${MAINTAINER_REVIEWED_KO}: a settlement is the repository owner's decision per occurrence, never a blanket peer acceptance and never an independent review.`, '',
+      table(['', 'Without settlements', 'With settlements (final)'], [
+        ['Credential families', dist(o.ledgerEffect.distribution.candidateWithoutSettlements), dist(o.ledgerEffect.distribution.final)],
+        ['Support matrix entries', dist(o.ledgerEffect.supportMatrix.candidateWithoutSettlements), dist(o.ledgerEffect.supportMatrix.final)],
+        ['Stable by route', JSON.stringify(o.ledgerEffect.stableDistribution.candidateWithoutSettlements), JSON.stringify(o.ledgerEffect.stableDistribution.final)],
+        ['Policy revision', `\`${o.ledgerEffect.policyRevision.candidateWithoutSettlements.slice(0, 30)}...\``, `\`${o.ledgerEffect.policyRevision.final.slice(0, 30)}...\``],
+      ]), '',
+      table(['Family', 'Status', 'Unresolved differential occurrences', 'Why not stable (if still not)'], o.ledgerEffect.familyChanges.map((r: Json) => [r.family, `${r.status.from} to ${r.status.to}`, `${r.differentialUnresolved.from} to ${r.differentialUnresolved.to}`, r.remainingReasons.join('; ').slice(0, 220)])), '',
+      `Support matrix entries that change with the settlements: ${o.ledgerEffect.supportMatrixStatusChanges.length ? o.ledgerEffect.supportMatrixStatusChanges.map((r: Json) => `\`${r.family}\` (${r.from} to ${r.to})`).join(', ') : 'none'}.`, '',
+      `Final versus the previously accepted view: ${o.ledgerEffect.finalVsAccepted.statusChanges.length} family status changes: ${o.ledgerEffect.finalVsAccepted.statusChanges.map((r: Json) => `\`${r.family}\` ${r.from} to ${r.to}`).join(', ')}.`, '',
+    ] : []),
     '## 3. Overlay and policy effect', '',
     o.overlayAndPolicy.note, '',
     table(['Input', L.base, L.current], [

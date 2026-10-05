@@ -139,3 +139,18 @@ test('the committed cell register points at artifacts whose bytes match their re
   for (const c of committed.cells) assert.equal(c.identityDigest, identityDigest(c.identity), c.id);
   assert.ok(committed.measurements.every(m => m.granularity === 'measurement'));
 });
+
+test('the plan names one separate dispatch per axis and none while a decision is open (#709)', () => {
+  const fixture = plan(['fixtures/accuracy/a.txt']);
+  assert.deepEqual(fixture.dispatch.map(d => [d.axis, d.workflow]), [['accuracy', 'official-runs.yml']], 'a fixture-only change dispatches no performance workflow');
+  assert.deepEqual(fixture.dispatch[0].covers, ['floors', 'regression']);
+  const open = plan(['package.json'], { changes: { 'peer-a': '1.1.0' } });
+  assert.equal(open.verdict, 'needs-decision');
+  assert.deepEqual(open.dispatch, []);
+  const controlled = planExecution({ axis: 'performance', files: [], axes, performance: performance({ controlledComparison: true }, { 'peer-a': '1.1.0' }) });
+  assert.deepEqual(controlled.dispatch.map(d => d.axis), []);
+  const withDispatch = { ...manifest, measurements: [{ ...manifest.measurements[0], dispatch: { workflow: 'perf.yml', inputs: { measurement: 'm' } } }] };
+  const both = planExecution({ axis: 'performance', files: [], axes, performance: { ...performance({ controlledComparison: true }, { 'peer-a': '1.1.0' }), manifest: withDispatch } });
+  assert.deepEqual(both.dispatch.map(d => d.command), ['gh workflow run perf.yml --ref <branch> -f measurement=m']);
+  assert.equal(planExecution({ axis: 'accuracy', files: ['fixtures/accuracy/a.txt'], axes, accuracy: accuracy(), performance: performance() }).counts.performance.jobs, 0);
+});

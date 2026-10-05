@@ -17,7 +17,7 @@ export const DOMAIN_HREF: Record<DomainId, string> = { credential: '/evaluation/
 const REPO = 'https://github.com/redact-secret/redact-secret-benchmarks';
 const blob = (path: string): string => `${REPO}/blob/develop/${path}`;
 const issue = (number: number) => ({ number, href: `${REPO}/issues/${number}` });
-const ISSUES = { activation: 615, population: 616, methods: 617, metrics: 618, policyHoldout: 619, accuracyCorpus: 576, piiEval: 665 } as const;
+const ISSUES = { activation: 615, population: 616, methods: 617, metrics: 618, policyHoldout: 619, accuracyCorpus: 576, piiEval: 665, piiAuthority: 666 } as const;
 
 const pair = [{ label: 'Credential', href: DOMAIN_HREF.credential }, { label: 'PII', href: DOMAIN_HREF.pii }];
 /** The first crumb is the Evaluation hub (#614). */
@@ -241,6 +241,16 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
       rows: [{ id: 'evidence', label: 'PII evidence', status: 'not-measured', statusWord: 'Not recorded', detail: pii.state === 'not-recorded' ? pii.reason : 'No PII record is bound.' }],
     });
   }
+  const stamp = pii.authority;
+  const met = stamp.total - stamp.unmet.length;
+  status[0].rows.push({
+    id: 'pii-authority', label: 'PII authority', status: 'info', statusWord: stamp.authority === 'new' ? 'New' : 'Legacy',
+    value: stamp.total ? `${int(met)} of ${int(stamp.total)} exit criteria met` : undefined,
+    detail: stamp.authority === 'legacy'
+      ? `${stamp.source} The pii-eval measurement is shown beside it as exploratory evidence and decides nothing.${stamp.unmet.length ? ` Not yet met: ${stamp.unmet.join(', ')}.` : ''}${stamp.decidedBy ? ` The exit is decided by ${stamp.decidedBy}${stamp.reviewOn ? `, reviewed on ${stamp.reviewOn}` : ''}.` : ''} Independent of the credential authority.`
+      : `The pii-eval artifacts are the authority, under an owner authorisation recorded in the repository. The legacy pipeline stays as the oracle. Independent of the credential authority.`,
+    link: { label: `#${ISSUES.piiAuthority}`, href: issue(ISSUES.piiAuthority).href, external: true },
+  });
   if (piiEval) {
     for (const population of piiEval.populations) {
       for (const scanner of population.scanners ?? []) {

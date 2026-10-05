@@ -149,6 +149,10 @@ jobs:
         run: npm run pii:custodian:check
       - name: The PII dual-run record, its four schema 1.2 population artifacts and its pins agree, with no unexplained difference (#664)
         run: npm run pii:migration:check
+      - name: The PII authority is one valid committed value, independent of the credential authority, with its exit criteria recomputed from the tree (#666)
+        run: npm run pii:authority:check
+      - name: The legacy PII measurement code has an inventory of removal candidates, owners, callers and prerequisites that equals the tree (#666)
+        run: npm run pii:legacy-inventory:check
       - name: Every taxonomy provider and family has a dossier entry (#473)
         run: npm run dossiers:check
       - name: Peer scanner rules map to real taxonomy families, and the peer registry ranks nothing (#558)

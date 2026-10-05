@@ -4,6 +4,13 @@ export interface PinFacts {
   registrySourceRevision: string;
   inventoryRedactSecretRevision: string;
   inventoryRedactSecretVersion: string;
+  /**
+   * `detector-inventory.json` `redactSecretReleaseRevision`: the commit the pinned PUBLISHED package was built from. The registry snapshot
+   * (`redactSecretRevision`) may sit ahead of it on product `main` to record detectors no release contains yet (#583); the performance
+   * evaluation and the runtime-comparison snapshots measure the published package, so they follow this revision. Optional: when absent
+   * the registry revision is used, as before.
+   */
+  inventoryRedactSecretReleaseRevision?: string;
   packageVersion: string;
   /** `performance-criteria.json` `baseline.verifiedCommit`: the latest ACCEPTED evaluation against the unchanged thresholds. */
   performanceCriteriaVerifiedCommit: string;
@@ -41,14 +48,15 @@ export const PRODUCT_BRANCH = 'main';
 /** Checks that need no network access: internal consistency between the three pins. */
 export function checkPinConsistency(facts: PinFacts): string[] {
   const failures: string[] = [];
+  const measured = facts.inventoryRedactSecretReleaseRevision ?? facts.inventoryRedactSecretRevision;
   if (facts.registrySourceRevision !== facts.inventoryRedactSecretRevision) {
     failures.push(`detectors.json sourceRevision (${facts.registrySourceRevision}) does not match detector-inventory.json redactSecretRevision (${facts.inventoryRedactSecretRevision})`);
   }
   if (facts.inventoryRedactSecretVersion !== facts.packageVersion) {
     failures.push(`detector-inventory.json redactSecretVersion (${facts.inventoryRedactSecretVersion}) does not match package.json @redact-secret/core version (${facts.packageVersion})`);
   }
-  if (facts.performanceCriteriaVerifiedCommit !== facts.inventoryRedactSecretRevision) {
-    failures.push(`benchmarks/performance-criteria.json baseline.verifiedCommit (${facts.performanceCriteriaVerifiedCommit}) does not match detector-inventory.json redactSecretRevision (${facts.inventoryRedactSecretRevision}) -- #150: the pinned core revision needs an ACCEPTED performance evaluation`);
+  if (facts.performanceCriteriaVerifiedCommit !== measured) {
+    failures.push(`benchmarks/performance-criteria.json baseline.verifiedCommit (${facts.performanceCriteriaVerifiedCommit}) does not match the measured core revision (${measured}; detector-inventory.json redactSecretReleaseRevision, else redactSecretRevision) -- #150: the pinned core revision needs an ACCEPTED performance evaluation`);
   }
   for (const snapshot of facts.runtimeComparisonSnapshots ?? []) {
     if (snapshot.kind !== 'published-npm-package') {
@@ -57,8 +65,8 @@ export function checkPinConsistency(facts: PinFacts): string[] {
     if (snapshot.version !== facts.packageVersion) {
       failures.push(`${snapshot.file} measured redact-secret ${snapshot.version}, but package.json pins @redact-secret/core ${facts.packageVersion}: re-measure with scripts/run-runtime-comparison-docker.sh and replace evidence/562 (#562)`);
     }
-    if (snapshot.commit !== facts.inventoryRedactSecretRevision) {
-      failures.push(`${snapshot.file} records product commit ${snapshot.commit}, but the pin is ${facts.inventoryRedactSecretRevision}: re-measure and replace evidence/562 (#562)`);
+    if (snapshot.commit !== measured) {
+      failures.push(`${snapshot.file} records product commit ${snapshot.commit}, but the pinned package was built from ${measured}: re-measure and replace evidence/562 (#562)`);
     }
   }
   return failures;

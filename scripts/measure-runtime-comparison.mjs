@@ -33,7 +33,7 @@ if (!['published', 'local-source-build'].includes(source)) throw new Error('--so
 if (!args.out) throw new Error('--out=<path> is required');
 
 const need = name => process.env[name] || (() => { throw new Error(`${name} is not set: run this through scripts/run-runtime-comparison-docker.sh`); })();
-const pinRef = JSON.parse(await readFile(path.join(root, 'benchmarks/pin-manifest.json'), 'utf8')).pins.redactSecretRevision;
+const pinRef = JSON.parse(await readFile(path.join(root, 'benchmarks/pin-manifest.json'), 'utf8')).pins.releaseSourceRevision;
 const productRef = need('REDACT_SECRET_REF');
 const imageDigest = need('IMAGE_DIGEST');
 const cpuLimit = Number(need('CPU_LIMIT'));

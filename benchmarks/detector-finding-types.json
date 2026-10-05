@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "source": {
     "repository": "redact-secret/redact-secret",
-    "revision": "66b492bdff5e6751fc6b5409266916346ed7c723",
+    "revision": "3b1a5aa9935c57416a026a44f45501fd41ffeac8",
     "path": "docs/coverage/detector-inventory.json",
-    "sha256": "c12822510bfd456ac409c999cc1a13363a47cef0847347f66de448c2e9555c62"
+    "sha256": "4f18fa1e19ecdd6cd7310a67f1e38afb0d0dca6a17956f9eb64ec0334b4d8ec7"
   },
   "note": "Finding types per registered detector, copied from the core detector inventory at one revision. A detector with several types is a shared detector; the support matrix keys each row by these types (docs/specs/support-matrix.md).",
   "detectors": {
@@ -49,6 +49,15 @@
     ],
     "browserbase-api-key": [
       "browserbase_api_key"
+    ],
+    "buildkite-token": [
+      "buildkite_agent_token",
+      "buildkite_api_access_token",
+      "buildkite_job_token",
+      "buildkite_oauth_token",
+      "buildkite_packages_token",
+      "buildkite_pipeline_token",
+      "buildkite_portal_token"
     ],
     "cerebras-api-key": [
       "cerebras_api_key"
@@ -140,6 +149,9 @@
     "fireworks-ai-api-key": [
       "fireworks_ai_api_key"
     ],
+    "fly-token": [
+      "fly_access_token"
+    ],
     "generic-token": [
       "authorization_credential",
       "contextual_secret",
@@ -210,6 +222,9 @@
     ],
     "mailgun-api-key": [
       "mailgun_api_key"
+    ],
+    "mapbox-token": [
+      "mapbox_secret_access_token"
     ],
     "microsoft-entra-client-secret": [
       "microsoft_entra_client_secret"
@@ -283,6 +298,9 @@
     "pulumi-access-token": [
       "pulumi_access_token"
     ],
+    "pydantic-logfire-token": [
+      "pydantic_logfire_token"
+    ],
     "pypi-token": [
       "pypi_api_token"
     ],
@@ -319,6 +337,13 @@
       "sonarqube_analysis_token",
       "sonarqube_user_token"
     ],
+    "sourcegraph-token": [
+      "sourcegraph_access_token"
+    ],
+    "square-token": [
+      "square_access_token",
+      "square_oauth_application_secret"
+    ],
     "stripe-token": [
       "stripe_credential",
       "stripe_webhook_signing_secret"
@@ -354,6 +379,9 @@
     "twilio-auth-token": [
       "twilio_auth_token"
     ],
+    "unkey-root-key": [
+      "unkey_root_key"
+    ],
     "vault-token": [
       "vault_token"
     ],
@@ -368,6 +396,10 @@
     ],
     "xai-api-key": [
       "xai_api_key"
+    ],
+    "xata-api-key": [
+      "xata_organization_api_key",
+      "xata_user_api_key"
     ]
   }
 }

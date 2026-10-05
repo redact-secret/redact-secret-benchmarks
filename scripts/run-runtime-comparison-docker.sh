@@ -9,7 +9,7 @@
 # emulated run; set HOST_CPU_MODEL to name the machine when the container only sees a virtual CPU. --source=local-build: the
 # original mode below, an add-on built from the pinned product commit.
 #
-# Like the #429 runner: REDACT_SECRET_REF defaults to benchmarks/pin-manifest.json pins.redactSecretRevision, the
+# Like the #429 runner: REDACT_SECRET_REF defaults to benchmarks/pin-manifest.json pins.releaseSourceRevision (the published package's source commit; #583 lets the registry pin sit ahead of it), the
 # measurement refuses to write evidence/562/ unless it equals the pin, and a non-amd64 Docker host is emulated (a smoke
 # check that cannot write evidence/562/).
 set -euo pipefail
@@ -28,7 +28,7 @@ for argument in "$@"; do
 done
 case "$source_mode" in published|local-build) ;; *) echo "--source must be published or local-build" >&2; exit 2 ;; esac
 
-pin=$(node -e "console.log(JSON.parse(require('fs').readFileSync('benchmarks/pin-manifest.json','utf8')).pins.redactSecretRevision)")
+pin=$(node -e "console.log(JSON.parse(require('fs').readFileSync('benchmarks/pin-manifest.json','utf8')).pins.releaseSourceRevision)")
 ref="${REDACT_SECRET_REF:-$pin}"
 host_arch=$(docker info --format '{{.Architecture}}')
 case "$host_arch" in x86_64|amd64) native=linux/amd64 ;; aarch64|arm64) native=linux/arm64 ;; *) native="" ;; esac

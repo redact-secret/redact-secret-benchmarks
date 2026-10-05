@@ -60,6 +60,8 @@ GITLEAKS_FAMILIES = {
     # same peer rules scanners/families.mjs maps. sonar-api-token reads squ_/sqa_/sqp_ under one label.
     "clickhouse-cloud-api-secret-key": "clickhouse-cloud-api-secret", "rubygems-": "rubygems-api-key",
     "clojars-": "clojars-deploy-token", "dynatrace-": "dynatrace-token", "sonar-api-token": "sonarqube-token",
+    # #583 (registry pin 3b1a5aa): square-access-token reads EAAA or sq0atp- (gitleaks 8.30.1 has no sq0csp- rule); squarespace-access-token is another provider.
+    "square-access-token": "square-token",
     "curl-auth-header": "bearer-token", "jwt": "jwt", "private-key": "private-key", "generic-api-key": "generic-token",
 }
 TRUFFLEHOG_FAMILIES = {
@@ -95,6 +97,8 @@ TRUFFLEHOG_FAMILIES = {
     "weightsandbiases": "wandb-api-key",
     # #464/#528 families, registry detectors since redact-secret#972/#1023 (registry pin 4fb7882).
     "nvapi": "nvidia-api-key", "rubygems": "rubygems-api-key",
+    # #583: squarespace is another provider and must precede the first-match square prefix.
+    "squarespace": None, "squareapp": "square-token", "square": "square-token",
     "jwt": "jwt", "privatekey": "private-key", "mongodb": "connection-string",
     "postgres": "connection-string", "redis": "connection-string",
     "azure_storage": "connection-string", "rabbitmq": "connection-string",
@@ -213,7 +217,7 @@ def main():
                 "redactSecretVersion": version,
                 "redactSecretRevision": registry["sourceRevision"],
                 "redactSecretReleaseRevision": release_revision,
-                "method": f"Explicit provider-family mapping against the {len(registry['detectors'])} registered {release} detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
+                "method": f"Explicit provider-family mapping against the {len(registry['detectors'])} detectors registered at product revision {registry['sourceRevision'][:7]} (published package {release}; detectors added after that release are included). No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
                 "sources": sources, "entries": rows}
     serialized = json.dumps(snapshot, indent=2) + "\n"
     if args.check:

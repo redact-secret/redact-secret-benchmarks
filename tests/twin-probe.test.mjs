@@ -31,6 +31,9 @@ const LIFTED = ['datadog-api-key', 'new-relic-user-api-key', 'grafana-service-ac
 // opaque, context-gated values). vercel-token's positive is still T0, so it stays un-probeable.
 const LIFTED_207 = ['supabase-token', 'discord-bot-token', 'telegram-bot-token', 'twilio-auth-token', 'twilio-api-key-secret', 'sentry-org-auth-token', 'sentry-user-auth-token'];
 const UNPROBEABLE = ['vercel-token'];
+// #583 (registry pin 3b1a5aa): second-wave detectors that are registered while their benchmark contract and corpus are pending
+// (benchmarks/lib/beta8/583p.ts). Each records `unprobeable` until its slice authors a grammar to mutate.
+const PENDING_583 = ['xata-api-key', 'sourcegraph-token', 'unkey-root-key', 'buildkite-token', 'pydantic-logfire-token', 'mapbox-token', 'fly-token'];
 
 test('every detector family either has a twin or is recorded un-probeable, never both and never neither', () => {
   assert.equal(TWINNED.length + LIFTED.length + LIFTED_207.length + UNPROBEABLE.length, 22);
@@ -39,7 +42,7 @@ test('every detector family either has a twin or is recorded un-probeable, never
     assert.notEqual(twinned, Boolean(record), id);
     if (record) { assert.ok(record.reason.trim().length > 40, `${id} states why`); assert.match(record.observedAt, /^\d{4}-\d{2}-\d{2}$/, id); }
   }
-  assert.deepEqual(registry.detectors.map(d => d.id).filter(id => contracts[id].unprobeable).sort(), [...UNPROBEABLE].sort());
+  assert.deepEqual(registry.detectors.map(d => d.id).filter(id => contracts[id].unprobeable).sort(), [...UNPROBEABLE, ...PENDING_583].sort());
   for (const id of [...TWINNED, ...LIFTED, ...LIFTED_207]) assert.ok(twins.some(t => t.detectors[0] === id), id);
 });
 
@@ -246,6 +249,9 @@ const T1_DIMENSIONS = {
   'paddle-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
   'honeycomb-api-key': ['alphabet', 'boundary', 'length', 'prefix'],
   'axiom-token': ['alphabet', 'boundary', 'length', 'prefix'],
+  // #583: Square disclaims length validation, so the width twins are unclaimed (DISPUTED_PROPERTIES) and only prefix, alphabet and
+  // boundary are asserted; the family's length dimension is unmeasured by design until the issuance check (#584).
+  'square-token': ['alphabet', 'boundary', 'prefix'],
 };
 
 test('every T1 ("stable"-track) family has a twin for each structural dimension its provider source asserts', () => {
@@ -267,6 +273,6 @@ test('every T1 ("stable"-track) family has a twin for each structural dimension 
 test('on the real corpus no family is left unrecorded', () => {
   const probe = twinProbe(registry.detectors.map(d => d.id), fixtures.map(f => ({ id: `${f.category}--${f.id}`, detectors: f.detectors, twinOf: f.twinOf && `${f.category}--${f.twinOf}` })), undefined, contracts);
   assert.equal(probe.counts.unrecorded, 0);
-  assert.equal(probe.counts['un-probeable'], 1);
-  assert.equal(probe.counts['not-measured'], 109);
+  assert.equal(probe.counts['un-probeable'], 1 + PENDING_583.length);
+  assert.equal(probe.counts['not-measured'], 110);
 });

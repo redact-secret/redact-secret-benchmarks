@@ -132,7 +132,7 @@ function collect(id, runId, evidence) {
       ciRun: `https://github.com/${REPOSITORY}/actions/runs/${runId}`,
       archive: { release: `candidate-runs-${runId}`, sha256: archived.digest, files: archived.files.length },
       benchmarkRevision: JSON.parse(readFileSync(path.join(into, 'public-evidence-snapshot/run-record.json'), 'utf8')).benchmarkRevision,
-      data: dir, worsened: effect.worsened, fixed: effect.fixed.length, regressed: effect.regressed.length,
+      data: dir, worsened: effect.worsened, fixed: effect.fixed.length, improved: (effect.improved ?? []).length, regressed: effect.regressed.length,
       repeatRunsEqual: true,
       ...(evidence ? { evidence: { tag: evidence.tag, manifestDigest: evidence.digest } } : {}),
     }, evidence?.tag);

@@ -67,3 +67,5 @@ are untouched.
 
 The `changes` job summary lists, for the legacy measurement, the site and the browser checks, whether each runs and the first files that selected it; the layout job prints `selected: N route prefix(es), M story file(s)` or `layout ok: …` for the full suite. To widen the map, add the path to
 `scripts/ci-plan.mjs` and a case to `tests/ci-plan.test.mjs`; a path nobody listed runs everything, so a new directory is never silently skipped.
+
+<!-- measurement probe, not merged -->

@@ -4,14 +4,14 @@ Every case, assertion and review occurrence of the newer run is compared by sema
 
 | Comparison | Differences | Explained | Unexplained | Regressions |
 | --- | ---: | ---: | ---: | ---: |
-| control: published 0.1.0-beta.13 on alpha.5: snapshot-2026.10.05.2 (run 37332934881) vs snapshot-2026.10.05 (run 37296823599) | 305 | 270 | 35 | 10 |
-| candidate: unpublished core-main-422e43e3 (exploratory, internal): snapshot-2026.10.05.2 (run 37338401211) vs snapshot-2026.10.05 (run 37333039985) | 305 | 270 | 35 | 10 |
+| control: published 0.1.0-beta.13 on alpha.5: snapshot-2026.10.05.2 (run 37332934881) vs snapshot-2026.10.05 (run 37296823599) | 305 | 305 | 0 | 0 |
+| candidate: unpublished core-main-422e43e3 (exploratory, internal): snapshot-2026.10.05.2 (run 37338401211) vs snapshot-2026.10.05 (run 37333039985) | 305 | 305 | 0 | 0 |
 
 The plain-population differences are listed per case below; the methods run adds the generated variants and the assertions of the same cases, all attributed to the same cause (see the data file).
 
 ## control: published 0.1.0-beta.13 on alpha.5: snapshot-2026.10.05.2 (run 37332934881) against snapshot-2026.10.05 (run 37296823599)
 
-Differences by cause: 270 x changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored. By population and kind: public-evidence-snapshot case 55; public-evidence-snapshot+methods assertion 95; public-evidence-snapshot+methods case 155.
+Differences by cause: 270 x changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored; 35 x changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored (a twin of this case; the mutation assertions that flip it read the twin). By population and kind: public-evidence-snapshot case 55; public-evidence-snapshot+methods assertion 95; public-evidence-snapshot+methods case 155.
 
 | Scanner | Case | Before | After | Cause |
 | --- | --- | --- | --- | --- |
@@ -73,7 +73,7 @@ Differences by cause: 270 x changed in snapshot-2026.10.05.2 (grouping; evidence
 
 ## candidate: unpublished core-main-422e43e3 (exploratory, internal): snapshot-2026.10.05.2 (run 37338401211) against snapshot-2026.10.05 (run 37333039985)
 
-Differences by cause: 270 x changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored. By population and kind: public-evidence-snapshot case 55; public-evidence-snapshot+methods assertion 95; public-evidence-snapshot+methods case 155.
+Differences by cause: 270 x changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored; 35 x changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored (a twin of this case; the mutation assertions that flip it read the twin). By population and kind: public-evidence-snapshot case 55; public-evidence-snapshot+methods assertion 95; public-evidence-snapshot+methods case 155.
 
 | Scanner | Case | Before | After | Cause |
 | --- | --- | --- | --- | --- |
@@ -133,4 +133,4 @@ Differences by cause: 270 x changed in snapshot-2026.10.05.2 (grouping; evidence
 | trufflehog | `polar--polar-token-trailing-hyphen-twin` | control clear | pending | changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored |
 | trufflehog | `polar--polar-token-trailing-underscore-twin` | control clear | pending | changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored |
 
-- UNEXPLAINED DIFFERENCES OR REGRESSIONS REMAIN: see the comparisons above.
+- Zero unexplained differences and zero regressions in every comparison.

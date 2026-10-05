@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-05T19:48:30.675Z",
+  "sourceRun": {
+    "runId": "2026-10-05T19:48:30.675Z-3c8a81",
+    "benchmarkRevision": "d7bc783c6ee274a83eeb8bc3b7d4b3be54ab9254"
+  },
+  "input": {
+    "surface": "comparison/beta8-583a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "607795f49291b8e25e4a8a7950fe48903d0c608716b2ae7d9cd1ba9877982cfc",
+    "fixtureCount": 75,
+    "fixturesDigest": "d123ec60a9dfab223bc7a64a645edbcdb02405bf5dc7636b5c2224654647e705",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "6fc68fe094f1f96d6c3f57fc305d09d21a8b9a92bb55a2c2580a5c07b4c32d6e",
+      "fixtureCount": 6089
+    }
+  },
+  "peer": {
+    "id": "trufflehog",
+    "version": "3.97.4",
+    "mode": "Filesystem scan · verification disabled",
+    "configurationHash": "27787a1a935f9cab09b01a0a24b5bd20e6509aa79a4a067b63e4d5d4d3ef1d17",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "trufflehog",
+      "arguments": [
+        "filesystem",
+        "<input-root>",
+        "--json",
+        "--no-verification",
+        "--no-update",
+        "--results=verified,unknown,unverified"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 16777216
+      },
+      "verification": false,
+      "update": false
+    },
+    "artifactDigest": "ad1e19d8a339aec8982276bf9f7f396cfd913158b4354a9dc64eff6060b773ff",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "57e2a41c1e196cf96cae49ca2151f5e9207be2f5c41349b5ea49cb5dcfc606b7"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/square-oauth-application-secret-obtain-token-json.http",
+      "start": 105,
+      "end": 134,
+      "family": "square-oauth-application-secret"
+    },
+    {
+      "path": "cases/square-token-actions-env.yml",
+      "start": 102,
+      "end": 166,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-bearer-header.http",
+      "start": 73,
+      "end": 137,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-chat-paste.txt",
+      "start": 22,
+      "end": 86,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-docker-env.sh",
+      "start": 39,
+      "end": 103,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-dotenv.env",
+      "start": 27,
+      "end": 91,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-equals-in-body-twin.http",
+      "start": 61,
+      "end": 125,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-export.sh",
+      "start": 28,
+      "end": 92,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-mcp-env.json",
+      "start": 142,
+      "end": 206,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-meta-style-long-run-twin.txt",
+      "start": 22,
+      "end": 86,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-sdk-kwarg.py",
+      "start": 31,
+      "end": 95,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-x-api-key-header.http",
+      "start": 61,
+      "end": 125,
+      "family": "square-token"
+    }
+  ],
+  "digest": "52a5cce909943424ef69c22c92f36a60f0e0ea7a5500df8f15afb1a869665ace"
+}

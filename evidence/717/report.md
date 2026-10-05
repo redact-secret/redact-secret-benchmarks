@@ -22,17 +22,34 @@ node 0.1.0-beta.13 · wasm 0.1.0-beta.13 · python 0.1.0b13 · cli 0.1.0-beta.13
 
 | family | node | wasm | python | cli |
 | --- | --- | --- | --- | --- |
-| `figma:personal-access-token` | 5/5 exact, 0 miss · 1/9 controls flagged | 5/5 exact, 0 miss · 1/9 controls flagged | 5/5 exact, 0 miss · 1/9 controls flagged | 5/5 exact, 0 miss · 1/9 controls flagged |
+| `figma:personal-access-token` | 5/5 exact, 0 miss · 0/9 controls flagged | 5/5 exact, 0 miss · 0/9 controls flagged | 5/5 exact, 0 miss · 0/9 controls flagged | 5/5 exact, 0 miss · 0/9 controls flagged |
 | `asana:webhook-secret` | 6/6 exact, 0 miss · 0/8 controls flagged | 6/6 exact, 0 miss · 0/8 controls flagged | 6/6 exact, 0 miss · 0/8 controls flagged | 6/6 exact, 0 miss · 0/8 controls flagged |
-| `airtable:webhook-mac-secret` | 0/7 exact, 7 miss · 0/8 controls flagged | 0/7 exact, 7 miss · 0/8 controls flagged | 0/7 exact, 7 miss · 0/8 controls flagged | 0/7 exact, 7 miss · 0/8 controls flagged |
-| `elastic:elasticsearch-api-key` | 0/8 exact, 8 miss · 0/8 controls flagged | 0/8 exact, 8 miss · 0/8 controls flagged | 0/8 exact, 8 miss · 0/8 controls flagged | 0/8 exact, 8 miss · 0/8 controls flagged |
+| `airtable:webhook-mac-secret` | 7/7 exact, 0 miss · 0/8 controls flagged | 7/7 exact, 0 miss · 0/8 controls flagged | 7/7 exact, 0 miss · 0/8 controls flagged | 7/7 exact, 0 miss · 0/8 controls flagged |
+| `elastic:elasticsearch-api-key` | 8/8 exact, 0 miss · 0/8 controls flagged | 8/8 exact, 0 miss · 0/8 controls flagged | 8/8 exact, 0 miss · 0/8 controls flagged | 8/8 exact, 0 miss · 0/8 controls flagged |
 | `canva:client-secret` | 8/8 exact, 0 miss · 0/9 controls flagged | 8/8 exact, 0 miss · 0/9 controls flagged | 8/8 exact, 0 miss · 0/9 controls flagged | 8/8 exact, 0 miss · 0/9 controls flagged |
 
 Stream-versus-whole disagreements: node 0, wasm 0, python 0, cli 0. Cross-surface disagreements: 0.
 
 ## Published to candidate (Node surface)
 
-No case changed.
+| case | published | candidate |
+| --- | --- | --- |
+| `figma-placeholder-example-control` | flagged | clean |
+| `airtable-json-positive` | miss/null/null | exact/redact/contextual_secret |
+| `airtable-json-pretty-positive` | miss/null/null | exact/redact/contextual_secret |
+| `airtable-yaml-positive` | miss/null/null | exact/redact/contextual_secret |
+| `airtable-yaml-quoted-positive` | miss/null/null | exact/redact/contextual_secret |
+| `airtable-assignment-spaced-positive` | miss/null/null | exact/redact/contextual_secret |
+| `airtable-assignment-env-positive` | miss/null/null | exact/redact/contextual_secret |
+| `airtable-json-unicode-prefix-positive` | miss/null/null | exact/redact/contextual_secret |
+| `elastic-raw-http-positive` | miss/null/null | exact/redact/authorization_credential |
+| `elastic-raw-http-proxy-positive` | miss/null/null | exact/redact/authorization_credential |
+| `elastic-raw-http-unicode-prefix-positive` | miss/null/null | exact/redact/authorization_credential |
+| `elastic-curl-single-positive` | miss/null/null | exact/redact/authorization_credential |
+| `elastic-curl-double-positive` | miss/null/null | exact/redact/authorization_credential |
+| `elastic-curl-proxy-positive` | miss/null/null | exact/redact/authorization_credential |
+| `elastic-json-header-map-positive` | miss/null/null | exact/redact/authorization_credential |
+| `elastic-json-header-map-proxy-positive` | miss/null/null | exact/redact/authorization_credential |
 
 Regressions (a pass that no longer passes, or a clean control now flagged): 0.
 

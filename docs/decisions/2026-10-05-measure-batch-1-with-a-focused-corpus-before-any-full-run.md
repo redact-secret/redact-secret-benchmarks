@@ -18,7 +18,7 @@ decided_at: 2026-10-05
 2. **Measure product surfaces directly, product only.** Node, WASM, Python and CLI, whole and streamed, on the published packages and on an exact candidate build. No peer runs, so no TruffleHog classification and no peer disagreement; peers stay diagnostic and out of this lane.
 3. **Unsupported variants are observed, not scored.** Bare prefixes, a key id alone, newline-separated values and prefixed header names carry no pass or fail. One class change was made after the first baseline (prefixed header names moved from control to unsupported, because such a header can carry the same credential) and is recorded in the evidence README.
 4. **Route measured gaps only.** A generic pass is coverage validation. The baseline routes Airtable `macSecretBase64` and Elastic `ApiKey` (misses) and the Figma placeholder control (false positive) to the open core issues; Asana and Canva are no-code dispositions.
-5. **The replay needs an implemented candidate.** The harness replays any build unchanged against the same corpus; current core `d4e86769` changes no case. The "misses improve" gate stays open until a core fix exists, and no disposition claims otherwise.
+5. **The replay needs an implemented candidate, and it ran.** The harness replays any build unchanged against the same corpus. Current core `d4e86769` changed no case; the exact candidate `af1e71e0` (redact-secret#1215) fixed all 15 misses and the placeholder false positive with 0 regressions and full surface and stream agreement. The disposition is an exploratory replay for that exact commit, not an official run and not a support promotion.
 
 ## Consequences
 

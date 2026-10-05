@@ -1,0 +1,1999 @@
+{
+  "schema": "redact-secret-benchmarks/performance-cells/v1",
+  "measurements": [
+    {
+      "id": "peer-pii-runtime-throughput-v1",
+      "plan": "qualification/peer-pii-runtime-throughput-v1.json",
+      "granularity": "measurement",
+      "jobKey": "measurement"
+    },
+    {
+      "id": "runtime-comparison-v2",
+      "plan": "qualification/runtime-comparison-v2.json",
+      "granularity": "measurement",
+      "jobKey": "measurement+setting"
+    }
+  ],
+  "cells": [
+    {
+      "id": "peer-pii-runtime-throughput-v1/default/flare-redact/multilingual-context",
+      "measurement": "peer-pii-runtime-throughput-v1",
+      "setting": null,
+      "subject": "flare-redact",
+      "workload": "multilingual-context",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:b79ed7bff10e770bea0e104ade69980339f37d0ac713de69f6813d09ea5cf5ff",
+        "protocolDigest": "sha256:e4fab93822fceb35dd6bfccdbe5988a12c5c4fc34b6c7bfbd1ebad77c16ca33e"
+      },
+      "identityDigest": "sha256:e8ec291ec9a521608dec716f31ffbafdad57097634747eed49325550fdfec710",
+      "artifact": {
+        "path": "evidence/429/peer-pii-runtime-throughput.json",
+        "byteDigest": "sha256:461fef598aaf5fe95365064ee036df8dc6a21f7a2300f70d0ff30760f83b9132",
+        "artifactCommitment": "8c204fc187485559d5d0c5a5fe35673d0c72f09353789bf0eddfa7d564d088f6",
+        "measuredAt": "2026-09-30T10:21:28.525Z",
+        "host": {
+          "platform": "linux",
+          "arch": "x64",
+          "cpuModel": "AMD EPYC 9V74 80-Core Processor",
+          "imageDigest": "sha256:dab0ed34b08082aa34370e5cbe4c8849c2ebfb3cc4df73762c5a7043643fc650"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "peer-pii-runtime-throughput-v1/default/flare-redact/validator-heavy",
+      "measurement": "peer-pii-runtime-throughput-v1",
+      "setting": null,
+      "subject": "flare-redact",
+      "workload": "validator-heavy",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:d5efd65c68d361280b81880d10bdd41f038d248d7eef74e45a7a931cbcf87287",
+        "protocolDigest": "sha256:e4fab93822fceb35dd6bfccdbe5988a12c5c4fc34b6c7bfbd1ebad77c16ca33e"
+      },
+      "identityDigest": "sha256:0bc04a07306155d63b837b807591c8a49f06721285060e03254a94261b33d4a1",
+      "artifact": {
+        "path": "evidence/429/peer-pii-runtime-throughput.json",
+        "byteDigest": "sha256:461fef598aaf5fe95365064ee036df8dc6a21f7a2300f70d0ff30760f83b9132",
+        "artifactCommitment": "8c204fc187485559d5d0c5a5fe35673d0c72f09353789bf0eddfa7d564d088f6",
+        "measuredAt": "2026-09-30T10:21:28.525Z",
+        "host": {
+          "platform": "linux",
+          "arch": "x64",
+          "cpuModel": "AMD EPYC 9V74 80-Core Processor",
+          "imageDigest": "sha256:dab0ed34b08082aa34370e5cbe4c8849c2ebfb3cc4df73762c5a7043643fc650"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "peer-pii-runtime-throughput-v1/default/openredaction/multilingual-context",
+      "measurement": "peer-pii-runtime-throughput-v1",
+      "setting": null,
+      "subject": "openredaction",
+      "workload": "multilingual-context",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:b79ed7bff10e770bea0e104ade69980339f37d0ac713de69f6813d09ea5cf5ff",
+        "protocolDigest": "sha256:e4fab93822fceb35dd6bfccdbe5988a12c5c4fc34b6c7bfbd1ebad77c16ca33e"
+      },
+      "identityDigest": "sha256:7dccbc222de138a646e41be04cabe3bb1ed2b1689c1f0019249670584f6cd3e0",
+      "artifact": {
+        "path": "evidence/429/peer-pii-runtime-throughput.json",
+        "byteDigest": "sha256:461fef598aaf5fe95365064ee036df8dc6a21f7a2300f70d0ff30760f83b9132",
+        "artifactCommitment": "8c204fc187485559d5d0c5a5fe35673d0c72f09353789bf0eddfa7d564d088f6",
+        "measuredAt": "2026-09-30T10:21:28.525Z",
+        "host": {
+          "platform": "linux",
+          "arch": "x64",
+          "cpuModel": "AMD EPYC 9V74 80-Core Processor",
+          "imageDigest": "sha256:dab0ed34b08082aa34370e5cbe4c8849c2ebfb3cc4df73762c5a7043643fc650"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "peer-pii-runtime-throughput-v1/default/openredaction/validator-heavy",
+      "measurement": "peer-pii-runtime-throughput-v1",
+      "setting": null,
+      "subject": "openredaction",
+      "workload": "validator-heavy",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:d5efd65c68d361280b81880d10bdd41f038d248d7eef74e45a7a931cbcf87287",
+        "protocolDigest": "sha256:e4fab93822fceb35dd6bfccdbe5988a12c5c4fc34b6c7bfbd1ebad77c16ca33e"
+      },
+      "identityDigest": "sha256:5fb4523517aa8fd4db134a0c75531c76ccbc8282bad5a3bb408bb61aa8a02c30",
+      "artifact": {
+        "path": "evidence/429/peer-pii-runtime-throughput.json",
+        "byteDigest": "sha256:461fef598aaf5fe95365064ee036df8dc6a21f7a2300f70d0ff30760f83b9132",
+        "artifactCommitment": "8c204fc187485559d5d0c5a5fe35673d0c72f09353789bf0eddfa7d564d088f6",
+        "measuredAt": "2026-09-30T10:21:28.525Z",
+        "host": {
+          "platform": "linux",
+          "arch": "x64",
+          "cpuModel": "AMD EPYC 9V74 80-Core Processor",
+          "imageDigest": "sha256:dab0ed34b08082aa34370e5cbe4c8849c2ebfb3cc4df73762c5a7043643fc650"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "peer-pii-runtime-throughput-v1/default/redact-secret/multilingual-context",
+      "measurement": "peer-pii-runtime-throughput-v1",
+      "setting": null,
+      "subject": "redact-secret",
+      "workload": "multilingual-context",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.11",
+          "package": "@redact-secret/core",
+          "kind": "local-source-build",
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "activation": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:b79ed7bff10e770bea0e104ade69980339f37d0ac713de69f6813d09ea5cf5ff",
+        "protocolDigest": "sha256:e4fab93822fceb35dd6bfccdbe5988a12c5c4fc34b6c7bfbd1ebad77c16ca33e"
+      },
+      "identityDigest": "sha256:5e6d2e0da4a238d9ed689390f7bf26415efdb50367e9cd791ebb093474566d3f",
+      "artifact": {
+        "path": "evidence/429/peer-pii-runtime-throughput.json",
+        "byteDigest": "sha256:461fef598aaf5fe95365064ee036df8dc6a21f7a2300f70d0ff30760f83b9132",
+        "artifactCommitment": "8c204fc187485559d5d0c5a5fe35673d0c72f09353789bf0eddfa7d564d088f6",
+        "measuredAt": "2026-09-30T10:21:28.525Z",
+        "host": {
+          "platform": "linux",
+          "arch": "x64",
+          "cpuModel": "AMD EPYC 9V74 80-Core Processor",
+          "imageDigest": "sha256:dab0ed34b08082aa34370e5cbe4c8849c2ebfb3cc4df73762c5a7043643fc650"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "peer-pii-runtime-throughput-v1/default/redact-secret/validator-heavy",
+      "measurement": "peer-pii-runtime-throughput-v1",
+      "setting": null,
+      "subject": "redact-secret",
+      "workload": "validator-heavy",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.11",
+          "package": "@redact-secret/core",
+          "kind": "local-source-build",
+          "commit": "da69ebf5090e0fb9519eb07829ff46001ede0de2",
+          "activation": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:d5efd65c68d361280b81880d10bdd41f038d248d7eef74e45a7a931cbcf87287",
+        "protocolDigest": "sha256:e4fab93822fceb35dd6bfccdbe5988a12c5c4fc34b6c7bfbd1ebad77c16ca33e"
+      },
+      "identityDigest": "sha256:ea9e02a0d2a92c2bbc2b58dadd665bb30b8b3dc5c3c734147f5573b45dbd8c7a",
+      "artifact": {
+        "path": "evidence/429/peer-pii-runtime-throughput.json",
+        "byteDigest": "sha256:461fef598aaf5fe95365064ee036df8dc6a21f7a2300f70d0ff30760f83b9132",
+        "artifactCommitment": "8c204fc187485559d5d0c5a5fe35673d0c72f09353789bf0eddfa7d564d088f6",
+        "measuredAt": "2026-09-30T10:21:28.525Z",
+        "host": {
+          "platform": "linux",
+          "arch": "x64",
+          "cpuModel": "AMD EPYC 9V74 80-Core Processor",
+          "imageDigest": "sha256:dab0ed34b08082aa34370e5cbe4c8849c2ebfb3cc4df73762c5a7043643fc650"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/flare-redact/credentials-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "flare-redact",
+      "workload": "credentials-context",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:1b0fb4e8d2630f4df9a9e79d96384f9d909e1ce233e4ae24cf61fd94297159e1",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:ddc93d1d113e2a20890c3da6de72646c578f3259a06a9c36c35fe93176f88f16",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/flare-redact/credentials-fake",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "flare-redact",
+      "workload": "credentials-fake",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:5e614e4f330f6ffd36c14bd0015ec73d84ce29f07a5746250838945c6d14f7ca",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:dcfca8407aba72c3041803d5360ce9adb5c02c5d80e505370a6b3642176a18da",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/flare-redact/credentials-real",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "flare-redact",
+      "workload": "credentials-real",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:a355fea1d8ad4eb6eec56f52fa3442f682bef46b0962cffb3a9f1466039920de",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:3b62112a9cfb3ace64696231bc21509ca80d049ef487fe431bafc366621699ee",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/flare-redact/multilingual-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "flare-redact",
+      "workload": "multilingual-context",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:17a83d8e74aa179328e734963298b881a192f22f543cb4e519aced645d5744c9",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:ceef0c67a59b493d7776445585946dd091917cfea86356e610eacef2c7a0afff",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/flare-redact/real-looking-values",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "flare-redact",
+      "workload": "real-looking-values",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:9472316b6a2d2e66bd0c83073f899eee336f66a080c23ab6e9a1271d8ce73faf",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:8612fdc9a62a22394e0493de9d2f2d01fb9f94b10c86820a416432127672f475",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/flare-redact/validator-heavy",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "flare-redact",
+      "workload": "validator-heavy",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:0141f0fd605568940041886f75fe7b629520d30faf82df9cdd6c0428c93847ac",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:6d4ac50de7b6fa2c9c3b7bdd17b036358c9447f71d9e0df8d791d665958bc67f",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/openredaction/credentials-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "openredaction",
+      "workload": "credentials-context",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:1b0fb4e8d2630f4df9a9e79d96384f9d909e1ce233e4ae24cf61fd94297159e1",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:9276e08ea4d601f0457ed1c33e14ad4455a2bfe415623205d8f5ca4df7cca872",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/openredaction/credentials-fake",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "openredaction",
+      "workload": "credentials-fake",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:5e614e4f330f6ffd36c14bd0015ec73d84ce29f07a5746250838945c6d14f7ca",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:666da2a384b91f0be5580117d2087d667985cb656e6c5766a442e3eb5181b3db",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/openredaction/credentials-real",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "openredaction",
+      "workload": "credentials-real",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:a355fea1d8ad4eb6eec56f52fa3442f682bef46b0962cffb3a9f1466039920de",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:f065101072c9888687132269a9cc5c3cf750b003cbb1e1281c8329d1a17f590c",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/openredaction/multilingual-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "openredaction",
+      "workload": "multilingual-context",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:17a83d8e74aa179328e734963298b881a192f22f543cb4e519aced645d5744c9",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:268410338f1c356b297789aaff02027303198ba7e08af52354501fa16d7687cf",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/openredaction/real-looking-values",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "openredaction",
+      "workload": "real-looking-values",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:9472316b6a2d2e66bd0c83073f899eee336f66a080c23ab6e9a1271d8ce73faf",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:d4c5f629abcafe52a4bcfdd49e17ea4c3395b76504d2419bfa01997847402dad",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/openredaction/validator-heavy",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "openredaction",
+      "workload": "validator-heavy",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:0141f0fd605568940041886f75fe7b629520d30faf82df9cdd6c0428c93847ac",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:4b8d48c552fd0f8a0b682a1bd3f97561cd0539f89fe9336fe1f0d2c93e180b25",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/redact-secret/credentials-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "redact-secret",
+      "workload": "credentials-context",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:1b0fb4e8d2630f4df9a9e79d96384f9d909e1ce233e4ae24cf61fd94297159e1",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:d6f6f8406c9168ae8745fe64d824d8830718323e97e8a47931b22d75e939e016",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/redact-secret/credentials-fake",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "redact-secret",
+      "workload": "credentials-fake",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:5e614e4f330f6ffd36c14bd0015ec73d84ce29f07a5746250838945c6d14f7ca",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:3811eeae1d9df8214081c458672e5bb85b727a44f2c9e7df2aa309d2e733a274",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/redact-secret/credentials-real",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "redact-secret",
+      "workload": "credentials-real",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:a355fea1d8ad4eb6eec56f52fa3442f682bef46b0962cffb3a9f1466039920de",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:37a56447b65c9d7b3b1d51f2ef2926f27c7698d2107675a1b2c0f3db598c5d2d",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/redact-secret/multilingual-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "redact-secret",
+      "workload": "multilingual-context",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:17a83d8e74aa179328e734963298b881a192f22f543cb4e519aced645d5744c9",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:28df2e32aec5f285e71fcf25b20aed089b31385b43d2a817b152390a9e2c3bd4",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/redact-secret/real-looking-values",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "redact-secret",
+      "workload": "real-looking-values",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:9472316b6a2d2e66bd0c83073f899eee336f66a080c23ab6e9a1271d8ce73faf",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:2a811fb50fcb290d4ee9b3669554b2a6002b59f1fff3e3ece44e023939ebf67b",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/default/redact-secret/validator-heavy",
+      "measurement": "runtime-comparison-v2",
+      "setting": "default",
+      "subject": "redact-secret",
+      "workload": "validator-heavy",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=off;families=;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:0141f0fd605568940041886f75fe7b629520d30faf82df9cdd6c0428c93847ac",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:753c07659d1bab958c4737bd3094933fea8d062eff75f7269dd1e9c0d7a7b948",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-default.json",
+        "byteDigest": "sha256:5e5f224df937a989ec97ef145a83c2c2226acd193f670d0f08ee9a96cf9b14b4",
+        "artifactCommitment": "d07923c8477edff882fd0533eb4d87826d1c4f5e86fea726d5e1b19dffc9f2da",
+        "measuredAt": "2026-10-03T11:33:42.987Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/flare-redact/credentials-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "flare-redact",
+      "workload": "credentials-context",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:1b0fb4e8d2630f4df9a9e79d96384f9d909e1ce233e4ae24cf61fd94297159e1",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:ddc93d1d113e2a20890c3da6de72646c578f3259a06a9c36c35fe93176f88f16",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/flare-redact/credentials-fake",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "flare-redact",
+      "workload": "credentials-fake",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:5e614e4f330f6ffd36c14bd0015ec73d84ce29f07a5746250838945c6d14f7ca",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:dcfca8407aba72c3041803d5360ce9adb5c02c5d80e505370a6b3642176a18da",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/flare-redact/credentials-real",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "flare-redact",
+      "workload": "credentials-real",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:a355fea1d8ad4eb6eec56f52fa3442f682bef46b0962cffb3a9f1466039920de",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:3b62112a9cfb3ace64696231bc21509ca80d049ef487fe431bafc366621699ee",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/flare-redact/multilingual-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "flare-redact",
+      "workload": "multilingual-context",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:17a83d8e74aa179328e734963298b881a192f22f543cb4e519aced645d5744c9",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:ceef0c67a59b493d7776445585946dd091917cfea86356e610eacef2c7a0afff",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/flare-redact/real-looking-values",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "flare-redact",
+      "workload": "real-looking-values",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:9472316b6a2d2e66bd0c83073f899eee336f66a080c23ab6e9a1271d8ce73faf",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:8612fdc9a62a22394e0493de9d2f2d01fb9f94b10c86820a416432127672f475",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/flare-redact/validator-heavy",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "flare-redact",
+      "workload": "validator-heavy",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:0141f0fd605568940041886f75fe7b629520d30faf82df9cdd6c0428c93847ac",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:6d4ac50de7b6fa2c9c3b7bdd17b036358c9447f71d9e0df8d791d665958bc67f",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/openredaction/credentials-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "openredaction",
+      "workload": "credentials-context",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:1b0fb4e8d2630f4df9a9e79d96384f9d909e1ce233e4ae24cf61fd94297159e1",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:9276e08ea4d601f0457ed1c33e14ad4455a2bfe415623205d8f5ca4df7cca872",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/openredaction/credentials-fake",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "openredaction",
+      "workload": "credentials-fake",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:5e614e4f330f6ffd36c14bd0015ec73d84ce29f07a5746250838945c6d14f7ca",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:666da2a384b91f0be5580117d2087d667985cb656e6c5766a442e3eb5181b3db",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/openredaction/credentials-real",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "openredaction",
+      "workload": "credentials-real",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:a355fea1d8ad4eb6eec56f52fa3442f682bef46b0962cffb3a9f1466039920de",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:f065101072c9888687132269a9cc5c3cf750b003cbb1e1281c8329d1a17f590c",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/openredaction/multilingual-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "openredaction",
+      "workload": "multilingual-context",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:17a83d8e74aa179328e734963298b881a192f22f543cb4e519aced645d5744c9",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:268410338f1c356b297789aaff02027303198ba7e08af52354501fa16d7687cf",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/openredaction/real-looking-values",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "openredaction",
+      "workload": "real-looking-values",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:9472316b6a2d2e66bd0c83073f899eee336f66a080c23ab6e9a1271d8ce73faf",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:d4c5f629abcafe52a4bcfdd49e17ea4c3395b76504d2419bfa01997847402dad",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/openredaction/validator-heavy",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "openredaction",
+      "workload": "validator-heavy",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:0141f0fd605568940041886f75fe7b629520d30faf82df9cdd6c0428c93847ac",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:4b8d48c552fd0f8a0b682a1bd3f97561cd0539f89fe9336fe1f0d2c93e180b25",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/redact-secret/credentials-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "redact-secret",
+      "workload": "credentials-context",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:1b0fb4e8d2630f4df9a9e79d96384f9d909e1ce233e4ae24cf61fd94297159e1",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:e6547f14f4016db0cd3b7f630b86bd226f26a0d097c4997414260290b38936a6",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/redact-secret/credentials-fake",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "redact-secret",
+      "workload": "credentials-fake",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:5e614e4f330f6ffd36c14bd0015ec73d84ce29f07a5746250838945c6d14f7ca",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:c34840c89b15506725c50d36a0ec2065127dc978e320fbc64e5c4e8c92fc56b9",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/redact-secret/credentials-real",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "redact-secret",
+      "workload": "credentials-real",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:a355fea1d8ad4eb6eec56f52fa3442f682bef46b0962cffb3a9f1466039920de",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:40b6a85cee67fbcb0b0fef5763256d703eaafd19ace58b7df79c2281ec76447b",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/redact-secret/multilingual-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "redact-secret",
+      "workload": "multilingual-context",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:17a83d8e74aa179328e734963298b881a192f22f543cb4e519aced645d5744c9",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:d32e2af6af0c1bba595a77e48677d0cc5daf192a04eb871027b4d4881207ae8c",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/redact-secret/real-looking-values",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "redact-secret",
+      "workload": "real-looking-values",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:9472316b6a2d2e66bd0c83073f899eee336f66a080c23ab6e9a1271d8ce73faf",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:408f63718f11a0a563dd7468c5e1ddabb4029d9da3e065e323c4b19b157155dd",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global-us/redact-secret/validator-heavy",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global-us",
+      "subject": "redact-secret",
+      "workload": "validator-heavy",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=pii:global,pii:us;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone,pii:us:ssn;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:0141f0fd605568940041886f75fe7b629520d30faf82df9cdd6c0428c93847ac",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:d9124aaf95af0133fcfef5d7912fedcea16a620e61629cc09f99f07fefb02981",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global-us.json",
+        "byteDigest": "sha256:22914e890ec8487fa8013537d2ae4dc1e9f6dbe291ccedba8709b82e74eb1bb4",
+        "artifactCommitment": "5b6665231cd188bce0f3a2a65c2ae2c28cc0e4648a439e09de64a22e9753fe74",
+        "measuredAt": "2026-10-03T11:35:06.595Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/flare-redact/credentials-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "flare-redact",
+      "workload": "credentials-context",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:1b0fb4e8d2630f4df9a9e79d96384f9d909e1ce233e4ae24cf61fd94297159e1",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:ddc93d1d113e2a20890c3da6de72646c578f3259a06a9c36c35fe93176f88f16",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/flare-redact/credentials-fake",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "flare-redact",
+      "workload": "credentials-fake",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:5e614e4f330f6ffd36c14bd0015ec73d84ce29f07a5746250838945c6d14f7ca",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:dcfca8407aba72c3041803d5360ce9adb5c02c5d80e505370a6b3642176a18da",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/flare-redact/credentials-real",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "flare-redact",
+      "workload": "credentials-real",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:a355fea1d8ad4eb6eec56f52fa3442f682bef46b0962cffb3a9f1466039920de",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:3b62112a9cfb3ace64696231bc21509ca80d049ef487fe431bafc366621699ee",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/flare-redact/multilingual-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "flare-redact",
+      "workload": "multilingual-context",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:17a83d8e74aa179328e734963298b881a192f22f543cb4e519aced645d5744c9",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:ceef0c67a59b493d7776445585946dd091917cfea86356e610eacef2c7a0afff",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/flare-redact/real-looking-values",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "flare-redact",
+      "workload": "real-looking-values",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:9472316b6a2d2e66bd0c83073f899eee336f66a080c23ab6e9a1271d8ce73faf",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:8612fdc9a62a22394e0493de9d2f2d01fb9f94b10c86820a416432127672f475",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/flare-redact/validator-heavy",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "flare-redact",
+      "workload": "validator-heavy",
+      "identity": {
+        "subject": {
+          "id": "flare-redact",
+          "version": "1.6.1",
+          "package": "flare-redact",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:0141f0fd605568940041886f75fe7b629520d30faf82df9cdd6c0428c93847ac",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:6d4ac50de7b6fa2c9c3b7bdd17b036358c9447f71d9e0df8d791d665958bc67f",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/openredaction/credentials-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "openredaction",
+      "workload": "credentials-context",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:1b0fb4e8d2630f4df9a9e79d96384f9d909e1ce233e4ae24cf61fd94297159e1",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:9276e08ea4d601f0457ed1c33e14ad4455a2bfe415623205d8f5ca4df7cca872",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/openredaction/credentials-fake",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "openredaction",
+      "workload": "credentials-fake",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:5e614e4f330f6ffd36c14bd0015ec73d84ce29f07a5746250838945c6d14f7ca",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:666da2a384b91f0be5580117d2087d667985cb656e6c5766a442e3eb5181b3db",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/openredaction/credentials-real",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "openredaction",
+      "workload": "credentials-real",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:a355fea1d8ad4eb6eec56f52fa3442f682bef46b0962cffb3a9f1466039920de",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:f065101072c9888687132269a9cc5c3cf750b003cbb1e1281c8329d1a17f590c",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/openredaction/multilingual-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "openredaction",
+      "workload": "multilingual-context",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:17a83d8e74aa179328e734963298b881a192f22f543cb4e519aced645d5744c9",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:268410338f1c356b297789aaff02027303198ba7e08af52354501fa16d7687cf",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/openredaction/real-looking-values",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "openredaction",
+      "workload": "real-looking-values",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:9472316b6a2d2e66bd0c83073f899eee336f66a080c23ab6e9a1271d8ce73faf",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:d4c5f629abcafe52a4bcfdd49e17ea4c3395b76504d2419bfa01997847402dad",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/openredaction/validator-heavy",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "openredaction",
+      "workload": "validator-heavy",
+      "identity": {
+        "subject": {
+          "id": "openredaction",
+          "version": "1.1.5",
+          "package": "@openredaction/core",
+          "kind": "published-npm-package",
+          "commit": null,
+          "activation": null
+        },
+        "workloadDigest": "sha256:0141f0fd605568940041886f75fe7b629520d30faf82df9cdd6c0428c93847ac",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:4b8d48c552fd0f8a0b682a1bd3f97561cd0539f89fe9336fe1f0d2c93e180b25",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/redact-secret/credentials-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "redact-secret",
+      "workload": "credentials-context",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:1b0fb4e8d2630f4df9a9e79d96384f9d909e1ce233e4ae24cf61fd94297159e1",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:5d45dd8ce006528f9efb29ebc8354566767884d46b5ce7f1456ddedc16011403",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/redact-secret/credentials-fake",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "redact-secret",
+      "workload": "credentials-fake",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:5e614e4f330f6ffd36c14bd0015ec73d84ce29f07a5746250838945c6d14f7ca",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:75e1a7c72a266041598a585506b929996576527fb556518edce78ce0f1a8538b",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/redact-secret/credentials-real",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "redact-secret",
+      "workload": "credentials-real",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:a355fea1d8ad4eb6eec56f52fa3442f682bef46b0962cffb3a9f1466039920de",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:157717a28377dbf161b49a8f160fb5438599e36bf6fe24edff0e5556bf2c1bdf",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/redact-secret/multilingual-context",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "redact-secret",
+      "workload": "multilingual-context",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:17a83d8e74aa179328e734963298b881a192f22f543cb4e519aced645d5744c9",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:80be1fae53450b02cd8b0aea440094033bd29a90d079f3965853a2e5b004bf87",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/redact-secret/real-looking-values",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "redact-secret",
+      "workload": "real-looking-values",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:9472316b6a2d2e66bd0c83073f899eee336f66a080c23ab6e9a1271d8ce73faf",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:cac0c5459bfd087c429dfb167480aabd6bfc2c8294efae9925678a908360ff22",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    },
+    {
+      "id": "runtime-comparison-v2/pii-global/redact-secret/validator-heavy",
+      "measurement": "runtime-comparison-v2",
+      "setting": "pii-global",
+      "subject": "redact-secret",
+      "workload": "validator-heavy",
+      "identity": {
+        "subject": {
+          "id": "redact-secret",
+          "version": "0.1.0-beta.13",
+          "package": "@redact-secret/core",
+          "kind": "published-npm-package",
+          "commit": "66b492bdff5e6751fc6b5409266916346ed7c723",
+          "activation": "credentials=full;selectors=pii:global;families=pii:global:email,pii:global:iban,pii:global:network-address,pii:global:payment-card,pii:global:phone;vocabulary=pii-context/v2"
+        },
+        "workloadDigest": "sha256:0141f0fd605568940041886f75fe7b629520d30faf82df9cdd6c0428c93847ac",
+        "protocolDigest": "sha256:e2564835510656621fff99d9ec7b322e71855e65e4ffe0a9f42e80b553ff0253"
+      },
+      "identityDigest": "sha256:325492b3a3635fdbd81ac8f12ad3919c3a02ae6d876c2624e2634c2f47440568",
+      "artifact": {
+        "path": "evidence/562/runtime-comparison-pii-global.json",
+        "byteDigest": "sha256:f2d99f00f0f4e9b3450db92cf8f4e2d4b4edacb3f4fc5755b19e3e62df75a3a3",
+        "artifactCommitment": "9d4ae929b34978d1195b8d1b036491750a90a1f55706e0fd9d183da07ef11bdc",
+        "measuredAt": "2026-10-03T11:34:22.446Z",
+        "host": {
+          "platform": "linux",
+          "arch": "arm64",
+          "cpuModel": "Apple M4 (Docker Desktop linux/arm64 VM)",
+          "imageDigest": "sha256:651afa9de8e6689372d1b3654074c8e9502b3df8b7c82418aad8ee0391ec4d32"
+        },
+        "observations": 12
+      }
+    }
+  ]
+}

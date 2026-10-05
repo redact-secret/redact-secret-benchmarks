@@ -1,0 +1,10 @@
+{
+  "schema": "redact-secret-benchmarks/execution-telemetry/v1",
+  "purpose": "Runner-minutes of past jobs, by job kind, for the execution plan's estimates (#709). Operational cost telemetry only: never a performance measurement and never read by a score. A job kind with no entry is unknown; the plan says so and does not invent a number.",
+  "jobs": {
+    "official-run:public-evidence-snapshot": { "runnerMinutes": 49.95, "runs": [{ "run": 37296823599, "minutes": 49.95 }] },
+    "official-run:regression-corpus": { "runnerMinutes": 1.48, "runs": [{ "run": 37296823599, "minutes": 1.48 }] },
+    "official-run:policy-corpus": { "runnerMinutes": 1.63, "runs": [{ "run": 37296823599, "minutes": 1.63 }] },
+    "performance:peer-pii-runtime-throughput-v1": { "runnerMinutes": 1.57, "runs": [{ "run": 36701748609, "minutes": 1.57 }] }
+  }
+}

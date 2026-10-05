@@ -39,7 +39,7 @@ export function adoptionReportState(adoption, registry) {
     deployment: { staging: c.deployment?.staging ?? null, production: c.deployment?.production ?? null },
     product: {
       measured: product ? `@redact-secret/core@${product}` : null,
-      note: `${tagShort(c.engine?.tag)} measured ${product ? `core ${product}` : 'the pinned core release'} (the adapters of the engine tag pin it). Any claim about a later core release (for example beta.13) needs the pinned replay of this identical snapshot against that release (#697); nothing here is evidence about it.`,
+      note: `${tagShort(c.engine?.tag)} measured ${product ? `core ${product}` : 'the pinned core release'} (the adapters of the engine tag pin it). Any claim about another core release (an unpublished build, or a release later than this one) needs the pinned replay of this identical snapshot against that release (#697); nothing here is evidence about it.`,
     },
   };
 }

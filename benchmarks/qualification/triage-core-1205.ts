@@ -1,0 +1,34 @@
+/**
+ * The product's classification of the base cases behind the 57 root causes of the `snapshot-2026.10.04.4` added cases (#698): redact-secret#1205, settled by
+ * core PR #1206 (merge 422e43e3dc1fb02536d9c617097fd45e78a92759) and `decision-settle-the-snapshot-2026-10-04-4-added-case-roots`. The 24 base cases are
+ * the whole of them: every context, encoding, assertion and peer occurrence of a base case replays with identical findings on published beta.13 and core main.
+ *
+ * This repository records the product's reading and never asserts it (the boundary rule). The two `fix` entries are in-contract bugs fixed in core PR #1206,
+ * which is unreleased and NOT in the registered candidate 1e45cecf (PRs #1202 and #1204): they are not replayed here, so they stay open until a replay
+ * on a build that carries them shows the case passing. An `evidenceProposal` is a proposed change to credential-evidence, never applied here.
+ */
+import type { Core1203Entry } from './triage-core-1203.ts';
+
+const CORE = 'https://github.com/redact-secret/redact-secret';
+export const CORE_1205_LINKS = [`${CORE}/issues/1205`, `${CORE}/pull/1206`, `${CORE}/issues/1203`];
+export const CORE_1205_ADR = 'redact-secret docs/decisions/2026-10-05-settle-the-snapshot-2026-10-04-4-added-case-roots.md (core PR #1206)';
+const ADR_DECODING = 'redact-secret ADR defer-encoded-input-decoding (#491)';
+const ADR_FRAGMENT = 'redact-secret docs/decisions/2026-10-04-define-fragmented-credentials-as-outside-the-raw-input-contract.md (core PR #1202)';
+const REPRO = 'core #1205 classification: findings (UTF-8 byte ranges, actions, sanitized output) reproduced identically on published beta.13 and core main 1e45cecf for this base case and all its variants';
+
+const feature = (disposition: string, evidenceProposal?: string): Core1203Entry => ({ classification: 'unsupported-or-feature-scope', kind: 'unsupported-family', disposition, evidence: [CORE_1205_ADR, REPRO], ...(evidenceProposal ? { evidenceProposal } : {}) });
+
+export const CORE_1205: Record<string, Core1203Entry> = {
+  'docker-compose-resolution-authored--required-message': { classification: 'in-contract-product-bug', kind: 'fix', disposition: 'in-contract bug: a Compose `${NAME:?message}` required-variable message is read as a value (`generic-token` warn 117-130 on beta.13 and 1e45cecf). Fixed in unreleased core main 422e43e3 (PR #1206), NOT yet measured: the registered candidate stays 1e45cecf and this repository has not replayed it', evidence: [CORE_1205_ADR, REPRO, 'core #1205: after the fix the case replays with no finding (verified by core on its merge commit, not by this repository)'] },
+  'jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback': { classification: 'in-contract-product-bug', kind: 'fix', disposition: 'in-contract bug: a value equal to its own name (`{"aws_secret_access_key": aws_secret_access_key}`) is read as a secret. Fixed in unreleased core main 422e43e3 (PR #1206), NOT yet measured: the registered candidate stays 1e45cecf and this repository has not replayed it', evidence: [CORE_1205_ADR, REPRO, 'core #1205: after the fix the case replays with exactly its 8 expected spans (verified by core on its merge commit, not by this repository)'] },
+  'graphql-requests-and-responses-authored--get-url-variables-value': { classification: 'unsupported-or-feature-scope', kind: 'encoded', disposition: 'out of scope: the credential sits behind a percent-encoded delimiter (`%22`), an encoded carrier the product does not decode; the key before it is no prefix boundary (`ghp_`, `sk-ant-` and `AKIA` behind `%22` are missed too)', evidence: [ADR_DECODING, CORE_1205_ADR, REPRO], evidenceProposal: 'graphql-requests-and-responses-authored--get-url-variables-value: the expectation needs percent decoding; mark it review-required / unsupported-carrier, or drop the percent-encoded form' },
+  'har-exports-authored--bearer-token-in-postdata-params': feature('the product reads no JSON `{"name","value"}` pair (only the YAML `env` item, #1016); a declared scope fact, deferred with a reopening bar', 'har-exports-authored--bearer-token-in-postdata-params: review-required, or author it as `name=value` (then it is the claimed assignment form)'),
+  'har-exports-authored--bearer-token-in-url-and-querystring-array': feature('the `url` string is claimed exactly (314-354); the same value as a `queryString` array member (657-697) is a JSON name/value pair, which the product does not read', 'har-exports-authored--bearer-token-in-url-and-querystring-array: keep span 314-354 (EXACT); drop or mark review-required the queryString member 657-697'),
+  'har-exports-authored--session-cookie-in-headers-and-cookies-arrays': feature('the product declares no session-cookie family (#1203) and does not read the JSON name/value pair form', 'har-exports-authored--session-cookie-in-headers-and-cookies-arrays: review-required'),
+  'hashicorp-terraform-authored--state-json-output-password-with-sensitive-true': feature('a parent-keyed JSON object (`"db_admin_password": { "value": ... }`) is not read; the one-line resource form is claimed', 'hashicorp-terraform-authored--state-json-output-password-with-sensitive-true: review-required (the `sensitive: true` flag needs a JSON reader)'),
+  'jupyter-notebook-files-authored--source-value-split-between-array-elements': { classification: 'unsupported-or-feature-scope', kind: 'fragment', disposition: 'out of the raw-input contract: a value split across notebook `source` array elements is a fragment; scored on the enclosing range', evidence: [ADR_FRAGMENT, CORE_1205_ADR, REPRO], evidenceProposal: 'jupyter-notebook-files-authored--source-value-split-between-array-elements: fragment; out of the raw-input contract' },
+  'jupyter-notebook-files-authored--stdout-mask-where-source-has-environment-reference': { classification: 'expectation-or-contract-correction', kind: 'expectation', disposition: 'contract: backslash-escaped input is not decoded (#491), so the JSON-escaped `\\n` after the mask makes it no mask run; the product warns (medium, text unchanged) where the control expects no finding', evidence: [ADR_DECODING, CORE_1205_ADR, REPRO], evidenceProposal: 'jupyter-notebook-files-authored--stdout-mask-where-source-has-environment-reference: use a real line break in the notebook text, or allow a warn-level finding' },
+};
+
+/** Product-scope statements #1206 asks the benchmarks to register (#622). They are not read into `scanners/product-scope.json` here: that file records statements at a named product revision, and these are core main 422e43e3, not the registered one. */
+export const CORE_1205_SCOPE_HANDOFF = ['no JSON `{"name","value"}` pairing', 'no parent-keyed JSON object reading', 'no percent-encoded-delimiter boundary', 'no session-cookie family'];

@@ -1,0 +1,2704 @@
+{
+  "schema": "redact-secret/evidence-adoption-view-comparison/v1",
+  "evidenceRelease": "snapshot-2026.10.05",
+  "scope": "Reporting only: nothing here is an assertion about the product. Denominators count measured cases only: pending (T0, not assertable) and not-measured cases are in none, and an unmeasured case is never a zero detection. Representation capability follows the engine contract (credential-eval representation/1): a bounded, re-derivable base64 or hex finding (up to four layers) is mapped to the whole original encoded segment and scored by the unchanged lattice; a fragmented expected span is scored on its enclosing range, and there is no fragment-aware scoring; decoded findings in other codecs (percent-encoding, UTF-16, escaped Unicode) and any mapping the engine cannot re-derive are unmeasured, never a miss and in no denominator (credential-eval#34, credential-evidence#150).",
+  "adoptionState": {
+    "state": "accepted",
+    "accepted": true,
+    "evidenceRelease": "snapshot-2026.10.05",
+    "engine": "v0.1.0-alpha.5",
+    "ownerAcceptance": {
+      "acceptedBy": "Milo Kang",
+      "acceptedOn": "2026-10-05",
+      "decision": "docs/decisions/2026-10-05-accept-snapshot-2026-10-05-on-credential-eval-alpha-5.md"
+    },
+    "replay": {
+      "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37296823599",
+      "archive": {
+        "release": "official-runs-registry-37296823599",
+        "asset": "official-runs-37296823599.tar.gz",
+        "sha256": "sha256:180b7cc61d2edd0b421ef8c2d69806583bd773efd3537c727acb81945eae1a9e"
+      },
+      "benchmarkRevision": "d4b9f1e96fc06c08d44554e4b2cc18a4a0872d0a"
+    },
+    "deployment": {
+      "staging": null,
+      "production": null
+    },
+    "product": {
+      "measured": "@redact-secret/core@0.1.0-beta.13",
+      "note": "alpha.5 measured core 0.1.0-beta.13 (the adapters of the engine tag pin it). Any claim about another core release (an unpublished build, or a release later than this one) needs the pinned replay of this identical snapshot against that release (#697); nothing here is evidence about it."
+    }
+  },
+  "views": {
+    "accepted": {
+      "policyRevision": "rs-policy-1:sha256:5615a8aa34a1cf593cff5913596f6745828cf168f67ba77ed305c4e4e4e0f6d3",
+      "distribution": {
+        "pending": 1,
+        "provisional": 18,
+        "stable": 116,
+        "unsupported": 0
+      },
+      "stableDistribution": {
+        "documented": 82,
+        "empirical": 34,
+        "policy-qualified": 0
+      },
+      "supportMatrix": {
+        "pending": 5,
+        "provisional": 25,
+        "stable": 126,
+        "unsupported": 17
+      },
+      "populations": [
+        {
+          "population": "policy-corpus",
+          "cases": 19,
+          "unmeasuredByScanner": {
+            "flare-redact": 0,
+            "gitleaks": 0,
+            "openredaction": 0,
+            "redact-secret": 0,
+            "trufflehog": 0
+          },
+          "pending": 0
+        },
+        {
+          "population": "public-evidence-snapshot",
+          "cases": 6449,
+          "unmeasuredByScanner": {
+            "flare-redact": 0,
+            "gitleaks": 0,
+            "openredaction": 0,
+            "redact-secret": 0,
+            "trufflehog": 0
+          },
+          "pending": 89
+        },
+        {
+          "population": "regression-corpus",
+          "cases": 153,
+          "unmeasuredByScanner": {
+            "flare-redact": 0,
+            "gitleaks": 0,
+            "openredaction": 0,
+            "redact-secret": 0,
+            "trufflehog": 0
+          },
+          "pending": 0
+        }
+      ]
+    },
+    "replayOld": {
+      "policyRevision": "rs-policy-1:sha256:dd110d4ba27f6e2b71f24c7be60ca5a6a2efc44b22d501a727ffa5adff2f7eab",
+      "distribution": {
+        "pending": 1,
+        "provisional": 18,
+        "stable": 116,
+        "unsupported": 0
+      },
+      "supportMatrix": {
+        "pending": 5,
+        "provisional": 25,
+        "stable": 126,
+        "unsupported": 17
+      }
+    },
+    "candidate": {
+      "policyRevision": "rs-policy-1:sha256:1bfa5d26c53dc4739a886d5e698acb23f40cb130bd4b6a10fb0185031fbc754b",
+      "distribution": {
+        "pending": 1,
+        "provisional": 19,
+        "stable": 115,
+        "unsupported": 0
+      },
+      "stableDistribution": {
+        "documented": 82,
+        "empirical": 33,
+        "policy-qualified": 0
+      },
+      "supportMatrix": {
+        "pending": 5,
+        "provisional": 26,
+        "stable": 125,
+        "unsupported": 17
+      },
+      "populations": [
+        {
+          "population": "policy-corpus",
+          "cases": 19,
+          "unmeasuredByScanner": {
+            "flare-redact": 0,
+            "gitleaks": 0,
+            "openredaction": 0,
+            "redact-secret": 0,
+            "trufflehog": 0
+          },
+          "pending": 0
+        },
+        {
+          "population": "public-evidence-snapshot",
+          "cases": 6519,
+          "unmeasuredByScanner": {
+            "flare-redact": 0,
+            "gitleaks": 0,
+            "openredaction": 0,
+            "redact-secret": 0,
+            "trufflehog": 0
+          },
+          "pending": 94
+        },
+        {
+          "population": "regression-corpus",
+          "cases": 153,
+          "unmeasuredByScanner": {
+            "flare-redact": 0,
+            "gitleaks": 0,
+            "openredaction": 0,
+            "redact-secret": 0,
+            "trufflehog": 0
+          },
+          "pending": 0
+        }
+      ]
+    }
+  },
+  "engineEffect": {
+    "note": "The same corpus, the same overlays and the same peer scanner versions, measured by credential-eval v0.1.0-alpha.4 and v0.1.0-alpha.5, with the product release the engine tag pins (the product release may move with the engine tag; where it does, the engine-versus-product split of an attribution run says how much of a difference is the product) (the review-ledger re-key is regenerated for the alpha.5 methods run, whose occurrence ids all changed with the scanner configuration identity).",
+    "distribution": {
+      "accepted": {
+        "pending": 1,
+        "provisional": 18,
+        "stable": 116,
+        "unsupported": 0
+      },
+      "replayOld": {
+        "pending": 1,
+        "provisional": 18,
+        "stable": 116,
+        "unsupported": 0
+      }
+    },
+    "distributionSame": true,
+    "familiesWithAnyDifference": [],
+    "supportMatrixSame": true,
+    "publicCasesWithAnyDifference": 0
+  },
+  "corpusEffect": {
+    "note": "Candidate corpus on the new engine versus the accepted view. Evidence deltas per family and every status change with its cause.",
+    "statusChanges": [
+      {
+        "family": "aws-secret-access-key",
+        "status": {
+          "from": "stable",
+          "to": "provisional"
+        },
+        "evidenceTier": "T2",
+        "evidenceDelta": {
+          "positiveCases": {
+            "from": 17,
+            "to": 21
+          },
+          "positiveAxes": {
+            "from": 11,
+            "to": 14
+          },
+          "totalFixtures": {
+            "from": 60,
+            "to": 64
+          },
+          "metamorphicCriticalFailures": {
+            "from": 0,
+            "to": 14
+          },
+          "mutationUnresolvedCritical": {
+            "from": 0,
+            "to": 2
+          },
+          "differentialUnresolvedContractDisagreements": {
+            "from": 0,
+            "to": 6
+          }
+        },
+        "statusReasons": [
+          "metamorphic.criticalFailures: 14 > 0",
+          "mutation.unresolvedCritical: 2 > 0",
+          "differential.unresolvedContractDisagreements: 6 > 0"
+        ],
+        "cause": {
+          "differentialUnresolvedFromAddedCases": 6,
+          "differentialUnresolvedFromCommonCases": 0,
+          "referenceAssertionFailuresByMethod": {
+            "metamorphic": {
+              "added": 14,
+              "common": 0
+            },
+            "mutation": {
+              "added": 2,
+              "common": 0
+            }
+          },
+          "explainedByAddedCases": true
+        }
+      }
+    ],
+    "evidenceDeltasWithoutStatusChange": [
+      {
+        "family": "bearer-token",
+        "status": {
+          "from": "provisional",
+          "to": "provisional"
+        },
+        "evidenceTier": "T3",
+        "evidenceDelta": {
+          "positiveCases": {
+            "from": 16,
+            "to": 19
+          },
+          "positiveAxes": {
+            "from": 13,
+            "to": 14
+          },
+          "totalFixtures": {
+            "from": 49,
+            "to": 52
+          },
+          "metamorphicCriticalFailures": {
+            "from": 0,
+            "to": 14
+          },
+          "mutationUnresolvedCritical": {
+            "from": 0,
+            "to": 2
+          },
+          "differentialUnresolvedContractDisagreements": {
+            "from": 0,
+            "to": 4
+          },
+          "policyQualification": {
+            "from": {
+              "benignAxes": 1,
+              "benignCases": 1,
+              "candidateFrozen": false,
+              "collateralBytes": 0,
+              "contractBounded": true,
+              "contractVersion": 1,
+              "controlFalseAlarms": {
+                "allow": 0,
+                "block": 0,
+                "redact": 0,
+                "warn": 0
+              },
+              "exactSpanMisses": 0,
+              "failedGates": [
+                {
+                  "actual": 2,
+                  "code": "positive-cases",
+                  "required": 6
+                },
+                {
+                  "actual": 2,
+                  "code": "positive-axes",
+                  "required": 4
+                },
+                {
+                  "actual": 1,
+                  "code": "benign-cases",
+                  "required": 8
+                },
+                {
+                  "actual": 1,
+                  "code": "benign-axes",
+                  "required": 4
+                },
+                {
+                  "actual": 1,
+                  "code": "twin-pairs",
+                  "required": 5
+                },
+                {
+                  "actual": "not-run",
+                  "code": "protected-holdout",
+                  "required": "pass on frozen candidate"
+                }
+              ],
+              "leakedSpans": 0,
+              "outcomes": {
+                "COVERED": 0,
+                "EXACT": 2,
+                "MISS": 0,
+                "OVERBROAD": 0,
+                "PARTIAL": 0
+              },
+              "overbroadSpans": 0,
+              "positiveActions": {
+                "allow": 0,
+                "block": 0,
+                "redact": 2,
+                "warn": 0
+              },
+              "positiveAxes": 2,
+              "positiveCases": 2,
+              "profileId": "credential-policy-v1",
+              "protectedHoldout": "not-run",
+              "publicConformance": "pass",
+              "publicConformanceCases": 4,
+              "publicConformanceFailures": 0,
+              "spans": 2,
+              "twinPairs": 1,
+              "unexpectedPositiveActions": 0,
+              "unresolvedActionCases": 0
+            },
+            "to": {
+              "benignAxes": 1,
+              "benignCases": 1,
+              "candidateFrozen": false,
+              "collateralBytes": 0,
+              "contractBounded": true,
+              "contractVersion": 1,
+              "controlFalseAlarms": {
+                "allow": 0,
+                "block": 0,
+                "redact": 0,
+                "warn": 0
+              },
+              "exactSpanMisses": 0,
+              "failedGates": [
+                {
+                  "actual": 2,
+                  "code": "positive-cases",
+                  "required": 6
+                },
+                {
+                  "actual": 2,
+                  "code": "positive-axes",
+                  "required": 4
+                },
+                {
+                  "actual": 1,
+                  "code": "benign-cases",
+                  "required": 8
+                },
+                {
+                  "actual": 1,
+                  "code": "benign-axes",
+                  "required": 4
+                },
+                {
+                  "actual": 1,
+                  "code": "twin-pairs",
+                  "required": 5
+                },
+                {
+                  "actual": 20,
+                  "code": "critical-failure",
+                  "required": 0
+                },
+                {
+                  "actual": "not-run",
+                  "code": "protected-holdout",
+                  "required": "pass on frozen candidate"
+                }
+              ],
+              "leakedSpans": 0,
+              "outcomes": {
+                "COVERED": 0,
+                "EXACT": 2,
+                "MISS": 0,
+                "OVERBROAD": 0,
+                "PARTIAL": 0
+              },
+              "overbroadSpans": 0,
+              "positiveActions": {
+                "allow": 0,
+                "block": 0,
+                "redact": 2,
+                "warn": 0
+              },
+              "positiveAxes": 2,
+              "positiveCases": 2,
+              "profileId": "credential-policy-v1",
+              "protectedHoldout": "not-run",
+              "publicConformance": "pass",
+              "publicConformanceCases": 4,
+              "publicConformanceFailures": 0,
+              "spans": 2,
+              "twinPairs": 1,
+              "unexpectedPositiveActions": 0,
+              "unresolvedActionCases": 0
+            }
+          }
+        }
+      },
+      {
+        "family": "generic-token",
+        "status": {
+          "from": "provisional",
+          "to": "provisional"
+        },
+        "evidenceTier": "T3",
+        "evidenceDelta": {
+          "positiveCases": {
+            "from": 112,
+            "to": 115
+          },
+          "positiveAxes": {
+            "from": 48,
+            "to": 49
+          },
+          "totalFixtures": {
+            "from": 207,
+            "to": 221
+          },
+          "benignCases": {
+            "from": 85,
+            "to": 93
+          },
+          "benignAxes": {
+            "from": 14,
+            "to": 16
+          },
+          "controlAxes": {
+            "from": 14,
+            "to": 16
+          },
+          "confusionAxes": {
+            "from": 15,
+            "to": 20
+          },
+          "twinPairs": {
+            "from": 10,
+            "to": 13
+          },
+          "metamorphicCriticalFailures": {
+            "from": 238,
+            "to": 252
+          },
+          "mutationUnresolvedCritical": {
+            "from": 34,
+            "to": 36
+          },
+          "differentialUnresolvedContractDisagreements": {
+            "from": 4,
+            "to": 12
+          },
+          "policyQualification": {
+            "from": {
+              "benignAxes": 1,
+              "benignCases": 1,
+              "candidateFrozen": false,
+              "collateralBytes": 0,
+              "contractBounded": true,
+              "contractVersion": 1,
+              "controlFalseAlarms": {
+                "allow": 0,
+                "block": 0,
+                "redact": 0,
+                "warn": 0
+              },
+              "exactSpanMisses": 0,
+              "failedGates": [
+                {
+                  "actual": 2,
+                  "code": "positive-cases",
+                  "required": 6
+                },
+                {
+                  "actual": 2,
+                  "code": "positive-axes",
+                  "required": 4
+                },
+                {
+                  "actual": 1,
+                  "code": "benign-cases",
+                  "required": 8
+                },
+                {
+                  "actual": 1,
+                  "code": "benign-axes",
+                  "required": 4
+                },
+                {
+                  "actual": 1,
+                  "code": "twin-pairs",
+                  "required": 5
+                },
+                {
+                  "actual": 276,
+                  "code": "critical-failure",
+                  "required": 0
+                },
+                {
+                  "actual": "not-run",
+                  "code": "protected-holdout",
+                  "required": "pass on frozen candidate"
+                }
+              ],
+              "leakedSpans": 0,
+              "outcomes": {
+                "COVERED": 0,
+                "EXACT": 2,
+                "MISS": 0,
+                "OVERBROAD": 0,
+                "PARTIAL": 0
+              },
+              "overbroadSpans": 0,
+              "positiveActions": {
+                "allow": 0,
+                "block": 0,
+                "redact": 1,
+                "warn": 1
+              },
+              "positiveAxes": 2,
+              "positiveCases": 2,
+              "profileId": "credential-policy-v1",
+              "protectedHoldout": "not-run",
+              "publicConformance": "pass",
+              "publicConformanceCases": 4,
+              "publicConformanceFailures": 0,
+              "spans": 2,
+              "twinPairs": 1,
+              "unexpectedPositiveActions": 0,
+              "unresolvedActionCases": 0
+            },
+            "to": {
+              "benignAxes": 1,
+              "benignCases": 1,
+              "candidateFrozen": false,
+              "collateralBytes": 0,
+              "contractBounded": true,
+              "contractVersion": 1,
+              "controlFalseAlarms": {
+                "allow": 0,
+                "block": 0,
+                "redact": 0,
+                "warn": 0
+              },
+              "exactSpanMisses": 0,
+              "failedGates": [
+                {
+                  "actual": 2,
+                  "code": "positive-cases",
+                  "required": 6
+                },
+                {
+                  "actual": 2,
+                  "code": "positive-axes",
+                  "required": 4
+                },
+                {
+                  "actual": 1,
+                  "code": "benign-cases",
+                  "required": 8
+                },
+                {
+                  "actual": 1,
+                  "code": "benign-axes",
+                  "required": 4
+                },
+                {
+                  "actual": 1,
+                  "code": "twin-pairs",
+                  "required": 5
+                },
+                {
+                  "actual": 300,
+                  "code": "critical-failure",
+                  "required": 0
+                },
+                {
+                  "actual": "not-run",
+                  "code": "protected-holdout",
+                  "required": "pass on frozen candidate"
+                }
+              ],
+              "leakedSpans": 0,
+              "outcomes": {
+                "COVERED": 0,
+                "EXACT": 2,
+                "MISS": 0,
+                "OVERBROAD": 0,
+                "PARTIAL": 0
+              },
+              "overbroadSpans": 0,
+              "positiveActions": {
+                "allow": 0,
+                "block": 0,
+                "redact": 1,
+                "warn": 1
+              },
+              "positiveAxes": 2,
+              "positiveCases": 2,
+              "profileId": "credential-policy-v1",
+              "protectedHoldout": "not-run",
+              "publicConformance": "pass",
+              "publicConformanceCases": 4,
+              "publicConformanceFailures": 0,
+              "spans": 2,
+              "twinPairs": 1,
+              "unexpectedPositiveActions": 0,
+              "unresolvedActionCases": 0
+            }
+          }
+        }
+      },
+      {
+        "family": "github-token",
+        "status": {
+          "from": "provisional",
+          "to": "provisional"
+        },
+        "evidenceTier": "T1",
+        "evidenceDelta": {
+          "positiveCases": {
+            "from": 115,
+            "to": 131
+          },
+          "positiveAxes": {
+            "from": 39,
+            "to": 44
+          },
+          "totalFixtures": {
+            "from": 178,
+            "to": 198
+          },
+          "benignCases": {
+            "from": 17,
+            "to": 21
+          },
+          "benignAxes": {
+            "from": 8,
+            "to": 9
+          },
+          "controlAxes": {
+            "from": 8,
+            "to": 9
+          },
+          "confusionAxes": {
+            "from": 10,
+            "to": 11
+          },
+          "differentialUnresolvedContractDisagreements": {
+            "from": 88,
+            "to": 111
+          }
+        }
+      },
+      {
+        "family": "postman-api-key",
+        "status": {
+          "from": "stable",
+          "to": "stable"
+        },
+        "evidenceTier": "T2",
+        "evidenceDelta": {
+          "positiveCases": {
+            "from": 14,
+            "to": 18
+          },
+          "positiveAxes": {
+            "from": 12,
+            "to": 15
+          },
+          "totalFixtures": {
+            "from": 40,
+            "to": 46
+          },
+          "benignCases": {
+            "from": 17,
+            "to": 18
+          },
+          "benignAxes": {
+            "from": 6,
+            "to": 7
+          },
+          "controlAxes": {
+            "from": 6,
+            "to": 7
+          },
+          "confusionAxes": {
+            "from": 9,
+            "to": 11
+          },
+          "twinPairs": {
+            "from": 9,
+            "to": 10
+          }
+        }
+      },
+      {
+        "family": "sendgrid-token",
+        "status": {
+          "from": "provisional",
+          "to": "provisional"
+        },
+        "evidenceTier": "T1",
+        "evidenceDelta": {
+          "positiveCases": {
+            "from": 117,
+            "to": 124
+          },
+          "positiveAxes": {
+            "from": 38,
+            "to": 40
+          },
+          "totalFixtures": {
+            "from": 151,
+            "to": 158
+          },
+          "metamorphicCriticalFailures": {
+            "from": 199,
+            "to": 206
+          },
+          "mutationUnresolvedCritical": {
+            "from": 29,
+            "to": 30
+          },
+          "differentialUnresolvedContractDisagreements": {
+            "from": 93,
+            "to": 106
+          }
+        }
+      },
+      {
+        "family": "twilio-api-key-secret",
+        "status": {
+          "from": "provisional",
+          "to": "provisional"
+        },
+        "evidenceTier": "T2",
+        "evidenceDelta": {
+          "differentialUnresolvedContractDisagreements": {
+            "from": 2,
+            "to": 4
+          }
+        }
+      }
+    ],
+    "supportMatrixStatusChanges": [
+      {
+        "family": "aws:iam-user-secret-access-key",
+        "from": "stable",
+        "to": "provisional",
+        "unresolvedCriticalItems": {
+          "differential": 6,
+          "metamorphic": 14,
+          "mutation": 2
+        },
+        "viewFamilyStatus": "provisional"
+      }
+    ],
+    "unmappedFamilies": {
+      "accepted": 16,
+      "candidate": 16,
+      "added": []
+    },
+    "undetectedSame": true,
+    "knownGapsSame": true
+  },
+  "publicPopulation": {
+    "commonCases": 6449,
+    "addedCases": 70,
+    "regroupedCommonCases": 2,
+    "commonCaseOutcomeDrift": {
+      "cases": 3,
+      "byScanner": {
+        "flare-redact: control:clear -> control:flagged": 1,
+        "flare-redact: positive:PARTIAL -> positive:EXACT": 2,
+        "gitleaks: positive:PARTIAL -> positive:EXACT": 2,
+        "openredaction: control:clear -> control:flagged": 1,
+        "openredaction: positive:PARTIAL -> positive:EXACT": 2,
+        "redact-secret: control:flagged -> control:clear": 1,
+        "redact-secret: positive:PARTIAL -> positive:EXACT": 2
+      },
+      "cause": "3 case(s) the release re-authored or whose expected spans it corrected (content or expected in the change report)",
+      "details": [
+        {
+          "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+          "regrouped": [],
+          "changed": [
+            {
+              "scanner": "flare-redact",
+              "from": "positive:PARTIAL",
+              "to": "positive:EXACT"
+            },
+            {
+              "scanner": "gitleaks",
+              "from": "positive:PARTIAL",
+              "to": "positive:EXACT"
+            },
+            {
+              "scanner": "openredaction",
+              "from": "positive:PARTIAL",
+              "to": "positive:EXACT"
+            },
+            {
+              "scanner": "redact-secret",
+              "from": "positive:PARTIAL",
+              "to": "positive:EXACT"
+            }
+          ],
+          "family": null
+        },
+        {
+          "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+          "regrouped": [],
+          "changed": [
+            {
+              "scanner": "flare-redact",
+              "from": "positive:PARTIAL",
+              "to": "positive:EXACT"
+            },
+            {
+              "scanner": "gitleaks",
+              "from": "positive:PARTIAL",
+              "to": "positive:EXACT"
+            },
+            {
+              "scanner": "openredaction",
+              "from": "positive:PARTIAL",
+              "to": "positive:EXACT"
+            },
+            {
+              "scanner": "redact-secret",
+              "from": "positive:PARTIAL",
+              "to": "positive:EXACT"
+            }
+          ],
+          "family": null
+        },
+        {
+          "case": "twilio-compound-credentials-authored--api-key-sid-alone",
+          "regrouped": [],
+          "changed": [
+            {
+              "scanner": "flare-redact",
+              "from": "control:clear",
+              "to": "control:flagged"
+            },
+            {
+              "scanner": "openredaction",
+              "from": "control:clear",
+              "to": "control:flagged"
+            },
+            {
+              "scanner": "redact-secret",
+              "from": "control:flagged",
+              "to": "control:clear"
+            }
+          ],
+          "family": null
+        }
+      ]
+    },
+    "addedCaseOutcomes": [
+      {
+        "scanner": "flare-redact",
+        "cases": 70,
+        "outcomes": {
+          "control:clear": 24,
+          "pending": 5,
+          "positive:EXACT": 27,
+          "positive:EXACT,EXACT": 3,
+          "positive:EXACT,EXACT,EXACT,MISS,EXACT,EXACT,EXACT,EXACT": 1,
+          "positive:MISS": 8,
+          "positive:MISS,MISS": 1,
+          "positive:MISS,MISS,MISS,MISS": 1
+        }
+      },
+      {
+        "scanner": "gitleaks",
+        "cases": 70,
+        "outcomes": {
+          "control:clear": 24,
+          "pending": 5,
+          "positive:EXACT": 18,
+          "positive:EXACT,MISS": 1,
+          "positive:MISS": 17,
+          "positive:MISS,EXACT": 2,
+          "positive:MISS,MISS": 1,
+          "positive:MISS,MISS,MISS,MISS": 1,
+          "positive:MISS,MISS,MISS,MISS,MISS,MISS,MISS,MISS": 1
+        }
+      },
+      {
+        "scanner": "openredaction",
+        "cases": 70,
+        "outcomes": {
+          "control:clear": 19,
+          "control:flagged": 5,
+          "pending": 5,
+          "positive:EXACT": 24,
+          "positive:EXACT,EXACT": 3,
+          "positive:EXACT,EXACT,EXACT,EXACT,EXACT,EXACT,EXACT,EXACT": 1,
+          "positive:EXACT,MISS": 1,
+          "positive:MISS": 8,
+          "positive:MISS,MISS,MISS,MISS": 1,
+          "positive:PARTIAL": 3
+        }
+      },
+      {
+        "scanner": "redact-secret",
+        "cases": 70,
+        "outcomes": {
+          "control:clear": 23,
+          "control:flagged": 1,
+          "pending": 5,
+          "positive:EXACT": 31,
+          "positive:EXACT,EXACT": 3,
+          "positive:EXACT,EXACT,EXACT,EXACT,EXACT,EXACT,EXACT,EXACT": 1,
+          "positive:EXACT,MISS": 1,
+          "positive:MISS": 4,
+          "positive:MISS,MISS,MISS,MISS": 1
+        }
+      },
+      {
+        "scanner": "trufflehog",
+        "cases": 70,
+        "outcomes": {
+          "control:clear": 23,
+          "control:flagged": 1,
+          "pending": 5,
+          "positive:EXACT": 4,
+          "positive:MISS": 31,
+          "positive:MISS,MISS": 4,
+          "positive:MISS,MISS,MISS,MISS": 1,
+          "positive:MISS,MISS,MISS,MISS,MISS,MISS,MISS,MISS": 1
+        }
+      }
+    ],
+    "regrouped": {
+      "project-policy -> provider-documented": 2
+    }
+  },
+  "unmeasured": {
+    "accepted": {
+      "policy-corpus": {},
+      "public-evidence-snapshot": {},
+      "regression-corpus": {}
+    },
+    "candidate": {
+      "policy-corpus": {},
+      "public-evidence-snapshot": {},
+      "regression-corpus": {}
+    },
+    "note": "Per population and scanner: cases a scanner observed but the engine could not map to ranges. Never a MISS, in no denominator."
+  },
+  "methods": {
+    "note": "The candidate methods run (differential, metamorphic, mutation): review occurrences of the gate peers and the failed assertions of the reference scanner (redact-secret), split by whether the seed case is one of the added cases or a common case.",
+    "differentialOccurrencesByPeer": {
+      "openredaction": {
+        "common settled": 0,
+        "common unsettled": 4044,
+        "added settled": 0,
+        "added unsettled": 20
+      },
+      "gitleaks (gate)": {
+        "common settled": 1924,
+        "common unsettled": 30,
+        "added settled": 0,
+        "added unsettled": 24
+      },
+      "flare-redact": {
+        "common settled": 0,
+        "common unsettled": 2785,
+        "added settled": 0,
+        "added unsettled": 14
+      },
+      "trufflehog (gate)": {
+        "common settled": 2723,
+        "common unsettled": 21,
+        "added settled": 0,
+        "added unsettled": 37
+      }
+    },
+    "referenceAssertionFailuresByMethod": {
+      "metamorphic": {
+        "added": 56,
+        "common": 591
+      },
+      "mutation": {
+        "added": 8,
+        "common": 91
+      }
+    },
+    "unsettledGateOccurrences": {
+      "note": "Every gate-peer (gitleaks, trufflehog) differential occurrence with no ledger decision, own or mapped from the legacy ledger. Origin added: the seed case is new in this snapshot, so no legacy decision exists for it. Origin common: the occurrence maps to a legacy ledger entry that is still open, and was equally unsettled in the accepted view.",
+      "items": [
+        {
+          "id": "sha256:01eeed8ba567c6706b92983266b8f8f4356bd8508be327a2aa07764b916e8efc",
+          "peer": "trufflehog",
+          "case": "twilio-compound-credentials-authored--api-key-sid-and-secret-env",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": [
+            "twilio-api-key-secret"
+          ]
+        },
+        {
+          "id": "sha256:02a0626b56745268136865efd14e25b99f401f3faef26efb97f8bd998e422405",
+          "peer": "gitleaks",
+          "case": "jupyter-notebook-files-authored--stdout-literal-where-source-has-environment-reference",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "aws-secret-access-key"
+          ]
+        },
+        {
+          "id": "sha256:049655045e48b79c4d20a3fd3bdf0bb6e67a9b317d1ff48564c48e4167f70caf",
+          "peer": "gitleaks",
+          "case": "base64-hex-representation-projections--sendgrid-key-hex-lower-of-base64-standard-padded-in-env",
+          "variant": "canonical",
+          "disagreement": "peer-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:05d1c60567c10f2586abcc8cb505cabe38cbc35227d2f845cb2e4ce81dd8cb83",
+          "peer": "trufflehog",
+          "case": "jupyter-notebook-files-authored--source-one-array-element-per-line",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "aws-secret-access-key"
+          ]
+        },
+        {
+          "id": "sha256:071c00069b11e169406da12eed84f7d2f98fd5321ad14557c9c866ded95a8bd2",
+          "peer": "gitleaks",
+          "case": "line-break-and-fragment-authored--key-split-by-unquoted-shell-continuation",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:0e47971c6b6a6831148545fb57b39bbcd71357670fd123bee66728743db5c4b0",
+          "peer": "trufflehog",
+          "case": "graphql-requests-and-responses-authored--post-body-variables-value",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:161e0a89a08c93ed5a24a411a6a8738aa04bad61bd585aaecb920565ddb337b1",
+          "peer": "gitleaks",
+          "case": "line-break-and-fragment-authored--key-split-across-javascript-added-literals",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:1850599e0974bae150fcfc70f7c668e7eb6ea49aa035666b0c492914d2270410",
+          "peer": "gitleaks",
+          "case": "twilio-compound-credentials-authored--api-key-sid-alone",
+          "variant": "canonical",
+          "disagreement": "peer-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:1d493f32328053e45cd0583c28dc18321754155e693f42939ea45d24adeadd08",
+          "peer": "gitleaks",
+          "case": "har-exports-authored--bearer-token-in-url-and-querystring-array",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "bearer-token"
+          ]
+        },
+        {
+          "id": "sha256:1e49dd557a53b8abf519e6d396f4738572f950c15e9964d1645e0ae2361c16cd",
+          "peer": "gitleaks",
+          "case": "authored-provider-neutral--pytest-fake-fixtures",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:1e5a1b61f5f657d1450e63af265434944856e3143b2f253e0093ffda696bb6b6",
+          "peer": "gitleaks",
+          "case": "url-credential-boundaries-authored--cloud-storage-signed-url-in-prose",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:1e6ef01cd78ed357021f5b207f35ce03b142dc2fc4254f314e3e932490906673",
+          "peer": "gitleaks",
+          "case": "http-auth-carriers-authored--basic-token-split-by-space",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:1e949f00f7c26af717c5c6cf071202898e8e32cce38d0eeb9511a56b64b9d5ef",
+          "peer": "trufflehog",
+          "case": "jupyter-notebook-files-authored--secret-base-output-only",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": []
+        },
+        {
+          "id": "sha256:1ea5be5370b086771b3697cfef1f6a96b217752c96e979485e4e96114ff66c80",
+          "peer": "trufflehog",
+          "case": "opentelemetry-log-records-authored--body-string-holding-serialized-json",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:1f5d19404add83ec92170172ae9bc84caa7b6484dd5e807f93c1ec7b968dbd7a",
+          "peer": "trufflehog",
+          "case": "http-auth-carriers-authored--basic-rfc-published-example",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:1f88f604a218fd71ba81f5adca5b166cb6455b105b3afe77e12e2a80697333be",
+          "peer": "gitleaks",
+          "case": "base64-hex-representation-projections--sendgrid-key-hex-upper-in-json",
+          "variant": "canonical",
+          "disagreement": "peer-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:20aec98af5b76908ebd027f3f0a94810f2811ef677f5061f5568cb0e6d10be25",
+          "peer": "trufflehog",
+          "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:215474755268ca99ac447d57fc300a651729588438ffd7275e68c6a3f39ea138",
+          "peer": "trufflehog",
+          "case": "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "aws-secret-access-key"
+          ]
+        },
+        {
+          "id": "sha256:22fee6e5d055d5a9d772c7667d368d779bea2e0c1b55047ab45b9a7790d4b99c",
+          "peer": "trufflehog",
+          "case": "structured-credential-files-authored--documented-redacted-literal-values",
+          "variant": "canonical",
+          "disagreement": "peer-only",
+          "origin": "added",
+          "families": []
+        },
+        {
+          "id": "sha256:2337a991a7064d4451224270831d61de8525e81012e6021dce9fc0d789e61ba7",
+          "peer": "trufflehog",
+          "case": "graphql-requests-and-responses-authored--request-then-full-echo-in-error-message",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:238195352a1bcb1af950f1b3d27ba339abf9afce48dc0306c558085bb7138fc6",
+          "peer": "gitleaks",
+          "case": "mime-transfer-encoding-authored--qp-soft-break-bytes-in-7bit-part",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:25c9b22f923fe9e9eb09dfcd0de0b321dd50236519841888c35680afd71d3727",
+          "peer": "gitleaks",
+          "case": "graphql-requests-and-responses-authored--post-body-inline-literal",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:26dc89e8fc524c29a2ed3827d809a004bfdf38ef76b513ad85c152bca60f2791",
+          "peer": "trufflehog",
+          "case": "opentelemetry-log-records-authored--two-secrets-with-upper-case-trace-id",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:29060d9a972e6c2051fb1d62c8ccdf4aba725e2457afe3f3e47f4869dcfc20b4",
+          "peer": "gitleaks",
+          "case": "graphql-requests-and-responses-authored--request-then-full-echo-in-error-message",
+          "variant": "canonical",
+          "disagreement": "range-disagreement",
+          "origin": "added",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:2b7cda94cb9865f297103aebb077b5d1de896c1b441a0522c2510d25a5378f2a",
+          "peer": "trufflehog",
+          "case": "github-actions-workflow-commands-authored--multiline-record-eof-delimiter",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:2cca0a2248721eceab5bbe417ba92928ca1698235b961e51ef2b33bcc5f9977f",
+          "peer": "gitleaks",
+          "case": "opentelemetry-log-records-authored--attribute-string",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:2e41091255ebf0a3ba532b6631fc372f2b0c6bf1cc1be73b45ffb558f34f8bc3",
+          "peer": "trufflehog",
+          "case": "github-actions-workflow-commands-authored--multiline-record-written-by-brace-group",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:3001fa265c3b9c31a1ad8c579b8081bd95de9c86cddd2f6e821c2648bc4ed0f9",
+          "peer": "trufflehog",
+          "case": "exa--exa-api-key-other-host-twin",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:329510d210f0add99d3b8cd47540beeaa206bec25ef5dabd24736983921c4338",
+          "peer": "gitleaks",
+          "case": "docker-compose-resolution-authored--required-message",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "generic-token"
+          ]
+        },
+        {
+          "id": "sha256:33f54e2ea4fa6be73beb4b6969b86be9430548b208914a13bed75cd669e4d4d4",
+          "peer": "gitleaks",
+          "case": "jupyter-notebook-files-authored--secret-base-output-only",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": []
+        },
+        {
+          "id": "sha256:3bbb9e0fa3e3734482ef3f2742c432cbf96eb1acefde1479b0c462224ce1c9ca",
+          "peer": "gitleaks",
+          "case": "line-break-and-fragment-authored--key-split-before-last-character-by-shell-continuation",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:3eb264a7abd220e37f8228309ccb1056ea1b8a8bbdfaca7b9b5c29d0c793ca80",
+          "peer": "trufflehog",
+          "case": "opentelemetry-log-records-authored--exception-message-and-stacktrace",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:4038dd338a7ba399da7173356be9d2e759dd2be44f854052d2dafb0e11e23d34",
+          "peer": "trufflehog",
+          "case": "docker-compose-resolution-authored--resolved-config-literal",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:494d0aa121f6a4b411b3731e93a0a65b1c2381a7783b9494c56b0177d0e6c15e",
+          "peer": "trufflehog",
+          "case": "url-credential-boundaries-authored--sas-token-in-config-line",
+          "variant": "canonical",
+          "disagreement": "peer-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:4a46b5f120e25b52dfeb5962fd17a2fb257b0c9309556b090e43891b42e38aeb",
+          "peer": "gitleaks",
+          "case": "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-three-layers-in-env",
+          "variant": "canonical",
+          "disagreement": "peer-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:4aac84db13bd75d6a32ece29bfbaefb457665d5afea801ba8b4fb2f5ecc9265b",
+          "peer": "trufflehog",
+          "case": "structured-credential-files-authored--documented-template-placeholders",
+          "variant": "canonical",
+          "disagreement": "range-disagreement",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:4b606002b6f2945f5b0f1abfa936698c145670e708a3f7e9c55aa8dc7cf2cbe3",
+          "peer": "trufflehog",
+          "case": "graphql-requests-and-responses-authored--variables-object-base-a",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:4c09c2ee0f2b21ae4967d33ea646c2c346f2a53b04a6cd9c875b1fdc3b4948cf",
+          "peer": "gitleaks",
+          "case": "structured-credential-files-authored--documented-template-placeholders",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:52b1739c71f08f8976f7363a86b4fa7213329403d042edac516d9c32ebf357bd",
+          "peer": "gitleaks",
+          "case": "http-auth-carriers-authored--basic-rfc-published-example",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:52ee2240bf9ddd40346a85950fec3495733d9730d64ecf1d344ef03eb7dd1fe3",
+          "peer": "gitleaks",
+          "case": "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+          "variant": "canonical",
+          "disagreement": "peer-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:55847ed32fbd59b8795b5066d2b30512b9f93184d614525e6d09ec9098edd5c7",
+          "peer": "trufflehog",
+          "case": "mime-transfer-encoding-authored--qp-soft-break-bytes-in-7bit-part",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:55dbe75231cd8f67612642f50d7f1d596ae31ef456f0f416b01e6568b54d5829",
+          "peer": "trufflehog",
+          "case": "url-credential-boundaries-authored--cloud-storage-signed-url-in-prose",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:5864f223c6e596b6363a06c6637fc533dbd30811c0de0c21af49e8e8ed8ee523",
+          "peer": "gitleaks",
+          "case": "structured-credential-files-authored--kubeconfig-client-key-data-encoded-pem",
+          "variant": "canonical",
+          "disagreement": "peer-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:58c45acd3e99f06d9ed843d9bf475c2843df60222bfffc3672ab39276bf21cc7",
+          "peer": "trufflehog",
+          "case": "line-break-and-fragment-authored--key-split-by-unquoted-shell-continuation",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:59cbe87ff371a20697f3a4502508b9af43491c6de960a2fb96c9917c50818178",
+          "peer": "trufflehog",
+          "case": "opentelemetry-log-records-authored--attribute-string",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:5a93469bf6a45917a2884bcfc8a8e58f7429a901e23cc9ec3ee8bc4a932d9881",
+          "peer": "gitleaks",
+          "case": "opentelemetry-log-records-authored--body-string",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:5b792626ef63c047888c24a7fcb7a15fe007d8275a2c9d29268f1009c23ad588",
+          "peer": "gitleaks",
+          "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:5d15d39046c81f07b7ea485a4162a82fb398749bbb32f690d6f0760df5e92451",
+          "peer": "gitleaks",
+          "case": "opentelemetry-log-records-authored--exception-message-and-stacktrace",
+          "variant": "canonical",
+          "disagreement": "range-disagreement",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:5f75e440ff3bc7d4f20ac264d32eab239527b1040fa76178552d6200d894a912",
+          "peer": "trufflehog",
+          "case": "graphql-requests-and-responses-authored--post-body-inline-literal",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:61af665cb9bb250935dd3116e7acaa58b344b61fa10a020a290531e824e2803e",
+          "peer": "trufflehog",
+          "case": "http-auth-carriers-authored--basic-empty-password",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:66a298c8f46d8eb468ff807014965dcf008c1a7b903f4218bc364e4a30756236",
+          "peer": "trufflehog",
+          "case": "jupyter-notebook-files-authored--secret-base-repeated",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": []
+        },
+        {
+          "id": "sha256:68c44f2f132a08fd91345fee845b66c71a693dad72afeb9d598072feebf7ab6c",
+          "peer": "gitleaks",
+          "case": "har-exports-authored--bearer-token-in-postdata-text-percent-escaped",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "bearer-token"
+          ]
+        },
+        {
+          "id": "sha256:6fdf74aee12f20381d32f22583962d59e91e547b7b0290d787164aa2eab237ad",
+          "peer": "gitleaks",
+          "case": "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-json",
+          "variant": "canonical",
+          "disagreement": "peer-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:72bd1955db4e64d2f8b8e28b18ff807ccfd21c9952bce6552dd9498be7b2ebae",
+          "peer": "trufflehog",
+          "case": "jupyter-notebook-files-authored--stdout-mask-where-source-has-environment-reference",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "generic-token"
+          ]
+        },
+        {
+          "id": "sha256:73986f3d5cccdc607ab4d98eb81e2389aee5264b952476163fad94fbb1678ee7",
+          "peer": "trufflehog",
+          "case": "twilio-compound-credentials-authored--api-key-secret-before-sid",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": [
+            "twilio-api-key-secret"
+          ]
+        },
+        {
+          "id": "sha256:7589ad7dcabb5cb9dd25580d12b16489225408ec08be5b331cdb9875a8dea911",
+          "peer": "trufflehog",
+          "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+          "variant": "canonical",
+          "disagreement": "range-disagreement",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:7a4fc04a5a61d0741df512da4c59a283645e39fa4432d092b453f6283afcd915",
+          "peer": "trufflehog",
+          "case": "hashicorp-terraform-authored--state-json-resource-password-with-sensitive-values",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "generic-token"
+          ]
+        },
+        {
+          "id": "sha256:7bf2d21728698b02e3edaad3415382633d14bc563c40ddbd317199eaa96e7bad",
+          "peer": "gitleaks",
+          "case": "http-auth-carriers-authored--basic-empty-password",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:7caf2164d25ac7e6c7271c52275c4d45b3e2534696ccc777f78e1a772e17346c",
+          "peer": "trufflehog",
+          "case": "github-actions-workflow-commands-authored--base-token",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:7f3040c8187eea22d073956313f9e2829fdf625083b7ca56a0b6f64925f21169",
+          "peer": "trufflehog",
+          "case": "har-exports-authored--bearer-token-in-url-and-querystring-array",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "bearer-token"
+          ]
+        },
+        {
+          "id": "sha256:820ed07ff1bda8da7e5974739b87dbc0d445f8f91617ddafe8fa164bb49e8274",
+          "peer": "gitleaks",
+          "case": "opentelemetry-log-records-authored--resource-attribute",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:83d8ef6c7b889778bee0019dda6893d5f062e8771708d8cc9e87728396340d6b",
+          "peer": "trufflehog",
+          "case": "jupyter-notebook-files-authored--stdout-literal-where-source-has-environment-reference",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "aws-secret-access-key"
+          ]
+        },
+        {
+          "id": "sha256:8a66b2d8cfa59fea1ab05c30b09d1e4eb605188491126358176facdb96e1a9b8",
+          "peer": "gitleaks",
+          "case": "jupyter-notebook-files-authored--secret-base-source-array",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": []
+        },
+        {
+          "id": "sha256:8e71eab84c9b0c3872f2ee1f3be13cdc478f3f23ba33ff59bca51166680ed7ba",
+          "peer": "trufflehog",
+          "case": "http-auth-carriers-authored--basic-token-split-by-space",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:912907ca080bd7233c8b1fa31a387b1d63088d62d113b5dcb876a89f3798a9ec",
+          "peer": "trufflehog",
+          "case": "opentelemetry-log-records-authored--body-string",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:934c76e04aee4e2e7f8d33f8e29d3b1ddb52d1554def529201fb5c4039395410",
+          "peer": "trufflehog",
+          "case": "graphql-requests-and-responses-authored--variables-object-base-b",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:93c9d991a5f38c79863a063665566a421da20ec960ac1223f056545136fe0c76",
+          "peer": "gitleaks",
+          "case": "jupyter-notebook-files-authored--source-one-array-element-per-line",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "aws-secret-access-key"
+          ]
+        },
+        {
+          "id": "sha256:959c052d589105a951f8f52142e66f929ae4283ed2853229f0de16b23abab625",
+          "peer": "trufflehog",
+          "case": "line-break-and-fragment-authored--key-split-before-last-character-by-shell-continuation",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:95e03d13ddc67ac09dcb125f673b0a59899d85dc04c9f5b3edd1370911f42476",
+          "peer": "trufflehog",
+          "case": "graphql-requests-and-responses-authored--request-then-response-without-value",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:97067a5498c4e084435be9dd129e3088e8652c86ead7053e17cfcbef4063c17d",
+          "peer": "gitleaks",
+          "case": "graphql-requests-and-responses-authored--get-url-variables-value",
+          "variant": "canonical",
+          "disagreement": "peer-only",
+          "origin": "added",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:9907ce928b772e386dc67d65f00f214e443caba71b342b459416e1fbe5a5e7d0",
+          "peer": "trufflehog",
+          "case": "opentelemetry-log-records-authored--resource-attribute",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:9a42b0c7b6d02680168b1771db625882d895d7eaa2c26341f1f2a499ed78e90c",
+          "peer": "gitleaks",
+          "case": "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "aws-secret-access-key"
+          ]
+        },
+        {
+          "id": "sha256:9bd84ee010f34f7c1b49f76f1d70e8a4cf00d97c74036d60b530d67eab9f84f1",
+          "peer": "trufflehog",
+          "case": "hashicorp-terraform-authored--plan-json-change-after-password-with-after-sensitive",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "generic-token"
+          ]
+        },
+        {
+          "id": "sha256:9ca105ab67683026832f9bff09e99ee58086e6155e337d84027a5428c672b8b6",
+          "peer": "gitleaks",
+          "case": "jupyter-notebook-files-authored--secret-base-repeated",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": []
+        },
+        {
+          "id": "sha256:9d0c60240400a852e901f3eb621c24742c958349ffb4be46402936b18078a569",
+          "peer": "trufflehog",
+          "case": "docker-compose-resolution-authored--required-message",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "generic-token"
+          ]
+        },
+        {
+          "id": "sha256:a14395ddde43893e52ee7fdc9ce88cfac94a8dc6d4fa529bdf1e6b5476c6292a",
+          "peer": "gitleaks",
+          "case": "mime-transfer-encoding-authored--qp-soft-break-in-quoted-printable-part",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:a6cd93a2cf2d48872cf3d6716bedd97f79dcee857212730f347a9727c0f48f1f",
+          "peer": "gitleaks",
+          "case": "opentelemetry-log-records-authored--body-nested-map-and-array",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:a729d3ff0075731745191b84cea968bae2dbf075750537bed244fe6dae1a0dd0",
+          "peer": "trufflehog",
+          "case": "url-credential-boundaries-authored--s3-presigned-url-in-prose",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:a76b9f627f7049ead9628619db30e9003ca5af41073e22280d0c0bd0bf9f2b89",
+          "peer": "trufflehog",
+          "case": "authored-provider-neutral--pytest-fake-fixtures",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:a85ddd31c8bb8618bdbfc4cb00ed82eee9851b668b34b093c1bf5cccdac6b7b3",
+          "peer": "trufflehog",
+          "case": "exa--exa-api-key-your-key-here-placeholder",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:af8722a1f3c342c794ebec154fcb7bbd182da94f30196ee4f23d9b831cfc7753",
+          "peer": "gitleaks",
+          "case": "opentelemetry-log-records-authored--two-secrets-with-upper-case-trace-id",
+          "variant": "canonical",
+          "disagreement": "range-disagreement",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:b1f445e8e5725e3700332332428f61fff020b185641fe0fee7596e4f3ff01c38",
+          "peer": "gitleaks",
+          "case": "opentelemetry-log-records-authored--body-string-holding-serialized-json",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:b230e60059c0177fcf3fc675720fde94d666c1f061eed8adfd4b0de896f8d8fb",
+          "peer": "gitleaks",
+          "case": "twilio-compound-credentials-authored--api-key-sid-and-secret-env",
+          "variant": "canonical",
+          "disagreement": "range-disagreement",
+          "origin": "common",
+          "families": [
+            "twilio-api-key-secret"
+          ]
+        },
+        {
+          "id": "sha256:b68b84b9eba919345bd0c0a4c7311e28b4fafda64fa4e2919002b2437fb10fa4",
+          "peer": "gitleaks",
+          "case": "exa--exa-api-key-your-key-here-placeholder",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:bbcc2afca9e8c4be48335465c76cef141c191c72068abeb6bf90c11c3bc36ab7",
+          "peer": "trufflehog",
+          "case": "github-actions-workflow-commands-authored--env-file-echo",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:be1b3b12cad657f3064841b42e43f785dcc1e1adc51ecb3f9f0cc8f3b928aac7",
+          "peer": "gitleaks",
+          "case": "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-env",
+          "variant": "canonical",
+          "disagreement": "peer-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:bf53d73c20c2818f8d85ffafbc64d2d0614573024c2be1460d551961367ae503",
+          "peer": "trufflehog",
+          "case": "line-break-and-fragment-authored--key-split-across-javascript-added-literals",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:c2f9efce5aefa902ae9a7667f2c99cdd19099072683b44d31d51bde97b136807",
+          "peer": "gitleaks",
+          "case": "jupyter-notebook-files-authored--stdout-mask-where-source-has-environment-reference",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "generic-token"
+          ]
+        },
+        {
+          "id": "sha256:c55817387d7d38b179fc911b6576dc29440bc67d5024d860732921810aa54d5c",
+          "peer": "trufflehog",
+          "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+          "variant": "canonical",
+          "disagreement": "range-disagreement",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:c6f1deac4b06a8b2c77730b34bec7703f7b4bde8a831e53cd8510d2c972cab63",
+          "peer": "trufflehog",
+          "case": "har-exports-authored--bearer-token-in-postdata-text-percent-escaped",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "bearer-token"
+          ]
+        },
+        {
+          "id": "sha256:c81cbbfc22a1c250ea498af5ac84eb6ba5f3ab7535b03f57e84f91067436b0ed",
+          "peer": "gitleaks",
+          "case": "base64-hex-representation-projections--sendgrid-key-hex-lower-of-hex-lower-in-env",
+          "variant": "canonical",
+          "disagreement": "peer-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:c95e0c1e4fa31e4c09c34be308fee2aa593b195ff6ab12519f5787a90be600c4",
+          "peer": "trufflehog",
+          "case": "jupyter-notebook-files-authored--secret-base-source-array",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": []
+        },
+        {
+          "id": "sha256:ccbfdfbea0fb3327c7d4429e9318965b6685adbe1709950d13922e097fd9ba8f",
+          "peer": "gitleaks",
+          "case": "base64-hex-representation-projections--sendgrid-key-hex-mixed-in-env",
+          "variant": "canonical",
+          "disagreement": "peer-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:d09cf76e6cd30c8b6950218fbb9458ace8cd736cb961a3932a2235ccd8f3b953",
+          "peer": "gitleaks",
+          "case": "hashicorp-terraform-authored--state-json-resource-password-with-sensitive-values",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "generic-token"
+          ]
+        },
+        {
+          "id": "sha256:d2968cdfd395d6d9d425794897d92fae8a72da1b54b190531a8677834d10a849",
+          "peer": "trufflehog",
+          "case": "structured-credential-files-authored--kubeconfig-four-users-two-inline-secrets",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:d36b2f06a0031d09c2060898dd25deb2099f46aff005d8f2c3ed8a6f714645d0",
+          "peer": "gitleaks",
+          "case": "line-break-and-fragment-authored--key-split-by-backslash-crlf-continuation",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:d5c09f2b25a19333dd0f0ef859499354428a2e957d97f83eeaffc58039162bdf",
+          "peer": "trufflehog",
+          "case": "mime-transfer-encoding-authored--qp-soft-break-in-quoted-printable-part",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:d776961b9013a1478a34cff7e84f1dd09f946ace9ac5caf1b223186db870fbfb",
+          "peer": "gitleaks",
+          "case": "twilio-compound-credentials-authored--api-key-secret-before-sid",
+          "variant": "canonical",
+          "disagreement": "range-disagreement",
+          "origin": "common",
+          "families": [
+            "twilio-api-key-secret"
+          ]
+        },
+        {
+          "id": "sha256:de1161bd5a9893cdecb3171dbb6cb7a3bde16902ee9dacabf7a0abe5c3941d05",
+          "peer": "gitleaks",
+          "case": "url-credential-boundaries-authored--s3-presigned-url-in-prose",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:df02e2076f6f9437b9d6a1c27d72ca981ae6d631c16066ce59fe14d1bc501ee0",
+          "peer": "gitleaks",
+          "case": "base64-hex-representation-projections--sendgrid-key-hex-lower-in-env",
+          "variant": "canonical",
+          "disagreement": "peer-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:e4711c285e77cf5b67d56fe9c4c24f4ddcc7146b76ca98bda7431914f3963339",
+          "peer": "trufflehog",
+          "case": "line-break-and-fragment-authored--key-split-by-backslash-crlf-continuation",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:e4ce8ab0526e1a963d756f3f42196fd6b53f4d39a6539addb593c30721a12f67",
+          "peer": "trufflehog",
+          "case": "opentelemetry-log-records-authored--body-nested-map-and-array",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:e66b88b253f1f8d9caa1bdb9b9c82e825b1e5bf630e4c80769d5f6655db4fde0",
+          "peer": "trufflehog",
+          "case": "github-actions-workflow-commands-authored--add-mask-literal-argument",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:e752b9a2e0a2733a27a25a800b90f5bfafca4e7db886e15510b1d91240023f1e",
+          "peer": "trufflehog",
+          "case": "docker-compose-resolution-authored--default-literal",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:e785ab3b5b85d32027410e8b3dc15ac91e6e14f17720d810857d18ee1c2eeeab",
+          "peer": "trufflehog",
+          "case": "authored-provider-neutral--terraform-apply-sensitive",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:e7898d6d6af5e1847a9465dd25ac211ec3c044a7e08f0a8e7d94d05a0b627b48",
+          "peer": "trufflehog",
+          "case": "github-actions-workflow-commands-authored--multiline-record-guid-delimiter",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:e975b2f11647a37f083b508d0310948239454f4f603dc63bab43b61d0f4d6d8b",
+          "peer": "gitleaks",
+          "case": "structured-credential-files-authored--kubeconfig-four-users-two-inline-secrets",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:f1dce5103179f291f857bc012a733085a6ef289a402249434ff6014a7d4a62b2",
+          "peer": "gitleaks",
+          "case": "authored-provider-neutral--terraform-apply-sensitive",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "common",
+          "families": []
+        },
+        {
+          "id": "sha256:f8d8e076d727128f8ec7e8c0632e82144bfeb0d8311ff4ff6789f3b9f38c1930",
+          "peer": "gitleaks",
+          "case": "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+          "variant": "canonical",
+          "disagreement": "peer-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        },
+        {
+          "id": "sha256:fc9556b3975fb942bfbeb716daaf34c81929fc31691e5b7b6db7f4b1429457bf",
+          "peer": "gitleaks",
+          "case": "hashicorp-terraform-authored--plan-json-change-after-password-with-after-sensitive",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "generic-token"
+          ]
+        },
+        {
+          "id": "sha256:ff3947c4c70720853a45b3cc3b86161b9eb79b6caca69237738648e19c6a5060",
+          "peer": "trufflehog",
+          "case": "github-actions-workflow-commands-authored--output-file-echo",
+          "variant": "canonical",
+          "disagreement": "reference-only",
+          "origin": "added",
+          "families": [
+            "github-token"
+          ]
+        },
+        {
+          "id": "sha256:ffa15526d2bc7fa63ca2de945b3e1e82e2036f1c1a19652c991e133d3db06548",
+          "peer": "gitleaks",
+          "case": "base64-hex-representation-projections--sendgrid-key-hex-upper-in-env",
+          "variant": "canonical",
+          "disagreement": "peer-only",
+          "origin": "common",
+          "families": [
+            "sendgrid-token"
+          ]
+        }
+      ]
+    },
+    "unmeasuredVariants": {
+      "trufflehog": 1
+    }
+  },
+  "overlayAndPolicy": {
+    "note": "Product-owned inputs derived from the corpus. They name axes and attribution and settle ledger decisions; they change no evidence class, outcome or measured count. The policy criteria, rules and gate peers are unchanged.",
+    "policyRevision": {
+      "accepted": "rs-policy-1:sha256:5615a8aa34a1cf593cff5913596f6745828cf168f67ba77ed305c4e4e4e0f6d3",
+      "candidate": "rs-policy-1:sha256:1bfa5d26c53dc4739a886d5e698acb23f40cb130bd4b6a10fb0185031fbc754b"
+    },
+    "unchangedPolicyKeys": [
+      "attributionFallback",
+      "axisCoverage",
+      "criteria",
+      "differentialPeers",
+      "fixtureProfilesVersion",
+      "id",
+      "methodsRequired",
+      "populations",
+      "rules",
+      "scanner"
+    ],
+    "changedPolicyKeys": [
+      "axisOverlay",
+      "components",
+      "ledgerRekey",
+      "revision",
+      "twinScope"
+    ],
+    "axisOverlay": {
+      "accepted": {
+        "contexts": 2354,
+        "controls": 2075,
+        "corpusDigest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
+        "detectors": 5466,
+        "id": "credential-public-axis-overlay-v1",
+        "population": "public-evidence-snapshot"
+      },
+      "candidate": {
+        "contexts": 2354,
+        "controls": 2075,
+        "corpusDigest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
+        "detectors": 5466,
+        "id": "credential-public-axis-overlay-v1",
+        "population": "public-evidence-snapshot"
+      }
+    },
+    "twinScope": {
+      "accepted": {
+        "corpusDigest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
+        "id": "credential-public-twin-scope-map-v1",
+        "population": "public-evidence-snapshot",
+        "scopedBy": "regression-corpus",
+        "twins": 0
+      },
+      "candidate": {
+        "corpusDigest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
+        "id": "credential-public-twin-scope-map-v1",
+        "population": "public-evidence-snapshot",
+        "scopedBy": "regression-corpus",
+        "twins": 0
+      },
+      "why": "credential-evidence now gives the 0 cross-provider twins the accepted map named their family (grouping change), so the engine scopes them itself and the product map has nothing left to map; the project twin cases stay in the regression population."
+    },
+    "ledgerRekey": {
+      "accepted": {
+        "corpusDigest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
+        "id": "credential-public-review-ledger-rekey-v1",
+        "occurrences": 4268,
+        "population": "public-evidence-snapshot"
+      },
+      "candidate": {
+        "corpusDigest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
+        "id": "credential-public-review-ledger-rekey-v1",
+        "occurrences": 4268,
+        "population": "public-evidence-snapshot"
+      }
+    }
+  },
+  "ledgerEffect": {
+    "note": "The same official runs, read with the owner-decided review settlements applied (benchmarks/review-ledger.json rows keyed by the accepted run's occurrence ids; scripts/apply-ledger-settlements.ts). Only the differential gate can move.",
+    "policyRevision": {
+      "candidateWithoutSettlements": "rs-policy-1:sha256:1bfa5d26c53dc4739a886d5e698acb23f40cb130bd4b6a10fb0185031fbc754b",
+      "final": "rs-policy-1:sha256:c478848be31ec4de7b9a0de2e752e832ef2d7288d9423e044e7e12171b4e79fd"
+    },
+    "distribution": {
+      "candidateWithoutSettlements": {
+        "pending": 1,
+        "provisional": 19,
+        "stable": 115,
+        "unsupported": 0
+      },
+      "final": {
+        "pending": 1,
+        "provisional": 11,
+        "stable": 123,
+        "unsupported": 0
+      }
+    },
+    "supportMatrix": {
+      "candidateWithoutSettlements": {
+        "pending": 5,
+        "provisional": 26,
+        "stable": 125,
+        "unsupported": 17
+      },
+      "final": {
+        "pending": 5,
+        "provisional": 15,
+        "stable": 136,
+        "unsupported": 17
+      }
+    },
+    "stableDistribution": {
+      "candidateWithoutSettlements": {
+        "documented": 82,
+        "empirical": 33,
+        "policy-qualified": 0
+      },
+      "final": {
+        "documented": 87,
+        "empirical": 36,
+        "policy-qualified": 0
+      }
+    },
+    "familyChanges": [
+      {
+        "family": "aws-access-key",
+        "status": {
+          "from": "provisional",
+          "to": "stable"
+        },
+        "differentialUnresolved": {
+          "from": 9,
+          "to": 0
+        },
+        "remainingReasons": []
+      },
+      {
+        "family": "connection-string",
+        "status": {
+          "from": "provisional",
+          "to": "provisional"
+        },
+        "differentialUnresolved": {
+          "from": 21,
+          "to": 0
+        },
+        "remainingReasons": [
+          "policy.positive-cases: 2 (requires 6)",
+          "policy.positive-axes: 2 (requires 4)",
+          "policy.benign-cases: 1 (requires 8)",
+          "policy.benign-axes: 1 (requires 4)",
+          "policy.twin-pairs: 1 (requires 5)",
+          "policy.critical-failure: 8 (requires 0)",
+          "policy.protected-holdout: not-run (requires pass on frozen candidate)",
+          "metamorphic.criticalFailures: 7 > 0",
+          "mutation.unresolvedCritical: 1 > 0"
+        ]
+      },
+      {
+        "family": "deepgram-api-key",
+        "status": {
+          "from": "provisional",
+          "to": "stable"
+        },
+        "differentialUnresolved": {
+          "from": 1,
+          "to": 0
+        },
+        "remainingReasons": []
+      },
+      {
+        "family": "generic-token",
+        "status": {
+          "from": "provisional",
+          "to": "provisional"
+        },
+        "differentialUnresolved": {
+          "from": 12,
+          "to": 8
+        },
+        "remainingReasons": [
+          "policy.positive-cases: 2 (requires 6)",
+          "policy.positive-axes: 2 (requires 4)",
+          "policy.benign-cases: 1 (requires 8)",
+          "policy.benign-axes: 1 (requires 4)",
+          "policy.twin-pairs: 1 (requires 5)",
+          "policy.critical-failure: 296 (requires 0)",
+          "policy.protected-holdout: not-run (requires pass on frozen candidate)",
+          "benign.falseAlarms: 1 > 0",
+          "metamorphic.criticalFailures: 252 > 0",
+          "mutation.unresolvedCritical: 36 > 0",
+          "differential.unresolvedContractDisagreements: 8 > 0"
+        ]
+      },
+      {
+        "family": "github-token",
+        "status": {
+          "from": "provisional",
+          "to": "provisional"
+        },
+        "differentialUnresolved": {
+          "from": 111,
+          "to": 23
+        },
+        "remainingReasons": [
+          "differential.unresolvedContractDisagreements: 23 > 0"
+        ]
+      },
+      {
+        "family": "gitlab-token",
+        "status": {
+          "from": "provisional",
+          "to": "stable"
+        },
+        "differentialUnresolved": {
+          "from": 31,
+          "to": 0
+        },
+        "remainingReasons": []
+      },
+      {
+        "family": "google-api-key",
+        "status": {
+          "from": "provisional",
+          "to": "stable"
+        },
+        "differentialUnresolved": {
+          "from": 3,
+          "to": 0
+        },
+        "remainingReasons": []
+      },
+      {
+        "family": "heroku-api-key-legacy",
+        "status": {
+          "from": "provisional",
+          "to": "stable"
+        },
+        "differentialUnresolved": {
+          "from": 1,
+          "to": 0
+        },
+        "remainingReasons": []
+      },
+      {
+        "family": "npm-token",
+        "status": {
+          "from": "provisional",
+          "to": "stable"
+        },
+        "differentialUnresolved": {
+          "from": 32,
+          "to": 0
+        },
+        "remainingReasons": []
+      },
+      {
+        "family": "sendgrid-token",
+        "status": {
+          "from": "provisional",
+          "to": "provisional"
+        },
+        "differentialUnresolved": {
+          "from": 106,
+          "to": 32
+        },
+        "remainingReasons": [
+          "metamorphic.criticalFailures: 206 > 0",
+          "mutation.unresolvedCritical: 30 > 0",
+          "differential.unresolvedContractDisagreements: 32 > 0"
+        ]
+      },
+      {
+        "family": "stripe-token",
+        "status": {
+          "from": "provisional",
+          "to": "stable"
+        },
+        "differentialUnresolved": {
+          "from": 50,
+          "to": 0
+        },
+        "remainingReasons": []
+      },
+      {
+        "family": "twilio-auth-token",
+        "status": {
+          "from": "provisional",
+          "to": "stable"
+        },
+        "differentialUnresolved": {
+          "from": 4,
+          "to": 0
+        },
+        "remainingReasons": []
+      }
+    ],
+    "supportMatrixStatusChanges": [
+      {
+        "family": "aws:iam-user-access-key",
+        "from": "provisional",
+        "to": "stable"
+      },
+      {
+        "family": "deepgram:api-key",
+        "from": "provisional",
+        "to": "stable"
+      },
+      {
+        "family": "gitlab:legacy-personal-access-token",
+        "from": "provisional",
+        "to": "stable"
+      },
+      {
+        "family": "google:generic-api-key",
+        "from": "provisional",
+        "to": "stable"
+      },
+      {
+        "family": "heroku:legacy-api-key",
+        "from": "provisional",
+        "to": "stable"
+      },
+      {
+        "family": "npm:granular-access-token",
+        "from": "provisional",
+        "to": "stable"
+      },
+      {
+        "family": "stripe:restricted-key-live",
+        "from": "provisional",
+        "to": "stable"
+      },
+      {
+        "family": "stripe:restricted-key-test",
+        "from": "provisional",
+        "to": "stable"
+      },
+      {
+        "family": "stripe:secret-key-live",
+        "from": "provisional",
+        "to": "stable"
+      },
+      {
+        "family": "stripe:secret-key-test",
+        "from": "provisional",
+        "to": "stable"
+      },
+      {
+        "family": "twilio:auth-token",
+        "from": "provisional",
+        "to": "stable"
+      }
+    ],
+    "finalVsAccepted": {
+      "statusChanges": [
+        {
+          "family": "aws-access-key",
+          "from": "provisional",
+          "to": "stable"
+        },
+        {
+          "family": "aws-secret-access-key",
+          "from": "stable",
+          "to": "provisional"
+        },
+        {
+          "family": "deepgram-api-key",
+          "from": "provisional",
+          "to": "stable"
+        },
+        {
+          "family": "gitlab-token",
+          "from": "provisional",
+          "to": "stable"
+        },
+        {
+          "family": "google-api-key",
+          "from": "provisional",
+          "to": "stable"
+        },
+        {
+          "family": "heroku-api-key-legacy",
+          "from": "provisional",
+          "to": "stable"
+        },
+        {
+          "family": "npm-token",
+          "from": "provisional",
+          "to": "stable"
+        },
+        {
+          "family": "stripe-token",
+          "from": "provisional",
+          "to": "stable"
+        },
+        {
+          "family": "twilio-auth-token",
+          "from": "provisional",
+          "to": "stable"
+        }
+      ]
+    }
+  },
+  "supersededCandidate": null,
+  "releaseRepresentation": {
+    "present": true,
+    "contract": "credential-eval/representation/1",
+    "factsDigest": "sha256:f25bf9f34e276a86f3b34a71c51ebf3f782fa16a196c0d1d544f76c94fd25f80",
+    "manifestCounts": {
+      "contract": "credential-eval/representation/1",
+      "facts_digest": "sha256:f25bf9f34e276a86f3b34a71c51ebf3f782fa16a196c0d1d544f76c94fd25f80",
+      "cases": 385,
+      "transformed_cases": 309,
+      "chunked_cases": 9,
+      "expected_rejections": 3,
+      "fragmented_spans": 18,
+      "fragments": 37,
+      "decoded_spans": 55,
+      "decoded_verified": 55,
+      "decoded_unverified": 0
+    },
+    "casesWithFacts": 385,
+    "derivation": {
+      "authored-base": 76,
+      "projection": 309
+    },
+    "inputValidity": {
+      "unpaired-surrogate-split": 3
+    },
+    "casesByTransformationOp": {
+      "embed": 206,
+      "encode": 62,
+      "escape": 7,
+      "fragment": 24,
+      "insert-codepoints": 17,
+      "normalize": 1,
+      "place": 66,
+      "repeat": 14
+    },
+    "casesByEncodeCodec": {
+      "encode:base64": 40,
+      "encode:hex": 28
+    },
+    "fragmentMechanisms": {
+      "adjacent-string-literals": 1,
+      "escaped-newline-text": 2,
+      "fixed-width-wrap": 1,
+      "json-string-array-elements": 1,
+      "literal-crlf": 1,
+      "literal-line-feed": 1,
+      "markdown-code-span-line-ending": 1,
+      "markdown-soft-line-break": 1,
+      "mime-base64-line-wrap": 3,
+      "quoted-printable-soft-line-break": 1,
+      "shell-line-continuation": 5,
+      "shell-line-continuation-in-single-quotes": 1,
+      "string-literal-addition": 2,
+      "string-literal-line-continuation": 2,
+      "trailing-equals-and-crlf-in-7bit-part": 1
+    },
+    "expectedSpansWithFragments": 18,
+    "expectedSpansWithDecoded": 55,
+    "decodedByCodec": {
+      "base64": 41,
+      "hex": 27,
+      "strip-codepoints": 8
+    },
+    "notExported": {
+      "materialized": 6524,
+      "exported": 6519,
+      "invalidUtf8": {
+        "total": 5,
+        "byReason": {
+          "invalid-utf8": 5
+        },
+        "cases": [
+          {
+            "id": "sendgrid-unicode-authored--key-a-byte-ff-before-key",
+            "reason": "invalid-utf8",
+            "bytes": 93
+          },
+          {
+            "id": "sendgrid-unicode-authored--key-a-encoded-surrogate-before-key",
+            "reason": "invalid-utf8",
+            "bytes": 95
+          },
+          {
+            "id": "sendgrid-unicode-authored--key-a-lone-continuation-byte-before-key",
+            "reason": "invalid-utf8",
+            "bytes": 93
+          },
+          {
+            "id": "sendgrid-unicode-authored--key-a-overlong-slash-before-key",
+            "reason": "invalid-utf8",
+            "bytes": 94
+          },
+          {
+            "id": "sendgrid-unicode-authored--key-a-truncated-four-byte-sequence-before-key",
+            "reason": "invalid-utf8",
+            "bytes": 95
+          }
+        ]
+      },
+      "twinLineageNotExported": 29
+    }
+  },
+  "representationEffect": null,
+  "reviewStateEffect": null,
+  "unexplained": []
+}

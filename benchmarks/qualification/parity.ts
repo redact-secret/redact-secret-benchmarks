@@ -33,6 +33,7 @@ export const CAUSES: Cause[] = [
   { id: 'twin-scope-vocabulary', change: 'A twin control is scoped to its declared family, and a finding of another known family is co-detection, not a flag. The legacy path scoped a twin by the product contract of the positive it mutates (a detector id); the evidence snapshot gives the twin its own family (a taxonomy id), so the twin can belong to another family and the same finding can swap between flagged and co-detected. A cross-provider twin has no family at all in the snapshot, so the engine cannot scope it and reads a finding of another known detector as flagged; recognised from the matched cases (the new twin is flagged with no family, the legacy twin was not). The adapter does not re-score it. Confirmed by the project twin-scope corpus (#602): the same bytes carried with the parent\'s family (twin-scope-regressions, a product regression-corpus addition) are read as co-detected, as the legacy path read them, so the public engine verdict on the unscoped copy stays a difference of the public population and the twin gate reads the project case (population-policy.json twinScope).', confirmation: 'confirmed', owner: 'credential-eval' },
   { id: 'pending-not-scored', change: 'A T0 (pending) non-twin fixture has no scored outcome in credential-eval, so the adapter excludes it from the floor counts; the legacy path counted it as a fixture of its family. A T0 twin is not in this cause: the legacy path drops T0 twins, so neither side counts it.', confirmation: 'confirmed', owner: 'benchmarks' },
   { id: 'canonical-evidence-membership', change: 'The evidence snapshot holds fixtures with no legacy counterpart (intended canonical-evidence change): they count in the new floors and in no legacy count, and their methods-run variants add review occurrences, failed assertions and unresolved differential disagreements no legacy count or ledger decision covers (#680). Recognised for a method figure only when the residual equals, exactly, the unsettled occurrences or failed assertions of the cases with no legacy counterpart; a review occurrence of such a case stays unreviewed until a decision is made for it.', confirmation: 'confirmed', owner: 'credential-evidence' },
+  { id: 'owner-ledger-settlement', change: 'The repository owner decided (2026-10-05, #698) to settle review occurrences of the accepted run by ledger rows keyed by the canonical occurrence id (scripts/apply-ledger-settlements.ts), only where the same occurrence was proposed by the triage of the previous snapshot and the observation is identical. The legacy ledger holds no decision for those occurrences, so the new path reads more of them settled than the legacy mapping. Recognised only when the residual equals, exactly, the occurrences settled by such rows. Not an independent review.', confirmation: 'confirmed', owner: 'repository owner' },
   { id: 'fixture-attribution', change: 'The legacy path attributed a fixture to its declared contract and targets; the adapter attributes a case to the detectors named by its targets, its family, or the taxonomy family it belongs to and, where the snapshot names none, to the legacy targets the product overlay carries, then to its twin parent (population-policy.json attribution). What remains is a case the legacy path scoped to a family the overlay does not carry (no legacy counterpart) or that the legacy path attributed to a detector the adapter attributes elsewhere.', confirmation: 'inferred', owner: 'benchmarks' },
 ];
 const CAUSE_IDS = new Set(CAUSES.map(c => c.id));
@@ -177,7 +178,7 @@ export function causeOfReason(code: string, countCause: string | undefined, reso
   if (/^differential\./.test(code)) return resolved.review;
   const failing = /^(metamorphic|mutation)\./.exec(code);
   if (failing) return resolved.method?.[failing[1]];
-  if (/minimumBenignCases|benign\.minimumCases|minimumPositiveCases|minimumTwinPairs|minimumFixtures|^twinFailures$|^benignFalseAlarms$/.test(code)) return countCause;
+  if (/minimumBenignCases|benign\.minimumCases|minimumPositiveCases|minimumTwinPairs|minimumFixtures|^twinFailures$|^benignFalseAlarms$|^benign\.falseAlarms$/.test(code)) return countCause;
   return undefined;
 }
 
@@ -543,7 +544,7 @@ export function compareDistributions(legacy: DistributionSide & { familyCount: n
 // The review queue and ledger decisions.
 
 /** Per peer, the differential occurrences and how many a decision settles. `null` is a peer the legacy run never scanned, so it holds no legacy entry. */
-export type ReviewSide = Record<string, { occurrences: number; settled: number } | null>;
+export type ReviewSide = Record<string, { occurrences: number; settled: number; /** Settled by a ledger row keyed by the canonical occurrence id itself (an owner-decided settlement of the accepted run), not through the legacy mapping. */ ownSettled?: number } | null>;
 export function compareReview(legacy: ReviewSide, next: ReviewSide, legacyEntries: { differential: number; mapped: number }, nextMapped: number, unjoinedByPeer: Record<string, number> = {}): Section {
   const c = new Collector();
   c.compare('ledger', 'legacy differential entries, against those mapped to a canonical occurrence', legacyEntries.differential, legacyEntries.mapped);
@@ -555,6 +556,7 @@ export function compareReview(legacy: ReviewSide, next: ReviewSide, legacyEntrie
         if (l === null) return { cause: 'review-occurrence-identity', note: `${peer} was never scanned by the legacy run, so the legacy ledger holds no entry for it` };
         const residual = (n?.[field] ?? 0) - (l?.[field] ?? 0), unjoined = unjoinedByPeer[peer] ?? 0;
         // Occurrences of cases the legacy path never had hold no legacy entry: explained only when they are exactly the residual of the count, and they are all unsettled.
+        if (field === 'settled' && (n?.ownSettled ?? 0) > 0 && residual === n!.ownSettled) return { cause: 'owner-ledger-settlement', note: `${residual} occurrence(s) settled by the owner-decided ledger rows keyed by the accepted run's occurrence ids (not a legacy decision)` };
         return field === 'occurrences' && unjoined > 0 && residual === unjoined ? { cause: 'canonical-evidence-membership', note: `${unjoined} occurrence(s) of cases with no legacy counterpart` } : undefined;
       });
     }

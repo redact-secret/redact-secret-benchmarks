@@ -71,7 +71,7 @@ const engine = (() => {
   for (const c of publicOf(B).cases) if (!same(ac.get(c.id), c)) caseDrift.push(c.id);
   const matrixSame = same(A.supportMatrix, B.supportMatrix), distributionSame = same(A.distribution, B.distribution);
   return {
-    note: `The same corpus, the same overlays, the same product and the same scanner versions, measured by credential-eval ${engineFrom} and ${engineTo} (the review-ledger re-key is regenerated for the ${tagShort(engineTo)} methods run, whose occurrence ids all changed with the scanner configuration identity).`,
+    note: `The same corpus, the same overlays and the same peer scanner versions, measured by credential-eval ${engineFrom} and ${engineTo}, with the product release the engine tag pins (the product release may move with the engine tag; where it does, the engine-versus-product split of an attribution run says how much of a difference is the product) (the review-ledger re-key is regenerated for the ${tagShort(engineTo)} methods run, whose occurrence ids all changed with the scanner configuration identity).`,
     distribution: { accepted: A.distribution, replayOld: B.distribution }, distributionSame,
     familiesWithAnyDifference: differing, supportMatrixSame: matrixSame, publicCasesWithAnyDifference: caseDrift.length,
   };
@@ -158,8 +158,8 @@ for (const x of pc.cases) {
   for (const r of x.results) { const before = o.results.find((q: Json) => q.scanner === r.scanner); if (outcome(before) !== outcome(r)) changed.push({ scanner: r.scanner, from: outcome(before), to: outcome(r) }); }
   if (changed.length) drift.push({ case: x.id, regrouped, changed, family: x.family });
 }
-// A common case the release itself records as changed in CONTENT (the case was re-authored in credential-evidence) is a corpus change: its outcome move is that change, attributed to it.
-const contentChanged = new Set<string>((Array.isArray(report.diff.changed) ? report.diff.changed : []).filter((c: Json) => (c.fields ?? []).includes('content')).map((c: Json) => c.id));
+// A common case the release itself records as changed in CONTENT or EXPECTED spans (the case was re-authored or its expectation corrected in credential-evidence, e.g. ADR 0021) is a corpus change: its outcome move is that change, attributed to it.
+const contentChanged = new Set<string>((Array.isArray(report.diff.changed) ? report.diff.changed : []).filter((c: Json) => (c.fields ?? []).some((f: string) => f === 'content' || f === 'expected')).map((c: Json) => c.id));
 const driftExplained = (d: Json) => contentChanged.has(d.case) || d.regrouped.includes('family') && d.regrouped.length > 0 && C.policy.twinScope && snapshotCases.get(d.case)?.twinOf !== undefined;
 const driftByScanner = count(drift.flatMap((d: Json) => d.changed.map((x: Json) => ({ ...x, case: d.case }))), (x: Json) => `${x.scanner}: ${x.from} -> ${x.to}`);
 for (const d of drift) if (!driftExplained(d)) unexplained.push(`common case ${d.case} changed outcome (${d.changed.map((x: Json) => `${x.scanner} ${x.from} -> ${x.to}`).join('; ')}) without a twin family assignment`);
@@ -198,6 +198,25 @@ const overlayAndPolicy = {
   ledgerRekey: { accepted: A.policy.ledgerRekey, candidate: C.policy.ledgerRekey },
 };
 
+// ---- 8b. the owner's ledger settlements (#698): the candidate view versus the same runs read with the settlements applied ----
+const finalFile = option('final');
+const ledgerEffect = finalFile ? (() => {
+  const F: Json = readJson(finalFile), f = familiesOf(F);
+  const rows = [...f].filter(([k, x]) => x.status.value !== c.get(k)!.status.value || !same(x.evidence.differentialUnresolvedContractDisagreements, c.get(k)!.evidence.differentialUnresolvedContractDisagreements)).map(([k, x]) => ({
+    family: k, status: { from: c.get(k)!.status.value, to: x.status.value }, differentialUnresolved: { from: c.get(k)!.evidence.differentialUnresolvedContractDisagreements, to: x.evidence.differentialUnresolvedContractDisagreements }, remainingReasons: x.status.value === 'stable' ? [] : reasonText(x),
+  }));
+  for (const r of rows) {
+    if (r.status.from !== r.status.to && !(r.differentialUnresolved.to < r.differentialUnresolved.from)) unexplained.push(`${r.family}: status ${r.status.from} to ${r.status.to} by the ledger settlements, but its unresolved differential occurrences did not fall (${r.differentialUnresolved.from} to ${r.differentialUnresolved.to})`);
+  }
+  for (const [k, x] of f) if (!same(x.evidence, c.get(k)!.evidence) && !rows.some(r => r.family === k)) {
+    const delta = FIELDS.filter(y => !same(x.evidence[y], c.get(k)!.evidence[y]));
+    if (delta.length) unexplained.push(`${k}: the ledger settlements changed ${delta.join(', ')}, which only the differential count may change`);
+  }
+  const am2 = matrixOf(F);
+  const matrix = [...am2].filter(([k, x]) => cm.get(k)!.status !== x.status).map(([k, x]) => ({ family: k, from: cm.get(k)!.status, to: x.status }));
+  return { note: 'The same official runs, read with the owner-decided review settlements applied (benchmarks/review-ledger.json rows keyed by the accepted run\'s occurrence ids; scripts/apply-ledger-settlements.ts). Only the differential gate can move.', policyRevision: { candidateWithoutSettlements: C.policy.revision, final: F.policy.revision }, distribution: { candidateWithoutSettlements: C.distribution, final: F.distribution }, supportMatrix: { candidateWithoutSettlements: C.supportMatrix.distribution, final: F.supportMatrix.distribution }, stableDistribution: { candidateWithoutSettlements: C.stableDistribution, final: F.stableDistribution }, familyChanges: rows, supportMatrixStatusChanges: matrix, finalVsAccepted: { statusChanges: [...f].filter(([k, x]) => x.status.value !== a.get(k)!.status.value).map(([k, x]) => ({ family: k, from: a.get(k)!.status.value, to: x.status.value })) } };
+})() : null;
+
 // ---- 9. the superseded candidate (the same release family on the previous engine), from its own recorded comparison ----
 const supersededFile = option('superseded-comparison');
 const superseded: Json = supersededFile ? readJson(supersededFile) : null;
@@ -230,13 +249,14 @@ const out = {
   },
   publicPopulation: {
     commonCases: commonCount, addedCases: addedCases.length, regroupedCommonCases: regroupedCommon,
-    commonCaseOutcomeDrift: { cases: drift.length, byScanner: driftByScanner, cause: `the ${drift.length} cross-provider twin case(s) gained a family in credential-evidence (grouping change), so a scanner finding of another detector is no longer read as flagged`, details: drift },
+    commonCaseOutcomeDrift: { cases: drift.length, byScanner: driftByScanner, cause: [drift.filter((d: Json) => contentChanged.has(d.case)).length ? `${drift.filter((d: Json) => contentChanged.has(d.case)).length} case(s) the release re-authored or whose expected spans it corrected (content or expected in the change report)` : '', drift.filter((d: Json) => !contentChanged.has(d.case)).length ? `${drift.filter((d: Json) => !contentChanged.has(d.case)).length} cross-provider twin case(s) gained a family in credential-evidence (grouping change), so a scanner finding of another detector is no longer read as flagged` : ''].filter(Boolean).join('; '), details: drift },
     addedCaseOutcomes: addedRows,
     regrouped: report.diff.evidenceClassTransitions,
   },
   unmeasured: { accepted: unmeasuredRows(A), candidate: unmeasuredRows(C), note: 'Per population and scanner: cases a scanner observed but the engine could not map to ranges. Never a MISS, in no denominator.' },
   methods,
   overlayAndPolicy,
+  ledgerEffect,
   supersededCandidate,
   releaseRepresentation: report.representation ?? null,
   representationEffect: report.replay?.representationEffect ?? null,
@@ -270,11 +290,12 @@ function renderMarkdown(o: Json, parity: Json | null): string {
     '## Status', '', ...statusLines(st, { previousRelease, reviewRelease }), '',
     '## Headline', '',
     table(['', `${L.base} (${previousRelease}, ${tagShort(engineFrom)})`, `${L.current} (${o.evidenceRelease}, ${tagShort(engineTo)})`], [
-      ['Credential families', dist(v.accepted.distribution), dist(v.candidate.distribution)],
-      ['Support matrix entries', dist(v.accepted.supportMatrix), dist(v.candidate.supportMatrix)],
-      ['Stable by route', JSON.stringify(v.accepted.stableDistribution), JSON.stringify(v.candidate.stableDistribution)],
+      ['Credential families', dist(v.accepted.distribution), dist(o.ledgerEffect ? o.ledgerEffect.distribution.final : v.candidate.distribution)],
+      ['Support matrix entries', dist(v.accepted.supportMatrix), dist(o.ledgerEffect ? o.ledgerEffect.supportMatrix.final : v.candidate.supportMatrix)],
+      ['Stable by route', JSON.stringify(v.accepted.stableDistribution), JSON.stringify(o.ledgerEffect ? o.ledgerEffect.stableDistribution.final : v.candidate.stableDistribution)],
+      ...(o.ledgerEffect ? [['Credential families without the owner\'s ledger settlements (section 2b)', '', dist(v.candidate.distribution)]] : []),
       ['Public cases', n(v.accepted.populations.find((p: Json) => p.population === 'public-evidence-snapshot').cases), `${n(add.commonCases)} common + ${n(add.addedCases)} added`],
-      ['Policy revision', `\`${v.accepted.policyRevision.slice(0, 30)}...\``, `\`${v.candidate.policyRevision.slice(0, 30)}...\``],
+      ['Policy revision', `\`${v.accepted.policyRevision.slice(0, 30)}...\``, `\`${(o.ledgerEffect ? o.ledgerEffect.policyRevision.final : v.candidate.policyRevision).slice(0, 30)}...\``],
     ]), '',
     `A larger denominator is not an improvement and a lower stable count is not a regression of the product: the ${n(addedTotal)} added cases bring evidence no previous run measured.`, '',
     `## 1. Engine effect (${tagShort(engineFrom)} to ${tagShort(engineTo)}, corpus fixed)`, '',
@@ -282,7 +303,7 @@ function renderMarkdown(o: Json, parity: Json | null): string {
     `Result: ${o.engineEffect.familiesWithAnyDifference.length} families differ, the support matrix is ${o.engineEffect.supportMatrixSame ? 'identical' : 'different'}, ${o.engineEffect.publicCasesWithAnyDifference} of the ${n(add.commonCases)} public cases change any outcome, and the family distribution is ${o.engineEffect.distributionSame ? 'identical' : 'different'}. The engine bump alone changes no support status, matrix entry or gate.`, '',
     `## 2. Corpus effect (${previousRelease} to ${o.evidenceRelease}, engine fixed)`, '',
     `### Common cases (${n(add.commonCases)}), apart from the added cases`, '',
-    `${add.regroupedCommonCases} common cases changed grouping in credential-evidence: ${classTransitions} changed evidence class (${JSON.stringify(add.regrouped)}) and ${add.regroupedCommonCases - classTransitions} changed grouping (family or twin family) with the evidence class unchanged. ${reconcile} ${add.commonCaseOutcomeDrift.cases} common cases change an outcome, all control cases that are cross-provider twins: ${add.commonCaseOutcomeDrift.cause}.`, '',
+    `${add.regroupedCommonCases} common cases changed grouping in credential-evidence: ${classTransitions} changed evidence class (${JSON.stringify(add.regrouped)}) and ${add.regroupedCommonCases - classTransitions} changed grouping (family or twin family) with the evidence class unchanged. ${reconcile} ${add.commonCaseOutcomeDrift.cases} common cases change an outcome: ${add.commonCaseOutcomeDrift.cause}.`, '',
     table(['Scanner and change', 'Cases'], Object.entries(add.commonCaseOutcomeDrift.byScanner).map(([k, c]) => [k, c])), '',
     `### Added cases (${n(add.addedCases)}), per scanner`, '',
     table(['Scanner', 'Pending (T0, outside denominators)', 'Not measured', 'Positive: exact', 'Positive: miss', 'Positive: other', 'Control clear', 'Control flagged'], add.addedCaseOutcomes.map((r: Json) => {
@@ -303,6 +324,19 @@ function renderMarkdown(o: Json, parity: Json | null): string {
     '### Unmeasured', '',
     table(['Population', 'Scanner', L.base, L.current], Object.keys(o.unmeasured.candidate).flatMap(p => { const scanners = new Set([...Object.keys(o.unmeasured.accepted[p] ?? {}), ...Object.keys(o.unmeasured.candidate[p] ?? {})]); return scanners.size ? [...scanners].map(sc => [p, sc, o.unmeasured.accepted[p]?.[sc]?.unmeasured ?? 0, `${o.unmeasured.candidate[p]?.[sc]?.unmeasured ?? 0} ${Object.entries(o.unmeasured.candidate[p]?.[sc]?.reasons ?? {}).map(([r, c]) => `(${c}: ${String(r).replace('scanner output could not be mapped to ranges: ', '')})`).join(' ')}`]) : [[p, 'all', 0, 0]]; })), '',
     `The methods run also leaves ${JSON.stringify(o.methods?.unmeasuredVariants ?? {})} generated variants unmeasured. They are in no denominator and never a zero detection.`, '',
+    ...(o.ledgerEffect ? [
+      '## 2b. Ledger settlements (owner decision, #698)', '',
+      `${o.ledgerEffect.note} Maintainer-reviewed (independent review pending) / ${MAINTAINER_REVIEWED_KO}: a settlement is the repository owner's decision per occurrence, never a blanket peer acceptance and never an independent review.`, '',
+      table(['', 'Without settlements', 'With settlements (final)'], [
+        ['Credential families', dist(o.ledgerEffect.distribution.candidateWithoutSettlements), dist(o.ledgerEffect.distribution.final)],
+        ['Support matrix entries', dist(o.ledgerEffect.supportMatrix.candidateWithoutSettlements), dist(o.ledgerEffect.supportMatrix.final)],
+        ['Stable by route', JSON.stringify(o.ledgerEffect.stableDistribution.candidateWithoutSettlements), JSON.stringify(o.ledgerEffect.stableDistribution.final)],
+        ['Policy revision', `\`${o.ledgerEffect.policyRevision.candidateWithoutSettlements.slice(0, 30)}...\``, `\`${o.ledgerEffect.policyRevision.final.slice(0, 30)}...\``],
+      ]), '',
+      table(['Family', 'Status', 'Unresolved differential occurrences', 'Why not stable (if still not)'], o.ledgerEffect.familyChanges.map((r: Json) => [r.family, `${r.status.from} to ${r.status.to}`, `${r.differentialUnresolved.from} to ${r.differentialUnresolved.to}`, r.remainingReasons.join('; ').slice(0, 220)])), '',
+      `Support matrix entries that change with the settlements: ${o.ledgerEffect.supportMatrixStatusChanges.length ? o.ledgerEffect.supportMatrixStatusChanges.map((r: Json) => `\`${r.family}\` (${r.from} to ${r.to})`).join(', ') : 'none'}.`, '',
+      `Final versus the previously accepted view: ${o.ledgerEffect.finalVsAccepted.statusChanges.length} family status changes: ${o.ledgerEffect.finalVsAccepted.statusChanges.map((r: Json) => `\`${r.family}\` ${r.from} to ${r.to}`).join(', ')}.`, '',
+    ] : []),
     '## 3. Overlay and policy effect', '',
     o.overlayAndPolicy.note, '',
     table(['Input', L.base, L.current], [
@@ -376,14 +410,16 @@ function renderMarkdown(o: Json, parity: Json | null): string {
       `These were the owner's instructions while ${o.evidenceRelease} was a candidate. They are kept for the record. The owner accepted it${st.ownerAcceptance ? ` (${st.ownerAcceptance.acceptedBy}, ${st.ownerAcceptance.acceptedOn}; \`${st.ownerAcceptance.decision}\`)` : ''}, so nothing below is awaiting acceptance and none of it should be run again.`, '',
       ...(rs ? [`Review state the owner weighed at the time: ${rs.release?.maintainerOnly?.fixtures} fixtures are maintainer-only (disclosed as \"${MAINTAINER_REVIEWED_EN}\"), 0 are independently reviewed; ${rs.maintainerOnly.overlapWithMoved} of the ${rs.movedOutOfNotAssertable.cases} fixtures that moved out of not-assertable are among them.`, ''] : []),
       `1. (Historical) Read this report and \`${o.evidenceRelease}.comparison.json\`; accept, or withdraw (reset \`benchmarks/evidence-adoption.json\` to \`{"schema": "redact-secret/evidence-adoption/v1", "state": "none"}\`).`,
-      `2. (Historical) Apply \`docs/generated/evidence-adoption/${o.evidenceRelease}.acceptance.patch\` on a branch from the merged \`develop\`: it pinned ${tagShort(engineTo)}, the schema, the four recorded runs, the archive receipt, the regenerated overlays and parity report, the renewed authority file and the accepted record, with the owner fields left as \`OWNER-TO-SET\`.`,
+      `2. (Historical) Apply the acceptance change (a prepared patch, or, when the owner decided on the replayed candidate, the same changes applied directly on the acceptance branch): it pinned ${tagShort(engineTo)}, the schema, the four recorded runs, the archive receipt, the regenerated overlays and parity report, the renewed authority file and the accepted record, with the owner fields left as \`OWNER-TO-SET\`.`,
       '3. (Historical) Set the owner fields and turn the draft ADR into the decision; run the gates; merge to `develop` (a push publishes staging).', '',
       '## Current state and what remains open', '',
       `- Accepted adoption: ${st.ownerAcceptance ? `${st.ownerAcceptance.acceptedBy}, ${st.ownerAcceptance.acceptedOn}` : 'see the record'}. The authority file is the owner's and is not edited by a report.`,
       `- Deployment receipts: staging ${st.deployment.staging ? 'recorded' : 'absent'}, production ${st.deployment.production ? 'recorded' : 'absent'} in \`candidate.deployment\`; they are filled only from a real deployment verification (#680). Production promotion (\`go-production\`) is a separate owner decision and is not made by this report.`,
       `- Independent review of the evidence is pending (disclosed as \"${MAINTAINER_REVIEWED_EN}\"); acceptance did not supply it.`,
-      `- The review decisions for the added cases' gate-peer occurrences (the ${o.corpusEffect.supportMatrixStatusChanges.length} matrix entries that moved to provisional stay provisional until they are settled) and the failure triage are #698.`,
-      '- A claim about core beta.13 needs the pinned replay of this identical snapshot (#697).', ''] : [
+      o.ledgerEffect
+        ? `- The owner's review settlements (section 2b) are applied; the gate-peer occurrences they do not cover (the added cases the previous snapshot has no settled counterpart for, and every open root cause of the triage) read unresolved and their families stay provisional (${o.ledgerEffect.distribution.final.provisional} provisional families). The failure triage is #698.`
+        : `- The review decisions for the added cases' gate-peer occurrences (the ${o.corpusEffect.supportMatrixStatusChanges.length} matrix entries that moved to provisional stay provisional until they are settled) and the failure triage are #698.`,
+      '- A claim about a core release other than the published beta.13 measured here (an unpublished build such as 1e45cecf, which is exploratory and internal, or a later release) needs its own pinned replay (#697).', ''] : [
       '## What the owner decides and runs', '',
       ...(rs ? [`**Review state the owner must weigh: ${rs.release?.maintainerOnly?.fixtures} fixtures are maintainer-only (finalized by the sole maintainer, not reviewed, not independent validation), 0 are reviewed; ${rs.maintainerOnly.overlapWithMoved} of the ${rs.movedOutOfNotAssertable.cases} fixtures that moved out of not-assertable are among them.**`, ''] : []),
       `**Accept this candidate (${o.evidenceRelease} on ${tagShort(engineTo)}), not the superseded one${sup ? ` (${sup.evidenceRelease} on ${tagShort(sup.engine ?? 'alpha.3')}, whose acceptance patch was removed)` : ''}.**`, '',

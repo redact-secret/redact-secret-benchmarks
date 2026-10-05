@@ -258,3 +258,18 @@ test('an evidence candidate rides next to the accepted adoption and carries the 
   assert.deepEqual(bad({ product: { version: '0.1.0-beta.13', integrity: `sha512-${'A'.repeat(86)}==` } }), []);
   assert.ok(evidenceCandidateProblems({ ...record, state: 'candidate' }, ctx).some(p => /accepted adoption/.test(p)));
 });
+
+test('a prepared acceptance of an evidence candidate needs its report, data and patch, the patch digest and no filled owner field (#690)', async () => {
+  const { evidenceCandidateProblems } = await import('../scripts/check-evidence-adoption.mjs');
+  const { createHash } = await import('node:crypto');
+  const D = c => `sha256:${c.repeat(64)}`;
+  const patch = '+    "acceptedBy": "OWNER-TO-SET",\n';
+  const files = { 'p.patch': patch, 'p.sha': `${createHash('sha256').update(patch).digest('hex')}  p.patch\n`, 'r.md': '', 'c.json': '' };
+  const ec = { evidenceRelease: 'snapshot-2026.10.05.2', manifestDigest: D('3'), snapshotDigest: D('4'), adoptionKey: D('5'), engine: { tag: 'v0.1.0-alpha.5', revision: 'd'.repeat(40) }, engineCompatibility: { compatible: true }, ownerAcceptance: null, changeReport: 'r.json', acceptance: { report: 'r.md', comparison: 'c.json', patch: 'p.patch', patchDigestFile: 'p.sha' } };
+  const ctx = { pin: { evidenceRelease: 'snapshot-2026.10.05' }, exists: p => p === 'r.json' || p in files, read: p => files[p] };
+  const run = (change, read = ctx.read) => evidenceCandidateProblems({ state: 'accepted', evidenceCandidate: { ...ec, ...change } }, { ...ctx, read });
+  assert.deepEqual(run({}), []);
+  assert.match(run({ acceptance: { ...ec.acceptance, patch: 'missing.patch' } }).join(), /evidenceCandidate\.acceptance\.patch missing\.patch does not exist/);
+  assert.match(run({}, p => (p === 'p.patch' ? `${patch}+x` : files[p])).join(), /records/);
+  assert.match(run({}, p => (p === 'p.patch' ? '+    "acceptedBy": "someone",\n' : files[p])).join(), /fills an owner field|records/);
+});

@@ -76,7 +76,7 @@ export function engineCandidateProblems(record, { pin, exists }) {
 /** The identity digest of a registered product candidate's bytes: sha256 over `name sha256` lines of its packages, sorted. The same bytes give the same digest on any evidence. */
 export const packagesDigest = packages => `sha256:${createHash('sha256').update([...packages].map(p => `${p.name} ${p.sha256}`).sort().join('\n') + '\n').digest('hex')}`;
 
-export function evidenceCandidateProblems(record, { pin, exists, productCandidates }) {
+export function evidenceCandidateProblems(record, { pin, exists, read, productCandidates }) {
   const ec = record.evidenceCandidate;
   if (ec === undefined) return [];
   const problems = [];
@@ -98,7 +98,8 @@ export function evidenceCandidateProblems(record, { pin, exists, productCandidat
       if (packagesDigest(registered.packages) !== pc.packagesDigest) problems.push(`evidenceCandidate.productCandidates ${pc.id}: packagesDigest is not the registered packages' (the candidate must be the same bytes on every evidence)`);
     }
   }
-  if (ec.acceptance && (!exists(ec.acceptance.patch) || !exists(ec.acceptance.report))) problems.push('evidenceCandidate.acceptance names a patch or report that does not exist');
+  // The prepared acceptance: the owner report, its data and the patch exist, the patch matches the digest file's, and it never fills an owner field.
+  if (ec.acceptance) problems.push(...preparedAcceptanceProblems(ec.acceptance, { exists, read }).map(p => p.replace(/^candidate\./, 'evidenceCandidate.')));
   return problems;
 }
 

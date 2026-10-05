@@ -1,0 +1,2907 @@
+{
+  "schemaVersion": 1,
+  "kind": "batch2-readiness-inventory",
+  "epic": 739,
+  "generatedBy": "scripts/batch2-readiness.mjs",
+  "inputs": {
+    "assignment": "benchmarks/batch2/families.json",
+    "observedState": "benchmarks/batch2/sources.json",
+    "evidenceCommit": "c34976b707b42eb41cbbad2e17deed5c94be1e07",
+    "handoffIssue": "redact-secret/credential-evidence#235"
+  },
+  "rule": "ready = a reviewed (non-proposed, non-draft, adopted currentContract, human review event) evidence contract names the carrier layout; carrier-unresolved = no provider-documented carrier is recorded (missing source named); blocked = a carrier is mentioned only in an unreviewed draft, or the representation needs a product-policy decision. None of the classes counts as FN, TN or passing coverage.",
+  "productContractAdopted": {
+    "1223": {
+      "state": "open",
+      "gatesChecked": 0,
+      "gatesTotal": 8,
+      "evidenceDirPublished": false
+    },
+    "1224": {
+      "state": "open",
+      "gatesChecked": 0,
+      "gatesTotal": 8,
+      "evidenceDirPublished": false
+    },
+    "1225": {
+      "state": "open",
+      "gatesChecked": 0,
+      "gatesTotal": 8,
+      "evidenceDirPublished": false
+    },
+    "1226": {
+      "state": "open",
+      "gatesChecked": 0,
+      "gatesTotal": 8,
+      "evidenceDirPublished": false
+    }
+  },
+  "counts": {
+    "G1": {
+      "ready": 0,
+      "carrier-unresolved": 8,
+      "blocked": 15,
+      "total": 23
+    },
+    "G2": {
+      "ready": 0,
+      "carrier-unresolved": 6,
+      "blocked": 7,
+      "total": 13
+    },
+    "G3": {
+      "ready": 0,
+      "carrier-unresolved": 8,
+      "blocked": 4,
+      "total": 12
+    },
+    "G4": {
+      "ready": 0,
+      "carrier-unresolved": 2,
+      "blocked": 2,
+      "total": 4
+    },
+    "G5": {
+      "ready": 0,
+      "carrier-unresolved": 2,
+      "blocked": 1,
+      "total": 3
+    },
+    "G6": {
+      "ready": 0,
+      "carrier-unresolved": 1,
+      "blocked": 2,
+      "total": 3
+    },
+    "total": {
+      "ready": 0,
+      "carrier-unresolved": 27,
+      "blocked": 31,
+      "total": 58
+    }
+  },
+  "families": [
+    {
+      "family": "adobe:oauth-server-to-server-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/adobe/oauth-server-to-server-access-token@1.json",
+          "id": "adobe:oauth-server-to-server-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "s2s-access-token-bearer-expiry"
+        ],
+        "claimIds": [
+          "s2s-access-token-bearer-expiry"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "s2s-access-token-bearer-expiry",
+            "layout": "request-or-response-field"
+          }
+        ],
+        "openQuestionIds": [
+          "format-not-documented",
+          "token-structure"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "airtable:oauth-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/airtable/oauth-access-token@1.json",
+          "id": "airtable:oauth-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence",
+          "opaque-format"
+        ],
+        "claimIds": [
+          "existence",
+          "opaque-format"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "existence",
+            "layout": "authorization-header-bearer"
+          }
+        ],
+        "openQuestionIds": [
+          "open-question-1"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "asana:oauth-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/asana/oauth-access-token@1.json",
+          "id": "asana:oauth-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence",
+          "format-opaque"
+        ],
+        "claimIds": [
+          "existence",
+          "format-opaque"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "not-researched-beyond-existence",
+          "format-unstated",
+          "scanner-rule-lead"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "asana:personal-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/asana/personal-access-token@1.json",
+          "id": "asana:personal-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence",
+          "presentation-bearer-header",
+          "format-opaque"
+        ],
+        "claimIds": [
+          "existence",
+          "presentation-bearer-header",
+          "format-opaque"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "presentation-bearer-header",
+            "layout": "authorization-header-bearer"
+          }
+        ],
+        "openQuestionIds": [
+          "not-researched-beyond-existence",
+          "format-unstated",
+          "gid-confusion-controls",
+          "scanner-rule-lead"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "box:oauth-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/box/oauth-access-token@1.json",
+          "id": "box:oauth-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "existence",
+            "layout": "authorization-header-bearer"
+          }
+        ],
+        "openQuestionIds": [
+          "app-token-and-developer-token",
+          "format-not-researched",
+          "downscoped-token-distinct"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "canva:access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/canva/access-token@1.json",
+          "id": "canva:access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "existence",
+            "layout": "request-or-response-field"
+          }
+        ],
+        "openQuestionIds": [
+          "open-question-1"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "contentful:oauth-application-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/contentful/oauth-application-access-token@1.json",
+          "id": "contentful:oauth-application-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "open-question-1"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "elastic:access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/elastic/access-token@1.json",
+          "id": "elastic:access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "existence",
+            "layout": "authorization-header-bearer"
+          }
+        ],
+        "openQuestionIds": [
+          "opaque-grammar",
+          "not-researched-beyond-existence"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "elastic:service-account-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/elastic/service-account-token@1.json",
+          "id": "elastic:service-account-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence",
+          "secret-string-length",
+          "no-expiry"
+        ],
+        "claimIds": [
+          "existence",
+          "secret-string-length",
+          "no-expiry"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "existence",
+            "layout": "authorization-header-bearer"
+          }
+        ],
+        "openQuestionIds": [
+          "full-token-grammar",
+          "not-researched-beyond-existence"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "figma:oauth-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/figma/oauth-access-token@1.json",
+          "id": "figma:oauth-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "existence",
+            "layout": "request-or-response-field"
+          }
+        ],
+        "openQuestionIds": [
+          "format-not-researched"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "figma:scim-api-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/figma/scim-api-token@1.json",
+          "id": "figma:scim-api-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "existence",
+            "layout": "authorization-header-bearer"
+          }
+        ],
+        "openQuestionIds": [
+          "format-not-researched"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "hubspot:oauth-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/hubspot/oauth-access-token@1.json",
+          "id": "hubspot:oauth-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "oauth-access-token-exists"
+        ],
+        "claimIds": [
+          "oauth-access-token-exists"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "oauth-access-token-exists",
+            "layout": "authorization-header-bearer"
+          }
+        ],
+        "openQuestionIds": [
+          "open-question-1",
+          "open-question-2"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "hubspot:service-key",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/hubspot/service-key@1.json",
+          "id": "hubspot:service-key@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "service-key-exists"
+        ],
+        "claimIds": [
+          "service-key-exists"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "service-key-exists",
+            "layout": "authorization-header-bearer"
+          }
+        ],
+        "openQuestionIds": [
+          "open-question-1",
+          "open-question-2"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "meta:instagram-user-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/meta/instagram-user-access-token@1.json",
+          "id": "meta:instagram-user-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "existence-only",
+          "distinct-from-meta-user-token"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "meta:page-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/meta/page-access-token@1.json",
+          "id": "meta:page-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "existence-only",
+          "distinct-from-user-token",
+          "scanner-rule-leads"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "meta:system-user-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/meta/system-user-access-token@1.json",
+          "id": "meta:system-user-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "existence-only"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "meta:user-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/meta/user-access-token@1.json",
+          "id": "meta:user-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "existence-only",
+          "short-vs-long-lived",
+          "scanner-rule-leads"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "mongodb-atlas:service-account-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/mongodb-atlas/service-account-access-token@1.json",
+          "id": "mongodb-atlas:service-account-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "researched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "issuance-and-lifetime",
+          "bearer-carrier",
+          "ip-access-list"
+        ],
+        "claimIds": [
+          "issuance-and-lifetime",
+          "bearer-carrier",
+          "ip-access-list"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "bearer-carrier",
+            "layout": "authorization-header-bearer"
+          }
+        ],
+        "openQuestionIds": [
+          "token-format",
+          "token-revocation"
+        ],
+        "publicSiblings": [
+          {
+            "id": "mongodb-atlas-service-account-client-id",
+            "class": "public-identifier"
+          }
+        ],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "salesforce:oauth-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/salesforce/oauth-access-token@1.json",
+          "id": "salesforce:oauth-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "access-token-not-researched"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "spotify:access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/spotify/access-token@1.json",
+          "id": "spotify:access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "existence",
+            "layout": "authorization-header-bearer"
+          }
+        ],
+        "openQuestionIds": [
+          "open-question-1"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "x:oauth2-user-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/x/oauth2-user-access-token@1.json",
+          "id": "x:oauth2-user-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "issued-by-authorization-code-flow",
+          "lifetime-two-hours"
+        ],
+        "claimIds": [
+          "issued-by-authorization-code-flow",
+          "lifetime-two-hours"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "issued-by-authorization-code-flow",
+            "layout": "authorization-header-bearer"
+          }
+        ],
+        "openQuestionIds": [
+          "open-question-1",
+          "open-question-2",
+          "open-question-3"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "zendesk:oauth-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (authorization-header-bearer, request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/zendesk/oauth-access-token@1.json",
+          "id": "zendesk:oauth-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence",
+          "documented-maximum-length",
+          "lifetime-and-legacy-clients",
+          "global-token-context"
+        ],
+        "claimIds": [
+          "existence",
+          "documented-maximum-length",
+          "lifetime-and-legacy-clients",
+          "global-token-context"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "existence",
+            "layout": "authorization-header-bearer"
+          },
+          {
+            "claimId": "existence",
+            "layout": "request-or-response-field"
+          }
+        ],
+        "openQuestionIds": [
+          "opaque-grammar",
+          "global-vs-local-family-boundary",
+          "not-researched-beyond-existence"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "zoom:server-to-server-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/zoom/server-to-server-access-token@1.json",
+          "id": "zoom:server-to-server-access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence",
+          "jwt-app-mention"
+        ],
+        "claimIds": [
+          "existence",
+          "jwt-app-mention"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "open-question-1",
+          "open-question-2",
+          "open-question-3"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "adobe:oauth-user-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/adobe/oauth-user-refresh-token@1.json",
+          "id": "adobe:oauth-user-refresh-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "refresh-token-offline-access"
+        ],
+        "claimIds": [
+          "refresh-token-offline-access"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "refresh-token-offline-access",
+            "layout": "request-or-response-field"
+          }
+        ],
+        "openQuestionIds": [
+          "format-not-documented",
+          "base64-encoded-wording"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "airtable:oauth-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/airtable/oauth-refresh-token@1.json",
+          "id": "airtable:oauth-refresh-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence",
+          "opaque-format"
+        ],
+        "claimIds": [
+          "existence",
+          "opaque-format"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "open-question-1"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "asana:oauth-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/asana/oauth-refresh-token@1.json",
+          "id": "asana:oauth-refresh-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence",
+          "format-opaque"
+        ],
+        "claimIds": [
+          "existence",
+          "format-opaque"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "not-researched-beyond-existence",
+          "format-unstated"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "box:oauth-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/box/oauth-refresh-token@1.json",
+          "id": "box:oauth-refresh-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "lifetime-and-rotation",
+          "format-not-researched"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "canva:refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/canva/refresh-token@1.json",
+          "id": "canva:refresh-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "existence",
+            "layout": "request-or-response-field"
+          }
+        ],
+        "openQuestionIds": [
+          "open-question-1"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "dropbox:refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/dropbox/refresh-token@1.json",
+          "id": "dropbox:refresh-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "refresh-token-exists"
+        ],
+        "claimIds": [
+          "refresh-token-exists"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "refresh-token-exists",
+            "layout": "request-or-response-field"
+          }
+        ],
+        "openQuestionIds": [
+          "format-not-researched"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "elastic:refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/elastic/refresh-token@1.json",
+          "id": "elastic:refresh-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "opaque-grammar",
+          "not-researched-beyond-existence"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "figma:oauth-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/figma/oauth-refresh-token@1.json",
+          "id": "figma:oauth-refresh-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "existence",
+            "layout": "request-or-response-field"
+          }
+        ],
+        "openQuestionIds": [
+          "format-not-researched"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "hubspot:oauth-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/hubspot/oauth-refresh-token@1.json",
+          "id": "hubspot:oauth-refresh-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "oauth-refresh-token-exists"
+        ],
+        "claimIds": [
+          "oauth-refresh-token-exists"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "open-question-1",
+          "open-question-2"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "spotify:refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/spotify/refresh-token@1.json",
+          "id": "spotify:refresh-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "existence",
+            "layout": "request-or-response-field"
+          }
+        ],
+        "openQuestionIds": [
+          "open-question-1"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "x:oauth2-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/x/oauth2-refresh-token@1.json",
+          "id": "x:oauth2-refresh-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "issued-with-offline-access",
+          "lifetime-and-single-use"
+        ],
+        "claimIds": [
+          "issued-with-offline-access",
+          "lifetime-and-single-use"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "open-question-1",
+          "open-question-2",
+          "open-question-3"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "zendesk:oauth-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/zendesk/oauth-refresh-token@1.json",
+          "id": "zendesk:oauth-refresh-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "existence",
+            "layout": "request-or-response-field"
+          }
+        ],
+        "openQuestionIds": [
+          "opaque-grammar",
+          "not-researched-beyond-existence"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "zoom:oauth-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/zoom/oauth-refresh-token@1.json",
+          "id": "zoom:oauth-refresh-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "existence",
+            "layout": "request-or-response-field"
+          }
+        ],
+        "openQuestionIds": [
+          "open-question-1",
+          "open-question-2",
+          "open-question-3"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "airtable:oauth-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/airtable/oauth-client-secret@1.json",
+          "id": "airtable:oauth-client-secret@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "open-question-1"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "asana:oauth-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/asana/oauth-client-secret@1.json",
+          "id": "asana:oauth-client-secret@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence",
+          "also-signs-app-component-requests"
+        ],
+        "claimIds": [
+          "existence",
+          "also-signs-app-component-requests"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "not-researched-beyond-existence",
+          "format-unstated",
+          "client-id-classification",
+          "scanner-rule-lead"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "box:oauth-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/box/oauth-client-secret@1.json",
+          "id": "box:oauth-client-secret@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "same-secret-across-grants",
+          "format-not-researched"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "dropbox:app-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/dropbox/app-secret@1.json",
+          "id": "dropbox:app-secret@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "app-secret-exists"
+        ],
+        "claimIds": [
+          "app-secret-exists"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "app-secret-exists",
+            "layout": "request-or-response-field"
+          }
+        ],
+        "openQuestionIds": [
+          "format-not-researched",
+          "single-artifact-lead"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "figma:oauth-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (authorization-header-basic) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/figma/oauth-client-secret@1.json",
+          "id": "figma:oauth-client-secret@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "existence",
+            "layout": "authorization-header-basic"
+          }
+        ],
+        "openQuestionIds": [
+          "format-not-researched"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "hubspot:app-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/hubspot/app-client-secret@1.json",
+          "id": "hubspot:app-client-secret@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "client-secret-exists"
+        ],
+        "claimIds": [
+          "client-secret-exists"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "open-question-1",
+          "open-question-2"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "salesforce:external-client-app-consumer-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/salesforce/external-client-app-consumer-secret@1.json",
+          "id": "salesforce:external-client-app-consumer-secret@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "consumer-secret-not-researched"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "spotify:client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/spotify/client-secret@1.json",
+          "id": "spotify:client-secret@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "open-question-1"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "x:oauth2-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (authorization-header-basic) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/x/oauth2-client-secret@1.json",
+          "id": "x:oauth2-client-secret@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "confidential-clients-receive-secret",
+          "used-for-token-endpoint-auth"
+        ],
+        "claimIds": [
+          "confidential-clients-receive-secret",
+          "used-for-token-endpoint-auth"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "used-for-token-endpoint-auth",
+            "layout": "authorization-header-basic"
+          }
+        ],
+        "openQuestionIds": [
+          "open-question-1",
+          "open-question-2",
+          "open-question-3"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "zendesk:oauth-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/zendesk/oauth-client-secret@1.json",
+          "id": "zendesk:oauth-client-secret@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "existence",
+            "layout": "request-or-response-field"
+          }
+        ],
+        "openQuestionIds": [
+          "opaque-grammar",
+          "public-client-no-secret",
+          "not-researched-beyond-existence"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "zoom:oauth-app-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/zoom/oauth-app-client-secret@1.json",
+          "id": "zoom:oauth-app-client-secret@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "open-question-1",
+          "open-question-2",
+          "open-question-3"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "zoom:server-to-server-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/zoom/server-to-server-client-secret@1.json",
+          "id": "zoom:server-to-server-client-secret@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "open-question-1",
+          "open-question-2",
+          "open-question-3"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "elastic:cloud-api-key",
+      "group": "G4",
+      "measurementIssue": 743,
+      "coreIssue": 1224,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (authorization-header-apikey) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/elastic/cloud-api-key@1.json",
+          "id": "elastic:cloud-api-key@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence",
+          "authorization-carrier",
+          "lifecycle",
+          "not-for-hosted-elasticsearch"
+        ],
+        "claimIds": [
+          "existence",
+          "authorization-carrier",
+          "lifecycle",
+          "not-for-hosted-elasticsearch"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "authorization-carrier",
+            "layout": "authorization-header-apikey"
+          }
+        ],
+        "openQuestionIds": [
+          "prefix-and-body-grammar",
+          "not-researched-beyond-existence"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "elastic:ece-api-key",
+      "group": "G4",
+      "measurementIssue": 743,
+      "coreIssue": 1224,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "ECE carrier is unconfirmed: the contract has only the lifecycle claim; redact-secret#1224 forbids reinterpreting it as Cloud ApiKey by name.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/elastic/ece-api-key@1.json",
+          "id": "elastic:ece-api-key@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence",
+          "lifecycle"
+        ],
+        "claimIds": [
+          "existence",
+          "lifecycle"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "header-scheme-and-grammar",
+          "not-researched-beyond-existence"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "jfrog:access-token",
+      "group": "G4",
+      "measurementIssue": 743,
+      "coreIssue": 1224,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/jfrog/access-token@1.json",
+          "id": "jfrog:access-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "existence-only",
+          "jwt-shape-and-signature-variants",
+          "oidc-exchange-and-identity-tokens"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "x:app-only-bearer-token",
+      "group": "G4",
+      "measurementIssue": 743,
+      "coreIssue": 1224,
+      "status": "blocked",
+      "reason": "representation-policy-undecided",
+      "detail": "X states the Bearer Token is a byte array of unspecified format; the only percent-containing shape is a tool-corroborated lead (claim artifacts-bearer-leading-run-and-percent). Raw, serialized-escaped and percent forms have no source-established contract (redact-secret#1224 keeps them unassertable until policy is adopted).",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/x/app-only-bearer-token@1.json",
+          "id": "x:app-only-bearer-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "generated-from-consumer-credentials",
+          "format-unspecified",
+          "sensitivity-and-rotation"
+        ],
+        "claimIds": [
+          "generated-from-consumer-credentials",
+          "format-unspecified",
+          "sensitivity-and-rotation",
+          "artifacts-bearer-leading-run-and-percent"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": [
+            "artifacts-bearer-leading-run-and-percent"
+          ]
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "open-question-1",
+          "open-question-2",
+          "open-question-3",
+          "open-question-4",
+          "open-question-5"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "hubspot:personal-access-key",
+      "group": "G5",
+      "measurementIssue": 744,
+      "coreIssue": 1225,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract says the key is stored in a local global config file but names no config field; the exact HubSpot CLI config name is requested in #235 and redact-secret#1225.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/hubspot/personal-access-key@1.json",
+          "id": "hubspot:personal-access-key@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "personal-access-key-exists"
+        ],
+        "claimIds": [
+          "personal-access-key-exists"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "open-question-1",
+          "open-question-2"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "jfrog:myjfrog-api-token",
+      "group": "G5",
+      "measurementIssue": 744,
+      "coreIssue": 1225,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The contract establishes existence only; the MyJFrog header or field is not recorded (redact-secret#1225).",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/jfrog/myjfrog-api-token@1.json",
+          "id": "jfrog:myjfrog-api-token@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "existence"
+        ],
+        "claimIds": [
+          "existence"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "existence-only",
+          "myjfrog-token-shape"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "x:oauth1-access-token-secret",
+      "group": "G5",
+      "measurementIssue": 744,
+      "coreIssue": 1225,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/x/oauth1-access-token-secret@1.json",
+          "id": "x:oauth1-access-token-secret@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "unresearched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "paired-secret-of-access-token",
+          "distinct-from-oauth2-client-credentials"
+        ],
+        "claimIds": [
+          "paired-secret-of-access-token",
+          "distinct-from-oauth2-client-credentials"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "paired-secret-of-access-token",
+            "layout": "request-or-response-field"
+          }
+        ],
+        "openQuestionIds": [
+          "open-question-1",
+          "open-question-2",
+          "open-question-3",
+          "open-question-4"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "mongodb-atlas:database-user-password",
+      "group": "G6",
+      "measurementIssue": 745,
+      "coreIssue": 1226,
+      "status": "blocked",
+      "reason": "representation-policy-undecided",
+      "detail": "The password is a caller-chosen write-only API field with no generated grammar (claims api-field, chosen-by-caller); user-specified passwords and percent encoding need explicit product-policy limits (redact-secret#1226).",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/mongodb-atlas/database-user-password@1.json",
+          "id": "mongodb-atlas:database-user-password@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "researched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "api-field",
+          "chosen-by-caller"
+        ],
+        "claimIds": [
+          "api-field",
+          "chosen-by-caller"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "api-field",
+            "layout": "request-or-response-field"
+          },
+          {
+            "claimId": "chosen-by-caller",
+            "layout": "request-or-response-field"
+          }
+        ],
+        "openQuestionIds": [
+          "character-set",
+          "bare-value-attribution"
+        ],
+        "publicSiblings": [],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "mongodb-atlas:programmatic-api-private-key",
+      "group": "G6",
+      "measurementIssue": 745,
+      "coreIssue": 1226,
+      "status": "carrier-unresolved",
+      "reason": "carrier-source-missing",
+      "detail": "The private key is a Digest input; the wire header is a hash of it, not the key. The contract names no field or config slot that holds the plaintext key.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/mongodb-atlas/programmatic-api-private-key@1.json",
+          "id": "mongodb-atlas:programmatic-api-private-key@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "researched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "two-part-key",
+          "legacy-method",
+          "private-key-unredacted-once",
+          "public-key-length",
+          "digest-not-bearer",
+          "no-ui-or-data-access"
+        ],
+        "claimIds": [
+          "two-part-key",
+          "legacy-method",
+          "private-key-unredacted-once",
+          "public-key-length",
+          "digest-not-bearer",
+          "no-ui-or-data-access"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [],
+        "openQuestionIds": [
+          "private-key-grammar",
+          "public-key-alphabet",
+          "historical-private-key-forms"
+        ],
+        "publicSiblings": [
+          {
+            "id": "mongodb-atlas-credential-object-id",
+            "class": "non-secret-companion"
+          },
+          {
+            "id": "mongodb-atlas-programmatic-api-public-key",
+            "class": "public-identifier"
+          }
+        ],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    },
+    {
+      "family": "mongodb-atlas:service-account-secret",
+      "group": "G6",
+      "measurementIssue": 745,
+      "coreIssue": 1226,
+      "status": "blocked",
+      "reason": "awaiting-evidence-review",
+      "detail": "The draft contract names a provider-documented carrier (authorization-header-basic, request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "evidence": {
+        "contract": {
+          "path": "records/contracts/mongodb-atlas/service-account-secret@1.json",
+          "id": "mongodb-atlas:service-account-secret@1",
+          "revision": 1,
+          "period": "proposed",
+          "lifecycle": "draft"
+        },
+        "familyLifecycle": "draft",
+        "currentContract": null,
+        "researchState": "researched",
+        "reviewEvents": [
+          "authored"
+        ],
+        "reviewedByHuman": false,
+        "handoffClaimIds": [
+          "pair-and-role",
+          "shown-once",
+          "example-prefix",
+          "client-id-pattern",
+          "expiry-and-rotation",
+          "basic-carrier",
+          "recommended-method"
+        ],
+        "claimIds": [
+          "pair-and-role",
+          "shown-once",
+          "example-prefix",
+          "client-id-pattern",
+          "expiry-and-rotation",
+          "basic-carrier",
+          "recommended-method"
+        ],
+        "claimIdMismatch": {
+          "missingFromContract": [],
+          "notInHandoff": []
+        },
+        "carrierMentions": [
+          {
+            "claimId": "basic-carrier",
+            "layout": "authorization-header-basic"
+          },
+          {
+            "claimId": "basic-carrier",
+            "layout": "request-or-response-field"
+          }
+        ],
+        "openQuestionIds": [
+          "body-alphabet-and-length",
+          "secret-checksum",
+          "historical-forms"
+        ],
+        "publicSiblings": [
+          {
+            "id": "mongodb-atlas-credential-object-id",
+            "class": "non-secret-companion"
+          },
+          {
+            "id": "mongodb-atlas-service-account-client-id",
+            "class": "public-identifier"
+          }
+        ],
+        "authoredCaseRecords": []
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false
+    }
+  ]
+}

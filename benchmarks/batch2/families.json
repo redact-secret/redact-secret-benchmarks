@@ -1,0 +1,599 @@
+{
+  "schemaVersion": 1,
+  "kind": "batch2-family-assignment",
+  "epic": 739,
+  "source": "credential-evidence#235 complete inventory table, cross-checked against the inventory lists in redact-secret-benchmarks#740..#745",
+  "groups": {
+    "G1": {
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "expected": 23
+    },
+    "G2": {
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "expected": 13
+    },
+    "G3": {
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "expected": 12
+    },
+    "G4": {
+      "measurementIssue": 743,
+      "coreIssue": 1224,
+      "expected": 4
+    },
+    "G5": {
+      "measurementIssue": 744,
+      "coreIssue": 1225,
+      "expected": 3
+    },
+    "G6": {
+      "measurementIssue": 745,
+      "coreIssue": 1226,
+      "expected": 3
+    }
+  },
+  "families": [
+    {
+      "family": "adobe:oauth-server-to-server-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "s2s-access-token-bearer-expiry"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "airtable:oauth-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence",
+        "opaque-format"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "asana:oauth-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence",
+        "format-opaque"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "asana:personal-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence",
+        "presentation-bearer-header",
+        "format-opaque"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "box:oauth-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "canva:access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "contentful:oauth-application-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "elastic:access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "elastic:service-account-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence",
+        "secret-string-length",
+        "no-expiry"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "figma:oauth-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "figma:scim-api-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "hubspot:oauth-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "oauth-access-token-exists"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "hubspot:service-key",
+      "group": "G1",
+      "handoffClaimIds": [
+        "service-key-exists"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "meta:instagram-user-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "meta:page-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "meta:system-user-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "meta:user-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "mongodb-atlas:service-account-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "issuance-and-lifetime",
+        "bearer-carrier",
+        "ip-access-list"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "salesforce:oauth-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "spotify:access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "x:oauth2-user-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "issued-by-authorization-code-flow",
+        "lifetime-two-hours"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "zendesk:oauth-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence",
+        "documented-maximum-length",
+        "lifetime-and-legacy-clients",
+        "global-token-context"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "zoom:server-to-server-access-token",
+      "group": "G1",
+      "handoffClaimIds": [
+        "existence",
+        "jwt-app-mention"
+      ],
+      "measurementIssue": 740,
+      "coreIssue": 1223
+    },
+    {
+      "family": "adobe:oauth-user-refresh-token",
+      "group": "G2",
+      "handoffClaimIds": [
+        "refresh-token-offline-access"
+      ],
+      "measurementIssue": 741,
+      "coreIssue": 1223
+    },
+    {
+      "family": "airtable:oauth-refresh-token",
+      "group": "G2",
+      "handoffClaimIds": [
+        "existence",
+        "opaque-format"
+      ],
+      "measurementIssue": 741,
+      "coreIssue": 1223
+    },
+    {
+      "family": "asana:oauth-refresh-token",
+      "group": "G2",
+      "handoffClaimIds": [
+        "existence",
+        "format-opaque"
+      ],
+      "measurementIssue": 741,
+      "coreIssue": 1223
+    },
+    {
+      "family": "box:oauth-refresh-token",
+      "group": "G2",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 741,
+      "coreIssue": 1223
+    },
+    {
+      "family": "canva:refresh-token",
+      "group": "G2",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 741,
+      "coreIssue": 1223
+    },
+    {
+      "family": "dropbox:refresh-token",
+      "group": "G2",
+      "handoffClaimIds": [
+        "refresh-token-exists"
+      ],
+      "measurementIssue": 741,
+      "coreIssue": 1223
+    },
+    {
+      "family": "elastic:refresh-token",
+      "group": "G2",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 741,
+      "coreIssue": 1223
+    },
+    {
+      "family": "figma:oauth-refresh-token",
+      "group": "G2",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 741,
+      "coreIssue": 1223
+    },
+    {
+      "family": "hubspot:oauth-refresh-token",
+      "group": "G2",
+      "handoffClaimIds": [
+        "oauth-refresh-token-exists"
+      ],
+      "measurementIssue": 741,
+      "coreIssue": 1223
+    },
+    {
+      "family": "spotify:refresh-token",
+      "group": "G2",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 741,
+      "coreIssue": 1223
+    },
+    {
+      "family": "x:oauth2-refresh-token",
+      "group": "G2",
+      "handoffClaimIds": [
+        "issued-with-offline-access",
+        "lifetime-and-single-use"
+      ],
+      "measurementIssue": 741,
+      "coreIssue": 1223
+    },
+    {
+      "family": "zendesk:oauth-refresh-token",
+      "group": "G2",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 741,
+      "coreIssue": 1223
+    },
+    {
+      "family": "zoom:oauth-refresh-token",
+      "group": "G2",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 741,
+      "coreIssue": 1223
+    },
+    {
+      "family": "airtable:oauth-client-secret",
+      "group": "G3",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 742,
+      "coreIssue": 1223
+    },
+    {
+      "family": "asana:oauth-client-secret",
+      "group": "G3",
+      "handoffClaimIds": [
+        "existence",
+        "also-signs-app-component-requests"
+      ],
+      "measurementIssue": 742,
+      "coreIssue": 1223
+    },
+    {
+      "family": "box:oauth-client-secret",
+      "group": "G3",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 742,
+      "coreIssue": 1223
+    },
+    {
+      "family": "dropbox:app-secret",
+      "group": "G3",
+      "handoffClaimIds": [
+        "app-secret-exists"
+      ],
+      "measurementIssue": 742,
+      "coreIssue": 1223
+    },
+    {
+      "family": "figma:oauth-client-secret",
+      "group": "G3",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 742,
+      "coreIssue": 1223
+    },
+    {
+      "family": "hubspot:app-client-secret",
+      "group": "G3",
+      "handoffClaimIds": [
+        "client-secret-exists"
+      ],
+      "measurementIssue": 742,
+      "coreIssue": 1223
+    },
+    {
+      "family": "salesforce:external-client-app-consumer-secret",
+      "group": "G3",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 742,
+      "coreIssue": 1223
+    },
+    {
+      "family": "spotify:client-secret",
+      "group": "G3",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 742,
+      "coreIssue": 1223
+    },
+    {
+      "family": "x:oauth2-client-secret",
+      "group": "G3",
+      "handoffClaimIds": [
+        "confidential-clients-receive-secret",
+        "used-for-token-endpoint-auth"
+      ],
+      "measurementIssue": 742,
+      "coreIssue": 1223
+    },
+    {
+      "family": "zendesk:oauth-client-secret",
+      "group": "G3",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 742,
+      "coreIssue": 1223
+    },
+    {
+      "family": "zoom:oauth-app-client-secret",
+      "group": "G3",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 742,
+      "coreIssue": 1223
+    },
+    {
+      "family": "zoom:server-to-server-client-secret",
+      "group": "G3",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 742,
+      "coreIssue": 1223
+    },
+    {
+      "family": "elastic:cloud-api-key",
+      "group": "G4",
+      "handoffClaimIds": [
+        "existence",
+        "authorization-carrier",
+        "lifecycle",
+        "not-for-hosted-elasticsearch"
+      ],
+      "measurementIssue": 743,
+      "coreIssue": 1224
+    },
+    {
+      "family": "elastic:ece-api-key",
+      "group": "G4",
+      "handoffClaimIds": [
+        "existence",
+        "lifecycle"
+      ],
+      "measurementIssue": 743,
+      "coreIssue": 1224
+    },
+    {
+      "family": "jfrog:access-token",
+      "group": "G4",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 743,
+      "coreIssue": 1224
+    },
+    {
+      "family": "x:app-only-bearer-token",
+      "group": "G4",
+      "handoffClaimIds": [
+        "generated-from-consumer-credentials",
+        "format-unspecified",
+        "sensitivity-and-rotation"
+      ],
+      "measurementIssue": 743,
+      "coreIssue": 1224
+    },
+    {
+      "family": "hubspot:personal-access-key",
+      "group": "G5",
+      "handoffClaimIds": [
+        "personal-access-key-exists"
+      ],
+      "measurementIssue": 744,
+      "coreIssue": 1225
+    },
+    {
+      "family": "jfrog:myjfrog-api-token",
+      "group": "G5",
+      "handoffClaimIds": [
+        "existence"
+      ],
+      "measurementIssue": 744,
+      "coreIssue": 1225
+    },
+    {
+      "family": "x:oauth1-access-token-secret",
+      "group": "G5",
+      "handoffClaimIds": [
+        "paired-secret-of-access-token",
+        "distinct-from-oauth2-client-credentials"
+      ],
+      "measurementIssue": 744,
+      "coreIssue": 1225
+    },
+    {
+      "family": "mongodb-atlas:database-user-password",
+      "group": "G6",
+      "handoffClaimIds": [
+        "api-field",
+        "chosen-by-caller"
+      ],
+      "measurementIssue": 745,
+      "coreIssue": 1226
+    },
+    {
+      "family": "mongodb-atlas:programmatic-api-private-key",
+      "group": "G6",
+      "handoffClaimIds": [
+        "two-part-key",
+        "legacy-method",
+        "private-key-unredacted-once",
+        "public-key-length",
+        "digest-not-bearer",
+        "no-ui-or-data-access"
+      ],
+      "measurementIssue": 745,
+      "coreIssue": 1226
+    },
+    {
+      "family": "mongodb-atlas:service-account-secret",
+      "group": "G6",
+      "handoffClaimIds": [
+        "pair-and-role",
+        "shown-once",
+        "example-prefix",
+        "client-id-pattern",
+        "expiry-and-rotation",
+        "basic-carrier",
+        "recommended-method"
+      ],
+      "measurementIssue": 745,
+      "coreIssue": 1226
+    }
+  ]
+}

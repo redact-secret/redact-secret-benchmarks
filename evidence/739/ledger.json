@@ -1,0 +1,1870 @@
+{
+  "schemaVersion": 1,
+  "kind": "batch2-disposition-ledger",
+  "epic": 739,
+  "complete": false,
+  "note": "One entry per family. Rows are not measured until evidence marks the carrier reviewed and a baseline exists; nothing here is a false negative, true negative or passing coverage.",
+  "counts": {
+    "families": 58,
+    "measured": 0,
+    "notMeasured": 58
+  },
+  "families": [
+    {
+      "family": "adobe:oauth-server-to-server-access-token",
+      "group": "G1",
+      "carrierContractRevision": "adobe:oauth-server-to-server-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "airtable:oauth-access-token",
+      "group": "G1",
+      "carrierContractRevision": "airtable:oauth-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "asana:oauth-access-token",
+      "group": "G1",
+      "carrierContractRevision": "asana:oauth-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "asana:personal-access-token",
+      "group": "G1",
+      "carrierContractRevision": "asana:personal-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "box:oauth-access-token",
+      "group": "G1",
+      "carrierContractRevision": "box:oauth-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "canva:access-token",
+      "group": "G1",
+      "carrierContractRevision": "canva:access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "contentful:oauth-application-access-token",
+      "group": "G1",
+      "carrierContractRevision": "contentful:oauth-application-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "elastic:access-token",
+      "group": "G1",
+      "carrierContractRevision": "elastic:access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "elastic:service-account-token",
+      "group": "G1",
+      "carrierContractRevision": "elastic:service-account-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "figma:oauth-access-token",
+      "group": "G1",
+      "carrierContractRevision": "figma:oauth-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "figma:scim-api-token",
+      "group": "G1",
+      "carrierContractRevision": "figma:scim-api-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "hubspot:oauth-access-token",
+      "group": "G1",
+      "carrierContractRevision": "hubspot:oauth-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "hubspot:service-key",
+      "group": "G1",
+      "carrierContractRevision": "hubspot:service-key@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "meta:instagram-user-access-token",
+      "group": "G1",
+      "carrierContractRevision": "meta:instagram-user-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "meta:page-access-token",
+      "group": "G1",
+      "carrierContractRevision": "meta:page-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "meta:system-user-access-token",
+      "group": "G1",
+      "carrierContractRevision": "meta:system-user-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "meta:user-access-token",
+      "group": "G1",
+      "carrierContractRevision": "meta:user-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "mongodb-atlas:service-account-access-token",
+      "group": "G1",
+      "carrierContractRevision": "mongodb-atlas:service-account-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "salesforce:oauth-access-token",
+      "group": "G1",
+      "carrierContractRevision": "salesforce:oauth-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "spotify:access-token",
+      "group": "G1",
+      "carrierContractRevision": "spotify:access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "x:oauth2-user-access-token",
+      "group": "G1",
+      "carrierContractRevision": "x:oauth2-user-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (authorization-header-bearer) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "zendesk:oauth-access-token",
+      "group": "G1",
+      "carrierContractRevision": "zendesk:oauth-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (authorization-header-bearer, request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "zoom:server-to-server-access-token",
+      "group": "G1",
+      "carrierContractRevision": "zoom:server-to-server-access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "adobe:oauth-user-refresh-token",
+      "group": "G2",
+      "carrierContractRevision": "adobe:oauth-user-refresh-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "airtable:oauth-refresh-token",
+      "group": "G2",
+      "carrierContractRevision": "airtable:oauth-refresh-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "asana:oauth-refresh-token",
+      "group": "G2",
+      "carrierContractRevision": "asana:oauth-refresh-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "box:oauth-refresh-token",
+      "group": "G2",
+      "carrierContractRevision": "box:oauth-refresh-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "canva:refresh-token",
+      "group": "G2",
+      "carrierContractRevision": "canva:refresh-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "dropbox:refresh-token",
+      "group": "G2",
+      "carrierContractRevision": "dropbox:refresh-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "elastic:refresh-token",
+      "group": "G2",
+      "carrierContractRevision": "elastic:refresh-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "figma:oauth-refresh-token",
+      "group": "G2",
+      "carrierContractRevision": "figma:oauth-refresh-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "hubspot:oauth-refresh-token",
+      "group": "G2",
+      "carrierContractRevision": "hubspot:oauth-refresh-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "spotify:refresh-token",
+      "group": "G2",
+      "carrierContractRevision": "spotify:refresh-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "x:oauth2-refresh-token",
+      "group": "G2",
+      "carrierContractRevision": "x:oauth2-refresh-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "zendesk:oauth-refresh-token",
+      "group": "G2",
+      "carrierContractRevision": "zendesk:oauth-refresh-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "zoom:oauth-refresh-token",
+      "group": "G2",
+      "carrierContractRevision": "zoom:oauth-refresh-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "airtable:oauth-client-secret",
+      "group": "G3",
+      "carrierContractRevision": "airtable:oauth-client-secret@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "asana:oauth-client-secret",
+      "group": "G3",
+      "carrierContractRevision": "asana:oauth-client-secret@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "box:oauth-client-secret",
+      "group": "G3",
+      "carrierContractRevision": "box:oauth-client-secret@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "dropbox:app-secret",
+      "group": "G3",
+      "carrierContractRevision": "dropbox:app-secret@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "figma:oauth-client-secret",
+      "group": "G3",
+      "carrierContractRevision": "figma:oauth-client-secret@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (authorization-header-basic) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "hubspot:app-client-secret",
+      "group": "G3",
+      "carrierContractRevision": "hubspot:app-client-secret@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "salesforce:external-client-app-consumer-secret",
+      "group": "G3",
+      "carrierContractRevision": "salesforce:external-client-app-consumer-secret@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "spotify:client-secret",
+      "group": "G3",
+      "carrierContractRevision": "spotify:client-secret@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "x:oauth2-client-secret",
+      "group": "G3",
+      "carrierContractRevision": "x:oauth2-client-secret@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (authorization-header-basic) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "zendesk:oauth-client-secret",
+      "group": "G3",
+      "carrierContractRevision": "zendesk:oauth-client-secret@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "zoom:oauth-app-client-secret",
+      "group": "G3",
+      "carrierContractRevision": "zoom:oauth-app-client-secret@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "zoom:server-to-server-client-secret",
+      "group": "G3",
+      "carrierContractRevision": "zoom:server-to-server-client-secret@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1223"
+    },
+    {
+      "family": "elastic:cloud-api-key",
+      "group": "G4",
+      "carrierContractRevision": "elastic:cloud-api-key@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (authorization-header-apikey) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1224"
+    },
+    {
+      "family": "elastic:ece-api-key",
+      "group": "G4",
+      "carrierContractRevision": "elastic:ece-api-key@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "ECE carrier is unconfirmed: the contract has only the lifecycle claim; redact-secret#1224 forbids reinterpreting it as Cloud ApiKey by name.",
+      "coreIssueForRow": "redact-secret#1224"
+    },
+    {
+      "family": "jfrog:access-token",
+      "group": "G4",
+      "carrierContractRevision": "jfrog:access-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence/role/lifecycle only; no provider-documented header, field or config slot is recorded. Missing source: the provider page that names where the secret value is carried.",
+      "coreIssueForRow": "redact-secret#1224"
+    },
+    {
+      "family": "x:app-only-bearer-token",
+      "group": "G4",
+      "carrierContractRevision": "x:app-only-bearer-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "representation-policy-undecided",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "X states the Bearer Token is a byte array of unspecified format; the only percent-containing shape is a tool-corroborated lead (claim artifacts-bearer-leading-run-and-percent). Raw, serialized-escaped and percent forms have no source-established contract (redact-secret#1224 keeps them unassertable until policy is adopted).",
+      "coreIssueForRow": "redact-secret#1224"
+    },
+    {
+      "family": "hubspot:personal-access-key",
+      "group": "G5",
+      "carrierContractRevision": "hubspot:personal-access-key@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract says the key is stored in a local global config file but names no config field; the exact HubSpot CLI config name is requested in #235 and redact-secret#1225.",
+      "coreIssueForRow": "redact-secret#1225"
+    },
+    {
+      "family": "jfrog:myjfrog-api-token",
+      "group": "G5",
+      "carrierContractRevision": "jfrog:myjfrog-api-token@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The contract establishes existence only; the MyJFrog header or field is not recorded (redact-secret#1225).",
+      "coreIssueForRow": "redact-secret#1225"
+    },
+    {
+      "family": "x:oauth1-access-token-secret",
+      "group": "G5",
+      "carrierContractRevision": "x:oauth1-access-token-secret@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1225"
+    },
+    {
+      "family": "mongodb-atlas:database-user-password",
+      "group": "G6",
+      "carrierContractRevision": "mongodb-atlas:database-user-password@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "representation-policy-undecided",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The password is a caller-chosen write-only API field with no generated grammar (claims api-field, chosen-by-caller); user-specified passwords and percent encoding need explicit product-policy limits (redact-secret#1226).",
+      "coreIssueForRow": "redact-secret#1226"
+    },
+    {
+      "family": "mongodb-atlas:programmatic-api-private-key",
+      "group": "G6",
+      "carrierContractRevision": "mongodb-atlas:programmatic-api-private-key@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "carrier-unresolved",
+      "readinessReason": "carrier-source-missing",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The private key is a Digest input; the wire header is a hash of it, not the key. The contract names no field or config slot that holds the plaintext key.",
+      "coreIssueForRow": "redact-secret#1226"
+    },
+    {
+      "family": "mongodb-atlas:service-account-secret",
+      "group": "G6",
+      "carrierContractRevision": "mongodb-atlas:service-account-secret@1 (proposed, draft, evidence c34976b7)",
+      "readiness": "blocked",
+      "readinessReason": "awaiting-evidence-review",
+      "caseIds": [],
+      "baseline": {
+        "identity": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+        "measured": false
+      },
+      "candidate": {
+        "identity": null,
+        "measured": false,
+        "note": "no candidate pinned: no ready row was measured, and the Batch 1 identity af1e71e0 is not proof for Batch 2"
+      },
+      "surfaces": {
+        "node": "not measured",
+        "wasm": "not measured",
+        "python": "not measured",
+        "rust": "not measured",
+        "cli": "not measured"
+      },
+      "findings": null,
+      "overlapOutcome": "not measured",
+      "streamParity": "not measured",
+      "coverage": "not-measured",
+      "gapIssue": null,
+      "unresolvedOrUnsupportedVariants": "The draft contract names a provider-documented carrier (authorization-header-basic, request-or-response-field) but it is proposed/draft, authored by an agent run and unreviewed; #235 posts no per-row ready status.",
+      "coreIssueForRow": "redact-secret#1226"
+    }
+  ]
+}

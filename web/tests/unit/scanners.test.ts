@@ -34,7 +34,7 @@ const library = source('beta', {
   snapshots: snapshots({ platforms: ['npm-lock'], observed: [{ platform: 'npm-lock', digest: 'd'.repeat(64) }], configuration: { adapterVersion: 1, familyMappingVersion: 2, package: 'beta-lib', options: {} } }),
 });
 const product = source('redact-secret', { pin: { version: '9.9.9', file: 'qualification/suite-v1.json' }, npm: { name: '@redact-secret/core', lockedVersion: '9.9.9', integrity: null }, adapter: { adapterVersion: 3, familyMappingVersion: 2, detectors: 'default', runtime: 'node' } });
-const environment: ScannerEnvironment = { suiteId: 'x', sources: [product, binary, library] };
+const environment: ScannerEnvironment = { suiteId: 'x', source: 'snapshots', sources: [product, binary, library] };
 
 const profile = (id: string, kind: 'repository-scanner' | 'runtime-library'): PeerProfile => ({
   id, kind, kindLabel: kind === 'repository-scanner' ? 'Repository scanner' : 'Runtime library', description: `${id} description.`, outOfScope: [`${id} is not run in one way.`],

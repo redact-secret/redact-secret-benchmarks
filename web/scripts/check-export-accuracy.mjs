@@ -16,9 +16,16 @@
 import { readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readAuthority } from './lib/authority.mjs';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const repoRoot = path.resolve(webRoot, '..');
+// The legacy recount, kept intact as the oracle (#658): it applies when the authority is `legacy`. Under `new` the page is built from the official run
+// and check-export-comparison.mjs recounts it against the qualification view.
+if ((await readAuthority(repoRoot)) === 'new') {
+  console.log('accuracy page: the authority is new, so check-export-comparison.mjs recounts it against the qualification view');
+  process.exit(0);
+}
 const out = path.join(webRoot, 'out', 'comparison', 'accuracy');
 const readJson = async rel => JSON.parse(await readFile(path.join(repoRoot, rel), 'utf8'));
 const problems = [];

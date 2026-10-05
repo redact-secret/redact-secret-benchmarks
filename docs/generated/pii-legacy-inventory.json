@@ -275,13 +275,12 @@
     "testCallers": 0,
     "external": 3,
     "externalByClass": {
-     "benchmarks": 1,
-     "src (legacy site)": 2
+     "benchmarks": 3
     },
     "externalFiles": [
      "benchmarks/evaluation/domains/pii/support.ts (benchmarks, import)",
-     "src/evaluation-domains-v2.ts (src (legacy site), import+path)",
-     "src/evaluation-domains.ts (src (legacy site), import+path)"
+     "benchmarks/shared/evaluation-domains-v2.ts (benchmarks, import)",
+     "benchmarks/shared/evaluation-domains.ts (benchmarks, import)"
     ]
    }
   },
@@ -815,12 +814,13 @@
     "testCallers": 2,
     "external": 4,
     "externalByClass": {
-     "src (legacy site)": 3,
+     "benchmarks": 2,
+     "src (legacy site)": 1,
      "web (Next app)": 1
     },
     "externalFiles": [
-     "src/evaluation-domains-v2.ts (src (legacy site), import+path)",
-     "src/evaluation-domains.ts (src (legacy site), import+path)",
+     "benchmarks/shared/evaluation-domains-v2.ts (benchmarks, import)",
+     "benchmarks/shared/evaluation-domains.ts (benchmarks, import)",
      "src/pages/domain-evaluation.ts (src (legacy site), import+path)",
      "web/services/domains.ts (web (Next app), import)"
     ]
@@ -1321,9 +1321,9 @@
    "owner": "benchmarks (product thresholds, support status, activation, publication and protected support bindings)",
    "prerequisite": "none: product-owned evidence and policy are never removal candidates",
    "callers": {
-    "total": 5,
+    "total": 6,
     "withinCandidates": 0,
-    "testCallers": 2,
+    "testCallers": 3,
     "external": 3,
     "externalByClass": {
      "web (Next app)": 3

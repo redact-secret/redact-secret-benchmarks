@@ -26,12 +26,16 @@ test.describe('/evaluation/scanner', () => {
     await expect(page).toHaveURL(new RegExp(`${target}$`));
   });
 
-  test('the arguments disclosure opens, and every link stays inside the app', async ({ page }) => {
+  test('the arguments disclosure opens where the pipeline records arguments, and every link stays inside the app', async ({ page }) => {
     await page.goto(`${BASE}/evaluation/scanner/`);
     const summary = page.getByText('Exact arguments').first();
-    expect(await summary.count(), 'a scanner shows its exact arguments').toBeGreaterThan(0);
-    await summary.click();
-    await expect(page.locator('details[open] pre').first()).toBeVisible();
+    if (await summary.count()) {
+      await summary.click();
+      await expect(page.locator('details[open] pre').first()).toBeVisible();
+    } else {
+      // Under the new authority a scanner's arguments are not in the official run's record (its configuration hash is): none is shown, and the page says what it does record.
+      await expect(page.getByText('Configuration hash').first(), 'a page with no arguments states the configuration hash the run recorded').toBeVisible();
+    }
     const hrefs = await page.locator('main a[href]').evaluateAll(a => a.map(x => (x as HTMLAnchorElement).getAttribute('href') ?? ''));
     for (const href of hrefs) expect(href, `link ${href}`).toMatch(/^(#|\/(report|comparison|evaluation)\/)/);
   });

@@ -23,7 +23,7 @@ import { readdir, readFile } from 'node:fs/promises';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import path from 'node:path';
 import { supportPage, SUPPORT_STATUS_COPY } from '../src/pages/support.ts';
-import { supportMatrixProblem } from '../src/support-model.ts';
+import { supportMatrixProblem } from '../benchmarks/shared/support-model.ts';
 import { providersPage, PROVIDER_STAGE_COPY, DOSSIER_VERDICT_COPY } from '../src/pages/providers.ts';
 import { providerDossiersProblem, PROVIDER_STAGES, DOSSIER_VERDICTS } from '../src/providers-model.ts';
 import { buildProviderDossiers, defaultInputs, STAGES } from '../benchmarks/generate-provider-dossiers.ts';

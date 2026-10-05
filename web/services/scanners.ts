@@ -65,7 +65,10 @@ export interface ScannerSource {
   adapter: Record<string, unknown> | null;
 }
 
-export interface ScannerEnvironment { sources: ScannerSource[]; suiteId: string }
+/** Where a scanner's observation facts come from: the committed peer snapshots (the legacy pipeline) or the official run's own record (the new pipeline). */
+export type EnvironmentSource = 'snapshots' | 'official';
+
+export interface ScannerEnvironment { sources: ScannerSource[]; suiteId: string; source: EnvironmentSource }
 
 interface Suite { id: string; scanners: Record<string, string> }
 interface Checksums { [id: string]: unknown }
@@ -122,8 +125,13 @@ async function summariseSnapshots(id: string): Promise<SnapshotFacts | null> {
   };
 }
 
-export function loadScannerEnvironment(): Promise<ScannerEnvironment> {
-  return once('scanner-environment', async () => {
+/**
+ * `official` reads no peer snapshot: under the new authority the observation facts of a scanner (version, mode, build, configuration hash, the run
+ * and population it was observed in) are the official run's, added by the resolver from the measured run. The pins, the npm lock and the archive
+ * checksums are product-owned inputs both pipelines read.
+ */
+export function loadScannerEnvironment(source: EnvironmentSource = 'snapshots'): Promise<ScannerEnvironment> {
+  return once(`scanner-environment:${source}`, async () => {
     const [suite, pkg, lock, checksums] = await Promise.all([
       readJson<Suite>('qualification/suite-v1.json'),
       readJson<PackageFile>('package.json'),
@@ -147,10 +155,10 @@ export function loadScannerEnvironment(): Promise<ScannerEnvironment> {
         release: table?.binary && table.assets && table.repo
           ? { repo: table.repo, archives: Object.entries(table.assets).map(([platform, a]) => ({ platform, archive: a.archive, sha256: a.sha256 })) }
           : null,
-        snapshots: id === PRODUCT ? null : await summariseSnapshots(id),
+        snapshots: id === PRODUCT || source === 'official' ? null : await summariseSnapshots(id),
         adapter,
       });
     }
-    return { sources, suiteId: suite.id };
+    return { sources, suiteId: suite.id, source };
   });
 }

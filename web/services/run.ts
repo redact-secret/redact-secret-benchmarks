@@ -6,9 +6,9 @@
  * number:
  *
  *  - every suite report is checked against the fixture bytes and re-scored
- *    (`reportProblem`, src/model.mjs). A report that fails is left out and named;
+ *    (`reportProblem`, benchmarks/shared/report-model.mjs). A report that fails is left out and named;
  *  - the run summary is checked to add up to the suite reports it covers
- *    (`summaryProblem`, src/pages/data.ts).
+ *    (`summaryProblem`, benchmarks/shared/run-data.ts).
  *
  * The site displays what the run recorded. Counts, bounds and rates are the
  * summary's and the rows'; this module derives none of them.
@@ -19,9 +19,9 @@
  */
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { reportProblem } from '../../src/model.mjs';
-import { summaryProblem, type RunSummary } from '../../src/pages/data';
-import type { Report, Row, Run, Scanner } from '../../src/types';
+import { reportProblem } from '../../benchmarks/shared/report-model.mjs';
+import { summaryProblem, type RunSummary } from '../../benchmarks/shared/run-data.ts';
+import type { Report, Row, Run, Scanner } from '../../benchmarks/shared/run-types.ts';
 import { loadCatalogSources } from './catalog';
 import { once, REPO_ROOT } from './repo';
 
@@ -46,7 +46,32 @@ export interface RowResult {
   observed?: number;
 }
 
-export interface ScannerObservation { source: 'fresh' | 'snapshot'; observedAt: string; sourceRunId: string }
+/**
+ * Where a scanner's rows were observed: `fresh` (this legacy run), `snapshot` (a committed peer snapshot, the legacy pipeline), or `official` (an official
+ * credential-eval run of one population, the new pipeline: `sourceRunId` is that run's semantic digest).
+ */
+export interface ScannerObservation { source: 'fresh' | 'snapshot' | 'official'; observedAt: string; sourceRunId: string }
+
+/** One scanner as an official run recorded it: the identity the artifact stamped, never a pin read from a file. */
+export interface OfficialScanner { id: string; version: string | null; mode: string; build: string | null; configurationHash: string; status: string }
+
+/**
+ * The official run a measured run was read from (the new pipeline, #658). Every figure of a page built from it belongs to this population and this
+ * run: its denominator is `caseCount` cases of `denominator`, and a figure of another population is never added to it.
+ */
+export interface OfficialRun {
+  population: string;
+  denominator: string;
+  role: string;
+  caseCount: number;
+  /** The run's semantic digest (also the measured run's `runId`) and the digest of its artifact file. */
+  semanticDigest: string;
+  artifactDigest: string;
+  engine: string;
+  evidenceTag: string | null;
+  recordedOn: string | null;
+  scanners: OfficialScanner[];
+}
 
 export interface RunScanner {
   id: string;
@@ -71,6 +96,8 @@ export interface MeasuredRun {
   generatedAt: string;
   accountingVersion: string;
   mode: Mode;
+  /** Set only when the run is an official run read through the qualification view: which population and run its figures belong to. */
+  official?: OfficialRun;
   /** Set only when the run measured an unreleased candidate build. */
   candidate?: { sourceCommit: string; declaredVersion: string };
   productVersion: string | null;

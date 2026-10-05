@@ -1,6 +1,6 @@
 /**
  * The credential report pages under each authority (#608): the same routes render either pipeline, every one names the pipeline
- * behind its numbers, and the comparison pages say they stay on the legacy files. The pipeline is chosen by an overlay root, never by the
+ * behind its numbers, and the comparison and scanner pages are built from the official run of the report population under the new authority, with the denominator named (#658). The pipeline is chosen by an overlay root, never by the
  * committed value, and every view is synthetic: no count of the ledger or of a built view is asserted.
  */
 import './next-mocks';
@@ -98,11 +98,53 @@ describe('authority new, with an authorised view', () => {
     expect(file.shared.scanners.map((s: { id: string }) => s.id)).toEqual(own.artifact.scanners.map(s => s.id));
   });
 
-  test('a page that stays on the legacy files says it is the oracle, not the new pipeline', async () => {
+  test('/comparison/accuracy is built from the official run of one population, and the stamp names it (#658)', async () => {
     const { container } = await open(root(), results(view), '/comparison/accuracy');
-    const aside = stamp(container);
-    if (aside) { expect(aside).toHaveAttribute('data-pipeline', 'legacy'); expect(aside).toHaveAttribute('data-role', 'oracle'); }
+    const aside = stamp(container)!;
+    expect(aside).toHaveAttribute('data-pipeline', 'new');
+    expect(aside).toHaveAttribute('data-role', 'authority');
+    expect(aside.textContent).toContain(own.population);
+    expect(aside.textContent).toContain(own.artifact.semanticDigest.slice(0, 19));
     expect(container.querySelector('h1')).not.toBeNull();
+  });
+
+  test('the accuracy page states its denominator and the official run, and reads no peer snapshot or legacy run', async () => {
+    const { container } = await open(root(), results(view), '/comparison/accuracy');
+    const text = container.textContent ?? '';
+    expect(text).toContain(`${own.cases.length.toLocaleString('en-US')} cases of the ${own.denominator} population`);
+    expect(text).toContain('are not added in');
+    expect(text).toContain(`Observed in the official run ${own.artifact.semanticDigest.slice(0, 19)}`);
+    expect(text).not.toMatch(/Output recorded .*replayed|No observation date recorded/);
+  });
+
+  test('the scanner page takes each scanner\u2019s identity from the official run, not from a peer snapshot', async () => {
+    const { container } = await open(root(), results(view), '/evaluation/scanner');
+    const text = container.textContent ?? '';
+    for (const scanner of own.artifact.scanners) {
+      expect(text).toContain(scanner.mode);
+      expect(text).toContain(scanner.configurationHash.slice(0, 12));
+    }
+    expect(text).toContain(`Official run, ${own.population}`);
+    expect(text).toContain(own.artifact.semanticDigest.slice(0, 12));
+    expect(text).toContain('not added in');
+    expect(text).not.toMatch(/committed snapshot|Snapshots, /);
+  });
+
+  test.each(['/report', '/comparison', '/comparison/accuracy', '/evaluation/scanner'])('%s needs no legacy catalog, corpus index or peer snapshot under the new authority (#658)', async route => {
+    // The catalog and the fixtures come from the view (the evidence snapshot's case metadata) and the product-owned overlays (the taxonomy, the detector
+    // registry, the pins); none of the legacy catalog files, nor the committed peer snapshots, is read. They are absent from this root.
+    const bare = overlay({
+      [AUTHORITY_FILE]: authorising(view),
+      'benchmarks/fixture-index.json': null, 'benchmarks/fixture-detectors.json': null, 'benchmarks/scenarios.json': null, 'peer-observations': null,
+    });
+    const { container } = await open(bare, results(view), route);
+    expect(container.querySelector('h1')).not.toBeNull();
+    expect(container.textContent).toContain(own.population);
+  });
+
+  test('the comparison hub names the population behind the accuracy run', async () => {
+    const { container } = await open(root(), results(view), '/comparison');
+    expect(container.textContent).toContain(`official run of ${own.population}`);
   });
 });
 

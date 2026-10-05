@@ -117,7 +117,7 @@ export function resolveHub({ runtime, features, run }: HubInput): ComparisonHubP
     },
     {
       label: 'Accuracy',
-      detail: run.state === 'measured' ? `${isoDate(run.generatedAt)} · ${modeText(run)}` : 'no benchmark run for this checkout',
+      detail: run.state === 'measured' ? `${isoDate(run.generatedAt)} · ${modeText(run)}${run.official ? ` · official run of ${run.official.population} (${count(run.official.caseCount, 'case')})` : ''}` : 'no benchmark run for this checkout',
     },
   ];
 

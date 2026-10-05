@@ -7,8 +7,8 @@
  *
  * Server-only. Client components import `./filters` and the types, never this.
  */
-import type { Catalog } from '../services/catalog';
-import { loadCredentialSource, loadLegacySource, NO_VIEW_SUITE } from '../services/credential-source';
+import { loadDetectorTitles, type Catalog } from '../services/catalog';
+import { loadCredentialSource, NO_VIEW_SUITE } from '../services/credential-source';
 import { loadDetectorContracts } from '../services/contracts';
 import { loadAccountingFloors } from '../services/floors';
 import { loadDossiers } from '../services/dossiers';
@@ -67,13 +67,6 @@ async function context() {
   const { pipeline, catalog, run, fixtureBytes, fixtureHashes } = await loadCredentialSource();
   const measured: MeasuredRun | undefined = run.state === 'measured' ? run : undefined;
   return { catalog, run, measured, rows: measured?.productRows, pipeline, stamp: resolvePipelineStamp(pipeline), fixtureBytes, fixtureHashes };
-}
-
-/** The legacy pipeline's data under either authority: the comparison pages stay on it as the oracle (the stamp says so). */
-async function legacyContext() {
-  const [{ pipeline }, { catalog, run }] = await Promise.all([loadCredentialSource(), loadLegacySource()]);
-  const measured: MeasuredRun | undefined = run.state === 'measured' ? run : undefined;
-  return { catalog, run, measured, rows: measured?.productRows, stamp: resolvePipelineStamp(pipeline, 'legacy') };
 }
 
 export interface HeadData { eyebrow: string; title: string; lede: string; meta: MetaItem[] }
@@ -488,7 +481,8 @@ export async function resolveFindingsPage(): Promise<FindingsPageData> {
 // ---- /comparison, /comparison/feature, /comparison/runtime -------------------------
 
 export async function resolveComparisonHubPage(): Promise<ComparisonHubProps> {
-  const [runtime, features, { run }] = await Promise.all([loadPeerRuntime(), loadFeatureClaims(), loadLegacySource()]);
+  // The credential run is the one the authority names (#658): the legacy run under `legacy`, the official run of the report population under `new`.
+  const [runtime, features, { run }] = await Promise.all([loadPeerRuntime(), loadFeatureClaims(), loadCredentialSource()]);
   return resolveHub({ runtime, features, run });
 }
 
@@ -517,7 +511,7 @@ export interface AccuracyPairPageData extends Omit<AccuracyPage, 'diff'> {
 }
 
 async function accuracyPage() {
-  const [{ catalog, run, stamp, measured }, profiles, runtime] = await Promise.all([legacyContext(), loadPeerProfiles(), loadPeerRuntime()]);
+  const [{ catalog, run, stamp, measured }, profiles, runtime] = await Promise.all([context(), loadPeerProfiles(), loadPeerRuntime()]);
   return { run, stamp, measured, page: resolveAccuracyPage({ catalog, run: measured, profiles, runtime: runtime.comparison, toolNames: { 'flare-redact': toolName('flare-redact'), openredaction: toolName('openredaction') } }) };
 }
 
@@ -551,8 +545,12 @@ export async function resolveReleaseCandidatePage(): Promise<RcPage> {
 
 /** The scanners the benchmark ran with and the environment each ran in (#612). */
 export async function resolveScannerPage(): Promise<ScannerOverviewProps> {
-  const [environment, profiles, { run, catalog }, runtime, productScope] = await Promise.all([loadScannerEnvironment(), loadPeerProfiles(), loadLegacySource(), loadPeerRuntime(), loadProductScope()]);
-  return resolveScanners({ environment, profiles, run: run.state === 'measured' ? run : undefined, runtime, productDetectors: catalog.detectors.length || null, productScope });
+  // Under `new` the scanners' provenance is what the official run recorded (version, mode, build, configuration hash), and the committed peer
+  // snapshots of the legacy pipeline are not read; under `legacy` it is the snapshots, as before (#658).
+  const { run, pipeline } = await loadCredentialSource();
+  const official = pipeline.authority === 'new';
+  const [environment, profiles, runtime, productScope, detectorTitles] = await Promise.all([loadScannerEnvironment(official ? 'official' : 'snapshots'), loadPeerProfiles(), loadPeerRuntime(), loadProductScope(), loadDetectorTitles()]);
+  return resolveScanners({ environment, profiles, run: run.state === 'measured' ? run : undefined, runtime, productDetectors: detectorTitles.size || null, productScope });
 }
 
 // ---- / (the landing page) and the footer's run line ------------------------------------------------------------------------

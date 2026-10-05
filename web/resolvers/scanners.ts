@@ -9,7 +9,7 @@
 import type { ScannerFact, ScannerFactGroup, ScannerLink, ScannerModeNoteData, ScannerOverviewProps, ScannerProfileData, ScannerRosterRow } from '../components/evaluation/scanner';
 import type { PeerProfile } from '../services/peers';
 import type { PeerRuntime, RuntimeTool } from '../services/runtime';
-import type { MeasuredRun, RunScanner } from '../services/run';
+import type { MeasuredRun, OfficialRun, OfficialScanner, RunScanner } from '../services/run';
 import type { ScannerEnvironment, ScannerSource, SnapshotFacts } from '../services/scanners';
 import { defaultQuery, pairHref, type PairOptions } from './accuracy';
 import { count, int, isoDate } from './format';
@@ -79,7 +79,7 @@ function sameOrMany(values: string[], one: (v: string) => string, many: string):
   return values.length === 1 ? one(values[0]) : many;
 }
 
-function installFacts(source: ScannerSource, run: RunScanner | undefined): ScannerFact[] {
+function installFacts(source: ScannerSource, run: RunScanner | undefined, official: boolean): ScannerFact[] {
   const out: ScannerFact[] = [fact('Pinned version', source.pin.version, { code: true, note: source.pin.file })];
   out.push(fact('Observed in this run', run?.version ?? null, { code: true, note: run?.version ? 'the version the scanner reported' : undefined }));
   if (source.release) {
@@ -92,6 +92,8 @@ function installFacts(source: ScannerSource, run: RunScanner | undefined): Scann
     for (const { o, archive } of matched) {
       out.push(fact(`Archive, ${o.platform}`, archive!.archive, { code: true, note: `SHA-256 ${short(archive!.sha256)}${archive!.sha256 === o.digest ? ', the digest the snapshots recorded' : ', not the digest the snapshots recorded'}` }));
     }
+    // An official run records no snapshot digest: the pinned archives are listed as pinned, and the run's own build field says the release was used.
+    if (official) for (const [platform, archive] of archives) out.push(fact(`Archive, ${platform}`, archive.archive, { code: true, note: `SHA-256 ${short(archive.sha256)}, pinned` }));
     out.push(fact('Location', 'Read-only directory first on PATH', { note: 'npm run peers:provision makes the directory read-only, so the scanner cannot update itself.' }));
   } else if (source.npm) {
     out.push(fact('Installed from', `npm, ${source.npm.name}`, {
@@ -101,7 +103,7 @@ function installFacts(source: ScannerSource, run: RunScanner | undefined): Scann
   return out;
 }
 
-function ranFacts(source: ScannerSource, run: RunScanner | undefined, tool: RuntimeTool | undefined): ScannerFact[] {
+function ranFacts(source: ScannerSource, run: RunScanner | undefined, tool: RuntimeTool | undefined, official: OfficialScanner | undefined): ScannerFact[] {
   const snap = source.snapshots;
   const configuration = snap?.configuration ?? source.adapter ?? null;
   const mode = run?.mode ?? (snap ? sameOrMany(snap.modes, v => v, `${snap.modes.length} mode lines`) : null);
@@ -119,6 +121,10 @@ function ranFacts(source: ScannerSource, run: RunScanner | undefined, tool: Runt
       note: snap.configurationHashes.length === 1 ? `the same in all ${count(snap.count, 'snapshot')}` : `across ${count(snap.count, 'snapshot')}`,
     }));
   }
+  if (official) {
+    out.push(fact('Build', official.build, { note: 'as the official run stamped it' }));
+    out.push(fact('Configuration hash', short(official.configurationHash), { code: true, note: 'recorded by the official run, the same in every population it ran' }));
+  }
   if (tool) out.push(fact('Runtime comparison call', `${tool.call}(), ${tool.async ? 'asynchronous' : 'synchronous'}`, { code: true }));
   return out;
 }
@@ -135,11 +141,18 @@ function runtimeRunner(runtime: PeerRuntime | undefined, id: string): { text: st
   };
 }
 
+/** What an official run says about itself, in one line: the denominator is named, and no other population is added in. */
+const officialNote = (o: OfficialRun): string =>
+  `run ${short(o.semanticDigest)} · ${o.engine}${o.evidenceTag ? ` · evidence ${o.evidenceTag}` : ''}${o.recordedOn ? ` · recorded ${o.recordedOn}` : ''}. ${count(o.caseCount, 'case')} of the ${o.denominator} population; the other populations were run separately and are not added in.`;
+
 function whereFacts(source: ScannerSource, run: MeasuredRun | undefined, scanner: RunScanner | undefined, runtime: PeerRuntime | undefined): ScannerFact[] {
   const out: ScannerFact[] = [];
   const snap = source.snapshots;
   const fresh = scanner?.observations.some(o => o.source === 'fresh');
-  if (run && fresh) {
+  if (run?.official) {
+    out.push(fact('Observed', `Official run, ${run.official.population}`, { note: officialNote(run.official) }));
+    out.push(fact('Host OS release, CPU and Node of the official run', null));
+  } else if (run && fresh) {
     out.push(fact('This run', run.hosts.map(h => `Node ${h.node} · ${h.platform} ${h.arch}`).join('; ') || null, { note: `observed fresh, ${isoDate(run.generatedAt)}; OS release and CPU are not part of the run` }));
   } else if (snap) {
     out.push(fact('Observed', `Snapshots, ${snapshotRange(snap)}`, { note: `${count(snap.count, 'committed snapshot')}${snap.invalid ? `, ${count(snap.invalid, 'snapshot')} left out because they did not validate` : ''}` }));
@@ -191,8 +204,8 @@ function profileOf(source: ScannerSource, input: ScannerInput, scanner: RunScann
   const args = Array.isArray(configuration?.arguments) ? (configuration!.arguments as string[]).join(' ') : null;
   const name = scanner?.name ?? NAMES[source.id] ?? source.id;
   const groups: ScannerFactGroup[] = [
-    { title: 'Install and pin', facts: installFacts(source, scanner) },
-    { title: 'How it ran', facts: ranFacts(source, scanner, tool) },
+    { title: 'Install and pin', facts: installFacts(source, scanner, !!run?.official) },
+    { title: 'How it ran', facts: ranFacts(source, scanner, tool, run?.official?.scanners.find(o => o.id === source.id)) },
     { title: 'Where it ran', facts: whereFacts(source, run, scanner, runtime) },
     { title: 'Rules', facts: rulesFacts(source.id, profile, productDetectors, input.productScope) },
   ];
@@ -236,9 +249,11 @@ export function resolveScanners(input: ScannerInput): ScannerOverviewProps {
     eyebrow: 'Evaluation',
     title: 'Scanners and where they ran',
     lede: 'The scanners this benchmark ran with: the version of each, how it was installed, how it was run, where it was observed and what was left out. Results are on the report and comparison pages.',
-    meta: run
-      ? [{ label: 'Mode', value: modeText(run) }, { label: 'Run', value: `${isoDate(run.generatedAt)} · ${count(run.suiteCount, 'suite')}` }]
-      : [],
+    meta: run?.official
+      ? [{ label: 'Mode', value: modeText(run) }, { label: 'Population', value: `${run.official.population} · ${count(run.official.caseCount, 'case')}` }, { label: 'Official run', value: `${run.official.recordedOn ? `${isoDate(run.generatedAt)} · ` : ''}${short(run.official.semanticDigest)}` }]
+      : run
+        ? [{ label: 'Mode', value: modeText(run) }, { label: 'Run', value: `${isoDate(run.generatedAt)} · ${count(run.suiteCount, 'suite')}` }]
+        : [],
     roster: {
       title: count(rows.length, 'scanner'),
       description: run ? 'In the order the run lists them. The kind and the description come from the scanner registry, the version from the run.' : 'No benchmark run is published for this checkout. Versions are the pins; the mode line is not recorded.',

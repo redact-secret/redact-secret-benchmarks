@@ -1,7 +1,7 @@
 import type { runEvaluation } from '../../../engine/runner.ts';
 import type { EvaluationCase } from '../../../engine/types.ts';
-import type { EvaluationReport } from '../../../../src/evaluation-types.ts';
-import { evaluationProblem } from '../../../../src/evaluation-model.ts';
+import type { EvaluationReport } from '../../../shared/evaluation-types.ts';
+import { evaluationProblem } from '../../../shared/evaluation-model.ts';
 import { validateQualificationEvidence } from './qualification.ts';
 import { projectKnownResults } from '../../substrate/public-projection.ts';
 import { readCredentialAccountingIdentity } from './accounting.ts';

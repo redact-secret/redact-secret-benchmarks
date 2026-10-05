@@ -99,7 +99,7 @@ async function legacySource(): Promise<Omit<CredentialSource, 'pipeline'>> {
   return { catalog, run, fixtureBytes, fixtureHashes };
 }
 
-/** The legacy pipeline's data whatever the authority is: what the oracle pages (the comparison pages) read. */
+/** The legacy pipeline's data whatever the authority is: the oracle seam. No page reads it since #658 (the comparison and scanner pages follow the authority); a test keeps it. */
 export function loadLegacySource(): Promise<CredentialSource> {
   return once('credential-source:legacy', async () => ({ pipeline: { authority: 'legacy' as const, from: (await loadAuthority()).from }, ...(await legacySource()) }));
 }

@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import Ajv from 'ajv';
 import driftSchema from '../schemas/support-matrix-drift-v1.json';
 import { buildSupportMatrixDrift } from './support/drift.ts';
-import { supportMatrixProblem, type SupportMatrixFile } from '../src/support-model.ts';
+import { supportMatrixProblem, type SupportMatrixFile } from './shared/support-model.ts';
 
 /**
  * Support-matrix drift for a release candidate (issue #511, A10). Reads two

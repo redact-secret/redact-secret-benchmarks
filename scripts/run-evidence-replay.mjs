@@ -194,13 +194,16 @@ export function collect(tag, manifestDigest, runId, { keepBranch = false } = {})
 
 
 /** Pure: the cause of every case the change report lists as changed, keyed by semantic id, for the contrast (a difference in these cases is the evidence change, not the product). */
-export function explainFromReport(report, note) {
+export function explainFromReport(report, note, twinOf = {}) {
   const out = {};
+  const changed = new Set((report.diff?.changed ?? []).map(c => c.id));
   for (const c of report.diff?.changed ?? []) {
     const parts = [...(c.fields ?? [])];
     if (Array.isArray(c.evidenceClass) && c.evidenceClass[0] !== c.evidenceClass[1]) parts.push(`evidence class ${c.evidenceClass[0]} -> ${c.evidenceClass[1]}`);
     out[c.id] = `changed in ${report.evidenceRelease} (${parts.join('; ')})${note ? `: ${note}` : ''}`;
   }
+  // The positive a changed twin belongs to is unchanged, but the mutation assertions that flip it to that twin read the changed case, so its assertions carry the same cause.
+  for (const [id, seed] of Object.entries(twinOf)) if (changed.has(id) && !changed.has(seed)) out[seed] ??= `${out[id]} (a twin of this case; the mutation assertions that flip it read the twin)`;
   return out;
 }
 
@@ -221,7 +224,10 @@ export function contrast(tag, manifestDigest, candidateId, note) {
     const cell = (name, a) => { const to = path.join(scratch, name); fetchArchive({ release: a.release, sha256: a.sha256, out: to, repository: REPOSITORY }); return to; };
     const accepted = controlFor(adoption, {});
     const report = readJson(ec.changeReport);
-    const explain = explainFromReport(report, note);
+    const snapshotDir = path.join(scratch, 'snapshot');
+    node(['scripts/fetch-pinned-public-snapshot.mjs', '--out', snapshotDir, '--tag', tag, '--manifest-digest', manifestDigest], { env: { ...process.env, GH_TOKEN: process.env.GH_TOKEN ?? gh(['auth', 'token']).trim() } });
+    const twinOf = Object.fromEntries(readJson(path.relative(root, path.join(snapshotDir, 'credential-eval-corpus-snapshot.json'))).cases.filter(c => c.twin?.twin_of).map(c => [c.id, c.twin.twin_of]));
+    const explain = explainFromReport(report, note, twinOf);
     const comparisons = [{ kind: `control: published ${ec.product?.version ?? 'product'} on ${ec.engine.tag.replace(/^v0\.1\.0-/, '')}`, newer: { label: `${tag} (run ${ec.replay.ciRun.split('/').pop()})`, dir: cell('c', ec.replay.archive) }, older: { label: `${accepted.evidenceRelease} (run ${accepted.replay.ciRun?.split('/').pop() ?? 'accepted'})`, dir: cell('a', accepted.replay.archive) }, explain }];
     if (candidateId) {
       const candidate = readJson('benchmarks/product-candidates.json').candidates.find(c => c.id === candidateId);

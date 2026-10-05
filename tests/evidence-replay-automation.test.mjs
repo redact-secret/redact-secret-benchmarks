@@ -68,6 +68,9 @@ test('the contrast attributes a difference to the evidence change the report nam
   const explain = explainFromReport({ evidenceRelease: 'snapshot-x', diff: { changed: [{ id: 'a--b', fields: ['grouping'], evidenceClass: ['project-policy', 'unresolved'] }, { id: 'c--d', fields: ['content'] }] } }, 'a maintainer decision');
   assert.equal(explain['a--b'], 'changed in snapshot-x (grouping; evidence class project-policy -> unresolved): a maintainer decision');
   assert.equal(explain['c--d'], 'changed in snapshot-x (content): a maintainer decision');
+  const withTwin = explainFromReport({ evidenceRelease: 'snapshot-x', diff: { changed: [{ id: 'p--twin', fields: ['grouping'], evidenceClass: ['project-policy', 'unresolved'] }] } }, undefined, { 'p--twin': 'p--seed', 'q--twin': 'q--seed' });
+  assert.match(withTwin['p--seed'], /a twin of this case/);
+  assert.equal(withTwin['q--seed'], undefined, 'only the seed of a twin the release changed');
   assert.equal(outcomeLabel({ measurement: { type: 'positive', span_outcomes: ['EXACT', 'MISS'], leaked_bytes: 3 } }), 'positive EXACT/MISS leaked 3');
   assert.equal(outcomeLabel({ measurement: { type: 'control', flagged: false } }), 'control clear');
   assert.equal(outcomeLabel({ measurement: { type: 'pending' } }), 'pending');

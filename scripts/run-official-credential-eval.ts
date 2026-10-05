@@ -38,6 +38,7 @@ import path from 'node:path';
 import { canonical, sha256Digest } from '../benchmarks/qualification/canonical.ts';
 import { buildEvaluationEvidence } from '../benchmarks/qualification/evaluation-evidence.ts';
 import { exportPopulation, PRODUCT_POPULATIONS, type ProductPopulation } from '../benchmarks/qualification/population-snapshot.ts';
+import { receiptProblems } from '../benchmarks/qualification/receipt-reuse.ts';
 import { bindingProblems, readRunArtifact, type RunArtifact } from '../benchmarks/qualification/run-artifact.ts';
 import { controlFor } from './candidate-control.mjs';
 import { releaseIdentityProblems } from './evidence-adoption.mjs';
@@ -60,6 +61,8 @@ const freshScanners = args.flatMap((a, i) => a === '--fresh' ? [args[i + 1]] : [
 const observationsOut = option('observations-out');
 if (!diagnostic && (reuseSet !== undefined || freshScanners.length || observationsOut !== undefined)) fail('--reuse-observations, --fresh and --observations-out are for --mode diagnostic; an official run measures every scanner fresh');
 if (reuseSet === undefined && freshScanners.length) fail('--fresh needs --reuse-observations');
+const reuseReceipt = option('reuse-receipt');
+if (diagnostic && reuseReceipt !== undefined) fail('--reuse-receipt is for an official retry (#707); a diagnostic run is always fresh');
 const attributionId = option('attribution');
 const candidateId = option('candidate');
 const evidenceTag = option('evidence-tag'), evidenceManifestDigest = option('evidence-manifest-digest');
@@ -195,9 +198,35 @@ if ((PRODUCT_POPULATIONS as readonly string[]).includes(populationId)) {
   } else if (sha256Digest(readFileSync(inputs.manifest)) !== pin.release.manifestDigest) fail(`release manifest digest differs from the pinned ${pin.release.manifestDigest}`);
 }
 
-// 4. Run the engine; any exit but 0 is a failed job.
+// 4. Run the engine; any exit but 0 is a failed job. A retry (#707) first tries the receipt of the same stage of an earlier run: an artifact that passed this
+// same determinism check and is the identity this run would produce. It is bound to the current pins in step 5 like a fresh artifact; any doubt measures fresh.
 const artifacts: string[] = [];
-for (let n = 1; n <= runs; n++) {
+let receiptReuse: { reused: boolean; artifactDigest?: string; reasons?: string[] } | undefined;
+if (reuseReceipt !== undefined) {
+  const dir = path.join(path.resolve(reuseReceipt), methodsMode ? 'methods' : '');
+  const problems: string[] = [];
+  try {
+    const bytes = readFileSync(path.join(dir, 'artifact.json'));
+    const found = JSON.parse(readFileSync(path.join(dir, 'run-record.json'), 'utf8'));
+    const digest = readRunArtifact(bytes).artifactDigest;
+    problems.push(...receiptProblems(found, digest, {
+      population: populationId, platform, methods: methodsMode, engineRevision: revision, runs,
+      candidateId: candidateId ?? null, attributionId: attributionId ?? null, evidenceTag: evidenceTag ?? null,
+      ...(methodsMode ? { methodsRun: { methods: methodsRun!.methods, reference: methodsRun!.reference, seed: methodsRun!.seed, evidenceDigest: methodsRun!.evaluationEvidence.digest } } : {}),
+    }));
+    if (!problems.length) {
+      const kept = path.join(out, 'artifact-1.json');
+      writeFileSync(kept, bytes);
+      artifacts.push(kept);
+      receiptReuse = { reused: true, artifactDigest: digest };
+    }
+  } catch (error) { problems.push(`the receipt is unreadable: ${(error as Error).message}`); }
+  if (!receiptReuse) {
+    receiptReuse = { reused: false, reasons: problems };
+    console.log(`receipt not reused (${problems.join('; ')}): measuring fresh`);
+  } else console.log(`receipt reused: ${receiptReuse.artifactDigest}; the engine is not run for this stage`);
+}
+for (let n = 1; n <= runs && !receiptReuse?.reused; n++) {
   const artifact = path.join(out, `artifact-${n}.json`);
   // A methods run is not given --require-complete: the engine then also exits 3 for a recorded operator generation attempt that errored, which
   // is a fact about the generated variants, not a scanner that did not measure. Scanner completeness is checked on the artifact below.
@@ -248,6 +277,7 @@ const record = {
   evidence: kept.manifest.evidence, configHash: kept.manifest.config_hash,
   artifact: { digest: kept.artifactDigest, semanticDigest: kept.semanticDigest, schemaDigest: sha256Digest(readFileSync(new URL('../schemas/credential-eval-run-artifact-v1.json', import.meta.url))) },
   determinism: { runs, semanticDigestsEqual: true },
+  ...(receiptReuse ? { receiptReuse } : {}),
   ...(evidenceTag && !(PRODUCT_POPULATIONS as readonly string[]).includes(populationId) ? { evidenceOverride: { tag: evidenceTag, manifestDigest: evidenceManifestDigest } } : {}),
   ...(candidate ? { productCandidate: { id: candidateId, commit: candidate.product.commit, version: candidate.product.version, published: false, packages: candidate.packages.map(x => ({ name: x.name, sha256: x.sha256 })), control: engineCandidate!.product, receipt: 'product-candidate-receipt.json' } } : {}),
   ...(attributionId ? { attribution: { id: attributionId, configFile, nodeDir: attribution!.nodeDir } } : {}),

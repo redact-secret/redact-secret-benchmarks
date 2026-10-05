@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "issue": 709,
+  "purpose": "Which change touches which measurement axis (docs/specs/execution-plan.md). Rules are tried in order; the first matching rule gives a file its change kind. A file no rule matches is `unclassified`: the plan refuses to guess and asks for a decision instead of measuring.",
+  "kinds": {
+    "accuracy-fixtures": {
+      "accuracy": "measure-affected-populations",
+      "performance": "reuse"
+    },
+    "accuracy-expectations": {
+      "accuracy": "rescore-eligible-observations",
+      "performance": "reuse"
+    },
+    "scanner-pin": {
+      "accuracy": "per-scanner-identity",
+      "performance": "identity-decides"
+    },
+    "performance-workload": {
+      "accuracy": "reuse",
+      "performance": "identity-decides"
+    },
+    "measurement-code": {
+      "accuracy": "reuse",
+      "performance": "identity-decides"
+    },
+    "evidence-record": {
+      "accuracy": "reuse",
+      "performance": "reuse"
+    },
+    "view-docs": {
+      "accuracy": "reuse",
+      "performance": "reuse"
+    },
+    "execution-tooling": {
+      "accuracy": "reuse",
+      "performance": "reuse"
+    }
+  },
+  "rules": [
+    {
+      "kind": "accuracy-fixtures",
+      "globs": [
+        "fixtures/**",
+        "corpora/**",
+        "adversarial/**",
+        "holdout/**",
+        "peer-observations/**",
+        "benchmarks/generated-corpora.json",
+        "benchmarks/operators/**"
+      ]
+    },
+    {
+      "kind": "accuracy-expectations",
+      "globs": [
+        "benchmarks/fixture-semantics.json",
+        "benchmarks/fixture-index.json",
+        "benchmarks/fixture-detectors.json",
+        "benchmarks/accounting/**",
+        "benchmarks/known-gaps.json",
+        "benchmarks/ledger-decisions.json",
+        "benchmarks/categories.json",
+        "benchmarks/detectors.json",
+        "benchmarks/detector-finding-types.json",
+        "benchmarks/detector-inventory.json",
+        "benchmarks/accepted-regressions.json",
+        "benchmarks/blind/**",
+        "tuning/**",
+        "baselines/**"
+      ]
+    },
+    {
+      "kind": "scanner-pin",
+      "globs": [
+        "benchmarks/official-runs.json",
+        "benchmarks/pin-manifest.json",
+        "benchmarks/evidence-adoption.json",
+        "benchmarks/product-candidates.json",
+        "scanners/**",
+        "package.json",
+        "package-lock.json"
+      ]
+    },
+    {
+      "kind": "performance-workload",
+      "globs": [
+        "qualification/*workloads*.json",
+        "qualification/peer-pii-runtime-throughput-v1.json",
+        "qualification/runtime-comparison-v2.json",
+        "qualification/pii-profile-cost-v*.json",
+        "benchmarks/performance-criteria.json"
+      ]
+    },
+    {
+      "kind": "measurement-code",
+      "globs": [
+        "scripts/measure-*.mjs",
+        "scripts/peer-pii-runtime-throughput/**",
+        "scripts/pii-profile-cost/**",
+        "benchmarks/evaluation/domains/pii/peer-runtime-throughput.ts",
+        "benchmarks/evaluate-performance.ts",
+        "benchmarks/lib/measured-performance.ts",
+        "benchmarks/lib/performance-*.ts"
+      ]
+    },
+    {
+      "kind": "evidence-record",
+      "globs": [
+        "evidence/**",
+        "benchmarks/official-run-archive.json",
+        "benchmarks/performance-cells.json",
+        "benchmarks/execution-telemetry.json",
+        "benchmarks/qualification-*.json"
+      ]
+    },
+    {
+      "kind": "execution-tooling",
+      "globs": [
+        "scripts/plan-*.ts",
+        "scripts/plan-*.mjs",
+        "scripts/ci-stage.sh",
+        "scripts/stage-timing-summary.mjs",
+        "scripts/retry-receipts.mjs",
+        "scripts/check-*.mjs",
+        "scripts/go-production*",
+        "scripts/adopt-evidence-snapshot.mjs",
+        "benchmarks/qualification/execution-plan.ts",
+        "benchmarks/qualification/receipt-reuse.ts",
+        ".github/workflows/execution-plan.yml"
+      ]
+    },
+    {
+      "kind": "view-docs",
+      "globs": [
+        "web/**",
+        "public/**",
+        "src/**",
+        "docs/**",
+        "*.md",
+        ".agents/**",
+        ".claude/**",
+        "graft/**",
+        "tests/**",
+        "schemas/**",
+        "index.html",
+        "vite.config.ts",
+        "tsconfig.json",
+        "Dockerfile",
+        ".dockerignore",
+        ".gitignore",
+        ".ignore",
+        ".gitguardian.yaml",
+        "LICENSE",
+        ".github/workflows/publish-site.yml",
+        ".github/workflows/validate.yml",
+        ".github/workflows/codeql.yml",
+        ".github/workflows/scorecard.yml"
+      ]
+    }
+  ]
+}

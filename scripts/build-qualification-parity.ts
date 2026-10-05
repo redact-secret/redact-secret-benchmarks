@@ -222,9 +222,12 @@ const adjustmentsByFamily: Record<string, Record<string, Record<string, number>>
   for (const key of publicJoin?.unmatchedNext ?? []) {
     const n = nextByKey.get(key)!, kind = kindOf(n);
     if (kind === 'pending') continue;
+    const flaggedControl = (kind === 'benign' || kind === 'twin') && (() => { const r = n.scanners[SCANNER]; return r?.kind === 'control' && Boolean((r as { flagged?: boolean }).flagged); })();
     for (const d of n.detectors) {
       add(d, 'canonical-evidence-membership', 'totalFixtures', -1);
       add(d, 'canonical-evidence-membership', kind === 'twin' ? 'twinPairs' : kind === 'benign' ? 'benignCases' : 'positiveCases', -1);
+      // A control with no legacy counterpart that the reference flags is a false alarm no legacy count holds (a twin is counted as a twin failure).
+      if (flaggedControl) add(d, 'canonical-evidence-membership', kind === 'twin' ? 'twinFailures' : 'benignFalseAlarms', -1);
     }
   }
 }
@@ -279,11 +282,11 @@ if (existsSync(methodsFile) && reviewDerivation) {
   for (const q of queue) {
     if (q.method !== 'differential') continue;
     const peer = String(q.peer ?? 'unknown');
-    const next = (reviewNext[peer] ??= { occurrences: 0, settled: 0 }) as { occurrences: number; settled: number };
+    const next = (reviewNext[peer] ??= { occurrences: 0, settled: 0 }) as { occurrences: number; settled: number; ownSettled?: number };
     next.occurrences++;
     if (unjoinedSeeds.has(seedCaseId(q.case_id, 'differential')) && !Object.hasOwn(product.ledgerRekey?.occurrences ?? {}, q.id)) unjoinedByPeer[peer] = (unjoinedByPeer[peer] ?? 0) + 1;
     const settledId = ledgerSettledId(q.id, product.ledger, product.ledgerRekey);
-    if (['resolved', 'not-assertable'].includes(String(product.ledger.entries[settledId]?.status))) next.settled++;
+    if (['resolved', 'not-assertable'].includes(String(product.ledger.entries[settledId]?.status))) { next.settled++; if (Object.hasOwn(product.ledger.entries, q.id)) next.ownSettled = (next.ownSettled ?? 0) + 1; }
     const legacyId = product.ledgerRekey!.occurrences[q.id];
     if (legacyId) { (mappedLegacy.get(peer) ?? mappedLegacy.set(peer, new Set()).get(peer)!).add(legacyId); reviewMapped++; }
   }

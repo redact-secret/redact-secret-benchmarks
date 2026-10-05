@@ -52,7 +52,8 @@ export function reviewLedgerProblem(value: unknown): string | null {
   if (ledger.schemaVersion !== 2 || !ledger.entries || typeof ledger.entries !== 'object' || Array.isArray(ledger.entries)) return 'Unsupported review ledger version';
   if (ledger.observationRun && (!run(ledger.observationRun.runId) || !date(ledger.observationRun.observedAt))) return 'Invalid review ledger observation run';
   for (const [id, entry] of Object.entries(ledger.entries)) {
-    if (!/^[a-f0-9]{64}$/.test(id) || !entry || !['open', 'resolved', 'not-assertable'].includes(entry.status) || !run(entry.firstSeenRun) || typeof entry.note !== 'string' || !entry.note.trim()) return `Invalid review ledger entry ${id.slice(0, 12)}`;
+    // A key is a legacy occurrence id (64 hex) or, for a decision made on a canonical occurrence of an accepted run, that occurrence's id (`sha256:` + 64 hex; ledgerSettledId reads it first).
+    if (!/^(?:sha256:)?[a-f0-9]{64}$/.test(id) || !entry || !['open', 'resolved', 'not-assertable'].includes(entry.status) || !run(entry.firstSeenRun) || typeof entry.note !== 'string' || !entry.note.trim()) return `Invalid review ledger entry ${id.slice(0, 12)}`;
     if ((entry.lastSeenRun === undefined) !== (entry.lastSeenAt === undefined)) return `Incomplete last observation for ${id.slice(0, 12)}`;
     if (entry.lastSeenRun !== undefined && (!run(entry.lastSeenRun) || !date(entry.lastSeenAt))) return `Invalid last observation for ${id.slice(0, 12)}`;
     if (entry.lastSeenEvidence && (!entry.lastSeenRun || !entry.lastSeenEvidence.caseId || !/^[a-z0-9-]+--[a-z0-9-]+$/.test(entry.lastSeenEvidence.sourceSlug) || !entry.lastSeenEvidence.variant)) return `Invalid last observation evidence for ${id.slice(0, 12)}`;

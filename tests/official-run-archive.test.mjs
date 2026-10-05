@@ -77,7 +77,7 @@ test('the real registry names a durable archive and every canonical file of it',
   const read = async rel => JSON.parse(await readFile(new URL(`../${rel}`, import.meta.url), 'utf8'));
   const archive = await read('benchmarks/official-run-archive.json');
   assert.equal(archive.schema, 'redact-secret/official-run-archive/v1');
-  assert.match(archive.release.tag, /^official-runs-\d+$/);
+  assert.match(archive.release.tag, /^official-runs(?:-registry)?-\d+$/);
   assert.ok(expectedFiles(await read('benchmarks/official-runs.json'), archive.platform).length >= 1);
 });
 

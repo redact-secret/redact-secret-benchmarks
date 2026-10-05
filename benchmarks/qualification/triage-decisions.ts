@@ -37,7 +37,7 @@ export interface TriageContext {
 const AMQP = 'generic-connection-grammar-authored--amqp-uri-all-sub-delimiters';
 const UNCLASSIFIED_PREFIXES = ['structured-credential-files-authored--', 'http-auth-carriers-authored--', 'url-credential-boundaries-authored--', 'twilio-compound-credentials-authored--'];
 // Families the product declares no detector or context for (docs/support-matrix.md and docs/specs/detector-families.md at core 0ecf3e59 name no netrc, kubeconfig,
-// HTTP session cookie, generic signed-URL or SAS-in-config family): a missed positive of these is a scope fact, provisional until the product's statement (#622).
+// HTTP session cookie, generic signed-URL or SAS-in-config family): a missed positive of these is a scope fact; the 13 provisional statements were confirmed by the repository owner on 2026-10-05 (#622), as the owner's decision based on the product's docs.
 const NO_DECLARED_FAMILY = ['generic:netrc-password', 'kubernetes:kubeconfig-user-credentials', 'generic:http-session-cookie', 'azure-storage:shared-access-signature-token', 'google:cloud-storage-signed-url', 'aws:s3-presigned-url'];
 const NO_DECLARED_SEED = /^(structured-credential-files-authored--(kubeconfig-|netrc-)|http-auth-carriers-authored--(cookie-|set-cookie-)|url-credential-boundaries-authored--(sas-token|cloud-storage-signed|s3-presigned))/;
 
@@ -109,7 +109,7 @@ export function decideRootCause(r: RootCause, ctx: TriageContext, seedDecisions:
 
   const core = r.kind.startsWith('core-');
   if (core && (NO_DECLARED_SEED.test(r.seedCase) || r.seedCase === 'http-auth-carriers-authored--basic-token-split-by-space') && !r.kind.endsWith('flagged')) {
-    return { classification: 'unsupported-or-feature-scope', status: 'settled', rule: 'no-declared-family', ledger: null, disposition: 'provisional scope reading: the product documents no detector family or supported context for this carrier (checked in docs/support-matrix.md and docs/specs/detector-families.md at core 0ecf3e59), so the miss or partial match is a scope fact until the product records its own statement (#622). Not a product-owner decision', evidence: ['no netrc, kubeconfig, HTTP session cookie, generic signed-URL or SAS-in-config family in the product docs at core 0ecf3e59'], links: [L.b622, ...issueLink] };
+    return { classification: 'unsupported-or-feature-scope', status: 'settled', rule: 'no-declared-family', ledger: null, disposition: 'scope reading confirmed by the repository owner (Milo Kang, 2026-10-05) as the owner\'s product-scope decision (#622), based on the product\'s own documentation: it documents no detector family or supported context for this carrier (checked in docs/support-matrix.md and docs/specs/detector-families.md at core 0ecf3e59), so the miss or partial match is a scope fact. It is the owner\'s decision on the product\'s docs, not a statement of the core maintainers beyond core #1203/#1204', evidence: ['no netrc, kubeconfig, HTTP session cookie, generic signed-URL or SAS-in-config family in the product docs at core 0ecf3e59', 'owner decision of 2026-10-05 (#680, #622): the 13 provisional product-scope statements are confirmed'], links: [L.b622, ...issueLink] };
   }
   if (UNCLASSIFIED_PREFIXES.some(p => r.seedCase.startsWith(p)) || (core && r.kind.endsWith('flagged')))
     return open('unclassified-by-core', 'core #1199 to #1201 do not classify this family; open with a linked core classification request', issueLink);

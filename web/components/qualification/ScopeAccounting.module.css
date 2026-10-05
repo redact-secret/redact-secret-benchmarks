@@ -1,0 +1,37 @@
+@layer components {
+  .mode {
+    margin: 0;
+    font: var(--text-small-strong);
+  }
+
+  .sub {
+    display: block;
+    color: var(--ink-muted);
+    font: var(--text-small);
+  }
+
+  .muted {
+    margin: 0;
+    color: var(--ink-muted);
+    font: var(--text-small);
+  }
+
+  .h3 {
+    margin: var(--space-4) 0 0;
+    font: var(--text-small-strong);
+  }
+
+  .plain {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--space-1);
+    font: var(--text-small);
+  }
+
+  .details summary {
+    cursor: pointer;
+    font: var(--text-small-strong);
+  }
+}

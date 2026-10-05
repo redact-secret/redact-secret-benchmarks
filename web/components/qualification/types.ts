@@ -53,6 +53,59 @@ export interface GapRow {
   fixtures: { fixture: string; matches: string[] }[];
 }
 
+/** One scanner's scope accounting for one artifact (#724): every cell is already formatted. "Unknown" is a word, never a zero. */
+export interface ScopeRow {
+  key: string;
+  population: string;
+  /** "plain run" or "methods run": the two artifacts are accounted apart. */
+  artifact: string;
+  scanner: string;
+  /** Declared configuration, e.g. "Default configuration, all built-in patterns" or "Diagnostic profile: credentials category". */
+  configuration: string;
+  /** Configuration hash and adapter version, shortened. */
+  identity: string;
+  /** Engine and classification version, e.g. "engine 0.1.0-alpha.11 · openredaction-1.1.5 · accounting v1", or why there is none. */
+  classification: string;
+  /** "812 of 1,020 findings carry a native label", or "Unknown". */
+  coverage: string;
+  mapped: string;
+  credentialRelated: string;
+  outOfScope: string;
+  ambiguous: string;
+  unavailable: string;
+  unrecognized: string;
+  /** True when the counts are not accounted (legacy, no table, not measured): the row is dashed. */
+  unaccounted: boolean;
+  /** The state word: "Accounted", "Legacy: native labels unavailable", "Not accounted", "Not measured". */
+  state: string;
+  /** Per native label, most findings first, already limited to `labelsShown`; `labelsMore` says how many were left out of this view. */
+  labels: { label: string; findings: string; scope: string; reason: string }[];
+  labelsMore: string | null;
+  /** Fixed limits for this row. */
+  limits: string[];
+}
+export interface ProfileEffectRow {
+  key: string;
+  population: string;
+  /** "openredaction-credentials against openredaction". */
+  pair: string;
+  identities: string;
+  outcomes: string;
+  benign: string;
+  findings: string;
+  denominators: string;
+  note: string;
+}
+export interface ScopeAccountingProps {
+  title: string;
+  description: string;
+  /** Published or candidate, as the mode line elsewhere on the page. */
+  mode: string;
+  rows: ScopeRow[];
+  profiles: { title: string; description: string; rows: ProfileEffectRow[]; empty: string };
+  notes: string[];
+}
+
 export interface QualificationOverviewProps {
   breadcrumb: Crumb[];
   eyebrow: string;
@@ -78,6 +131,8 @@ export interface QualificationOverviewProps {
   /** The cases no detector family claims, per population, on pages of their own. */
   unattributed: { title: string; description: string; href: string; label: string };
   gaps: { title: string; description: string; rows: GapRow[] };
+  /** Scope accounting beside the scanner counts (#724); absent when the view carries none. */
+  scope?: ScopeAccountingProps;
 }
 
 export interface CountsRow { key: string; population: string; role: string; scanner: string; cases: string; positives: string; outcomes: string; leaked: string; benign: string; twins: string; unmeasured: string }

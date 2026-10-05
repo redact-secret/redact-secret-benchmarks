@@ -18,6 +18,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { canonical, sha256Digest } from '../../benchmarks/qualification/canonical';
 import { QUALIFICATION_COMMANDS, QUALIFICATION_FILE, QUALIFICATION_SCHEMA } from '../lib/qualification';
+import type { ProfileEffect, ScopeEntry } from '../../benchmarks/qualification/scope-accounting';
 import { once, readJson, REPO_ROOT } from './repo';
 
 export { QUALIFICATION_COMMANDS, QUALIFICATION_FILE, QUALIFICATION_SCHEMA };
@@ -58,6 +59,8 @@ export interface PopulationView {
   methodsArtifact?: { semanticDigest: string; artifactDigest?: string; methods?: string[] };
   /** Cases and methods variants a complete scanner could not map to ranges: in no denominator, never zero detections or misses (RunArtifact v1.2). */
   unmeasured?: { cases: { scanner: string; unmeasured: number; reasons: Record<string, number> }[]; methodsVariants?: { scanner: string; unmeasured: number; reasons: Record<string, number> }[] };
+  /** Scope accounting per scanner (#724): the engine's counts, read and never recomputed. Absent in a view built before it. */
+  scope?: ScopeEntry[]; methodsScope?: ScopeEntry[]; profileEffects?: ProfileEffect[];
   artifact: {
     artifactDigest: string; semanticDigest: string; configHash: string; protocolVersion: string; engineRunClass?: string; publication?: string;
     engine: { name: string; version: string }; methods: string[]; caseCount: number;
@@ -108,6 +111,7 @@ export function qualificationShapeProblem(value: unknown): string | null {
   if (!Array.isArray(value.populations) || value.populations.length === 0) return 'populations is empty';
   for (const p of value.populations) {
     if (!object(p) || typeof p.population !== 'string' || !object(p.artifact) || !object(p.artifact.evidence) || !Array.isArray(p.artifact.scanners) || !Array.isArray(p.artifact.methods)) return 'a population has no artifact identity';
+    for (const key of ['scope', 'methodsScope', 'profileEffects']) if (p[key] !== undefined && !Array.isArray(p[key])) return `population ${p.population} has a ${key} that is not a list`;
     if (!Array.isArray(p.cases)) return `population ${p.population} has no cases: the view predates the case rows, rebuild it with npm run qualification:view`;
     for (const c of p.cases) {
       if (!object(c) || typeof c.id !== 'string' || typeof c.kind !== 'string' || !Array.isArray(c.detectors) || !Array.isArray(c.expected) || !Array.isArray(c.results) || c.results.some((r: unknown) => !object(r) || typeof (r as Record<string, unknown>).scanner !== 'string' || typeof (r as Record<string, unknown>).measurement !== 'string')) return `population ${p.population} has a case row that is not readable`;

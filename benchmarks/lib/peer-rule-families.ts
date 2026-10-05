@@ -52,7 +52,14 @@ export interface PeerProfile {
   description: string;
   /** What this benchmark does not run or measure for the scanner, one plain statement each (#612). */
   outOfScope: string[];
+  /**
+   * Declared diagnostic profiles of this peer (#724): other scanner ids that run the same package under a narrower, reviewed configuration. A
+   * profile is a separate scanner identity, never the default result and never a speed-up of it; the key is its scanner id.
+   */
+  diagnosticProfiles?: Record<string, { declaredScope: DeclaredScope; description: string }>;
 }
+export const DECLARED_SCOPES = { 'credential-category': 'Credentials category', 'credential-bearing-types': 'Credential-bearing types', 'mapped-types': 'Mapped types' } as const;
+export type DeclaredScope = keyof typeof DECLARED_SCOPES;
 export type PeerKind = 'repository-scanner' | 'runtime-library';
 export const PEER_KINDS: Record<PeerKind, string> = { 'repository-scanner': 'Repository scanner', 'runtime-library': 'Runtime library' };
 export interface PeerRegistry { schemaVersion: 1; scanners: Record<string, PeerProfile> }
@@ -151,8 +158,21 @@ export function peerRegistryProblems(registry: PeerRegistry, registered: string[
       if (typeof statement !== 'string' || !statement.trim() || statement.length > 200) problems.push(`peer-registry.json: ${id} has an outOfScope statement that is empty or over 200 characters`);
       else if (RANKING_WORDS.test(statement)) problems.push(`peer-registry.json: ${id} outOfScope statement words a judgement; state what is not run`);
     }
+    for (const [profileId, declared] of Object.entries(profile.diagnosticProfiles ?? {})) {
+      if (!/^[a-z0-9][a-z0-9-]*$/.test(profileId) || profileId === id || registered.includes(profileId)) problems.push(`peer-registry.json: ${id} diagnostic profile ${profileId} must be a new scanner id`);
+      if (!(declared.declaredScope in DECLARED_SCOPES)) problems.push(`peer-registry.json: ${id} profile ${profileId} has unknown declaredScope ${declared.declaredScope}`);
+      if (!declared.description?.trim() || declared.description.length > 240) problems.push(`peer-registry.json: ${id} profile ${profileId} needs a description of at most 240 characters`);
+      else if (RANKING_WORDS.test(declared.description)) problems.push(`peer-registry.json: ${id} profile ${profileId} description words a judgement`);
+    }
   }
   return problems;
+}
+
+/** Declared diagnostic profile scanner id -> its default scanner id, from the peer registry (#724). */
+export function declaredProfiles(registry: PeerRegistry): Record<string, string> {
+  const out: Record<string, string> = {};
+  for (const [id, profile] of Object.entries(registry.scanners)) for (const profileId of Object.keys(profile.diagnosticProfiles ?? {})) out[profileId] = id;
+  return out;
 }
 
 /** The families each peer's mapped rules target, and how many of its rules that is. */

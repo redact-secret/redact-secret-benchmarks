@@ -71,7 +71,7 @@ export function draftDecision({ tag, ec, decision, summary }) {
     'On acceptance the active evidence pin, the recorded runs (the previous ones as historical receipts), the derived overlays, the parity report and the authority file move to this release; the public numbers change only when this is merged and deployed. Rollback: revert the acceptance, or set the authority back to `legacy` (docs/specs/qualification-cutover.md).', '',
   ];
   void decision;
-  return `${lines.join('\n')}\n`;
+  return `${lines.join('\n').replace(/\n+$/, '')}\n`;
 }
 
 const sh = (command, args, options = {}) => execFileSync(command, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'], maxBuffer: 512 * 1024 * 1024, ...options });
@@ -168,6 +168,7 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
     const decisions = readFileSync(path.join(tree, 'docs/decisions/DECISIONS.md'), 'utf8').replace(/\n*$/, '\n');
     writeFileSync(path.join(tree, 'docs/decisions/DECISIONS.md'), `${decisions}- [Accept evidence ${tag} on credential-eval ${ec.engine.tag} with the published @redact-secret/core ${ec.product?.version ?? ''} as the credential qualification evidence (PROPOSED)](${path.basename(decision)}) (#690, #680; owner acceptance OWNER-TO-SET)\n`);
     // 9. The patch and its digest; the acceptance block into THIS checkout's record.
+    rmSync(path.join(tree, 'node_modules'), { force: true }); // the link to this checkout's modules is not part of the change
     run('git', ['add', '-A']);
     const patch = run('git', ['diff', '--cached', '--binary', 'HEAD']);
     mkdirSync(path.join(root, GENERATED), { recursive: true });

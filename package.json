@@ -115,6 +115,7 @@
     "eval:diagnostics:validate": "node --import tsx scripts/validate-unit-diagnostics.mjs",
     "eval:dry-run": "node --import tsx scripts/accounting-dry-run.ts",
     "eval:milestone": "node scripts/refresh-evaluation-milestone.mjs",
+    "plan:execution": "node --import tsx scripts/plan-execution.ts plan",
     "performance:criteria": "node --import tsx scripts/derive-performance-criteria.mjs",
     "performance:criteria:check": "node --import tsx scripts/derive-performance-criteria.mjs --check",
     "performance:schema:check": "node scripts/check-performance-schema.mjs",

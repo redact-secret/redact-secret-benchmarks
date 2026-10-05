@@ -1,0 +1,70 @@
+name: Execution plan (dry run)
+# #709: the cost-aware plan for what a change would measure, per axis and scanner. It reads the repository and starts no scan, no measurement and no job;
+# the dispatch workflows (official-runs.yml for accuracy, the performance workflows) run what the plan names. Spec: docs/specs/execution-plan.md.
+on:
+  workflow_dispatch:
+    inputs:
+      axis:
+        description: Which axis to plan. No default; both is an explicit choice.
+        required: true
+        type: choice
+        options: [accuracy, performance, both]
+      base_ref:
+        description: The branch the change is compared with.
+        required: false
+        default: develop
+        type: string
+      lane:
+        description: Accuracy lane. The official lane measures every scanner of a changed population; the diagnostic lane may reuse (#706).
+        required: false
+        default: official
+        type: choice
+        options: [official, diagnostic]
+      force_fresh:
+        description: Cell, subject, measurement or scanner ids to plan fresh, comma separated, or all.
+        required: false
+        default: ''
+        type: string
+      controlled_comparison:
+        description: Plan an explicit controlled comparison (every subject of the affected performance job fresh in one run).
+        required: false
+        default: false
+        type: boolean
+permissions:
+  contents: read
+jobs:
+  plan:
+    name: Plan (${{ inputs.axis }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      AXIS: ${{ inputs.axis }}
+      BASE_REF: ${{ inputs.base_ref }}
+      LANE: ${{ inputs.lane }}
+      FORCE_FRESH: ${{ inputs.force_fresh }}
+      CONTROLLED: ${{ inputs.controlled_comparison }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Plan
+        run: |
+          [[ "$BASE_REF" =~ ^[A-Za-z0-9._/-]+$ ]] || { echo "::error::base_ref is not a branch name"; exit 1; }
+          [ -z "$FORCE_FRESH" ] || [[ "$FORCE_FRESH" =~ ^[A-Za-z0-9._/,-]+$ ]] || { echo "::error::force_fresh is a comma-separated list of ids"; exit 1; }
+          git fetch --no-tags origin "$BASE_REF"
+          extra=()
+          [ -z "$FORCE_FRESH" ] || extra+=(--force-fresh "$FORCE_FRESH")
+          [ "$CONTROLLED" != "true" ] || extra+=(--controlled-comparison)
+          node --import tsx scripts/plan-execution.ts plan --axis "$AXIS" --base "origin/$BASE_REF" --lane "$LANE" "${extra[@]}" --out execution-plan-out | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: execution-plan
+          path: execution-plan-out
+          if-no-files-found: error
+          retention-days: 30

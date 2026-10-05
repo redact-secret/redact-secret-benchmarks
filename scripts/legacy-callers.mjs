@@ -55,6 +55,9 @@ for (const f of files) {
   }
 }
 
+/** The files that statically import `file` (no path mentions), for callers that walk the import graph (scripts/ci-plan.mjs). */
+export const importersOf = (file) => [...(importers.get(file) ?? [])]
+
 export function classify(f) {
   if (f === 'package.json') return 'package hook'
   if (f.startsWith('.github/workflows/')) return 'workflow'

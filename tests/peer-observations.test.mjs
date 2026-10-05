@@ -101,8 +101,8 @@ test('reused observations are rescored without executing a peer and remain visib
 });
 
 test('ordinary validation and publication consume snapshots before any peer provisioning', async () => {
-  const validate = await readFile(new URL('../.github/workflows/validate.yml', import.meta.url), 'utf8');
-  const comparison = validate.slice(validate.indexOf('  scanner-comparison:'));
+  const validate = await readFile(new URL('../.github/workflows/legacy-oracle.yml', import.meta.url), 'utf8');
+  const comparison = validate.slice(validate.indexOf('  scanner-comparison:'), validate.indexOf('  web-legacy:'));
   assert.doesNotMatch(comparison, /peers:provision|test:integration/);
   assert.match(comparison, /npm run eval:classify/);
   assert.match(comparison, /npm run queue:check/);

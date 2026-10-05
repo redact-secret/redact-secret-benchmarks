@@ -275,7 +275,10 @@ jobs:
         with:
           node-version: 22
           cache: npm
-      - run: npm ci
+      # The view is exported from the two product populations only, built in memory by qualification:export (#659): the public development corpora the
+      # `prepare` hook would also materialize are not read here, so install without scripts and materialize just the product populations.
+      - run: npm ci --ignore-scripts
+      - run: npm run fixtures:ensure:product
       - name: The registry pins the artifacts and the corpus the view is exported from
         run: npm run official-runs:check -- --bindings
       - name: Restore the view built for these inputs

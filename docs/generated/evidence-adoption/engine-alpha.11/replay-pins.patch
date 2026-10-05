@@ -1,0 +1,1227 @@
+diff --git a/benchmarks/official-runs.json b/benchmarks/official-runs.json
+index 31102853..cbfb7688 100644
+--- a/benchmarks/official-runs.json
++++ b/benchmarks/official-runs.json
+@@ -4,13 +4,13 @@
+   "decision": "docs/decisions/2026-10-01-run-credential-eval-per-population-and-adapt-run-artifacts.md",
+   "engine": {
+     "repository": "redact-secret/credential-eval",
+-    "tag": "v0.1.0-alpha.5",
+-    "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+-    "version": "0.1.0-alpha.5",
++    "tag": "v0.1.0-alpha.11",
++    "revision": "eec5d0d3548ddb232a996c11c4e2b1a65a436489",
++    "version": "0.1.0-alpha.11",
+     "protocol": "credential-eval-protocol/1",
+     "runArtifactSchema": {
+       "path": "schemas/credential-eval-run-artifact-v1.json",
+-      "sha256": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809"
++      "sha256": "sha256:cd80c3df7fd8c788cf6de97fe36f5da6041398c6217e8b845a7803b294f14a9a"
+     }
+   },
+   "config": {
+@@ -149,473 +149,7 @@
+       }
+     }
+   ],
+-  "runs": [
+-    {
+-      "id": "policy-corpus@linux-x64",
+-      "population": "policy-corpus",
+-      "platform": "linux-x64",
+-      "canonical": true,
+-      "purpose": "canonical measurement: the linux-x64 official run of .github/workflows/official-runs.yml",
+-      "recordedOn": "2026-10-05",
+-      "benchmarkRevision": "d4b9f1e96fc06c08d44554e4b2cc18a4a0872d0a",
+-      "engine": {
+-        "name": "credential-eval",
+-        "version": "0.1.0-alpha.5",
+-        "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+-        "protocol": "credential-eval-protocol/1"
+-      },
+-      "runClass": "public",
+-      "engineRunClass": "official",
+-      "publication": "public",
+-      "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+-      "evidence": {
+-        "source": "redact-secret-benchmarks/policy",
+-        "revision": "corpus-sha256:37293aba657dc6b6034f568206b5cdf717f9eac1e0f8e4fbfeeff363f162f1be",
+-        "evidence_schema": "redact-secret-benchmarks/fixtures/v2",
+-        "corpus_digest": "sha256:37293aba657dc6b6034f568206b5cdf717f9eac1e0f8e4fbfeeff363f162f1be",
+-        "release": {
+-          "tag": "policy-37293aba657d",
+-          "manifest_digest": "sha256:336d79eadf7d9e19a3da1f42843f1c8cf00a8adcc1e946c794d6c9531f66a703"
+-        }
+-      },
+-      "artifact": {
+-        "semanticDigest": "sha256:9a6576c90e30907dee3b6e2b368d2791a29865fa8215790b0ef9cf6f75b66f9e",
+-        "byteDigest": "sha256:400da577902a97d63100da1166ede6a6bc7ee4a016c98489102fd6401a2fe226",
+-        "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
+-        "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
+-      },
+-      "determinism": {
+-        "runs": 2,
+-        "semanticDigestsEqual": true
+-      },
+-      "scanners": [
+-        {
+-          "id": "flare-redact",
+-          "version": "1.6.1",
+-          "build": "released",
+-          "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+-          "adapter": {
+-            "id": "flare-redact",
+-            "version": "1"
+-          },
+-          "configurationHash": "sha256:f111f4606c9185205f16555c97493f82a9165e19afe05c38a9d4a4b399b36300",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-13Htu6VPk2ttxcoVOP909pXao6orrIBAMS/qWdhQn3/BS5AxSB5fpyqaPZnRGJhfBAM2M9T+RE662hxEpv6nGQ=="
+-        },
+-        {
+-          "id": "gitleaks",
+-          "version": "8.30.1",
+-          "build": "released",
+-          "mode": "Directory scan · default rules",
+-          "adapter": {
+-            "id": "gitleaks",
+-            "version": "2"
+-          },
+-          "configurationHash": "sha256:f091a51ed948545f0ef07b2c29940ef1f84af58262f0888b6433fb60ec4c7337",
+-          "executableSha256": "sha256:88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
+-          "packageIntegrity": null
+-        },
+-        {
+-          "id": "openredaction",
+-          "version": "1.1.5",
+-          "build": "released",
+-          "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+-          "adapter": {
+-            "id": "openredaction",
+-            "version": "1"
+-          },
+-          "configurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-SpQTBhVV4p3rmge818NH6iJiL/fvwFlDvhGaejoL0wbzY7jRHIhU5vEf3KzNARsIZmpCJV1eHdiavIjQyN1hXQ=="
+-        },
+-        {
+-          "id": "redact-secret",
+-          "version": "0.1.0-beta.13",
+-          "build": "released",
+-          "mode": "Published npm package · default detectors",
+-          "adapter": {
+-            "id": "redact-secret",
+-            "version": "3"
+-          },
+-          "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+-        },
+-        {
+-          "id": "trufflehog",
+-          "version": "3.97.4",
+-          "build": "released",
+-          "mode": "Filesystem scan · verification disabled",
+-          "adapter": {
+-            "id": "trufflehog",
+-            "version": "2"
+-          },
+-          "configurationHash": "sha256:d077d8241c93abc23a64c8f9278475c779e1beaaa302f0d43a072284f6cf1678",
+-          "executableSha256": "sha256:95c2a42bce979fce6dd73cc629b37ae4d72731b0dc16e047fba41a77bc765620",
+-          "packageIntegrity": null
+-        }
+-      ],
+-      "caseCounts": {
+-        "flare-redact": 19,
+-        "gitleaks": 19,
+-        "openredaction": 19,
+-        "redact-secret": 19,
+-        "trufflehog": 19
+-      }
+-    },
+-    {
+-      "id": "public-evidence-snapshot+methods@linux-x64",
+-      "population": "public-evidence-snapshot",
+-      "kind": "methods",
+-      "methods": [
+-        "differential",
+-        "metamorphic",
+-        "mutation"
+-      ],
+-      "evaluation": {
+-        "reference": "redact-secret",
+-        "seed": "case-id",
+-        "evidenceDigest": "sha256:1af8d70c6891eddf749f741364b35ba0c46d510a888d7e39111be04ec2c49c91"
+-      },
+-      "platform": "linux-x64",
+-      "canonical": true,
+-      "purpose": "canonical methods run: the linux-x64 official run of .github/workflows/official-runs.yml",
+-      "recordedOn": "2026-10-05",
+-      "benchmarkRevision": "d4b9f1e96fc06c08d44554e4b2cc18a4a0872d0a",
+-      "engine": {
+-        "name": "credential-eval",
+-        "version": "0.1.0-alpha.5",
+-        "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+-        "protocol": "credential-eval-protocol/1"
+-      },
+-      "runClass": "public",
+-      "engineRunClass": "official",
+-      "publication": "public",
+-      "configHash": "sha256:d47d081ce5fb1265aeebe7fdee9fea27a3b01b2fa0e36ce6ee679706d2a924b2",
+-      "evidence": {
+-        "source": "credential-evidence",
+-        "revision": "records-tree-sha256:924cd5b9b068e0d5ec5039bce962c63a484cb7fdec61b8b1e6603b1c530884b7",
+-        "evidence_schema": "credential-evidence/schema/1.7.0",
+-        "corpus_digest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
+-        "release": {
+-          "tag": "snapshot-2026.10.05",
+-          "manifest_digest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
+-        },
+-        "representation": "credential-eval/representation/1"
+-      },
+-      "artifact": {
+-        "semanticDigest": "sha256:3b5c750a1f973760b4f08d748525e280b6a516feb0e013ccfdc8c87ff66e2442",
+-        "byteDigest": "sha256:d4e9a1b0b373ec404cfafa629b985b68eb161276b14da8dcb01bb81fb99d90ec",
+-        "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
+-        "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
+-      },
+-      "determinism": {
+-        "runs": 2,
+-        "semanticDigestsEqual": true
+-      },
+-      "scanners": [
+-        {
+-          "id": "flare-redact",
+-          "version": "1.6.1",
+-          "build": "released",
+-          "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+-          "adapter": {
+-            "id": "flare-redact",
+-            "version": "1"
+-          },
+-          "configurationHash": "sha256:f111f4606c9185205f16555c97493f82a9165e19afe05c38a9d4a4b399b36300",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-13Htu6VPk2ttxcoVOP909pXao6orrIBAMS/qWdhQn3/BS5AxSB5fpyqaPZnRGJhfBAM2M9T+RE662hxEpv6nGQ=="
+-        },
+-        {
+-          "id": "gitleaks",
+-          "version": "8.30.1",
+-          "build": "released",
+-          "mode": "Directory scan · default rules",
+-          "adapter": {
+-            "id": "gitleaks",
+-            "version": "2"
+-          },
+-          "configurationHash": "sha256:f091a51ed948545f0ef07b2c29940ef1f84af58262f0888b6433fb60ec4c7337",
+-          "executableSha256": "sha256:88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
+-          "packageIntegrity": null
+-        },
+-        {
+-          "id": "openredaction",
+-          "version": "1.1.5",
+-          "build": "released",
+-          "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+-          "adapter": {
+-            "id": "openredaction",
+-            "version": "1"
+-          },
+-          "configurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-SpQTBhVV4p3rmge818NH6iJiL/fvwFlDvhGaejoL0wbzY7jRHIhU5vEf3KzNARsIZmpCJV1eHdiavIjQyN1hXQ=="
+-        },
+-        {
+-          "id": "redact-secret",
+-          "version": "0.1.0-beta.13",
+-          "build": "released",
+-          "mode": "Published npm package · default detectors",
+-          "adapter": {
+-            "id": "redact-secret",
+-            "version": "3"
+-          },
+-          "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+-        },
+-        {
+-          "id": "trufflehog",
+-          "version": "3.97.4",
+-          "build": "released",
+-          "mode": "Filesystem scan · verification disabled",
+-          "adapter": {
+-            "id": "trufflehog",
+-            "version": "2"
+-          },
+-          "configurationHash": "sha256:d077d8241c93abc23a64c8f9278475c779e1beaaa302f0d43a072284f6cf1678",
+-          "executableSha256": "sha256:95c2a42bce979fce6dd73cc629b37ae4d72731b0dc16e047fba41a77bc765620",
+-          "packageIntegrity": null
+-        }
+-      ],
+-      "caseCounts": {
+-        "flare-redact": 35747,
+-        "gitleaks": 35747,
+-        "openredaction": 35747,
+-        "redact-secret": 35747,
+-        "trufflehog": 35747
+-      }
+-    },
+-    {
+-      "id": "public-evidence-snapshot@linux-x64",
+-      "population": "public-evidence-snapshot",
+-      "platform": "linux-x64",
+-      "canonical": true,
+-      "purpose": "canonical measurement: the linux-x64 official run of .github/workflows/official-runs.yml",
+-      "recordedOn": "2026-10-05",
+-      "benchmarkRevision": "d4b9f1e96fc06c08d44554e4b2cc18a4a0872d0a",
+-      "engine": {
+-        "name": "credential-eval",
+-        "version": "0.1.0-alpha.5",
+-        "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+-        "protocol": "credential-eval-protocol/1"
+-      },
+-      "runClass": "public",
+-      "engineRunClass": "official",
+-      "publication": "public",
+-      "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+-      "evidence": {
+-        "source": "credential-evidence",
+-        "revision": "records-tree-sha256:924cd5b9b068e0d5ec5039bce962c63a484cb7fdec61b8b1e6603b1c530884b7",
+-        "evidence_schema": "credential-evidence/schema/1.7.0",
+-        "corpus_digest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
+-        "release": {
+-          "tag": "snapshot-2026.10.05",
+-          "manifest_digest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
+-        },
+-        "representation": "credential-eval/representation/1"
+-      },
+-      "artifact": {
+-        "semanticDigest": "sha256:4bbbebc2ca24f190a3c69b0ff9dd7e97e744bba9e54e266a3caf11702018fc66",
+-        "byteDigest": "sha256:31ebec733e4e715fafe5d8ee8af826c864d4cc61a3f49eca19242fce2ba4e3ea",
+-        "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
+-        "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
+-      },
+-      "determinism": {
+-        "runs": 2,
+-        "semanticDigestsEqual": true
+-      },
+-      "scanners": [
+-        {
+-          "id": "flare-redact",
+-          "version": "1.6.1",
+-          "build": "released",
+-          "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+-          "adapter": {
+-            "id": "flare-redact",
+-            "version": "1"
+-          },
+-          "configurationHash": "sha256:f111f4606c9185205f16555c97493f82a9165e19afe05c38a9d4a4b399b36300",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-13Htu6VPk2ttxcoVOP909pXao6orrIBAMS/qWdhQn3/BS5AxSB5fpyqaPZnRGJhfBAM2M9T+RE662hxEpv6nGQ=="
+-        },
+-        {
+-          "id": "gitleaks",
+-          "version": "8.30.1",
+-          "build": "released",
+-          "mode": "Directory scan · default rules",
+-          "adapter": {
+-            "id": "gitleaks",
+-            "version": "2"
+-          },
+-          "configurationHash": "sha256:f091a51ed948545f0ef07b2c29940ef1f84af58262f0888b6433fb60ec4c7337",
+-          "executableSha256": "sha256:88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
+-          "packageIntegrity": null
+-        },
+-        {
+-          "id": "openredaction",
+-          "version": "1.1.5",
+-          "build": "released",
+-          "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+-          "adapter": {
+-            "id": "openredaction",
+-            "version": "1"
+-          },
+-          "configurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-SpQTBhVV4p3rmge818NH6iJiL/fvwFlDvhGaejoL0wbzY7jRHIhU5vEf3KzNARsIZmpCJV1eHdiavIjQyN1hXQ=="
+-        },
+-        {
+-          "id": "redact-secret",
+-          "version": "0.1.0-beta.13",
+-          "build": "released",
+-          "mode": "Published npm package · default detectors",
+-          "adapter": {
+-            "id": "redact-secret",
+-            "version": "3"
+-          },
+-          "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+-        },
+-        {
+-          "id": "trufflehog",
+-          "version": "3.97.4",
+-          "build": "released",
+-          "mode": "Filesystem scan · verification disabled",
+-          "adapter": {
+-            "id": "trufflehog",
+-            "version": "2"
+-          },
+-          "configurationHash": "sha256:d077d8241c93abc23a64c8f9278475c779e1beaaa302f0d43a072284f6cf1678",
+-          "executableSha256": "sha256:95c2a42bce979fce6dd73cc629b37ae4d72731b0dc16e047fba41a77bc765620",
+-          "packageIntegrity": null
+-        }
+-      ],
+-      "caseCounts": {
+-        "flare-redact": 6519,
+-        "gitleaks": 6519,
+-        "openredaction": 6519,
+-        "redact-secret": 6519,
+-        "trufflehog": 6519
+-      }
+-    },
+-    {
+-      "id": "regression-corpus@linux-x64",
+-      "population": "regression-corpus",
+-      "platform": "linux-x64",
+-      "canonical": true,
+-      "purpose": "canonical measurement: the linux-x64 official run of .github/workflows/official-runs.yml",
+-      "recordedOn": "2026-10-05",
+-      "benchmarkRevision": "d4b9f1e96fc06c08d44554e4b2cc18a4a0872d0a",
+-      "engine": {
+-        "name": "credential-eval",
+-        "version": "0.1.0-alpha.5",
+-        "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+-        "protocol": "credential-eval-protocol/1"
+-      },
+-      "runClass": "public",
+-      "engineRunClass": "official",
+-      "publication": "public",
+-      "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+-      "evidence": {
+-        "source": "redact-secret-benchmarks/regression",
+-        "revision": "corpus-sha256:b7b236c5ad1afc9377d05ca3f3738cebdaad15fbdaa3a492e3059770f04285f6",
+-        "evidence_schema": "redact-secret-benchmarks/fixtures/v2",
+-        "corpus_digest": "sha256:b7b236c5ad1afc9377d05ca3f3738cebdaad15fbdaa3a492e3059770f04285f6",
+-        "release": {
+-          "tag": "regression-b7b236c5ad1a",
+-          "manifest_digest": "sha256:5cf63dd0aafdbff6752107c0d3a7e4be63938f1e4e6d30c92c15c5443cfb1080"
+-        }
+-      },
+-      "artifact": {
+-        "semanticDigest": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
+-        "byteDigest": "sha256:50687e1c6a38410db5686ec8c1c3ce6f46a7585bc4e8cf5bfcdfa22cf6411340",
+-        "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
+-        "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
+-      },
+-      "determinism": {
+-        "runs": 2,
+-        "semanticDigestsEqual": true
+-      },
+-      "scanners": [
+-        {
+-          "id": "flare-redact",
+-          "version": "1.6.1",
+-          "build": "released",
+-          "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+-          "adapter": {
+-            "id": "flare-redact",
+-            "version": "1"
+-          },
+-          "configurationHash": "sha256:f111f4606c9185205f16555c97493f82a9165e19afe05c38a9d4a4b399b36300",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-13Htu6VPk2ttxcoVOP909pXao6orrIBAMS/qWdhQn3/BS5AxSB5fpyqaPZnRGJhfBAM2M9T+RE662hxEpv6nGQ=="
+-        },
+-        {
+-          "id": "gitleaks",
+-          "version": "8.30.1",
+-          "build": "released",
+-          "mode": "Directory scan · default rules",
+-          "adapter": {
+-            "id": "gitleaks",
+-            "version": "2"
+-          },
+-          "configurationHash": "sha256:f091a51ed948545f0ef07b2c29940ef1f84af58262f0888b6433fb60ec4c7337",
+-          "executableSha256": "sha256:88f91962aa2f93ac6ab281d553b9e125f5197bbbce38f9f2437f7299c32e5509",
+-          "packageIntegrity": null
+-        },
+-        {
+-          "id": "openredaction",
+-          "version": "1.1.5",
+-          "build": "released",
+-          "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+-          "adapter": {
+-            "id": "openredaction",
+-            "version": "1"
+-          },
+-          "configurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-SpQTBhVV4p3rmge818NH6iJiL/fvwFlDvhGaejoL0wbzY7jRHIhU5vEf3KzNARsIZmpCJV1eHdiavIjQyN1hXQ=="
+-        },
+-        {
+-          "id": "redact-secret",
+-          "version": "0.1.0-beta.13",
+-          "build": "released",
+-          "mode": "Published npm package · default detectors",
+-          "adapter": {
+-            "id": "redact-secret",
+-            "version": "3"
+-          },
+-          "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2",
+-          "executableSha256": null,
+-          "packageIntegrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+-        },
+-        {
+-          "id": "trufflehog",
+-          "version": "3.97.4",
+-          "build": "released",
+-          "mode": "Filesystem scan · verification disabled",
+-          "adapter": {
+-            "id": "trufflehog",
+-            "version": "2"
+-          },
+-          "configurationHash": "sha256:d077d8241c93abc23a64c8f9278475c779e1beaaa302f0d43a072284f6cf1678",
+-          "executableSha256": "sha256:95c2a42bce979fce6dd73cc629b37ae4d72731b0dc16e047fba41a77bc765620",
+-          "packageIntegrity": null
+-        }
+-      ],
+-      "caseCounts": {
+-        "flare-redact": 153,
+-        "gitleaks": 153,
+-        "openredaction": 153,
+-        "redact-secret": 153,
+-        "trufflehog": 153
+-      }
+-    }
+-  ],
++  "runs": [],
+   "historicalRuns": [
+     {
+       "id": "public-evidence-snapshot+methods@linux-x64",
+@@ -672,7 +206,7 @@
+           "id": "flare-redact",
+           "version": "1.6.1",
+           "build": "released",
+-          "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
++          "mode": "Published npm package \u00b7 secrets-only (pii, generic_assignment disabled) \u00b7 JavaScript engine",
+           "adapter": {
+             "id": "flare-redact",
+             "version": "1"
+@@ -685,7 +219,7 @@
+           "id": "gitleaks",
+           "version": "8.30.1",
+           "build": "released",
+-          "mode": "Directory scan · default rules",
++          "mode": "Directory scan \u00b7 default rules",
+           "adapter": {
+             "id": "gitleaks",
+             "version": "2"
+@@ -698,7 +232,7 @@
+           "id": "openredaction",
+           "version": "1.1.5",
+           "build": "released",
+-          "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
++          "mode": "Published npm package \u00b7 default patterns (PII enabled) \u00b7 pattern coverage only",
+           "adapter": {
+             "id": "openredaction",
+             "version": "1"
+@@ -711,7 +245,7 @@
+           "id": "redact-secret",
+           "version": "0.1.0-beta.12",
+           "build": "released",
+-          "mode": "Published npm package · default detectors",
++          "mode": "Published npm package \u00b7 default detectors",
+           "adapter": {
+             "id": "redact-secret",
+             "version": "3"
+@@ -724,7 +258,7 @@
+           "id": "trufflehog",
+           "version": "3.97.4",
+           "build": "released",
+-          "mode": "Filesystem scan · verification disabled",
++          "mode": "Filesystem scan \u00b7 verification disabled",
+           "adapter": {
+             "id": "trufflehog",
+             "version": "2"
+@@ -792,7 +326,7 @@
+           "id": "flare-redact",
+           "version": "1.6.1",
+           "build": "released",
+-          "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
++          "mode": "Published npm package \u00b7 secrets-only (pii, generic_assignment disabled) \u00b7 JavaScript engine",
+           "adapter": {
+             "id": "flare-redact",
+             "version": "1"
+@@ -805,7 +339,7 @@
+           "id": "gitleaks",
+           "version": "8.30.1",
+           "build": "released",
+-          "mode": "Directory scan · default rules",
++          "mode": "Directory scan \u00b7 default rules",
+           "adapter": {
+             "id": "gitleaks",
+             "version": "2"
+@@ -818,7 +352,7 @@
+           "id": "openredaction",
+           "version": "1.1.5",
+           "build": "released",
+-          "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
++          "mode": "Published npm package \u00b7 default patterns (PII enabled) \u00b7 pattern coverage only",
+           "adapter": {
+             "id": "openredaction",
+             "version": "1"
+@@ -831,7 +365,7 @@
+           "id": "redact-secret",
+           "version": "0.1.0-beta.12",
+           "build": "released",
+-          "mode": "Published npm package · default detectors",
++          "mode": "Published npm package \u00b7 default detectors",
+           "adapter": {
+             "id": "redact-secret",
+             "version": "3"
+@@ -844,7 +378,7 @@
+           "id": "trufflehog",
+           "version": "3.97.4",
+           "build": "released",
+-          "mode": "Filesystem scan · verification disabled",
++          "mode": "Filesystem scan \u00b7 verification disabled",
+           "adapter": {
+             "id": "trufflehog",
+             "version": "2"
+diff --git a/schemas/credential-eval-run-artifact-v1.json b/schemas/credential-eval-run-artifact-v1.json
+index 91b59711..50e87133 100644
+--- a/schemas/credential-eval-run-artifact-v1.json
++++ b/schemas/credential-eval-run-artifact-v1.json
+@@ -792,6 +792,77 @@
+         }
+       ]
+     },
++    "DispositionCounts": {
++      "description": "Finding counts by disposition. Every key is always present; a zero is a\nmeasured zero.",
++      "type": "object",
++      "properties": {
++        "ambiguous": {
++          "description": "Unmapped with conflicting or ambiguous scope.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "credential_related_unmapped": {
++          "description": "Unmapped, credential-related, unresolved.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "mapped_credential": {
++          "description": "Findings carrying a family.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "native_label_unavailable": {
++          "description": "No native label.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "out_of_scope": {
++          "description": "Unmapped, reviewed as not a credential (personal data, resource identifiers).",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "unrecognized_label": {
++          "description": "Only an unrecognized label.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        }
++      },
++      "additionalProperties": false,
++      "required": [
++        "mapped_credential",
++        "credential_related_unmapped",
++        "out_of_scope",
++        "ambiguous",
++        "native_label_unavailable",
++        "unrecognized_label"
++      ]
++    },
++    "DispositionStatus": {
++      "description": "Review status of a native type.",
++      "oneOf": [
++        {
++          "description": "The adapter maps the type to a family.",
++          "type": "string",
++          "const": "mapped"
++        },
++        {
++          "description": "Credential-bearing or ambiguous; no family is claimed.",
++          "type": "string",
++          "const": "unresolved"
++        },
++        {
++          "description": "Not a credential by scope.",
++          "type": "string",
++          "const": "not-credential"
++        }
++      ]
++    },
+     "EngineIdentity": {
+       "description": "Engine identity.",
+       "type": "object",
+@@ -894,18 +965,47 @@
+           "format": "uint32",
+           "minimum": 0
+         },
++        "phases": {
++          "description": "Where the wall-clock time of each run phase went (v1.5, additive).",
++          "anyOf": [
++            {
++              "$ref": "#/$defs/PhaseTimings"
++            },
++            {
++              "type": "null"
++            }
++          ]
++        },
+         "processes": {
+           "description": "Scanner process invocations that ran (version probes and scans).",
+           "type": "integer",
+           "format": "uint64",
+           "minimum": 0
+         },
++        "reuse": {
++          "description": "The earlier observations this run drew on; absent when every scanner\nran fresh (v1.6, additive).",
++          "anyOf": [
++            {
++              "$ref": "#/$defs/ReuseDiagnostics"
++            },
++            {
++              "type": "null"
++            }
++          ]
++        },
+         "scanner_process_ms": {
+           "description": "Sum of scanner process wall-clock times, in milliseconds. With\nparallel jobs this can exceed `wall_ms`.",
+           "type": "integer",
+           "format": "uint64",
+           "minimum": 0
+         },
++        "scanners": {
++          "description": "Per-scanner timings and sizes, by scanner id (v1.5, additive).",
++          "type": "object",
++          "additionalProperties": {
++            "$ref": "#/$defs/ScannerTiming"
++          }
++        },
+         "wall_ms": {
+           "description": "Wall-clock time of the whole run, in milliseconds.",
+           "type": "integer",
+@@ -922,6 +1022,31 @@
+         "evaluator_ms"
+       ]
+     },
++    "FailedPhase": {
++      "description": "Phase of a run in which a scanner failed. A fixed vocabulary, so a\ntiming record can never carry scanner output.",
++      "oneOf": [
++        {
++          "description": "The version probe failed (the scanner never ran).",
++          "type": "string",
++          "const": "prepare"
++        },
++        {
++          "description": "The scan process failed: timeout, output overflow, non-zero exit.",
++          "type": "string",
++          "const": "scan"
++        },
++        {
++          "description": "The output could not be parsed or mapped to ranges.",
++          "type": "string",
++          "const": "normalize"
++        },
++        {
++          "description": "The replays disagreed, or did not all run.",
++          "type": "string",
++          "const": "replay"
++        }
++      ]
++    },
+     "FindingMapping": {
+       "description": "What an adapter did to place a finding that was reported in decoded\ncoordinates. Carried on the finding and on its artifact row so a consumer\ncan see which ranges are mapped, and how, and which are plain.",
+       "type": "object",
+@@ -1211,6 +1336,63 @@
+         }
+       ]
+     },
++    "LabelAccount": {
++      "description": "Findings carrying one native label. A finding with several labels counts\nunder each, so label counts can exceed the finding count.",
++      "type": "object",
++      "properties": {
++        "findings": {
++          "description": "Findings carrying the label.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "label": {
++          "description": "Native label (reviewed, or the unrecognized marker).",
++          "$ref": "#/$defs/NativeLabel"
++        },
++        "reason": {
++          "description": "Reviewed reason; absent for the unrecognized marker.",
++          "type": [
++            "string",
++            "null"
++          ]
++        },
++        "scope": {
++          "description": "Reviewed scope; absent for the unrecognized marker.",
++          "anyOf": [
++            {
++              "$ref": "#/$defs/Scope"
++            },
++            {
++              "type": "null"
++            }
++          ]
++        },
++        "status": {
++          "description": "Review status; absent for the unrecognized marker.",
++          "anyOf": [
++            {
++              "$ref": "#/$defs/DispositionStatus"
++            },
++            {
++              "type": "null"
++            }
++          ]
++        },
++        "with_family": {
++          "description": "Of those, findings that carry a family.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        }
++      },
++      "additionalProperties": false,
++      "required": [
++        "label",
++        "findings",
++        "with_family"
++      ]
++    },
+     "MappingBound": {
+       "description": "The bound a mapped range gives for a decoded finding.",
+       "oneOf": [
+@@ -1252,6 +1434,12 @@
+         "version"
+       ]
+     },
++    "NativeLabel": {
++      "type": "string",
++      "maxLength": 64,
++      "minLength": 1,
++      "pattern": "^(~unrecognized|[A-Za-z0-9][A-Za-z0-9_.:-]*)$"
++    },
+     "NetworkPolicy": {
+       "description": "Network permission for a scanner.",
+       "oneOf": [
+@@ -1357,6 +1545,13 @@
+             }
+           ]
+         },
++        "native_labels": {
++          "description": "The scanner's own labels for the finding (revision v1.7), kept apart\nfrom the derived `family`: sorted, unique, at most\n[`MAX_NATIVE_LABELS`]. Empty means the adapter retained no label (never\na guess); an unreviewed label is the single marker\n[`crate::ids::UNRECOGNIZED_NATIVE_LABEL`]. Several findings on one range\nmerge into one finding carrying the union, so labels never change\nmultiplicity.",
++          "type": "array",
++          "items": {
++            "$ref": "#/$defs/NativeLabel"
++          }
++        },
+         "path": {
+           "description": "Fixture path the finding is in.",
+           "$ref": "#/$defs/FixturePath"
+@@ -1375,6 +1570,21 @@
+         "end"
+       ]
+     },
++    "ObservationOrigin": {
++      "description": "Whether a scanner's observation was made in this run or taken from an\nearlier one.",
++      "oneOf": [
++        {
++          "description": "Scanned in this run.",
++          "type": "string",
++          "const": "fresh"
++        },
++        {
++          "description": "Taken, with its original receipt, from an earlier verified run.",
++          "type": "string",
++          "const": "reused"
++        }
++      ]
++    },
+     "ObservedRange": {
+       "description": "A finding range on one case.",
+       "type": "object",
+@@ -1410,6 +1620,13 @@
+             }
+           ]
+         },
++        "native_labels": {
++          "description": "The scanner's own labels for the finding (revision v1.7); see\n[`crate::observation::NormalizedFinding::native_labels`].",
++          "type": "array",
++          "items": {
++            "$ref": "#/$defs/NativeLabel"
++          }
++        },
+         "start": {
+           "description": "Inclusive start byte offset.",
+           "type": "integer",
+@@ -1497,6 +1714,64 @@
+         "MISS"
+       ]
+     },
++    "PhaseTimings": {
++      "description": "Wall-clock time of each phase of a run, in milliseconds. Phases run one\nafter another, so they sum to about `wall_ms`. Never a measurement.",
++      "type": "object",
++      "properties": {
++        "cases": {
++          "description": "Cases of the corpus the run was given.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "evaluate_ms": {
++          "description": "Observation collation, scoring or method evaluation, and artifact\nconstruction. Writing the artifact is not included: it happens after\nthe artifact exists (the CLI reports it on stderr).",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "fixtures": {
++          "description": "Fixtures materialized and scanned: the cases, or, for an\nevaluation-method run, the generated variants.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "generate_ms": {
++          "description": "Evaluation-method case building and variant generation (0 for a\nplain run).",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "materialize_ms": {
++          "description": "Validation, binding and fixture materialization.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "prepare_ms": {
++          "description": "Version probes of every scanner (sequential).",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "scan_ms": {
++          "description": "Bounded parallel scan tasks, from the first start to the last end.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        }
++      },
++      "additionalProperties": false,
++      "required": [
++        "cases",
++        "fixtures",
++        "materialize_ms",
++        "generate_ms",
++        "prepare_ms",
++        "scan_ms",
++        "evaluate_ms"
++      ]
++    },
+     "PositiveDiagnostics": {
+       "description": "Exact-match diagnostics for positives (not comparable across scanners).",
+       "type": "object",
+@@ -1798,6 +2073,25 @@
+         "decoded_unverified"
+       ]
+     },
++    "ReuseDiagnostics": {
++      "description": "Where reused observations came from. Provenance, not a measurement: it\nstays out of the semantic digest, so a run that reused a scanner's\nobservations and a run that scanned it fresh have the same digest.",
++      "type": "object",
++      "properties": {
++        "input_digest": {
++          "description": "Input digest both the source and this run were observed over.",
++          "$ref": "#/$defs/Sha256Digest"
++        },
++        "source_digest": {
++          "description": "Canonical digest of the whole `ObservationSet` that was offered for\nreuse (its original receipts).",
++          "$ref": "#/$defs/Sha256Digest"
++        }
++      },
++      "additionalProperties": false,
++      "required": [
++        "source_digest",
++        "input_digest"
++      ]
++    },
+     "ReviewOccurrence": {
+       "description": "One entry of the review queue: an occurrence that needs an authored\ndecision. Neither scanner of a disagreement is ground truth.",
+       "type": "object",
+@@ -2144,6 +2438,17 @@
+           "description": "Scanner id (identity is in the manifest).",
+           "$ref": "#/$defs/ScannerId"
+         },
++        "scope_accounting": {
++          "description": "Scope accounting of `findings` (revision v1.8, ADR 0016): counts by\nreviewed disposition, reconcilable to `findings`. Present only for a\ncomplete scanner with a reviewed disposition table; absent means \"not\naccounted\" (older artifact, other scanner or not measured), never zero.",
++          "anyOf": [
++            {
++              "$ref": "#/$defs/ScopeAccounting"
++            },
++            {
++              "type": "null"
++            }
++          ]
++        },
+         "status": {
+           "description": "Execution status. Anything but `complete` means not measured.",
+           "$ref": "#/$defs/ScannerStatus"
+@@ -2205,6 +2510,241 @@
+         }
+       ]
+     },
++    "ScannerTiming": {
++      "description": "Timing and size of one scanner's work in a run. Never a measurement.",
++      "type": "object",
++      "properties": {
++        "completion": {
++          "description": "Final scanner status.",
++          "$ref": "#/$defs/ScannerStatus"
++        },
++        "end_ms": {
++          "description": "End of the scanner's last scan task, in milliseconds after the run\nstarted.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "failed_phase": {
++          "description": "Phase in which the scanner failed; absent when it completed.",
++          "anyOf": [
++            {
++              "$ref": "#/$defs/FailedPhase"
++            },
++            {
++              "type": "null"
++            }
++          ]
++        },
++        "findings": {
++          "description": "Normalized findings of the first replay.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "fixtures": {
++          "description": "Fixtures the scanner was asked to scan.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "normalize_ms": {
++          "description": "Output parsing, range mapping and normalization, summed over replays.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "origin": {
++          "description": "Whether this run scanned the scanner or reused an earlier observation\n(v1.6). A reused scanner ran no scan task: its sizes and times above\ndescribe this run (version probe only), never the original scan.\nAbsent in a run that did not offer observations for reuse.",
++          "anyOf": [
++            {
++              "$ref": "#/$defs/ObservationOrigin"
++            },
++            {
++              "type": "null"
++            }
++          ]
++        },
++        "origin_reason": {
++          "description": "Why the scanner ran fresh or was reused. A fixed vocabulary\n(`compatible`, `forced`, `no-recorded-observation`, `not-prepared`,\n`changed: <field>[, <field>]`); never scanner output.",
++          "type": [
++            "string",
++            "null"
++          ]
++        },
++        "prepare_ms": {
++          "description": "Time spent on the scanner's version probes, in milliseconds.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "process_ms": {
++          "description": "Scanner process wall-clock time summed over replays, including the\ntransfer of stdout through the bounded pipe.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "queue_ms": {
++          "description": "Time the scanner's first scan task waited for a free job, in\nmilliseconds, from the start of the scan phase.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "received_bytes": {
++          "description": "Scanner stdout bytes received, summed over replays.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "start_ms": {
++          "description": "Start of the scanner's first scan task, in milliseconds after the run\nstarted.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "tasks": {
++          "description": "Scan tasks that ran (replays; skipped replays are not counted).",
++          "type": "integer",
++          "format": "uint32",
++          "minimum": 0
++        }
++      },
++      "additionalProperties": false,
++      "required": [
++        "prepare_ms",
++        "queue_ms",
++        "start_ms",
++        "end_ms",
++        "process_ms",
++        "normalize_ms",
++        "tasks",
++        "fixtures",
++        "received_bytes",
++        "findings",
++        "completion"
++      ]
++    },
++    "Scope": {
++      "description": "Scope of a native type, as reviewed.",
++      "oneOf": [
++        {
++          "description": "A credential or a part of one.",
++          "type": "string",
++          "const": "credential"
++        },
++        {
++          "description": "An identifier that accompanies a credential but is not the secret.",
++          "type": "string",
++          "const": "identifier-of-credential"
++        },
++        {
++          "description": "A session identifier or cookie; needs an explicit scope decision.",
++          "type": "string",
++          "const": "session"
++        },
++        {
++          "description": "Scope cannot be decided from the type.",
++          "type": "string",
++          "const": "ambiguous"
++        },
++        {
++          "description": "A resource identifier (not a credential).",
++          "type": "string",
++          "const": "resource-identifier"
++        },
++        {
++          "description": "Personal data.",
++          "type": "string",
++          "const": "pii"
++        },
++        {
++          "description": "Personal data or a generic identifier.",
++          "type": "string",
++          "const": "pii-or-identifier"
++        }
++      ]
++    },
++    "ScopeAccounting": {
++      "description": "Scope accounting of one scanner's retained findings (revision v1.8).\n\nPresent only when the scanner completed and has a reviewed table. Absent\nmeans \"not accounted\" (legacy artifact, other scanner, or not measured),\nnever zero.",
++      "type": "object",
++      "properties": {
++        "by_disposition": {
++          "description": "One disposition per finding; sums to `findings`.",
++          "$ref": "#/$defs/DispositionCounts"
++        },
++        "by_label": {
++          "description": "Per-label counts, sorted by label.",
++          "type": "array",
++          "items": {
++            "$ref": "#/$defs/LabelAccount"
++          }
++        },
++        "conflicting_label_findings": {
++          "description": "Findings whose reviewed labels disagree on scope or status, whatever\ntheir primary disposition.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "findings": {
++          "description": "Retained findings counted; equals `scanners[].findings` length.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "multi_label_findings": {
++          "description": "Findings with two or more native labels.",
++          "type": "integer",
++          "format": "uint64",
++          "minimum": 0
++        },
++        "table": {
++          "description": "The reviewed table used.",
++          "$ref": "#/$defs/ScopeTableIdentity"
++        },
++        "version": {
++          "description": "Contract and classification-rule version ([`SCOPE_ACCOUNTING_VERSION`]).",
++          "type": "string"
++        }
++      },
++      "additionalProperties": false,
++      "required": [
++        "version",
++        "table",
++        "findings",
++        "by_disposition",
++        "multi_label_findings",
++        "conflicting_label_findings",
++        "by_label"
++      ]
++    },
++    "ScopeTableIdentity": {
++      "description": "Identity of the reviewed table the counts were made with.",
++      "type": "object",
++      "properties": {
++        "id": {
++          "description": "Table id.",
++          "type": "string"
++        },
++        "integrity": {
++          "description": "Package integrity.",
++          "type": "string"
++        },
++        "package": {
++          "description": "Package name.",
++          "type": "string"
++        },
++        "version": {
++          "description": "Package version.",
++          "type": "string"
++        }
++      },
++      "additionalProperties": false,
++      "required": [
++        "id",
++        "package",
++        "version",
++        "integrity"
++      ]
++    },
+     "ScoredSpan": {
+       "description": "An expected span as embedded in results.",
+       "type": "object",

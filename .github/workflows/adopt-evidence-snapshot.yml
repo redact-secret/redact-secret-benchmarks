@@ -56,10 +56,10 @@ jobs:
           [[ -z "$ENGINE_TAG_INPUT" || "$ENGINE_TAG_INPUT" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]] || { echo "::error::engine_tag must look like v0.1.0-alpha.4"; exit 1; }
           [[ "$TAG" =~ ^snapshot-[0-9]{4}\.[0-9]{2}\.[0-9]{2}(\.[0-9]+)?$ ]] || { echo "::error::tag must look like snapshot-YYYY.MM.DD[.N]"; exit 1; }
           [[ "$MANIFEST_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]] || { echo "::error::manifest_digest must be sha256:<64 lowercase hex>"; exit 1; }
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 22
           cache: npm
@@ -71,7 +71,7 @@ jobs:
           echo "tag=${ENGINE_TAG_INPUT:-$(node -p "require('./benchmarks/official-runs.json').engine.tag")}" >> "$GITHUB_OUTPUT"
       - name: Mint a read-only token for the engine repository
         id: engine-token
-        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349 # v2.2.2
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
         with:
           app-id: ${{ vars.CREDENTIAL_EVAL_APP_ID }}
           private-key: ${{ secrets.CREDENTIAL_EVAL_APP_PRIVATE_KEY }}
@@ -146,7 +146,7 @@ jobs:
       KEY: ${{ needs.preflight.outputs.key }}
       GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
       - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1

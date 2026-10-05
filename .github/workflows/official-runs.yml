@@ -107,8 +107,9 @@ jobs:
       CANDIDATE: ${{ inputs.candidate }}
       EVIDENCE_TAG: ${{ inputs.evidence_tag }}
       EVIDENCE_DIGEST: ${{ inputs.evidence_manifest_digest }}
-      STAGE_TIMINGS: ${{ runner.temp }}/stage-timings.tsv
     steps:
+      - name: Name the stage-timing file (the runner context is not available in job-level env)
+        run: echo "STAGE_TIMINGS=$RUNNER_TEMP/stage-timings.tsv" >> "$GITHUB_ENV"
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           persist-credentials: false

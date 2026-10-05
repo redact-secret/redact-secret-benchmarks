@@ -41,6 +41,8 @@ const worse = (a?: Measurement, b?: Measurement) => {
   if (pa === false && pb === false) return (b?.leaked_bytes ?? 0) > (a?.leaked_bytes ?? 0) || (b?.collateral_bytes ?? 0) > (a?.collateral_bytes ?? 0) || (b?.findings ?? 0) > (a?.findings ?? 0);
   return pa === true && pb === true ? (b?.collateral_bytes ?? 0) > (a?.collateral_bytes ?? 0) : false;
 };
+// Both pass and the later one has fewer findings or less collateral, nothing lost: the scored outcome does not move, the findings do (an unexpected `warn`, an extra redaction beside exact spans).
+const better = (a?: Measurement, b?: Measurement) => passes(a) === true && passes(b) === true && !worse(a, b) && ((b?.collateral_bytes ?? 0) < (a?.collateral_bytes ?? 0) || (b?.findings ?? 0) < (a?.findings ?? 0));
 const same = (x: unknown, y: unknown) => JSON.stringify(x) === JSON.stringify(y);
 
 const dirs = { A: path.resolve(need('a')), B: path.resolve(need('b')), C: path.resolve(need('c')), D: path.resolve(need('d')) } as const;
@@ -56,6 +58,8 @@ const oldById = new Map(snapOld.map(c => [c.id, c])), newById = new Map(snapNew.
 const added = snapNew.filter(c => !oldById.has(c.id)).map(c => c.id).sort(), removed = snapOld.filter(c => !newById.has(c.id)).map(c => c.id).sort();
 const changed = snapNew.filter(c => oldById.has(c.id) && !same(c, oldById.get(c.id))).map(c => c.id).sort();
 const changedSet = new Set(changed), addedSet = new Set(added);
+// A common positive whose twin the release changed: the mutation assertions that flip it to that twin read the changed case (for example a twin moved to T0, which no scanner is scored on).
+const seedsWithChangedTwin = new Set(snapNew.filter(c => changedSet.has(c.id) && (c as { twin?: { twin_of?: string } }).twin?.twin_of).map(c => (c as { twin: { twin_of: string } }).twin.twin_of));
 const common = snapNew.filter(c => oldById.has(c.id) && !changedSet.has(c.id)).map(c => c.id);
 const maintainerOnly = new Set<string>(option('maintainer-only-ids') ? JSON.parse(readFileSync(option('maintainer-only-ids')!, 'utf8')) : []);
 const seedOf = (id: string) => id.replace(/--(differential|metamorphic|mutation)(--.*)?$/, '').replace(/--(context-indent|context-unicode-prefix|encoding-crlf|canonical)$/, '');
@@ -66,13 +70,13 @@ function casesOf(cell: Cell) { const a = art(cell, 'public-evidence-snapshot'); 
 const cells = { A: casesOf('A'), B: casesOf('B'), C: casesOf('C'), D: casesOf('D') };
 const row = (id: string, x: CaseRow | undefined, y: CaseRow | undefined): Row => ({ id, from: label(x?.measurement), to: label(y?.measurement), fromFindings: fnd(x?.actual), toFindings: fnd(y?.actual), maintainerOnly: maintainerOnly.has(id) });
 const effect = (from: Map<string, CaseRow>, to: Map<string, CaseRow>, ids: string[]) => {
-  const fixed: Row[] = [], regressed: Row[] = [], changedRows: Row[] = [];
+  const fixed: Row[] = [], regressed: Row[] = [], improved: Row[] = [], changedRows: Row[] = [];
   for (const id of ids) {
     const x = from.get(id), y = to.get(id);
     if (!x || !y || same({ a: x.actual, m: x.measurement }, { a: y.actual, m: y.measurement })) continue;
-    (passes(x.measurement) === false && passes(y.measurement) === true ? fixed : worse(x.measurement, y.measurement) ? regressed : changedRows).push(row(id, x, y));
+    (passes(x.measurement) === false && passes(y.measurement) === true ? fixed : worse(x.measurement, y.measurement) ? regressed : better(x.measurement, y.measurement) ? improved : changedRows).push(row(id, x, y));
   }
-  return { fixed, regressed, changed: changedRows };
+  return { fixed, regressed, improved, changed: changedRows };
 };
 const tally = (map: Map<string, CaseRow>, ids: string[]) => {
   const t = { cases: 0, pass: 0, fail: 0, pending: 0, notMeasured: 0, absent: 0 };
@@ -86,7 +90,7 @@ const plain = {
   corpusEffectCandidate: { onCommon: effect(cells.B, cells.D, common), onChanged: effect(cells.B, cells.D, changed), addedOutcomes: tally(cells.D, added) },
   productEffectOld: effect(cells.A, cells.B, snapOld.map(c => c.id)),
   productEffectNew: effect(cells.C, cells.D, newIds),
-  interaction: { onCommon: [] as Array<{ id: string; old: string; new: string }>, onlyOnNew: { changed: changed.length, added: added.length } },
+  interaction: { onCommon: [] as Array<{ id: string; old: string; new: string }>, onlyOnNew: { changed: changed.length, added: added.length }, seedsWithChangedTwin: [...seedsWithChangedTwin].sort() },
 };
 // Interaction: on the common cases the product effect (control to candidate) must be the same on both corpora.
 for (const id of common) {
@@ -118,7 +122,7 @@ const methods: Record<string, unknown> = {};
     const maps = ms.map(m => new Map((product(m!).assertions ?? []).map(a => [key(a), a])));
     const [mA, mB, mC, mD] = maps;
     const commonSeed = new Set(common);
-    const inCommon = (k: string) => commonSeed.has(seedOf(k.split('|')[0]));
+    const inCommon = (k: string) => commonSeed.has(seedOf(k.split('|')[0])) && !seedsWithChangedTwin.has(seedOf(k.split('|')[0]));
     const diff = (from: Map<string, Assertion>, to: Map<string, Assertion>, pick?: (k: string) => boolean) => {
       const fixed: string[] = [], regressed: string[] = [], absent: string[] = [];
       for (const [k, a] of from) { if (pick && !pick(k)) continue; const b = to.get(k); if (!b) absent.push(k); else if (a.status !== b.status) (a.status !== 'pass' && b.status === 'pass' ? fixed : regressed).push(k); }
@@ -173,8 +177,8 @@ const report = {
   plain, peerCasesDifferingAcrossProductCells: peerDiffs, methods, populations,
   summary: {
     corpus: plain.corpus,
-    productEffectOld: { fixed: plain.productEffectOld.fixed.map(r => r.id), regressed: plain.productEffectOld.regressed.length },
-    productEffectNew: { fixed: plain.productEffectNew.fixed.map(r => r.id), regressed: plain.productEffectNew.regressed.length, changed: plain.productEffectNew.changed.length, maintainerOnly: rest(plain.productEffectNew.fixed) },
+    productEffectOld: { fixed: plain.productEffectOld.fixed.map(r => r.id), improved: plain.productEffectOld.improved.map(r => r.id), regressed: plain.productEffectOld.regressed.length },
+    productEffectNew: { fixed: plain.productEffectNew.fixed.map(r => r.id), improved: plain.productEffectNew.improved.map(r => r.id), regressed: plain.productEffectNew.regressed.length, changed: plain.productEffectNew.changed.length, maintainerOnly: rest(plain.productEffectNew.fixed) },
     addedCaseOutcomesOnControl: plain.corpusEffectControl.addedOutcomes, addedCaseOutcomesOnCandidate: plain.corpusEffectCandidate.addedOutcomes,
     interactionOnCommonCases: plain.interaction.onCommon.length, unexplained: unexplained.length,
   },
@@ -196,8 +200,8 @@ if (option('out-md')) {
     '### Changed cases on the control', '', list([...plain.corpusEffectControl.onChanged.fixed, ...plain.corpusEffectControl.onChanged.regressed, ...plain.corpusEffectControl.onChanged.changed]), '',
     '### Added cases the control fails', '', list(plain.corpusEffectControl.addedFailing), '',
     '## Product effect (control to candidate)', '',
-    `Old corpus (A to B): fixed ${plain.productEffectOld.fixed.length}, regressed ${plain.productEffectOld.regressed.length}, changed ${plain.productEffectOld.changed.length}.`, list(plain.productEffectOld.fixed), '',
-    `New corpus (C to D): fixed ${plain.productEffectNew.fixed.length}, regressed ${plain.productEffectNew.regressed.length}, changed ${plain.productEffectNew.changed.length}.`, list(plain.productEffectNew.fixed),
+    `Old corpus (A to B): fixed ${plain.productEffectOld.fixed.length}, improved ${plain.productEffectOld.improved.length}, regressed ${plain.productEffectOld.regressed.length}, changed ${plain.productEffectOld.changed.length}.`, list(plain.productEffectOld.fixed), '', 'Improved (passing before and after, fewer unexpected findings or less collateral):', list(plain.productEffectOld.improved), '',
+    `New corpus (C to D): fixed ${plain.productEffectNew.fixed.length}, improved ${plain.productEffectNew.improved.length}, regressed ${plain.productEffectNew.regressed.length}, changed ${plain.productEffectNew.changed.length}.`, list(plain.productEffectNew.fixed), '', 'Improved:', list(plain.productEffectNew.improved),
     ...(plain.productEffectNew.regressed.length ? ['', '### Regressions on the new corpus', '', list(plain.productEffectNew.regressed)] : []), '',
     '## Interaction', '', `On the common cases the product effect differs between the corpora in ${plain.interaction.onCommon.length} cases. Only on the new corpus (not separable from the corpus): ${plain.interaction.onlyOnNew.changed} changed and ${plain.interaction.onlyOnNew.added} added cases.`, '',
     '## Methods run', '', '```json', JSON.stringify(methods, (k, v) => (Array.isArray(v) && v.length > 12 ? [...v.slice(0, 12), `... ${v.length - 12} more`] : v), 1), '```', '',

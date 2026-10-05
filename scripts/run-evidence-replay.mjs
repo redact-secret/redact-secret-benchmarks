@@ -23,6 +23,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { controlFor } from './candidate-control.mjs';
+import { packagesDigest } from './check-evidence-adoption.mjs';
 import { fetchArchive, listKept, pack, sha256File } from './replay-archive.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -30,6 +31,7 @@ const REPOSITORY = 'redact-secret/redact-secret-benchmarks';
 const WORKFLOW = 'official-runs.yml';
 const POPULATIONS = ['public-evidence-snapshot', 'regression-corpus', 'policy-corpus'];
 const ADOPTION = 'benchmarks/evidence-adoption.json';
+const GENERATED_DIR = 'docs/generated/evidence-adoption';
 const DIGEST = /^sha256:[0-9a-f]{64}$/;
 const readJson = file => JSON.parse(readFileSync(path.join(root, file), 'utf8'));
 const run = (command, args, options = {}) => execFileSync(command, args, { encoding: 'utf8', cwd: root, stdio: ['ignore', 'pipe', 'inherit'], maxBuffer: 256 * 1024 * 1024, ...options });
@@ -233,6 +235,15 @@ export function contrast(tag, manifestDigest, candidateId, note) {
   } finally { rmSync(scratch, { recursive: true, force: true }); }
 }
 
+/** Record in the evidence candidate which registered product candidate bytes were measured on it, and where the contrast is. Identity only; nothing is accepted. */
+export function recordLinks(tag, candidateId) {
+  const adoption = readJson(ADOPTION);
+  const candidate = readJson('benchmarks/product-candidates.json').candidates.find(c => c.id === candidateId);
+  if (!candidate?.evidenceReplays?.[tag]) throw new Error(`${candidateId} has no recorded replay on ${tag}`);
+  const productCandidates = [...(adoption.evidenceCandidate.productCandidates ?? []).filter(p => p.id !== candidateId), { id: candidateId, commit: candidate.product.commit, packagesDigest: packagesDigest(candidate.packages) }];
+  writeFileSync(path.join(root, ADOPTION), `${JSON.stringify({ ...adoption, evidenceCandidate: { ...adoption.evidenceCandidate, productCandidates, contrast: { report: `${GENERATED_DIR}/${tag}.contrast.md`, data: `${GENERATED_DIR}/${tag}.contrast.json` } } }, null, 2)}\n`);
+}
+
 export function chain(tag, manifestDigest, candidateId, { note, keepBranch = false } = {}) {
   const log = message => console.error(`[chain] ${message}`);
   const adoption = () => readJson(ADOPTION);
@@ -251,7 +262,8 @@ export function chain(tag, manifestDigest, candidateId, { note, keepBranch = fal
   else { node(['scripts/run-candidate-replay.mjs', 'all', '--candidate', candidateId, ...evidence, '--no-pr']); commitAndPush(`data(candidate): replay of ${candidateId} on ${tag} (2x2)`, ['benchmarks/product-candidates.json', `docs/generated/evidence-adoption/product-${candidateId}`]); }
   // 4. The contrast of the new evidence with the accepted one, by semantic id (strict).
   contrast(tag, manifestDigest, candidateId, note);
-  commitAndPush(`data(adoption): contrast of ${tag} with the accepted snapshot`, [`docs/generated/evidence-adoption/${tag}.contrast.json`, `docs/generated/evidence-adoption/${tag}.contrast.md`]);
+  recordLinks(tag, candidateId);
+  commitAndPush(`data(adoption): contrast of ${tag} with the accepted snapshot`, [ADOPTION, `docs/generated/evidence-adoption/${tag}.contrast.json`, `docs/generated/evidence-adoption/${tag}.contrast.md`]);
   // 5. The draft pull request, once.
   const branch = git('branch', '--show-current');
   const open = JSON.parse(gh(['pr', 'list', '-R', REPOSITORY, '--head', branch, '--state', 'open', '--json', 'number,url']));

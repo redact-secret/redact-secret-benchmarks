@@ -7,11 +7,12 @@
  *
  * On a transient worktree of HEAD it does what the owner's acceptance branch would: `repin` (the earlier runs become historical receipts), records the control replay's four runs, stores them
  * in the registry-format archive (a release of this repository, verified by fetching it back), regenerates the three derived inputs from the snapshot and the methods run and proves them with the
- * `--check` commands, builds the candidate view, regenerates the legacy oracle (the pinned trufflehog 3.97.4 must be first on PATH) and the parity report (strict: zero unexplained), renews the
- * authority file with the owner fields left as OWNER-TO-SET, turns the candidate into the accepted record (owner acceptance OWNER-TO-SET) and drafts the decision (status: proposed).
+ * `--check` commands, builds the candidate view, regenerates the legacy oracle (the pinned trufflehog 3.97.4 must be first on PATH) and the parity report (strict: zero unexplained), turns the
+ * candidate into the accepted record (owner acceptance OWNER-TO-SET) and drafts the decision (status: proposed). The authority is not touched: the gate lists its readers and the owner renews it in a
+ * reviewed commit, so the package carries the values to set (`candidate.acceptance.authorityValues`) and the patch does not change that file.
  * The result is `git diff` as `<tag>.acceptance.patch` with its sha256, and `candidate.acceptance` is written to the evidence candidate. Refuses unless the control replay is recorded.
  *
- * It never fills acceptedBy, acceptedOn or the decision status, never writes the authority file or the record in THIS checkout (only the transient copy, as a patch), and never deploys.
+ * It never fills acceptedBy, acceptedOn or the decision status, never reads or writes the authority, never writes the accepted record in THIS checkout (only the transient copy, as a patch), and never deploys.
  */
 import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
@@ -43,7 +44,9 @@ export function acceptedRecord({ record, decision }) {
     candidate: {
       ...rest,
       supersedesAccepted: {
-        evidenceRelease: previous.evidenceRelease, manifestDigest: previous.manifestDigest, adoptionKey: previous.adoptionKey, ownerAcceptance: previous.ownerAcceptance,
+        evidenceRelease: previous.evidenceRelease, manifestDigest: previous.manifestDigest, adoptionKey: previous.adoptionKey,
+        // The earlier owner's decision, kept as history under other key names: the prepared patch must never carry an acceptedBy or acceptedOn line that is not OWNER-TO-SET.
+        ownerDecision: previous.ownerAcceptance && { by: previous.ownerAcceptance.acceptedBy, on: previous.ownerAcceptance.acceptedOn, decision: previous.ownerAcceptance.decision },
         replay: { ciRun: previous.replay?.ciRun, archive: previous.replay?.archive }, deployment: previous.deployment,
         note: 'The previously accepted adoption stays the public numbers until this change is applied by the owner and deployed; its runs become historical receipts in benchmarks/official-runs.json.',
       },
@@ -51,11 +54,6 @@ export function acceptedRecord({ record, decision }) {
       deployment: { staging: null, production: null },
     },
   };
-}
-
-/** Pure: the renewed authority file with the owner fields unset. Everything else is read from the recorded runs and the candidate view. */
-export function renewedAuthority({ authority, release, policyRevision, semanticDigests, decision }) {
-  return { ...authority, new: { release, acceptedOn: OWNER, acceptedBy: OWNER, policyRevision, semanticDigests: Object.fromEntries(Object.entries(semanticDigests).sort(([a], [b]) => (a < b ? -1 : 1))), parityReport: authority.new.parityReport, decision } };
 }
 
 /** Pure: the draft decision (status proposed). It states the facts of the replay and leaves the decision and the owner statement to the owner. */
@@ -143,10 +141,13 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
     const derivedDigest = f => `sha256:${createHash('sha256').update(readFileSync(path.join(derived, f))).digest('hex')}`;
     const viewData = JSON.parse(readFileSync(view, 'utf8'));
     const distribution = viewData.distribution ?? {};
+    const recordedRuns = readJson('benchmarks/official-runs.json', tree).runs;
+    const semanticDigests = Object.fromEntries(recordedRuns.map(r => [r.id.replace(/@.*$/, ''), r.artifact.semanticDigest]).sort(([a], [b]) => (a < b ? -1 : 1)));
     const acceptance = {
       note: 'Prepared for the owner (#690). Nothing here is accepted: the active pins, runs and authority file stay on the previous accepted evidence until the owner applies the patch and fills the OWNER-TO-SET fields. The patch applies to the commit that merges this candidate; the policy revision and the parity report in it are derived from the product inputs of that commit, so re-derive them if the product inputs change first.',
       report: `${GENERATED}/${tag}.md`, comparison: `${GENERATED}/${tag}.comparison.json`, patch: patchFile, patchDigestFile: `${patchFile}.sha256`, applies: `git apply ${patchFile}`,
-      ownerFields: ['the authority file: new.acceptedOn and new.acceptedBy (the file is named in the patch and the spec, never here)', 'benchmarks/evidence-adoption.json candidate.ownerAcceptance acceptedBy and acceptedOn', `${decision} status (proposed to accepted), decided_at and its Decision`],
+      ownerFields: ['the authority: renew it in a reviewed commit with `authorityValues` (and set its acceptedOn and acceptedBy); the patch does not change it, so authority:check stays red until you do', 'benchmarks/evidence-adoption.json candidate.ownerAcceptance acceptedBy and acceptedOn', `${decision} status (proposed to accepted), decided_at and its Decision`],
+      authorityValues: { release: `@redact-secret/core@${ec.product?.version ?? registry.scanners.find(x => x.id === 'redact-secret').version}`, policyRevision: viewData.policy?.revision, semanticDigests, parityReport: 'docs/generated/qualification-parity.json', decision },
       candidateView: { sha256: `sha256:${createHash('sha256').update(readFileSync(view)).digest('hex')}`, policyRevision: viewData.policy?.revision, distribution },
       derivedInputs: {
         snapshot: `credential-evidence release ${tag}, asset credential-eval-corpus-snapshot.json (gh release download ${tag} -R redact-secret/credential-evidence)`,
@@ -159,10 +160,6 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
     writeJson('benchmarks/evidence-adoption.json', withAcceptance, tree);
     run('git', ['-c', 'user.name=acceptance', '-c', 'user.email=acceptance@localhost', 'commit', '-qm', 'base: the record with the prepared acceptance', '--', 'benchmarks/evidence-adoption.json']);
     // 8. The authority file (owner fields unset), the accepted record and the draft decision.
-    const recordedRuns = readJson('benchmarks/official-runs.json', tree).runs;
-    const semanticDigests = Object.fromEntries(recordedRuns.map(r => [r.id.replace(/@.*$/, ''), r.artifact.semanticDigest]));
-    const version = `@redact-secret/core@${ec.product?.version ?? registry.scanners.find(s => s.id === 'redact-secret').version}`;
-    writeJson('benchmarks/qualification-authority.json', renewedAuthority({ authority: readJson('benchmarks/qualification-authority.json', tree), release: version, policyRevision: viewData.policy?.revision, semanticDigests, decision }), tree);
     writeJson('benchmarks/evidence-adoption.json', acceptedRecord({ record: withAcceptance, decision }), tree);
     writeFileSync(path.join(tree, decision), draftDecision({ tag, ec, decision, summary: `Candidate view: ${JSON.stringify(distribution)}; the report is ${GENERATED}/${tag}.md.` }));
     const decisions = readFileSync(path.join(tree, 'docs/decisions/DECISIONS.md'), 'utf8').replace(/\n*$/, '\n');

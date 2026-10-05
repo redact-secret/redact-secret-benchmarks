@@ -298,6 +298,47 @@
       "package": "@redact-secret/core",
       "version": "0.1.0-beta.13",
       "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+    },
+    "acceptance": {
+      "note": "Prepared for the owner (#690). Nothing here is accepted: the active pins, runs and authority file stay on the previous accepted evidence until the owner applies the patch and fills the OWNER-TO-SET fields. The patch applies to the commit that merges this candidate; the policy revision and the parity report in it are derived from the product inputs of that commit, so re-derive them if the product inputs change first.",
+      "report": "docs/generated/evidence-adoption/snapshot-2026.10.05.2.md",
+      "comparison": "docs/generated/evidence-adoption/snapshot-2026.10.05.2.comparison.json",
+      "patch": "docs/generated/evidence-adoption/snapshot-2026.10.05.2.acceptance.patch",
+      "patchDigestFile": "docs/generated/evidence-adoption/snapshot-2026.10.05.2.acceptance.patch.sha256",
+      "applies": "git apply docs/generated/evidence-adoption/snapshot-2026.10.05.2.acceptance.patch",
+      "ownerFields": [
+        "the authority file: new.acceptedOn and new.acceptedBy (the file is named in the patch and the spec, never here)",
+        "benchmarks/evidence-adoption.json candidate.ownerAcceptance acceptedBy and acceptedOn",
+        "docs/decisions/2026-10-05-accept-snapshot-2026-10-05-2-on-credential-eval-alpha-5.md status (proposed to accepted), decided_at and its Decision"
+      ],
+      "candidateView": {
+        "sha256": "sha256:19c15e24d48983e13a6a29f379c2aab21e379908b0001a59e51d0fc9b2b44354",
+        "policyRevision": "rs-policy-1:sha256:ce414548ec792d90e73ff4bc3aae58472ba930f0b33b9017f896271fe2dd4d00",
+        "distribution": {
+          "pending": 1,
+          "provisional": 13,
+          "stable": 121,
+          "unsupported": 0
+        }
+      },
+      "derivedInputs": {
+        "snapshot": "credential-evidence release snapshot-2026.10.05.2, asset credential-eval-corpus-snapshot.json (gh release download snapshot-2026.10.05.2 -R redact-secret/credential-evidence)",
+        "axisOverlay": {
+          "file": "benchmarks/support/public-axis-overlay.json",
+          "sha256": "sha256:f90267bad17d4570747e650ce43beda7c5e162e3df43966fde94f39180340b7c",
+          "check": "npm run qualification:axis-overlay -- --snapshot <snapshot> --check"
+        },
+        "twinScope": {
+          "file": "benchmarks/support/public-twin-scope-map.json",
+          "sha256": "sha256:4e2e682c0b430eab651468e162b1e2b44837bfc23438ace02e90177235d186eb",
+          "check": "npm run qualification:twin-scope -- --snapshot <snapshot> --check"
+        },
+        "ledgerRekey": {
+          "file": "benchmarks/support/public-review-ledger-map.json",
+          "sha256": "sha256:b7c1677c5cdfbaa4c52727b9865bfbc84d6c5cc4a16cbf106e4e6c86f43ff2c3",
+          "check": "npm run qualification:ledger-rekey -- --snapshot <snapshot> --methods-run <dir>/public-evidence-snapshot/methods/artifact.json --check"
+        }
+      }
     }
   }
 }

@@ -1,0 +1,3303 @@
+{
+ "schema": "redact-secret/ledger-settlements/v1",
+ "decidedOn": "2026-10-05",
+ "acceptedRun": "37332934881",
+ "evidenceUrl": "https://github.com/redact-secret/redact-secret-benchmarks/issues/698",
+ "decision": "The repository owner (Milo Kang) decided on 2026-10-05 to apply the #698 triage settlements, re-keyed to the final occurrence identities only where semantic applicability is demonstrated. Maintainer-reviewed (independent review pending) / 메인테이너 검토 (독립 검토 대기): nothing here is an independent review.",
+ "previousProposals": {
+  "occurrences": 398,
+  "byProposal": {
+   "resolved": 368,
+   "not-assertable": 30
+  }
+ },
+ "acceptedRunProposals": {
+  "occurrences": 457,
+  "byProposal": {
+   "resolved": 423,
+   "not-assertable": 34
+  }
+ },
+ "gateOccurrencesInAcceptedQueue": 506,
+ "applied": {
+  "occurrences": 394,
+  "byProposal": {
+   "not-assertable": 30,
+   "resolved": 364
+  }
+ },
+ "unapplied": {
+  "new-case-or-occurrence (no settled occurrence of the previous snapshot)": 59,
+  "observation differs from the previous snapshot": 4,
+  "accepted triage proposes another settlement": 0
+ },
+ "unappliedItems": [
+  {
+   "case": "docker-compose-resolution-authored--default-literal",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "docker-compose-resolution-authored--resolved-config-literal",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "github-actions-workflow-commands-authored--add-mask-literal-argument",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "github-actions-workflow-commands-authored--base-token",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "github-actions-workflow-commands-authored--env-file-echo",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "github-actions-workflow-commands-authored--multiline-record-eof-delimiter",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "github-actions-workflow-commands-authored--multiline-record-guid-delimiter",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "github-actions-workflow-commands-authored--multiline-record-written-by-brace-group",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "github-actions-workflow-commands-authored--output-file-echo",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "graphql-requests-and-responses-authored--post-body-inline-literal",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "graphql-requests-and-responses-authored--post-body-inline-literal",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "graphql-requests-and-responses-authored--post-body-variables-value",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "graphql-requests-and-responses-authored--request-then-full-echo-in-error-message",
+   "peer": "gitleaks",
+   "disagreement": "range-disagreement",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "graphql-requests-and-responses-authored--request-then-full-echo-in-error-message",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "graphql-requests-and-responses-authored--request-then-response-without-value",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "graphql-requests-and-responses-authored--variables-object-base-a",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "graphql-requests-and-responses-authored--variables-object-base-b",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "har-exports-authored--bearer-token-in-postdata-text-percent-escaped",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "har-exports-authored--bearer-token-in-postdata-text-percent-escaped",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "hashicorp-terraform-authored--plan-json-change-after-password-with-after-sensitive",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "hashicorp-terraform-authored--plan-json-change-after-password-with-after-sensitive",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "hashicorp-terraform-authored--state-json-resource-password-with-sensitive-values",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "hashicorp-terraform-authored--state-json-resource-password-with-sensitive-values",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "jupyter-notebook-files-authored--secret-base-output-only",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "jupyter-notebook-files-authored--secret-base-output-only",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "jupyter-notebook-files-authored--secret-base-repeated",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "jupyter-notebook-files-authored--secret-base-repeated",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "jupyter-notebook-files-authored--secret-base-source-array",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "jupyter-notebook-files-authored--secret-base-source-array",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "jupyter-notebook-files-authored--source-one-array-element-per-line",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "jupyter-notebook-files-authored--source-one-array-element-per-line",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "jupyter-notebook-files-authored--stdout-literal-where-source-has-environment-reference",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "jupyter-notebook-files-authored--stdout-literal-where-source-has-environment-reference",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "mime-transfer-encoding-authored--qp-soft-break-bytes-in-7bit-part",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "not-assertable",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "mime-transfer-encoding-authored--qp-soft-break-bytes-in-7bit-part",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "not-assertable",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "mime-transfer-encoding-authored--qp-soft-break-in-quoted-printable-part",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "not-assertable",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "mime-transfer-encoding-authored--qp-soft-break-in-quoted-printable-part",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "not-assertable",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "opentelemetry-log-records-authored--attribute-string",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "opentelemetry-log-records-authored--attribute-string",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "opentelemetry-log-records-authored--body-nested-map-and-array",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "opentelemetry-log-records-authored--body-nested-map-and-array",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "opentelemetry-log-records-authored--body-string-holding-serialized-json",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "opentelemetry-log-records-authored--body-string-holding-serialized-json",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "opentelemetry-log-records-authored--body-string",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "opentelemetry-log-records-authored--body-string",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "opentelemetry-log-records-authored--exception-message-and-stacktrace",
+   "peer": "gitleaks",
+   "disagreement": "range-disagreement",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "opentelemetry-log-records-authored--exception-message-and-stacktrace",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "opentelemetry-log-records-authored--resource-attribute",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "opentelemetry-log-records-authored--resource-attribute",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "opentelemetry-log-records-authored--two-secrets-with-upper-case-trace-id",
+   "peer": "gitleaks",
+   "disagreement": "range-disagreement",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "opentelemetry-log-records-authored--two-secrets-with-upper-case-trace-id",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+   "peer": "gitleaks",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "observation differs from the previous snapshot"
+  },
+  {
+   "case": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "observation differs from the previous snapshot"
+  },
+  {
+   "case": "structured-credential-files-authored--documented-redacted-literal-values",
+   "peer": "trufflehog",
+   "disagreement": "peer-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "structured-credential-files-authored--service-account-key-file-minified-json",
+   "peer": "trufflehog",
+   "disagreement": "range-disagreement",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "structured-credential-files-authored--service-account-key-file-pretty-json",
+   "peer": "trufflehog",
+   "disagreement": "range-disagreement",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence"
+  },
+  {
+   "case": "twilio-compound-credentials-authored--api-key-secret-before-sid",
+   "peer": "gitleaks",
+   "disagreement": "range-disagreement",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence: the case was re-authored but no single occurrence of the previous snapshot matches it"
+  },
+  {
+   "case": "twilio-compound-credentials-authored--api-key-secret-before-sid",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "observation differs from the previous snapshot (re-authored content: the reference or a peer reads the new bytes differently)"
+  },
+  {
+   "case": "twilio-compound-credentials-authored--api-key-sid-alone",
+   "peer": "gitleaks",
+   "disagreement": "peer-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence: the case was re-authored but no single occurrence of the previous snapshot matches it"
+  },
+  {
+   "case": "twilio-compound-credentials-authored--api-key-sid-and-secret-env",
+   "peer": "gitleaks",
+   "disagreement": "range-disagreement",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "new-case-or-occurrence: the case was re-authored but no single occurrence of the previous snapshot matches it"
+  },
+  {
+   "case": "twilio-compound-credentials-authored--api-key-sid-and-secret-env",
+   "peer": "trufflehog",
+   "disagreement": "reference-only",
+   "variant": "canonical",
+   "proposal": "resolved",
+   "reason": "observation differs from the previous snapshot (re-authored content: the reference or a peer reads the new bytes differently)"
+  }
+ ],
+ "byApplicability": {
+  "same-occurrence": 394
+ },
+ "ids": [
+  {
+   "case": "authored-conflicting-field-label-semantics--google-key-shape-under-firebase-config-label",
+   "previousId": "sha256:23fd99fd3cff9f0efaf8940a30840bf66161f4226e9a91a929ca140f7afff237",
+   "id": "sha256:23fd99fd3cff9f0efaf8940a30840bf66161f4226e9a91a929ca140f7afff237",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--google-key-shape-under-generative-api-env-label",
+   "previousId": "sha256:d4939ad60bc49e762d193996c00793b067c007e850034c539799b31581f987bf",
+   "id": "sha256:d4939ad60bc49e762d193996c00793b067c007e850034c539799b31581f987bf",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--google-key-shape-under-json-api-key-field",
+   "previousId": "sha256:53abc055e60fb273af8aeb7adfa6e169195d94d23a2cb22b2080d6d0491370d5",
+   "id": "sha256:53abc055e60fb273af8aeb7adfa6e169195d94d23a2cb22b2080d6d0491370d5",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--stripe-env-repeated-key-label-order-swapped",
+   "previousId": "sha256:0c3bd291ef1d28de9b33d594841e2d411bcee69cc752cfb15ca501709c37da0d",
+   "id": "sha256:0c3bd291ef1d28de9b33d594841e2d411bcee69cc752cfb15ca501709c37da0d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--stripe-env-repeated-key-label-order-swapped",
+   "previousId": "sha256:78c6b688f2fc28002056cfe8611bdefee29b25e5e566e1ca1c81c4e3ec305f99",
+   "id": "sha256:78c6b688f2fc28002056cfe8611bdefee29b25e5e566e1ca1c81c4e3ec305f99",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--stripe-keys-array-repeated-key-label",
+   "previousId": "sha256:adcf2e85d3e8f36d1e0302f55eb58578b463f6863c80a2202ae102ab757fdc59",
+   "id": "sha256:adcf2e85d3e8f36d1e0302f55eb58578b463f6863c80a2202ae102ab757fdc59",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--stripe-keys-array-repeated-key-label",
+   "previousId": "sha256:b4cdebf6f2eb48dac630a6aa3802b2eef1ec96a971de64624e53663ebae537af",
+   "id": "sha256:b4cdebf6f2eb48dac630a6aa3802b2eef1ec96a971de64624e53663ebae537af",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--stripe-nested-key-label-under-two-parents",
+   "previousId": "sha256:ed7f8f22fec40c9436f6295fd55a3e3b1052d5fd709e622f2759b51d0ceb644a",
+   "id": "sha256:ed7f8f22fec40c9436f6295fd55a3e3b1052d5fd709e622f2759b51d0ceb644a",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--stripe-nested-key-label-under-two-parents",
+   "previousId": "sha256:4753bc9f894b2829f1ac852deb5e37720d4228cda273d5374a453ce33d5aa768",
+   "id": "sha256:4753bc9f894b2829f1ac852deb5e37720d4228cda273d5374a453ce33d5aa768",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--stripe-publishable-under-client-secret-field",
+   "previousId": "sha256:072cf629ee271ef264f1d70bc6e3054bf1235b2d809e4972c2f8b7b2463f27aa",
+   "id": "sha256:072cf629ee271ef264f1d70bc6e3054bf1235b2d809e4972c2f8b7b2463f27aa",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--stripe-publishable-under-publishable-env-label",
+   "previousId": "sha256:4b674dbe4e0f23b599726bd2a131f4a49734f674e8111de15249f4be60315026",
+   "id": "sha256:4b674dbe4e0f23b599726bd2a131f4a49734f674e8111de15249f4be60315026",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--stripe-publishable-under-secret-key-env-label",
+   "previousId": "sha256:98c7aac057c5349201355f93399dd100c2284827826b32d3604af0979aad9bb0",
+   "id": "sha256:98c7aac057c5349201355f93399dd100c2284827826b32d3604af0979aad9bb0",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--stripe-secret-beside-public-visibility-flag",
+   "previousId": "sha256:1411184753c01900bac58f24948092b81b69bdf9806b41fe754d6268d7048db7",
+   "id": "sha256:1411184753c01900bac58f24948092b81b69bdf9806b41fe754d6268d7048db7",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--stripe-secret-under-name-field",
+   "previousId": "sha256:7aac3096d5beddcebf9fca9e02a06cfbc06266f99b3831ca46d7c5b569e65595",
+   "id": "sha256:7aac3096d5beddcebf9fca9e02a06cfbc06266f99b3831ca46d7c5b569e65595",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--stripe-secret-under-nested-display-label",
+   "previousId": "sha256:2be9bad7f3e17bf8bcfb10768ca1e432d50e5e4b4606127342454219b761457c",
+   "id": "sha256:2be9bad7f3e17bf8bcfb10768ca1e432d50e5e4b4606127342454219b761457c",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--stripe-secret-under-public-env-label",
+   "previousId": "sha256:266252f68a927a05b18660bfc10e7b1b407b3df062f2fede5df5feba34972195",
+   "id": "sha256:266252f68a927a05b18660bfc10e7b1b407b3df062f2fede5df5feba34972195",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--stripe-secret-under-publishable-label",
+   "previousId": "sha256:ad3bdc27e136709e3e8525b4add31943c3276f068e7ac7edd13998b968c3e4df",
+   "id": "sha256:ad3bdc27e136709e3e8525b4add31943c3276f068e7ac7edd13998b968c3e4df",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--supabase-publishable-under-public-env-label",
+   "previousId": "sha256:4ff188d64c60b1d7a6e3e1d873dcd7c3a8f8111821572b4c1d8e6d0f98d2e107",
+   "id": "sha256:4ff188d64c60b1d7a6e3e1d873dcd7c3a8f8111821572b4c1d8e6d0f98d2e107",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-conflicting-field-label-semantics--supabase-publishable-under-service-role-env-label",
+   "previousId": "sha256:5bd0b44b283432574cf6b503f59332f3bc1b1e92f1cce42edac75cc356e39067",
+   "id": "sha256:5bd0b44b283432574cf6b503f59332f3bc1b1e92f1cce42edac75cc356e39067",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "authored-prefixless-key-shape-discrimination--hex-api-key-and-commit-name",
+   "previousId": "sha256:042c1dc51a35e1005d190ccf60bcc1537d9b3b5dd04a703370edcf86f6b9ff87",
+   "id": "sha256:042c1dc51a35e1005d190ccf60bcc1537d9b3b5dd04a703370edcf86f6b9ff87",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-prefixless-key-shape-discrimination--hex-auth-token-and-trace-id",
+   "previousId": "sha256:26eb4e443c55faf90a3f46e8481937562ead62e726e6e7d13f502b31c0be5031",
+   "id": "sha256:26eb4e443c55faf90a3f46e8481937562ead62e726e6e7d13f502b31c0be5031",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-prefixless-key-shape-discrimination--sdk-bump-commit-line",
+   "previousId": "sha256:c979aca43e0f968f978b350ff7e143a9ecc8dff926ca753ff4df0c68a420db4a",
+   "id": "sha256:c979aca43e0f968f978b350ff7e143a9ecc8dff926ca753ff4df0c68a420db4a",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "authored-prefixless-key-shape-discrimination--uuid-under-generic-api-key-name",
+   "previousId": "sha256:bd5488b42c477a2ad617fbee548b3bb288a2ca137f80287dc38ad223cddca01e",
+   "id": "sha256:bd5488b42c477a2ad617fbee548b3bb288a2ca137f80287dc38ad223cddca01e",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "authored-prefixless-key-shape-discrimination--x-api-key-unattributed-host",
+   "previousId": "sha256:e95b6c8662d3a27e3fe1c988edafb223c051934f93762221a90960d757db90e0",
+   "id": "sha256:e95b6c8662d3a27e3fe1c988edafb223c051934f93762221a90960d757db90e0",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "authored-provider-neutral--pino-checkout-ndjson",
+   "previousId": "sha256:f16ba818d0fee8d93af295acf578f8d4ec0acf7407c7bc51ffc4c4ae27ebb0e4",
+   "id": "sha256:f16ba818d0fee8d93af295acf578f8d4ec0acf7407c7bc51ffc4c4ae27ebb0e4",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-provider-neutral--podfile-lock-ios-wallet",
+   "previousId": "sha256:4b30a535d1e969e316ccadf9f3bea9c515d0ac500ae59cfe8efe5ab7d788e4d3",
+   "id": "sha256:4b30a535d1e969e316ccadf9f3bea9c515d0ac500ae59cfe8efe5ab7d788e4d3",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-provider-neutral--spring-application-prod-yml",
+   "previousId": "sha256:bd80df4d52e44a7a15427ac0d705d35f57a7841c7d46cab3814cb8c21d2d6f17",
+   "id": "sha256:bd80df4d52e44a7a15427ac0d705d35f57a7841c7d46cab3814cb8c21d2d6f17",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "authored-provider-neutral--spring-value-injection",
+   "previousId": "sha256:0f2226c34f38088594c588145dc593c4de787b5eb7cbb769bdcf9b8eb99de6f2",
+   "id": "sha256:0f2226c34f38088594c588145dc593c4de787b5eb7cbb769bdcf9b8eb99de6f2",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "aws-compound-credentials-authored--identifier-alone",
+   "previousId": "sha256:589300f360335a7821cd0a3858695d4d1a93704a85dc51ee614e9115af869b90",
+   "id": "sha256:589300f360335a7821cd0a3858695d4d1a93704a85dc51ee614e9115af869b90",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "aws-compound-credentials-authored--pair-credentials-file",
+   "previousId": "sha256:986e790fe4ab76c7a130a483d184a3250371caafd4173686b8085220110f0306",
+   "id": "sha256:986e790fe4ab76c7a130a483d184a3250371caafd4173686b8085220110f0306",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "aws-compound-credentials-authored--pair-credentials-file",
+   "previousId": "sha256:d303198f80c87a006a05aa00351ce6a6aff87e3cb2454e95ed40b19884573b4b",
+   "id": "sha256:d303198f80c87a006a05aa00351ce6a6aff87e3cb2454e95ed40b19884573b4b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "aws-compound-credentials-authored--pair-secret-before-identifier-json",
+   "previousId": "sha256:a8d082e094af0f9a61b9225b7fde62b33c817a9146ecc8ee31fa8230216974cd",
+   "id": "sha256:a8d082e094af0f9a61b9225b7fde62b33c817a9146ecc8ee31fa8230216974cd",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "aws-compound-credentials-authored--pair-secret-before-identifier-json",
+   "previousId": "sha256:3c585c43d13202df63c262c0a3752a4537615092eb04fb5c1b4811899f599034",
+   "id": "sha256:3c585c43d13202df63c262c0a3752a4537615092eb04fb5c1b4811899f599034",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "aws-compound-credentials-authored--pair-separated-lines-repeated-identifier",
+   "previousId": "sha256:1030105bb8a2c7485b782b2a0e21dbc334535ab00731837ca29c26639c083793",
+   "id": "sha256:1030105bb8a2c7485b782b2a0e21dbc334535ab00731837ca29c26639c083793",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "aws-compound-credentials-authored--pair-separated-lines-repeated-identifier",
+   "previousId": "sha256:503bcc9d5e0d6065b23358498890894f542930974e28d57934c4c23c6d7ae5cc",
+   "id": "sha256:503bcc9d5e0d6065b23358498890894f542930974e28d57934c4c23c6d7ae5cc",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "aws-compound-credentials-authored--secret-without-identifier-named-field",
+   "previousId": "sha256:199fc8b254299b1fc8d50d9aac181bc1d1d16be11d280fa20fc817bd8a63e6c6",
+   "id": "sha256:199fc8b254299b1fc8d50d9aac181bc1d1d16be11d280fa20fc817bd8a63e6c6",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "aws-compound-credentials-authored--secret-without-identifier-named-field",
+   "previousId": "sha256:9d489f7de69f2edacfc90f82be40463c3078fd36617ab39ae91b37e920b190b7",
+   "id": "sha256:9d489f7de69f2edacfc90f82be40463c3078fd36617ab39ae91b37e920b190b7",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "aws-compound-credentials-authored--session-token-alone",
+   "previousId": "sha256:2c095e9896e5e42723cc562ffc735587d592d7a7ab666b5226d36e0595db33eb",
+   "id": "sha256:2c095e9896e5e42723cc562ffc735587d592d7a7ab666b5226d36e0595db33eb",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "aws-compound-credentials-authored--session-token-alone",
+   "previousId": "sha256:f79a1d1ff656a34bc02be6346b01538fb38e2a7f4584596de34f3c1c02529b6b",
+   "id": "sha256:f79a1d1ff656a34bc02be6346b01538fb38e2a7f4584596de34f3c1c02529b6b",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "aws-compound-credentials-authored--temporary-triple-env",
+   "previousId": "sha256:d09385694246923c0a1ec5485fd05a4d2963f87921558e16ef1584c4de6a9697",
+   "id": "sha256:d09385694246923c0a1ec5485fd05a4d2963f87921558e16ef1584c4de6a9697",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "aws-compound-credentials-authored--temporary-triple-env",
+   "previousId": "sha256:c278eefeaaaba77c56a367f2587905c65d4740bfb4edcad1186bb9e9943937bf",
+   "id": "sha256:c278eefeaaaba77c56a367f2587905c65d4740bfb4edcad1186bb9e9943937bf",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "aws-compound-credentials-authored--temporary-triple-token-first-json",
+   "previousId": "sha256:bb0b46de6fc7bd8c3c2fc1fd3bbb3ed95028fe3b52fc0f755a9ba7a85eea6019",
+   "id": "sha256:bb0b46de6fc7bd8c3c2fc1fd3bbb3ed95028fe3b52fc0f755a9ba7a85eea6019",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "aws-compound-credentials-authored--temporary-triple-token-first-json",
+   "previousId": "sha256:349e980ccc156445ab02e6e70dcee76ef7b45bd78f656ef25f700f9d22ee8269",
+   "id": "sha256:349e980ccc156445ab02e6e70dcee76ef7b45bd78f656ef25f700f9d22ee8269",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "base64-hex-representation-bases--generic-literal-alphabet-edge-base",
+   "previousId": "sha256:5342ec0e3e145f883e031aae273364c20c96d19a0ac7b9cac75a359c0147a312",
+   "id": "sha256:5342ec0e3e145f883e031aae273364c20c96d19a0ac7b9cac75a359c0147a312",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "base64-hex-representation-bases--generic-literal-alphabet-edge-base",
+   "previousId": "sha256:671a886a5f44635a85742303c1328ca621923730e47949e96bb1e912115d796f",
+   "id": "sha256:671a886a5f44635a85742303c1328ca621923730e47949e96bb1e912115d796f",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "base64-hex-representation-bases--generic-literal-padding-edge-base",
+   "previousId": "sha256:dd5c44188c2dd17b15e2c0a22ee2594ec37d180d4ce1bafaf845e4b4e762423d",
+   "id": "sha256:dd5c44188c2dd17b15e2c0a22ee2594ec37d180d4ce1bafaf845e4b4e762423d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "base64-hex-representation-bases--generic-literal-padding-edge-base",
+   "previousId": "sha256:7a1d873141aca1e91e586d4055bb7fa0dd5c034b5efc41d43a13fe14a931874a",
+   "id": "sha256:7a1d873141aca1e91e586d4055bb7fa0dd5c034b5efc41d43a13fe14a931874a",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "base64-hex-representation-bases--sendgrid-key-base",
+   "previousId": "sha256:d5519aae5aed51904c9b56a3989deb2daaf19cf01ce745ff8368095e558eac72",
+   "id": "sha256:d5519aae5aed51904c9b56a3989deb2daaf19cf01ce745ff8368095e558eac72",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-bases-authored--publishable-key-under-matching-label-base",
+   "previousId": "sha256:dff0efc4d011bfbc49c41dcb8f71aea91c846978c259ae9af3084c80b9565b43",
+   "id": "sha256:dff0efc4d011bfbc49c41dcb8f71aea91c846978c259ae9af3084c80b9565b43",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-bases-authored--secret-after-personal-data-contact-line-base",
+   "previousId": "sha256:2ae1eed9127d305a2370924513af962ee465615ac3b2afa25a2aba34d41f23c1",
+   "id": "sha256:2ae1eed9127d305a2370924513af962ee465615ac3b2afa25a2aba34d41f23c1",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-bases-authored--secret-after-prefix-prose-base",
+   "previousId": "sha256:584e569f4e57c7180ca7af0cda826fc1b053b9faa8bf39378a6b8a072d54819b",
+   "id": "sha256:584e569f4e57c7180ca7af0cda826fc1b053b9faa8bf39378a6b8a072d54819b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-bases-authored--secret-beside-publishable-under-one-label-base",
+   "previousId": "sha256:c6808c9e93b49b589aa406c775993d489e27d0f69c0718f335bac1b7500ba59d",
+   "id": "sha256:c6808c9e93b49b589aa406c775993d489e27d0f69c0718f335bac1b7500ba59d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-bases-authored--secret-beside-publishable-under-one-label-base",
+   "previousId": "sha256:a2049437147ae9f0a2135e9503988c1845af38188cc5046a5e469e4e9b55efa4",
+   "id": "sha256:a2049437147ae9f0a2135e9503988c1845af38188cc5046a5e469e4e9b55efa4",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-bases-authored--secret-literal-beside-kubernetes-reference-shape-base",
+   "previousId": "sha256:c3186c4a6daab8f701a36d759b603449cb9b6afdb662872e745d83f49a3e0231",
+   "id": "sha256:c3186c4a6daab8f701a36d759b603449cb9b6afdb662872e745d83f49a3e0231",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-bases-authored--secret-literal-in-reference-position-base",
+   "previousId": "sha256:6410cc0ce000b8c24afd8efde29b1724cfa25c2b26e02b112df31a885844b823",
+   "id": "sha256:6410cc0ce000b8c24afd8efde29b1724cfa25c2b26e02b112df31a885844b823",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-bases-authored--secret-literal-where-the-pattern-was-base",
+   "previousId": "sha256:7a85927fd2b68d38a72d2618f6ce31a0f93ece194dec5b3d9f45479a7ace9625",
+   "id": "sha256:7a85927fd2b68d38a72d2618f6ce31a0f93ece194dec5b3d9f45479a7ace9625",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--publishable-key-under-matching-label-in-english-prose",
+   "previousId": "sha256:48ffbf6007054a0e863706fd93ccafe438f1b949d3a2feb9d4f049e6aa0dcf61",
+   "id": "sha256:48ffbf6007054a0e863706fd93ccafe438f1b949d3a2feb9d4f049e6aa0dcf61",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--publishable-key-under-matching-label-in-korean-prose",
+   "previousId": "sha256:015fef4032ccbee9fdcf3f88c70c840f4e192c50fc6ad723075c433310a7daf0",
+   "id": "sha256:015fef4032ccbee9fdcf3f88c70c840f4e192c50fc6ad723075c433310a7daf0",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--publishable-key-under-matching-label-in-markdown-fence",
+   "previousId": "sha256:3391cfe7a096ea71c536a66df3bf2152bf9e3ecd3cbe9d460c2ee4c24593f711",
+   "id": "sha256:3391cfe7a096ea71c536a66df3bf2152bf9e3ecd3cbe9d460c2ee4c24593f711",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-after-personal-data-contact-line-in-english-prose",
+   "previousId": "sha256:db73a5121e12b1f598c39ed89cae0097fd4f6319cbd4197a60178bddfc2ee3b2",
+   "id": "sha256:db73a5121e12b1f598c39ed89cae0097fd4f6319cbd4197a60178bddfc2ee3b2",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-after-personal-data-contact-line-in-korean-prose",
+   "previousId": "sha256:f6ec779e197068c22367219f043daf76faed4eb0968e49135f5c53eec1837709",
+   "id": "sha256:f6ec779e197068c22367219f043daf76faed4eb0968e49135f5c53eec1837709",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-after-personal-data-contact-line-in-markdown-fence",
+   "previousId": "sha256:3414daf3d15dab02b9dc0054f22c07bef36650a171d961276b39b9bc8dca70e2",
+   "id": "sha256:3414daf3d15dab02b9dc0054f22c07bef36650a171d961276b39b9bc8dca70e2",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-after-prefix-prose-in-english-prose",
+   "previousId": "sha256:e6bae8d3a476a49ac24726ef83ded5d54b35ee8cdb66fb5cefbc257406480f03",
+   "id": "sha256:e6bae8d3a476a49ac24726ef83ded5d54b35ee8cdb66fb5cefbc257406480f03",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-after-prefix-prose-in-korean-prose",
+   "previousId": "sha256:98fa191dcfcb67bc8e76c2956039d422c524f6d7af94b9aa8241f6350c198173",
+   "id": "sha256:98fa191dcfcb67bc8e76c2956039d422c524f6d7af94b9aa8241f6350c198173",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-after-prefix-prose-in-markdown-fence",
+   "previousId": "sha256:e3b51ec42bf3c2e6747425b26964fd74fab9fe6aa2d4550036203d821cd29e85",
+   "id": "sha256:e3b51ec42bf3c2e6747425b26964fd74fab9fe6aa2d4550036203d821cd29e85",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-beside-publishable-under-one-label-in-english-prose",
+   "previousId": "sha256:887e800a0db65d5af5a36d3944c173532832d130fe0f6cf85b102e11cc3cd088",
+   "id": "sha256:887e800a0db65d5af5a36d3944c173532832d130fe0f6cf85b102e11cc3cd088",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-beside-publishable-under-one-label-in-english-prose",
+   "previousId": "sha256:5f9e54843caf28bfb4c582f099d7dd4a2f99627434e340a84f5076d26833d884",
+   "id": "sha256:5f9e54843caf28bfb4c582f099d7dd4a2f99627434e340a84f5076d26833d884",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-beside-publishable-under-one-label-in-korean-prose",
+   "previousId": "sha256:c694ac7f36cc081c06953e3a0e6436fad3c106b622dfbb190d576c1d56862e67",
+   "id": "sha256:c694ac7f36cc081c06953e3a0e6436fad3c106b622dfbb190d576c1d56862e67",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-beside-publishable-under-one-label-in-korean-prose",
+   "previousId": "sha256:8bb6b50b63cb55d9b824edd9407d4d9a8900717432f793ac5124b77a91ddbcfd",
+   "id": "sha256:8bb6b50b63cb55d9b824edd9407d4d9a8900717432f793ac5124b77a91ddbcfd",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-beside-publishable-under-one-label-in-markdown-fence",
+   "previousId": "sha256:730241752614c2bc06213d91b9a30c4ce384f7d02b5b7f83247367bb9259856f",
+   "id": "sha256:730241752614c2bc06213d91b9a30c4ce384f7d02b5b7f83247367bb9259856f",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-beside-publishable-under-one-label-in-markdown-fence",
+   "previousId": "sha256:953a1d218219747c2aeddd31798bd1be6df73a149f3db5851caa25967ac98417",
+   "id": "sha256:953a1d218219747c2aeddd31798bd1be6df73a149f3db5851caa25967ac98417",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-literal-beside-kubernetes-reference-shape-in-english-prose",
+   "previousId": "sha256:3fab3970dd921d94a84ab047db380658f688e17054f6dbb1b5b2e86d93049040",
+   "id": "sha256:3fab3970dd921d94a84ab047db380658f688e17054f6dbb1b5b2e86d93049040",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-literal-beside-kubernetes-reference-shape-in-korean-prose",
+   "previousId": "sha256:052471bb26fd2299c81df2b5dcfb3fce5ec9e14767ec0116cbd68b0eb73bbe7c",
+   "id": "sha256:052471bb26fd2299c81df2b5dcfb3fce5ec9e14767ec0116cbd68b0eb73bbe7c",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-literal-beside-kubernetes-reference-shape-in-markdown-fence",
+   "previousId": "sha256:96ad9f73aad2765a167f12bc3247c798b2bcded7a9724c4a0d52da41c29ae064",
+   "id": "sha256:96ad9f73aad2765a167f12bc3247c798b2bcded7a9724c4a0d52da41c29ae064",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-literal-in-reference-position-in-english-prose",
+   "previousId": "sha256:d1ed2e9c887a38a963e5168297353dbec5cc2d0a59fbe67f2d5bfd97db8b0209",
+   "id": "sha256:d1ed2e9c887a38a963e5168297353dbec5cc2d0a59fbe67f2d5bfd97db8b0209",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-literal-in-reference-position-in-korean-prose",
+   "previousId": "sha256:2f9d37807737a6f31a9f6881375874c547edfbeb7ebf3a818967da02a8ceec2d",
+   "id": "sha256:2f9d37807737a6f31a9f6881375874c547edfbeb7ebf3a818967da02a8ceec2d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-literal-in-reference-position-in-markdown-fence",
+   "previousId": "sha256:0d1b54a1b7286561045c106fa0f048c2e64b99ac8be17f90051ebf261eff14c5",
+   "id": "sha256:0d1b54a1b7286561045c106fa0f048c2e64b99ac8be17f90051ebf261eff14c5",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-literal-where-the-pattern-was-in-english-prose",
+   "previousId": "sha256:0775ddce57efb6ba65b03279e4a4cdd7d5aaf73591cd82edb417efe34f0c806e",
+   "id": "sha256:0775ddce57efb6ba65b03279e4a4cdd7d5aaf73591cd82edb417efe34f0c806e",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-literal-where-the-pattern-was-in-korean-prose",
+   "previousId": "sha256:e976b0577f785be42687438e5ae9d29418cf3abba7df7695b367e6cba6b62669",
+   "id": "sha256:e976b0577f785be42687438e5ae9d29418cf3abba7df7695b367e6cba6b62669",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "benign-control-and-near-neighbor-projections-generated--secret-literal-where-the-pattern-was-in-markdown-fence",
+   "previousId": "sha256:1b7b29bc27406cd8fb98dc5c0611db9268987a72e4690956fa0c7285d6361680",
+   "id": "sha256:1b7b29bc27406cd8fb98dc5c0611db9268987a72e4690956fa0c7285d6361680",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-and-large-input-bases-authored--github-classic-pat-base-a",
+   "previousId": "sha256:c09778c52d90e7bf00eb222031e08e4045024a74016341fab0b9152c847fb44b",
+   "id": "sha256:c09778c52d90e7bf00eb222031e08e4045024a74016341fab0b9152c847fb44b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-and-large-input-bases-authored--github-classic-pat-base-a",
+   "previousId": "sha256:4f9840b4fdbc8b399bcde49cbfc1eaae00ccbf1fa7c66bcb4b961b9472f48e5c",
+   "id": "sha256:4f9840b4fdbc8b399bcde49cbfc1eaae00ccbf1fa7c66bcb4b961b9472f48e5c",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-and-large-input-bases-authored--github-classic-pat-base-b",
+   "previousId": "sha256:fb675fa5a05fefaf6cc0f3ee96c9917461f98221bd67ed4a70a2422f7aec1310",
+   "id": "sha256:fb675fa5a05fefaf6cc0f3ee96c9917461f98221bd67ed4a70a2422f7aec1310",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-and-large-input-bases-authored--gitlab-legacy-pat-base-a",
+   "previousId": "sha256:7c88f364c744a43a11b85bf135f21eefda1cd6298fd41df83f8ac7c2d258d005",
+   "id": "sha256:7c88f364c744a43a11b85bf135f21eefda1cd6298fd41df83f8ac7c2d258d005",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-and-large-input-bases-authored--gitlab-legacy-pat-base-b",
+   "previousId": "sha256:8e9d9949da9c334da47c5fe06fdb6548fc2d9069a61c7c3d1816ec881b6cd79b",
+   "id": "sha256:8e9d9949da9c334da47c5fe06fdb6548fc2d9069a61c7c3d1816ec881b6cd79b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-and-large-input-bases-authored--npm-granular-token-base-a",
+   "previousId": "sha256:12fb8c6ab2aa6c43cbdbe88cd6981a85025ee572241536b0251d3a6110d1f316",
+   "id": "sha256:12fb8c6ab2aa6c43cbdbe88cd6981a85025ee572241536b0251d3a6110d1f316",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-and-large-input-bases-authored--npm-granular-token-base-b",
+   "previousId": "sha256:0bb5064b70e21adee17874f4d1b30ef38cc46e8410027592ee7cec6dd2f710d1",
+   "id": "sha256:0bb5064b70e21adee17874f4d1b30ef38cc46e8410027592ee7cec6dd2f710d1",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-and-large-input-bases-authored--sendgrid-api-key-base-a",
+   "previousId": "sha256:ee9d70a17ff7ab1268c8e8bc4f17b3c6073c11f93162cd9f0cf2209e823be0f9",
+   "id": "sha256:ee9d70a17ff7ab1268c8e8bc4f17b3c6073c11f93162cd9f0cf2209e823be0f9",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-and-large-input-bases-authored--sendgrid-api-key-base-b",
+   "previousId": "sha256:994788801cb54b4c8683495df49e3d7d5588ea3cf7278df7bcb34815b0cea8d8",
+   "id": "sha256:994788801cb54b4c8683495df49e3d7d5588ea3cf7278df7bcb34815b0cea8d8",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-bare-value",
+   "previousId": "sha256:1aefb9bcec6eea0fc765209312ee1515cfa6ff008408c92b88897176b94499c5",
+   "id": "sha256:1aefb9bcec6eea0fc765209312ee1515cfa6ff008408c92b88897176b94499c5",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-bare-value",
+   "previousId": "sha256:c4b755c47ac1aa76605a7c450b2d3ce9555f6d082a7871781e612e9bf66faa83",
+   "id": "sha256:c4b755c47ac1aa76605a7c450b2d3ce9555f6d082a7871781e612e9bf66faa83",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-bearer-header",
+   "previousId": "sha256:579b3d492158c5370948f5af85086b2e24c3e1e765613df662f025357fd6362e",
+   "id": "sha256:579b3d492158c5370948f5af85086b2e24c3e1e765613df662f025357fd6362e",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-bearer-header",
+   "previousId": "sha256:f9e7d93200e38ce561bf4e72edbd26cfbe5356ad74f16731685a72832eafb389",
+   "id": "sha256:f9e7d93200e38ce561bf4e72edbd26cfbe5356ad74f16731685a72832eafb389",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-bom-prefix",
+   "previousId": "sha256:aaf85fc12cc879d04afe535a0e803c06d161dd49e98394854a1ee59eb5417e87",
+   "id": "sha256:aaf85fc12cc879d04afe535a0e803c06d161dd49e98394854a1ee59eb5417e87",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-bom-prefix",
+   "previousId": "sha256:88cae730f4184bc2f8bdb51a1cc3e32f8f52245226a1441cbba8fb80ee5f57b0",
+   "id": "sha256:88cae730f4184bc2f8bdb51a1cc3e32f8f52245226a1441cbba8fb80ee5f57b0",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-crlf-lines",
+   "previousId": "sha256:ba0661cade4dbd06855b4e27f569990163544438f2054f6502a1ea9d7d406670",
+   "id": "sha256:ba0661cade4dbd06855b4e27f569990163544438f2054f6502a1ea9d7d406670",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-crlf-lines",
+   "previousId": "sha256:fc74e4e73dc7f2278be64c1e8f5c6763c8a2e2e02aba5c4d8f6f33ec0b1eb52e",
+   "id": "sha256:fc74e4e73dc7f2278be64c1e8f5c6763c8a2e2e02aba5c4d8f6f33ec0b1eb52e",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-emoji-prefix",
+   "previousId": "sha256:2c6843200acedb878b62965d45861212773ca1c7a7665a2452d992e33d2e8bef",
+   "id": "sha256:2c6843200acedb878b62965d45861212773ca1c7a7665a2452d992e33d2e8bef",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-emoji-prefix",
+   "previousId": "sha256:70c089b2d8a50fc0c5aba822a0362e3b0562bf8d9c440ebcce259a3a03aacea2",
+   "id": "sha256:70c089b2d8a50fc0c5aba822a0362e3b0562bf8d9c440ebcce259a3a03aacea2",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-json-field",
+   "previousId": "sha256:1ce021ea2248c44a479617f995428545129b7ae83a7ab2c78ab2861e88417c20",
+   "id": "sha256:1ce021ea2248c44a479617f995428545129b7ae83a7ab2c78ab2861e88417c20",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-json-field",
+   "previousId": "sha256:dc3b314ce31b24f0b0afbb0184d21df6c77898dc4644f3735d3fdad91e0e7d58",
+   "id": "sha256:dc3b314ce31b24f0b0afbb0184d21df6c77898dc4644f3735d3fdad91e0e7d58",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-korean-text-prefix",
+   "previousId": "sha256:eabb9106d7f13b7ea860ef2626f22234102f088085b818a161848167ac9627d0",
+   "id": "sha256:eabb9106d7f13b7ea860ef2626f22234102f088085b818a161848167ac9627d0",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-korean-text-prefix",
+   "previousId": "sha256:32c43fa1cb4e39a3282b281eee17726c0a57ee27122613da6ef4d448c7cdd39d",
+   "id": "sha256:32c43fa1cb4e39a3282b281eee17726c0a57ee27122613da6ef4d448c7cdd39d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-log-line",
+   "previousId": "sha256:7fcb9cd5bbf527ceb0104403dde8a8f241088809a3ecdd91a9eb2eb8f30fb031",
+   "id": "sha256:7fcb9cd5bbf527ceb0104403dde8a8f241088809a3ecdd91a9eb2eb8f30fb031",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-log-line",
+   "previousId": "sha256:f1ffe6f1f27df542aced20058e0c4ef9591f723c7682753a711db026a5f4e2d4",
+   "id": "sha256:f1ffe6f1f27df542aced20058e0c4ef9591f723c7682753a711db026a5f4e2d4",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-markdown-code-span",
+   "previousId": "sha256:7442ca208c4909dbb5632b0d5b54080ed8cdf0eef503345cedcc8e4f352148b5",
+   "id": "sha256:7442ca208c4909dbb5632b0d5b54080ed8cdf0eef503345cedcc8e4f352148b5",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-markdown-code-span",
+   "previousId": "sha256:c6729fbad5b89f07748828e37927c6851fff169a7c5ef3d3038dd185c80f9111",
+   "id": "sha256:c6729fbad5b89f07748828e37927c6851fff169a7c5ef3d3038dd185c80f9111",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-nbsp-before-value",
+   "previousId": "sha256:5c0806783493c89fa5339d6dd62d3fbc50cc3aacf40f48d85f3277f3ac8d618b",
+   "id": "sha256:5c0806783493c89fa5339d6dd62d3fbc50cc3aacf40f48d85f3277f3ac8d618b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-nbsp-before-value",
+   "previousId": "sha256:5695751715070196b8a39bc8ae90996b5f345da08fb3805a7c28c0ac2da2e17c",
+   "id": "sha256:5695751715070196b8a39bc8ae90996b5f345da08fb3805a7c28c0ac2da2e17c",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-shell-export-quoted",
+   "previousId": "sha256:ae46d0eec172dd5ebcae23c63f4df6490576e5f39f9e51d6f11bbc764b646013",
+   "id": "sha256:ae46d0eec172dd5ebcae23c63f4df6490576e5f39f9e51d6f11bbc764b646013",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-shell-export-quoted",
+   "previousId": "sha256:25703b33f5ca6fd1dc1c3faad3ed009af9f1aa85b746b4aa4d46d327190c5968",
+   "id": "sha256:25703b33f5ca6fd1dc1c3faad3ed009af9f1aa85b746b4aa4d46d327190c5968",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-url-query",
+   "previousId": "sha256:65ffc5344ac3298ca651a37e26c3f0c93a0355bda019cd1fc7ff2dd323927221",
+   "id": "sha256:65ffc5344ac3298ca651a37e26c3f0c93a0355bda019cd1fc7ff2dd323927221",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-url-query",
+   "previousId": "sha256:58f42014e0e70e888920f1a0465eb5fea6a88470371e6d23223e2fc23f75d056",
+   "id": "sha256:58f42014e0e70e888920f1a0465eb5fea6a88470371e6d23223e2fc23f75d056",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-xml-element",
+   "previousId": "sha256:50fdc9e0c620364d99b2fe5bdb88ac57666298ec87c926fc78ab3f70f8f186c3",
+   "id": "sha256:50fdc9e0c620364d99b2fe5bdb88ac57666298ec87c926fc78ab3f70f8f186c3",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-xml-element",
+   "previousId": "sha256:47f9c1c04b65a5a7495bdb4634c1e554667eb291a453874f8d516cd9a10c7056",
+   "id": "sha256:47f9c1c04b65a5a7495bdb4634c1e554667eb291a453874f8d516cd9a10c7056",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-yaml-scalar",
+   "previousId": "sha256:1e0eff735a371c807c69d6d3a4fd633d3bdff7ae382092755cc178206c727c3e",
+   "id": "sha256:1e0eff735a371c807c69d6d3a4fd633d3bdff7ae382092755cc178206c727c3e",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--github-classic-pat-yaml-scalar",
+   "previousId": "sha256:9cd895e02c7542ce528020cea7f15359b9322e80b25c9c5367e011508d652bd5",
+   "id": "sha256:9cd895e02c7542ce528020cea7f15359b9322e80b25c9c5367e011508d652bd5",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--gitlab-legacy-pat-bare-value",
+   "previousId": "sha256:85519b9fab01eb3638eca9e24613dd5ddaf25e59bb757b700422f84e76d116b1",
+   "id": "sha256:85519b9fab01eb3638eca9e24613dd5ddaf25e59bb757b700422f84e76d116b1",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--gitlab-legacy-pat-bearer-header",
+   "previousId": "sha256:ea193df12329261ea0a4b388b47156a4854e39689de7cfe07b83e1a797d5f943",
+   "id": "sha256:ea193df12329261ea0a4b388b47156a4854e39689de7cfe07b83e1a797d5f943",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--gitlab-legacy-pat-bom-prefix",
+   "previousId": "sha256:75fecdde91aeb577a227ca38fa8f5d61883f7704568a362167e49380ad1f7e15",
+   "id": "sha256:75fecdde91aeb577a227ca38fa8f5d61883f7704568a362167e49380ad1f7e15",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--gitlab-legacy-pat-crlf-lines",
+   "previousId": "sha256:651ae5210f25c4301aa1697566c9be764f75c021eb34712059448cd8d6b7f660",
+   "id": "sha256:651ae5210f25c4301aa1697566c9be764f75c021eb34712059448cd8d6b7f660",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--gitlab-legacy-pat-emoji-prefix",
+   "previousId": "sha256:ec0d5153032dfb2f15cd0eef207ab0cab20f6d726a46f05aa07adf7bd4f33861",
+   "id": "sha256:ec0d5153032dfb2f15cd0eef207ab0cab20f6d726a46f05aa07adf7bd4f33861",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--gitlab-legacy-pat-json-field",
+   "previousId": "sha256:de8c40fd0e16b5257301cfaef2b889e5d29e49099c569a8a224a53a6bc397ee5",
+   "id": "sha256:de8c40fd0e16b5257301cfaef2b889e5d29e49099c569a8a224a53a6bc397ee5",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--gitlab-legacy-pat-korean-text-prefix",
+   "previousId": "sha256:957915d19ea3bf2acd5afa10b63f4586ef5e73ab018c225eb4f4120c7df87d7c",
+   "id": "sha256:957915d19ea3bf2acd5afa10b63f4586ef5e73ab018c225eb4f4120c7df87d7c",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--gitlab-legacy-pat-log-line",
+   "previousId": "sha256:1cbfaa9087e492c1da6e88172d8c2017b38913dfd5861dd8322612ef84761ce7",
+   "id": "sha256:1cbfaa9087e492c1da6e88172d8c2017b38913dfd5861dd8322612ef84761ce7",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--gitlab-legacy-pat-markdown-code-span",
+   "previousId": "sha256:90bdd6873fe41de0c1bc8b78a85c17a7a2fdd9865448b7279ad065906bd52594",
+   "id": "sha256:90bdd6873fe41de0c1bc8b78a85c17a7a2fdd9865448b7279ad065906bd52594",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--gitlab-legacy-pat-nbsp-before-value",
+   "previousId": "sha256:25face86222cc1993c46ae272ff991a1d027cb700afb86c47aabaf42c9b46ad6",
+   "id": "sha256:25face86222cc1993c46ae272ff991a1d027cb700afb86c47aabaf42c9b46ad6",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--gitlab-legacy-pat-shell-export-quoted",
+   "previousId": "sha256:1d92a835c696d80854d46d1e49fb5a8faf7fca61539bad671057e25050124620",
+   "id": "sha256:1d92a835c696d80854d46d1e49fb5a8faf7fca61539bad671057e25050124620",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--gitlab-legacy-pat-url-query",
+   "previousId": "sha256:ce6e99473ccba023a768b50451a2c0bc2762322bd96a83471a6eeddd9ee225b8",
+   "id": "sha256:ce6e99473ccba023a768b50451a2c0bc2762322bd96a83471a6eeddd9ee225b8",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--gitlab-legacy-pat-xml-element",
+   "previousId": "sha256:c1016d4c7c556e27846347a25aa252411ef159f0b6885aada0b22d30092c9257",
+   "id": "sha256:c1016d4c7c556e27846347a25aa252411ef159f0b6885aada0b22d30092c9257",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--gitlab-legacy-pat-yaml-scalar",
+   "previousId": "sha256:f956e9061287084f794e837185668e2a023f303e2f8de4c8704fa869d57555e9",
+   "id": "sha256:f956e9061287084f794e837185668e2a023f303e2f8de4c8704fa869d57555e9",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--npm-granular-token-bare-value",
+   "previousId": "sha256:8f4ad9e046653f3619ec0eae44155d9da86ad99580ed85ec137095d51e629fa1",
+   "id": "sha256:8f4ad9e046653f3619ec0eae44155d9da86ad99580ed85ec137095d51e629fa1",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--npm-granular-token-bearer-header",
+   "previousId": "sha256:cc785369b8ebd778bb21d1f1996b061d36beb0bbd169bcbf7fa4a0e46f742a1b",
+   "id": "sha256:cc785369b8ebd778bb21d1f1996b061d36beb0bbd169bcbf7fa4a0e46f742a1b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--npm-granular-token-bom-prefix",
+   "previousId": "sha256:6140b3a5cde2de5112b5b259c8f58ea540aa3ca53275588925cbefa7a8b2da01",
+   "id": "sha256:6140b3a5cde2de5112b5b259c8f58ea540aa3ca53275588925cbefa7a8b2da01",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--npm-granular-token-crlf-lines",
+   "previousId": "sha256:359b39c693648aef19049df6dca4f5863bb1aff1eee8307bd6d6966c5cd8c212",
+   "id": "sha256:359b39c693648aef19049df6dca4f5863bb1aff1eee8307bd6d6966c5cd8c212",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--npm-granular-token-emoji-prefix",
+   "previousId": "sha256:3fbff4f458c5af6d8520cdf14ec88612d989a78d9f52c5caa3f75d239d042c2b",
+   "id": "sha256:3fbff4f458c5af6d8520cdf14ec88612d989a78d9f52c5caa3f75d239d042c2b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--npm-granular-token-json-field",
+   "previousId": "sha256:fbef63b5736170deec4a03d29aa4eef04a9d0583feaac2f237b5d97cbdb070e6",
+   "id": "sha256:fbef63b5736170deec4a03d29aa4eef04a9d0583feaac2f237b5d97cbdb070e6",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--npm-granular-token-korean-text-prefix",
+   "previousId": "sha256:054545c8c797d1fc6eb052ceb5d966043195dd27307fb9fdbd6222453a2aa4b6",
+   "id": "sha256:054545c8c797d1fc6eb052ceb5d966043195dd27307fb9fdbd6222453a2aa4b6",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--npm-granular-token-log-line",
+   "previousId": "sha256:06893f104cdcdb52d529271ead2dfd17f8c78232140810c249a00e129951644f",
+   "id": "sha256:06893f104cdcdb52d529271ead2dfd17f8c78232140810c249a00e129951644f",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--npm-granular-token-markdown-code-span",
+   "previousId": "sha256:1d189a8dd054a08dbb51fbc6d23a4f3d8603e46909923ce0143995de9f1283b7",
+   "id": "sha256:1d189a8dd054a08dbb51fbc6d23a4f3d8603e46909923ce0143995de9f1283b7",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--npm-granular-token-nbsp-before-value",
+   "previousId": "sha256:56d26643db907c8bccd23c23f6c037c113c6dfb0de461d1aa1f3a391ff6654f4",
+   "id": "sha256:56d26643db907c8bccd23c23f6c037c113c6dfb0de461d1aa1f3a391ff6654f4",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--npm-granular-token-shell-export-quoted",
+   "previousId": "sha256:105eb0334754d1ffda7c178e188fbc08e4fd2d5b3cbef247d96fb3c64012df0d",
+   "id": "sha256:105eb0334754d1ffda7c178e188fbc08e4fd2d5b3cbef247d96fb3c64012df0d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--npm-granular-token-url-query",
+   "previousId": "sha256:9c48c86339d70c3d97b7c776da5f99b930a3bc413c3ce9d4b821f1963a388a1d",
+   "id": "sha256:9c48c86339d70c3d97b7c776da5f99b930a3bc413c3ce9d4b821f1963a388a1d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--npm-granular-token-xml-element",
+   "previousId": "sha256:9dee8441b681d76e6df119c42f284384d850857c53144ec470776e0581a8c902",
+   "id": "sha256:9dee8441b681d76e6df119c42f284384d850857c53144ec470776e0581a8c902",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--npm-granular-token-xml-element",
+   "previousId": "sha256:5c9dd5d60e3c19c2de147f8d71c3771cf57a5a9018e5be66299289c470fd6a1f",
+   "id": "sha256:5c9dd5d60e3c19c2de147f8d71c3771cf57a5a9018e5be66299289c470fd6a1f",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--npm-granular-token-yaml-scalar",
+   "previousId": "sha256:7360e66deeb8398ea12b15def09738183e648efc18888efb7b0cc4628e569476",
+   "id": "sha256:7360e66deeb8398ea12b15def09738183e648efc18888efb7b0cc4628e569476",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--sendgrid-api-key-bare-value",
+   "previousId": "sha256:b9b634025be638682c2b9a4c90c88855953d4a233bab28aa538c82a2b44e4d71",
+   "id": "sha256:b9b634025be638682c2b9a4c90c88855953d4a233bab28aa538c82a2b44e4d71",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--sendgrid-api-key-bearer-header",
+   "previousId": "sha256:ffe83215d478207c4821aa0c6c3a7ea4a7c09e558aeef4bda6ea447d558da810",
+   "id": "sha256:ffe83215d478207c4821aa0c6c3a7ea4a7c09e558aeef4bda6ea447d558da810",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--sendgrid-api-key-bom-prefix",
+   "previousId": "sha256:d800f4298e8485d5b0afa5af1da1f13a05676feb3787a3e2268ae41d07905baa",
+   "id": "sha256:d800f4298e8485d5b0afa5af1da1f13a05676feb3787a3e2268ae41d07905baa",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--sendgrid-api-key-crlf-lines",
+   "previousId": "sha256:77d1444636b71665b3f1adb291dcd0cf40f4555c7245588fc933eb38b856ba63",
+   "id": "sha256:77d1444636b71665b3f1adb291dcd0cf40f4555c7245588fc933eb38b856ba63",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--sendgrid-api-key-emoji-prefix",
+   "previousId": "sha256:64edbb55d5e1981ba7b06bd0046269109656135d7b0c51636f7cc5011bb1f3e5",
+   "id": "sha256:64edbb55d5e1981ba7b06bd0046269109656135d7b0c51636f7cc5011bb1f3e5",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--sendgrid-api-key-json-field",
+   "previousId": "sha256:4b4a3942d5c2c38d9ae0e6629ca1934c58ce5502a8f53907b9902554cb7b0df3",
+   "id": "sha256:4b4a3942d5c2c38d9ae0e6629ca1934c58ce5502a8f53907b9902554cb7b0df3",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--sendgrid-api-key-korean-text-prefix",
+   "previousId": "sha256:53e16f088e457e8cbe603d9a94326345d7da243a629c2f225624f336f3d146ac",
+   "id": "sha256:53e16f088e457e8cbe603d9a94326345d7da243a629c2f225624f336f3d146ac",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--sendgrid-api-key-log-line",
+   "previousId": "sha256:feda674d9acd28dc8783cf66cf7dd4d24eb302069ce0a8813461ba31bb67c392",
+   "id": "sha256:feda674d9acd28dc8783cf66cf7dd4d24eb302069ce0a8813461ba31bb67c392",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--sendgrid-api-key-markdown-code-span",
+   "previousId": "sha256:346bb788e7e2a641f50f79624a194cbf9131767f36822daee9b88a22e0690b9a",
+   "id": "sha256:346bb788e7e2a641f50f79624a194cbf9131767f36822daee9b88a22e0690b9a",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--sendgrid-api-key-nbsp-before-value",
+   "previousId": "sha256:64c5e2eda990b3de7018a7ed6d038deedb89f1c22a074d85fd25af285bace396",
+   "id": "sha256:64c5e2eda990b3de7018a7ed6d038deedb89f1c22a074d85fd25af285bace396",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--sendgrid-api-key-shell-export-quoted",
+   "previousId": "sha256:79c1659ea0b3b50c08a1e2ea60b5896e5b1ad1cd47024a817c8086e5e9cbde89",
+   "id": "sha256:79c1659ea0b3b50c08a1e2ea60b5896e5b1ad1cd47024a817c8086e5e9cbde89",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--sendgrid-api-key-url-query",
+   "previousId": "sha256:7a04fa53399648f4758d1974adb5f009473cfffe22c166043227bd1156808fd3",
+   "id": "sha256:7a04fa53399648f4758d1974adb5f009473cfffe22c166043227bd1156808fd3",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--sendgrid-api-key-xml-element",
+   "previousId": "sha256:c6b64ad1fdc66fea5d0f519d120f3cb656bfcc997ba6d887c30069d721562950",
+   "id": "sha256:c6b64ad1fdc66fea5d0f519d120f3cb656bfcc997ba6d887c30069d721562950",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--sendgrid-api-key-xml-element",
+   "previousId": "sha256:1b357aa8fb3b87bf62da28979d94a1502a6d6abf4db38dcfed7c2fb4ce1aa5ee",
+   "id": "sha256:1b357aa8fb3b87bf62da28979d94a1502a6d6abf4db38dcfed7c2fb4ce1aa5ee",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "context-carrier-projections-generated--sendgrid-api-key-yaml-scalar",
+   "previousId": "sha256:22dd6d66a3c665cd508502927120c21c9206548e28085c5ad2aaf241a2004394",
+   "id": "sha256:22dd6d66a3c665cd508502927120c21c9206548e28085c5ad2aaf241a2004394",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "developer-artifact-lookalikes-authored--actions-cache-step-key-input",
+   "previousId": "sha256:aa517e819dbda58dcb6d2bf40b501aaa2c969af1502cb79961106895d337a31c",
+   "id": "sha256:aa517e819dbda58dcb6d2bf40b501aaa2c969af1502cb79961106895d337a31c",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "developer-artifact-lookalikes-authored--go-sum-excerpt-with-goproxy-password",
+   "previousId": "sha256:527c6370c94ac8057853b963aafbc0bcb43dd414bb6c9f6c7317406a56176f52",
+   "id": "sha256:527c6370c94ac8057853b963aafbc0bcb43dd414bb6c9f6c7317406a56176f52",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "developer-artifact-lookalikes-authored--go-sum-excerpt-with-goproxy-password",
+   "previousId": "sha256:ca67a2b7456b896c319322813d46928048ca5fa1ec5a199febdc25c8ec0ce0ed",
+   "id": "sha256:ca67a2b7456b896c319322813d46928048ca5fa1ec5a199febdc25c8ec0ce0ed",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "developer-artifact-lookalikes-authored--pip-requirements-hashes-with-index-url-password",
+   "previousId": "sha256:f24e8ccfe6f4b50657d9e4703f03a0864d9276af7ac64f2c374e306d89ccec77",
+   "id": "sha256:f24e8ccfe6f4b50657d9e4703f03a0864d9276af7ac64f2c374e306d89ccec77",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "developer-artifact-lookalikes-authored--pip-requirements-hashes-with-index-url-password",
+   "previousId": "sha256:043ef4f98961d0ee080a876be9879ccaa05870b6d70c1803db9313fefd2d71d4",
+   "id": "sha256:043ef4f98961d0ee080a876be9879ccaa05870b6d70c1803db9313fefd2d71d4",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "developer-artifact-lookalikes-authored--stored-api-key-fingerprint-field",
+   "previousId": "sha256:52a9fa981edae994975a6045a3d94dc5c8a920247d3ce71f5bc9c6bdbff64be2",
+   "id": "sha256:52a9fa981edae994975a6045a3d94dc5c8a920247d3ce71f5bc9c6bdbff64be2",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "developer-artifact-lookalikes-authored--twilio-token-beside-image-digest",
+   "previousId": "sha256:033050644cb706da440803456dee37530eb08cf8b0fd3c39188bbf184f5341a3",
+   "id": "sha256:033050644cb706da440803456dee37530eb08cf8b0fd3c39188bbf184f5341a3",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "environment-and-test-values-authored--env-assignment-sandbox-comment",
+   "previousId": "sha256:fc968ef5c41ea19d087035d03b6e1628a4db124e3bed06ca95bccc787d5cbd48",
+   "id": "sha256:fc968ef5c41ea19d087035d03b6e1628a4db124e3bed06ca95bccc787d5cbd48",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "environment-and-test-values-authored--installation-token-lifetime-note",
+   "previousId": "sha256:94aa16ec433ac3305d6a80df1e651386432da139aa11361dd4ce92225007c7ca",
+   "id": "sha256:94aa16ec433ac3305d6a80df1e651386432da139aa11361dd4ce92225007c7ca",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "environment-and-test-values-authored--json-config-sandbox-mode",
+   "previousId": "sha256:e450bf010fff2879fc1df1dce9e75f2ebd6fee283448cb1e9d738b38a04a904d",
+   "id": "sha256:e450bf010fff2879fc1df1dce9e75f2ebd6fee283448cb1e9d738b38a04a904d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "environment-and-test-values-authored--stripe-rotated-key-note",
+   "previousId": "sha256:fd1f43e72a2840bc2cb3ec26a7d1140c864e7acb69ec68259187ab5d340e1dc7",
+   "id": "sha256:fd1f43e72a2840bc2cb3ec26a7d1140c864e7acb69ec68259187ab5d340e1dc7",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "environment-and-test-values-authored--sts-credentials-past-expiration",
+   "previousId": "sha256:925e63792557e410180eb9806e8a6186c892a3666cb4daaa52c06d0d18d120d1",
+   "id": "sha256:925e63792557e410180eb9806e8a6186c892a3666cb4daaa52c06d0d18d120d1",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "environment-and-test-values-authored--sts-credentials-past-expiration",
+   "previousId": "sha256:1f81a469beda03774f5fe05e69b95fcecd8f9352ec351acb7daf287d848bddc2",
+   "id": "sha256:1f81a469beda03774f5fe05e69b95fcecd8f9352ec351acb7daf287d848bddc2",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "exa--exa-api-key-curl-x-api-key",
+   "previousId": "sha256:64969826813b82510be1a53c1e718ec3a0e366516e8156a53ec5d38b285fa8bb",
+   "id": "sha256:64969826813b82510be1a53c1e718ec3a0e366516e8156a53ec5d38b285fa8bb",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "exa--exa-api-key-dotenv",
+   "previousId": "sha256:8bb1811b8cdba1781ad9a46f0af96ca4d9ceee0e6e38810d406db60fc02dffb1",
+   "id": "sha256:8bb1811b8cdba1781ad9a46f0af96ca4d9ceee0e6e38810d406db60fc02dffb1",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "exa--exa-api-key-export",
+   "previousId": "sha256:c7b1c3fe4df98a83f9918a7b9bfce8fc817abf7a66b034244a18d07e48cb29cf",
+   "id": "sha256:c7b1c3fe4df98a83f9918a7b9bfce8fc817abf7a66b034244a18d07e48cb29cf",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "exa--exa-api-key-hosted-mcp-query",
+   "previousId": "sha256:2b86b4af6679e9eb191477512410596e7b1ce143a58c8fc81759119e4aebe08b",
+   "id": "sha256:2b86b4af6679e9eb191477512410596e7b1ce143a58c8fc81759119e4aebe08b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "generic-connection-grammar-authored--ado-net-password-ends-at-semicolon",
+   "previousId": "sha256:b97a4170af7f01fadd6bf42e43c5b3e75500a711c034d52fef4a3d4a496eb5b8",
+   "id": "sha256:b97a4170af7f01fadd6bf42e43c5b3e75500a711c034d52fef4a3d4a496eb5b8",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "generic-connection-grammar-authored--amqp-uri-encoded-percent-and-brackets",
+   "previousId": "sha256:f9518971d6adb7a1049e6b86b5767a41f7062fb1b343570993cc5d341fdfa79f",
+   "id": "sha256:f9518971d6adb7a1049e6b86b5767a41f7062fb1b343570993cc5d341fdfa79f",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "generic-connection-grammar-authored--amqp-uri-encoded-percent-and-brackets",
+   "previousId": "sha256:526509e30aaefc57eeffe6c4bf884793110ce2bde53e34c77b20c86876a65dc4",
+   "id": "sha256:526509e30aaefc57eeffe6c4bf884793110ce2bde53e34c77b20c86876a65dc4",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "generic-connection-grammar-authored--kafka-jaas-plain-quoted-password",
+   "previousId": "sha256:12a2bd6a81102de73c04cf93f577fdc2b01d7a37ce173521915d2b7444a6d8a1",
+   "id": "sha256:12a2bd6a81102de73c04cf93f577fdc2b01d7a37ce173521915d2b7444a6d8a1",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "generic-connection-grammar-authored--libpq-quoted-value-with-space-and-escapes",
+   "previousId": "sha256:19659a88d9a980a1f324063aab85650a953bce666e1768d4fa275c86f8216c4b",
+   "id": "sha256:19659a88d9a980a1f324063aab85650a953bce666e1768d4fa275c86f8216c4b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "generic-connection-grammar-authored--libpq-quoted-value-with-space-and-escapes",
+   "previousId": "sha256:99b1548c95ea869499cc3e304559e6803877f08258f3adff752afee6ec8a5ef0",
+   "id": "sha256:99b1548c95ea869499cc3e304559e6803877f08258f3adff752afee6ec8a5ef0",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "generic-connection-grammar-authored--mongodb-uri-encoded-at-and-colon",
+   "previousId": "sha256:5866f37f4d991b84f29a12cf61359fd0baea4fc64ecb97916a3eb681997ef73b",
+   "id": "sha256:5866f37f4d991b84f29a12cf61359fd0baea4fc64ecb97916a3eb681997ef73b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "generic-connection-grammar-authored--mongodb-uri-encoded-at-and-colon",
+   "previousId": "sha256:cf7a2eba37ac450b0841c01bcec4ba66d166739bd9595056d3466dc18a5c47cf",
+   "id": "sha256:cf7a2eba37ac450b0841c01bcec4ba66d166739bd9595056d3466dc18a5c47cf",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "generic-connection-grammar-authored--mysql-key-value-quoted-password",
+   "previousId": "sha256:96f852e9eae7128f08c4895980cf88acec936bded1263c16bfe22e5cc1c222a7",
+   "id": "sha256:96f852e9eae7128f08c4895980cf88acec936bded1263c16bfe22e5cc1c222a7",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "generic-connection-grammar-authored--mysql-uri-encoded-slash-and-hash",
+   "previousId": "sha256:ef2a2e02cae925fc75ba3231d7bca4574610b5f734604e757b4f40ce1908af67",
+   "id": "sha256:ef2a2e02cae925fc75ba3231d7bca4574610b5f734604e757b4f40ce1908af67",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "generic-connection-grammar-authored--mysql-uri-encoded-slash-and-hash",
+   "previousId": "sha256:b2ac0de9bf1493416cd161a643ff13d7afb7ede168f11841c0fa097f33e9eeec",
+   "id": "sha256:b2ac0de9bf1493416cd161a643ff13d7afb7ede168f11841c0fa097f33e9eeec",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "generic-connection-grammar-authored--redis-uri-password-only-with-dollar-and-semicolon",
+   "previousId": "sha256:e77188f7c4815181eec4b3a85cbc5f02da292ec7da55d77ee8dde5d80de4adc8",
+   "id": "sha256:e77188f7c4815181eec4b3a85cbc5f02da292ec7da55d77ee8dde5d80de4adc8",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "generic-connection-grammar-authored--redis-uri-password-only-with-dollar-and-semicolon",
+   "previousId": "sha256:5a7bf07ba1646216c82e2e5d389694f57768173acc9a73babc1328870a17c260",
+   "id": "sha256:5a7bf07ba1646216c82e2e5d389694f57768173acc9a73babc1328870a17c260",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--base-no-app-id",
+   "previousId": "sha256:7df76a4d03e95c4d4fdc531fdae3dcc18c9e11c638f26eb1461dd30099bcdb44",
+   "id": "sha256:7df76a4d03e95c4d4fdc531fdae3dcc18c9e11c638f26eb1461dd30099bcdb44",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "github-installation-token-authored--base-no-app-id",
+   "previousId": "sha256:67f74c941c89b6007d3657f222596a3079f698015e7ae5ad9a068b687445bb6d",
+   "id": "sha256:67f74c941c89b6007d3657f222596a3079f698015e7ae5ad9a068b687445bb6d",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "github-installation-token-authored--base-opaque",
+   "previousId": "sha256:86935be3751fd6d44849a254e7f0243e591fcfef76c9f9ebc36bc2b33bf9b283",
+   "id": "sha256:86935be3751fd6d44849a254e7f0243e591fcfef76c9f9ebc36bc2b33bf9b283",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--base-stateless-a",
+   "previousId": "sha256:8f573ea930503273496c9eda3db5bacef5524399c117027f0866ee6e037d5ff7",
+   "id": "sha256:8f573ea930503273496c9eda3db5bacef5524399c117027f0866ee6e037d5ff7",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--base-stateless-a",
+   "previousId": "sha256:b5000550e2241d5e76d2471de93d511484eaeb070ba32577bb92a0ef0a0ec353",
+   "id": "sha256:b5000550e2241d5e76d2471de93d511484eaeb070ba32577bb92a0ef0a0ec353",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--base-stateless-b",
+   "previousId": "sha256:8eba7f6b5d436dacbf31a87209f689c24a2ecfa7cf457076ef5c84bde3d0d2e8",
+   "id": "sha256:8eba7f6b5d436dacbf31a87209f689c24a2ecfa7cf457076ef5c84bde3d0d2e8",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--base-stateless-b",
+   "previousId": "sha256:c9c044947dc4e7114efde14efbefad36ccfb1ad2b4c910ec25ba3330c830836b",
+   "id": "sha256:c9c044947dc4e7114efde14efbefad36ccfb1ad2b4c910ec25ba3330c830836b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--base-unprefixed-jwt",
+   "previousId": "sha256:d09b4cd8e1331f7320cb0729a955ae0fb6070d63e59fe2fb58294c42e352df7c",
+   "id": "sha256:d09b4cd8e1331f7320cb0729a955ae0fb6070d63e59fe2fb58294c42e352df7c",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "github-installation-token-authored--mutation-incomplete-header-only",
+   "previousId": "sha256:4a59ded4902b209e44c844b6dec3122449d2d43c6682b2d0064827d959312058",
+   "id": "sha256:4a59ded4902b209e44c844b6dec3122449d2d43c6682b2d0064827d959312058",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "github-installation-token-authored--mutation-incomplete-header-only",
+   "previousId": "sha256:6cdbcb8453927ebebe670e4f13b6cf877f15b3fdcc83327c2578524762db8a62",
+   "id": "sha256:6cdbcb8453927ebebe670e4f13b6cf877f15b3fdcc83327c2578524762db8a62",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "github-installation-token-authored--mutation-incomplete-no-signature",
+   "previousId": "sha256:edcbb9b76d47e2f878327039d684df4307cfdd12a527b7d6d1a0db98cd155ac4",
+   "id": "sha256:edcbb9b76d47e2f878327039d684df4307cfdd12a527b7d6d1a0db98cd155ac4",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "github-installation-token-authored--mutation-incomplete-no-signature",
+   "previousId": "sha256:89dc5e63a08daad1fe42289442a253d4a3c2f55e32fb2b7bca8cdd87aa6f0fda",
+   "id": "sha256:89dc5e63a08daad1fe42289442a253d4a3c2f55e32fb2b7bca8cdd87aa6f0fda",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "github-installation-token-authored--projection-opaque-crlf",
+   "previousId": "sha256:d6185c63974f29333aa910a95be49f5df031d275c6f096a2aa42fcb8e49deaf8",
+   "id": "sha256:d6185c63974f29333aa910a95be49f5df031d275c6f096a2aa42fcb8e49deaf8",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--projection-opaque-env",
+   "previousId": "sha256:915b7dc5857733234774d4f9b0d39e8a57a57a5fb5578bb66f0968eb6252cd36",
+   "id": "sha256:915b7dc5857733234774d4f9b0d39e8a57a57a5fb5578bb66f0968eb6252cd36",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--projection-opaque-json",
+   "previousId": "sha256:53ed6ba97b55f2b440a756519bf0e75bc3e61c0fd5ce0c1ee0563229b8945ee4",
+   "id": "sha256:53ed6ba97b55f2b440a756519bf0e75bc3e61c0fd5ce0c1ee0563229b8945ee4",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--projection-stateless-a-authorization",
+   "previousId": "sha256:9b75504ebac945ec147300840c0aab86b2ea5bd8f8f96c13cd83843e23178bd6",
+   "id": "sha256:9b75504ebac945ec147300840c0aab86b2ea5bd8f8f96c13cd83843e23178bd6",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--projection-stateless-a-authorization",
+   "previousId": "sha256:ce569cf762c15e0c0495da8e94c701c24a3793f5cf96c1fcf7f6c429329c428b",
+   "id": "sha256:ce569cf762c15e0c0495da8e94c701c24a3793f5cf96c1fcf7f6c429329c428b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--projection-stateless-a-crlf",
+   "previousId": "sha256:ba6ec6faf8f59c2ce11a26fa6939fc03dc001cc2a051ffd2b502a41a15629b2a",
+   "id": "sha256:ba6ec6faf8f59c2ce11a26fa6939fc03dc001cc2a051ffd2b502a41a15629b2a",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--projection-stateless-a-crlf",
+   "previousId": "sha256:13ed836a9a55c1fb1c0ceac564523648bd559492b1e2af904050fa855713f7e4",
+   "id": "sha256:13ed836a9a55c1fb1c0ceac564523648bd559492b1e2af904050fa855713f7e4",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--projection-stateless-a-git-url",
+   "previousId": "sha256:d987e9d0401924ba9c6a467c5db1f93438f00db0249d4800ee0cfe490708262f",
+   "id": "sha256:d987e9d0401924ba9c6a467c5db1f93438f00db0249d4800ee0cfe490708262f",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--projection-stateless-a-git-url",
+   "previousId": "sha256:c872e83f1ae7255ebafc421cc5a1a11bf4768fe74c38e9960c7eaec11390dee0",
+   "id": "sha256:c872e83f1ae7255ebafc421cc5a1a11bf4768fe74c38e9960c7eaec11390dee0",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--projection-stateless-a-json",
+   "previousId": "sha256:2f181dd8c47e049ca0307e2220a4e5ba1030af52b7072b2bc2c273d00aca09e9",
+   "id": "sha256:2f181dd8c47e049ca0307e2220a4e5ba1030af52b7072b2bc2c273d00aca09e9",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--projection-stateless-a-json",
+   "previousId": "sha256:d8c1595d0634e02c7301b6f26e0d18285250ad8d5d017de0527c3370955a70a9",
+   "id": "sha256:d8c1595d0634e02c7301b6f26e0d18285250ad8d5d017de0527c3370955a70a9",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--projection-stateless-a-korean-emoji",
+   "previousId": "sha256:3691ed87c0cb51094b11e21e4d806dcec597cf3110b4da2ceebe9a538f619795",
+   "id": "sha256:3691ed87c0cb51094b11e21e4d806dcec597cf3110b4da2ceebe9a538f619795",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--projection-stateless-a-korean-emoji",
+   "previousId": "sha256:7c2b27b3e61f976041cfb56034da84ccb574891f239d8a865535418bf10d9ebe",
+   "id": "sha256:7c2b27b3e61f976041cfb56034da84ccb574891f239d8a865535418bf10d9ebe",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--projection-stateless-b-env",
+   "previousId": "sha256:960a1fb398fabf573abbb84525db629df8575ca46db0858ffcb145b66525fd40",
+   "id": "sha256:960a1fb398fabf573abbb84525db629df8575ca46db0858ffcb145b66525fd40",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "github-installation-token-authored--projection-stateless-b-env",
+   "previousId": "sha256:2f7c181c81e0db3462e20662ab5fb1b454ea235d026cf5d520659159cda89839",
+   "id": "sha256:2f7c181c81e0db3462e20662ab5fb1b454ea235d026cf5d520659159cda89839",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--authorization-and-proxy-authorization",
+   "previousId": "sha256:eda57bc6028972caedd5b56e2f75b0ed424cd52e9042cb1b082ebc559df9c0a1",
+   "id": "sha256:eda57bc6028972caedd5b56e2f75b0ed424cd52e9042cb1b082ebc559df9c0a1",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--authorization-and-proxy-authorization",
+   "previousId": "sha256:0aff5cb4c0fb23b3c70aff179233cdafeb2886f7d434a16efe6af6a8e1057f2b",
+   "id": "sha256:0aff5cb4c0fb23b3c70aff179233cdafeb2886f7d434a16efe6af6a8e1057f2b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--authorization-values-joined-by-comma",
+   "previousId": "sha256:3c09037f0b7e745b3d7afa112d59308d75dafc510b2888f57bdf1c54a37484c0",
+   "id": "sha256:3c09037f0b7e745b3d7afa112d59308d75dafc510b2888f57bdf1c54a37484c0",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "http-auth-carriers-authored--authorization-values-joined-by-comma",
+   "previousId": "sha256:2bcdd8dce389c610c839e5c8f11020175bc2e8b87745f89ef592055b8da468fd",
+   "id": "sha256:2bcdd8dce389c610c839e5c8f11020175bc2e8b87745f89ef592055b8da468fd",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "http-auth-carriers-authored--basic-in-curl-header-argument",
+   "previousId": "sha256:7ced452475ee71c62fc57e6488ca9db0f77ba3b6724a7509ad9bd3d3da7e52df",
+   "id": "sha256:7ced452475ee71c62fc57e6488ca9db0f77ba3b6724a7509ad9bd3d3da7e52df",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--basic-in-request-headers",
+   "previousId": "sha256:e2841c59f0be2efd394b4508e819ea44b9f60ef41e7df2212eec1b8ef384a163",
+   "id": "sha256:e2841c59f0be2efd394b4508e819ea44b9f60ef41e7df2212eec1b8ef384a163",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--basic-in-request-headers",
+   "previousId": "sha256:0dc7344f4ba690fa8a10b2bb073f7335990e09793528ed671a15e379ce46de11",
+   "id": "sha256:0dc7344f4ba690fa8a10b2bb073f7335990e09793528ed671a15e379ce46de11",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--basic-lowercase-scheme-double-space",
+   "previousId": "sha256:7b17e08c529ce9385497405bf2b575df7bfa1ca1e16f49d4868a2e723d077c0a",
+   "id": "sha256:7b17e08c529ce9385497405bf2b575df7bfa1ca1e16f49d4868a2e723d077c0a",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--basic-lowercase-scheme-double-space",
+   "previousId": "sha256:1d2f2df2d67b60de6a2cda3468c5b933f9000a94011a9150117b146146900e53",
+   "id": "sha256:1d2f2df2d67b60de6a2cda3468c5b933f9000a94011a9150117b146146900e53",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--basic-password-with-colon",
+   "previousId": "sha256:f68b4f986b4f8324d6c7e2b8185523b42031dc38cb25b7973fdfb05820faf8d6",
+   "id": "sha256:f68b4f986b4f8324d6c7e2b8185523b42031dc38cb25b7973fdfb05820faf8d6",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--basic-password-with-colon",
+   "previousId": "sha256:cbba5c1738c638932516d2eaca610777d79f8ddbf3fde622a28f73a2bc1b0f1d",
+   "id": "sha256:cbba5c1738c638932516d2eaca610777d79f8ddbf3fde622a28f73a2bc1b0f1d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--basic-token-url-safe-alphabet",
+   "previousId": "sha256:3c34fddb329e52a2073696ceca524b691b616adb0bca7a109ac5cfeb5eacd1d9",
+   "id": "sha256:3c34fddb329e52a2073696ceca524b691b616adb0bca7a109ac5cfeb5eacd1d9",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--basic-token-url-safe-alphabet",
+   "previousId": "sha256:43b8853e7331a5097f3c4a3b00200c4ba5baa0e49ecbc2d7b62c56837e7d7e00",
+   "id": "sha256:43b8853e7331a5097f3c4a3b00200c4ba5baa0e49ecbc2d7b62c56837e7d7e00",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--basic-token-without-padding",
+   "previousId": "sha256:7e0be0aad09a3130578fb6d584024d341056b45070dd6eda1b4e83482e15257e",
+   "id": "sha256:7e0be0aad09a3130578fb6d584024d341056b45070dd6eda1b4e83482e15257e",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--basic-token-without-padding",
+   "previousId": "sha256:418cc3b0529b4899c450ec57cff5c642990106339ae3a0c1b32f681809e550f4",
+   "id": "sha256:418cc3b0529b4899c450ec57cff5c642990106339ae3a0c1b32f681809e550f4",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--basic-user-id-in-cleartext-beside-token",
+   "previousId": "sha256:02c69466195e895640288683280670363624334fc847592c9ef3cd1bf027dd5a",
+   "id": "sha256:02c69466195e895640288683280670363624334fc847592c9ef3cd1bf027dd5a",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--basic-user-id-in-cleartext-beside-token",
+   "previousId": "sha256:7591b852e545a70e9131bc2ab751d7646b8c4e166af657534e5cf8ddf6ca34d8",
+   "id": "sha256:7591b852e545a70e9131bc2ab751d7646b8c4e166af657534e5cf8ddf6ca34d8",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--basic-utf8-password",
+   "previousId": "sha256:fb750432b9eacd6b8a50e271a93c61491e32a9bb4965a29ae89cb0c396dcbb0e",
+   "id": "sha256:fb750432b9eacd6b8a50e271a93c61491e32a9bb4965a29ae89cb0c396dcbb0e",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--basic-utf8-password",
+   "previousId": "sha256:d17de35cc58c35e21d11e4554b4969362bcceb20e0139a7f454c33c7b3bf456d",
+   "id": "sha256:d17de35cc58c35e21d11e4554b4969362bcceb20e0139a7f454c33c7b3bf456d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--proxy-authorization-basic",
+   "previousId": "sha256:6ebd4f294e42963a65be17d0c78593c63f825204d23e07bd7f1e97c09c3a4699",
+   "id": "sha256:6ebd4f294e42963a65be17d0c78593c63f825204d23e07bd7f1e97c09c3a4699",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--proxy-authorization-basic",
+   "previousId": "sha256:98f90b00661275fa3d0f31f71787a60255e7d59d227355aefd04227b0baf5534",
+   "id": "sha256:98f90b00661275fa3d0f31f71787a60255e7d59d227355aefd04227b0baf5534",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "http-auth-carriers-authored--two-authorization-lines",
+   "previousId": "sha256:461c2f777edd8c86930fe801e95baf4e5c5022c7f994c8d3b8894ecb08835506",
+   "id": "sha256:461c2f777edd8c86930fe801e95baf4e5c5022c7f994c8d3b8894ecb08835506",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "http-auth-carriers-authored--two-authorization-lines",
+   "previousId": "sha256:14a166adee1339eb23aed39c7710297e4b1ca3136a3e4d63792543cf5fe467d2",
+   "id": "sha256:14a166adee1339eb23aed39c7710297e4b1ca3136a3e4d63792543cf5fe467d2",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-head-of-1mib",
+   "previousId": "sha256:4993e51161993eb828fec68cf04fbdda12a931f77ab0150f70d0bb71576e5cc5",
+   "id": "sha256:4993e51161993eb828fec68cf04fbdda12a931f77ab0150f70d0bb71576e5cc5",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-head-of-1mib",
+   "previousId": "sha256:4c5adc643b2a4eb9173f8a6019208e744e90fc7ebfe1cf5f01251fbfbead9121",
+   "id": "sha256:4c5adc643b2a4eb9173f8a6019208e744e90fc7ebfe1cf5f01251fbfbead9121",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-head-of-256kib",
+   "previousId": "sha256:0185d11b7e4cf238fcaac58c476fdab7e5f63135d6a0790e408b93acc562af7b",
+   "id": "sha256:0185d11b7e4cf238fcaac58c476fdab7e5f63135d6a0790e408b93acc562af7b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-head-of-256kib",
+   "previousId": "sha256:d2604e6fe725ba825e20e70089e19c7b5c4c75320759f457be06ad8ae40c4f26",
+   "id": "sha256:d2604e6fe725ba825e20e70089e19c7b5c4c75320759f457be06ad8ae40c4f26",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-head-of-64kib",
+   "previousId": "sha256:dc810ca2e63c8fc113236153173449aef38d8e34d2ec18c8a014603fc6e8360f",
+   "id": "sha256:dc810ca2e63c8fc113236153173449aef38d8e34d2ec18c8a014603fc6e8360f",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-head-of-64kib",
+   "previousId": "sha256:dec946afd2fbc2266f1457915e58b0eb58b0d7b10802ee8e73f7f7b45d08f158",
+   "id": "sha256:dec946afd2fbc2266f1457915e58b0eb58b0d7b10802ee8e73f7f7b45d08f158",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-middle-of-1mib",
+   "previousId": "sha256:f6096f8831b189620ec147f090aad9703325f3b7e9a6dc54ae0e5e9ad03bda00",
+   "id": "sha256:f6096f8831b189620ec147f090aad9703325f3b7e9a6dc54ae0e5e9ad03bda00",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-middle-of-1mib",
+   "previousId": "sha256:d6d341f37a72730aa7015411ba1d95402d5dcfb2f590352a7e3170d8d2214e36",
+   "id": "sha256:d6d341f37a72730aa7015411ba1d95402d5dcfb2f590352a7e3170d8d2214e36",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-middle-of-256kib",
+   "previousId": "sha256:04a38ba811fdca46fbb449bdca6907b5c3d576f6ef23de4532610dc3cdf67917",
+   "id": "sha256:04a38ba811fdca46fbb449bdca6907b5c3d576f6ef23de4532610dc3cdf67917",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-middle-of-256kib",
+   "previousId": "sha256:01fa9eaa7493585c41ee7222ffd207c57664620c06f9d9f977eb7985e9245381",
+   "id": "sha256:01fa9eaa7493585c41ee7222ffd207c57664620c06f9d9f977eb7985e9245381",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-middle-of-64kib",
+   "previousId": "sha256:432a608562f3c6cfdd6b1287ec0c9afd23fc3b161ab8eb0b8727d05677bdd9b8",
+   "id": "sha256:432a608562f3c6cfdd6b1287ec0c9afd23fc3b161ab8eb0b8727d05677bdd9b8",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-middle-of-64kib",
+   "previousId": "sha256:2021d64bea0da1faad50d280d70927d388fce11da95f9f5d3f0561e093445024",
+   "id": "sha256:2021d64bea0da1faad50d280d70927d388fce11da95f9f5d3f0561e093445024",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-tail-of-1mib",
+   "previousId": "sha256:8ce1a96e3ea7f50806607db87ba815d4ee338a0d4db913947219cc1cf7bc974d",
+   "id": "sha256:8ce1a96e3ea7f50806607db87ba815d4ee338a0d4db913947219cc1cf7bc974d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-tail-of-1mib",
+   "previousId": "sha256:ba34561ab139f800ff29f15a257fabeb4eb0de10ef0d3f0d3983e39f9297361a",
+   "id": "sha256:ba34561ab139f800ff29f15a257fabeb4eb0de10ef0d3f0d3983e39f9297361a",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-tail-of-256kib",
+   "previousId": "sha256:650bd7fab9183ee642a1962a443db567fb6c013f9269b95e922771e32d7025e6",
+   "id": "sha256:650bd7fab9183ee642a1962a443db567fb6c013f9269b95e922771e32d7025e6",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-tail-of-256kib",
+   "previousId": "sha256:d89d0c12747f8599dd1e91607e7cc4da8fa3447a3fc109bbff82d4824e89460c",
+   "id": "sha256:d89d0c12747f8599dd1e91607e7cc4da8fa3447a3fc109bbff82d4824e89460c",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-tail-of-64kib",
+   "previousId": "sha256:5e95a0614f019bbacbdd3284e12157ea12ea21e1cbdfd622c7d3ab079e592f4a",
+   "id": "sha256:5e95a0614f019bbacbdd3284e12157ea12ea21e1cbdfd622c7d3ab079e592f4a",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-tail-of-64kib",
+   "previousId": "sha256:c0fe2a9912cb6aa1786cbdeed32a25fab607d8f01861046e5edff8a8fd44340c",
+   "id": "sha256:c0fe2a9912cb6aa1786cbdeed32a25fab607d8f01861046e5edff8a8fd44340c",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-three-occurrences-in-1mib",
+   "previousId": "sha256:ee0d64bc61777bd243eb28e4e1fd58132cbb0f52661fd32bea8597046f86cada",
+   "id": "sha256:ee0d64bc61777bd243eb28e4e1fd58132cbb0f52661fd32bea8597046f86cada",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-three-occurrences-in-1mib",
+   "previousId": "sha256:9500473beb23df0c5e18a2b82b4e6dfccbebbf0c3161aff6ecc87acb2f19a84b",
+   "id": "sha256:9500473beb23df0c5e18a2b82b4e6dfccbebbf0c3161aff6ecc87acb2f19a84b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-three-occurrences-in-256kib",
+   "previousId": "sha256:e0c9c9cf10b7aa123ffa3ad2fdabe26cd4266e9f9ac4cd10d264eb789ebb3d66",
+   "id": "sha256:e0c9c9cf10b7aa123ffa3ad2fdabe26cd4266e9f9ac4cd10d264eb789ebb3d66",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-three-occurrences-in-256kib",
+   "previousId": "sha256:b07cdca2970b5eb899c8d4c816fb61fd26b796ca144e541cd099dfbb47e85140",
+   "id": "sha256:b07cdca2970b5eb899c8d4c816fb61fd26b796ca144e541cd099dfbb47e85140",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-three-occurrences-in-64kib",
+   "previousId": "sha256:597606a2000420aab9532e14751c102488ef9ea5a4b5d14397e4d38f43429ee3",
+   "id": "sha256:597606a2000420aab9532e14751c102488ef9ea5a4b5d14397e4d38f43429ee3",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-three-occurrences-in-64kib",
+   "previousId": "sha256:f03a4534ceeec2fffa64ab760dff72381e527bfdef560f9f54e31191405be616",
+   "id": "sha256:f03a4534ceeec2fffa64ab760dff72381e527bfdef560f9f54e31191405be616",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-two-distinct-keys-in-1mib",
+   "previousId": "sha256:1ca46b4dcdddb5d6b3327bee05ca47eb7b1f6028dfc5f4bb0af50db94af82ca0",
+   "id": "sha256:1ca46b4dcdddb5d6b3327bee05ca47eb7b1f6028dfc5f4bb0af50db94af82ca0",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-two-distinct-keys-in-1mib",
+   "previousId": "sha256:d87c58d0c56d474de2d913f81cf9e740f03f0fb6e4f062737f3989ad3692fed1",
+   "id": "sha256:d87c58d0c56d474de2d913f81cf9e740f03f0fb6e4f062737f3989ad3692fed1",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-two-distinct-keys-in-256kib",
+   "previousId": "sha256:8b8c957c1149752defeb83f135079372be10421dd5de98458c0da226b38a872d",
+   "id": "sha256:8b8c957c1149752defeb83f135079372be10421dd5de98458c0da226b38a872d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-two-distinct-keys-in-256kib",
+   "previousId": "sha256:4c47c8ebb2334623a97ce97d2f1dd80801ff6cc31a33d356b07e78540984026f",
+   "id": "sha256:4c47c8ebb2334623a97ce97d2f1dd80801ff6cc31a33d356b07e78540984026f",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-two-distinct-keys-in-64kib",
+   "previousId": "sha256:69228f2aa3a5a8bae833ca423130c4ccbaeb5f09c8e5a45bf49bbc725facc53d",
+   "id": "sha256:69228f2aa3a5a8bae833ca423130c4ccbaeb5f09c8e5a45bf49bbc725facc53d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--github-classic-pat-two-distinct-keys-in-64kib",
+   "previousId": "sha256:b29e6c0c7a9d8111e8cc07050039c228740e9572fe2486833356871fd5d82a4c",
+   "id": "sha256:b29e6c0c7a9d8111e8cc07050039c228740e9572fe2486833356871fd5d82a4c",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-and-npm-granular-token-in-1mib",
+   "previousId": "sha256:b198899a257563ad16f5738d1baa85c9dfceae55502ad8ba3ecb0e9d6f8b2fa7",
+   "id": "sha256:b198899a257563ad16f5738d1baa85c9dfceae55502ad8ba3ecb0e9d6f8b2fa7",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-and-npm-granular-token-in-256kib",
+   "previousId": "sha256:e80bbed74e8913890af64b1b290d0174b2efd7f256feed31467e2c7006d0f138",
+   "id": "sha256:e80bbed74e8913890af64b1b290d0174b2efd7f256feed31467e2c7006d0f138",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-and-npm-granular-token-in-64kib",
+   "previousId": "sha256:16db98b857a35873348f96525154dda36f3c588edb0d4c8e942a10f9051d50e2",
+   "id": "sha256:16db98b857a35873348f96525154dda36f3c588edb0d4c8e942a10f9051d50e2",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-head-of-1mib",
+   "previousId": "sha256:38c553bbdcac0b53d46f71e65a008091ca19365f6c449ae64c6847fc0d9876c1",
+   "id": "sha256:38c553bbdcac0b53d46f71e65a008091ca19365f6c449ae64c6847fc0d9876c1",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-head-of-256kib",
+   "previousId": "sha256:deb0734a232e742c458ccc92bcfa8f4fc7cabcf48be085dca9c80b9c2da1d921",
+   "id": "sha256:deb0734a232e742c458ccc92bcfa8f4fc7cabcf48be085dca9c80b9c2da1d921",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-head-of-64kib",
+   "previousId": "sha256:2d0cbbac9ce624118ee954286c5c4f95434a2d97bfa7b046b0636fd3cd2ee4c5",
+   "id": "sha256:2d0cbbac9ce624118ee954286c5c4f95434a2d97bfa7b046b0636fd3cd2ee4c5",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-middle-of-1mib",
+   "previousId": "sha256:f12f6d7313623221e69d2923d08611414d11b4c7dfe5e3e9d4ca067219e3843a",
+   "id": "sha256:f12f6d7313623221e69d2923d08611414d11b4c7dfe5e3e9d4ca067219e3843a",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-middle-of-256kib",
+   "previousId": "sha256:a0739342ba7ded885dca4f7755aea28400387bc1d17c53a53d21ce079e5aed22",
+   "id": "sha256:a0739342ba7ded885dca4f7755aea28400387bc1d17c53a53d21ce079e5aed22",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-middle-of-64kib",
+   "previousId": "sha256:7f971ad70aeebc961502fb43619cf7b7210932c7662b656aad9b210b31000ed0",
+   "id": "sha256:7f971ad70aeebc961502fb43619cf7b7210932c7662b656aad9b210b31000ed0",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-tail-of-1mib",
+   "previousId": "sha256:895d5a8c17412d5e5815a3c0a79b195ce3167f5ba700d85fcc7e8eb6cea46bfd",
+   "id": "sha256:895d5a8c17412d5e5815a3c0a79b195ce3167f5ba700d85fcc7e8eb6cea46bfd",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-tail-of-256kib",
+   "previousId": "sha256:2ca8c11a6030e70c232a53cbfcef45106b08fcfe4679796e693c5148f3514dd6",
+   "id": "sha256:2ca8c11a6030e70c232a53cbfcef45106b08fcfe4679796e693c5148f3514dd6",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-tail-of-64kib",
+   "previousId": "sha256:eac0a7e1cfcbb4871d6cff25d304663d5f5445c0b3ac56982f00d39c6e45ca45",
+   "id": "sha256:eac0a7e1cfcbb4871d6cff25d304663d5f5445c0b3ac56982f00d39c6e45ca45",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-three-occurrences-in-1mib",
+   "previousId": "sha256:5fa145b43107e448f336db8971acabf685049e284fccfc657d9e8fb4956b6924",
+   "id": "sha256:5fa145b43107e448f336db8971acabf685049e284fccfc657d9e8fb4956b6924",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-three-occurrences-in-256kib",
+   "previousId": "sha256:c5033e33c3dbfc6b6081db05d2b213dafefa88f31967dfab57ba06b1b5f15148",
+   "id": "sha256:c5033e33c3dbfc6b6081db05d2b213dafefa88f31967dfab57ba06b1b5f15148",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-three-occurrences-in-64kib",
+   "previousId": "sha256:ddd710d83af779fef76b88f9693d0963ebb4c26b1a3091adde0dff37310d58c2",
+   "id": "sha256:ddd710d83af779fef76b88f9693d0963ebb4c26b1a3091adde0dff37310d58c2",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-two-distinct-keys-in-1mib",
+   "previousId": "sha256:9dbc7ea74ecfe046bef0f9b6edef08293c25552b2b7e215778a7e1ba676207f7",
+   "id": "sha256:9dbc7ea74ecfe046bef0f9b6edef08293c25552b2b7e215778a7e1ba676207f7",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-two-distinct-keys-in-256kib",
+   "previousId": "sha256:93d98a7d1eabd4607c42c1750b46f45d8ea2dc5685312636b8d76f2756f2332f",
+   "id": "sha256:93d98a7d1eabd4607c42c1750b46f45d8ea2dc5685312636b8d76f2756f2332f",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--gitlab-legacy-pat-two-distinct-keys-in-64kib",
+   "previousId": "sha256:46c0314b11d81133a3e05522f5e51b3fb9983774c532e3ee011b3da1a465629a",
+   "id": "sha256:46c0314b11d81133a3e05522f5e51b3fb9983774c532e3ee011b3da1a465629a",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--npm-granular-token-head-of-1mib",
+   "previousId": "sha256:34fa376e7e1e29d532ddccabcd6ed4bdad7ce0d31832cd8c6ac4b70d6b85f761",
+   "id": "sha256:34fa376e7e1e29d532ddccabcd6ed4bdad7ce0d31832cd8c6ac4b70d6b85f761",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--npm-granular-token-head-of-256kib",
+   "previousId": "sha256:c8cfffac9d1bf5ad970d4025bec2c3fd157713ff63216cddabd423758018d370",
+   "id": "sha256:c8cfffac9d1bf5ad970d4025bec2c3fd157713ff63216cddabd423758018d370",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--npm-granular-token-head-of-64kib",
+   "previousId": "sha256:70d3591542f326a1b1483f61718854d224f6789ae7d703d907799eb2f932f58e",
+   "id": "sha256:70d3591542f326a1b1483f61718854d224f6789ae7d703d907799eb2f932f58e",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--npm-granular-token-middle-of-1mib",
+   "previousId": "sha256:83788c015ba518fbd5ddd7cc09b54421c7d669df9429fb8aa96875d05d44d6e3",
+   "id": "sha256:83788c015ba518fbd5ddd7cc09b54421c7d669df9429fb8aa96875d05d44d6e3",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--npm-granular-token-middle-of-256kib",
+   "previousId": "sha256:a13239b80b714f0d0dcb19e6e1de76014be69a46fc9cce2fcb607321a9978e97",
+   "id": "sha256:a13239b80b714f0d0dcb19e6e1de76014be69a46fc9cce2fcb607321a9978e97",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--npm-granular-token-middle-of-64kib",
+   "previousId": "sha256:1075db2f913793a91c70ba984dc9b60ec2020b14d250a25440caa26fc55cfae3",
+   "id": "sha256:1075db2f913793a91c70ba984dc9b60ec2020b14d250a25440caa26fc55cfae3",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--npm-granular-token-tail-of-1mib",
+   "previousId": "sha256:ff75916caa41a2d624d156b8aa84cf706fc5fa0b6c740a64ee60698bf880206e",
+   "id": "sha256:ff75916caa41a2d624d156b8aa84cf706fc5fa0b6c740a64ee60698bf880206e",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--npm-granular-token-tail-of-256kib",
+   "previousId": "sha256:d9b7ee3b3534fc8754a71bff160825e41d68c98bf5febc946a4c954e57602bd2",
+   "id": "sha256:d9b7ee3b3534fc8754a71bff160825e41d68c98bf5febc946a4c954e57602bd2",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--npm-granular-token-tail-of-64kib",
+   "previousId": "sha256:3408f02fec041d3818ae4f80c0b00b5da6cd12f845b56ca0966f41104a1db3b2",
+   "id": "sha256:3408f02fec041d3818ae4f80c0b00b5da6cd12f845b56ca0966f41104a1db3b2",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--npm-granular-token-three-occurrences-in-1mib",
+   "previousId": "sha256:540a0fc479bb7923afc5409e2d98914edf7299e058eb4ebf5ab49490e8987ad9",
+   "id": "sha256:540a0fc479bb7923afc5409e2d98914edf7299e058eb4ebf5ab49490e8987ad9",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--npm-granular-token-three-occurrences-in-256kib",
+   "previousId": "sha256:4a9fce28be7261ff9017baf58234e324b98dfad9cd0a7c04c0de4e5ef6ae6cd4",
+   "id": "sha256:4a9fce28be7261ff9017baf58234e324b98dfad9cd0a7c04c0de4e5ef6ae6cd4",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--npm-granular-token-three-occurrences-in-64kib",
+   "previousId": "sha256:a3f42176549e3bdf766c8a2bc772b42a8c10cc760bc9a52214dccf8bf81345f6",
+   "id": "sha256:a3f42176549e3bdf766c8a2bc772b42a8c10cc760bc9a52214dccf8bf81345f6",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--npm-granular-token-two-distinct-keys-in-1mib",
+   "previousId": "sha256:2a0d16f5f2743796963f6347dbe0647d678ff17df94d38a41f079eace4d7d1f2",
+   "id": "sha256:2a0d16f5f2743796963f6347dbe0647d678ff17df94d38a41f079eace4d7d1f2",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--npm-granular-token-two-distinct-keys-in-256kib",
+   "previousId": "sha256:b6c3d4c78ab654b86b8b96b25ead7a2652b7ab60abb8cea85c42ae08ed233e25",
+   "id": "sha256:b6c3d4c78ab654b86b8b96b25ead7a2652b7ab60abb8cea85c42ae08ed233e25",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--npm-granular-token-two-distinct-keys-in-64kib",
+   "previousId": "sha256:f41992a89b13d32dc722049643d6078cfe8c16b05bc8a5b9d79ce64d7b05d5b1",
+   "id": "sha256:f41992a89b13d32dc722049643d6078cfe8c16b05bc8a5b9d79ce64d7b05d5b1",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-and-github-classic-pat-in-1mib",
+   "previousId": "sha256:7333221d67504348d2f6e9b7a7f9a21b263c6b4a895914cf730fb3de67e2a861",
+   "id": "sha256:7333221d67504348d2f6e9b7a7f9a21b263c6b4a895914cf730fb3de67e2a861",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-and-github-classic-pat-in-1mib",
+   "previousId": "sha256:1914ec172bfd797ea2faaa0a23ab7393f3bf43050735bd3ed97d9ff87ae3a203",
+   "id": "sha256:1914ec172bfd797ea2faaa0a23ab7393f3bf43050735bd3ed97d9ff87ae3a203",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-and-github-classic-pat-in-256kib",
+   "previousId": "sha256:ce4fab04d92101be704386849764873574e065328d6612b3137ba59df856713f",
+   "id": "sha256:ce4fab04d92101be704386849764873574e065328d6612b3137ba59df856713f",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-and-github-classic-pat-in-256kib",
+   "previousId": "sha256:fe6c3077c5d632ac67b2c64db50e6def642057317339bab2686cd16530d8dcbd",
+   "id": "sha256:fe6c3077c5d632ac67b2c64db50e6def642057317339bab2686cd16530d8dcbd",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-and-github-classic-pat-in-64kib",
+   "previousId": "sha256:d9ce8ff7cd420db279446960a4bac1008333ce73f5e106ba0b7396a430d2678e",
+   "id": "sha256:d9ce8ff7cd420db279446960a4bac1008333ce73f5e106ba0b7396a430d2678e",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-and-github-classic-pat-in-64kib",
+   "previousId": "sha256:295747a47207b71502eb643d2b2fe3b17d9818dde5adae2cde315bffee4d7c8d",
+   "id": "sha256:295747a47207b71502eb643d2b2fe3b17d9818dde5adae2cde315bffee4d7c8d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-head-of-1mib",
+   "previousId": "sha256:036a98b3eee73bc413f6975c9d6dd08b1ea7ef0d47555fdcf5033dc4373f6f9d",
+   "id": "sha256:036a98b3eee73bc413f6975c9d6dd08b1ea7ef0d47555fdcf5033dc4373f6f9d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-head-of-256kib",
+   "previousId": "sha256:333b5194faeafc806cd8fe1ff5058709414b5bd15b107568b0c18076217622ab",
+   "id": "sha256:333b5194faeafc806cd8fe1ff5058709414b5bd15b107568b0c18076217622ab",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-head-of-64kib",
+   "previousId": "sha256:9b714d73d3751d15fbbda9dec18da359a8816daaa8130872d72a7be088d424b9",
+   "id": "sha256:9b714d73d3751d15fbbda9dec18da359a8816daaa8130872d72a7be088d424b9",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-middle-of-1mib",
+   "previousId": "sha256:1f1bed174c91d97d4ccbf00a9a4a60a46ed7446f009fdaa03107afb7786af09d",
+   "id": "sha256:1f1bed174c91d97d4ccbf00a9a4a60a46ed7446f009fdaa03107afb7786af09d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-middle-of-256kib",
+   "previousId": "sha256:c2f92d64d9eb05a7d35dd49232a0144041e4601d93ec651e699ff1273c5c0307",
+   "id": "sha256:c2f92d64d9eb05a7d35dd49232a0144041e4601d93ec651e699ff1273c5c0307",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-middle-of-64kib",
+   "previousId": "sha256:5bad4cd65158cd406b97c07762bfca5fed9fc911685b7666b6ffeee7be5bd55c",
+   "id": "sha256:5bad4cd65158cd406b97c07762bfca5fed9fc911685b7666b6ffeee7be5bd55c",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-tail-of-1mib",
+   "previousId": "sha256:12841e8bf4f17547d724abf8bb1bafc841284258996122150dfa3b670d736fba",
+   "id": "sha256:12841e8bf4f17547d724abf8bb1bafc841284258996122150dfa3b670d736fba",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-tail-of-256kib",
+   "previousId": "sha256:2caca7266169ce0fc8816b45fdd07c9d440f75138438144fe3a32adf1285a303",
+   "id": "sha256:2caca7266169ce0fc8816b45fdd07c9d440f75138438144fe3a32adf1285a303",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-tail-of-64kib",
+   "previousId": "sha256:3998c161b23629b8dafd7766aa46452e7575fb9e5f50a6dd9c49e2707f5c39ba",
+   "id": "sha256:3998c161b23629b8dafd7766aa46452e7575fb9e5f50a6dd9c49e2707f5c39ba",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-three-occurrences-in-1mib",
+   "previousId": "sha256:73892e4014d6c9b01356b302263b440ef59bda1964662ef20affd30990bc9df7",
+   "id": "sha256:73892e4014d6c9b01356b302263b440ef59bda1964662ef20affd30990bc9df7",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-three-occurrences-in-256kib",
+   "previousId": "sha256:73c72f3b94b4c1d51e3e3144ff6dae87d6dfdf96aa0ee38eb2484c4217bc070b",
+   "id": "sha256:73c72f3b94b4c1d51e3e3144ff6dae87d6dfdf96aa0ee38eb2484c4217bc070b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-three-occurrences-in-64kib",
+   "previousId": "sha256:0359933b648add5b2eabe86967c2ff382fcac6706047a4dc7305d0df06922fc0",
+   "id": "sha256:0359933b648add5b2eabe86967c2ff382fcac6706047a4dc7305d0df06922fc0",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-two-distinct-keys-in-1mib",
+   "previousId": "sha256:4bd3407fc59c6ba1da25b510ce606e0723eb06ea7e243bd006344aa0bdd4dab1",
+   "id": "sha256:4bd3407fc59c6ba1da25b510ce606e0723eb06ea7e243bd006344aa0bdd4dab1",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-two-distinct-keys-in-256kib",
+   "previousId": "sha256:f74c11b06c65c8190f1c13c81cb1ff2ecb8761b5e297694004eb61be51105209",
+   "id": "sha256:f74c11b06c65c8190f1c13c81cb1ff2ecb8761b5e297694004eb61be51105209",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "large-and-repeated-input-projections-generated--sendgrid-api-key-two-distinct-keys-in-64kib",
+   "previousId": "sha256:3d3a4fba1b85c67fffe1552cf387ce10a6674300eb723f19a894db2a36d137d4",
+   "id": "sha256:3d3a4fba1b85c67fffe1552cf387ce10a6674300eb723f19a894db2a36d137d4",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "line-break-and-fragment-authored--key-after-emoji-with-boundary-inside-emoji",
+   "previousId": "sha256:810137ccd31d496c7bf57bbeca6fbfaed6a78d476799dbe8aadf5e0c5c54d45d",
+   "id": "sha256:810137ccd31d496c7bf57bbeca6fbfaed6a78d476799dbe8aadf5e0c5c54d45d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "line-break-and-fragment-authored--key-divided-mid-secret-by-byte-chunks",
+   "previousId": "sha256:81038e4d32053d75c6f4b6439eb331610c649b6b9bb86048373cba6ac454253a",
+   "id": "sha256:81038e4d32053d75c6f4b6439eb331610c649b6b9bb86048373cba6ac454253a",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "line-break-and-fragment-authored--key-with-json-escaped-line-feed",
+   "previousId": "sha256:707dd58bb13c381b9aeab6794050c294fafc9d2c2cd798b33501d8eb548bad6a",
+   "id": "sha256:707dd58bb13c381b9aeab6794050c294fafc9d2c2cd798b33501d8eb548bad6a",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "line-break-and-fragment-authored--key-with-json-escaped-line-feed",
+   "previousId": "sha256:03bafdecb1682da1bb222a7ed5ee9657a742c4b17889b1884d738a31ec356a75",
+   "id": "sha256:03bafdecb1682da1bb222a7ed5ee9657a742c4b17889b1884d738a31ec356a75",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "line-break-and-fragment-authored--sendgrid-key-base-first",
+   "previousId": "sha256:80b2656d6759f8c2d943d5ba1019eabd9617f9307e8e0aba09b3115666401b0c",
+   "id": "sha256:80b2656d6759f8c2d943d5ba1019eabd9617f9307e8e0aba09b3115666401b0c",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "line-break-and-fragment-authored--sendgrid-key-base-second",
+   "previousId": "sha256:72ec0c44fb0739bb5f27196686948b64ec1106b6026e11bf944c5c492e12bd0d",
+   "id": "sha256:72ec0c44fb0739bb5f27196686948b64ec1106b6026e11bf944c5c492e12bd0d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "policy-ambiguous-assignment-bases-authored--aws-key-id-shaped-body-of-example-marker-base",
+   "previousId": "sha256:83f5a6e7d74baa9d6d5e32cc464f7c719caea3106993d485a152fdcd2e51cd99",
+   "id": "sha256:83f5a6e7d74baa9d6d5e32cc464f7c719caea3106993d485a152fdcd2e51cd99",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "policy-ambiguous-assignment-bases-authored--aws-key-id-shaped-body-of-example-marker-base",
+   "previousId": "sha256:d6ddb4b5f7862085afbfa22481848077c73baf34bb9e534636db3773561f593f",
+   "id": "sha256:d6ddb4b5f7862085afbfa22481848077c73baf34bb9e534636db3773561f593f",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "policy-ambiguous-assignment-bases-authored--stripe-shaped-body-of-example-marker-base",
+   "previousId": "sha256:34c57c91de60ca5828645e15ce64d5d216fdbb3e88b07b8e7a696bc89346fe27",
+   "id": "sha256:34c57c91de60ca5828645e15ce64d5d216fdbb3e88b07b8e7a696bc89346fe27",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-english-prose",
+   "previousId": "sha256:9f7a7b5eba3d51c912fef8da7bea0345026aede16e08bed2f475a24c3a9b2624",
+   "id": "sha256:9f7a7b5eba3d51c912fef8da7bea0345026aede16e08bed2f475a24c3a9b2624",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-english-prose",
+   "previousId": "sha256:eae3b27c1bcf5cf6766fad98207611a5cab91a985555f85ef0b3c08cef8f6fd1",
+   "id": "sha256:eae3b27c1bcf5cf6766fad98207611a5cab91a985555f85ef0b3c08cef8f6fd1",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-korean-prose",
+   "previousId": "sha256:b499b923247df4e4802fe7fe179d5802df94a945c98181468988caca0bd79a18",
+   "id": "sha256:b499b923247df4e4802fe7fe179d5802df94a945c98181468988caca0bd79a18",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-korean-prose",
+   "previousId": "sha256:bed8947b666afa34d0790c446aa83a4dbad9894def90b7a8f5ac4422388c6e4a",
+   "id": "sha256:bed8947b666afa34d0790c446aa83a4dbad9894def90b7a8f5ac4422388c6e4a",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-markdown-fence",
+   "previousId": "sha256:887ebd3bc251a2b4e7e1a72ce0d0752ed5dcc725bc766215c86ac30e5c01f7a7",
+   "id": "sha256:887ebd3bc251a2b4e7e1a72ce0d0752ed5dcc725bc766215c86ac30e5c01f7a7",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-markdown-fence",
+   "previousId": "sha256:853b70c0b0638e9124ed4fa9ddc66f5e660a81fedf6a5dff8a9c14728da28b16",
+   "id": "sha256:853b70c0b0638e9124ed4fa9ddc66f5e660a81fedf6a5dff8a9c14728da28b16",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-english-prose",
+   "previousId": "sha256:a7653b000011ad29c48f995177fe7b872c23ce38c0c3ae62bbe4d88f96481336",
+   "id": "sha256:a7653b000011ad29c48f995177fe7b872c23ce38c0c3ae62bbe4d88f96481336",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-korean-prose",
+   "previousId": "sha256:ac98c7081eabe883ff2c679bdd45ff75e2432e877c838121b0eecb0e1ce2f1ef",
+   "id": "sha256:ac98c7081eabe883ff2c679bdd45ff75e2432e877c838121b0eecb0e1ce2f1ef",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-markdown-fence",
+   "previousId": "sha256:4215fd2c1dfd7e876834539a1efafeecf0d5105e421c80747c3eeb43552c688d",
+   "id": "sha256:4215fd2c1dfd7e876834539a1efafeecf0d5105e421c80747c3eeb43552c688d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-after-cjk-and-emoji-byte-chunked-at-every-byte",
+   "previousId": "sha256:639e9c4f9a2f105c388fd649495691d53a7612ddcebe0c70b881a0038d854bb1",
+   "id": "sha256:639e9c4f9a2f105c388fd649495691d53a7612ddcebe0c70b881a0038d854bb1",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-after-cjk-and-emoji-byte-chunked-inside-sequences",
+   "previousId": "sha256:af811b7a3ad1e333e603ea9b9efb019e90771db2abb2e201b2294dc9b9316f5b",
+   "id": "sha256:af811b7a3ad1e333e603ea9b9efb019e90771db2abb2e201b2294dc9b9316f5b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-after-cjk-and-emoji-utf16-pair-split",
+   "previousId": "sha256:3ff9b67d84d749beb5239ffa487c3fdd7bc20f4541fa989b1ad3085ce8bed408",
+   "id": "sha256:3ff9b67d84d749beb5239ffa487c3fdd7bc20f4541fa989b1ad3085ce8bed408",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-after-leading-byte-order-mark",
+   "previousId": "sha256:c285ededfc55159729008f825081c2e8ecf03f75b620dc02526e79ce8e313b57",
+   "id": "sha256:c285ededfc55159729008f825081c2e8ecf03f75b620dc02526e79ce8e313b57",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-after-zero-width-space-before-value",
+   "previousId": "sha256:76dcef03a0136b6cb08ea09aa18fc9873a502ce89d96a37f23d3c55e4d9642e4",
+   "id": "sha256:76dcef03a0136b6cb08ea09aa18fc9873a502ce89d96a37f23d3c55e4d9642e4",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-base",
+   "previousId": "sha256:b192de84666ecdab067b5eafc89b75863e868e482d837d28b4d87693ef7eb90c",
+   "id": "sha256:b192de84666ecdab067b5eafc89b75863e868e482d837d28b4d87693ef7eb90c",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-before-emoji",
+   "previousId": "sha256:eebe83afabeef0d07b0961f2c7bea11bc6afe2059068032df5423ac271586ea8",
+   "id": "sha256:eebe83afabeef0d07b0961f2c7bea11bc6afe2059068032df5423ac271586ea8",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-before-emoji",
+   "previousId": "sha256:bdc2e1799a3fe2549ce2fd68a7f1e6d59d05bb72f12d1aefedc5ea64da8371a5",
+   "id": "sha256:bdc2e1799a3fe2549ce2fd68a7f1e6d59d05bb72f12d1aefedc5ea64da8371a5",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-in-fullwidth-compatibility-forms",
+   "previousId": "sha256:debfb34b725f79004271d52730c3ae338f2df328dc55dc8a8c0e5ac5ed233ddb",
+   "id": "sha256:debfb34b725f79004271d52730c3ae338f2df328dc55dc8a8c0e5ac5ed233ddb",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-in-fullwidth-compatibility-forms",
+   "previousId": "sha256:91535950a9a1843615b2bd33e9394640125577f3236099626081dce420883917",
+   "id": "sha256:91535950a9a1843615b2bd33e9394640125577f3236099626081dce420883917",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-with-no-break-space-inside",
+   "previousId": "sha256:45b12b11a7b38f874c0156cd69b322c7ec3a3782177965b77b570b656f9f439b",
+   "id": "sha256:45b12b11a7b38f874c0156cd69b322c7ec3a3782177965b77b570b656f9f439b",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-with-no-break-space-inside",
+   "previousId": "sha256:22cb04d25d2c4bccad4364617b976d16f6029c8b1c617b7ca2f8e1e43253f7d9",
+   "id": "sha256:22cb04d25d2c4bccad4364617b976d16f6029c8b1c617b7ca2f8e1e43253f7d9",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-with-word-joiner-near-end",
+   "previousId": "sha256:04c96628d414eaa3baa6565384f37e34bddc72864d91de7405fec8d61cdf3dd8",
+   "id": "sha256:04c96628d414eaa3baa6565384f37e34bddc72864d91de7405fec8d61cdf3dd8",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-with-word-joiner-near-end",
+   "previousId": "sha256:4f150f816663739f8817e322b170f2d7c375bc5e79dbef66936dc03fbd76bf49",
+   "id": "sha256:4f150f816663739f8817e322b170f2d7c375bc5e79dbef66936dc03fbd76bf49",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-with-zero-width-non-joiner-in-first-segment",
+   "previousId": "sha256:88c143149c300c03e7f37b9fd53426dfa4297af598e2e433a5a2ff9b3927f4ab",
+   "id": "sha256:88c143149c300c03e7f37b9fd53426dfa4297af598e2e433a5a2ff9b3927f4ab",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-with-zero-width-non-joiner-in-first-segment",
+   "previousId": "sha256:b8049f02faf4a49bb9752c62e818edf4f91b55f030841916892f433b819415ef",
+   "id": "sha256:b8049f02faf4a49bb9752c62e818edf4f91b55f030841916892f433b819415ef",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-with-zero-width-space-in-second-segment",
+   "previousId": "sha256:aca2c3bedcb36b698dae5a21ddb19429721becc313c7bbf66a0c441677e75e61",
+   "id": "sha256:aca2c3bedcb36b698dae5a21ddb19429721becc313c7bbf66a0c441677e75e61",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-a-with-zero-width-space-in-second-segment",
+   "previousId": "sha256:ff7d414a7797900dac6cc8b660cb31b771e672f2b0898fb9554bc56cca117feb",
+   "id": "sha256:ff7d414a7797900dac6cc8b660cb31b771e672f2b0898fb9554bc56cca117feb",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-after-emoji-with-variation-selector",
+   "previousId": "sha256:29efa5d4e34b37ee358ab8f999e9cb3128195328168822f96b38a5c1b595fc0f",
+   "id": "sha256:29efa5d4e34b37ee358ab8f999e9cb3128195328168822f96b38a5c1b595fc0f",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-after-no-break-space-before-value",
+   "previousId": "sha256:72bea4bbcac2233a4796fd472aa6d00ca582b56a03918139d41c16522bc23393",
+   "id": "sha256:72bea4bbcac2233a4796fd472aa6d00ca582b56a03918139d41c16522bc23393",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-after-second-emoji-utf16-pair-split",
+   "previousId": "sha256:2bb46d63bed7e893967e6ccc8bbdf08e2847a5343179d21b1a8d3181c38bd43f",
+   "id": "sha256:2bb46d63bed7e893967e6ccc8bbdf08e2847a5343179d21b1a8d3181c38bd43f",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-after-two-byte-character-byte-chunked-inside-it",
+   "previousId": "sha256:073092849b48ca1be95715e0ad762b4c85994b9c8a8ea073bf1f25f1e0df8665",
+   "id": "sha256:073092849b48ca1be95715e0ad762b4c85994b9c8a8ea073bf1f25f1e0df8665",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-base",
+   "previousId": "sha256:2060976ffa2fceb2c69d088151b86412f7a8eeea7bd49d4258694341cd2f55a8",
+   "id": "sha256:2060976ffa2fceb2c69d088151b86412f7a8eeea7bd49d4258694341cd2f55a8",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-before-zero-width-non-joiner",
+   "previousId": "sha256:dc51097ec08864198cf74b3fa2199307576cc199970694f185308fbacbd36a23",
+   "id": "sha256:dc51097ec08864198cf74b3fa2199307576cc199970694f185308fbacbd36a23",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-before-zero-width-non-joiner",
+   "previousId": "sha256:7cabf81198ae5056425cad2756eebaf998f9d41f125daee52b9bbfeac366e18c",
+   "id": "sha256:7cabf81198ae5056425cad2756eebaf998f9d41f125daee52b9bbfeac366e18c",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-with-combining-acute-after-last-character",
+   "previousId": "sha256:c4de14d418a9e30ce6848f147e3e588da97a7a62863896529afce0de0f28dcd6",
+   "id": "sha256:c4de14d418a9e30ce6848f147e3e588da97a7a62863896529afce0de0f28dcd6",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-with-combining-acute-after-last-character",
+   "previousId": "sha256:a57fa05b23e2f0fcfe85659b539b7f23c4fa2809c1518a5efa735ca9d1deca1e",
+   "id": "sha256:a57fa05b23e2f0fcfe85659b539b7f23c4fa2809c1518a5efa735ca9d1deca1e",
+   "proposal": "not-assertable",
+   "rule": "gate-peer.t0-pending"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-with-two-different-zero-width-code-points",
+   "previousId": "sha256:90153675fc7350d3e183ab2295effc6f318737c5d7c348d75988f94635eff82e",
+   "id": "sha256:90153675fc7350d3e183ab2295effc6f318737c5d7c348d75988f94635eff82e",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-with-two-different-zero-width-code-points",
+   "previousId": "sha256:8ed31566aba59c635b3b4ec5d658e0891ab2c6c841e3d7c861349539ada2e939",
+   "id": "sha256:8ed31566aba59c635b3b4ec5d658e0891ab2c6c841e3d7c861349539ada2e939",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-with-zero-width-joiner-after-dot",
+   "previousId": "sha256:a9ab4fe68dea6bea1732bb14a1b5fef82324dcb5b20e31c1a88e6546f77c52e8",
+   "id": "sha256:a9ab4fe68dea6bea1732bb14a1b5fef82324dcb5b20e31c1a88e6546f77c52e8",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-with-zero-width-joiner-after-dot",
+   "previousId": "sha256:4689e9ad23511a505560b5dcb6ed01df9aca35c590aef63da07ae7c22444f176",
+   "id": "sha256:4689e9ad23511a505560b5dcb6ed01df9aca35c590aef63da07ae7c22444f176",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-with-zero-width-space-between-every-character",
+   "previousId": "sha256:2942eefdc9691a93d10de9cfef767ddb2c4629c095697a8453804ef9ea0e64f0",
+   "id": "sha256:2942eefdc9691a93d10de9cfef767ddb2c4629c095697a8453804ef9ea0e64f0",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-with-zero-width-space-between-every-character",
+   "previousId": "sha256:5033f9c261d94d52776079aba3a8f5901192f1d6bed4cfa71028429cf70fded2",
+   "id": "sha256:5033f9c261d94d52776079aba3a8f5901192f1d6bed4cfa71028429cf70fded2",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-with-zero-width-space-chunked-inside-it",
+   "previousId": "sha256:3b77ad3d88ab77f9a0ccd53cf75f522c4ee3684e2d8c326c448e54186bdedff6",
+   "id": "sha256:3b77ad3d88ab77f9a0ccd53cf75f522c4ee3684e2d8c326c448e54186bdedff6",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "sendgrid-unicode-authored--key-b-with-zero-width-space-chunked-inside-it",
+   "previousId": "sha256:2b1198eac9c464c3bef2b247431385f2478e3fc0e05debe19cd4b4afb58ee04f",
+   "id": "sha256:2b1198eac9c464c3bef2b247431385f2478e3fc0e05debe19cd4b4afb58ee04f",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "structured-credential-files-authored--aws-config-file-profile-with-inline-secret",
+   "previousId": "sha256:a0c9c4f8b3a7c57700799a80b24e2d3777aac1baea182132eda6a47d42fa2c53",
+   "id": "sha256:a0c9c4f8b3a7c57700799a80b24e2d3777aac1baea182132eda6a47d42fa2c53",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "structured-credential-files-authored--aws-config-file-profile-with-inline-secret",
+   "previousId": "sha256:b7d21e16395f40269787c888692d1ad0e70e3555b7ff29e5972e89cb39a2f4a6",
+   "id": "sha256:b7d21e16395f40269787c888692d1ad0e70e3555b7ff29e5972e89cb39a2f4a6",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "structured-credential-files-authored--docker-config-two-registries-auth",
+   "previousId": "sha256:3014d149cc95f1c7268121aa3b6b9276187b573c036421427a44a95f096f1435",
+   "id": "sha256:3014d149cc95f1c7268121aa3b6b9276187b573c036421427a44a95f096f1435",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "structured-credential-files-authored--kubeconfig-inline-basic-auth-password",
+   "previousId": "sha256:8cd76403d3a5848bba0faddb5fb6e1e12eaa64779dfc26a37d338d36d33e6408",
+   "id": "sha256:8cd76403d3a5848bba0faddb5fb6e1e12eaa64779dfc26a37d338d36d33e6408",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "structured-credential-files-authored--kubeconfig-inline-basic-auth-password",
+   "previousId": "sha256:889463aed569fab69887b1547fee816d86fa4e70a5394e9e4dcfabad2b362d7d",
+   "id": "sha256:889463aed569fab69887b1547fee816d86fa4e70a5394e9e4dcfabad2b362d7d",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "structured-credential-files-authored--npmrc-scoped-base64-auth-string",
+   "previousId": "sha256:9a19d89c8b55f7081ed56d0b6fff1dc5d44498d6749bec541f8388b35a0ed4a9",
+   "id": "sha256:9a19d89c8b55f7081ed56d0b6fff1dc5d44498d6749bec541f8388b35a0ed4a9",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "structured-credential-files-authored--npmrc-scoped-literal-auth-token",
+   "previousId": "sha256:cb723bf365a15c743c638475398994b62c186aa37c2849211ccab63209ac42cc",
+   "id": "sha256:cb723bf365a15c743c638475398994b62c186aa37c2849211ccab63209ac42cc",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "structured-credential-files-authored--npmrc-scoped-literal-auth-token",
+   "previousId": "sha256:2f6d28a392195892504c4d5899fee784c9ee6b0c6e78867255e375638ec9180e",
+   "id": "sha256:2f6d28a392195892504c4d5899fee784c9ee6b0c6e78867255e375638ec9180e",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "twilio-compound-credentials-authored--account-sid-and-token-env",
+   "previousId": "sha256:e1fe60712cd4b5a2b43b7bffcb7cb7d2224b0599447bb7d13e41e916ca85e1d8",
+   "id": "sha256:e1fe60712cd4b5a2b43b7bffcb7cb7d2224b0599447bb7d13e41e916ca85e1d8",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "twilio-compound-credentials-authored--repeated-sid-separated-token",
+   "previousId": "sha256:1476d0f06574016270e75c8657ed376020b41116e7879b890da9825a34f5f254",
+   "id": "sha256:1476d0f06574016270e75c8657ed376020b41116e7879b890da9825a34f5f254",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "twilio-compound-credentials-authored--token-before-sid-basic-auth",
+   "previousId": "sha256:cf5cbe070ac0ec45f44bc26659278e49f966cc82ef4af5d77719e71b42b521f6",
+   "id": "sha256:cf5cbe070ac0ec45f44bc26659278e49f966cc82ef4af5d77719e71b42b521f6",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "twilio-compound-credentials-authored--token-without-sid-named-field",
+   "previousId": "sha256:7d438cac6653fae800a8d44d6b2406244a2b67b4f2571436726495701957e965",
+   "id": "sha256:7d438cac6653fae800a8d44d6b2406244a2b67b4f2571436726495701957e965",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "url-credential-boundaries-authored--escaped-password-in-userinfo",
+   "previousId": "sha256:423a820f1d993b6deed57d9c5c3a110cfa0d48a253b523de5762da3b70b7fd0a",
+   "id": "sha256:423a820f1d993b6deed57d9c5c3a110cfa0d48a253b523de5762da3b70b7fd0a",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "url-credential-boundaries-authored--escaped-password-in-userinfo",
+   "previousId": "sha256:a878de192066d4b6759836c646c3d7a852873cb98596ee8d94ae2e9168d6fc9f",
+   "id": "sha256:a878de192066d4b6759836c646c3d7a852873cb98596ee8d94ae2e9168d6fc9f",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "url-credential-boundaries-authored--password-with-second-colon",
+   "previousId": "sha256:549ceb6e21807acc8f75a4b979cf41dd2923233e7a3ec05f84fee29bb8227de6",
+   "id": "sha256:549ceb6e21807acc8f75a4b979cf41dd2923233e7a3ec05f84fee29bb8227de6",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  },
+  {
+   "case": "url-credential-boundaries-authored--password-with-second-colon",
+   "previousId": "sha256:b8e9cfb02f00f8595848ccdfb8515022fe8db1d11d4dbd9008ad2f93502475f7",
+   "id": "sha256:b8e9cfb02f00f8595848ccdfb8515022fe8db1d11d4dbd9008ad2f93502475f7",
+   "proposal": "resolved",
+   "rule": "gate-peer.reference-matches-evidence"
+  }
+ ]
+}

@@ -1,0 +1,664 @@
+{
+ "schema": "redact-secret/candidate-2x2/v1",
+ "note": "A measurement, not a decision: nothing here asserts a product result, moves a status or edits the evidence. Maintainer-reviewed (independent review pending) / 메인테이너 검토 (독립 검토 대기): `maintainerOnly` marks a case the release records as maintainer-only (credential-evidence ADR 0020); none is independently reviewed.",
+ "cells": {
+  "A": "control (published product) on the old corpus",
+  "B": "candidate on the old corpus",
+  "C": "control on the new corpus",
+  "D": "candidate on the new corpus"
+ },
+ "plain": {
+  "corpus": {
+   "oldCases": 6449,
+   "newCases": 6519,
+   "added": 70,
+   "removed": 0,
+   "changed": 8,
+   "common": 6441
+  },
+  "corpusEffectControl": {
+   "onCommon": {
+    "fixed": [],
+    "regressed": [],
+    "changed": []
+   },
+   "onChanged": {
+    "fixed": [
+     {
+      "id": "structured-credential-files-authored--service-account-key-file-minified-json",
+      "from": "PARTIAL",
+      "to": "EXACT",
+      "fromFindings": "134-548 private-key block",
+      "toFindings": "134-548 private-key block",
+      "maintainerOnly": false
+     },
+     {
+      "id": "structured-credential-files-authored--service-account-key-file-pretty-json",
+      "from": "PARTIAL",
+      "to": "EXACT",
+      "fromFindings": "150-564 private-key block",
+      "toFindings": "150-564 private-key block",
+      "maintainerOnly": false
+     },
+     {
+      "id": "twilio-compound-credentials-authored--api-key-sid-alone",
+      "from": "flagged",
+      "to": "clear",
+      "fromFindings": "15-49 generic-token redact",
+      "toFindings": "none",
+      "maintainerOnly": false
+     }
+    ],
+    "regressed": [],
+    "changed": [
+     {
+      "id": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+      "from": "EXACT/EXACT/EXACT",
+      "to": "EXACT/EXACT/EXACT",
+      "fromFindings": "28-48 aws-access-key redact; 71-111 aws-secret-access-key redact; 139-159 aws-access-key redact; 182-222 aws-secret-access-key redact; 241-379 generic-token redact",
+      "toFindings": "28-48 aws-access-key redact; 71-111 aws-secret-access-key redact; 139-159 aws-access-key redact; 182-222 aws-secret-access-key redact; 241-379 generic-token redact",
+      "maintainerOnly": false
+     },
+     {
+      "id": "twilio-compound-credentials-authored--api-key-secret-before-sid",
+      "from": "EXACT",
+      "to": "EXACT",
+      "fromFindings": "18-50  redact; 66-100 generic-token redact",
+      "toFindings": "18-50  redact",
+      "maintainerOnly": false
+     },
+     {
+      "id": "twilio-compound-credentials-authored--api-key-sid-and-secret-env",
+      "from": "EXACT",
+      "to": "EXACT",
+      "fromFindings": "15-49 generic-token redact; 68-100  redact",
+      "toFindings": "68-100  redact",
+      "maintainerOnly": false
+     }
+    ]
+   },
+   "addedOutcomes": {
+    "cases": 70,
+    "pass": 58,
+    "fail": 7,
+    "pending": 5,
+    "notMeasured": 0,
+    "absent": 0
+   },
+   "addedFailing": [
+    {
+     "id": "graphql-requests-and-responses-authored--get-url-variables-value",
+     "from": "absent",
+     "to": "MISS",
+     "fromFindings": "none",
+     "toFindings": "none",
+     "maintainerOnly": false
+    },
+    {
+     "id": "har-exports-authored--bearer-token-in-postdata-params",
+     "from": "absent",
+     "to": "MISS",
+     "fromFindings": "none",
+     "toFindings": "none",
+     "maintainerOnly": false
+    },
+    {
+     "id": "har-exports-authored--bearer-token-in-url-and-querystring-array",
+     "from": "absent",
+     "to": "EXACT/MISS",
+     "fromFindings": "none",
+     "toFindings": "314-354 generic-token redact",
+     "maintainerOnly": false
+    },
+    {
+     "id": "har-exports-authored--session-cookie-in-headers-and-cookies-arrays",
+     "from": "absent",
+     "to": "MISS/MISS/MISS/MISS",
+     "fromFindings": "none",
+     "toFindings": "none",
+     "maintainerOnly": false
+    },
+    {
+     "id": "hashicorp-terraform-authored--state-json-output-password-with-sensitive-true",
+     "from": "absent",
+     "to": "MISS",
+     "fromFindings": "none",
+     "toFindings": "none",
+     "maintainerOnly": false
+    },
+    {
+     "id": "jupyter-notebook-files-authored--source-value-split-between-array-elements",
+     "from": "absent",
+     "to": "MISS",
+     "fromFindings": "none",
+     "toFindings": "none",
+     "maintainerOnly": false
+    },
+    {
+     "id": "jupyter-notebook-files-authored--stdout-mask-where-source-has-environment-reference",
+     "from": "absent",
+     "to": "flagged",
+     "fromFindings": "none",
+     "toFindings": "237-279 generic-token warn",
+     "maintainerOnly": false
+    }
+   ]
+  },
+  "corpusEffectCandidate": {
+   "onCommon": {
+    "fixed": [],
+    "regressed": [],
+    "changed": []
+   },
+   "onChanged": {
+    "fixed": [
+     {
+      "id": "structured-credential-files-authored--service-account-key-file-minified-json",
+      "from": "PARTIAL",
+      "to": "EXACT",
+      "fromFindings": "134-548 private-key block",
+      "toFindings": "134-548 private-key block",
+      "maintainerOnly": false
+     },
+     {
+      "id": "structured-credential-files-authored--service-account-key-file-pretty-json",
+      "from": "PARTIAL",
+      "to": "EXACT",
+      "fromFindings": "150-564 private-key block",
+      "toFindings": "150-564 private-key block",
+      "maintainerOnly": false
+     },
+     {
+      "id": "twilio-compound-credentials-authored--api-key-sid-alone",
+      "from": "flagged",
+      "to": "clear",
+      "fromFindings": "15-49 generic-token redact",
+      "toFindings": "none",
+      "maintainerOnly": false
+     }
+    ],
+    "regressed": [],
+    "changed": [
+     {
+      "id": "structured-credential-files-authored--aws-credentials-file-two-profiles",
+      "from": "EXACT/EXACT/EXACT",
+      "to": "EXACT/EXACT/EXACT",
+      "fromFindings": "28-48 aws-access-key redact; 71-111 aws-secret-access-key redact; 139-159 aws-access-key redact; 182-222 aws-secret-access-key redact; 241-379 generic-token redact",
+      "toFindings": "28-48 aws-access-key redact; 71-111 aws-secret-access-key redact; 139-159 aws-access-key redact; 182-222 aws-secret-access-key redact; 241-379 generic-token redact",
+      "maintainerOnly": false
+     },
+     {
+      "id": "twilio-compound-credentials-authored--api-key-secret-before-sid",
+      "from": "EXACT",
+      "to": "EXACT",
+      "fromFindings": "18-50  redact; 66-100 generic-token redact",
+      "toFindings": "18-50  redact",
+      "maintainerOnly": false
+     },
+     {
+      "id": "twilio-compound-credentials-authored--api-key-sid-and-secret-env",
+      "from": "EXACT",
+      "to": "EXACT",
+      "fromFindings": "15-49 generic-token redact; 68-100  redact",
+      "toFindings": "68-100  redact",
+      "maintainerOnly": false
+     }
+    ]
+   },
+   "addedOutcomes": {
+    "cases": 70,
+    "pass": 58,
+    "fail": 7,
+    "pending": 5,
+    "notMeasured": 0,
+    "absent": 0
+   }
+  },
+  "productEffectOld": {
+   "fixed": [
+    {
+     "id": "authored-provider-neutral--terraform-apply-sensitive",
+     "from": "flagged",
+     "to": "clear",
+     "fromFindings": "780-790 generic-token warn",
+     "toFindings": "none",
+     "maintainerOnly": false
+    },
+    {
+     "id": "exa--exa-api-key-your-key-here-placeholder",
+     "from": "flagged",
+     "to": "clear",
+     "fromFindings": "12-33 generic-token redact",
+     "toFindings": "none",
+     "maintainerOnly": false
+    },
+    {
+     "id": "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters",
+     "from": "MISS",
+     "to": "EXACT",
+     "fromFindings": "none",
+     "toFindings": "14-31 connection-string redact",
+     "maintainerOnly": false
+    },
+    {
+     "id": "structured-credential-files-authored--documented-template-placeholders",
+     "from": "flagged",
+     "to": "clear",
+     "fromFindings": "109-178 generic-token redact",
+     "toFindings": "none",
+     "maintainerOnly": false
+    }
+   ],
+   "regressed": [],
+   "changed": []
+  },
+  "productEffectNew": {
+   "fixed": [
+    {
+     "id": "authored-provider-neutral--terraform-apply-sensitive",
+     "from": "flagged",
+     "to": "clear",
+     "fromFindings": "780-790 generic-token warn",
+     "toFindings": "none",
+     "maintainerOnly": false
+    },
+    {
+     "id": "exa--exa-api-key-your-key-here-placeholder",
+     "from": "flagged",
+     "to": "clear",
+     "fromFindings": "12-33 generic-token redact",
+     "toFindings": "none",
+     "maintainerOnly": false
+    },
+    {
+     "id": "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters",
+     "from": "MISS",
+     "to": "EXACT",
+     "fromFindings": "none",
+     "toFindings": "14-31 connection-string redact",
+     "maintainerOnly": false
+    },
+    {
+     "id": "structured-credential-files-authored--documented-template-placeholders",
+     "from": "flagged",
+     "to": "clear",
+     "fromFindings": "109-178 generic-token redact",
+     "toFindings": "none",
+     "maintainerOnly": false
+    }
+   ],
+   "regressed": [],
+   "changed": []
+  },
+  "interaction": {
+   "onCommon": [],
+   "onlyOnNew": {
+    "changed": 8,
+    "added": 70
+   }
+  }
+ },
+ "peerCasesDifferingAcrossProductCells": {
+  "flare-redact@old": 0,
+  "gitleaks@old": 0,
+  "openredaction@old": 0,
+  "trufflehog@old": 0,
+  "flare-redact@new": 0,
+  "gitleaks@new": 0,
+  "openredaction@new": 0,
+  "trufflehog@new": 0
+ },
+ "methods": {
+  "assertions": {
+   "counts": {
+    "A": 47632,
+    "B": 47632,
+    "C": 48210,
+    "D": 48210,
+    "addedByNewCorpus": 578,
+    "addedFailingOnControl": 96
+   },
+   "corpusEffectControlOnCommon": {
+    "fixed": [],
+    "regressed": [],
+    "absentInTarget": []
+   },
+   "productEffectOld": {
+    "fixed": [
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|absent|canonical||",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|absent|context.indent||",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|absent|context.unicode-prefix||",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|absent|encoding.crlf||",
+     "authored-provider-neutral--terraform-apply-sensitive--mutation|mutation|absent|canonical||",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|absent|canonical||",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|absent|context.indent||",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|absent|context.unicode-prefix||",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|absent|encoding.crlf||",
+     "exa--exa-api-key-your-key-here-placeholder--mutation|mutation|absent|canonical||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|present-within-envelope|canonical||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|present-within-envelope|context.indent||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|present-within-envelope|context.unicode-prefix||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|present-within-envelope|encoding.crlf||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--mutation|mutation|present-within-envelope|canonical||",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|absent|canonical||",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|absent|context.indent||",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|absent|context.unicode-prefix||",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|absent|encoding.crlf||",
+     "structured-credential-files-authored--documented-template-placeholders--mutation|mutation|absent|canonical||"
+    ],
+    "regressed": [],
+    "absentInTarget": []
+   },
+   "productEffectNew": {
+    "fixed": [
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|absent|canonical||",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|absent|context.indent||",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|absent|context.unicode-prefix||",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|absent|encoding.crlf||",
+     "authored-provider-neutral--terraform-apply-sensitive--mutation|mutation|absent|canonical||",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|absent|canonical||",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|absent|context.indent||",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|absent|context.unicode-prefix||",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|absent|encoding.crlf||",
+     "exa--exa-api-key-your-key-here-placeholder--mutation|mutation|absent|canonical||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|present-within-envelope|canonical||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|present-within-envelope|context.indent||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|present-within-envelope|context.unicode-prefix||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|present-within-envelope|encoding.crlf||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--mutation|mutation|present-within-envelope|canonical||",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|absent|canonical||",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|absent|context.indent||",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|absent|context.unicode-prefix||",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|absent|encoding.crlf||",
+     "structured-credential-files-authored--documented-template-placeholders--mutation|mutation|absent|canonical||"
+    ],
+    "regressed": [],
+    "absentInTarget": []
+   },
+   "interactionOnCommon": []
+  },
+  "reviewOccurrences": {
+   "sizes": {
+    "A": 11525,
+    "B": 11520,
+    "C": 11622,
+    "D": 11617
+   },
+   "productOld": {
+    "added": [
+     "authored-provider-neutral--terraform-apply-sensitive--differential|openredaction|peer-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|flare-redact|range-disagreement|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|gitleaks|reference-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|openredaction|reference-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|trufflehog|reference-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|flare-redact|peer-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|openredaction|peer-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|trufflehog|peer-only|canonical||differential"
+    ],
+    "removed": [
+     "authored-provider-neutral--terraform-apply-sensitive--differential|flare-redact|reference-only|canonical||differential",
+     "authored-provider-neutral--terraform-apply-sensitive--differential|gitleaks|reference-only|canonical||differential",
+     "authored-provider-neutral--terraform-apply-sensitive--differential|openredaction|range-disagreement|canonical||differential",
+     "authored-provider-neutral--terraform-apply-sensitive--differential|trufflehog|reference-only|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|flare-redact|reference-only|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|gitleaks|reference-only|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|openredaction|reference-only|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|trufflehog|reference-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|flare-redact|peer-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|flare-redact|range-disagreement|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|gitleaks|reference-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|openredaction|range-disagreement|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|trufflehog|range-disagreement|canonical||differential"
+    ]
+   },
+   "productNew": {
+    "added": [
+     "authored-provider-neutral--terraform-apply-sensitive--differential|openredaction|peer-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|flare-redact|range-disagreement|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|gitleaks|reference-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|openredaction|reference-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|trufflehog|reference-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|flare-redact|peer-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|openredaction|peer-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|trufflehog|peer-only|canonical||differential"
+    ],
+    "removed": [
+     "authored-provider-neutral--terraform-apply-sensitive--differential|flare-redact|reference-only|canonical||differential",
+     "authored-provider-neutral--terraform-apply-sensitive--differential|gitleaks|reference-only|canonical||differential",
+     "authored-provider-neutral--terraform-apply-sensitive--differential|openredaction|range-disagreement|canonical||differential",
+     "authored-provider-neutral--terraform-apply-sensitive--differential|trufflehog|reference-only|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|flare-redact|reference-only|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|gitleaks|reference-only|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|openredaction|reference-only|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|trufflehog|reference-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|flare-redact|peer-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|flare-redact|range-disagreement|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|gitleaks|reference-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|openredaction|range-disagreement|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|trufflehog|range-disagreement|canonical||differential"
+    ]
+   },
+   "corpusControl": {
+    "added": [
+     "docker-compose-resolution-authored--default-literal--differential|trufflehog|reference-only|canonical||differential",
+     "docker-compose-resolution-authored--required-message--differential|flare-redact|reference-only|canonical||differential",
+     "docker-compose-resolution-authored--required-message--differential|gitleaks|reference-only|canonical||differential",
+     "docker-compose-resolution-authored--required-message--differential|openredaction|reference-only|canonical||differential",
+     "docker-compose-resolution-authored--required-message--differential|trufflehog|reference-only|canonical||differential",
+     "docker-compose-resolution-authored--resolved-config-literal--differential|trufflehog|reference-only|canonical||differential",
+     "github-actions-workflow-commands-authored--add-mask-literal-argument--differential|trufflehog|reference-only|canonical||differential",
+     "github-actions-workflow-commands-authored--base-token--differential|trufflehog|reference-only|canonical||differential",
+     "github-actions-workflow-commands-authored--env-file-echo--differential|trufflehog|reference-only|canonical||differential",
+     "github-actions-workflow-commands-authored--multiline-record-eof-delimiter--differential|trufflehog|reference-only|canonical||differential",
+     "github-actions-workflow-commands-authored--multiline-record-guid-delimiter--differential|trufflehog|reference-only|canonical||differential",
+     "github-actions-workflow-commands-authored--multiline-record-written-by-brace-group--differential|trufflehog|reference-only|canonical||differential",
+     "github-actions-workflow-commands-authored--output-file-echo--differential|trufflehog|reference-only|canonical||differential",
+     "github-actions-workflow-commands-authored--runner-mask-in-log-line--differential|openredaction|peer-only|canonical||differential",
+     "graphql-requests-and-responses-authored--get-url-variables-value--differential|gitleaks|peer-only|canonical||differential",
+     "graphql-requests-and-responses-authored--post-body-inline-literal--differential|gitleaks|reference-only|canonical||differential",
+     "graphql-requests-and-responses-authored--post-body-inline-literal--differential|trufflehog|reference-only|canonical||differential",
+     "graphql-requests-and-responses-authored--post-body-variables-value--differential|trufflehog|reference-only|canonical||differential",
+     "graphql-requests-and-responses-authored--request-then-full-echo-in-error-message--differential|gitleaks|range-disagreement|canonical||differential",
+     "graphql-requests-and-responses-authored--request-then-full-echo-in-error-message--differential|trufflehog|reference-only|canonical||differential",
+     "graphql-requests-and-responses-authored--request-then-response-without-value--differential|trufflehog|reference-only|canonical||differential",
+     "graphql-requests-and-responses-authored--variables-object-base-a--differential|trufflehog|reference-only|canonical||differential",
+     "graphql-requests-and-responses-authored--variables-object-base-b--differential|trufflehog|reference-only|canonical||differential",
+     "har-exports-authored--bearer-token-in-postdata-text-percent-escaped--differential|flare-redact|reference-only|canonical||differential",
+     "har-exports-authored--bearer-token-in-postdata-text-percent-escaped--differential|gitleaks|reference-only|canonical||differential",
+     "har-exports-authored--bearer-token-in-postdata-text-percent-escaped--differential|openredaction|range-disagreement|canonical||differential",
+     "har-exports-authored--bearer-token-in-postdata-text-percent-escaped--differential|trufflehog|reference-only|canonical||differential",
+     "har-exports-authored--bearer-token-in-url-and-querystring-array--differential|flare-redact|reference-only|canonical||differential",
+     "har-exports-authored--bearer-token-in-url-and-querystring-array--differential|gitleaks|reference-only|canonical||differential",
+     "har-exports-authored--bearer-token-in-url-and-querystring-array--differential|trufflehog|reference-only|canonical||differential",
+     "hashicorp-terraform-authored--plan-json-change-after-password-with-after-sensitive--differential|flare-redact|reference-only|canonical||differential",
+     "hashicorp-terraform-authored--plan-json-change-after-password-with-after-sensitive--differential|gitleaks|reference-only|canonical||differential",
+     "hashicorp-terraform-authored--plan-json-change-after-password-with-after-sensitive--differential|openredaction|range-disagreement|canonical||differential",
+     "hashicorp-terraform-authored--plan-json-change-after-password-with-after-sensitive--differential|trufflehog|reference-only|canonical||differential",
+     "hashicorp-terraform-authored--plan-json-unknown-password-with-after-sensitive-flag--differential|openredaction|peer-only|canonical||differential",
+     "hashicorp-terraform-authored--plan-json-write-only-version-without-value--differential|openredaction|peer-only|canonical||differential",
+     "hashicorp-terraform-authored--state-json-null-password-with-sensitive-values-flag--differential|openredaction|peer-only|canonical||differential",
+     "hashicorp-terraform-authored--state-json-resource-password-with-sensitive-values--differential|flare-redact|reference-only|canonical||differential",
+     "hashicorp-terraform-authored--state-json-resource-password-with-sensitive-values--differential|gitleaks|reference-only|canonical||differential",
+     "hashicorp-terraform-authored--state-json-resource-password-with-sensitive-values--differential|openredaction|range-disagreement|canonical||differential",
+     "hashicorp-terraform-authored--state-json-resource-password-with-sensitive-values--differential|trufflehog|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--base64-png-display-output-with-cell-ids-and-execution-timestamps--differential|openredaction|peer-only|canonical||differential",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--differential|flare-redact|range-disagreement|canonical||differential",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--differential|gitleaks|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--differential|openredaction|range-disagreement|canonical||differential",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--differential|trufflehog|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--secret-base-output-only--differential|flare-redact|classification-disagreement|canonical||differential",
+     "jupyter-notebook-files-authored--secret-base-output-only--differential|gitleaks|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--secret-base-output-only--differential|trufflehog|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--secret-base-repeated--differential|flare-redact|classification-disagreement|canonical||differential",
+     "jupyter-notebook-files-authored--secret-base-repeated--differential|gitleaks|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--secret-base-repeated--differential|trufflehog|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--secret-base-source-array--differential|flare-redact|classification-disagreement|canonical||differential",
+     "jupyter-notebook-files-authored--secret-base-source-array--differential|gitleaks|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--secret-base-source-array--differential|trufflehog|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--source-one-array-element-per-line--differential|flare-redact|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--source-one-array-element-per-line--differential|gitleaks|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--source-one-array-element-per-line--differential|trufflehog|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--stdout-literal-where-source-has-environment-reference--differential|flare-redact|classification-disagreement|canonical||differential",
+     "jupyter-notebook-files-authored--stdout-literal-where-source-has-environment-reference--differential|gitleaks|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--stdout-literal-where-source-has-environment-reference--differential|trufflehog|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--stdout-mask-where-source-has-environment-reference--differential|flare-redact|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--stdout-mask-where-source-has-environment-reference--differential|gitleaks|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--stdout-mask-where-source-has-environment-reference--differential|openredaction|reference-only|canonical||differential",
+     "jupyter-notebook-files-authored--stdout-mask-where-source-has-environment-reference--differential|trufflehog|reference-only|canonical||differential",
+     "mime-transfer-encoding-authored--base64-wrapped-in-base64-part--differential|openredaction|peer-only|canonical||differential",
+     "mime-transfer-encoding-authored--base64-wrapped-part-beside-unrelated-base64-part--differential|openredaction|peer-only|canonical||differential",
+     "mime-transfer-encoding-authored--qp-soft-break-bytes-in-7bit-part--differential|flare-redact|reference-only|canonical||differential",
+     "mime-transfer-encoding-authored--qp-soft-break-bytes-in-7bit-part--differential|gitleaks|reference-only|canonical||differential",
+     "mime-transfer-encoding-authored--qp-soft-break-bytes-in-7bit-part--differential|openredaction|range-disagreement|canonical||differential",
+     "mime-transfer-encoding-authored--qp-soft-break-bytes-in-7bit-part--differential|trufflehog|reference-only|canonical||differential",
+     "mime-transfer-encoding-authored--qp-soft-break-in-quoted-printable-part--differential|flare-redact|reference-only|canonical||differential",
+     "mime-transfer-encoding-authored--qp-soft-break-in-quoted-printable-part--differential|gitleaks|reference-only|canonical||differential",
+     "mime-transfer-encoding-authored--qp-soft-break-in-quoted-printable-part--differential|openredaction|range-disagreement|canonical||differential",
+     "mime-transfer-encoding-authored--qp-soft-break-in-quoted-printable-part--differential|trufflehog|reference-only|canonical||differential",
+     "opentelemetry-log-records-authored--attribute-string--differential|gitleaks|reference-only|canonical||differential",
+     "opentelemetry-log-records-authored--attribute-string--differential|trufflehog|reference-only|canonical||differential",
+     "opentelemetry-log-records-authored--body-nested-map-and-array--differential|gitleaks|reference-only|canonical||differential",
+     "opentelemetry-log-records-authored--body-nested-map-and-array--differential|trufflehog|reference-only|canonical||differential",
+     "opentelemetry-log-records-authored--body-string--differential|gitleaks|reference-only|canonical||differential",
+     "opentelemetry-log-records-authored--body-string--differential|trufflehog|reference-only|canonical||differential",
+     "opentelemetry-log-records-authored--body-string-holding-serialized-json--differential|gitleaks|reference-only|canonical||differential",
+     "opentelemetry-log-records-authored--body-string-holding-serialized-json--differential|trufflehog|reference-only|canonical||differential",
+     "opentelemetry-log-records-authored--exception-message-and-stacktrace--differential|gitleaks|range-disagreement|canonical||differential",
+     "opentelemetry-log-records-authored--exception-message-and-stacktrace--differential|trufflehog|reference-only|canonical||differential",
+     "opentelemetry-log-records-authored--resource-attribute--differential|gitleaks|reference-only|canonical||differential",
+     "opentelemetry-log-records-authored--resource-attribute--differential|trufflehog|reference-only|canonical||differential",
+     "opentelemetry-log-records-authored--two-secrets-with-upper-case-trace-id--differential|gitleaks|range-disagreement|canonical||differential",
+     "opentelemetry-log-records-authored--two-secrets-with-upper-case-trace-id--differential|trufflehog|reference-only|canonical||differential",
+     "postman-authored--collection-apikey-auth-literal--differential|openredaction|reference-only|canonical||differential",
+     "postman-authored--collection-scope-literal-with-reference--differential|openredaction|reference-only|canonical||differential",
+     "postman-authored--environment-scope-literal--differential|openredaction|reference-only|canonical||differential",
+     "postman-authored--environment-secret-typed-literal--differential|openredaction|reference-only|canonical||differential",
+     "structured-credential-files-authored--documented-redacted-literal-values--differential|openredaction|peer-only|canonical||differential",
+     "structured-credential-files-authored--documented-redacted-literal-values--differential|trufflehog|peer-only|canonical||differential",
+     "twilio-compound-credentials-authored--api-key-secret-before-sid--differential|flare-redact|range-disagreement|canonical||differential",
+     "twilio-compound-credentials-authored--api-key-secret-before-sid--differential|gitleaks|range-disagreement|canonical||differential",
+     "twilio-compound-credentials-authored--api-key-secret-before-sid--differential|openredaction|range-disagreement|canonical||differential",
+     "twilio-compound-credentials-authored--api-key-sid-alone--differential|flare-redact|peer-only|canonical||differential",
+     "twilio-compound-credentials-authored--api-key-sid-alone--differential|gitleaks|peer-only|canonical||differential",
+     "twilio-compound-credentials-authored--api-key-sid-alone--differential|openredaction|peer-only|canonical||differential",
+     "twilio-compound-credentials-authored--api-key-sid-and-secret-env--differential|flare-redact|range-disagreement|canonical||differential",
+     "twilio-compound-credentials-authored--api-key-sid-and-secret-env--differential|gitleaks|range-disagreement|canonical||differential",
+     "twilio-compound-credentials-authored--api-key-sid-and-secret-env--differential|openredaction|range-disagreement|canonical||differential"
+    ],
+    "removed": [
+     "twilio-compound-credentials-authored--api-key-secret-before-sid--differential|flare-redact|reference-only|canonical||differential",
+     "twilio-compound-credentials-authored--api-key-secret-before-sid--differential|openredaction|reference-only|canonical||differential",
+     "twilio-compound-credentials-authored--api-key-sid-alone--differential|flare-redact|reference-only|canonical||differential",
+     "twilio-compound-credentials-authored--api-key-sid-alone--differential|openredaction|reference-only|canonical||differential",
+     "twilio-compound-credentials-authored--api-key-sid-alone--differential|trufflehog|reference-only|canonical||differential",
+     "twilio-compound-credentials-authored--api-key-sid-and-secret-env--differential|flare-redact|reference-only|canonical||differential",
+     "twilio-compound-credentials-authored--api-key-sid-and-secret-env--differential|openredaction|reference-only|canonical||differential"
+    ]
+   }
+  },
+  "semanticDigests": {
+   "A": "sha256:27d4a77fb55aed3c3139e28ec053a5eeea2f3157749f448c54674b14e553155f",
+   "B": "sha256:50e1b4673273f6025d043c43547b463bd2a1b468303acd69bf522b5e80a0247c",
+   "C": "sha256:3b5c750a1f973760b4f08d748525e280b6a516feb0e013ccfdc8c87ff66e2442",
+   "D": "sha256:da4d957dbe7f9416ca88536df66ddc530802810338ff16eb11608f8b83049215"
+  }
+ },
+ "populations": {
+  "regression-corpus": {
+   "semanticDigests": {
+    "A": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
+    "B": "sha256:a33f010a5d8446207e32341ec1bbe5428f5f55df13cf97f4ea667839c8b6d741",
+    "C": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
+    "D": "sha256:a33f010a5d8446207e32341ec1bbe5428f5f55df13cf97f4ea667839c8b6d741"
+   },
+   "controlUnchangedAcrossCorpora": true,
+   "candidateUnchangedAcrossCorpora": true
+  },
+  "policy-corpus": {
+   "semanticDigests": {
+    "A": "sha256:9a6576c90e30907dee3b6e2b368d2791a29865fa8215790b0ef9cf6f75b66f9e",
+    "B": "sha256:78bd03b306413cee0ad46f3c5cb31d2b317103b1a893ceb4e465ea03d7731620",
+    "C": "sha256:9a6576c90e30907dee3b6e2b368d2791a29865fa8215790b0ef9cf6f75b66f9e",
+    "D": "sha256:78bd03b306413cee0ad46f3c5cb31d2b317103b1a893ceb4e465ea03d7731620"
+   },
+   "controlUnchangedAcrossCorpora": true,
+   "candidateUnchangedAcrossCorpora": true
+  }
+ },
+ "summary": {
+  "corpus": {
+   "oldCases": 6449,
+   "newCases": 6519,
+   "added": 70,
+   "removed": 0,
+   "changed": 8,
+   "common": 6441
+  },
+  "productEffectOld": {
+   "fixed": [
+    "authored-provider-neutral--terraform-apply-sensitive",
+    "exa--exa-api-key-your-key-here-placeholder",
+    "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters",
+    "structured-credential-files-authored--documented-template-placeholders"
+   ],
+   "regressed": 0
+  },
+  "productEffectNew": {
+   "fixed": [
+    "authored-provider-neutral--terraform-apply-sensitive",
+    "exa--exa-api-key-your-key-here-placeholder",
+    "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters",
+    "structured-credential-files-authored--documented-template-placeholders"
+   ],
+   "regressed": 0,
+   "changed": 0,
+   "maintainerOnly": {
+    "total": 4,
+    "maintainerOnly": 0
+   }
+  },
+  "addedCaseOutcomesOnControl": {
+   "cases": 70,
+   "pass": 58,
+   "fail": 7,
+   "pending": 5,
+   "notMeasured": 0,
+   "absent": 0
+  },
+  "addedCaseOutcomesOnCandidate": {
+   "cases": 70,
+   "pass": 58,
+   "fail": 7,
+   "pending": 5,
+   "notMeasured": 0,
+   "absent": 0
+  },
+  "interactionOnCommonCases": 0,
+  "unexplained": 0
+ },
+ "unexplained": []
+}

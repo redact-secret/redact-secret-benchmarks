@@ -1,5 +1,5 @@
-import type { Operator, EvaluationCase } from '../../../../engine/types.ts';
-import { bytes, secrets } from '../../../../engine/model.ts';
+import type { Operator, EvaluationCase } from '../../../model/types.ts';
+import { bytes, secrets } from '../../../model/model.ts';
 import { mutate, seededChoice, supportsLexical } from './lexical.ts';
 
 const value = (c: EvaluationCase) => bytes(c.seed, secrets(c.seed)[0]);

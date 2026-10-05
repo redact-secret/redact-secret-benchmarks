@@ -1,7 +1,7 @@
 import type { Finding } from '../../../../types.ts';
-import type { ReviewEntry, MethodResult, Method, GeneratedVariant, ObservedRange } from '../../../../engine/types.ts';
-import { findingsForPath } from '../../../../lib/findings-by-path.ts';
-import { generate } from './common.ts';
+import type { ReviewEntry, MethodResult, Method, GeneratedVariant, ObservedRange } from '../../../model/types.ts';
+import { findingsForPath } from '../../../../scoring/findings-by-path.ts';
+import { generate } from '../method-common.ts';
 import { observe } from '../assertions.ts';
 
 // Deduplicate ranges, sort families and retain unknown mappings explicitly.

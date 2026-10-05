@@ -1,7 +1,7 @@
-import type { Method } from '../../../../engine/types.ts';
-import { secrets } from '../../../../engine/model.ts';
+import type { Method } from '../../../model/types.ts';
+import { secrets } from '../../../model/model.ts';
 import { AXES, REAL_WORLD_AXES } from '../assessment.ts';
-import { generate, evaluate } from './common.ts';
+import { generate, evaluate } from '../method-common.ts';
 // Two disjoint, equally valid taxonomies feed this method: AXES (family-control
 // vocabulary, #91) and REAL_WORLD_AXES (untargeted `real-world-shapes`, #95).
 const VOCABULARY: readonly string[] = [...AXES, ...REAL_WORLD_AXES];

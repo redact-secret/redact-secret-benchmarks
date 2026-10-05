@@ -1,5 +1,5 @@
 import type { AccountedGroup, AccountingConfig, ScoredRow } from '../../../types.ts';
-import { groupKey } from '../../../lib/lattice.ts';
+import { groupKey } from '../../../scoring/lattice.ts';
 import { accountGroups, credentialAccountingIdentity, readCredentialAccountingIdentity, assertCredentialAccountingIdentities } from './accounting.ts';
 
 /**

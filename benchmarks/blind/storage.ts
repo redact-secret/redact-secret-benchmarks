@@ -2,7 +2,7 @@ import { constants, existsSync } from 'node:fs';
 import { lstat, open, realpath, rename, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { repositoryRoot } from '../engine/provenance.ts';
+import { repositoryRoot } from '../evaluation/substrate/provenance.ts';
 import type { PrivateCorpus, PrivateFixture, PrivateFreeze, PrivateLedger } from './types.ts';
 
 /** Every rejection carries a code only: no path, fixture id or content reaches an error message. */

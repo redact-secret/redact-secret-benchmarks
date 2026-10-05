@@ -3,7 +3,7 @@ import { readFile, mkdir, rename, writeFile } from 'node:fs/promises';
 import { platform, arch } from 'node:os';
 import path from 'node:path';
 import type { Finding, Fixture } from '../types.ts';
-import type { Observation, Scanner } from '../engine/types.ts';
+import type { Observation, Scanner } from '../evaluation/model/types.ts';
 import { fixtureIndexProblems, fixtureSemanticIdentity, type FixtureIndex } from './fixture-index.ts';
 
 export const PEER_SNAPSHOT_SCHEMA = 1;

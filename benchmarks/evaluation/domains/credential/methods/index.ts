@@ -1,5 +1,5 @@
-import type { Method } from '../../../../engine/types.ts';
-import { createRegistry } from '../../../../engine/registry.ts';
+import type { Method } from '../../../model/types.ts';
+import { createRegistry } from '../../../substrate/registry.ts';
 import { twin } from './twin.ts';
 import { benign } from './benign.ts';
 import { metamorphic } from './metamorphic.ts';

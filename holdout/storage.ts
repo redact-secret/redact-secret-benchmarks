@@ -2,7 +2,7 @@ import { constants } from 'node:fs';
 import { lstat, open, readFile, writeFile, mkdir, rename, realpath } from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { hash } from '../benchmarks/engine/model.ts';
+import { hash } from '../benchmarks/evaluation/model/model.ts';
 import type { HoldoutCorpus, HoldoutManifest } from './types.ts';
 import type { ManifestEvaluationIdentity } from './types.ts';
 

@@ -1,4 +1,4 @@
-import type { Summary, ReviewLedger, EvaluationCase, CaseResult } from '../engine/types.ts';
+import type { Summary, ReviewLedger, EvaluationCase, CaseResult } from '../evaluation/model/types.ts';
 import { basisForRoute, empiricalRoute, type EvidenceBasis, type FamilySupportEvidence } from './status.ts';
 import { contracts, disputedProperty } from '../lib/assessment.ts';
 import { measureFixtureCells, profileClaim } from './profiles.ts';

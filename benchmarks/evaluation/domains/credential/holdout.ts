@@ -1,13 +1,12 @@
-import type { Scanner, EvaluationCase } from '../../../engine/types.ts';
+import type { Scanner, EvaluationCase } from '../../model/types.ts';
 import type { Candidate, Counts, HoldoutManifest, HoldoutReport } from '../../../../holdout/types.ts';
 import { hash } from '../../substrate/hash.ts';
 import { executeEvaluation } from './execution.ts';
-import { createHoldoutMethods } from './methods/holdout.ts';
-import { createOperators } from './operators/index.ts';
+import { createHoldoutMethods, createHoldoutOperators } from './holdout-method.ts';
 import { normalizeFinding } from './normalization.ts';
 import { publicConformanceCorpus } from '../../../../holdout/conformance.ts';
 import { credentialHoldoutStorage, credentialManifestEvaluation, validateCredentialHoldoutCorpus } from './holdout-corpus.ts';
-import { validateEvidence } from './evidence.ts';
+import { validateEvidence } from '../../evidence.ts';
 import { credentialAccountingIdentity } from './accounting.ts';
 import type { HoldoutDomainAdapter, HoldoutLifecycleCommon } from '../../../../holdout/lifecycle.ts';
 
@@ -33,7 +32,7 @@ export const credentialHoldoutDomain: HoldoutDomainAdapter<Scanner, ReturnType<t
       provenance: { source: 'holdout', sourceHash: manifest.corpusHash, rationale: f.assessment.reason,
         seed: corpus.seed, reviewStatus: manifest.review, sources: f.assessment.sources },
     }));
-    const raw = await executeEvaluation({ cases, methods: createHoldoutMethods(), operators: createOperators(), scanners,
+    const raw = await executeEvaluation({ cases, methods: createHoldoutMethods(), operators: createHoldoutOperators(), scanners,
       runId, scratchParent: directory, provenance: { planHash }, normalizeFinding });
     const candidateStable = hash(await verifyCandidate()) === hash(candidate);
     const scannerResults = raw.scanners.map(s => {

@@ -1,6 +1,6 @@
-import type { CaseResult, EvaluationCase, ReviewLedger } from '../engine/types.ts';
+import type { CaseResult, EvaluationCase, ReviewLedger } from '../evaluation/model/types.ts';
 import type { Finding, Outcome } from '../types.ts';
-import { OUTCOMES, scoreRow } from '../lib/lattice.ts';
+import { OUTCOMES, scoreRow } from '../scoring/lattice.ts';
 import data from './policy-qualified-credentials.json';
 import type { CredentialPolicyHoldoutReport } from '../evaluation/domains/credential-policy/holdout.ts';
 

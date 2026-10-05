@@ -2,7 +2,7 @@ import { createHash, randomUUID } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { mkdir, mkdtemp, readdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { hash } from '../engine/model.ts';
+import { hash } from '../evaluation/model/model.ts';
 import { assertNoPrivateDetail, summarize, validateAggregate, type Observation } from './aggregate.ts';
 import { BlindError, CORPUS_FILE, FREEZE_FILE, LEDGER_FILE, privateRead, privateRoot, privateWrite, readCorpus, readLedger, serialize, validateFreeze } from './storage.ts';
 import type { BenchmarkIdentity, BlindAggregate, CandidateArtifacts, Environment, PrivateCorpus, PrivateFixture, PrivateFreeze, PrivateLedger } from './types.ts';

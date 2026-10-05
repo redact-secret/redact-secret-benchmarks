@@ -1,5 +1,5 @@
 import type { HoldoutCorpus } from './types.ts';
-import { hash } from '../benchmarks/engine/model.ts';
+import { hash } from '../benchmarks/evaluation/model/model.ts';
 import { evidence } from '../benchmarks/lib/assessment.ts';
 
 /** Public lifecycle controls, never represented as independent holdout data. */

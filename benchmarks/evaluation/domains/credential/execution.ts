@@ -1,4 +1,4 @@
-import type { EvaluationCase, Registry, Method, Operator, Scanner, Observation, CaseResult, ReviewEntry, ReviewLedger, Summary } from '../../../engine/types.ts';
+import type { EvaluationCase, Registry, Method, Operator, Scanner, Observation, CaseResult, ReviewEntry, ReviewLedger, Summary } from '../../model/types.ts';
 import type { AccountingConfig, DeltaCause, Finding, Fixture } from '../../../types.ts';
 
 export interface EvaluationOptions {
@@ -17,9 +17,9 @@ export interface EvaluationOptions {
 }
 import { randomUUID } from 'node:crypto';
 import { tmpdir } from 'node:os';
-import { score } from '../../../lib/scoring.ts';
+import { score } from '../../../scoring/scoring.ts';
 import { normalizeFinding as normalizeCredentialFinding } from './normalization.ts';
-import { generateCase, hash } from '../../../engine/model.ts';
+import { generateCase, hash } from '../../model/model.ts';
 import { describeCase, describeVariant, summaries } from './reporting.ts';
 import { ACCOUNTING_VERSION, accountCounts, unresolvedGroups, validateAccounting, floorFor, credentialAccountingIdentity } from './accounting.ts';
 import suite from '../../../../qualification/suite-v1.json';

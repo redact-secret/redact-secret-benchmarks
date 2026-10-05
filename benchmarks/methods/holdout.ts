@@ -1,1 +1,1 @@
-export * from '../evaluation/domains/credential/methods/holdout.ts';
+export * from '../evaluation/domains/credential/holdout-method.ts';

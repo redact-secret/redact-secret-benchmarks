@@ -4,9 +4,9 @@
 import { readFile, writeFile, readdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { encodeOutcome } from '../benchmarks/lib/lattice.ts';
+import { encodeOutcome } from '../benchmarks/scoring/lattice.ts';
 import { kinds, tiers } from '../benchmarks/lib/assessment.ts';
-import { assertComparable } from '../benchmarks/lib/accounting.ts';
+import { assertComparable } from '../benchmarks/accounting/index.ts';
 import { compareBaselineNames } from '../benchmarks/lib/baselines.ts';
 
 const PRODUCT = 'redact-secret';

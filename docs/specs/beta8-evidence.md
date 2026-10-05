@@ -547,6 +547,48 @@ The corpus adds one authored calibration row pair per family to
 `corpora/development/shadow-scoring-authored.json` and lists the five categories as development-evaluation in
 `tuning/shadow-scoring-development-v1.json`.
 
+## Beta.14 second-wave slices (#583)
+
+The benchmarks side of the #1014 second wave (Xata, Sourcegraph, Unkey, Buildkite, Pydantic Logfire, Square, Mapbox, Fly,
+Ory siblings; product issues redact-secret#1102 to #1110). Only **Square** (slice `583a`) has a contract, a corpus and
+arrival evidence so far; the other detectors that the registry now carries are recorded as "detector present in the
+registry, benchmark contract/corpus pending (#583)" (slice `583p`) and claim nothing. The registry snapshot
+(`benchmarks/detectors.json`, `detector-inventory.json`, `detector-finding-types.json`) is pinned to product main
+`3b1a5aa` (redact-secret PR #1214 and #1227), ahead of the published `@redact-secret/core` 0.1.0-beta.13; see the
+[decision](../decisions/2026-10-05-claim-square-stable-widths-under-q8-and-pin-the-registry-ahead-of-the-release.md).
+
+- **`583a` (`benchmarks/lib/beta8/583a.ts`, `fixtures/generated/beta8/583a.mjs`, category `beta8-583a`).** Contracts for
+  `square-token` (a registry detector, the `EAAA` access token: `EAAA` + exactly 60 `[A-Za-z0-9_-]`) and the arrival
+  family `square-oauth-application-secret` (shares the detector, scored by finding type `square_oauth_application_secret`:
+  `sq0csp-` + 43 or 44, `sandbox-sq0csb-` + 43). Both are T1 by example under R5 from the #1014 handoff
+  (`docs/audits/evidence/1014/square.md` at `fa955d2`), **conditional on the open ruling Q8** (may R5 support an
+  exact-width grammar when the provider disclaims length validation): `policy-q8-exact-width` is a `policy-*` field,
+  never T1, and a refusal drops the claim to issuance-gated (#584). Positives cover the nine #860 contexts plus the
+  provider-native ones (the Node and MCP configurations, a curl call, GitHub Actions, Docker, the ObtainToken body, the
+  sandbox forms), with one-property twins on prefix, alphabet and boundary and benign, public-identifier and
+  context-confusion controls.
+- **Unclaimed widths.** Square's own examples disagree (an `EAAl` + 59 access token and an `EQAA` + 60 refresh token in
+  the ObtainToken reference against the 64-character `EAAA` example; `sq0csp-` at 43 and at 44), so every conflicting
+  width is an *unclaimed twin*: `EAAA` at 59 and 61, `EAAl` + 59, `EQAA` + 60, the scanner-only `sq0atp-` + 22, `sq0csp-`
+  at 42 and 45, `sandbox-sq0csb-` at 42 and 44. They are authored, listed in `DISPUTED_PROPERTIES`
+  (`square-access-token-widths`, `square-oauth-secret-widths`) and read T0, so no fixture asserts silence or detection on
+  them, and the T1 twin dimensions for `square-token` are `alphabet`, `boundary` and `prefix` (no `length`).
+- **`583p` (`benchmarks/lib/beta8/583p.ts`).** A T3, `contextGated`, `unprobeable` placeholder contract for each of
+  `xata-api-key`, `sourcegraph-token`, `unkey-root-key`, `buildkite-token`, `pydantic-logfire-token`, `mapbox-token`
+  and `fly-token`, with the handoff as `candidateSource`. It asserts no format; the registry-wide detector-coverage
+  minimum (`fixtures/generated/detector-coverage.mjs`, one detector-id shape each) and one static calibration row per
+  family in `corpora/development/shadow-scoring-authored.json` (first character `\u`-escaped) are the only evidence.
+  A slice that authors one of these moves its entry into that slice's `registryContracts`.
+- **Provenance.** Every `583a` fixture cites the Square handoff permalink and product issue redact-secret#1107 through the
+  contract's `references`. All values are built at generation time from `synthetic()` filler; no complete Square key
+  literal exists in a source file (the static calibration rows use repeated filler with the first character escaped).
+- **Peers.** trufflehog 3.97.4 `square` (EAAA + 60, keyword `square`) and `squareapp` (`sq0c??` + 40 to 50, and the public
+  `sq0i??` application ids) are mapped; gitleaks 8.30.1 `square-access-token` is mapped (it has no `sq0csp-` rule in its
+  default config). The measured lag and overreach are in `evidence/583/`.
+- **Issuance check.** `docs/specs/square-issuance-check.md`: a structure-only script the maintainer runs on a key he
+  issues (`npm run issuance:square`), reading stdin only, recording `rawValueRetained: false`; the result is pending in
+  `benchmarks/support/issuance-records/square.json` (#584).
+
 ## Beta.11 family evidence (#379)
 
 [#379](https://github.com/redact-secret/redact-secret-benchmarks/issues/379) (parent

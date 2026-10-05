@@ -30,7 +30,10 @@ const families = ['github-token', 'gitlab-token', 'npm-token', 'sendgrid-token',
   'clojars-deploy-token', 'crates-io-token', 'dynatrace-token', 'paddle-api-key', 'honeycomb-api-key', 'axiom-token',
   // #1012 READY-T2 families, registry detectors since redact-secret#1028 and #1029 (product PR #1039, registry pin
   // 4fb7882); first measured at that pin (benchmarks/lib/beta8/1012a.ts, 1012b.ts).
-  'aws-secret-access-key', 'google-oauth-client-secret'];
+  'aws-secret-access-key', 'google-oauth-client-secret',
+  // #583: registry detector since redact-secret#1107 (product PR #1227, registry pin 3b1a5aa); measured under the same id
+  // (benchmarks/lib/beta8/583a.ts). Its OAuth application secret type is labelled by finding type (arrivalFindingTypes below).
+  'square-token'];
 const gitleaks = {
   'github-pat': 'github-token', 'github-oauth': 'github-token',
   'github-app-token': 'github-token', 'github-refresh-token': 'github-token',
@@ -76,6 +79,11 @@ const gitleaks = {
   // positives; peer lag, not a family difference). 1password-secret-key is the account Secret Key, never this family,
   // and stays unmapped.
   '1password-service-account-token': 'onepassword-service-account-token',
+  // #583 (benchmarks/lib/beta8/583a.ts): gitleaks 8.30.1 square-access-token reads EAAA or the scanner-only sq0atp- + 22 to 60 over
+  // [\w-] (entropy 2): the square-token credential over a wider window. The default config has no sq0csp- rule (square-secret exists
+  // only in the generator source), so gitleaks lags on every application secret. squarespace-access-token is another provider and
+  // stays unmapped.
+  'square-access-token': 'square-token',
 };
 const trufflehog = {
   Github: 'github-token', Gitlab: 'gitlab-token', Npm: 'npm-token',
@@ -112,6 +120,10 @@ const trufflehog = {
   // 40 near "sonar", sqco_) and Honeycomb (32-hex or 22-alphanumeric near "Honeycomb") labels read no #528 family's
   // shape and stay unmapped.
   RubyGems: 'rubygems-api-key',
+  // #583 (benchmarks/lib/beta8/583a.ts): trufflehog 3.97.4's square detector (label Square) reads EAAA + 60 over [a-zA-Z0-9\-_+=] beside the
+  // word square; squareapp (label SquareApp) reads (sandbox-)sq0c?? + 40 to 50 and also the public sq0i?? application ids under the same
+  // label, so its finding on a public id reads as overreach on the application secret family. Squarespace is another provider.
+  Square: 'square-token', SquareApp: 'square-oauth-application-secret',
   // #436 (deferred to graduation): trufflehog 3.97.4's apify detector reads apify_api_ + exactly 36 alphanumerics, the
   // apify-api-token credential over a narrower width (it misses the 20- and 128-byte positives). Its weightsandbiases
   // detectors report under one label: v2 (wandb_v1_ keys, the wandb-api-key family) and v1 (the legacy keyword-gated
@@ -211,6 +223,9 @@ export const arrivalFindingTypes = Object.freeze({
   'sonarqube-token': Object.freeze({ sonarqube_analysis_token: 'sonarqube-analysis-token' }),
   'crates-io-token': Object.freeze({ crates_io_trusted_publishing_token: 'crates-io-trusted-publishing-token' }),
   'axiom-token': Object.freeze({ axiom_personal_token: 'axiom-personal-token' }),
+  // #583: product PR #1227 (redact-secret#1107) types the OAuth application secret (sq0csp-, sandbox-sq0csb-) as its own finding type
+  // inside the new shared square-token detector; the detector-id family keeps the detector id (square_access_token, EAAA).
+  'square-token': Object.freeze({ square_oauth_application_secret: 'square-oauth-application-secret' }),
   // #1012/#1013: product PR #1039 (redact-secret#1036) splits vercel-token per credential class and types the three READY
   // classes (vcp_/vca_/vcr_ + exactly 56 [A-Za-z0-9]) as their own finding types; vci_, vck_ and off-width values keep the
   // aggregate vercel_token (benchmarks/lib/beta8/1012e.ts).

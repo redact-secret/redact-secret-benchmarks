@@ -134,7 +134,8 @@ export function buildFixtureIndex(input: {
     const beta11 = /^beta8-43[46]/.test(category.id) || category.id === 'beta8-379';
     // beta8-528a..528j hold the Beta.12 #1014 broad-discovery credential corpus (#528), in the same per-issue layout.
     // beta8-1012a..1012e hold the Beta.12 #1012/#1013 first-measured variants (#528), in the same per-issue layout.
-    const beta12 = /^beta8-(464|528|1012)/.test(category.id);
+    // beta8-583a holds the Beta.14 #583 second-wave corpus (Square), in the same per-issue layout.
+    const beta12 = /^beta8-(464|528|1012|583)/.test(category.id);
     const beta8 = /^beta8-/.test(category.id) && !beta10 && !beta11 && !beta12;
     const provenance: FixtureIndexEntry['provenance'] = {
       categoryId: category.id,

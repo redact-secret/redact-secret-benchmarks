@@ -636,6 +636,19 @@ export const DISPUTED_PROPERTIES: Record<string, { family: string; property: str
     family: 'elevenlabs-api-key', property: 'the length and alphabet of the sk_ body (48 lowercase hexadecimal characters), which no provider-owned source states',
     ids: ['short-body', 'long-body', 'non-hex-body'].map(c => `beta8-384c--elevenlabs-api-key-${c}-twin`),
   },
+  // #583: Square says "don't use token length for validation" and its own examples disagree (an EAAl + 59 access token and an
+  // EQAA + 60 refresh token in the ObtainToken reference against the 64-character EAAA example; sq0csp- + 43 in the walkthrough
+  // and + 44 in the reference). The contract (benchmarks/lib/beta8/583a.ts) claims the stable widths under ruling Q8 (open) and
+  // leaves every other width unclaimed, so these twins assert neither detection nor silence. The prefix, alphabet and boundary
+  // twins of the same corpus stay asserted.
+  'square-access-token-widths': {
+    family: 'square-token', property: 'the width of an EAAA access token other than 60 after the prefix, the EAAl + 59 and EQAA + 60 forms of the ObtainToken reference, and the scanner-only sq0atp- + 22 form (Square disclaims length validation and its examples disagree; ruling Q8)',
+    ids: ['body-59', 'body-61', 'eaal-59', 'eqaa-60', 'legacy-sq0atp'].map(c => `beta8-583a--square-token-${c}-twin`),
+  },
+  'square-oauth-secret-widths': {
+    family: 'square-oauth-application-secret', property: 'the width of an OAuth application secret other than sq0csp- + 43 or 44 and sandbox-sq0csb- + 43 (Square disclaims length validation and its examples disagree on 43 vs 44; ruling Q8)',
+    ids: ['production-42', 'production-45', 'sandbox-42', 'sandbox-44'].map(c => `beta8-583a--square-oauth-application-secret-${c}-twin`),
+  },
   'mailchimp-datacenter-literal': {
     family: 'mailchimp-api-key', property: 'whether a data-center suffix other than us<N> (such as eu6) is ever issued',
     ids: ['bare', 'quoted', 'unicode-crlf'].map(c => `detector-coverage--mailchimp-api-key-single-digit-datacenter-${c}-twin`),

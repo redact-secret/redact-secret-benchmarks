@@ -419,6 +419,18 @@
           ],
           "basis": "sonar login or token keyword + squ_, sqp_ or sqa_ + 40 characters"
         },
+        "sourcegraph-access-token": {
+          "families": [
+            "sourcegraph:access-token"
+          ],
+          "basis": "sgp_ (optionally with a 16-hex or local instance identifier) + 40 hex, or a bare 40 hex"
+        },
+        "square-access-token": {
+          "families": [
+            "square:access-token"
+          ],
+          "basis": "EAAA or sq0atp- + 22-60 [\\w-], entropy 2 (a wider window than EAAA + 60; sq0atp- is a scanner-only form)"
+        },
         "stripe-access-token": {
           "families": [
             "stripe:secret-key-live",
@@ -477,6 +489,7 @@
         "hashicorp-tf-password": "a password assignment in Terraform files, not a Terraform Cloud API token",
         "huggingface-organization-api-token": "the api_org_ prefix, a different token class from hf_ access tokens",
         "linear-client-secret": "an OAuth client secret beside a linear keyword, not the personal API key or the OAuth access token",
+        "mapbox-api-token": "reads the public pk. token (keyword-gated, 60 + 22 lowercase alphanumerics); the secret sk. token is the family and this rule does not read it",
         "microsoft-teams-webhook": "a webhook URL, not a credential family in the taxonomy",
         "new-relic-browser-api-token": "a browser key (NRJS-); the taxonomy families are the NRAK- user key and the license key",
         "new-relic-insert-key": "an insert key (NRII-); no taxonomy family",
@@ -489,6 +502,7 @@
         "slack-legacy-token": "a legacy xoxo- or xoxs- token; no taxonomy family",
         "slack-legacy-workspace-token": "a legacy xoxa- or xoxr- workspace token; no taxonomy family",
         "slack-webhook-url": "a webhook URL; the taxonomy's workflow webhook family is the xwfp- token",
+        "squarespace-access-token": "Squarespace is another provider (a keyword-gated UUID)",
         "twilio-api-key": "the SK API key SID, a public identifier the taxonomy excludes (docs/specs/taxonomy.md); the 32-character secret is not matched"
       }
     },
@@ -552,6 +566,12 @@
             "azure-devops:personal-access-token"
           ],
           "basis": "azure keyword + 52 characters"
+        },
+        "buildkite/v2": {
+          "families": [
+            "buildkite:access-token"
+          ],
+          "basis": "bkua_ + 40 [a-z0-9] (the API access token role only)"
         },
         "cloudflareapitoken/v2": {
           "families": [
@@ -760,6 +780,12 @@
           ],
           "basis": "key- + 32 characters, or a 32-8-8 hex triplet"
         },
+        "mapbox": {
+          "families": [
+            "mapbox:secret-access-token"
+          ],
+          "basis": "sk. + 80-240 [a-zA-Z0-9.-]"
+        },
         "mongodb": {
           "families": [
             "generic:connection-string-password"
@@ -926,6 +952,24 @@
           ],
           "basis": "xoxb- or xoxp- + 10-13 digits + 10-13 digits"
         },
+        "sourcegraph": {
+          "families": [
+            "sourcegraph:access-token"
+          ],
+          "basis": "sgp_ (optionally with a 16-hex or local instance identifier) + 40 hex, or a bare 40 hex"
+        },
+        "square": {
+          "families": [
+            "square:access-token"
+          ],
+          "basis": "EAAA + 60 [a-zA-Z0-9\\-_+=] after the word square"
+        },
+        "squareapp": {
+          "families": [
+            "square:oauth-application-secret"
+          ],
+          "basis": "(sandbox-)sq0c?? + 40-50 [0-9A-Za-z_-]; the same detector also reads sq0i?? application ids (public identifiers)"
+        },
         "stripe": {
           "families": [
             "stripe:secret-key-live",
@@ -1003,6 +1047,7 @@
         "atlassiandatacenter/confluencedatacenter": "a Confluence Data Center token; no taxonomy family",
         "atlassiandatacenter/jiradatacenterpat": "a Jira Data Center personal access token; no taxonomy family",
         "azure_openai": "an Azure OpenAI resource key, a different credential from the OpenAI secret API key",
+        "buildkite/v1": "reads a bare 40-character [a-z0-9] run after the word buildkite, a legacy shape no handoff role claims",
         "cloudflareapitoken/v1": "a 40-character legacy key beside a cloudflare keyword; cannot match the cfut_ scannable token",
         "cloudflarecakey": "an origin CA key, not the cfut_ scannable token",
         "cloudflareglobalapikey/v1": "a global API key beside a cloudflare keyword, not the cfut_ scannable token",
@@ -1028,6 +1073,8 @@
         "sentrytoken/v1": "a 64-hex value beside a sentry keyword, not the sntryu_ or sntrys_ prefixed tokens",
         "shopifyoauth": "an app shared secret (shpss_) and client id, not an access token",
         "slackwebhook": "a webhook URL; the taxonomy's workflow webhook family is the xwfp- token",
+        "sourcegraphcody": "the Cody Gateway slk_ token is not the sgp_ personal access token (the handoff leaves sgd_ for a later extension)",
+        "squarespace": "Squarespace is another provider",
         "vercel": "a 24-character legacy token beside a vercel keyword; the taxonomy's modern families are the vcp_, vca_, vcr_, vci_ and vck_ tokens, and the compatibility aggregate is a routing row, not a credential class"
       }
     },
@@ -1232,6 +1279,13 @@
             "slack:user-token"
           ],
           "basis": "xoxb- or xoxp- + 10-64 characters"
+        },
+        "square_token": {
+          "families": [
+            "square:access-token",
+            "square:oauth-application-secret"
+          ],
+          "basis": "sq0 + three letters + - + 22-43, or EAAA + 60 [A-Za-z0-9_-]; the sq0i?? alternatives are public application ids"
         },
         "stripe_key": {
           "families": [

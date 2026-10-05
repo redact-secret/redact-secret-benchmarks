@@ -1,1754 +1,2991 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "kind": "batch2-disposition-ledger",
   "epic": 739,
-  "complete": false,
-  "note": "One entry per family. Nothing has been measured yet; no row is a false negative, true negative or passing coverage.",
+  "complete": true,
+  "completeMeaning": "every one of the 58 families has a disposition: measured (30) or not-measured/carrier-unresolved (28). It does not mean all 58 are covered.",
+  "baseline": {
+    "source": "npm @redact-secret/core 0.1.0-beta.13 (+ @redact-secret/wasm, node-darwin-arm64), PyPI redact-secret 0.1.0b13, crates.io redact-secret-cli 0.1.0-beta.13 built with cargo install --locked",
+    "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+    "versions": {
+      "node": "0.1.0-beta.13",
+      "wasm": "0.1.0-beta.13",
+      "python": "0.1.0b13",
+      "cli": "0.1.0-beta.13"
+    },
+    "observationSha256": "602349fcffe711512c45698f301712e38d5711bef6ce09b9fd78440b0e9fe619"
+  },
+  "candidate": {
+    "source": "unpublished redact-secret commit a148dadf4a43b5441ed88386d055428b2e278f25 (core main after PR #1231; code identical to 3b1a5aa9, includes the Batch 1 fixes af1e71e0, #1202/#1204/#1206 and the #1227 second-wave detectors)",
+    "commit": "a148dadf4a43b5441ed88386d055428b2e278f25",
+    "versions": {
+      "node": "0.1.0-beta.13",
+      "wasm": "0.1.0-beta.13",
+      "python": "0.1.0b13",
+      "cli": "0.1.0-beta.13"
+    },
+    "observationSha256": "2e53ad31219404fbc29372403826444e52f46d1ea3b9b480c6d66d86a6645b0b"
+  },
   "counts": {
     "families": 58,
-    "measured": 0,
-    "notMeasured": 58
+    "measured": 30,
+    "notMeasuredCarrierUnresolved": 28,
+    "byCoverage": {
+      "already-covered / no-code": 28,
+      "fixed in candidate by an existing core fix (no new gap)": 1,
+      "contract-evidence conflict": 1
+    }
   },
   "families": [
     {
       "family": "adobe:oauth-server-to-server-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/adobe/oauth-server-to-server-access-token@1.json (proposed/draft, sha256 413d96e026b1, evidence 005a7331)",
+      "carrierContract": "records/contracts/adobe/oauth-server-to-server-access-token@1.json (proposed/draft, sha256 413d96e026b1, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
+      "caseIds": [
+        "adobe:oauth-server-to-server-access-token:access_token-json:positive",
+        "adobe:oauth-server-to-server-access-token:access_token-json-last:positive",
+        "adobe:oauth-server-to-server-access-token:access_token-json-pretty:positive",
+        "adobe:oauth-server-to-server-access-token:access_token-http-response:positive",
+        "adobe:oauth-server-to-server-access-token:access_token-unicode-prefix:positive",
+        "adobe:oauth-server-to-server-access-token:access_token-curl-response:positive",
+        "adobe:oauth-server-to-server-access-token:access_token-lowentropy:positive",
+        "adobe:oauth-server-to-server-access-token:access_token-below-floor:unsupported",
+        "adobe:oauth-server-to-server-access-token:access_token-public-fields:control",
+        "adobe:oauth-server-to-server-access-token:access_token-placeholder:control",
+        "adobe:oauth-server-to-server-access-token:access_token-reference-env:control",
+        "adobe:oauth-server-to-server-access-token:access_token-reference-template:control",
+        "adobe:oauth-server-to-server-access-token:access_token-masked:control",
+        "adobe:oauth-server-to-server-access-token:access_token-name-lookalike:control",
+        "adobe:oauth-server-to-server-access-token:access_token-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 6,
+        "unsupportedObserved": 2,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 60/60 entries; four surfaces identical on 15/15 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "adobe:oauth-server-to-server-access-token:access_token-below-floor:unsupported (unsupported; no finding, not scored)",
+        "adobe:oauth-server-to-server-access-token:access_token-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "airtable:oauth-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/airtable/oauth-access-token@1.json (proposed/draft, sha256 1f66597af510, evidence 005a7331)",
+      "carrierContract": "records/contracts/airtable/oauth-access-token@1.json (proposed/draft, sha256 1f66597af510, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
+      "caseIds": [
+        "airtable:oauth-access-token:bearer-raw-http:positive",
+        "airtable:oauth-access-token:bearer-raw-http-proxy:positive",
+        "airtable:oauth-access-token:bearer-curl:positive",
+        "airtable:oauth-access-token:bearer-curl-single:positive",
+        "airtable:oauth-access-token:bearer-json-header-map:positive",
+        "airtable:oauth-access-token:bearer-unicode-prefix:positive",
+        "airtable:oauth-access-token:bearer-long:positive",
+        "airtable:oauth-access-token:bearer-public-fields:control",
+        "airtable:oauth-access-token:bearer-placeholder:control",
+        "airtable:oauth-access-token:bearer-placeholder-curl:control",
+        "airtable:oauth-access-token:bearer-reference-env:control",
+        "airtable:oauth-access-token:bearer-reference-template:control",
+        "airtable:oauth-access-token:bearer-masked:control",
+        "airtable:oauth-access-token:bearer-scheme-prose:control",
+        "airtable:oauth-access-token:bearer-below-floor:unsupported",
+        "airtable:oauth-access-token:bearer-newline-between:unsupported",
+        "airtable:oauth-access-token:bearer-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 7,
+        "unsupportedObserved": 3,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 68/68 entries; four surfaces identical on 17/17 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "airtable:oauth-access-token:bearer-below-floor:unsupported (unsupported; no finding, not scored)",
+        "airtable:oauth-access-token:bearer-newline-between:unsupported (unsupported; no finding, not scored)",
+        "airtable:oauth-access-token:bearer-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "asana:oauth-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/asana/oauth-access-token@1.json (proposed/draft, sha256 695c27bd7ecc, evidence 005a7331)",
+      "carrierContract": "records/contracts/asana/oauth-access-token@1.json (proposed/draft, sha256 695c27bd7ecc, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Asana \"Authentication\" / \"OAuth\" pages: token response member name and the Authorization form for an OAuth access token",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Asana \"Authentication\" / \"OAuth\" pages: token response member name and the Authorization form for an OAuth access token"
     },
     {
       "family": "asana:personal-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/asana/personal-access-token@1.json (proposed/draft, sha256 4b4e9ce02f62, evidence 005a7331)",
+      "carrierContract": "records/contracts/asana/personal-access-token@1.json (proposed/draft, sha256 4b4e9ce02f62, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
+      "caseIds": [
+        "asana:personal-access-token:bearer-raw-http:positive",
+        "asana:personal-access-token:bearer-raw-http-proxy:positive",
+        "asana:personal-access-token:bearer-curl:positive",
+        "asana:personal-access-token:bearer-curl-single:positive",
+        "asana:personal-access-token:bearer-json-header-map:positive",
+        "asana:personal-access-token:bearer-unicode-prefix:positive",
+        "asana:personal-access-token:bearer-long:positive",
+        "asana:personal-access-token:bearer-public-fields:control",
+        "asana:personal-access-token:bearer-placeholder:control",
+        "asana:personal-access-token:bearer-placeholder-curl:control",
+        "asana:personal-access-token:bearer-reference-env:control",
+        "asana:personal-access-token:bearer-reference-template:control",
+        "asana:personal-access-token:bearer-masked:control",
+        "asana:personal-access-token:bearer-scheme-prose:control",
+        "asana:personal-access-token:bearer-below-floor:unsupported",
+        "asana:personal-access-token:bearer-newline-between:unsupported",
+        "asana:personal-access-token:bearer-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 7,
+        "unsupportedObserved": 3,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 68/68 entries; four surfaces identical on 17/17 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "asana:personal-access-token:bearer-below-floor:unsupported (unsupported; no finding, not scored)",
+        "asana:personal-access-token:bearer-newline-between:unsupported (unsupported; no finding, not scored)",
+        "asana:personal-access-token:bearer-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "box:oauth-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/box/oauth-access-token@1.json (proposed/draft, sha256 e34353e73314, evidence 005a7331)",
+      "carrierContract": "records/contracts/box/oauth-access-token@1.json (proposed/draft, sha256 e34353e73314, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Box developer docs (not readable in the first pass): authorization header form and the `access_token` member; app and developer token subtypes",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Box developer docs (not readable in the first pass): authorization header form and the `access_token` member; app and developer token subtypes"
     },
     {
       "family": "canva:access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/canva/access-token@1.json (proposed/draft, sha256 510659fb3719, evidence 005a7331)",
+      "carrierContract": "records/contracts/canva/access-token@1.json (proposed/draft, sha256 510659fb3719, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
+      "caseIds": [
+        "canva:access-token:access_token-json:positive",
+        "canva:access-token:access_token-json-last:positive",
+        "canva:access-token:access_token-json-pretty:positive",
+        "canva:access-token:access_token-http-response:positive",
+        "canva:access-token:access_token-unicode-prefix:positive",
+        "canva:access-token:access_token-curl-response:positive",
+        "canva:access-token:access_token-lowentropy:positive",
+        "canva:access-token:access_token-below-floor:unsupported",
+        "canva:access-token:access_token-public-fields:control",
+        "canva:access-token:access_token-placeholder:control",
+        "canva:access-token:access_token-reference-env:control",
+        "canva:access-token:access_token-reference-template:control",
+        "canva:access-token:access_token-masked:control",
+        "canva:access-token:access_token-name-lookalike:control",
+        "canva:access-token:access_token-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 6,
+        "unsupportedObserved": 2,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 60/60 entries; four surfaces identical on 15/15 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "canva:access-token:access_token-below-floor:unsupported (unsupported; no finding, not scored)",
+        "canva:access-token:access_token-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "contentful:oauth-application-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/contentful/oauth-application-access-token@1.json (proposed/draft, sha256 058ad040ef31, evidence 005a7331)",
+      "carrierContract": "records/contracts/contentful/oauth-application-access-token@1.json (proposed/draft, sha256 058ad040ef31, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Contentful \"Authentication\" page: header form for an OAuth token and the token-response field",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Contentful \"Authentication\" page: header form for an OAuth token and the token-response field"
     },
     {
       "family": "elastic:access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/elastic/access-token@1.json (proposed/draft, sha256 e266196c8e82, evidence 005a7331)",
+      "carrierContract": "records/contracts/elastic/access-token@1.json (proposed/draft, sha256 e266196c8e82, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
+      "caseIds": [
+        "elastic:access-token:bearer-raw-http:positive",
+        "elastic:access-token:bearer-raw-http-proxy:positive",
+        "elastic:access-token:bearer-curl:positive",
+        "elastic:access-token:bearer-curl-single:positive",
+        "elastic:access-token:bearer-json-header-map:positive",
+        "elastic:access-token:bearer-unicode-prefix:positive",
+        "elastic:access-token:bearer-long:positive",
+        "elastic:access-token:bearer-public-fields:control",
+        "elastic:access-token:bearer-placeholder:control",
+        "elastic:access-token:bearer-placeholder-curl:control",
+        "elastic:access-token:bearer-reference-env:control",
+        "elastic:access-token:bearer-reference-template:control",
+        "elastic:access-token:bearer-masked:control",
+        "elastic:access-token:bearer-scheme-prose:control",
+        "elastic:access-token:bearer-below-floor:unsupported",
+        "elastic:access-token:bearer-newline-between:unsupported",
+        "elastic:access-token:bearer-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 7,
+        "unsupportedObserved": 3,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 68/68 entries; four surfaces identical on 17/17 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "elastic:access-token:bearer-below-floor:unsupported (unsupported; no finding, not scored)",
+        "elastic:access-token:bearer-newline-between:unsupported (unsupported; no finding, not scored)",
+        "elastic:access-token:bearer-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "elastic:service-account-token",
       "group": "G1",
-      "carrierContract": "records/contracts/elastic/service-account-token@1.json (proposed/draft, sha256 c8df09a254f6, evidence 005a7331)",
+      "carrierContract": "records/contracts/elastic/service-account-token@1.json (proposed/draft, sha256 c8df09a254f6, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
+      "caseIds": [
+        "elastic:service-account-token:bearer-raw-http:positive",
+        "elastic:service-account-token:bearer-raw-http-proxy:positive",
+        "elastic:service-account-token:bearer-curl:positive",
+        "elastic:service-account-token:bearer-curl-single:positive",
+        "elastic:service-account-token:bearer-json-header-map:positive",
+        "elastic:service-account-token:bearer-unicode-prefix:positive",
+        "elastic:service-account-token:bearer-long:positive",
+        "elastic:service-account-token:bearer-public-fields:control",
+        "elastic:service-account-token:bearer-placeholder:control",
+        "elastic:service-account-token:bearer-placeholder-curl:control",
+        "elastic:service-account-token:bearer-reference-env:control",
+        "elastic:service-account-token:bearer-reference-template:control",
+        "elastic:service-account-token:bearer-masked:control",
+        "elastic:service-account-token:bearer-scheme-prose:control",
+        "elastic:service-account-token:bearer-below-floor:unsupported",
+        "elastic:service-account-token:bearer-newline-between:unsupported",
+        "elastic:service-account-token:bearer-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 7,
+        "unsupportedObserved": 3,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 68/68 entries; four surfaces identical on 17/17 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "elastic:service-account-token:bearer-below-floor:unsupported (unsupported; no finding, not scored)",
+        "elastic:service-account-token:bearer-newline-between:unsupported (unsupported; no finding, not scored)",
+        "elastic:service-account-token:bearer-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "figma:oauth-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/figma/oauth-access-token@1.json (proposed/draft, sha256 23522bec4454, evidence 005a7331)",
+      "carrierContract": "records/contracts/figma/oauth-access-token@1.json (proposed/draft, sha256 23522bec4454, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
+      "caseIds": [
+        "figma:oauth-access-token:access_token-json:positive",
+        "figma:oauth-access-token:access_token-json-last:positive",
+        "figma:oauth-access-token:access_token-json-pretty:positive",
+        "figma:oauth-access-token:access_token-http-response:positive",
+        "figma:oauth-access-token:access_token-unicode-prefix:positive",
+        "figma:oauth-access-token:access_token-curl-response:positive",
+        "figma:oauth-access-token:access_token-lowentropy:positive",
+        "figma:oauth-access-token:access_token-below-floor:unsupported",
+        "figma:oauth-access-token:access_token-public-fields:control",
+        "figma:oauth-access-token:access_token-placeholder:control",
+        "figma:oauth-access-token:access_token-reference-env:control",
+        "figma:oauth-access-token:access_token-reference-template:control",
+        "figma:oauth-access-token:access_token-masked:control",
+        "figma:oauth-access-token:access_token-name-lookalike:control",
+        "figma:oauth-access-token:access_token-prefixed-name:unsupported",
+        "figma:oauth-access-token:bearer-raw-http:positive",
+        "figma:oauth-access-token:bearer-raw-http-proxy:positive",
+        "figma:oauth-access-token:bearer-curl:positive",
+        "figma:oauth-access-token:bearer-curl-single:positive",
+        "figma:oauth-access-token:bearer-json-header-map:positive",
+        "figma:oauth-access-token:bearer-unicode-prefix:positive",
+        "figma:oauth-access-token:bearer-long:positive",
+        "figma:oauth-access-token:bearer-public-fields:control",
+        "figma:oauth-access-token:bearer-placeholder:control",
+        "figma:oauth-access-token:bearer-placeholder-curl:control",
+        "figma:oauth-access-token:bearer-reference-env:control",
+        "figma:oauth-access-token:bearer-reference-template:control",
+        "figma:oauth-access-token:bearer-masked:control",
+        "figma:oauth-access-token:bearer-scheme-prose:control",
+        "figma:oauth-access-token:bearer-below-floor:unsupported",
+        "figma:oauth-access-token:bearer-newline-between:unsupported",
+        "figma:oauth-access-token:bearer-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 14,
+        "control": 13,
+        "unsupportedObserved": 5,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "14/14",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "14/14",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 128/128 entries; four surfaces identical on 32/32 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "figma:oauth-access-token:access_token-below-floor:unsupported (unsupported; no finding, not scored)",
+        "figma:oauth-access-token:access_token-prefixed-name:unsupported (unsupported; findings observed, not scored)",
+        "figma:oauth-access-token:bearer-below-floor:unsupported (unsupported; no finding, not scored)",
+        "figma:oauth-access-token:bearer-newline-between:unsupported (unsupported; no finding, not scored)",
+        "figma:oauth-access-token:bearer-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "figma:scim-api-token",
       "group": "G1",
-      "carrierContract": "records/contracts/figma/scim-api-token@1.json (proposed/draft, sha256 e2275e129354, evidence 005a7331)",
+      "carrierContract": "records/contracts/figma/scim-api-token@1.json (proposed/draft, sha256 e2275e129354, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
+      "caseIds": [
+        "figma:scim-api-token:bearer-raw-http:positive",
+        "figma:scim-api-token:bearer-raw-http-proxy:positive",
+        "figma:scim-api-token:bearer-curl:positive",
+        "figma:scim-api-token:bearer-curl-single:positive",
+        "figma:scim-api-token:bearer-json-header-map:positive",
+        "figma:scim-api-token:bearer-unicode-prefix:positive",
+        "figma:scim-api-token:bearer-long:positive",
+        "figma:scim-api-token:bearer-public-fields:control",
+        "figma:scim-api-token:bearer-placeholder:control",
+        "figma:scim-api-token:bearer-placeholder-curl:control",
+        "figma:scim-api-token:bearer-reference-env:control",
+        "figma:scim-api-token:bearer-reference-template:control",
+        "figma:scim-api-token:bearer-masked:control",
+        "figma:scim-api-token:bearer-scheme-prose:control",
+        "figma:scim-api-token:bearer-below-floor:unsupported",
+        "figma:scim-api-token:bearer-newline-between:unsupported",
+        "figma:scim-api-token:bearer-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 7,
+        "unsupportedObserved": 3,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 68/68 entries; four surfaces identical on 17/17 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "figma:scim-api-token:bearer-below-floor:unsupported (unsupported; no finding, not scored)",
+        "figma:scim-api-token:bearer-newline-between:unsupported (unsupported; no finding, not scored)",
+        "figma:scim-api-token:bearer-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "hubspot:oauth-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/hubspot/oauth-access-token@1.json (proposed/draft, sha256 f1775858b5c8, evidence 005a7331)",
+      "carrierContract": "records/contracts/hubspot/oauth-access-token@1.json (proposed/draft, sha256 f1775858b5c8, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
+      "caseIds": [
+        "hubspot:oauth-access-token:bearer-raw-http:positive",
+        "hubspot:oauth-access-token:bearer-raw-http-proxy:positive",
+        "hubspot:oauth-access-token:bearer-curl:positive",
+        "hubspot:oauth-access-token:bearer-curl-single:positive",
+        "hubspot:oauth-access-token:bearer-json-header-map:positive",
+        "hubspot:oauth-access-token:bearer-unicode-prefix:positive",
+        "hubspot:oauth-access-token:bearer-long:positive",
+        "hubspot:oauth-access-token:bearer-public-fields:control",
+        "hubspot:oauth-access-token:bearer-placeholder:control",
+        "hubspot:oauth-access-token:bearer-placeholder-curl:control",
+        "hubspot:oauth-access-token:bearer-reference-env:control",
+        "hubspot:oauth-access-token:bearer-reference-template:control",
+        "hubspot:oauth-access-token:bearer-masked:control",
+        "hubspot:oauth-access-token:bearer-scheme-prose:control",
+        "hubspot:oauth-access-token:bearer-below-floor:unsupported",
+        "hubspot:oauth-access-token:bearer-newline-between:unsupported",
+        "hubspot:oauth-access-token:bearer-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 7,
+        "unsupportedObserved": 3,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 68/68 entries; four surfaces identical on 17/17 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "hubspot:oauth-access-token:bearer-below-floor:unsupported (unsupported; no finding, not scored)",
+        "hubspot:oauth-access-token:bearer-newline-between:unsupported (unsupported; no finding, not scored)",
+        "hubspot:oauth-access-token:bearer-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "hubspot:service-key",
       "group": "G1",
-      "carrierContract": "records/contracts/hubspot/service-key@1.json (proposed/draft, sha256 8e56cb30d78a, evidence 005a7331)",
+      "carrierContract": "records/contracts/hubspot/service-key@1.json (proposed/draft, sha256 8e56cb30d78a, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
+      "caseIds": [
+        "hubspot:service-key:bearer-raw-http:positive",
+        "hubspot:service-key:bearer-raw-http-proxy:positive",
+        "hubspot:service-key:bearer-curl:positive",
+        "hubspot:service-key:bearer-curl-single:positive",
+        "hubspot:service-key:bearer-json-header-map:positive",
+        "hubspot:service-key:bearer-unicode-prefix:positive",
+        "hubspot:service-key:bearer-long:positive",
+        "hubspot:service-key:bearer-public-fields:control",
+        "hubspot:service-key:bearer-placeholder:control",
+        "hubspot:service-key:bearer-placeholder-curl:control",
+        "hubspot:service-key:bearer-reference-env:control",
+        "hubspot:service-key:bearer-reference-template:control",
+        "hubspot:service-key:bearer-masked:control",
+        "hubspot:service-key:bearer-scheme-prose:control",
+        "hubspot:service-key:bearer-below-floor:unsupported",
+        "hubspot:service-key:bearer-newline-between:unsupported",
+        "hubspot:service-key:bearer-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 7,
+        "unsupportedObserved": 3,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 68/68 entries; four surfaces identical on 17/17 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "hubspot:service-key:bearer-below-floor:unsupported (unsupported; no finding, not scored)",
+        "hubspot:service-key:bearer-newline-between:unsupported (unsupported; no finding, not scored)",
+        "hubspot:service-key:bearer-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "meta:instagram-user-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/meta/instagram-user-access-token@1.json (proposed/draft, sha256 6e23726b489e, evidence 005a7331)",
+      "carrierContract": "records/contracts/meta/instagram-user-access-token@1.json (proposed/draft, sha256 6e23726b489e, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Meta developer docs: how each token kind is passed (`access_token` parameter vs Authorization header) per token kind, kept separate",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Meta developer docs: how each token kind is passed (`access_token` parameter vs Authorization header) per token kind, kept separate"
     },
     {
       "family": "meta:page-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/meta/page-access-token@1.json (proposed/draft, sha256 a1973708e2dc, evidence 005a7331)",
+      "carrierContract": "records/contracts/meta/page-access-token@1.json (proposed/draft, sha256 a1973708e2dc, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Meta docs: carrier for a Page token; do not assume it equals the user-token carrier",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Meta docs: carrier for a Page token; do not assume it equals the user-token carrier"
     },
     {
       "family": "meta:system-user-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/meta/system-user-access-token@1.json (proposed/draft, sha256 ef14a8e47cf9, evidence 005a7331)",
+      "carrierContract": "records/contracts/meta/system-user-access-token@1.json (proposed/draft, sha256 ef14a8e47cf9, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Meta docs: carrier for a system user token",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Meta docs: carrier for a system user token"
     },
     {
       "family": "meta:user-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/meta/user-access-token@1.json (proposed/draft, sha256 bafaa49d6eb0, evidence 005a7331)",
+      "carrierContract": "records/contracts/meta/user-access-token@1.json (proposed/draft, sha256 bafaa49d6eb0, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Meta docs: carrier for a user token and short-lived vs long-lived forms",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Meta docs: carrier for a user token and short-lived vs long-lived forms"
     },
     {
       "family": "mongodb-atlas:service-account-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/mongodb-atlas/service-account-access-token@1.json (proposed/draft, sha256 2c2f10461a9a, evidence 005a7331)",
+      "carrierContract": "records/contracts/mongodb-atlas/service-account-access-token@1.json (proposed/draft, sha256 2c2f10461a9a, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
+      "caseIds": [
+        "mongodb-atlas:service-account-access-token:bearer-raw-http:positive",
+        "mongodb-atlas:service-account-access-token:bearer-raw-http-proxy:positive",
+        "mongodb-atlas:service-account-access-token:bearer-curl:positive",
+        "mongodb-atlas:service-account-access-token:bearer-curl-single:positive",
+        "mongodb-atlas:service-account-access-token:bearer-json-header-map:positive",
+        "mongodb-atlas:service-account-access-token:bearer-unicode-prefix:positive",
+        "mongodb-atlas:service-account-access-token:bearer-long:positive",
+        "mongodb-atlas:service-account-access-token:bearer-public-fields:control",
+        "mongodb-atlas:service-account-access-token:bearer-placeholder:control",
+        "mongodb-atlas:service-account-access-token:bearer-placeholder-curl:control",
+        "mongodb-atlas:service-account-access-token:bearer-reference-env:control",
+        "mongodb-atlas:service-account-access-token:bearer-reference-template:control",
+        "mongodb-atlas:service-account-access-token:bearer-masked:control",
+        "mongodb-atlas:service-account-access-token:bearer-scheme-prose:control",
+        "mongodb-atlas:service-account-access-token:bearer-below-floor:unsupported",
+        "mongodb-atlas:service-account-access-token:bearer-newline-between:unsupported",
+        "mongodb-atlas:service-account-access-token:bearer-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 7,
+        "unsupportedObserved": 3,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 68/68 entries; four surfaces identical on 17/17 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "mongodb-atlas:service-account-access-token:bearer-below-floor:unsupported (unsupported; no finding, not scored)",
+        "mongodb-atlas:service-account-access-token:bearer-newline-between:unsupported (unsupported; no finding, not scored)",
+        "mongodb-atlas:service-account-access-token:bearer-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "salesforce:oauth-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/salesforce/oauth-access-token@1.json (proposed/draft, sha256 81f330b2f4c4, evidence 005a7331)",
+      "carrierContract": "records/contracts/salesforce/oauth-access-token@1.json (proposed/draft, sha256 81f330b2f4c4, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Salesforce OAuth docs: `access_token` response member and Authorization form; subtype between connected and external client app tokens",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Salesforce OAuth docs: `access_token` response member and Authorization form; subtype between connected and external client app tokens"
     },
     {
       "family": "spotify:access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/spotify/access-token@1.json (proposed/draft, sha256 85836d1f738e, evidence 005a7331)",
+      "carrierContract": "records/contracts/spotify/access-token@1.json (proposed/draft, sha256 85836d1f738e, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
+      "caseIds": [
+        "spotify:access-token:bearer-raw-http:positive",
+        "spotify:access-token:bearer-raw-http-proxy:positive",
+        "spotify:access-token:bearer-curl:positive",
+        "spotify:access-token:bearer-curl-single:positive",
+        "spotify:access-token:bearer-json-header-map:positive",
+        "spotify:access-token:bearer-unicode-prefix:positive",
+        "spotify:access-token:bearer-long:positive",
+        "spotify:access-token:bearer-public-fields:control",
+        "spotify:access-token:bearer-placeholder:control",
+        "spotify:access-token:bearer-placeholder-curl:control",
+        "spotify:access-token:bearer-reference-env:control",
+        "spotify:access-token:bearer-reference-template:control",
+        "spotify:access-token:bearer-masked:control",
+        "spotify:access-token:bearer-scheme-prose:control",
+        "spotify:access-token:bearer-below-floor:unsupported",
+        "spotify:access-token:bearer-newline-between:unsupported",
+        "spotify:access-token:bearer-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 7,
+        "unsupportedObserved": 3,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 68/68 entries; four surfaces identical on 17/17 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "spotify:access-token:bearer-below-floor:unsupported (unsupported; no finding, not scored)",
+        "spotify:access-token:bearer-newline-between:unsupported (unsupported; no finding, not scored)",
+        "spotify:access-token:bearer-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "x:oauth2-user-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/x/oauth2-user-access-token@1.json (proposed/draft, sha256 a9e23514d742, evidence 005a7331)",
+      "carrierContract": "records/contracts/x/oauth2-user-access-token@1.json (proposed/draft, sha256 a9e23514d742, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
+      "caseIds": [
+        "x:oauth2-user-access-token:bearer-raw-http:positive",
+        "x:oauth2-user-access-token:bearer-raw-http-proxy:positive",
+        "x:oauth2-user-access-token:bearer-curl:positive",
+        "x:oauth2-user-access-token:bearer-curl-single:positive",
+        "x:oauth2-user-access-token:bearer-json-header-map:positive",
+        "x:oauth2-user-access-token:bearer-unicode-prefix:positive",
+        "x:oauth2-user-access-token:bearer-long:positive",
+        "x:oauth2-user-access-token:bearer-public-fields:control",
+        "x:oauth2-user-access-token:bearer-placeholder:control",
+        "x:oauth2-user-access-token:bearer-placeholder-curl:control",
+        "x:oauth2-user-access-token:bearer-reference-env:control",
+        "x:oauth2-user-access-token:bearer-reference-template:control",
+        "x:oauth2-user-access-token:bearer-masked:control",
+        "x:oauth2-user-access-token:bearer-scheme-prose:control",
+        "x:oauth2-user-access-token:bearer-below-floor:unsupported",
+        "x:oauth2-user-access-token:bearer-newline-between:unsupported",
+        "x:oauth2-user-access-token:bearer-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 7,
+        "unsupportedObserved": 3,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 68/68 entries; four surfaces identical on 17/17 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "x:oauth2-user-access-token:bearer-below-floor:unsupported (unsupported; no finding, not scored)",
+        "x:oauth2-user-access-token:bearer-newline-between:unsupported (unsupported; no finding, not scored)",
+        "x:oauth2-user-access-token:bearer-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "zendesk:oauth-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/zendesk/oauth-access-token@1.json (proposed/draft, sha256 0cd0b9626533, evidence 005a7331)",
+      "carrierContract": "records/contracts/zendesk/oauth-access-token@1.json (proposed/draft, sha256 0cd0b9626533, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
+      "caseIds": [
+        "zendesk:oauth-access-token:bearer-raw-http:positive",
+        "zendesk:oauth-access-token:bearer-raw-http-proxy:positive",
+        "zendesk:oauth-access-token:bearer-curl:positive",
+        "zendesk:oauth-access-token:bearer-curl-single:positive",
+        "zendesk:oauth-access-token:bearer-json-header-map:positive",
+        "zendesk:oauth-access-token:bearer-unicode-prefix:positive",
+        "zendesk:oauth-access-token:bearer-long:positive",
+        "zendesk:oauth-access-token:bearer-public-fields:control",
+        "zendesk:oauth-access-token:bearer-placeholder:control",
+        "zendesk:oauth-access-token:bearer-placeholder-curl:control",
+        "zendesk:oauth-access-token:bearer-reference-env:control",
+        "zendesk:oauth-access-token:bearer-reference-template:control",
+        "zendesk:oauth-access-token:bearer-masked:control",
+        "zendesk:oauth-access-token:bearer-scheme-prose:control",
+        "zendesk:oauth-access-token:bearer-below-floor:unsupported",
+        "zendesk:oauth-access-token:bearer-newline-between:unsupported",
+        "zendesk:oauth-access-token:bearer-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 7,
+        "unsupportedObserved": 3,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 68/68 entries; four surfaces identical on 17/17 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "zendesk:oauth-access-token:bearer-below-floor:unsupported (unsupported; no finding, not scored)",
+        "zendesk:oauth-access-token:bearer-newline-between:unsupported (unsupported; no finding, not scored)",
+        "zendesk:oauth-access-token:bearer-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "zoom:server-to-server-access-token",
       "group": "G1",
-      "carrierContract": "records/contracts/zoom/server-to-server-access-token@1.json (proposed/draft, sha256 8563d52a8298, evidence 005a7331)",
+      "carrierContract": "records/contracts/zoom/server-to-server-access-token@1.json (proposed/draft, sha256 8563d52a8298, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#740",
+      "caseIds": [
+        "zoom:server-to-server-access-token:bearer-raw-http:positive",
+        "zoom:server-to-server-access-token:bearer-raw-http-proxy:positive",
+        "zoom:server-to-server-access-token:bearer-curl:positive",
+        "zoom:server-to-server-access-token:bearer-curl-single:positive",
+        "zoom:server-to-server-access-token:bearer-json-header-map:positive",
+        "zoom:server-to-server-access-token:bearer-unicode-prefix:positive",
+        "zoom:server-to-server-access-token:bearer-long:positive",
+        "zoom:server-to-server-access-token:bearer-public-fields:control",
+        "zoom:server-to-server-access-token:bearer-placeholder:control",
+        "zoom:server-to-server-access-token:bearer-placeholder-curl:control",
+        "zoom:server-to-server-access-token:bearer-reference-env:control",
+        "zoom:server-to-server-access-token:bearer-reference-template:control",
+        "zoom:server-to-server-access-token:bearer-masked:control",
+        "zoom:server-to-server-access-token:bearer-scheme-prose:control",
+        "zoom:server-to-server-access-token:bearer-below-floor:unsupported",
+        "zoom:server-to-server-access-token:bearer-newline-between:unsupported",
+        "zoom:server-to-server-access-token:bearer-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 7,
+        "unsupportedObserved": 3,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 68/68 entries; four surfaces identical on 17/17 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "zoom:server-to-server-access-token:bearer-below-floor:unsupported (unsupported; no finding, not scored)",
+        "zoom:server-to-server-access-token:bearer-newline-between:unsupported (unsupported; no finding, not scored)",
+        "zoom:server-to-server-access-token:bearer-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "adobe:oauth-user-refresh-token",
       "group": "G2",
-      "carrierContract": "records/contracts/adobe/oauth-user-refresh-token@1.json (proposed/draft, sha256 3d5bac3c4b8e, evidence 005a7331)",
+      "carrierContract": "records/contracts/adobe/oauth-user-refresh-token@1.json (proposed/draft, sha256 3d5bac3c4b8e, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#741",
+      "caseIds": [
+        "adobe:oauth-user-refresh-token:refresh_token-json:positive",
+        "adobe:oauth-user-refresh-token:refresh_token-json-last:positive",
+        "adobe:oauth-user-refresh-token:refresh_token-json-pretty:positive",
+        "adobe:oauth-user-refresh-token:refresh_token-http-response:positive",
+        "adobe:oauth-user-refresh-token:refresh_token-unicode-prefix:positive",
+        "adobe:oauth-user-refresh-token:refresh_token-curl-response:positive",
+        "adobe:oauth-user-refresh-token:refresh_token-lowentropy:positive",
+        "adobe:oauth-user-refresh-token:refresh_token-below-floor:unsupported",
+        "adobe:oauth-user-refresh-token:refresh_token-public-fields:control",
+        "adobe:oauth-user-refresh-token:refresh_token-placeholder:control",
+        "adobe:oauth-user-refresh-token:refresh_token-reference-env:control",
+        "adobe:oauth-user-refresh-token:refresh_token-reference-template:control",
+        "adobe:oauth-user-refresh-token:refresh_token-masked:control",
+        "adobe:oauth-user-refresh-token:refresh_token-name-lookalike:control",
+        "adobe:oauth-user-refresh-token:refresh_token-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 6,
+        "unsupportedObserved": 2,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 60/60 entries; four surfaces identical on 15/15 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "adobe:oauth-user-refresh-token:refresh_token-below-floor:unsupported (unsupported; no finding, not scored)",
+        "adobe:oauth-user-refresh-token:refresh_token-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "airtable:oauth-refresh-token",
       "group": "G2",
-      "carrierContract": "records/contracts/airtable/oauth-refresh-token@1.json (proposed/draft, sha256 ef9605bbcda6, evidence 005a7331)",
+      "carrierContract": "records/contracts/airtable/oauth-refresh-token@1.json (proposed/draft, sha256 ef9605bbcda6, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#741",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Airtable OAuth reference: token response and refresh request member names, delimiters and adjacent client_id/scope",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Airtable OAuth reference: token response and refresh request member names, delimiters and adjacent client_id/scope"
     },
     {
       "family": "asana:oauth-refresh-token",
       "group": "G2",
-      "carrierContract": "records/contracts/asana/oauth-refresh-token@1.json (proposed/draft, sha256 c325e301337c, evidence 005a7331)",
+      "carrierContract": "records/contracts/asana/oauth-refresh-token@1.json (proposed/draft, sha256 c325e301337c, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#741",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Asana OAuth docs: `refresh_token` member and request form fields",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Asana OAuth docs: `refresh_token` member and request form fields"
     },
     {
       "family": "box:oauth-refresh-token",
       "group": "G2",
-      "carrierContract": "records/contracts/box/oauth-refresh-token@1.json (proposed/draft, sha256 5ef575c9576f, evidence 005a7331)",
+      "carrierContract": "records/contracts/box/oauth-refresh-token@1.json (proposed/draft, sha256 5ef575c9576f, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#741",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Box developer docs: `refresh_token` member and refresh request form",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Box developer docs: `refresh_token` member and refresh request form"
     },
     {
       "family": "canva:refresh-token",
       "group": "G2",
-      "carrierContract": "records/contracts/canva/refresh-token@1.json (proposed/draft, sha256 72c0232eeba5, evidence 005a7331)",
+      "carrierContract": "records/contracts/canva/refresh-token@1.json (proposed/draft, sha256 72c0232eeba5, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#741",
+      "caseIds": [
+        "canva:refresh-token:refresh_token-json:positive",
+        "canva:refresh-token:refresh_token-json-last:positive",
+        "canva:refresh-token:refresh_token-json-pretty:positive",
+        "canva:refresh-token:refresh_token-http-response:positive",
+        "canva:refresh-token:refresh_token-unicode-prefix:positive",
+        "canva:refresh-token:refresh_token-curl-response:positive",
+        "canva:refresh-token:refresh_token-lowentropy:positive",
+        "canva:refresh-token:refresh_token-below-floor:unsupported",
+        "canva:refresh-token:refresh_token-public-fields:control",
+        "canva:refresh-token:refresh_token-placeholder:control",
+        "canva:refresh-token:refresh_token-reference-env:control",
+        "canva:refresh-token:refresh_token-reference-template:control",
+        "canva:refresh-token:refresh_token-masked:control",
+        "canva:refresh-token:refresh_token-name-lookalike:control",
+        "canva:refresh-token:refresh_token-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 6,
+        "unsupportedObserved": 2,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 60/60 entries; four surfaces identical on 15/15 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "canva:refresh-token:refresh_token-below-floor:unsupported (unsupported; no finding, not scored)",
+        "canva:refresh-token:refresh_token-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "dropbox:refresh-token",
       "group": "G2",
-      "carrierContract": "records/contracts/dropbox/refresh-token@1.json (proposed/draft, sha256 a85e14974f72, evidence 005a7331)",
+      "carrierContract": "records/contracts/dropbox/refresh-token@1.json (proposed/draft, sha256 a85e14974f72, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#741",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Dropbox OAuth guide: response member name and the form body of the refresh request",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Dropbox OAuth guide: response member name and the form body of the refresh request"
     },
     {
       "family": "elastic:refresh-token",
       "group": "G2",
-      "carrierContract": "records/contracts/elastic/refresh-token@1.json (proposed/draft, sha256 f7fe7256a274, evidence 005a7331)",
+      "carrierContract": "records/contracts/elastic/refresh-token@1.json (proposed/draft, sha256 f7fe7256a274, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#741",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Elasticsearch get-token API reference: `refresh_token` response member and refresh request body",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Elasticsearch get-token API reference: `refresh_token` response member and refresh request body"
     },
     {
       "family": "figma:oauth-refresh-token",
       "group": "G2",
-      "carrierContract": "records/contracts/figma/oauth-refresh-token@1.json (proposed/draft, sha256 6195ef20af3a, evidence 005a7331)",
+      "carrierContract": "records/contracts/figma/oauth-refresh-token@1.json (proposed/draft, sha256 6195ef20af3a, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#741",
+      "caseIds": [
+        "figma:oauth-refresh-token:refresh_token-json:positive",
+        "figma:oauth-refresh-token:refresh_token-json-last:positive",
+        "figma:oauth-refresh-token:refresh_token-json-pretty:positive",
+        "figma:oauth-refresh-token:refresh_token-http-response:positive",
+        "figma:oauth-refresh-token:refresh_token-unicode-prefix:positive",
+        "figma:oauth-refresh-token:refresh_token-curl-response:positive",
+        "figma:oauth-refresh-token:refresh_token-lowentropy:positive",
+        "figma:oauth-refresh-token:refresh_token-below-floor:unsupported",
+        "figma:oauth-refresh-token:refresh_token-public-fields:control",
+        "figma:oauth-refresh-token:refresh_token-placeholder:control",
+        "figma:oauth-refresh-token:refresh_token-reference-env:control",
+        "figma:oauth-refresh-token:refresh_token-reference-template:control",
+        "figma:oauth-refresh-token:refresh_token-masked:control",
+        "figma:oauth-refresh-token:refresh_token-name-lookalike:control",
+        "figma:oauth-refresh-token:refresh_token-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 6,
+        "unsupportedObserved": 2,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 60/60 entries; four surfaces identical on 15/15 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "figma:oauth-refresh-token:refresh_token-below-floor:unsupported (unsupported; no finding, not scored)",
+        "figma:oauth-refresh-token:refresh_token-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "hubspot:oauth-refresh-token",
       "group": "G2",
-      "carrierContract": "records/contracts/hubspot/oauth-refresh-token@1.json (proposed/draft, sha256 7be9a36c42c2, evidence 005a7331)",
+      "carrierContract": "records/contracts/hubspot/oauth-refresh-token@1.json (proposed/draft, sha256 7be9a36c42c2, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#741",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "HubSpot OAuth docs: `refresh_token` member and the form body of the refresh request",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: HubSpot OAuth docs: `refresh_token` member and the form body of the refresh request"
     },
     {
       "family": "spotify:refresh-token",
       "group": "G2",
-      "carrierContract": "records/contracts/spotify/refresh-token@1.json (proposed/draft, sha256 9201e08a692e, evidence 005a7331)",
+      "carrierContract": "records/contracts/spotify/refresh-token@1.json (proposed/draft, sha256 9201e08a692e, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#741",
+      "caseIds": [
+        "spotify:refresh-token:refresh_token-json:positive",
+        "spotify:refresh-token:refresh_token-json-last:positive",
+        "spotify:refresh-token:refresh_token-json-pretty:positive",
+        "spotify:refresh-token:refresh_token-http-response:positive",
+        "spotify:refresh-token:refresh_token-unicode-prefix:positive",
+        "spotify:refresh-token:refresh_token-curl-response:positive",
+        "spotify:refresh-token:refresh_token-lowentropy:positive",
+        "spotify:refresh-token:refresh_token-below-floor:unsupported",
+        "spotify:refresh-token:refresh_token-public-fields:control",
+        "spotify:refresh-token:refresh_token-placeholder:control",
+        "spotify:refresh-token:refresh_token-reference-env:control",
+        "spotify:refresh-token:refresh_token-reference-template:control",
+        "spotify:refresh-token:refresh_token-masked:control",
+        "spotify:refresh-token:refresh_token-name-lookalike:control",
+        "spotify:refresh-token:refresh_token-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 6,
+        "unsupportedObserved": 2,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 60/60 entries; four surfaces identical on 15/15 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "spotify:refresh-token:refresh_token-below-floor:unsupported (unsupported; no finding, not scored)",
+        "spotify:refresh-token:refresh_token-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "x:oauth2-refresh-token",
       "group": "G2",
-      "carrierContract": "records/contracts/x/oauth2-refresh-token@1.json (proposed/draft, sha256 a7a3af0d6c0d, evidence 005a7331)",
+      "carrierContract": "records/contracts/x/oauth2-refresh-token@1.json (proposed/draft, sha256 a7a3af0d6c0d, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#741",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "X OAuth 2.0 docs: refresh_token member and refresh form. The 6 month, single-use sentence is attributed to the OAuth 1.0a exchange in the claim; its scope is itself unresolved",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: X OAuth 2.0 docs: refresh_token member and refresh form. The 6 month, single-use sentence is attributed to the OAuth 1.0a exchange in the claim; its scope is itself unresolved"
     },
     {
       "family": "zendesk:oauth-refresh-token",
       "group": "G2",
-      "carrierContract": "records/contracts/zendesk/oauth-refresh-token@1.json (proposed/draft, sha256 e61a9e5ffcc7, evidence 005a7331)",
+      "carrierContract": "records/contracts/zendesk/oauth-refresh-token@1.json (proposed/draft, sha256 e61a9e5ffcc7, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#741",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Zendesk OAuth docs: `refresh_token` member and refresh form fields",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Zendesk OAuth docs: `refresh_token` member and refresh form fields"
     },
     {
       "family": "zoom:oauth-refresh-token",
       "group": "G2",
-      "carrierContract": "records/contracts/zoom/oauth-refresh-token@1.json (proposed/draft, sha256 3bf1818b8773, evidence 005a7331)",
+      "carrierContract": "records/contracts/zoom/oauth-refresh-token@1.json (proposed/draft, sha256 3bf1818b8773, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#741",
+      "caseIds": [
+        "zoom:oauth-refresh-token:refresh_token-json:positive",
+        "zoom:oauth-refresh-token:refresh_token-json-last:positive",
+        "zoom:oauth-refresh-token:refresh_token-json-pretty:positive",
+        "zoom:oauth-refresh-token:refresh_token-http-response:positive",
+        "zoom:oauth-refresh-token:refresh_token-unicode-prefix:positive",
+        "zoom:oauth-refresh-token:refresh_token-curl-response:positive",
+        "zoom:oauth-refresh-token:refresh_token-lowentropy:positive",
+        "zoom:oauth-refresh-token:refresh_token-below-floor:unsupported",
+        "zoom:oauth-refresh-token:refresh_token-public-fields:control",
+        "zoom:oauth-refresh-token:refresh_token-placeholder:control",
+        "zoom:oauth-refresh-token:refresh_token-reference-env:control",
+        "zoom:oauth-refresh-token:refresh_token-reference-template:control",
+        "zoom:oauth-refresh-token:refresh_token-masked:control",
+        "zoom:oauth-refresh-token:refresh_token-name-lookalike:control",
+        "zoom:oauth-refresh-token:refresh_token-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 6,
+        "unsupportedObserved": 2,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 60/60 entries; four surfaces identical on 15/15 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "zoom:oauth-refresh-token:refresh_token-below-floor:unsupported (unsupported; no finding, not scored)",
+        "zoom:oauth-refresh-token:refresh_token-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "airtable:oauth-client-secret",
       "group": "G3",
-      "carrierContract": "records/contracts/airtable/oauth-client-secret@1.json (proposed/draft, sha256 bd8f7e40b26a, evidence 005a7331)",
+      "carrierContract": "records/contracts/airtable/oauth-client-secret@1.json (proposed/draft, sha256 bd8f7e40b26a, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#742",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Airtable OAuth reference: token request authentication form",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Airtable OAuth reference: token request authentication form"
     },
     {
       "family": "asana:oauth-client-secret",
       "group": "G3",
-      "carrierContract": "records/contracts/asana/oauth-client-secret@1.json (proposed/draft, sha256 d4501587d50d, evidence 005a7331)",
+      "carrierContract": "records/contracts/asana/oauth-client-secret@1.json (proposed/draft, sha256 d4501587d50d, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#742",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Asana docs: token exchange form field name",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Asana docs: token exchange form field name"
     },
     {
       "family": "box:oauth-client-secret",
       "group": "G3",
-      "carrierContract": "records/contracts/box/oauth-client-secret@1.json (proposed/draft, sha256 a0b5fc774e8f, evidence 005a7331)",
+      "carrierContract": "records/contracts/box/oauth-client-secret@1.json (proposed/draft, sha256 a0b5fc774e8f, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#742",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Box docs: request body field and any Basic form",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Box docs: request body field and any Basic form"
     },
     {
       "family": "dropbox:app-secret",
       "group": "G3",
-      "carrierContract": "records/contracts/dropbox/app-secret@1.json (proposed/draft, sha256 8578d71bed8e, evidence 005a7331)",
+      "carrierContract": "records/contracts/dropbox/app-secret@1.json (proposed/draft, sha256 8578d71bed8e, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#742",
+      "caseIds": [
+        "dropbox:app-secret:client_secret-form:positive",
+        "dropbox:app-secret:client_secret-form-last:positive",
+        "dropbox:app-secret:client_secret-curl-data:positive",
+        "dropbox:app-secret:client_secret-json:positive",
+        "dropbox:app-secret:client_secret-assignment:positive",
+        "dropbox:app-secret:client_secret-unicode-prefix:positive",
+        "dropbox:app-secret:client_secret-lowentropy:positive",
+        "dropbox:app-secret:client_secret-below-floor:unsupported",
+        "dropbox:app-secret:client_secret-webhook-signature:control",
+        "dropbox:app-secret:client_secret-public-fields:control",
+        "dropbox:app-secret:client_secret-placeholder:control",
+        "dropbox:app-secret:client_secret-placeholder-upper:control",
+        "dropbox:app-secret:client_secret-reference-env:control",
+        "dropbox:app-secret:client_secret-reference-template:control",
+        "dropbox:app-secret:client_secret-masked:control",
+        "dropbox:app-secret:client_secret-name-lookalike:control",
+        "dropbox:app-secret:client_secret-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 8,
+        "unsupportedObserved": 2,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 68/68 entries; four surfaces identical on 17/17 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "dropbox:app-secret:client_secret-below-floor:unsupported (unsupported; no finding, not scored)",
+        "dropbox:app-secret:client_secret-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "figma:oauth-client-secret",
       "group": "G3",
-      "carrierContract": "records/contracts/figma/oauth-client-secret@1.json (proposed/draft, sha256 18648d33f173, evidence 005a7331)",
+      "carrierContract": "records/contracts/figma/oauth-client-secret@1.json (proposed/draft, sha256 18648d33f173, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#742",
+      "caseIds": [
+        "figma:oauth-client-secret:basic-raw-http:positive",
+        "figma:oauth-client-secret:basic-curl:positive",
+        "figma:oauth-client-secret:basic-json-header-map:positive",
+        "figma:oauth-client-secret:basic-unicode-prefix:positive",
+        "figma:oauth-client-secret:basic-curl-user-flag:unsupported",
+        "figma:oauth-client-secret:basic-client-id:control",
+        "figma:oauth-client-secret:basic-client-id-json:control",
+        "figma:oauth-client-secret:basic-placeholder:control",
+        "figma:oauth-client-secret:basic-placeholder-curl:control",
+        "figma:oauth-client-secret:basic-reference-env:control",
+        "figma:oauth-client-secret:basic-masked:control",
+        "figma:oauth-client-secret:basic-scheme-prose:control",
+        "figma:oauth-client-secret:basic-below-floor:unsupported",
+        "figma:oauth-client-secret:basic-newline-between:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 4,
+        "control": 7,
+        "unsupportedObserved": 3,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "4/4",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "4/4",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 56/56 entries; four surfaces identical on 14/14 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "figma:oauth-client-secret:basic-curl-user-flag:unsupported (unsupported; no finding, not scored)",
+        "figma:oauth-client-secret:basic-below-floor:unsupported (unsupported; no finding, not scored)",
+        "figma:oauth-client-secret:basic-newline-between:unsupported (unsupported; no finding, not scored)"
+      ]
     },
     {
       "family": "hubspot:app-client-secret",
       "group": "G3",
-      "carrierContract": "records/contracts/hubspot/app-client-secret@1.json (proposed/draft, sha256 5cc8d4a4eeb3, evidence 005a7331)",
+      "carrierContract": "records/contracts/hubspot/app-client-secret@1.json (proposed/draft, sha256 5cc8d4a4eeb3, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#742",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "HubSpot OAuth docs: `client_secret` form field",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: HubSpot OAuth docs: `client_secret` form field"
     },
     {
       "family": "salesforce:external-client-app-consumer-secret",
       "group": "G3",
-      "carrierContract": "records/contracts/salesforce/external-client-app-consumer-secret@1.json (proposed/draft, sha256 1022600d2fa1, evidence 005a7331)",
+      "carrierContract": "records/contracts/salesforce/external-client-app-consumer-secret@1.json (proposed/draft, sha256 1022600d2fa1, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#742",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Salesforce docs: `client_secret` parameter and web server flow",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Salesforce docs: `client_secret` parameter and web server flow"
     },
     {
       "family": "spotify:client-secret",
       "group": "G3",
-      "carrierContract": "records/contracts/spotify/client-secret@1.json (proposed/draft, sha256 ea16107141d3, evidence 005a7331)",
+      "carrierContract": "records/contracts/spotify/client-secret@1.json (proposed/draft, sha256 ea16107141d3, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#742",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Spotify authorization guide: token request header and body",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Spotify authorization guide: token request header and body"
     },
     {
       "family": "x:oauth2-client-secret",
       "group": "G3",
-      "carrierContract": "records/contracts/x/oauth2-client-secret@1.json (proposed/draft, sha256 0e3b7108abce, evidence 005a7331)",
+      "carrierContract": "records/contracts/x/oauth2-client-secret@1.json (proposed/draft, sha256 0e3b7108abce, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#742",
+      "caseIds": [
+        "x:oauth2-client-secret:basic-raw-http:positive",
+        "x:oauth2-client-secret:basic-curl:positive",
+        "x:oauth2-client-secret:basic-json-header-map:positive",
+        "x:oauth2-client-secret:basic-unicode-prefix:positive",
+        "x:oauth2-client-secret:basic-curl-user-flag:unsupported",
+        "x:oauth2-client-secret:basic-client-id:control",
+        "x:oauth2-client-secret:basic-client-id-json:control",
+        "x:oauth2-client-secret:basic-placeholder:control",
+        "x:oauth2-client-secret:basic-placeholder-curl:control",
+        "x:oauth2-client-secret:basic-reference-env:control",
+        "x:oauth2-client-secret:basic-masked:control",
+        "x:oauth2-client-secret:basic-scheme-prose:control",
+        "x:oauth2-client-secret:basic-below-floor:unsupported",
+        "x:oauth2-client-secret:basic-newline-between:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 4,
+        "control": 7,
+        "unsupportedObserved": 3,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "4/4",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "4/4",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 56/56 entries; four surfaces identical on 14/14 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "x:oauth2-client-secret:basic-curl-user-flag:unsupported (unsupported; no finding, not scored)",
+        "x:oauth2-client-secret:basic-below-floor:unsupported (unsupported; no finding, not scored)",
+        "x:oauth2-client-secret:basic-newline-between:unsupported (unsupported; no finding, not scored)"
+      ]
     },
     {
       "family": "zendesk:oauth-client-secret",
       "group": "G3",
-      "carrierContract": "records/contracts/zendesk/oauth-client-secret@1.json (proposed/draft, sha256 ea73bf3b3cad, evidence 005a7331)",
+      "carrierContract": "records/contracts/zendesk/oauth-client-secret@1.json (proposed/draft, sha256 ea73bf3b3cad, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#742",
+      "caseIds": [
+        "zendesk:oauth-client-secret:client_secret-form:positive",
+        "zendesk:oauth-client-secret:client_secret-form-last:positive",
+        "zendesk:oauth-client-secret:client_secret-curl-data:positive",
+        "zendesk:oauth-client-secret:client_secret-json:positive",
+        "zendesk:oauth-client-secret:client_secret-assignment:positive",
+        "zendesk:oauth-client-secret:client_secret-unicode-prefix:positive",
+        "zendesk:oauth-client-secret:client_secret-lowentropy:positive",
+        "zendesk:oauth-client-secret:client_secret-below-floor:unsupported",
+        "zendesk:oauth-client-secret:client_secret-public-fields:control",
+        "zendesk:oauth-client-secret:client_secret-placeholder:control",
+        "zendesk:oauth-client-secret:client_secret-placeholder-upper:control",
+        "zendesk:oauth-client-secret:client_secret-reference-env:control",
+        "zendesk:oauth-client-secret:client_secret-reference-template:control",
+        "zendesk:oauth-client-secret:client_secret-masked:control",
+        "zendesk:oauth-client-secret:client_secret-name-lookalike:control",
+        "zendesk:oauth-client-secret:client_secret-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 7,
+        "unsupportedObserved": 2,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 64/64 entries; four surfaces identical on 16/16 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": [
+        "zendesk:oauth-client-secret:client_secret-below-floor:unsupported (unsupported; no finding, not scored)",
+        "zendesk:oauth-client-secret:client_secret-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "zoom:oauth-app-client-secret",
       "group": "G3",
-      "carrierContract": "records/contracts/zoom/oauth-app-client-secret@1.json (proposed/draft, sha256 e514a82ea303, evidence 005a7331)",
+      "carrierContract": "records/contracts/zoom/oauth-app-client-secret@1.json (proposed/draft, sha256 e514a82ea303, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#742",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Zoom OAuth docs: Basic header and form form",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Zoom OAuth docs: Basic header and form form"
     },
     {
       "family": "zoom:server-to-server-client-secret",
       "group": "G3",
-      "carrierContract": "records/contracts/zoom/server-to-server-client-secret@1.json (proposed/draft, sha256 4c6937182e54, evidence 005a7331)",
+      "carrierContract": "records/contracts/zoom/server-to-server-client-secret@1.json (proposed/draft, sha256 4c6937182e54, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1223/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1223",
+      "measurementIssue": "redact-secret-benchmarks#742",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Zoom S2S docs: token request authentication form",
-      "coreIssue": "redact-secret#1223"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Zoom S2S docs: token request authentication form"
     },
     {
       "family": "elastic:cloud-api-key",
       "group": "G4",
-      "carrierContract": "records/contracts/elastic/cloud-api-key@1.json (proposed/draft, sha256 18f415350aa1, evidence 005a7331)",
+      "carrierContract": "records/contracts/elastic/cloud-api-key@1.json (proposed/draft, sha256 18f415350aa1, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1224/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1224",
+      "measurementIssue": "redact-secret-benchmarks#743",
+      "caseIds": [
+        "elastic:cloud-api-key:apikey-raw-http:positive",
+        "elastic:cloud-api-key:apikey-curl:positive",
+        "elastic:cloud-api-key:apikey-curl-single:positive",
+        "elastic:cloud-api-key:apikey-json-header-map:positive",
+        "elastic:cloud-api-key:apikey-unicode-prefix:positive",
+        "elastic:cloud-api-key:apikey-proxy:positive",
+        "elastic:cloud-api-key:apikey-public-fields:control",
+        "elastic:cloud-api-key:apikey-placeholder:control",
+        "elastic:cloud-api-key:apikey-reference-env:control",
+        "elastic:cloud-api-key:apikey-masked:control",
+        "elastic:cloud-api-key:apikey-scheme-prose:control",
+        "elastic:cloud-api-key:apikey-newline-between:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 6,
+        "control": 5,
+        "unsupportedObserved": 1,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "0/6",
+        "positivesPassOnEverySurfaceAndStream": false,
+        "controlsFlaggedNode": 0,
+        "failingCases": [
+          "elastic:cloud-api-key:apikey-raw-http:positive",
+          "elastic:cloud-api-key:apikey-curl:positive",
+          "elastic:cloud-api-key:apikey-curl-single:positive",
+          "elastic:cloud-api-key:apikey-json-header-map:positive",
+          "elastic:cloud-api-key:apikey-unicode-prefix:positive",
+          "elastic:cloud-api-key:apikey-proxy:positive"
+        ]
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "6/6",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
-      "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1224"
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 48/48 entries; four surfaces identical on 12/12 cases",
+      "coverage": "fixed in candidate by an existing core fix (no new gap)",
+      "boundary": null,
+      "contractEvidenceConflict": null,
+      "gapIssue": "redact-secret#1212 (Elastic ApiKey envelope, fixed by PR #1215); reused, no new issue",
+      "unresolvedOrUnsupportedVariants": [
+        "elastic:cloud-api-key:apikey-newline-between:unsupported (unsupported; no finding, not scored)"
+      ]
     },
     {
       "family": "elastic:ece-api-key",
       "group": "G4",
-      "carrierContract": "records/contracts/elastic/ece-api-key@1.json (proposed/draft, sha256 cd6eee3f4a9f, evidence 005a7331)",
+      "carrierContract": "records/contracts/elastic/ece-api-key@1.json (proposed/draft, sha256 cd6eee3f4a9f, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1224/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1224",
+      "measurementIssue": "redact-secret-benchmarks#743",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "Elastic Cloud Enterprise API reference: authentication header for the API key",
-      "coreIssue": "redact-secret#1224"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: Elastic Cloud Enterprise API reference: authentication header for the API key"
     },
     {
       "family": "jfrog:access-token",
       "group": "G4",
-      "carrierContract": "records/contracts/jfrog/access-token@1.json (proposed/draft, sha256 febe2a861061, evidence 005a7331)",
+      "carrierContract": "records/contracts/jfrog/access-token@1.json (proposed/draft, sha256 febe2a861061, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1224/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1224",
+      "measurementIssue": "redact-secret-benchmarks#743",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "JFrog access token docs: header and `access_token` form; representation of a reference token",
-      "coreIssue": "redact-secret#1224"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: JFrog access token docs: header and `access_token` form; representation of a reference token"
     },
     {
       "family": "x:app-only-bearer-token",
       "group": "G4",
-      "carrierContract": "records/contracts/x/app-only-bearer-token@1.json (proposed/draft, sha256 752810e7ec5d, evidence 005a7331)",
+      "carrierContract": "records/contracts/x/app-only-bearer-token@1.json (proposed/draft, sha256 752810e7ec5d, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1224/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1224",
+      "measurementIssue": "redact-secret-benchmarks#743",
+      "caseIds": [
+        "x:app-only-bearer-token:bearer-raw-http:positive",
+        "x:app-only-bearer-token:bearer-raw-http-proxy:positive",
+        "x:app-only-bearer-token:bearer-curl:positive",
+        "x:app-only-bearer-token:bearer-curl-single:positive",
+        "x:app-only-bearer-token:bearer-json-header-map:positive",
+        "x:app-only-bearer-token:bearer-unicode-prefix:positive",
+        "x:app-only-bearer-token:bearer-long:positive",
+        "x:app-only-bearer-token:bearer-public-fields:control",
+        "x:app-only-bearer-token:bearer-placeholder:control",
+        "x:app-only-bearer-token:bearer-placeholder-curl:control",
+        "x:app-only-bearer-token:bearer-reference-env:control",
+        "x:app-only-bearer-token:bearer-reference-template:control",
+        "x:app-only-bearer-token:bearer-masked:control",
+        "x:app-only-bearer-token:bearer-scheme-prose:control",
+        "x:app-only-bearer-token:bearer-below-floor:unsupported",
+        "x:app-only-bearer-token:bearer-newline-between:unsupported",
+        "x:app-only-bearer-token:bearer-prefixed-name:unsupported",
+        "x:app-only-bearer-token:bearer-percent-raw:unsupported",
+        "x:app-only-bearer-token:bearer-percent-json-escaped:unsupported",
+        "x:app-only-bearer-token:bearer-percent-curl:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 7,
+        "unsupportedObserved": 6,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 80/80 entries; four surfaces identical on 20/20 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": "unsupported-policy boundary (percent-containing and escaped forms)",
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1224"
+      "unresolvedOrUnsupportedVariants": [
+        "x:app-only-bearer-token:bearer-below-floor:unsupported (unsupported; no finding, not scored)",
+        "x:app-only-bearer-token:bearer-newline-between:unsupported (unsupported; no finding, not scored)",
+        "x:app-only-bearer-token:bearer-prefixed-name:unsupported (unsupported; findings observed, not scored)",
+        "x:app-only-bearer-token:bearer-percent-raw:unsupported (unsupported; findings observed, not scored)",
+        "x:app-only-bearer-token:bearer-percent-json-escaped:unsupported (unsupported; findings observed, not scored)",
+        "x:app-only-bearer-token:bearer-percent-curl:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "hubspot:personal-access-key",
       "group": "G5",
-      "carrierContract": "records/contracts/hubspot/personal-access-key@1.json (proposed/draft, sha256 c32123658964, evidence 005a7331)",
+      "carrierContract": "records/contracts/hubspot/personal-access-key@1.json (proposed/draft, sha256 c32123658964, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1225/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1225",
+      "measurementIssue": "redact-secret-benchmarks#744",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "HubSpot CLI docs and `hs` config reference: exact config field and file layout",
-      "coreIssue": "redact-secret#1225"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: HubSpot CLI docs and `hs` config reference: exact config field and file layout"
     },
     {
       "family": "jfrog:myjfrog-api-token",
       "group": "G5",
-      "carrierContract": "records/contracts/jfrog/myjfrog-api-token@1.json (proposed/draft, sha256 964062ba1e9f, evidence 005a7331)",
+      "carrierContract": "records/contracts/jfrog/myjfrog-api-token@1.json (proposed/draft, sha256 964062ba1e9f, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1225/README.md)",
       "evidenceStatus": "carrier-unresolved",
+      "coreIssue": "redact-secret#1225",
+      "measurementIssue": "redact-secret-benchmarks#744",
       "caseIds": [],
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
         "measured": false
       },
       "candidate": {
-        "identity": null,
         "measured": false
       },
       "surfaces": {
         "node": "not measured",
         "wasm": "not measured",
         "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "cli": "not measured",
+        "rust": "not measured"
       },
       "findings": null,
       "overlapOutcome": "not measured",
       "streamParity": "not measured",
       "coverage": "not-measured, carrier-unresolved",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "JFrog MyJFrog API docs: header form",
-      "coreIssue": "redact-secret#1225"
+      "unresolvedOrUnsupportedVariants": "carrier-unresolved; follow-up source: JFrog MyJFrog API docs: header form"
     },
     {
       "family": "x:oauth1-access-token-secret",
       "group": "G5",
-      "carrierContract": "records/contracts/x/oauth1-access-token-secret@1.json (proposed/draft, sha256 380dfecdf407, evidence 005a7331)",
+      "carrierContract": "records/contracts/x/oauth1-access-token-secret@1.json (proposed/draft, sha256 380dfecdf407, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1225/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1225",
+      "measurementIssue": "redact-secret-benchmarks#744",
+      "caseIds": [
+        "x:oauth1-access-token-secret:oauth_token_secret-form:positive",
+        "x:oauth1-access-token-secret:oauth_token_secret-form-last:positive",
+        "x:oauth1-access-token-secret:oauth_token_secret-json:positive",
+        "x:oauth1-access-token-secret:oauth_token_secret-assignment:positive",
+        "x:oauth1-access-token-secret:oauth_token_secret-http-response:positive",
+        "x:oauth1-access-token-secret:oauth_token_secret-unicode-prefix:positive",
+        "x:oauth1-access-token-secret:oauth_token_secret-lowentropy:positive",
+        "x:oauth1-access-token-secret:oauth_token_secret-below-floor:unsupported",
+        "x:oauth1-access-token-secret:oauth_token_secret-signature:control",
+        "x:oauth1-access-token-secret:oauth_token_secret-public-form:control",
+        "x:oauth1-access-token-secret:oauth_token-as-public-lookalike:conflict",
+        "x:oauth1-access-token-secret:oauth_token_secret-placeholder:control",
+        "x:oauth1-access-token-secret:oauth_token_secret-reference-env:control",
+        "x:oauth1-access-token-secret:oauth_token_secret-masked:control",
+        "x:oauth1-access-token-secret:oauth_token_secret-name-lookalike:control",
+        "x:oauth1-access-token-secret:oauth_token_secret-prefixed-name:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 6,
+        "unsupportedObserved": 2,
+        "conflict": 1
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 64/64 entries; four surfaces identical on 16/16 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": "oauth_token: the evidence handoff names it a public lookalike; the adopted contract (#1225) keeps the default that reads it as contextual_secret and asserts nothing for it. The secret-half expectation is not in conflict.",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1225"
+      "unresolvedOrUnsupportedVariants": [
+        "x:oauth1-access-token-secret:oauth_token_secret-below-floor:unsupported (unsupported; no finding, not scored)",
+        "x:oauth1-access-token-secret:oauth_token-as-public-lookalike:conflict (conflict; findings observed, not scored)",
+        "x:oauth1-access-token-secret:oauth_token_secret-prefixed-name:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "mongodb-atlas:database-user-password",
       "group": "G6",
-      "carrierContract": "records/contracts/mongodb-atlas/database-user-password@1.json (proposed/draft, sha256 8f67a633cfc5, evidence 005a7331)",
+      "carrierContract": "records/contracts/mongodb-atlas/database-user-password@1.json (proposed/draft, sha256 8f67a633cfc5, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1226/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1226",
+      "measurementIssue": "redact-secret-benchmarks#745",
+      "caseIds": [
+        "mongodb-atlas:database-user-password:password-json-body:positive",
+        "mongodb-atlas:database-user-password:password-curl-data:positive",
+        "mongodb-atlas:database-user-password:password-json-pretty:positive",
+        "mongodb-atlas:database-user-password:password-unicode-prefix:positive",
+        "mongodb-atlas:database-user-password:password-json-last-key:positive",
+        "mongodb-atlas:database-user-password:password-uri-userinfo:positive",
+        "mongodb-atlas:database-user-password:password-lowentropy:positive",
+        "mongodb-atlas:database-user-password:password-below-floor:unsupported",
+        "mongodb-atlas:database-user-password:password-uri-percent-escapes:conflict",
+        "mongodb-atlas:database-user-password:password-public-fields:control",
+        "mongodb-atlas:database-user-password:password-placeholder:control",
+        "mongodb-atlas:database-user-password:password-reference-env:control",
+        "mongodb-atlas:database-user-password:password-reference-template:control",
+        "mongodb-atlas:database-user-password:password-masked:control",
+        "mongodb-atlas:database-user-password:password-name-lookalike:control"
+      ],
+      "caseCounts": {
+        "positive": 7,
+        "control": 6,
+        "unsupportedObserved": 1,
+        "conflict": 1
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "7/7",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 60/60 entries; four surfaces identical on 15/15 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": "percent encoding in a connection-string password: the contract keeps escapes in the span; the evidence records it as unresolved. The password field and plain URI userinfo expectations are not in conflict.",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1226"
+      "unresolvedOrUnsupportedVariants": [
+        "mongodb-atlas:database-user-password:password-below-floor:unsupported (unsupported; no finding, not scored)",
+        "mongodb-atlas:database-user-password:password-uri-percent-escapes:conflict (conflict; findings observed, not scored)"
+      ]
     },
     {
       "family": "mongodb-atlas:programmatic-api-private-key",
       "group": "G6",
-      "carrierContract": "records/contracts/mongodb-atlas/programmatic-api-private-key@1.json (proposed/draft, sha256 d7ba7f305131, evidence 005a7331)",
+      "carrierContract": "records/contracts/mongodb-atlas/programmatic-api-private-key@1.json (proposed/draft, sha256 d7ba7f305131, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1226/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1226",
+      "measurementIssue": "redact-secret-benchmarks#745",
+      "caseIds": [
+        "mongodb-atlas:programmatic-api-private-key:digest-authorization:control",
+        "mongodb-atlas:programmatic-api-private-key:digest-curl:control",
+        "mongodb-atlas:programmatic-api-private-key:digest-public-key-only:control",
+        "mongodb-atlas:programmatic-api-private-key:digest-redacted-read:control",
+        "mongodb-atlas:programmatic-api-private-key:digest-curl-user-literal:unsupported",
+        "mongodb-atlas:programmatic-api-private-key:digest-privateKey-member:unsupported",
+        "mongodb-atlas:programmatic-api-private-key:digest-private-key-assignment:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 0,
+        "control": 4,
+        "unsupportedObserved": 3,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "0/0",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "0/0",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 28/28 entries; four surfaces identical on 7/7 cases",
+      "coverage": "contract-evidence conflict",
+      "boundary": null,
+      "contractEvidenceConflict": "readiness: the evidence handoff marks the row ready (a client-configured Digest input, no wire carrier); the adopted contract (#1226) treats no layout as named and starts it at P2. Only the controls both sides agree on were observed.",
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1226"
+      "unresolvedOrUnsupportedVariants": [
+        "mongodb-atlas:programmatic-api-private-key:digest-curl-user-literal:unsupported (unsupported; no finding, not scored)",
+        "mongodb-atlas:programmatic-api-private-key:digest-privateKey-member:unsupported (unsupported; findings observed, not scored)",
+        "mongodb-atlas:programmatic-api-private-key:digest-private-key-assignment:unsupported (unsupported; findings observed, not scored)"
+      ]
     },
     {
       "family": "mongodb-atlas:service-account-secret",
       "group": "G6",
-      "carrierContract": "records/contracts/mongodb-atlas/service-account-secret@1.json (proposed/draft, sha256 5248f65035fd, evidence 005a7331)",
+      "carrierContract": "records/contracts/mongodb-atlas/service-account-secret@1.json (proposed/draft, sha256 5248f65035fd, evidence 005a7331; product contract redact-secret PR #1231 a148dadf, docs/audits/evidence/1226/README.md)",
       "evidenceStatus": "ready",
-      "caseIds": [],
+      "coreIssue": "redact-secret#1226",
+      "measurementIssue": "redact-secret-benchmarks#745",
+      "caseIds": [
+        "mongodb-atlas:service-account-secret:basic-raw-http:positive",
+        "mongodb-atlas:service-account-secret:basic-curl:positive",
+        "mongodb-atlas:service-account-secret:basic-json-header-map:positive",
+        "mongodb-atlas:service-account-secret:basic-unicode-prefix:positive",
+        "mongodb-atlas:service-account-secret:basic-curl-user-flag:unsupported",
+        "mongodb-atlas:service-account-secret:basic-client-id:control",
+        "mongodb-atlas:service-account-secret:basic-client-id-json:control",
+        "mongodb-atlas:service-account-secret:basic-placeholder:control",
+        "mongodb-atlas:service-account-secret:basic-placeholder-curl:control",
+        "mongodb-atlas:service-account-secret:basic-reference-env:control",
+        "mongodb-atlas:service-account-secret:basic-masked:control",
+        "mongodb-atlas:service-account-secret:basic-scheme-prose:control",
+        "mongodb-atlas:service-account-secret:basic-below-floor:unsupported",
+        "mongodb-atlas:service-account-secret:basic-newline-between:unsupported"
+      ],
+      "caseCounts": {
+        "positive": 4,
+        "control": 7,
+        "unsupportedObserved": 3,
+        "conflict": 0
+      },
       "baseline": {
-        "identity": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
-        "measured": false
+        "measured": true,
+        "identity": {
+          "node": "0.1.0-beta.13",
+          "wasm": "0.1.0-beta.13",
+          "python": "0.1.0b13",
+          "cli": "0.1.0-beta.13"
+        },
+        "positivesPassNodeWhole": "4/4",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "failingCases": []
       },
       "candidate": {
-        "identity": null,
-        "measured": false
+        "measured": true,
+        "identity": "a148dadf4a43b5441ed88386d055428b2e278f25",
+        "positivesPassNodeWhole": "4/4",
+        "positivesPassOnEverySurfaceAndStream": true,
+        "controlsFlaggedNode": 0,
+        "controlsCleanOnEverySurface": true
       },
       "surfaces": {
-        "node": "not measured",
-        "wasm": "not measured",
-        "python": "not measured",
-        "rust": "not measured",
-        "cli": "not measured"
+        "node": "measured",
+        "wasm": "measured",
+        "python": "measured",
+        "cli": "measured",
+        "rust": "no separate Rust library harness exists; the CLI binary is the Rust surface"
       },
-      "findings": null,
-      "overlapOutcome": "not measured",
-      "streamParity": "not measured",
-      "coverage": "not-measured",
+      "findings": "per-case findings (start, end, type, action; no matched text) are in observations-published.json and observations-candidate.json; contract expectation per case is in benchmarks/batch2/corpus.mjs",
+      "overlapOutcome": "0 positives with more than one finding on the expected span (candidate, Node)",
+      "streamParity": "candidate whole==stream 56/56 entries; four surfaces identical on 14/14 cases",
+      "coverage": "already-covered / no-code",
+      "boundary": null,
+      "contractEvidenceConflict": null,
       "gapIssue": null,
-      "unresolvedOrUnsupportedVariants": "awaiting the adopted product contract (redact-secret#1231) before expectations are frozen",
-      "coreIssue": "redact-secret#1226"
+      "unresolvedOrUnsupportedVariants": [
+        "mongodb-atlas:service-account-secret:basic-curl-user-flag:unsupported (unsupported; no finding, not scored)",
+        "mongodb-atlas:service-account-secret:basic-below-floor:unsupported (unsupported; no finding, not scored)",
+        "mongodb-atlas:service-account-secret:basic-newline-between:unsupported (unsupported; no finding, not scored)"
+      ]
     }
   ]
 }

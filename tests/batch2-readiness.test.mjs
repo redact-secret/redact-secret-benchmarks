@@ -23,10 +23,19 @@ test('readiness inventory and ledger cover every assigned family exactly once', 
   assert.equal(c.ready + c['carrier-unresolved'], 58);
 });
 
-test('status is evidence\'s; no row is scored before measurement', () => {
+test('status is evidence\'s', () => {
   for (const r of readiness.families) assert.ok(['ready', 'carrier-unresolved'].includes(r.status));
+});
+
+test('unresolved rows are never measured; measured rows are exactly the ready ones', () => {
   for (const l of ledger.families) {
-    if (!l.baseline.measured) assert.match(l.coverage, /^not-measured/);
-    assert.equal(l.findings, null);
+    const r = readiness.families.find((f) => f.family === l.family);
+    if (r.status === 'carrier-unresolved') {
+      assert.equal(l.coverage, 'not-measured, carrier-unresolved');
+      assert.equal(l.findings, null);
+      assert.deepEqual(l.caseIds, []);
+    } else {
+      assert.ok(l.caseIds.length > 0);
+    }
   }
 });

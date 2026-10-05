@@ -3,7 +3,7 @@
 //
 // Reads the 58-family assignment (benchmarks/batch2/families.json), the observed external state
 // (benchmarks/batch2/sources.json) and a credential-evidence checkout at the pinned commit, and writes
-// evidence/739/readiness.{json,md} and evidence/739/ledger.json. It measures nothing and asserts no product
+// evidence/739/readiness.{json,md}. The ledger is written by scripts/report-batch2.mjs after measurement. It measures nothing and asserts no product
 // output: a row is `ready` only when evidence has a reviewed contract that establishes the carrier layout.
 //
 //   node scripts/batch2-readiness.mjs --evidence-dir <credential-evidence checkout> [--out-dir evidence/739]
@@ -129,34 +129,6 @@ const readiness = {
 };
 mkdirSync(outDir, { recursive: true });
 writeFileSync(join(outDir, 'readiness.json'), `${JSON.stringify(readiness, null, 2)}\n`);
-
-// The disposition ledger at this stage: nothing is measured. Measurement fills these fields later.
-const ledger = {
-  schemaVersion: 2,
-  kind: 'batch2-disposition-ledger',
-  epic: 739,
-  complete: false,
-  note: 'One entry per family. Nothing has been measured yet; no row is a false negative, true negative or passing coverage.',
-  counts: { families: rows.length, measured: 0, notMeasured: rows.length },
-  families: rows.map((r) => ({
-    family: r.family,
-    group: r.group,
-    carrierContract: `${r.contract.path} (${r.contract.period}/${r.contract.lifecycle}, sha256 ${r.contract.sha12AtEvidenceCommit}, evidence ${head.slice(0, 8)})`,
-    evidenceStatus: r.status,
-    caseIds: [],
-    baseline: { identity: sources.baseline.publishedPin.version, integrity: sources.baseline.publishedPin.integrity, measured: false },
-    candidate: { identity: null, measured: false },
-    surfaces: { node: 'not measured', wasm: 'not measured', python: 'not measured', rust: 'not measured', cli: 'not measured' },
-    findings: null,
-    overlapOutcome: 'not measured',
-    streamParity: 'not measured',
-    coverage: r.status === 'ready' ? 'not-measured' : 'not-measured, carrier-unresolved',
-    gapIssue: null,
-    unresolvedOrUnsupportedVariants: r.status === 'ready' ? 'awaiting the adopted product contract (redact-secret#1231) before expectations are frozen' : r.handoff.followUp,
-    coreIssue: `redact-secret#${r.coreIssue}`,
-  })),
-};
-writeFileSync(join(outDir, 'ledger.json'), `${JSON.stringify(ledger, null, 2)}\n`);
 
 const stale = rows.filter((r) => !r.contract.unchangedSinceHandoff).map((r) => r.family);
 const md = [];

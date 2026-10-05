@@ -1,5 +1,5 @@
 import type { Fixture, Range } from '../../../../types.ts';
-import type { Operator } from '../../../../engine/types.ts';
+import type { Operator } from '../../../model/types.ts';
 // Map every byte boundary through a text transformation. This also maps
 // authored envelopes and multiple spans, without searching for secret values.
 export function mapFixture(seed: Fixture, transform: (character: string, offset: number) => string, prefix = '', suffix = '') {

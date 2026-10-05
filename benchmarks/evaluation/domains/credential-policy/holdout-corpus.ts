@@ -1,7 +1,7 @@
 import type { Fixture } from '../../../types.ts';
 import type { HoldoutCorpus, ManifestEvaluationIdentity } from '../../../../holdout/types.ts';
 import { HoldoutError, serialize, type HoldoutStorageAdapter } from '../../../../holdout/storage.ts';
-import { validateCorpus } from '../../../lib/scoring.ts';
+import { validateCorpus } from '../../../scoring/scoring.ts';
 import { validateAssessment } from '../credential/assessment.ts';
 import { credentialPolicyIdentity } from './identity.ts';
 

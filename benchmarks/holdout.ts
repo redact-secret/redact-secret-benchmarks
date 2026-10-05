@@ -1,7 +1,7 @@
 import { writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { scanners } from '../scanners/index.mjs';
-import { runtimeProvenance, repositoryRoot } from './engine/provenance.ts';
+import { runtimeProvenance, repositoryRoot } from './evaluation/substrate/provenance.ts';
 import { runHoldout, contaminateHoldout } from '../holdout/lifecycle.ts';
 import { sealProtectedCorpus, HoldoutError } from '../holdout/storage.ts';
 import type { Candidate } from '../holdout/types.ts';

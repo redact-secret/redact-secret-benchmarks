@@ -13,8 +13,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { installCandidate, removeCandidate, piiFindingIdentity } from '../scanners/candidate.mjs';
 import { findingFamily, familyMappingVersion } from '../scanners/families.mjs';
 import { classifyFixture, validateAssessment, validateContracts } from './lib/assessment.ts';
-import { aggregateGroups } from './lib/lattice.ts';
-import { score, validateCorpus } from './lib/scoring.ts';
+import { aggregateGroups } from './scoring/lattice.ts';
+import { score, validateCorpus } from './scoring/scoring.ts';
 import { validateStructures } from './lib/validate-structures.ts';
 import {
   UNIT_DIAGNOSTICS_SCHEMA_VERSION, PLACEHOLDER_FORMAT, observeProduct, diagnoseRow, aggregateRows,

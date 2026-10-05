@@ -10,7 +10,7 @@
  * equivalence when the PII evidence commit differs from the release commit.
  */
 import { hash } from './substrate/hash.ts';
-import { validateEvidence, type QualificationSuite } from './domains/credential/evidence.ts';
+import { validateEvidence, type QualificationSuite } from './evidence.ts';
 import { credentialAccountingIdentity } from './domains/credential/accounting.ts';
 import { validatePiiQualificationReport, type PiiQualificationReport } from './domains/pii/qualification.ts';
 import { validatePiiProductBinding, type PiiTrustedProductBinding } from './domains/pii/product-binding.ts';

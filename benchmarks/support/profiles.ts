@@ -1,4 +1,4 @@
-import type { EvaluationCase } from '../engine/types.ts';
+import type { EvaluationCase } from '../evaluation/model/types.ts';
 import data from './fixture-profiles.json';
 import { disputedProperty } from '../lib/assessment.ts';
 

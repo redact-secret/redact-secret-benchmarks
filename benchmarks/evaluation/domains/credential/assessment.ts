@@ -2,7 +2,7 @@ import type { Fixture, Range, Kind, Tier, Assessment, FormatContract, EvidenceBa
 // Classification is authored from input construction and provider evidence,
 // never scanner outcomes. Unknown fixtures fail closed into T0 (pending).
 // Protocol: docs/specs/measurement-v4.md §2.1, §2.6, §6.
-import { KINDS, TIERS } from '../../../lib/lattice.ts';
+import { KINDS, TIERS } from '../../../scoring/lattice.ts';
 import { crc32Latin1, uint32LeBase64 } from '../../../lib/crc32.ts';
 
 export const kinds = {

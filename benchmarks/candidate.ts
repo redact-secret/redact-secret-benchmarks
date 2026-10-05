@@ -6,14 +6,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { candidateConfiguration, installCandidate, loadCandidate, removeCandidate } from '../scanners/candidate.mjs';
 import { classifyFixture, validateAssessment, validateContracts } from './lib/assessment.ts';
-import { encodeOutcome } from './lib/lattice.ts';
+import { encodeOutcome } from './scoring/lattice.ts';
 import { scoreReport } from './lib/reporting.ts';
-import { validateCorpus } from './lib/scoring.ts';
+import { validateCorpus } from './scoring/scoring.ts';
 import { validateStructures } from './lib/validate-structures.ts';
-import { hash } from './engine/model.ts';
+import { hash } from './evaluation/model/model.ts';
 import { validateEvidence } from './engine/evidence.ts';
 import type { Category, Fixture, Finding, ScoredRow, AccountingConfig } from './types.ts';
-import { validateAccounting } from './lib/accounting.ts';
+import { validateAccounting } from './accounting/index.ts';
 import { newestBaselineName } from './lib/baselines.ts';
 import suite from '../qualification/suite-v1.json';
 

@@ -1,6 +1,6 @@
 import { validateAssessment } from '../lib/assessment.ts';
-import { groupKey, scoreRow, encodeOutcome, KINDS, TIERS } from '../lib/lattice.ts';
-import { ACCOUNTING_VERSION, accountGroups, accountingDelta, validateAccounting, readCredentialAccountingIdentity } from '../lib/accounting.ts';
+import { groupKey, scoreRow, encodeOutcome, KINDS, TIERS } from '../scoring/lattice.ts';
+import { ACCOUNTING_VERSION, accountGroups, accountingDelta, validateAccounting, readCredentialAccountingIdentity } from '../accounting/index.ts';
 
 /** Pure catalog and report projections shared by the UI and tests. */
 export const fixtureSlug = (category, id) => `${category}--${id}`;

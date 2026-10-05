@@ -1,1 +1,1 @@
-export * from '../evaluation/domains/credential/methods/common.ts';
+export * from '../evaluation/domains/credential/method-common.ts';

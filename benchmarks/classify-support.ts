@@ -8,7 +8,7 @@ import { scanners as available } from '../scanners/index.mjs';
 import { assertPinnedPeers } from '../scanners/pins.mjs';
 import { candidateConfiguration, installCandidate, loadCandidate, removeCandidate } from '../scanners/candidate.mjs';
 import { resolveCredentialDomain } from './evaluation/domains/registry.ts';
-import type { ReviewLedger, Scanner } from './engine/types.ts';
+import type { ReviewLedger, Scanner } from './evaluation/model/types.ts';
 import { runEvaluation } from './engine/runner.ts';
 import { evaluationInputs } from './engine/execution.ts';
 import { makeHandoff, removeHandoff, worktreeState, writeHandoff } from './lib/review-queue-handoff.ts';

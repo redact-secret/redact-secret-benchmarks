@@ -76,7 +76,7 @@ export function callersOf(target) {
   const ownSet = new Set(own)
   const result = new Map()
   const add = (f, why) => {
-    if (ownSet.has(f) || f === 'scripts/legacy-callers.mjs') return
+    if (ownSet.has(f) || f === 'scripts/legacy-callers.mjs' || f === 'scripts/legacy-inventory.mjs') return
     if (!result.has(f)) result.set(f, new Set())
     result.get(f).add(why)
   }

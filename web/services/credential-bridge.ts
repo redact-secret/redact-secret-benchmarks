@@ -19,10 +19,10 @@
  *
  * Pure: no file is read here. `credential-source.ts` hands it the parsed view and the product-owned inputs.
  */
-import { selectionGroups } from '../../benchmarks/lib/run-summary';
-import { ACCOUNTING_VERSION } from '../../benchmarks/lib/accounting';
+import { selectionGroups } from '../../benchmarks/evaluation/domains/credential/run-summary';
+import { ACCOUNTING_VERSION } from '../../benchmarks/accounting/index';
 import type { AccountingConfig, ScoredRow } from '../../benchmarks/types';
-import type { RunSummary } from '../../benchmarks/lib/run-summary';
+import type { RunSummary } from '../../benchmarks/evaluation/domains/credential/run-summary';
 import type { Taxonomy } from '../../benchmarks/support/taxonomy';
 import { assembleCatalog, type BuiltFixture, type Catalog, type CatalogFixture, type CatalogSuite, type Tier } from './catalog';
 import type { CaseRow, CaseScannerResult, PopulationView, QualificationView } from './qualification';

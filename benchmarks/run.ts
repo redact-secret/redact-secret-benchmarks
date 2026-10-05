@@ -14,12 +14,12 @@ import { createHash, randomBytes } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { scanners as registered } from "../scanners/index.mjs";
 import { installCandidate, loadCandidate, removeCandidate } from "../scanners/candidate.mjs";
-import { validateCorpus } from "./lib/scoring.ts";
+import { validateCorpus } from "./scoring/scoring.ts";
 import { classifyFixture, validateAssessment, validateContracts } from './lib/assessment.ts';
 import { scoreReport } from './lib/reporting.ts';
 import { validateStructures } from './lib/validate-structures.ts';
-import { ACCOUNTING_VERSION, validateAccounting, credentialAccountingIdentity } from './lib/accounting.ts';
-import { summarizeRun } from './lib/run-summary.ts';
+import { ACCOUNTING_VERSION, validateAccounting, credentialAccountingIdentity } from './accounting/index.ts';
+import { summarizeRun } from './evaluation/domains/credential/run-summary.ts';
 import { inputIdentity, makeSnapshot, observationSuiteIdentity, readSnapshot, repositoryPeerIdentity, semanticIndexIdentity, snapshotObservation,
   snapshotPath, writeSnapshot } from './lib/peer-observations.ts';
 

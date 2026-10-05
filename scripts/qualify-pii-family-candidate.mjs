@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
-import { validateEvidence } from '../benchmarks/evaluation/domains/credential/evidence.ts';
+import { validateEvidence } from '../benchmarks/evaluation/evidence.ts';
 import { validatePiiArrivalCandidateBinding, validatePiiArrivalOperational, validatePiiArrivalQualificationReadiness,
   validatePiiArrivalProtectedEvidence, validatePiiPopulationArrivalBundle, piiArrivalCommitment,
   piiArrivalContractCommitment, piiArrivalFamilyContractCommitment,

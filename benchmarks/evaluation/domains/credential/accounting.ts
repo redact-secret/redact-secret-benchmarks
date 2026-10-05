@@ -1,5 +1,5 @@
 import type { ScoredRow, AccountingConfig, Published, AccountedGroup, AccountingDelta, DeltaCause } from '../../../types.ts';
-import { aggregateGroups, groupKey } from '../../../lib/lattice.ts';
+import { aggregateGroups, groupKey } from '../../../scoring/lattice.ts';
 import { credentialIdentity } from './identity.ts';
 import {
   INSUFFICIENT_EVIDENCE, INSUFFICIENT_COVERAGE, STATUSES, floorFor, round, wilson, proportion, ratio, accountCounts,

@@ -14,7 +14,7 @@
  */
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { ACCOUNTING_VERSION } from '../../benchmarks/lib/accounting';
+import { ACCOUNTING_VERSION } from '../../benchmarks/accounting/index';
 import { PII_METRIC_IDS, PII_METRIC_LABELS, piiV1Profile } from '../../benchmarks/evaluation/domains/pii/profile';
 import { PII_CONTEXT_LANGUAGES } from '../../benchmarks/evaluation/domains/pii/context-languages';
 import { PII_JURISDICTION_STANDARD } from '../../benchmarks/evaluation/domains/pii/jurisdictions';

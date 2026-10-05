@@ -176,6 +176,32 @@ export function fetchPinnedArtifact({ sourceFile, pinsFile, outDir }) {
   return receipt;
 }
 
+/**
+ * Fetch and verify only the pinned engine artifact (#665 linux replay) and write its verified binary. The measurement artifact
+ * is not needed (and expires sooner), so this does not read it. The binary is verified by archive, member and build-info digests;
+ * the caller runs it in a later step that holds no token.
+ */
+export function fetchPinnedEngine({ sourceFile, pinsFile, outDir }) {
+  if (!process.env.GH_TOKEN) fail('GH_TOKEN is required');
+  const { source, pins } = checkFiles(sourceFile, pinsFile);
+  const run = ghJson(`/repos/${source.repository.fullName}/actions/runs/${source.workflow.runId}`);
+  verifyRunMetadata(run, source);
+  const inventory = ghJson(`/repos/${source.repository.fullName}/actions/runs/${source.workflow.runId}/artifacts?per_page=100`);
+  if (!Array.isArray(inventory.artifacts)) fail('GitHub artifact inventory is malformed');
+  const expected = source.artifacts.engine;
+  const matches = inventory.artifacts.filter(item => item.id === expected.id);
+  if (matches.length !== 1) fail('Pinned engine artifact is missing or duplicated');
+  verifyArtifactMetadata(matches[0], expected);
+  mkdirSync(outDir, { recursive: true, mode: 0o700 });
+  const members = verifyArchiveMembers(fetchZip(source.repository.fullName, expected, outDir), expected);
+  verifyBuildInfo(members, source, pins);
+  const binary = path.join(outDir, 'pii-eval');
+  writeFileSync(binary, members['pii-eval'], { mode: 0o700 });
+  if (sha256(members['pii-eval']) !== pins.build.binarySha256) fail('Engine binary digest differs from the pin');
+  if (process.env.GITHUB_OUTPUT) writeFileSync(process.env.GITHUB_OUTPUT, `engine=${binary}\n`, { flag: 'a' });
+  return { engine: binary, binarySha256: pins.build.binarySha256, artifactId: expected.id, runId: source.workflow.runId, headSha: source.workflow.headSha, engineExecuted: false };
+}
+
 function option(name, fallback) {
   const prefix = `--${name}=`;
   return process.argv.find(arg => arg.startsWith(prefix))?.slice(prefix.length) ?? fallback;
@@ -190,8 +216,12 @@ async function main() {
     process.stdout.write(`${source.repository.fullName}@${source.workflow.headSha} run ${source.workflow.runId} is internally consistent\n`);
     return;
   }
-  if (command !== 'fetch') fail('Usage: fetch-pii-eval-public-synthetic.mjs check|fetch [--source=FILE] [--pins=FILE] [--out=DIR]');
+  if (command !== 'fetch' && command !== 'fetch-engine') fail('Usage: fetch-pii-eval-public-synthetic.mjs check|fetch|fetch-engine [--source=FILE] [--pins=FILE] [--out=DIR]');
   const outDir = path.resolve(option('out', path.join(process.cwd(), 'pii-eval-public')));
+  if (command === 'fetch-engine') {
+    process.stdout.write(`${JSON.stringify(fetchPinnedEngine({ sourceFile, pinsFile, outDir }))}\n`);
+    return;
+  }
   const receipt = fetchPinnedArtifact({ sourceFile, pinsFile, outDir });
   process.stdout.write(`${JSON.stringify(receipt)}\n`);
 }

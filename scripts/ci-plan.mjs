@@ -29,11 +29,26 @@ const NEW_PATH_SCRIPTS = /^scripts\/(build-qualification-|export-qualification-|
 /** Benchmark-owned files only the new path reads: they change the view, never the legacy measurement. */
 const NEW_PATH_BENCHMARKS = /^benchmarks\/(qualification\/|evidence-adoption\.json$|official-run|qualification-)/
 
+/**
+ * PII migration tooling and data (#666): the pii-eval consumer, the dual-run and linux-replay scripts, the committed pins and artifacts, the PII
+ * authority record and its gate, the rollback rehearsal and the legacy-caller inventory. They read committed files and the pii-eval engine; none is
+ * read by the legacy engine exercise, the four-scanner comparison or the legacy export (tests/pii-ci-lanes.test.mjs holds that through the import
+ * graph). A change to only these runs the site build and the root unit tests, and `validate-sources` always runs their gates (`pii:*:check`), so
+ * nothing is checked less: the legacy credential measurement is just not repeated for a change it cannot reach. The PII domain code itself
+ * (`benchmarks/evaluation/domains/pii/`, which is the oracle) stays a legacy input.
+ */
+export const PII_MIGRATION = [
+  /^scripts\/(replay-pii-populations|run-pii-population-dual-run|convert-pii-populations|check-pii-eval-migration|fetch-pii-eval-public-synthetic|check-custodian-conformance|check-pii-authority|pii-legacy-inventory|rehearse-pii-authority-rollback)\.mjs$/,
+  /^scripts\/(lib\/pii-population-|pii-eval-population-parity\/)/,
+  /^benchmarks\/(pii-eval-|pii-authority\.json$)/,
+  /^benchmarks\/evaluation\/domains\/pii\/(pii-eval-artifact-consumer|custodian-consumer|authority)\./,
+]
+
 /** Inputs of the legacy measurement (the oracle): the engine, its adapters, corpora, policy, pins and ledger, and shared scripts. */
 const LEGACY = [
-  (f) => /^benchmarks\//.test(f) && !NEW_PATH_BENCHMARKS.test(f),
+  (f) => /^benchmarks\//.test(f) && !NEW_PATH_BENCHMARKS.test(f) && !matches(PII_MIGRATION, f),
   (f) => /^(scanners|corpora|fixtures|peer-observations|qualification|holdout|adversarial|baselines|evidence|src)\//.test(f),
-  (f) => /^scripts\//.test(f) && !NEW_PATH_SCRIPTS.test(f),
+  (f) => /^scripts\//.test(f) && !NEW_PATH_SCRIPTS.test(f) && !matches(PII_MIGRATION, f),
   (f) => /^(vite\.config\.ts|index\.html)$/.test(f),
 ]
 
@@ -52,7 +67,7 @@ const IGNORED = [
   DOCS, /^tests\//, /^\.github\/(?!workflows\/(validate|legacy-oracle)\.yml$|actions\/)/, /^\.(claude|agents|vscode)\//, /^graft\//, /^\.gitguardian\.yaml$/, /^\.ignore$/, /^\.mcp\.json$/,
 ]
 
-const matches = (rules, f) => rules.some((r) => (typeof r === 'function' ? r(f) : r.test(f)))
+function matches(rules, f) { return rules.some((r) => (typeof r === 'function' ? r(f) : r.test(f))) }
 
 /**
  * web/app/<route>/page.tsx -> the address it serves: `report/families` is that page alone ('' is the landing page), and a dynamic segment makes it

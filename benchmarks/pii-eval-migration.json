@@ -121,7 +121,18 @@
     "classifiedDifferences": { "compatibility": ["0007/D1", "0007/D4"], "intentionalContractChange": [], "oldBug": [], "newBug": [], "unresolved": [] },
     "determinism": { "replays": 3, "equalSemanticDigest": true },
     "mode": "exploratory",
-    "consumerPins": "benchmarks/pii-eval-population-pins.json"
+    "consumerPins": "benchmarks/pii-eval-population-pins.json",
+    "linuxReplay": {
+      "path": "benchmarks/pii-eval-population-dual-run/linux-replay.json",
+      "sha256": "ab662ba9a4c441343257f05d85e7b8b5fd25661a2b38beb0168f8c19061a209d",
+      "workflow": ".github/workflows/pii-population-replay.yml",
+      "runId": 37350920750,
+      "headSha": "91ac467fda6c28bb6f07268a261c465251b1d7a6",
+      "engineBinarySha256": "b2902d58e8fba5199fedca235c2b81264cd44c8ae9db4c33f07379722297e9af",
+      "platform": "linux-x64",
+      "result": "equal",
+      "note": "the pinned linux CI engine replayed the four frozen observations to the committed artifacts' semantic digests and bytes; exploratory, internal, no scanner launched"
+    }
   },
   "publicationBinding": {
     "ciRun": { "repository": "redact-secret/pii-eval", "runId": 37340150108, "headSha": "212d500de90ce97461275be1e8b9dd8acd663fb3", "engineArtifactId": 11358475612, "measurementArtifactId": 11357099796 },
@@ -129,6 +140,20 @@
     "durableCopy": "tests/fixtures/pii-eval/ci-37340150108-projection.public-synthetic-artifact.json",
     "stagingOnly": true,
     "candidateBinding": "a candidate population is bound to a publication's product only when its pin names exactly that source commit; otherwise it is another product"
+  },
+  "protectedPath": {
+    "state": "absent",
+    "checkedOn": "2026-10-05",
+    "privateCustodianMain": "61f2a43e20d57f0f52a81d8eed546b286b649826",
+    "reviewedPin": "23f75304d4cf53fc8604379255bbf058f642daeb",
+    "contractFilesChangedSincePin": 0,
+    "blockers": [
+      "no real ApprovedCatalog over release records and no transport that serves the bridge (private-custodian docs/benchmarks-integration.md section 4, depends on its C10 and C12)",
+      "no production caller of prepare_bound and no signing key authorised for the v2 public-projection domain",
+      "pii-eval does not emit private-custodian.worker-result/1 inside a custodian-authorised run"
+    ],
+    "liveProtectedArtifactConsumed": false,
+    "syntheticConformanceOnly": true
   },
   "acceptance": {
     "ownershipAndContracts": "accepted",

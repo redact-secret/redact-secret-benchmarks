@@ -59,7 +59,7 @@ The pinned local build at `pii-eval` `6157cbc5918b3888c8e84b1884719ea8f3278b36` 
 - source archive SHA-256 `e86756f8a556af326c712f1abdaca3624fdae2f59dd924a497791892c2b0b6e1`;
 - macOS local verification binary SHA-256 `532b51347ae8696d444d7cf35b11ce00f975444a29f8ebc22a59f78c120bce26`.
 
-That binary hash identifies this reproducible local verification only; it is not a canonical Linux Actions artifact. CI validates committed synthetic artifacts and policy, but does not execute a measurement run. The four population artifacts were produced by a local darwin build of `212d500` (see the dual-run report); their pins name the canonical linux engine artifact `11358475612` (binary `b2902d58e8fba5199fedca235c2b81264cd44c8ae9db4c33f07379722297e9af`) of the same commit, and the semantic digest is host independent by contract, but a replay with the linux binary has not been compared here.
+That binary hash identifies this reproducible local verification only; it is not a canonical Linux Actions artifact. CI validates committed synthetic artifacts and policy, but does not execute a measurement run. The four population artifacts were produced by a local darwin build of `212d500` (see the dual-run report); their pins name the canonical linux engine artifact `11358475612` (binary `b2902d58e8fba5199fedca235c2b81264cd44c8ae9db4c33f07379722297e9af`) of the same commit, and the semantic digest is host independent by contract, but a replay with the linux binary is recorded below.
 
 ## Linux replay of the four populations (#665)
 
@@ -70,6 +70,12 @@ same read-only App token as the staging transport, downloads and verifies only t
 semantic digest and bytes with the committed artifact, the consumer pin and the migration record. It launches no scanner, writes no committed file and
 changes no status, threshold or authority; a difference exits 1 and is named, never normalised. A run on another binary or platform is a verification
 (`canonical: false` in the receipt). Locally: `npm run pii:population:replay -- --engine=<pii-eval binary>`.
+
+Result (run `37350920750` on develop `91ac467f`, linux-x64, the pinned binary `b2902d58…`): the semantic digests of all four populations equal the committed artifacts, the consumer pins and the migration record, the two replays are byte-identical and the replayed bytes equal the committed files. The darwin-built artifacts are verified by the canonical engine; the runs stay
+`exploratory` and the 156 not-representable memberships remain. The receipt is `benchmarks/pii-eval-population-dual-run/linux-replay.json`, bound in the migration record and checked by `pii:migration:check`; decision [`2026-10-05-accept-the-linux-engine-replay-of-the-four-pii-populations-as-verification`](../decisions/2026-10-05-accept-the-linux-engine-replay-of-the-four-pii-populations-as-verification.md).
+The protected path was re-checked the same day and is still absent (`protectedPath` in the migration record): no custodian catalog or transport, no production v2 signing key, and `pii-eval` does not emit `worker-result/1`.
+
+PII authority, its measured exit, the rollback rehearsal and the legacy caller inventory are in [`pii-authority.md`](pii-authority.md).
 
 ## Commands
 

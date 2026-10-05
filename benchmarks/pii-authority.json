@@ -1,0 +1,81 @@
+{
+  "schema": "redact-secret/pii-authority/v1",
+  "authority": "legacy",
+  "independence": "A credential authority setting (the credential qualification authority file) is not authorisation for PII. This file is read by no credential reader and reads none of theirs; switching one never switches the other.",
+  "legacy": {
+    "role": "authority",
+    "source": "The benchmark-owned scorer (b11ScoreTable) over the frozen Beta.11 and Beta.13 evidence and the b11-population-v2 plans, with the product policy in qualification/pii-v1.json.",
+    "oracle": {
+      "exitCondition": "The oracle period ends when the owner has authorised the new path for an explicitly frozen release or candidate (every criterion below met, none by hand), the new path has been the authority for at least one further release or candidate that was measured through both pipelines with the dual-run report regenerated and 0 unexplained differences, the rollback has been rehearsed again against that target, and a removal PR lists each legacy file's callers first (docs/generated/pii-legacy-inventory.json) and is reviewed. A lapse of time removes nothing.",
+      "decision": "docs/decisions/2026-10-05-keep-pii-authority-legacy-with-a-measured-exit-and-a-rehearsed-rollback.md",
+      "decidedBy": "the owner of redact-secret/redact-secret-benchmarks",
+      "reviewOn": "2027-01-02"
+    }
+  },
+  "new": {
+    "target": {
+      "engine": "redact-secret/pii-eval@212d500de90ce97461275be1e8b9dd8acd663fb3",
+      "populations": ["oracle-plan", "qualification-plan", "diagnostic-balanced", "benign-heavy-stress"],
+      "artifactSchema": "1.2"
+    },
+    "authorisation": null
+  },
+  "exitCriteria": [
+    {
+      "id": "population-dual-run-complete",
+      "basis": "computed",
+      "statement": "Every case membership of the four frozen populations is carried through both engines: an engine contract can state an authored identity of not-established, or the owner has decided to drop those memberships, and the dual-run acceptance is accepted rather than accepted-representable-cases.",
+      "state": "unmet",
+      "evidence": "benchmarks/pii-eval-migration.json acceptance.benchmarkPopulationDualRun (156 of 1,188 case memberships are not representable)"
+    },
+    {
+      "id": "linux-engine-replay-equal",
+      "basis": "computed",
+      "statement": "The pinned linux CI engine replays the four populations to the same semantic digests and bytes as the committed artifacts, on the pinned binary.",
+      "state": "met",
+      "evidence": "benchmarks/pii-eval-population-dual-run/linux-replay.json (receipt of .github/workflows/pii-population-replay.yml)"
+    },
+    {
+      "id": "official-mode-measurement",
+      "basis": "computed",
+      "statement": "The four populations are measured in official mode on the canonical engine. They are exploratory today, so no PII number is an official run.",
+      "state": "unmet",
+      "evidence": "benchmarks/pii-eval-population-pins.json populations[].projection.mode"
+    },
+    {
+      "id": "protected-path-live",
+      "basis": "computed",
+      "statement": "A live protected path exists and has been consumed: a custodian catalog and transport, a production v2 signing key authorised for the projection domain, and a protected artifact verified by the consumer. Synthetic conformance does not count.",
+      "state": "unmet",
+      "evidence": "benchmarks/pii-eval-migration.json protectedPath"
+    },
+    {
+      "id": "legacy-callers-inventoried",
+      "basis": "computed",
+      "statement": "Every removal candidate of the legacy PII measurement code is named with its owner, its callers and its prerequisite, and the committed inventory equals the tree.",
+      "state": "met",
+      "evidence": "docs/generated/pii-legacy-inventory.json (node scripts/pii-legacy-inventory.mjs --check)"
+    },
+    {
+      "id": "rollback-rehearsed-for-target",
+      "basis": "computed",
+      "statement": "The rollback was rehearsed against the pinned target: flipping the one value and restoring it changes no byte of the PII support publication, and new is refused without an owner authorisation.",
+      "state": "met",
+      "evidence": "docs/generated/pii-authority-rehearsal.json (node --import tsx scripts/rehearse-pii-authority-rollback.mjs)"
+    },
+    {
+      "id": "scorer-basis-decided",
+      "basis": "owner",
+      "statement": "The owner has decided which scorer defines the PII metric values the qualification uses: the benchmark scorer (b11ScoreTable) or pii-v1 accounting. They are different scorers and their numbers are not compared.",
+      "state": "unmet",
+      "evidence": "no decision recorded; docs/reports/2026-10-05-pii-eval-population-dual-run.md states the difference"
+    },
+    {
+      "id": "owner-accepted-verdict",
+      "basis": "owner",
+      "statement": "The owner has accepted the measured verdict of an explicitly frozen release or candidate through benchmark policy, recorded in an accepted decision and in new.authorisation. The repository never records this on the owner's behalf.",
+      "state": "unmet",
+      "evidence": "new.authorisation is null"
+    }
+  ]
+}

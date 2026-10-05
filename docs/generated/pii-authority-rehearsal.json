@@ -1,0 +1,56 @@
+{
+ "schemaVersion": 1,
+ "reportType": "pii-authority-rollback-rehearsal",
+ "supportClaims": false,
+ "authorityChanged": false,
+ "writesAcceptance": false,
+ "rehearsedOn": "2026-10-05",
+ "committedAuthority": "legacy",
+ "target": {
+  "engineCommit": "212d500de90ce97461275be1e8b9dd8acd663fb3",
+  "populationDigests": {
+   "oracle-plan": "cc6c2cf30ff0fdfb90bd4a4027d56d692c4cd57db23f010ecf27a05eda55371b",
+   "qualification-plan": "5de4b6ebc6316e5298203e900d5db68dfe16e3d9744f792779d8570231d9034e",
+   "diagnostic-balanced": "73fa9a1cdf4c281afebd77943c11033f023fde5d62d83dae4f6233ac882e4e39",
+   "benign-heavy-stress": "0cc6d2a5ad5ac8c273fb34a6af4776aebecc06f8ad718fdbe812ef5092cd8a19"
+  }
+ },
+ "method": "the one value flipped in the working tree and restored; the PII support publication (protected route plus the five bound pii-eval artifacts) rebuilt and the gate run under each value",
+ "states": [
+  {
+   "label": "committed",
+   "authority": "legacy",
+   "fileSha256": "ca019a3f0df2b2ead66bea576b068deff4ddb4b557fcdadff62a3901c2b6825e",
+   "matrixSha256": "8f2d9e289b530f5fc26886899555d751aa0d344d7eb6fa66d2edd76119d65d54",
+   "matrixBytes": 594454,
+   "gateAccepted": true,
+   "gateProblems": []
+  },
+  {
+   "label": "flipped",
+   "authority": "new",
+   "fileSha256": "187c83fda265f8aaba1cc046a7a896979a3d84bd40a50a2880f593ca291f23ea",
+   "matrixSha256": "8f2d9e289b530f5fc26886899555d751aa0d344d7eb6fa66d2edd76119d65d54",
+   "matrixBytes": 594454,
+   "gateAccepted": false,
+   "gateProblems": [
+    "authority is new but no owner authorisation is recorded: a credential authority setting is not authorisation for PII, and the repository records no acceptance on the owner's behalf"
+   ]
+  },
+  {
+   "label": "rolled-back",
+   "authority": "legacy",
+   "fileSha256": "ca019a3f0df2b2ead66bea576b068deff4ddb4b557fcdadff62a3901c2b6825e",
+   "matrixSha256": "8f2d9e289b530f5fc26886899555d751aa0d344d7eb6fa66d2edd76119d65d54",
+   "matrixBytes": 594454,
+   "gateAccepted": true,
+   "gateProblems": []
+  }
+ ],
+ "result": {
+  "matrixIdenticalAcrossValues": true,
+  "restoredIdentical": true,
+  "legacyAccepted": true,
+  "newWithoutAuthorisationRefused": true
+ }
+}

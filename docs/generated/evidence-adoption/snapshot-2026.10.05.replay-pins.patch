@@ -1,5 +1,5 @@
 diff --git a/benchmarks/official-runs.json b/benchmarks/official-runs.json
-index 33b68f7d..7b7b171b 100644
+index 33b68f7d..041aa949 100644
 --- a/benchmarks/official-runs.json
 +++ b/benchmarks/official-runs.json
 @@ -4,9 +4,9 @@
@@ -32,15 +32,15 @@ index 33b68f7d..7b7b171b 100644
        "evidence": {
          "source": "credential-evidence",
 -        "revision": "records-tree-sha256:dbfea28d29e427c28dff4054cbdda77e6c102541e56210e3cd253ddc63e9b154",
-+        "revision": "records-tree-sha256:964793dcbc10f76cbae5eecc6feb4d8cad71d8f4c42e844503e655ef5ba6e4df",
++        "revision": "records-tree-sha256:924cd5b9b068e0d5ec5039bce962c63a484cb7fdec61b8b1e6603b1c530884b7",
          "evidenceSchema": "credential-evidence/schema/1.7.0",
 -        "corpusDigest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
-+        "corpusDigest": "sha256:9870d50f7d626f0b2b39c39f94fb706d93b6ef73577e2e1e25e3052e58fed57c",
++        "corpusDigest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
          "release": {
 -          "tag": "snapshot-2026.10.04.3",
 -          "manifestDigest": "sha256:690ed57312d576fd6a614d40de10efe8bbc89431693aa4fbaa99979d69c0da8a"
-+          "tag": "snapshot-2026.10.04.4",
-+          "manifestDigest": "sha256:f75a46f855e6daf82fbd94bf6f13e187e5b110a4e473b9045e7db47a74b65f1f"
++          "tag": "snapshot-2026.10.05",
++          "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
          }
        }
      },
@@ -220,8 +220,8 @@ index 33b68f7d..7b7b171b 100644
 +      },
 +      "status": "historical",
 +      "supersededBy": {
-+        "evidenceRelease": "snapshot-2026.10.04.4",
-+        "manifestDigest": "sha256:f75a46f855e6daf82fbd94bf6f13e187e5b110a4e473b9045e7db47a74b65f1f"
++        "evidenceRelease": "snapshot-2026.10.05",
++        "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
 +      },
 +      "supersededOn": "2026-10-04"
      },
@@ -317,8 +317,8 @@ index 33b68f7d..7b7b171b 100644
 -        "semanticDigestsEqual": true
 +      "status": "historical",
 +      "supersededBy": {
-+        "evidenceRelease": "snapshot-2026.10.04.4",
-+        "manifestDigest": "sha256:f75a46f855e6daf82fbd94bf6f13e187e5b110a4e473b9045e7db47a74b65f1f"
++        "evidenceRelease": "snapshot-2026.10.05",
++        "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
        },
 -      "scanners": [
 -        {
@@ -399,7 +399,7 @@ index 33b68f7d..7b7b171b 100644
    ]
  }
 diff --git a/benchmarks/qualification-inputs.json b/benchmarks/qualification-inputs.json
-index 55cf0eca..72e8a987 100644
+index 55cf0eca..ca81f816 100644
 --- a/benchmarks/qualification-inputs.json
 +++ b/benchmarks/qualification-inputs.json
 @@ -27,10 +27,10 @@
@@ -410,10 +410,10 @@ index 55cf0eca..72e8a987 100644
 -        "sourceRevision": "3db9c428b2303a4b51106624d2f1a839bb94c795",
 -        "manifestDigest": "sha256:690ed57312d576fd6a614d40de10efe8bbc89431693aa4fbaa99979d69c0da8a",
 -        "snapshotDigest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
-+        "evidenceRelease": "snapshot-2026.10.04.4",
-+        "sourceRevision": "20c18bdb679aedc341c067c3ce0e3fa5eff17f52",
-+        "manifestDigest": "sha256:f75a46f855e6daf82fbd94bf6f13e187e5b110a4e473b9045e7db47a74b65f1f",
-+        "snapshotDigest": "sha256:9870d50f7d626f0b2b39c39f94fb706d93b6ef73577e2e1e25e3052e58fed57c",
++        "evidenceRelease": "snapshot-2026.10.05",
++        "sourceRevision": "225f7ae74a986a40fe857371b393ebfdb7d2268a",
++        "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef",
++        "snapshotDigest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
          "legacyReference": "1020d2b5",
          "evalProtocol": "credential-eval-protocol/1",
          "evalVersion": "v0.1.0-alpha.1",

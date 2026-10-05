@@ -158,8 +158,8 @@ for (const x of pc.cases) {
   for (const r of x.results) { const before = o.results.find((q: Json) => q.scanner === r.scanner); if (outcome(before) !== outcome(r)) changed.push({ scanner: r.scanner, from: outcome(before), to: outcome(r) }); }
   if (changed.length) drift.push({ case: x.id, regrouped, changed, family: x.family });
 }
-// A common case the release itself records as changed in CONTENT (the case was re-authored in credential-evidence) is a corpus change: its outcome move is that change, attributed to it.
-const contentChanged = new Set<string>((Array.isArray(report.diff.changed) ? report.diff.changed : []).filter((c: Json) => (c.fields ?? []).includes('content')).map((c: Json) => c.id));
+// A common case the release itself records as changed in CONTENT or EXPECTED spans (the case was re-authored or its expectation corrected in credential-evidence, e.g. ADR 0021) is a corpus change: its outcome move is that change, attributed to it.
+const contentChanged = new Set<string>((Array.isArray(report.diff.changed) ? report.diff.changed : []).filter((c: Json) => (c.fields ?? []).some((f: string) => f === 'content' || f === 'expected')).map((c: Json) => c.id));
 const driftExplained = (d: Json) => contentChanged.has(d.case) || d.regrouped.includes('family') && d.regrouped.length > 0 && C.policy.twinScope && snapshotCases.get(d.case)?.twinOf !== undefined;
 const driftByScanner = count(drift.flatMap((d: Json) => d.changed.map((x: Json) => ({ ...x, case: d.case }))), (x: Json) => `${x.scanner}: ${x.from} -> ${x.to}`);
 for (const d of drift) if (!driftExplained(d)) unexplained.push(`common case ${d.case} changed outcome (${d.changed.map((x: Json) => `${x.scanner} ${x.from} -> ${x.to}`).join('; ')}) without a twin family assignment`);
@@ -230,7 +230,7 @@ const out = {
   },
   publicPopulation: {
     commonCases: commonCount, addedCases: addedCases.length, regroupedCommonCases: regroupedCommon,
-    commonCaseOutcomeDrift: { cases: drift.length, byScanner: driftByScanner, cause: `the ${drift.length} cross-provider twin case(s) gained a family in credential-evidence (grouping change), so a scanner finding of another detector is no longer read as flagged`, details: drift },
+    commonCaseOutcomeDrift: { cases: drift.length, byScanner: driftByScanner, cause: [drift.filter((d: Json) => contentChanged.has(d.case)).length ? `${drift.filter((d: Json) => contentChanged.has(d.case)).length} case(s) the release re-authored or whose expected spans it corrected (content or expected in the change report)` : '', drift.filter((d: Json) => !contentChanged.has(d.case)).length ? `${drift.filter((d: Json) => !contentChanged.has(d.case)).length} cross-provider twin case(s) gained a family in credential-evidence (grouping change), so a scanner finding of another detector is no longer read as flagged` : ''].filter(Boolean).join('; '), details: drift },
     addedCaseOutcomes: addedRows,
     regrouped: report.diff.evidenceClassTransitions,
   },
@@ -282,7 +282,7 @@ function renderMarkdown(o: Json, parity: Json | null): string {
     `Result: ${o.engineEffect.familiesWithAnyDifference.length} families differ, the support matrix is ${o.engineEffect.supportMatrixSame ? 'identical' : 'different'}, ${o.engineEffect.publicCasesWithAnyDifference} of the ${n(add.commonCases)} public cases change any outcome, and the family distribution is ${o.engineEffect.distributionSame ? 'identical' : 'different'}. The engine bump alone changes no support status, matrix entry or gate.`, '',
     `## 2. Corpus effect (${previousRelease} to ${o.evidenceRelease}, engine fixed)`, '',
     `### Common cases (${n(add.commonCases)}), apart from the added cases`, '',
-    `${add.regroupedCommonCases} common cases changed grouping in credential-evidence: ${classTransitions} changed evidence class (${JSON.stringify(add.regrouped)}) and ${add.regroupedCommonCases - classTransitions} changed grouping (family or twin family) with the evidence class unchanged. ${reconcile} ${add.commonCaseOutcomeDrift.cases} common cases change an outcome, all control cases that are cross-provider twins: ${add.commonCaseOutcomeDrift.cause}.`, '',
+    `${add.regroupedCommonCases} common cases changed grouping in credential-evidence: ${classTransitions} changed evidence class (${JSON.stringify(add.regrouped)}) and ${add.regroupedCommonCases - classTransitions} changed grouping (family or twin family) with the evidence class unchanged. ${reconcile} ${add.commonCaseOutcomeDrift.cases} common cases change an outcome: ${add.commonCaseOutcomeDrift.cause}.`, '',
     table(['Scanner and change', 'Cases'], Object.entries(add.commonCaseOutcomeDrift.byScanner).map(([k, c]) => [k, c])), '',
     `### Added cases (${n(add.addedCases)}), per scanner`, '',
     table(['Scanner', 'Pending (T0, outside denominators)', 'Not measured', 'Positive: exact', 'Positive: miss', 'Positive: other', 'Control clear', 'Control flagged'], add.addedCaseOutcomes.map((r: Json) => {

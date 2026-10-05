@@ -1,5 +1,6 @@
 import { CLASSIFICATIONS } from './triage-queue.ts';
 import { CORE_1203, CORE_1203_LINKS, type Core1203Entry } from './triage-core-1203.ts';
+import { CORE_1205, CORE_1205_LINKS } from './triage-core-1205.ts';
 
 /**
  * Triage decisions for the queue of an adopted snapshot (#698): a classification and a disposition per root cause, each with the evidence it rests on.
@@ -48,17 +49,25 @@ const matches = (m?: Measured) => {
 };
 const isPending = (m?: Measured) => m?.measurement?.type === 'pending' || m?.measurement?.type === 'not-measured';
 
-/** The product's #1203 reading of a base case (core PR #1204), as a decision; a fix is claimed fixed only when the candidate replay shows the case now passes. */
+/**
+ * The product's reading of a base case: #1203 (core PR #1204) and #1205 (core PR #1206). A fix is claimed fixed only when the candidate replay shows the case now
+ * passing; a fix the registered candidate does not carry (PR #1206 is not in 1e45cecf) stays open and says so.
+ */
 function core1203(seed: string, ctx: TriageContext, ledger: Decision['ledger']): Decision | null {
-  const e: Core1203Entry | undefined = CORE_1203[seed];
+  const from1205 = !CORE_1203[seed] && !!CORE_1205[seed];
+  const e: Core1203Entry | undefined = CORE_1203[seed] ?? CORE_1205[seed];
   if (!e) return null;
   const verified = e.kind === 'fix' && ctx.candidate?.fixed.includes(seed);
+  const links = from1205 ? CORE_1205_LINKS : CORE_1203_LINKS;
   return {
-    classification: e.classification, status: e.kind === 'fix' ? (verified ? 'fixed-in-candidate' : 'open') : 'settled', rule: `core-1203.${e.kind}`, ledger,
+    classification: e.classification, status: e.kind === 'fix' ? (verified ? 'fixed-in-candidate' : 'open') : 'settled', rule: `core-${from1205 ? '1205' : '1203'}.${e.kind}`, ledger,
     disposition: e.kind === 'fix' && !verified ? `${e.disposition}; not yet verified on a candidate replay` : e.kind === 'fix' ? `${e.disposition}; the candidate replay (core ${ctx.candidate?.commit?.slice(0, 12)}) passes this case` : e.disposition,
-    evidence: [...e.evidence], links: CORE_1203_LINKS, ...(e.evidenceProposal ? { evidenceProposal: e.evidenceProposal } : {}),
+    evidence: [...e.evidence], links, ...(e.evidenceProposal ? { evidenceProposal: e.evidenceProposal } : {}),
   };
 }
+
+const encodedCarrier = (): Decision => ({ classification: 'unsupported-or-feature-scope', status: 'settled', rule: 'encoded-carrier', ledger: null, disposition: 'out of scope: the product defers decoding of base64, hex and nested encoded carriers; a raw encoded run under a non-credential name claims nothing. Stays a scope fact, not a product defect', evidence: [ADR_DECODING, 'core #1199 (13 SendGrid) and #1200 (34 generic-token) classification tables; published beta.13, beta.12 and pre-fix main give identical findings', 'core #1205 classification (11 SendGrid base64/hex projections): findings identical on published beta.13 and core main'], links: [L.i1199, L.i1200, L.pr1202, L.b622, ...CORE_1205_LINKS] });
+const fragmentedCredential = (): Decision => ({ classification: 'unsupported-or-feature-scope', status: 'settled', rule: 'fragmented-credential', ledger: null, disposition: 'out of the raw-input contract: a credential cut by a line break, continuation, literal join, markdown or escaped text is not reconstructed (no source-language evaluation). The scorer encloses a fragmented expected span, so the product match is partial by contract', evidence: [ADR_FRAGMENT, 'core #1199 classification table (16 cases)', 'core #1205 classification: the four key-split cases redact an incidental first fragment (incidental, not a claim)'], links: [L.i1199, L.pr1202, L.b622, ...CORE_1205_LINKS] });
 
 /** Decide one root cause. `seedKinds` maps a seed case id to the decision of its core (non-assertion, non-peer) root cause. */
 export function decideRootCause(r: RootCause, ctx: TriageContext, seedDecisions: Map<string, Decision>): Decision {
@@ -72,6 +81,8 @@ export function decideRootCause(r: RootCause, ctx: TriageContext, seedDecisions:
     if (!matches(o.reference)) {
       const product = core1203(r.seedCase, ctx, { proposal: 'open', basis: 'the reference itself deviates from the evidence on this case; the occurrence follows the product\'s #1203 reading of the base case' });
       if (product) return { ...product, rule: `gate-peer.follows-${product.rule}` };
+      const byScope = r.seedCase.startsWith('base64-hex-representation-projections--') ? encodedCarrier() : r.seedCase.startsWith('line-break-and-fragment-authored--key-') ? fragmentedCredential() : null;
+      if (byScope) return { ...byScope, rule: `gate-peer.follows-${byScope.rule}`, ledger: { proposal: 'open', basis: 'the reference itself deviates from the evidence on this case (a peer reads what the product by contract does not); the occurrence follows the product\'s scope reading. No decision settles the occurrence: the family stays provisional' } };
       if (seed) return { ...seed, rule: 'gate-peer.follows-core-root-cause', ledger: { proposal: 'open', basis: 'the reference itself deviates from the evidence on this case; the occurrence follows the core root cause of the seed case' }, evidence: [...seed.evidence], links: seed.links };
       return open('gate-peer.reference-deviates', 'the reference deviates from the evidence on this case and no core root cause covers it yet; stays open', issueLink);
     }
@@ -90,10 +101,8 @@ export function decideRootCause(r: RootCause, ctx: TriageContext, seedDecisions:
       disposition: fixed ? `fixed in core PR #1202 (merge ${ctx.candidate?.commit}); the unpublished candidate replays this case as fixed; unreleased, so it stays failing on published beta.13 until a release carries it` : 'in-contract bug fixed in core PR #1202 (unpublished); not yet verified on a candidate replay',
       evidence: ['core #1201 classification table: an unencoded `\'` in userinfo ended the authority (password bytes 14-31 missed on beta.13 and pre-fix main)'], links: [L.i1201, L.pr1202] };
   }
-  if (r.seedCase.startsWith('base64-hex-representation-projections--'))
-    return { classification: 'unsupported-or-feature-scope', status: 'settled', rule: 'encoded-carrier', ledger: null, disposition: 'out of scope: the product defers decoding of base64, hex and nested encoded carriers; a raw encoded run under a non-credential name claims nothing. Stays a scope fact, not a product defect', evidence: [ADR_DECODING, 'core #1199 (13 SendGrid) and #1200 (34 generic-token) classification tables; published beta.13, beta.12 and pre-fix main give identical findings'], links: [L.i1199, L.i1200, L.pr1202, L.b622] };
-  if (r.seedCase.startsWith('line-break-and-fragment-authored--key-'))
-    return { classification: 'unsupported-or-feature-scope', status: 'settled', rule: 'fragmented-credential', ledger: null, disposition: 'out of the raw-input contract: a credential cut by a line break, continuation, literal join, markdown or escaped text is not reconstructed (no source-language evaluation). The scorer encloses a fragmented expected span, so the product match is partial by contract', evidence: [ADR_FRAGMENT, 'core #1199 classification table (16 cases)'], links: [L.i1199, L.pr1202, L.b622] };
+  if (r.seedCase.startsWith('base64-hex-representation-projections--')) return encodedCarrier();
+  if (r.seedCase.startsWith('line-break-and-fragment-authored--key-')) return fragmentedCredential();
 
   const product = core1203(r.seedCase, ctx, null);
   if (product) return product;

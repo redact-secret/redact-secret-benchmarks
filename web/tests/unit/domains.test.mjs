@@ -93,6 +93,44 @@ describe('PII view', () => {
     expect(row.detail).toContain('does not change a family status');
   });
 
+  test('a schema 1.2 projection is shown per family and view with strata and mode, and nothing is called unavailable', () => {
+    const metric = id => ({ metric: { id }, status: 'measured', effectiveN: 4, counts: { numerator: 1, measured: 4, eligible: 4, unresolved: 0, notMeasured: 0 },
+      value: id === 'type-miss-rate' ? { state: 'withheld', reason: 'insufficient-evidence' } : { state: 'measured', point: { mantissa: 25, scale: 2 }, bound: { mantissa: 4, scale: 1 } } });
+    const cell = (cases) => ({ counts: { authoredCases: cases, occurrences: cases, variants: cases }, metrics: [metric('type-miss-rate'), metric('measurable-share')] });
+    const population = (state, over = {}) => ({ populationId: 'synthetic-pop', population: { populationDigest: 'c'.repeat(64) },
+      productBinding: { state, candidateSourceCommit: null }, scanners: [{ scannerId: 's', metrics: [], identity: { product: { kind: 'candidate' }, scannerVersion: '1.2.3' } }],
+      productProjection: { requiredViews: ['oracle-plan'], rosterDigest: 'd'.repeat(64), rows: [
+        { family: 'pii:global:email', view: 'oracle-plan', mode: 'exploratory', ...cell(3), byLanguage: [{ language: 'en', ...cell(2) }, { language: 'ko', ...cell(1) }], byControlClass: [{ controlClass: 'test-value', ...cell(1) }] },
+        { family: 'pii:us:ssn', view: 'oracle-plan', mode: 'exploratory', ...cell(2), byLanguage: [{ language: 'en', ...cell(2) }] },
+      ] }, ...over });
+    const build = { commit: 'a'.repeat(40), binarySha256: 'b'.repeat(64) };
+    const view = resolvePiiView(pii({ piiEvalMeasurement: { complete: true, populations: [population('other-product')], build } }));
+    const group = view.status.groups.find(g => g.title.includes('product projection'));
+    expect(group.title).toContain('Exploratory');
+    expect(group.rows.map(r => r.label)).toEqual(['Measured product', 'pii:global:email · oracle-plan', 'pii:us:ssn · oracle-plan']);
+    const email = group.rows[1];
+    expect(email.value).toBe('3 cases · 3 variants');
+    expect(email.statusWord).toBe('Exploratory');
+    expect(email.detail).toContain('type-miss-rate 1/4 withheld (insufficient-evidence)');
+    expect(email.detail).toContain('Languages: en 2, ko 1.');
+    expect(email.detail).toContain('Control classes: test-value 1.');
+    expect(group.rows[2].detail).toContain('Control classes: none authored.');
+    expect(group.rows[0].detail).toContain('another product');
+    expect(group.rows[0].detail).toContain('never an official qualification run');
+    const row = rowsOf(view).find(item => item.id === 'pii-eval');
+    expect(row.detail).toContain('schema 1.2 product projection');
+    expect(row.detail).not.toContain('are unavailable');
+    expect(row.detail).toContain('does not change a family status');
+    const same = resolvePiiView(pii({ piiEvalMeasurement: { complete: true, populations: [population('measures-publication-product')], build } }));
+    expect(rowsOf(same).find(r => r.id === 'synthetic-pop:projection-binding').detail).toContain('measures the product this publication measured');
+    const none = resolvePiiView(pii({ piiEvalMeasurement: { complete: true, populations: [population('publication-product-not-measured')], build } }));
+    expect(rowsOf(none).find(r => r.id === 'synthetic-pop:projection-binding').detail).toContain('no product is claimed');
+    // A 1.1 population next to a 1.2 one keeps its unavailable fields.
+    const mixed = resolvePiiView(pii({ piiEvalMeasurement: { complete: true, populations: [population('other-product'), { populationId: 'old', scanners: [], population: {} }], build } }));
+    expect(rowsOf(mixed).find(item => item.id === 'pii-eval').detail).toContain('1 read under schema 1.1 does not carry it');
+    expect(text(view)).not.toMatch(/\b(best|worst|winner|fastest|slowest|better than|outperform)/i);
+  });
+
   test('custodian conformance is visibly synthetic and never described as protected qualification', () => {
     const custodianConformance = { projections: [{}], feed: { sequence: 2 } };
     const row = rowsOf(resolvePiiView(pii({ custodianConformance }))).find(item => item.id === 'custodian-conformance');

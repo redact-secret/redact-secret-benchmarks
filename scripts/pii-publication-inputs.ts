@@ -17,15 +17,40 @@ import type { CustodianConformance } from '../benchmarks/evaluation/domains/pii/
  */
 export interface PiiMeasuredProduct { sourceCommit: string; coreSha256: string }
 
-/** Validate public pii-eval artifacts independently and project only their scanner-neutral evidence. */
-export async function piiEvalMeasurementFrom(pinsFile: string, artifactFiles: string[]): Promise<PiiEvalMeasurement> {
+/**
+ * Validate public pii-eval artifacts independently and project only their scanner-neutral evidence. Several pin sets may be
+ * bound (the transport-verified CI measurement and the committed benchmark populations); each artifact is judged only by the
+ * pin set that names its population, every pin set must be satisfied, and all of them must name one engine build. A candidate
+ * is never described as the release, and it is described as measuring this publication's product only when its pin names
+ * exactly that source commit.
+ */
+export async function piiEvalMeasurementFrom(pinsFile: string | string[], artifactFiles: string[], product: PiiMeasuredProduct | null = null): Promise<PiiEvalMeasurement> {
   if (!artifactFiles.length) throw new Error('At least one pii-eval artifact is required');
-  const { loadPins, consume } = await import('../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs');
-  const pins = loadPins(await readFile(pinsFile, 'utf8'));
+  const { loadPins, consume, parseStrictJson } = await import('../benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs');
+  const pinSets = await Promise.all([pinsFile].flat().map(async file => loadPins(await readFile(file, 'utf8'))));
   const artifacts = await Promise.all(artifactFiles.map(async file => ({ name: path.basename(file), text: await readFile(file, 'utf8') })));
-  const report = consume(pins, artifacts);
-  if (!report.complete) throw new Error(`pii-eval artifact validation failed: ${report.rejections.flatMap((row: any) => row.reasons.map((reason: any) => reason.code)).join(',') || 'pinned population missing'}`);
-  return report as PiiEvalMeasurement;
+  const populationOf = (text: string): string | undefined => { try { return parseStrictJson(text)?.semantic?.population?.populationId; } catch { return undefined; } };
+  const reports = pinSets.map((pins: any) => {
+    const own = new Set(pins.populations.map((row: any) => row.population.populationId));
+    const report = consume(pins, artifacts.filter(artifact => own.has(populationOf(artifact.text))));
+    if (!report.complete) throw new Error(`pii-eval artifact validation failed: ${report.rejections.flatMap((row: any) => row.reasons.map((reason: any) => reason.code)).join(',') || 'pinned population missing'}`);
+    return { report, pins };
+  });
+  const claimed = new Set(pinSets.flatMap((pins: any) => pins.populations.map((row: any) => row.population.populationId)));
+  const stray = artifacts.filter(artifact => !claimed.has(populationOf(artifact.text)));
+  if (stray.length) throw new Error(`pii-eval artifact validation failed: population-not-pinned (${stray.map(row => row.name).join(', ')})`);
+  const [first] = reports;
+  for (const { report } of reports) {
+    if (JSON.stringify(report.build) !== JSON.stringify(first.report.build)) throw new Error('pii-eval pin sets name different engine builds');
+  }
+  const populations = reports.flatMap(({ report, pins }: any) => report.populations.map((row: any) => {
+    const pin = pins.populations.find((item: any) => item.label === row.label);
+    const scanner = pin.scanners[0], sourceCommit: string | null = scanner.candidateSourceCommit ?? null;
+    const state = !product ? 'publication-product-not-measured' : sourceCommit !== null && sourceCommit === product.sourceCommit ? 'measures-publication-product' : 'other-product';
+    return { ...row, productBinding: { state, candidateSourceCommit: sourceCommit } };
+  }));
+  if (new Set(populations.map((row: any) => row.populationId)).size !== populations.length) throw new Error('pii-eval pin sets name one population twice');
+  return { ...first.report, populations } as PiiEvalMeasurement;
 }
 
 /** Verify a public synthetic custodian bridge bundle. It is conformance evidence, never a live support input. */

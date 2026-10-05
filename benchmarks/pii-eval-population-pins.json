@@ -1,0 +1,200 @@
+{
+  "artifactSchema": {
+    "id": "pii-eval.public-synthetic-artifact",
+    "version": "1.2"
+  },
+  "build": {
+    "repository": "redact-secret/pii-eval",
+    "commit": "212d500de90ce97461275be1e8b9dd8acd663fb3",
+    "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+    "binarySha256": "b2902d58e8fba5199fedca235c2b81264cd44c8ae9db4c33f07379722297e9af",
+    "sourceArchiveSha256": "6904137f1dd508fc4bfcf44223d5d91262849ac525b86e269ae297347f11df84"
+  },
+  "engine": {
+    "name": "pii-eval",
+    "version": "0.0.0"
+  },
+  "populations": [
+    {
+      "artifactDigest": "cc6c2cf30ff0fdfb90bd4a4027d56d692c4cd57db23f010ecf27a05eda55371b",
+      "label": "oracle-plan",
+      "manifestDigest": "bd0a8087e46ec2df8389a9962b075a1d8be8a59c4d9805fe6ce9d4159b67fd7e",
+      "population": {
+        "populationDigest": "b9c80deee38229e86287a5fdacdb6eddc516cc5b325e0435b7786a31a7b56116",
+        "populationId": "b11-population-v2-oracle-plan",
+        "populationVersion": 1,
+        "visibility": "public-synthetic"
+      },
+      "projection": {
+        "mode": "exploratory",
+        "requiredViews": [
+          "oracle-plan"
+        ],
+        "rosterDigest": "cca87a2913aec930b165cd075701ef87f80e245d33c275433e207f2f087d0abf"
+      },
+      "retiredArtifactDigests": [],
+      "retiredManifestDigests": [],
+      "runClass": "public-synthetic",
+      "scanners": [
+        {
+          "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+          "adapter": {
+            "adapterId": "redact-secret-core-node",
+            "adapterVersion": "1.0.0",
+            "normalizationVersion": 1
+          },
+          "artifactDigest": "a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5",
+          "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+          "product": {
+            "candidateDigest": "a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5",
+            "kind": "candidate"
+          },
+          "scannerId": "redact-secret-core",
+          "scannerVersion": "0.1.0-beta.13",
+          "candidateSourceCommit": "401158d09a677b110fa60209256ba184b1f08f8f"
+        }
+      ]
+    },
+    {
+      "artifactDigest": "5de4b6ebc6316e5298203e900d5db68dfe16e3d9744f792779d8570231d9034e",
+      "label": "qualification-plan",
+      "manifestDigest": "7bd499d2622b5c49b8486c69ddff0b443653fa9b3c8503c825b8c4fde8f93fe5",
+      "population": {
+        "populationDigest": "69d6cc26bc9d2d7a9aee4231f5f1e3c7969840fb6407d8f4cc777312836a59d6",
+        "populationId": "b11-population-v2-qualification-plan",
+        "populationVersion": 1,
+        "visibility": "public-synthetic"
+      },
+      "projection": {
+        "mode": "exploratory",
+        "requiredViews": [
+          "qualification-plan"
+        ],
+        "rosterDigest": "7b0a5b8b136f46d1e5410bebc5c4d1a328fa33e669a30813f49fcd3708087883"
+      },
+      "retiredArtifactDigests": [],
+      "retiredManifestDigests": [],
+      "runClass": "public-synthetic",
+      "scanners": [
+        {
+          "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+          "adapter": {
+            "adapterId": "redact-secret-core-node",
+            "adapterVersion": "1.0.0",
+            "normalizationVersion": 1
+          },
+          "artifactDigest": "a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5",
+          "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+          "product": {
+            "candidateDigest": "a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5",
+            "kind": "candidate"
+          },
+          "scannerId": "redact-secret-core",
+          "scannerVersion": "0.1.0-beta.13",
+          "candidateSourceCommit": "401158d09a677b110fa60209256ba184b1f08f8f"
+        }
+      ]
+    },
+    {
+      "artifactDigest": "73fa9a1cdf4c281afebd77943c11033f023fde5d62d83dae4f6233ac882e4e39",
+      "label": "diagnostic-balanced",
+      "manifestDigest": "925d56c824f08fc0ef49a1d9f8ea2d272cc1e4a690f9b5ea7238073ea69b4e7c",
+      "population": {
+        "populationDigest": "4864e3a4f52d9b4119f97314c6cecb8fb780eec9098270977ce34fd7f29022bb",
+        "populationId": "b11-population-v2-diagnostic-balanced",
+        "populationVersion": 1,
+        "visibility": "public-synthetic"
+      },
+      "projection": {
+        "mode": "exploratory",
+        "requiredViews": [
+          "diagnostic-balanced"
+        ],
+        "rosterDigest": "b777a6db1c1cc3a662119f28a1f93824206b979e8297a0cd953cea44588fec63"
+      },
+      "retiredArtifactDigests": [],
+      "retiredManifestDigests": [],
+      "runClass": "public-synthetic",
+      "scanners": [
+        {
+          "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+          "adapter": {
+            "adapterId": "redact-secret-core-node",
+            "adapterVersion": "1.0.0",
+            "normalizationVersion": 1
+          },
+          "artifactDigest": "a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5",
+          "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+          "product": {
+            "candidateDigest": "a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5",
+            "kind": "candidate"
+          },
+          "scannerId": "redact-secret-core",
+          "scannerVersion": "0.1.0-beta.13",
+          "candidateSourceCommit": "401158d09a677b110fa60209256ba184b1f08f8f"
+        }
+      ]
+    },
+    {
+      "artifactDigest": "0cc6d2a5ad5ac8c273fb34a6af4776aebecc06f8ad718fdbe812ef5092cd8a19",
+      "label": "benign-heavy-stress",
+      "manifestDigest": "5274550d0b1fe808be9b8389615ea4848af83dcce73fb8e2a230832887156b64",
+      "population": {
+        "populationDigest": "8e3716a7a67f68a5b6bbf90d554ec85817f3ae8b1b4fc90ac8b204cbb44d2a88",
+        "populationId": "b11-population-v2-benign-heavy-stress",
+        "populationVersion": 1,
+        "visibility": "public-synthetic"
+      },
+      "projection": {
+        "mode": "exploratory",
+        "requiredViews": [
+          "benign-heavy-stress"
+        ],
+        "rosterDigest": "616b5f99072cd32eaa5c5b63edf1d4e8081f711218d8a428b144c89e79dc2a0b"
+      },
+      "retiredArtifactDigests": [],
+      "retiredManifestDigests": [],
+      "runClass": "public-synthetic",
+      "scanners": [
+        {
+          "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+          "adapter": {
+            "adapterId": "redact-secret-core-node",
+            "adapterVersion": "1.0.0",
+            "normalizationVersion": 1
+          },
+          "artifactDigest": "a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5",
+          "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+          "product": {
+            "candidateDigest": "a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5",
+            "kind": "candidate"
+          },
+          "scannerId": "redact-secret-core",
+          "scannerVersion": "0.1.0-beta.13",
+          "candidateSourceCommit": "401158d09a677b110fa60209256ba184b1f08f8f"
+        }
+      ]
+    }
+  ],
+  "protocol": {
+    "accounting": "pii-v1",
+    "id": "pii-v1",
+    "rules": {
+      "accounting": {
+        "id": "pii-v1-canonical-accounting",
+        "revision": 2
+      },
+      "matching": {
+        "id": "pii-v1-canonical",
+        "revision": 2
+      },
+      "statistics": {
+        "id": "pii-v1-wilson-exact",
+        "revision": 1
+      }
+    },
+    "version": 2
+  },
+  "requireComplete": true,
+  "schema": "pii-eval-consumer-pins/1"
+}

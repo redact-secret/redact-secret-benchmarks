@@ -92,4 +92,28 @@ if (carried !== dual.coverage.carriedCases || excluded !== dual.coverage.notRepr
   fail('dual-run coverage');
 if (JSON.stringify(report.populations.flatMap(row => row.classifiedDifferences.map(d => d.class))) !== JSON.stringify(report.populations.flatMap(row => row.classifiedDifferences.map(() => 'compatibility'))))
   fail('an unrecorded difference class');
+// Schema 1.1 and 1.2 files the consumer validates against are the pinned upstream ones.
+for (const [version, item] of Object.entries(record.engine.artifactSchema.schemaFiles)) {
+  if (!/^[0-9a-f]{40}$/.test(item.upstreamCommit) || await digest(item.path) !== item.sha256) fail(`public artifact schema ${version} drift`);
+}
+// The consumer pins of the four populations are exactly the dual-run artifacts, for the pinned engine, and bind a candidate only by commit.
+const popPins = JSON.parse(await readFile(new URL(`../${dual.consumerPins}`, import.meta.url), 'utf8'));
+if (popPins.schema !== 'pii-eval-consumer-pins/1' || popPins.artifactSchema.version !== '1.2' || popPins.build.commit !== record.pins.piiEvalProjection ||
+    popPins.build.cargoLockSha256 !== record.pins.piiEvalProjectionCargoLockSha256 || popPins.requireComplete !== true || popPins.populations.length !== dual.artifacts.length)
+  fail('population consumer pins');
+for (const item of dual.artifacts) {
+  const pin = popPins.populations.find(row => row.label === item.view);
+  if (!pin || pin.artifactDigest !== item.semanticDigest || pin.manifestDigest !== item.manifestDigest || pin.population.populationDigest !== item.snapshotDigest ||
+      pin.projection.rosterDigest !== item.rosterDigest || JSON.stringify(pin.projection.requiredViews) !== JSON.stringify([item.view]) || pin.projection.mode !== item.mode ||
+      pin.scanners.length !== 1 || pin.scanners[0].product.kind !== 'candidate' || pin.scanners[0].candidateSourceCommit !== record.benchmarkPopulations.candidate.sourceCommit ||
+      pin.scanners[0].product.candidateDigest !== record.benchmarkPopulations.candidate.artifactSetCommitment || pin.scanners[0].activationDigest !== record.scanner.activationDigest ||
+      pin.scanners[0].configurationDigest !== record.scanner.configurationDigest)
+    fail(`population consumer pin for ${item.view}`);
+}
+const binding = record.publicationBinding;
+const source = JSON.parse(await readFile(new URL(`../${binding.transportPins}`, import.meta.url), 'utf8'));
+if (source.workflow.runId !== binding.ciRun.runId || source.workflow.headSha !== binding.ciRun.headSha || source.workflow.headSha !== record.pins.piiEvalProjection ||
+    source.artifacts.engine.id !== binding.ciRun.engineArtifactId || source.artifacts.measurement.id !== binding.ciRun.measurementArtifactId ||
+    source.durableCopy.path !== binding.durableCopy || binding.stagingOnly !== true || popPins.build.binarySha256 !== source.artifacts.engine.members['pii-eval'])
+  fail('publication binding');
 console.log('PII migration ownership, pins, populations and parity classifications are consistent.');

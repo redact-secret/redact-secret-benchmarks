@@ -48,6 +48,7 @@ export function problems(registry, adoption) {
       if (!/^candidate-runs-\d+$/.test(r.archive?.release ?? '') || !DIGEST.test(r.archive?.sha256 ?? '')) found.push(`${at}: ${name}.archive needs the candidate-runs-<run id> release and its sha256`);
       if (!SHA.test(r.benchmarkRevision ?? '')) found.push(`${at}: ${name}.benchmarkRevision must be a full commit`);
       if (typeof r.worsened !== 'boolean' || !Number.isInteger(r.fixed) || !Number.isInteger(r.regressed)) found.push(`${at}: ${name}.worsened, fixed and regressed must be recorded`);
+      if (r.improved !== undefined && !Number.isInteger(r.improved)) found.push(`${at}: ${name}.improved must be an integer when recorded`);
       if (r.worsened === false && r.regressed > 0) found.push(`${at}: ${name}.worsened is false but ${r.regressed} case(s) regressed`);
       if (r.repeatRunsEqual !== true) found.push(`${at}: the repeat runs did not agree, so the replay is not recorded`);
       if (!existsSync(path.join(root, r.data ?? '', 'candidate-effect.json'))) found.push(`${at}: ${name}.data ${r.data} holds no candidate-effect.json`);

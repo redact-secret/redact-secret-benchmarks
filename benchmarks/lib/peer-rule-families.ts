@@ -172,7 +172,7 @@ export function productScopeProblems(scope: ProductScope): string[] {
   if (!/^[0-9a-f]{40}$/.test(scope.readAt?.revision ?? '')) problems.push('product-scope.json: readAt.revision must be a full 40-character product commit');
   if (!scope.description?.trim() || scope.description.length > 240) problems.push('product-scope.json: needs a description of one sentence or two, at most 240 characters');
   if (RANKING_WORDS.test(scope.description ?? '')) problems.push('product-scope.json: the description words a judgement');
-  if (!Array.isArray(scope.outOfScope) || scope.outOfScope.length === 0 || scope.outOfScope.length > 8) problems.push('product-scope.json: needs one to eight outOfScope statements');
+  if (!Array.isArray(scope.outOfScope) || scope.outOfScope.length === 0 || scope.outOfScope.length > 12) problems.push('product-scope.json: needs one to twelve outOfScope statements');
   for (const statement of Array.isArray(scope.outOfScope) ? scope.outOfScope : []) {
     if (typeof statement !== 'string' || !statement.trim() || statement.length > 200) problems.push('product-scope.json: an outOfScope statement is empty or over 200 characters');
     else if (RANKING_WORDS.test(statement)) problems.push('product-scope.json: an outOfScope statement words a judgement; state what is not covered');

@@ -1,0 +1,584 @@
+{
+  "schema": "redact-secret/evidence-adoption-change-report/v1",
+  "evidenceRelease": "snapshot-2026.10.05.2",
+  "previous": {
+    "evidenceRelease": "snapshot-2026.10.05",
+    "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
+  },
+  "adoptionKey": "sha256:fbbeeca867db0f3db61e687709e22d7deb29792fcabb8a6f520302ae5f1256cb",
+  "scope": "Corpus evidence only: scanner and configuration pins are unchanged, and so is the engine, so any later difference in results is the changed corpus, not a product version.",
+  "diff": {
+    "cases": {
+      "old": 6519,
+      "new": 6519,
+      "added": 0,
+      "removed": 0,
+      "changed": 11,
+      "unchanged": 6508
+    },
+    "added": [],
+    "removed": [],
+    "changed": [
+      {
+        "id": "polar--polar-api-credential-body-42-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-api-credential-body-44-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-api-credential-checkout-link-secret-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-api-credential-client-id-in-url-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-api-credential-leading-glue-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-api-credential-setting-names-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-body-44-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-leading-glue-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-oauth-client-id-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-trailing-hyphen-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-trailing-underscore-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      }
+    ],
+    "addedByKind": {},
+    "addedByEvidenceClass": {},
+    "addedByGroup": {},
+    "changedFields": {
+      "grouping": 11
+    },
+    "evidenceClassTransitions": {
+      "project-policy -> unresolved": 11
+    },
+    "diversity": {
+      "providers": {
+        "old": 95,
+        "new": 95,
+        "added": [],
+        "removed": []
+      },
+      "families": {
+        "old": 169,
+        "new": 169,
+        "addedFamilies": []
+      }
+    }
+  },
+  "representation": {
+    "present": true,
+    "contract": "credential-eval/representation/1",
+    "factsDigest": "sha256:f25bf9f34e276a86f3b34a71c51ebf3f782fa16a196c0d1d544f76c94fd25f80",
+    "manifestCounts": {
+      "contract": "credential-eval/representation/1",
+      "facts_digest": "sha256:f25bf9f34e276a86f3b34a71c51ebf3f782fa16a196c0d1d544f76c94fd25f80",
+      "cases": 385,
+      "transformed_cases": 309,
+      "chunked_cases": 9,
+      "expected_rejections": 3,
+      "fragmented_spans": 18,
+      "fragments": 37,
+      "decoded_spans": 55,
+      "decoded_verified": 55,
+      "decoded_unverified": 0
+    },
+    "casesWithFacts": 385,
+    "derivation": {
+      "authored-base": 76,
+      "projection": 309
+    },
+    "inputValidity": {
+      "unpaired-surrogate-split": 3
+    },
+    "casesByTransformationOp": {
+      "embed": 206,
+      "encode": 62,
+      "escape": 7,
+      "fragment": 24,
+      "insert-codepoints": 17,
+      "normalize": 1,
+      "place": 66,
+      "repeat": 14
+    },
+    "casesByEncodeCodec": {
+      "encode:base64": 40,
+      "encode:hex": 28
+    },
+    "fragmentMechanisms": {
+      "adjacent-string-literals": 1,
+      "escaped-newline-text": 2,
+      "fixed-width-wrap": 1,
+      "json-string-array-elements": 1,
+      "literal-crlf": 1,
+      "literal-line-feed": 1,
+      "markdown-code-span-line-ending": 1,
+      "markdown-soft-line-break": 1,
+      "mime-base64-line-wrap": 3,
+      "quoted-printable-soft-line-break": 1,
+      "shell-line-continuation": 5,
+      "shell-line-continuation-in-single-quotes": 1,
+      "string-literal-addition": 2,
+      "string-literal-line-continuation": 2,
+      "trailing-equals-and-crlf-in-7bit-part": 1
+    },
+    "expectedSpansWithFragments": 18,
+    "expectedSpansWithDecoded": 55,
+    "decodedByCodec": {
+      "base64": 41,
+      "hex": 27,
+      "strip-codepoints": 8
+    },
+    "notExported": {
+      "materialized": 6524,
+      "exported": 6519,
+      "invalidUtf8": {
+        "total": 5,
+        "byReason": {
+          "invalid-utf8": 5
+        },
+        "cases": [
+          {
+            "id": "sendgrid-unicode-authored--key-a-byte-ff-before-key",
+            "reason": "invalid-utf8",
+            "bytes": 93
+          },
+          {
+            "id": "sendgrid-unicode-authored--key-a-encoded-surrogate-before-key",
+            "reason": "invalid-utf8",
+            "bytes": 95
+          },
+          {
+            "id": "sendgrid-unicode-authored--key-a-lone-continuation-byte-before-key",
+            "reason": "invalid-utf8",
+            "bytes": 93
+          },
+          {
+            "id": "sendgrid-unicode-authored--key-a-overlong-slash-before-key",
+            "reason": "invalid-utf8",
+            "bytes": 94
+          },
+          {
+            "id": "sendgrid-unicode-authored--key-a-truncated-four-byte-sequence-before-key",
+            "reason": "invalid-utf8",
+            "bytes": 95
+          }
+        ]
+      },
+      "twinLineageNotExported": 29
+    }
+  },
+  "reviewState": {
+    "previous": {
+      "present": true,
+      "contract": "credential-evidence/review-state/1",
+      "rule": "solo-maintainer-period (ADR 0020)",
+      "note": "maintainer-only: finalized by the sole maintainer, never reviewed, never independent validation, queued for retro-review. The credential-eval snapshot does not carry review state.",
+      "fixtures": {
+        "total": 6524,
+        "draft": 6428,
+        "maintainerOnly": 96,
+        "reviewed": 0
+      },
+      "maintainerOnly": {
+        "fixtures": 96,
+        "fixturesByOutcome": {
+          "must-flag": 71,
+          "must-not-flag": 25
+        },
+        "records": {
+          "case": 17,
+          "scenario": 6
+        },
+        "decisions": 23
+      },
+      "attributedFixtures": 84,
+      "attributedByOutcome": {
+        "must-flag": 71,
+        "must-not-flag": 13
+      },
+      "unattributedFixtures": 12,
+      "maintainerOnlyFixtureIds": [
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-url",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-three-layers-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-unpadded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-json",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-url",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-in-url",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-of-hex-lower-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-mixed-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-upper-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-upper-in-json",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-url",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-three-layers-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-json",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-url",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-in-url",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-of-hex-lower-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-mixed-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-upper-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-upper-in-json",
+        "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-url",
+        "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-three-layers-in-env",
+        "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--sendgrid-key-hex-lower-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-lower-in-url",
+        "base64-hex-representation-projections--sendgrid-key-hex-lower-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-lower-of-hex-lower-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-mixed-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-upper-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-upper-in-json",
+        "developer-artifact-lookalikes-authored--actions-cache-restore-log-key",
+        "developer-artifact-lookalikes-authored--actions-cache-step-key-input",
+        "developer-artifact-lookalikes-authored--go-mod-pseudo-version-requirement",
+        "developer-artifact-lookalikes-authored--go-sum-module-and-go-mod-hashes",
+        "developer-artifact-lookalikes-authored--npm-lock-integrity-sha512",
+        "developer-artifact-lookalikes-authored--oci-image-reference-pinned-by-digest",
+        "developer-artifact-lookalikes-authored--pip-requirements-hash-checking",
+        "developer-artifact-lookalikes-authored--semver-full-commit-build-metadata",
+        "developer-artifact-lookalikes-authored--semver-sha-tagged-build-metadata",
+        "developer-artifact-lookalikes-authored--sri-script-tag-sha384",
+        "developer-artifact-lookalikes-authored--webpack-contenthash-output-filenames",
+        "environment-and-test-values-authored--installation-token-lifetime-note",
+        "environment-and-test-values-authored--stripe-rotated-key-note",
+        "environment-and-test-values-authored--sts-credentials-past-expiration",
+        "http-auth-carriers-authored--basic-empty-password",
+        "http-auth-carriers-authored--basic-rfc-published-example",
+        "http-auth-carriers-authored--basic-token-split-by-space",
+        "http-auth-carriers-authored--basic-token-url-safe-alphabet",
+        "http-auth-carriers-authored--basic-token-without-padding",
+        "http-auth-carriers-authored--basic-user-id-in-cleartext-beside-token",
+        "line-break-and-fragment-authored--key-split-by-backslash-crlf-continuation",
+        "line-break-and-fragment-authored--key-split-by-backslash-newline-in-single-quotes",
+        "line-break-and-fragment-authored--key-split-by-literal-crlf",
+        "line-break-and-fragment-authored--key-split-by-literal-line-feed",
+        "line-break-and-fragment-authored--key-with-json-escaped-line-feed",
+        "line-break-and-fragment-authored--key-with-literal-backslash-n-in-log-line",
+        "line-break-and-fragment-authored--key-wrapped-in-markdown-code-span",
+        "line-break-and-fragment-authored--key-wrapped-in-markdown-paragraph",
+        "policy-ambiguous-assignment-bases-authored--aws-key-id-shaped-body-of-example-marker-base",
+        "policy-ambiguous-assignment-bases-authored--stripe-shaped-body-of-example-marker-base",
+        "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-english-prose",
+        "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-korean-prose",
+        "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-markdown-fence",
+        "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-english-prose",
+        "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-korean-prose",
+        "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-markdown-fence",
+        "sendgrid-unicode-authored--key-a-with-no-break-space-inside"
+      ]
+    },
+    "candidate": {
+      "present": true,
+      "contract": "credential-evidence/review-state/1",
+      "rule": "solo-maintainer-period (ADR 0020)",
+      "note": "maintainer-only: finalized by the sole maintainer, never reviewed, never independent validation, queued for retro-review. The credential-eval snapshot does not carry review state.",
+      "fixtures": {
+        "total": 6524,
+        "draft": 6428,
+        "maintainerOnly": 96,
+        "reviewed": 0
+      },
+      "maintainerOnly": {
+        "fixtures": 96,
+        "fixturesByOutcome": {
+          "must-flag": 71,
+          "must-not-flag": 25
+        },
+        "records": {
+          "case": 17,
+          "scenario": 6
+        },
+        "decisions": 23
+      },
+      "attributedFixtures": 84,
+      "attributedByOutcome": {
+        "must-flag": 71,
+        "must-not-flag": 13
+      },
+      "unattributedFixtures": 12,
+      "maintainerOnlyFixtureIds": [
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-url",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-three-layers-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-unpadded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-json",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-url",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-in-url",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-of-hex-lower-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-mixed-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-upper-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-upper-in-json",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-url",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-three-layers-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-json",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-url",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-in-url",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-of-hex-lower-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-mixed-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-upper-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-upper-in-json",
+        "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-url",
+        "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-three-layers-in-env",
+        "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--sendgrid-key-hex-lower-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-lower-in-url",
+        "base64-hex-representation-projections--sendgrid-key-hex-lower-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-lower-of-hex-lower-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-mixed-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-upper-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-upper-in-json",
+        "developer-artifact-lookalikes-authored--actions-cache-restore-log-key",
+        "developer-artifact-lookalikes-authored--actions-cache-step-key-input",
+        "developer-artifact-lookalikes-authored--go-mod-pseudo-version-requirement",
+        "developer-artifact-lookalikes-authored--go-sum-module-and-go-mod-hashes",
+        "developer-artifact-lookalikes-authored--npm-lock-integrity-sha512",
+        "developer-artifact-lookalikes-authored--oci-image-reference-pinned-by-digest",
+        "developer-artifact-lookalikes-authored--pip-requirements-hash-checking",
+        "developer-artifact-lookalikes-authored--semver-full-commit-build-metadata",
+        "developer-artifact-lookalikes-authored--semver-sha-tagged-build-metadata",
+        "developer-artifact-lookalikes-authored--sri-script-tag-sha384",
+        "developer-artifact-lookalikes-authored--webpack-contenthash-output-filenames",
+        "environment-and-test-values-authored--installation-token-lifetime-note",
+        "environment-and-test-values-authored--stripe-rotated-key-note",
+        "environment-and-test-values-authored--sts-credentials-past-expiration",
+        "http-auth-carriers-authored--basic-empty-password",
+        "http-auth-carriers-authored--basic-rfc-published-example",
+        "http-auth-carriers-authored--basic-token-split-by-space",
+        "http-auth-carriers-authored--basic-token-url-safe-alphabet",
+        "http-auth-carriers-authored--basic-token-without-padding",
+        "http-auth-carriers-authored--basic-user-id-in-cleartext-beside-token",
+        "line-break-and-fragment-authored--key-split-by-backslash-crlf-continuation",
+        "line-break-and-fragment-authored--key-split-by-backslash-newline-in-single-quotes",
+        "line-break-and-fragment-authored--key-split-by-literal-crlf",
+        "line-break-and-fragment-authored--key-split-by-literal-line-feed",
+        "line-break-and-fragment-authored--key-with-json-escaped-line-feed",
+        "line-break-and-fragment-authored--key-with-literal-backslash-n-in-log-line",
+        "line-break-and-fragment-authored--key-wrapped-in-markdown-code-span",
+        "line-break-and-fragment-authored--key-wrapped-in-markdown-paragraph",
+        "policy-ambiguous-assignment-bases-authored--aws-key-id-shaped-body-of-example-marker-base",
+        "policy-ambiguous-assignment-bases-authored--stripe-shaped-body-of-example-marker-base",
+        "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-english-prose",
+        "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-korean-prose",
+        "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-markdown-fence",
+        "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-english-prose",
+        "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-korean-prose",
+        "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-markdown-fence",
+        "sendgrid-unicode-authored--key-a-with-no-break-space-inside"
+      ]
+    }
+  },
+  "replay": {
+    "state": "pending",
+    "note": "Outcome drift, added-case outcomes, unmeasured/errors and qualification changes are added from the official replay (adopt-evidence-snapshot.mjs compare-runs)."
+  }
+}

@@ -31,7 +31,7 @@ export interface TriageContext {
   /** Core issue that tracks the families core has not classified (the handoff for the open root causes). */
   openCoreIssue?: string;
   /** Case ids the unpublished candidate (core 0ecf3e59) replays as fixed, and the ones it still fails, from the candidate replay (null when not replayed). */
-  candidate?: { commit: string; fixed: string[]; stillFailing: string[] } | null;
+  candidate?: { commit: string; fixed: string[]; improved?: string[]; stillFailing: string[] } | null;
 }
 
 const AMQP = 'generic-connection-grammar-authored--amqp-uri-all-sub-delimiters';
@@ -57,11 +57,13 @@ function core1203(seed: string, ctx: TriageContext, ledger: Decision['ledger']):
   const from1205 = !CORE_1203[seed] && !!CORE_1205[seed];
   const e: Core1203Entry | undefined = CORE_1203[seed] ?? CORE_1205[seed];
   if (!e) return null;
-  const verified = e.kind === 'fix' && ctx.candidate?.fixed.includes(seed);
+  // Verified when the candidate replay shows the case passing that failed (fixed), or passing both times with the unexpected output removed (improved: a `warn` or an extra redaction the product's own record calls a bug).
+  const verified = e.kind === 'fix' && (ctx.candidate?.fixed.includes(seed) || ctx.candidate?.improved?.includes(seed));
+  const how = ctx.candidate?.fixed.includes(seed) ? 'passes this case' : 'removes the unexpected output on this case (the scored outcome was already a pass)';
   const links = from1205 ? CORE_1205_LINKS : CORE_1203_LINKS;
   return {
     classification: e.classification, status: e.kind === 'fix' ? (verified ? 'fixed-in-candidate' : 'open') : 'settled', rule: `core-${from1205 ? '1205' : '1203'}.${e.kind}`, ledger,
-    disposition: e.kind === 'fix' && !verified ? `${e.disposition}; not yet verified on a candidate replay` : e.kind === 'fix' ? `${e.disposition}; the candidate replay (core ${ctx.candidate?.commit?.slice(0, 12)}) passes this case` : e.disposition,
+    disposition: e.kind === 'fix' && !verified ? `${e.disposition}; not yet verified on a candidate replay` : e.kind === 'fix' ? `${e.disposition}; the candidate replay (core ${ctx.candidate?.commit?.slice(0, 12)}) ${how}` : e.disposition,
     evidence: [...e.evidence], links, ...(e.evidenceProposal ? { evidenceProposal: e.evidenceProposal } : {}),
   };
 }

@@ -201,9 +201,18 @@ const adjustmentsByFamily: Record<string, Record<string, Record<string, number>>
     const l = legacyByKey.get(pair.legacy.key)!, n = nextByKey.get(pair.next.key)!;
     const kind = kindOf(n);
     if (kind === 'pending') {
-      // Legacy drops T0 twins (benchmarks/lib/lattice.ts), so a pending twin was never a legacy fixture to book.
-      if (n.twin) continue;
-      for (const d of l.detectors) { add(d, 'pending-not-scored', 'totalFixtures', 1); add(d, 'pending-not-scored', n.kind === 'must-not-flag' ? 'benignCases' : 'positiveCases', 1); }
+      // Legacy drops T0 twins (benchmarks/lib/lattice.ts), so a pending twin was never a legacy fixture to book, unless the legacy fixture itself was scored (its own tier is not T0:
+      // the release moved the case to an unresolved evidence class after the legacy fixture was authored), in which case the legacy counts held it and the new ones do not.
+      const legacyResult = l.scanners[SCANNER];
+      const legacyScored = legacyResult?.kind === 'control' || legacyResult?.kind === 'positive';
+      if (n.twin && !legacyScored) continue;
+      const flaggedByLegacy = legacyResult?.kind === 'control' && Boolean((legacyResult as { flagged?: boolean }).flagged);
+      for (const d of l.detectors) {
+        add(d, 'pending-not-scored', 'totalFixtures', 1);
+        add(d, 'pending-not-scored', n.twin ? 'twinPairs' : n.kind === 'must-not-flag' ? 'benignCases' : 'positiveCases', 1);
+        if (n.twin && flaggedByLegacy) add(d, 'pending-not-scored', 'twinFailures', 1);
+        else if (!n.twin && n.kind === 'must-not-flag' && flaggedByLegacy) add(d, 'pending-not-scored', 'benignFalseAlarms', 1);
+      }
       continue;
     }
     // A twin the snapshot gives no family to cannot be scoped by the engine (credential-eval scopes a twin by its own family), so it reads a

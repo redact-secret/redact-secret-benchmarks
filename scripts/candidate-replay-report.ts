@@ -46,6 +46,12 @@ const worse = (a?: Measurement, b?: Measurement): boolean => {
   if (pa === false && pb === false) return (b?.leaked_bytes ?? 0) > (a?.leaked_bytes ?? 0) || (b?.collateral_bytes ?? 0) > (a?.collateral_bytes ?? 0) || (b?.findings ?? 0) > (a?.findings ?? 0);
   return pa === true && pb === true ? (b?.collateral_bytes ?? 0) > (a?.collateral_bytes ?? 0) : false;
 };
+// A case the control and the candidate both pass whose unexpected output the candidate reduces: fewer findings or fewer collateral bytes, with nothing expected lost and nothing leaked. The scored
+// outcome does not change (a `warn` on a control reads clear, an extra redaction beside exact spans is collateral, not a miss), so it is not `fixed`; it is an improvement the findings show.
+const better = (a?: Measurement, b?: Measurement): boolean => {
+  if (passes(a) !== true || passes(b) !== true || worse(a, b)) return false;
+  return (b?.collateral_bytes ?? 0) < (a?.collateral_bytes ?? 0) || (b?.findings ?? 0) < (a?.findings ?? 0);
+};
 const same = (x: unknown, y: unknown) => JSON.stringify(x) === JSON.stringify(y);
 
 const POPULATIONS = ['public-evidence-snapshot', 'regression-corpus', 'policy-corpus'] as const;
@@ -79,7 +85,7 @@ for (const population of POPULATIONS) {
   }
   const pa = sa.get(PRODUCT)!, pb = sb.get(PRODUCT)!;
   const cb = new Map(pb.cases.map(c => [c.case_id, c]));
-  const fixed: string[] = [], regressed: string[] = [], changed: string[] = [], failing: string[] = [];
+  const fixed: string[] = [], regressed: string[] = [], changed: string[] = [], improved: string[] = [], failing: string[] = [];
   const differing: unknown[] = [];
   let unchanged = 0;
   for (const c of pa.cases) {
@@ -87,8 +93,8 @@ for (const population of POPULATIONS) {
     const before = passes(c.measurement), after = passes(n?.measurement);
     if (after === false) failing.push(c.case_id);
     if (same({ a: c.actual, m: c.measurement }, { a: n?.actual, m: n?.measurement })) { unchanged += 1; continue; }
-    const direction = before === false && after === true ? 'fixed' : worse(c.measurement, n?.measurement) ? 'regressed' : 'changed';
-    (direction === 'fixed' ? fixed : direction === 'regressed' ? regressed : changed).push(c.case_id);
+    const direction = before === false && after === true ? 'fixed' : worse(c.measurement, n?.measurement) ? 'regressed' : better(c.measurement, n?.measurement) ? 'improved' : 'changed';
+    (direction === 'fixed' ? fixed : direction === 'regressed' ? regressed : direction === 'improved' ? improved : changed).push(c.case_id);
     const content = snapshot.get(c.case_id);
     differing.push({
       case_id: c.case_id, direction, kind: c.kind, tier: c.tier, family: c.family, group: c.group, evidence_class: c.evidence_class, expected: c.expected,
@@ -101,7 +107,7 @@ for (const population of POPULATIONS) {
   if (population === 'public-evidence-snapshot') { for (const id of fixed) fixedSeeds.add(id); for (const id of failing) stillFailing.add(id); for (const id of regressed) regressedSeeds.add(id); }
   const recA = recordOf(control, population), recB = recordOf(candidateDir, population);
   result[population] = {
-    cases: pa.cases.length, fixed, regressed, changed, unchanged, stillFailing: failing.length,
+    cases: pa.cases.length, fixed, regressed, improved, changed, unchanged, stillFailing: failing.length,
     aggregatesIdentical: same(pa.aggregates, pb.aggregates), status: { control: pa.status, candidate: pb.status }, peers,
     repeat: { control: recA?.determinism ?? null, candidate: recB?.determinism ?? null, semanticDigest: { control: recA?.artifact?.semanticDigest ?? null, candidate: recB?.artifact?.semanticDigest ?? null } },
     differing,
@@ -151,7 +157,7 @@ const report = {
   control: { product: adoption.product, archive: adoption.replay?.archive, ciRun: adoption.replay?.ciRun, runClass: 'official' },
   replay: { engine: `credential-eval ${adoption.engine.tag} (${adoption.engine.revision.slice(0, 8)})`, runClass: registered.runClass, publication: registered.publication, platform: registered.platform, evidence: adoption.evidenceRelease,
     scope: 'plain, methods (floors population), policy and regression populations; every scanner and the engine configuration as the control; only the product build differs' },
-  worsened, fixed: plain?.fixed ?? [], regressed: POPULATIONS.flatMap(p => (result[p]?.regressed ?? []).map((id: string) => `${p}:${id}`)), stillFailing: [...stillFailing].sort(), populations: result,
+  worsened, fixed: plain?.fixed ?? [], improved: plain?.improved ?? [], regressed: POPULATIONS.flatMap(p => (result[p]?.regressed ?? []).map((id: string) => `${p}:${id}`)), stillFailing: [...stillFailing].sort(), populations: result,
   note: 'An exploratory, internal measurement of an unpublished build: never an accepted run, never public evidence. It decides nothing: no ledger row, status or evidence expectation is changed.',
 };
 mkdirSync(out, { recursive: true });
@@ -162,9 +168,9 @@ const f = (x?: Finding[]) => (x?.length ? x.map(y => `${y.start}-${y.end} ${y.fa
 const lines = [
   `# Product candidate ${candidateId} against the published control (#698)`, '',
   `Candidate: \`@redact-secret/core\` built from redact-secret ${registered.product.commit} (${registered.product.changes.join(', ')}), **unpublished**, exploratory/internal. Control: published ${adoption.product.version} (${adoption.replay?.archive?.release ?? 'archive'}). Same engine ${adoption.engine.tag}, evidence ${adoption.evidenceRelease}, peers and configuration; only the product build differs.`, '',
-  `**Worsened: ${worsened ? 'YES, see the regressed rows' : 'no'}.** This is a measurement, not a decision: no ledger row, status or evidence expectation changes.`, '',
-  '| Population | Cases | Fixed | Regressed | Changed | Unchanged | Still failing | Peers identical | Repeat runs equal (control / candidate) |', '| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |',
-  ...POPULATIONS.filter(p => !result[p]?.skipped).map(p => { const r = result[p]; return `| ${p} | ${r.cases} | ${r.fixed.length} | ${r.regressed.length} | ${r.changed.length} | ${r.unchanged} | ${r.stillFailing} | ${Object.values(r.peers).every((x: any) => x.casesIdentical) ? 'yes' : 'NO'} | ${r.repeat.control?.semanticDigestsEqual ?? '?'} / ${r.repeat.candidate?.semanticDigestsEqual ?? '?'} |`; }), '',
+  `**Worsened: ${worsened ? 'YES, see the regressed rows' : 'no'}.** Fixed is a failing case that now passes; improved is a case that passed before and passes now with fewer unexpected findings or less collateral. This is a measurement, not a decision: no ledger row, status or evidence expectation changes.`, '',
+  '| Population | Cases | Fixed | Improved | Regressed | Changed | Unchanged | Still failing | Peers identical | Repeat runs equal (control / candidate) |', '| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |',
+  ...POPULATIONS.filter(p => !result[p]?.skipped).map(p => { const r = result[p]; return `| ${p} | ${r.cases} | ${r.fixed.length} | ${r.improved.length} | ${r.regressed.length} | ${r.changed.length} | ${r.unchanged} | ${r.stillFailing} | ${Object.values(r.peers).every((x: any) => x.casesIdentical) ? 'yes' : 'NO'} | ${r.repeat.control?.semanticDigestsEqual ?? '?'} / ${r.repeat.candidate?.semanticDigestsEqual ?? '?'} |`; }), '',
 ];
 if (result.methods && !result.methods.skipped) {
   const x = result.methods;
@@ -177,5 +183,5 @@ for (const p of POPULATIONS) {
     ...r.differing.map((d: any) => `| \`${d.case_id}\` | ${d.direction} | ${m(d.control.measurement)} | ${m(d.candidate.measurement)} | ${f(d.control.actual)} | ${f(d.candidate.actual)} |`), '');
 }
 writeFileSync(path.join(out, 'candidate-effect.md'), `${lines.join('\n')}\n`);
-console.error(`candidate ${candidateId}: worsened=${worsened}; plain fixed ${plain?.fixed?.length ?? 0}, regressed ${plain?.regressed?.length ?? 0}`);
+console.error(`candidate ${candidateId}: worsened=${worsened}; plain fixed ${plain?.fixed?.length ?? 0}, improved ${plain?.improved?.length ?? 0}, regressed ${plain?.regressed?.length ?? 0}`);
 if (args.includes('--strict') && worsened) process.exit(1);

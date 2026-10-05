@@ -3,8 +3,11 @@
  * anything: it reads three built views (and optionally the candidate methods run) and writes what differs and why.
  *
  *   node --import tsx scripts/compare-adoption-views.ts --accepted VIEW --replay-old VIEW --candidate VIEW --report CHANGE_REPORT.json \
- *     [--candidate-methods ARTIFACT] [--out-json FILE] [--out-md FILE] [--record FILE] [--registry FILE] [--parity FILE]
+ *     [--candidate-methods ARTIFACT [--candidate-inputs <derived dir>] [--ledger <review ledger>]] [--out-json FILE] [--out-md FILE] [--record FILE] [--registry FILE] [--parity FILE]
  *   node --import tsx scripts/compare-adoption-views.ts --from-comparison COMPARISON.json --report CHANGE_REPORT.json [--out-json FILE] [--out-md FILE] ...
+ *
+ * `--ledger` names the review ledger the settled/unsettled split reads (default benchmarks/review-ledger.json): a triage queue that must not depend on the owner's settlement rows is exported
+ * with the ledger as it was before they were applied, and the settlements are applied afterwards (scripts/apply-ledger-settlements.ts).
  *
  * The report states the CURRENT adoption state (#700): acceptance, deployment receipts, scanned product and capability come from the structured record
  * (`--record`, default benchmarks/evidence-adoption.json) and the registry, so a report regenerated after the owner accepted no longer asks for acceptance.
@@ -80,12 +83,13 @@ if (engine.familiesWithAnyDifference.length || !engine.supportMatrixSame || engi
 
 // ---- 2. the candidate methods run, attributed to added versus common cases ----
 const snapshotCases = new Map<string, Json>(publicOf(C).cases.map((c: Json) => [c.id, c]));
+const classToPending = new Set<string>((Array.isArray(report.diff.changed) ? report.diff.changed : []).filter((c: Json) => Array.isArray(c.evidenceClass) && c.evidenceClass[0] !== c.evidenceClass[1] && c.evidenceClass[1] === 'unresolved').map((c: Json) => c.id));
 let methods: Json = null;
 const gateAttribution = new Map<string, { added: number; common: number }>();
 const unsettledGateOccurrences: Json[] = [];
 const assertionAttribution = new Map<string, Record<string, { added: number; common: number }>>();
 if (option('candidate-methods')) {
-  const ledger = readJson('benchmarks/review-ledger.json'), rekey = readJson('benchmarks/support/public-review-ledger-map.json');
+  const ledger = readJson(option('ledger') ?? 'benchmarks/review-ledger.json'), rekey = readJson(option('candidate-inputs') ? `${option('candidate-inputs')}/public-review-ledger-map.json` : 'benchmarks/support/public-review-ledger-map.json'); // a candidate's own derived re-key (--candidate-inputs <derived dir>): the committed one belongs to the accepted corpus
   const art = readRunArtifact(readFileSync(need('candidate-methods')), { forceBytes: true }).artifact as Json;
   const policy = C.policy; const gatePeers = new Set<string>(policy.differentialPeers ?? ['gitleaks', 'trufflehog']);
   const settled = (id: string) => ['resolved', 'not-assertable'].includes(ledger.entries[ledgerSettledId(id, ledger, rekey)]?.status);
@@ -131,7 +135,9 @@ const familyRows = [...c].filter(([k, f]) => FIELDS.some(x => !same(a.get(k)!.ev
     // every reason must be one the added cases explain: the unresolved differential occurrences and the reference's failed assertions of added cases
     const unresolved = f.evidence.differentialUnresolvedContractDisagreements as number;
     const explainedByAdded = gateAttribution.size ? g.added === unresolved && g.common === (o.evidence.differentialUnresolvedContractDisagreements as number) : null;
+    const movedToUnresolved = snapshotCases.size === 0 ? [] : [...snapshotCases.values()].filter((x: Json) => classToPending.has(x.id) && (x.detectors ?? []).includes(k)).map((x: Json) => x.id).sort();
     row.cause = {
+      evidenceClassMovedToUnresolved: movedToUnresolved,
       differentialUnresolvedFromAddedCases: gateAttribution.size ? g.added : null, differentialUnresolvedFromCommonCases: gateAttribution.size ? g.common : null,
       referenceAssertionFailuresByMethod: Object.fromEntries(Object.entries(m).map(([k2, v]) => [k2, v])),
       explainedByAddedCases: explainedByAdded,
@@ -160,7 +166,9 @@ for (const x of pc.cases) {
 }
 // A common case the release itself records as changed in CONTENT or EXPECTED spans (the case was re-authored or its expectation corrected in credential-evidence, e.g. ADR 0021) is a corpus change: its outcome move is that change, attributed to it.
 const contentChanged = new Set<string>((Array.isArray(report.diff.changed) ? report.diff.changed : []).filter((c: Json) => (c.fields ?? []).some((f: string) => f === 'content' || f === 'expected')).map((c: Json) => c.id));
-const driftExplained = (d: Json) => contentChanged.has(d.case) || d.regrouped.includes('family') && d.regrouped.length > 0 && C.policy.twinScope && snapshotCases.get(d.case)?.twinOf !== undefined;
+// A common case the release moves to an unresolved evidence class (T0: the maintainer asserts nothing) is not scored by any scanner any more: its outcome moves to `pending`, outside every denominator.
+// That is the evidence change itself, so a drift whose every scanner outcome ends `pending` for a case the release lists with an evidence-class change is attributed to it.
+const driftExplained = (d: Json) => (classToPending.has(d.case) && d.changed.length > 0 && d.changed.every((x: Json) => x.to === 'pending')) || contentChanged.has(d.case) || d.regrouped.includes('family') && d.regrouped.length > 0 && C.policy.twinScope && snapshotCases.get(d.case)?.twinOf !== undefined;
 const driftByScanner = count(drift.flatMap((d: Json) => d.changed.map((x: Json) => ({ ...x, case: d.case }))), (x: Json) => `${x.scanner}: ${x.from} -> ${x.to}`);
 for (const d of drift) if (!driftExplained(d)) unexplained.push(`common case ${d.case} changed outcome (${d.changed.map((x: Json) => `${x.scanner} ${x.from} -> ${x.to}`).join('; ')}) without a twin family assignment`);
 
@@ -249,7 +257,7 @@ const out = {
   },
   publicPopulation: {
     commonCases: commonCount, addedCases: addedCases.length, regroupedCommonCases: regroupedCommon,
-    commonCaseOutcomeDrift: { cases: drift.length, byScanner: driftByScanner, cause: [drift.filter((d: Json) => contentChanged.has(d.case)).length ? `${drift.filter((d: Json) => contentChanged.has(d.case)).length} case(s) the release re-authored or whose expected spans it corrected (content or expected in the change report)` : '', drift.filter((d: Json) => !contentChanged.has(d.case)).length ? `${drift.filter((d: Json) => !contentChanged.has(d.case)).length} cross-provider twin case(s) gained a family in credential-evidence (grouping change), so a scanner finding of another detector is no longer read as flagged` : ''].filter(Boolean).join('; '), details: drift },
+    commonCaseOutcomeDrift: { cases: drift.length, byScanner: driftByScanner, cause: [drift.filter((d: Json) => contentChanged.has(d.case)).length ? `${drift.filter((d: Json) => contentChanged.has(d.case)).length} case(s) the release re-authored or whose expected spans it corrected (content or expected in the change report)` : '', drift.filter((d: Json) => classToPending.has(d.case) && !contentChanged.has(d.case)).length ? `${drift.filter((d: Json) => classToPending.has(d.case) && !contentChanged.has(d.case)).length} case(s) the release moved to an unresolved evidence class (T0: the maintainer asserts nothing), which no scanner scores any more, so every outcome is pending and in no denominator` : '', drift.filter((d: Json) => !contentChanged.has(d.case) && !classToPending.has(d.case)).length ? `${drift.filter((d: Json) => !contentChanged.has(d.case) && !classToPending.has(d.case)).length} cross-provider twin case(s) gained a family in credential-evidence (grouping change), so a scanner finding of another detector is no longer read as flagged` : ''].filter(Boolean).join('; '), details: drift },
     addedCaseOutcomes: addedRows,
     regrouped: report.diff.evidenceClassTransitions,
   },
@@ -313,14 +321,22 @@ function renderMarkdown(o: Json, parity: Json | null): string {
     })), '',
     'Positive "other" is a partial, overbroad or mixed-span outcome. Pending cases carry no scored outcome and sit in no denominator; a not-measured case is never a zero detection.', '',
     '### Support status changes', '',
+    ...(addedTotal === 0 && o.corpusEffect.statusChanges.length && o.corpusEffect.statusChanges.every((r: Json) => r.cause.evidenceClassMovedToUnresolved?.length) ? [
+      `${o.corpusEffect.statusChanges.length} credential families (${o.corpusEffect.supportMatrixStatusChanges.length} support matrix entries) move from stable to provisional. No case was added, so none of it comes from added cases: each family lost scored evidence because the release moved cases of that family to an unresolved evidence class (T0), which are not scored and sit in no denominator. The reasons are the documented-route floors the remaining scored evidence no longer meets:`, '',
+      table(['Family', 'Tier', 'Status reasons (candidate)', 'Evidence delta (accepted to candidate)', 'Cases moved to T0'], o.corpusEffect.statusChanges.map((r: Json) => [r.family, r.evidenceTier, (r.statusReasons ?? []).join('; '), Object.entries(r.evidenceDelta).filter(([k]) => k !== 'policyQualification').map(([k, d]: [string, Json]) => `${k} ${JSON.stringify(d.from)} to ${JSON.stringify(d.to)}`).join('; '), r.cause.evidenceClassMovedToUnresolved.length])), '',
+      'Why: a status is read from scored evidence only. Those cases were scored before (as benign controls and twins) and are not now; nothing was removed or hidden, the evidence owner asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only), and this repository neither restores the status by dropping a floor nor counts an unscored case as a miss. The status returns when scored evidence meets the floors again (new or re-asserted cases), which is the evidence owner\'s change.', '',
+    ] : [
     `${o.corpusEffect.statusChanges.length} credential families (${o.corpusEffect.supportMatrixStatusChanges.length} support matrix entries) move from stable to provisional. Every status reason is one the added cases explain exactly:`, '',
     table(['Family', 'Tier', 'Unresolved differential occurrences (all from added cases)', 'Reference failures on added cases', 'Common-case cause'], o.corpusEffect.statusChanges.map((r: Json) => [r.family, r.evidenceTier, r.cause.differentialUnresolvedFromAddedCases, Object.entries(r.cause.referenceAssertionFailuresByMethod).map(([m, c]: [string, Json]) => `${m} ${c.added}`).join(', ') || 'none', r.cause.differentialUnresolvedFromCommonCases === 0 ? 'none (0 from common cases)' : r.cause.differentialUnresolvedFromCommonCases])), '',
     'Why: stable requires every disagreement with a peer scanner over the provider contract to be settled by a review decision. The legacy review ledger holds decisions for the cases the previous corpus had; the added cases have none, so their gate-peer occurrences (see the data file, `methods.unsettledGateOccurrences`) read unresolved. This repository does not invent those decisions. sendgrid-token additionally carries failed metamorphic and mutation assertions of the reference scanner on added cases that split a credential across lines or string literals: a fragment case, and fragment semantics are not measured yet (credential-eval#34, credential-evidence#150), so the engine scores the raw span.', '',
+    ]),
     `Support matrix entries that change: ${o.corpusEffect.supportMatrixStatusChanges.map((r: Json) => `\`${r.family}\``).join(', ')}.`, '',
+    ...(o.corpusEffect.evidenceDeltasWithoutStatusChange.length ? [
     '### Evidence deltas without a status change', '',
     table(['Family', `Changed evidence (${baseLower} to ${currentLower})`], o.corpusEffect.evidenceDeltasWithoutStatusChange.map((r: Json) => [r.family, Object.entries(r.evidenceDelta).filter(([k]) => k !== 'policyQualification').map(([k, d]: [string, Json]) => `${k} ${JSON.stringify(d.from)} to ${JSON.stringify(d.to)}`).join('; ')])), '',
     'Their statuses are unchanged (provisional before and after: the policy route reads the bounded policy corpus). The deltas come from added cases of the family: more positives, benign cases and axes, plus unsettled differential occurrences and metamorphic or mutation failures of the reference scanner on added cases.', '',
-    `Families: ${o.corpusEffect.unmappedFamilies.added.length} upstream families have no product detector yet (unmapped, never scored against a product family): ${o.corpusEffect.unmappedFamilies.added.map((x: string) => `\`${x.replace('public-evidence-snapshot:', '')}\``).join(', ')}. The undetected list and the known gaps are ${o.corpusEffect.undetectedSame && o.corpusEffect.knownGapsSame ? 'unchanged' : 'changed'}.`, '',
+    ] : []),
+    `Families: ${o.corpusEffect.unmappedFamilies.added.length ? `${o.corpusEffect.unmappedFamilies.added.length} upstream families have no product detector yet (unmapped, never scored against a product family): ${o.corpusEffect.unmappedFamilies.added.map((x: string) => `\`${x.replace('public-evidence-snapshot:', '')}\``).join(', ')}` : 'no upstream family was added or left without a product detector'}. The undetected list and the known gaps are ${o.corpusEffect.undetectedSame && o.corpusEffect.knownGapsSame ? 'unchanged' : 'changed'}.`, '',
     '### Unmeasured', '',
     table(['Population', 'Scanner', L.base, L.current], Object.keys(o.unmeasured.candidate).flatMap(p => { const scanners = new Set([...Object.keys(o.unmeasured.accepted[p] ?? {}), ...Object.keys(o.unmeasured.candidate[p] ?? {})]); return scanners.size ? [...scanners].map(sc => [p, sc, o.unmeasured.accepted[p]?.[sc]?.unmeasured ?? 0, `${o.unmeasured.candidate[p]?.[sc]?.unmeasured ?? 0} ${Object.entries(o.unmeasured.candidate[p]?.[sc]?.reasons ?? {}).map(([r, c]) => `(${c}: ${String(r).replace('scanner output could not be mapped to ranges: ', '')})`).join(' ')}`]) : [[p, 'all', 0, 0]]; })), '',
     `The methods run also leaves ${JSON.stringify(o.methods?.unmeasuredVariants ?? {})} generated variants unmeasured. They are in no denominator and never a zero detection.`, '',
@@ -428,7 +444,7 @@ function renderMarkdown(o: Json, parity: Json | null): string {
       '3. Set the owner fields (the authority file `new.acceptedOn` and `new.acceptedBy`, the record `candidate.ownerAcceptance`), and turn the draft ADR into your decision (`status: accepted`, the Decision and Consequences text). The gates stay red until you do.',
       '4. Run the gates on that branch with `trufflehog --version` printing 3.97.4: `npm run official-runs:check -- --bindings`, `authority:check`, `adoption:check`, `decisions:validate`, `qualification-inputs:check`, `npm test`, `npm run typecheck`, and the web checks. If the product inputs changed since this PR, the policy revision and the parity report in the patch are stale: re-run `qualification:view` and `qualification:parity --strict` (commands in `docs/specs/qualification-parity.md`) and update the authority policy revision.',
       '5. Merge to `develop` (a push publishes staging), check the stamps and that `develop` is green, then `npm run go-production` when the measurement is ready to be public. Record the staging and production receipts under `candidate.deployment` and comment on credential-evidence#142 with the tag, digests, run ids and disposition.', '',
-      `Open for the product, not part of the acceptance: the review decisions for the added cases' gate-peer occurrences (the ${o.corpusEffect.supportMatrixStatusChanges.length} matrix entries that moved to provisional stay provisional until they are settled), the product position on fragment and decoded cases, and the pinned replay of this snapshot against the published core beta.13 (#697).`, '']),
+      `Open for the product, not part of the acceptance: ${addedTotal === 0 ? `the ${o.corpusEffect.supportMatrixStatusChanges.length} matrix entries that moved to provisional stay provisional until scored evidence meets the documented-route floors again (a change of the evidence, not of this repository), and the product position on fragment and decoded cases.` : `the review decisions for the added cases' gate-peer occurrences (the ${o.corpusEffect.supportMatrixStatusChanges.length} matrix entries that moved to provisional stay provisional until they are settled), the product position on fragment and decoded cases, and the pinned replay of this snapshot against the published core beta.13 (#697).`}`, '']),
     '## Unexplained', '', o.unexplained.length ? o.unexplained.map((u: string) => `- ${u}`).join('\n') : 'None: every difference above is attributed by a rule that checks the data of both views.', '');
   return `${lines.join('\n')}\n`;
 }

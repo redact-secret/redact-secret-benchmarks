@@ -1,0 +1,927 @@
+{
+ "schema": "redact-secret/snapshot-contrast/v1",
+ "disclosure": "Maintainer-reviewed (independent review pending) / 메인테이너 검토 (독립 검토 대기). A measurement by semantic id, not an assertion about the product.",
+ "tool": "scripts/contrast-snapshots.ts",
+ "comparisons": [
+  {
+   "kind": "control: published 0.1.0-beta.13 on alpha.5",
+   "newer": "snapshot-2026.10.05.2 (run 37332934881)",
+   "older": "snapshot-2026.10.05 (run 37296823599)",
+   "differences": 305,
+   "explained": 305,
+   "unexplained": 0,
+   "regressions": 0,
+   "byCause": {
+    "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored": 270,
+    "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored (a twin of this case; the mutation assertions that flip it read the twin)": 35
+   },
+   "byPopulationAndKind": {
+    "public-evidence-snapshot case": 55,
+    "public-evidence-snapshot+methods assertion": 95,
+    "public-evidence-snapshot+methods case": 155
+   },
+   "plainCases": [
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-body-42-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-checkout-link-secret-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-client-id-in-url-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-setting-names-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-token-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-token-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-token-oauth-client-id-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-token-trailing-hyphen-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-token-trailing-underscore-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-body-42-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-checkout-link-secret-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-client-id-in-url-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-setting-names-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-token-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-token-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-token-oauth-client-id-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-token-trailing-hyphen-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-token-trailing-underscore-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-api-credential-body-42-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control flagged",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-api-credential-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control flagged",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-api-credential-checkout-link-secret-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-api-credential-client-id-in-url-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-api-credential-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control flagged",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-api-credential-setting-names-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-token-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-token-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control flagged",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-token-oauth-client-id-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-token-trailing-hyphen-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-token-trailing-underscore-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control flagged",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-body-42-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-checkout-link-secret-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-client-id-in-url-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-setting-names-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-token-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-token-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-token-oauth-client-id-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-token-trailing-hyphen-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-token-trailing-underscore-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-body-42-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-checkout-link-secret-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-client-id-in-url-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-setting-names-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-token-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-token-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-token-oauth-client-id-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-token-trailing-hyphen-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-token-trailing-underscore-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    }
+   ]
+  },
+  {
+   "kind": "candidate: unpublished core-main-422e43e3 (exploratory, internal)",
+   "newer": "snapshot-2026.10.05.2 (run 37338401211)",
+   "older": "snapshot-2026.10.05 (run 37333039985)",
+   "differences": 305,
+   "explained": 305,
+   "unexplained": 0,
+   "regressions": 0,
+   "byCause": {
+    "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored": 270,
+    "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored (a twin of this case; the mutation assertions that flip it read the twin)": 35
+   },
+   "byPopulationAndKind": {
+    "public-evidence-snapshot case": 55,
+    "public-evidence-snapshot+methods assertion": 95,
+    "public-evidence-snapshot+methods case": 155
+   },
+   "plainCases": [
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-body-42-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-checkout-link-secret-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-client-id-in-url-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-setting-names-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-token-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-token-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-token-oauth-client-id-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-token-trailing-hyphen-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-token-trailing-underscore-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-body-42-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-checkout-link-secret-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-client-id-in-url-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-setting-names-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-token-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-token-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-token-oauth-client-id-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-token-trailing-hyphen-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-token-trailing-underscore-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-api-credential-body-42-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control flagged",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-api-credential-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control flagged",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-api-credential-checkout-link-secret-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-api-credential-client-id-in-url-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-api-credential-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control flagged",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-api-credential-setting-names-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-token-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-token-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control flagged",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-token-oauth-client-id-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-token-trailing-hyphen-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "openredaction",
+     "case": "polar--polar-token-trailing-underscore-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control flagged",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-body-42-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-checkout-link-secret-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-client-id-in-url-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-setting-names-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-token-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-token-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-token-oauth-client-id-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-token-trailing-hyphen-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-token-trailing-underscore-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-body-42-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-checkout-link-secret-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-client-id-in-url-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-setting-names-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-token-body-44-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-token-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-token-oauth-client-id-public-id",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-token-trailing-hyphen-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-token-trailing-underscore-twin",
+     "cause": "changed in snapshot-2026.10.05.2 (grouping; evidence class project-policy -> unresolved): the maintainer asserts nothing for them (credential-evidence ADR 0022 / #226, maintainer-only): moved from T3 project-policy to T0 unresolved, not scored",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    }
+   ]
+  }
+ ]
+}

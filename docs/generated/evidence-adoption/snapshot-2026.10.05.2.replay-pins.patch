@@ -1,0 +1,487 @@
+diff --git a/benchmarks/official-runs.json b/benchmarks/official-runs.json
+index 31102853..a8ff4768 100644
+--- a/benchmarks/official-runs.json
++++ b/benchmarks/official-runs.json
+@@ -107,12 +107,12 @@
+       "publishable": true,
+       "evidence": {
+         "source": "credential-evidence",
+-        "revision": "records-tree-sha256:924cd5b9b068e0d5ec5039bce962c63a484cb7fdec61b8b1e6603b1c530884b7",
++        "revision": "records-tree-sha256:51e2164c2b16c49d33ebd46d12224040e2b5d628bed35c5f329acae319e23aba",
+         "evidenceSchema": "credential-evidence/schema/1.7.0",
+-        "corpusDigest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
++        "corpusDigest": "sha256:c114af16ef8644519cd01c88e6ffeb9bdb698ed32a3803d64d68405bedb52c3c",
+         "release": {
+-          "tag": "snapshot-2026.10.05",
+-          "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
++          "tag": "snapshot-2026.10.05.2",
++          "manifestDigest": "sha256:c4133f8f06d38b80402e4a3c0d59e7c4b08d81708d4c3e1b32d2260db4a45a88"
+         }
+       }
+     },
+@@ -264,22 +264,11 @@
+       }
+     },
+     {
+-      "id": "public-evidence-snapshot+methods@linux-x64",
+-      "population": "public-evidence-snapshot",
+-      "kind": "methods",
+-      "methods": [
+-        "differential",
+-        "metamorphic",
+-        "mutation"
+-      ],
+-      "evaluation": {
+-        "reference": "redact-secret",
+-        "seed": "case-id",
+-        "evidenceDigest": "sha256:1af8d70c6891eddf749f741364b35ba0c46d510a888d7e39111be04ec2c49c91"
+-      },
++      "id": "regression-corpus@linux-x64",
++      "population": "regression-corpus",
+       "platform": "linux-x64",
+       "canonical": true,
+-      "purpose": "canonical methods run: the linux-x64 official run of .github/workflows/official-runs.yml",
++      "purpose": "canonical measurement: the linux-x64 official run of .github/workflows/official-runs.yml",
+       "recordedOn": "2026-10-05",
+       "benchmarkRevision": "d4b9f1e96fc06c08d44554e4b2cc18a4a0872d0a",
+       "engine": {
+@@ -291,21 +280,20 @@
+       "runClass": "public",
+       "engineRunClass": "official",
+       "publication": "public",
+-      "configHash": "sha256:d47d081ce5fb1265aeebe7fdee9fea27a3b01b2fa0e36ce6ee679706d2a924b2",
++      "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+       "evidence": {
+-        "source": "credential-evidence",
+-        "revision": "records-tree-sha256:924cd5b9b068e0d5ec5039bce962c63a484cb7fdec61b8b1e6603b1c530884b7",
+-        "evidence_schema": "credential-evidence/schema/1.7.0",
+-        "corpus_digest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
++        "source": "redact-secret-benchmarks/regression",
++        "revision": "corpus-sha256:b7b236c5ad1afc9377d05ca3f3738cebdaad15fbdaa3a492e3059770f04285f6",
++        "evidence_schema": "redact-secret-benchmarks/fixtures/v2",
++        "corpus_digest": "sha256:b7b236c5ad1afc9377d05ca3f3738cebdaad15fbdaa3a492e3059770f04285f6",
+         "release": {
+-          "tag": "snapshot-2026.10.05",
+-          "manifest_digest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
+-        },
+-        "representation": "credential-eval/representation/1"
++          "tag": "regression-b7b236c5ad1a",
++          "manifest_digest": "sha256:5cf63dd0aafdbff6752107c0d3a7e4be63938f1e4e6d30c92c15c5443cfb1080"
++        }
+       },
+       "artifact": {
+-        "semanticDigest": "sha256:3b5c750a1f973760b4f08d748525e280b6a516feb0e013ccfdc8c87ff66e2442",
+-        "byteDigest": "sha256:d4e9a1b0b373ec404cfafa629b985b68eb161276b14da8dcb01bb81fb99d90ec",
++        "semanticDigest": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
++        "byteDigest": "sha256:50687e1c6a38410db5686ec8c1c3ce6f46a7585bc4e8cf5bfcdfa22cf6411340",
+         "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
+         "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
+       },
+@@ -381,45 +369,58 @@
+         }
+       ],
+       "caseCounts": {
+-        "flare-redact": 35747,
+-        "gitleaks": 35747,
+-        "openredaction": 35747,
+-        "redact-secret": 35747,
+-        "trufflehog": 35747
++        "flare-redact": 153,
++        "gitleaks": 153,
++        "openredaction": 153,
++        "redact-secret": 153,
++        "trufflehog": 153
+       }
+-    },
++    }
++  ],
++  "historicalRuns": [
+     {
+-      "id": "public-evidence-snapshot@linux-x64",
++      "id": "public-evidence-snapshot+methods@linux-x64",
+       "population": "public-evidence-snapshot",
++      "kind": "methods",
++      "methods": [
++        "differential",
++        "metamorphic",
++        "mutation"
++      ],
++      "evaluation": {
++        "reference": "redact-secret",
++        "seed": "case-id",
++        "evidenceDigest": "sha256:1af8d70c6891eddf749f741364b35ba0c46d510a888d7e39111be04ec2c49c91"
++      },
+       "platform": "linux-x64",
+       "canonical": true,
+-      "purpose": "canonical measurement: the linux-x64 official run of .github/workflows/official-runs.yml",
+-      "recordedOn": "2026-10-05",
+-      "benchmarkRevision": "d4b9f1e96fc06c08d44554e4b2cc18a4a0872d0a",
++      "purpose": "canonical methods run: the linux-x64 official run of .github/workflows/official-runs.yml",
++      "recordedOn": "2026-10-04",
++      "benchmarkRevision": "9a22e6fd046ef98242987d3f727ae1e6d11df91e",
+       "engine": {
+         "name": "credential-eval",
+-        "version": "0.1.0-alpha.5",
+-        "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
++        "version": "0.1.0-alpha.4",
++        "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33",
+         "protocol": "credential-eval-protocol/1"
+       },
+       "runClass": "public",
+       "engineRunClass": "official",
+       "publication": "public",
+-      "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
++      "configHash": "sha256:eea835c2e088ff369ecae475d6daccf55917f6c14e2c6398ca804f146fc83f01",
+       "evidence": {
+         "source": "credential-evidence",
+-        "revision": "records-tree-sha256:924cd5b9b068e0d5ec5039bce962c63a484cb7fdec61b8b1e6603b1c530884b7",
++        "revision": "records-tree-sha256:dbfea28d29e427c28dff4054cbdda77e6c102541e56210e3cd253ddc63e9b154",
+         "evidence_schema": "credential-evidence/schema/1.7.0",
+-        "corpus_digest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
++        "corpus_digest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
+         "release": {
+-          "tag": "snapshot-2026.10.05",
+-          "manifest_digest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
++          "tag": "snapshot-2026.10.04.3",
++          "manifest_digest": "sha256:690ed57312d576fd6a614d40de10efe8bbc89431693aa4fbaa99979d69c0da8a"
+         },
+         "representation": "credential-eval/representation/1"
+       },
+       "artifact": {
+-        "semanticDigest": "sha256:4bbbebc2ca24f190a3c69b0ff9dd7e97e744bba9e54e266a3caf11702018fc66",
+-        "byteDigest": "sha256:31ebec733e4e715fafe5d8ee8af826c864d4cc61a3f49eca19242fce2ba4e3ea",
++        "semanticDigest": "sha256:0e909c53f18bd399951540e6ea5edacfe51a330902e396138e639201cd541d04",
++        "byteDigest": "sha256:c4566578e169dfb28f6c4949911738f7a8030e35ff2eb1ac7571e002ec024645",
+         "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
+         "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
+       },
+@@ -469,7 +470,7 @@
+         },
+         {
+           "id": "redact-secret",
+-          "version": "0.1.0-beta.13",
++          "version": "0.1.0-beta.12",
+           "build": "released",
+           "mode": "Published npm package · default detectors",
+           "adapter": {
+@@ -478,7 +479,7 @@
+           },
+           "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2",
+           "executableSha256": null,
+-          "packageIntegrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
++          "packageIntegrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw=="
+         },
+         {
+           "id": "trufflehog",
+@@ -495,44 +496,51 @@
+         }
+       ],
+       "caseCounts": {
+-        "flare-redact": 6519,
+-        "gitleaks": 6519,
+-        "openredaction": 6519,
+-        "redact-secret": 6519,
+-        "trufflehog": 6519
+-      }
++        "flare-redact": 35322,
++        "gitleaks": 35322,
++        "openredaction": 35322,
++        "redact-secret": 35322,
++        "trufflehog": 35322
++      },
++      "status": "historical",
++      "supersededBy": {
++        "evidenceRelease": "snapshot-2026.10.05",
++        "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
++      },
++      "supersededOn": "2026-10-05"
+     },
+     {
+-      "id": "regression-corpus@linux-x64",
+-      "population": "regression-corpus",
++      "id": "public-evidence-snapshot@linux-x64",
++      "population": "public-evidence-snapshot",
+       "platform": "linux-x64",
+       "canonical": true,
+       "purpose": "canonical measurement: the linux-x64 official run of .github/workflows/official-runs.yml",
+-      "recordedOn": "2026-10-05",
+-      "benchmarkRevision": "d4b9f1e96fc06c08d44554e4b2cc18a4a0872d0a",
++      "recordedOn": "2026-10-04",
++      "benchmarkRevision": "9a22e6fd046ef98242987d3f727ae1e6d11df91e",
+       "engine": {
+         "name": "credential-eval",
+-        "version": "0.1.0-alpha.5",
+-        "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
++        "version": "0.1.0-alpha.4",
++        "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33",
+         "protocol": "credential-eval-protocol/1"
+       },
+       "runClass": "public",
+       "engineRunClass": "official",
+       "publication": "public",
+-      "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
++      "configHash": "sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16",
+       "evidence": {
+-        "source": "redact-secret-benchmarks/regression",
+-        "revision": "corpus-sha256:b7b236c5ad1afc9377d05ca3f3738cebdaad15fbdaa3a492e3059770f04285f6",
+-        "evidence_schema": "redact-secret-benchmarks/fixtures/v2",
+-        "corpus_digest": "sha256:b7b236c5ad1afc9377d05ca3f3738cebdaad15fbdaa3a492e3059770f04285f6",
++        "source": "credential-evidence",
++        "revision": "records-tree-sha256:dbfea28d29e427c28dff4054cbdda77e6c102541e56210e3cd253ddc63e9b154",
++        "evidence_schema": "credential-evidence/schema/1.7.0",
++        "corpus_digest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
+         "release": {
+-          "tag": "regression-b7b236c5ad1a",
+-          "manifest_digest": "sha256:5cf63dd0aafdbff6752107c0d3a7e4be63938f1e4e6d30c92c15c5443cfb1080"
+-        }
++          "tag": "snapshot-2026.10.04.3",
++          "manifest_digest": "sha256:690ed57312d576fd6a614d40de10efe8bbc89431693aa4fbaa99979d69c0da8a"
++        },
++        "representation": "credential-eval/representation/1"
+       },
+       "artifact": {
+-        "semanticDigest": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
+-        "byteDigest": "sha256:50687e1c6a38410db5686ec8c1c3ce6f46a7585bc4e8cf5bfcdfa22cf6411340",
++        "semanticDigest": "sha256:d253e93cd6bf89053b83d12621ca59fe293741cce9304c9cf54c055108e8f4d9",
++        "byteDigest": "sha256:1efe17925cc64f5addcbf6daff5c1d0006eceb8d9d8a69209f730390f1ef7f6a",
+         "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
+         "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
+       },
+@@ -582,7 +590,7 @@
+         },
+         {
+           "id": "redact-secret",
+-          "version": "0.1.0-beta.13",
++          "version": "0.1.0-beta.12",
+           "build": "released",
+           "mode": "Published npm package · default detectors",
+           "adapter": {
+@@ -591,7 +599,7 @@
+           },
+           "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2",
+           "executableSha256": null,
+-          "packageIntegrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
++          "packageIntegrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw=="
+         },
+         {
+           "id": "trufflehog",
+@@ -608,15 +616,19 @@
+         }
+       ],
+       "caseCounts": {
+-        "flare-redact": 153,
+-        "gitleaks": 153,
+-        "openredaction": 153,
+-        "redact-secret": 153,
+-        "trufflehog": 153
+-      }
+-    }
+-  ],
+-  "historicalRuns": [
++        "flare-redact": 6449,
++        "gitleaks": 6449,
++        "openredaction": 6449,
++        "redact-secret": 6449,
++        "trufflehog": 6449
++      },
++      "status": "historical",
++      "supersededBy": {
++        "evidenceRelease": "snapshot-2026.10.05",
++        "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
++      },
++      "supersededOn": "2026-10-05"
++    },
+     {
+       "id": "public-evidence-snapshot+methods@linux-x64",
+       "population": "public-evidence-snapshot",
+@@ -634,32 +646,32 @@
+       "platform": "linux-x64",
+       "canonical": true,
+       "purpose": "canonical methods run: the linux-x64 official run of .github/workflows/official-runs.yml",
+-      "recordedOn": "2026-10-04",
+-      "benchmarkRevision": "9a22e6fd046ef98242987d3f727ae1e6d11df91e",
++      "recordedOn": "2026-10-05",
++      "benchmarkRevision": "d4b9f1e96fc06c08d44554e4b2cc18a4a0872d0a",
+       "engine": {
+         "name": "credential-eval",
+-        "version": "0.1.0-alpha.4",
+-        "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33",
++        "version": "0.1.0-alpha.5",
++        "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+         "protocol": "credential-eval-protocol/1"
+       },
+       "runClass": "public",
+       "engineRunClass": "official",
+       "publication": "public",
+-      "configHash": "sha256:eea835c2e088ff369ecae475d6daccf55917f6c14e2c6398ca804f146fc83f01",
++      "configHash": "sha256:d47d081ce5fb1265aeebe7fdee9fea27a3b01b2fa0e36ce6ee679706d2a924b2",
+       "evidence": {
+         "source": "credential-evidence",
+-        "revision": "records-tree-sha256:dbfea28d29e427c28dff4054cbdda77e6c102541e56210e3cd253ddc63e9b154",
++        "revision": "records-tree-sha256:924cd5b9b068e0d5ec5039bce962c63a484cb7fdec61b8b1e6603b1c530884b7",
+         "evidence_schema": "credential-evidence/schema/1.7.0",
+-        "corpus_digest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
++        "corpus_digest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
+         "release": {
+-          "tag": "snapshot-2026.10.04.3",
+-          "manifest_digest": "sha256:690ed57312d576fd6a614d40de10efe8bbc89431693aa4fbaa99979d69c0da8a"
++          "tag": "snapshot-2026.10.05",
++          "manifest_digest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
+         },
+         "representation": "credential-eval/representation/1"
+       },
+       "artifact": {
+-        "semanticDigest": "sha256:0e909c53f18bd399951540e6ea5edacfe51a330902e396138e639201cd541d04",
+-        "byteDigest": "sha256:c4566578e169dfb28f6c4949911738f7a8030e35ff2eb1ac7571e002ec024645",
++        "semanticDigest": "sha256:3b5c750a1f973760b4f08d748525e280b6a516feb0e013ccfdc8c87ff66e2442",
++        "byteDigest": "sha256:d4e9a1b0b373ec404cfafa629b985b68eb161276b14da8dcb01bb81fb99d90ec",
+         "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
+         "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
+       },
+@@ -709,7 +721,7 @@
+         },
+         {
+           "id": "redact-secret",
+-          "version": "0.1.0-beta.12",
++          "version": "0.1.0-beta.13",
+           "build": "released",
+           "mode": "Published npm package · default detectors",
+           "adapter": {
+@@ -718,7 +730,7 @@
+           },
+           "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2",
+           "executableSha256": null,
+-          "packageIntegrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw=="
++          "packageIntegrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+         },
+         {
+           "id": "trufflehog",
+@@ -735,16 +747,16 @@
+         }
+       ],
+       "caseCounts": {
+-        "flare-redact": 35322,
+-        "gitleaks": 35322,
+-        "openredaction": 35322,
+-        "redact-secret": 35322,
+-        "trufflehog": 35322
++        "flare-redact": 35747,
++        "gitleaks": 35747,
++        "openredaction": 35747,
++        "redact-secret": 35747,
++        "trufflehog": 35747
+       },
+       "status": "historical",
+       "supersededBy": {
+-        "evidenceRelease": "snapshot-2026.10.05",
+-        "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
++        "evidenceRelease": "snapshot-2026.10.05.2",
++        "manifestDigest": "sha256:c4133f8f06d38b80402e4a3c0d59e7c4b08d81708d4c3e1b32d2260db4a45a88"
+       },
+       "supersededOn": "2026-10-05"
+     },
+@@ -754,32 +766,32 @@
+       "platform": "linux-x64",
+       "canonical": true,
+       "purpose": "canonical measurement: the linux-x64 official run of .github/workflows/official-runs.yml",
+-      "recordedOn": "2026-10-04",
+-      "benchmarkRevision": "9a22e6fd046ef98242987d3f727ae1e6d11df91e",
++      "recordedOn": "2026-10-05",
++      "benchmarkRevision": "d4b9f1e96fc06c08d44554e4b2cc18a4a0872d0a",
+       "engine": {
+         "name": "credential-eval",
+-        "version": "0.1.0-alpha.4",
+-        "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33",
++        "version": "0.1.0-alpha.5",
++        "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+         "protocol": "credential-eval-protocol/1"
+       },
+       "runClass": "public",
+       "engineRunClass": "official",
+       "publication": "public",
+-      "configHash": "sha256:107f4601e4d4aac22cf3f4673760c3509f914491a4d30ba6400170682ca08e16",
++      "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+       "evidence": {
+         "source": "credential-evidence",
+-        "revision": "records-tree-sha256:dbfea28d29e427c28dff4054cbdda77e6c102541e56210e3cd253ddc63e9b154",
++        "revision": "records-tree-sha256:924cd5b9b068e0d5ec5039bce962c63a484cb7fdec61b8b1e6603b1c530884b7",
+         "evidence_schema": "credential-evidence/schema/1.7.0",
+-        "corpus_digest": "sha256:fdce9df7611a1c8be927c1bad3ec8fa85a57373187c2f5b51cc9dc09195d9e8f",
++        "corpus_digest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
+         "release": {
+-          "tag": "snapshot-2026.10.04.3",
+-          "manifest_digest": "sha256:690ed57312d576fd6a614d40de10efe8bbc89431693aa4fbaa99979d69c0da8a"
++          "tag": "snapshot-2026.10.05",
++          "manifest_digest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
+         },
+         "representation": "credential-eval/representation/1"
+       },
+       "artifact": {
+-        "semanticDigest": "sha256:d253e93cd6bf89053b83d12621ca59fe293741cce9304c9cf54c055108e8f4d9",
+-        "byteDigest": "sha256:1efe17925cc64f5addcbf6daff5c1d0006eceb8d9d8a69209f730390f1ef7f6a",
++        "semanticDigest": "sha256:4bbbebc2ca24f190a3c69b0ff9dd7e97e744bba9e54e266a3caf11702018fc66",
++        "byteDigest": "sha256:31ebec733e4e715fafe5d8ee8af826c864d4cc61a3f49eca19242fce2ba4e3ea",
+         "schemaDigest": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
+         "stored": "the build artifact of the CI run that produced it (immutable, with its manifest)"
+       },
+@@ -829,7 +841,7 @@
+         },
+         {
+           "id": "redact-secret",
+-          "version": "0.1.0-beta.12",
++          "version": "0.1.0-beta.13",
+           "build": "released",
+           "mode": "Published npm package · default detectors",
+           "adapter": {
+@@ -838,7 +850,7 @@
+           },
+           "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2",
+           "executableSha256": null,
+-          "packageIntegrity": "sha512-fDVwt2U7VFSKb/0ixSuU5e+TOGVaUnyR1sIYwgS4S6gMndFnaq0M7ikaqac8wnTMYfYO/LS12JayXXeKbhE4aw=="
++          "packageIntegrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+         },
+         {
+           "id": "trufflehog",
+@@ -855,16 +867,16 @@
+         }
+       ],
+       "caseCounts": {
+-        "flare-redact": 6449,
+-        "gitleaks": 6449,
+-        "openredaction": 6449,
+-        "redact-secret": 6449,
+-        "trufflehog": 6449
++        "flare-redact": 6519,
++        "gitleaks": 6519,
++        "openredaction": 6519,
++        "redact-secret": 6519,
++        "trufflehog": 6519
+       },
+       "status": "historical",
+       "supersededBy": {
+-        "evidenceRelease": "snapshot-2026.10.05",
+-        "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
++        "evidenceRelease": "snapshot-2026.10.05.2",
++        "manifestDigest": "sha256:c4133f8f06d38b80402e4a3c0d59e7c4b08d81708d4c3e1b32d2260db4a45a88"
+       },
+       "supersededOn": "2026-10-05"
+     }
+diff --git a/benchmarks/qualification-inputs.json b/benchmarks/qualification-inputs.json
+index ca81f816..7d061896 100644
+--- a/benchmarks/qualification-inputs.json
++++ b/benchmarks/qualification-inputs.json
+@@ -27,10 +27,10 @@
+       },
+       "pin": {
+         "sourceRepository": "redact-secret/credential-evidence",
+-        "evidenceRelease": "snapshot-2026.10.05",
+-        "sourceRevision": "225f7ae74a986a40fe857371b393ebfdb7d2268a",
+-        "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef",
+-        "snapshotDigest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
++        "evidenceRelease": "snapshot-2026.10.05.2",
++        "sourceRevision": "6dd2ae3cf46947548dcfad4bb746bcfd80f9f431",
++        "manifestDigest": "sha256:c4133f8f06d38b80402e4a3c0d59e7c4b08d81708d4c3e1b32d2260db4a45a88",
++        "snapshotDigest": "sha256:c114af16ef8644519cd01c88e6ffeb9bdb698ed32a3803d64d68405bedb52c3c",
+         "legacyReference": "1020d2b5",
+         "evalProtocol": "credential-eval-protocol/1",
+         "evalVersion": "v0.1.0-alpha.1",

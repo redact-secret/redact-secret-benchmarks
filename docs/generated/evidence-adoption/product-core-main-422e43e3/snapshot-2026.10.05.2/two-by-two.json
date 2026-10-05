@@ -1,0 +1,653 @@
+{
+ "schema": "redact-secret/candidate-2x2/v1",
+ "note": "A measurement, not a decision: nothing here asserts a product result, moves a status or edits the evidence. Maintainer-reviewed (independent review pending) / 메인테이너 검토 (독립 검토 대기): `maintainerOnly` marks a case the release records as maintainer-only (credential-evidence ADR 0020); none is independently reviewed.",
+ "cells": {
+  "A": "control (published product) on the old corpus",
+  "B": "candidate on the old corpus",
+  "C": "control on the new corpus",
+  "D": "candidate on the new corpus"
+ },
+ "plain": {
+  "corpus": {
+   "oldCases": 6519,
+   "newCases": 6519,
+   "added": 0,
+   "removed": 0,
+   "changed": 11,
+   "common": 6508
+  },
+  "corpusEffectControl": {
+   "onCommon": {
+    "fixed": [],
+    "regressed": [],
+    "improved": [],
+    "changed": []
+   },
+   "onChanged": {
+    "fixed": [],
+    "regressed": [],
+    "improved": [],
+    "changed": [
+     {
+      "id": "polar--polar-api-credential-body-42-twin",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "none",
+      "toFindings": "none",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-api-credential-body-44-twin",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "57-111 generic-token redact",
+      "toFindings": "57-111 generic-token redact",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-api-credential-checkout-link-secret-public-id",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "none",
+      "toFindings": "none",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-api-credential-client-id-in-url-public-id",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "none",
+      "toFindings": "none",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-api-credential-leading-glue-twin",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "none",
+      "toFindings": "none",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-api-credential-setting-names-public-id",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "none",
+      "toFindings": "none",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-token-body-44-twin",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "27-81 generic-token redact",
+      "toFindings": "27-81 generic-token redact",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-token-leading-glue-twin",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "none",
+      "toFindings": "none",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-token-oauth-client-id-public-id",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "none",
+      "toFindings": "none",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-token-trailing-hyphen-twin",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "24-79 generic-token redact",
+      "toFindings": "24-79 generic-token redact",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-token-trailing-underscore-twin",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "none",
+      "toFindings": "none",
+      "maintainerOnly": false
+     }
+    ]
+   },
+   "addedOutcomes": {
+    "cases": 0,
+    "pass": 0,
+    "fail": 0,
+    "pending": 0,
+    "notMeasured": 0,
+    "absent": 0
+   },
+   "addedFailing": []
+  },
+  "corpusEffectCandidate": {
+   "onCommon": {
+    "fixed": [],
+    "regressed": [],
+    "improved": [],
+    "changed": []
+   },
+   "onChanged": {
+    "fixed": [],
+    "regressed": [],
+    "improved": [],
+    "changed": [
+     {
+      "id": "polar--polar-api-credential-body-42-twin",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "none",
+      "toFindings": "none",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-api-credential-body-44-twin",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "57-111 generic-token redact",
+      "toFindings": "57-111 generic-token redact",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-api-credential-checkout-link-secret-public-id",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "none",
+      "toFindings": "none",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-api-credential-client-id-in-url-public-id",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "none",
+      "toFindings": "none",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-api-credential-leading-glue-twin",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "none",
+      "toFindings": "none",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-api-credential-setting-names-public-id",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "none",
+      "toFindings": "none",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-token-body-44-twin",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "27-81 generic-token redact",
+      "toFindings": "27-81 generic-token redact",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-token-leading-glue-twin",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "none",
+      "toFindings": "none",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-token-oauth-client-id-public-id",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "none",
+      "toFindings": "none",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-token-trailing-hyphen-twin",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "24-79 generic-token redact",
+      "toFindings": "24-79 generic-token redact",
+      "maintainerOnly": false
+     },
+     {
+      "id": "polar--polar-token-trailing-underscore-twin",
+      "from": "clear",
+      "to": "pending",
+      "fromFindings": "none",
+      "toFindings": "none",
+      "maintainerOnly": false
+     }
+    ]
+   },
+   "addedOutcomes": {
+    "cases": 0,
+    "pass": 0,
+    "fail": 0,
+    "pending": 0,
+    "notMeasured": 0,
+    "absent": 0
+   }
+  },
+  "productEffectOld": {
+   "fixed": [
+    {
+     "id": "authored-provider-neutral--terraform-apply-sensitive",
+     "from": "flagged",
+     "to": "clear",
+     "fromFindings": "780-790 generic-token warn",
+     "toFindings": "none",
+     "maintainerOnly": false
+    },
+    {
+     "id": "exa--exa-api-key-your-key-here-placeholder",
+     "from": "flagged",
+     "to": "clear",
+     "fromFindings": "12-33 generic-token redact",
+     "toFindings": "none",
+     "maintainerOnly": false
+    },
+    {
+     "id": "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters",
+     "from": "MISS",
+     "to": "EXACT",
+     "fromFindings": "none",
+     "toFindings": "14-31 connection-string redact",
+     "maintainerOnly": false
+    },
+    {
+     "id": "structured-credential-files-authored--documented-template-placeholders",
+     "from": "flagged",
+     "to": "clear",
+     "fromFindings": "109-178 generic-token redact",
+     "toFindings": "none",
+     "maintainerOnly": false
+    }
+   ],
+   "regressed": [],
+   "improved": [
+    {
+     "id": "docker-compose-resolution-authored--required-message",
+     "from": "clear",
+     "to": "clear",
+     "fromFindings": "117-130 generic-token warn",
+     "toFindings": "none",
+     "maintainerOnly": false
+    },
+    {
+     "id": "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback",
+     "from": "EXACT/EXACT/EXACT/EXACT/EXACT/EXACT/EXACT/EXACT",
+     "to": "EXACT/EXACT/EXACT/EXACT/EXACT/EXACT/EXACT/EXACT",
+     "fromFindings": "237-277 aws-secret-access-key redact; 377-417 aws-secret-access-key redact; 485-525 aws-secret-access-key redact; 688-728 aws-secret-access-key redact; 835-856 generic-token redact; 1063-1103 aws-secret-access-key redact; 1411-1451 aws-secret-access-key redact; 1510-1550 aws-secret-access-key redact; 1634-1674 aws-secret-access-key redact",
+     "toFindings": "237-277 aws-secret-access-key redact; 377-417 aws-secret-access-key redact; 485-525 aws-secret-access-key redact; 688-728 aws-secret-access-key redact; 1063-1103 aws-secret-access-key redact; 1411-1451 aws-secret-access-key redact; 1510-1550 aws-secret-access-key redact; 1634-1674 aws-secret-access-key redact",
+     "maintainerOnly": false
+    }
+   ],
+   "changed": []
+  },
+  "productEffectNew": {
+   "fixed": [
+    {
+     "id": "authored-provider-neutral--terraform-apply-sensitive",
+     "from": "flagged",
+     "to": "clear",
+     "fromFindings": "780-790 generic-token warn",
+     "toFindings": "none",
+     "maintainerOnly": false
+    },
+    {
+     "id": "exa--exa-api-key-your-key-here-placeholder",
+     "from": "flagged",
+     "to": "clear",
+     "fromFindings": "12-33 generic-token redact",
+     "toFindings": "none",
+     "maintainerOnly": false
+    },
+    {
+     "id": "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters",
+     "from": "MISS",
+     "to": "EXACT",
+     "fromFindings": "none",
+     "toFindings": "14-31 connection-string redact",
+     "maintainerOnly": false
+    },
+    {
+     "id": "structured-credential-files-authored--documented-template-placeholders",
+     "from": "flagged",
+     "to": "clear",
+     "fromFindings": "109-178 generic-token redact",
+     "toFindings": "none",
+     "maintainerOnly": false
+    }
+   ],
+   "regressed": [],
+   "improved": [
+    {
+     "id": "docker-compose-resolution-authored--required-message",
+     "from": "clear",
+     "to": "clear",
+     "fromFindings": "117-130 generic-token warn",
+     "toFindings": "none",
+     "maintainerOnly": false
+    },
+    {
+     "id": "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback",
+     "from": "EXACT/EXACT/EXACT/EXACT/EXACT/EXACT/EXACT/EXACT",
+     "to": "EXACT/EXACT/EXACT/EXACT/EXACT/EXACT/EXACT/EXACT",
+     "fromFindings": "237-277 aws-secret-access-key redact; 377-417 aws-secret-access-key redact; 485-525 aws-secret-access-key redact; 688-728 aws-secret-access-key redact; 835-856 generic-token redact; 1063-1103 aws-secret-access-key redact; 1411-1451 aws-secret-access-key redact; 1510-1550 aws-secret-access-key redact; 1634-1674 aws-secret-access-key redact",
+     "toFindings": "237-277 aws-secret-access-key redact; 377-417 aws-secret-access-key redact; 485-525 aws-secret-access-key redact; 688-728 aws-secret-access-key redact; 1063-1103 aws-secret-access-key redact; 1411-1451 aws-secret-access-key redact; 1510-1550 aws-secret-access-key redact; 1634-1674 aws-secret-access-key redact",
+     "maintainerOnly": false
+    }
+   ],
+   "changed": []
+  },
+  "interaction": {
+   "onCommon": [],
+   "onlyOnNew": {
+    "changed": 11,
+    "added": 0
+   },
+   "seedsWithChangedTwin": [
+    "polar--polar-api-credential-bare-prose",
+    "polar--polar-api-credential-chat-paste",
+    "polar--polar-api-credential-python-sdk",
+    "polar--polar-token-bare-prose",
+    "polar--polar-token-chat-paste",
+    "polar--polar-token-export",
+    "polar--polar-token-sdk-kwarg"
+   ]
+  }
+ },
+ "peerCasesDifferingAcrossProductCells": {
+  "flare-redact@old": 0,
+  "gitleaks@old": 0,
+  "openredaction@old": 0,
+  "trufflehog@old": 0,
+  "flare-redact@new": 0,
+  "gitleaks@new": 0,
+  "openredaction@new": 0,
+  "trufflehog@new": 0
+ },
+ "methods": {
+  "assertions": {
+   "counts": {
+    "A": 48210,
+    "B": 48210,
+    "C": 48210,
+    "D": 48210,
+    "addedByNewCorpus": 27,
+    "addedFailingOnControl": 27
+   },
+   "corpusEffectControlOnCommon": {
+    "fixed": [],
+    "regressed": [],
+    "absentInTarget": []
+   },
+   "productEffectOld": {
+    "fixed": [
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|absent|canonical||",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|absent|context.indent||",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|absent|context.unicode-prefix||",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|absent|encoding.crlf||",
+     "authored-provider-neutral--terraform-apply-sensitive--mutation|mutation|absent|canonical||",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|absent|canonical||",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|absent|context.indent||",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|absent|context.unicode-prefix||",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|absent|encoding.crlf||",
+     "exa--exa-api-key-your-key-here-placeholder--mutation|mutation|absent|canonical||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|present-within-envelope|canonical||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|present-within-envelope|context.indent||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|present-within-envelope|context.unicode-prefix||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|present-within-envelope|encoding.crlf||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--mutation|mutation|present-within-envelope|canonical||",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--metamorphic|metamorphic|present-within-envelope|canonical||",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--metamorphic|metamorphic|present-within-envelope|context.indent||",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--metamorphic|metamorphic|present-within-envelope|context.unicode-prefix||",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--metamorphic|metamorphic|present-within-envelope|encoding.crlf||",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--mutation|mutation|present-within-envelope|canonical||",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|absent|canonical||",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|absent|context.indent||",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|absent|context.unicode-prefix||",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|absent|encoding.crlf||",
+     "structured-credential-files-authored--documented-template-placeholders--mutation|mutation|absent|canonical||"
+    ],
+    "regressed": [],
+    "absentInTarget": []
+   },
+   "productEffectNew": {
+    "fixed": [
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|absent|canonical||",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|absent|context.indent||",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|absent|context.unicode-prefix||",
+     "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|absent|encoding.crlf||",
+     "authored-provider-neutral--terraform-apply-sensitive--mutation|mutation|absent|canonical||",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|absent|canonical||",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|absent|context.indent||",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|absent|context.unicode-prefix||",
+     "exa--exa-api-key-your-key-here-placeholder--metamorphic|metamorphic|absent|encoding.crlf||",
+     "exa--exa-api-key-your-key-here-placeholder--mutation|mutation|absent|canonical||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|present-within-envelope|canonical||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|present-within-envelope|context.indent||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|present-within-envelope|context.unicode-prefix||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--metamorphic|metamorphic|present-within-envelope|encoding.crlf||",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--mutation|mutation|present-within-envelope|canonical||",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--metamorphic|metamorphic|present-within-envelope|canonical||",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--metamorphic|metamorphic|present-within-envelope|context.indent||",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--metamorphic|metamorphic|present-within-envelope|context.unicode-prefix||",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--metamorphic|metamorphic|present-within-envelope|encoding.crlf||",
+     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--mutation|mutation|present-within-envelope|canonical||",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|absent|canonical||",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|absent|context.indent||",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|absent|context.unicode-prefix||",
+     "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|absent|encoding.crlf||",
+     "structured-credential-files-authored--documented-template-placeholders--mutation|mutation|absent|canonical||"
+    ],
+    "regressed": [],
+    "absentInTarget": []
+   },
+   "interactionOnCommon": []
+  },
+  "reviewOccurrences": {
+   "sizes": {
+    "A": 11622,
+    "B": 11613,
+    "C": 11622,
+    "D": 11613
+   },
+   "productOld": {
+    "added": [
+     "authored-provider-neutral--terraform-apply-sensitive--differential|openredaction|peer-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|flare-redact|range-disagreement|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|gitleaks|reference-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|openredaction|reference-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|trufflehog|reference-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|flare-redact|peer-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|openredaction|peer-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|trufflehog|peer-only|canonical||differential"
+    ],
+    "removed": [
+     "authored-provider-neutral--terraform-apply-sensitive--differential|flare-redact|reference-only|canonical||differential",
+     "authored-provider-neutral--terraform-apply-sensitive--differential|gitleaks|reference-only|canonical||differential",
+     "authored-provider-neutral--terraform-apply-sensitive--differential|openredaction|range-disagreement|canonical||differential",
+     "authored-provider-neutral--terraform-apply-sensitive--differential|trufflehog|reference-only|canonical||differential",
+     "docker-compose-resolution-authored--required-message--differential|flare-redact|reference-only|canonical||differential",
+     "docker-compose-resolution-authored--required-message--differential|gitleaks|reference-only|canonical||differential",
+     "docker-compose-resolution-authored--required-message--differential|openredaction|reference-only|canonical||differential",
+     "docker-compose-resolution-authored--required-message--differential|trufflehog|reference-only|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|flare-redact|reference-only|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|gitleaks|reference-only|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|openredaction|reference-only|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|trufflehog|reference-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|flare-redact|peer-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|flare-redact|range-disagreement|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|gitleaks|reference-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|openredaction|range-disagreement|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|trufflehog|range-disagreement|canonical||differential"
+    ]
+   },
+   "productNew": {
+    "added": [
+     "authored-provider-neutral--terraform-apply-sensitive--differential|openredaction|peer-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|flare-redact|range-disagreement|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|gitleaks|reference-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|openredaction|reference-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|trufflehog|reference-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|flare-redact|peer-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|openredaction|peer-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|trufflehog|peer-only|canonical||differential"
+    ],
+    "removed": [
+     "authored-provider-neutral--terraform-apply-sensitive--differential|flare-redact|reference-only|canonical||differential",
+     "authored-provider-neutral--terraform-apply-sensitive--differential|gitleaks|reference-only|canonical||differential",
+     "authored-provider-neutral--terraform-apply-sensitive--differential|openredaction|range-disagreement|canonical||differential",
+     "authored-provider-neutral--terraform-apply-sensitive--differential|trufflehog|reference-only|canonical||differential",
+     "docker-compose-resolution-authored--required-message--differential|flare-redact|reference-only|canonical||differential",
+     "docker-compose-resolution-authored--required-message--differential|gitleaks|reference-only|canonical||differential",
+     "docker-compose-resolution-authored--required-message--differential|openredaction|reference-only|canonical||differential",
+     "docker-compose-resolution-authored--required-message--differential|trufflehog|reference-only|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|flare-redact|reference-only|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|gitleaks|reference-only|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|openredaction|reference-only|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|trufflehog|reference-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|flare-redact|peer-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|flare-redact|range-disagreement|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|gitleaks|reference-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|openredaction|range-disagreement|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|trufflehog|range-disagreement|canonical||differential"
+    ]
+   },
+   "corpusControl": {
+    "added": [],
+    "removed": []
+   }
+  },
+  "semanticDigests": {
+   "A": "sha256:3b5c750a1f973760b4f08d748525e280b6a516feb0e013ccfdc8c87ff66e2442",
+   "B": "sha256:d4d5fa97ea23ccf715079faff769ace48f8e9dedbe00d9ffb4402911cb00f2cb",
+   "C": "sha256:b6b0e83ad24567004eec16e484031a5babacddc7fc5215c89578f29ec69024d5",
+   "D": "sha256:95d14ba9b8006fe5a961c65ef0d7844c6b64ece9214500179747944edc61f52b"
+  }
+ },
+ "populations": {
+  "regression-corpus": {
+   "semanticDigests": {
+    "A": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
+    "B": "sha256:a33f010a5d8446207e32341ec1bbe5428f5f55df13cf97f4ea667839c8b6d741",
+    "C": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
+    "D": "sha256:a33f010a5d8446207e32341ec1bbe5428f5f55df13cf97f4ea667839c8b6d741"
+   },
+   "controlUnchangedAcrossCorpora": true,
+   "candidateUnchangedAcrossCorpora": true
+  },
+  "policy-corpus": {
+   "semanticDigests": {
+    "A": "sha256:9a6576c90e30907dee3b6e2b368d2791a29865fa8215790b0ef9cf6f75b66f9e",
+    "B": "sha256:78bd03b306413cee0ad46f3c5cb31d2b317103b1a893ceb4e465ea03d7731620",
+    "C": "sha256:9a6576c90e30907dee3b6e2b368d2791a29865fa8215790b0ef9cf6f75b66f9e",
+    "D": "sha256:78bd03b306413cee0ad46f3c5cb31d2b317103b1a893ceb4e465ea03d7731620"
+   },
+   "controlUnchangedAcrossCorpora": true,
+   "candidateUnchangedAcrossCorpora": true
+  }
+ },
+ "summary": {
+  "corpus": {
+   "oldCases": 6519,
+   "newCases": 6519,
+   "added": 0,
+   "removed": 0,
+   "changed": 11,
+   "common": 6508
+  },
+  "productEffectOld": {
+   "fixed": [
+    "authored-provider-neutral--terraform-apply-sensitive",
+    "exa--exa-api-key-your-key-here-placeholder",
+    "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters",
+    "structured-credential-files-authored--documented-template-placeholders"
+   ],
+   "improved": [
+    "docker-compose-resolution-authored--required-message",
+    "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback"
+   ],
+   "regressed": 0
+  },
+  "productEffectNew": {
+   "fixed": [
+    "authored-provider-neutral--terraform-apply-sensitive",
+    "exa--exa-api-key-your-key-here-placeholder",
+    "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters",
+    "structured-credential-files-authored--documented-template-placeholders"
+   ],
+   "improved": [
+    "docker-compose-resolution-authored--required-message",
+    "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback"
+   ],
+   "regressed": 0,
+   "changed": 0,
+   "maintainerOnly": {
+    "total": 4,
+    "maintainerOnly": 0
+   }
+  },
+  "addedCaseOutcomesOnControl": {
+   "cases": 0,
+   "pass": 0,
+   "fail": 0,
+   "pending": 0,
+   "notMeasured": 0,
+   "absent": 0
+  },
+  "addedCaseOutcomesOnCandidate": {
+   "cases": 0,
+   "pass": 0,
+   "fail": 0,
+   "pending": 0,
+   "notMeasured": 0,
+   "absent": 0
+  },
+  "interactionOnCommonCases": 0,
+  "unexplained": 0
+ },
+ "unexplained": []
+}

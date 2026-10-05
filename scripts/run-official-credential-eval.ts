@@ -69,6 +69,10 @@ const minRuns = diagnostic ? 1 : 2;
 const runs = Number(option('runs', String(minRuns)));
 if (!Number.isInteger(runs) || runs < minRuns) fail(diagnostic ? '--runs must be at least 1' : '--runs must be at least 2: an official artifact needs a determinism check');
 
+// Parallel scanner processes of the engine: a scheduling parameter the artifact records as non-semantic (it never changes a result). A candidate replay on the 7 GB runner uses fewer (#698).
+const engineJobs = option('jobs', '4')!;
+if (!/^[1-4]$/.test(engineJobs)) fail('--jobs must be 1 to 4');
+
 const population = registry.populations.find((p: { id: string }) => p.id === populationId) ?? fail(`unknown population ${populationId}`);
 
 // The methods run: its selection and the evaluation evidence are pinned in the registry, and the evidence file must be what the product contracts derive.
@@ -184,7 +188,7 @@ for (let n = 1; n <= runs; n++) {
   // is a fact about the generated variants, not a scanner that did not measure. Scanner completeness is checked on the artifact below.
   const methodArgs = methodsMode ? ['--methods', methodsRun!.methods.join(','), '--reference', methodsRun!.reference, '--seed', methodsRun!.seed, '--evidence', evaluationEvidenceFile] : ['--require-complete'];
   const result = spawnSync(binary, ['run', '--run-class', diagnostic || candidate ? 'exploratory' : 'official', '--corpus', inputs.corpus, '--evidence-release', inputs.tag, '--evidence-manifest', inputs.manifest,
-    '--evidence-manifest-digest', inputs.manifestDigest, '--config', configPath, '--node-dir', nodeDir, '--jobs', '4', ...methodArgs, '--out', artifact],
+    '--evidence-manifest-digest', inputs.manifestDigest, '--config', configPath, '--node-dir', nodeDir, '--jobs', engineJobs, ...methodArgs, '--out', artifact],
   { stdio: ['ignore', 'inherit', 'inherit'] });
   if (result.status !== 0) fail(`credential-eval run ${n} exited ${result.status}; no artifact is accepted`);
   artifacts.push(artifact);

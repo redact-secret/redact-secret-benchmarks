@@ -206,7 +206,7 @@ jobs:
         run: >
           node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
-          --out "official-out/$POPULATION" --runs 2 --methods ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
+          --out "official-out/$POPULATION" --runs 2 --methods ${CANDIDATE:+--jobs 2} ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
       - name: Remove the byte copies the checks made
         run: rm -f "official-out/$POPULATION"/artifact-[0-9]*.json "official-out/$POPULATION"/methods/artifact-[0-9]*.json
         env:

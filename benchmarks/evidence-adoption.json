@@ -344,6 +344,65 @@
         "packagesDigest": "sha256:a9609bb8b9c426a3659d0e90b1bc7c04681646e32c71fdb323fdfc145e59ed41",
         "note": "The same registered, unpublished product bytes are measured on this evidence as on the accepted one (the 2x2 design: docs/specs/product-candidate-replay.md); never published, never an accepted run."
       }
-    ]
+    ],
+    "acceptance": {
+      "status": "PREPARED, NOT APPLIED. The owner holds the acceptance of the engine candidate until a core release; nothing here moves a pin, a run, the authority file or a ledger row.",
+      "note": "Prepared for the owner (#680, #690, #698). The patch applies to the commit that merges this candidate; it records the replay of the PUBLISHED @redact-secret/core 0.1.0-beta.13 on credential-eval alpha.5 as the runs (CI run 37241828378), not the unpublished core build 1e45cecf, which is not part of it.",
+      "report": "docs/generated/evidence-adoption/snapshot-2026.10.04.4.md",
+      "ownerReport": "docs/generated/evidence-adoption/snapshot-2026.10.04.4.acceptance.md",
+      "comparison": "docs/generated/evidence-adoption/snapshot-2026.10.04.4.comparison.json",
+      "patch": "docs/generated/evidence-adoption/snapshot-2026.10.04.4.acceptance.patch",
+      "patchDigestFile": "docs/generated/evidence-adoption/snapshot-2026.10.04.4.acceptance.patch.sha256",
+      "applies": "git apply docs/generated/evidence-adoption/snapshot-2026.10.04.4.acceptance.patch",
+      "ownerFields": [
+        "the authority file: new.acceptedOn and new.acceptedBy (named in the patch and the spec, never edited here)",
+        "benchmarks/evidence-adoption.json candidate.ownerAcceptance acceptedBy and acceptedOn",
+        "docs/decisions/2026-10-04-accept-snapshot-2026-10-04-4-on-credential-eval-alpha-5.md status (proposed to accepted), decided_at and its owner statement"
+      ],
+      "ownerDecisions": [
+        "accept the engine candidate alpha.5 with the published beta.13 on snapshot-2026.10.04.4, or keep holding it until the core release",
+        "publish a core release carrying PRs #1202 and #1204 (the unpublished build 1e45cecf), or not",
+        "the 13 provisional product-scope statements of scanners/product-scope.json (#622)",
+        "the ledger proposals of the triage (kept on hold; no ledger row is edited)",
+        "whether the legacy oracle exit condition needs a parity report at beta.13 (the patch does not regenerate it: no legacy run exists for beta.13)"
+      ],
+      "registryArchive": {
+        "release": "official-runs-registry-37241828378",
+        "asset": "official-runs-37241828378.tar.gz",
+        "note": "The runs in the patch, in the registry archive format (verified: node scripts/official-run-archive.mjs fetch/verify against the patched registry). A release asset of this repository, not an accepted run."
+      },
+      "candidateView": {
+        "sha256": "sha256:d4ed43bf0dc7632a5e65e8ecbd9f8c6e79164a12aede3b2b66515b214bc179d9",
+        "policyRevision": "rs-policy-1:sha256:cf37ff861d5abf1d8b4ad7224a7aa7e097161acbfb693353471994fd407517dc",
+        "distribution": {
+          "pending": 1,
+          "provisional": 19,
+          "stable": 115,
+          "unsupported": 0
+        },
+        "supportMatrix": {
+          "pending": 5,
+          "provisional": 26,
+          "stable": 125,
+          "unsupported": 17
+        },
+        "build": "The qualification-view artifact of CI run 37241828378 (the view stage of the replay), built from the archived artifacts and the inputs derived from the snapshot."
+      },
+      "derivedInputs": {
+        "snapshot": "credential-evidence release snapshot-2026.10.04.4, asset credential-eval-corpus-snapshot.json (gh release download snapshot-2026.10.04.4 -R redact-secret/credential-evidence)",
+        "axisOverlay": {
+          "file": "benchmarks/support/public-axis-overlay.json",
+          "check": "npm run qualification:axis-overlay -- --snapshot <snapshot> --check"
+        },
+        "twinScope": {
+          "file": "benchmarks/support/public-twin-scope-map.json",
+          "check": "npm run qualification:twin-scope -- --snapshot <snapshot> --check"
+        },
+        "ledgerRekey": {
+          "file": "benchmarks/support/public-review-ledger-map.json",
+          "check": "npm run qualification:ledger-rekey -- --snapshot <snapshot> --methods-run <dir>/public-evidence-snapshot/methods/artifact.json --check"
+        }
+      }
+    }
   }
 }

@@ -15,7 +15,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { peerRegistryProblems, peerRuleFamilyProblems } from '../benchmarks/lib/peer-rule-families.ts';
+import { peerRegistryProblems, peerRuleFamilyProblems, productScopeProblems } from '../benchmarks/lib/peer-rule-families.ts';
 
 const root = new URL('../', import.meta.url);
 const readJson = async relative => JSON.parse(await readFile(new URL(relative, root), 'utf8'));
@@ -42,7 +42,8 @@ export async function problems() {
     import('../scanners/index.mjs'),
   ]);
   const { sources, ...inventories } = await peerInventories();
-  const found = [...peerRuleFamilyProblems(map, taxonomy, inventories), ...peerRegistryProblems(registry, scanners.map(scanner => scanner.id))];
+  const productScope = await readJson('scanners/product-scope.json');
+  const found = [...peerRuleFamilyProblems(map, taxonomy, inventories), ...peerRegistryProblems(registry, scanners.map(scanner => scanner.id)), ...productScopeProblems(productScope)];
   // The map was reviewed against these exact rule files: a new pin fails here until it is re-reviewed.
   for (const id of ['gitleaks', 'trufflehog', 'flare-redact']) {
     const at = map.scanners[id]?.source, now = sources[id];

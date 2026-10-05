@@ -131,7 +131,7 @@ test('the official-runs workflow derives the inputs from the pinned snapshot bef
   assert.match(view, /derived-inputs\.json/, 'the receipt travels with the view artifact');
   // View-only retry: the scanner jobs are skipped by an input and the view job accepts a skipped scanner job, never a failed one.
   assert.match(workflow, /reuse_run_id:/);
-  assert.match(workflow, /official-run:\n[\s\S]*?if: \$\{\{ inputs\.reuse_run_id == '' \}\}/);
+  assert.match(workflow, /official-run:\n[\s\S]*?if: \$\{\{ inputs\.reuse_run_id == '' && inputs\.reuse_candidate_run_id == '' \}\}/);
   assert.match(view, /needs\.official-run\.result == 'success' \|\| needs\.official-run\.result == 'skipped'/);
   assert.match(view, /run-id: \$\{\{ inputs\.reuse_run_id \}\}/);
   assert.match(view, /official-runs\.yml/);
@@ -148,4 +148,15 @@ test('the pinned snapshot a view stage derives from must be the registry pin', (
   assert.deepEqual(pinnedSnapshotProblems({ pin, manifestBytes, snapshotBytes }), []);
   assert.ok(pinnedSnapshotProblems({ pin: { ...pin, corpusDigest: DIGEST(22) }, manifestBytes, snapshotBytes }).some(p => /registry pins/.test(p)));
   assert.ok(pinnedSnapshotProblems({ pin: { ...pin, release: { ...pin.release, manifestDigest: DIGEST(23) } }, manifestBytes, snapshotBytes }).some(p => /manifest digest/.test(p)));
+});
+
+test('the candidate effect report can be retried alone from an earlier candidate run, never from a failed scanner job (#698)', async () => {
+  const workflow = (await readFile(new URL('../.github/workflows/official-runs.yml', import.meta.url), 'utf8')).replace(/^\s*#.*$/gm, '');
+  const report = workflow.slice(workflow.indexOf('  report:'));
+  assert.match(workflow, /reuse_candidate_run_id:/);
+  assert.match(report, /needs\.official-run\.result == 'success' \|\| \(needs\.official-run\.result == 'skipped' && inputs\.reuse_candidate_run_id != ''\)/);
+  assert.match(report, /run-id: \$\{\{ inputs\.reuse_candidate_run_id \}\}/);
+  assert.match(report, /official-runs\.yml/);
+  assert.match(report, /exclusive with reuse_run_id and attribution/);
+  assert.ok(!/^\s+\S+: write$/m.test(workflow));
 });

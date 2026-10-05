@@ -133,6 +133,8 @@ So the canonical linux-x64 artifacts are also kept as one release asset of this 
 
 Issue [#705](https://github.com/redact-secret/redact-secret-benchmarks/issues/705), under #704. Decision: [run a product-only exploratory diagnostic lane beside the full official run](../decisions/2026-10-04-run-a-product-only-exploratory-diagnostic-lane-beside-the-full-official-run.md).
 
+The lane is the fast, product-only check. The full comparative measurement of an unreleased build (all scanners, methods, a control, an effect report, the 2x2 on a new snapshot) is the candidate replay (`candidate` input, [product candidate replay](product-candidate-replay.md), #698); a dispatch takes one or the other.
+
 `official-runs.yml` has two modes, chosen by the `mode` input (default `full`).
 
 | | `full` (default) | `diagnostic` |

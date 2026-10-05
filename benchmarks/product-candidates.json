@@ -1,0 +1,100 @@
+{
+  "schema": "redact-secret/product-candidates/v1",
+  "spec": "docs/specs/product-candidate-replay.md",
+  "note": "An unpublished product build measured on the adopted evidence with the adoption's engine candidate and the engine's own configuration (#698). The run class is exploratory (the engine refuses an unpinned build as official) and the publication class internal: never an accepted run, never public evidence. The control is the published build the adoption's engineCandidate records.",
+  "candidates": [
+    {
+      "id": "core-main-1e45cecf",
+      "product": {
+        "repository": "redact-secret/redact-secret",
+        "commit": "1e45cecf674344726e59bd35a37f28ba1966a06e",
+        "ref": "main",
+        "version": "0.1.0-beta.13",
+        "published": false,
+        "changes": [
+          "redact-secret/redact-secret#1202",
+          "redact-secret/redact-secret#1204"
+        ],
+        "build": "core: npm pack of packages/javascript built from the commit (js:build); node-linux-x64-gnu: bindings/node/npm/linux-x64-gnu with the addon the commit's own CI run built; wasm: bindings/wasm/npm with the wasm-web and wasm-web-common outputs of the same run. Never published.",
+        "ci": {
+          "run": "https://github.com/redact-secret/redact-secret/actions/runs/37233127448",
+          "artifacts": [
+            "node-addon-x86_64-unknown-linux-gnu",
+            "wasm-web",
+            "wasm-web-common"
+          ]
+        }
+      },
+      "control": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.13"
+      },
+      "platform": "linux-x64",
+      "runClass": "exploratory",
+      "publication": "internal",
+      "release": {
+        "repository": "redact-secret/redact-secret-benchmarks",
+        "tag": "product-candidate-core-main-1e45cecf"
+      },
+      "packages": [
+        {
+          "name": "@redact-secret/core",
+          "file": "redact-secret-core-0.1.0-beta.13.tgz",
+          "sha256": "sha256:8e281e2932b245c8d238f52076c08e6c00859edafdb3e1e202500bc176a73cec",
+          "size": 43292,
+          "platform": null
+        },
+        {
+          "name": "@redact-secret/node-linux-x64-gnu",
+          "file": "redact-secret-node-linux-x64-gnu-0.1.0-beta.13.tgz",
+          "sha256": "sha256:e7f1641f295b94790363170c3654015bf36321e35a2f9ccf341b287d388e140a",
+          "size": 722220,
+          "platform": "linux-x64"
+        },
+        {
+          "name": "@redact-secret/wasm",
+          "file": "redact-secret-wasm-0.1.0-beta.13.tgz",
+          "sha256": "sha256:3bd3c57daf59ec94c57494848e9ecbe7c82c4c8100d7cdbd470deb44cd2ad23a",
+          "size": 980255,
+          "platform": null
+        }
+      ],
+      "replay": {
+        "state": "replayed",
+        "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37235723441",
+        "archive": {
+          "release": "candidate-runs-37235723441",
+          "sha256": "sha256:95974de9ab720a2a4dac07168edb19ee50e6b772f81f914feffdad7f14863f2c",
+          "files": 12
+        },
+        "benchmarkRevision": "80f2ef90ce6884aa32e00fbb29b751f686c6cb18",
+        "data": "docs/generated/evidence-adoption/product-core-main-1e45cecf",
+        "worsened": false,
+        "fixed": 4,
+        "regressed": 0,
+        "repeatRunsEqual": true
+      },
+      "evidenceReplays": {
+        "snapshot-2026.10.04.4": {
+          "state": "replayed",
+          "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37253769074",
+          "archive": {
+            "release": "candidate-runs-37253769074",
+            "sha256": "sha256:ba76cd14ce3426c578c5256fb18d4c9599340fe0856a74ea63fb62c641b2e77e",
+            "files": 12
+          },
+          "benchmarkRevision": "b7d51c95370079ed32734efdea298bea71f1e4ef",
+          "data": "docs/generated/evidence-adoption/product-core-main-1e45cecf/snapshot-2026.10.04.4",
+          "worsened": false,
+          "fixed": 4,
+          "regressed": 0,
+          "repeatRunsEqual": true,
+          "evidence": {
+            "tag": "snapshot-2026.10.04.4",
+            "manifestDigest": "sha256:f75a46f855e6daf82fbd94bf6f13e187e5b110a4e473b9045e7db47a74b65f1f"
+          }
+        }
+      }
+    }
+  ]
+}

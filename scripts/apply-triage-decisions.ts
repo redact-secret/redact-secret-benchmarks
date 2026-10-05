@@ -37,6 +37,9 @@ const summary = {
     return Object.fromEntries(Object.entries(m).sort(([a], [b]) => (a < b ? -1 : 1)));
   })(),
   openRootCauses: decided.filter(r => r.decision.status === 'open').length,
+  // Proposed credential-evidence changes the product's classification implies. They are proposals only: the snapshot is not edited here (the evidence owner decides).
+  evidenceProposals: [...new Map(decided.filter(r => r.decision.evidenceProposal).map(r => [r.seedCase, { case: r.seedCase, proposal: r.decision.evidenceProposal!, rootCauses: 0 }])).values()]
+    .map(p => ({ ...p, rootCauses: decided.filter(r => r.seedCase === p.case && r.decision.evidenceProposal).length })).sort((a, b) => (a.case < b.case ? -1 : 1)),
 };
 const out = { schema: 'redact-secret/triage-decisions/v1', queueSource: queue.source, identity: queue.identity, disclosure: queue.disclosure, candidate, summary,
   note: 'Decisions are rules applied to recorded evidence (benchmarks/qualification/triage-decisions.ts). A root cause no rule decides is open. Ledger proposals are not ledger rows. Core classifications are the product maintainers\' (core #1199 to #1201); a "provisional scope reading" is this repository\'s reading of the product docs, not a product-owner decision.',
@@ -54,6 +57,7 @@ if (option('out-md')) {
     '## By kind, classification and status', '', t(['Kind | classification | status', 'Root causes'], Object.entries(summary.byKindAndClassification)), '',
     '## By rule', '', t(['Rule', 'Root causes'], Object.entries(summary.byRule)), '',
     '## Gate proposals by product family (not ledger rows; no status moves)', '', t(['Product family', 'Occurrences', 'Proposed resolved', 'Proposed not-assertable', 'Stay open'], Object.entries(summary.gateProposalsByProductFamily).map(([f, v]) => [f, v.occurrences, v.resolved, v['not-assertable'], v.open])), '',
+    '## Proposed credential-evidence changes (proposals only; the adopted snapshot is not edited)', '', t(['Case', 'Proposal', 'Root causes'], summary.evidenceProposals.map(p => [`\`${p.case}\``, p.proposal, p.rootCauses])), '',
     `Open root causes: ${summary.openRootCauses}. Ledger proposals: ${JSON.stringify(summary.ledgerProposals)}.`, '',
   ].join('\n'));
 }

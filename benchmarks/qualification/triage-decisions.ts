@@ -1,4 +1,5 @@
 import { CLASSIFICATIONS } from './triage-queue.ts';
+import { CORE_1203, CORE_1203_LINKS, type Core1203Entry } from './triage-core-1203.ts';
 
 /**
  * Triage decisions for the queue of an adopted snapshot (#698): a classification and a disposition per root cause, each with the evidence it rests on.
@@ -18,7 +19,7 @@ interface RootCause {
 }
 interface Measured { expected?: unknown[]; actual?: unknown[]; measurement?: { type?: string; span_outcomes?: string[]; flagged?: boolean } }
 
-export interface Decision { classification: Classification | null; disposition: string; status: Status; rule: string; evidence: string[]; links: string[]; ledger: { proposal: 'resolved' | 'not-assertable' | 'open'; basis: string } | null }
+export interface Decision { classification: Classification | null; disposition: string; status: Status; rule: string; evidence: string[]; links: string[]; /** A proposed credential-evidence change, kept apart from the disposition and never applied here. */ evidenceProposal?: string; ledger: { proposal: 'resolved' | 'not-assertable' | 'open'; basis: string } | null }
 
 const CORE = 'https://github.com/redact-secret/redact-secret';
 const L = { pr1202: `${CORE}/pull/1202`, i1199: `${CORE}/issues/1199`, i1200: `${CORE}/issues/1200`, i1201: `${CORE}/issues/1201`, b622: 'https://github.com/redact-secret/redact-secret-benchmarks/issues/622' };
@@ -47,6 +48,18 @@ const matches = (m?: Measured) => {
 };
 const isPending = (m?: Measured) => m?.measurement?.type === 'pending' || m?.measurement?.type === 'not-measured';
 
+/** The product's #1203 reading of a base case (core PR #1204), as a decision; a fix is claimed fixed only when the candidate replay shows the case now passes. */
+function core1203(seed: string, ctx: TriageContext, ledger: Decision['ledger']): Decision | null {
+  const e: Core1203Entry | undefined = CORE_1203[seed];
+  if (!e) return null;
+  const verified = e.kind === 'fix' && ctx.candidate?.fixed.includes(seed);
+  return {
+    classification: e.classification, status: e.kind === 'fix' ? (verified ? 'fixed-in-candidate' : 'open') : 'settled', rule: `core-1203.${e.kind}`, ledger,
+    disposition: e.kind === 'fix' && !verified ? `${e.disposition}; not yet verified on a candidate replay` : e.kind === 'fix' ? `${e.disposition}; the candidate replay (core ${ctx.candidate?.commit?.slice(0, 12)}) passes this case` : e.disposition,
+    evidence: [...e.evidence], links: CORE_1203_LINKS, ...(e.evidenceProposal ? { evidenceProposal: e.evidenceProposal } : {}),
+  };
+}
+
 /** Decide one root cause. `seedKinds` maps a seed case id to the decision of its core (non-assertion, non-peer) root cause. */
 export function decideRootCause(r: RootCause, ctx: TriageContext, seedDecisions: Map<string, Decision>): Decision {
   const open = (rule: string, disposition: string, links: string[] = []): Decision => ({ classification: null, disposition, status: 'open', rule, evidence: [], links, ledger: r.kind === 'gate-peer-differential-unsettled' ? { proposal: 'open', basis: disposition } : null });
@@ -57,6 +70,8 @@ export function decideRootCause(r: RootCause, ctx: TriageContext, seedDecisions:
     if (isPending(o.reference) || r.tier === 'T0') return { classification: null, disposition: 'expectation unresolved (T0 pending): not assertable, in no denominator; the decided class differential.t0-pending-fixture applies (docs/decisions/2026-09-22-settle-differential-disagreements-on-pending-fixtures.md)', status: 'settled', rule: 'gate-peer.t0-pending', evidence: ['the case is pending (T0): the release records no assertable expectation'], links: [], ledger: { proposal: 'not-assertable', basis: 'T0 pending fixture' } };
     const seed = seedDecisions.get(r.seedCase);
     if (!matches(o.reference)) {
+      const product = core1203(r.seedCase, ctx, { proposal: 'open', basis: 'the reference itself deviates from the evidence on this case; the occurrence follows the product\'s #1203 reading of the base case' });
+      if (product) return { ...product, rule: `gate-peer.follows-${product.rule}` };
       if (seed) return { ...seed, rule: 'gate-peer.follows-core-root-cause', ledger: { proposal: 'open', basis: 'the reference itself deviates from the evidence on this case; the occurrence follows the core root cause of the seed case' }, evidence: [...seed.evidence], links: seed.links };
       return open('gate-peer.reference-deviates', 'the reference deviates from the evidence on this case and no core root cause covers it yet; stays open', issueLink);
     }
@@ -79,6 +94,9 @@ export function decideRootCause(r: RootCause, ctx: TriageContext, seedDecisions:
     return { classification: 'unsupported-or-feature-scope', status: 'settled', rule: 'encoded-carrier', ledger: null, disposition: 'out of scope: the product defers decoding of base64, hex and nested encoded carriers; a raw encoded run under a non-credential name claims nothing. Stays a scope fact, not a product defect', evidence: [ADR_DECODING, 'core #1199 (13 SendGrid) and #1200 (34 generic-token) classification tables; published beta.13, beta.12 and pre-fix main give identical findings'], links: [L.i1199, L.i1200, L.pr1202, L.b622] };
   if (r.seedCase.startsWith('line-break-and-fragment-authored--key-'))
     return { classification: 'unsupported-or-feature-scope', status: 'settled', rule: 'fragmented-credential', ledger: null, disposition: 'out of the raw-input contract: a credential cut by a line break, continuation, literal join, markdown or escaped text is not reconstructed (no source-language evaluation). The scorer encloses a fragmented expected span, so the product match is partial by contract', evidence: [ADR_FRAGMENT, 'core #1199 classification table (16 cases)'], links: [L.i1199, L.pr1202, L.b622] };
+
+  const product = core1203(r.seedCase, ctx, null);
+  if (product) return product;
 
   const core = r.kind.startsWith('core-');
   if (core && (NO_DECLARED_SEED.test(r.seedCase) || r.seedCase === 'http-auth-carriers-authored--basic-token-split-by-space') && !r.kind.endsWith('flagged')) {

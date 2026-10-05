@@ -3,11 +3,16 @@
  * The steps are credential-eval docs/consumers/benchmarks-quickstart.md; the pins are benchmarks/official-runs.json.
  *
  *   node --import tsx scripts/run-official-credential-eval.ts --population <id> --engine-dir <checkout at the pinned tag>
- *     --platform <linux-x64|darwin-arm64> --out <dir> [--runs 2] [--evidence-dir <dir with the public release assets>] [--methods] [--attribution <id>]
+ *     --platform <linux-x64|darwin-arm64> --out <dir> [--runs 2] [--evidence-dir <dir with the public release assets>] [--methods] [--attribution <id> | --candidate <id> [--evidence-tag <tag> --evidence-manifest-digest sha256:<hex>]]
  *
  * `--attribution <id>` (#697) makes an ATTRIBUTION run: the same engine, evidence and population, scanning the product build the registry's `attributionRuns[<id>]`
  * names (the previous published release, with the engine's own configuration file and Node shim directory for it, which are always used together). It exists to
  * separate a product effect from an engine or configuration effect; its artifacts are never the accepted runs and are never recorded in `runs[]`.
+ *
+ * `--candidate <id>` (#698) measures a REGISTERED UNPUBLISHED product build (benchmarks/product-candidates.json) on the adoption's engine candidate: the same engine,
+ * evidence, populations, peers and configuration as the control run, the product packages replaced by the registered tarballs (verified by digest before anything
+ * is measured). The engine refuses an unpinned build as official, so the run class is `exploratory` and the publication `internal`: the artifacts are never accepted
+ * runs and never public evidence (docs/specs/product-candidate-replay.md).
  *
  * `--methods` makes the methods run of the floors population (docs/specs/official-runs.md, "The methods run"): the same
  * evidence and configuration as the plain run plus `--methods`, `--reference`, `--seed` and the product evaluation evidence
@@ -34,6 +39,9 @@ import { canonical, sha256Digest } from '../benchmarks/qualification/canonical.t
 import { buildEvaluationEvidence } from '../benchmarks/qualification/evaluation-evidence.ts';
 import { exportPopulation, PRODUCT_POPULATIONS, type ProductPopulation } from '../benchmarks/qualification/population-snapshot.ts';
 import { bindingProblems, readRunArtifact, type RunArtifact } from '../benchmarks/qualification/run-artifact.ts';
+import { controlFor } from './candidate-control.mjs';
+import { releaseIdentityProblems } from './evidence-adoption.mjs';
+import { candidateOf, install as installCandidate, readRegistry as readCandidateRegistry, verifyLoaded } from './install-product-candidate.mjs';
 import { diagnosticBindingProblems, diagnosticSummary, outcomesOf, parseSelectedScanners, renderDiagnosticSummary, selectedScannerConfig, DIAGNOSTIC_PRODUCT_SCANNER, type PopulationOutcomes } from '../benchmarks/qualification/diagnostic-lane.ts';
 
 const registry = JSON.parse(readFileSync(new URL('../benchmarks/official-runs.json', import.meta.url), 'utf8'));
@@ -53,6 +61,10 @@ const observationsOut = option('observations-out');
 if (!diagnostic && (reuseSet !== undefined || freshScanners.length || observationsOut !== undefined)) fail('--reuse-observations, --fresh and --observations-out are for --mode diagnostic; an official run measures every scanner fresh');
 if (reuseSet === undefined && freshScanners.length) fail('--fresh needs --reuse-observations');
 const attributionId = option('attribution');
+const candidateId = option('candidate');
+const evidenceTag = option('evidence-tag'), evidenceManifestDigest = option('evidence-manifest-digest');
+if (attributionId && candidateId) fail('--attribution and --candidate are exclusive');
+if (diagnostic && candidateId) fail('--candidate (the full comparative candidate replay, #698) and --mode diagnostic (the product-only lane, #705) are different mechanisms; use one');
 if (diagnostic && (attributionId !== undefined || args.includes('--methods'))) fail('a diagnostic run makes no attribution run and no methods run; the methods need the peers and are reported as unavailable');
 type Attribution = { configs: Record<string, string>; nodeDir: string; scanners: Record<string, { version: string; integrity: string }> };
 const attribution: Attribution | undefined = attributionId === undefined ? undefined : (registry.attributionRuns?.[attributionId] ?? fail(`the registry pins no attribution run ${attributionId}`));
@@ -65,6 +77,10 @@ const out = methodsMode ? path.join(baseOut, 'methods') : baseOut;
 const minRuns = diagnostic ? 1 : 2;
 const runs = Number(option('runs', String(minRuns)));
 if (!Number.isInteger(runs) || runs < minRuns) fail(diagnostic ? '--runs must be at least 1' : '--runs must be at least 2: an official artifact needs a determinism check');
+
+// Parallel scanner processes of the engine: a scheduling parameter the artifact records as non-semantic (it never changes a result). A candidate replay on the 7 GB runner uses fewer (#698).
+const engineJobs = option('jobs', '4')!;
+if (!/^[1-4]$/.test(engineJobs)) fail('--jobs must be 1 to 4');
 
 const population = registry.populations.find((p: { id: string }) => p.id === populationId) ?? fail(`unknown population ${populationId}`);
 
@@ -79,6 +95,20 @@ if (methodsMode) {
   if (onDisk !== methodsRun!.evaluationEvidence.digest) fail(`${methodsRun!.evaluationEvidence.file} has digest ${onDisk}, the registry pins ${methodsRun!.evaluationEvidence.digest}`);
   if (sha256Digest(canonical(buildEvaluationEvidence())) !== onDisk) fail(`${methodsRun!.evaluationEvidence.file} is stale against the product contracts; run npm run qualification:evidence`);
 }
+// A candidate run replays on the adoption's engine candidate (benchmarks/evidence-adoption.json), which is not the registry's accepted engine.
+const adoption = candidateId ? JSON.parse(readFileSync(new URL('../benchmarks/evidence-adoption.json', import.meta.url), 'utf8')) : undefined;
+let engineCandidate: { engine: { tag: string; revision: string }; product: { version: string; integrity: string }; evidenceRelease: string; manifestDigest: string } | undefined;
+try { engineCandidate = candidateId ? controlFor(adoption, { evidenceTag, manifestDigest: evidenceManifestDigest, requireArchive: false }) as typeof engineCandidate : undefined; } catch (error) { fail((error as Error).message); }
+if (candidateId && !engineCandidate) fail('benchmarks/evidence-adoption.json records no engineCandidate to replay a product candidate on');
+if (candidateId && !evidenceTag && (engineCandidate!.evidenceRelease !== registry.populations.find((p: { id: string }) => p.id === 'public-evidence-snapshot')?.evidence.release.tag)) fail('the engineCandidate evidence is not the registry pin: a product candidate is measured on the accepted evidence');
+// A candidate is measured on the accepted evidence, or, with --evidence-tag and --evidence-manifest-digest (a new snapshot, #698 phase 2), on that release of credential-evidence
+// instead: the same registered product bytes, the engine candidate's engine, verified against the manifest digest the caller names (never against the registry pin).
+if (!!evidenceTag !== !!evidenceManifestDigest) fail('--evidence-tag and --evidence-manifest-digest go together');
+if (evidenceTag && !candidateId) fail('--evidence-tag is for a product candidate run: an official run measures the registry pin');
+if (evidenceTag && !/^snapshot-\d{4}\.\d{2}\.\d{2}(\.\d+)?$/.test(evidenceTag)) fail(`--evidence-tag ${evidenceTag} is not a snapshot tag`);
+if (evidenceManifestDigest && !/^sha256:[0-9a-f]{64}$/.test(evidenceManifestDigest)) fail('--evidence-manifest-digest must be sha256:<64 hex>');
+const expectedEngine = engineCandidate ? { revision: engineCandidate.engine.revision, version: engineCandidate.engine.tag.replace(/^v/, '') } : { revision: registry.engine.revision, version: registry.engine.version };
+const candidate = candidateId ? candidateOf(readCandidateRegistry(), candidateId) : undefined;
 const configFile = (attribution ? attribution.configs[platform] : registry.config.platforms[platform]?.file) ?? fail(`no run configuration pinned for platform ${platform}`);
 const nodeDir = path.join(engineDir, attribution?.nodeDir ?? 'adapters/node');
 // The scanners this run is pinned to: the registry's, with the attributed product build in place of the product pin.
@@ -89,9 +119,9 @@ mkdirSync(out, { recursive: true });
 
 // 1. Engine identity: the tag's commit, the version string and the protocol. A different engine is a different measurement.
 const revision = execFileSync('/usr/bin/git', ['-C', engineDir, 'rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
-if (revision !== registry.engine.revision) fail(`engine checkout is at ${revision}, expected ${registry.engine.revision} (${registry.engine.tag})`);
+if (revision !== expectedEngine.revision) fail(`engine checkout is at ${revision}, expected ${expectedEngine.revision}`);
 const engineVersion = execFileSync(binary, ['--version'], { encoding: 'utf8' }).trim();
-const expectedVersion = `credential-eval ${registry.engine.version} (protocol ${registry.engine.protocol})`;
+const expectedVersion = `credential-eval ${expectedEngine.version} (protocol ${registry.engine.protocol})`;
 if (engineVersion !== expectedVersion) fail(`engine prints "${engineVersion}", expected "${expectedVersion}"`);
 
 // 2. Scanner pins: read from the pinned configuration, and checked against the registry and the binaries on PATH.
@@ -104,8 +134,10 @@ if (diagnostic) {
 }
 for (const scanner of runScanners) {
   const entry = config.scanners.find((s: { id: string }) => s.id === scanner.id);
-  if (!entry?.pin || entry.pin.version !== scanner.version) fail(`configuration pins ${scanner.id} at ${entry?.pin?.version ?? 'nothing'}, the registry pins ${scanner.version}`);
-  if (scanner.kind === 'npm' && scanner.integrity && entry.pin.integrity !== scanner.integrity) fail(`configuration pins ${scanner.id} with integrity ${entry.pin.integrity ?? 'none'}, the registry pins ${scanner.integrity}`);
+  // The control build of a candidate run is the engine candidate's product pin (the registry still holds the accepted run's).
+  const control = candidate && scanner.id === 'redact-secret' ? { ...scanner, ...engineCandidate!.product } : scanner;
+  if (!entry?.pin || entry.pin.version !== control.version) fail(`configuration pins ${scanner.id} at ${entry?.pin?.version ?? 'nothing'}, the registry pins ${control.version}`);
+  if (scanner.kind === 'npm' && control.integrity && entry.pin.integrity !== control.integrity) fail(`configuration pins ${scanner.id} with integrity ${entry.pin.integrity ?? 'none'}, the registry pins ${control.integrity}`);
   if (scanner.kind === 'executable' && entry.pin.sha256 !== scanner.executableSha256[platform]) fail(`configuration pin for ${scanner.id} differs from the registry on ${platform}`);
 }
 if (reuseSet !== undefined && !(spawnSync(binary, ['run', '--help'], { encoding: 'utf8' }).stdout ?? '').includes('--reuse-observations'))
@@ -114,12 +146,22 @@ if (reuseSet !== undefined) {
   const unknown = freshScanners.filter(id => !selectedScanners.includes(id));
   if (unknown.length) fail(`--fresh names ${unknown.join(', ')}, not selected scanners`);
 }
+// 2b. A product candidate: the registered tarballs over the shim's published install, byte-verified, loaded by the shim, receipt kept with the run.
+let candidateReceipt: unknown;
+if (candidate) {
+  const receiptFile = path.join(out, 'product-candidate-receipt.json');
+  try {
+    candidateReceipt = installCandidate({ registry: readCandidateRegistry(), id: candidateId!, nodeDir, platform, receipt: receiptFile });
+    verifyLoaded({ nodeDir, shim: path.join(nodeDir, 'shim.mjs'), expectedVersion: candidate.product.version });
+  } catch (error) { fail(`product candidate ${candidateId}: ${(error as Error).message}`); }
+}
 const probe = (command: string, argv: string[]) => (spawnSync(command, argv, { encoding: 'utf8' }).stdout ?? '').trim();
 if (selectedScanners.includes('trufflehog') && probe('trufflehog', ['--version']) !== `trufflehog ${registry.scanners.find((s: { id: string }) => s.id === 'trufflehog').version}`) fail(`trufflehog on PATH is "${probe('trufflehog', ['--version'])}", not the pinned version; put a pinned binary first on PATH`);
 if (selectedScanners.includes('gitleaks') && probe('gitleaks', ['version']) !== registry.scanners.find((s: { id: string }) => s.id === 'gitleaks').version) fail('gitleaks on PATH is not the pinned version');
 
 // 3. Population inputs.
 const pin = population.evidence;
+let bindPin = pin; // the pin the artifact must bind to: the registry's, or the named release's own identity (a new snapshot, candidate runs only)
 const inputs: { corpus: string; manifest: string; tag: string; manifestDigest: string } = { corpus: '', manifest: '', tag: pin.release.tag, manifestDigest: pin.release.manifestDigest };
 if (methodsMode && (PRODUCT_POPULATIONS as readonly string[]).includes(populationId)) fail('a methods run is made for the floors population only');
 if ((PRODUCT_POPULATIONS as readonly string[]).includes(populationId)) {
@@ -138,11 +180,19 @@ if ((PRODUCT_POPULATIONS as readonly string[]).includes(populationId)) {
   const dir = path.resolve(option('evidence-dir', path.join(baseOut, 'evidence'))!);
   mkdirSync(dir, { recursive: true });
   if (!existsSync(path.join(dir, 'release-manifest.json')))
-    execFileSync('gh', ['release', 'download', pin.release.tag, '-R', pin.source === 'credential-evidence' ? 'redact-secret/credential-evidence' : pin.source, '-D', dir,
+    execFileSync('gh', ['release', 'download', evidenceTag ?? pin.release.tag, '-R', pin.source === 'credential-evidence' ? 'redact-secret/credential-evidence' : pin.source, '-D', dir,
       '-p', 'release-manifest.json', '-p', 'release-manifest.json.sha256', '-p', 'credential-eval-corpus-snapshot.json'], { stdio: 'inherit' });
   inputs.corpus = path.join(dir, 'credential-eval-corpus-snapshot.json');
   inputs.manifest = path.join(dir, 'release-manifest.json');
-  if (sha256Digest(readFileSync(inputs.manifest)) !== pin.release.manifestDigest) fail(`release manifest digest differs from the pinned ${pin.release.manifestDigest}`);
+  if (evidenceTag) {
+    // A new snapshot: the identity of the release as the adoption preflight checks it (manifest digest, asset bytes, records tree, schema, case count).
+    const manifestBytes = readFileSync(inputs.manifest), snapshotBytes = readFileSync(inputs.corpus);
+    const problems = releaseIdentityProblems({ tag: evidenceTag, expectedManifestDigest: evidenceManifestDigest, manifestBytes, manifest: JSON.parse(manifestBytes.toString('utf8')), snapshotBytes, snapshot: JSON.parse(snapshotBytes.toString('utf8')) });
+    if (problems.length) fail(`${evidenceTag} is not the release ${evidenceManifestDigest}: ${problems.join('; ')}`);
+    inputs.tag = evidenceTag; inputs.manifestDigest = evidenceManifestDigest!;
+    const identity = JSON.parse(snapshotBytes.toString('utf8')).identity as { source: string; revision: string; evidence_schema: string; corpus_digest: string };
+    bindPin = { ...pin, source: pin.source, revision: identity.revision, evidenceSchema: identity.evidence_schema, corpusDigest: identity.corpus_digest, release: { tag: evidenceTag, manifestDigest: evidenceManifestDigest! } };
+  } else if (sha256Digest(readFileSync(inputs.manifest)) !== pin.release.manifestDigest) fail(`release manifest digest differs from the pinned ${pin.release.manifestDigest}`);
 }
 
 // 4. Run the engine; any exit but 0 is a failed job.
@@ -152,8 +202,8 @@ for (let n = 1; n <= runs; n++) {
   // A methods run is not given --require-complete: the engine then also exits 3 for a recorded operator generation attempt that errored, which
   // is a fact about the generated variants, not a scanner that did not measure. Scanner completeness is checked on the artifact below.
   const methodArgs = methodsMode ? ['--methods', methodsRun!.methods.join(','), '--reference', methodsRun!.reference, '--seed', methodsRun!.seed, '--evidence', evaluationEvidenceFile] : ['--require-complete'];
-  const result = spawnSync(binary, ['run', '--run-class', diagnostic ? 'exploratory' : 'official', '--corpus', inputs.corpus, '--evidence-release', inputs.tag, '--evidence-manifest', inputs.manifest,
-    '--evidence-manifest-digest', inputs.manifestDigest, '--config', configPath, '--node-dir', nodeDir, '--jobs', '4', ...methodArgs,
+  const result = spawnSync(binary, ['run', '--run-class', diagnostic || candidate ? 'exploratory' : 'official', '--corpus', inputs.corpus, '--evidence-release', inputs.tag, '--evidence-manifest', inputs.manifest,
+    '--evidence-manifest-digest', inputs.manifestDigest, '--config', configPath, '--node-dir', nodeDir, '--jobs', engineJobs, ...methodArgs,
     ...(reuseSet !== undefined ? ['--reuse-observations', path.resolve(reuseSet), ...freshScanners.flatMap(id => ['--fresh', id])] : []),
     ...(observationsOut !== undefined && n === 1 ? ['--observations-out', path.resolve(observationsOut)] : []), '--out', artifact],
   { stdio: ['ignore', 'inherit', 'inherit'] });
@@ -171,7 +221,10 @@ for (const [i, file] of artifacts.entries()) {
   const product = runScanners.find((s: { id: string }) => s.id === DIAGNOSTIC_PRODUCT_SCANNER);
   const problems = diagnostic
     ? diagnosticBindingProblems(a.artifact, pin, { engineVersion: registry.engine.version, protocol: registry.engine.protocol, selected: selectedScanners, product: { id: DIAGNOSTIC_PRODUCT_SCANNER, version: product.version, integrity: product.integrity } })
-    : bindingProblems(a.artifact, pin, { engineVersion: registry.engine.version, protocol: registry.engine.protocol });
+    : bindingProblems(a.artifact, bindPin, { engineVersion: expectedEngine.version, protocol: registry.engine.protocol })
+    // A candidate is exploratory by construction: the class is checked for what it must be instead of being refused.
+      .filter(problem => !(candidate && problem.startsWith('run_class is')));
+  if (candidate && (a.artifact.manifest.run_class !== 'exploratory' || a.artifact.manifest.publication !== 'internal')) problems.push(`a product candidate run is exploratory and internal, this artifact is ${a.artifact.manifest.run_class}/${a.artifact.manifest.publication}`);
   if (problems.length) fail(`artifact ${i + 1} is not accepted for ${populationId}: ${problems.join('; ')}`);
   if (methodsMode) {
     const ran = [...a.artifact.manifest.methods.map(m => m.id)].sort().join(',');
@@ -195,6 +248,8 @@ const record = {
   evidence: kept.manifest.evidence, configHash: kept.manifest.config_hash,
   artifact: { digest: kept.artifactDigest, semanticDigest: kept.semanticDigest, schemaDigest: sha256Digest(readFileSync(new URL('../schemas/credential-eval-run-artifact-v1.json', import.meta.url))) },
   determinism: { runs, semanticDigestsEqual: true },
+  ...(evidenceTag && !(PRODUCT_POPULATIONS as readonly string[]).includes(populationId) ? { evidenceOverride: { tag: evidenceTag, manifestDigest: evidenceManifestDigest } } : {}),
+  ...(candidate ? { productCandidate: { id: candidateId, commit: candidate.product.commit, version: candidate.product.version, published: false, packages: candidate.packages.map(x => ({ name: x.name, sha256: x.sha256 })), control: engineCandidate!.product, receipt: 'product-candidate-receipt.json' } } : {}),
   ...(attributionId ? { attribution: { id: attributionId, configFile, nodeDir: attribution!.nodeDir } } : {}),
   ...(methodsMode ? { kind: 'methods', methods: [...methodsRun!.methods].sort(), evaluation: { reference: methodsRun!.reference, seed: methodsRun!.seed, evidenceDigest: methodsRun!.evaluationEvidence.digest } } : {}),
   scanners: kept.manifest.scanners.map(s => ({

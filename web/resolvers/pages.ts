@@ -15,6 +15,7 @@ import { loadDossiers } from '../services/dossiers';
 import { loadFeatureClaims } from '../services/features';
 import { loadFindings } from '../services/findings';
 import { loadPeerProfiles } from '../services/peers';
+import { loadProductScope } from '../services/product-scope';
 import { loadOwnPerformance } from '../services/performance';
 import { loadPeerRuntime } from '../services/runtime';
 import type { MeasuredRun } from '../services/run';
@@ -550,8 +551,8 @@ export async function resolveReleaseCandidatePage(): Promise<RcPage> {
 
 /** The scanners the benchmark ran with and the environment each ran in (#612). */
 export async function resolveScannerPage(): Promise<ScannerOverviewProps> {
-  const [environment, profiles, { run, catalog }, runtime] = await Promise.all([loadScannerEnvironment(), loadPeerProfiles(), loadLegacySource(), loadPeerRuntime()]);
-  return resolveScanners({ environment, profiles, run: run.state === 'measured' ? run : undefined, runtime, productDetectors: catalog.detectors.length || null });
+  const [environment, profiles, { run, catalog }, runtime, productScope] = await Promise.all([loadScannerEnvironment(), loadPeerProfiles(), loadLegacySource(), loadPeerRuntime(), loadProductScope()]);
+  return resolveScanners({ environment, profiles, run: run.state === 'measured' ? run : undefined, runtime, productDetectors: catalog.detectors.length || null, productScope });
 }
 
 // ---- / (the landing page) and the footer's run line ------------------------------------------------------------------------

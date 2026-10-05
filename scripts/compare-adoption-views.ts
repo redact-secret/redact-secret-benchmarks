@@ -158,7 +158,9 @@ for (const x of pc.cases) {
   for (const r of x.results) { const before = o.results.find((q: Json) => q.scanner === r.scanner); if (outcome(before) !== outcome(r)) changed.push({ scanner: r.scanner, from: outcome(before), to: outcome(r) }); }
   if (changed.length) drift.push({ case: x.id, regrouped, changed, family: x.family });
 }
-const driftExplained = (d: Json) => d.regrouped.includes('family') && d.regrouped.length > 0 && C.policy.twinScope && snapshotCases.get(d.case)?.twinOf !== undefined;
+// A common case the release itself records as changed in CONTENT (the case was re-authored in credential-evidence) is a corpus change: its outcome move is that change, attributed to it.
+const contentChanged = new Set<string>((Array.isArray(report.diff.changed) ? report.diff.changed : []).filter((c: Json) => (c.fields ?? []).includes('content')).map((c: Json) => c.id));
+const driftExplained = (d: Json) => contentChanged.has(d.case) || d.regrouped.includes('family') && d.regrouped.length > 0 && C.policy.twinScope && snapshotCases.get(d.case)?.twinOf !== undefined;
 const driftByScanner = count(drift.flatMap((d: Json) => d.changed.map((x: Json) => ({ ...x, case: d.case }))), (x: Json) => `${x.scanner}: ${x.from} -> ${x.to}`);
 for (const d of drift) if (!driftExplained(d)) unexplained.push(`common case ${d.case} changed outcome (${d.changed.map((x: Json) => `${x.scanner} ${x.from} -> ${x.to}`).join('; ')}) without a twin family assignment`);
 
@@ -167,10 +169,10 @@ const touched = new Set<string>();
 for (const x of pc.cases) {
   const o = commonA.get(x.id);
   if (!o && !added.has(x.id)) continue;
-  if (added.has(x.id) || ['family', 'tier', 'evidenceClass', 'group', 'kind'].some(k => !same(o![k], x[k]))) for (const d of x.detectors ?? []) touched.add(d);
+  if (added.has(x.id) || contentChanged.has(x.id) || ['family', 'tier', 'evidenceClass', 'group', 'kind'].some(k => !same(o![k], x[k]))) for (const d of x.detectors ?? []) touched.add(d);
 }
 const regroupedCommon = pc.cases.filter((x: Json) => commonA.has(x.id) && ['family', 'tier', 'evidenceClass', 'group', 'kind'].some(k => !same(commonA.get(x.id)![k], x[k]))).length;
-if (Array.isArray(report.diff.changed) && report.diff.changed.length !== regroupedCommon) unexplained.push(`the change report lists ${report.diff.changed.length} changed common cases, the views regroup ${regroupedCommon}`);
+if (Array.isArray(report.diff.changed) && report.diff.changed.length !== regroupedCommon + [...contentChanged].filter(id => pc.cases.some((x: Json) => x.id === id && commonA.has(id) && !['family', 'tier', 'evidenceClass', 'group', 'kind'].some(k => !same(commonA.get(id)![k], x[k])))).length) unexplained.push(`the change report lists ${report.diff.changed.length} changed common cases, the views regroup ${regroupedCommon}`);
 for (const r of familyRows) if (!touched.has(r.family)) unexplained.push(`${r.family}: evidence changed (${Object.keys(r.evidenceDelta).join(', ')}) with no added or regrouped case attributed to it`);
 
 // ---- 6. added cases ----

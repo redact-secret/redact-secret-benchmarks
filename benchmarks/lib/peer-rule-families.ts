@@ -161,3 +161,23 @@ export function targetedFamilies(set: PeerRuleSet): { families: Set<string>; map
   for (const entry of Object.values(set.rules)) for (const family of entry.families) families.add(family);
   return { families, mappedRules: Object.keys(set.rules).length };
 }
+
+export interface ProductScope { schemaVersion: number; product: string; readAt: { repository: string; revision: string; note?: string }; description: string; outOfScope: string[]; sources: string[] }
+
+/** The product's own out-of-scope statements (#622): what the product documents it does not do, stated without a judgement and read at a named product revision. */
+export function productScopeProblems(scope: ProductScope): string[] {
+  const problems: string[] = [];
+  if (scope?.schemaVersion !== 1) return ['product-scope.json: schemaVersion must be 1'];
+  if (scope.product !== 'redact-secret') problems.push('product-scope.json: product must be redact-secret');
+  if (!/^[0-9a-f]{40}$/.test(scope.readAt?.revision ?? '')) problems.push('product-scope.json: readAt.revision must be a full 40-character product commit');
+  if (!scope.description?.trim() || scope.description.length > 240) problems.push('product-scope.json: needs a description of one sentence or two, at most 240 characters');
+  if (RANKING_WORDS.test(scope.description ?? '')) problems.push('product-scope.json: the description words a judgement');
+  if (!Array.isArray(scope.outOfScope) || scope.outOfScope.length === 0 || scope.outOfScope.length > 8) problems.push('product-scope.json: needs one to eight outOfScope statements');
+  for (const statement of Array.isArray(scope.outOfScope) ? scope.outOfScope : []) {
+    if (typeof statement !== 'string' || !statement.trim() || statement.length > 200) problems.push('product-scope.json: an outOfScope statement is empty or over 200 characters');
+    else if (RANKING_WORDS.test(statement)) problems.push('product-scope.json: an outOfScope statement words a judgement; state what is not covered');
+  }
+  if (!Array.isArray(scope.sources) || scope.sources.length === 0) problems.push('product-scope.json: needs the sources the statements restate');
+  for (const source of scope.sources ?? []) if (/github\.com\/redact-secret\/redact-secret\/blob\//.test(source) && !/\/blob\/[0-9a-f]{40}\//.test(source)) problems.push(`product-scope.json: ${source} is a past-state link and needs a 40-hex permalink`);
+  return problems;
+}

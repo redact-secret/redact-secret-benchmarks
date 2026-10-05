@@ -88,7 +88,7 @@ export const FAMILIES = {
   // G5
   'x:oauth1-access-token-secret': F('G5', ['field:oauth_token_secret'], ['paired-secret-of-access-token', 'distinct-from-oauth2-client-credentials'], [['oauth_token', URLSAFE, 50], ['oauth_signature', ALNUM, 27], ['oauth_consumer_key', ALNUM, 25]], [ALNUM, 45]),
   // G6
-  'mongodb-atlas:database-user-password': F('G6', ['atlas-password'], ['api-field', 'chosen-by-caller'], [['username', LOWER, 8], ['databaseName', LOWER, 8]], [ALNUM, 18]),
+  'mongodb-atlas:database-user-password': F('G6', ['atlas-password'], ['api-field', 'chosen-by-caller'], [['username', LOWER, 8], ['databaseName', LOWER, 8]], [ALNUM, 18]), // ggignore: synthetic filler spec, family name contains the word password
   'mongodb-atlas:programmatic-api-private-key': F('G6', ['digest-only'], ['two-part-key', 'legacy-method', 'private-key-unredacted-once', 'public-key-length', 'digest-not-bearer', 'no-ui-or-data-access'], [['publicKey', LOWER, 8]], [HEX, 32]),
   'mongodb-atlas:service-account-secret': F('G6', ['basic'], ['pair-and-role', 'shown-once', 'example-prefix', 'client-id-pattern', 'expiry-and-rotation', 'basic-carrier', 'recommended-method'], [['clientId', HEX, 24, 'mdb_sa_id_']], [URLSAFE, 52], { basicClientId: ['mdb_sa_id_', HEX, 24] }),
 };

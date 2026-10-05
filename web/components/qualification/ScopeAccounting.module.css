@@ -34,4 +34,16 @@
     cursor: pointer;
     font: var(--text-small-strong);
   }
+
+  /* A closed disclosure is still laid out by the browser, so its list keeps a width a word fits in whatever the cell is. */
+  @media (min-width: 721px) {
+    .plain {
+      min-inline-size: calc(var(--space-16) * 5);
+      overflow-wrap: break-word;
+    }
+
+    .sub {
+      overflow-wrap: break-word;
+    }
+  }
 }

@@ -3,7 +3,7 @@
   "product": "redact-secret",
   "readAt": {
     "repository": "redact-secret/redact-secret",
-    "revision": "1e45cecf674344726e59bd35a37f28ba1966a06e",
+    "revision": "422e43e3dc1fb02536d9c617097fd45e78a92759",
     "note": "The product documents the statements below were read at; they restate the product's own scope decisions and are not read from any result."
   },
   "description": "Deterministic secret detection and redaction for runtime data; the Node package is measured through its public API with its default detectors.",
@@ -13,23 +13,40 @@
     "No declared netrc, kubeconfig user token, HTTP session cookie, Azure SAS, S3-presigned or GCS-signed-URL family.",
     "Values in those carriers are claimed only when a supported detector reads them independently, and that claim is incidental.",
     "The personal-data profile, selectors and the pii:us add-on: off in the published runs; default credential detectors only.",
-    "The CLI, WebAssembly and Python surfaces: not run; the Node package's public API only."
+    "The CLI, WebAssembly and Python surfaces: not run; the Node package's public API only.",
+    "JSON {\"name\": ..., \"value\": ...} object pairs (HAR postData params and queryString members): not read as a name with its value.",
+    "A credential name that keys an object holding a \"value\" member (Terraform state outputs): not read; the one-line assignment form is.",
+    "A token behind a percent-encoded delimiter (%22, %3D, %2F): not read for any family; percent-encoding is not decoded.",
+    "HTTP session cookies in HAR headers and cookies arrays: no session-cookie family, and no name/value pair reading."
   ],
   "sources": [
-    "https://github.com/redact-secret/redact-secret/blob/1e45cecf674344726e59bd35a37f28ba1966a06e/docs/decisions/2026-10-04-define-fragmented-credentials-as-outside-the-raw-input-contract.md",
-    "https://github.com/redact-secret/redact-secret/blob/1e45cecf674344726e59bd35a37f28ba1966a06e/docs/decisions/2026-09-20-defer-encoded-input-decoding.md",
-    "https://github.com/redact-secret/redact-secret/blob/1e45cecf674344726e59bd35a37f28ba1966a06e/docs/decisions/2026-10-04-settle-the-open-structured-file-url-carrier-and-control-roots-of-1203.md",
+    "https://github.com/redact-secret/redact-secret/blob/422e43e3dc1fb02536d9c617097fd45e78a92759/docs/decisions/2026-10-04-define-fragmented-credentials-as-outside-the-raw-input-contract.md",
+    "https://github.com/redact-secret/redact-secret/blob/422e43e3dc1fb02536d9c617097fd45e78a92759/docs/decisions/2026-09-20-defer-encoded-input-decoding.md",
+    "https://github.com/redact-secret/redact-secret/blob/422e43e3dc1fb02536d9c617097fd45e78a92759/docs/decisions/2026-10-04-settle-the-open-structured-file-url-carrier-and-control-roots-of-1203.md",
     "https://github.com/redact-secret/redact-secret/issues/1203#issuecomment-5984192521",
+    "https://github.com/redact-secret/redact-secret/blob/422e43e3dc1fb02536d9c617097fd45e78a92759/docs/decisions/2026-10-05-settle-the-snapshot-2026-10-04-4-added-case-roots.md",
     "benchmarks/official-runs.json: the run configuration credential-public-v1 (mode \"Published npm package · default detectors\", runtime node)"
   ],
-  "ownerConfirmation": {
-    "decidedBy": "Milo Kang (repository owner)",
-    "decidedOn": "2026-10-05",
-    "statement": "The 13 provisional product-scope statements of the #698 triage (netrc, kubeconfig user token and client key, HTTP session cookie, Azure SAS, S3-presigned and GCS-signed-URL carriers) are confirmed as the owner's product-scope decision, based on the product's own documentation at the revision above. They are the owner's decision on the product's docs, not a statement of the core maintainers beyond redact-secret#1203 and PR #1204.",
-    "issues": [
-      "redact-secret-benchmarks#622",
-      "redact-secret-benchmarks#698",
-      "redact-secret-benchmarks#680"
-    ]
-  }
+  "ownerConfirmations": [
+    {
+      "decidedBy": "Milo Kang (repository owner)",
+      "decidedOn": "2026-10-05",
+      "statement": "The 13 provisional product-scope statements of the #698 triage (netrc, kubeconfig user token and client key, HTTP session cookie, Azure SAS, S3-presigned and GCS-signed-URL carriers) are confirmed as the owner's product-scope decision, based on the product's own documentation at the revision above. They are the owner's decision on the product's docs, not a statement of the core maintainers beyond redact-secret#1203 and PR #1204.",
+      "issues": [
+        "redact-secret-benchmarks#622",
+        "redact-secret-benchmarks#698",
+        "redact-secret-benchmarks#680"
+      ]
+    },
+    {
+      "decidedBy": "Milo Kang (repository owner)",
+      "decidedOn": "2026-10-05",
+      "statement": "The 4 scope statements of core redact-secret#1205 / PR #1206 (JSON name/value object pairs, a credential name that keys an object holding a value member, a token behind a percent-encoded delimiter, HTTP session cookies in HAR headers and cookies arrays) are registered as the owner's product-scope decision, based on the product's own decision record at the revision above (decision-settle-the-snapshot-2026-10-04-4-added-case-roots). The earlier statements were re-read unchanged at this revision. They are the owner's decision on the product's docs; the claim 'not read' is a scope fact the core records, never a measured result.",
+      "issues": [
+        "redact-secret-benchmarks#622",
+        "redact-secret-benchmarks#698",
+        "redact-secret/redact-secret#1205"
+      ]
+    }
+  ]
 }

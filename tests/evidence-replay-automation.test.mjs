@@ -61,3 +61,20 @@ test('a deployment receipt is built only from a successful push publish on the r
   assert.match(bad({ pages: { ...pages, '/report/': 'nothing' } }), /does not carry the evidenceRelease stamp/);
   assert.throws(() => buildReceipt({ ...ok, commitHasAcceptance: false, verifiedOn: 'x' }), /does not hold/);
 });
+
+test('the contrast attributes a difference to the evidence change the report names, and labels outcomes without inventing any (#690)', async () => {
+  const { explainFromReport } = await import('../scripts/run-evidence-replay.mjs');
+  const { outcomeLabel, comparisonEntry, renderMarkdown } = await import('../scripts/render-snapshot-contrast.mjs');
+  const explain = explainFromReport({ evidenceRelease: 'snapshot-x', diff: { changed: [{ id: 'a--b', fields: ['grouping'], evidenceClass: ['project-policy', 'unresolved'] }, { id: 'c--d', fields: ['content'] }] } }, 'a maintainer decision');
+  assert.equal(explain['a--b'], 'changed in snapshot-x (grouping; evidence class project-policy -> unresolved): a maintainer decision');
+  assert.equal(explain['c--d'], 'changed in snapshot-x (content): a maintainer decision');
+  assert.equal(outcomeLabel({ measurement: { type: 'positive', span_outcomes: ['EXACT', 'MISS'], leaked_bytes: 3 } }), 'positive EXACT/MISS leaked 3');
+  assert.equal(outcomeLabel({ measurement: { type: 'control', flagged: false } }), 'control clear');
+  assert.equal(outcomeLabel({ measurement: { type: 'pending' } }), 'pending');
+  assert.equal(outcomeLabel(undefined), 'absent');
+  const d = (id, cause) => ({ population: 'public-evidence-snapshot', scanner: 's', kind: 'case', id, before: { measurement: { type: 'control', flagged: false }, expected: [] }, after: { measurement: { type: 'pending' }, expected: [] }, cause, regression: false });
+  const entry = comparisonEntry({ kind: 'k', newer: { label: 'n' }, older: { label: 'o' } }, { differences: 2, explained: 1, unexplained: 1, regressions: 0, byCause: { x: 1 }, explainedDifferences: [d('a', 'x')], unexplainedDifferences: [d('b', null)] });
+  assert.equal(entry.plainCases.length, 2);
+  assert.match(renderMarkdown('t', [entry]), /\*\*unexplained\*\*/);
+  assert.match(renderMarkdown('t', [entry]), /UNEXPLAINED DIFFERENCES OR REGRESSIONS REMAIN/);
+});

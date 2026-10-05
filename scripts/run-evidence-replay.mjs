@@ -9,6 +9,9 @@
  *   node scripts/run-evidence-replay.mjs dispatch ...   dispatch official-runs.yml once on that branch (an existing run of the same commit is reused, never dispatched twice); prints the run id
  *   node scripts/run-evidence-replay.mjs wait     --run <id>
  *   node scripts/run-evidence-replay.mjs collect  ... --run <id>   download, verify each run record, archive as `official-runs-<run id>`, check the round trip, record `evidenceCandidate.replay`, delete the branch
+ *   node scripts/run-evidence-replay.mjs contrast ... [--candidate <id>] [--note <text>]   contrast the control (and the candidate) on the new snapshot with the accepted one, by semantic id, strict
+ *   node scripts/run-evidence-replay.mjs chain    ... --candidate <id>   the whole chain, each step skipped when its record exists and committed and pushed before the next dispatch:
+ *                                                  control replay, candidate on the accepted evidence, candidate on the new evidence (the 2x2), contrast, draft pull request
  *
  * The control is the PUBLISHED product on the engine the adoption record names, so the corpus is the only difference from the accepted runs. The candidate must already be
  * recorded by `adopt-evidence-snapshot.yml` (state `accepted`, `evidenceCandidate`), and its engine and product pins must equal the active registry's (a moved engine or product
@@ -19,6 +22,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, 
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { controlFor } from './candidate-control.mjs';
 import { fetchArchive, listKept, pack, sha256File } from './replay-archive.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -186,6 +190,75 @@ export function collect(tag, manifestDigest, runId, { keepBranch = false } = {})
   } finally { rmSync(scratch, { recursive: true, force: true }); }
 }
 
+
+/** Pure: the cause of every case the change report lists as changed, keyed by semantic id, for the contrast (a difference in these cases is the evidence change, not the product). */
+export function explainFromReport(report, note) {
+  const out = {};
+  for (const c of report.diff?.changed ?? []) {
+    const parts = [...(c.fields ?? [])];
+    if (Array.isArray(c.evidenceClass) && c.evidenceClass[0] !== c.evidenceClass[1]) parts.push(`evidence class ${c.evidenceClass[0]} -> ${c.evidenceClass[1]}`);
+    out[c.id] = `changed in ${report.evidenceRelease} (${parts.join('; ')})${note ? `: ${note}` : ''}`;
+  }
+  return out;
+}
+
+const git = (...args) => run('git', args).trim();
+function commitAndPush(message, paths) {
+  run('git', ['add', ...paths]);
+  if (git('status', '--porcelain', '--', ...paths)) run('git', ['commit', '-q', '-m', message]);
+  run('git', ['push', '-q', 'origin', `HEAD:refs/heads/${git('branch', '--show-current')}`]);
+}
+const node = (args, options = {}) => execFileSync('node', args, { cwd: root, stdio: ['ignore', 'inherit', 'inherit'], ...options });
+
+export function contrast(tag, manifestDigest, candidateId, note) {
+  const adoption = readJson(ADOPTION);
+  const ec = adoption.evidenceCandidate;
+  if (ec?.evidenceRelease !== tag || !ec.replay?.archive) throw new Error(`${tag} has no recorded control replay: run the control first`);
+  const scratch = mkdtempSync(path.join(os.tmpdir(), 'evidence-contrast-'));
+  try {
+    const cell = (name, a) => { const to = path.join(scratch, name); fetchArchive({ release: a.release, sha256: a.sha256, out: to, repository: REPOSITORY }); return to; };
+    const accepted = controlFor(adoption, {});
+    const report = readJson(ec.changeReport);
+    const explain = explainFromReport(report, note);
+    const comparisons = [{ kind: `control: published ${ec.product?.version ?? 'product'} on ${ec.engine.tag.replace(/^v0\.1\.0-/, '')}`, newer: { label: `${tag} (run ${ec.replay.ciRun.split('/').pop()})`, dir: cell('c', ec.replay.archive) }, older: { label: `${accepted.evidenceRelease} (run ${accepted.replay.ciRun?.split('/').pop() ?? 'accepted'})`, dir: cell('a', accepted.replay.archive) }, explain }];
+    if (candidateId) {
+      const candidate = readJson('benchmarks/product-candidates.json').candidates.find(c => c.id === candidateId);
+      const d = candidate?.evidenceReplays?.[tag], b = candidate?.replay;
+      if (d && b) comparisons.push({ kind: `candidate: unpublished ${candidateId} (exploratory, internal)`, newer: { label: `${tag} (run ${d.ciRun.split('/').pop()})`, dir: cell('d', d.archive) }, older: { label: `${accepted.evidenceRelease} (run ${b.ciRun.split('/').pop()})`, dir: cell('b', b.archive) }, explain });
+    }
+    const specFile = path.join(scratch, 'spec.json');
+    writeFileSync(specFile, JSON.stringify({ evidenceRelease: tag, comparisons }));
+    node(['scripts/render-snapshot-contrast.mjs', '--spec', specFile, '--out-json', `docs/generated/evidence-adoption/${tag}.contrast.json`, '--out-md', `docs/generated/evidence-adoption/${tag}.contrast.md`, '--strict'], { env: { ...process.env, NODE_OPTIONS: '--max-old-space-size=8192' } });
+    return { json: `docs/generated/evidence-adoption/${tag}.contrast.json`, md: `docs/generated/evidence-adoption/${tag}.contrast.md`, comparisons: comparisons.length };
+  } finally { rmSync(scratch, { recursive: true, force: true }); }
+}
+
+export function chain(tag, manifestDigest, candidateId, { note, keepBranch = false } = {}) {
+  const log = message => console.error(`[chain] ${message}`);
+  const adoption = () => readJson(ADOPTION);
+  const registry = () => readJson('benchmarks/product-candidates.json').candidates.find(c => c.id === candidateId);
+  if (!registry()) throw new Error(`no registered product candidate ${candidateId}`);
+  const evidence = ['--evidence-tag', tag, '--manifest-digest', manifestDigest];
+  const pushed = () => cleanTree();
+  pushed();
+  // 1. The control: the published product on the new evidence.
+  if (adoption().evidenceCandidate?.replay?.archive) log('control replay already recorded');
+  else { const d = dispatch(tag, manifestDigest); log(`control run ${d.runId}`); wait(d.runId); collect(tag, manifestDigest, d.runId, { keepBranch }); commitAndPush(`data(adoption): control replay of ${tag} (run ${d.runId})`, [ADOPTION, `docs/generated/evidence-adoption/${tag}.replay-pins.patch`]); }
+  // 2. The candidate on the accepted evidence (cell B of the 2x2), 3. on the new evidence (cell D). The candidate replay script dispatches, waits, collects and archives.
+  if (registry().replay) log('candidate replay on the accepted evidence already recorded');
+  else { node(['scripts/run-candidate-replay.mjs', 'all', '--candidate', candidateId, '--no-pr']); commitAndPush(`data(candidate): replay of ${candidateId} on the accepted evidence`, ['benchmarks/product-candidates.json', `docs/generated/evidence-adoption/product-${candidateId}`]); }
+  if (registry().evidenceReplays?.[tag]) log(`candidate replay on ${tag} already recorded`);
+  else { node(['scripts/run-candidate-replay.mjs', 'all', '--candidate', candidateId, ...evidence, '--no-pr']); commitAndPush(`data(candidate): replay of ${candidateId} on ${tag} (2x2)`, ['benchmarks/product-candidates.json', `docs/generated/evidence-adoption/product-${candidateId}`]); }
+  // 4. The contrast of the new evidence with the accepted one, by semantic id (strict).
+  contrast(tag, manifestDigest, candidateId, note);
+  commitAndPush(`data(adoption): contrast of ${tag} with the accepted snapshot`, [`docs/generated/evidence-adoption/${tag}.contrast.json`, `docs/generated/evidence-adoption/${tag}.contrast.md`]);
+  // 5. The draft pull request, once.
+  const branch = git('branch', '--show-current');
+  const open = JSON.parse(gh(['pr', 'list', '-R', REPOSITORY, '--head', branch, '--state', 'open', '--json', 'number,url']));
+  if (open.length) return { pullRequest: open[0].url };
+  return { pullRequest: gh(['pr', 'create', '-R', REPOSITORY, '--draft', '--base', 'develop', '--head', branch, '--title', `data(adoption): replay of evidence candidate ${tag} and product candidate ${candidateId}`, '--body', `Control replay, candidate replays, the 2x2 and the contrast of the evidence candidate \`${tag}\` (made by scripts/run-evidence-replay.mjs chain). Nothing is accepted: the active pins, the runs and the authority are unchanged.`]).trim() };
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   const [command, ...rest] = process.argv.slice(2);
   const option = name => { const at = rest.indexOf(`--${name}`); return at >= 0 ? rest[at + 1] : undefined; };
@@ -195,11 +268,13 @@ if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.ar
     else if (command === 'dispatch') console.log(JSON.stringify(dispatch(tag, digest)));
     else if (command === 'wait') wait(option('run'));
     else if (command === 'collect') console.log(JSON.stringify(collect(tag, digest, option('run'), { keepBranch: rest.includes('--keep-branch') })));
+    else if (command === 'contrast') console.log(JSON.stringify(contrast(tag, digest, option('candidate'), option('note'))));
+    else if (command === 'chain') console.log(JSON.stringify(chain(tag, digest, option('candidate'), { note: option('note'), keepBranch: rest.includes('--keep-branch') })));
     else if (command === 'all') {
       const d = dispatch(tag, digest);
       console.error(`${d.reused ? 'reusing' : 'dispatched'} run ${d.runId} on ${d.branch} (${d.sha})`);
       wait(d.runId);
       console.log(JSON.stringify(collect(tag, digest, d.runId, { keepBranch: rest.includes('--keep-branch') })));
-    } else { console.error('usage: run-evidence-replay.mjs all|branch|dispatch|wait|collect --tag <snapshot tag> --manifest-digest sha256:<hex> [--run <id>]'); process.exit(2); }
+    } else { console.error('usage: run-evidence-replay.mjs all|branch|dispatch|wait|collect|contrast|chain --tag <snapshot tag> --manifest-digest sha256:<hex> [--run <id>]'); process.exit(2); }
   } catch (error) { console.error(`evidence replay refused: ${error.message}`); process.exit(1); }
 }

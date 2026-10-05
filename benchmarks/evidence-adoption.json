@@ -219,9 +219,75 @@
     },
     "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.05.2.json",
     "replay": {
-      "state": "pending",
-      "via": ".github/workflows/official-runs.yml after the acceptance repin",
-      "recordedRuns": []
+      "state": "replayed",
+      "via": "The PUBLISHED @redact-secret/core 0.1.0-beta.13 on credential-eval v0.1.0-alpha.5: .github/workflows/official-runs.yml dispatched once on the transient replay branch replay/snapshot-2026.10.05.2-fbbeeca867db-control (revision 7cd5e87b37d255cc06146d13235b8761957dbe51: the repository at the reviewed code plus the candidate's evidence pin only, patch kept as docs/generated/evidence-adoption/snapshot-2026.10.05.2.replay-pins.patch; branch deleted after archiving), plain and methods, linux-x64, two engine runs each with equal semantic digests; the control of the product candidate 2x2. Made by scripts/run-evidence-replay.mjs.",
+      "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37332934881",
+      "benchmarkRevision": "7cd5e87b37d255cc06146d13235b8761957dbe51",
+      "archive": {
+        "release": "official-runs-37332934881",
+        "sha256": "sha256:df6987165784f3cc9f822c9b474c7957cfd868b1104b38ced65c1923c89c5043"
+      },
+      "semanticDigests": {
+        "public-evidence-snapshot": "sha256:e539312a3bab7f1b18baa283c0736df11f196731d4dbfcc606dfd0754893417e",
+        "public-evidence-snapshot+methods": "sha256:b6b0e83ad24567004eec16e484031a5babacddc7fc5215c89578f29ec69024d5",
+        "regression-corpus": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
+        "policy-corpus": "sha256:9a6576c90e30907dee3b6e2b368d2791a29865fa8215790b0ef9cf6f75b66f9e"
+      },
+      "recordedRuns": [
+        {
+          "id": "policy-corpus@linux-x64",
+          "semanticDigest": "sha256:9a6576c90e30907dee3b6e2b368d2791a29865fa8215790b0ef9cf6f75b66f9e",
+          "byteDigest": "sha256:ba94a08eb9395d602fbdd11bec02c060ac0534e14d62ad8006cd67634d332223",
+          "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+          "caseCounts": {
+            "flare-redact": 19,
+            "gitleaks": 19,
+            "openredaction": 19,
+            "redact-secret": 19,
+            "trufflehog": 19
+          }
+        },
+        {
+          "id": "public-evidence-snapshot+methods@linux-x64",
+          "semanticDigest": "sha256:b6b0e83ad24567004eec16e484031a5babacddc7fc5215c89578f29ec69024d5",
+          "byteDigest": "sha256:773dc62fa9d5385b7478b98cd6ff06c7fba44aead888503f522d83d11abfc583",
+          "configHash": "sha256:d47d081ce5fb1265aeebe7fdee9fea27a3b01b2fa0e36ce6ee679706d2a924b2",
+          "caseCounts": {
+            "flare-redact": 35747,
+            "gitleaks": 35747,
+            "openredaction": 35747,
+            "redact-secret": 35747,
+            "trufflehog": 35747
+          }
+        },
+        {
+          "id": "public-evidence-snapshot@linux-x64",
+          "semanticDigest": "sha256:e539312a3bab7f1b18baa283c0736df11f196731d4dbfcc606dfd0754893417e",
+          "byteDigest": "sha256:fce95282f6c89f173b8e89f67450d1e9585b22fac207e7ed71cfe50a2b17791f",
+          "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+          "caseCounts": {
+            "flare-redact": 6519,
+            "gitleaks": 6519,
+            "openredaction": 6519,
+            "redact-secret": 6519,
+            "trufflehog": 6519
+          }
+        },
+        {
+          "id": "regression-corpus@linux-x64",
+          "semanticDigest": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
+          "byteDigest": "sha256:03fe5bda0bb9af88d5dfcb7944c4190a389858dd2b02277b4f71e1fa69a214d5",
+          "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+          "caseCounts": {
+            "flare-redact": 153,
+            "gitleaks": 153,
+            "openredaction": 153,
+            "redact-secret": 153,
+            "trufflehog": 153
+          }
+        }
+      ],
+      "note": "An exploratory replay for the evidence candidate: never an accepted run, and nothing is recorded in runs[]."
     },
     "ownerAcceptance": null,
     "deployment": {

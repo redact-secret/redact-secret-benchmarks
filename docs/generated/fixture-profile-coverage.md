@@ -24,10 +24,10 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 
 | Profile | Families | Of |
 | --- | ---: | ---: |
-| Arrival / provisional | 115 | 141 |
-| Stable / documented | 115 | 141 |
-| Stable / empirical | 40 | 141 |
-| Context-constrained empirical | 21 | 141 |
+| Arrival / provisional | 117 | 150 |
+| Stable / documented | 117 | 150 |
+| Stable / empirical | 40 | 150 |
+| Context-constrained empirical | 21 | 150 |
 
 ## Per family
 
@@ -50,6 +50,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | bearer-token | T3 | arrival-provisional | 52 | 5 | 19 | 14 | 12 | 6 | 9 | positive/context cases 5/6 |
 | bitwarden-secrets-manager-access-token | T1 | stable-documented | 46 | 3 | 16 | 14 | 11 | 6 | 10 | positive/context cases 3/6 |
 | browserbase-api-key | T1 | stable-documented | 38 | 9 | 15 | 7 | 9 | 5 | 8 | none |
+| buildkite-token | T3 | arrival-provisional | 8 | 3 | 5 | 0 | 1 | 3 | 3 | total fixtures 8/24; positive/context cases 3/6; non-twin benign controls 5/8; twin pairs 0/5; positive-context axes 1/4; control axes 3/4 |
 | cerebras-api-key | T1 | stable-documented | 46 | 16 | 14 | 8 | 7 | 5 | 8 | none |
 | clickhouse-cloud-api-secret | T1 | stable-documented | 45 | 9 | 16 | 10 | 11 | 6 | 10 | none |
 | clojars-deploy-token | T1 | stable-documented | 37 | 7 | 14 | 8 | 8 | 6 | 10 | none |
@@ -87,6 +88,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | firebase-server-key | T2 | stable-empirical | 45 | 10 | 19 | 8 | 16 | 6 | 9 | none |
 | firecrawl-api-key | T1 | stable-documented | 48 | 6 | 15 | 14 | 11 | 6 | 10 | none |
 | fireworks-ai-api-key | T1 | stable-documented | 32 | 6 | 16 | 5 | 8 | 6 | 8 | none |
+| fly-token | T3 | arrival-provisional | 8 | 3 | 5 | 0 | 1 | 3 | 3 | total fixtures 8/24; positive/context cases 3/6; non-twin benign controls 5/8; twin pairs 0/5; positive-context axes 1/4; control axes 3/4 |
 | generic-token | T3 | arrival-provisional | 165 | 69 | 76 | 10 | 35 | 4 | 5 | none |
 | github-fine-grained-pat | T2 | stable-empirical | 40 | 12 | 15 | 8 | 13 | 6 | 9 | none |
 | github-token | T1 | stable-documented | 131 | 28 | 15 | 45 | 25 | 6 | 8 | none |
@@ -112,6 +114,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | mailchimp-api-key | T2 | stable-empirical | 50 | 18 | 16 | 10 | 19 | 6 | 9 | none |
 | mailgun-api-key | T2 | stable-empirical | 40 | 12 | 16 | 8 | 11 | 6 | 9 | none |
 | mailgun-api-key-triplet | T2 | arrival-provisional | 46 | 0 | 20 | 14 | 10 | 5 | 8 | positive/context cases 0/6 |
+| mapbox-token | T3 | arrival-provisional | 8 | 3 | 5 | 0 | 1 | 3 | 3 | total fixtures 8/24; positive/context cases 3/6; non-twin benign controls 5/8; twin pairs 0/5; positive-context axes 1/4; control axes 3/4 |
 | microsoft-entra-client-secret | T1 | stable-documented | 45 | 6 | 8 | 17 | 13 | 4 | 6 | none |
 | mistral-api-key | T2 | context-constrained-empirical | 68 | 10 | 26 | 17 | 12 | 6 | 8 | none |
 | neon-api-key | T2 | stable-empirical | 42 | 10 | 16 | 8 | 16 | 6 | 10 | none |
@@ -140,6 +143,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | postman-collection-access-key | T2 | stable-empirical | 42 | 10 | 16 | 8 | 16 | 6 | 9 | none |
 | private-key | T1 | stable-documented | 36 | 18 | 8 | 5 | 4 | 6 | 8 | none |
 | pulumi-access-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 4 | 5 | 7 | none |
+| pydantic-logfire-token | T3 | arrival-provisional | 8 | 3 | 5 | 0 | 1 | 3 | 3 | total fixtures 8/24; positive/context cases 3/6; non-twin benign controls 5/8; twin pairs 0/5; positive-context axes 1/4; control axes 3/4 |
 | pypi-token | T1 | stable-documented | 26 | 6 | 8 | 9 | 7 | 6 | 9 | none |
 | replicate-api-token | T1 | stable-documented | 32 | 6 | 14 | 6 | 8 | 6 | 10 | none |
 | resend-api-key | T1 | stable-documented | 42 | 6 | 14 | 11 | 11 | 5 | 9 | none |
@@ -154,6 +158,9 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | slack-user-token | T1 | stable-documented | 27 | 6 | 11 | 5 | 9 | 6 | 9 | none |
 | sonarqube-analysis-token | T1 | stable-documented | 28 | 5 | 9 | 7 | 8 | 6 | 10 | positive/context cases 5/6 |
 | sonarqube-token | T1 | stable-documented | 40 | 8 | 14 | 9 | 9 | 6 | 10 | none |
+| sourcegraph-token | T3 | arrival-provisional | 8 | 3 | 5 | 0 | 1 | 3 | 3 | total fixtures 8/24; positive/context cases 3/6; non-twin benign controls 5/8; twin pairs 0/5; positive-context axes 1/4; control axes 3/4 |
+| square-oauth-application-secret | T1 | stable-documented | 34 | 6 | 10 | 9 | 8 | 6 | 9 | none |
+| square-token | T1 | stable-documented | 40 | 10 | 16 | 7 | 11 | 6 | 9 | none |
 | stripe-token | T1 | stable-documented | 79 | 40 | 25 | 8 | 10 | 6 | 9 | none |
 | stripe-webhook-signing-secret | T1 | stable-documented | 26 | 6 | 10 | 5 | 9 | 6 | 10 | none |
 | supabase-management-token | T1 | stable-documented | 26 | 6 | 8 | 6 | 7 | 6 | 8 | none |
@@ -167,6 +174,7 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | trigger-dev-token | T1 | stable-documented | 50 | 6 | 16 | 16 | 11 | 6 | 10 | none |
 | twilio-api-key-secret | T2 | context-constrained-empirical | 48 | 13 | 15 | 10 | 18 | 6 | 7 | none |
 | twilio-auth-token | T2 | context-constrained-empirical | 60 | 16 | 20 | 12 | 24 | 6 | 7 | none |
+| unkey-root-key | T3 | arrival-provisional | 8 | 3 | 5 | 0 | 1 | 3 | 3 | total fixtures 8/24; positive/context cases 3/6; non-twin benign controls 5/8; twin pairs 0/5; positive-context axes 1/4; control axes 3/4 |
 | vault-token | T1 | stable-documented | 28 | 12 | 8 | 6 | 4 | 6 | 9 | none |
 | vercel-app-access-token | T2 | stable-empirical | 40 | 11 | 14 | 8 | 11 | 5 | 9 | none |
 | vercel-app-refresh-token | T2 | stable-empirical | 40 | 11 | 14 | 8 | 10 | 5 | 9 | none |
@@ -174,3 +182,4 @@ Meeting a profile's cells is not qualifying for it: tier, provider source and th
 | vercel-token | T0 | arrival-provisional | 20 | 15 | 5 | 0 | 1 | 3 | 3 | total fixtures 20/24; non-twin benign controls 5/8; twin pairs 0/5; positive-context axes 1/4; control axes 3/4 |
 | wandb-api-key | T1 | stable-documented | 35 | 10 | 13 | 6 | 9 | 6 | 9 | none |
 | xai-api-key | T2 | stable-empirical | 41 | 11 | 14 | 8 | 16 | 6 | 10 | none |
+| xata-api-key | T3 | arrival-provisional | 8 | 3 | 5 | 0 | 1 | 3 | 3 | total fixtures 8/24; positive/context cases 3/6; non-twin benign controls 5/8; twin pairs 0/5; positive-context axes 1/4; control axes 3/4 |

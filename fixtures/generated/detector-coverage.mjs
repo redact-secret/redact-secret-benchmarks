@@ -1092,6 +1092,31 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
     add(detector, "label-prose", [`Documentation mentions a ${label} without embedding the key value.`]);
   }
 
+  // Beta.14 #583 second wave: the registry detectors at the 3b1a5aa re-pin (redact-secret#1102-#1109, product PR #1214 and
+  // #1227). square-token has its contract and corpus (benchmarks/lib/beta8/583a.ts); the other seven are registered with the
+  // benchmark contract and corpus pending (benchmarks/lib/beta8/583p.ts), so these rows are only the registry-wide minimum,
+  // one detector-id shape each, built from public synthetic seeds in the handoff's shape and never copied from a provider example.
+  const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+  const beta14 = [
+    // [detector, value, prefix, env name, provider label]
+    ["square-token", `EAAA${synthetic("coverage:square:access-token:body", 60, `${AI_ALNUM}_-`)}`, "EAAA", "SQUARE_ACCESS_TOKEN", "Square access token (EAAA prefix)"],
+    ["xata-api-key", `xau_${synthetic("coverage:xata:api-key:body", 33, AI_ALNUM)}`, "xau_", "XATA_API_KEY", "Xata API key (xau_ prefix)"],
+    ["sourcegraph-token", `sgp_${synthetic("coverage:sourcegraph:access-token:body", 40, AI_HEX)}`, "sgp_", "SRC_ACCESS_TOKEN", "Sourcegraph access token (sgp_ prefix)"],
+    ["unkey-root-key", `unkey_${synthetic("coverage:unkey:root-key:head", 8, BASE58)}unkeyv1${synthetic("coverage:unkey:root-key:tail", 42, BASE58)}`, "unkey_", "UNKEY_ROOT_KEY", "Unkey root key (unkey_ prefix)"],
+    ["buildkite-token", `bkua_${synthetic("coverage:buildkite:api-token:body", 40, AI_HEX)}`, "bkua_", "BUILDKITE_API_TOKEN", "Buildkite API access token (bkua_ prefix)"],
+    ["pydantic-logfire-token", `pylf_v1_us_${synthetic("coverage:logfire:token:body", 44, AI_ALNUM)}`, "pylf_v1_us_", "LOGFIRE_TOKEN", "Pydantic Logfire token (pylf_v prefix)"],
+    ["mapbox-token", `sk.eyJ${synthetic("coverage:mapbox:secret-token:payload", 60, `${AI_ALNUM}_-`)}.${synthetic("coverage:mapbox:secret-token:signature", 22, `${AI_ALNUM}_-`)}`, "sk.eyJ", "MAPBOX_SECRET_TOKEN", "Mapbox secret access token (sk. prefix)"],
+    ["fly-token", `fm2_${synthetic("coverage:fly:access-token:body", 100, `${AI_ALNUM}+/`)}`, "fm2_", "FLY_API_TOKEN", "Fly.io access token (fm2_ prefix)"],
+  ];
+  for (const [detector, value, prefix, env, label] of beta14) {
+    positive(detector, "key-shape", [{ secret: value }]);
+    add(detector, "prefix-only", [prefix]);
+    add(detector, "short-body", [value.slice(0, prefix.length + 8)]);
+    add(detector, "mask", [`${prefix}${"*".repeat(value.length - prefix.length)}`]);
+    add(detector, "reference", [`${env}=\${${env}}\n`]);
+    add(detector, "label-prose", [`Documentation mentions a ${label} without embedding the key value.`]);
+  }
+
   // Issue #369: keep these independently authored boundary cases in the
   // expanded corpus. The fixed common-formats snapshot above remains
   // unchanged so historical before/after evidence stays comparable.

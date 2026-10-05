@@ -8015,6 +8015,497 @@
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/528"
         ]
       }
+    },
+    {
+      "id": "square-token-positive",
+      "path": "square-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SQUARE_ACCESS_TOKEN=\u0045AAAreviewalpha7beta9reviewalpha7beta9reviewalpha7beta9reviewalp\n",
+      "expected": [
+        {
+          "start": 20,
+          "end": 84,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "square-token"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "square-token",
+        "sources": [
+          "https://developer.squareup.com/docs/oauth-api/receive-and-manage-tokens",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/square/square.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://developer.squareup.com/docs/oauth-api/receive-and-manage-tokens",
+          "https://developer.squareup.com/reference/square/o-auth-api/obtain-token",
+          "https://developer.squareup.com/docs/oauth-api/walkthrough",
+          "https://github.com/square/square-nodejs-sdk/blob/5e484507548ce8ffdc55752395a290ecc2d26771/tests/wire/oAuth.test.ts",
+          "https://github.com/redact-secret/redact-secret/blob/fa955d28eed59c70a9c4380ed130d1b82d439cd9/docs/audits/evidence/1014/square.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1107",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/584"
+        ]
+      }
+    },
+    {
+      "id": "square-token-negative",
+      "path": "square-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SQUARE_ACCESS_TOKEN=${SQUARE_ACCESS_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "square-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "square-token",
+        "sources": [
+          "https://developer.squareup.com/docs/oauth-api/receive-and-manage-tokens",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/square/square.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://developer.squareup.com/docs/oauth-api/receive-and-manage-tokens",
+          "https://developer.squareup.com/reference/square/o-auth-api/obtain-token",
+          "https://developer.squareup.com/docs/oauth-api/walkthrough",
+          "https://github.com/square/square-nodejs-sdk/blob/5e484507548ce8ffdc55752395a290ecc2d26771/tests/wire/oAuth.test.ts",
+          "https://github.com/redact-secret/redact-secret/blob/fa955d28eed59c70a9c4380ed130d1b82d439cd9/docs/audits/evidence/1014/square.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1107",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/584"
+        ]
+      }
+    },
+    {
+      "id": "xata-api-key-positive",
+      "path": "xata-api-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "XATA_API_KEY=\u0078au_reviewalpha7beta9reviewalpha7beta\n",
+      "expected": [
+        {
+          "start": 13,
+          "end": 50,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "xata-api-key"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "xata-api-key",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/xata.md",
+          "https://github.com/redact-secret/redact-secret/issues/1102",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
+        ]
+      }
+    },
+    {
+      "id": "xata-api-key-negative",
+      "path": "xata-api-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "XATA_API_KEY=${XATA_API_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "xata-api-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "xata-api-key",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/xata.md",
+          "https://github.com/redact-secret/redact-secret/issues/1102",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
+        ]
+      }
+    },
+    {
+      "id": "sourcegraph-token-positive",
+      "path": "sourcegraph-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SRC_ACCESS_TOKEN=\u0073gp_0123456789abcdef0123456789abcdef01234567\n",
+      "expected": [
+        {
+          "start": 17,
+          "end": 61,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "sourcegraph-token"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "sourcegraph-token",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/sourcegraph.md",
+          "https://github.com/redact-secret/redact-secret/issues/1103",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
+        ]
+      }
+    },
+    {
+      "id": "sourcegraph-token-negative",
+      "path": "sourcegraph-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SRC_ACCESS_TOKEN=${SRC_ACCESS_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "sourcegraph-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "sourcegraph-token",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/sourcegraph.md",
+          "https://github.com/redact-secret/redact-secret/issues/1103",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
+        ]
+      }
+    },
+    {
+      "id": "unkey-root-key-positive",
+      "path": "unkey-root-key/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "UNKEY_ROOT_KEY=\u0075nkey_Review9Bunkeyv1Review9BetaReview9BetaReview9BetaReview9Be\n",
+      "expected": [
+        {
+          "start": 15,
+          "end": 78,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "unkey-root-key"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "unkey-root-key",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/unkey.md",
+          "https://github.com/redact-secret/redact-secret/issues/1104",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
+        ]
+      }
+    },
+    {
+      "id": "unkey-root-key-negative",
+      "path": "unkey-root-key/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "UNKEY_ROOT_KEY=${UNKEY_ROOT_KEY_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "unkey-root-key"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "unkey-root-key",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/unkey.md",
+          "https://github.com/redact-secret/redact-secret/issues/1104",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
+        ]
+      }
+    },
+    {
+      "id": "buildkite-token-positive",
+      "path": "buildkite-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "BUILDKITE_API_TOKEN=\u0062kua_reviewalpha7beta9reviewalpha7beta9review\n",
+      "expected": [
+        {
+          "start": 20,
+          "end": 65,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "buildkite-token"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "buildkite-token",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/buildkite.md",
+          "https://github.com/redact-secret/redact-secret/issues/1105",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
+        ]
+      }
+    },
+    {
+      "id": "buildkite-token-negative",
+      "path": "buildkite-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "BUILDKITE_API_TOKEN=${BUILDKITE_API_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "buildkite-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "buildkite-token",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/buildkite.md",
+          "https://github.com/redact-secret/redact-secret/issues/1105",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
+        ]
+      }
+    },
+    {
+      "id": "pydantic-logfire-token-positive",
+      "path": "pydantic-logfire-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "LOGFIRE_TOKEN=\u0070ylf_v1_us_reviewalpha7beta9reviewalpha7beta9reviewalph\n",
+      "expected": [
+        {
+          "start": 14,
+          "end": 69,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "pydantic-logfire-token"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "pydantic-logfire-token",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/pydantic-logfire.md",
+          "https://github.com/redact-secret/redact-secret/issues/1106",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
+        ]
+      }
+    },
+    {
+      "id": "pydantic-logfire-token-negative",
+      "path": "pydantic-logfire-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "LOGFIRE_TOKEN=${LOGFIRE_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "pydantic-logfire-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "pydantic-logfire-token",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/pydantic-logfire.md",
+          "https://github.com/redact-secret/redact-secret/issues/1106",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
+        ]
+      }
+    },
+    {
+      "id": "mapbox-token-positive",
+      "path": "mapbox-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "MAPBOX_SECRET_TOKEN=\u0073k.eyJreviewalpha7beta9reviewalpha7beta9review.reviewalpha7beta9revie\n",
+      "expected": [
+        {
+          "start": 20,
+          "end": 89,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "mapbox-token"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "mapbox-token",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/mapbox.md",
+          "https://github.com/redact-secret/redact-secret/issues/1108",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
+        ]
+      }
+    },
+    {
+      "id": "mapbox-token-negative",
+      "path": "mapbox-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "MAPBOX_SECRET_TOKEN=${MAPBOX_SECRET_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "mapbox-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "mapbox-token",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/mapbox.md",
+          "https://github.com/redact-secret/redact-secret/issues/1108",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
+        ]
+      }
+    },
+    {
+      "id": "fly-token-positive",
+      "path": "fly-token/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "FLY_API_TOKEN=\u0066m2_reviewalpha7beta9reviewalpha7beta9reviewalpha7beta9reviewalpha7beta9reviewalpha7beta9reviewalpha7bet\n",
+      "expected": [
+        {
+          "start": 14,
+          "end": 118,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "fly-token"
+      ],
+      "assessment": {
+        "kind": "policy",
+        "tier": "T3",
+        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "contract": "fly-token",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/fly.md",
+          "https://github.com/redact-secret/redact-secret/issues/1109",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
+        ]
+      }
+    },
+    {
+      "id": "fly-token-negative",
+      "path": "fly-token/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "FLY_API_TOKEN=${FLY_API_TOKEN_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "fly-token"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "fly-token",
+        "sources": [
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/fly.md",
+          "https://github.com/redact-secret/redact-secret/issues/1109",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
+        ]
+      }
+    },
+    {
+      "id": "square-oauth-application-secret-positive",
+      "path": "square-oauth-application-secret/positive.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SQUARE_CLIENT_SECRET=\u0073q0csp-reviewalpha7beta9reviewalpha7beta9reviewalp\n",
+      "expected": [
+        {
+          "start": 21,
+          "end": 71,
+          "role": "secret",
+          "note": "Independently authored, never-issued synthetic calibration value; provider issuance and liveness are not claimed."
+        }
+      ],
+      "detectors": [
+        "square-oauth-application-secret"
+      ],
+      "assessment": {
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
+        "contract": "square-oauth-application-secret",
+        "sources": [
+          "https://developer.squareup.com/docs/oauth-api/walkthrough",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/squareapp/squareapp.go",
+          "https://developer.squareup.com/docs/oauth-api/receive-and-manage-tokens",
+          "https://developer.squareup.com/reference/square/o-auth-api/obtain-token",
+          "https://developer.squareup.com/docs/oauth-api/walkthrough",
+          "https://github.com/square/square-nodejs-sdk/blob/5e484507548ce8ffdc55752395a290ecc2d26771/tests/wire/oAuth.test.ts",
+          "https://github.com/redact-secret/redact-secret/blob/fa955d28eed59c70a9c4380ed130d1b82d439cd9/docs/audits/evidence/1014/square.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1107",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/584"
+        ]
+      }
+    },
+    {
+      "id": "square-oauth-application-secret-negative",
+      "path": "square-oauth-application-secret/negative.txt",
+      "group": "shadow-scoring-authored",
+      "content": "SQUARE_CLIENT_SECRET=${SQUARE_CLIENT_SECRET_REFERENCE}\n",
+      "expected": [],
+      "detectors": [
+        "square-oauth-application-secret"
+      ],
+      "assessment": {
+        "kind": "must-not-flag",
+        "tier": "T3",
+        "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
+        "contract": "square-oauth-application-secret",
+        "sources": [
+          "https://developer.squareup.com/docs/oauth-api/walkthrough",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/squareapp/squareapp.go",
+          "https://developer.squareup.com/docs/oauth-api/receive-and-manage-tokens",
+          "https://developer.squareup.com/reference/square/o-auth-api/obtain-token",
+          "https://developer.squareup.com/docs/oauth-api/walkthrough",
+          "https://github.com/square/square-nodejs-sdk/blob/5e484507548ce8ffdc55752395a290ecc2d26771/tests/wire/oAuth.test.ts",
+          "https://github.com/redact-secret/redact-secret/blob/fa955d28eed59c70a9c4380ed130d1b82d439cd9/docs/audits/evidence/1014/square.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447820",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
+          "https://github.com/redact-secret/redact-secret/issues/1107",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/583",
+          "https://github.com/redact-secret/redact-secret-benchmarks/issues/584"
+        ]
+      }
     }
   ]
 }

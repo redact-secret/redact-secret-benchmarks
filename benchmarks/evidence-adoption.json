@@ -188,5 +188,50 @@
       "report": "docs/generated/evidence-adoption/snapshot-2026.10.05.contrast.md",
       "data": "docs/generated/evidence-adoption/snapshot-2026.10.05.contrast.json"
     }
+  },
+  "evidenceCandidate": {
+    "evidenceRelease": "snapshot-2026.10.05.2",
+    "sourceRevision": "6dd2ae3cf46947548dcfad4bb746bcfd80f9f431",
+    "manifestDigest": "sha256:c4133f8f06d38b80402e4a3c0d59e7c4b08d81708d4c3e1b32d2260db4a45a88",
+    "snapshotDigest": "sha256:c114af16ef8644519cd01c88e6ffeb9bdb698ed32a3803d64d68405bedb52c3c",
+    "evidenceSchema": "credential-evidence/schema/1.7.0",
+    "evidenceRevision": "records-tree-sha256:51e2164c2b16c49d33ebd46d12224040e2b5d628bed35c5f329acae319e23aba",
+    "adoptionKey": "sha256:fbbeeca867db0f3db61e687709e22d7deb29792fcabb8a6f520302ae5f1256cb",
+    "engine": {
+      "tag": "v0.1.0-alpha.5",
+      "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d"
+    },
+    "engineCompatibility": {
+      "compatible": true,
+      "cases": 6519
+    },
+    "supersedes": {
+      "evidenceRelease": "snapshot-2026.10.05",
+      "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
+    },
+    "changeSummary": {
+      "old": 6519,
+      "new": 6519,
+      "added": 0,
+      "removed": 0,
+      "changed": 11,
+      "unchanged": 6508
+    },
+    "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.05.2.json",
+    "replay": {
+      "state": "pending",
+      "via": ".github/workflows/official-runs.yml after the acceptance repin",
+      "recordedRuns": []
+    },
+    "ownerAcceptance": null,
+    "deployment": {
+      "staging": null,
+      "production": null
+    },
+    "product": {
+      "package": "@redact-secret/core",
+      "version": "0.1.0-beta.13",
+      "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+    }
   }
 }

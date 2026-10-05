@@ -18,6 +18,20 @@ import { int } from './format';
 /** 'v0.1.0-beta.4' reads as 'Beta.4' beside an issue number. */
 export const milestoneLabel = (milestone: string): string => (milestone.split('-').pop() ?? milestone).replace(/^./, c => c.toUpperCase());
 
+/**
+ * What the ledger header says about itself, from data: when it was last reviewed, the release it was last measured on, and how many of the fixed and verified
+ * records the accepted run could confirm. The header is the last recorded review and measurement, never the milestone a finding was measured on (each record
+ * carries its own candidate build and dates).
+ */
+export function ledgerStamp(gaps: KnownGaps): string {
+  const r = gaps.reverification;
+  const base = `Ledger last reviewed ${gaps.reviewedAt}; last measured release ${gaps.measuredVersion}`;
+  if (!r) return `${base}.`;
+  const records = r.fixed.records + r.verified.records, confirmed = r.fixed.allFixturesPass + r.verified.allFixturesPass;
+  const unconfirmed = r.fixed.notCovered.length + r.fixed.stillFailing.length + r.verified.notCovered.length + r.verified.stillFailing.length;
+  return `${base}, when ${int(confirmed)} of ${int(records)} fixed and verified records were confirmed against the accepted run${unconfirmed ? ` and ${int(unconfirmed)} kept their status because the run could not confirm them` : ''}.`;
+}
+
 export interface FindingsInventory {
   title: string;
   description: string;
@@ -32,9 +46,9 @@ export function resolveFindingsInventory(gaps: KnownGaps, catalog: Pick<Catalog,
     .sort((a, b) => b.date.localeCompare(a.date) || b.i.number - a.i.number);
   return {
     title: 'Findings',
-    description: `Findings this benchmark handed to the product, newest first. Ledger snapshot ${gaps.reviewedAt}, measured on ${gaps.measuredVersion}; a snapshot of lifecycle records, not live issue status.`,
+    description: `Findings this benchmark handed to the product, newest first. ${ledgerStamp(gaps)} A snapshot of lifecycle records, not live issue status.`,
     count: gaps.issues.length,
-    milestone: { label: `${milestoneLabel(gaps.milestone)} milestone`, href: gaps.milestoneUrl },
+    milestone: { label: `Latest measured release: ${milestoneLabel(gaps.milestone)} milestone`, href: gaps.milestoneUrl },
     rows: newest.map(({ i, date }) => ({
       id: String(i.number),
       number: `#${i.number}`,
@@ -46,7 +60,7 @@ export function resolveFindingsInventory(gaps: KnownGaps, catalog: Pick<Catalog,
         const fixture = catalog.bySlug.get(slug);
         return { label: slug.split('--').slice(1).join('--') || slug, ...(fixture ? { href: fixtureHref(fixture) } : {}) };
       }),
-      measured: gaps.measuredVersion,
+      measured: i.candidate?.version ?? gaps.measuredVersion,
       reviewed: date,
     })),
   };

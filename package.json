@@ -91,6 +91,7 @@
     "qualification:view": "node --import tsx scripts/build-qualification-view.ts",
     "qualification:parity": "node --import tsx scripts/build-qualification-parity.ts",
     "ledger:decisions:check": "node scripts/check-ledger-decisions.mjs",
+    "known-gaps:currency:check": "node scripts/check-known-gaps-currency.mjs",
     "ledger:provenance:check": "node --import tsx scripts/check-review-ledger.mjs",
     "queue:check": "node --import tsx scripts/check-review-queue-coverage.mjs",
     "eval:candidate": "node --import tsx benchmarks/candidate.ts",

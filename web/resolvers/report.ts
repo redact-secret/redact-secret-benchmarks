@@ -196,7 +196,7 @@ export function resolveHubTiles(list: FamilyList, findings: KnownGaps, detectors
     { href: '/report/providers/', label: 'Providers', figure: int(totals.providers), figureUnit: 'providers', emphasis: int(totals.providersWithFixtures), text: 'with fixtures in this corpus. Each opens its families and rows.', action: 'By provider →' },
     { href: '/report/families/', label: 'Families', figure: int(totals.families), figureUnit: 'families', emphasis: int(totals.familiesWithFixtures), text: 'with fixtures. Rows and outcomes for every family, in one list.', action: 'All families →' },
     ...(detectors ? [{ href: '/report/detectors/', label: 'Detectors', figure: int(detectors.count), figureUnit: 'detectors', emphasis: int(detectors.fixtures), text: 'fixtures exercise them. Sample size and rows per detector.', action: 'By detector →' }] : []),
-    { href: '/report/findings/', label: 'News', figure: int(findings.issues.length), figureUnit: 'findings', text: `Ledger snapshot ${findings.reviewedAt}: findings from this benchmark and where each one stands.`, action: 'What changed →' },
+    { href: '/report/findings/', label: 'News', figure: int(findings.issues.length), figureUnit: 'findings', text: `Ledger last reviewed ${findings.reviewedAt}, last measured on ${findings.measuredVersion}: findings from this benchmark and where each one stands.`, action: 'What changed →' },
   ];
 }
 
@@ -224,7 +224,7 @@ export function resolveFindings(gaps: KnownGaps, limit = 6): FindingsBlock {
     .slice(0, limit);
   return {
     title: 'What changed',
-    description: `Findings this benchmark handed to the product, newest first. Ledger snapshot ${gaps.reviewedAt}; not live issue status.`,
+    description: `Findings this benchmark handed to the product, newest first. Ledger last reviewed ${gaps.reviewedAt}, last measured on ${gaps.measuredVersion}; not live issue status.`,
     findings: newest.map(({ i, date }) => ({
       id: String(i.number),
       href: i.url,

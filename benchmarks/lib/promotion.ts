@@ -47,7 +47,22 @@ export interface KnownGaps {
   milestone: string;
   milestoneUrl: string;
   reviewedAt: string;
+  /**
+   * What the last recorded measurement of the fixed and verified records rests on: the accepted official run, its product release, the date and the records
+   * the run could not confirm (no fixture of the record is in its corpora, or a fixture still fails). It records; it never marks a record verified.
+   */
+  reverification?: KnownGapsReverification;
   issues: KnownGapRecord[];
+}
+
+export interface KnownGapsReverification {
+  checkedOn: string;
+  run: string;
+  product: string;
+  scope: string;
+  fixed: { records: number; allFixturesPass: number; notCovered: number[]; stillFailing: number[] };
+  verified: { records: number; allFixturesPass: number; notCovered: number[]; stillFailing: number[] };
+  note: string;
 }
 
 const ID = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/;
@@ -86,14 +101,23 @@ const finding = (value: Finding, actual: boolean): boolean =>
     ['redact', 'warn', 'block', 'allow'].includes(value.action ?? '')
   ));
 
+const validReverification = (r: unknown): boolean => {
+  const x = r as KnownGapsReverification | null;
+  const group = (g: KnownGapsReverification['fixed'] | undefined) => !!g && Number.isInteger(g.records) && Number.isInteger(g.allFixturesPass) && g.allFixturesPass <= g.records &&
+    Array.isArray(g.notCovered) && g.notCovered.every(Number.isInteger) && Array.isArray(g.stillFailing) && g.stillFailing.every(Number.isInteger);
+  return !!x && typeof x === 'object' && only(x, ['checkedOn', 'run', 'product', 'scope', 'fixed', 'verified', 'note']) && DATE.test(x.checkedOn) && typeof x.run === 'string' && typeof x.product === 'string' &&
+    typeof x.scope === 'string' && typeof x.note === 'string' && group(x.fixed) && group(x.verified);
+};
+
 /** Validate the known-gap lifecycle without exposing fixture content in errors. */
 export function validateKnownGaps(value: KnownGaps): KnownGaps {
   if (
     typeof value !== 'object' || value === null ||
-    !only(value, ['schemaVersion', 'lifecycleAuthority', 'measuredVersion', 'milestone', 'milestoneUrl', 'reviewedAt', 'issues']) ||
+    !only(value, ['schemaVersion', 'lifecycleAuthority', 'measuredVersion', 'milestone', 'milestoneUrl', 'reviewedAt', 'reverification', 'issues']) ||
     value.schemaVersion !== 1 || !HTTPS.test(value.lifecycleAuthority) ||
     typeof value.measuredVersion !== 'string' || typeof value.milestone !== 'string' ||
-    !HTTPS.test(value.milestoneUrl) || !DATE.test(value.reviewedAt) || !Array.isArray(value.issues)
+    !HTTPS.test(value.milestoneUrl) || !DATE.test(value.reviewedAt) || !Array.isArray(value.issues) ||
+    (value.reverification !== undefined && !validReverification(value.reverification))
   ) fail('manifest', 'invalid-metadata');
 
   const ids = new Set<string>();

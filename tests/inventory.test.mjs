@@ -152,6 +152,8 @@ test('coverage route renders inventory, source provenance, milestone, and fixtur
     for (const issue of knownGaps.issues) assert.ok(html.includes(issue.url));
     assert.ok(!coveragePage(fixtures, 'all').includes('inventory-query'), 'the inventory is its own view of Coverage');
     const {fixturePage} = await server.ssrLoadModule('/src/pages/fixture.ts');
-    assert.ok(fixturePage(fixtures.find(f => f.slug === 'reference-syntax--windows-env'), undefined).includes('Beta.6 #292'));
+    const windows = knownGaps.issues.find(i => i.number === 292);
+    const label = windows.candidate.version.split('-').pop().replace(/^./, c => c.toUpperCase());
+    assert.ok(fixturePage(fixtures.find(f => f.slug === 'reference-syntax--windows-env'), undefined).includes(`${label} #292`), 'the follow-up is labelled with the build the finding was recorded on, not the ledger header');
   } finally { await server.close(); }
 });

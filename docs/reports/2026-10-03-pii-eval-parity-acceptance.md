@@ -1,5 +1,7 @@
 # PII dual-run parity acceptance — 2026-10-03
 
+> Update 2026-10-05: the schema 1.2 blocker described below is resolved and the four benchmark populations ran through both engines. The current record is [2026-10-05-pii-eval-population-dual-run.md](2026-10-05-pii-eval-population-dual-run.md). The text below is the 2026-10-03 state, kept as history.
+
 This is the benchmark-owned acceptance record for #664. It is sanitized, contains only public synthetic identities and aggregate counts, and makes no product support claim.
 
 ## Result
@@ -10,7 +12,7 @@ This is the benchmark-owned acceptance record for #664. It is sanitized, contain
 | Canonical revision 2 versus oracle | 85 intentional contract revisions, 32 old oracle bugs, 85 compatibility representations, 0 new bugs, 0 unresolved, 0 unexplained | fully classified upstream evidence |
 | Deterministic reruns | equal semantic digest at one and four workers and repeated CLI output | accepted |
 | Actual benchmark populations | four identities and six plan files frozen; counts and source observations content-pinned | benchmark input accepted |
-| Actual benchmark populations through `pii-eval` | not representable in public artifact schema 1.1 because family/view projections and run mode are absent | unresolved upstream contract blocker; no parity claim |
+| Actual benchmark populations through `pii-eval` | not representable in public artifact schema 1.1 because family/view projections and run mode are absent | superseded 2026-10-05: schema 1.2 landed and the populations ran, see [the dual-run report](2026-10-05-pii-eval-population-dual-run.md) |
 
 The first three rows reproduce the pinned TypeScript oracle only under the named compatibility protocol. Canonical revision behavior is separate. The upstream single-population result supports this review but does not substitute for the last two rows.
 

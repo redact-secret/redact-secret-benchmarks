@@ -621,3 +621,45 @@ test('a changed corpus is refused with the accepted population\'s overlay and tw
   assert.equal(built.policy.axisOverlay.corpusDigest, candidate);
   assert.equal(built.policy.twinScope.corpusDigest, candidate);
 });
+
+test('the view carries each scanner\'s scope state next to its counts: an artifact without engine accounting is not accounted, never zero (#724)', () => {
+  const view = build({ methods: true });
+  assert.deepEqual(validateQualificationView(view), []);
+  for (const population of view.populations) {
+    assert.deepEqual(population.scope.map(s => s.scanner), ['peer-one', 'redact-secret']);
+    for (const entry of population.scope) {
+      assert.equal(entry.state, 'not-accounted');
+      assert.equal(entry.dispositions, null, 'no counts are invented for an artifact that carries none');
+      assert.equal(entry.profile.configurationHash, DIGEST(8));
+      assert.equal(entry.engineVersion, engine.version);
+    }
+    assert.deepEqual(population.profileEffects, [], 'no declared profile, no comparison');
+  }
+  assert.ok(view.populations.find(p => p.population === 'pop-a').methodsScope.every(s => s.state === 'not-accounted'), 'the methods artifact is accounted apart from the plain one');
+  // Scope never feeds a count: the product's family counts equal those of a build that ignores scope.
+  const before = structuredClone(view.families);
+  const stripped = build({ methods: true }); for (const p of stripped.populations) { delete p.scope; delete p.methodsScope; delete p.profileEffects; }
+  assert.deepEqual(stripped.families, before);
+});
+
+test('a declared profile present in a plain artifact is compared with its default scanner without changing either (#724)', () => {
+  const profiles = { 'peer-profile': 'peer-one' };
+  const withProfile = ['pop-a', 'pop-b', 'pop-c'].map(population => ({
+    population,
+    bytes: artifact(population, population === 'pop-c' ? [] : familyCases(population === 'pop-a' ? 'a' : 'b', population === 'pop-a' ? 'prov:fam' : 'synthetic-token'), {
+      mutate: doc => {
+        const base = doc.scanners.find(s => s.scanner === 'peer-one');
+        doc.scanners.push({ ...structuredClone(base), scanner: 'peer-profile' });
+        doc.manifest.scanners.push({ ...structuredClone(doc.manifest.scanners.find(s => s.id === 'peer-one')), id: 'peer-profile', configuration_hash: DIGEST(9) });
+      },
+    }),
+    ...(population === 'pop-c' ? { caseMetadata: {} } : {}),
+  }));
+  const view = buildQualificationView({ registry, engine, artifacts: withProfile, product: product(), profiles });
+  assert.deepEqual(validateQualificationView(view), []);
+  const a = view.populations.find(p => p.population === 'pop-a');
+  assert.equal(a.profileEffects.length, 1);
+  assert.equal(a.profileEffects[0].denominatorsEqual, true);
+  assert.notEqual(a.profileEffects[0].default.configurationHash, a.profileEffects[0].profile.configurationHash, 'a profile is its own configuration identity');
+  assert.ok(view.scanners.includes('peer-profile') && view.scanners.includes('peer-one'), 'both results are kept');
+});

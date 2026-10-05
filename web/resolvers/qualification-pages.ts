@@ -4,6 +4,7 @@
  */
 import type { QualificationCasesProps, QualificationFamilyProps, QualificationOverviewProps, QualificationUnavailableProps } from '../components/qualification/types';
 import { loadQualificationView } from '../services/qualification';
+import { loadDeclaredConfigurations } from '../services/peers';
 import { loadReviewDisclosure } from '../services/review-state';
 import { resolveReviewDisclosure } from './run';
 import { qualificationCaseParams, qualificationUnattributedParams, resolveQualificationCases } from './qualification-cases';
@@ -18,7 +19,7 @@ export async function resolveQualificationPage(): Promise<QualificationPage> {
   if (load.state === 'ready') {
     const tag = load.view.populations.find(p => p.role === 'floors-and-gates')?.artifact.evidence.release?.tag;
     const disclosure = resolveReviewDisclosure(await loadReviewDisclosure(tag));
-    return { state: 'ready', props: { ...resolveQualificationOverview(load.view), ...(disclosure ? { disclosure } : {}) } };
+    return { state: 'ready', props: { ...resolveQualificationOverview(load.view, await loadDeclaredConfigurations()), ...(disclosure ? { disclosure } : {}) } };
   }
   return { state: 'unavailable', props: resolveQualificationUnavailable(load) };
 }

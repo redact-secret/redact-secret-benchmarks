@@ -17,6 +17,7 @@ import path from 'node:path';
 import { buildQualificationView, serializeView, type ArtifactInput } from '../benchmarks/qualification/adapter.ts';
 import { loadProductInputs, loadRegistry } from '../benchmarks/qualification/inputs.ts';
 import { validateQualificationView } from '../benchmarks/qualification/view-schema.ts';
+import { declaredProfiles } from '../benchmarks/lib/peer-rule-families.ts';
 import { validatePolicyHoldoutReceipt } from '../benchmarks/support/policy-holdout-receipt.ts';
 
 const usage = 'Usage: qualification:view --artifacts <dir> [--out <file>] [--holdout-receipt <aggregate.json>] [--inputs <derived dir>]';
@@ -44,7 +45,8 @@ for (const id of Object.keys(product.policy.populations)) {
   });
 }
 
-const view = buildQualificationView({ registry: populations, engine, artifacts, product });
+const profiles = declaredProfiles(JSON.parse(await readFile(new URL('../scanners/peer-registry.json', import.meta.url), 'utf8')));
+const view = buildQualificationView({ registry: populations, engine, artifacts, product, profiles });
 const problems = validateQualificationView(view);
 if (problems.length) throw new Error(`The qualification view does not match schemas/qualification-view-v1.json: ${problems.join('; ')}`);
 await mkdir(path.dirname(out), { recursive: true });

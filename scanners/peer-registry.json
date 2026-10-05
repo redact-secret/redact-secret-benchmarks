@@ -25,7 +25,21 @@
         "Document, CSV, XLSX and OCR processors: not used; the text detect() path only.",
         "Tuning options (categories, patterns, confidence threshold): none applied.",
         "Personal-data detections are reported without a family on credential inputs."
-      ]
+      ],
+      "diagnosticProfiles": {
+        "openredaction-credentials": {
+          "declaredScope": "credential-category",
+          "description": "The same package restricted to its credentials category. A diagnostic profile with its own configuration identity, never the default result."
+        },
+        "openredaction-credential-bearing": {
+          "declaredScope": "credential-bearing-types",
+          "description": "The same package restricted to the 33 types the audit reads as credential-bearing. A diagnostic profile with its own configuration identity, never the default result."
+        },
+        "openredaction-mapped": {
+          "declaredScope": "mapped-types",
+          "description": "The same package restricted to the types the adapter maps to a family. A diagnostic profile with its own configuration identity, never the default result."
+        }
+      }
     },
     "trufflehog": {
       "kind": "repository-scanner",

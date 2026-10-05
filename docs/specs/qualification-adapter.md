@@ -250,6 +250,16 @@ report population's `cases` (the one the population policy gives the floors and 
 policy revision and every population's semantic digest). No field was added to the view for this; a page that needs a field the view lacks adds it additively and schema-validated, as the case rows were. Read path and rollback:
 [`qualification-cutover.md`](qualification-cutover.md#authority-read-path).
 
+## Scope accounting (#724)
+
+The engine (credential-eval ADR 0016, contract v1.8) writes `scope_accounting` per complete scanner with a reviewed disposition table (`openredaction` and its diagnostic profiles). The adapter reads it with `benchmarks/qualification/scope-accounting.ts` and adds, per population, `scope` (plain artifact), `methodsScope` (methods artifact, accounted apart) and `profileEffects` to the view (`schemas/qualification-view-v1.json`, `$defs/scopeEntry`, `$defs/profileEffect`; additive).
+
+- Six always-present dispositions per finding: `mapped_credential`, `credential_related_unmapped`, `out_of_scope`, `ambiguous`, `native_label_unavailable`, `unrecognized_label`. They sum to the retained findings; the adapter refuses an accounting that does not reconcile (also per native label, family-carrying findings and label-less findings).
+- State: `accounted`, `legacy-native-label-unavailable` (engine before `0.1.0-alpha.11`: every count null, shown as Unknown, never zero), `not-accounted` (no reviewed table or an engine version this reader does not know), `not-measured`.
+- Beside the counts: scanner configuration hash, adapter version, engine version, classification table and accounting version, native-label coverage, per-native-type counts with the reviewed scope and reason, and fixed limits.
+- Declared profiles come from `scanners/peer-registry.json` (`diagnosticProfiles`, validated by `peerRegistryProblems`); the build script passes them to the adapter. A profile and its default measured on the same population yield one `profileEffects` entry: `profile - default` deltas of the engine's own outcome counts, benign flags and retained findings, with `denominatorsEqual`. Nothing is excluded, spliced or re-scored; a profile is not a speed-up.
+- The Next qualification overview shows the block (`ScopeAccounting`, Storybook first) next to the scanner table. Decision: `docs/decisions/2026-10-05-read-the-engines-scope-accounting-and-keep-profiles-as-separate-observations.md`.
+
 ## Tests
 
 `tests/qualification-adapter.test.mjs` builds synthetic artifacts and asserts the rules relative to what it built:

@@ -1,5 +1,5 @@
 /** Synthetic story data: made-up populations, families, digests and counts. Nothing here is a ledger value. */
-import type { CaseRowProps, CaseSection, CountsRow, QualificationCasesProps, FamilyRow, GapRow, PopulationRow, QualificationFamilyProps, QualificationOverviewProps, PipelineStampProps, ReviewDisclosureProps, QualificationUnavailableProps, ScannerRow } from './types';
+import type { ScopeAccountingProps, ScopeRow, CaseRowProps, CaseSection, CountsRow, QualificationCasesProps, FamilyRow, GapRow, PopulationRow, QualificationFamilyProps, QualificationOverviewProps, PipelineStampProps, ReviewDisclosureProps, QualificationUnavailableProps, ScannerRow } from './types';
 
 export const populationRows: PopulationRow[] = [
   { id: 'evidence-population', role: 'floors and gates', runClass: 'public', evidence: 'example-evidence · snapshot-0000.00.00', corpusDigest: 'sha256:aaaaaaaaaaaa', configHash: 'sha256:cccccccccccc', semanticDigest: 'sha256:111111111111', engine: 'example-eval 0.0.1 · protocol 1', methods: 'None run', cases: '120' },
@@ -210,4 +210,43 @@ export const pipelineStampOracle: PipelineStampProps = {
   role: 'oracle', title: 'Built from the legacy pipeline, kept as the oracle',
   text: 'The new pipeline is the authority for credential qualification. This page compares scanners on the legacy pipeline run, which is kept intact for a bounded period.',
   facts: [{ term: 'Authority', value: 'new' }, { term: 'This page', value: 'legacy pipeline' }],
+};
+
+// Scope accounting (#724): authored mock contract, synthetic labels and counts only.
+const scopeBase = { artifact: 'plain run', unaccounted: false, state: 'Accounted', limitsNote: '' };
+const limits = ['Counts describe the retained findings; none was removed, relabelled or excluded.', 'An unresolved type is neither a false positive nor ignored.'];
+export const scopeRows: ScopeRow[] = [
+  {
+    key: 'p/default', population: 'evidence-population', artifact: scopeBase.artifact, scanner: 'peer-library', configuration: 'Default configuration, all built-in patterns', identity: 'config sha256:aaaaaaaaaaaa · adapter 2',
+    classification: 'engine 0.1.0-alpha.11 · table-1 · accounting v1', coverage: '100 of 100 findings carry a native label', mapped: '5', credentialRelated: '3', outOfScope: '88', ambiguous: '2', unavailable: '0', unrecognized: '2', unaccounted: false, state: 'Accounted',
+    labels: [{ label: 'TYPE_PERSONAL', findings: '80 findings', scope: 'personal data', reason: 'reviewed: not a credential' }, { label: 'TYPE_KEY', findings: '5 findings', scope: 'credential', reason: 'mapped to a family' }, { label: '~unrecognized', findings: '2 findings', scope: 'outside the reviewed set', reason: 'not classified' }], labelsMore: null, limits,
+  },
+  {
+    key: 'p/profile', population: 'evidence-population', artifact: scopeBase.artifact, scanner: 'peer-library-credentials', configuration: 'Diagnostic profile: credentials category', identity: 'config sha256:bbbbbbbbbbbb · adapter 1',
+    classification: 'engine 0.1.0-alpha.11 · table-1 · accounting v1', coverage: '9 of 9 findings carry a native label', mapped: '5', credentialRelated: '3', outOfScope: '1', ambiguous: '0', unavailable: '0', unrecognized: '0', unaccounted: false, state: 'Accounted',
+    labels: [{ label: 'TYPE_KEY', findings: '5 findings', scope: 'credential', reason: 'mapped to a family' }], labelsMore: null, limits,
+  },
+  {
+    key: 'p/legacy', population: 'older-population', artifact: scopeBase.artifact, scanner: 'peer-library', configuration: 'Default configuration, all built-in patterns', identity: 'config sha256:cccccccccccc · adapter 1',
+    classification: 'engine 0.1.0-alpha.5 · no classification recorded', coverage: 'Unknown', mapped: 'Unknown', credentialRelated: 'Unknown', outOfScope: 'Unknown', ambiguous: 'Unknown', unavailable: 'Unknown', unrecognized: 'Unknown', unaccounted: true, state: 'Legacy: native labels unavailable',
+    labels: [], labelsMore: null, limits: ['The engine of this artifact did not record native labels. Its findings are legacy historical evidence; nothing is classified retrospectively.'],
+  },
+  {
+    key: 'p/none', population: 'evidence-population', artifact: 'methods run', scanner: 'other-scanner', configuration: 'Default configuration', identity: 'config sha256:dddddddddddd · adapter 3',
+    classification: 'engine 0.1.0-alpha.11 · no reviewed table', coverage: 'Unknown', mapped: 'Unknown', credentialRelated: 'Unknown', outOfScope: 'Unknown', ambiguous: 'Unknown', unavailable: 'Unknown', unrecognized: 'Unknown', unaccounted: true, state: 'Not accounted',
+    labels: [], labelsMore: null, limits: ['The engine has no reviewed disposition table for this scanner.'],
+  },
+];
+export const scopeAccounting: ScopeAccountingProps = {
+  title: 'Findings by scope',
+  description: 'What the engine recorded for the findings each scanner produced, per population and per artifact. A different count is not a different accuracy.',
+  mode: 'Published release · engine 0.1.0-alpha.11 · public view',
+  notes: ['Native type (what the scanner said), derived family (the adapter’s classification) and reviewed scope (the engine’s table, with its reason) are separate. An unmapped finding is neither a false positive nor ignored.', 'Unknown means no accounting was recorded for that artifact. It is not zero.'],
+  rows: scopeRows,
+  profiles: {
+    title: 'Credential profiles against the default',
+    description: 'A profile is a separate scanner configuration with its own identity. Both results are kept; the difference is a recorded configuration effect.',
+    empty: 'No declared profile was measured on the same population as its default.',
+    rows: [{ key: 'evidence-population/peer-library-credentials', population: 'evidence-population', pair: 'peer-library-credentials against peer-library', identities: 'sha256:bbbbbbbbbbbb against sha256:aaaaaaaaaaaa', outcomes: 'EXACT +0 · PARTIAL -2 · MISS +2', benign: '-4', findings: '-91', denominators: 'Equal: no case or span was dropped', note: 'Not a speed-up of the default.' }],
+  },
 };

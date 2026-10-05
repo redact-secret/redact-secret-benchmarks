@@ -6,7 +6,7 @@ import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { promisify } from 'node:util';
-import { hash } from '../benchmarks/engine/model.ts';
+import { hash } from '../benchmarks/evaluation/model/model.ts';
 import { candidateConfiguration } from '../scanners/candidate.mjs';
 import { accountPiiRows } from '../benchmarks/evaluation/domains/pii/accounting.ts';
 import { qualifyPii } from '../benchmarks/evaluation/domains/pii/qualification.ts';

@@ -2,13 +2,13 @@ import { readFile, mkdir, writeFile, rename } from 'node:fs/promises';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { resolveCredentialDomain } from './evaluation/domains/registry.ts';
-import { runEvaluation } from './engine/runner.ts';
+import { runEvaluation } from './evaluation/domains/credential/runner.ts';
 import { hash } from './evaluation/model/model.ts';
 import { runtimeProvenance, repositoryRoot } from './evaluation/substrate/provenance.ts';
 import { runHoldout } from '../holdout/lifecycle.ts';
 import type { Candidate } from '../holdout/types.ts';
 import type { ReviewLedger } from './evaluation/model/types.ts';
-import { ENGINE_VERSION } from './engine/execution.ts';
+import { ENGINE_VERSION } from './evaluation/domains/credential/execution.ts';
 import { ACCOUNTING_VERSION, validateAccounting } from './accounting/index.ts';
 import { scanners as available } from '../scanners/index.mjs';
 

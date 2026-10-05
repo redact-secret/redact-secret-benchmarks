@@ -11,7 +11,7 @@ import { scoreReport } from './lib/reporting.ts';
 import { validateCorpus } from './scoring/scoring.ts';
 import { validateStructures } from './lib/validate-structures.ts';
 import { hash } from './evaluation/model/model.ts';
-import { validateEvidence } from './engine/evidence.ts';
+import { validateEvidence } from './evaluation/evidence.ts';
 import type { Category, Fixture, Finding, ScoredRow, AccountingConfig } from './types.ts';
 import { validateAccounting } from './accounting/index.ts';
 import { newestBaselineName } from './lib/baselines.ts';
@@ -92,7 +92,7 @@ async function main() {
     const registry: Category[] = JSON.parse(await readFile(path.join(root, 'benchmarks/categories.json'), 'utf8'))
       .filter((category: Category & { calibrationOnly?: boolean }) => !category.calibrationOnly);
     const assignments: Record<string, string[]> = JSON.parse(await readFile(path.join(root, 'benchmarks/fixture-detectors.json'), 'utf8'));
-    // The newest saved release, the same comparison point the Workbench reads (src/catalog.ts).
+    // The newest saved release, the same comparison point the legacy site's Workbench reads (the Vite catalog module).
     const baselineName = newestBaselineName(await readdir(path.join(root, 'baselines')));
     if (!baselineName) throw new Error('missing-baseline');
     const baseline = JSON.parse(await readFile(path.join(root, 'baselines', baselineName), 'utf8'));

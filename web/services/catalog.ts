@@ -1,6 +1,6 @@
 /**
  * The fixture catalog and the credential taxonomy, read from the committed
- * corpora. This is the same catalog the existing site builds in `src/catalog.ts`;
+ * corpora. This is the same catalog the legacy Vite site builds in its catalog module;
  * that module reads the corpora through Vite's `import.meta.glob` and cannot run
  * under Next, so the files are read here and handed to the same `buildCatalog`
  * (benchmarks/shared/report-model.mjs) and the same index validator (benchmarks/lib/fixture-index.ts).

@@ -46,12 +46,12 @@ const ELEMENTS = [
   {
     id: 'metamorphic cases',
     present: (_family, cases) => cases.some(c => c.method === 'metamorphic'),
-    describe: family => `assign a fixture to "${family}" that carries an encoding, whitespace, CRLF, Unicode, or chunk-boundary variant (benchmarks/operators/context.ts)`,
+    describe: family => `assign a fixture to "${family}" that carries an encoding, whitespace, CRLF, Unicode, or chunk-boundary variant (benchmarks/evaluation/domains/credential/operators/context.ts)`,
   },
   {
     id: 'mutation cases',
     present: (_family, cases) => cases.some(c => c.method === 'mutation'),
-    describe: family => `assign a fixture to "${family}" whose prefix, length, alphabet, or separator can be mutated (benchmarks/operators/lexical.ts)`,
+    describe: family => `assign a fixture to "${family}" whose prefix, length, alphabet, or separator can be mutated (benchmarks/evaluation/domains/credential/operators/lexical.ts)`,
   },
   {
     id: 'differential observation',

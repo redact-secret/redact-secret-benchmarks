@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
 import { contracts, classifyFixture, validateAssessment, validateContracts, MUTATION_KINDS, arrivalIds, disputedProperty } from '../benchmarks/lib/assessment.ts';
-import { validateCorpus } from '../benchmarks/lib/scoring.ts';
+import { validateCorpus } from '../benchmarks/scoring/scoring.ts';
 import { twinProbe } from '../benchmarks/lib/twin-probe.ts';
 
 const read = async path => JSON.parse(await readFile(new URL('../' + path, import.meta.url), 'utf8'));

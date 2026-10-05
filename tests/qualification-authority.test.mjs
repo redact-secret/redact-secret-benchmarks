@@ -35,6 +35,8 @@ const context = () => ({
     ] } },
   },
   decisionStatus: 'accepted',
+  exitDecisionStatus: 'accepted',
+  exitRehearsalPresent: true,
 });
 
 test('the committed authority file is one valid value, and the gate holds', async () => {
@@ -59,6 +61,11 @@ test('the schema and the shape check agree: each refuses the same malformed file
     'a parity report outside docs/generated': f => { f.new.parityReport = 'elsewhere/report.json'; },
     'no exit condition for the oracle period': f => { f.legacy.oracle.exitCondition = 'later'; },
     'a release that is not a package version': f => { f.new.release = 'beta.12'; },
+    'an exit with no owner': f => { f.legacy.oracle.exit.recordedBy = ''; },
+    'an exit with an unknown field': f => { f.legacy.oracle.exit.extra = 1; },
+    'an exit that names another inventory command': f => { f.legacy.oracle.exit.callerInventory = 'npm test'; },
+    'an exit whose rehearsal has no anchor': f => { f.legacy.oracle.exit.rollbackRehearsal = 'docs/specs/qualification-cutover.md'; },
+    'an exit whose decision is outside docs/decisions': f => { f.legacy.oracle.exit.decision = 'README.md'; },
   };
   for (const [name, change] of Object.entries(mutations)) {
     const f = newFile();
@@ -90,6 +97,21 @@ test('new is authorised only while the policy, every canonical run, the parity r
   assert.match(problems(c => { c.parity.identities.new.populations[1].semanticDigest = digest('6'); }), /compared another run of pop-b/);
   assert.match(problems(c => { c.decisionStatus = undefined; }), /does not exist/);
   assert.match(problems(c => { c.decisionStatus = 'proposed'; }), /not accepted/);
+});
+
+test('a recorded oracle exit holds only for the authorised release, its parity report, an accepted decision and a rehearsal that resolves (#660)', () => {
+  const exit = newFile().legacy.oracle.exit;
+  assert.ok(exit, 'the committed file records the exit');
+  const problems = (change, edit = () => {}) => authorityFreshnessProblems((() => { const f = newFile(); edit(f); return f; })(), (() => { const c = context(); change(c); return c; })()).join(' | ');
+  assert.equal(problems(() => {}), '');
+  assert.match(problems(() => {}, f => { f.legacy.oracle.exit.release = '@redact-secret/core@9.9.9'; }), /a new release needs its own exit/);
+  assert.match(problems(() => {}, f => { f.legacy.oracle.exit.parityReport = 'docs/generated/other-report.json'; }), /oracle exit cites/);
+  assert.match(problems(c => { c.exitDecisionStatus = undefined; }), /does not exist/);
+  assert.match(problems(c => { c.exitDecisionStatus = 'proposed'; }), /not accepted/);
+  assert.match(problems(c => { c.exitRehearsalPresent = false; }), /does not resolve to a heading/);
+  const without = newFile(); delete without.legacy.oracle.exit;
+  assert.deepEqual(authorityShapeProblems(without), [], 'an authority file without an exit is still valid: the exit is a record, not a requirement');
+  assert.equal(validate(without), true);
 });
 
 test('only listed readers may name the file; a new reader is a decision', () => {

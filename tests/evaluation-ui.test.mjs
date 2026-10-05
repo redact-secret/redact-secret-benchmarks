@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { loadCases } from '../benchmarks/engine/cases.ts';
-import { createMethods } from '../benchmarks/methods/index.ts';
-import { createOperators } from '../benchmarks/operators/index.ts';
-import { runEvaluation } from '../benchmarks/engine/runner.ts';
-import { publicEvaluation } from '../benchmarks/engine/public-report.ts';
+import { loadCases } from '../benchmarks/evaluation/domains/credential/cases.ts';
+import { createMethods } from '../benchmarks/evaluation/domains/credential/methods/index.ts';
+import { createOperators } from '../benchmarks/evaluation/domains/credential/operators/index.ts';
+import { runEvaluation } from '../benchmarks/evaluation/domains/credential/runner.ts';
+import { publicEvaluation } from '../benchmarks/evaluation/domains/credential/public-report.ts';
 import { assertionRows, reviewRows, summarizeEvaluation, evaluationProblem } from '../src/evaluation-model.ts';
 import { parseRoute } from '../src/model.mjs';
 import { domainEvaluationPage } from '../src/pages/domain-evaluation.ts';

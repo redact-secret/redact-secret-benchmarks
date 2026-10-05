@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import * as compatibility from '../benchmarks/lib/accounting.ts';
+import * as compatibility from '../benchmarks/accounting/index.ts';
 import * as credential from '../benchmarks/evaluation/domains/credential/accounting.ts';
 import * as shared from '../benchmarks/accounting/shared/primitives.ts';
 
@@ -49,9 +49,6 @@ test('generic execution and holdout mechanics have no credential dependency', as
     const source = await text(file);
     assert.doesNotMatch(source, /domains\/credential|credentialDomain|qualification\/suite-v1/, file);
   }
-  assert.match(await text('benchmarks/engine/execution.ts'), /export \* from .*domains\/credential\/execution/);
-  assert.match(await text('benchmarks/engine/public-report.ts'), /export \* from .*domains\/credential\/public-report/);
-  assert.match(await text('benchmarks/engine/evidence.ts'), /export \* from .*domains\/credential\/evidence/);
   const lifecycle = await text('holdout/lifecycle.ts');
   assert.doesNotMatch(lifecycle, /HoldoutReport|\bCounts\b|byStratum/);
   assert.match(await text('benchmarks/evaluation/domains/credential/holdout.ts'), /buildReport/);

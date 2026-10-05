@@ -4,8 +4,8 @@ import { readFile } from 'node:fs/promises';
 import { createServer } from 'vite';
 import { buildCatalog } from '../src/model.mjs';
 import { scoreReport } from '../benchmarks/lib/reporting.ts';
-import { accountGroups } from '../benchmarks/lib/accounting.ts';
-import { summarizeRun } from '../benchmarks/lib/run-summary.ts';
+import { accountGroups } from '../benchmarks/accounting/index.ts';
+import { summarizeRun } from '../benchmarks/evaluation/domains/credential/run-summary.ts';
 
 const read = async path => JSON.parse(await readFile(new URL('../' + path, import.meta.url), 'utf8'));
 const categories = (await read('benchmarks/categories.json')).filter(category => !category.calibrationOnly);

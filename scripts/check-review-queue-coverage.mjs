@@ -21,8 +21,8 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { scanners as available } from '../scanners/index.mjs';
 import { credentialDomain } from '../benchmarks/evaluation/domains/credential/contract.ts';
-import { runEvaluation } from '../benchmarks/engine/runner.ts';
-import { evaluationInputs } from '../benchmarks/engine/execution.ts';
+import { runEvaluation } from '../benchmarks/evaluation/domains/credential/runner.ts';
+import { evaluationInputs } from '../benchmarks/evaluation/domains/credential/execution.ts';
 import { inputIdentity, observationSuiteIdentity, readSnapshot, repositoryPeerIdentity, semanticIndexIdentity,
   snapshotObservation, snapshotPath, digest } from '../benchmarks/lib/peer-observations.ts';
 import { readHandoff, worktreeState } from '../benchmarks/lib/review-queue-handoff.ts';

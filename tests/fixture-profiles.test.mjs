@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import Ajv from 'ajv';
-import { createOperators } from '../benchmarks/operators/index.ts';
-import { loadCases } from '../benchmarks/engine/cases.ts';
+import { createOperators } from '../benchmarks/evaluation/domains/credential/operators/index.ts';
+import { loadCases } from '../benchmarks/evaluation/domains/credential/cases.ts';
 import { contracts } from '../benchmarks/lib/assessment.ts';
 import {
   fixtureProfiles, validateFixtureProfiles, measureFixtureCells, assessProfile, profileClaim, fixtureProfileReport, PROFILE_IDS,

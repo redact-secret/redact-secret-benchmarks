@@ -201,7 +201,7 @@ const adjustmentsByFamily: Record<string, Record<string, Record<string, number>>
     const l = legacyByKey.get(pair.legacy.key)!, n = nextByKey.get(pair.next.key)!;
     const kind = kindOf(n);
     if (kind === 'pending') {
-      // Legacy drops T0 twins (benchmarks/lib/lattice.ts), so a pending twin was never a legacy fixture to book, unless the legacy fixture itself was scored (its own tier is not T0:
+      // Legacy drops T0 twins (benchmarks/scoring/lattice.ts), so a pending twin was never a legacy fixture to book, unless the legacy fixture itself was scored (its own tier is not T0:
       // the release moved the case to an unresolved evidence class after the legacy fixture was authored), in which case the legacy counts held it and the new ones do not.
       const legacyResult = l.scanners[SCANNER];
       const legacyScored = legacyResult?.kind === 'control' || legacyResult?.kind === 'positive';

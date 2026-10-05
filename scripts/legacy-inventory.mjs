@@ -2,7 +2,7 @@
 // The file-level caller inventory of the legacy credential evaluator (docs/specs/qualification-cutover.md, "File-level inventory", #653, #660) as a checked
 // document. Every row of a six-column inventory table names one path with its owner, disposition, callers, replacement and removal prerequisite; this
 // script recomputes the callers column from the tree (scripts/legacy-callers.mjs) and fails when a cell is stale, a cell is empty, a disposition is
-// not one the document defines, or a file of the legacy engine, the credential domain, the compatibility shims or the neutral modules has no row.
+// not one the document defines, or a file of the credential domain, the neutral modules or the frozen legacy review queue has no row.
 // Read-only unless `--write`, which rewrites only the callers column. It removes nothing and asserts nothing about product output.
 //
 //   node scripts/legacy-inventory.mjs --check     fail when the document differs from the tree (npm run legacy-inventory:check)
@@ -22,9 +22,9 @@ export const DISPOSITIONS = new Set(['keep', 'oracle', 'replace', 'move', 'remov
 const REMOVAL = new Set(['remove', 'shim'])
 /** Every tracked file below these must have a row (a directory prefix, or an exact path). */
 export const COMPLETE_FOR = [
-  'benchmarks/engine/', 'benchmarks/evaluation/domains/credential/', 'benchmarks/methods/', 'benchmarks/operators/',
+  'benchmarks/evaluation/domains/credential/',
   'benchmarks/evaluation/model/', 'benchmarks/scoring/', 'benchmarks/evaluation/evidence.ts', 'benchmarks/accounting/index.ts', 'benchmarks/qualification/legacy-review.ts',
-  'benchmarks/lib/accounting.ts', 'benchmarks/lib/run-summary.ts', 'benchmarks/lib/lattice.ts', 'benchmarks/lib/scoring.ts', 'benchmarks/lib/findings-by-path.ts',
+  'benchmarks/support/legacy-review-queue.json',
 ]
 
 const cells = (line) => line.split('|').slice(1, -1).map((c) => c.trim())

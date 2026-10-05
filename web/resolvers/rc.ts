@@ -2,11 +2,11 @@
  * `/evaluation/rc`: the release candidate beside the last release, resolved to block props. Pure.
  *
  * Boundary rule: everything here is a value a run recorded. The classification of one fixture (regressed,
- * improved, other change, unchanged) is the existing Workbench's own (`changeRows` in src/evaluation-model.ts,
+ * improved, other change, unchanged) is the existing Workbench's own (`changeRows` in benchmarks/shared/evaluation-model.ts,
  * applied to the one fixture), so this page and the old Changes page can never disagree about what moved.
  * Nothing is worded as approval, a gate or a ranking, and a missing record is stated, never a zero.
  */
-import { candidatePairs, changeRows, type ChangeRow, type OutcomePair } from '../../src/evaluation-model';
+import { candidatePairs, changeRows, type ChangeRow, type OutcomePair } from '../../benchmarks/shared/evaluation-model.ts';
 import type { RcBuild, RcBuildsData, RcDifferencesData, RcLevelsData, RcMovedData, RcMovedRow, RcNotRecordedData, RcPerformanceData, RcStamp, RcTile } from '../components/evaluation/rc/types';
 import type { CandidateLoad, LastRelease, RcSources, ReleaseBaseline } from '../services/candidate';
 import type { OwnPerformance } from '../services/performance';

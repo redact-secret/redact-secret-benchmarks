@@ -2,12 +2,12 @@ import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { evaluationProblem } from '../src/evaluation-model.ts';
-import { supportMatrixProblem } from '../src/support-model.ts';
+import { evaluationProblem } from '../benchmarks/shared/evaluation-model.ts';
+import { supportMatrixProblem } from '../benchmarks/shared/support-model.ts';
 import { buildPiiSupportMatrixV2, validatePiiSupportMatrixV2, type PiiSupportBuildOptions } from '../benchmarks/evaluation/domains/pii/support-v2.ts';
 import { custodianConformanceFrom, piiEvalMeasurementFrom, populationBindingsFrom, productEvidenceFor, type PiiMeasuredProduct } from './pii-publication-inputs.ts';
 import { bindPiiProtectedSupport } from '../benchmarks/evaluation/domains/pii/protected-support-binding.ts';
-import { buildEvaluationDomainsV2, evaluationDomainsV2Problem } from '../src/evaluation-domains-v2.ts';
+import { buildEvaluationDomainsV2, evaluationDomainsV2Problem } from '../benchmarks/shared/evaluation-domains-v2.ts';
 import { publishArtifactAndIndex } from './atomic-publication.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));

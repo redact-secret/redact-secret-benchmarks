@@ -148,6 +148,39 @@ describe('the run', () => {
   });
 });
 
+describe('the official run behind the figures (#658)', () => {
+  const view = syntheticView();
+  const { run, population } = bridged(view);
+  const official = run.official!;
+
+  test('names the population, its denominator and the run: the identity the artifact stamped, never a pin read from a file', () => {
+    expect(official).toMatchObject({
+      population: population.population, denominator: population.denominator, role: population.role, caseCount: population.cases.length,
+      semanticDigest: population.artifact.semanticDigest, artifactDigest: population.artifact.artifactDigest, recordedOn: input.recordedOn,
+    });
+    expect(official.engine).toBe(`${population.artifact.engine.name} ${population.artifact.engine.version}`);
+    expect(run.runId).toBe(official.semanticDigest);
+  });
+
+  test('carries each scanner as the artifact recorded it, in the artifact\u2019s order', () => {
+    expect(official.scanners.map(s => s.id)).toEqual(population.artifact.scanners.map(s => s.id));
+    for (const s of population.artifact.scanners) {
+      expect(official.scanners.find(o => o.id === s.id)).toEqual({ id: s.id, version: s.version, mode: s.mode, build: s.build, configurationHash: s.configurationHash, status: s.status });
+    }
+  });
+
+  test('every scanner was observed once, in that official run: never a snapshot or a fresh observation', () => {
+    for (const scanner of run.scanners) expect(scanner.observations).toEqual([{ source: 'official', observedAt: `${input.recordedOn}T00:00:00.000Z`, sourceRunId: population.artifact.semanticDigest }]);
+  });
+
+  test('the denominator is this population\u2019s cases alone: another population of the view is never added in', () => {
+    const others = view.populations.filter(p => p.population !== population.population);
+    expect(others.length).toBeGreaterThan(0);
+    expect(official.caseCount).toBe(population.cases.length);
+    expect(official.caseCount).not.toBe(view.populations.reduce((n, p) => n + p.cases.length, 0));
+  });
+});
+
 describe('rowOf', () => {
   test.each([
     [{ scanner: 's', measurement: 'positive', observed: 2, outcomes: ['EXACT'], leakedBytes: 0, collateralBytes: 1 }, { spanOutcomes: ['EXACT'], leakedBytes: 0, collateralBytes: 1, observed: 2 }],

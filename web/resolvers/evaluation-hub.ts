@@ -8,7 +8,7 @@
  */
 import type { EvaluationHubProps } from '../components/evaluation/hub/EvaluationHub';
 import type { HubMethod, HubPhase, HubRunData, HubScanner } from '../components/evaluation/hub/types';
-import type { EvaluationReport, QualificationEvidence } from '../../src/evaluation-types';
+import type { EvaluationReport, QualificationEvidence } from '../../benchmarks/shared/evaluation-types.ts';
 import { METHOD_IDS, methodHref } from '../lib/methods';
 import type { RouteEntry } from '../lib/routes';
 import { toolName } from './comparison';

@@ -95,7 +95,7 @@ for await (const file of walk(path.join(out, '_next', 'static'))) {
 const text = html => html.replace(/<(script|style)\b[\s\S]*?<\/\1[^>]*>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
 const int = n => n.toLocaleString('en-US');
 const taxonomy = await readJson('benchmarks/support/taxonomy.json');
-// The legacy run, read for the legacy recount below and for the comparison pages, which stay on the legacy files under either authority.
+// The legacy run, read for the legacy recount below. The comparison and scanner pages follow the authority (#658): check-export-accuracy/-scanners under `legacy`, check-export-comparison under `new`.
 let summary;
 try { summary = await readJson('public/results/summary.json'); } catch { /* no run */ }
 const authority = await readAuthority(repoRoot);

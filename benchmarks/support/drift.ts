@@ -1,5 +1,5 @@
 import type { ProviderSource, SupportMatrixEntry } from './matrix.ts';
-import type { SupportMatrixFile } from '../../src/support-model.ts';
+import type { SupportMatrixFile } from '../shared/support-model.ts';
 
 /**
  * Support-matrix drift (issue #511, A10). Compares a freshly generated

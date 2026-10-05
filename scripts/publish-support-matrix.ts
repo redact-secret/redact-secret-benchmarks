@@ -1,7 +1,7 @@
 import { readFile, mkdir, writeFile, rename } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { supportMatrixProblem } from '../src/support-model.ts';
+import { supportMatrixProblem } from '../benchmarks/shared/support-model.ts';
 
 /**
  * Publish the generated support matrix (#509) for the benchmark UI (#50, A9).

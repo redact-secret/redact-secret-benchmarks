@@ -14,7 +14,7 @@ import type { MetaItem } from '../components/page/MetaList';
 import type {
   EvidenceCell, EvidenceColumn, EvidenceGroup, MethodInputsData, MethodPageProps, MethodRecordedData, NotMeasuredData, TextTable,
 } from '../components/evaluation/methods/types';
-import type { EvaluationAssertion, EvaluationCase, EvaluationReport, EvaluationVariant, QualificationEvidence } from '../../src/evaluation-types';
+import type { EvaluationAssertion, EvaluationCase, EvaluationReport, EvaluationVariant, QualificationEvidence } from '../../benchmarks/shared/evaluation-types.ts';
 import { METHOD_IDS, methodHref, type MethodId } from '../lib/methods';
 import { toolName } from './comparison';
 import { EVAL_COMMANDS, METHOD_COPY, OPERATOR_COPY } from './evaluation-copy';

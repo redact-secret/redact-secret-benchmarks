@@ -11,10 +11,17 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { linkResolves } from './lib/links.mjs';
+import { readAuthority } from './lib/authority.mjs';
 
 const webRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const repoRoot = path.resolve(webRoot, '..');
 const readJson = async rel => JSON.parse(await readFile(path.join(repoRoot, rel), 'utf8'));
+// The legacy recount, kept intact as the oracle (#658): it applies when the authority is `legacy`. Under `new` the page is built from the official run
+// and check-export-comparison.mjs recounts it against the qualification view.
+if ((await readAuthority(repoRoot)) === 'new') {
+  console.log('/evaluation/scanner/: the authority is new, so check-export-comparison.mjs recounts it against the qualification view');
+  process.exit(0);
+}
 const problems = [];
 const fail = message => problems.push(message);
 

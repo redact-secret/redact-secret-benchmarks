@@ -4,7 +4,7 @@
  *
  *  - the candidate is the evidence `npm run eval:candidate` writes to
  *    `public/results/candidate-evidence-v1.json`, validated with `candidateProblem`
- *    (src/evaluation-model.ts, the schema `schemas/candidate-report-v1.json`). Like the run files it is
+ *    (benchmarks/shared/evaluation-model.ts, the schema `schemas/candidate-report-v1.json`). Like the run files it is
  *    generated and never committed: a build that did not measure a candidate has none, and says so.
  *    Committed `evidence/<issue>/` runs are history for their issue, never "the candidate in development";
  *  - the last release is the saved comparison point `baselines/<version>.json` (run id, saved date) plus
@@ -16,7 +16,7 @@
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { compareBaselineNames } from '../../benchmarks/lib/baselines';
-import { candidateProblem, type CandidateReport } from '../../src/evaluation-model';
+import { candidateProblem, type CandidateReport } from '../../benchmarks/shared/evaluation-model.ts';
 import { loadOwnPerformance, type OwnPerformance } from './performance';
 import { once, readJson, readJsonIfPresent, REPO_ROOT } from './repo';
 

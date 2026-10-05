@@ -61,6 +61,16 @@ The pinned local build at `pii-eval` `6157cbc5918b3888c8e84b1884719ea8f3278b36` 
 
 That binary hash identifies this reproducible local verification only; it is not a canonical Linux Actions artifact. CI validates committed synthetic artifacts and policy, but does not execute a measurement run. The four population artifacts were produced by a local darwin build of `212d500` (see the dual-run report); their pins name the canonical linux engine artifact `11358475612` (binary `b2902d58e8fba5199fedca235c2b81264cd44c8ae9db4c33f07379722297e9af`) of the same commit, and the semantic digest is host independent by contract, but a replay with the linux binary has not been compared here.
 
+## Linux replay of the four populations (#665)
+
+The committed population artifacts were built by a local darwin engine. `.github/workflows/pii-population-replay.yml` (dispatch only) mints the
+same read-only App token as the staging transport, downloads and verifies only the pinned linux engine artifact (`fetch-engine` of
+`scripts/fetch-pii-eval-public-synthetic.mjs`: run, artifact, archive, member and build-info digests), and in a later step that holds no token runs
+`scripts/replay-pii-populations.mjs`. That script regenerates the four conversions, replays each frozen observation twice and compares the replayed
+semantic digest and bytes with the committed artifact, the consumer pin and the migration record. It launches no scanner, writes no committed file and
+changes no status, threshold or authority; a difference exits 1 and is named, never normalised. A run on another binary or platform is a verification
+(`canonical: false` in the receipt). Locally: `npm run pii:population:replay -- --engine=<pii-eval binary>`.
+
 ## Commands
 
 ```sh

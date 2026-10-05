@@ -107,6 +107,7 @@ jobs:
       CANDIDATE: ${{ inputs.candidate }}
       EVIDENCE_TAG: ${{ inputs.evidence_tag }}
       EVIDENCE_DIGEST: ${{ inputs.evidence_manifest_digest }}
+      STAGE_TIMINGS: ${{ runner.temp }}/stage-timings.tsv
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
@@ -158,12 +159,23 @@ jobs:
       - uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # v1
         with:
           toolchain: stable
+      - name: Restore the engine build cache
+        id: engine-cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        # The key binds the engine revision (the tag's commit), the lockfile, the toolchain, the target and the profile; a hit only
+        # saves dependency compilation, and cargo still rebuilds anything that differs. The version and revision checks stay in the driver.
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            credential-eval/target/release
+          key: engine-build-${{ runner.os }}-${{ runner.arch }}-release-${{ hashFiles('credential-eval/Cargo.lock', 'credential-eval/rust-toolchain*') }}-${{ steps.engine.outputs.tag }}
       - name: Build the engine at the pinned tag
-        run: cargo build --release --locked -p credential-eval-cli --manifest-path credential-eval/Cargo.toml
+        run: scripts/ci-stage.sh "engine build (cache ${{ steps.engine-cache.outputs.cache-hit == 'true' && 'hit' || 'miss' }})" -- cargo build --release --locked -p credential-eval-cli --manifest-path credential-eval/Cargo.toml
       - name: Provision the peer scanners at their pinned digests
         if: ${{ inputs.mode != 'diagnostic' }} # the diagnostic lane runs the product only; no peer is needed or waited for
         run: |
-          node scripts/provision-official-peers.mjs --platform "$PLATFORM" --out "$RUNNER_TEMP/peer-bin"
+          scripts/ci-stage.sh "peer provisioning" -- node scripts/provision-official-peers.mjs --platform "$PLATFORM" --out "$RUNNER_TEMP/peer-bin"
           echo "$RUNNER_TEMP/peer-bin" >> "$GITHUB_PATH"
       - name: Read the Node shim directory (the attribution run's own, when one is made)
         id: shim
@@ -179,7 +191,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           POPULATION: ${{ matrix.population }}
         run: >
-          node --import tsx scripts/run-official-credential-eval.ts
+          scripts/ci-stage.sh "diagnostic run" -- node --import tsx scripts/run-official-credential-eval.ts
           --mode diagnostic --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
           --out "official-out/$POPULATION"
       - name: Diagnostic scope and outcomes
@@ -194,9 +206,26 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           POPULATION: ${{ matrix.population }}
         run: >
-          node --import tsx scripts/run-official-credential-eval.ts
+          scripts/ci-stage.sh "plain run (2 repeats)" -- node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
           --out "official-out/$POPULATION" --runs 2 ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
+          --out "official-out/$POPULATION" --runs 2 ${ATTRIBUTION:+--attribution "$ATTRIBUTION"}
+      - name: Expose the plain artifact before the slow methods run (floors population only)
+        if: ${{ !cancelled() && matrix.population == 'public-evidence-snapshot' && inputs.mode != 'diagnostic' }}
+        # A methods run takes up to ~29 min per slow peer; the plain evidence is reviewable now. This copy is evidence for people, never an
+        # input of the qualification view (which reads official-run-* only) and never replaces the final upload below.
+        run: rm -f "official-out/$POPULATION"/artifact-[0-9]*.json
+        env:
+          POPULATION: ${{ matrix.population }}
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: ${{ !cancelled() && matrix.population == 'public-evidence-snapshot' && inputs.mode != 'diagnostic' }}
+        with:
+          name: early-plain-${{ inputs.attribution != '' && format('attribution-{0}-', inputs.attribution) || '' }}${{ matrix.population }}
+          path: |
+            official-out/${{ matrix.population }}
+            !official-out/${{ matrix.population }}/methods
+          if-no-files-found: ignore
+          retention-days: 14
       - name: Methods run, twice, with the determinism check (floors population only)
         if: matrix.population == 'public-evidence-snapshot' && inputs.mode != 'diagnostic'
         env:
@@ -204,9 +233,20 @@ jobs:
           POPULATION: ${{ matrix.population }}
           NODE_OPTIONS: --max-old-space-size=5120
         run: >
-          node --import tsx scripts/run-official-credential-eval.ts
+          scripts/ci-stage.sh "methods run (2 repeats)" -- node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
           --out "official-out/$POPULATION" --runs 2 --methods ${CANDIDATE:+--jobs 2} ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
+          --out "official-out/$POPULATION" --runs 2 --methods ${ATTRIBUTION:+--attribution "$ATTRIBUTION"}
+      - name: Job summary with per-stage timings and the artifacts this job uploads
+        if: ${{ !cancelled() }}
+        env:
+          POPULATION: ${{ matrix.population }}
+          ARTIFACT: ${{ inputs.mode == 'diagnostic' && 'diagnostic-' || (inputs.attribution != '' && format('attribution-{0}-', inputs.attribution) || 'official-run-') }}${{ matrix.population }}
+        run: >
+          node scripts/stage-timing-summary.mjs --timings "$STAGE_TIMINGS" --title "$MODE: $POPULATION"
+          --note "Measurements are fresh in this job (no receipt reuse); only the view stage can reuse an earlier run (reuse_run_id)."
+          --note "Engine build cache: ${{ steps.engine-cache.outputs.cache-hit == 'true' && 'hit' || 'miss' }}. Artifact: $ARTIFACT (this run's Artifacts section)."
+          >> "$GITHUB_STEP_SUMMARY"
       - name: Remove the byte copies the checks made
         run: rm -f "official-out/$POPULATION"/artifact-[0-9]*.json "official-out/$POPULATION"/methods/artifact-[0-9]*.json
         env:

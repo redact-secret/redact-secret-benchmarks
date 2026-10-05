@@ -350,6 +350,33 @@
     "contrast": {
       "report": "docs/generated/evidence-adoption/snapshot-2026.10.05.2.contrast.md",
       "data": "docs/generated/evidence-adoption/snapshot-2026.10.05.2.contrast.json"
+    },
+    "ledgerSettlements": {
+      "receipt": "docs/generated/evidence-adoption/snapshot-2026.10.05.2.ledger-settlements.json",
+      "applied": {
+        "occurrences": 394,
+        "byProposal": {
+          "not-assertable": 30,
+          "resolved": 364
+        }
+      },
+      "previousProposals": {
+        "occurrences": 398,
+        "byProposal": {
+          "resolved": 368,
+          "not-assertable": 30
+        }
+      },
+      "unapplied": {
+        "new-case-or-occurrence (no settled occurrence of the previous snapshot)": 59,
+        "observation differs from the previous snapshot": 4,
+        "accepted triage proposes another settlement": 0
+      },
+      "note": "Re-evaluated on the identities of the snapshot-2026.10.05.2 control run (run 37332934881). The 394 rows the owner decided on 2026-10-05 (keyed by the occurrence ids of run 37296823599) hold on this run unchanged: every id is the same, so they are carried, not rewritten, and no row is added. The 63 proposals that stayed unresolved stay so: 59 are occurrences of cases the earlier snapshots did not settle (no settled counterpart of an earlier snapshot to carry), and 4 differ in observation from the earlier snapshot. The 7 Twilio occurrences of the three cases credential-evidence re-authored were also tried against their earlier counterpart (identical case, peer, disagreement, variant, method, expected spans, findings and measurement required): none matches, because the peers and the reference read the new bytes differently, so none is carried. Nothing was settled by dropping a hard case, counting an unmeasured case as a miss or a blanket peer acceptance; none is an independent review."
+    },
+    "productScope": {
+      "file": "scanners/product-scope.json",
+      "note": "The 4 scope statements of core redact-secret#1205 / PR #1206 (JSON name/value object pairs, a credential name that keys an object holding a value member, a token behind a percent-encoded delimiter, HTTP session cookies in HAR headers and cookies arrays) are registered at core 422e43e3 as the owner's product-scope decision (#622)."
     }
   }
 }

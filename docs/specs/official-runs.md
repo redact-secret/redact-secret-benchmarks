@@ -168,3 +168,5 @@ A diagnostic artifact cannot reach an official path: `bindingProblems` accepts o
   differential review occurrences (settled by a legacy decision only through the re-key mapping), and 46 failed assertions of
   `redact-secret` (35 metamorphic, 11 mutation), none attributed to a product detector family (untargeted fixtures and the `exa:api-key` policy fixtures). The darwin-arm64 entries remain local verification runs and are never compared with a linux run; the qualification
   view and the #607 comparison read the canonical artifacts.
+
+**Accuracy reuse (#706).** A diagnostic run may reuse a verified accuracy observation set for unchanged peers; see [accuracy-reuse.md](accuracy-reuse.md). An official run never reuses.

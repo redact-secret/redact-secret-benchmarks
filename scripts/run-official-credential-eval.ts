@@ -18,6 +18,10 @@
  * every selected scanner's pin; this driver still checks the engine, the evidence binding and the product build against the registry. It writes
  * diagnostic-record.json and diagnostic-summary.{json,md} (never run-record.json), which no official-run tool accepts. `--mode full` (the default) is unchanged.
  *
+ * `--reuse-observations <set> [--fresh <id>]... [--observations-out <file>]` (#706, docs/specs/accuracy-reuse.md) is for `--mode diagnostic` only: the engine keeps a peer's recorded accuracy
+ * observation when its identity is unchanged (plan it first with scripts/plan-accuracy-reuse.ts) and scans the rest fresh. An official run measures every scanner fresh and refuses it
+ * here; an engine without the reuse contract (the pinned tag's `run --help` does not list it) is refused rather than silently scanning everything. No performance measurement is started.
+ *
  * It refuses, before reading any measurement, when the engine, a scanner, the evidence or a product corpus differs from
  * the registry. It runs the engine `--runs` times (default 2) and accepts the artifact only when every run exits 0, is
  * schema-valid, binds to the population and has the same semantic digest. It writes artifact.json and run-record.json.
@@ -43,6 +47,11 @@ const diagnostic = mode === 'diagnostic';
 if (!diagnostic && args.includes('--scanners')) fail('--scanners is for --mode diagnostic; a full run uses every pinned scanner');
 const registryScannerIds: string[] = registry.scanners.map((s: { id: string }) => s.id);
 const selectedScanners: string[] = diagnostic ? (() => { try { return parseSelectedScanners(option('scanners'), registryScannerIds); } catch (e) { return fail((e as Error).message); } })() : registryScannerIds;
+const reuseSet = option('reuse-observations');
+const freshScanners = args.flatMap((a, i) => a === '--fresh' ? [args[i + 1]] : []);
+const observationsOut = option('observations-out');
+if (!diagnostic && (reuseSet !== undefined || freshScanners.length || observationsOut !== undefined)) fail('--reuse-observations, --fresh and --observations-out are for --mode diagnostic; an official run measures every scanner fresh');
+if (reuseSet === undefined && freshScanners.length) fail('--fresh needs --reuse-observations');
 const attributionId = option('attribution');
 if (diagnostic && (attributionId !== undefined || args.includes('--methods'))) fail('a diagnostic run makes no attribution run and no methods run; the methods need the peers and are reported as unavailable');
 type Attribution = { configs: Record<string, string>; nodeDir: string; scanners: Record<string, { version: string; integrity: string }> };
@@ -99,6 +108,12 @@ for (const scanner of runScanners) {
   if (scanner.kind === 'npm' && scanner.integrity && entry.pin.integrity !== scanner.integrity) fail(`configuration pins ${scanner.id} with integrity ${entry.pin.integrity ?? 'none'}, the registry pins ${scanner.integrity}`);
   if (scanner.kind === 'executable' && entry.pin.sha256 !== scanner.executableSha256[platform]) fail(`configuration pin for ${scanner.id} differs from the registry on ${platform}`);
 }
+if (reuseSet !== undefined && !(spawnSync(binary, ['run', '--help'], { encoding: 'utf8' }).stdout ?? '').includes('--reuse-observations'))
+  fail(`engine ${registry.engine.version} has no observation reuse contract (credential-eval ADR 0008); pin an engine that has it, or run fresh without --reuse-observations`);
+if (reuseSet !== undefined) {
+  const unknown = freshScanners.filter(id => !selectedScanners.includes(id));
+  if (unknown.length) fail(`--fresh names ${unknown.join(', ')}, not selected scanners`);
+}
 const probe = (command: string, argv: string[]) => (spawnSync(command, argv, { encoding: 'utf8' }).stdout ?? '').trim();
 if (selectedScanners.includes('trufflehog') && probe('trufflehog', ['--version']) !== `trufflehog ${registry.scanners.find((s: { id: string }) => s.id === 'trufflehog').version}`) fail(`trufflehog on PATH is "${probe('trufflehog', ['--version'])}", not the pinned version; put a pinned binary first on PATH`);
 if (selectedScanners.includes('gitleaks') && probe('gitleaks', ['version']) !== registry.scanners.find((s: { id: string }) => s.id === 'gitleaks').version) fail('gitleaks on PATH is not the pinned version');
@@ -138,7 +153,9 @@ for (let n = 1; n <= runs; n++) {
   // is a fact about the generated variants, not a scanner that did not measure. Scanner completeness is checked on the artifact below.
   const methodArgs = methodsMode ? ['--methods', methodsRun!.methods.join(','), '--reference', methodsRun!.reference, '--seed', methodsRun!.seed, '--evidence', evaluationEvidenceFile] : ['--require-complete'];
   const result = spawnSync(binary, ['run', '--run-class', diagnostic ? 'exploratory' : 'official', '--corpus', inputs.corpus, '--evidence-release', inputs.tag, '--evidence-manifest', inputs.manifest,
-    '--evidence-manifest-digest', inputs.manifestDigest, '--config', configPath, '--node-dir', nodeDir, '--jobs', '4', ...methodArgs, '--out', artifact],
+    '--evidence-manifest-digest', inputs.manifestDigest, '--config', configPath, '--node-dir', nodeDir, '--jobs', '4', ...methodArgs,
+    ...(reuseSet !== undefined ? ['--reuse-observations', path.resolve(reuseSet), ...freshScanners.flatMap(id => ['--fresh', id])] : []),
+    ...(observationsOut !== undefined && n === 1 ? ['--observations-out', path.resolve(observationsOut)] : []), '--out', artifact],
   { stdio: ['ignore', 'inherit', 'inherit'] });
   if (result.status !== 0) fail(`credential-eval run ${n} exited ${result.status}; no artifact is accepted`);
   artifacts.push(artifact);
@@ -170,6 +187,7 @@ const kept = first!;
 const record = {
   schema: diagnostic ? 'redact-secret-benchmarks/diagnostic-record/v1' : 'redact-secret-benchmarks/official-run-record/v1',
   ...(diagnostic ? { mode: 'diagnostic', promotion: 'disallowed', selectedScanners } : {}),
+  ...(reuseSet !== undefined ? { accuracyReuse: { observations: path.basename(reuseSet), observationsDigest: sha256Digest(readFileSync(reuseSet)), fresh: [...freshScanners].sort(), performanceMeasurements: 0 } } : {}),
   population: populationId, platform,
   benchmarkRevision: execFileSync('/usr/bin/git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim(),
   engine: { ...kept.manifest.engine, revision, protocol: kept.manifest.protocol_version },

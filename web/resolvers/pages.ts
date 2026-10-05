@@ -227,7 +227,7 @@ export async function resolveSuiteRecordsFile(id: string): Promise<SuiteRecordsF
     scanners: measured ? measured.scanners : [],
     ...(measured ? { run: { date: isoDate(measured.generatedAt), mode: measured.mode, ...(measured.candidate ? { commit: measured.candidate.sourceCommit } : {}) } } : {}),
     ...(runProblem ? { runProblem } : {}),
-    findings: gaps.issues.map(i => ({ number: i.number, url: i.url, milestone: milestoneLabel(gaps.milestone), fixtures: i.fixtures })),
+    findings: gaps.issues.map(i => ({ number: i.number, url: i.url, milestone: milestoneLabel(i.candidate?.version ?? gaps.milestone), fixtures: i.fixtures })),
     detectorTitles: new Map(catalog.detectors.map(d => [d.id, d.title])),
     familyNames: new Map(catalog.taxonomy.families.map(f => [f.id, f.name])),
     providerNames: new Map(catalog.taxonomy.families.map(f => [f.id, f.provider === null ? NOT_PROVIDER_SPECIFIC.name : catalog.providerById.get(f.provider)!.name])),

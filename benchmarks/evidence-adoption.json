@@ -124,8 +124,27 @@
       "decision": "docs/decisions/2026-10-05-accept-snapshot-2026-10-05-on-credential-eval-alpha-5.md"
     },
     "deployment": {
-      "staging": null,
-      "production": null
+      "staging": {
+        "environment": "staging",
+        "site": "https://staging.benchmarks.redactsecret.dev",
+        "commit": "e140f05b1670aeb5a7e0e009f4656ac56446c83b",
+        "workflowRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37314155819",
+        "runId": "37314155819",
+        "conclusion": "success",
+        "verifiedOn": "2026-10-05",
+        "verified": "/evaluation/credential/, /report/, /report/families/ and /evaluation/qualification/ fetched: 123 stable of 135 families, 0.1.0-beta.13, snapshot-2026.10.05, credential-eval alpha.5, and the disclosure \"Maintainer-reviewed (independent review pending)\" / \"메인테이너 검토 (독립 검토 대기)\""
+      },
+      "production": {
+        "environment": "production",
+        "site": "https://benchmarks.redactsecret.dev",
+        "commit": "e140f05b1670aeb5a7e0e009f4656ac56446c83b",
+        "workflowRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37317385667",
+        "runId": "37317385667",
+        "conclusion": "success",
+        "verifiedOn": "2026-10-05",
+        "verified": "/evaluation/credential/, /report/, /report/families/ and /evaluation/qualification/ fetched: 123 stable of 135 families, 0.1.0-beta.13, snapshot-2026.10.05, credential-eval alpha.5, and the disclosure \"Maintainer-reviewed (independent review pending)\" / \"메인테이너 검토 (독립 검토 대기)\"",
+        "promotion": "npm run go-production: pull request #716 fast-forwarded main to develop; no merge commit"
+      }
     },
     "product": {
       "package": "@redact-secret/core",

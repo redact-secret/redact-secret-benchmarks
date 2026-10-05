@@ -13,7 +13,7 @@ import { isRowsData } from '../../resolvers/rowdata.ts';
 import { BUILD_DATA_PATH, recordsDataPath, rowsDataPath } from '../../lib/data-paths.ts';
 import { PAGE_SIZE, filterRows, rowsQueryOf, rowsQueryString } from '../../resolvers/filters.ts';
 import { boundText, resolveDetector, resolveDetectorList } from '../../resolvers/detectors.ts';
-import { milestoneLabel, resolveFindingsInventory, resolveSuiteRows } from '../../resolvers/inventory.ts';
+import { milestoneLabel, resolveFindingsInventory, ledgerStamp, resolveSuiteRows } from '../../resolvers/inventory.ts';
 import { buildSuiteRecords, byteLines, changedRanges, isSuiteRecordsFile, packRow, resolveFixtureRecord, segment, unpackRow, verdictsOf } from '../../resolvers/fixtures.ts';
 const WEB = path.resolve(import.meta.dirname, '../..');
 
@@ -482,6 +482,14 @@ test('the findings inventory links a fixture the corpus holds and leaves one it 
   assert.equal(inventory.milestone.href, 'https://example.com/m');
   assert.match(inventory.description, /not live issue status/);
   assert.equal(milestoneLabel('v0.1.0-beta.4'), 'Beta.4');
+});
+
+test('the ledger stamp reads as the last review and measurement, derived from the header and never a milestone', () => {
+  const base = { reviewedAt: '2030-02-03', measuredVersion: '9.9.9' };
+  assert.equal(ledgerStamp(base), 'Ledger last reviewed 2030-02-03; last measured release 9.9.9.');
+  const stamp = ledgerStamp({ ...base, reverification: { fixed: { records: 4, allFixturesPass: 4, notCovered: [], stillFailing: [] }, verified: { records: 3, allFixturesPass: 1, notCovered: [7], stillFailing: [8] } } });
+  assert.match(stamp, /last measured release 9\.9\.9, when 5 of 7 fixed and verified records were confirmed against the accepted run and 2 kept their status/);
+  assert.doesNotMatch(stamp, /milestone/i);
 });
 
 test('suites resolve to counts, and a suite with no fixtures is not zeros', () => {

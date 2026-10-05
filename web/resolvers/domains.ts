@@ -475,7 +475,7 @@ export function resolveCredentialView(input: CredentialEvaluation): DomainViewDa
   for (const record of findings.issues) byStatus.set(record.status, (byStatus.get(record.status) ?? 0) + 1);
   recordedRows.push({
     id: 'findings', label: 'Findings handed to the product', status: 'info', statusWord: 'Recorded', value: count(findings.issues.length, 'record'),
-    detail: `${[...byStatus].map(([state, n]) => `${int(n)} ${state.replace(/-/g, ' ')}`).join(', ') || 'None'}. Snapshot reviewed ${findings.reviewedAt} against ${findings.measuredVersion}.`,
+    detail: `${[...byStatus].map(([state, n]) => `${int(n)} ${state.replace(/-/g, ' ')}`).join(', ') || 'None'}. Ledger last reviewed ${findings.reviewedAt}; last measured on ${findings.measuredVersion}.`,
     link: { label: 'Findings', href: '/report/findings/' },
   });
   notMeasuredRows.push(

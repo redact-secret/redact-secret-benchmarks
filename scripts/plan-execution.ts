@@ -70,7 +70,7 @@ function register() {
   }
   const merged: CellsManifest = {
     schema: CELLS_SCHEMA,
-    measurements: [...manifest.measurements.filter(m => m.id !== measurement), { id: measurement, plan: planFile, granularity: 'measurement', jobKey: entries.some(e => e.setting) ? 'measurement+setting' : 'measurement' }].sort((a, b) => (a.id < b.id ? -1 : 1)),
+    measurements: [...manifest.measurements.filter(m => m.id !== measurement), { id: measurement, plan: planFile, granularity: 'measurement', jobKey: entries.some(e => e.setting) ? 'measurement+setting' : 'measurement', dispatch: manifest.measurements.find(m => m.id === measurement)?.dispatch ?? { workflow: 'peer-pii-runtime-throughput.yml', inputs: { measurement } } }].sort((a, b) => (a.id < b.id ? -1 : 1)),
     cells: [...manifest.cells.filter(c => !cells.some(n => n.id === c.id)), ...cells].sort((a, b) => (a.id < b.id ? -1 : 1)),
   };
   const text = `${JSON.stringify(merged, null, 2)}\n`;

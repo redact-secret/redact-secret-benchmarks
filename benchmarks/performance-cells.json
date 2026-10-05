@@ -5,13 +5,25 @@
       "id": "peer-pii-runtime-throughput-v1",
       "plan": "qualification/peer-pii-runtime-throughput-v1.json",
       "granularity": "measurement",
-      "jobKey": "measurement"
+      "jobKey": "measurement",
+      "dispatch": {
+        "workflow": "peer-pii-runtime-throughput.yml",
+        "inputs": {
+          "measurement": "peer-pii-runtime-throughput-v1"
+        }
+      }
     },
     {
       "id": "runtime-comparison-v2",
       "plan": "qualification/runtime-comparison-v2.json",
       "granularity": "measurement",
-      "jobKey": "measurement+setting"
+      "jobKey": "measurement+setting",
+      "dispatch": {
+        "workflow": "peer-pii-runtime-throughput.yml",
+        "inputs": {
+          "measurement": "runtime-comparison-v2"
+        }
+      }
     }
   ],
   "cells": [

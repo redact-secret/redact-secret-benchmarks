@@ -33,6 +33,14 @@ node --import tsx scripts/plan-execution.ts plan --axis <accuracy|performance|bo
 | View, docs, evidence record | reuse recorded runs | reuse |
 | A file no rule classifies | decision | decision |
 
+## Dispatch modes
+
+The axes are dispatched by separate workflows, never one from the other: accuracy by `official-runs.yml` (`mode` full or diagnostic), performance by the measurement's own workflow (`peer-pii-runtime-throughput.yml`, input `measurement`, recorded per measurement in the cell register). `plan` ends with the exact `gh workflow run` commands for what it scheduled, one per axis job, and none while a decision is open. A fixture-only plan therefore names no performance workflow. `execution-plan.yml` has no dispatch rights by design (`contents: read`), so it names the commands and a maintainer runs them.
+
+## Views
+
+The runtime and performance pages already show each measurement's date and host (`resolvers/performance.ts`, `resolvers/scanners.ts`: `Run of <date>: <platform> <arch> · Node · <cpu>`), and each report is a frozen, content-addressed artifact, so a view always shows an independent historical measurement with its source. The cell register carries the same fields plus the artifact digest for the plan.
+
 ## Performance cells
 
 `benchmarks/performance-cells.json` is registered with `plan-execution.ts register --measurement <id> --plan <plan> --artifact <path>[:<setting>]` (`--check` verifies). A cell is a subject x workload (x setting) of one recorded artifact: identity `{subject: {id, version, package, kind, commit, activation}, workloadDigest, protocolDigest}`, the artifact's path, byte digest, commitment, `measuredAt` and host. Current identity is read from the plan (workload definitions, protocol, settings), `package.json` (versions) and `benchmarks/pin-manifest.json` (the product commit).
@@ -45,4 +53,4 @@ The plan reports executed, reused and re-scored counts, jobs, engine runs or inv
 
 ## Not covered
 
-Engine #42's per-cell identity and `perf plan` once an engine tag carries it; case-level accuracy reuse (#706); showing measuredAt, host and reused source in the web views (the plan and cell register carry them; the views are a `web/` change).
+Engine #42's per-cell identity and `perf plan`, merged as alpha.9 but untagged (the newest engine tag is alpha.5): the planner is the repository-side contract and the engine's `perf plan` replaces the cell comparison when a tag carries it; case-level accuracy reuse (#706).

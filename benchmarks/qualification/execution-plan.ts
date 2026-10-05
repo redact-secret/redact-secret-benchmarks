@@ -57,6 +57,8 @@ export interface MeasurementEntry {
   /** One engine/harness job measures every subject of the measurement (the repository's harness interleaves them in one process), so a fresh cell runs the others too. */
   granularity: 'measurement';
   jobKey: 'measurement' | 'measurement+setting';
+  /** The workflow that runs this measurement and its inputs: the performance axis is dispatched there, never from the accuracy lane. */
+  dispatch?: { workflow: string; inputs: Record<string, string> };
 }
 export interface CellsManifest { schema: typeof CELLS_SCHEMA; measurements: MeasurementEntry[]; cells: PerformanceCell[] }
 
@@ -281,6 +283,8 @@ export interface ExecutionPlanInputs {
   performance?: PerformanceInputs;
 }
 
+export interface DispatchStep { axis: 'accuracy' | 'performance'; workflow: string; inputs: Record<string, string>; command: string; covers: string[] }
+
 export interface ExecutionPlan {
   schema: typeof EXECUTION_PLAN_SCHEMA;
   axis: Axis;
@@ -288,6 +292,8 @@ export interface ExecutionPlan {
   change: { files: number; kinds: Partial<Record<ChangeKind, string[]>>; unclassified: string[] };
   accuracy: AccuracyPlan | null;
   performance: PerformancePlan | null;
+  /** The separate dispatches that run exactly what this plan schedules, one per axis job; empty while a decision is open or nothing is scheduled. */
+  dispatch: DispatchStep[];
   decisions: string[];
   missingEvidence: string[];
   counts: {
@@ -317,12 +323,25 @@ export function planExecution(inputs: ExecutionPlanInputs): ExecutionPlan {
   const invocations = perfJobs.map(j => j.engineInvocations);
   const minutes = [...accuracyJobs.map(p => p.runnerMinutes), ...perfJobs.map(j => j.runnerMinutes)];
 
+  const dispatch: DispatchStep[] = [];
+  if (!decisions.length) {
+    const cmd = (workflow: string, ins: Record<string, string>) => `gh workflow run ${workflow} --ref <branch>${Object.entries(ins).map(([k, v]) => ` -f ${k}=${v}`).join('')}`;
+    if (accuracyJobs.length) {
+      const ins = { mode: inputs.accuracy?.lane === 'diagnostic' ? 'diagnostic' : 'full' };
+      dispatch.push({ axis: 'accuracy', workflow: 'official-runs.yml', inputs: ins, command: cmd('official-runs.yml', ins), covers: accuracyJobs.map(p => p.population) });
+    }
+    for (const job of perfJobs) {
+      const entry = inputs.performance?.manifest.measurements.find(m => m.id === job.measurement);
+      if (entry?.dispatch) dispatch.push({ axis: 'performance', workflow: entry.dispatch.workflow, inputs: entry.dispatch.inputs, command: cmd(entry.dispatch.workflow, entry.dispatch.inputs), covers: [job.job] });
+    }
+  }
+
   return {
     schema: EXECUTION_PLAN_SCHEMA,
     axis: inputs.axis,
     verdict: decisions.length ? 'needs-decision' : 'plan',
     change: { files: inputs.files.length, kinds, unclassified },
-    accuracy, performance,
+    accuracy, performance, dispatch,
     decisions,
     missingEvidence: [...(accuracy?.missingEvidence ?? []), ...(performance?.missingEvidence ?? [])],
     counts: {
@@ -350,6 +369,7 @@ export function renderExecutionPlan(plan: ExecutionPlan): string {
   if (plan.accuracy) lines.push(`| Accuracy (scanner x population) | ${c.accuracy.executed} | ${c.accuracy.reused} | ${c.accuracy.rescored} | ${c.accuracy.jobs} | ${c.accuracy.engineRuns} | n/a |`);
   if (plan.performance) lines.push(`| Performance (cells) | ${c.performance.executed} | ${c.performance.reused} | n/a | ${c.performance.jobs} | ${c.performance.engineInvocations ?? 'unknown'} | ${c.performance.peerProcesses} |`);
   lines.push('', `Runner-minutes (historical telemetry): ${c.runnerMinutes.known} known${c.runnerMinutes.unknownJobs ? `, ${c.runnerMinutes.unknownJobs} job(s) unknown` : ''}. Reported apart from wall-clock latency.`, '');
+  if (plan.dispatch.length) lines.push('### Dispatch (separate workflows, one per axis)', '', ...plan.dispatch.map(d => `- ${d.axis}: \`${d.command}\` (${d.covers.join(', ')})`), '');
   if (plan.decisions.length) lines.push('### Decisions needed', '', ...plan.decisions.map(d => `- ${d}`), '');
   if (plan.accuracy) {
     lines.push('### Accuracy', '', '| Population | Action | Scanner | Origin | Reason |', '| --- | --- | --- | --- | --- |');

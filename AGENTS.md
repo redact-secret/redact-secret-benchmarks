@@ -44,9 +44,17 @@ a verification, never compared with them. `trufflehog --version` must print the 
 **Authority (#608).** Which pipeline is the authority for credential qualification is one committed value,
 `benchmarks/qualification-authority.json` (`new` or `legacy`), checked by `npm run authority:check`; the Next credential
 report pages are built from the view or the legacy files by it, and each says which. Rolling back is changing that one
-value (rehearsed: [`docs/specs/qualification-cutover.md`](docs/specs/qualification-cutover.md)). Do not read the file
+value (rehearsed: [`docs/specs/qualification-cutover.md`](docs/specs/qualification-cutover.md); its file-level inventory (#653) lists
+every legacy removal candidate's owner, callers and prerequisite, and `node scripts/legacy-callers.mjs <file>` recomputes the callers before any removal PR). Do not read the file
 anywhere else (the gate lists the readers), do not make a build infer it, and do not delete the legacy path: it is the oracle
 until the exit condition in the switch ADR is met.
+
+**PII authority (#666).** Which pipeline is the authority for PII measurement is its own committed value, `benchmarks/pii-authority.json`
+(`legacy` or `new`), checked by `npm run pii:authority:check`; a credential authority setting is not authorisation for PII and the two never read each
+other. It is `legacy`, with eight exit criteria recomputed from the tree (`docs/specs/pii-authority.md`); the owner decides the exit, and the repository never
+writes `new.authorisation` or an owner criterion on the owner's behalf. Do not read the file anywhere else (the gate lists the readers), do not delete the
+legacy PII code (the caller inventory is `docs/generated/pii-legacy-inventory.json`; removal needs the exit), and rehearse the rollback with
+`npm run pii:authority:rehearse` after a repin. The linux replay of the four populations is `pii-population-replay.yml` (dispatch only).
 
 ## Branches
 

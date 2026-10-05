@@ -52,6 +52,40 @@ node scripts/run-candidate-replay.mjs all --candidate core-main-422e43e3   # on 
 
 `dispatch` (checks the push, the registry and its release, dispatches `official-runs.yml` with `candidate`, finds the run), `wait`, `collect` (downloads the artifacts and the report, checks each run record is exploratory, internal, this candidate and repeat-equal, archives them as `candidate-runs-<run id>`, fetches the archive by its digest and compares every artifact byte, writes `docs/generated/evidence-adoption/product-<id>/` and the registry receipt) and `propose` (commit, push, draft pull request) can be run alone; each is idempotent and refuses with the reason. The workflow stays `contents: read`; the release and the pull request use the maintainer's `gh` credentials.
 
+## The candidate diff and the saved baseline from artifacts (#657)
+
+The legacy candidate diff (`eval:candidate`, `public/results/candidate-evidence-v1.json`, compared with `baselines/<version>.json`) re-runs the legacy engine. The same question,
+what an unpublished build changes against the saved release, is answered from validated RunArtifacts by `npm run qualification:candidate-diff`
+(`scripts/build-candidate-diff.ts`, `benchmarks/qualification/candidate-diff.ts`):
+
+```bash
+npm run qualification:candidate-diff -- --candidate core-main-1e45cecf --candidate-dir <downloaded candidate-run-* laid out per population> --verify-tarballs
+```
+
+| | Reads |
+| --- | --- |
+| candidate side | the `candidate-run-<population>` artifacts of a replay (plain populations and the methods run): run record, `product-candidate-receipt.json`, artifact bytes |
+| saved baseline | the control the adoption record binds by archive release and sha256 (`candidate-control.mjs`, fetched with `replay-archive.mjs`, digest verified), never a directory taken on trust and never a legacy `baselines/<version>.json` |
+
+Refused with exit 1, nothing written: a candidate artifact that is not exploratory and internal (record and manifest); a run record or receipt that does not name the registered candidate id, commit and exactly its tarball sha256 set
+(a missing, extra or different package fails); artifact bytes or a semantic digest that differ from the run record; repeat runs that did not agree; a baseline that is itself a candidate run or measured a candidate build; and any difference between the
+sides other than the product build (engine, protocol, configuration hash, evidence identity, scanner roster, every peer's identity, every peer's per-case results, the product's case universe). `--verify-tarballs` also downloads each registered tarball from the
+candidate's release, requires its sha256 to be the registered one and requires the receipt to list exactly the files that tarball holds, so the claim is about the bytes and not a version string (the replay's manifest labels the build `released`
+because the shim installs the published version first; the receipt, not that label, binds the bytes).
+
+The output is an internal projection (`publication: internal`, `runClass: exploratory`): per population the cases fixed, regressed, changed, unchanged and still failing, the per-family pass counts, and a row per differing case with its id, family, kind, tier and a measurement label
+(for example `MISS` and `EXACT`, `clear` and `flagged`). It carries no span, no byte and no finding text. `fixed` and `worsened` use the definitions of `scripts/candidate-replay-report.ts` (a pass is every span EXACT, or a control that is not flagged; worse is a pass that now fails,
+more leaked or collateral bytes, a control now flagged), so the two readings can be compared; this consumer re-scores nothing. The command refuses an output path under `public/`, `web/` or `out/`. Candidate data never enters the published modes: `qualification:matrix --mode published`
+refuses an internal run, an unrecorded digest and a candidate build (`tests/matrix-artifact.test.mjs`, `tests/candidate-diff.test.mjs`).
+
+**Baseline re-key and ledger occurrence mapping.** A legacy baseline row is keyed by a legacy slug (`<category>--<fixture>`), a case of an artifact by its canonical, semantic `case_id`; the two never meet here. The artifact baseline needs no re-key because both sides are keyed by the same case ids.
+Review decisions made against legacy review-queue ids reach canonical occurrences through the generated mapping `benchmarks/support/public-review-ledger-map.json` (`npm run qualification:ledger-rekey`, `benchmarks/qualification/ledger-rekey.ts`, #638); the candidate diff does not read or change the ledger, and a review occurrence a candidate adds is reported by
+`candidate-effect.json` (methods section), not decided. The legacy `baselines/*.json` stay with the oracle until its exit condition.
+
+**Legacy matrix consumers.** `eval:publish:matrix`, `eval:matrix:drift`, the dossier roadmap, `family-status` and the legacy site validate the support matrix with `supportMatrixProblem` (`src/support-model.ts`), which requires `sourceReport` (a legacy run id, scanner observation provenance, the legacy fixture-index identity). The view matrix has none of that and
+inventing it would claim a measurement that was not made. Decision ([ADR](../decisions/2026-10-05-read-the-candidate-diff-and-baseline-from-artifacts-and-give-the-legacy-matrix-consumers-no-forged-provenance.md)): no compatibility envelope is written. The view matrix is its own artifact
+(`redact-secret/support-matrix-from-view/v1`) read by new consumers, the legacy consumers keep reading the legacy file until the oracle's exit condition, and `tests/candidate-diff.test.mjs` fails if the legacy validator ever accepts a view matrix by accident. A compatibility field is added only when a verified consumer needs it.
+
 ## A new evidence snapshot: the 2x2
 
 When credential-evidence releases a newer snapshot, the SAME registered product bytes are measured on it and the effects are separated (decision [record a newer evidence release](../decisions/2026-10-04-record-a-newer-evidence-release-as-an-evidence-candidate-and-separate-corpus-product-and-interaction-effects-in-a-2x2.md)).

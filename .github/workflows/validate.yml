@@ -1,30 +1,93 @@
 name: Validate benchmark sources
+# One run per change (#655, #656). A pull request runs once (the `push` trigger is for the integration branch and the release, so a branch push
+# no longer starts a second, identical run), and `scripts/ci-plan.mjs` plans it from the changed files: legacy measurement only when an input of
+# it changed, the site's builds and browser checks only when the site or what it is built from changed, browser checks on the pages and stories a
+# component change can reach. A push to develop or main, the weekly schedule and a dispatch run everything. The plan only removes work whose
+# inputs did not change; an unknown path or a failed diff runs everything. `validate` is the required check: it accepts a skipped job only when
+# the plan says that job was not selected, and a failure or a cancellation never passes. A superseded pull request run is cancelled; a push
+# is never (every tip of develop and main keeps its run), and nothing here deploys, so no deployment sync is ever cancelled.
 on:
   push:
+    branches: [develop, main]
   pull_request:
-  workflow_dispatch: # the adoption workflow's draft pull request starts no checks with the workflow token; it dispatches this one on the branch (#690)
+  workflow_dispatch:
+  schedule:
+    - cron: '23 4 * * 1'
 permissions:
   contents: read
+concurrency:
+  group: validate-${{ github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number) || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
-  # `validate` is the required status check and keeps its name: it is the
-  # aggregate of `validate-sources` (everything but `npm test`) and the
-  # `unit-tests` shards, which run in parallel instead of serially (#479 P3).
+  # `validate` is the required status check and keeps its name: it is the aggregate of every job below, judged against the plan.
   validate:
     if: always()
-    needs: [validate-sources, unit-tests, web]
+    needs: [changes, validate-sources, unit-tests, legacy-oracle, legacy-results, view, web-build, web-unit, web-browser]
     runs-on: ubuntu-latest
     permissions: {}
     env:
+      LEGACY: ${{ needs.changes.outputs.legacy }}
+      WEB: ${{ needs.changes.outputs.web }}
+      BROWSER: ${{ needs.changes.outputs.browser }}
+      CHANGES: ${{ needs.changes.result }}
       SOURCES: ${{ needs.validate-sources.result }}
       TESTS: ${{ needs.unit-tests.result }}
-      WEB: ${{ needs.web.result }}
+      ORACLE: ${{ needs.legacy-oracle.result }}
+      LEGACY_RESULTS: ${{ needs.legacy-results.result }}
+      VIEW: ${{ needs.view.result }}
+      WEB_BUILD: ${{ needs.web-build.result }}
+      WEB_UNIT: ${{ needs.web-unit.result }}
+      WEB_BROWSER: ${{ needs.web-browser.result }}
     steps:
-      - run: |
-          echo "validate-sources: $SOURCES; unit-tests: $TESTS; web: $WEB"
-          [ "$SOURCES" = success ] && [ "$TESTS" = success ] && [ "$WEB" = success ]
+      - name: Every selected job succeeded; a skip is accepted only where the plan did not select the job
+        run: |
+          fail=0
+          judge() {
+            # $1 job, $2 its result, $3 whether the plan selected it (anything but "false" counts as selected, so a missing plan fails closed)
+            if [ "$2" = success ]; then echo "$1: success"
+            elif [ "$2" = skipped ] && [ "$3" = false ]; then echo "$1: skipped (not selected by the plan)"
+            else echo "::error::$1: $2 (selected: $3)"; fail=1; fi
+          }
+          judge changes "$CHANGES" true
+          judge validate-sources "$SOURCES" true
+          judge unit-tests "$TESTS" true
+          judge legacy-oracle "$ORACLE" "$LEGACY"
+          judge legacy-results "$LEGACY_RESULTS" "$WEB"
+          judge view "$VIEW" "$WEB"
+          judge web-build "$WEB_BUILD" "$WEB"
+          judge web-unit "$WEB_UNIT" "$WEB"
+          judge web-browser "$WEB_BROWSER" "$BROWSER"
+          exit $fail
+
+  # Plans the run from the changed files and writes what was selected, and why, to the job summary.
+  changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    outputs:
+      legacy: ${{ steps.plan.outputs.legacy }}
+      web: ${{ steps.plan.outputs.web }}
+      browser: ${{ steps.plan.outputs.browser }}
+      web_scope: ${{ steps.plan.outputs.web_scope }}
+      layout_select: ${{ steps.plan.outputs.layout_select }}
+      legacy_key: ${{ steps.plan.outputs.legacy_key }}
+      view_key: ${{ steps.plan.outputs.view_key }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          # A pull request is checked out as a merge commit: its first parent is the base, so HEAD^1..HEAD is exactly the change.
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+      - id: plan
+        run: node scripts/ci-plan.mjs --event "$GITHUB_EVENT_NAME"
 
   unit-tests:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -42,8 +105,11 @@ jobs:
       # Same command as `npm test`, sharded by file; --test-shard must precede the file list.
       - run: node --import tsx --test --test-shard=${{ matrix.shard }}/4 tests/*.test.mjs
 
+  # The gates that are cheap and read the committed files: they run on every change. The legacy measurement that used to be in this job
+  # (the engine exercise) is in legacy-oracle.yml (#655).
   validate-sources:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
       - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
@@ -59,8 +125,6 @@ jobs:
         run: npm run fixture-index:check
       - name: Validate published engine qualification evidence (frozen Beta.11 report, against the suite snapshot it was produced with)
         run: npm run eval:validate -- docs/specs/qualification/engine-v1.json --suite=evidence/449/suite-v1.json
-      - name: Exercise evaluation engine with the published npm scanner
-        run: npm run eval -- --scanner=redact-secret
       - name: The UI carries no support status the generated matrix cannot
         run: npm run support:check:ui
       - name: No detector family arrives without its required evidence (#52)
@@ -83,6 +147,12 @@ jobs:
         run: npm run pii:artifact-source:check
       - name: Synthetic custodian projections remain destination-bound and revocation removes their standing (#665)
         run: npm run pii:custodian:check
+      - name: The PII dual-run record, its four schema 1.2 population artifacts and its pins agree, with no unexplained difference (#664)
+        run: npm run pii:migration:check
+      - name: The PII authority is one valid committed value, independent of the credential authority, with its exit criteria recomputed from the tree (#666)
+        run: npm run pii:authority:check
+      - name: The legacy PII measurement code has an inventory of removal candidates, owners, callers and prerequisites that equals the tree (#666)
+        run: npm run pii:legacy-inventory:check
       - name: Every taxonomy provider and family has a dossier entry (#473)
         run: npm run dossiers:check
       - name: Peer scanner rules map to real taxonomy families, and the peer registry ranks nothing (#558)
@@ -111,9 +181,9 @@ jobs:
         run: npm run tuning:check
       - name: The statistical scorer's future-promotion contract answers Q1-Q5 with hard constraints and no mixed score (#257)
         run: npm run scorer-promotion:check
-      # `npm run build` is the legacy Vite UI plus this typecheck. The site is the Next export now (the web job builds it), so the
+      # `npm run build` is the legacy Vite UI plus this typecheck. The site is the Next export now (the web jobs build it), so the
       # legacy UI is not built here; its source stays as the oracle and the typecheck keeps it compiling. The two guards below scan
-      # tracked files and public/; the web job runs them again over the assembled site root.
+      # tracked files and public/; the web-build job runs them again over the assembled site root.
       - name: Typecheck (the root project, including the legacy oracle source)
         run: npm run typecheck
       - name: No candidate-level feature vector or calibration boundary detail reaches public/ or the built site (#254, #255)
@@ -129,11 +199,148 @@ jobs:
       - name: Generated inputs must not change tracked files
         run: git diff --exit-code
 
+  # The legacy measurement, kept as the oracle (legacy-oracle.yml). Selected when a pull request changes one of its inputs, and always on a
+  # push to develop or main, on the schedule and on dispatch.
+  legacy-oracle:
+    needs: changes
+    if: needs.changes.outputs.legacy == 'true'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/legacy-oracle.yml
+
+  # The legacy files the pages that still compare scanners read (the run, the evaluation, the report files). They are a function of the legacy
+  # inputs, so they are restored from the cache keyed by those inputs and measured only when an input changed (a UI-only or docs-only change
+  # measures nothing). A key hit holds exactly what the measurement writes for those bytes; the pages are recounted against the files in web-build.
+  legacy-results:
+    needs: changes
+    if: needs.changes.outputs.web == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+      - name: Restore the legacy results measured for these inputs
+        id: cache
+        # A pull request may reuse a result; the integration branch, the release, the schedule and a dispatch always measure.
+        if: github.event_name == 'pull_request'
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: public/results
+          key: legacy-results-${{ needs.changes.outputs.legacy_key }}
+      - name: Repository dependencies, generated fixtures, one benchmark run for the report pages and one evaluation for the evaluation pages
+        if: steps.cache.outputs.cache-hit != 'true'
+        # With the product alone and no peer the run takes under a minute and the pages are built in the state a checkout without peers has;
+        # a full evaluation is published by publish-site.
+        run: |
+          npm ci
+          npm run bench
+          npm run eval:discover -- --scanner=redact-secret
+          npm run eval:publish
+      - name: Keep the result for the next change with the same inputs
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: public/results
+          key: legacy-results-${{ needs.changes.outputs.legacy_key }}
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: legacy-results
+          path: public/results
+          retention-days: 1
+
+  # The new-authority view from the accepted official RunArtifacts (#654). The archive is the public release asset of this repository, fetched with the
+  # read-only default token (a fork's pull request has no other), and every file is checked against the byte digests of benchmarks/official-runs.json
+  # before anything reads it: a missing, extra, linked or altered file fails closed (scripts/official-run-archive.mjs). The case metadata of the product
+  # populations is exported from this checkout, whose corpus `official-runs:check --bindings` pins. The three populations are run class public. A pull
+  # request whose inputs of the view did not change reuses the view built (and verified) for them; the integration branch, the release, the
+  # schedule and a dispatch always fetch and verify the archive. Nothing here is written back, and no secret is read.
+  view:
+    needs: changes
+    if: needs.changes.outputs.web == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      NODE_OPTIONS: --max-old-space-size=5120
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+      # The view is exported from the two product populations only, built in memory by qualification:export (#659): the public development corpora the
+      # `prepare` hook would also materialize are not read here, so install without scripts and materialize just the product populations.
+      - run: npm ci --ignore-scripts
+      - run: npm run fixtures:ensure:product
+      - name: The registry pins the artifacts and the corpus the view is exported from
+        run: npm run official-runs:check -- --bindings
+      - name: Restore the view built for these inputs
+        id: cache
+        if: github.event_name == 'pull_request'
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: public/results/qualification-v1.json
+          key: qualification-view-${{ needs.changes.outputs.view_key }}
+      - name: Fetch the canonical official RunArtifacts and check them against the registry
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: node scripts/official-run-archive.mjs fetch --out "$RUNNER_TEMP/official-in"
+      - name: A directory whose bytes are not the recorded ones is refused (the check that guards the fetch fails closed)
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/tampered/public-evidence-snapshot"
+          echo '{}' > "$RUNNER_TEMP/tampered/public-evidence-snapshot/artifact.json"
+          if node scripts/official-run-archive.mjs verify --dir "$RUNNER_TEMP/tampered"; then
+            echo "::error::a directory that is not the recorded artifacts verified"
+            exit 1
+          fi
+      - name: Build the qualification view from the official RunArtifacts
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          set -euo pipefail
+          for population in regression-corpus policy-corpus; do
+            npm run qualification:export -- --population "$population" --out "$RUNNER_TEMP/official-export/$population"
+            mkdir -p "$RUNNER_TEMP/official-in/$population/inputs"
+            cp "$RUNNER_TEMP/official-export/$population/case-metadata.json" "$RUNNER_TEMP/official-in/$population/inputs/"
+          done
+          mkdir -p public/results
+          rm -f public/results/qualification-v1.json
+          npm run qualification:view -- --artifacts "$RUNNER_TEMP/official-in" --out public/results/qualification-v1.json
+      - name: Keep the view for the next change with the same inputs
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: public/results/qualification-v1.json
+          key: qualification-view-${{ needs.changes.outputs.view_key }}
+      - name: The view is the one the registry authorises
+        # The site service refuses a view built from other pins or another policy (WEB_REQUIRE_QUALIFICATION); this states the identity in the log.
+        run: |
+          jq -r '"view: \(.distribution.stable|tostring) stable, policy \(.policy.revision), populations \([.populations[]|.population]|join(", "))"' public/results/qualification-v1.json
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: qualification-view
+          path: public/results/qualification-v1.json
+          retention-days: 1
+
   # The site (#547): a self-contained package in web/ with its own lockfile. It builds to web/out and web/storybook-static.
   # It is the root of the published site (#602): publish-site.yml builds its own export (with the qualification view) and
-  # assembles it with the measured files; this job assembles the same layout from the CI run to scan it.
-  web:
+  # assembles it with the measured files; the jobs below build the same pipelines from the CI run. The committed authority is `new`, so the
+  # export is built from the view (WEB_REQUIRE_QUALIFICATION: a missing or stale view fails the build instead of rendering its absence), and the
+  # rollback state (the legacy pipeline, built by flipping the one value for the command only) is built and recounted beside it.
+  web-build:
+    needs: [changes, legacy-results, view]
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     permissions:
       contents: read
     steps:
@@ -147,16 +354,16 @@ jobs:
           cache-dependency-path: web/package-lock.json
       - run: npm ci --ignore-scripts
         working-directory: web
-      # The web services read the fixture corpora and the benchmark run, as the existing site does (#556).
-      # `npm ci` materialises the generated corpora (prepare); the bench takes about 15 seconds.
-      - name: Repository dependencies, generated fixtures, one benchmark run for the report pages and one evaluation for the evaluation pages
-        # The evaluation pages (#614) read public/results/evaluation-v1.json. With the product alone the run takes under a minute
-        # and has no peer, so the pages are built in the state a checkout without peers has; a full evaluation is published by publish-site.
-        run: |
-          npm ci
-          npm run bench
-          npm run eval:discover -- --scanner=redact-secret
-          npm run eval:publish
+      # `npm ci` materialises the generated corpora (prepare) the services read.
+      - run: npm ci
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: legacy-results
+          path: public/results
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: qualification-view
+          path: public/results
       - name: No sx prop, no styled(), fetch only of build-emitted data through one helper, CSS Modules layered (#547, #573)
         run: npm run check:no-sx
         working-directory: web
@@ -165,20 +372,51 @@ jobs:
         working-directory: web
       - run: npm run typecheck
         working-directory: web
-      # The committed qualification authority (#608) is `new`, and CI has no qualification view (it is derived from the manual official
-      # runs, never committed), so the credential pages as committed have no data to test in a browser. The browser checks below
-      # therefore run on the export of the legacy pipeline, built by flipping the one committed value in this runner's checkout only
-      # (web/scripts/with-authority.mjs restores it): the oracle and rollback state stays built and tested on every change. The
-      # committed state is built and recounted at the end of this job.
-      - name: Static export of the legacy pipeline (the oracle) builds and contains the six routes (#547, #608)
+      - name: Rollback state, the legacy pipeline export builds and every page recounts against the legacy files (#547, #608)
         run: node scripts/with-authority.mjs legacy -- sh -c 'npm run build && npm run check:routes'
         working-directory: web
         env:
           WEB_REQUIRE_RUN: '1'
-      # Unit and component tests (#598): Vitest with V8 coverage over web/app, components, lib, resolvers,
-      # services and theme. Fails below 80% of lines, statements, functions or branches (vitest.config.mts).
-      # The services read the corpora and the run installed above; the resolver suites that used to run in
-      # the root unit-tests job run here, where their coverage is counted.
+      - name: The committed authority builds from the qualification view and every page recounts against it (#608, #654)
+        # Last of the two, because it replaces the export the check above ran on. The view is required: a missing, stale or unauthorised one fails.
+        run: npm run build && npm run check:routes
+        working-directory: web
+        env:
+          WEB_REQUIRE_RUN: '1'
+          WEB_REQUIRE_QUALIFICATION: '1'
+      # The layout that ships: the export at the root, the measured files at /results/, robots.txt and favicon.svg. The publication
+      # guards read dist/ and public/ of the repository root, so the site root is assembled there (dist/ is ignored).
+      - name: The assembled site root is the export plus /results/ and carries no leak the publication guards refuse (#142, #254, #602)
+        run: |
+          node scripts/assemble-site.mjs
+          npm run features:check-public
+          npm run blind:check-public
+
+  # Unit and component tests (#598): Vitest with V8 coverage over web/app, components, lib, resolvers,
+  # services and theme. Fails below 80% of lines, statements, functions or branches (vitest.config.mts).
+  # The services read the corpora and the legacy files; the tests pin their own pipeline and build synthetic views, so no view is given here.
+  web-unit:
+    needs: [changes, legacy-results]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --ignore-scripts
+        working-directory: web
+      - run: npm ci
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: legacy-results
+          path: public/results
       - name: Unit and component tests, at least 80% of lines, statements, functions and branches (#598)
         run: npm run test:coverage
         working-directory: web
@@ -193,53 +431,71 @@ jobs:
           name: web-coverage
           path: web/coverage
           retention-days: 14
+
+  # The browser checks, on the export built from the view (the state that ships). The layout check and the Playwright suite are two jobs of one matrix,
+  # run in parallel and each to normal completion with its own timeout (the suite no longer starts in the background beside the layout check). A pull
+  # request that changes only components or routes runs them for the pages and stories the change can reach (the plan's `layout_select`); every shared
+  # input, and any push, schedule or dispatch, runs the full suite. What was selected is in the plan's job summary and in each job's output.
+  web-browser:
+    needs: [changes, legacy-results, view]
+    if: needs.changes.outputs.browser == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        check: [layout, e2e]
+    env:
+      LAYOUT_SELECT: ${{ needs.changes.outputs.layout_select }}
+      WEB_BROWSER_SELECT: ${{ needs.changes.outputs.layout_select }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --ignore-scripts
+        working-directory: web
+      - run: npm ci
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: legacy-results
+          path: public/results
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          name: qualification-view
+          path: public/results
+      - name: Static export built from the qualification view
+        run: npm run build
+        working-directory: web
+        env:
+          WEB_REQUIRE_RUN: '1'
+          WEB_REQUIRE_QUALIFICATION: '1'
       - name: Storybook builds on the Next.js framework (#547)
+        if: matrix.check == 'layout'
         run: npm run build-storybook
         working-directory: web
       - name: Chromium for the layout check and the Playwright suite (#554, #598)
         run: npx playwright install --with-deps chromium
         working-directory: web
-      # The Playwright suite (#598) drives the export check:routes just built. check:layout below runs
-      # one browser with a page per core it can have (3 on a 4 vCPU runner: it leaves the suite's 2 workers
-      # a share), so the suite starts first in the background and is joined after it; its exit status and log are kept in RUNNER_TEMP, and a failing run uploads its traces.
-      - name: Playwright suite over the export, started in the background (#598)
-        run: |
-          rm -f "$RUNNER_TEMP/e2e.status"
-          touch "$RUNNER_TEMP/e2e.started"
-          nohup bash -c "npm run test:e2e; echo \$? > \"$RUNNER_TEMP/e2e.status\"" > "$RUNNER_TEMP/e2e.log" 2>&1 &
-        working-directory: web
-        env:
-          PW_WORKERS: '2'
       - name: No page overflow, no mid-word breaks and no shift when data loads, at 320, 375 and 768px in any story, page or loading or error state (#554, #573)
+        if: matrix.check == 'layout'
         run: npm run check:layout
         working-directory: web
-      - name: Playwright suite results (every route in both themes at 320 and 1280px with axe, navigation, URL state, data states, theme, keyboard, reduced motion, no script)
-        if: always()
-        run: |
-          [ -f "$RUNNER_TEMP/e2e.started" ] || { echo 'The Playwright suite did not start (an earlier step failed).'; exit 0; }
-          for _ in $(seq 1 600); do [ -f "$RUNNER_TEMP/e2e.status" ] && break; sleep 2; done
-          cat "$RUNNER_TEMP/e2e.log"
-          [ "$(cat "$RUNNER_TEMP/e2e.status" 2>/dev/null)" = "0" ]
-      - name: The committed authority builds as committed and says what it has, with no qualification view (#608)
-        # Last, because it replaces the export the browser checks above ran on. Without a view every credential report page names the
-        # new pipeline and says no view backs the build; check:routes recounts exactly that. WEB_REQUIRE_QUALIFICATION is set by a workflow
-        # that publishes the new pipeline, where a missing view must fail the build instead.
-        run: npm run build && npm run check:routes
+      - name: Playwright suite (every route in both themes at 320 and 1280px with axe, navigation, URL state, data states, theme, keyboard, reduced motion, no script)
+        if: matrix.check == 'e2e'
+        run: npm run test:e2e
         working-directory: web
-        env:
-          WEB_REQUIRE_RUN: '1'
-      # The layout that ships: the export at the root, the measured files at /results/, robots.txt and favicon.svg. The publication
-      # guards read dist/ and public/ of the repository root, so the site root is assembled there (dist/ is ignored).
-      - name: The assembled site root is the export plus /results/ and carries no leak the publication guards refuse (#142, #254, #602)
-        run: |
-          node scripts/assemble-site.mjs
-          npm run features:check-public
-          npm run blind:check-public
       - name: Playwright traces of the failures
         if: failure()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: web-playwright-failures
+          name: web-playwright-failures-${{ matrix.check }}
           path: web/test-results
           retention-days: 7
           if-no-files-found: ignore
@@ -261,39 +517,3 @@ jobs:
         run: npm run pins:check
       - name: Every product promotion cross-references a lifecycle record, and vice versa (#106)
         run: npm run promotion:check
-
-  scanner-comparison:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
-      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      # Ordinary validation intentionally has no peer binaries on PATH. Both
-      # commands must fail closed unless every committed observation matches
-      # the current corpus, semantic index, pin, adapter and snapshot schema.
-      - name: Support classification reuses validated peer observations
-        run: npm run eval:classify
-      - name: Every review-queue id resolves against the ledger, using the same validated observations (#98)
-        run: npm run queue:check
-      - name: Run the comparison with a fresh product and validated peer observations
-        run: npm run bench -- --strict
-      - name: Record which redact-secret artifact was measured
-        if: always()
-        run: |
-          {
-            echo "### Four-scanner comparison"
-            echo "- redact-secret: published npm package \`@redact-secret/core@$(node -p "require('./package.json').dependencies['@redact-secret/core']")\`, not a candidate build of the product's \`main\`"
-            echo "- peers: validated normalized snapshots (source run, observed time, input identity and digest retained in every row); no peer binary provisioned or executed"
-          } >> "$GITHUB_STEP_SUMMARY"
-      - name: Upload the four-scanner comparison results
-        if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: four-scanner-comparison
-          path: public/results/
-          retention-days: 90

@@ -10,6 +10,9 @@
     "piiEvalParityEvidence": "6bb0e750fb165d3b32620a51eb6ba0ca172202c8",
     "piiEvalConsumerHandoff": "6646dd210b0928e3e4228496a45fbd99ad6b8536",
     "piiEvalCargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+    "piiEvalProjection": "212d500de90ce97461275be1e8b9dd8acd663fb3",
+    "piiEvalProjectionCargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+    "oracleFilesTreeSha256": "6f35613cc5a6a827f19609d8c3d22a56362c0f7f526553f17cc1bc4e9ec8a83b",
     "privateCustodian": "23f75304d4cf53fc8604379255bbf058f642daeb",
     "custodianProjectionV2SchemaSha256": "fd19887dc4492fc210f0b7ad8c9b991ad73fb8808a6b8c005fc67f88fa8a8647",
     "custodianRevocationSchemaSha256": "6f2272523f659e6a1fa84cee794dc720f367b3df4241713f6271766fd844d45b",
@@ -23,7 +26,10 @@
   "engine": {
     "name": "pii-eval",
     "version": "0.0.0",
-    "artifactSchema": { "id": "pii-eval.public-synthetic-artifact", "version": "1.1" },
+    "artifactSchema": { "id": "pii-eval.public-synthetic-artifact", "version": "1.2", "readableVersions": ["1.1", "1.2"],
+      "schemaFiles": {
+        "1.1": { "path": "schemas/pii-eval-public-synthetic-artifact-v1.1.json", "sha256": "5368839ea48cce9a868dfece2dcb2c80ed39c8aab522daccdc8dcc8a8ded57ec", "upstreamCommit": "6157cbc5918b3888c8e84b1884719ea8f3278b36" },
+        "1.2": { "path": "schemas/pii-eval-public-synthetic-artifact-v1.2.json", "sha256": "58238767e9901feffa5544edbc7fba47a3d1aaae99f873137029217cc1064f69", "upstreamCommit": "212d500de90ce97461275be1e8b9dd8acd663fb3" } } },
     "protocol": { "id": "pii-v1", "revision": 2, "matching": "pii-v1-canonical", "accounting": "pii-v1-canonical-accounting", "statistics": "pii-v1-wilson-exact" },
     "compatibilityProtocol": { "id": "pii-v1", "revision": 1, "matching": "legacy-first-overlap", "accounting": "legacy-accounting" },
     "methods": [
@@ -91,10 +97,69 @@
       { "id": "benign-heavy-stress", "cases": 299, "scoredCases": 299, "unscoredCases": 0 }
     ]
   },
+  "benchmarkPopulationDualRun": {
+    "schemaVersion": 1,
+    "report": { "path": "benchmarks/pii-eval-population-dual-run/report.json", "sha256": "be62ad95b8b848d48286ef653818e5e0086f77bd87f481c219f45171790782db", "markdown": "docs/reports/2026-10-05-pii-eval-population-dual-run.md" },
+    "oracle": { "commit": "4b846967346505baca11e0b98cab1475fbce6773", "filesTreeSha256": "6f35613cc5a6a827f19609d8c3d22a56362c0f7f526553f17cc1bc4e9ec8a83b" },
+    "engine": { "commit": "212d500de90ce97461275be1e8b9dd8acd663fb3", "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a", "artifactSchema": "1.2" },
+    "artifacts": [
+      { "view": "oracle-plan", "populationId": "b11-population-v2-oracle-plan", "path": "benchmarks/pii-eval-population-dual-run/oracle-plan.public-synthetic-artifact.json", "sha256": "8351d46b40ded917e61f412c5ba44b4a14cb9eb4c3c7aece836d228f38085791", "semanticDigest": "cc6c2cf30ff0fdfb90bd4a4027d56d692c4cd57db23f010ecf27a05eda55371b",
+        "snapshotDigest": "b9c80deee38229e86287a5fdacdb6eddc516cc5b325e0435b7786a31a7b56116", "manifestDigest": "bd0a8087e46ec2df8389a9962b075a1d8be8a59c4d9805fe6ce9d4159b67fd7e", "rosterDigest": "cca87a2913aec930b165cd075701ef87f80e245d33c275433e207f2f087d0abf",
+        "cases": 146, "carriedCases": 95, "notRepresentableCases": 51, "mode": "exploratory" },
+      { "view": "qualification-plan", "populationId": "b11-population-v2-qualification-plan", "path": "benchmarks/pii-eval-population-dual-run/qualification-plan.public-synthetic-artifact.json", "sha256": "a74393a00056926b5fc5c637ae603484934f601c27261bf7d3c00cfec14f0b95", "semanticDigest": "5de4b6ebc6316e5298203e900d5db68dfe16e3d9744f792779d8570231d9034e",
+        "snapshotDigest": "69d6cc26bc9d2d7a9aee4231f5f1e3c7969840fb6407d8f4cc777312836a59d6", "manifestDigest": "7bd499d2622b5c49b8486c69ddff0b443653fa9b3c8503c825b8c4fde8f93fe5", "rosterDigest": "7b0a5b8b136f46d1e5410bebc5c4d1a328fa33e669a30813f49fcd3708087883",
+        "cases": 266, "carriedCases": 230, "notRepresentableCases": 36, "mode": "exploratory" },
+      { "view": "diagnostic-balanced", "populationId": "b11-population-v2-diagnostic-balanced", "path": "benchmarks/pii-eval-population-dual-run/diagnostic-balanced.public-synthetic-artifact.json", "sha256": "482f75af74622976aebf54a2ca00d4273e66eb4db7eb53434d29fcfd0e8402d5", "semanticDigest": "73fa9a1cdf4c281afebd77943c11033f023fde5d62d83dae4f6233ac882e4e39",
+        "snapshotDigest": "4864e3a4f52d9b4119f97314c6cecb8fb780eec9098270977ce34fd7f29022bb", "manifestDigest": "925d56c824f08fc0ef49a1d9f8ea2d272cc1e4a690f9b5ea7238073ea69b4e7c", "rosterDigest": "b777a6db1c1cc3a662119f28a1f93824206b979e8297a0cd953cea44588fec63",
+        "cases": 477, "carriedCases": 428, "notRepresentableCases": 49, "mode": "exploratory" },
+      { "view": "benign-heavy-stress", "populationId": "b11-population-v2-benign-heavy-stress", "path": "benchmarks/pii-eval-population-dual-run/benign-heavy-stress.public-synthetic-artifact.json", "sha256": "a7ab60db62bdedb714d726ca7e4afb75b9a00e96468ccf04ed34eed34d8c6f39", "semanticDigest": "0cc6d2a5ad5ac8c273fb34a6af4776aebecc06f8ad718fdbe812ef5092cd8a19",
+        "snapshotDigest": "8e3716a7a67f68a5b6bbf90d554ec85817f3ae8b1b4fc90ac8b204cbb44d2a88", "manifestDigest": "5274550d0b1fe808be9b8389615ea4848af83dcce73fb8e2a230832887156b64", "rosterDigest": "616b5f99072cd32eaa5c5b63edf1d4e8081f711218d8a428b144c89e79dc2a0b",
+        "cases": 299, "carriedCases": 279, "notRepresentableCases": 20, "mode": "exploratory" }
+    ],
+    "coverage": { "benchmarkCases": 1188, "carriedCases": 1032, "notRepresentableCases": 156, "notRepresentableReason": "authored identity not-established: both engine contracts are closed over valid/invalid" },
+    "unexplainedDifferences": 0,
+    "classifiedDifferences": { "compatibility": ["0007/D1", "0007/D4"], "intentionalContractChange": [], "oldBug": [], "newBug": [], "unresolved": [] },
+    "determinism": { "replays": 3, "equalSemanticDigest": true },
+    "mode": "exploratory",
+    "consumerPins": "benchmarks/pii-eval-population-pins.json",
+    "linuxReplay": {
+      "path": "benchmarks/pii-eval-population-dual-run/linux-replay.json",
+      "sha256": "ab662ba9a4c441343257f05d85e7b8b5fd25661a2b38beb0168f8c19061a209d",
+      "workflow": ".github/workflows/pii-population-replay.yml",
+      "runId": 37350920750,
+      "headSha": "91ac467fda6c28bb6f07268a261c465251b1d7a6",
+      "engineBinarySha256": "b2902d58e8fba5199fedca235c2b81264cd44c8ae9db4c33f07379722297e9af",
+      "platform": "linux-x64",
+      "result": "equal",
+      "note": "the pinned linux CI engine replayed the four frozen observations to the committed artifacts' semantic digests and bytes; exploratory, internal, no scanner launched"
+    }
+  },
+  "publicationBinding": {
+    "ciRun": { "repository": "redact-secret/pii-eval", "runId": 37340150108, "headSha": "212d500de90ce97461275be1e8b9dd8acd663fb3", "engineArtifactId": 11358475612, "measurementArtifactId": 11357099796 },
+    "transportPins": "benchmarks/pii-eval-public-synthetic-source.json",
+    "durableCopy": "tests/fixtures/pii-eval/ci-37340150108-projection.public-synthetic-artifact.json",
+    "stagingOnly": true,
+    "candidateBinding": "a candidate population is bound to a publication's product only when its pin names exactly that source commit; otherwise it is another product"
+  },
+  "protectedPath": {
+    "state": "absent",
+    "checkedOn": "2026-10-05",
+    "privateCustodianMain": "61f2a43e20d57f0f52a81d8eed546b286b649826",
+    "reviewedPin": "23f75304d4cf53fc8604379255bbf058f642daeb",
+    "contractFilesChangedSincePin": 0,
+    "blockers": [
+      "no real ApprovedCatalog over release records and no transport that serves the bridge (private-custodian docs/benchmarks-integration.md section 4, depends on its C10 and C12)",
+      "no production caller of prepare_bound and no signing key authorised for the v2 public-projection domain",
+      "pii-eval does not emit private-custodian.worker-result/1 inside a custodian-authorised run"
+    ],
+    "liveProtectedArtifactConsumed": false,
+    "syntheticConformanceOnly": true
+  },
   "acceptance": {
     "ownershipAndContracts": "accepted",
     "genericCompatibilityParity": "accepted",
-    "benchmarkPopulationDualRun": "blocked-schema-1.2",
-    "reason": "pii-eval schema 1.1 does not carry benchmark population views or per-family projections, so the frozen benchmark observations cannot be represented as equivalent four-population engine artifacts without an additive upstream contract."
+    "benchmarkPopulationDualRun": "accepted-representable-cases",
+    "reason": "pii-eval schema 1.2 carries the four benchmark population views, per-family projections, language and control-class strata and the run mode. The four frozen populations ran through the pinned oracle and the pinned pii-eval engine on identical inputs with zero unexplained differences (see benchmarkPopulationDualRun). 156 of 1188 case memberships have an authored identity of not-established, which neither engine contract can state, so they are not part of the dual run and remain scored only by the benchmark's own scorer; the legacy path must keep scoring them until that is resolved (#666 inventory).",
+    "residual": { "notRepresentableCases": 156, "ownedBy": "benchmarks scorer until an engine contract can state an unestablished identity", "gates": "#666 retirement of the legacy scorer" }
   }
 }

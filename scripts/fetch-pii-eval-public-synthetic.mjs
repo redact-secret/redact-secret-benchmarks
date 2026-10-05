@@ -21,7 +21,7 @@ const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 const fail = message => { throw new Error(message); };
 
 export function validateSource(source, pins) {
-  if (!exactKeys(source, ['schema', 'environment', 'supportClaims', 'app', 'repository', 'workflow', 'artifacts', 'publicArtifactMember', 'pins']) ||
+  if (!exactKeys(source, ['schema', 'environment', 'supportClaims', 'app', 'repository', 'workflow', 'artifacts', 'buildInfo', 'durableCopy', 'publicArtifactMember', 'pins']) ||
       source.schema !== 'redact-secret-benchmarks.pii-eval-artifact-source/1' || source.environment !== 'staging' || source.supportClaims !== false)
     fail('Invalid pii-eval artifact source document');
   if (!exactKeys(source.app, ['id', 'owner', 'repository', 'secret', 'permissions']) || source.app.id !== '5178533' ||
@@ -42,6 +42,11 @@ export function validateSource(source, pins) {
         !Object.keys(artifact.members).length || Object.entries(artifact.members).some(([name, digest]) => unsafeMember(name) || !HEX64.test(digest)))
       fail(`Invalid ${role} artifact identity`);
   }
+  if (!exactKeys(source.buildInfo, ['binaryBytes', 'binaryVersion', 'target', 'rustc', 'rustToolchainFileSha256']) || !Number.isSafeInteger(source.buildInfo.binaryBytes) ||
+      source.buildInfo.binaryBytes <= 0 || typeof source.buildInfo.binaryVersion !== 'string' || source.buildInfo.target !== 'linux-x86_64' ||
+      typeof source.buildInfo.rustc !== 'string' || !HEX64.test(source.buildInfo.rustToolchainFileSha256)) fail('Invalid engine build-info pin');
+  if (!exactKeys(source.durableCopy, ['path', 'member']) || source.durableCopy.member !== 'run/public-synthetic-artifact.json' ||
+      typeof source.durableCopy.path !== 'string' || !/^tests\/fixtures\/pii-eval\/[A-Za-z0-9._-]+\.json$/.test(source.durableCopy.path)) fail('Invalid durable copy pin');
   if (source.publicArtifactMember !== 'run/public-synthetic-artifact.json' ||
       !Object.hasOwn(source.artifacts.measurement.members, source.publicArtifactMember)) fail('Invalid public artifact member');
   if (source.workflow.headSha !== pins.build.commit || pins.build.repository !== source.repository.fullName ||
@@ -88,7 +93,7 @@ export function verifyArchiveMembers(zipFile, expected) {
 export function verifyBuildInfo(members, source, pins) {
   const info = parseStrictJson(members['build-info.json'].toString('utf8'));
   const expected = {
-    binary: { bytes: 4031344, name: 'pii-eval', sha256: pins.build.binarySha256, version: 'pii-eval 0.0.0 (bootstrap)' },
+    binary: { bytes: source.buildInfo.binaryBytes, name: 'pii-eval', sha256: pins.build.binarySha256, version: source.buildInfo.binaryVersion },
     commit: pins.build.commit,
     event: source.workflow.event,
     headSha: source.workflow.headSha,
@@ -97,11 +102,11 @@ export function verifyBuildInfo(members, source, pins) {
     runAttempt: String(source.workflow.runAttempt),
     runId: String(source.workflow.runId),
     schema: 'pii-eval-build-info/1',
-    target: 'linux-x86_64',
+    target: source.buildInfo.target,
     toolchain: {
       cargoLockSha256: pins.build.cargoLockSha256,
-      rustToolchainFileSha256: '887f9be066a15585a2c583578e84b0fcb541126d81546276bad3d2ff00d61167',
-      rustc: 'rustc 1.98.1 (48a229cea 2026-09-01)',
+      rustToolchainFileSha256: source.buildInfo.rustToolchainFileSha256,
+      rustc: source.buildInfo.rustc,
     },
   };
   if (JSON.stringify(info) !== JSON.stringify(expected)) fail('Engine build-info differs from the immutable pin');
@@ -127,6 +132,12 @@ export function checkFiles(sourceFile, pinsFile) {
   const pins = loadPins(readFileSync(pinsFile, 'utf8'));
   const source = validateSource(JSON.parse(readFileSync(sourceFile, 'utf8')), pins);
   if (path.resolve(ROOT, source.pins) !== path.resolve(pinsFile)) fail('Source document names another consumer pin file');
+  // The committed copy of the pinned public artifact outlives the Actions artifact (14 days). It is the same bytes by digest and
+  // is judged by the same consumer, so a pin can always be re-verified offline; it is never a substitute for transport.
+  const copy = readFileSync(path.resolve(ROOT, source.durableCopy.path));
+  if (sha256(copy) !== source.artifacts.measurement.members[source.durableCopy.member]) fail('The committed copy is not the pinned public artifact');
+  const report = consume(pins, [{ name: path.basename(source.durableCopy.path), text: copy.toString('utf8') }]);
+  if (!report.complete) fail(`The committed copy does not pass the semantic consumer: ${JSON.stringify(report.rejections)}`);
   return { source, pins };
 }
 
@@ -165,6 +176,32 @@ export function fetchPinnedArtifact({ sourceFile, pinsFile, outDir }) {
   return receipt;
 }
 
+/**
+ * Fetch and verify only the pinned engine artifact (#665 linux replay) and write its verified binary. The measurement artifact
+ * is not needed (and expires sooner), so this does not read it. The binary is verified by archive, member and build-info digests;
+ * the caller runs it in a later step that holds no token.
+ */
+export function fetchPinnedEngine({ sourceFile, pinsFile, outDir }) {
+  if (!process.env.GH_TOKEN) fail('GH_TOKEN is required');
+  const { source, pins } = checkFiles(sourceFile, pinsFile);
+  const run = ghJson(`/repos/${source.repository.fullName}/actions/runs/${source.workflow.runId}`);
+  verifyRunMetadata(run, source);
+  const inventory = ghJson(`/repos/${source.repository.fullName}/actions/runs/${source.workflow.runId}/artifacts?per_page=100`);
+  if (!Array.isArray(inventory.artifacts)) fail('GitHub artifact inventory is malformed');
+  const expected = source.artifacts.engine;
+  const matches = inventory.artifacts.filter(item => item.id === expected.id);
+  if (matches.length !== 1) fail('Pinned engine artifact is missing or duplicated');
+  verifyArtifactMetadata(matches[0], expected);
+  mkdirSync(outDir, { recursive: true, mode: 0o700 });
+  const members = verifyArchiveMembers(fetchZip(source.repository.fullName, expected, outDir), expected);
+  verifyBuildInfo(members, source, pins);
+  const binary = path.join(outDir, 'pii-eval');
+  writeFileSync(binary, members['pii-eval'], { mode: 0o700 });
+  if (sha256(members['pii-eval']) !== pins.build.binarySha256) fail('Engine binary digest differs from the pin');
+  if (process.env.GITHUB_OUTPUT) writeFileSync(process.env.GITHUB_OUTPUT, `engine=${binary}\n`, { flag: 'a' });
+  return { engine: binary, binarySha256: pins.build.binarySha256, artifactId: expected.id, runId: source.workflow.runId, headSha: source.workflow.headSha, engineExecuted: false };
+}
+
 function option(name, fallback) {
   const prefix = `--${name}=`;
   return process.argv.find(arg => arg.startsWith(prefix))?.slice(prefix.length) ?? fallback;
@@ -179,8 +216,12 @@ async function main() {
     process.stdout.write(`${source.repository.fullName}@${source.workflow.headSha} run ${source.workflow.runId} is internally consistent\n`);
     return;
   }
-  if (command !== 'fetch') fail('Usage: fetch-pii-eval-public-synthetic.mjs check|fetch [--source=FILE] [--pins=FILE] [--out=DIR]');
+  if (command !== 'fetch' && command !== 'fetch-engine') fail('Usage: fetch-pii-eval-public-synthetic.mjs check|fetch|fetch-engine [--source=FILE] [--pins=FILE] [--out=DIR]');
   const outDir = path.resolve(option('out', path.join(process.cwd(), 'pii-eval-public')));
+  if (command === 'fetch-engine') {
+    process.stdout.write(`${JSON.stringify(fetchPinnedEngine({ sourceFile, pinsFile, outDir }))}\n`);
+    return;
+  }
   const receipt = fetchPinnedArtifact({ sourceFile, pinsFile, outDir });
   process.stdout.write(`${JSON.stringify(receipt)}\n`);
 }

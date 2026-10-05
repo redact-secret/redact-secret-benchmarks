@@ -17,7 +17,7 @@ export const DOMAIN_HREF: Record<DomainId, string> = { credential: '/evaluation/
 const REPO = 'https://github.com/redact-secret/redact-secret-benchmarks';
 const blob = (path: string): string => `${REPO}/blob/develop/${path}`;
 const issue = (number: number) => ({ number, href: `${REPO}/issues/${number}` });
-const ISSUES = { activation: 615, population: 616, methods: 617, metrics: 618, policyHoldout: 619, accuracyCorpus: 576, piiEval: 665 } as const;
+const ISSUES = { activation: 615, population: 616, methods: 617, metrics: 618, policyHoldout: 619, accuracyCorpus: 576, piiEval: 665, piiAuthority: 666 } as const;
 
 const pair = [{ label: 'Credential', href: DOMAIN_HREF.credential }, { label: 'PII', href: DOMAIN_HREF.pii }];
 /** The first crumb is the Evaluation hub (#614). */
@@ -128,11 +128,15 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
   const jurisdictional = families.filter(f => f.jurisdiction !== null);
   const protectedTotal = families.length > 0 && families.every(f => f.protectedRun.cases !== null) ? families.reduce((sum, f) => sum + (f.protectedRun.cases ?? 0), 0) : null;
   const piiEval = publicRecorded?.piiEvalMeasurement ?? null;
+  const projected = (piiEval?.populations ?? []).filter(row => row.productProjection);
+  const unprojected = (piiEval?.populations ?? []).filter(row => !row.productProjection);
   const custodian = publicRecorded?.custodianConformance ?? null;
   const piiEvalRow: StatusRowData = piiEval
     ? { id: 'pii-eval', label: 'pii-eval artifact', status: 'info', statusWord: 'Validated',
         value: `${int(piiEval.populations.length)} public ${piiEval.populations.length === 1 ? 'population' : 'populations'} · 10 metrics each`,
-        detail: `Schema 1.1 preserves every numerator, denominator, interval and withheld state. Family/view, language, control-class and official/exploratory projections are unavailable in that schema, so this evidence does not change a family status. Engine ${piiEval.build.commit.slice(0, 12)}; binary ${piiEval.build.binarySha256.slice(0, 12)}.`,
+        detail: `${projected.length
+          ? `${int(projected.length)} of ${int(piiEval.populations.length)} ${piiEval.populations.length === 1 ? 'population carries' : 'populations carry'} the schema 1.2 product projection: family and view rows, language and control-class strata and the run mode are shown below with their own denominators. ${unprojected.length ? `${int(unprojected.length)} read under schema 1.1 ${unprojected.length === 1 ? 'does' : 'do'} not carry it, so those fields are unavailable for ${unprojected.length === 1 ? 'it' : 'them'}. ` : ''}`
+          : 'Schema 1.1 preserves every numerator, denominator, interval and withheld state. Family/view, language, control-class and official/exploratory projections are unavailable in that schema. '}This evidence does not change a family status. Engine ${piiEval.build.commit.slice(0, 12)}; binary ${piiEval.build.binarySha256.slice(0, 12)}.`,
         link: { label: `#${ISSUES.piiEval}`, href: issue(ISSUES.piiEval).href, external: true } }
     : { id: 'pii-eval', label: 'pii-eval artifact', status: 'not-measured', statusWord: 'Not recorded',
         detail: 'No validated public-synthetic pii-eval artifact is bound to this publication.', link: { label: `#${ISSUES.piiEval}`, href: issue(ISSUES.piiEval).href, external: true } };
@@ -237,6 +241,16 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
       rows: [{ id: 'evidence', label: 'PII evidence', status: 'not-measured', statusWord: 'Not recorded', detail: pii.state === 'not-recorded' ? pii.reason : 'No PII record is bound.' }],
     });
   }
+  const stamp = pii.authority;
+  const met = stamp.total - stamp.unmet.length;
+  status[0].rows.push({
+    id: 'pii-authority', label: 'PII authority', status: 'info', statusWord: stamp.authority === 'new' ? 'New' : 'Legacy',
+    value: stamp.total ? `${int(met)} of ${int(stamp.total)} exit criteria met` : undefined,
+    detail: stamp.authority === 'legacy'
+      ? `${stamp.source} The pii-eval measurement is shown beside it as exploratory evidence and decides nothing.${stamp.unmet.length ? ` Not yet met: ${stamp.unmet.join(', ')}.` : ''}${stamp.decidedBy ? ` The exit is decided by ${stamp.decidedBy}${stamp.reviewOn ? `, reviewed on ${stamp.reviewOn}` : ''}.` : ''} Independent of the credential authority.`
+      : `The pii-eval artifacts are the authority, under an owner authorisation recorded in the repository. The legacy pipeline stays as the oracle. Independent of the credential authority.`,
+    link: { label: `#${ISSUES.piiAuthority}`, href: issue(ISSUES.piiAuthority).href, external: true },
+  });
   if (piiEval) {
     for (const population of piiEval.populations) {
       for (const scanner of population.scanners ?? []) {
@@ -263,6 +277,40 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
         });
       }
     }
+  }
+  for (const population of projected) {
+    const projection = population.productProjection!;
+    const scanner = population.scanners[0];
+    const mode = projection.rows[0].mode;
+    const modeLabel = mode === 'official' ? 'Official' : 'Exploratory';
+    const identity = scanner?.identity as { product?: { kind?: string }; scannerVersion?: string } | undefined;
+    const kind = identity?.product?.kind === 'candidate' ? 'Candidate' : identity?.product?.kind === 'released' ? 'Released' : 'Not recorded';
+    const relation = population.productBinding.state === 'measures-publication-product' ? 'It measures the product this publication measured.'
+      : population.productBinding.state === 'other-product' ? 'It is another product than the one this publication measured; it says nothing about that product.'
+      : 'This publication measured no product, so no product is claimed.';
+    const fixedDecimal = (value: { mantissa: number; scale: number }) => {
+      const digits = String(value.mantissa).padStart(value.scale + 1, '0');
+      return value.scale ? `${digits.slice(0, -value.scale)}.${digits.slice(-value.scale)}` : digits;
+    };
+    type Cell = { counts: { authoredCases: number }; metrics: unknown[] };
+    const metricText = (cell: Cell) => (cell.metrics as Array<{ metric: { id: string }; effectiveN: number; counts: { numerator: number };
+      value: { state: 'withheld'; reason: string } | { state: 'measured'; point: { mantissa: number; scale: number }; bound: { mantissa: number; scale: number } } }>)
+      .map(metric => `${metric.metric.id} ${int(metric.counts.numerator)}/${int(metric.effectiveN)} ${metric.value.state === 'withheld' ? `withheld (${metric.value.reason})` : `${fixedDecimal(metric.value.point)}, bound ${fixedDecimal(metric.value.bound)}`}`).join('; ');
+    const strataText = (label: string, strata: Array<Cell & Record<string, unknown>> | undefined, key: string) =>
+      strata?.length ? ` ${label}: ${strata.map(item => `${String(item[key])} ${int(item.counts.authoredCases)}`).join(', ')}.` : ` ${label}: none authored.`;
+    status.push({
+      title: `${population.populationId} · product projection · ${modeLabel} · public synthetic`,
+      rows: [
+        { id: `${population.populationId}:projection-binding`, label: 'Measured product', status: 'info', statusWord: modeLabel,
+          value: `${kind} ${String(identity?.scannerVersion ?? '')} · ${projection.requiredViews.join(', ')}`,
+          detail: `${relation} The ${mode} run is a verification, never an official qualification run. Roster ${projection.rosterDigest.slice(0, 12)}, population ${population.population.populationDigest.slice(0, 12)}. Each row below keeps its own denominators; nothing is pooled across families, views or populations.` },
+        ...projection.rows.map(row => ({
+          id: `${population.populationId}:${row.view}:${row.family}`, label: `${row.family} · ${row.view}`, status: 'info' as const, statusWord: modeLabel,
+          value: `${int(row.counts.authoredCases)} ${row.counts.authoredCases === 1 ? 'case' : 'cases'} · ${int(row.counts.variants)} ${row.counts.variants === 1 ? 'variant' : 'variants'}`,
+          detail: `${metricText(row)}.${strataText('Languages', row.byLanguage as never, 'language')}${strataText('Control classes', row.byControlClass as never, 'controlClass')} No qualification verdict.`,
+        })),
+      ],
+    });
   }
   status.push({
     title: 'Known gaps',
@@ -297,7 +345,7 @@ export function resolvePiiView(pii: PiiEvaluation): DomainViewData {
       metrics: {
         summary: `The ${int(recorded?.metrics.length ?? 10)} pii-v1 metrics`,
         text: piiEval
-          ? `Each validated pii-eval population keeps all ten numerator/denominator and interval or withheld results separate. Schema 1.1 has no family/view projection, so those values are not presented as family qualification (#${ISSUES.metrics}).`
+          ? `Each validated pii-eval population keeps all ten numerator/denominator and interval or withheld results separate. ${projected.length ? 'Where the artifact is schema 1.2, the same ten results are also projected per family and view, with language and control-class strata and the run mode' : 'Schema 1.1 has no family/view projection'}; none of it is presented as family qualification (#${ISSUES.metrics}).`
           : `Each metric is read against its own population. None is combined with another or with a credential metric. Their values are not on this page (#${ISSUES.metrics}).`,
         rows: (publicRecorded?.metrics ?? []).map(m => ({ id: m.id, population: m.population, counts: `${m.numerator}, of ${m.denominator}`, better: m.direction === 'upper' ? 'Lower' : 'Higher' })),
       },

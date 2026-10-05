@@ -39,15 +39,37 @@ type PopulationInput = { report: PiiPopulationReport; rows?: PiiAccountingRow[];
 type PopulationComparisonInput = { baseline: PiiPopulationReport; candidate: PiiPopulationReport;
   baselineRows: PiiAccountingRow[]; candidateRows: PiiAccountingRow[]; contract?: PiiPopulationContract;
   evidence?: PiiBenignCollisionEvidence; validation?: PiiPopulationValidationOptions };
+export type PiiEvalViewId = 'oracle-plan' | 'qualification-plan' | 'diagnostic-balanced' | 'benign-heavy-stress';
+export type PiiEvalMode = 'official' | 'exploratory';
+export interface PiiEvalProjectionCounts { authoredCases: number; occurrences: number; variants: number }
+export interface PiiEvalProjectionStratum<K extends string> { counts: PiiEvalProjectionCounts; metrics: unknown[] }
+/** The schema 1.2 product projection of one population artifact, exactly as the strict consumer validated it. */
+export interface PiiEvalProjection {
+  requiredViews: PiiEvalViewId[]; rosterDigest: string;
+  rows: Array<{
+    family: string; view: PiiEvalViewId; mode: PiiEvalMode; counts: PiiEvalProjectionCounts;
+    binding: { scannerId: string; configurationDigest: string; activationDigest: string; product: Record<string, unknown>;
+      population: { populationId: string; populationVersion: number; populationDigest: string; visibility: 'public-synthetic' } };
+    methodCoverage: Array<{ method: { id: string; version: number }; cases: number; variants: number }>;
+    metrics: unknown[];
+    byLanguage?: Array<PiiEvalProjectionStratum<'language'> & { language: string }>;
+    byControlClass?: Array<PiiEvalProjectionStratum<'controlClass'> & { controlClass: string }>;
+  }>;
+}
 export interface PiiEvalMeasurement {
   schema: 'pii-eval-consumer-report/1'; complete: true; decision: 'none'; pooling: 'none'; rejections: [];
   build: { repository: 'redact-secret/pii-eval'; commit: string; cargoLockSha256: string; binarySha256: string;
     sourceArchiveSha256: string; binding: 'out-of-band-build-provenance' };
   populations: Array<{ label: string; populationId: string; artifactDigest: string; file: string; status: 'accepted';
+    /** The public artifact schema this population was read under. 1.1 cannot carry a projection; 1.2 carries it in `productProjection`. */
+    schemaVersion: '1.1' | '1.2';
     population: { populationId: string; populationVersion: number; populationDigest: string; visibility: 'public-synthetic' };
     populationCounts: { authoredCases: number; variants: number; occurrences: number };
+    /** How the measured scanner relates to the product this publication measured. A candidate is never a release. */
+    productBinding: { state: 'measures-publication-product' | 'other-product' | 'publication-product-not-measured'; candidateSourceCommit: string | null };
     scanners: Array<{ scannerId: string; status: 'complete'; identity: Record<string, unknown>; metrics: unknown[] }>;
-    unavailable: { familyProjection: 'schema-1.1-does-not-carry'; populationViews: 'schema-1.1-does-not-carry';
+    productProjection?: PiiEvalProjection;
+    unavailable?: { familyProjection: 'schema-1.1-does-not-carry'; populationViews: 'schema-1.1-does-not-carry';
       languageBreakdown: 'schema-1.1-does-not-carry'; controlClassBreakdown: 'schema-1.1-does-not-carry';
       officialOrExploratoryMode: 'schema-1.1-does-not-carry' } }>;
 }
@@ -156,6 +178,70 @@ function validPiiEvalMetric(value: unknown) {
       ['zero-denominator', 'insufficient-evidence'].includes(result.reason as string);
 }
 
+const PII_EVAL_VIEWS: readonly string[] = ['benign-heavy-stress', 'diagnostic-balanced', 'oracle-plan', 'qualification-plan'];
+const PII_EVAL_MODES: readonly string[] = ['exploratory', 'official'];
+const COUNT_FIELDS = ['authoredCases', 'occurrences', 'variants'] as const;
+const validCounts = (value: unknown): value is PiiEvalProjectionCounts => exact(value, [...COUNT_FIELDS]) &&
+  COUNT_FIELDS.every(field => Number.isSafeInteger((value as Record<string, unknown>)[field]) && (value as Record<string, number>)[field] >= 0) &&
+  (value as PiiEvalProjectionCounts).variants >= (value as PiiEvalProjectionCounts).authoredCases &&
+  (value as PiiEvalProjectionCounts).occurrences >= (value as PiiEvalProjectionCounts).variants;
+/** Every metric of a cell is one of the ten, and none counts more samples than the cell holds (one per case, two assertions for measurable-share). */
+const validCellMetrics = (metrics: unknown, cases: number) => Array.isArray(metrics) && metrics.length === 10 &&
+  new Set(metrics.map(metric => (metric as { metric?: { id?: string } })?.metric?.id)).size === 10 && metrics.every(metric => validPiiEvalMetric(metric) &&
+    (metric as { counts: { total: number } }).counts.total <= cases * ((metric as { metric: { id: string } }).metric.id === 'measurable-share' ? 2 : 1));
+
+/**
+ * The strict consumer already refuses duplicate family/view rows, absent required views, pooled denominators, unknown modes
+ * and views and rows bound to another artifact. A published matrix is read again by the site without that consumer, so the same
+ * rules hold here: a hand-edited or stale matrix cannot show a projection the consumer would have refused.
+ */
+function bad(): never { throw new Error('Invalid pii-eval product projection'); }
+function validatePiiEvalProjection(population: PiiEvalMeasurement['populations'][number]) {
+  const block = population.productProjection;
+  if (!block || !exact(block, ['requiredViews', 'rosterDigest', 'rows']) || !digest(block.rosterDigest) || !Array.isArray(block.requiredViews) ||
+      !block.requiredViews.length || block.requiredViews.some((view, index) => !PII_EVAL_VIEWS.includes(view) || index > 0 && !(block.requiredViews[index - 1] < view)) ||
+      !Array.isArray(block.rows) || !block.rows.length) bad();
+  const seen = new Set<string>(), sums = new Map<string, PiiEvalProjectionCounts>();
+  let previous = '';
+  const modes = new Set<string>();
+  for (const row of block.rows) {
+    if (!exact(row, ['binding', 'counts', 'family', 'methodCoverage', 'metrics', 'mode', 'view'].concat(
+          row && 'byControlClass' in row ? ['byControlClass'] : [], row && 'byLanguage' in row ? ['byLanguage'] : [])) ||
+        !PII_EVAL_MODES.includes(row.mode) || !PII_EVAL_VIEWS.includes(row.view) || !block.requiredViews.includes(row.view) || !familyId(row.family) ||
+        !validCounts(row.counts) || !exact(row.binding, ['activationDigest', 'configurationDigest', 'population', 'product', 'scannerId']) ||
+        !Array.isArray(row.methodCoverage) || row.methodCoverage.some(item => !exact(item, ['cases', 'method', 'variants']) || !Number.isSafeInteger(item.cases) ||
+          !Number.isSafeInteger(item.variants) || !exact(item.method, ['id', 'version']))) bad();
+    modes.add(row.mode);
+    const key = `${row.binding.scannerId}\0${row.view}\0${row.family}`;
+    // Rows are ascending by (scanner, view, family) with every key once: duplicates cannot hide as an ordering accident.
+    if (seen.has(key) || key < previous) bad();
+    seen.add(key); previous = key;
+    const scanner = population.scanners.find(item => item.scannerId === row.binding.scannerId);
+    if (!scanner || row.binding.configurationDigest !== scanner.identity.configurationDigest || row.binding.activationDigest !== scanner.identity.activationDigest ||
+        JSON.stringify(canonical(row.binding.product)) !== JSON.stringify(canonical(scanner.identity.product)) ||
+        JSON.stringify(canonical(row.binding.population)) !== JSON.stringify(canonical(population.population))) bad();
+    if (row.methodCoverage.reduce((n, item) => n + item.cases, 0) !== row.counts.authoredCases || row.methodCoverage.reduce((n, item) => n + item.variants, 0) !== row.counts.variants ||
+        !validCellMetrics(row.metrics, row.counts.authoredCases)) bad();
+    for (const [name, partition] of [['byLanguage', true], ['byControlClass', false]] as const) {
+      const strata = row[name] as Array<PiiEvalProjectionStratum<string>> | undefined;
+      if (strata === undefined) continue;
+      if (!Array.isArray(strata) || !strata.length || strata.some(item => !validCounts(item.counts) || !validCellMetrics(item.metrics, item.counts.authoredCases))) bad();
+      const total = (field: typeof COUNT_FIELDS[number]) => strata.reduce((n, item) => n + item.counts[field], 0);
+      if (COUNT_FIELDS.some(field => total(field) > row.counts[field]) || partition && COUNT_FIELDS.some(field => total(field) !== row.counts[field])) bad();
+    }
+    const sum = sums.get(row.binding.scannerId) ?? { authoredCases: 0, occurrences: 0, variants: 0 };
+    for (const field of COUNT_FIELDS) sum[field] += row.counts[field];
+    sums.set(row.binding.scannerId, sum);
+  }
+  // One mode for the artifact; every required view has rows for every scanner; the rows add up to the population exactly, never beyond it.
+  if (modes.size !== 1) bad();
+  for (const scanner of population.scanners) {
+    for (const view of block.requiredViews) if (!block.rows.some(row => row.binding.scannerId === scanner.scannerId && row.view === view)) bad();
+    const sum = sums.get(scanner.scannerId);
+    if (!sum || COUNT_FIELDS.some(field => sum[field] !== population.populationCounts[field])) bad();
+  }
+}
+
 function validatePiiEvalMeasurement(value: PiiEvalMeasurement): PiiEvalMeasurement {
   const unavailable = 'schema-1.1-does-not-carry';
   if (value.schema !== 'pii-eval-consumer-report/1' || value.complete !== true || value.decision !== 'none' || value.pooling !== 'none' ||
@@ -164,12 +250,19 @@ function validatePiiEvalMeasurement(value: PiiEvalMeasurement): PiiEvalMeasureme
       value.build.binding !== 'out-of-band-build-provenance' || !value.populations.length ||
       new Set(value.populations.map(row => row.populationId)).size !== value.populations.length || value.populations.some(row =>
         row.status !== 'accepted' || row.populationId !== row.population.populationId || row.population.visibility !== 'public-synthetic' ||
+        !['1.1', '1.2'].includes(row.schemaVersion) ||
+        !['measures-publication-product', 'other-product', 'publication-product-not-measured'].includes(row.productBinding?.state) ||
+        !(row.productBinding.candidateSourceCommit === null || /^[a-f0-9]{40}$/.test(row.productBinding.candidateSourceCommit)) ||
         !digest(row.artifactDigest) || !Number.isInteger(row.population.populationVersion) || !digest(row.population.populationDigest) ||
         Object.values(row.populationCounts).some(count => !Number.isInteger(count) || count < 0) || !row.scanners.length ||
         row.scanners.some(scanner => scanner.status !== 'complete' || !validPiiEvalIdentity(scanner.identity, scanner.scannerId) ||
           scanner.metrics.length !== 10 || new Set(scanner.metrics.map(metric => (metric as { metric?: { id?: string } }).metric?.id)).size !== 10 ||
           scanner.metrics.some(metric => !validPiiEvalMetric(metric))) ||
-        Object.values(row.unavailable).some(state => state !== unavailable))) throw new Error('Invalid pii-eval measurement evidence');
+        // Exactly one of the two: a 1.1 artifact states what it cannot carry, a 1.2 artifact carries it.
+        (row.schemaVersion === '1.1'
+          ? row.productProjection !== undefined || !row.unavailable || Object.values(row.unavailable).some(state => state !== unavailable) || Object.keys(row.unavailable).length !== 5
+          : row.unavailable !== undefined || row.productProjection === undefined))) throw new Error('Invalid pii-eval measurement evidence');
+  for (const row of value.populations) if (row.schemaVersion === '1.2') validatePiiEvalProjection(row);
   return structuredClone(value);
 }
 

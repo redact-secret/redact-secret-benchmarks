@@ -11,8 +11,9 @@ const family = (id, over = {}) => ({
   id, name: `Family ${id}`, scope: 'global', jurisdiction: null, validatorApplicable: true, coverage: 'Global', status: 'provisional', reasonCodes: [], activation: 'not-measured',
   views, protectedRun: { state: 'met', reason: 'protected-gates-met', cases: 10 }, publicGates: { met: 4, notMet: 0, unresolved: 0, acceptedTradeoffs: 1 }, ...over,
 });
+const stamp = { authority: 'legacy', from: 'committed', source: 'The benchmark-owned scorer over the frozen evidence.', unmet: ['criterion-a', 'criterion-b'], total: 8, decidedBy: 'the owner', reviewOn: '2027-01-02' };
 const pii = (over = {}) => ({
-  state: 'recorded', mode: 'candidate', core: { commit: 'abcdef1234567890', versionString: '0.0.0' }, route: { id: 'route-x', record: 'evidence/1/2.md', maximumStatus: 'provisional' },
+  authority: stamp, state: 'recorded', mode: 'candidate', core: { commit: 'abcdef1234567890', versionString: '0.0.0' }, route: { id: 'route-x', record: 'evidence/1/2.md', maximumStatus: 'provisional' },
   profile: { id: 'pii-v1', version: 1, evaluationProfile: 'pii-v1', domainAccountingVersion: 'pii-v1' }, distribution: { pending: 1, provisional: 1, stable: 0, unsupported: 0 },
   families: [family('pii:global:a'), family('pii:xx:b', { jurisdiction: 'XX', status: 'pending', reasonCodes: ['why'], protectedRun: { state: 'not-met', reason: 'protected-gates-not-met:x', cases: 3 } })],
   productActivation: 'not-measured', populationComparisons: [{ id: 'p', verdict: 'not-measured' }],
@@ -36,7 +37,7 @@ describe('the two pages are a pair', () => {
   test('no copy ranks, grades or says what a product outputs', () => {
     const forbidden = /\b(best|worst|winner|fastest|slowest|better than|outperform)/i;
     expect(text(resolvePiiView(pii()))).not.toMatch(forbidden);
-    expect(text(resolvePiiView({ state: 'not-recorded', reason: 'x' }))).not.toMatch(forbidden);
+    expect(text(resolvePiiView({ authority: stamp, state: 'not-recorded', reason: 'x' }))).not.toMatch(forbidden);
   });
 });
 
@@ -93,6 +94,44 @@ describe('PII view', () => {
     expect(row.detail).toContain('does not change a family status');
   });
 
+  test('a schema 1.2 projection is shown per family and view with strata and mode, and nothing is called unavailable', () => {
+    const metric = id => ({ metric: { id }, status: 'measured', effectiveN: 4, counts: { numerator: 1, measured: 4, eligible: 4, unresolved: 0, notMeasured: 0 },
+      value: id === 'type-miss-rate' ? { state: 'withheld', reason: 'insufficient-evidence' } : { state: 'measured', point: { mantissa: 25, scale: 2 }, bound: { mantissa: 4, scale: 1 } } });
+    const cell = (cases) => ({ counts: { authoredCases: cases, occurrences: cases, variants: cases }, metrics: [metric('type-miss-rate'), metric('measurable-share')] });
+    const population = (state, over = {}) => ({ populationId: 'synthetic-pop', population: { populationDigest: 'c'.repeat(64) },
+      productBinding: { state, candidateSourceCommit: null }, scanners: [{ scannerId: 's', metrics: [], identity: { product: { kind: 'candidate' }, scannerVersion: '1.2.3' } }],
+      productProjection: { requiredViews: ['oracle-plan'], rosterDigest: 'd'.repeat(64), rows: [
+        { family: 'pii:global:email', view: 'oracle-plan', mode: 'exploratory', ...cell(3), byLanguage: [{ language: 'en', ...cell(2) }, { language: 'ko', ...cell(1) }], byControlClass: [{ controlClass: 'test-value', ...cell(1) }] },
+        { family: 'pii:us:ssn', view: 'oracle-plan', mode: 'exploratory', ...cell(2), byLanguage: [{ language: 'en', ...cell(2) }] },
+      ] }, ...over });
+    const build = { commit: 'a'.repeat(40), binarySha256: 'b'.repeat(64) };
+    const view = resolvePiiView(pii({ piiEvalMeasurement: { complete: true, populations: [population('other-product')], build } }));
+    const group = view.status.groups.find(g => g.title.includes('product projection'));
+    expect(group.title).toContain('Exploratory');
+    expect(group.rows.map(r => r.label)).toEqual(['Measured product', 'pii:global:email · oracle-plan', 'pii:us:ssn · oracle-plan']);
+    const email = group.rows[1];
+    expect(email.value).toBe('3 cases · 3 variants');
+    expect(email.statusWord).toBe('Exploratory');
+    expect(email.detail).toContain('type-miss-rate 1/4 withheld (insufficient-evidence)');
+    expect(email.detail).toContain('Languages: en 2, ko 1.');
+    expect(email.detail).toContain('Control classes: test-value 1.');
+    expect(group.rows[2].detail).toContain('Control classes: none authored.');
+    expect(group.rows[0].detail).toContain('another product');
+    expect(group.rows[0].detail).toContain('never an official qualification run');
+    const row = rowsOf(view).find(item => item.id === 'pii-eval');
+    expect(row.detail).toContain('schema 1.2 product projection');
+    expect(row.detail).not.toContain('are unavailable');
+    expect(row.detail).toContain('does not change a family status');
+    const same = resolvePiiView(pii({ piiEvalMeasurement: { complete: true, populations: [population('measures-publication-product')], build } }));
+    expect(rowsOf(same).find(r => r.id === 'synthetic-pop:projection-binding').detail).toContain('measures the product this publication measured');
+    const none = resolvePiiView(pii({ piiEvalMeasurement: { complete: true, populations: [population('publication-product-not-measured')], build } }));
+    expect(rowsOf(none).find(r => r.id === 'synthetic-pop:projection-binding').detail).toContain('no product is claimed');
+    // A 1.1 population next to a 1.2 one keeps its unavailable fields.
+    const mixed = resolvePiiView(pii({ piiEvalMeasurement: { complete: true, populations: [population('other-product'), { populationId: 'old', scanners: [], population: {} }], build } }));
+    expect(rowsOf(mixed).find(item => item.id === 'pii-eval').detail).toContain('1 read under schema 1.1 does not carry it');
+    expect(text(view)).not.toMatch(/\b(best|worst|winner|fastest|slowest|better than|outperform)/i);
+  });
+
   test('custodian conformance is visibly synthetic and never described as protected qualification', () => {
     const custodianConformance = { projections: [{}], feed: { sequence: 2 } };
     const row = rowsOf(resolvePiiView(pii({ custodianConformance }))).find(item => item.id === 'custodian-conformance');
@@ -104,7 +143,7 @@ describe('PII view', () => {
   test('public measurement survives absent protected evidence without showing product support or protected counts', () => {
     const value = pii();
     const measurement = { populations: [{}], build: { commit: 'a'.repeat(40), binarySha256: 'b'.repeat(64) } };
-    const view = resolvePiiView({ state: 'public-recorded', profile: value.profile, metrics: value.metrics,
+    const view = resolvePiiView({ authority: stamp, state: 'public-recorded', profile: value.profile, metrics: value.metrics,
       piiEvalMeasurement: measurement, custodianConformance: null, protectedReason: 'Protected binding did not validate.' });
     expect(rowsOf(view).find(row => row.id === 'pii-eval').statusWord).toBe('Validated');
     expect(rowsOf(view).find(row => row.id === 'protected-evidence').detail).toContain('did not validate');
@@ -135,14 +174,14 @@ describe('PII view', () => {
   });
 
   test('no record: every fact is Not recorded, the reason is stated, the method still reads', () => {
-    const v = resolvePiiView({ state: 'not-recorded', reason: 'The binding did not validate.' });
+    const v = resolvePiiView({ authority: stamp, state: 'not-recorded', reason: 'The binding did not validate.' });
     expect(v.glance.map(g => g.value)).toEqual([null, null, null]);
     expect(v.head.meta.find(m => m.label === 'Mode').value).toBe('Not recorded');
     expect(v.coverage.tables[0].text).toContain('did not validate');
     expect(v.status.groups[0].rows[0].statusWord).toBe('Not recorded');
     expect(v.method.vocabularies[0].rows.length).toBeGreaterThan(0);
     expect(v.method.metrics.rows).toEqual([]);
-    expect(resolvePiiView({ state: 'not-recorded', reason: 'x' }).coverage.scope[1].text).toBe('Not recorded.');
+    expect(resolvePiiView({ authority: stamp, state: 'not-recorded', reason: 'x' }).coverage.scope[1].text).toBe('Not recorded.');
   });
 
   test('a published record is called published, and a binding with no reviewed route says so', () => {
@@ -221,5 +260,34 @@ describe('credential view', () => {
     const rows = rowsOf(resolveCredentialView(credential()));
     expect(rows.find(r => r.id === 'policy-qualified')).toMatchObject({ status: 'not-measured', link: { href: expect.stringMatching(/issues\/\d+$/) } });
     for (const id of ['validity', 'real-world']) expect(rows.find(r => r.id === id).status).toBe('not-measured');
+  });
+});
+
+describe('the PII authority row (#666)', () => {
+  const authorityRow = view => rowsOf(view).find(item => item.id === 'pii-authority');
+
+  test('legacy says the benchmark scorer is the authority, the pii-eval measurement is exploratory, what is unmet, who decides, and that it is independent of the credential authority', () => {
+    const row = authorityRow(resolvePiiView(pii()));
+    expect(row.statusWord).toBe('Legacy');
+    expect(row.value).toBe('6 of 8 exit criteria met');
+    expect(row.detail).toContain('benchmark-owned scorer');
+    expect(row.detail).toContain('exploratory evidence and decides nothing');
+    expect(row.detail).toContain('Not yet met: criterion-a, criterion-b');
+    expect(row.detail).toContain('decided by the owner, reviewed on 2027-01-02');
+    expect(row.detail).toContain('Independent of the credential authority');
+  });
+
+  test('it is the last row of the first group on every state, so the page keeps its shape', () => {
+    for (const view of [resolvePiiView(pii()), resolvePiiView({ authority: stamp, state: 'not-recorded', reason: 'x' })]) {
+      expect(view.status.groups[0].rows.at(-1).id).toBe('pii-authority');
+    }
+    expect(resolvePiiView(pii()).status.groups.map(g => g.title)).toEqual(['Recorded', 'Not measured yet', 'Known gaps']);
+  });
+
+  test('new says the pii-eval artifacts are the authority under a recorded owner authorisation and that the legacy pipeline is the oracle', () => {
+    const row = authorityRow(resolvePiiView(pii({ authority: { ...stamp, authority: 'new', unmet: [] } })));
+    expect(row.statusWord).toBe('New');
+    expect(row.detail).toContain('pii-eval artifacts are the authority');
+    expect(row.detail).toContain('oracle');
   });
 });

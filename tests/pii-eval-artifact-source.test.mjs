@@ -23,8 +23,25 @@ test('committed transport and semantic pins bind one exact successful public-syn
   assert.equal(checked.source.environment, 'staging');
 });
 
+test('the pinned public artifact is also committed, so the pin outlives the 14-day Actions artifact', () => {
+  const copy = readFileSync(new URL(`../${source.durableCopy.path}`, import.meta.url));
+  assert.equal(createHash('sha256').update(copy).digest('hex'), source.artifacts.measurement.members[source.durableCopy.member]);
+  assert.ok(new Date(source.artifacts.measurement.expiresAt) > new Date('2026-10-05T00:00:00Z'));
+  assert.equal(source.workflow.headSha, '212d500de90ce97461275be1e8b9dd8acd663fb3');
+  assert.equal(source.artifacts.measurement.id, 11357099796);
+  assert.equal(source.artifacts.engine.id, 11358475612);
+  const altered = clone(source);
+  altered.artifacts.measurement.members[source.durableCopy.member] = '0'.repeat(64);
+  const directory = mkdtempSync(path.join(tmpdir(), 'pii-eval-copy-'));
+  const file = path.join(directory, 'source.json');
+  writeFileSync(file, JSON.stringify(altered));
+  assert.throws(() => checkFiles(file, pinsFile.pathname), /Transport pins do not bind|Source document names|not the pinned public artifact/);
+});
+
 test('transport source rejects a different app, run, engine, or semantic pin file', () => {
   for (const mutate of [
+    value => { value.buildInfo.target = 'darwin'; },
+    value => { delete value.durableCopy; },
     value => { value.app.id = '1'; },
     value => { value.workflow.headSha = '0'.repeat(40); },
     value => { value.artifacts.engine.members['pii-eval'] = '0'.repeat(64); },
@@ -105,5 +122,10 @@ test('public workflow isolates App credentials and publisher consumes only stagi
   const classify = publish.jobs.publish.steps.find(step => step.name === 'Classify support').run;
   assert.match(classify, /pii_eval_args=\(\)/);
   assert.match(classify, /--pii-eval-pins=benchmarks\/pii-eval-public-synthetic-pins.json/);
+  assert.match(classify, /--pii-eval-pins=benchmarks\/pii-eval-population-pins.json/);
   assert.match(classify, /--pii-eval-artifact="\$RUNNER_TEMP\/pii-eval-public\/public-synthetic-artifact.json"/);
+  for (const view of ['oracle-plan', 'qualification-plan', 'diagnostic-balanced', 'benign-heavy-stress'])
+    assert.match(classify, new RegExp(`--pii-eval-artifact=benchmarks/pii-eval-population-dual-run/${view}.public-synthetic-artifact.json`));
+  // Production binds none of it: the candidate populations are staging evidence.
+  assert.match(classify, /if \[ "\$TARGET" = staging \]; then\n\s+product_args=[\s\S]*pii_eval_args=\(/);
 });

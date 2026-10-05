@@ -1,0 +1,1543 @@
+{
+ "schemaVersion": 1,
+ "reportType": "pii-eval-population-dual-run",
+ "supportClaims": false,
+ "authorityChanged": false,
+ "identities": {
+  "oracle": {
+   "repository": "redact-secret/redact-secret-benchmarks",
+   "commit": "4b846967346505baca11e0b98cab1475fbce6773",
+   "filesTreeDigest": "6f35613cc5a6a827f19609d8c3d22a56362c0f7f526553f17cc1bc4e9ec8a83b",
+   "fileCount": 40,
+   "runsUnmodified": true,
+   "stubs": [
+    "ajv (accepts every document)",
+    "benign-collision-evidence (no entries)"
+   ]
+  },
+  "piiEval": {
+   "repository": "redact-secret/pii-eval",
+   "commit": "212d500de90ce97461275be1e8b9dd8acd663fb3",
+   "cargoLockSha256": "e646a917c7dc8a5d5f5744bbfc56456661ebeb5505ac18788b7d5262f29a956a",
+   "engineVersion": "0.0.0",
+   "artifactSchema": "1.2",
+   "protocolRevision": 2,
+   "buildFlags": "--release --locked"
+  },
+  "candidate": {
+   "kind": "candidate",
+   "sourceCommit": "401158d09a677b110fa60209256ba184b1f08f8f",
+   "version": "0.1.0-beta.13",
+   "artifactSetCommitment": "a26968fe74077d1b814c5069488b8a7537833a231d981da2b515c393af6212f5"
+  },
+  "activationDigest": "68785ee0037e8b4d5b0ea2b0043e5d897eb942a7bea89a3bd7191510e338b5a3",
+  "configurationDigest": "d213ca5dd371adcea382769b656cd9b3d7b6543ea157dbf63e9a3f50eaeb3f21",
+  "mode": "exploratory",
+  "tooling": {
+   "scripts/lib/pii-population-conversion.mjs": "551c02ab8261c29d18b7845ea22e38e84aa795014c67d71acde43149d8866646",
+   "scripts/pii-eval-population-parity/population_parity.rs": "4260d346c42cf810e21b6849f692d98da48902e969c69bf7efd75d13e9f84e0a"
+  }
+ },
+ "populations": [
+  {
+   "view": "oracle-plan",
+   "identities": {
+    "populationId": "b11-population-v2-oracle-plan",
+    "snapshotDigest": "b9c80deee38229e86287a5fdacdb6eddc516cc5b325e0435b7786a31a7b56116",
+    "manifestDigest": "bd0a8087e46ec2df8389a9962b075a1d8be8a59c4d9805fe6ce9d4159b67fd7e",
+    "observationDigest": "5957975a0a5d9a45eb4ddbe66d19cea157d1947fd5bd9e54f301c7adca72f1fc",
+    "rosterDigest": "cca87a2913aec930b165cd075701ef87f80e245d33c275433e207f2f087d0abf",
+    "inputSha256": "c47b0fb693a9c41c17e237fe3428afcf18ec0f71b8a23033e2588c9f28b1db0c",
+    "oracleExportSha256": "b3db6f08eb8cf3c972c11f4cb9019c2babb9d29a93b5481b10ef8d598754f811"
+   },
+   "conversion": {
+    "view": "oracle-plan",
+    "benchmarkCases": 146,
+    "convertedCases": 95,
+    "excludedCases": 51,
+    "excludedReason": "identity-not-established",
+    "unlocatedOtherFamilyFindings": 0,
+    "lineSensitiveFindingsDropped": 0,
+    "byFamily": {
+     "pii:global:network-address": {
+      "converted": 22,
+      "excluded": 3
+     },
+     "pii:global:email": {
+      "converted": 11,
+      "excluded": 9
+     },
+     "pii:global:payment-card": {
+      "converted": 14,
+      "excluded": 5
+     },
+     "pii:global:iban": {
+      "converted": 8,
+      "excluded": 13
+     },
+     "pii:us:ssn": {
+      "converted": 15,
+      "excluded": 5
+     },
+     "pii:global:phone": {
+      "converted": 25,
+      "excluded": 16
+     }
+    },
+    "findings": 36,
+    "casesWithSeveralFindings": 0,
+    "excludedIds": [
+     "pii:global:email/adjacent-at-boundary",
+     "pii:global:email/combining-mark-domain-suffix",
+     "pii:global:email/credential-userinfo-collision",
+     "pii:global:email/domain-literal-unsupported",
+     "pii:global:email/quoted-local-unsupported",
+     "pii:global:email/source-route-collision",
+     "pii:global:email/unicode-domain-unsupported",
+     "pii:global:email/uri-userinfo-collision",
+     "pii:global:email/variation-selector-domain-suffix",
+     "pii:global:iban/alnum-left-adjacency",
+     "pii:global:iban/angle-placeholder",
+     "pii:global:iban/environment-reference",
+     "pii:global:iban/governed-invisible-inside",
+     "pii:global:iban/governed-invisible-right-adjacency",
+     "pii:global:iban/hyphen-separator-unsupported",
+     "pii:global:iban/lowercase-unsupported",
+     "pii:global:iban/percent-right-adjacency",
+     "pii:global:iban/repeated-space-unsupported",
+     "pii:global:iban/tab-separator-unsupported",
+     "pii:global:iban/template-reference",
+     "pii:global:iban/underscore-right-adjacency",
+     "pii:global:iban/unicode-mark-right-adjacency",
+     "pii:global:network-address/ipv4-right-boundary",
+     "pii:global:network-address/ipv4-version-collision",
+     "pii:global:network-address/ipv6-right-boundary",
+     "pii:global:payment-card/governed-invisible-interior",
+     "pii:global:payment-card/identifier-suffix-boundary",
+     "pii:global:payment-card/mixed-display-separators",
+     "pii:global:payment-card/unicode-mark-boundary",
+     "pii:global:payment-card/url-query-collision",
+     "pii:global:phone/adjacent-identifier-prefix",
+     "pii:global:phone/adjacent-identifier-suffix",
+     "pii:global:phone/date-collision",
+     "pii:global:phone/extension-line-break",
+     "pii:global:phone/extension-seven-digits",
+     "pii:global:phone/extension-zero-digits",
+     "pii:global:phone/governed-invisible-interior",
+     "pii:global:phone/ipv4-collision",
+     "pii:global:phone/mixed-separators",
+     "pii:global:phone/repeated-extension",
+     "pii:global:phone/repeated-extension-spaced",
+     "pii:global:phone/second-x-extension",
+     "pii:global:phone/unsupported-country-code",
+     "pii:global:phone/unsupported-tel-uri",
+     "pii:global:phone/unsupported-vanity",
+     "pii:global:phone/unsupported-x-extension",
+     "pii:us:ssn/identifier-suffix",
+     "pii:us:ssn/percent-suffix",
+     "pii:us:ssn/unicode-dash",
+     "pii:us:ssn/unicode-mark-suffix",
+     "pii:us:ssn/unicode-space"
+    ]
+   },
+   "artifact": {
+    "schemaVersion": "1.2",
+    "publicArtifactSha256": "8351d46b40ded917e61f412c5ba44b4a14cb9eb4c3c7aece836d228f38085791",
+    "semanticDigest": "cc6c2cf30ff0fdfb90bd4a4027d56d692c4cd57db23f010ecf27a05eda55371b",
+    "semanticDigestRecomputed": true,
+    "runArtifactDigest": "5f03f38804a84f79a8fce6ce4fa4602b9d0a479bd1fc1621a7a4c932de8136d3",
+    "validatedAgainstSnapshotAndRoster": true
+   },
+   "comparisonDetectsInjectedDifferences": true,
+   "determinism": {
+    "replays": 3,
+    "equalSemanticDigest": true,
+    "byteIdenticalDocuments": true,
+    "scannersLaunched": [
+     0,
+     0,
+     0
+    ]
+   },
+   "census": {
+    "outcomeStates": {
+     "typeIdentity": {
+      "correct": 36,
+      "invalid-correct": 16,
+      "miss": 43
+     },
+     "sensitivityContext": {
+      "correct": 53,
+      "unresolved": 42
+     },
+     "range": {
+      "exact": 36,
+      "miss": 59
+     }
+    },
+    "oracleOutcomeStates": {
+     "typeIdentity": {
+      "correct": 36,
+      "invalid-correct": 16,
+      "miss": 43
+     },
+     "sensitivityContext": {
+      "correct": 53,
+      "unresolved": 42
+     },
+     "range": {
+      "exact": 36,
+      "miss": 59
+     }
+    },
+    "scannerStatus": "complete",
+    "completeness": "complete",
+    "failures": 0,
+    "methodCoverage": [
+     {
+      "cases": 95,
+      "method": {
+       "id": "schema-only",
+       "version": 1
+      },
+      "variants": 95
+     }
+    ]
+   },
+   "compared": {
+    "accounting-canonical": 10,
+    "accounting-compat": 10,
+    "accounting-rule": 10,
+    "case-identity": 95,
+    "corpus-equivalence": 95,
+    "metric": 10,
+    "outcome": 95,
+    "outcome-compat": 95,
+    "population": 2,
+    "projection-cell": 6,
+    "projection-control-class-stratum": 41,
+    "projection-language-stratum": 9,
+    "variant": 95,
+    "variant-identity": 95
+   },
+   "comparatorCompared": {
+    "accounting-canonical": 10,
+    "accounting-compat": 10,
+    "accounting-rule": 10,
+    "outcome": 95,
+    "outcome-compat": 95,
+    "population": 2,
+    "variant": 95
+   },
+   "metrics": {
+    "benign-suppression-rate": {
+     "status": "not-applicable",
+     "numerator": 0,
+     "eligible": 0,
+     "effectiveN": 0,
+     "rate": {
+      "kind": "null"
+     }
+    },
+    "context-discrimination-rate": {
+     "status": "not-applicable",
+     "numerator": 0,
+     "eligible": 0,
+     "effectiveN": 0,
+     "rate": {
+      "kind": "null"
+     }
+    },
+    "jurisdiction-collision-rate": {
+     "status": "not-applicable",
+     "numerator": 0,
+     "eligible": 0,
+     "effectiveN": 0,
+     "rate": {
+      "kind": "null"
+     }
+    },
+    "measurable-share": {
+     "status": "partial",
+     "numerator": 148,
+     "eligible": 190,
+     "effectiveN": 190,
+     "rate": {
+      "kind": "value",
+      "point": "0.778947",
+      "bound": "0.714742"
+     }
+    },
+    "non-sensitive-flag-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 17,
+     "effectiveN": 17,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.184324"
+     }
+    },
+    "range-collateral-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 36,
+     "effectiveN": 36,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.096422"
+     }
+    },
+    "sensitive-miss-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 36,
+     "effectiveN": 36,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.096422"
+     }
+    },
+    "type-miss-rate": {
+     "status": "measured",
+     "numerator": 43,
+     "eligible": 79,
+     "effectiveN": 79,
+     "rate": {
+      "kind": "value",
+      "point": "0.544304",
+      "bound": "0.649517"
+     }
+    },
+    "wrong-family-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 79,
+     "effectiveN": 79,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.046373"
+     }
+    },
+    "wrong-jurisdiction-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 9,
+     "effectiveN": 9,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.299153"
+     }
+    }
+   },
+   "projection": {
+    "rows": 6,
+    "mode": "exploratory",
+    "requiredViews": [
+     "oracle-plan"
+    ],
+    "rosterDigest": "cca87a2913aec930b165cd075701ef87f80e245d33c275433e207f2f087d0abf",
+    "bindingsEqualToManifest": true,
+    "cellsCompared": 6,
+    "languageStrataCompared": 9,
+    "controlClassStrataCompared": 41,
+    "oracleRunsBehindTheProjection": 56
+   },
+   "classifiedDifferences": [
+    {
+     "layer": "variant",
+     "aspect": "operator",
+     "ids": [
+      "0007/D4"
+     ],
+     "class": "compatibility",
+     "count": 344
+    },
+    {
+     "layer": "variant",
+     "aspect": "variant-id",
+     "ids": [
+      "0007/D1"
+     ],
+     "class": "compatibility",
+     "count": 344
+    }
+   ],
+   "unexplainedDifferences": [],
+   "unexplained": 0
+  },
+  {
+   "view": "qualification-plan",
+   "identities": {
+    "populationId": "b11-population-v2-qualification-plan",
+    "snapshotDigest": "69d6cc26bc9d2d7a9aee4231f5f1e3c7969840fb6407d8f4cc777312836a59d6",
+    "manifestDigest": "7bd499d2622b5c49b8486c69ddff0b443653fa9b3c8503c825b8c4fde8f93fe5",
+    "observationDigest": "3ac26ba4485af8d0c38a82aa6f37c11224684c3070e44231f772375fd0f3c532",
+    "rosterDigest": "7b0a5b8b136f46d1e5410bebc5c4d1a328fa33e669a30813f49fcd3708087883",
+    "inputSha256": "c52def2cffc72a10e1ecf19bb5195ef4c607c123d49c1ce5f40a82b0e6a99a97",
+    "oracleExportSha256": "b213ff959604d800a91c82aac1b8209a9602909c38a7247fa4cea894427845ef"
+   },
+   "conversion": {
+    "view": "qualification-plan",
+    "benchmarkCases": 266,
+    "convertedCases": 230,
+    "excludedCases": 36,
+    "excludedReason": "identity-not-established",
+    "unlocatedOtherFamilyFindings": 2,
+    "lineSensitiveFindingsDropped": 2,
+    "byFamily": {
+     "pii:global:network-address": {
+      "converted": 24,
+      "excluded": 1
+     },
+     "pii:global:email": {
+      "converted": 43,
+      "excluded": 9
+     },
+     "pii:global:payment-card": {
+      "converted": 103,
+      "excluded": 11
+     },
+     "pii:global:iban": {
+      "converted": 34,
+      "excluded": 9
+     },
+     "pii:us:ssn": {
+      "converted": 13,
+      "excluded": 2
+     },
+     "pii:global:phone": {
+      "converted": 13,
+      "excluded": 4
+     }
+    },
+    "findings": 176,
+    "casesWithSeveralFindings": 0,
+    "excludedIds": [
+     "pii:global:email/email-b-hangul-domain",
+     "pii:global:email/email-b-ko-joined-suffix",
+     "pii:global:email/email-b-leading-dot",
+     "pii:global:email/email-b-nfd-combining",
+     "pii:global:email/email-b-trailing-at",
+     "pii:global:email/email-b-trailing-dot",
+     "pii:global:email/email-f-comment",
+     "pii:global:email/email-f-domain-literal",
+     "pii:global:email/email-f-quoted-local",
+     "pii:global:iban/iban-print-de22-dot",
+     "pii:global:iban/iban-print-de22-double-space",
+     "pii:global:iban/iban-print-de22-groups-of-five",
+     "pii:global:iban/iban-print-de22-hyphen",
+     "pii:global:iban/iban-print-de22-lowercase",
+     "pii:global:iban/iban-print-de22-mixed-case",
+     "pii:global:iban/iban-print-de22-mixed-compact-and-print",
+     "pii:global:iban/iban-print-de22-nbsp",
+     "pii:global:iban/iban-print-de22-tab",
+     "pii:global:network-address/net-p-port-suffix",
+     "pii:global:payment-card/card-layout-amex-grouping-4443",
+     "pii:global:payment-card/card-layout-visa16-dot",
+     "pii:global:payment-card/card-layout-visa16-double-space",
+     "pii:global:payment-card/card-layout-visa16-fullwidth-digits",
+     "pii:global:payment-card/card-layout-visa16-grouping-466",
+     "pii:global:payment-card/card-layout-visa16-masked",
+     "pii:global:payment-card/card-layout-visa16-mixed-separators",
+     "pii:global:payment-card/card-layout-visa16-nbsp",
+     "pii:global:payment-card/card-layout-visa16-tab",
+     "pii:global:payment-card/card-layout-visa16-unicode-hyphen",
+     "pii:global:payment-card/card-layout-visa19-grouping-44443",
+     "pii:global:phone/qp-ext-repeated",
+     "pii:global:phone/qp-ext-repeated-word",
+     "pii:global:phone/qp-ext-seven-digits",
+     "pii:global:phone/qp-ext-x-marker",
+     "pii:us:ssn/qp-twin-identifier-suffix",
+     "pii:us:ssn/qp-twin-unicode-dash"
+    ]
+   },
+   "artifact": {
+    "schemaVersion": "1.2",
+    "publicArtifactSha256": "a74393a00056926b5fc5c637ae603484934f601c27261bf7d3c00cfec14f0b95",
+    "semanticDigest": "5de4b6ebc6316e5298203e900d5db68dfe16e3d9744f792779d8570231d9034e",
+    "semanticDigestRecomputed": true,
+    "runArtifactDigest": "e9cc187cce5110faff9f63c81e4457a44f272cc84736b2469d0fef2c7b45fb41",
+    "validatedAgainstSnapshotAndRoster": true
+   },
+   "comparisonDetectsInjectedDifferences": true,
+   "determinism": {
+    "replays": 3,
+    "equalSemanticDigest": true,
+    "byteIdenticalDocuments": true,
+    "scannersLaunched": [
+     0,
+     0,
+     0
+    ]
+   },
+   "census": {
+    "outcomeStates": {
+     "typeIdentity": {
+      "correct": 176,
+      "invalid-correct": 39,
+      "miss": 15
+     },
+     "sensitivityContext": {
+      "correct": 177,
+      "unresolved": 53
+     },
+     "range": {
+      "exact": 176,
+      "miss": 54
+     }
+    },
+    "oracleOutcomeStates": {
+     "typeIdentity": {
+      "correct": 176,
+      "invalid-correct": 39,
+      "miss": 15
+     },
+     "sensitivityContext": {
+      "correct": 177,
+      "unresolved": 53
+     },
+     "range": {
+      "exact": 176,
+      "miss": 54
+     }
+    },
+    "scannerStatus": "complete",
+    "completeness": "complete",
+    "failures": 0,
+    "methodCoverage": [
+     {
+      "cases": 230,
+      "method": {
+       "id": "schema-only",
+       "version": 1
+      },
+      "variants": 230
+     }
+    ]
+   },
+   "compared": {
+    "accounting-canonical": 10,
+    "accounting-compat": 10,
+    "accounting-rule": 10,
+    "case-identity": 230,
+    "corpus-equivalence": 230,
+    "metric": 10,
+    "outcome": 230,
+    "outcome-compat": 230,
+    "population": 2,
+    "projection-cell": 6,
+    "projection-control-class-stratum": 11,
+    "projection-language-stratum": 12,
+    "variant": 230,
+    "variant-identity": 230
+   },
+   "comparatorCompared": {
+    "accounting-canonical": 10,
+    "accounting-compat": 10,
+    "accounting-rule": 10,
+    "outcome": 230,
+    "outcome-compat": 230,
+    "population": 2,
+    "variant": 230
+   },
+   "metrics": {
+    "benign-suppression-rate": {
+     "status": "not-applicable",
+     "numerator": 0,
+     "eligible": 0,
+     "effectiveN": 0,
+     "rate": {
+      "kind": "null"
+     }
+    },
+    "context-discrimination-rate": {
+     "status": "not-applicable",
+     "numerator": 0,
+     "eligible": 0,
+     "effectiveN": 0,
+     "rate": {
+      "kind": "null"
+     }
+    },
+    "jurisdiction-collision-rate": {
+     "status": "not-applicable",
+     "numerator": 0,
+     "eligible": 0,
+     "effectiveN": 0,
+     "rate": {
+      "kind": "null"
+     }
+    },
+    "measurable-share": {
+     "status": "partial",
+     "numerator": 407,
+     "eligible": 460,
+     "effectiveN": 460,
+     "rate": {
+      "kind": "value",
+      "point": "0.884783",
+      "bound": "0.852365"
+     }
+    },
+    "non-sensitive-flag-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 1,
+     "effectiveN": 1,
+     "rate": {
+      "kind": "insufficient-evidence"
+     }
+    },
+    "range-collateral-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 176,
+     "effectiveN": 176,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.021361"
+     }
+    },
+    "sensitive-miss-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 176,
+     "effectiveN": 176,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.021361"
+     }
+    },
+    "type-miss-rate": {
+     "status": "measured",
+     "numerator": 15,
+     "eligible": 191,
+     "effectiveN": 191,
+     "rate": {
+      "kind": "value",
+      "point": "0.078534",
+      "bound": "0.125520"
+     }
+    },
+    "wrong-family-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 191,
+     "effectiveN": 191,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.019717"
+     }
+    },
+    "wrong-jurisdiction-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 9,
+     "effectiveN": 9,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.299153"
+     }
+    }
+   },
+   "projection": {
+    "rows": 6,
+    "mode": "exploratory",
+    "requiredViews": [
+     "qualification-plan"
+    ],
+    "rosterDigest": "7b0a5b8b136f46d1e5410bebc5c4d1a328fa33e669a30813f49fcd3708087883",
+    "bindingsEqualToManifest": true,
+    "cellsCompared": 6,
+    "languageStrataCompared": 12,
+    "controlClassStrataCompared": 11,
+    "oracleRunsBehindTheProjection": 29
+   },
+   "classifiedDifferences": [
+    {
+     "layer": "variant",
+     "aspect": "operator",
+     "ids": [
+      "0007/D4"
+     ],
+     "class": "compatibility",
+     "count": 744
+    },
+    {
+     "layer": "variant",
+     "aspect": "variant-id",
+     "ids": [
+      "0007/D1"
+     ],
+     "class": "compatibility",
+     "count": 744
+    }
+   ],
+   "unexplainedDifferences": [],
+   "unexplained": 0
+  },
+  {
+   "view": "diagnostic-balanced",
+   "identities": {
+    "populationId": "b11-population-v2-diagnostic-balanced",
+    "snapshotDigest": "4864e3a4f52d9b4119f97314c6cecb8fb780eec9098270977ce34fd7f29022bb",
+    "manifestDigest": "925d56c824f08fc0ef49a1d9f8ea2d272cc1e4a690f9b5ea7238073ea69b4e7c",
+    "observationDigest": "02538a647a9c79ea784cfdbc49bcd16b5d8526e145664063ea93e60910b2194d",
+    "rosterDigest": "b777a6db1c1cc3a662119f28a1f93824206b979e8297a0cd953cea44588fec63",
+    "inputSha256": "b5d031de01b2d0d0e6f49fef6cd8f9d475661ebdeb14ac64e09de91dc87c9d26",
+    "oracleExportSha256": "73e7f1c2bfee55a919ce7deca3d8aa7dc722b4c3a99241d3e01681e06fe0b824"
+   },
+   "conversion": {
+    "view": "diagnostic-balanced",
+    "benchmarkCases": 477,
+    "convertedCases": 428,
+    "excludedCases": 49,
+    "excludedReason": "identity-not-established",
+    "unlocatedOtherFamilyFindings": 2,
+    "lineSensitiveFindingsDropped": 7,
+    "byFamily": {
+     "pii:global:network-address": {
+      "converted": 91,
+      "excluded": 6
+     },
+     "pii:global:email": {
+      "converted": 73,
+      "excluded": 13
+     },
+     "pii:global:payment-card": {
+      "converted": 150,
+      "excluded": 11
+     },
+     "pii:global:iban": {
+      "converted": 77,
+      "excluded": 16
+     },
+     "pii:us:ssn": {
+      "converted": 18,
+      "excluded": 1
+     },
+     "pii:global:phone": {
+      "converted": 19,
+      "excluded": 2
+     }
+    },
+    "findings": 213,
+    "casesWithSeveralFindings": 0,
+    "excludedIds": [
+     "pii:global:email/email-b-hangul-domain",
+     "pii:global:email/email-b-ko-joined-suffix",
+     "pii:global:email/email-b-leading-dot",
+     "pii:global:email/email-b-nfd-combining",
+     "pii:global:email/email-b-trailing-at",
+     "pii:global:email/email-b-trailing-dot",
+     "pii:global:email/email-f-comment",
+     "pii:global:email/email-f-domain-literal",
+     "pii:global:email/email-f-quoted-local",
+     "pii:global:email/email-k-https-userinfo",
+     "pii:global:email/email-k-postgres-url",
+     "pii:global:email/email-k-proxy-url",
+     "pii:global:email/email-k-ssh-url",
+     "pii:global:iban/iban-ko-ref-masked",
+     "pii:global:iban/iban-print-de22-dot",
+     "pii:global:iban/iban-print-de22-double-space",
+     "pii:global:iban/iban-print-de22-groups-of-five",
+     "pii:global:iban/iban-print-de22-hyphen",
+     "pii:global:iban/iban-print-de22-lowercase",
+     "pii:global:iban/iban-print-de22-mixed-case",
+     "pii:global:iban/iban-print-de22-mixed-compact-and-print",
+     "pii:global:iban/iban-print-de22-nbsp",
+     "pii:global:iban/iban-print-de22-tab",
+     "pii:global:iban/iban-ref-angle-at20",
+     "pii:global:iban/iban-ref-env-at20",
+     "pii:global:iban/iban-ref-env-name",
+     "pii:global:iban/iban-ref-masked",
+     "pii:global:iban/iban-ref-mustache-at20",
+     "pii:global:iban/iban-ref-placeholder-x",
+     "pii:global:network-address/net-v-label-version",
+     "pii:global:network-address/net-v-release-upper",
+     "pii:global:network-address/net-v-version-prefix",
+     "pii:global:network-address/net-w-five-octets",
+     "pii:global:network-address/net-w-letter-prefix",
+     "pii:global:network-address/net-w-letter-suffix",
+     "pii:global:payment-card/card-layout-amex-grouping-4443",
+     "pii:global:payment-card/card-layout-visa16-dot",
+     "pii:global:payment-card/card-layout-visa16-double-space",
+     "pii:global:payment-card/card-layout-visa16-fullwidth-digits",
+     "pii:global:payment-card/card-layout-visa16-grouping-466",
+     "pii:global:payment-card/card-layout-visa16-masked",
+     "pii:global:payment-card/card-layout-visa16-mixed-separators",
+     "pii:global:payment-card/card-layout-visa16-nbsp",
+     "pii:global:payment-card/card-layout-visa16-tab",
+     "pii:global:payment-card/card-layout-visa16-unicode-hyphen",
+     "pii:global:payment-card/card-layout-visa19-grouping-44443",
+     "pii:global:phone/db-ext-line-break",
+     "pii:global:phone/db-ext-second-hash",
+     "pii:us:ssn/db-twin-percent-suffix"
+    ]
+   },
+   "artifact": {
+    "schemaVersion": "1.2",
+    "publicArtifactSha256": "482f75af74622976aebf54a2ca00d4273e66eb4db7eb53434d29fcfd0e8402d5",
+    "semanticDigest": "73fa9a1cdf4c281afebd77943c11033f023fde5d62d83dae4f6233ac882e4e39",
+    "semanticDigestRecomputed": true,
+    "runArtifactDigest": "43ece7e6abcdb1e59493f2e11a00dc28deb95e52239c744bceff83284df9389c",
+    "validatedAgainstSnapshotAndRoster": true
+   },
+   "comparisonDetectsInjectedDifferences": true,
+   "determinism": {
+    "replays": 3,
+    "equalSemanticDigest": true,
+    "byteIdenticalDocuments": true,
+    "scannersLaunched": [
+     0,
+     0,
+     0
+    ]
+   },
+   "census": {
+    "outcomeStates": {
+     "typeIdentity": {
+      "correct": 213,
+      "invalid-correct": 72,
+      "miss": 143
+     },
+     "sensitivityContext": {
+      "correct": 250,
+      "unresolved": 178
+     },
+     "range": {
+      "exact": 213,
+      "miss": 215
+     }
+    },
+    "oracleOutcomeStates": {
+     "typeIdentity": {
+      "correct": 213,
+      "invalid-correct": 72,
+      "miss": 143
+     },
+     "sensitivityContext": {
+      "correct": 250,
+      "unresolved": 178
+     },
+     "range": {
+      "exact": 213,
+      "miss": 215
+     }
+    },
+    "scannerStatus": "complete",
+    "completeness": "complete",
+    "failures": 0,
+    "methodCoverage": [
+     {
+      "cases": 428,
+      "method": {
+       "id": "schema-only",
+       "version": 1
+      },
+      "variants": 428
+     }
+    ]
+   },
+   "compared": {
+    "accounting-canonical": 10,
+    "accounting-compat": 10,
+    "accounting-rule": 10,
+    "case-identity": 428,
+    "corpus-equivalence": 428,
+    "metric": 10,
+    "outcome": 428,
+    "outcome-compat": 428,
+    "population": 2,
+    "projection-cell": 6,
+    "projection-control-class-stratum": 29,
+    "projection-language-stratum": 12,
+    "variant": 428,
+    "variant-identity": 428
+   },
+   "comparatorCompared": {
+    "accounting-canonical": 10,
+    "accounting-compat": 10,
+    "accounting-rule": 10,
+    "outcome": 428,
+    "outcome-compat": 428,
+    "population": 2,
+    "variant": 428
+   },
+   "metrics": {
+    "benign-suppression-rate": {
+     "status": "not-applicable",
+     "numerator": 0,
+     "eligible": 0,
+     "effectiveN": 0,
+     "rate": {
+      "kind": "null"
+     }
+    },
+    "context-discrimination-rate": {
+     "status": "not-applicable",
+     "numerator": 0,
+     "eligible": 0,
+     "effectiveN": 0,
+     "rate": {
+      "kind": "null"
+     }
+    },
+    "jurisdiction-collision-rate": {
+     "status": "not-applicable",
+     "numerator": 0,
+     "eligible": 0,
+     "effectiveN": 0,
+     "rate": {
+      "kind": "null"
+     }
+    },
+    "measurable-share": {
+     "status": "partial",
+     "numerator": 678,
+     "eligible": 856,
+     "effectiveN": 856,
+     "rate": {
+      "kind": "value",
+      "point": "0.792056",
+      "bound": "0.763593"
+     }
+    },
+    "non-sensitive-flag-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 37,
+     "effectiveN": 37,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.094061"
+     }
+    },
+    "range-collateral-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 213,
+     "effectiveN": 213,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.017716"
+     }
+    },
+    "sensitive-miss-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 213,
+     "effectiveN": 213,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.017716"
+     }
+    },
+    "type-miss-rate": {
+     "status": "measured",
+     "numerator": 143,
+     "eligible": 356,
+     "effectiveN": 356,
+     "rate": {
+      "kind": "value",
+      "point": "0.401685",
+      "bound": "0.453399"
+     }
+    },
+    "wrong-family-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 356,
+     "effectiveN": 356,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.010676"
+     }
+    },
+    "wrong-jurisdiction-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 16,
+     "effectiveN": 16,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.193613"
+     }
+    }
+   },
+   "projection": {
+    "rows": 6,
+    "mode": "exploratory",
+    "requiredViews": [
+     "diagnostic-balanced"
+    ],
+    "rosterDigest": "b777a6db1c1cc3a662119f28a1f93824206b979e8297a0cd953cea44588fec63",
+    "bindingsEqualToManifest": true,
+    "cellsCompared": 6,
+    "languageStrataCompared": 12,
+    "controlClassStrataCompared": 29,
+    "oracleRunsBehindTheProjection": 47
+   },
+   "classifiedDifferences": [
+    {
+     "layer": "variant",
+     "aspect": "operator",
+     "ids": [
+      "0007/D4"
+     ],
+     "class": "compatibility",
+     "count": 1499
+    },
+    {
+     "layer": "variant",
+     "aspect": "variant-id",
+     "ids": [
+      "0007/D1"
+     ],
+     "class": "compatibility",
+     "count": 1499
+    }
+   ],
+   "unexplainedDifferences": [],
+   "unexplained": 0
+  },
+  {
+   "view": "benign-heavy-stress",
+   "identities": {
+    "populationId": "b11-population-v2-benign-heavy-stress",
+    "snapshotDigest": "8e3716a7a67f68a5b6bbf90d554ec85817f3ae8b1b4fc90ac8b204cbb44d2a88",
+    "manifestDigest": "5274550d0b1fe808be9b8389615ea4848af83dcce73fb8e2a230832887156b64",
+    "observationDigest": "5183c581669e051203f2f0140eec93f65b083d1d8aca0a00c628e274437a8366",
+    "rosterDigest": "616b5f99072cd32eaa5c5b63edf1d4e8081f711218d8a428b144c89e79dc2a0b",
+    "inputSha256": "b6c3ef36bb50cd0ff03fa209129d8cd074149b2439147bdf70a9bc156958ad02",
+    "oracleExportSha256": "05b37a0279e87f33e85a4188abceb28ac8c9de2ab0c1288aea839f3df2ccd22a"
+   },
+   "conversion": {
+    "view": "benign-heavy-stress",
+    "benchmarkCases": 299,
+    "convertedCases": 279,
+    "excludedCases": 20,
+    "excludedReason": "identity-not-established",
+    "unlocatedOtherFamilyFindings": 0,
+    "lineSensitiveFindingsDropped": 5,
+    "byFamily": {
+     "pii:global:network-address": {
+      "converted": 74,
+      "excluded": 6
+     },
+     "pii:global:email": {
+      "converted": 47,
+      "excluded": 4
+     },
+     "pii:global:payment-card": {
+      "converted": 55,
+      "excluded": 0
+     },
+     "pii:global:iban": {
+      "converted": 43,
+      "excluded": 7
+     },
+     "pii:us:ssn": {
+      "converted": 29,
+      "excluded": 0
+     },
+     "pii:global:phone": {
+      "converted": 31,
+      "excluded": 3
+     }
+    },
+    "findings": 68,
+    "casesWithSeveralFindings": 0,
+    "excludedIds": [
+     "pii:global:email/email-k-https-userinfo",
+     "pii:global:email/email-k-postgres-url",
+     "pii:global:email/email-k-proxy-url",
+     "pii:global:email/email-k-ssh-url",
+     "pii:global:iban/iban-ko-ref-masked",
+     "pii:global:iban/iban-ref-angle-at20",
+     "pii:global:iban/iban-ref-env-at20",
+     "pii:global:iban/iban-ref-env-name",
+     "pii:global:iban/iban-ref-masked",
+     "pii:global:iban/iban-ref-mustache-at20",
+     "pii:global:iban/iban-ref-placeholder-x",
+     "pii:global:network-address/net-v-label-version",
+     "pii:global:network-address/net-v-release-upper",
+     "pii:global:network-address/net-v-version-prefix",
+     "pii:global:network-address/net-w-five-octets",
+     "pii:global:network-address/net-w-letter-prefix",
+     "pii:global:network-address/net-w-letter-suffix",
+     "pii:global:phone/bh-en-dot-display",
+     "pii:global:phone/bh-en-uk-drama-number",
+     "pii:global:phone/bh-ko-unsupported-country-code"
+    ]
+   },
+   "artifact": {
+    "schemaVersion": "1.2",
+    "publicArtifactSha256": "a7ab60db62bdedb714d726ca7e4afb75b9a00e96468ccf04ed34eed34d8c6f39",
+    "semanticDigest": "0cc6d2a5ad5ac8c273fb34a6af4776aebecc06f8ad718fdbe812ef5092cd8a19",
+    "semanticDigestRecomputed": true,
+    "runArtifactDigest": "37f80262960ef4c9aef4749d6b353df340753e1f4af4c0d7649197ac36e9d5e2",
+    "validatedAgainstSnapshotAndRoster": true
+   },
+   "comparisonDetectsInjectedDifferences": true,
+   "determinism": {
+    "replays": 3,
+    "equalSemanticDigest": true,
+    "byteIdenticalDocuments": true,
+    "scannersLaunched": [
+     0,
+     0,
+     0
+    ]
+   },
+   "census": {
+    "outcomeStates": {
+     "typeIdentity": {
+      "correct": 68,
+      "invalid-correct": 32,
+      "miss": 179
+     },
+     "sensitivityContext": {
+      "correct": 115,
+      "unresolved": 164
+     },
+     "range": {
+      "exact": 68,
+      "miss": 211
+     }
+    },
+    "oracleOutcomeStates": {
+     "typeIdentity": {
+      "correct": 68,
+      "invalid-correct": 32,
+      "miss": 179
+     },
+     "sensitivityContext": {
+      "correct": 115,
+      "unresolved": 164
+     },
+     "range": {
+      "exact": 68,
+      "miss": 211
+     }
+    },
+    "scannerStatus": "complete",
+    "completeness": "complete",
+    "failures": 0,
+    "methodCoverage": [
+     {
+      "cases": 279,
+      "method": {
+       "id": "schema-only",
+       "version": 1
+      },
+      "variants": 279
+     }
+    ]
+   },
+   "compared": {
+    "accounting-canonical": 10,
+    "accounting-compat": 10,
+    "accounting-rule": 10,
+    "case-identity": 279,
+    "corpus-equivalence": 279,
+    "metric": 10,
+    "outcome": 279,
+    "outcome-compat": 279,
+    "population": 2,
+    "projection-cell": 6,
+    "projection-control-class-stratum": 32,
+    "projection-language-stratum": 12,
+    "variant": 279,
+    "variant-identity": 279
+   },
+   "comparatorCompared": {
+    "accounting-canonical": 10,
+    "accounting-compat": 10,
+    "accounting-rule": 10,
+    "outcome": 279,
+    "outcome-compat": 279,
+    "population": 2,
+    "variant": 279
+   },
+   "metrics": {
+    "benign-suppression-rate": {
+     "status": "not-applicable",
+     "numerator": 0,
+     "eligible": 0,
+     "effectiveN": 0,
+     "rate": {
+      "kind": "null"
+     }
+    },
+    "context-discrimination-rate": {
+     "status": "not-applicable",
+     "numerator": 0,
+     "eligible": 0,
+     "effectiveN": 0,
+     "rate": {
+      "kind": "null"
+     }
+    },
+    "jurisdiction-collision-rate": {
+     "status": "not-applicable",
+     "numerator": 0,
+     "eligible": 0,
+     "effectiveN": 0,
+     "rate": {
+      "kind": "null"
+     }
+    },
+    "measurable-share": {
+     "status": "partial",
+     "numerator": 394,
+     "eligible": 558,
+     "effectiveN": 558,
+     "rate": {
+      "kind": "value",
+      "point": "0.706093",
+      "bound": "0.666989"
+     }
+    },
+    "non-sensitive-flag-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 47,
+     "effectiveN": 47,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.075560"
+     }
+    },
+    "range-collateral-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 68,
+     "effectiveN": 68,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.053473"
+     }
+    },
+    "sensitive-miss-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 68,
+     "effectiveN": 68,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.053473"
+     }
+    },
+    "type-miss-rate": {
+     "status": "measured",
+     "numerator": 179,
+     "eligible": 247,
+     "effectiveN": 247,
+     "rate": {
+      "kind": "value",
+      "point": "0.724696",
+      "bound": "0.776639"
+     }
+    },
+    "wrong-family-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 247,
+     "effectiveN": 247,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.015315"
+     }
+    },
+    "wrong-jurisdiction-rate": {
+     "status": "measured",
+     "numerator": 0,
+     "eligible": 26,
+     "effectiveN": 26,
+     "rate": {
+      "kind": "value",
+      "point": "0.000000",
+      "bound": "0.128733"
+     }
+    }
+   },
+   "projection": {
+    "rows": 6,
+    "mode": "exploratory",
+    "requiredViews": [
+     "benign-heavy-stress"
+    ],
+    "rosterDigest": "616b5f99072cd32eaa5c5b63edf1d4e8081f711218d8a428b144c89e79dc2a0b",
+    "bindingsEqualToManifest": true,
+    "cellsCompared": 6,
+    "languageStrataCompared": 12,
+    "controlClassStrataCompared": 32,
+    "oracleRunsBehindTheProjection": 50
+   },
+   "classifiedDifferences": [
+    {
+     "layer": "variant",
+     "aspect": "operator",
+     "ids": [
+      "0007/D4"
+     ],
+     "class": "compatibility",
+     "count": 1048
+    },
+    {
+     "layer": "variant",
+     "aspect": "variant-id",
+     "ids": [
+      "0007/D1"
+     ],
+     "class": "compatibility",
+     "count": 1048
+    }
+   ],
+   "unexplainedDifferences": [],
+   "unexplained": 0
+  }
+ ],
+ "benchmarkReportCounts": [
+  {
+   "view": "oracle-plan",
+   "family": "pii:global:network-address",
+   "reportCases": 25,
+   "convertedPlusExcluded": 25,
+   "equal": true
+  },
+  {
+   "view": "qualification-plan",
+   "family": "pii:global:network-address",
+   "reportCases": 25,
+   "convertedPlusExcluded": 25,
+   "equal": true
+  },
+  {
+   "view": "diagnostic-balanced",
+   "family": "pii:global:network-address",
+   "reportCases": 97,
+   "convertedPlusExcluded": 97,
+   "equal": true
+  },
+  {
+   "view": "benign-heavy-stress",
+   "family": "pii:global:network-address",
+   "reportCases": 80,
+   "convertedPlusExcluded": 80,
+   "equal": true
+  },
+  {
+   "view": "oracle-plan",
+   "family": "pii:global:email",
+   "reportCases": 20,
+   "convertedPlusExcluded": 20,
+   "equal": true
+  },
+  {
+   "view": "qualification-plan",
+   "family": "pii:global:email",
+   "reportCases": 52,
+   "convertedPlusExcluded": 52,
+   "equal": true
+  },
+  {
+   "view": "diagnostic-balanced",
+   "family": "pii:global:email",
+   "reportCases": 86,
+   "convertedPlusExcluded": 86,
+   "equal": true
+  },
+  {
+   "view": "benign-heavy-stress",
+   "family": "pii:global:email",
+   "reportCases": 51,
+   "convertedPlusExcluded": 51,
+   "equal": true
+  },
+  {
+   "view": "oracle-plan",
+   "family": "pii:global:payment-card",
+   "reportCases": 19,
+   "convertedPlusExcluded": 19,
+   "equal": true
+  },
+  {
+   "view": "qualification-plan",
+   "family": "pii:global:payment-card",
+   "reportCases": 114,
+   "convertedPlusExcluded": 114,
+   "equal": true
+  },
+  {
+   "view": "diagnostic-balanced",
+   "family": "pii:global:payment-card",
+   "reportCases": 161,
+   "convertedPlusExcluded": 161,
+   "equal": true
+  },
+  {
+   "view": "benign-heavy-stress",
+   "family": "pii:global:payment-card",
+   "reportCases": 55,
+   "convertedPlusExcluded": 55,
+   "equal": true
+  },
+  {
+   "view": "oracle-plan",
+   "family": "pii:global:iban",
+   "reportCases": 21,
+   "convertedPlusExcluded": 21,
+   "equal": true
+  },
+  {
+   "view": "qualification-plan",
+   "family": "pii:global:iban",
+   "reportCases": 43,
+   "convertedPlusExcluded": 43,
+   "equal": true
+  },
+  {
+   "view": "diagnostic-balanced",
+   "family": "pii:global:iban",
+   "reportCases": 93,
+   "convertedPlusExcluded": 93,
+   "equal": true
+  },
+  {
+   "view": "benign-heavy-stress",
+   "family": "pii:global:iban",
+   "reportCases": 50,
+   "convertedPlusExcluded": 50,
+   "equal": true
+  },
+  {
+   "view": "oracle-plan",
+   "family": "pii:us:ssn",
+   "reportCases": 20,
+   "convertedPlusExcluded": 20,
+   "equal": true
+  },
+  {
+   "view": "qualification-plan",
+   "family": "pii:us:ssn",
+   "reportCases": 15,
+   "convertedPlusExcluded": 15,
+   "equal": true
+  },
+  {
+   "view": "diagnostic-balanced",
+   "family": "pii:us:ssn",
+   "reportCases": 19,
+   "convertedPlusExcluded": 19,
+   "equal": true
+  },
+  {
+   "view": "benign-heavy-stress",
+   "family": "pii:us:ssn",
+   "reportCases": 29,
+   "convertedPlusExcluded": 29,
+   "equal": true
+  },
+  {
+   "view": "oracle-plan",
+   "family": "pii:global:phone",
+   "reportCases": 41,
+   "convertedPlusExcluded": 41,
+   "equal": true
+  },
+  {
+   "view": "qualification-plan",
+   "family": "pii:global:phone",
+   "reportCases": 17,
+   "convertedPlusExcluded": 17,
+   "equal": true
+  },
+  {
+   "view": "diagnostic-balanced",
+   "family": "pii:global:phone",
+   "reportCases": 21,
+   "convertedPlusExcluded": 21,
+   "equal": true
+  },
+  {
+   "view": "benign-heavy-stress",
+   "family": "pii:global:phone",
+   "reportCases": 34,
+   "convertedPlusExcluded": 34,
+   "equal": true
+  }
+ ],
+ "bindingRejections": [
+  {
+   "case": "control-same-population",
+   "exit": 0,
+   "outputWritten": true,
+   "refusal": null
+  },
+  {
+   "case": "wrong-population",
+   "exit": 4,
+   "outputWritten": false,
+   "refusal": "provenance-mismatch: observation-set"
+  },
+  {
+   "case": "wrong-population-snapshot",
+   "exit": 4,
+   "outputWritten": false,
+   "refusal": "provenance-mismatch: manifest"
+  },
+  {
+   "case": "wrong-activation",
+   "exit": 4,
+   "outputWritten": false,
+   "refusal": "provenance-mismatch: observation-set"
+  },
+  {
+   "case": "wrong-candidate",
+   "exit": 4,
+   "outputWritten": false,
+   "refusal": "provenance-mismatch: observation-set"
+  },
+  {
+   "case": "released-instead-of-candidate",
+   "exit": 4,
+   "outputWritten": false,
+   "refusal": "provenance-mismatch: observation-set"
+  },
+  {
+   "case": "wrong-configuration",
+   "exit": 4,
+   "outputWritten": false,
+   "refusal": "provenance-mismatch: observation-set"
+  }
+ ],
+ "verdict": {
+  "populations": 4,
+  "unexplainedDifferences": 0,
+  "reportCountDisagreements": 0,
+  "bindingsRefused": true,
+  "comparisonDetectsInjectedDifferences": true,
+  "deterministic": true
+ }
+}

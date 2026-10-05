@@ -1,0 +1,133 @@
+name: Legacy oracle
+# The legacy credential measurement, kept as the oracle until the exit condition recorded in the committed authority file is met
+# (docs/specs/qualification-cutover.md; nothing is removed by moving it here, #655). It is not on the routine path of a pull request:
+#
+#  - `validate.yml` calls it when a pull request changes an input of the legacy measurement (the engine, its adapters, corpora, policy, pins,
+#    ledger, shared scripts, workflows; scripts/ci-plan.mjs holds the map), and on every push to develop or main (the integration branch and
+#    the release), on its weekly schedule and on dispatch, where the complete suite always runs;
+#  - it can be dispatched on its own, as the explicit oracle run.
+#
+# It is the measurement that used to run in every pull request: the engine on the published scanner, the four-scanner comparison on
+# validated peer snapshots (no peer binary is provisioned or executed), and the export and browser checks of the legacy pipeline (the
+# rollback state, #608). It reads no secret and holds no token beyond contents: read, so a fork's pull request runs it unchanged.
+on:
+  workflow_call:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  engine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+      - run: npm ci
+      - name: Exercise evaluation engine with the published npm scanner
+        run: npm run eval -- --scanner=redact-secret
+
+  scanner-comparison:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Ordinary validation intentionally has no peer binaries on PATH. Both
+      # commands must fail closed unless every committed observation matches
+      # the current corpus, semantic index, pin, adapter and snapshot schema.
+      - name: Support classification reuses validated peer observations
+        run: npm run eval:classify
+      - name: Every review-queue id resolves against the ledger, using the same validated observations (#98)
+        run: npm run queue:check
+      - name: Run the comparison with a fresh product and validated peer observations
+        run: npm run bench -- --strict
+      - name: Record which redact-secret artifact was measured
+        if: always()
+        run: |
+          {
+            echo "### Four-scanner comparison"
+            echo "- redact-secret: published npm package \`@redact-secret/core@$(node -p "require('./package.json').dependencies['@redact-secret/core']")\`, not a candidate build of the product's \`main\`"
+            echo "- peers: validated normalized snapshots (source run, observed time, input identity and digest retained in every row); no peer binary provisioned or executed"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload the four-scanner comparison results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: four-scanner-comparison
+          path: public/results/
+          retention-days: 90
+
+  # The export and the browser checks of the legacy pipeline: the rollback state is built from the legacy files exactly as before the switch.
+  # The committed authority is `new`, so the one value is flipped for the command only (web/scripts/with-authority.mjs restores it).
+  web-legacy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        check: [layout, e2e]
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci --ignore-scripts
+        working-directory: web
+      # The pages read the benchmark run and the evaluation the legacy pipeline writes (about a minute with the product alone and no peer).
+      - name: Repository dependencies, generated fixtures, one benchmark run for the report pages and one evaluation for the evaluation pages
+        run: |
+          npm ci
+          npm run bench
+          npm run eval:discover -- --scanner=redact-secret
+          npm run eval:publish
+      - name: Static export of the legacy pipeline (the oracle) builds and contains the six routes (#547, #608)
+        run: node scripts/with-authority.mjs legacy -- npm run build
+        working-directory: web
+        env:
+          WEB_REQUIRE_RUN: '1'
+      - name: Every page recounted against the legacy files
+        run: node scripts/with-authority.mjs legacy -- npm run check:routes
+        working-directory: web
+        env:
+          WEB_REQUIRE_RUN: '1'
+      - name: Storybook builds on the Next.js framework (#547)
+        if: matrix.check == 'layout'
+        run: npm run build-storybook
+        working-directory: web
+      - name: Chromium for the layout check and the Playwright suite (#554, #598)
+        run: npx playwright install --with-deps chromium
+        working-directory: web
+      - name: No page overflow, no mid-word breaks and no shift when data loads, at 320, 375 and 768px in any story, page or loading or error state (#554, #573)
+        if: matrix.check == 'layout'
+        run: node scripts/with-authority.mjs legacy -- npm run check:layout
+        working-directory: web
+      - name: Playwright suite over the legacy export (every route in both themes at 320 and 1280px with axe, navigation, URL state, data states, theme, keyboard, reduced motion, no script)
+        if: matrix.check == 'e2e'
+        run: node scripts/with-authority.mjs legacy -- npm run test:e2e
+        working-directory: web
+      - name: Playwright traces of the failures
+        if: failure()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: web-legacy-playwright-failures-${{ matrix.check }}
+          path: web/test-results
+          retention-days: 7
+          if-no-files-found: ignore

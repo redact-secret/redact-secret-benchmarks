@@ -367,9 +367,17 @@ jobs:
           pii_eval_args=()
           if [ "$TARGET" = staging ]; then
             product_args=(--product-commit="$PRODUCT_COMMIT" --product-core="$CORE_PACKAGE")
+            # The transport-verified CI measurement and the four committed benchmark populations (#664) are separate pin
+            # sets: each artifact is judged by the set that names its population, and a candidate is bound to this
+            # publication's product only when its pin names exactly this commit.
             pii_eval_args=(
               --pii-eval-pins=benchmarks/pii-eval-public-synthetic-pins.json
+              --pii-eval-pins=benchmarks/pii-eval-population-pins.json
               --pii-eval-artifact="$RUNNER_TEMP/pii-eval-public/public-synthetic-artifact.json"
+              --pii-eval-artifact=benchmarks/pii-eval-population-dual-run/oracle-plan.public-synthetic-artifact.json
+              --pii-eval-artifact=benchmarks/pii-eval-population-dual-run/qualification-plan.public-synthetic-artifact.json
+              --pii-eval-artifact=benchmarks/pii-eval-population-dual-run/diagnostic-balanced.public-synthetic-artifact.json
+              --pii-eval-artifact=benchmarks/pii-eval-population-dual-run/benign-heavy-stress.public-synthetic-artifact.json
             )
           fi
           population_bundle=results-output/pii/population-release-v1.json

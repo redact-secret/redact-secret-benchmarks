@@ -6,16 +6,39 @@ import { validateStructures } from '../benchmarks/lib/validate-structures.ts';
 import { checkLexicalSeparability, validateLexicalExemptions } from '../benchmarks/lib/lexical-separability.ts';
 import { createHash } from 'node:crypto';
 import { validateBeta8 } from '../benchmarks/lib/beta8/index.ts';
+import { categoriesOf, loadPopulations, populationProblems } from '../fixtures/generated/populations.mjs';
 
-const check = process.argv.includes("--check");
-const ensure = process.argv.includes('--ensure');
-if (process.argv.slice(2).some(arg => !['--check', '--ensure'].includes(arg)) || (check && ensure)) throw new Error('Usage: generate-fixtures.mjs [--check | --ensure]');
+const usage = 'Usage: generate-fixtures.mjs [--check | --ensure] [--population <id>]... (a population needs --check or --ensure)';
+const args = process.argv.slice(2);
+const populationIds = [];
+const flags = [];
+for (let i = 0; i < args.length; i++) {
+  if (args[i] === '--population') { if (!args[i + 1]) throw new Error(usage); populationIds.push(args[++i]); } else flags.push(args[i]);
+}
+const check = flags.includes('--check');
+const ensure = flags.includes('--ensure');
+if (flags.some(arg => !['--check', '--ensure'].includes(arg)) || (check && ensure) || (populationIds.length && !check && !ensure)) throw new Error(usage);
 validateContracts();
 const beta8Problems = validateBeta8(JSON.parse(await readFile(new URL('../benchmarks/detectors.json', import.meta.url), 'utf8')).detectors.map(d => d.id), JSON.parse(await readFile(new URL('../benchmarks/support/taxonomy.json', import.meta.url), 'utf8')).families.map(f => f.id));
 if (beta8Problems.length) throw new Error(`Beta.8 module problems:\n${beta8Problems.map(p => `  - ${p}`).join('\n')}`);
 const generated = buildCorpora();
+// #659: every generated category has one owning population (benchmarks/generated-populations.json); a gap or an overlap fails before anything is written.
+const populations = loadPopulations();
+const partition = populationProblems({
+  manifest: populations,
+  generatedIds: Object.keys(generated),
+  qualificationInputs: JSON.parse(await readFile(new URL('../benchmarks/qualification-inputs.json', import.meta.url), 'utf8')),
+  regressionManifest: JSON.parse(await readFile(new URL('../corpora/regression/manifest.json', import.meta.url), 'utf8')),
+});
+if (partition.length) throw new Error(`Generated population problems:\n${partition.map(p => `  - ${p}`).join('\n')}`);
+// A population run touches only that population's categories and their manifest entries. The whole-corpus gates (the hash manifest as a whole, the
+// legacy annotation, lexical separability and the detector assignments) belong to the full run, which stays the default.
+const scoped = populationIds.length > 0;
+const selected = scoped ? new Set(populationIds.flatMap(id => categoriesOf(populations, id, Object.keys(generated)))) : null;
+const committedManifest = scoped ? JSON.parse(await readFile(new URL('../benchmarks/generated-corpora.json', import.meta.url), 'utf8')) : null;
 const manifest = {};
 for (const [id, corpus] of Object.entries(generated)) {
+  if (selected && !selected.has(id)) continue;
   validateCorpus(corpus);
   corpus.fixtures.forEach(validateAssessment);
   validateStructures(corpus.fixtures);
@@ -33,6 +56,11 @@ for (const [id, corpus] of Object.entries(generated)) {
   console.log(
     `${check || ensure ? "Checked" : "Generated"} ${id}: ${corpus.fixtures.length} files`,
   );
+}
+if (scoped) {
+  for (const id of selected) if (JSON.stringify(committedManifest[id]) !== JSON.stringify(manifest[id])) throw new Error(`Generated corpus hash drift: ${id}. Review the generator change and run npm run fixtures:generate.`);
+  console.log(`Checked populations ${populationIds.join(', ')}: ${selected.size} categories`);
+  process.exit(0);
 }
 const manifestFile = new URL('../benchmarks/generated-corpora.json', import.meta.url);
 const manifestText = JSON.stringify(manifest, null, 2) + '\n';

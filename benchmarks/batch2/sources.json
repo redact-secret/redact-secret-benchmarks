@@ -5,20 +5,41 @@
   "note": "Facts read from GitHub and npm when the inventory was generated. They are inputs, recorded so the inventory can be re-run and compared; refresh them by hand when the issues change.",
   "evidence": {
     "repo": "redact-secret/credential-evidence",
-    "commit": "c34976b707b42eb41cbbad2e17deed5c94be1e07",
+    "commit": "005a7331cf90403bd4ce4abcb93bd8b085d315a9",
     "handoffIssue": 235,
     "handoffComments": 2,
-    "handoffPerRowReadinessStatus": false,
-    "handoffNote": "Issue 235 lists the 58 rows with a living proposed contract and provider claim IDs. Neither the body nor either comment (5999807537, 6001249222) carries a per-row ready/unresolved status; 6001249222 is the benchmarks request for one."
+    "handoffPerRowReadinessStatus": true,
+    "handoffNote": "58 rows: 30 ready, 28 carrier-unresolved. Evidence added no Case or fixture; benchmarks authors the corpus from the handoff slots. Contracts remain proposed/draft. Group C/D/E research (#236-#238) is ongoing and may turn rows ready later.",
+    "handoffDoc": "docs/handoffs/batch-2-bounded-carriers.md (credential-evidence PR #248, 2026-10-05T19:19Z)"
   },
   "core": {
     "repo": "redact-secret/redact-secret",
     "mainCommitObserved": "3b1a5aa9935c57416a026a44f45501fd41ffeac8",
     "packages": {
-      "1223": { "state": "open", "gatesChecked": 0, "gatesTotal": 8, "evidenceDirPublished": false },
-      "1224": { "state": "open", "gatesChecked": 0, "gatesTotal": 8, "evidenceDirPublished": false },
-      "1225": { "state": "open", "gatesChecked": 0, "gatesTotal": 8, "evidenceDirPublished": false },
-      "1226": { "state": "open", "gatesChecked": 0, "gatesTotal": 8, "evidenceDirPublished": false }
+      "1223": {
+        "state": "open",
+        "gatesChecked": 0,
+        "gatesTotal": 8,
+        "evidenceDirPublished": false
+      },
+      "1224": {
+        "state": "open",
+        "gatesChecked": 0,
+        "gatesTotal": 8,
+        "evidenceDirPublished": false
+      },
+      "1225": {
+        "state": "open",
+        "gatesChecked": 0,
+        "gatesTotal": 8,
+        "evidenceDirPublished": false
+      },
+      "1226": {
+        "state": "open",
+        "gatesChecked": 0,
+        "gatesTotal": 8,
+        "evidenceDirPublished": false
+      }
     },
     "adoptedContractNote": "Each package's first gate is to freeze each ready row's layout, value admission, span, attribution and action under docs/audits/evidence/<issue>/. None is ticked and docs/audits/evidence/1223..1226 does not exist on core main."
   },

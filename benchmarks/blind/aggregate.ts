@@ -1,6 +1,6 @@
 import Ajv from 'ajv';
 import schema from '../../schemas/blind-aggregate-v1.json';
-import { OUTCOMES, isLeaked, scoreRow } from '../lib/lattice.ts';
+import { OUTCOMES, isLeaked, scoreRow } from '../scoring/lattice.ts';
 import { BlindError } from './storage.ts';
 import type { BlindAggregate, PrivateFixture, Rate, WithheldReason } from './types.ts';
 

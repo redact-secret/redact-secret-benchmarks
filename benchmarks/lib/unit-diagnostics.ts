@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import type { Range } from '../types.ts';
-import { spanOutcome, bytesOutside, union, OUTCOMES } from './lattice.ts';
+import { spanOutcome, bytesOutside, union, OUTCOMES } from '../scoring/lattice.ts';
 
 // Unit-safe diagnostics (#380). Measurement protocol v4 deliberately removed the
 // mixed precision / recall / F1 export (docs/specs/measurement-v4.md §2.4). This

@@ -1,7 +1,7 @@
-import type { Operator } from '../../../../engine/types.ts';
-import { validateCorpus } from '../../../../lib/scoring.ts';
+import type { Operator } from '../../../model/types.ts';
+import { validateCorpus } from '../../../../scoring/scoring.ts';
 import { validateAssessment } from '../assessment.ts';
-import { secrets } from '../../../../engine/model.ts';
+import { secrets } from '../../../model/model.ts';
 
 export const authoredTwin: Operator = {
   id: 'authored.twin', version: 1,

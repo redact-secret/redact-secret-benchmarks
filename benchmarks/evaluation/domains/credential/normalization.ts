@@ -1,5 +1,5 @@
 import type { Finding } from '../../../types.ts';
-import type { Scanner } from '../../../engine/types.ts';
+import type { Scanner } from '../../model/types.ts';
 import { contracts } from './assessment.ts';
 
 export const normalizeFinding = ({ path, start, end, family, action }: Finding, scanner: Pick<Scanner, 'capabilities'>): Finding => ({

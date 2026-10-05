@@ -1,4 +1,4 @@
-import type { ReviewLedger } from '../engine/review-ledger.ts';
+import type { ReviewLedger } from '../evaluation/model/review-ledger.ts';
 import { canonical } from './canonical.ts';
 
 /**

@@ -1,4 +1,4 @@
-import { validateCorpus } from '../../../lib/scoring.ts';
+import { validateCorpus } from '../../../scoring/scoring.ts';
 import { validateAssessment } from './assessment.ts';
 import { validateStructures } from '../../../lib/validate-structures.ts';
 import type { Fixture } from '../../../types.ts';

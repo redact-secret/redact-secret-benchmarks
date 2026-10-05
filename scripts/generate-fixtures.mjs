@@ -1,6 +1,6 @@
 import { readFile, writeFile } from "node:fs/promises";
 import { buildCorpora } from "../fixtures/generated/build.mjs";
-import { validateCorpus } from "../benchmarks/lib/scoring.ts";
+import { validateCorpus } from "../benchmarks/scoring/scoring.ts";
 import { classifyFixture, validateAssessment, validateContracts, contracts } from "../benchmarks/lib/assessment.ts";
 import { validateStructures } from '../benchmarks/lib/validate-structures.ts';
 import { checkLexicalSeparability, validateLexicalExemptions } from '../benchmarks/lib/lexical-separability.ts';

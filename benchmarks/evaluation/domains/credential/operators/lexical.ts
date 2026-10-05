@@ -1,7 +1,7 @@
 import type { Range } from '../../../../types.ts';
-import type { Operator, EvaluationCase } from '../../../../engine/types.ts';
+import type { Operator, EvaluationCase } from '../../../model/types.ts';
 import { contracts } from '../assessment.ts';
-import { bytes, secrets, hash } from '../../../../engine/model.ts';
+import { bytes, secrets, hash } from '../../../model/model.ts';
 
 export const supportsLexical: Operator['supports'] = c => secrets(c.seed).length === 1 &&
   ['T1', 'T2'].includes(c.seed.assessment.tier) &&

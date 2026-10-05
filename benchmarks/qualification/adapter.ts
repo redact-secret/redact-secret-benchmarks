@@ -3,7 +3,7 @@ import { fixtureProfileReport, profileClaim, type FixtureCells, type FixtureProf
 import type { PolicyAction, PolicyBehaviorAggregate, PolicyGateCode, PolicyGateFailure, PolicyHoldoutReceipt } from '../support/policy-qualified.ts';
 import type { Tier } from '../types.ts';
 import type { Taxonomy } from '../support/taxonomy.ts';
-import type { ReviewLedger } from '../engine/review-ledger.ts';
+import type { ReviewLedger } from '../evaluation/model/review-ledger.ts';
 import { canonical } from './canonical.ts';
 import { contextGroup, type AxisOverlay } from './axis-overlay.ts';
 import { ledgerSettledId, type LedgerRekey } from './ledger-rekey.ts';

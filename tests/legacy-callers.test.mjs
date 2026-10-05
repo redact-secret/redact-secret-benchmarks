@@ -54,3 +54,51 @@ test('every repository path in the file-level inventory exists', () => {
     }
   }
 });
+
+// The inventory is a checked document (#660): its callers equal the tree, every row carries the four things a removal PR needs, and a stale or incomplete
+// row is refused. Structure only: no count and no measured value is asserted.
+import { DISPOSITIONS, inventoryProblems, parseInventory, trackedFiles } from '../scripts/legacy-inventory.mjs';
+
+const inventoryDoc = () => readFileSync(new URL('../docs/specs/qualification-cutover.md', import.meta.url), 'utf8');
+
+test('the committed inventory equals the tree: current callers, no empty cell, every legacy file has a row', () => {
+  assert.deepEqual(inventoryProblems(inventoryDoc(), trackedFiles()), []);
+});
+
+test('every inventory row names an owner, a defined disposition, callers and a removal prerequisite', () => {
+  const { rows } = parseInventory(inventoryDoc());
+  assert.ok(rows.length > 50);
+  for (const row of rows) {
+    assert.equal(row.cells.length, 6, row.line.slice(0, 80));
+    const [, owner, disposition, callers, , prerequisite] = row.cells;
+    assert.ok(owner && callers && prerequisite, row.cells[0]);
+    if (row.path) assert.ok(DISPOSITIONS.has(disposition), `${row.path}: ${disposition}`);
+  }
+});
+
+test('a stale callers cell, an empty prerequisite, an unknown disposition and a missing row are each refused', () => {
+  const doc = inventoryDoc();
+  const row = parseInventory(doc).rows.find(r => r.path === 'benchmarks/engine/runner.ts');
+  assert.ok(row);
+  const tamper = (mutate) => doc.replace(row.line, mutate(row.cells));
+  const stale = tamper(c => `| ${[c[0], c[1], c[2], '`scripts/not-a-caller.mjs`', c[4], c[5]].join(' | ')} |`);
+  assert.ok(inventoryProblems(stale, []).some(p => p.startsWith('benchmarks/engine/runner.ts: callers are stale')));
+  const empty = tamper(c => `| ${[c[0], c[1], c[2], c[3], c[4], ''].join(' | ')} |`);
+  assert.ok(inventoryProblems(empty, []).some(p => p.includes('the removal prerequisite cell is empty')));
+  const unknown = tamper(c => `| ${[c[0], c[1], 'delete-it', c[3], c[4], c[5]].join(' | ')} |`);
+  assert.ok(inventoryProblems(unknown, []).some(p => p.includes('"delete-it" is not one of')));
+  assert.ok(inventoryProblems(doc, [...trackedFiles(), 'benchmarks/engine/not-in-the-inventory.ts']).some(p => p === 'benchmarks/engine/not-in-the-inventory.ts: has no row in the inventory'));
+});
+
+test('derived-inputs reaches the legacy engine only through legacy-review, which the caller lister sees', () => {
+  const source = readFileSync(new URL('../benchmarks/qualification/derived-inputs.ts', import.meta.url), 'utf8');
+  assert.doesNotMatch(source, /engine\/|credential\/contract|peer-observations/);
+  assert.ok(callersOf('benchmarks/engine/runner.ts').some(c => c.file === 'benchmarks/qualification/legacy-review.ts'), 'the literal dynamic import is visible to the lister');
+});
+
+test('the protected holdouts import neither the credential methods nor the operators', () => {
+  for (const file of ['benchmarks/evaluation/domains/credential/holdout.ts', 'benchmarks/evaluation/domains/credential-policy/holdout.ts', 'benchmarks/evaluation/domains/credential/holdout-corpus.ts', 'benchmarks/evaluation/domains/credential-policy/holdout-corpus.ts']) {
+    const source = readFileSync(new URL(`../${file}`, import.meta.url), 'utf8');
+    assert.doesNotMatch(source, /(?:\/methods\/|\/operators\/|engine\/runner)/, file);
+  }
+});

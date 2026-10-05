@@ -1,7 +1,7 @@
 import type { Fixture, Finding, AccountingConfig } from '../types.ts';
 import { validateAssessment } from './assessment.ts';
-import { accountGroups, accountingDelta } from './accounting.ts';
-import { score } from './scoring.ts';
+import { accountGroups, accountingDelta } from '../accounting/index.ts';
+import { score } from '../scoring/scoring.ts';
 
 // A report has no combined score across kinds or tiers. T0 observations
 // retain raw ranges but carry no outcome or byte fields.

@@ -5,7 +5,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { scanners } from '../scanners/index.mjs';
 import { resolveCredentialDomain } from './evaluation/domains/registry.ts';
-import { hash } from './engine/model.ts';
+import { hash } from './evaluation/model/model.ts';
 import { runEvaluation, exitCode } from './engine/runner.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));

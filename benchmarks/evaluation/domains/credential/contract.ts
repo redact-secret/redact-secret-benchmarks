@@ -1,5 +1,5 @@
 import { createMethods } from './methods/index.ts';
-import { createHoldoutMethods } from './methods/holdout.ts';
+import { createHoldoutMethods } from './holdout-method.ts';
 import { createOperators } from './operators/index.ts';
 import { loadCases } from './cases.ts';
 import { validateAssessment, validateContracts, classifyFixture, controlAxis, contracts, scoredContractIds } from './assessment.ts';

@@ -1,4 +1,4 @@
-import type { EvaluationCase } from '../engine/types.ts';
+import type { EvaluationCase } from '../evaluation/model/types.ts';
 import { contracts } from '../lib/assessment.ts';
 import { empiricalEvidence } from './empirical.ts';
 import { CELL_IDS, PROFILE_IDS, fixtureProfileReport, fixtureProfiles, measureFixtureCells, profileClaim, type CellId, type FixtureProfileReport, type FixtureProfiles } from './profiles.ts';

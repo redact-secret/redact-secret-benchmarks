@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { promisify } from 'node:util';
-import { validateEvidence } from '../benchmarks/evaluation/domains/credential/evidence.ts';
+import { validateEvidence } from '../benchmarks/evaluation/evidence.ts';
 import { piiDomain } from '../benchmarks/evaluation/domains/pii/contract.ts';
 import { piiAccountingRowsFromEvaluation } from '../benchmarks/evaluation/domains/pii/accounting.ts';
 import { piiBenignCollisionEvidence } from '../benchmarks/evaluation/domains/pii/benign-collision-evidence.ts';

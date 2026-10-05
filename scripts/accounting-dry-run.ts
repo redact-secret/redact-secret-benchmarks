@@ -5,7 +5,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { ScoredRow, AccountingConfig } from '../benchmarks/types.ts';
-import { accountGroups, accountingDelta, accountCounts, floorFor, validateAccounting } from '../benchmarks/lib/accounting.ts';
+import { accountGroups, accountingDelta, accountCounts, floorFor, validateAccounting } from '../benchmarks/accounting/index.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const suite = JSON.parse(await readFile(path.join(root, 'qualification/suite-v1.json'), 'utf8'));

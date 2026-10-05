@@ -114,6 +114,64 @@
           }
         }
       }
+    },
+    {
+      "id": "core-main-422e43e3",
+      "product": {
+        "repository": "redact-secret/redact-secret",
+        "commit": "422e43e3dc1fb02536d9c617097fd45e78a92759",
+        "ref": "main",
+        "version": "0.1.0-beta.13",
+        "published": false,
+        "changes": [
+          "redact-secret/redact-secret#1202",
+          "redact-secret/redact-secret#1204",
+          "redact-secret/redact-secret#1206"
+        ],
+        "build": "core: npm pack of packages/javascript built from the commit (js:build); node-linux-x64-gnu: bindings/node/npm/linux-x64-gnu with the addon the commit's own CI run built; wasm: bindings/wasm/npm with the wasm-web and wasm-web-common outputs of the same run. Never published. The core JS package is byte-identical to core-main-1e45cecf's (the #1206 fixes are in the native detector: the addon and the wasm differ).",
+        "ci": {
+          "run": "https://github.com/redact-secret/redact-secret/actions/runs/37296677475",
+          "artifacts": [
+            "node-addon-x86_64-unknown-linux-gnu",
+            "wasm-web",
+            "wasm-web-common"
+          ]
+        }
+      },
+      "control": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.13"
+      },
+      "platform": "linux-x64",
+      "runClass": "exploratory",
+      "publication": "internal",
+      "release": {
+        "repository": "redact-secret/redact-secret-benchmarks",
+        "tag": "product-candidate-core-main-422e43e3"
+      },
+      "packages": [
+        {
+          "name": "@redact-secret/core",
+          "file": "redact-secret-core-0.1.0-beta.13.tgz",
+          "sha256": "sha256:8e281e2932b245c8d238f52076c08e6c00859edafdb3e1e202500bc176a73cec",
+          "size": 43292,
+          "platform": null
+        },
+        {
+          "name": "@redact-secret/node-linux-x64-gnu",
+          "file": "redact-secret-node-linux-x64-gnu-0.1.0-beta.13.tgz",
+          "sha256": "sha256:a91d6a537e491cc0eadbf7a116e53a6abfd380df41eac265edb96e2ccdfbdca0",
+          "size": 722636,
+          "platform": "linux-x64"
+        },
+        {
+          "name": "@redact-secret/wasm",
+          "file": "redact-secret-wasm-0.1.0-beta.13.tgz",
+          "sha256": "sha256:96820295d5c351520bfca28d9415cd3d589f0d0c74e98e2256c449378d0a7b6f",
+          "size": 980983,
+          "platform": null
+        }
+      ]
     }
   ]
 }

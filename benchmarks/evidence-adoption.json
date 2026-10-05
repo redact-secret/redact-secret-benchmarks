@@ -307,10 +307,22 @@
       "patchDigestFile": "docs/generated/evidence-adoption/snapshot-2026.10.05.2.acceptance.patch.sha256",
       "applies": "git apply docs/generated/evidence-adoption/snapshot-2026.10.05.2.acceptance.patch",
       "ownerFields": [
-        "the authority file: new.acceptedOn and new.acceptedBy (the file is named in the patch and the spec, never here)",
+        "the authority: renew it in a reviewed commit with `authorityValues` (and set its acceptedOn and acceptedBy); the patch does not change it, so authority:check stays red until you do",
         "benchmarks/evidence-adoption.json candidate.ownerAcceptance acceptedBy and acceptedOn",
         "docs/decisions/2026-10-05-accept-snapshot-2026-10-05-2-on-credential-eval-alpha-5.md status (proposed to accepted), decided_at and its Decision"
       ],
+      "authorityValues": {
+        "release": "@redact-secret/core@0.1.0-beta.13",
+        "policyRevision": "rs-policy-1:sha256:ce414548ec792d90e73ff4bc3aae58472ba930f0b33b9017f896271fe2dd4d00",
+        "semanticDigests": {
+          "policy-corpus": "sha256:9a6576c90e30907dee3b6e2b368d2791a29865fa8215790b0ef9cf6f75b66f9e",
+          "public-evidence-snapshot": "sha256:e539312a3bab7f1b18baa283c0736df11f196731d4dbfcc606dfd0754893417e",
+          "public-evidence-snapshot+methods": "sha256:b6b0e83ad24567004eec16e484031a5babacddc7fc5215c89578f29ec69024d5",
+          "regression-corpus": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728"
+        },
+        "parityReport": "docs/generated/qualification-parity.json",
+        "decision": "docs/decisions/2026-10-05-accept-snapshot-2026-10-05-2-on-credential-eval-alpha-5.md"
+      },
       "candidateView": {
         "sha256": "sha256:19c15e24d48983e13a6a29f379c2aab21e379908b0001a59e51d0fc9b2b44354",
         "policyRevision": "rs-policy-1:sha256:ce414548ec792d90e73ff4bc3aae58472ba930f0b33b9017f896271fe2dd4d00",

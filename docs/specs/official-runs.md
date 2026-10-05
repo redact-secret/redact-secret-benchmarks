@@ -14,10 +14,10 @@ identity of everything it used; it asserts nothing about the product and emits n
 
 | Pin | Value |
 | --- | --- |
-| Engine | credential-eval `v0.1.0-alpha.4`, commit `57858c9d1bdfad3d65e22d24b089b27189a0cf33`, protocol `credential-eval-protocol/1` |
+| Engine | credential-eval `v0.1.0-alpha.5`, commit `c1802a6b7c81f9ef16b0b70778be293821d7a31d`, protocol `credential-eval-protocol/1` |
 | RunArtifact schema | `schemas/credential-eval-run-artifact-v1.json`, vendored from the engine tag, digest pinned |
 | Configuration | `credential-public-v1` at the engine tag: `credential-public-v1.json` (linux-x64, canonical) and `credential-public-v1.darwin-arm64.json` (local reproduction) |
-| Scanners | gitleaks 8.30.1, TruffleHog 3.97.4 (archive and executable digests per platform), `@redact-secret/core` 0.1.0-beta.12 (the published release), flare-redact 1.6.1, `@openredaction/core` 1.1.5 (npm integrity) |
+| Scanners | gitleaks 8.30.1, TruffleHog 3.97.4 (archive and executable digests per platform), `@redact-secret/core` 0.1.0-beta.13 (the published release), flare-redact 1.6.1, `@openredaction/core` 1.1.5 (npm integrity) |
 | Methods run | `methodsRun` of the registry: the methods (`differential`, `metamorphic`, `mutation`), the differential reference (`redact-secret`), the seed convention (`case-id`) and the product evaluation evidence file `benchmarks/qualification/evaluation-evidence.json` with its digest (see "The methods run") |
 | Public population | evidence release `snapshot-2026.10.01.2`, manifest digest, `records-tree-sha256:` revision and corpus digest |
 | Product populations | `regression-<12 hex>` and `policy-<12 hex>`: the corpus digest, the release manifest digest and the tag, all content-addressed |

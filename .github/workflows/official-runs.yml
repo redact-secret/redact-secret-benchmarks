@@ -209,7 +209,6 @@ jobs:
           scripts/ci-stage.sh "plain run (2 repeats)" -- node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
           --out "official-out/$POPULATION" --runs 2 ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
-          --out "official-out/$POPULATION" --runs 2 ${ATTRIBUTION:+--attribution "$ATTRIBUTION"}
       - name: Expose the plain artifact before the slow methods run (floors population only)
         if: ${{ !cancelled() && matrix.population == 'public-evidence-snapshot' && inputs.mode != 'diagnostic' }}
         # A methods run takes up to ~29 min per slow peer; the plain evidence is reviewable now. This copy is evidence for people, never an
@@ -236,7 +235,6 @@ jobs:
           scripts/ci-stage.sh "methods run (2 repeats)" -- node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
           --out "official-out/$POPULATION" --runs 2 --methods ${CANDIDATE:+--jobs 2} ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
-          --out "official-out/$POPULATION" --runs 2 --methods ${ATTRIBUTION:+--attribution "$ATTRIBUTION"}
       - name: Job summary with per-stage timings and the artifacts this job uploads
         if: ${{ !cancelled() }}
         env:

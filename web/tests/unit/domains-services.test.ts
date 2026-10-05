@@ -11,7 +11,7 @@ import { PII_METRIC_IDS } from '../../../benchmarks/evaluation/domains/pii/profi
 import { piiCurrentProtectedRoute } from '../../../benchmarks/evaluation/domains/pii/support-semantics';
 import { buildPiiSupportMatrixV2, validatePiiSupportMatrixV2 } from '../../../benchmarks/evaluation/domains/pii/support-v2';
 import { custodianConformanceFrom, piiEvalMeasurementFrom } from '../../../scripts/pii-publication-inputs';
-import { buildEvaluationDomainsV2, domainDescriptorV2 } from '../../../src/evaluation-domains-v2';
+import { buildEvaluationDomainsV2, domainDescriptorV2 } from '../../../benchmarks/shared/evaluation-domains-v2.ts';
 import { REAL_ROOT as REAL, overlay } from './overlay';
 
 async function domains(root: string = REAL) {

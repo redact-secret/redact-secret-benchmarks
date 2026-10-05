@@ -26,7 +26,7 @@ import type { RunSummary } from '../../benchmarks/lib/run-summary';
 import type { Taxonomy } from '../../benchmarks/support/taxonomy';
 import { assembleCatalog, type BuiltFixture, type Catalog, type CatalogFixture, type CatalogSuite, type Tier } from './catalog';
 import type { CaseRow, CaseScannerResult, PopulationView, QualificationView } from './qualification';
-import type { MeasuredRun, Outcome, RowResult, RunScanner } from './run';
+import type { MeasuredRun, OfficialRun, Outcome, RowResult, RunScanner } from './run';
 
 /** The role the population policy gives the population the report pages are about. */
 export const REPORT_ROLE = 'floors-and-gates';
@@ -121,8 +121,11 @@ export function bridgeQualificationView(view: QualificationView, input: BridgeIn
   });
 
   const scannerIds = population.artifact.scanners.map(s => s.id);
+  // Each scanner was observed once, in the official run of this population: the observation names that run, so a page never says "snapshot" or "fresh" of a scanner it read from an official artifact.
+  const observedAt = input.recordedOn ? `${input.recordedOn}T00:00:00.000Z` : '';
   const scanners: RunScanner[] = population.artifact.scanners.map(s => ({
-    id: s.id, name: s.id, version: s.version, mode: s.mode, status: s.status, observations: [],
+    id: s.id, name: s.id, version: s.version, mode: s.mode, status: s.status,
+    observations: [{ source: 'official' as const, observedAt, sourceRunId: population.artifact.semanticDigest }],
     rows: new Map<string, RowResult>(s.status === 'complete' ? population.cases.flatMap(c => {
       const row = rowOf(c.results.find(r => r.scanner === s.id));
       return row ? [[c.id, row] as const] : [];
@@ -156,8 +159,14 @@ export function bridgeQualificationView(view: QualificationView, input: BridgeIn
     scanners: population.artifact.scanners.map(s => ({ id: s.id, name: s.id, version: s.version, mode: s.mode, status: s.status, completeSuites: s.status === 'complete' ? categories.length : 0 })),
     overall, byDetector,
   } as RunSummary;
+  const official: OfficialRun = {
+    population: population.population, denominator: population.denominator, role: population.role, caseCount: population.cases.length,
+    semanticDigest: population.artifact.semanticDigest, artifactDigest: population.artifact.artifactDigest,
+    engine: `${population.artifact.engine.name} ${population.artifact.engine.version}`, evidenceTag: population.artifact.evidence.release?.tag ?? null, recordedOn: input.recordedOn,
+    scanners: population.artifact.scanners.map(s => ({ id: s.id, version: s.version, mode: s.mode, build: s.build, configurationHash: s.configurationHash, status: s.status })),
+  };
   const run: MeasuredRun = {
-    state: 'measured', runId: population.artifact.semanticDigest, generatedAt: summary.generatedAt, accountingVersion: ACCOUNTING_VERSION,
+    state: 'measured', official, runId: population.artifact.semanticDigest, generatedAt: summary.generatedAt, accountingVersion: ACCOUNTING_VERSION,
     mode: 'published', productVersion: product?.version ?? null, summary, scanners, productRows: scanners.find(s => s.id === 'redact-secret')?.rows ?? new Map(),
     hosts: [], revision: null, dirty: null, excludedSuites: [], staleSuites: [], suiteCount: categories.length,
   };

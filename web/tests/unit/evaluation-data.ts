@@ -3,7 +3,7 @@
  * evaluation resolver and page tests. Every id, count and version here is made up: a test asserts what the
  * resolver derives from THESE rows, never a figure the committed ledger or the run holds.
  */
-import type { AssertionStatus, EvaluationAssertion, EvaluationCase, EvaluationReport, EvaluationVariant, QualificationEvidence } from '../../../src/evaluation-types';
+import type { AssertionStatus, EvaluationAssertion, EvaluationCase, EvaluationReport, EvaluationVariant, QualificationEvidence } from '../../../benchmarks/shared/evaluation-types.ts';
 
 const variant = (id: string, over: Partial<EvaluationVariant> = {}): EvaluationVariant => ({
   id, kind: 'must-redact', tier: 'T1', strategy: 'authored', operator: 'identity', property: '', relation: '', expectationEffect: '', contractMatch: null, ...over,

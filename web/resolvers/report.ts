@@ -344,7 +344,9 @@ function peerSource(peers: RunScanner[]): string {
   const observations = peers.flatMap(p => p.observations);
   const snapshots = [...new Set(observations.filter(o => o.source === 'snapshot').map(o => isoDate(o.observedAt)))].sort();
   const fresh = [...new Set(observations.filter(o => o.source === 'fresh').map(o => isoDate(o.observedAt)))].sort();
+  const official = observations.filter(o => o.source === 'official');
   const parts: string[] = [];
+  if (official.length) parts.push(`Observed once each, in the official run ${[...new Set(official.map(o => o.sourceRunId))].map(d => `${d.slice(0, 19)}…`).join(', ')}${official[0].observedAt ? `, recorded ${isoDate(official[0].observedAt)}` : ''}.`);
   if (snapshots.length) parts.push(`Results from ${snapshots.join(', ')}, reused because the inputs have not changed since.`);
   if (fresh.length) parts.push(`Observed in this run on ${fresh.join(', ')}.`);
   if (!parts.length) parts.push('No observation dates are recorded for these scanners.');

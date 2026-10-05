@@ -224,6 +224,8 @@ const cellKey = (level: Level, scope: PairScope): string => `${level}|${scope}`;
 const zero = (n: number): number[] => Array.from({ length: n }, () => 0);
 
 function observedText(scanner: RunScanner): string {
+  const official = scanner.observations.find(o => o.source === 'official');
+  if (official) return `Observed in the official run ${official.sourceRunId.slice(0, 19)}…${official.observedAt ? `, ${isoDate(official.observedAt)}` : ''}`;
   const snapshots = [...new Set(scanner.observations.filter(o => o.source === 'snapshot').map(o => isoDate(o.observedAt)))].sort();
   const fresh = [...new Set(scanner.observations.filter(o => o.source === 'fresh').map(o => isoDate(o.observedAt)))].sort();
   if (snapshots.length) return `Output recorded ${snapshots.join(', ')}, replayed while the inputs are unchanged`;
@@ -487,6 +489,7 @@ function credentialsPanel(ctx: Context, query: PairQuery): PairPanel {
   const sources: AccuracySource[] = [
     { text: `redact-secret ${model.product.version} (${run.mode === 'candidate' ? `candidate build of main ${run.candidate?.sourceCommit.slice(0, 7) ?? ''}, unreleased` : 'published package'}), measured in the same run as this page: ${isoDate(run.generatedAt)}, run ${run.runId}.` },
     { text: `${peer.name} ${peer.version}: ${peer.recorded}.${peer.profile ? ` Version pinned in the repository; its own rules checked against the pinned rule file ${peer.profile.ruleFileVersion}, reviewed ${isoDate(peer.profile.reviewedAt)}.` : ''}` },
+    ...(run.official ? [{ text: `Denominator: ${int(run.official.caseCount)} cases of the ${run.official.denominator} population, from the official ${run.official.engine} run ${run.official.semanticDigest.slice(0, 19)}…${run.official.evidenceTag ? ` on evidence ${run.official.evidenceTag}` : ''}. Every count on this page is of those cases; the regression and policy populations were run separately and are not added in.`, link: { href: '/evaluation/qualification/', label: 'Every population' } }] : []),
     { text: 'Evidence levels and file kinds are the ones on the report. The same rows feed it; this page regroups them by file, where the report counts spans, so a file with several secrets counts once here.', link: { href: '/report/', label: 'Open the report' } },
   ];
 

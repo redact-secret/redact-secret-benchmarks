@@ -1,7 +1,7 @@
 /**
  * The evaluation run, read from what `npm run eval:discover` and `npm run eval:publish` write to
  * `public/results/evaluation-v1.json`. The existing site fetches the same file in the browser and
- * re-validates it with `evaluationProblem` (src/evaluation-model.ts); here it is read at build time and
+ * re-validates it with `evaluationProblem` (benchmarks/shared/evaluation-model.ts); here it is read at build time and
  * checked with that same function, against the corpus hashes of this checkout, before any page may use a
  * number. A report that fails is not shown and the reason is kept, never a partial read.
  *
@@ -14,8 +14,8 @@
  */
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { evaluationProblem } from '../../src/evaluation-model';
-import type { EvaluationReport, QualificationEvidence } from '../../src/evaluation-types';
+import { evaluationProblem } from '../../benchmarks/shared/evaluation-model.ts';
+import type { EvaluationReport, QualificationEvidence } from '../../benchmarks/shared/evaluation-types.ts';
 import { loadCatalogSources } from './catalog';
 import { once, readJsonIfPresent, REPO_ROOT } from './repo';
 

@@ -24,12 +24,12 @@ async function service(options: { dir: string; root?: string; contract?: string 
   vi.resetModules();
   vi.stubEnv('WEB_REPO_ROOT', options.root ?? REAL_ROOT);
   vi.stubEnv('WEB_RESULTS_DIR', options.dir);
-  if (options.contract !== undefined) vi.doMock('../../../src/evaluation-model', () => ({ evaluationProblem: () => options.contract }));
+  if (options.contract !== undefined) vi.doMock('../../../benchmarks/shared/evaluation-model.ts', () => ({ evaluationProblem: () => options.contract }));
   return import('../../services/evaluation');
 }
 
 beforeEach(() => { vi.unstubAllEnvs(); });
-afterEach(() => { vi.doUnmock('../../../src/evaluation-model'); for (const dir of dirs.splice(0)) rmSync(dir, { recursive: true, force: true }); });
+afterEach(() => { vi.doUnmock('../../../benchmarks/shared/evaluation-model.ts'); for (const dir of dirs.splice(0)) rmSync(dir, { recursive: true, force: true }); });
 
 describe('loadEvaluation', () => {
   test('a results directory with no evaluation is not published, with the file named', async () => {

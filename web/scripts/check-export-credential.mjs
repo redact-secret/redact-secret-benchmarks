@@ -5,8 +5,8 @@
  * (`public/results/qualification-v1.json`), the taxonomy and the detector registry, independently of web/services and web/resolvers,
  * and compared with what the built pages and data files say:
  *
- *  - every report page carries the stamp that names the pipeline (new, the authority) and the comparison pages carry the legacy one
- *    (oracle): no number is shown without the name of the pipeline behind it;
+ *  - every report page carries the stamp that names the pipeline (new, the authority) and the comparison page carries it too (#658)
+ *    : no number is shown without the name of the pipeline behind it;
  *  - the hub, the level, family, provider, detector and suite pages state the counts recounted from the report population's cases
  *    (the population the population policy gives the floors and gates), and the three answers state the leaked, flagged and
  *    discriminated figures recounted from each case's own row;
@@ -87,10 +87,10 @@ if (!view) {
       if (!t.includes(report.artifact.evidence.release.tag)) fail('/report/ does not name the evidence release');
     }
   }
+  // The comparison page is built from the same official run (#658): the new pipeline, the authority; check-export-comparison.mjs recounts its figures.
   for (const route of ['comparison/accuracy']) {
     const html = await readHtml(route);
-    const stamp = html && stampOf(html);
-    if (html && stamp && (stamp.pipeline !== 'legacy' || stamp.role !== 'oracle')) fail(`/${route}/ is stamped ${stamp.pipeline}/${stamp.role}; a page on the legacy files is the oracle`);
+    if (html) stampProblem(route, html, { pipeline: 'new', role: 'authority' });
   }
 
   // ---- The hub: counts and the three answers, recounted from the cases -------------------------------------------------

@@ -3,7 +3,7 @@
  * corpora. This is the same catalog the existing site builds in `src/catalog.ts`;
  * that module reads the corpora through Vite's `import.meta.glob` and cannot run
  * under Next, so the files are read here and handed to the same `buildCatalog`
- * (src/model.mjs) and the same index validator (benchmarks/lib/fixture-index.ts).
+ * (benchmarks/shared/report-model.mjs) and the same index validator (benchmarks/lib/fixture-index.ts).
  * Nothing is re-scored or re-classified.
  *
  * The generated corpora (`fixtures/generated/*.json`) are materialised by
@@ -11,7 +11,7 @@
  * without them fails here with the missing file's name rather than rendering a
  * partial catalog.
  */
-import { buildCatalog } from '../../src/model.mjs';
+import { buildCatalog } from '../../benchmarks/shared/report-model.mjs';
 import { fixtureIndexProblems, type FixtureIndex } from '../../benchmarks/lib/fixture-index';
 import type { Family, Provider, Taxonomy } from '../../benchmarks/support/taxonomy';
 import { readFile } from 'node:fs/promises';

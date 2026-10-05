@@ -24,7 +24,7 @@ const short = (digest: string): string => `${digest.slice(0, 19)}…`;
 /**
  * The stamp for a page: which pipeline its numbers come from and whether that pipeline is the authority for credential
  * qualification. `builtFrom` is the pipeline the page was built from; it differs from the authority only for a page that stays on the
- * legacy files as the oracle (the comparison pages).
+ * legacy files as the oracle (no page does since #658; the parameter stays for a page that must).
  */
 /** The owner's words (decision 2026-10-04-accept-snapshot-2026-10-04-3): the count comes from the data, the label and the note are fixed. */
 export function resolveReviewDisclosure(data: ReviewDisclosureData | undefined): ReviewDisclosureProps | undefined {

@@ -1,9 +1,9 @@
 import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { evaluationProblem } from '../src/evaluation-model.ts';
-import { supportMatrixProblem } from '../src/support-model.ts';
-import { evaluationDomains, evaluationDomainsProblem } from '../src/evaluation-domains.ts';
+import { evaluationProblem } from '../benchmarks/shared/evaluation-model.ts';
+import { supportMatrixProblem } from '../benchmarks/shared/support-model.ts';
+import { evaluationDomains, evaluationDomainsProblem } from '../benchmarks/shared/evaluation-domains.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const options = Object.fromEntries(process.argv.slice(2).map(arg => {

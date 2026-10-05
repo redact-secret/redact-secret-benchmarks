@@ -6,7 +6,8 @@ name: Adopt evidence snapshot
 # staging, production and rollback are in docs/specs/evidence-adoption.md. Manual only; releasing a snapshot stays manual.
 #
 # Safety: dispatch only (never pull_request_target); inputs reach the shell only through env and are pattern-checked first; the
-# preflight job is contents: read; the propose job alone gets contents/pull-requests: write, and only after the preflight passed;
+# preflight job is contents: read; the propose job alone gets contents/pull-requests: write (and actions: write, only to dispatch validate.yml on the branch it
+# pushed, because a workflow-token pull request starts no checks), and only after the preflight passed;
 # the engine token is a GitHub App token for credential-eval with contents: read; one run at a time; no step echoes a secret.
 on:
   workflow_dispatch:
@@ -140,6 +141,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
+      actions: write # only to dispatch validate.yml on the candidate branch (a workflow-token push or pull request starts no checks)
     env:
       TAG: ${{ inputs.tag }}
       BRANCH: ${{ needs.preflight.outputs.branch }}
@@ -183,6 +185,10 @@ jobs:
             cat "$RUNNER_TEMP/candidate/adoption-out/summary.md"
             echo
             echo "This draft records a candidate only. Active pins, official runs and the authority file are unchanged, so the gates stay green and the old public numbers stay in force. Next: docs/specs/evidence-adoption.md (replay, owner acceptance, staging, production)."
-            echo "A pull request opened with the workflow token does not start the repository checks: push an empty commit or close and reopen it to run them."
+            echo "The workflow token starts no pull_request run, so the propose job dispatched validate.yml on this branch: the required validate check reports on the head commit (if it did not, push an empty commit)."
           } > "$RUNNER_TEMP/pr-body.md"
           gh pr create --draft --base develop --head "$BRANCH" --title "chore(evidence): adoption candidate ${TAG}" --body-file "$RUNNER_TEMP/pr-body.md"
+          # GitHub starts no pull_request or push run for a commit or pull request made with the workflow token, but it does start a workflow_dispatch run. Dispatching validate.yml on the branch
+          # puts the required `validate` check on the head commit, so the draft is reviewable without a manual empty commit (#690). If the dispatch is refused the pull request stays and says so.
+          gh workflow run validate.yml --ref "$BRANCH" || echo "::warning::validate.yml could not be dispatched on ${BRANCH}; push an empty commit or close and reopen the pull request to run the checks"
+          echo "Dispatched validate.yml on ${BRANCH}: the required validate check will report on the draft's head commit." >> "$GITHUB_STEP_SUMMARY"

@@ -149,7 +149,11 @@ test('the adoption workflow is dispatch-only, least-privilege, and opens a pull 
   assert.deepEqual(Object.keys(wf.on), ['workflow_dispatch']);
   assert.deepEqual(wf.permissions, {});
   assert.deepEqual(wf.jobs.preflight.permissions, { contents: 'read' });
-  assert.deepEqual(wf.jobs.propose.permissions, { contents: 'write', 'pull-requests': 'write' });
+  assert.deepEqual(wf.jobs.propose.permissions, { contents: 'write', 'pull-requests': 'write', actions: 'write' });
+  // A workflow-token pull request starts no pull_request run (observed on #727); the propose job dispatches validate.yml, which accepts a dispatch, so the required check reports on the head commit.
+  const open = wf.jobs.propose.steps.find(s => /gh pr create/.test(s.run ?? ''));
+  assert.match(open.run, /gh workflow run validate\.yml --ref "\$BRANCH"/);
+  assert.ok('workflow_dispatch' in YAML.parse(await text('.github/workflows/validate.yml')).on);
   assert.match(wf.jobs.propose.if, /outcome == 'ready'/);
   assert.equal(wf.jobs.propose.needs, 'preflight');
   assert.equal(wf.concurrency['cancel-in-progress'], false);

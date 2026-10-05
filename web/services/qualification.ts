@@ -21,6 +21,7 @@ import { QUALIFICATION_COMMANDS, QUALIFICATION_FILE, QUALIFICATION_SCHEMA } from
 import type { ProfileEffect, ScopeEntry } from '../../benchmarks/qualification/scope-accounting';
 import { once, readJson, REPO_ROOT } from './repo';
 
+export type { ProfileEffect, ScopeEntry };
 export { QUALIFICATION_COMMANDS, QUALIFICATION_FILE, QUALIFICATION_SCHEMA };
 
 export type SupportStatusWord = 'stable' | 'provisional' | 'pending' | 'unsupported';

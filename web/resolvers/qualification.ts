@@ -5,8 +5,7 @@
  */
 import type { ScopeAccountingProps, ScopeRow, ProfileEffectRow, QualificationOverviewProps, QualificationFamilyProps, QualificationUnavailableProps, StatusWord, CountsRow, FamilyRow, GapRow } from '../components/qualification/types';
 import type { DeclaredConfiguration } from '../services/peers';
-import type { ScopeEntry } from '../../benchmarks/qualification/scope-accounting';
-import type { FamilyView, PopulationSlice, QualificationLoad, QualificationView, ScannerCounts } from '../services/qualification';
+import type { ScopeEntry, FamilyView, PopulationSlice, QualificationLoad, QualificationView, ScannerCounts } from '../services/qualification';
 import { QUALIFICATION_COMMANDS, QUALIFICATION_FILE } from '../lib/qualification';
 import { int } from './format';
 

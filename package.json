@@ -76,6 +76,7 @@
     "official-runs:check": "node --import tsx scripts/check-official-runs.mjs",
     "authority:check": "node --import tsx scripts/check-qualification-authority.mjs",
     "pii:migration:check": "node scripts/check-pii-eval-migration.mjs",
+    "pii:population:dual-run": "node --import tsx scripts/run-pii-population-dual-run.mjs",
     "pii:artifact:check": "node benchmarks/evaluation/domains/pii/pii-eval-artifact-consumer.mjs --pins tests/fixtures/pii-eval/pins.json tests/fixtures/pii-eval/population-a-v2.public-synthetic-artifact.json tests/fixtures/pii-eval/population-b-v1.public-synthetic-artifact.json",
     "pii:artifact-source:check": "node scripts/fetch-pii-eval-public-synthetic.mjs check",
     "pii:custodian:check": "node scripts/check-custodian-conformance.mjs",

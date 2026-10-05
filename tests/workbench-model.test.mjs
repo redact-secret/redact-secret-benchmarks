@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { reviewClasses, ledgerClassOf, reviewClassId, ledgerSnippet, reviewLedgerPublicationProblem } from '../src/evaluation-model.ts';
-import { observeReviewEntries, reviewLedgerProblem } from '../benchmarks/engine/review-ledger.ts';
+import { observeReviewEntries, reviewLedgerProblem } from '../benchmarks/evaluation/model/review-ledger.ts';
 import { parseRoute } from '../src/model.mjs';
 import { bindCopy, reviewPage, reviewQueue } from '../src/pages/workbench/review.ts';
 

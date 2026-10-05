@@ -78,22 +78,24 @@ test('every inventory row names an owner, a defined disposition, callers and a r
 
 test('a stale callers cell, an empty prerequisite, an unknown disposition and a missing row are each refused', () => {
   const doc = inventoryDoc();
-  const row = parseInventory(doc).rows.find(r => r.path === 'benchmarks/engine/runner.ts');
+  const row = parseInventory(doc).rows.find(r => r.path === 'benchmarks/evaluation/domains/credential/runner.ts');
   assert.ok(row);
   const tamper = (mutate) => doc.replace(row.line, mutate(row.cells));
   const stale = tamper(c => `| ${[c[0], c[1], c[2], '`scripts/not-a-caller.mjs`', c[4], c[5]].join(' | ')} |`);
-  assert.ok(inventoryProblems(stale, []).some(p => p.startsWith('benchmarks/engine/runner.ts: callers are stale')));
+  assert.ok(inventoryProblems(stale, []).some(p => p.startsWith('benchmarks/evaluation/domains/credential/runner.ts: callers are stale')));
   const empty = tamper(c => `| ${[c[0], c[1], c[2], c[3], c[4], ''].join(' | ')} |`);
   assert.ok(inventoryProblems(empty, []).some(p => p.includes('the removal prerequisite cell is empty')));
   const unknown = tamper(c => `| ${[c[0], c[1], 'delete-it', c[3], c[4], c[5]].join(' | ')} |`);
   assert.ok(inventoryProblems(unknown, []).some(p => p.includes('"delete-it" is not one of')));
-  assert.ok(inventoryProblems(doc, [...trackedFiles(), 'benchmarks/engine/not-in-the-inventory.ts']).some(p => p === 'benchmarks/engine/not-in-the-inventory.ts: has no row in the inventory'));
+  assert.ok(inventoryProblems(doc, [...trackedFiles(), 'benchmarks/evaluation/domains/credential/not-in-the-inventory.ts']).some(p => p === 'benchmarks/evaluation/domains/credential/not-in-the-inventory.ts: has no row in the inventory'));
 });
 
-test('derived-inputs reaches the legacy engine only through legacy-review, which the caller lister sees', () => {
-  const source = readFileSync(new URL('../benchmarks/qualification/derived-inputs.ts', import.meta.url), 'utf8');
-  assert.doesNotMatch(source, /engine\/|credential\/contract|peer-observations/);
-  assert.ok(callersOf('benchmarks/engine/runner.ts').some(c => c.file === 'benchmarks/qualification/legacy-review.ts'), 'the literal dynamic import is visible to the lister');
+test('the re-key derivation reads the frozen legacy review queue and reaches no part of the legacy engine (#660)', () => {
+  for (const file of ['benchmarks/qualification/derived-inputs.ts', 'benchmarks/qualification/legacy-review.ts']) {
+    const source = readFileSync(new URL(`../${file}`, import.meta.url), 'utf8');
+    assert.doesNotMatch(source, /engine\/|credential\/contract|peer-observations|runEvaluation/, file);
+  }
+  assert.equal(callersOf('benchmarks/evaluation/domains/credential/runner.ts').some(c => c.file === 'benchmarks/qualification/legacy-review.ts'), false);
 });
 
 test('the protected holdouts import neither the credential methods nor the operators', () => {

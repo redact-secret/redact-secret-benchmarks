@@ -66,10 +66,10 @@ benchmarks/detectors.json      Core detector taxonomy snapshot
 benchmarks/detector-finding-types.json Finding types per detector, from the core inventory (matrix finding-type key)
 benchmarks/fixture-detectors.json Explicit fixture-to-detector assignments
 benchmarks/run.ts             Materialization, execution, provenance, atomic reports
-benchmarks/lib/lattice.ts     Per-span outcome lattice, byte accounting, v1.0 group aggregation (frozen scorer)
-benchmarks/lib/accounting.ts  Engine v1.1 accounting: Wilson bounds, floors, measurable share, twin coverage, dual-scorer delta
+benchmarks/scoring/lattice.ts Per-span outcome lattice, byte accounting, v1.0 group aggregation (frozen scorer)
+benchmarks/accounting/index.ts Engine v1.1 accounting: Wilson bounds, floors, measurable share, twin coverage, dual-scorer delta
 benchmarks/review-ledger.json Reviewed state of queued disagreements; written by review, never by the engine
-benchmarks/lib/scoring.ts     Corpus schema 2 validation (roles, envelopes, twins) and row scoring
+benchmarks/scoring/scoring.ts Corpus schema 2 validation (roles, envelopes, twins) and row scoring
 benchmarks/lib/twin-probe.ts  Per-family twin probe: discriminated, not discriminated, un-probeable
 benchmarks/lib/assessment.ts  Kinds, tiers, provider-first contracts and classification
 benchmarks/lib/beta8/          Per-issue contracts, arrival families and profiles: Beta.8 (#207–#212), Beta.10 (#384a–e) and Beta.11 (#434a–g, Tier B #436a–f) and Beta.12 (#464a–f, #528a–j, #1012a–e; docs/specs/beta8-evidence.md)
@@ -96,7 +96,7 @@ fixtures/<category>/          Versioned corpus and independent expected ranges
 public/results/<category>.json Generated report per category (gitignored)
 public/results/run.json        Run manifest: run id, suites, scanner versions
 public/results/summary.json    Cross-suite and per-detector groups for the run, accounted once at bench time
-benchmarks/lib/run-summary.ts  Builds summary.json with the same accountGroups that accounts each suite
+benchmarks/evaluation/domains/credential/run-summary.ts  Builds summary.json with the same accountGroups that accounts each suite
 src/main.ts                   Data loading, history routing and report refresh
 src/shell.ts                  Top bar, global search, theme switch, bottom tabs at 360px
 src/tokens.css, tokens.json   Redact Secret design tokens, copied from the design system (a test fails on drift)

@@ -1,4 +1,4 @@
-import type { runEvaluation } from '../../../engine/runner.ts';
+import type { runEvaluation } from './runner.ts';
 import type { EvaluationCase } from '../../model/types.ts';
 import type { EvaluationReport } from '../../../shared/evaluation-types.ts';
 import { evaluationProblem } from '../../../shared/evaluation-model.ts';

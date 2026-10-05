@@ -4,15 +4,15 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { credentialDomain } from '../benchmarks/evaluation/domains/credential/contract.ts';
-import { createMethods } from '../benchmarks/methods/index.ts';
-import { createOperators } from '../benchmarks/operators/index.ts';
-import { loadCases } from '../benchmarks/engine/cases.ts';
+import { createMethods } from '../benchmarks/evaluation/domains/credential/methods/index.ts';
+import { createOperators } from '../benchmarks/evaluation/domains/credential/operators/index.ts';
+import { loadCases } from '../benchmarks/evaluation/domains/credential/cases.ts';
 import { contracts, validateAssessment } from '../benchmarks/lib/assessment.ts';
 import { classifyFamilySupport } from '../benchmarks/support/status.ts';
 import { familyEvidence } from '../benchmarks/support/evidence.ts';
 import { buildSupportMatrix } from '../benchmarks/support/matrix.ts';
-import { generateCase, hash } from '../benchmarks/engine/model.ts';
-import { reviewEntryId } from '../benchmarks/engine/execution.ts';
+import { generateCase, hash } from '../benchmarks/evaluation/model/model.ts';
+import { reviewEntryId } from '../benchmarks/evaluation/domains/credential/execution.ts';
 import { resolveEvaluationDomain, evaluationDomainIds } from '../benchmarks/evaluation/domains/registry.ts';
 import { assembleEvaluationArtifact } from '../benchmarks/evaluation/substrate/result-assembly.ts';
 
@@ -80,11 +80,7 @@ test('credential observation normalization preserves the existing family allowli
 });
 
 test('legacy module paths are re-export shims and production entrypoints select the domain contract', async () => {
-  const shims = [
-    'benchmarks/lib/assessment.ts', 'benchmarks/engine/cases.ts', 'benchmarks/engine/assertions.ts', 'benchmarks/engine/reporting.ts',
-    ...['benign','common','differential','holdout','index','metamorphic','mutation','twin'].map(name => `benchmarks/methods/${name}.ts`),
-    ...['authored-twin','context','index','lexical','structural'].map(name => `benchmarks/operators/${name}.ts`),
-  ];
+  const shims = ['benchmarks/lib/assessment.ts'];
   for (const file of shims) {
     const source = await text(file);
     assert.match(source, /export \* from ['"][^'"]*evaluation\/domains\/credential\//, file);

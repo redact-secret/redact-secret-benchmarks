@@ -24,7 +24,22 @@
           "required": ["exitCondition", "decision"],
           "properties": {
             "exitCondition": { "type": "string", "minLength": 20 },
-            "decision": { "$ref": "#/$defs/decisionPath" }
+            "decision": { "$ref": "#/$defs/decisionPath" },
+            "exit": {
+              "description": "The recorded oracle exit (#660): the owner's decision that the exit condition holds. A record, not a switch: it does not change `authority` and removes nothing by itself.",
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["recordedOn", "recordedBy", "release", "parityReport", "rollbackRehearsal", "callerInventory", "decision"],
+              "properties": {
+                "recordedOn": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+                "recordedBy": { "type": "string", "minLength": 1 },
+                "release": { "type": "string", "pattern": "^@[a-z0-9-]+/[a-z0-9-]+@\\d+\\.\\d+\\.\\d+(-[0-9A-Za-z.-]+)?$" },
+                "parityReport": { "$ref": "#/$defs/reportPath" },
+                "rollbackRehearsal": { "type": "string", "pattern": "^docs/[A-Za-z0-9/._-]+\\.md#[a-z0-9-]+$" },
+                "callerInventory": { "const": "npm run legacy-inventory:check" },
+                "decision": { "$ref": "#/$defs/decisionPath" }
+              }
+            }
           }
         }
       }

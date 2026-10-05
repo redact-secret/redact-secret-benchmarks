@@ -39,11 +39,11 @@ const corpusOf = (artifact: RunArtifact) => artifact.manifest.evidence.corpus_di
 
 /** The review-ledger re-key of a methods artifact over the snapshot it ran on. `run` names the methods run in the re-key (the registry id, or `replay` for an unrecorded run). */
 export async function deriveLedgerRekey(snapshot: SnapshotLike, methods: RunArtifact, semanticDigest: string, run: string, source: LegacyReviewSource = legacyReview): Promise<{ map: LedgerRekey; ledger: unknown }> {
-  const { ledger, legacyQueue, joined } = await source(snapshot);
+  const { ledger, legacyQueue, legacyOtherMethods, joined } = await source(snapshot);
   const map = buildLedgerRekey({
     snapshot: { corpusDigest: snapshot.identity.corpus_digest, cases: snapshot.cases.length },
     methodsRun: { run, semanticDigest, reviewQueue: methods.review_queue as never, variants: (methods as unknown as { variants: never }).variants },
-    legacyQueue, joined, ledger,
+    legacyQueue, legacyOtherMethods, joined, ledger,
   });
   const problems = ledgerRekeyProblems(map, ledger);
   if (problems.length) throw new Error(`The derived re-key is invalid:\n  - ${problems.join('\n  - ')}`);

@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
-import { hash } from '../benchmarks/engine/model.ts';
-import { validateEvidence } from '../benchmarks/engine/evidence.ts';
+import { hash } from '../benchmarks/evaluation/model/model.ts';
+import { validateEvidence } from '../benchmarks/evaluation/evidence.ts';
 
 const suite = JSON.parse(await readFile(new URL('../qualification/suite-v1.json', import.meta.url)));
 const candidate = { sourceHash: 'a'.repeat(64), lockHash: 'b'.repeat(64), candidateArtifactHash: 'c'.repeat(64) };

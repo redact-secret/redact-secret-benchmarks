@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFile, mkdtemp, writeFile, rm, mkdir } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { validateCorpus, score } from "../benchmarks/lib/scoring.ts";
+import { validateCorpus, score } from "../benchmarks/scoring/scoring.ts";
 import { locate, scanners, command } from "../scanners/index.mjs";
 
 const fixture = {

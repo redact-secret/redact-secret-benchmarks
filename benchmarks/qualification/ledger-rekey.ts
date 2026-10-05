@@ -72,19 +72,21 @@ export interface RekeyInput {
   methodsRun: { run: string; semanticDigest: string; reviewQueue: CanonicalOccurrence[]; variants: CanonicalVariant[] };
   /** The legacy review queue of the development partition (`runEvaluation` reviewQueue), with the evidence of each occurrence. */
   legacyQueue: LegacyOccurrence[];
+  /** Counts of legacy queue entries of other methods that are not carried in `legacyQueue` (the frozen queue keeps only the differential entries, #660). */
+  legacyOtherMethods?: Record<string, number>;
   /** Legacy fixture slug (`<category>--<fixture id>`) to the canonical case id it joins to, one to one. */
   joined: Map<string, string>;
   ledger: ReviewLedger;
 }
 
 /** Map the legacy decisions onto the canonical occurrences. Pure: the same inputs give the same mapping, whatever their order. */
-export function buildLedgerRekey({ snapshot, methodsRun, legacyQueue, joined, ledger }: RekeyInput): LedgerRekey {
+export function buildLedgerRekey({ snapshot, methodsRun, legacyQueue, legacyOtherMethods, joined, ledger }: RekeyInput): LedgerRekey {
   const suffix = `--${METHOD}`;
   const canonicalCases = new Set(joined.values());
   const contentOfVariant = new Map(methodsRun.variants.map(v => [`${v.case_id}\u0000${v.variant}`, digestHex(v.content_digest)]));
 
   const legacyKeys = new Map<string, LegacyOccurrence[]>();
-  const legacyByMethod: Record<string, number> = {};
+  const legacyByMethod: Record<string, number> = { ...legacyOtherMethods };
   const legacyDifferential: LegacyOccurrence[] = [];
   for (const q of legacyQueue) {
     if (q.method !== METHOD) { legacyByMethod[q.method] = (legacyByMethod[q.method] ?? 0) + 1; continue; }

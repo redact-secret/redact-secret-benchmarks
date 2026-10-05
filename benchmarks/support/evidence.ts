@@ -7,7 +7,7 @@ import { policyBehaviorAggregate, type PolicyHoldoutReceipt } from './policy-qua
 
 /**
  * Real `FamilySupportEvidence` per family (issue #504, A3). Aggregates
- * `benchmarks/engine/reporting.ts`'s `byDetector` summaries and the checked-in
+ * `benchmarks/evaluation/domains/credential/reporting.ts`'s `byDetector` summaries and the checked-in
  * review ledger; `classifyFamilySupport` (#503) turns this into a status.
  * See docs/specs/support-status.md.
  */

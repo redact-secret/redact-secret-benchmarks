@@ -12,7 +12,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { scanners as available } from '../scanners/index.mjs';
 import { credentialDomain } from '../benchmarks/evaluation/domains/credential/contract.ts';
-import { runEvaluation } from '../benchmarks/engine/runner.ts';
+import { runEvaluation } from '../benchmarks/evaluation/domains/credential/runner.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const ledgerPath = path.join(root, 'benchmarks/review-ledger.json');

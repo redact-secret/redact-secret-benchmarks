@@ -5,7 +5,16 @@
     "role": "oracle",
     "oracle": {
       "exitCondition": "At least one further published release is qualified through the new path and compared with the legacy path (parity report regenerated, 0 unexplained), the rollback has been rehearsed against that release, and a removal PR lists each legacy file's callers first.",
-      "decision": "docs/decisions/2026-10-02-switch-credential-qualification-authority-to-the-new-path.md"
+      "decision": "docs/decisions/2026-10-02-switch-credential-qualification-authority-to-the-new-path.md",
+      "exit": {
+        "recordedOn": "2026-10-05",
+        "recordedBy": "Milo Kang",
+        "release": "@redact-secret/core@0.1.0-beta.13",
+        "parityReport": "docs/generated/qualification-parity.json",
+        "rollbackRehearsal": "docs/specs/qualification-cutover.md#rehearsal-of-the-rollback-against-beta13-2026-10-05-660",
+        "callerInventory": "npm run legacy-inventory:check",
+        "decision": "docs/decisions/2026-10-05-record-the-oracle-exit-and-retire-the-legacy-credential-evaluator.md"
+      }
     }
   },
   "new": {

@@ -53,7 +53,7 @@ const commitment = (value: unknown) => {
   return hash(JSON.stringify(canonical(projection)));
 };
 
-/** The two credential evidence shapes bound here (`benchmarks/evaluation/domains/credential/evidence.ts`); narrowed to what identity binding needs. */
+/** The two credential evidence shapes bound here (`benchmarks/evaluation/evidence.ts`); narrowed to what identity binding needs. */
 export interface CredentialCandidateEvidence {
   schemaVersion: 1; reportType: 'candidate'; status: 'complete' | 'incomplete';
   candidate: { sourceCommit: string; sourceState: string; artifactSha256: string; expectedArtifactSha256: string | null };

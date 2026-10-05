@@ -2,14 +2,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { aggregateGroups, scoreRow, isLeaked } from '../benchmarks/lib/lattice.ts';
-import { accountGroups, accountingDelta, accountCounts, unresolvedGroups, assertComparable, validateAccounting, wilson, proportion, ratio } from '../benchmarks/lib/accounting.ts';
-import { createMethods } from '../benchmarks/methods/index.ts';
-import { createOperators } from '../benchmarks/operators/index.ts';
-import { loadCases } from '../benchmarks/engine/cases.ts';
-import { runEvaluation, exitCode } from '../benchmarks/engine/runner.ts';
-import { reviewState } from '../benchmarks/engine/execution.ts';
-import { completenessReasons } from '../benchmarks/engine/evidence.ts';
+import { aggregateGroups, scoreRow, isLeaked } from '../benchmarks/scoring/lattice.ts';
+import { accountGroups, accountingDelta, accountCounts, unresolvedGroups, assertComparable, validateAccounting, wilson, proportion, ratio } from '../benchmarks/accounting/index.ts';
+import { createMethods } from '../benchmarks/evaluation/domains/credential/methods/index.ts';
+import { createOperators } from '../benchmarks/evaluation/domains/credential/operators/index.ts';
+import { loadCases } from '../benchmarks/evaluation/domains/credential/cases.ts';
+import { runEvaluation, exitCode } from '../benchmarks/evaluation/domains/credential/runner.ts';
+import { reviewState } from '../benchmarks/evaluation/domains/credential/execution.ts';
+import { completenessReasons } from '../benchmarks/evaluation/evidence.ts';
 
 const suite = JSON.parse(await readFile(new URL('../qualification/suite-v1.json', import.meta.url)));
 const config = validateAccounting(suite.accounting);

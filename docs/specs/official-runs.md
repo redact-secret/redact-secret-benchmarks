@@ -82,6 +82,16 @@ artifact, its run record and the inputs are uploaded as a build artifact. A job 
 The public job runs the driver a second time with `--methods` (writing `<out>/methods/`); the view job lays the artifacts out as
 `<dir>/<population>/artifact.json` and `<dir>/public-evidence-snapshot/methods/artifact.json`.
 
+**Cost-first execution (#707).** Each job appends per-stage timings (`scripts/ci-stage.sh`, rendered by
+`scripts/stage-timing-summary.mjs`) to its job summary, with the engine build cache status and the artifact name. The engine build is
+cached by runner OS/arch, release profile, `Cargo.lock`, toolchain file and engine tag; a hit saves dependency compilation only, and the
+driver still checks the engine commit, version and protocol. The floors job uploads its plain artifact as `early-plain-<population>` (14 days,
+never read by the view) before the slow methods run, so a slow or failing peer cannot hide it; the final `official-run-<population>` upload is
+unchanged and a failed methods step still leaves the plain evidence. Peer and methods sharding into separate jobs, and reuse of successful
+measurement receipts on retry (distinct from the view-only `reuse_run_id`), are not done: each fresh runner repeats provisioning and build
+overhead, so they wait for a measured runner-minute and critical-path comparison from these summaries (#709 owns the accuracy/performance
+split).
+
 Locally (verification): build the engine at the pinned tag, put pinned `trufflehog` and `gitleaks` first on `PATH`
 (`node scripts/provision-official-peers.mjs --platform darwin-arm64 --out <dir>`), then run the driver. TruffleHog
 self-updates and a patch bump re-keys the ledger, so `trufflehog --version` must print `3.97.4` in the exact shell that

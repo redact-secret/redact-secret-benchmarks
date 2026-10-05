@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // `node scripts/measure-batch1.mjs --label <published|candidate> --out <file> [--node-root D] [--wasm-dir D]
-// [--python P] [--cli B]` (#717). Scans the focused Batch 1 corpus through every supported surface the given
+// [--python P] [--cli B] [--corpus <module>]` (#717, #739). Scans the focused Batch 1 corpus through every supported surface the given
 // engine provides, whole and streamed, and records the per-case observations with UTF-8 byte offsets. It records
 // no matched text and decides nothing; scoring is benchmarks/batch1/score.mjs.
 import { execFileSync, spawn } from 'node:child_process';
@@ -10,9 +10,10 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
-import { cases, corpusDigest, CORPUS_VERSION } from '../benchmarks/batch1/corpus.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
+// The corpus module is chosen by `--corpus` (default: the Batch 1 corpus, so Batch 1 runs are unchanged).
+let cases;
 const CHUNK = 7;
 const LIMITS = { maxInputBytes: 1_000_000, maxBufferedBytes: 32_896, maxTokenBytes: 8_192, maxMultilineBytes: 32_768 };
 const bytes = (text, index) => Buffer.byteLength(text.slice(0, index));
@@ -89,7 +90,10 @@ async function cliSurface(binary, scratch) {
   return { version, rangeUnit: 'utf8-bytes', cases: out };
 }
 
-const { values } = parseArgs({ options: { label: { type: 'string' }, out: { type: 'string' }, 'node-root': { type: 'string' }, 'wasm-dir': { type: 'string' }, python: { type: 'string' }, cli: { type: 'string' }, 'source-commit': { type: 'string' } } });
+const { values } = parseArgs({ options: { label: { type: 'string' }, out: { type: 'string' }, 'node-root': { type: 'string' }, 'wasm-dir': { type: 'string' }, python: { type: 'string' }, cli: { type: 'string' }, 'source-commit': { type: 'string' }, corpus: { type: 'string' } } });
+const corpusModule = await import(pathToFileURL(path.resolve(here, values.corpus ?? '../benchmarks/batch1/corpus.mjs')).href);
+cases = corpusModule.cases;
+const { corpusDigest, CORPUS_VERSION } = corpusModule;
 if (!values.label || !values.out) { console.error('usage: measure-batch1.mjs --label <published|candidate> --out <file> [--node-root D] [--wasm-dir D] [--python P] [--cli B]'); process.exit(2); }
 const scratch = mkdtempSync(path.join(tmpdir(), 'batch1-'));
 try {
@@ -99,8 +103,8 @@ try {
   if (values.python) surfaces.python = pythonSurface(values.python, scratch);
   if (values.cli) surfaces.cli = await cliSurface(values.cli, scratch);
   const record = {
-    schema: 'batch1-observations-v1',
-    issue: 717,
+    schema: corpusModule.SCHEMA ?? 'batch1-observations-v1',
+    issue: corpusModule.ISSUE ?? 717,
     corpus: { version: CORPUS_VERSION, sha256: corpusDigest(), cases: cases.length },
     label: values.label,
     sourceCommit: values['source-commit'] ?? null,

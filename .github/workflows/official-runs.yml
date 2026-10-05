@@ -43,6 +43,11 @@ on:
         required: false
         default: ''
         type: string
+      retry_run_id:
+        description: Retry a failed official or attribution run (#707). The id of an earlier official-runs run of this workflow; each population stage that succeeded there (a plain run, a methods run) reuses its artifact as a receipt instead of repeating the engine runs, after it is verified against the pins of this commit and the same inputs; a stage that failed or is not compatible measures fresh. Exclusive with the other reuse inputs and with diagnostic mode.
+        required: false
+        default: ''
+        type: string
       reuse_candidate_run_id:
         description: Retry the effect report of a candidate replay only (#698). The id of an earlier official-runs run with the same `candidate` whose scanner jobs succeeded; the scanner jobs are skipped and the report is built from that run's candidate-run-* artifacts (and the control of the adoption record). Requires `candidate`; exclusive with reuse_run_id and attribution.
         required: false
@@ -78,9 +83,14 @@ jobs:
       REUSE_RUN_ID: ${{ inputs.reuse_run_id }}
       CANDIDATE: ${{ inputs.candidate }}
       REUSE_CANDIDATE_RUN_ID: ${{ inputs.reuse_candidate_run_id }}
+      RETRY_RUN_ID: ${{ inputs.retry_run_id }}
     steps:
       - id: plan
         run: |
+          if [ -n "$RETRY_RUN_ID" ]; then
+            [[ "$RETRY_RUN_ID" =~ ^[0-9]+$ ]] || { echo "::error::retry_run_id must be a run id"; exit 1; }
+            [ -z "$REUSE_RUN_ID" ] && [ -z "$REUSE_CANDIDATE_RUN_ID" ] && [ "$MODE" != "diagnostic" ] || { echo "::error::retry_run_id is exclusive with reuse_run_id, reuse_candidate_run_id and diagnostic mode"; exit 1; }
+          fi
           if [ "$MODE" = "diagnostic" ]; then
             [ -z "$ATTRIBUTION" ] && [ -z "$REUSE_RUN_ID" ] || { echo "::error::a diagnostic run takes neither attribution nor reuse_run_id"; exit 1; }
             [ -z "$CANDIDATE" ] && [ -z "$REUSE_CANDIDATE_RUN_ID" ] || { echo "::error::a diagnostic run (product only, #705) is not a candidate replay (all scanners against the control, #698): use one input set"; exit 1; }
@@ -95,6 +105,9 @@ jobs:
     needs: plan
     if: ${{ inputs.reuse_run_id == '' && inputs.reuse_candidate_run_id == '' }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read # download the receipts of a retried run (#707)
     timeout-minutes: 180 # two plain and two methods runs; OpenRedaction's methods scan alone takes ~29 min of its 30-min per-scan limit (credential-eval ADR 0004)
     strategy:
       fail-fast: false
@@ -186,6 +199,22 @@ jobs:
       - name: Install the npm scanners from the engine lockfile, without install scripts
         run: npm ci --ignore-scripts --no-audit --no-fund
         working-directory: credential-eval/${{ steps.shim.outputs.dir }}
+      - name: Find the stages of the retried run that succeeded (#707)
+        id: receipts
+        if: ${{ inputs.retry_run_id != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POPULATION: ${{ matrix.population }}
+          RETRY_RUN_ID: ${{ inputs.retry_run_id }}
+        run: node scripts/retry-receipts.mjs --run "$RETRY_RUN_ID" --population "$POPULATION" | tee -a "$GITHUB_OUTPUT"
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        if: ${{ inputs.retry_run_id != '' && (steps.receipts.outputs.plain == 'reuse' || steps.receipts.outputs.methods == 'reuse') }}
+        continue-on-error: true # a missing artifact only means the stage measures fresh
+        with:
+          name: ${{ inputs.attribution != '' && format('attribution-{0}-', inputs.attribution) || 'official-run-' }}${{ matrix.population }}
+          path: receipts-in
+          run-id: ${{ inputs.retry_run_id }}
+          github-token: ${{ github.token }}
       - name: Diagnostic run (product only, exploratory and internal)
         if: ${{ inputs.mode == 'diagnostic' }}
         env:
@@ -206,10 +235,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           POPULATION: ${{ matrix.population }}
+          RECEIPT: ${{ steps.receipts.outputs.plain == 'reuse' && 'receipts-in' || '' }}
         run: >
           scripts/ci-stage.sh "plain run (2 repeats)" -- node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
-          --out "official-out/$POPULATION" --runs 2 ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
+          --out "official-out/$POPULATION" --runs 2 ${RECEIPT:+--reuse-receipt "$RECEIPT"} ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
       - name: Expose the plain artifact before the slow methods run (floors population only)
         if: ${{ !cancelled() && matrix.population == 'public-evidence-snapshot' && inputs.mode != 'diagnostic' }}
         # A methods run takes up to ~29 min per slow peer; the plain evidence is reviewable now. This copy is evidence for people, never an
@@ -232,18 +262,23 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           POPULATION: ${{ matrix.population }}
           NODE_OPTIONS: --max-old-space-size=5120
+          RECEIPT: ${{ steps.receipts.outputs.methods == 'reuse' && 'receipts-in' || '' }}
         run: >
           scripts/ci-stage.sh "methods run (2 repeats)" -- node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
-          --out "official-out/$POPULATION" --runs 2 --methods ${CANDIDATE:+--jobs 2} ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
+          --out "official-out/$POPULATION" --runs 2 --methods ${RECEIPT:+--reuse-receipt "$RECEIPT"} ${CANDIDATE:+--jobs 2} ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
       - name: Job summary with per-stage timings and the artifacts this job uploads
         if: ${{ !cancelled() }}
         env:
           POPULATION: ${{ matrix.population }}
+          RETRY_RUN_ID: ${{ inputs.retry_run_id }}
+          PLAIN_RECEIPT: ${{ steps.receipts.outputs.plain }}
+          METHODS_RECEIPT: ${{ steps.receipts.outputs.methods }}
           ARTIFACT: ${{ inputs.mode == 'diagnostic' && 'diagnostic-' || (inputs.attribution != '' && format('attribution-{0}-', inputs.attribution) || 'official-run-') }}${{ matrix.population }}
         run: >
           node scripts/stage-timing-summary.mjs --timings "$STAGE_TIMINGS" --title "$MODE: $POPULATION"
           --note "Measurements are fresh in this job (no receipt reuse); only the view stage can reuse an earlier run (reuse_run_id)."
+          --note "Retry of run ${RETRY_RUN_ID:-none}: plain receipt ${PLAIN_RECEIPT:-n/a}, methods receipt ${METHODS_RECEIPT:-n/a} (reuse = offered to the driver; the stage timing shows whether the engine ran)."
           --note "Engine build cache: ${{ steps.engine-cache.outputs.cache-hit == 'true' && 'hit' || 'miss' }}. Artifact: $ARTIFACT (this run's Artifacts section)."
           >> "$GITHUB_STEP_SUMMARY"
       - name: Remove the byte copies the checks made

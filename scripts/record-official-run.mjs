@@ -21,6 +21,9 @@ const registryUrl = new URL('../benchmarks/official-runs.json', import.meta.url)
 const text = await readFile(registryUrl, 'utf8');
 const registry = JSON.parse(text);
 const record = JSON.parse(await readFile(file, 'utf8'));
+const { diagnosticRecordProblem } = await import('../benchmarks/qualification/diagnostic-lane.ts');
+const diagnosticProblem = diagnosticRecordProblem(record);
+if (diagnosticProblem) throw new Error(`Refused: ${diagnosticProblem} (#705)`);
 if (record.schema !== 'redact-secret-benchmarks/official-run-record/v1') throw new Error('Not an official run record');
 
 const canonical = Boolean(registry.config.platforms[record.platform]?.canonical);

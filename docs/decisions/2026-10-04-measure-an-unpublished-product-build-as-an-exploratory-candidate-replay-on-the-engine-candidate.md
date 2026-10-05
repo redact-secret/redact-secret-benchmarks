@@ -21,6 +21,8 @@ decided_at: 2026-10-04
 5. **One command for the manual steps.** `scripts/run-candidate-replay.mjs` dispatches, waits, downloads, archives (`candidate-runs-<run id>`, round-trip verified), writes the generated data and the registry receipt and opens the draft pull request; the workflow stays `contents: read`.
 6. **The product's scope is recorded as the product states it.** `scanners/product-scope.json` (#622) restates the product's own out-of-scope decisions at a named product revision, validated like the peer registry, and the scanner page shows them with the revision its detector count was read at.
 
+7. **Beside the diagnostic lane.** The product-only lane of [the diagnostic lane decision](2026-10-04-run-a-product-only-exploratory-diagnostic-lane-beside-the-full-official-run.md) (#705) answers a faster, narrower question; this replay is the full comparative one. They are different `official-runs.yml` inputs and a dispatch takes one (the `plan` job refuses both); neither path can promote anything.
+
 ## Consequences
 
 A fix in an unreleased core build can be measured on the exact corpus and peers before a release, and a release decision sees the effect without a number being restored by it. The first use is core-main-1e45cecf: `docs/generated/evidence-adoption/product-core-main-1e45cecf/`. Spec: `docs/specs/product-candidate-replay.md`.

@@ -4,6 +4,19 @@ How an unpublished product build is measured on the adopted evidence before a re
 [measure an unpublished product build as an exploratory candidate replay](../decisions/2026-10-04-measure-an-unpublished-product-build-as-an-exploratory-candidate-replay-on-the-engine-candidate.md).
 This repository measures and records (the boundary rule): the replay reports an effect and decides nothing.
 
+## Relation to the diagnostic lane (#705)
+
+`official-runs.yml` has two exploratory mechanisms for an unreleased product build, with different questions, and a dispatch takes one of them (the `plan` job refuses both):
+
+| | diagnostic lane (`mode: diagnostic`, #705) | candidate replay (`candidate`, #698) |
+| --- | --- | --- |
+| question | do the product's own findings on the regression and policy populations change, within one product scan | what does the build change on the adopted evidence, against the published control, with every peer unchanged |
+| scanners, methods | the product only; no peers, no methods | all five scanners, plain and methods, two engine runs with equal semantic digests |
+| product build | the registry's pinned candidate | a registered tarball set, byte-verified (`benchmarks/product-candidates.json`) |
+| output | `diagnostic-<population>` artifacts and a summary; never recorded | `candidate-run-<population>` artifacts, the effect report, triage, an archive, the 2x2 on a new snapshot |
+
+Use the lane to iterate on a fix; use the replay for the report a release decision sees. Neither is an accepted run or public evidence. Spec of the lane: [official runs, "The diagnostic lane"](official-runs.md).
+
 ## What is measured
 
 The registered candidate (`benchmarks/product-candidates.json`) on the adoption's engine candidate (`benchmarks/evidence-adoption.json` `engineCandidate`), the accepted evidence, the plain runs of the floors, regression and policy populations and the floors methods run (metamorphic, mutation, differential), all five scanners, the engine's own configuration, linux-x64, two engine runs each with equal semantic digests. The control is the engine candidate's replay of the published build (`engineCandidate.replay.archive`), so the product build is the only difference.

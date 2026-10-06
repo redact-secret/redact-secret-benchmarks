@@ -1,0 +1,163 @@
+{
+ "schema": "groups-cde-report-v1",
+ "headline": {
+  "c": {
+   "published": {
+    "positives": 277,
+    "exact": 197,
+    "fullyCovered": 212,
+    "misses": 65,
+    "pass": 197,
+    "typeOk": 212,
+    "actionOk": 212,
+    "controls": 251,
+    "controlFlagged": 36,
+    "unsupported": 118,
+    "conflict": 0
+   },
+   "candidate": {
+    "positives": 277,
+    "exact": 197,
+    "fullyCovered": 212,
+    "misses": 65,
+    "pass": 197,
+    "typeOk": 212,
+    "actionOk": 212,
+    "controls": 251,
+    "controlFlagged": 36,
+    "unsupported": 118,
+    "conflict": 0
+   }
+  },
+  "d": {
+   "published": {
+    "positives": 219,
+    "exact": 159,
+    "fullyCovered": 180,
+    "misses": 39,
+    "pass": 0,
+    "typeOk": 0,
+    "actionOk": 0,
+    "controls": 351,
+    "controlFlagged": 25,
+    "unsupported": 290,
+    "conflict": 8
+   },
+   "candidate": {
+    "positives": 219,
+    "exact": 181,
+    "fullyCovered": 202,
+    "misses": 17,
+    "pass": 0,
+    "typeOk": 0,
+    "actionOk": 0,
+    "controls": 351,
+    "controlFlagged": 23,
+    "unsupported": 290,
+    "conflict": 8
+   }
+  },
+  "e": {
+   "published": {
+    "positives": 343,
+    "exact": 182,
+    "fullyCovered": 192,
+    "misses": 151,
+    "pass": 0,
+    "typeOk": 0,
+    "actionOk": 0,
+    "controls": 186,
+    "controlFlagged": 2,
+    "unsupported": 234,
+    "conflict": 4
+   },
+   "candidate": {
+    "positives": 343,
+    "exact": 182,
+    "fullyCovered": 192,
+    "misses": 151,
+    "pass": 0,
+    "typeOk": 0,
+    "actionOk": 0,
+    "controls": 186,
+    "controlFlagged": 2,
+    "unsupported": 234,
+    "conflict": 4
+   }
+  }
+ },
+ "parityDivergences": 0,
+ "regressions": 0,
+ "gapGroups": {
+  "G-brace": {
+   "triage": "PRODUCT GAP",
+   "title": "brace template placeholder `{NAME}` reported (span stops before the closing brace)",
+   "cases": 39
+  },
+  "G-angle": {
+   "triage": "PRODUCT GAP",
+   "title": "angle placeholder `<...>` reported",
+   "cases": 1
+  },
+  "G-docmask": {
+   "triage": "PRODUCT GAP",
+   "title": "documented mask/ellipsis/xxx/upper-case-name placeholder reported as a value",
+   "cases": 6
+  },
+  "G-xapikey-clientid": {
+   "triage": "POLICY QUESTION",
+   "title": "`x-api-key` header whose value the evidence names a public client ID (control flagged)",
+   "cases": 6
+  },
+  "G-authcode": {
+   "triage": "CORPUS ERRATUM CANDIDATE",
+   "title": "control carries an OAuth `code=` value; the product reads it as a credential (warn)",
+   "cases": 9
+  },
+  "G-meta-pipe-span": {
+   "triage": "POLICY QUESTION",
+   "title": "Meta `APP_ID|SECRET`: finding covers the whole pipe pair, expectation is the secret half only (over-span, fully covered)",
+   "cases": 36
+  },
+  "G-token-member": {
+   "triage": "PRODUCT GAP",
+   "title": "bare `token` / `tokenKey` JSON member value not read (Contentful CMA PAT, HubSpot private-app token)",
+   "cases": 32
+  },
+  "G-jfrog": {
+   "triage": "PRODUCT GAP",
+   "title": "`X-JFrog-Art-Api` header and `curl -u user:<secret>` password not read (JFrog reference token / API key)",
+   "cases": 73
+  },
+  "G-hapikey": {
+   "triage": "PRODUCT GAP",
+   "title": "HubSpot legacy `hapikey=` query parameter not read",
+   "cases": 32
+  },
+  "G-reddit-token": {
+   "triage": "PRODUCT GAP",
+   "title": "Reddit revoke-form `token=` parameter not read",
+   "cases": 24
+  },
+  "G-reddit-secret": {
+   "triage": "PRODUCT GAP",
+   "title": "Reddit client secret in `-u/--user id:secret` Basic password not read",
+   "cases": 26
+  },
+  "G-zendesk-cred": {
+   "triage": "PRODUCT GAP",
+   "title": "Zendesk `email/token:<token>` credential string: not read in `curl -u`, over-spanned (email included, warn) in JSON/env",
+   "cases": 32
+  },
+  "G-digits24": {
+   "triage": "PRODUCT GAP",
+   "title": "credential-named member/parameter whose value is 24 digits is silent (evidence: flagged by position, not shape)",
+   "cases": 7
+  },
+  "G-elastic-encoded": {
+   "triage": "PRODUCT GAP",
+   "title": "Elastic cross-cluster `encoded` member (base64 `id:key`) not reported; only `api_key` is",
+   "cases": 17
+  }
+ }
+}

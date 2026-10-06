@@ -3,7 +3,7 @@
  * The steps are credential-eval docs/consumers/benchmarks-quickstart.md; the pins are benchmarks/official-runs.json.
  *
  *   node --import tsx scripts/run-official-credential-eval.ts --population <id> --engine-dir <checkout at the pinned tag>
- *     --platform <linux-x64|darwin-arm64> --out <dir> [--runs 2] [--evidence-dir <dir with the public release assets>] [--methods] [--attribution <id> | --candidate <id> [--evidence-tag <tag> --evidence-manifest-digest sha256:<hex>]]
+ *     --platform <linux-x64|darwin-arm64> --out <dir> [--runs 2] [--evidence-dir <dir with the public release assets>] [--methods] [--omit-optional <scanner>] [--attribution <id> | --candidate <id> [--evidence-tag <tag> --evidence-manifest-digest sha256:<hex>]]
  *
  * `--attribution <id>` (#697) makes an ATTRIBUTION run: the same engine, evidence and population, scanning the product build the registry's `attributionRuns[<id>]`
  * names (the previous published release, with the engine's own configuration file and Node shim directory for it, which are always used together). It exists to
@@ -127,7 +127,8 @@ if (evidenceTag && !/^snapshot-\d{4}\.\d{2}\.\d{2}(\.\d+)?$/.test(evidenceTag)) 
 if (evidenceManifestDigest && !/^sha256:[0-9a-f]{64}$/.test(evidenceManifestDigest)) fail('--evidence-manifest-digest must be sha256:<64 hex>');
 const expectedEngine = engineCandidate ? { revision: engineCandidate.engine.revision, version: engineCandidate.engine.tag.replace(/^v/, '') } : { revision: registry.engine.revision, version: registry.engine.version };
 const candidate = candidateId ? candidateOf(readCandidateRegistry(), candidateId) : undefined;
-if (omitOptional !== undefined && (attributionId || candidateId)) fail('--omit-optional is for the accepted official run, not an attribution or candidate run');
+// A candidate replay may leave the same optional scanner out as its control did: the comparison needs one scanner roster on both sides (candidate-diff refuses a different roster).
+if (omitOptional !== undefined && attributionId) fail('--omit-optional is for the accepted official run and a candidate replay, not an attribution run');
 const withoutConfig = omitOptional === undefined ? undefined : (roster.optionalScanners[omitOptional].withoutConfigs[platform] ?? fail(`the scanner roster names no run configuration without ${omitOptional} for platform ${platform}`));
 const configFile = (withoutConfig ?? (attribution ? attribution.configs[platform] : registry.config.platforms[platform]?.file)) ?? fail(`no run configuration pinned for platform ${platform}`);
 const nodeDir = path.join(engineDir, attribution?.nodeDir ?? 'adapters/node');

@@ -1,6 +1,6 @@
 # Triage dispositions (#698)
 
-Scanned product `@redact-secret/core@0.1.0-beta.13` on credential-eval 0.1.0-alpha.5. **Maintainer-reviewed (independent review pending) / 메인테이너 검토 (독립 검토 대기)**: 96 maintainer-only fixtures, 0 independently reviewed. 46 root causes rest on a seed case attributed to a maintainer-only record; their dispositions are not independent review.
+Scanned product `@redact-secret/core@0.1.0-beta.13` on credential-eval 0.1.0-alpha.15. **Maintainer-reviewed (independent review pending) / 메인테이너 검토 (독립 검토 대기)**: 96 maintainer-only fixtures, 0 independently reviewed. 46 root causes rest on a seed case attributed to a maintainer-only record; their dispositions are not independent review.
 
 Decisions are rules applied to recorded evidence (benchmarks/qualification/triage-decisions.ts). A root cause no rule decides is open. Ledger proposals are not ledger rows. Core classifications are the product maintainers' (core #1199 to #1201); a "provisional scope reading" is this repository's reading of the product docs, not a product-owner decision.
 
@@ -8,10 +8,10 @@ Decisions are rules applied to recorded evidence (benchmarks/qualification/triag
 
 | Classification | Root causes |
 | --- | --- |
-| (open) | 34 |
+| (open) | 92 |
 | expectation-or-contract-correction | 13 |
-| in-contract-product-bug | 11 |
-| justified-peer-divergence | 423 |
+| in-contract-product-bug | 12 |
+| justified-peer-divergence | 736 |
 | unsupported-or-feature-scope | 56 |
 
 ## By kind, classification and status
@@ -19,12 +19,14 @@ Decisions are rules applied to recorded evidence (benchmarks/qualification/triag
 | Kind | classification | status | Root causes |
 | --- | --- |
 | core-control-flagged | expectation-or-contract-correction | settled | 1 |
+| core-control-flagged | in-contract-product-bug | fixed-in-candidate | 1 |
 | core-positive-miss | unsupported-or-feature-scope | settled | 5 |
 | core-positive-partial-or-overbroad | unsupported-or-feature-scope | settled | 1 |
-| gate-peer-differential-unsettled | (open) | settled | 34 |
+| gate-peer-differential-unsettled | (open) | open | 52 |
+| gate-peer-differential-unsettled | (open) | settled | 40 |
 | gate-peer-differential-unsettled | expectation-or-contract-correction | settled | 9 |
 | gate-peer-differential-unsettled | in-contract-product-bug | fixed-in-candidate | 8 |
-| gate-peer-differential-unsettled | justified-peer-divergence | settled | 423 |
+| gate-peer-differential-unsettled | justified-peer-divergence | settled | 736 |
 | gate-peer-differential-unsettled | unsupported-or-feature-scope | settled | 32 |
 | reference-assertion-failure | expectation-or-contract-correction | settled | 3 |
 | reference-assertion-failure | in-contract-product-bug | fixed-in-candidate | 3 |
@@ -36,7 +38,7 @@ Decisions are rules applied to recorded evidence (benchmarks/qualification/triag
 | --- | --- |
 | core-1205.encoded | 4 |
 | core-1205.expectation | 4 |
-| core-1205.fix | 3 |
+| core-1205.fix | 4 |
 | core-1205.fragment | 4 |
 | core-1205.unsupported-family | 16 |
 | gate-peer.follows-core-1203.encoded | 1 |
@@ -50,14 +52,15 @@ Decisions are rules applied to recorded evidence (benchmarks/qualification/triag
 | gate-peer.follows-core-1205.unsupported-family | 2 |
 | gate-peer.follows-encoded-carrier | 11 |
 | gate-peer.follows-fragmented-credential | 8 |
-| gate-peer.reference-matches-evidence | 423 |
-| gate-peer.t0-pending | 34 |
+| gate-peer.reference-deviates | 52 |
+| gate-peer.reference-matches-evidence | 736 |
+| gate-peer.t0-pending | 40 |
 
 ## Gate proposals by product family (not ledger rows; no status moves)
 
 | Product family | Occurrences | Proposed resolved | Proposed not-assertable | Stay open |
 | --- | --- | --- | --- | --- |
-| (no product family) | 111 | 76 | 12 | 23 |
+| (no product family) | 482 | 389 | 18 | 75 |
 | aws-access-key | 9 | 8 | 1 | 0 |
 | aws-secret-access-key | 6 | 6 | 0 | 0 |
 | bearer-token | 4 | 2 | 0 | 2 |
@@ -90,4 +93,4 @@ Decisions are rules applied to recorded evidence (benchmarks/qualification/triag
 | `jupyter-notebook-files-authored--source-value-split-between-array-elements` | jupyter-notebook-files-authored--source-value-split-between-array-elements: fragment; out of the raw-input contract | 4 |
 | `jupyter-notebook-files-authored--stdout-mask-where-source-has-environment-reference` | jupyter-notebook-files-authored--stdout-mask-where-source-has-environment-reference: use a real line break in the notebook text, or allow a warn-level finding | 6 |
 
-Open root causes: 0. Ledger proposals: {"not-assertable":34,"open":49,"resolved":423}.
+Open root causes: 52. Ledger proposals: {"not-assertable":40,"open":101,"resolved":736}.

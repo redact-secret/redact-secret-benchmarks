@@ -119,7 +119,7 @@ jobs:
           echo "rehearsal=false" >> "$GITHUB_OUTPUT"
           if [ -n "$OMIT_OPTIONAL" ]; then
             [[ "$OMIT_OPTIONAL" =~ ^[a-z][a-z0-9-]*$ ]] || { echo "::error::omit_optional must be a scanner id"; exit 1; }
-            [ "$MODE" != "diagnostic" ] && [ -z "$ATTRIBUTION" ] && [ -z "$CANDIDATE" ] || { echo "::error::omit_optional is exclusive with diagnostic mode, attribution and candidate"; exit 1; }
+            [ "$MODE" != "diagnostic" ] && [ -z "$ATTRIBUTION" ] || { echo "::error::omit_optional is exclusive with diagnostic mode and attribution"; exit 1; }
           fi
           if [ "$REHEARSE_FAILURE" = "true" ] && [ -z "$POPULATIONS" ]; then echo "::error::rehearse_post_step_failure needs populations (a stage rehearsal)"; exit 1; fi
           if [ -n "$POPULATIONS" ]; then

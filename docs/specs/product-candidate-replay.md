@@ -11,7 +11,7 @@ This repository measures and records (the boundary rule): the replay reports an 
 | | diagnostic lane (`mode: diagnostic`, #705) | candidate replay (`candidate`, #698) |
 | --- | --- | --- |
 | question | do the product's own findings on the regression and policy populations change, within one product scan | what does the build change on the adopted evidence, against the published control, with every peer unchanged |
-| scanners, methods | the product only; no peers, no methods | all five scanners, plain and methods, two engine runs with equal semantic digests |
+| scanners, methods | the product only; no peers, no methods | the control's scanner roster (all five, or four when the control left the optional OpenRedaction out, `--omit-optional`), plain and methods, two engine runs with equal semantic digests |
 | product build | the registry's pinned candidate | a registered tarball set, byte-verified (`benchmarks/product-candidates.json`) |
 | output | `diagnostic-<population>` artifacts and a summary; never recorded | `candidate-run-<population>` artifacts, the effect report, triage, an archive, the 2x2 on a new snapshot |
 
@@ -33,6 +33,10 @@ The registered candidate (`benchmarks/product-candidates.json`) on the adoption'
 `candidates[]`: `id`, `product` (repository, full commit, version, `published: false`, the PRs, the build description, the CI run the addon came from), `control` (the published pin), `platform`, `runClass`, `publication`, `release` (the release of this repository that holds the tarballs) and `packages[]` (name, file, sha256, size, platform). The core and wasm packages are platform-neutral; the node addon is the one built for the replay platform. After a replay the candidate carries `replay` (the CI run, the archive release and digest, the benchmark revision, the verdict counts, `repeatRunsEqual`). Gate: `npm run product-candidates:check` (`--bindings` also checks the release assets).
 
 Registering a candidate: build the three packages from the exact commit (the core with `npm pack` after `js:build`, the addon and wasm from the commit's own CI run), upload them to a release of this repository, record the digests. Nothing is published.
+
+## The scanner roster must match the control
+
+The candidate diff and the effect report refuse a different roster (`candidate-diff.ts`, `scanner rosters differ`; the manifest's scanner list and `config_hash` move). The control of the accepted adoption leaves the optional OpenRedaction default profile out (#763, `omit_optional=openredaction`), so a candidate replay on it must too: `node scripts/run-candidate-replay.mjs dispatch --candidate <id> --omit-optional openredaction` (workflow input `omit_optional`, which a candidate replay accepts; an attribution run and the diagnostic lane still refuse it). The receipt records `omittedOptionalScanners`. A replay that includes OpenRedaction (about 50 minutes on the public population) cannot be compared with such a control.
 
 ## Install and refusal
 

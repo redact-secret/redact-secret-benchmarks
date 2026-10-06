@@ -173,5 +173,7 @@ test('the driver and the workflow leave an optional scanner out only on request,
   const yml = (await readFile('.github/workflows/official-runs.yml')).replace(/^\s*#.*$/gm, '');
   assert.match(yml, /omit_optional:/);
   assert.match(yml, /--omit-optional "\$OMIT_OPTIONAL"/);
-  assert.match(yml, /omit_optional is exclusive with diagnostic mode, attribution and candidate/);
+  assert.match(yml, /omit_optional is exclusive with diagnostic mode and attribution/);
+  assert.doesNotMatch(driver, /not an attribution or candidate run/, 'a candidate replay may omit the optional scanner its control omitted');
+  assert.match(driver, /--omit-optional is for the accepted official run and a candidate replay, not an attribution run/);
 });

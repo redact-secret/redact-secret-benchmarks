@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { reviewEntryId } from '../benchmarks/engine/execution.ts';
+import { reviewEntryId } from '../benchmarks/evaluation/domains/credential/execution.ts';
 
 const entry = (product, peerVersion = '3.97.4') => ({
   variant: 'v1', peer: 'trufflehog', disagreement: 'redact-secret-only',

@@ -6,8 +6,8 @@
  *   npm run qualification:ledger-rekey -- --validate                                                  structure only, no inputs
  *
  * The snapshot is the evidence release asset the public artifact was run on and the methods artifact is the canonical methods run
- * recorded in benchmarks/official-runs.json (its semantic digest is checked). The legacy review queue is recomputed from the
- * committed development corpora and the validated peer snapshots exactly as `queue:check` does (only redact-secret executes).
+ * recorded in benchmarks/official-runs.json (its semantic digest is checked). The legacy review queue is the frozen evidence in
+ * benchmarks/support/legacy-review-queue.json (#660, bound by its digest); the legacy engine is not run.
  * Nothing here decides anything: it maps a legacy decision to the canonical occurrence it was made for. The method and boundary
  * are benchmarks/qualification/ledger-rekey.ts and docs/specs/qualification-adapter.md.
  */
@@ -17,6 +17,7 @@ import { ledgerRekeyProblems, LEDGER_REKEY_FILE, serializeLedgerRekey } from '..
 import { type SnapshotLike } from '../benchmarks/qualification/axis-overlay.ts';
 import { deriveLedgerRekey } from '../benchmarks/qualification/derived-inputs.ts';
 import { readRunArtifact } from '../benchmarks/qualification/run-artifact.ts';
+import { FROZEN_QUEUE_FILE, frozenQueueProblems } from '../benchmarks/qualification/legacy-review.ts';
 
 const args = process.argv.slice(2);
 const option = (name: string) => { const at = args.indexOf(`--${name}`); return at >= 0 ? args[at + 1] : undefined; };
@@ -34,8 +35,9 @@ if (args.includes('--validate')) {
   const problems = ledgerRekeyProblems(committed, ledger);
   if (committed && committed.snapshot?.corpusDigest !== pinned) problems.push(`the mapping is bound to ${committed.snapshot?.corpusDigest}, the registry pins the public corpus ${pinned}`);
   if (committed && committed.methodsRun?.semanticDigest !== canonicalMethods.artifact.semanticDigest) problems.push(`the mapping is of methods run ${committed.methodsRun?.semanticDigest}, the registry records ${canonicalMethods.artifact.semanticDigest} as ${canonicalMethods.id}`);
+  problems.push(...frozenQueueProblems(await readJson(path.join(root, FROZEN_QUEUE_FILE))).map(p => `${FROZEN_QUEUE_FILE}: ${p}`));
   if (problems.length) { console.error(`${LEDGER_REKEY_FILE}:\n  - ${problems.join('\n  - ')}`); process.exit(1); }
-  console.log(`${LEDGER_REKEY_FILE} is well formed, one to one with the legacy ledger and bound to the pinned corpus and the canonical methods run (${Object.keys(committed.occurrences).length} occurrences mapped)`);
+  console.log(`${LEDGER_REKEY_FILE} is well formed, one to one with the legacy ledger and bound to the pinned corpus and the canonical methods run (${Object.keys(committed.occurrences).length} occurrences mapped); the frozen legacy review queue matches its digest`);
   process.exit(0);
 }
 

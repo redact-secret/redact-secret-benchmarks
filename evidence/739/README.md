@@ -1,4 +1,27 @@
-# Batch 2 (#739): measurement of the 30 ready families, 58-family disposition ledger
+# Batch 2 (#739): measurement of all 58 families, disposition ledger
+
+## Round 2 (this directory's `round2/`, `ledger.json`)
+
+**Readiness.** credential-evidence finished Groups C, D, E (PR #253, main `65602481`, snapshot-2026.10.06). All 28 previously carrier-unresolved rows are now `ready`, so 58 of 58 are ready (G1 23, G2 13, G3 12, G4 4, G5 3, G6 3). The 30 round-1 rows kept their contract digests and claim IDs (no re-derivation needed); the 28 newly ready rows have changed contract digests because carrier claims were added (`readiness.md`). Their carriers come from `docs/handoffs/batch-2-research-r1..r3.md`.
+
+**Measured.** An adversarial corpus (`benchmarks/batch2/corpus-r2.mjs`, 1935 cases, sha256 `a312308a...`, frozen in `FROZEN-r2.json`; first freeze `8e447629` before any scan, three documented errata E1 to E3 before the re-measurement) in two parts: 28 new rows (1048 cases) and the 30 round-1 rows re-tested with the same axes (887 cases). 21 axes (delimiter, neighbouring/same-shape public fields, neighbouring secret, repeated secret, UTF-8 before and after, end of input, line endings, nesting, big preceding text, glued names, near-miss values and names, alphabet, low entropy, JWT overlap, unsupported representations, 1-byte stream cuts) are explained in `round2/report.md`. Same baseline (published beta.13) and candidate (`a148dadf4a43b5441ed88386d055428b2e278f25`; core main has not moved and no candidate package was published) as round 1. Node, WASM, Python, CLI, whole and streamed at 7-byte and 1-byte chunks. Peers not run.
+
+**Results (candidate).** New rows: 536 of 544 positives pass, 295 of 307 controls clean. Round-1 rows with the harder axes: 466 of 466 positives pass, 244 of 248 controls clean (round 1 held on positives and was too easy on controls: 4 control cases flagged). On the baseline, 11 positives fail on `elastic:ece-api-key` and 11 on `elastic:cloud-api-key` plus none elsewhere (the Batch 1 ApiKey fix, core #1212). Stream equals whole and the four surfaces agree on every case, at both chunk sizes.
+
+Reproduced gaps (core issues filed, no core code changed):
+- redact-secret#1232 (package #1223, also #1225): an empty form value (`refresh_token=&other=1`) is reported as the next parameter (warn span over `&other=1`); 15 families.
+- redact-secret#1233 (package #1225): HubSpot `personalAccessKey` and `HUBSPOT_PERSONAL_ACCESS_KEY` are not read; 8 of 8 positives miss.
+- redact-secret#1234 (package #1226): `"password":"YOUR_PASSWORD"` placeholder flagged (warn).
+
+Unchanged recorded conflicts: `oauth_token` (x:oauth1-access-token-secret), Atlas percent-escaped URI password, Atlas programmatic API private key readiness (controls only). Adversarial `unsupported` variants (prefixed names, upper-case names, single quotes, lower-case schemes, percent values, legacy layouts) are observed and never scored.
+
+Files: `readiness.*`, `round2/report.{md,json}`, `round2/observations-*.json.gz` (per-case findings, no matched text), `ledger.json` (58 rows), `ledger-round1.json` (the round-1 ledger), corpora `benchmarks/batch2/corpus.mjs` (round 1) and `corpus-r2.mjs`, scorers `score.mjs` and `score-r2.mjs`, reports `scripts/report-batch2.mjs` and `scripts/report-batch2-r2.mjs`.
+
+Reproduce round 2: build the same baseline and candidate as below, then run `node scripts/measure-batch1.mjs --corpus ../benchmarks/batch2/corpus-r2.mjs --chunk 7|1 ...` (same flags as round 1) and `node scripts/report-batch2-r2.mjs --published-c7 ... --candidate-c7 ... --published-c1 ... --candidate-c1 ... --gaps benchmarks/batch2/gaps-r2.json`.
+
+---
+
+# Round 1
 
 **Result.** Of 58 families, credential-evidence's handoff marks 30 ready and 28 carrier-unresolved. The 30 ready rows were measured (frozen corpus, 486 cases) on the published baseline and on an exact unpublished candidate, across Node, WASM, Python and the CLI, whole and streamed. On the candidate all 200 positives pass (exact span, contract type, contract action) on every surface and stream, and all 203 controls are clean. On the published baseline 194 of 200 pass; the six misses are the `elastic:cloud-api-key` ApiKey header cases, already fixed by Batch 1 (core #1212, PR #1215). No new product gap was reproduced, so no core issue was filed. The 28 unresolved rows are not measured: not false negatives, true negatives or passing coverage.
 

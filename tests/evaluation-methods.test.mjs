@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createMethods } from '../benchmarks/methods/index.ts';
-import { createOperators } from '../benchmarks/operators/index.ts';
-import { loadCases } from '../benchmarks/engine/cases.ts';
-import { generateCase, hash, secrets, bytes } from '../benchmarks/engine/model.ts';
-import { runEvaluation, exitCode } from '../benchmarks/engine/runner.ts';
+import { createMethods } from '../benchmarks/evaluation/domains/credential/methods/index.ts';
+import { createOperators } from '../benchmarks/evaluation/domains/credential/operators/index.ts';
+import { loadCases } from '../benchmarks/evaluation/domains/credential/cases.ts';
+import { generateCase, hash, secrets, bytes } from '../benchmarks/evaluation/model/model.ts';
+import { runEvaluation, exitCode } from '../benchmarks/evaluation/domains/credential/runner.ts';
 import { findingFamily, arrivalFindingTypes } from '../scanners/families.mjs';
 import { arrivalFamilies } from '../benchmarks/lib/beta8/index.ts';
 

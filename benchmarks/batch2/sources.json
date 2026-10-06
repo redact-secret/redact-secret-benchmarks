@@ -5,12 +5,13 @@
   "note": "Facts read from GitHub and npm when the inventory was generated. They are inputs, recorded so the inventory can be re-run and compared; refresh them by hand when the issues change.",
   "evidence": {
     "repo": "redact-secret/credential-evidence",
-    "commit": "005a7331cf90403bd4ce4abcb93bd8b085d315a9",
+    "commit": "65602481b83532b8acd6caf0d51b8552873e0d98",
     "handoffIssue": 235,
     "handoffComments": 2,
     "handoffPerRowReadinessStatus": true,
-    "handoffNote": "58 rows: 30 ready, 28 carrier-unresolved. Evidence added no Case or fixture; benchmarks authors the corpus from the handoff slots. Contracts remain proposed/draft. Group C/D/E research (#236-#238) is ongoing and may turn rows ready later.",
-    "handoffDoc": "docs/handoffs/batch-2-bounded-carriers.md (credential-evidence PR #248, 2026-10-05T19:19Z)"
+    "handoffNote": "Round 2: Groups C, D, E finished (credential-evidence PR #253, snapshot-2026.10.06 manifest sha256:568f2a7f414f21e03b169c5706a57a2c3d63e69053199006ca44725404c30c6a). The handoff status cell now reads 'ready (researched, [carrier](batch-2-research-rN.md))' for rows researched after round 1; the carrier facts are in those research docs and docs/handoffs/batch-2-cases-*.md. Contracts remain proposed/draft unless the readiness inventory says otherwise.",
+    "handoffDoc": "docs/handoffs/batch-2-bounded-carriers.md (credential-evidence PR #248, 2026-10-05T19:19Z)",
+    "round1Commit": "005a7331cf90403bd4ce4abcb93bd8b085d315a9"
   },
   "core": {
     "repo": "redact-secret/redact-secret",

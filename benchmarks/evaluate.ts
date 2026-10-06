@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { scanners } from '../scanners/index.mjs';
 import { resolveCredentialDomain } from './evaluation/domains/registry.ts';
 import { hash } from './evaluation/model/model.ts';
-import { runEvaluation, exitCode } from './engine/runner.ts';
+import { runEvaluation, exitCode } from './evaluation/domains/credential/runner.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const usage = 'npm run eval -- [--domain=credential] [--method=twin,benign] [--detector=github-token] [--scanner=redact-secret,gitleaks,trufflehog] [--seed=experiment-1] [--strict] [--fail-on-assertions] [--output=results-output/evaluation.json]';

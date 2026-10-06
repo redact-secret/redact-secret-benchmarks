@@ -6,7 +6,7 @@ import { access, mkdir, mkdtemp, readdir, readFile, rm, writeFile } from 'node:f
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { promisify } from 'node:util';
-import { validateEvidence } from '../benchmarks/engine/evidence.ts';
+import { validateEvidence } from '../benchmarks/evaluation/evidence.ts';
 import { newestBaselineName } from '../benchmarks/lib/baselines.ts';
 import { candidateConfiguration, installCandidate, loadCandidate, removeCandidate } from '../scanners/candidate.mjs';
 

@@ -10,7 +10,7 @@ import registry from '../benchmarks/evaluation/domains/pii/support-registry-v1.j
 import { assembleReleaseRecordV2, assertNoCrossDomainAggregate, reviewedReleaseSourceEquivalence, validateReleaseRecord,
   validateReleaseRecordV2 } from '../benchmarks/evaluation/release-record.ts';
 import { verifyReleaseRecordEvidence, verifySourceEquivalenceParity } from '../benchmarks/evaluation/release-record-evidence.ts';
-import { validateEvidence } from '../benchmarks/evaluation/domains/credential/evidence.ts';
+import { validateEvidence } from '../benchmarks/evaluation/evidence.ts';
 import liveSuite from '../qualification/suite-v1.json' with { type: 'json' };
 import { piiReviewedProtectedRoute } from '../benchmarks/evaluation/domains/pii/support-semantics.ts';
 

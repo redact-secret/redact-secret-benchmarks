@@ -6,12 +6,12 @@ import path from 'node:path';
 import { publicConformanceCorpus } from '../holdout/conformance.ts';
 import { sealProtectedCorpus, serialize } from '../holdout/storage.ts';
 import { runHoldout, contaminateHoldout } from '../holdout/lifecycle.ts';
-import { hash } from '../benchmarks/engine/model.ts';
-import { runEvaluation } from '../benchmarks/engine/runner.ts';
-import { createMethods } from '../benchmarks/methods/index.ts';
-import { createOperators } from '../benchmarks/operators/index.ts';
-import { loadCases } from '../benchmarks/engine/cases.ts';
-import { validateEvidence } from '../benchmarks/engine/evidence.ts';
+import { hash } from '../benchmarks/evaluation/model/model.ts';
+import { runEvaluation } from '../benchmarks/evaluation/domains/credential/runner.ts';
+import { createMethods } from '../benchmarks/evaluation/domains/credential/methods/index.ts';
+import { createOperators } from '../benchmarks/evaluation/domains/credential/operators/index.ts';
+import { loadCases } from '../benchmarks/evaluation/domains/credential/cases.ts';
+import { validateEvidence } from '../benchmarks/evaluation/evidence.ts';
 import { credentialHoldoutDomain } from '../benchmarks/evaluation/domains/credential/holdout.ts';
 import { credentialHoldoutStorage, validateCredentialHoldoutCorpus } from '../benchmarks/evaluation/domains/credential/holdout-corpus.ts';
 

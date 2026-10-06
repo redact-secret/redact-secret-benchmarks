@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { buildCorpora } from "../fixtures/generated/build.mjs";
-import { validateCorpus } from "../benchmarks/lib/scoring.ts";
+import { validateCorpus } from "../benchmarks/scoring/scoring.ts";
 
 const corpora = buildCorpora();
 

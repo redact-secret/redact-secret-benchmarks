@@ -14,10 +14,29 @@ export const AUTHORITY_SCHEMA = 'redact-secret/qualification-authority/v1';
 export const AUTHORITY_FILE = 'benchmarks/qualification-authority.json';
 export type Authority = 'legacy' | 'new';
 
+/**
+ * The recorded oracle exit (#660): the owner's decision that the exit condition holds. It is a record, not a switch: the `authority` value is unchanged by it, and it
+ * removes nothing by itself. The removal pull requests it permits are bound by the caller inventory (`npm run legacy-inventory:check`) and by `authority:check`.
+ */
+export interface OracleExit {
+  recordedOn: string;
+  /** The owner who decided the exit (the authority-file acceptor); never recorded on the owner's behalf. */
+  recordedBy: string;
+  /** The release the exit was qualified for; it is the authorised release of `new`. */
+  release: string;
+  /** The parity report regenerated for that release (0 unexplained); it is the report `new` cites. */
+  parityReport: string;
+  /** The rehearsal of the rollback against that release: a docs path with an anchor. */
+  rollbackRehearsal: string;
+  /** The command that checks the removal callers inventory. */
+  callerInventory: 'npm run legacy-inventory:check';
+  decision: string;
+}
+
 export interface QualificationAuthority {
   schema: typeof AUTHORITY_SCHEMA;
   authority: Authority;
-  legacy: { role: 'authority' | 'oracle'; oracle: { exitCondition: string; decision: string } };
+  legacy: { role: 'authority' | 'oracle'; oracle: { exitCondition: string; decision: string; exit?: OracleExit } };
   new: {
     release: string;
     acceptedOn: string;
@@ -35,6 +54,8 @@ export const DEFAULT_AUTHORITY: Authority = 'legacy';
 const DIGEST = /^sha256:[0-9a-f]{64}$/;
 const REVISION = /^rs-policy-\d+:sha256:[0-9a-f]{64}$/;
 const DECISION_PATH = /^docs\/decisions\/\d{4}-\d{2}-\d{2}-[a-z0-9-]+\.md$/;
+const RELEASE = /^@[a-z0-9-]+\/[a-z0-9-]+@\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/;
+const ROLLBACK_PATH = /^docs\/[A-Za-z0-9/._-]+\.md#[a-z0-9-]+$/;
 const REPORT_PATH = /^docs\/generated\/[a-z0-9-]+\.json$/;
 const object = (v: unknown): v is Record<string, unknown> => typeof v === 'object' && v !== null && !Array.isArray(v);
 
@@ -54,9 +75,23 @@ export function authorityShapeProblems(value: unknown): string[] {
     const oracle = legacy.oracle;
     if (!object(oracle)) problems.push('legacy.oracle is required');
     else {
-      extra(oracle, ['exitCondition', 'decision'], 'legacy.oracle');
+      extra(oracle, ['exitCondition', 'decision', 'exit'], 'legacy.oracle');
       if (typeof oracle.exitCondition !== 'string' || oracle.exitCondition.length < 20) problems.push('legacy.oracle.exitCondition must state the exit condition');
       if (typeof oracle.decision !== 'string' || !DECISION_PATH.test(oracle.decision)) problems.push('legacy.oracle.decision must be a docs/decisions path');
+      if (oracle.exit !== undefined) {
+        const exit = oracle.exit;
+        if (!object(exit)) problems.push('legacy.oracle.exit must be an object');
+        else {
+          extra(exit, ['recordedOn', 'recordedBy', 'release', 'parityReport', 'rollbackRehearsal', 'callerInventory', 'decision'], 'legacy.oracle.exit');
+          if (typeof exit.recordedOn !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(exit.recordedOn)) problems.push('legacy.oracle.exit.recordedOn must be a date');
+          if (typeof exit.recordedBy !== 'string' || !exit.recordedBy) problems.push('legacy.oracle.exit.recordedBy is required');
+          if (typeof exit.release !== 'string' || !RELEASE.test(exit.release)) problems.push('legacy.oracle.exit.release must name a published package version');
+          if (typeof exit.parityReport !== 'string' || !REPORT_PATH.test(exit.parityReport)) problems.push('legacy.oracle.exit.parityReport must be a docs/generated path');
+          if (typeof exit.rollbackRehearsal !== 'string' || !ROLLBACK_PATH.test(exit.rollbackRehearsal)) problems.push('legacy.oracle.exit.rollbackRehearsal must be a docs path with an anchor');
+          if (exit.callerInventory !== 'npm run legacy-inventory:check') problems.push('legacy.oracle.exit.callerInventory must be "npm run legacy-inventory:check"');
+          if (typeof exit.decision !== 'string' || !DECISION_PATH.test(exit.decision)) problems.push('legacy.oracle.exit.decision must be a docs/decisions path');
+        }
+      }
     }
   }
   const next = value.new;
@@ -86,6 +121,10 @@ export interface AuthorityContext {
   parity?: { identities?: { new?: { policyRevision?: string; populations?: { population: string; run: string; semanticDigest: string; methodsRun?: { run: string; semanticDigest: string } }[] } }; summary?: { unexplained?: number } };
   /** The front matter `status` of the decision the authorisation cites, or `undefined` when the file is absent. */
   decisionStatus?: string;
+  /** The same for the decision that records the oracle exit, when there is one. */
+  exitDecisionStatus?: string;
+  /** Whether the rollback rehearsal the exit cites resolves to a heading of its document, when there is an exit. */
+  exitRehearsalPresent?: boolean;
 }
 
 /** Why an authorisation of the new path is stale or unfounded; empty when `authority` is `new` and every part holds. Nothing is asked of `legacy`. */
@@ -109,6 +148,14 @@ export function authorityFreshnessProblems(file: QualificationAuthority, context
     if (built?.policyRevision !== next.policyRevision) problems.push(`${next.parityReport} compared the policy ${built?.policyRevision ?? '(none)'}, not the authorised one: regenerate it with npm run qualification:parity`);
     const compared = new Map((built?.populations ?? []).flatMap(p => [[p.population, p.semanticDigest] as const, ...(p.methodsRun ? [[p.methodsRun.run.replace(/@[a-z0-9-]+$/, ''), p.methodsRun.semanticDigest] as const] : [])]));
     for (const [id, digest] of Object.entries(next.semanticDigests)) if (compared.get(id) !== digest) problems.push(`${next.parityReport} compared another run of ${id} than the authorised one`);
+  }
+  const exit = file.legacy.oracle.exit;
+  if (exit) {
+    if (exit.release !== next.release) problems.push(`the recorded oracle exit is for ${exit.release}, the authorisation is for ${next.release}: a new release needs its own exit`);
+    if (exit.parityReport !== next.parityReport) problems.push(`the recorded oracle exit cites ${exit.parityReport}, the authorisation cites ${next.parityReport}`);
+    if (context.exitDecisionStatus === undefined) problems.push(`${exit.decision} does not exist`);
+    else if (context.exitDecisionStatus !== 'accepted') problems.push(`${exit.decision} is ${context.exitDecisionStatus}, not accepted`);
+    if (context.exitRehearsalPresent === false) problems.push(`${exit.rollbackRehearsal} does not resolve to a heading`);
   }
   if (context.decisionStatus === undefined) problems.push(`${next.decision} does not exist`);
   else if (context.decisionStatus !== 'accepted') problems.push(`${next.decision} is ${context.decisionStatus}, not accepted`);

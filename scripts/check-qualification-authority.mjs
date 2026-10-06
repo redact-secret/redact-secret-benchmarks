@@ -19,6 +19,9 @@ const readText = async path => readFile(new URL(path, root), 'utf8');
 const readJson = async path => JSON.parse(await readText(path));
 const readJsonIfPresent = async path => { try { return await readJson(path); } catch (error) { if (error.code === 'ENOENT') return undefined; throw error; } };
 
+/** The anchor a heading line gets in rendered markdown: lower-cased, punctuation dropped, spaces to hyphens. */
+const headingAnchor = line => line.replace(/^#{1,6}\s+/, '').trim().toLowerCase().replace(/[^a-z0-9 _-]/g, '').replace(/ /g, '-');
+
 /** Tracked files that name the authority file, other than the file itself. */
 export function filesNamingTheAuthorityFile(listing, read) {
   return listing.filter(path => !/\.(png|jpe?g|gif|ico|woff2?|lock|map)$/.test(path) && path !== 'package-lock.json' && path !== 'web/package-lock.json').filter(path => {
@@ -42,11 +45,19 @@ export async function checkQualificationAuthority({ listing } = {}) {
     const { loadPolicyRevision } = await import('../benchmarks/qualification/inputs.ts');
     const registry = await readJson('benchmarks/official-runs.json');
     const decisionText = await readText(file.new.decision).catch(() => undefined);
+    const exit = file.legacy.oracle.exit;
+    const exitText = exit ? await readText(exit.decision).catch(() => undefined) : undefined;
+    const [rehearsalPath, rehearsalAnchor] = exit ? exit.rollbackRehearsal.split('#') : [];
+    const rehearsalText = exit ? await readText(rehearsalPath).catch(() => undefined) : undefined;
     problems.push(...authorityFreshnessProblems(file, {
       policyRevision: (await loadPolicyRevision()).revision,
       runs: registry.runs.map(r => ({ id: r.id, canonical: r.canonical === true, semanticDigest: r.artifact?.semanticDigest })),
       parity: await readJsonIfPresent(file.new.parityReport),
       decisionStatus: decisionText === undefined ? undefined : /^status:\s*(\S+)/m.exec(decisionText)?.[1],
+      ...(exit ? {
+        exitDecisionStatus: exitText === undefined ? undefined : /^status:\s*(\S+)/m.exec(exitText)?.[1],
+        exitRehearsalPresent: rehearsalText !== undefined && rehearsalText.split('\n').some(l => /^#{1,6}\s/.test(l) && headingAnchor(l) === rehearsalAnchor),
+      } : {}),
     }));
   }
   const oracleDecision = await readText(file.legacy.oracle.decision).catch(() => undefined);

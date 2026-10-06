@@ -4,9 +4,9 @@ import { readFile } from 'node:fs/promises';
 import { buildCorpora } from '../fixtures/generated/build.mjs';
 import { kinds, tiers, contracts, classifyFixture, validateAssessment, validateContracts, controlAxis, AXES, arrivalIds, disputedProperty, DISPUTED_PROPERTIES } from '../benchmarks/lib/assessment.ts';
 import { scoreReport } from '../benchmarks/lib/reporting.ts';
-import { validateCorpus, score } from '../benchmarks/lib/scoring.ts';
+import { validateCorpus, score } from '../benchmarks/scoring/scoring.ts';
 import { validateStructures } from '../benchmarks/lib/validate-structures.ts';
-import { spanOutcome } from '../benchmarks/lib/lattice.ts';
+import { spanOutcome } from '../benchmarks/scoring/lattice.ts';
 import { reportProblem, summarize } from '../src/model.mjs';
 import { normalizeTrufflehogFindings, locate } from '../scanners/index.mjs';
 

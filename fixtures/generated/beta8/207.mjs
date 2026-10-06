@@ -38,7 +38,7 @@ function crc32(text) {
 /**
  * One family's authoring helpers. `pos` records each positive's context so a
  * value twin keeps that context byte-for-byte and a context twin keeps the
- * value byte-for-byte (benchmarks/operators/authored-twin.ts).
+ * value byte-for-byte (benchmarks/evaluation/domains/credential/operators/authored-twin.ts).
  */
 function family(c, synthetic, target) {
   const s = (slug, length, chars) => synthetic(`beta8:207:${target}:${slug}`, length, chars);

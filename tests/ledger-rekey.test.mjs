@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { buildLedgerRekey, ledgerRekeyProblems, ledgerSettledId, serializeLedgerRekey, LEDGER_REKEY_FILE, LEGACY_PROPERTY } from '../benchmarks/qualification/ledger-rekey.ts';
+import { FROZEN_QUEUE_FILE, frozenQueueProblems } from '../benchmarks/qualification/legacy-review.ts';
 import { policyRevision, POLICY_FILES } from '../benchmarks/qualification/inputs.ts';
 
 // Synthetic only. No mapping, count or digest read from a committed file is asserted beyond structure: a repin re-keys them, and
@@ -131,4 +132,14 @@ test('the committed mapping is well formed against the committed ledger, bound t
   const base = [{ path: LEDGER_REKEY_FILE, digest: CANON(1) }, { path: 'benchmarks/review-ledger.json', digest: CANON(2) }];
   assert.notEqual(policyRevision(base).revision, policyRevision([{ ...base[0], digest: CANON(3) }, base[1]]).revision);
   assert.notEqual(policyRevision(base).revision, policyRevision([base[0], { ...base[1], digest: CANON(3) }]).revision);
+});
+
+test('the frozen legacy review queue is intact: its digest, counts and entries are those it records (#660)', async () => {
+  const queue = await read(FROZEN_QUEUE_FILE);
+  assert.deepEqual(frozenQueueProblems(queue), []);
+  assert.ok(queue.differential.length > 0);
+  const edited = { ...queue, differential: queue.differential.slice(1) };
+  assert.ok(frozenQueueProblems(edited).some(p => p.includes('edited')));
+  assert.ok(frozenQueueProblems({ ...queue, differential: [...queue.differential, { ...queue.differential[0], method: 'mutation' }] }).length > 0);
+  assert.ok(frozenQueueProblems({ ...queue, id: 'other' })[0].includes('is not a'));
 });

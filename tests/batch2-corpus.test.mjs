@@ -12,10 +12,11 @@ test('the Batch 2 corpus is the frozen one', () => {
   assert.equal(cases.length, frozen.cases);
 });
 
-test('only evidence-ready families have cases, and every ready family has some', () => {
-  const ready = readiness.families.filter((f) => f.status === 'ready').map((f) => f.family).sort();
-  assert.deepEqual([...FAMILY_IDS].sort(), ready);
-  for (const f of ready) assert.ok(cases.some((c) => c.family === f), f);
+test('round 1 covers only families evidence marked ready, and each has cases', () => {
+  const ready = new Set(readiness.families.filter((f) => f.status === 'ready').map((f) => f.family));
+  for (const f of FAMILY_IDS) assert.ok(ready.has(f), f);
+  assert.equal(FAMILY_IDS.length, 30);
+  for (const f of FAMILY_IDS) assert.ok(cases.some((c) => c.family === f), f);
 });
 
 test('case ids are unique, spans are in bounds, and every positive carries a contract expectation', () => {

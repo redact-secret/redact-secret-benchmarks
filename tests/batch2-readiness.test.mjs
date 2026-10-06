@@ -27,15 +27,11 @@ test('status is evidence\'s', () => {
   for (const r of readiness.families) assert.ok(['ready', 'carrier-unresolved'].includes(r.status));
 });
 
-test('unresolved rows are never measured; measured rows are exactly the ready ones', () => {
+test('every family has a measured disposition; a gap names its issue', () => {
+  assert.equal(ledger.families.length, 58);
   for (const l of ledger.families) {
-    const r = readiness.families.find((f) => f.family === l.family);
-    if (r.status === 'carrier-unresolved') {
-      assert.equal(l.coverage, 'not-measured, carrier-unresolved');
-      assert.equal(l.findings, null);
-      assert.deepEqual(l.caseIds, []);
-    } else {
-      assert.ok(l.caseIds.length > 0);
-    }
+    assert.ok(l.coverage && !/^not-measured/.test(l.coverage), l.family);
+    assert.ok(l.measuredIn.length > 0, l.family);
+    if (/reproduced product gap/.test(l.coverage)) assert.match(l.gapIssue, /redact-secret#\d+/, l.family);
   }
 });

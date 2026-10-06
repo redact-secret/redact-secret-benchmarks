@@ -46,8 +46,9 @@ a verification, never compared with them. `trufflehog --version` must print the 
 report pages are built from the view or the legacy files by it, and each says which. Rolling back is changing that one
 value (rehearsed: [`docs/specs/qualification-cutover.md`](docs/specs/qualification-cutover.md); its file-level inventory (#653) lists
 every legacy removal candidate's owner, callers and prerequisite, and `node scripts/legacy-callers.mjs <file>` recomputes the callers before any removal PR). Do not read the file
-anywhere else (the gate lists the readers), do not make a build infer it, and do not delete the legacy path: it is the oracle
-until the exit condition in the switch ADR is met.
+anywhere else (the gate lists the readers), do not make a build infer it, and do not delete the legacy path except through
+a removal PR that lists each file's callers: the oracle exit is recorded (`legacy.oracle.exit`, owner decision 2026-10-05, [ADR](docs/decisions/2026-10-05-record-the-oracle-exit-and-retire-the-legacy-credential-evaluator.md)), but the
+rollback and the files that still have callers stay. The legacy review queue the ledger re-key reads is frozen evidence (`benchmarks/support/legacy-review-queue.json`); never regenerate it.
 
 **PII authority (#666).** Which pipeline is the authority for PII measurement is its own committed value, `benchmarks/pii-authority.json`
 (`legacy` or `new`), checked by `npm run pii:authority:check`; a credential authority setting is not authorisation for PII and the two never read each

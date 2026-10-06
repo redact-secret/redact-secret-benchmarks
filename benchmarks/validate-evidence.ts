@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { validateEvidence } from './engine/evidence.ts';
+import { validateEvidence } from './evaluation/evidence.ts';
 
 // Usage: validate-evidence <report.json> [--suite=<suite-v1.json>]
 // Without --suite a report is checked against the live qualification/suite-v1.json, so new evidence is held to the current pin. A frozen

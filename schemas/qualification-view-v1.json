@@ -1317,7 +1317,8 @@
         "required",
         "optional",
         "measured",
-        "notMeasured"
+        "notMeasured",
+        "profiles"
       ],
       "properties": {
         "id": {
@@ -1449,6 +1450,94 @@
                     }
                   }
                 }
+              },
+              "officialMeasurement": {
+                "type": "string"
+              },
+              "decision": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "profiles": {
+          "description": "Every optional scanner of the roster, measured or not (#764): its label, the profile it is, what it detects, the scanner it is a profile of and its configuration identity. A profile is labelled separately from the default and never spliced with it; both are the same package under different configurations, so results differ by configuration and no accuracy claim follows.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "scanner",
+              "label",
+              "profile",
+              "measured"
+            ],
+            "properties": {
+              "scanner": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "profile": {
+                "type": "string"
+              },
+              "measured": {
+                "type": "boolean"
+              },
+              "detects": {
+                "type": "string"
+              },
+              "profileOf": {
+                "type": "string"
+              },
+              "disclosure": {
+                "type": "string"
+              },
+              "identity": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "adapter",
+                  "package",
+                  "scannerConfigurationHash"
+                ],
+                "properties": {
+                  "adapter": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "id",
+                      "version"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "version": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "package": {
+                    "type": "string"
+                  },
+                  "patterns": {
+                    "type": "integer"
+                  },
+                  "scannerConfigurationHash": {
+                    "type": "string"
+                  },
+                  "runConfig": {
+                    "type": "string"
+                  },
+                  "runConfigHash": {
+                    "type": "string"
+                  }
+                }
+              },
+              "decision": {
+                "type": "string"
               }
             }
           }

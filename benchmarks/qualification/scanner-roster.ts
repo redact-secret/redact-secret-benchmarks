@@ -22,9 +22,23 @@ export interface OptionalScanner {
   profile: string;
   /** Why the measurement is optional, stated beside the absence. */
   reason: string;
-  /** Per platform, the official run configuration (credential-eval `configs/official/`) of a run that leaves the scanner out. `engineRelease` says whether a pinned engine has them. */
+  /** Per platform, the official run configuration (credential-eval `configs/official/`) of a run that leaves the scanner out. `engineRelease` says whether a pinned engine has them. Empty for a profile that is in no official configuration (nothing to leave out). */
   withoutConfigs: Record<string, string>;
   engineRelease: 'pending' | string;
+  /** What the profile detects, in the words of the page (#764). */
+  detects?: string;
+  /** The scanner this entry is a profile of: both are the same package under different configurations, never one history. */
+  profileOf?: string;
+  /** The configuration-effect disclosure shown beside a profile: results differ by configuration, no accuracy claim. */
+  disclosure?: string;
+  /** Replaces the contract sentence for a scanner that has never had an official measurement (#764). */
+  statement?: string;
+  /** The identity of the profile: adapter, package, pattern count, scanner configuration hash and the run configuration with its hash. Facts about the configuration, never a result. */
+  identity?: { adapter: { id: string; version: string }; package: string; patterns?: number; scannerConfigurationHash: string; runConfig?: string; runConfigHash?: string };
+  /** The decision record of the entry. */
+  decision?: string;
+  /** What stands between the entry and its official measurement, when there is no recorded one. */
+  officialMeasurement?: string;
 }
 export interface ScannerRoster {
   schemaVersion: number;
@@ -59,7 +73,10 @@ export interface RosterView {
     statement: string; reason: string;
     /** Null when no recorded run measured it: the view then says so rather than point at nothing. */
     lastMeasurement: LastMeasurement | null;
+    officialMeasurement?: string; decision?: string;
   }[];
+  /** Every optional scanner of the roster, measured or not, with what it detects and which scanner it is a profile of (#764): the pages label the profiles separately. */
+  profiles: { scanner: string; label: string; profile: string; measured: boolean; detects?: string; profileOf?: string; disclosure?: string; identity?: OptionalScanner['identity']; decision?: string }[];
 }
 
 export const readScannerRoster = (url = new URL('../support/scanner-roster.json', import.meta.url)): ScannerRoster => validateRoster(JSON.parse(readFileSync(url, 'utf8')));
@@ -81,6 +98,11 @@ export function validateRoster(roster: ScannerRoster): ScannerRoster {
       for (const id of e.optional) if (!roster.optionalScanners[id]) problems.push(`${where}: optional scanner ${id} has no entry in optionalScanners (label, reason, profile)`);
     }
   }
+  // A profile is its own scanner and its own history: labels and profiles are distinct, and a profile names a scanner of the roster it is a profile of (#764).
+  const specs = Object.entries(roster.optionalScanners);
+  if (!unique(specs.map(([, o]) => o.label))) problems.push('optionalScanners: two entries share a label; a profile is labelled separately from the default');
+  if (!unique(specs.map(([id, o]) => `${o.profileOf ?? id}/${o.profile}`))) problems.push('optionalScanners: two entries are the same profile of the same scanner');
+  for (const [id, o] of specs) if (o.profileOf !== undefined && (o.profileOf === id || !roster.optionalScanners[o.profileOf])) problems.push(`optionalScanners.${id}: profileOf ${o.profileOf} is not another optional scanner`);
   if (problems.length) throw new Error(`Invalid scanner roster: ${problems.join('; ')}`);
   return roster;
 }
@@ -139,13 +161,20 @@ export function assessRoster({ roster, runClass, populations, history = {} }: { 
     if (where.length) continue;
     const spec = roster.optionalScanners[id];
     notMeasured.push({
-      scanner: id, profile: spec.profile, optional: true, label: spec.label, statement: notMeasuredStatement(spec.label), reason: spec.reason,
+      scanner: id, profile: spec.profile, optional: true, label: spec.label, statement: spec.statement ?? notMeasuredStatement(spec.label), reason: spec.reason,
       lastMeasurement: lastMeasurementOf(id, history),
+      ...(spec.officialMeasurement ? { officialMeasurement: spec.officialMeasurement } : {}), ...(spec.decision ? { decision: spec.decision } : {}),
     });
   }
+  const profiles: RosterView['profiles'] = [...optional].sort().map(id => {
+    const spec = roster.optionalScanners[id];
+    return { scanner: id, label: spec.label, profile: spec.profile, measured: measured.has(id),
+      ...(spec.detects ? { detects: spec.detects } : {}), ...(spec.profileOf ? { profileOf: spec.profileOf } : {}), ...(spec.disclosure ? { disclosure: spec.disclosure } : {}),
+      ...(spec.identity ? { identity: spec.identity } : {}), ...(spec.decision ? { decision: spec.decision } : {}) };
+  });
   if (problems.length) return { problems, view: null };
   return {
     problems,
-    view: { id: roster.id, runClass, required: [...required].sort(), optional: [...optional].sort(), measured: [...measured].sort(), notMeasured },
+    view: { id: roster.id, runClass, required: [...required].sort(), optional: [...optional].sort(), measured: [...measured].sort(), notMeasured, profiles },
   };
 }

@@ -3,7 +3,7 @@
  * formatting is here. Nothing is summed across populations or scanners, a population with no case for a family says so, and
  * a gate that did not run is "not measured", never a zero. The support status is the adapter's: it is displayed, never derived.
  */
-import type { ScopeAccountingProps, ScopeRow, ProfileEffectRow, QualificationOverviewProps, QualificationFamilyProps, QualificationUnavailableProps, StatusWord, CountsRow, FamilyRow, GapRow, NotMeasuredScanner } from '../components/qualification/types';
+import type { ScopeAccountingProps, ScopeRow, ProfileEffectRow, QualificationOverviewProps, QualificationFamilyProps, QualificationUnavailableProps, StatusWord, CountsRow, FamilyRow, GapRow, NotMeasuredScanner, ScannerProfiles } from '../components/qualification/types';
 import type { DeclaredConfiguration } from '../services/peers';
 import type { ScopeEntry, FamilyView, PopulationSlice, QualificationLoad, QualificationView, ScannerCounts } from '../services/qualification';
 import { QUALIFICATION_COMMANDS, QUALIFICATION_FILE } from '../lib/qualification';
@@ -73,9 +73,32 @@ export function resolveNotMeasured(view: QualificationView): NotMeasuredScanner[
     const pointer = last
       ? `Last measurement: ${last.runs.map(r => `${r.id} (configuration ${shortDigest(r.configHash)})`).join(', ')} · engine ${last.engine.version} · recorded ${last.recordedOn}${last.registry === 'historicalRuns' ? ' · superseded, kept as history' : ''}. It stays labelled with that run identity and is never combined with another profile or another run.`
       : 'No earlier measurement of it is recorded. Nothing is shown in its place.';
-    return { key: n.scanner, statement: n.statement, reason: n.reason, lastMeasurement: pointer };
+    return { key: n.scanner, statement: n.statement, reason: n.reason, lastMeasurement: pointer, ...(n.officialMeasurement ? { officialMeasurement: `Official measurement: ${n.officialMeasurement}.` } : {}) };
   });
   return rows.length ? rows : undefined;
+}
+
+/**
+ * The profiles of a scanner the roster names (#764), each under its own label with what it detects and its configuration identity, so the default (all patterns)
+ * and the credential profile (33 types) are never read as one scanner. Only a roster that declares a profile of another scanner shows this; the disclosure says
+ * the results differ by configuration and that no accuracy claim follows. Nothing here is a result.
+ */
+export function resolveScannerProfiles(view: QualificationView): ScannerProfiles | undefined {
+  const all = view.scannerRoster?.profiles ?? [];
+  if (!all.some(p => p.profileOf)) return undefined;
+  const parents = new Set(all.filter(p => p.profileOf).map(p => p.profileOf));
+  const rows = all.filter(p => p.profileOf || parents.has(p.scanner)).map(p => ({
+    key: p.scanner, label: p.label, scanner: p.scanner,
+    detects: p.detects ?? 'Not stated',
+    identity: p.identity ? `${p.identity.adapter.id} adapter ${p.identity.adapter.version} · ${p.identity.package}${p.identity.patterns ? ` · ${p.identity.patterns} types` : ''} · configuration ${shortDigest(p.identity.scannerConfigurationHash)}` : 'Every built-in pattern; its history is labelled with each run, engine, configuration and date',
+    status: p.measured ? 'Measured in this view' : 'Not measured in this view',
+  }));
+  return {
+    title: 'Profiles of one scanner',
+    description: 'The same package runs under two configurations. Each is its own scanner with its own results and history; they are never added together or spliced.',
+    rows,
+    disclosure: all.find(p => p.profileOf && p.disclosure)?.disclosure,
+  };
 }
 
 function scopeRow(population: string, artifact: string, e: ScopeEntry, declared: Map<string, DeclaredConfiguration>): ScopeRow {
@@ -226,6 +249,7 @@ export function resolveQualificationOverview(view: QualificationView, declared: 
       description: 'The scanners each population ran with, as the run artifact recorded them.',
       rows: view.populations.flatMap(p => p.artifact.scanners.map(s => ({ key: `${p.population}/${s.id}`, population: p.population, scanner: s.id, version: s.version ?? 'Not recorded', build: s.build ?? 'Not recorded', mode: s.mode }))),
       ...(resolveNotMeasured(view) ? { notMeasured: resolveNotMeasured(view) } : {}),
+      ...(resolveScannerProfiles(view) ? { profiles: resolveScannerProfiles(view) } : {}),
     },
     families: {
       title: 'Detector families',

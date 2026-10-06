@@ -67,6 +67,7 @@ const omitOptional = option('omit-optional');
 if (omitOptional !== undefined) {
   if (diagnostic) fail('--omit-optional is for an official run; the diagnostic lane selects its scanners with --scanners');
   if (!rosterFor(roster, 'official').optional.includes(omitOptional)) fail(`--omit-optional ${omitOptional}: not an optional scanner of the official run class (benchmarks/support/scanner-roster.json); a required scanner cannot be omitted`);
+  if (!Object.keys(roster.optionalScanners[omitOptional].withoutConfigs).length) fail(`--omit-optional ${omitOptional}: it is in no official configuration, so there is nothing to leave out (#764: the credential profile is measured only by its own profile-only run, pending the owner's approval)`);
 }
 const selectedScanners: string[] = diagnostic ? (() => { try { return parseSelectedScanners(option('scanners'), registryScannerIds); } catch (e) { return fail((e as Error).message); } })() : registryScannerIds.filter(id => id !== omitOptional);
 const reuseSet = option('reuse-observations');

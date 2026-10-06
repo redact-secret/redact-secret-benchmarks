@@ -126,7 +126,7 @@ export interface QualificationOverviewProps {
   };
   identity: { title: string; items: IdentityItem[] };
   populations: { title: string; description: string; rows: PopulationRow[] };
-  scanners: { title: string; description: string; rows: ScannerRow[]; notMeasured?: NotMeasuredScanner[] };
+  scanners: { title: string; description: string; rows: ScannerRow[]; notMeasured?: NotMeasuredScanner[]; profiles?: ScannerProfiles };
   families: { title: string; description: string; rows: FamilyRow[]; undetected: { title: string; text: string; items: string[] } };
   /** The cases no detector family claims, per population, on pages of their own. */
   unattributed: { title: string; description: string; href: string; label: string };
@@ -139,7 +139,19 @@ export interface QualificationOverviewProps {
  * An OPTIONAL scanner this view does not carry (#763): the contract's sentence, why, and where its last measurement is. Never a zero and never a row of counts.
  * Every field is already formatted; the pointer names the run, engine, configuration and date of the earlier measurement, which stays history.
  */
-export interface NotMeasuredScanner { key: string; statement: string; reason: string; lastMeasurement: string }
+export interface NotMeasuredScanner { key: string; statement: string; reason: string; lastMeasurement: string; officialMeasurement?: string; decision?: string }
+
+/**
+ * The profiles of one scanner, labelled separately (#764): what each detects, its configuration identity and whether this view measured it, with the one disclosure
+ * that results differ by configuration. Every field is already formatted; nothing here is a result.
+ */
+export interface ScannerProfiles {
+  title: string;
+  description: string;
+  rows: ScannerProfileRow[];
+  disclosure?: string;
+}
+export interface ScannerProfileRow { key: string; label: string; scanner: string; detects: string; identity: string; status: string }
 
 export interface CountsRow { key: string; population: string; role: string; scanner: string; cases: string; positives: string; outcomes: string; leaked: string; benign: string; twins: string; unmeasured: string }
 

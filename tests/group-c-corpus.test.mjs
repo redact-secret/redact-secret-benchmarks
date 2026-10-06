@@ -20,22 +20,44 @@ test('the evidence snapshot pin and the 11 rows', () => {
   assert.deepEqual([...new Set(cases.map(c => c.family))].sort(), [...ROW_IDS].sort());
 });
 
-test('the corpus digest is the frozen one', () => {
-  assert.ok(existsSync(new URL('../benchmarks/group-c/FROZEN-group-c.json', import.meta.url)), 'FROZEN-group-c.json exists');
+const sha = f => createHash('sha256').update(readFileSync(new URL('../' + f, import.meta.url))).digest('hex');
+const ERRATA_ORIGINAL = 'f216ca0a72c52d2b268924662d7f4ab66372c9820d0cfe386e3eefa0110dc37d';
+
+test('the original freeze record is untouched; errata 1 proposes the new digest', () => {
   const frozen = JSON.parse(read('benchmarks/group-c/FROZEN-group-c.json'));
   assert.equal(frozen.frozen, true);
   assert.equal(frozen.frozenBeforeAnyScan, true);
   assert.equal(frozen.evidenceSnapshot.tag, 'snapshot-2026.10.06.5');
   assert.equal(frozen.evidenceSnapshot.commit, '574b52ba367e2071d5a9bea3e2da7a9c5057f633');
-  assert.equal(frozen.sha256, 'f216ca0a72c52d2b268924662d7f4ab66372c9820d0cfe386e3eefa0110dc37d');
-  for (const group of Object.values(frozen.frozenFileHashes)) for (const [f, h] of Object.entries(group)) assert.equal(createHash('sha256').update(readFileSync(new URL('../' + f, import.meta.url))).digest('hex'), h, f);
-  assert.equal(corpusDigest(), frozen.sha256);
-  assert.equal(cases.length, frozen.cases);
-  assert.equal(frozen.positives + frozen.controls + frozen.unsupported + frozen.conflict, frozen.cases);
+  assert.equal(frozen.sha256, ERRATA_ORIGINAL);
+  // everything the original freeze hashed except the generator (changed by errata 1, hashed in the errata manifest) still matches
+  for (const [group, files] of Object.entries(frozen.frozenFileHashes)) {
+    if (group === 'corpusGenerator') continue;
+    for (const [f, h] of Object.entries(files)) assert.equal(sha(f), h, f);
+  }
+  const errata = existsSync(new URL('../benchmarks/group-c/FROZEN-group-c-errata-1.json', import.meta.url)) ? 'benchmarks/group-c/FROZEN-group-c-errata-1.json' : 'benchmarks/group-c/FROZEN-group-c-errata-1.json.proposed';
+  const e = JSON.parse(read(errata));
+  assert.equal(e.errata.id, 'errata-1');
+  assert.equal(e.errata.previousSha256, ERRATA_ORIGINAL);
+  assert.notEqual(e.sha256, ERRATA_ORIGINAL);
+  assert.equal(e.errata.ids.length, 9);
+  assert.equal(e.inputs.generator.sha256, sha('benchmarks/group-c/corpus-group-c.mjs'));
+  assert.equal(e.inputs.evidenceFixtures.sha256, sha('benchmarks/group-c/evidence-fixtures.json'));
+  assert.equal(corpusDigest(), e.sha256);
+  assert.equal(cases.length, e.cases);
+  assert.equal(e.positives + e.controls + e.unsupported + e.conflict, e.cases);
   const index = JSON.parse(read('benchmarks/group-c/corpus-index.json'));
   assert.equal(index.corpusSha256, corpusDigest());
   assert.equal(index.cases.length, cases.length);
   assert.ok(read('benchmarks/group-c/TRACEABILITY.md').includes(corpusDigest()));
+});
+
+test('errata 1: exactly the nine code= controls are downgraded', () => {
+  const e = cases.filter(c => c.ruling === 'errata-1');
+  assert.equal(e.length, 9);
+  for (const c of e) { assert.equal(c.kind, 'unsupported'); assert.equal(c.downgradedFrom, 'control'); assert.ok(/code=/.test(c.text), c.id); assert.deepEqual(c.observedSpans, []); assert.deepEqual(c.probeSpans, []); assert.ok(c.rulingReason); }
+  assert.equal(e.filter(c => c.id.includes('fixture-replay-public-client-request-client-id-only')).length, 3);
+  assert.equal(cases.filter(c => c.kind === 'control' && c.family.startsWith('adobe:') && /\bcode=/.test(c.text)).length, 0);
 });
 
 test('ids are unique, axes defined, spans are in UTF-8 byte bounds and cover a non-empty value', () => {
@@ -164,7 +186,7 @@ test('a perfect observation passes every positive and clears every control (scor
 
 test('reviewer rulings: downgrades keep the entry, no scored span, and the control corrections hold', () => {
   const down = cases.filter(c => c.downgradedFrom);
-  assert.equal(down.length, 46);
+  assert.equal(down.length, 55);
   for (const c of down.filter(x => x.downgradedFrom === 'positive')) { assert.ok(c.observedSpans.length >= 1, c.id); assert.deepEqual(c.probeSpans, c.observedSpans, c.id); for (const sp of c.observedSpans) assert.ok(sp.end > sp.start && sp.end <= Buffer.byteLength(c.text), c.id); }
   for (const c of cases.filter(x => x.kind === 'unsupported' && !x.downgradedFrom)) assert.deepEqual(c.observedSpans, [], c.id);
   assert.ok(cases.some(c => c.id === 'adobe:oauth-web-app-client-secret:gc:basic-header-map:unsupported' && c.ruling === 'A1'));
@@ -176,7 +198,7 @@ test('reviewer rulings: downgrades keep the entry, no scored span, and the contr
   for (const c of cases.filter(x => x.family === 'adobe:enterprise-web-app-client-secret' && x.kind === 'control')) assert.ok(!/org_id/.test(c.text), c.id);
   for (const c of cases.filter(x => x.family === 'meta:app-secret' && x.kind === 'control')) assert.ok(!/\b\d{15,17}\b/.test(c.text), c.id);
   // A10 / A13 / A4 / A12 are in the manifest
-  const f = JSON.parse(read('benchmarks/group-c/FROZEN-group-c.json.proposed'));
+  const f = JSON.parse(read('benchmarks/group-c/FROZEN-group-c-errata-1.json.proposed'));
   assert.deepEqual(f.headlineMetrics, ['exact', 'fullyCovered']);
   assert.ok(f.uniqueInputs.total > 0 && f.policyClassTolerance.includes('cannot be expressed'));
   // C-F2: class extension is by construction: generated benign-value controls only, never a verbatim fixture replay

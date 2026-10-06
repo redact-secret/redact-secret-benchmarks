@@ -105,6 +105,7 @@ export const DOWNGRADES = [
   ['C-B3', /^meta:app-secret$/, /^fixture-replay-app-pair-lookalike-(masked-secret|appsecret-proof-derived|generation-call-placeholder)$/, 'control', 'the contract leaves app-id and appsecret_proof disclosure undecided'],
   ['C-B3', /^meta:app-secret$/, /^appsecret-proof-[01]$/, 'control', 'the contract leaves appsecret_proof disclosure undecided'],
   ['A1', /^(contentful:cma-personal-access-token|dropbox:access-token|hubspot:private-app-access-token)$/, /^bearer-header-map-(compact|spaced)$/, 'positive', 'a JSON header-map container the Case does not name'],
+  ['errata-1', /^adobe:(oauth-server-to-server-client-secret|enterprise-web-app-client-secret|oauth-web-app-client-secret)$/, /^(fixture-replay-public-client-request-client-id-only|public-only-0|public-only-0-utf8)$/, 'control', 'the control carries an OAuth code= authorization-code value whose confidentiality the Adobe Case and contract leave unresolved'],
   ['A1', /^adobe:oauth-web-app-client-secret$/, /^basic-header-map$/, 'positive', 'a JSON header-map container the Case does not name (it names the raw request, the curl refresh header and the revocation request)'],
   ['A1', /^jfrog:reference-token$/, /^header-x-jfrog-art-api-header-map-(compact|spaced)$/, 'positive', 'a JSON header-map container the Case does not name'],
   ['A1', /^(contentful:cma-personal-access-token|dropbox:access-token|hubspot:private-app-access-token|salesforce:oauth-refresh-token)$/, /-member-json-nested-array$/, 'positive', 'a nested array container the Case does not name'],

@@ -1,7 +1,7 @@
 // Writes the generated, secret-free artifacts of the Group C corpus (#752):
 //   corpus-index.json                 one row per corpus case: ids, expectation, text sha256 (never the text)
 //   TRACEABILITY.md                   Case -> corpus cases and fixture -> replay case tables
-//   FROZEN-group-c.json.proposed      the freeze manifest PROPOSED for review (never FROZEN-group-c.json: the orchestrator freezes)
+//   FROZEN-group-c-errata-1.json.proposed   the errata-1 manifest PROPOSED for review (FROZEN-group-c.json, the original freeze, is never touched)
 //   node benchmarks/group-c/build-artifacts.mjs
 // It runs no scanner: it only generates the corpus text in memory and hashes it.
 import { createHash } from 'node:crypto';
@@ -39,7 +39,14 @@ const classExtension = {};
 for (const c of cases.filter(x => x.classExtension)) classExtension[c.family] = (classExtension[c.family] ?? 0) + 1;
 const frozen = {
   schema: 'group-c-frozen-corpus-v1',
-  status: 'PROPOSED: not frozen until the orchestrator commits this as FROZEN-group-c.json after an independent review',
+  status: 'PROPOSED errata 1: a new digest, to be signed off by the reviewer before re-measurement; FROZEN-group-c.json (the original freeze) is not touched',
+  errata: {
+    id: 'errata-1',
+    previousSha256: 'f216ca0a72c52d2b268924662d7f4ab66372c9820d0cfe386e3eefa0110dc37d',
+    principle: 'a scored expectation must be supported by the evidence Case; a control built from a value whose confidentiality the Case and contract leave unresolved is observed-only',
+    change: 'nine controls carry an OAuth code= authorization-code value (Adobe confidentiality unstated) and are downgraded to unsupported; text kept, downgradedFrom/ruling/rulingReason recorded; no other case changed',
+    ids: cases.filter(c => c.ruling === 'errata-1').map(c => c.id),
+  },
   issue: ISSUE,
   group: 'C',
   corpusVersion: CORPUS_VERSION,
@@ -74,7 +81,7 @@ const frozen = {
   frozenBeforeAnyScan: true,
   frozenBeforeAnyScanNote: 'asserted by the author: no scanner, CLI or product build was run, and no product repository, Batch 2 observation or ledger was read while authoring',
 };
-writeFileSync(here('./FROZEN-group-c.json.proposed'), `${JSON.stringify(frozen, null, 2)}\n`);
+writeFileSync(here('./FROZEN-group-c-errata-1.json.proposed'), `${JSON.stringify(frozen, null, 2)}\n`);
 
 // ---- TRACEABILITY.md ----
 const md = [];

@@ -48,12 +48,15 @@ test('a recorded run must match the pinned engine, evidence, scanners and determ
 });
 
 test('an optional scanner may be left out of a run only when the run says so; a required one never (#763)', () => {
-  const mutate = change => { const r = clone(); change(r.runs[0], r); return officialRunProblems(r, context); };
-  const without = (r, id, omitted) => { r.scanners = r.scanners.filter(s => s.id !== id); if (omitted) r.omittedOptionalScanners = omitted; };
-  assert.deepEqual(mutate(r => without(r, 'openredaction', ['openredaction'])), []);
-  assert.ok(mutate(r => without(r, 'openredaction')).some(p => /scanner openredaction is missing/.test(p)), 'a silent drop is refused');
-  assert.ok(mutate(r => without(r, 'trufflehog', ['trufflehog'])).some(p => /scanner trufflehog is missing/.test(p) || /omittedOptionalScanners names trufflehog/.test(p)), 'a required scanner cannot be omitted');
-  assert.ok(mutate(r => { r.omittedOptionalScanners = ['openredaction']; }).some(p => /omittedOptionalScanners names openredaction/.test(p)), 'a scanner that ran cannot be listed as omitted');
+  // Independent of what the registry records: the first run is cloned with the optional scanner present (as a run that measured it) or absent.
+  const pinned = registry.scanners.find(s => s.id === 'openredaction');
+  const mutate = change => { const r = clone(); const run = r.runs[0]; delete run.omittedOptionalScanners; run.scanners = [...run.scanners.filter(s => s.id !== 'openredaction'), { id: 'openredaction', version: pinned.version, build: 'released' }]; change(run); return officialRunProblems(r, context); };
+  const without = (run, id, omitted) => { run.scanners = run.scanners.filter(s => s.id !== id); if (omitted) run.omittedOptionalScanners = omitted; };
+  assert.deepEqual(mutate(() => {}).filter(p => /openredaction/.test(p)), [], 'a run that measured it is fine');
+  assert.deepEqual(mutate(run => without(run, 'openredaction', ['openredaction'])).filter(p => /openredaction/.test(p)), []);
+  assert.ok(mutate(run => without(run, 'openredaction')).some(p => /scanner openredaction is missing/.test(p)), 'a silent drop is refused');
+  assert.ok(mutate(run => without(run, 'trufflehog', ['trufflehog'])).some(p => /scanner trufflehog is missing/.test(p) || /omittedOptionalScanners names trufflehog/.test(p)), 'a required scanner cannot be omitted');
+  assert.ok(mutate(run => { run.omittedOptionalScanners = ['openredaction']; }).some(p => /omittedOptionalScanners names openredaction/.test(p)), 'a scanner that ran cannot be listed as omitted');
 });
 
 test('a product population is content-addressed, so a corpus change must be re-pinned', () => {

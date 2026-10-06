@@ -3,11 +3,15 @@
   "evidenceRelease": "snapshot-2026.10.06.4",
   "scope": "Reporting only: nothing here is an assertion about the product. Denominators count measured cases only: pending (T0, not assertable) and not-measured cases are in none, and an unmeasured case is never a zero detection. Representation capability follows the engine contract (credential-eval representation/1): a bounded, re-derivable base64 or hex finding (up to four layers) is mapped to the whole original encoded segment and scored by the unchanged lattice; a fragmented expected span is scored on its enclosing range, and there is no fragment-aware scoring; decoded findings in other codecs (percent-encoding, UTF-16, escaped Unicode) and any mapping the engine cannot re-derive are unmeasured, never a miss and in no denominator (credential-eval#34, credential-evidence#150).",
   "adoptionState": {
-    "state": "candidate",
-    "accepted": false,
+    "state": "accepted",
+    "accepted": true,
     "evidenceRelease": "snapshot-2026.10.06.4",
     "engine": "v0.1.0-alpha.15",
-    "ownerAcceptance": null,
+    "ownerAcceptance": {
+      "acceptedBy": "Milo Kang",
+      "acceptedOn": "2026-10-06",
+      "decision": "docs/decisions/2026-10-06-accept-snapshot-2026-10-06-4-on-credential-eval-alpha-15.md"
+    },
     "replay": {
       "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37469753365",
       "archive": {

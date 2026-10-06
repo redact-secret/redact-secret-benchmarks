@@ -91,7 +91,8 @@ test('a moved engine is replayed only with the record\'s engineChange, and the m
   const moved = { ...ec, engine: to, engineChange };
   assert.equal(replayablePin({ adoption: { ...adoption, evidenceCandidate: moved }, registry, tag: ec.evidenceRelease, manifestDigest: D('1') }), moved);
   assert.throws(() => replayablePin({ adoption: { ...adoption, evidenceCandidate: { ...moved, engineChange: { ...engineChange, from: { tag: 'v1', revision: 'c'.repeat(40) } } } }, registry, tag: ec.evidenceRelease, manifestDigest: D('1') }), /engineChange/);
-  const pinned = moveEnginePin({ engine: { ...registry.engine, version: '0.1.0-alpha.5', runArtifactSchema: { path: 'schemas/r.json', sha256: D('0') } }, scanners: [] }, engineChange, schema);
+  const pinned = moveEnginePin({ engine: { ...registry.engine, version: '0.1.0-alpha.5', runArtifactSchema: { path: 'schemas/r.json', sha256: D('0') } }, scanners: [], runs: [{ id: 'old', engine: { revision: registry.engine.revision } }, { id: 'new', engine: { revision: to.revision } }] }, engineChange, schema);
+  assert.deepEqual(pinned.runs.map(r => r.id), ['new'], 'a run of the previous engine cannot match the moved pin');
   assert.deepEqual(pinned.engine, { tag: 'v9.0.0', revision: to.revision, version: '9.0.0', runArtifactSchema: { path: 'schemas/r.json', sha256: sha256Digest(schema) } });
   assert.throws(() => moveEnginePin({ engine: registry.engine, scanners: [] }, engineChange, Buffer.from('other')), /record names/);
 });
@@ -107,4 +108,17 @@ test('engine-effect attribution splits the mechanisms and keeps the generic twin
   assert.equal(out['vercel--vercel-app-access-token-dotenv'], out['vercel--vercel-app-access-token-body-55-twin']);
   assert.equal(out['sendgrid--sendgrid-1-twin'], ENGINE_TWIN_SCOPING);
   assert.equal(out['polar--polar-1'], 'changed');
+});
+
+import { viewEffect, renderMarkdown } from '../scripts/render-view-effect.mjs';
+test('the view effect reads two views only: status and reason changes, counts, and a cause only where one is authored (#773)', () => {
+  const fam = (family, value, reasons = []) => ({ family, status: { value, reasons } });
+  const view = (families, revision, extra = {}) => ({ families, policy: { revision }, distribution: { stable: families.filter(f => f.status.value === 'stable').length }, stableDistribution: { documented: 1, empirical: 0 }, unmappedFamilies: [], undetected: [], knownGaps: [], ...extra });
+  const a = view([fam('x', 'stable'), fam('y', 'provisional', ['r1 — text']), fam('z', 'stable')], 'rev-a');
+  const c = view([fam('x', 'provisional', ['twinFailures: 1 > 0 — why']), fam('y', 'provisional', ['r2 — text']), fam('z', 'stable')], 'rev-c');
+  const e = viewEffect(a, c, { effects: { x: 'engine: twin scoring' } });
+  assert.deepEqual(e.statusChanges.map(r => [r.family, r.before, r.after, r.reasonsAdded, r.effect]), [['x', 'stable', 'provisional', ['twinFailures: 1 > 0'], 'engine: twin scoring']]);
+  assert.deepEqual(e.reasonChangesWithoutStatusChange.map(r => [r.family, r.reasonsAdded, r.reasonsRemoved, r.effect]), [['y', ['r2'], ['r1'], 'cause: see the contrast']]);
+  assert.deepEqual(e.policyRevision, { accepted: 'rev-a', candidate: 'rev-c' });
+  assert.match(renderMarkdown({ release: 'snapshot-x', disclosure: 'd', basis: 'b', effect: e }), /1 families lose `stable` and 0 gain it\./);
 });

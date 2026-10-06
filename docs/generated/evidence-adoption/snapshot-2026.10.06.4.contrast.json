@@ -1,0 +1,1862 @@
+{
+ "schema": "redact-secret/snapshot-contrast/v1",
+ "disclosure": "Maintainer-reviewed (independent review pending) / 메인테이너 검토 (독립 검토 대기). A measurement by semantic id, not an assertion about the product.",
+ "tool": "scripts/contrast-snapshots.ts",
+ "comparisons": [
+  {
+   "kind": "control: published @redact-secret/core 0.1.0-beta.13, alpha.15 without OpenRedaction default vs alpha.5 with it",
+   "newer": "snapshot-2026.10.06.4 (run 37469753365)",
+   "older": "snapshot-2026.10.05 (accepted control run 37296823599)",
+   "differences": 4995,
+   "explained": 4995,
+   "unexplained": 0,
+   "regressions": 0,
+   "byCause": {
+    "roster: openredaction not measured in the newer run (optional scanner, #763)": 4068,
+    "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs": 520,
+    "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect": 216,
+    "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect": 72,
+    "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs": 12,
+    "changed in snapshot-2026.10.06.4 (twin): corpus effect (a twin of this case; the mutation assertions that flip it read the twin)": 34,
+    "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect (a twin of this case; the mutation assertions that flip it read the twin)": 28,
+    "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect (a twin of this case; the mutation assertions that flip it read the twin)": 45
+   },
+   "byPopulationAndKind": {
+    "policy-corpus scanner": 1,
+    "public-evidence-snapshot case": 228,
+    "public-evidence-snapshot scanner": 1,
+    "public-evidence-snapshot+methods assertion": 378,
+    "public-evidence-snapshot+methods case": 321,
+    "public-evidence-snapshot+methods review-occurrence-removed": 4064,
+    "public-evidence-snapshot+methods scanner": 1,
+    "regression-corpus scanner": 1
+   },
+   "plainCases": [
+    {
+     "scanner": "flare-redact",
+     "case": "anthropic--anthropic-admin01-key-admim-letter-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "anthropic--anthropic-admin01-key-underscore-after-version-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "anthropic--anthropic-api01-key-apl-letter-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "anthropic--anthropic-token-api03-no-final-hyphen-prefix-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "anthropic--anthropic-token-api03-plain-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "anthropic--anthropic-token-api03-unicode-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "aws--aws-access-key-shape-1-bare-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "aws--aws-access-key-shape-1-quoted-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "aws--aws-access-key-shape-1-unicode-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "aws--aws-access-key-shape-2-bare-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "aws--aws-access-key-shape-2-quoted-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "aws--aws-access-key-shape-2-unicode-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "aws--aws-secret-access-key-aida-akia-next-line-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "aws--aws-secret-access-key-aida-akia-same-line-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "generic--bearer-token-authorization-header-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "generic--bearer-token-header-bare-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "generic--bearer-token-header-quoted-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "generic--bearer-token-header-unicode-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "groq--groq-api-key-env-short-body-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "groq--groq-api-key-short-body-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "hashicorp-vault--vault-token-service-plain-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "hashicorp-vault--vault-token-service-unicode-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "huggingface--huggingface-token-user-plain-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "huggingface--huggingface-token-user-unicode-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "openai--openai-admin-api-key-admn-prefix-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "openai--openai-admin-api-key-first-segment-57-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "openai--openai-admin-api-key-lowercase-marker-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "openai--openai-token-alphabet-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "openai--openai-token-compose-short-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "openai--openai-token-legacy-plain-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "openai--openai-token-legacy-unicode-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "perplexity--perplexity-api-key-short-body-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "perplexity--perplexity-api-key-short-body-twin-wrong-length",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-body-42-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-body-44-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-checkout-link-secret-public-id",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-client-id-in-url-public-id",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-api-credential-setting-names-public-id",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-token-body-44-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-token-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-token-oauth-client-id-public-id",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-token-trailing-hyphen-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "polar--polar-token-trailing-underscore-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "replicate--replicate-api-token-env-short-body-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "sendgrid--base62-bare-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "sendgrid--base62-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "sendgrid--base62-env-key-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "sendgrid--base62-env-token-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "sendgrid--base62-json-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "sendgrid--base62-markdown-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "sendgrid--base62-quoted-env-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "sendgrid--base62-unicode-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "sendgrid--sendgrid-1-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "sendgrid--sendgrid-2-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "sendgrid--sendgrid-3-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "sendgrid--sendgrid-token-segmented-length-plain-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "sendgrid--sendgrid-token-segmented-length-unicode-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "sendgrid--url-safe-bare-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "slack--slack-token-bot-plain-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "slack--slack-token-bot-unicode-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "slack--slack-user-token-dotted-sections-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "slack--slack-user-token-missing-secret-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "vercel--vercel-app-access-token-body-57-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "vercel--vercel-app-access-token-hyphen-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "vercel--vercel-app-access-token-underscore-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "vercel--vercel-app-refresh-token-body-57-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "vercel--vercel-app-refresh-token-hyphen-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "vercel--vercel-app-refresh-token-underscore-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "vercel--vercel-personal-access-token-body-57-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "vercel--vercel-personal-access-token-hyphen-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "vercel--vercel-personal-access-token-underscore-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "xai--xai-api-key-env-short-body-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "xai--xai-api-key-litellm-half-body-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "xai--xai-api-key-openai-dot-body-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "flare-redact",
+     "case": "xai--xai-api-key-short-body-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "aws-bedrock--aws-bedrock-short-term-api-key-embedded-leading-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "aws-bedrock--aws-bedrock-short-term-api-key-head-only-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "aws-bedrock--aws-bedrock-short-term-api-key-urlsafe-body-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "clickhouse-cloud--clickhouse-cloud-api-secret-trailing-hyphen-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "clojars--clojars-deploy-token-body-61-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "clojars--clojars-deploy-token-leading-glue-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "clojars--clojars-deploy-token-lowercase-prefix-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "clojars--clojars-deploy-token-non-hex-letter-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "clojars--clojars-deploy-token-trailing-hyphen-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "clojars--clojars-deploy-token-trailing-underscore-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "clojars--clojars-deploy-token-uppercase-hex-byte-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "cohere--cohere-api-key-id-named-env-alt-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "cohere--cohere-api-key-id-named-json-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "cohere--cohere-api-key-id-named-kwarg-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "doppler--doppler-personal-token-body-45-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "doppler--doppler-personal-token-leading-glue-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "doppler--doppler-personal-token-leading-underscore-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "doppler--doppler-personal-token-trailing-glue-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "dynatrace--dynatrace-token-digit-outside-base32-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "dynatrace--dynatrace-token-leading-glue-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "dynatrace--dynatrace-token-secret-65-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "dynatrace--dynatrace-token-trailing-underscore-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "generic--jwt-eddsa-plain-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "generic--jwt-eddsa-unicode-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "gitlab--gitlab-routable-personal-access-token-checksum-mismatch-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "gitlab--gitlab-routable-personal-access-token-leading-glue-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "gitlab--gitlab-routable-personal-access-token-length-holder-mismatch-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "gitlab--gitlab-routable-personal-access-token-missing-separator-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control flagged",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "gitlab--gitlab-routable-personal-access-token-payload-26-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "gitlab--gitlab-routable-personal-access-token-trailing-glue-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "gitlab--gitlab-routable-personal-access-token-uppercase-base36-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "gitlab--gitlab-routable-personal-access-token-version-one-char-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "gitlab--gitlab-runner-authentication-token-checksum-mismatch-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "gitlab--gitlab-runner-authentication-token-length-holder-mismatch-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "gitlab--gitlab-runner-authentication-token-uppercase-base36-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-body-42-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-body-44-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-checkout-link-secret-public-id",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-client-id-in-url-public-id",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-api-credential-setting-names-public-id",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-token-body-44-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-token-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-token-oauth-client-id-public-id",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-token-trailing-hyphen-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "polar--polar-token-trailing-underscore-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "slack--slack-token-bot-plain-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control flagged",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "slack--slack-token-bot-unicode-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control flagged",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "travis-ci--travisci-api-token-context-1-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "travis-ci--travisci-api-token-context-8-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "travis-ci--travisci-api-token-identifier-key-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "vercel--vercel-app-access-token-body-57-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "vercel--vercel-app-access-token-hyphen-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "vercel--vercel-app-access-token-underscore-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "vercel--vercel-app-refresh-token-body-57-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "vercel--vercel-app-refresh-token-hyphen-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "vercel--vercel-app-refresh-token-underscore-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "vercel--vercel-personal-access-token-body-57-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "vercel--vercel-personal-access-token-hyphen-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "gitleaks",
+     "case": "vercel--vercel-personal-access-token-underscore-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "docker-compose-resolution-authored--required-message",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "gitlab--gitlab-routable-personal-access-token-checksum-mismatch-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "gitlab--gitlab-routable-personal-access-token-length-holder-mismatch-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "gitlab--gitlab-routable-personal-access-token-missing-separator-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "gitlab--gitlab-routable-personal-access-token-payload-26-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "gitlab--gitlab-routable-personal-access-token-trailing-glue-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "gitlab--gitlab-routable-personal-access-token-uppercase-base36-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "gitlab--gitlab-routable-personal-access-token-version-one-char-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-body-42-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-body-44-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-checkout-link-secret-public-id",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-client-id-in-url-public-id",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-api-credential-setting-names-public-id",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-token-body-44-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-token-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-token-oauth-client-id-public-id",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-token-trailing-hyphen-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "polar--polar-token-trailing-underscore-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "vercel--vercel-app-access-token-body-55-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "vercel--vercel-app-access-token-body-57-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "vercel--vercel-app-access-token-hyphen-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "vercel--vercel-app-access-token-underscore-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "vercel--vercel-app-refresh-token-body-55-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "vercel--vercel-app-refresh-token-body-57-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "vercel--vercel-app-refresh-token-hyphen-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "vercel--vercel-app-refresh-token-underscore-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "vercel--vercel-personal-access-token-body-55-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "vercel--vercel-personal-access-token-body-57-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "vercel--vercel-personal-access-token-hyphen-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "redact-secret",
+     "case": "vercel--vercel-personal-access-token-underscore-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "apify--apify-api-token-trailing-hyphen-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "deepgram--deepgram-api-key-id-named-compose-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "deepgram--deepgram-api-key-id-named-env-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "deepgram--deepgram-api-key-id-named-export-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "deepgram--deepgram-api-key-id-named-tool-call-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "deepgram--deepgram-api-key-model-revision-field-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "deepgram--deepgram-api-key-unrelated-python-ctor-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "github--github-fine-grained-pat-terraform-provider-alphabet-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "github--github-token-ghp-prefix-plain-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "github--github-token-ghp-prefix-unicode-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "gitlab--gitlab-routable-personal-access-token-checksum-mismatch-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "gitlab--gitlab-routable-personal-access-token-length-holder-mismatch-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "gitlab--gitlab-routable-personal-access-token-missing-separator-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "gitlab--gitlab-runner-authentication-token-prefix-letter-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "langfuse--langfuse-secret-key-version-nibble-twin-wrong-alphabet",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "openai--openai-token-compose-short-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "openai--openai-token-proj-plain-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "openai--openai-token-proj-unicode-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-body-42-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-body-44-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-checkout-link-secret-public-id",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-client-id-in-url-public-id",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-api-credential-setting-names-public-id",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-token-body-44-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-token-leading-glue-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-token-oauth-client-id-public-id",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-token-trailing-hyphen-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "polar--polar-token-trailing-underscore-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class project-policy -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "posthog--posthog-token-underscore-in-body-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "rubygems--rubygems-api-key-non-hex-letter-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "sendgrid--base62-bare-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "sendgrid--base62-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "sendgrid--base62-env-key-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "sendgrid--base62-env-token-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "sendgrid--base62-json-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "sendgrid--base62-markdown-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "sendgrid--base62-quoted-env-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "sendgrid--base62-unicode-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "sendgrid--sendgrid-1-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "sendgrid--sendgrid-2-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "sendgrid--sendgrid-3-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "sendgrid--sendgrid-token-segmented-length-plain-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "sendgrid--sendgrid-token-segmented-length-unicode-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "sendgrid--url-safe-bare-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "slack--slack-token-bot-plain-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "slack--slack-token-bot-unicode-crlf-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "slack--slack-user-token-missing-secret-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "travis-ci--travisci-api-token-context-1-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "travis-ci--travisci-api-token-context-2-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "travis-ci--travisci-api-token-context-8-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "travis-ci--travisci-api-token-identifier-key-twin",
+     "cause": "engine: twin scoping of credential-eval (alpha.13 and later, ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "before": "control clear",
+     "after": "control flagged",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "vercel--vercel-app-access-token-body-57-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "vercel--vercel-app-access-token-hyphen-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "vercel--vercel-app-access-token-underscore-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "vercel--vercel-app-refresh-token-body-57-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "vercel--vercel-app-refresh-token-hyphen-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "vercel--vercel-app-refresh-token-underscore-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "vercel--vercel-personal-access-token-body-57-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "vercel--vercel-personal-access-token-hyphen-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    },
+    {
+     "scanner": "trufflehog",
+     "case": "vercel--vercel-personal-access-token-underscore-in-body-twin",
+     "cause": "changed in snapshot-2026.10.06.4 (grouping; evidence class tool-corroborated -> unresolved): corpus effect",
+     "before": "control clear",
+     "after": "pending",
+     "expectedChanged": false
+    }
+   ]
+  }
+ ]
+}

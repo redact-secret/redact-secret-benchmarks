@@ -173,6 +173,16 @@ Result for the adoption: the corpus effect is exactly the 11 Polar negatives (pe
 
 Still open (not tooling, or not exercised): the workflow-opened PR check dispatch (`propose` job) has not been seen on a workflow-opened PR; the acceptance package for a run without an optional scanner waits for the run-registry shape decision (#763).
 
+## Fourth real use (#690, snapshot-2026.10.06.4 on credential-eval alpha.15, without OpenRedaction default)
+
+| Step | Result |
+| --- | --- |
+| `adopt-evidence-snapshot.yml` (`engine_tag=v0.1.0-alpha.15`, `supersede=true`) | Recorded `snapshot-2026.10.06.4` as the evidence candidate (PR #777, draft). The workflow's `propose` job dispatched `validate.yml` on its branch and every check, `validate` included, landed on the PR's head commit (the workflow-token PR's own `pull_request` runs waited for approval). This is the first observation of that dispatch on a workflow-opened PR (#773). |
+| Control replay | `run-evidence-replay.mjs branch` cut the transient branch with the engine pin moved by the record's `engineChange` (`moveEnginePin`): the schema read at the engine tag, digest-checked, and the previous engine's runs dropped. First attempt failed in one minute on the registry check (the runs of alpha.5 still on the branch, and an undefined variable in `branch()`); both fixed with tests. Second dispatch of `official-runs.yml` with `omit_optional=openredaction` (run 37469753365): about 6 minutes, green; `collect` archived it (`official-runs-37469753365`). |
+| Contrast | Corpus, engine and roster effects separated by `scripts/attribute-engine-effect.mjs`: 4,995 differences, 0 unexplained, 0 regressions. The provider-wide-coverage mechanism of the Anthropic twins (#772) no longer appears under alpha.15; the Vercel fallback mechanism remains for 12 differences. |
+| View effect | `scripts/render-view-effect.mjs` (new) reads the accepted view and the replay's `qualification-view` and writes the effect; the cause of each change is authored from the contrast. Stable 123 to 116 as for the previous candidate, with different reasons for the five engine-affected families. |
+| Not done | Acceptance package, owner acceptance and deployment receipts: the owner's decisions. |
+
 ## Rollback
 
 Before acceptance: nothing changed; withdraw by resetting the record to `none`. After acceptance: revert the acceptance PR (the pins and the historical receipts return to `runs[]` with it), or set the authority back to `legacy` (one value, rehearsed in `qualification-cutover.md`). Old public numbers stay usable until the new results are accepted.

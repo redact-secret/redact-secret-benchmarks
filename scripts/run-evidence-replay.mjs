@@ -59,11 +59,12 @@ export function replayablePin({ adoption, registry, tag, manifestDigest }) {
   return ec;
 }
 
-/** Pure: the registry with its engine pin moved to the recorded engine candidate, for the transient replay branch only. Refuses a schema whose digest is not the recorded one. */
+/** Pure: the registry with its engine pin moved to the recorded engine candidate, for the transient replay branch only, with the runs of the previous engine dropped. Refuses a schema whose digest is not the recorded one. */
 export function moveEnginePin(registry, engineChange, schemaBytes) {
   const digest = sha256Digest(schemaBytes);
   if (digest !== engineChange.runArtifactSchemaSha256) throw new Error(`the engine run-artifact schema at ${engineChange.to.tag} is ${digest}, the record names ${engineChange.runArtifactSchemaSha256}`);
-  return { ...registry, engine: { ...registry.engine, tag: engineChange.to.tag, revision: engineChange.to.revision, version: engineChange.to.tag.replace(/^v/, ''), runArtifactSchema: { ...registry.engine.runArtifactSchema, sha256: digest } } };
+  // A recorded run of the previous engine can no longer match the moved pin; the transient branch carries none (the accepted ones stay in the history of the real branch and are never replayed here).
+  return { ...registry, runs: (registry.runs ?? []).filter(r => r.engine?.revision === engineChange.to.revision), engine: { ...registry.engine, tag: engineChange.to.tag, revision: engineChange.to.revision, version: engineChange.to.tag.replace(/^v/, ''), runArtifactSchema: { ...registry.engine.runArtifactSchema, sha256: digest } } };
 }
 
 /** Pure: the run this dispatch may reuse (same commit, not failed or cancelled), the newest first. */
@@ -121,7 +122,7 @@ function context(tag, manifestDigest) {
 function remoteSha(branch) { return run('git', ['ls-remote', 'origin', `refs/heads/${branch}`]).split('\t')[0] || null; }
 
 export function branch(tag, manifestDigest) {
-  const { branch: name, patchPath } = context(tag, manifestDigest);
+  const { branch: name, patchPath, ec } = context(tag, manifestDigest);
   const existing = remoteSha(name);
   if (existing) return { branch: name, sha: existing, reused: true };
   cleanTree();

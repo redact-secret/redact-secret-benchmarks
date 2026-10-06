@@ -231,9 +231,71 @@
     },
     "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.06.4.json",
     "replay": {
-      "state": "pending",
-      "via": ".github/workflows/official-runs.yml after the acceptance repin",
-      "recordedRuns": []
+      "state": "replayed",
+      "via": "The PUBLISHED @redact-secret/core 0.1.0-beta.13 on credential-eval v0.1.0-alpha.15: .github/workflows/official-runs.yml dispatched once on the transient replay branch replay/snapshot-2026.10.06.4-95ff2d213b4e-control (revision cdcd6f3899c95429b662339a19bb5ece0ce9b200: the repository at the reviewed code plus the candidate's evidence pin only, patch kept as docs/generated/evidence-adoption/snapshot-2026.10.06.4.replay-pins.patch; branch deleted after archiving), plain and methods, linux-x64, two engine runs each with equal semantic digests; the control of the product candidate 2x2. Made by scripts/run-evidence-replay.mjs.",
+      "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37469753365",
+      "benchmarkRevision": "cdcd6f3899c95429b662339a19bb5ece0ce9b200",
+      "archive": {
+        "release": "official-runs-37469753365",
+        "sha256": "sha256:8aa5ecabf8c0724586997b5b91a66f576fe2e81c948edb9c94513da22304a849"
+      },
+      "semanticDigests": {
+        "public-evidence-snapshot": "sha256:d1d596d60532b98ffc26a2c07c7f1dad287e473652d5514e9ac5eb6f031e31e9",
+        "public-evidence-snapshot+methods": "sha256:1f97705aaaa623915734ba127761cb32551e1fc3c5934658022c0d59ddafed5e",
+        "regression-corpus": "sha256:5a3bf5030823913cb193f8a9bb388c7d05ab804c500e266145c2e0fe07e730c0",
+        "policy-corpus": "sha256:71a11b17d308f23e252cc4118d94558a2b2cb292f79334c10549fa1c946ff13b"
+      },
+      "recordedRuns": [
+        {
+          "id": "policy-corpus@linux-x64",
+          "semanticDigest": "sha256:71a11b17d308f23e252cc4118d94558a2b2cb292f79334c10549fa1c946ff13b",
+          "byteDigest": "sha256:4ab3d6542874126d757ed59593a3172df48dc0bdbbd4d088ce164a816cfb2ae1",
+          "configHash": "sha256:da7118d90b6791f27e32ca4d6363ce9ad9610d0a2d4b992b160d968e6bda87b0",
+          "caseCounts": {
+            "flare-redact": 19,
+            "gitleaks": 19,
+            "redact-secret": 19,
+            "trufflehog": 19
+          }
+        },
+        {
+          "id": "public-evidence-snapshot+methods@linux-x64",
+          "semanticDigest": "sha256:1f97705aaaa623915734ba127761cb32551e1fc3c5934658022c0d59ddafed5e",
+          "byteDigest": "sha256:d248e19618924e77bb7126cec4f7a87d0154e7be2837a8ee97d9ce8a1cb01baa",
+          "configHash": "sha256:95bd486e034d2f13890e7da727cdc17771c4c2518d207e005428af05ee7cdfb4",
+          "caseCounts": {
+            "flare-redact": 38849,
+            "gitleaks": 38849,
+            "redact-secret": 38849,
+            "trufflehog": 38849
+          }
+        },
+        {
+          "id": "public-evidence-snapshot@linux-x64",
+          "semanticDigest": "sha256:d1d596d60532b98ffc26a2c07c7f1dad287e473652d5514e9ac5eb6f031e31e9",
+          "byteDigest": "sha256:216b3da3290af406b7441c45b075658aab4309c5828488d703652bb0e0d06f21",
+          "configHash": "sha256:da7118d90b6791f27e32ca4d6363ce9ad9610d0a2d4b992b160d968e6bda87b0",
+          "caseCounts": {
+            "flare-redact": 7036,
+            "gitleaks": 7036,
+            "redact-secret": 7036,
+            "trufflehog": 7036
+          }
+        },
+        {
+          "id": "regression-corpus@linux-x64",
+          "semanticDigest": "sha256:5a3bf5030823913cb193f8a9bb388c7d05ab804c500e266145c2e0fe07e730c0",
+          "byteDigest": "sha256:8b4687230555aa7a0b0a3ddf98f7ddc766904279bf2ec247117c4df8ae13fc98",
+          "configHash": "sha256:da7118d90b6791f27e32ca4d6363ce9ad9610d0a2d4b992b160d968e6bda87b0",
+          "caseCounts": {
+            "flare-redact": 153,
+            "gitleaks": 153,
+            "redact-secret": 153,
+            "trufflehog": 153
+          }
+        }
+      ],
+      "note": "An exploratory replay for the evidence candidate: never an accepted run, and nothing is recorded in runs[]."
     },
     "ownerAcceptance": null,
     "deployment": {
@@ -249,6 +311,16 @@
       "evidenceRelease": "snapshot-2026.10.06.2",
       "adoptionKey": "sha256:b837e97b4b4392dffea924874bee27a20a56838d808f3b5f573e5d29b99a1aad",
       "note": "Superseded before acceptance by snapshot-2026.10.06.4. its report and data stay as history."
+    },
+    "contrast": {
+      "report": "docs/generated/evidence-adoption/snapshot-2026.10.06.4.contrast.md",
+      "data": "docs/generated/evidence-adoption/snapshot-2026.10.06.4.contrast.json",
+      "note": "Control against the accepted control by semantic id: 4,995 differences, all attributed (corpus 395, engine twin scoring 532, roster 4,068), 0 unexplained, 0 regressions. Under alpha.15 the provider-wide-coverage mechanism of the Anthropic api03-prefix twins (#772) no longer appears; the Vercel fallback mechanism remains for 12 differences. No isolating replay was made."
+    },
+    "viewEffect": {
+      "report": "docs/generated/evidence-adoption/snapshot-2026.10.06.4.view-effect.md",
+      "data": "docs/generated/evidence-adoption/snapshot-2026.10.06.4.view-effect.json",
+      "note": "If accepted: stable 123 -> 116, provisional 20 -> 27 (two Polar families and three Vercel families by the corpus with one Vercel fallback twin failure each, two Anthropic families by one unresolved critical mutation finding after the corpus twin change; alpha.15 removes their twin failure); OpenRedaction default not measured."
     }
   },
   "engineCandidate": {

@@ -390,5 +390,73 @@
       "file": "scanners/product-scope.json",
       "note": "The 4 scope statements of core redact-secret#1205 / PR #1206 (JSON name/value object pairs, a credential name that keys an object holding a value member, a token behind a percent-encoded delimiter, HTTP session cookies in HAR headers and cookies arrays) are registered at core 422e43e3 as the owner's product-scope decision (#622)."
     }
+  },
+  "engineCandidate": {
+    "kind": "engine-product",
+    "evidenceRelease": "snapshot-2026.10.05",
+    "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef",
+    "snapshotDigest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
+    "sourceRevision": "225f7ae74a986a40fe857371b393ebfdb7d2268a",
+    "adoptionKey": "sha256:7469c61c7277228c302796b00ae986972d482ca820091cd5dceb18d529d5f9d4",
+    "engine": {
+      "tag": "v0.1.0-alpha.12",
+      "revision": "d9d83b9d3e5435f8f8858f84254824932c5e827a"
+    },
+    "engineChange": {
+      "from": {
+        "tag": "v0.1.0-alpha.5",
+        "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d"
+      },
+      "to": {
+        "tag": "v0.1.0-alpha.12",
+        "revision": "d9d83b9d3e5435f8f8858f84254824932c5e827a"
+      },
+      "runArtifactSchemaSha256": "sha256:cd80c3df7fd8c788cf6de97fe36f5da6041398c6217e8b845a7803b294f14a9a"
+    },
+    "product": {
+      "package": "@redact-secret/core",
+      "version": "0.1.0-beta.13",
+      "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+    },
+    "productChange": {
+      "from": {
+        "version": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+      },
+      "to": {
+        "version": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+      }
+    },
+    "engineCompatibility": {
+      "compatible": true,
+      "cases": 6519
+    },
+    "supersedesCandidate": {
+      "adoptionKey": "sha256:bdb7e6b007a3083d5e1e700aefdca5d51fa9344d9e1e04948d99a15743f0743b",
+      "engine": {
+        "tag": "v0.1.0-alpha.11",
+        "revision": "eec5d0d3548ddb232a996c11c4e2b1a65a436489"
+      },
+      "product": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.13",
+        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+      },
+      "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.05.engine-alpha.11.json",
+      "note": "Superseded before acceptance by engine candidate v0.1.0-alpha.12 with 0.1.0-beta.13."
+    },
+    "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.05.engine-alpha.12.json",
+    "replay": {
+      "state": "pending",
+      "via": ".github/workflows/official-runs.yml on a transient replay branch (engine and product pins only), plus an attribution run of the previous product build",
+      "recordedRuns": []
+    },
+    "note": "The evidence bytes are identical to the accepted adoption. The active registry, vendored schemas, runs and authority stay on the accepted engine and product until the owner accepts this candidate; nothing here is an owner acceptance.",
+    "ownerAcceptance": null,
+    "deployment": {
+      "staging": null,
+      "production": null
+    }
   }
 }

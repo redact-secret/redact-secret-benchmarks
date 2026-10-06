@@ -176,6 +176,7 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
     const digest = createHash('sha256').update(patch).digest('hex');
     writeFileSync(path.join(root, `${patchFile}.sha256`), `${digest}  ${path.basename(patchFile)}\n`);
     writeJson('benchmarks/evidence-adoption.json', withAcceptance);
+    symlinkSync(path.join(root, 'node_modules'), path.join(tree, 'node_modules'), 'dir'); // back for the comparison, which runs in the tree (the patch is already taken)
     // 10. The views A and C for the owner report: the accepted runs of this checkout and the candidate's, with the product populations' case metadata (a deterministic export of the checkout).
     const dirA = path.join(scratch, 'accepted');
     sh('node', ['scripts/official-run-archive.mjs', 'fetch', '--out', dirA], { cwd: root, env: { ...env, GITHUB_REPOSITORY: REPOSITORY } });

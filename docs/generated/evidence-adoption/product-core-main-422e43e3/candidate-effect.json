@@ -20,33 +20,41 @@
    "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
   },
   "archive": {
-   "release": "official-runs-37296823599",
-   "sha256": "sha256:57accf3d9229e287c95d7f3c34904c97866bb52295776e24d8a8ece9264f1578"
+   "release": "official-runs-37469753365",
+   "sha256": "sha256:8aa5ecabf8c0724586997b5b91a66f576fe2e81c948edb9c94513da22304a849"
   },
-  "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37296823599",
+  "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37469753365",
   "runClass": "official"
  },
  "replay": {
-  "engine": "credential-eval v0.1.0-alpha.5 (c1802a6b)",
+  "engine": "credential-eval v0.1.0-alpha.15 (0024de69)",
   "runClass": "exploratory",
   "publication": "internal",
   "platform": "linux-x64",
-  "evidence": "snapshot-2026.10.05",
+  "evidence": "snapshot-2026.10.06.4",
   "scope": "plain, methods (floors population), policy and regression populations; every scanner and the engine configuration as the control; only the product build differs"
  },
  "worsened": false,
  "fixed": [
   "authored-provider-neutral--terraform-apply-sensitive",
+  "docker-compose-resolution-authored--required-message",
   "exa--exa-api-key-your-key-here-placeholder",
   "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters",
+  "spotify-authored--client-secret-variable-placeholder",
   "structured-credential-files-authored--documented-template-placeholders"
  ],
  "improved": [
-  "docker-compose-resolution-authored--required-message",
   "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback"
  ],
  "regressed": [],
  "stillFailing": [
+  "airtable-authored--mac-secret-json-response",
+  "airtable-authored--mac-secret-shell-assignment",
+  "airtable-authored--mac-secret-unquoted-assignment",
+  "airtable-authored--mac-secret-yaml-config",
+  "airtable-authored--mac-secret-yaml-quoted",
+  "asana-authored--oauth-lookalike-access-token-documented-placeholder",
+  "asana-authored--x-hook-secret-angle-placeholder",
   "authored-provider-neutral--pytest-fake-fixtures",
   "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-env",
   "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-json",
@@ -97,9 +105,28 @@
   "base64-hex-representation-projections--sendgrid-key-hex-upper-in-json",
   "cross-provider--base62-bearer-twin",
   "cross-provider--base62-generic-key-twin",
+  "elastic-authored--authorization-apikey-curl-header",
+  "elastic-authored--authorization-apikey-json-header-map",
+  "elastic-authored--authorization-apikey-lowercase-name-and-scheme",
+  "elastic-authored--authorization-apikey-raw-http",
+  "elastic-authored--cloud-apikey-curl-header",
+  "elastic-authored--cloud-apikey-json-header-map",
+  "elastic-authored--cloud-apikey-raw-http",
+  "elastic-authored--ece-apikey-curl-header",
+  "elastic-authored--ece-apikey-json-header-map",
+  "elastic-authored--ece-apikey-raw-http",
+  "elastic-authored--proxy-authorization-apikey-json-header-map",
+  "elastic-authored--proxy-authorization-apikey-raw-http",
   "elevenlabs--elevenlabs-api-key-residency-suffix",
   "exa--exa-api-key-js-positional",
   "exa--exa-api-key-python-positional",
+  "gitlab--gitlab-routable-personal-access-token-checksum-mismatch-twin",
+  "gitlab--gitlab-routable-personal-access-token-length-holder-mismatch-twin",
+  "gitlab--gitlab-routable-personal-access-token-missing-separator-twin",
+  "gitlab--gitlab-routable-personal-access-token-payload-26-twin",
+  "gitlab--gitlab-routable-personal-access-token-trailing-glue-twin",
+  "gitlab--gitlab-routable-personal-access-token-uppercase-base36-twin",
+  "gitlab--gitlab-routable-personal-access-token-version-one-char-twin",
   "graphql-requests-and-responses-authored--get-url-variables-value",
   "har-exports-authored--bearer-token-in-postdata-params",
   "har-exports-authored--bearer-token-in-url-and-querystring-array",
@@ -110,6 +137,12 @@
   "http-auth-carriers-authored--basic-token-split-by-space",
   "http-auth-carriers-authored--cookie-header-session-id-among-preferences",
   "http-auth-carriers-authored--set-cookie-session-id-with-attributes",
+  "hubspot-authored--pak-environment-assignment",
+  "hubspot-authored--pak-global-config-accounts",
+  "hubspot-authored--pak-legacy-portals-config-quoted",
+  "jfrog-authored--api-key-curl-art-api-header",
+  "jfrog-authored--api-key-curl-basic-password",
+  "jfrog-authored--api-key-raw-http-art-api-header",
   "jupyter-notebook-files-authored--source-value-split-between-array-elements",
   "jupyter-notebook-files-authored--stdout-mask-where-source-has-environment-reference",
   "line-break-and-fragment-authored--key-split-across-javascript-added-literals",
@@ -130,6 +163,13 @@
   "line-break-and-fragment-authored--key-wrapped-in-markdown-paragraph",
   "mailgun--mailgun-api-key-triplet-merged-last-segments-twin",
   "mailgun--mailgun-api-key-triplet-short-first-segment-twin",
+  "meta-authored--access-token-documented-template",
+  "meta-authored--app-pair-curl-url",
+  "meta-authored--app-pair-lookalike-appsecret-proof-derived",
+  "meta-authored--app-pair-lookalike-documented-template",
+  "meta-authored--app-pair-raw-http",
+  "meta-authored--app-pair-url-query-continues",
+  "meta-authored--client-token-pair-parameter",
   "structured-credential-files-authored--kubeconfig-client-key-data-encoded-pem",
   "structured-credential-files-authored--kubeconfig-four-users-two-inline-secrets",
   "structured-credential-files-authored--kubeconfig-inline-bearer-token",
@@ -139,25 +179,43 @@
   "structured-credential-files-authored--netrc-two-machines-and-default",
   "url-credential-boundaries-authored--cloud-storage-signed-url-in-prose",
   "url-credential-boundaries-authored--s3-presigned-url-in-prose",
-  "url-credential-boundaries-authored--sas-token-in-config-line"
+  "url-credential-boundaries-authored--sas-token-in-config-line",
+  "vercel--vercel-app-access-token-body-55-twin",
+  "vercel--vercel-app-refresh-token-body-55-twin",
+  "vercel--vercel-personal-access-token-body-55-twin",
+  "x-authored--oauth-authorization-header-identity-and-signature",
+  "x-authored--refresh-angle-placeholder",
+  "x-authored--refresh-empty-value",
+  "zendesk-authored--api-token-curl-basic-credential",
+  "zendesk-authored--api-token-env-assignment",
+  "zendesk-authored--api-token-json-credentials-string",
+  "zendesk-authored--api-token-lookalike-masked-display",
+  "zendesk-authored--refresh-angle-placeholder",
+  "zendesk-authored--refresh-curl-environment-reference",
+  "zendesk-authored--refresh-documented-template",
+  "zendesk-authored--refresh-empty-value",
+  "zendesk-authored--refresh-masked-display",
+  "zendesk-authored--refresh-template-reference",
+  "zoom-authored--webhook-lookalike-validation-response"
  ],
  "populations": {
   "public-evidence-snapshot": {
-   "cases": 6519,
+   "cases": 7036,
    "fixed": [
     "authored-provider-neutral--terraform-apply-sensitive",
+    "docker-compose-resolution-authored--required-message",
     "exa--exa-api-key-your-key-here-placeholder",
     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters",
+    "spotify-authored--client-secret-variable-placeholder",
     "structured-credential-files-authored--documented-template-placeholders"
    ],
    "regressed": [],
    "improved": [
-    "docker-compose-resolution-authored--required-message",
     "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback"
    ],
    "changed": [],
-   "unchanged": 6513,
-   "stillFailing": 93,
+   "unchanged": 7029,
+   "stillFailing": 149,
    "aggregatesIdentical": false,
    "status": {
     "control": "complete",
@@ -169,10 +227,6 @@
      "differing": 0
     },
     "gitleaks": {
-     "casesIdentical": true,
-     "differing": 0
-    },
-    "openredaction": {
      "casesIdentical": true,
      "differing": 0
     },
@@ -191,8 +245,8 @@
      "semanticDigestsEqual": true
     },
     "semanticDigest": {
-     "control": "sha256:4bbbebc2ca24f190a3c69b0ff9dd7e97e744bba9e54e266a3caf11702018fc66",
-     "candidate": "sha256:c0c25c022eabd2e49e89afaa8f774a1e24afc48c4c1d59e9100d86e0655fa7c2"
+     "control": "sha256:d1d596d60532b98ffc26a2c07c7f1dad287e473652d5514e9ac5eb6f031e31e9",
+     "candidate": "sha256:7e8039bcae192cdab0a4319890c7c7db7a6d3c1665567cfda6cd428d0e086f38"
     }
    },
    "differing": [
@@ -239,7 +293,7 @@
     },
     {
      "case_id": "docker-compose-resolution-authored--required-message",
-     "direction": "improved",
+     "direction": "fixed",
      "kind": "must-not-flag",
      "tier": "T3",
      "family": "generic:unclassified-assignment-literal",
@@ -249,9 +303,9 @@
      "control": {
       "measurement": {
        "type": "control",
-       "flagged": false,
+       "flagged": true,
        "findings": 1,
-       "co_detected": true,
+       "co_detected": false,
        "action_counts": {
         "warn": 1
        }
@@ -566,6 +620,48 @@
      }
     },
     {
+     "case_id": "spotify-authored--client-secret-variable-placeholder",
+     "direction": "fixed",
+     "kind": "must-not-flag",
+     "tier": "T3",
+     "family": "spotify:client-secret",
+     "group": "spotify-client-credentials-request-placeholders-non-values",
+     "evidence_class": "project-policy",
+     "expected": [],
+     "control": {
+      "measurement": {
+       "type": "control",
+       "flagged": true,
+       "findings": 1,
+       "co_detected": false,
+       "action_counts": {
+        "warn": 1
+       }
+      },
+      "actual": [
+       {
+        "start": 21,
+        "end": 34,
+        "family": "generic-token",
+        "action": "warn"
+       }
+      ]
+     },
+     "candidate": {
+      "measurement": {
+       "type": "control",
+       "flagged": false,
+       "findings": 0,
+       "co_detected": false
+      },
+      "actual": []
+     },
+     "sanitized": {
+      "control": "var client_secret = 'CLIENT_SECRET';\n",
+      "candidate": "var client_secret = 'CLIENT_SECRET';\n"
+     }
+    },
+    {
      "case_id": "structured-credential-files-authored--documented-template-placeholders",
      "direction": "fixed",
      "kind": "must-not-flag",
@@ -631,10 +727,6 @@
      "casesIdentical": true,
      "differing": 0
     },
-    "openredaction": {
-     "casesIdentical": true,
-     "differing": 0
-    },
     "trufflehog": {
      "casesIdentical": true,
      "differing": 0
@@ -650,8 +742,8 @@
      "semanticDigestsEqual": true
     },
     "semanticDigest": {
-     "control": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
-     "candidate": "sha256:a33f010a5d8446207e32341ec1bbe5428f5f55df13cf97f4ea667839c8b6d741"
+     "control": "sha256:5a3bf5030823913cb193f8a9bb388c7d05ab804c500e266145c2e0fe07e730c0",
+     "candidate": "sha256:532d4f4e2c47cd2c7fd9d825a4bb5143f6d44bc610285927ebcf8b01c91729e5"
     }
    },
    "differing": []
@@ -678,10 +770,6 @@
      "casesIdentical": true,
      "differing": 0
     },
-    "openredaction": {
-     "casesIdentical": true,
-     "differing": 0
-    },
     "trufflehog": {
      "casesIdentical": true,
      "differing": 0
@@ -697,19 +785,19 @@
      "semanticDigestsEqual": true
     },
     "semanticDigest": {
-     "control": "sha256:9a6576c90e30907dee3b6e2b368d2791a29865fa8215790b0ef9cf6f75b66f9e",
-     "candidate": "sha256:78bd03b306413cee0ad46f3c5cb31d2b317103b1a893ceb4e465ea03d7731620"
+     "control": "sha256:71a11b17d308f23e252cc4118d94558a2b2cb292f79334c10549fa1c946ff13b",
+     "candidate": "sha256:0e62e41c6aeb81443a7e6a70da7b6126bc3b936ee7a6fb538ebce58233ada2d5"
     }
    },
    "differing": []
   },
   "methods": {
    "assertions": {
-    "control": 48210,
-    "candidate": 48210,
-    "fixed": 40,
+    "control": 52346,
+    "candidate": 52346,
+    "fixed": 48,
     "regressed": 0,
-    "stillFailing": 1408,
+    "stillFailing": 2032,
     "fixedKeys": [
      "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|same-detection||canonical|context.indent",
      "authored-provider-neutral--terraform-apply-sensitive--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
@@ -743,6 +831,14 @@
      "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--metamorphic|metamorphic|present-within-envelope|context.unicode-prefix||",
      "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--metamorphic|metamorphic|present-within-envelope|encoding.crlf||",
      "jupyter-notebook-files-authored--same-value-in-source-stream-result-json-error-and-traceback--mutation|mutation|present-within-envelope|canonical||",
+     "spotify-authored--client-secret-variable-placeholder--metamorphic|metamorphic|same-detection||canonical|context.indent",
+     "spotify-authored--client-secret-variable-placeholder--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
+     "spotify-authored--client-secret-variable-placeholder--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
+     "spotify-authored--client-secret-variable-placeholder--metamorphic|metamorphic|absent|canonical||",
+     "spotify-authored--client-secret-variable-placeholder--metamorphic|metamorphic|absent|context.indent||",
+     "spotify-authored--client-secret-variable-placeholder--metamorphic|metamorphic|absent|context.unicode-prefix||",
+     "spotify-authored--client-secret-variable-placeholder--metamorphic|metamorphic|absent|encoding.crlf||",
+     "spotify-authored--client-secret-variable-placeholder--mutation|mutation|absent|canonical||",
      "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|same-detection||canonical|context.indent",
      "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|same-detection||canonical|context.unicode-prefix",
      "structured-credential-files-authored--documented-template-placeholders--metamorphic|metamorphic|same-detection||canonical|encoding.crlf",
@@ -755,43 +851,39 @@
     "regressedKeys": []
    },
    "reviewOccurrences": {
-    "control": 11622,
-    "candidate": 11613,
+    "control": 8122,
+    "candidate": 8111,
     "added": [
-     "structured-credential-files-authored--documented-template-placeholders--differential|flare-redact|peer-only|canonical||differential",
-     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|openredaction|reference-only|canonical||differential",
-     "structured-credential-files-authored--documented-template-placeholders--differential|trufflehog|peer-only|canonical||differential",
-     "authored-provider-neutral--terraform-apply-sensitive--differential|openredaction|peer-only|canonical||differential",
      "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|flare-redact|range-disagreement|canonical||differential",
-     "structured-credential-files-authored--documented-template-placeholders--differential|openredaction|peer-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|trufflehog|peer-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|flare-redact|peer-only|canonical||differential",
      "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|trufflehog|reference-only|canonical||differential",
      "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|gitleaks|reference-only|canonical||differential"
     ],
     "removed": [
-     "exa--exa-api-key-your-key-here-placeholder--differential|openredaction|reference-only|canonical||differential",
-     "docker-compose-resolution-authored--required-message--differential|flare-redact|reference-only|canonical||differential",
+     "spotify-authored--client-secret-variable-placeholder--differential|gitleaks|reference-only|canonical||differential",
+     "spotify-authored--client-secret-variable-placeholder--differential|trufflehog|reference-only|canonical||differential",
      "docker-compose-resolution-authored--required-message--differential|gitleaks|reference-only|canonical||differential",
+     "structured-credential-files-authored--documented-template-placeholders--differential|flare-redact|range-disagreement|canonical||differential",
+     "exa--exa-api-key-your-key-here-placeholder--differential|flare-redact|reference-only|canonical||differential",
      "structured-credential-files-authored--documented-template-placeholders--differential|trufflehog|range-disagreement|canonical||differential",
      "structured-credential-files-authored--documented-template-placeholders--differential|gitleaks|reference-only|canonical||differential",
-     "structured-credential-files-authored--documented-template-placeholders--differential|flare-redact|range-disagreement|canonical||differential",
-     "docker-compose-resolution-authored--required-message--differential|openredaction|reference-only|canonical||differential",
+     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|flare-redact|peer-only|canonical||differential",
+     "docker-compose-resolution-authored--required-message--differential|flare-redact|reference-only|canonical||differential",
+     "spotify-authored--client-secret-variable-placeholder--differential|flare-redact|reference-only|canonical||differential",
      "docker-compose-resolution-authored--required-message--differential|trufflehog|reference-only|canonical||differential",
      "exa--exa-api-key-your-key-here-placeholder--differential|trufflehog|reference-only|canonical||differential",
      "authored-provider-neutral--terraform-apply-sensitive--differential|flare-redact|reference-only|canonical||differential",
      "exa--exa-api-key-your-key-here-placeholder--differential|gitleaks|reference-only|canonical||differential",
-     "structured-credential-files-authored--documented-template-placeholders--differential|openredaction|range-disagreement|canonical||differential",
-     "exa--exa-api-key-your-key-here-placeholder--differential|flare-redact|reference-only|canonical||differential",
-     "authored-provider-neutral--terraform-apply-sensitive--differential|openredaction|range-disagreement|canonical||differential",
      "authored-provider-neutral--terraform-apply-sensitive--differential|trufflehog|reference-only|canonical||differential",
-     "authored-provider-neutral--terraform-apply-sensitive--differential|gitleaks|reference-only|canonical||differential",
-     "generic-connection-grammar-authored--amqp-uri-all-sub-delimiters--differential|flare-redact|peer-only|canonical||differential"
+     "authored-provider-neutral--terraform-apply-sensitive--differential|gitleaks|reference-only|canonical||differential"
     ],
-    "addedOnFixedCases": 8,
+    "addedOnFixedCases": 5,
     "addedElsewhere": 0
    },
    "variantCases": {
-    "changed": 31,
-    "fixed": 25,
+    "changed": 37,
+    "fixed": 31,
     "regressed": 0,
     "changes": [
      {
@@ -2273,6 +2365,198 @@
       "direction": "changed"
      },
      {
+      "case_id": "spotify-authored--client-secret-variable-placeholder--differential--canonical",
+      "control": {
+       "measurement": {
+        "type": "control",
+        "flagged": true,
+        "findings": 1,
+        "co_detected": false,
+        "action_counts": {
+         "warn": 1
+        }
+       },
+       "actual": [
+        {
+         "start": 21,
+         "end": 34,
+         "family": "generic-token",
+         "action": "warn"
+        }
+       ]
+      },
+      "candidate": {
+       "measurement": {
+        "type": "control",
+        "flagged": false,
+        "findings": 0,
+        "co_detected": false
+       },
+       "actual": []
+      },
+      "direction": "fixed"
+     },
+     {
+      "case_id": "spotify-authored--client-secret-variable-placeholder--metamorphic--canonical",
+      "control": {
+       "measurement": {
+        "type": "control",
+        "flagged": true,
+        "findings": 1,
+        "co_detected": false,
+        "action_counts": {
+         "warn": 1
+        }
+       },
+       "actual": [
+        {
+         "start": 21,
+         "end": 34,
+         "family": "generic-token",
+         "action": "warn"
+        }
+       ]
+      },
+      "candidate": {
+       "measurement": {
+        "type": "control",
+        "flagged": false,
+        "findings": 0,
+        "co_detected": false
+       },
+       "actual": []
+      },
+      "direction": "fixed"
+     },
+     {
+      "case_id": "spotify-authored--client-secret-variable-placeholder--metamorphic--context-indent",
+      "control": {
+       "measurement": {
+        "type": "control",
+        "flagged": true,
+        "findings": 1,
+        "co_detected": false,
+        "action_counts": {
+         "warn": 1
+        }
+       },
+       "actual": [
+        {
+         "start": 25,
+         "end": 38,
+         "family": "generic-token",
+         "action": "warn"
+        }
+       ]
+      },
+      "candidate": {
+       "measurement": {
+        "type": "control",
+        "flagged": false,
+        "findings": 0,
+        "co_detected": false
+       },
+       "actual": []
+      },
+      "direction": "fixed"
+     },
+     {
+      "case_id": "spotify-authored--client-secret-variable-placeholder--metamorphic--context-unicode-prefix",
+      "control": {
+       "measurement": {
+        "type": "control",
+        "flagged": true,
+        "findings": 1,
+        "co_detected": false,
+        "action_counts": {
+         "warn": 1
+        }
+       },
+       "actual": [
+        {
+         "start": 41,
+         "end": 54,
+         "family": "generic-token",
+         "action": "warn"
+        }
+       ]
+      },
+      "candidate": {
+       "measurement": {
+        "type": "control",
+        "flagged": false,
+        "findings": 0,
+        "co_detected": false
+       },
+       "actual": []
+      },
+      "direction": "fixed"
+     },
+     {
+      "case_id": "spotify-authored--client-secret-variable-placeholder--metamorphic--encoding-crlf",
+      "control": {
+       "measurement": {
+        "type": "control",
+        "flagged": true,
+        "findings": 1,
+        "co_detected": false,
+        "action_counts": {
+         "warn": 1
+        }
+       },
+       "actual": [
+        {
+         "start": 21,
+         "end": 34,
+         "family": "generic-token",
+         "action": "warn"
+        }
+       ]
+      },
+      "candidate": {
+       "measurement": {
+        "type": "control",
+        "flagged": false,
+        "findings": 0,
+        "co_detected": false
+       },
+       "actual": []
+      },
+      "direction": "fixed"
+     },
+     {
+      "case_id": "spotify-authored--client-secret-variable-placeholder--mutation--canonical",
+      "control": {
+       "measurement": {
+        "type": "control",
+        "flagged": true,
+        "findings": 1,
+        "co_detected": false,
+        "action_counts": {
+         "warn": 1
+        }
+       },
+       "actual": [
+        {
+         "start": 21,
+         "end": 34,
+         "family": "generic-token",
+         "action": "warn"
+        }
+       ]
+      },
+      "candidate": {
+       "measurement": {
+        "type": "control",
+        "flagged": false,
+        "findings": 0,
+        "co_detected": false
+       },
+       "actual": []
+      },
+      "direction": "fixed"
+     },
+     {
       "case_id": "structured-credential-files-authored--documented-template-placeholders--differential--canonical",
       "control": {
        "measurement": {
@@ -2476,8 +2760,8 @@
      "semanticDigestsEqual": true
     },
     "semanticDigest": {
-     "control": "sha256:3b5c750a1f973760b4f08d748525e280b6a516feb0e013ccfdc8c87ff66e2442",
-     "candidate": "sha256:d4d5fa97ea23ccf715079faff769ace48f8e9dedbe00d9ffb4402911cb00f2cb"
+     "control": "sha256:1f97705aaaa623915734ba127761cb32551e1fc3c5934658022c0d59ddafed5e",
+     "candidate": "sha256:344bd29f1929243bc95b85cfce74e38fcf9f8999aac992a6fea7688629407379"
     }
    }
   }

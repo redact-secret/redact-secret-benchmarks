@@ -19,6 +19,7 @@ import { createHash } from 'node:crypto';
 import { createReadStream, existsSync, mkdirSync, mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { pipeline } from 'node:stream/promises';
 import { buildCandidateDiff, candidateDiffArtifactProblems, METHODS_KEY, PLAIN_POPULATIONS, receiptFilesProblems, type RegisteredCandidate, type Receipt, type RunRecord, type Side } from '../benchmarks/qualification/candidate-diff.ts';
 import { readRunArtifact } from '../benchmarks/qualification/run-artifact.ts';
@@ -28,7 +29,7 @@ import { candidateOf, packagesFor, readRegistry, treeDigest } from './install-pr
 
 const usage = 'Usage: qualification:candidate-diff --candidate <id> --candidate-dir <dir> [--control-archive <release>=sha256:<hex>] [--evidence-tag <tag> --manifest-digest sha256:<hex>] [--verify-tarballs] [--out <file>]';
 const REPOSITORY = 'redact-secret/redact-secret-benchmarks';
-const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
 const flags = new Set(['verify-tarballs']);
 const values: Record<string, string> = {};

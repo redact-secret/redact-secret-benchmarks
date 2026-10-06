@@ -13,7 +13,7 @@ Accuracy observation reuse is [accuracy-reuse.md](accuracy-reuse.md) (#706). Thi
 | `pii-profile-cost.yml`, `pii-profile-cost-v2.yml` | performance | A/A, freeze, candidate phases. |
 | `performance-evaluation.yml` | performance | core's assessment, paired baseline/candidate on one runner. |
 
-No workflow here calls the engine's `perf` command yet; credential-eval #42 (ADR 0010, `perf plan`) is merged but untagged.
+No workflow here calls the engine's `perf` command yet. credential-eval #42 (ADR 0010, `perf plan`) is released (alpha.9) and the pinned engine, `v0.1.0-alpha.15`, carries it; see [Which planner](#which-planner).
 
 ## Running it
 
@@ -51,6 +51,10 @@ The harness measures a whole job (a measurement, or a measurement and setting) i
 
 The plan reports executed, reused and re-scored counts, jobs, engine runs or invocations and peer processes, and runner-minutes from `benchmarks/execution-telemetry.json` (a job kind without an entry is unknown and is counted as such), separately from wall-clock latency.
 
+## Which planner
+
+[Decision](../decisions/2026-10-06-integrate-the-engine-perf-plan-for-engine-kinds-and-keep-harness-cells-repository-side.md) (#722). `perf plan` reads only engine `PerformanceArtifact` v1 files and reuses a cell only with an invocation digest, an executable digest and a CPU model (ADR 0010 §2, §5). The 60 registered cells come from this repository's harness, are not engine artifacts and carry no invocation digest, so they stay on the repository-side identity comparison above; replacing it would mark every one `no stored result`. A measurement declared as an engine-run kind (`latency`, `instructions`) is planned by `credential-eval perf plan` from the pinned engine, and its dry-run decision, reason and `invalidated_by` are reported as the engine states them. Each job names its planner. The harness whole-job granularity decision above is unchanged. No engine-run measurement is registered yet, so the engine path is not wired until one exists.
+
 ## Not covered
 
-Engine #42's per-cell identity and `perf plan`, merged as alpha.9 but untagged (the newest engine tag is alpha.5): the planner is the repository-side contract and the engine's `perf plan` replaces the cell comparison when a tag carries it; case-level accuracy reuse (#706).
+Case-level accuracy reuse (#706).

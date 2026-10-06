@@ -121,7 +121,7 @@ function context(tag, manifestDigest) {
 function remoteSha(branch) { return run('git', ['ls-remote', 'origin', `refs/heads/${branch}`]).split('\t')[0] || null; }
 
 export function branch(tag, manifestDigest) {
-  const { branch: name, patchPath } = context(tag, manifestDigest);
+  const { branch: name, patchPath, ec } = context(tag, manifestDigest);
   const existing = remoteSha(name);
   if (existing) return { branch: name, sha: existing, reused: true };
   cleanTree();

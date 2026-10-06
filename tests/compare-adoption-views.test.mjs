@@ -81,6 +81,15 @@ test('a common case whose outcome changes without a twin family assignment is un
   assert.ok(out.unexplained.some(u => /common case c1 changed outcome/.test(u)));
 });
 
+test('an outcome move the engine alone already makes (the same corpus on the new engine, view B) is the engine\'s, not unexplained (#690)', () => {
+  const base = view({ families: [family('fam-a', {})], cases: [makeCase('c1', { results: [result('s', true)] })] });
+  const onNewEngine = view({ families: [family('fam-a', {})], cases: [makeCase('c1', { results: [result('s', false)] })] });
+  const candidate = view({ families: [family('fam-a', {})], cases: [makeCase('c1', { results: [result('s', false)] })] });
+  const { out } = run({ A: base, B: onNewEngine, C: candidate, added: [] });
+  assert.equal(out.publicPopulation.commonCaseOutcomeDrift.cases, 1);
+  assert.ok(!out.unexplained.some(u => /common case c1 changed outcome/.test(u)), 'the engine alone gives this outcome');
+});
+
 test('the report separates the superseded candidate and the representation capability, and says unverified facts are unverified (#690)', () => {
   const base = view({ families: [family('fam-a', {})], cases: [makeCase('c1')] });
   const bucket = { 's': { fragment: { pending: 1, 'positive:exact': 2 } } };

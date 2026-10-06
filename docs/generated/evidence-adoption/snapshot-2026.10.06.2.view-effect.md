@@ -21,16 +21,16 @@ Policy revision: accepted `rs-policy-1:sha256:20f1b70bde51fc9ac0f866cdf78713f02d
 
 | Family | Before | After | Reasons added | Effect |
 | --- | --- | --- | --- | --- |
-| `anthropic-admin01-key` | stable | provisional | mutation.unresolvedCritical: 2 > 0; twinFailures: 1 > 0 | engine: twin scoping (alpha.13, ADR 0018) records one twin failure and unresolved critical mutation findings on identical findings |
-| `anthropic-api01-key` | stable | provisional | mutation.unresolvedCritical: 2 > 0; twinFailures: 1 > 0 | engine: as above |
+| `anthropic-admin01-key` | stable | provisional | mutation.unresolvedCritical: 2 > 0; twinFailures: 1 > 0 | engine: twin scoping (alpha.13, ADR 0018) records one twin failure and unresolved critical mutation findings on identical findings; mechanism: provider-wide coverage maps `anthropic-token` to `anthropic:`, so the sibling-class detection reads as the twin's own family (credential-eval issue, draft 01) |
+| `anthropic-api01-key` | stable | provisional | mutation.unresolvedCritical: 2 > 0; twinFailures: 1 > 0 | engine: as above (provider-wide coverage, draft 01) |
 | `generic-token` | provisional | provisional | twinFailures: 1 > 0 | engine: provisional before and after; one more reason (a twin failure) under alpha.13 |
 | `polar-api-credential` | stable | provisional | documented.minimumBenignCases: 6 < 8; documented.minimumTwinPairs: 4 < 5 | corpus: the 11 Polar cases moved to unresolved (outcome pending, outside the denominators), so the documented fixture profile floors (benign controls, twin pairs) are no longer met |
 | `polar-token` | stable | provisional | documented.minimumTwinPairs: 4 < 5 | corpus: as above (twin pairs 4 < 5) |
-| `vercel-app-access-token` | stable | provisional | mutation.unresolvedCritical: 8 > 0; twinFailures: 4 > 0 | engine: as above (4 twin failures) |
-| `vercel-app-refresh-token` | stable | provisional | mutation.unresolvedCritical: 8 > 0; twinFailures: 4 > 0 | engine: as above |
-| `vercel-personal-access-token` | stable | provisional | mutation.unresolvedCritical: 8 > 0; twinFailures: 4 > 0 | engine: as above |
+| `vercel-app-access-token` | stable | provisional | mutation.unresolvedCritical: 8 > 0; twinFailures: 4 > 0 | engine: twin scoping (alpha.13, ADR 0018) records 4 twin failures on identical findings; mechanism: the product's documented security-first fallback (core #1036) reports the off-contract body as the unqualified `vercel_token`, so the scored twin outcome reflects a real product behaviour that the evidence declares must be silent (expectation strength: credential-evidence draft 02) |
+| `vercel-app-refresh-token` | stable | provisional | mutation.unresolvedCritical: 8 > 0; twinFailures: 4 > 0 | engine: as above (Vercel fallback, draft 02) |
+| `vercel-personal-access-token` | stable | provisional | mutation.unresolvedCritical: 8 > 0; twinFailures: 4 > 0 | engine: as above (Vercel fallback, draft 02) |
 
-Seven families lose `stable` (two by the corpus, five by the engine's twin scoring) and no family gains it. The five engine-effect families change on identical findings: the same twin controls were scored clear by alpha.5 and are scored flagged by alpha.13 (see the contrast). The beta.13 product bytes are the same in both views.
+Seven families lose `stable` (two by the corpus, five by the engine's twin scoring) and no family gains it. The five engine-effect families change on identical findings: the same twin controls were scored clear by alpha.5 and are scored flagged by alpha.13 (see the contrast), through two mechanisms (#772): for the two Anthropic families, provider-wide coverage reads a sibling-class detection as the twin's own family (credential-eval draft 01); for the three Vercel families, the product's documented security-first fallback (core #1036) reports off-contract bodies as `vercel_token`, which the evidence declares must be silent (draft 02). Whether the fallback is a deliberate trade-off (`policy-decision` disposition) or a product change (promote-finding) is the owner's decision; none is recorded here. No isolating replay was made; the mechanisms are read from the case data of runs 37296823599 and 37447804171. The beta.13 product bytes are the same in both views.
 
 ## Scanner roster
 

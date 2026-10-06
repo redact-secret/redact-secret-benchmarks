@@ -14,8 +14,9 @@
  *                                                  control replay, candidate on the accepted evidence, candidate on the new evidence (the 2x2), contrast, draft pull request
  *
  * The control is the PUBLISHED product on the engine the adoption record names, so the corpus is the only difference from the accepted runs. The candidate must already be
- * recorded by `adopt-evidence-snapshot.yml` (state `accepted`, `evidenceCandidate`), and its engine and product pins must equal the active registry's (a moved engine or product
- * still needs the by-hand pins: this command refuses and says so). Idempotence: one branch and one run per adoption key and commit; collect reuses an existing release.
+ * recorded by `adopt-evidence-snapshot.yml` (state `accepted`, `evidenceCandidate`), and its product pin must equal the active registry's (a moved product still needs the by-hand pins: this command refuses and says so). A moved engine is
+ * replayed when the record carries `engineChange` (from the active pin to the candidate's engine, with the run-artifact schema digest): the transient branch moves the engine pin and
+ * schema (`moveEnginePin`, digest-checked) and nothing else; without it the command refuses. Idempotence: one branch and one run per adoption key and commit; collect reuses an existing release.
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
@@ -24,6 +25,7 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { controlFor } from './candidate-control.mjs';
 import { packagesDigest } from './check-evidence-adoption.mjs';
+import { sha256Digest } from './evidence-adoption.mjs';
 import { fetchArchive, listKept, pack, sha256File } from './replay-archive.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -46,10 +48,22 @@ export function replayablePin({ adoption, registry, tag, manifestDigest }) {
   if (!ec || ec.evidenceRelease !== tag) throw new Error(`benchmarks/evidence-adoption.json records no evidence candidate ${tag}: dispatch adopt-evidence-snapshot.yml first`);
   if (ec.manifestDigest !== manifestDigest) throw new Error(`${tag} is recorded with manifest ${ec.manifestDigest}, not ${manifestDigest}`);
   if (ec.ownerAcceptance) throw new Error(`${tag} is already accepted; nothing to replay as a candidate`);
-  if (ec.engine.tag !== registry.engine.tag || ec.engine.revision !== registry.engine.revision) throw new Error(`the candidate names engine ${ec.engine.tag}, the active pin is ${registry.engine.tag}: replaying on a moved engine still needs the by-hand pins (docs/specs/evidence-adoption.md, "Engine candidate")`);
+  if (ec.engine.tag !== registry.engine.tag || ec.engine.revision !== registry.engine.revision) {
+    // An explicit engine candidate (#773): the record carries `engineChange` from the active pin to the candidate's engine; the transient branch moves the engine pin, nothing else does.
+    const change = ec.engineChange;
+    const explicit = change && change.from?.tag === registry.engine.tag && change.from?.revision === registry.engine.revision && change.to?.tag === ec.engine.tag && change.to?.revision === ec.engine.revision && DIGEST.test(change.runArtifactSchemaSha256 ?? '');
+    if (!explicit) throw new Error(`the candidate names engine ${ec.engine.tag}, the active pin is ${registry.engine.tag}: replaying on a moved engine needs the record's engineChange (from the active pin to the candidate's engine, with the run-artifact schema digest)`);
+  }
   const product = registry.scanners.find(s => s.id === 'redact-secret');
   if (ec.product && (ec.product.version !== product.version || ec.product.integrity !== product.integrity)) throw new Error(`the candidate names @redact-secret/core ${ec.product.version}, the active pin is ${product.version}: a moved product needs the by-hand pins`);
   return ec;
+}
+
+/** Pure: the registry with its engine pin moved to the recorded engine candidate, for the transient replay branch only. Refuses a schema whose digest is not the recorded one. */
+export function moveEnginePin(registry, engineChange, schemaBytes) {
+  const digest = sha256Digest(schemaBytes);
+  if (digest !== engineChange.runArtifactSchemaSha256) throw new Error(`the engine run-artifact schema at ${engineChange.to.tag} is ${digest}, the record names ${engineChange.runArtifactSchemaSha256}`);
+  return { ...registry, engine: { ...registry.engine, tag: engineChange.to.tag, revision: engineChange.to.revision, version: engineChange.to.tag.replace(/^v/, ''), runArtifactSchema: { ...registry.engine.runArtifactSchema, sha256: digest } } };
 }
 
 /** Pure: the run this dispatch may reuse (same commit, not failed or cancelled), the newest first. */
@@ -118,6 +132,13 @@ export function branch(tag, manifestDigest) {
     symlinkSync(path.join(root, 'node_modules'), path.join(tree, 'node_modules'), 'dir'); // untracked: the commit below takes tracked files only
     // The same `repin` the owner's acceptance branch runs: the floors population's pin moves to the candidate, its earlier runs become historical receipts. Nothing else changes.
     run('node', ['scripts/adopt-evidence-snapshot.mjs', 'repin', '--superseded-on', new Date().toISOString().slice(0, 10)], { cwd: tree, stdio: ['ignore', 'inherit', 'inherit'] });
+    const treeRegistryFile = path.join(tree, 'benchmarks/official-runs.json'), treeRegistry = JSON.parse(readFileSync(treeRegistryFile, 'utf8'));
+    if (ec.engineChange && ec.engine.tag !== treeRegistry.engine.tag) {
+      const schema = execFileSync('gh', ['api', '-H', 'Accept: application/vnd.github.raw', `repos/redact-secret/credential-eval/contents/schemas/run-artifact-v1.schema.json?ref=${ec.engine.tag}`], { cwd: root, maxBuffer: 64 << 20 });
+      const pins = moveEnginePin(treeRegistry, ec.engineChange, schema);
+      writeFileSync(treeRegistryFile, `${JSON.stringify(pins, null, 2)}\n`);
+      writeFileSync(path.join(tree, pins.engine.runArtifactSchema.path), schema);
+    }
     run('git', ['-c', 'user.name=replay', '-c', 'user.email=replay@localhost', 'commit', '-qam', `replay(${tag}): the candidate's evidence pin only (transient; never merged)`], { cwd: tree });
     const patch = run('git', ['diff', 'HEAD~1', 'HEAD'], { cwd: tree });
     mkdirSync(path.dirname(path.join(root, patchPath)), { recursive: true });

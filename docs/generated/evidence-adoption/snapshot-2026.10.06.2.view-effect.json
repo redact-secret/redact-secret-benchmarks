@@ -60,7 +60,7 @@
         "twinFailures: 1 > 0"
       ],
       "reasonsRemoved": [],
-      "effect": "engine: twin scoping (alpha.13, ADR 0018) records one twin failure and unresolved critical mutation findings on identical findings"
+      "effect": "engine: twin scoping (alpha.13, ADR 0018) records one twin failure and unresolved critical mutation findings on identical findings; mechanism: provider-wide coverage maps `anthropic-token` to `anthropic:`, so the sibling-class detection reads as the twin's own family (credential-eval issue, draft 01)"
     },
     {
       "family": "anthropic-api01-key",
@@ -71,7 +71,7 @@
         "twinFailures: 1 > 0"
       ],
       "reasonsRemoved": [],
-      "effect": "engine: as above"
+      "effect": "engine: as above (provider-wide coverage, draft 01)"
     },
     {
       "family": "polar-api-credential",
@@ -103,7 +103,7 @@
         "twinFailures: 4 > 0"
       ],
       "reasonsRemoved": [],
-      "effect": "engine: as above (4 twin failures)"
+      "effect": "engine: twin scoping (alpha.13, ADR 0018) records 4 twin failures on identical findings; mechanism: the product's documented security-first fallback (core #1036) reports the off-contract body as the unqualified `vercel_token`, so the scored twin outcome reflects a real product behaviour that the evidence declares must be silent (expectation strength: credential-evidence draft 02)"
     },
     {
       "family": "vercel-app-refresh-token",
@@ -114,7 +114,7 @@
         "twinFailures: 4 > 0"
       ],
       "reasonsRemoved": [],
-      "effect": "engine: as above"
+      "effect": "engine: as above (Vercel fallback, draft 02)"
     },
     {
       "family": "vercel-personal-access-token",
@@ -125,7 +125,7 @@
         "twinFailures: 4 > 0"
       ],
       "reasonsRemoved": [],
-      "effect": "engine: as above"
+      "effect": "engine: as above (Vercel fallback, draft 02)"
     }
   ],
   "reasonChangesWithoutStatusChange": [

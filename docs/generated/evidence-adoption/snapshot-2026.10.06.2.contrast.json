@@ -13,8 +13,10 @@
    "regressions": 0,
    "byCause": {
     "roster: openredaction not measured in the newer run (optional scanner, #763)": 4068,
-    "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs": 613,
+    "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs": 535,
+    "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product finding is unchanged (anthropic_api_key / anthropic-token, redact) and provider-wide coverage maps anthropic-token to anthropic:, so a sibling-class detection reads as the twin's own family (credential-eval issue, draft 01); other scanners: twin scoping, only the scored outcome differs": 30,
     "changed in snapshot-2026.10.06.2 (grouping; evidence class project-policy -> unresolved): corpus effect": 216,
+    "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs": 48,
     "changed in snapshot-2026.10.06.2 (grouping; evidence class project-policy -> unresolved): corpus effect (a twin of this case; the mutation assertions that flip it read the twin)": 28
    },
    "byPopulationAndKind": {
@@ -47,7 +49,7 @@
     {
      "scanner": "flare-redact",
      "case": "anthropic--anthropic-admin01-key-api03-prefix-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product finding is unchanged (anthropic_api_key / anthropic-token, redact) and provider-wide coverage maps anthropic-token to anthropic:, so a sibling-class detection reads as the twin's own family (credential-eval issue, draft 01); other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -71,7 +73,7 @@
     {
      "scanner": "flare-redact",
      "case": "anthropic--anthropic-api01-key-api03-prefix-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product finding is unchanged (anthropic_api_key / anthropic-token, redact) and provider-wide coverage maps anthropic-token to anthropic:, so a sibling-class detection reads as the twin's own family (credential-eval issue, draft 01); other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -599,7 +601,7 @@
     {
      "scanner": "gitleaks",
      "case": "anthropic--anthropic-admin01-key-api03-prefix-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product finding is unchanged (anthropic_api_key / anthropic-token, redact) and provider-wide coverage maps anthropic-token to anthropic:, so a sibling-class detection reads as the twin's own family (credential-eval issue, draft 01); other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -607,7 +609,7 @@
     {
      "scanner": "gitleaks",
      "case": "anthropic--anthropic-api01-key-api03-prefix-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product finding is unchanged (anthropic_api_key / anthropic-token, redact) and provider-wide coverage maps anthropic-token to anthropic:, so a sibling-class detection reads as the twin's own family (credential-eval issue, draft 01); other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -1023,7 +1025,7 @@
     {
      "scanner": "redact-secret",
      "case": "anthropic--anthropic-admin01-key-api03-prefix-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product finding is unchanged (anthropic_api_key / anthropic-token, redact) and provider-wide coverage maps anthropic-token to anthropic:, so a sibling-class detection reads as the twin's own family (credential-eval issue, draft 01); other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -1031,7 +1033,7 @@
     {
      "scanner": "redact-secret",
      "case": "anthropic--anthropic-api01-key-api03-prefix-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product finding is unchanged (anthropic_api_key / anthropic-token, redact) and provider-wide coverage maps anthropic-token to anthropic:, so a sibling-class detection reads as the twin's own family (credential-eval issue, draft 01); other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -1191,7 +1193,7 @@
     {
      "scanner": "redact-secret",
      "case": "vercel--vercel-app-access-token-body-55-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -1199,7 +1201,7 @@
     {
      "scanner": "redact-secret",
      "case": "vercel--vercel-app-access-token-body-57-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -1207,7 +1209,7 @@
     {
      "scanner": "redact-secret",
      "case": "vercel--vercel-app-access-token-hyphen-in-body-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -1215,7 +1217,7 @@
     {
      "scanner": "redact-secret",
      "case": "vercel--vercel-app-access-token-underscore-in-body-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -1223,7 +1225,7 @@
     {
      "scanner": "redact-secret",
      "case": "vercel--vercel-app-refresh-token-body-55-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -1231,7 +1233,7 @@
     {
      "scanner": "redact-secret",
      "case": "vercel--vercel-app-refresh-token-body-57-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -1239,7 +1241,7 @@
     {
      "scanner": "redact-secret",
      "case": "vercel--vercel-app-refresh-token-hyphen-in-body-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -1247,7 +1249,7 @@
     {
      "scanner": "redact-secret",
      "case": "vercel--vercel-app-refresh-token-underscore-in-body-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -1255,7 +1257,7 @@
     {
      "scanner": "redact-secret",
      "case": "vercel--vercel-personal-access-token-body-55-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -1263,7 +1265,7 @@
     {
      "scanner": "redact-secret",
      "case": "vercel--vercel-personal-access-token-body-57-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -1271,7 +1273,7 @@
     {
      "scanner": "redact-secret",
      "case": "vercel--vercel-personal-access-token-hyphen-in-body-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -1279,7 +1281,7 @@
     {
      "scanner": "redact-secret",
      "case": "vercel--vercel-personal-access-token-underscore-in-body-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product reports the off-contract body as the unqualified vercel_token by its documented security-first fallback (core #1036, detector-families.md) and the scored twin outcome reflects that behaviour, which the evidence declares must be silent; scoring is faithful and the expectation's strength is the subject of credential-evidence draft 02; other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -1287,7 +1289,7 @@
     {
      "scanner": "trufflehog",
      "case": "anthropic--anthropic-admin01-key-api03-prefix-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product finding is unchanged (anthropic_api_key / anthropic-token, redact) and provider-wide coverage maps anthropic-token to anthropic:, so a sibling-class detection reads as the twin's own family (credential-eval issue, draft 01); other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false
@@ -1303,7 +1305,7 @@
     {
      "scanner": "trufflehog",
      "case": "anthropic--anthropic-api01-key-api03-prefix-twin",
-     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018, same family under the legacy and the evidence id); the findings and the expected spans are unchanged, only the scored outcome differs",
+     "cause": "engine: twin scoping of credential-eval alpha.13 (ADR 0018); the product finding is unchanged (anthropic_api_key / anthropic-token, redact) and provider-wide coverage maps anthropic-token to anthropic:, so a sibling-class detection reads as the twin's own family (credential-eval issue, draft 01); other scanners: twin scoping, only the scored outcome differs",
      "before": "control clear",
      "after": "control flagged",
      "expectedChanged": false

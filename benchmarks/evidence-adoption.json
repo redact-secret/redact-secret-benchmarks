@@ -319,12 +319,12 @@
     "contrast": {
       "report": "docs/generated/evidence-adoption/snapshot-2026.10.06.2.contrast.md",
       "data": "docs/generated/evidence-adoption/snapshot-2026.10.06.2.contrast.json",
-      "note": "Control against the accepted control by semantic id: 4,925 differences, all attributed (corpus 244, engine twin scoping 613, roster 4,068), 0 unexplained, 0 regressions."
+      "note": "Control against the accepted control by semantic id: 4,925 differences, all attributed (corpus 244, engine twin scoping 613 with two mechanisms for five families, roster 4,068), 0 unexplained, 0 regressions. Mechanisms (#772): provider-wide coverage (anthropic, draft 01) and the product's security-first Vercel fallback (draft 02); no isolating replay was made."
     },
     "viewEffect": {
       "report": "docs/generated/evidence-adoption/snapshot-2026.10.06.2.view-effect.md",
       "data": "docs/generated/evidence-adoption/snapshot-2026.10.06.2.view-effect.json",
-      "note": "If accepted: stable 123 -> 116, provisional 20 -> 27 (two Polar families by the corpus, five anthropic/vercel families by the engine twin scoring); OpenRedaction default not measured."
+      "note": "If accepted: stable 123 -> 116, provisional 20 -> 27 (two Polar families by the corpus, five anthropic/vercel families by the engine twin scoring: two Anthropic by provider-wide coverage, three Vercel by the product's documented fallback, #772); OpenRedaction default not measured."
     }
   },
   "engineCandidate": {

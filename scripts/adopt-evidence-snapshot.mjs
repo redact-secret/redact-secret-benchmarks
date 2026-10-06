@@ -172,12 +172,15 @@ function prepare() {
   }
   const removed = [];
   if (old?.acceptance) for (const f of [old.acceptance.patch, old.acceptance.patchDigestFile]) if (f && existsSync(path.join(root, f))) { rmSync(path.join(root, f)); removed.push(f); }
+  // A superseded EVIDENCE candidate (recorded next to the accepted adoption) leaves its prepared acceptance patch behind otherwise (#773): remove it and say so in the record.
+  const oldEvidence = adoption.state === 'accepted' && supersede && adoption.evidenceCandidate?.adoptionKey !== record.candidate.adoptionKey ? adoption.evidenceCandidate : null;
+  if (oldEvidence?.acceptance) for (const f of [oldEvidence.acceptance.patch, oldEvidence.acceptance.patchDigestFile]) if (f && existsSync(path.join(root, f))) { rmSync(path.join(root, f)); removed.push(f); }
   if (options['removed-list']) writeFileSync(options['removed-list'], removed.map(f => `${f}\n`).join(''));
   // After an acceptance the accepted adoption stays as the record (it is the active pin's); a newer evidence release rides next to it as `evidenceCandidate`, superseding a recorded one
   // only with --supersede, and the engine candidate on the accepted evidence is untouched.
   if (adoption.state === 'accepted') {
     if (adoption.evidenceCandidate && adoption.evidenceCandidate.adoptionKey !== record.candidate.adoptionKey && !supersede) { console.error(`A different evidence candidate (${adoption.evidenceCandidate.evidenceRelease}) is recorded; pass --supersede to replace it.`); process.exit(5); }
-    writeJson(ADOPTION_FILE, { ...adoption, evidenceCandidate: { ...record.candidate, product: { package: product.package, version: product.version, integrity: product.integrity }, ...(adoption.evidenceCandidate && supersede ? { supersedesEvidenceCandidate: { evidenceRelease: adoption.evidenceCandidate.evidenceRelease, adoptionKey: adoption.evidenceCandidate.adoptionKey } } : {}) } });
+    writeJson(ADOPTION_FILE, { ...adoption, evidenceCandidate: { ...record.candidate, product: { package: product.package, version: product.version, integrity: product.integrity }, ...(adoption.evidenceCandidate && supersede ? { supersedesEvidenceCandidate: { evidenceRelease: adoption.evidenceCandidate.evidenceRelease, adoptionKey: adoption.evidenceCandidate.adoptionKey, ...(oldEvidence?.acceptance?.patch ? { removedAcceptancePatch: oldEvidence.acceptance.patch } : {}), note: `Superseded before acceptance by ${tag}.${oldEvidence?.acceptance?.patch ? ' Its prepared acceptance patch and digest file are removed (a patch that no longer matches the record must not be applied by mistake);' : ''} its report and data stay as history.` } } : {}) } });
   } else writeJson(ADOPTION_FILE, record);
   writeJson(record.candidate.changeReport, {
     schema: 'redact-secret/evidence-adoption-change-report/v1', evidenceRelease: tag, previous: record.candidate.supersedes, adoptionKey: record.candidate.adoptionKey,

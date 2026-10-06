@@ -321,6 +321,59 @@
       "report": "docs/generated/evidence-adoption/snapshot-2026.10.06.4.view-effect.md",
       "data": "docs/generated/evidence-adoption/snapshot-2026.10.06.4.view-effect.json",
       "note": "If accepted: stable 123 -> 116, provisional 20 -> 27 (two Polar families and three Vercel families by the corpus with one Vercel fallback twin failure each, two Anthropic families by one unresolved critical mutation finding after the corpus twin change; alpha.15 removes their twin failure); OpenRedaction default not measured."
+    },
+    "acceptance": {
+      "note": "Prepared for the owner (#690). Nothing here is accepted: the active pins, runs and authority file stay on the previous accepted evidence until the owner applies the patch and fills the OWNER-TO-SET fields. The patch applies to the commit that merges this candidate; the policy revision and the parity report in it are derived from the product inputs of that commit, so re-derive them if the product inputs change first.",
+      "report": "docs/generated/evidence-adoption/snapshot-2026.10.06.4.md",
+      "comparison": "docs/generated/evidence-adoption/snapshot-2026.10.06.4.comparison.json",
+      "patch": "docs/generated/evidence-adoption/snapshot-2026.10.06.4.acceptance.patch",
+      "patchDigestFile": "docs/generated/evidence-adoption/snapshot-2026.10.06.4.acceptance.patch.sha256",
+      "applies": "git apply docs/generated/evidence-adoption/snapshot-2026.10.06.4.acceptance.patch",
+      "ownerFields": [
+        "the authority: renew it in a reviewed commit with `authorityValues` (and set its acceptedOn and acceptedBy); the patch does not change it, so authority:check stays red until you do",
+        "benchmarks/evidence-adoption.json candidate.ownerAcceptance acceptedBy and acceptedOn",
+        "docs/decisions/2026-10-06-accept-snapshot-2026-10-06-4-on-credential-eval-alpha-15.md status (proposed to accepted), decided_at and its Decision"
+      ],
+      "authorityValues": {
+        "release": "@redact-secret/core@0.1.0-beta.13",
+        "policyRevision": "rs-policy-1:sha256:393b37e95a723e8af365c32431b874a341751df2d19590a1eda622828f7b01bc",
+        "semanticDigests": {
+          "policy-corpus": "sha256:71a11b17d308f23e252cc4118d94558a2b2cb292f79334c10549fa1c946ff13b",
+          "public-evidence-snapshot": "sha256:d1d596d60532b98ffc26a2c07c7f1dad287e473652d5514e9ac5eb6f031e31e9",
+          "public-evidence-snapshot+methods": "sha256:1f97705aaaa623915734ba127761cb32551e1fc3c5934658022c0d59ddafed5e",
+          "regression-corpus": "sha256:5a3bf5030823913cb193f8a9bb388c7d05ab804c500e266145c2e0fe07e730c0"
+        },
+        "parityReport": "docs/generated/qualification-parity.json",
+        "decision": "docs/decisions/2026-10-06-accept-snapshot-2026-10-06-4-on-credential-eval-alpha-15.md"
+      },
+      "candidateView": {
+        "sha256": "sha256:61909a9c1791ff40e2f0990698d689d9959803a0f13d7d56ae8f12637200869e",
+        "policyRevision": "rs-policy-1:sha256:393b37e95a723e8af365c32431b874a341751df2d19590a1eda622828f7b01bc",
+        "distribution": {
+          "pending": 1,
+          "provisional": 27,
+          "stable": 116,
+          "unsupported": 0
+        }
+      },
+      "derivedInputs": {
+        "snapshot": "credential-evidence release snapshot-2026.10.06.4, asset credential-eval-corpus-snapshot.json (gh release download snapshot-2026.10.06.4 -R redact-secret/credential-evidence)",
+        "axisOverlay": {
+          "file": "benchmarks/support/public-axis-overlay.json",
+          "sha256": "sha256:fa9da546923009b23da2a9bd128fbea2b0b62de8d0b1bd8f981bfaba61225ca2",
+          "check": "npm run qualification:axis-overlay -- --snapshot <snapshot> --check"
+        },
+        "twinScope": {
+          "file": "benchmarks/support/public-twin-scope-map.json",
+          "sha256": "sha256:deedb4f1acb72901213a8c265bba50d98197d9c04a1b4704ed8403a9c5fa8e5b",
+          "check": "npm run qualification:twin-scope -- --snapshot <snapshot> --check"
+        },
+        "ledgerRekey": {
+          "file": "benchmarks/support/public-review-ledger-map.json",
+          "sha256": "sha256:9572f4ce7844bea7306f621d22c9ec89c8587bda1578f7eb1c34070b74979a65",
+          "check": "npm run qualification:ledger-rekey -- --snapshot <snapshot> --methods-run <dir>/public-evidence-snapshot/methods/artifact.json --check"
+        }
+      }
     }
   },
   "engineCandidate": {

@@ -81,7 +81,7 @@ const engine = (() => {
 })();
 // With the SAME engine on both sides a difference on the same corpus is a defect; when the adoption MOVES the engine it is the engine effect, a product-version effect reported apart from the corpus change (docs/specs/evidence-adoption.md),
 // never a refusal. Its scanners that the new run left out on purpose (the roster) are absent from B by design.
-const engineMoved = engineFrom !== engineTo;
+const engineMoved = (option('engine-from') !== undefined || record.engineChange !== undefined) && engineFrom !== engineTo;
 if (!engineMoved && (engine.familiesWithAnyDifference.length || !engine.supportMatrixSame || engine.publicCasesWithAnyDifference)) unexplained.push(`engine effect: ${engine.familiesWithAnyDifference.length} families, ${engine.publicCasesWithAnyDifference} public cases differ between the accepted view and the previous corpus on the new engine`);
 
 // ---- 2. the candidate methods run, attributed to added versus common cases ----

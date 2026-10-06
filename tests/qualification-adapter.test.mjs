@@ -46,9 +46,9 @@ const familyCases = (prefix, family, { twinFlagged = false, evidenceClass } = {}
   ];
 };
 
-function artifact(population, cases, { publication = 'public', runClass = 'official', methods = [], build = 'released', status = 'complete', mutate } = {}) {
+function artifact(population, cases, { publication = 'public', runClass = 'official', methods = [], build = 'released', status = 'complete', mutate, scannerIds = ['redact-secret', 'peer-one'] } = {}) {
   const evidence = registry.find(r => r.id === population).evidence;
-  const ids = ['redact-secret', 'peer-one'];
+  const ids = scannerIds;
   const doc = {
     schema: 'credential-eval/run-artifact/v1',
     manifest: {
@@ -662,4 +662,126 @@ test('a declared profile present in a plain artifact is compared with its defaul
   assert.equal(a.profileEffects[0].denominatorsEqual, true);
   assert.notEqual(a.profileEffects[0].default.configurationHash, a.profileEffects[0].profile.configurationHash, 'a profile is its own configuration identity');
   assert.ok(view.scanners.includes('peer-profile') && view.scanners.includes('peer-one'), 'both results are kept');
+});
+
+// ---- The scanner roster (#763): an optional scanner may be absent; a required one may not. Synthetic roster, synthetic ids. ----
+
+import { assessRoster, lastMeasurementOf, notMeasuredStatement, readScannerRoster, rosterFor, validateRoster } from '../benchmarks/qualification/scanner-roster.ts';
+
+const roster = () => ({
+  schemaVersion: 1, id: 'synthetic-roster',
+  runClasses: { official: { required: ['redact-secret', 'peer-one'], optional: ['peer-opt'] }, diagnostic: { required: ['redact-secret'], optional: [] } },
+  optionalScanners: { 'peer-opt': { label: 'Optional Peer default', profile: 'default', reason: 'synthetic: slow and manual', withoutConfigs: { 'linux-x64': 'without.json' }, engineRelease: 'pending' } },
+});
+const SCANNERS = ['redact-secret', 'peer-one'];
+const WITH_OPT = [...SCANNERS, 'peer-opt'];
+const historyRecord = (id, recordedOn, version = '1.0.0') => ({ id, recordedOn, configHash: DIGEST(9), engine: { version: '0.0.1', revision: 'abc' }, scanners: [{ id: 'peer-opt', version, configurationHash: DIGEST(10) }, { id: 'peer-one', version: '1' }] });
+const withRoster = (ids, extra = {}) => {
+  const opts = { scannerIds: ids };
+  return buildQualificationView({ registry, engine, product: product(), roster: roster(), ...extra,
+    artifacts: inputs({ aOptions: opts, bOptions: opts, cOptions: opts, ...(extra.methods ? { methods: extra.methods } : {}) }) });
+};
+
+test('a run is complete without an optional scanner and says what was not measured, with the pointer to its last measurement (#763)', () => {
+  const history = { runs: [historyRecord('pop-a@linux-x64', '2026-10-01'), historyRecord('pop-b@linux-x64', '2026-10-05'), historyRecord('pop-a+methods@linux-x64', '2026-10-05')], historicalRuns: [historyRecord('old@linux-x64', '2026-09-01')] };
+  const view = withRoster(SCANNERS, { history });
+  assert.deepEqual(validateQualificationView(view), []);
+  const note = view.scannerRoster.notMeasured;
+  assert.equal(note.length, 1);
+  assert.equal(note[0].statement, 'Optional Peer default: not measured in this run (optional)');
+  assert.equal(note[0].statement, notMeasuredStatement('Optional Peer default'));
+  assert.deepEqual([note[0].scanner, note[0].profile, note[0].optional, note[0].reason], ['peer-opt', 'default', true, 'synthetic: slow and manual']);
+  // the pointer: the newest recording among the active runs, every run of that date, with its engine and configuration identity
+  assert.equal(note[0].lastMeasurement.recordedOn, '2026-10-05');
+  assert.equal(note[0].lastMeasurement.registry, 'runs');
+  assert.deepEqual(note[0].lastMeasurement.runs.map(r => r.id), ['pop-a+methods@linux-x64', 'pop-b@linux-x64']);
+  assert.deepEqual(note[0].lastMeasurement.engine, { version: '0.0.1', revision: 'abc' });
+  assert.deepEqual(view.scannerRoster.measured, [...SCANNERS].sort());
+  assert.deepEqual(view.scannerRoster.required, [...SCANNERS].sort());
+  assert.deepEqual(view.scannerRoster.optional, ['peer-opt']);
+});
+
+test('an absent optional scanner leaves no row, no count and no zero anywhere in the view (#763)', () => {
+  const view = withRoster(SCANNERS);
+  assert.ok(!view.scanners.includes('peer-opt'));
+  assert.ok(!JSON.stringify(view.populations.map(p => [p.artifact.scanners, p.aggregates, p.unattributed, p.scope, p.unmeasured, p.cases.map(c => c.results)])).includes('peer-opt'));
+  for (const f of view.families) for (const p of f.populations) assert.ok(!p.scanners.some(s => s.scanner === 'peer-opt'));
+  // never silent, never invented: the only mention is the roster's statement, with no pointer when no run recorded the scanner
+  assert.equal(view.scannerRoster.notMeasured[0].lastMeasurement, null);
+});
+
+test('dropping an optional scanner changes no status, no count and no other scanner (#763)', () => {
+  const without = withRoster(SCANNERS), withIt = withRoster(WITH_OPT);
+  assert.deepEqual(withIt.scannerRoster.notMeasured, []);
+  assert.deepEqual(withIt.scannerRoster.measured, [...WITH_OPT].sort());
+  const status = v => v.families.map(f => [f.family, f.status, f.evidence, f.gates, f.differential]);
+  assert.deepEqual(status(without), status(withIt));
+  assert.deepEqual(without.distribution, withIt.distribution);
+  assert.deepEqual(without.stableDistribution, withIt.stableDistribution);
+  assert.deepEqual(without.supportMatrix, withIt.supportMatrix);
+  assert.equal(without.policy.revision, withIt.policy.revision);
+  const counts = v => v.families.map(f => f.populations.map(p => p.scanners.filter(s => s.scanner !== 'peer-opt')));
+  assert.deepEqual(counts(without), counts(withIt));
+});
+
+test('peers that do not depend on the optional scanner keep their differential and review computable (#763)', () => {
+  const view = withRoster(SCANNERS, { methods: true });
+  const f = family(view);
+  assert.ok(f.differential, 'the differential of the gate peer is still computed');
+  assert.deepEqual(view.policy.differentialPeers, ['peer-one']);
+});
+
+test('a required scanner that is absent or not complete refuses the view; an optional one is not a substitute (#763)', () => {
+  assert.throws(() => withRoster(['redact-secret', 'peer-opt']), /required scanner peer-one is absent/);
+  assert.throws(() => withRoster(['peer-one']), /required scanner redact-secret is absent/);
+  const problems = assessRoster({ roster: roster(), runClass: 'official', populations: [{ population: 'p', scanners: [{ id: 'redact-secret', status: 'complete' }, { id: 'peer-one', status: 'failed' }] }] }).problems;
+  assert.match(problems[0], /required scanner peer-one is failed/);
+});
+
+test('an optional scanner measured in some populations only is refused, never spliced (#763)', () => {
+  const some = ['redact-secret', 'peer-one', 'peer-opt'];
+  assert.throws(() => buildQualificationView({ registry, engine, product: product(), roster: roster(),
+    artifacts: inputs({ aOptions: { scannerIds: some }, bOptions: { scannerIds: SCANNERS }, cOptions: { scannerIds: SCANNERS } }) }), /optional scanner peer-opt is measured in pop-a only/);
+});
+
+test('a methods run that carries an optional scanner the plain run lacks is refused as a different scanner set (#763)', () => {
+  assert.throws(() => buildQualificationView({ registry, engine, product: product(), roster: roster(),
+    artifacts: inputs({ aOptions: { scannerIds: SCANNERS }, bOptions: { scannerIds: SCANNERS }, cOptions: { scannerIds: SCANNERS }, methods: artifact('pop-a', familyCases('a', 'prov:fam').map(c => ({ ...c, case_id: `${c.case_id}--differential--canonical` })), { methods: METHODS, scannerIds: WITH_OPT }) }) }), /different scanner set|differs from the plain run/);
+});
+
+test('without a roster nothing is optional and the view carries no roster section (#763)', () => {
+  const view = build();
+  assert.equal(view.scannerRoster, undefined);
+  assert.deepEqual(view.scanners, SCANNERS.slice().sort());
+});
+
+test('the last measurement points at the active registry first, then at history, and is null when no run recorded the scanner (#763)', () => {
+  assert.equal(lastMeasurementOf('peer-opt', {}), null);
+  assert.equal(lastMeasurementOf('peer-opt', { runs: [{ ...historyRecord('x', '2026-10-05'), scanners: [{ id: 'other' }] }] }), null);
+  assert.equal(lastMeasurementOf('peer-opt', { historicalRuns: [historyRecord('h1', '2026-08-01'), historyRecord('h2', '2026-09-01')] }).runs[0].id, 'h2');
+  assert.equal(lastMeasurementOf('peer-opt', { historicalRuns: [historyRecord('h2', '2026-09-01')] }).registry, 'historicalRuns');
+  const both = lastMeasurementOf('peer-opt', { runs: [historyRecord('r1', '2026-07-01')], historicalRuns: [historyRecord('h2', '2026-09-01')] });
+  assert.deepEqual([both.registry, both.runs[0].id], ['runs', 'r1']);
+});
+
+test('the roster is validated: disjoint lists, a spec for every optional scanner, a population override (#763)', () => {
+  assert.throws(() => validateRoster({ ...roster(), runClasses: { official: { required: ['a'], optional: ['a'] } } }), /listed twice/);
+  assert.throws(() => validateRoster({ ...roster(), runClasses: { official: { required: ['a'], optional: ['ghost'] } } }), /no entry in optionalScanners/);
+  assert.throws(() => validateRoster({ ...roster(), runClasses: { official: { required: [], optional: [] } } }), /non-empty required list/);
+  const r = roster(); r.runClasses.official.populations = { 'pop-c': { required: ['redact-secret'], optional: ['peer-one', 'peer-opt'] } };
+  r.optionalScanners['peer-one'] = { ...r.optionalScanners['peer-opt'], label: 'Peer One' };
+  assert.deepEqual(rosterFor(validateRoster(r), 'official', 'pop-c').optional, ['peer-one', 'peer-opt']);
+  assert.deepEqual(rosterFor(r, 'official', 'pop-a').required, ['redact-secret', 'peer-one']);
+  assert.throws(() => rosterFor(r, 'nonexistent'), /no run class/);
+});
+
+test('the committed roster is valid, keeps the product required, and makes only the OpenRedaction default optional (#763)', () => {
+  const committed = readScannerRoster();
+  const official = rosterFor(committed, 'official');
+  assert.ok(official.required.includes('redact-secret'));
+  assert.deepEqual(official.optional, ['openredaction']);
+  assert.equal(committed.optionalScanners.openredaction.profile, 'default');
+  assert.ok(!official.required.includes('openredaction'));
+  // a credential profile is a separate scanner id, never the default's optional slot
+  assert.ok(!['openredaction-credentials', 'openredaction-mapped', 'openredaction-credential-bearing'].some(id => official.optional.includes(id) || official.required.includes(id)));
 });

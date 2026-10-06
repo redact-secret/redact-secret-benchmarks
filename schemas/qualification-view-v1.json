@@ -1306,6 +1306,154 @@
       "items": {
         "type": "string"
       }
+    },
+    "scannerRoster": {
+      "description": "The evaluation contract's scanner roster as applied to this view (#763, benchmarks/support/scanner-roster.json): the required and optional scanners of the official run class, the scanners this view measured, and every optional scanner it did NOT measure, with the reason and the pointer to its last recorded measurement. A scanner not measured is stated here; it is never a zero.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "runClass",
+        "required",
+        "optional",
+        "measured",
+        "notMeasured"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "runClass": {
+          "type": "string"
+        },
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "optional": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "measured": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notMeasured": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "scanner",
+              "profile",
+              "optional",
+              "label",
+              "statement",
+              "reason",
+              "lastMeasurement"
+            ],
+            "properties": {
+              "scanner": {
+                "type": "string"
+              },
+              "profile": {
+                "type": "string"
+              },
+              "optional": {
+                "const": true
+              },
+              "label": {
+                "type": "string"
+              },
+              "statement": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "lastMeasurement": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": false,
+                "required": [
+                  "recordedOn",
+                  "engine",
+                  "registry",
+                  "runs"
+                ],
+                "properties": {
+                  "recordedOn": {
+                    "type": "string"
+                  },
+                  "engine": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "version",
+                      "revision"
+                    ],
+                    "properties": {
+                      "version": {
+                        "type": "string"
+                      },
+                      "revision": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "registry": {
+                    "enum": [
+                      "runs",
+                      "historicalRuns"
+                    ]
+                  },
+                  "runs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "id",
+                        "configHash",
+                        "scannerVersion",
+                        "scannerConfigurationHash"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "configHash": {
+                          "type": "string"
+                        },
+                        "scannerVersion": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "scannerConfigurationHash": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "$defs": {

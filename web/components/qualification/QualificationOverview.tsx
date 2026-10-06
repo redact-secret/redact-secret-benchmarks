@@ -86,6 +86,12 @@ export function QualificationOverview({ breadcrumb, eyebrow, title, lede, meta, 
 
       <Section title={scanners.title} description={scanners.description}>
         <DataTable<ScannerRow> columns={scannerColumns} rows={scanners.rows} getRowKey={r => r.key} caption={scanners.title} wide empty="No scanner is recorded in this view." />
+        {scanners.notMeasured?.map(n => (
+          <Note key={n.key} tone="info" title={n.statement}>
+            <p>{n.reason}</p>
+            <p>{n.lastMeasurement}</p>
+          </Note>
+        ))}
       </Section>
 
       {scope && <ScopeAccounting {...scope} />}

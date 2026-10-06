@@ -3,7 +3,7 @@
  * formatting is here. Nothing is summed across populations or scanners, a population with no case for a family says so, and
  * a gate that did not run is "not measured", never a zero. The support status is the adapter's: it is displayed, never derived.
  */
-import type { ScopeAccountingProps, ScopeRow, ProfileEffectRow, QualificationOverviewProps, QualificationFamilyProps, QualificationUnavailableProps, StatusWord, CountsRow, FamilyRow, GapRow } from '../components/qualification/types';
+import type { ScopeAccountingProps, ScopeRow, ProfileEffectRow, QualificationOverviewProps, QualificationFamilyProps, QualificationUnavailableProps, StatusWord, CountsRow, FamilyRow, GapRow, NotMeasuredScanner } from '../components/qualification/types';
 import type { DeclaredConfiguration } from '../services/peers';
 import type { ScopeEntry, FamilyView, PopulationSlice, QualificationLoad, QualificationView, ScannerCounts } from '../services/qualification';
 import { QUALIFICATION_COMMANDS, QUALIFICATION_FILE } from '../lib/qualification';
@@ -62,6 +62,21 @@ const unmeasuredOf = (c: ScannerCounts): string => {
 const LABELS_SHOWN = 12;
 const STATE_WORD: Record<ScopeEntry['state'], string> = { accounted: 'Accounted', 'legacy-native-label-unavailable': 'Legacy: native labels unavailable', 'not-accounted': 'Not accounted', 'not-measured': 'Not measured' };
 const UNKNOWN = 'Unknown';
+
+/**
+ * The optional scanners the view did not measure (#763), in the contract's own words, with the pointer to the last recorded measurement (run, engine,
+ * configuration, date). A view built before the roster, or one that measured every optional scanner, says nothing here.
+ */
+export function resolveNotMeasured(view: QualificationView): NotMeasuredScanner[] | undefined {
+  const rows = (view.scannerRoster?.notMeasured ?? []).map(n => {
+    const last = n.lastMeasurement;
+    const pointer = last
+      ? `Last measurement: ${last.runs.map(r => `${r.id} (configuration ${shortDigest(r.configHash)})`).join(', ')} · engine ${last.engine.version} · recorded ${last.recordedOn}${last.registry === 'historicalRuns' ? ' · superseded, kept as history' : ''}. It stays labelled with that run identity and is never combined with another profile or another run.`
+      : 'No earlier measurement of it is recorded. Nothing is shown in its place.';
+    return { key: n.scanner, statement: n.statement, reason: n.reason, lastMeasurement: pointer };
+  });
+  return rows.length ? rows : undefined;
+}
 
 function scopeRow(population: string, artifact: string, e: ScopeEntry, declared: Map<string, DeclaredConfiguration>): ScopeRow {
   const unaccounted = e.state !== 'accounted';
@@ -210,6 +225,7 @@ export function resolveQualificationOverview(view: QualificationView, declared: 
       title: 'Scanners',
       description: 'The scanners each population ran with, as the run artifact recorded them.',
       rows: view.populations.flatMap(p => p.artifact.scanners.map(s => ({ key: `${p.population}/${s.id}`, population: p.population, scanner: s.id, version: s.version ?? 'Not recorded', build: s.build ?? 'Not recorded', mode: s.mode }))),
+      ...(resolveNotMeasured(view) ? { notMeasured: resolveNotMeasured(view) } : {}),
     },
     families: {
       title: 'Detector families',

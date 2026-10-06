@@ -9,6 +9,7 @@ import { contextGroup, type AxisOverlay } from './axis-overlay.ts';
 import { ledgerSettledId, type LedgerRekey } from './ledger-rekey.ts';
 import type { TwinScopeMap } from './twin-scope.ts';
 import { buildViewSupportMatrix } from './support-matrix.ts';
+import { assessRoster, type MeasurementHistory, type ScannerRoster } from './scanner-roster.ts';
 import { profileEffectsOf, scopeByScanner, type ProfileEffect, type ScopeEntry } from './scope-accounting.ts';
 import {
   bindingProblems, byId, countCase, emptyCounts, OUTCOMES, readRunArtifact, UNASSIGNED, unmeasuredByScanner,
@@ -386,10 +387,14 @@ const caseRow = (c: CaseResult, detectors: string[], attribution: AttributionSou
 });
 
 /** `profiles` maps a declared diagnostic profile scanner id to the default scanner it is a credential-scoped profile of (`scanners/peer-registry.json`, #724). */
-export interface BuildOptions { registry: PopulationRegistryEntry[]; engine: { version: string; protocol: string }; artifacts: ArtifactInput[]; product: ProductInputs; profiles?: Record<string, string> }
+/**
+ * `roster` (#763) names the scanners the official run class must measure and the ones it may leave out; `history` is the registry's recorded runs, read only to
+ * point at the last measurement of a scanner a view does not carry. Without a roster every scanner an artifact carries is measured and nothing is optional.
+ */
+export interface BuildOptions { registry: PopulationRegistryEntry[]; engine: { version: string; protocol: string }; artifacts: ArtifactInput[]; product: ProductInputs; profiles?: Record<string, string>; roster?: ScannerRoster; history?: MeasurementHistory }
 
 /** Build the qualification view from separately identified artifacts. Throws on any artifact that does not validate or bind: one invalid artifact invalidates the decisions that cite it. */
-export function buildQualificationView({ registry, engine, artifacts, product, profiles = {} }: BuildOptions) {
+export function buildQualificationView({ registry, engine, artifacts, product, profiles = {}, roster, history }: BuildOptions) {
   const { policy } = product;
   validateCombinationPolicy(policy, registry);
   const loaded: Loaded[] = [];
@@ -428,6 +433,11 @@ export function buildQualificationView({ registry, engine, artifacts, product, p
   const policyPopulation = Object.entries(policy.populations).find(([, p]) => p.role === 'policy-route')?.[0];
   for (const id of Object.keys(policy.populations)) if (!seen.has(id)) throw new Error(`No artifact for population ${id}, which the population policy requires`);
   loaded.sort((a, b) => byteOrder(a.input.population, b.input.population));
+  // The evaluation contract (#763): a required scanner that is absent or incomplete refuses the view; an optional one that is in no artifact is stated as not measured.
+  const rosterAssessment = roster
+    ? assessRoster({ roster, runClass: 'official', populations: loaded.map(l => ({ population: l.input.population, scanners: l.artifact.scanners.map(s => ({ id: s.scanner, status: s.status })) })), history })
+    : null;
+  if (rosterAssessment?.problems.length) throw new Error(`The scanner roster is not met: ${rosterAssessment.problems.join('; ')}`);
   if (product.holdoutReceipt && policyPopulation && loaded.find(l => l.input.population === policyPopulation)!.identity.scanners.find(s => s.id === policy.scanner)?.build !== 'candidate')
     throw new Error('A policy holdout receipt can only qualify an immutable candidate run');
 
@@ -659,6 +669,7 @@ export function buildQualificationView({ registry, engine, artifacts, product, p
       }),
     })),
     scanners: scannerIds,
+    ...(rosterAssessment?.view ? { scannerRoster: rosterAssessment.view } : {}),
     distribution, stableDistribution,
     families,
     supportMatrix: buildViewSupportMatrix(families, product.taxonomy.families, detector => product.contracts[detector]),

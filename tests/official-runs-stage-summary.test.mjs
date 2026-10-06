@@ -24,9 +24,9 @@ test('ci-stage.sh records the timing of a failing stage and keeps its exit statu
   assert.equal(execFileSync('scripts/ci-stage.sh', ['x', '--', 'true'], { env: { ...process.env, STAGE_TIMINGS: '' } }).length, 0);
 });
 
-test('the workflow exposes the plain artifact before the methods run, caches the engine build and summarises timings (#707)', async () => {
+test('the workflow exposes the plain stage artifact (stage-plain-*) before the methods run, caches the engine build and summarises timings (#707)', async () => {
   const yml = (await readFile(new URL('../.github/workflows/official-runs.yml', import.meta.url), 'utf8')).replace(/^\s*#.*$/gm, '');
-  const early = yml.indexOf('name: early-plain-');
+  const early = yml.indexOf('name: stage-plain-');
   assert.ok(early > 0 && early < yml.indexOf('Methods run, twice'), 'the plain artifact is uploaded before the methods step');
   assert.match(yml, /key: engine-build-.*hashFiles\('credential-eval\/Cargo\.lock'.*steps\.engine\.outputs\.tag/);
   assert.ok(!/STAGE_TIMINGS: \$\{\{/.test(yml), 'the runner context is invalid in job-level env; the timing file is set through GITHUB_ENV');

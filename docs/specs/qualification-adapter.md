@@ -51,6 +51,25 @@ or erase the source population. One invalid artifact stops the view; it is never
 6. A view is `public` only when every artifact is `publication: public` and its population is publishable. One internal
    artifact makes the view `internal`.
 
+## The scanner roster
+
+Issue [#763](https://github.com/redact-secret/redact-secret-benchmarks/issues/763), epic #723.
+Decision: [Make the OpenRedaction default profile an optional, manual measurement](../decisions/2026-10-06-make-the-openredaction-default-profile-an-optional-manual-measurement.md).
+
+The evaluation contract names, per run class (and, when needed, per population), the scanners a run MUST measure and the ones it MAY leave unmeasured:
+`benchmarks/support/scanner-roster.json` (`required`, `optional`, and for each optional scanner its label, profile, reason, the per-platform engine configuration that leaves it out, and the engine release status). The
+adapter reads it (`benchmarks/qualification/scanner-roster.ts`, `buildQualificationView({ roster, history })`):
+
+- A **required** scanner that is absent from an artifact, or not `complete`, refuses the view, as before. The product (`redact-secret`) is always required.
+- An **optional** scanner that is in no artifact is not an error: the run is complete without it. The view's `scannerRoster` section lists it under `notMeasured` with the contract's sentence (`OpenRedaction default: not measured in this run (optional)`), the reason, and `lastMeasurement`: the newest recorded run of that scanner in `benchmarks/official-runs.json` (`runs[]`, else `historicalRuns[]`: run id, engine, configuration hash, scanner version and configuration identity, date), or `null` when no run recorded it. The registry is read, never edited.
+- An optional scanner measured in **some** populations of a view and not in others is refused, and so is a methods run whose scanner set differs from its plain run: an optional scanner is in the whole view or in none of it, never a partial splice.
+- Nothing stands in for the absent scanner: no row, no count, no zero detection, no aggregate, no scope accounting and no profile effect (a diagnostic profile has an effect entry only against a default measured on the same population). The scanner is absent from `scanners` and from every per-population list; only `scannerRoster` mentions it.
+- A scanner not in the roster is reported as measured, as before. A credential profile (`openredaction-credentials` and the other declared profiles) is its own scanner id, never the default's optional slot, and its results are never spliced with the default's.
+
+What dropping the default changes, stated rather than hidden: the other scanners' counts, every family status and the support matrix are derived from the product and the other scanners and do not move (the contract tests build the same view with and without an optional scanner and compare). The gate peers of the differential are `gitleaks` and `trufflehog`; OpenRedaction occurrences were measured and listed per family but were never gate-bearing, so the gate, the review queue of the gate peers and the ledger are unchanged; its occurrences, and any comparison column or page that listed the default, are absent for that run and say so. A view built from an earlier run keeps its OpenRedaction default results as history labelled with that run, engine, configuration and date.
+
+The roster is deliberately not a component of the product policy revision (it says who is measured, not what a status requires), so changing it moves no support status and not `policy.revision`; `npm run authority:check` does not see it.
+
 ## The methods run
 
 The metamorphic, mutation and differential gates are measured by a second official run of the floors population (docs/specs/official-runs.md,
@@ -208,7 +227,7 @@ stamp (the gate checks its format).
 ## The view (for the Next app)
 
 Top level: `schema` (`redact-secret/qualification-view/v1`), `adapter`, `publication` (`public`|`internal`), `policy`,
-`populations`, `scanners`, `distribution`, `stableDistribution`, `families`, `supportMatrix`, `undetected`, `knownGaps`, `unmappedFamilies`.
+`populations`, `scanners`, `scannerRoster` (#763, optional: absent in a view built without a roster), `distribution`, `stableDistribution`, `families`, `supportMatrix`, `undetected`, `knownGaps`, `unmappedFamilies`.
 
 - `policy`: `revision`, `components[]` (path, digest), `criteria` (the thresholds as applied), `populations` (roles),
   `methodsRequired`, `differentialPeers`, `attributionFallback`, `axisCoverage` (the populations whose axis labels are unioned), `twinScope` (the twin-scope map: id, scoping population, corpus digest, twins mapped), `rules`, `ledgerRekey` (the mapping: id, population, corpus digest, occurrences mapped) and `axisOverlay` (the overlay the floors were counted with: id, population, corpus digest, entry counts).
@@ -263,4 +282,4 @@ The engine (credential-eval ADR 0016, contract v1.8) writes `scope_accounting` p
 ## Tests
 
 `tests/qualification-adapter.test.mjs` builds synthetic artifacts and asserts the rules relative to what it built:
-no ledger value, family count or digest read from the committed tree is asserted, because a repin re-keys them.
+no ledger value, family count or digest read from the committed tree is asserted, because a repin re-keys them. The roster tests (#763) use a synthetic roster and scanner ids: an optional scanner absent, present, partial, required-absent and with or without a recorded last measurement.

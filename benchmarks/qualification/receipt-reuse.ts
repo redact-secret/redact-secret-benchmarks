@@ -17,6 +17,8 @@ export interface ReceiptExpectation {
   candidateId: string | null;
   attributionId: string | null;
   evidenceTag: string | null;
+  /** The scanners this stage measures (#763): a receipt of another scanner set (with or without an optional scanner) is another measurement. */
+  scannerIds?: string[];
   /** The registry's pinned methods selection and evaluation, for a methods receipt. */
   methodsRun?: { methods: string[]; reference: string; seed: string; evidenceDigest: string };
 }
@@ -27,6 +29,7 @@ interface ReceiptRecord {
   artifact?: { digest?: string };
   determinism?: { runs?: number; semanticDigestsEqual?: boolean };
   productCandidate?: { id?: string }; attribution?: { id?: string }; evidenceOverride?: { tag?: string };
+  scanners?: { id?: string }[];
   evaluation?: { reference?: string; seed?: string; evidenceDigest?: string };
 }
 
@@ -42,6 +45,10 @@ export function receiptProblems(record: ReceiptRecord, artifactDigest: string, w
   if ((record.productCandidate?.id ?? null) !== want.candidateId) problems.push('the receipt is of a different product candidate');
   if ((record.attribution?.id ?? null) !== want.attributionId) problems.push('the receipt is of a different attribution run');
   if ((record.evidenceOverride?.tag ?? null) !== want.evidenceTag) problems.push('the receipt is of a different evidence release');
+  if (want.scannerIds) {
+    const had = (record.scanners ?? []).map(s => s.id ?? '').sort().join(',');
+    if (had !== [...want.scannerIds].sort().join(',')) problems.push(`the receipt measured the scanners ${had || 'none recorded'}, this run measures ${[...want.scannerIds].sort().join(',')}`);
+  }
   if (want.methods && want.methodsRun) {
     if ([...(record.methods ?? [])].sort().join(',') !== [...want.methodsRun.methods].sort().join(',')) problems.push('the receipt ran a different methods selection');
     const e = record.evaluation;

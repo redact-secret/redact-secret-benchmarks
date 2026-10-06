@@ -86,6 +86,14 @@ export interface QualificationView {
   policy: { revision: string; components: { path: string; digest: string }[]; methodsRequired: string[]; populations: Record<string, string> };
   populations: PopulationView[];
   scanners: string[];
+  /** The evaluation contract's scanner roster as applied to this view (#763); absent in a view built before it. An optional scanner not measured is stated here, never a zero. */
+  scannerRoster?: {
+    id: string; runClass: string; required: string[]; optional: string[]; measured: string[];
+    notMeasured: {
+      scanner: string; profile: string; optional: true; label: string; statement: string; reason: string;
+      lastMeasurement: { recordedOn: string; engine: { version: string; revision: string }; registry: 'runs' | 'historicalRuns'; runs: { id: string; configHash: string; scannerVersion: string | null; scannerConfigurationHash: string | null }[] } | null;
+    }[];
+  };
   distribution: Record<string, number>;
   stableDistribution: Record<string, number>;
   families: FamilyView[];

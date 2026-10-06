@@ -126,7 +126,7 @@ export interface QualificationOverviewProps {
   };
   identity: { title: string; items: IdentityItem[] };
   populations: { title: string; description: string; rows: PopulationRow[] };
-  scanners: { title: string; description: string; rows: ScannerRow[] };
+  scanners: { title: string; description: string; rows: ScannerRow[]; notMeasured?: NotMeasuredScanner[] };
   families: { title: string; description: string; rows: FamilyRow[]; undetected: { title: string; text: string; items: string[] } };
   /** The cases no detector family claims, per population, on pages of their own. */
   unattributed: { title: string; description: string; href: string; label: string };
@@ -134,6 +134,12 @@ export interface QualificationOverviewProps {
   /** Scope accounting beside the scanner counts (#724); absent when the view carries none. */
   scope?: ScopeAccountingProps;
 }
+
+/**
+ * An OPTIONAL scanner this view does not carry (#763): the contract's sentence, why, and where its last measurement is. Never a zero and never a row of counts.
+ * Every field is already formatted; the pointer names the run, engine, configuration and date of the earlier measurement, which stays history.
+ */
+export interface NotMeasuredScanner { key: string; statement: string; reason: string; lastMeasurement: string }
 
 export interface CountsRow { key: string; population: string; role: string; scanner: string; cases: string; positives: string; outcomes: string; leaked: string; benign: string; twins: string; unmeasured: string }
 

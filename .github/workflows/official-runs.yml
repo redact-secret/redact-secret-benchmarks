@@ -11,6 +11,12 @@ name: Official credential-eval runs
 # the summary states which scanners and methods did not run. Diagnostic artifacts are named diagnostic-<population>, are never read by the
 # qualification-view job, never recorded or archived, and cannot pass the official binding. Spec: docs/specs/official-runs.md, "The diagnostic lane".
 #
+# Stage receipts and retry (#762). Every completed stage (plain, methods) of a population is uploaded as its own artifact the moment it ends
+# (stage-plain-<population>, stage-methods-<population>, 14 days), with stage-receipt.json naming the stage, population, engine/config/evidence identity and the
+# digests of its bytes. `retry_run_id` resolves each stage from stage-*, early-plain-* or the job-end official-run-* artifact of the earlier run and reuses it only
+# when the driver finds the IDENTICAL identity (never a mix). A failure or cancel after the engine finished keeps the output and marks the stage INCOMPLETE
+# (stage-incomplete.json, never a success, never reused). `populations` + `rehearse_post_step_failure` rehearse that on the cheap populations only.
+#
 # Safety: dispatch only (never pull_request_target); contents: read; the engine token is a GitHub App token scoped to
 # redact-secret/credential-eval with contents: read, minted in the job that needs it and never echoed; no checkout keeps
 # credentials; every action is pinned to a commit.
@@ -28,6 +34,21 @@ on:
         required: false
         default: false
         type: boolean
+      populations:
+        description: STAGE REHEARSAL only (#762). A comma-separated subset of regression-corpus,policy-corpus, to rehearse the stage receipts and the retry on the cheap populations without any public/OpenRedaction measurement. Never an official run (no view is built); refused with attribution, candidate, reuse_run_id and diagnostic mode, and never names the public population.
+        required: false
+        default: ''
+        type: string
+      rehearse_post_step_failure:
+        description: Stage rehearsal only (#762). Fail the job on purpose after the plain stage was measured, verified and uploaded, to prove that a retry (retry_run_id) reuses the finished stage. Needs `populations`.
+        required: false
+        default: false
+        type: boolean
+      omit_optional:
+        description: Leave an OPTIONAL scanner of the evaluation contract out of the official run (#763, benchmarks/support/scanner-roster.json), for example openredaction (its default profile is a manual measurement). The run is complete without it and the view says it was not measured. Needs an engine release that ships the without-optional configuration; refused otherwise. Exclusive with diagnostic mode, attribution and candidate.
+        required: false
+        default: ''
+        type: string
       reuse_run_id:
         description: Retry the view stage only (#699). The id of an earlier official-runs run whose scanner artifacts are valid; the scanner jobs are skipped and the view is built from that run's artifacts and the pinned snapshot of this commit.
         required: false
@@ -76,7 +97,11 @@ jobs:
     timeout-minutes: 5
     outputs:
       populations: ${{ steps.plan.outputs.populations }}
+      rehearsal: ${{ steps.plan.outputs.rehearsal }}
     env:
+      POPULATIONS: ${{ inputs.populations }}
+      REHEARSE_FAILURE: ${{ inputs.rehearse_post_step_failure }}
+      OMIT_OPTIONAL: ${{ inputs.omit_optional }}
       MODE: ${{ inputs.mode }}
       INCLUDE_PUBLIC: ${{ inputs.include_public }}
       ATTRIBUTION: ${{ inputs.attribution }}
@@ -90,6 +115,21 @@ jobs:
           if [ -n "$RETRY_RUN_ID" ]; then
             [[ "$RETRY_RUN_ID" =~ ^[0-9]+$ ]] || { echo "::error::retry_run_id must be a run id"; exit 1; }
             [ -z "$REUSE_RUN_ID" ] && [ -z "$REUSE_CANDIDATE_RUN_ID" ] && [ "$MODE" != "diagnostic" ] || { echo "::error::retry_run_id is exclusive with reuse_run_id, reuse_candidate_run_id and diagnostic mode"; exit 1; }
+          fi
+          echo "rehearsal=false" >> "$GITHUB_OUTPUT"
+          if [ -n "$OMIT_OPTIONAL" ]; then
+            [[ "$OMIT_OPTIONAL" =~ ^[a-z][a-z0-9-]*$ ]] || { echo "::error::omit_optional must be a scanner id"; exit 1; }
+            [ "$MODE" != "diagnostic" ] && [ -z "$ATTRIBUTION" ] && [ -z "$CANDIDATE" ] || { echo "::error::omit_optional is exclusive with diagnostic mode, attribution and candidate"; exit 1; }
+          fi
+          if [ "$REHEARSE_FAILURE" = "true" ] && [ -z "$POPULATIONS" ]; then echo "::error::rehearse_post_step_failure needs populations (a stage rehearsal)"; exit 1; fi
+          if [ -n "$POPULATIONS" ]; then
+            [ "$MODE" != "diagnostic" ] && [ "$INCLUDE_PUBLIC" != "true" ] && [ -z "$ATTRIBUTION" ] && [ -z "$CANDIDATE" ] && [ -z "$REUSE_RUN_ID" ] && [ -z "$REUSE_CANDIDATE_RUN_ID" ] || { echo "::error::populations (a stage rehearsal) is exclusive with diagnostic mode, attribution, candidate and the reuse inputs"; exit 1; }
+            [[ "$POPULATIONS" =~ ^(regression-corpus|policy-corpus)(,(regression-corpus|policy-corpus))?$ ]] || { echo "::error::populations must be regression-corpus and/or policy-corpus: a rehearsal never runs the public population"; exit 1; }
+            list=$(node -p "[...new Set(process.env.POPULATIONS.split(','))].map(p=>JSON.stringify(p)).join(',')")
+            echo "populations=[$list]" >> "$GITHUB_OUTPUT"
+            echo "rehearsal=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::STAGE REHEARSAL of $POPULATIONS: not an official run; no qualification view is built"
+            exit 0
           fi
           if [ "$MODE" = "diagnostic" ]; then
             [ -z "$ATTRIBUTION" ] && [ -z "$REUSE_RUN_ID" ] || { echo "::error::a diagnostic run takes neither attribution nor reuse_run_id"; exit 1; }
@@ -120,6 +160,7 @@ jobs:
       CANDIDATE: ${{ inputs.candidate }}
       EVIDENCE_TAG: ${{ inputs.evidence_tag }}
       EVIDENCE_DIGEST: ${{ inputs.evidence_manifest_digest }}
+      OMIT_OPTIONAL: ${{ inputs.omit_optional }}
     steps:
       - name: Name the stage-timing file (the runner context is not available in job-level env)
         run: echo "STAGE_TIMINGS=$RUNNER_TEMP/stage-timings.tsv" >> "$GITHUB_ENV"
@@ -199,22 +240,14 @@ jobs:
       - name: Install the npm scanners from the engine lockfile, without install scripts
         run: npm ci --ignore-scripts --no-audit --no-fund
         working-directory: credential-eval/${{ steps.shim.outputs.dir }}
-      - name: Find the stages of the retried run that succeeded (#707)
+      - name: Find the stages the retried run left behind and download them (#707, #762)
         id: receipts
         if: ${{ inputs.retry_run_id != '' }}
         env:
           GH_TOKEN: ${{ github.token }}
           POPULATION: ${{ matrix.population }}
           RETRY_RUN_ID: ${{ inputs.retry_run_id }}
-        run: node scripts/retry-receipts.mjs --run "$RETRY_RUN_ID" --population "$POPULATION" | tee -a "$GITHUB_OUTPUT"
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        if: ${{ inputs.retry_run_id != '' && (steps.receipts.outputs.plain == 'reuse' || steps.receipts.outputs.methods == 'reuse') }}
-        continue-on-error: true # a missing artifact only means the stage measures fresh
-        with:
-          name: ${{ inputs.attribution != '' && format('attribution-{0}-', inputs.attribution) || 'official-run-' }}${{ matrix.population }}
-          path: receipts-in
-          run-id: ${{ inputs.retry_run_id }}
-          github-token: ${{ github.token }}
+        run: node scripts/retry-receipts.mjs --run "$RETRY_RUN_ID" --population "$POPULATION" --out receipts-in ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate} | tee -a "$GITHUB_OUTPUT"
       - name: Diagnostic run (product only, exploratory and internal)
         if: ${{ inputs.mode == 'diagnostic' }}
         env:
@@ -231,42 +264,81 @@ jobs:
         run: |
           if [ -f "official-out/$POPULATION/diagnostic-summary.md" ]; then cat "official-out/$POPULATION/diagnostic-summary.md" >> "$GITHUB_STEP_SUMMARY"; fi
       - name: Official run, twice, with the determinism check
+        id: plain
         if: ${{ inputs.mode != 'diagnostic' }}
         env:
           GH_TOKEN: ${{ github.token }}
           POPULATION: ${{ matrix.population }}
-          RECEIPT: ${{ steps.receipts.outputs.plain == 'reuse' && 'receipts-in' || '' }}
+          RECEIPT: ${{ steps.receipts.outputs.plain == 'reuse' && steps.receipts.outputs.plain_dirs || '' }}
         run: >
           scripts/ci-stage.sh "plain run (2 repeats)" -- node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
-          --out "official-out/$POPULATION" --runs 2 ${RECEIPT:+--reuse-receipt "$RECEIPT"} ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
-      - name: Expose the plain artifact before the slow methods run (floors population only)
-        if: ${{ !cancelled() && matrix.population == 'public-evidence-snapshot' && inputs.mode != 'diagnostic' }}
-        # A methods run takes up to ~29 min per slow peer; the plain evidence is reviewable now. This copy is evidence for people, never an
-        # input of the qualification view (which reads official-run-* only) and never replaces the final upload below.
-        run: rm -f "official-out/$POPULATION"/artifact-[0-9]*.json
+          --out "official-out/$POPULATION" --runs 2 ${RECEIPT:+--reuse-receipt "$RECEIPT"} ${OMIT_OPTIONAL:+--omit-optional "$OMIT_OPTIONAL"} ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
+      - name: Write the plain stage receipt (the stage is verified and finished)
+        id: plain-receipt
+        if: ${{ !cancelled() && steps.plain.outcome == 'success' }}
+        # The plain evidence is reviewable and reusable the moment it exists, before any slow methods run. It is never an input of the qualification
+        # view (which reads official-run-* only) and never replaces the final upload below. The byte copies the checks made are not part of the stage.
         env:
           POPULATION: ${{ matrix.population }}
+        run: |
+          rm -f "official-out/$POPULATION"/artifact-[0-9]*.json
+          node scripts/stage-receipts.mjs write --stage plain --dir "official-out/$POPULATION" --run-id "$GITHUB_RUN_ID"
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        if: ${{ !cancelled() && matrix.population == 'public-evidence-snapshot' && inputs.mode != 'diagnostic' }}
+        if: ${{ !cancelled() && steps.plain-receipt.outcome == 'success' }}
         with:
-          name: early-plain-${{ inputs.attribution != '' && format('attribution-{0}-', inputs.attribution) || '' }}${{ matrix.population }}
+          name: stage-plain-${{ inputs.attribution != '' && format('attribution-{0}-', inputs.attribution) || '' }}${{ matrix.population }}
           path: |
             official-out/${{ matrix.population }}
             !official-out/${{ matrix.population }}/methods
-          if-no-files-found: ignore
+          if-no-files-found: error
           retention-days: 14
+      - name: Rehearsal, fail on purpose after the plain stage was finished and uploaded (#762)
+        if: ${{ inputs.rehearse_post_step_failure && steps.plain-receipt.outcome == 'success' && steps.receipts.outputs.plain != 'reuse' }}
+        run: |
+          echo "::error::REHEARSAL: failing after the plain stage of $POPULATION was finished and uploaded as stage-plain-$POPULATION; retry with retry_run_id=$GITHUB_RUN_ID to see it reused"
+          exit 1
+        env:
+          POPULATION: ${{ matrix.population }}
       - name: Methods run, twice, with the determinism check (floors population only)
+        id: methods
         if: matrix.population == 'public-evidence-snapshot' && inputs.mode != 'diagnostic'
         env:
           GH_TOKEN: ${{ github.token }}
           POPULATION: ${{ matrix.population }}
           NODE_OPTIONS: --max-old-space-size=5120
-          RECEIPT: ${{ steps.receipts.outputs.methods == 'reuse' && 'receipts-in' || '' }}
+          RECEIPT: ${{ steps.receipts.outputs.methods == 'reuse' && steps.receipts.outputs.methods_dirs || '' }}
         run: >
           scripts/ci-stage.sh "methods run (2 repeats)" -- node --import tsx scripts/run-official-credential-eval.ts
           --population "$POPULATION" --engine-dir credential-eval --platform "$PLATFORM"
-          --out "official-out/$POPULATION" --runs 2 --methods ${RECEIPT:+--reuse-receipt "$RECEIPT"} ${CANDIDATE:+--jobs 2} ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
+          --out "official-out/$POPULATION" --runs 2 --methods ${RECEIPT:+--reuse-receipt "$RECEIPT"} ${OMIT_OPTIONAL:+--omit-optional "$OMIT_OPTIONAL"} ${CANDIDATE:+--jobs 2} ${ATTRIBUTION:+--attribution "$ATTRIBUTION"} ${CANDIDATE:+--candidate "$CANDIDATE" ${EVIDENCE_TAG:+--evidence-tag "$EVIDENCE_TAG" --evidence-manifest-digest "$EVIDENCE_DIGEST"}}
+      - name: Write the methods stage receipt (the stage is verified and finished)
+        id: methods-receipt
+        if: ${{ !cancelled() && steps.methods.outcome == 'success' }}
+        env:
+          POPULATION: ${{ matrix.population }}
+        run: |
+          rm -f "official-out/$POPULATION/methods"/artifact-[0-9]*.json
+          node scripts/stage-receipts.mjs write --stage methods --dir "official-out/$POPULATION/methods" --run-id "$GITHUB_RUN_ID"
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        if: ${{ !cancelled() && steps.methods-receipt.outcome == 'success' }}
+        with:
+          name: stage-methods-${{ inputs.attribution != '' && format('attribution-{0}-', inputs.attribution) || '' }}${{ matrix.population }}
+          path: official-out/${{ matrix.population }}/methods
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 1
+      - name: Say plainly which stages are INCOMPLETE (engine output finished, verification did not)
+        if: ${{ always() }}
+        env:
+          POPULATION: ${{ matrix.population }}
+        run: |
+          for marker in "official-out/$POPULATION/stage-incomplete.json" "official-out/$POPULATION/methods/stage-incomplete.json"; do
+            [ -f "$marker" ] || continue
+            msg="INCOMPLETE: $(node -p "const m=require('./$marker'); m.stage+' stage of '+m.population+': '+m.reason")"
+            echo "::error::$msg. The engine output is kept in this job's artifact (official-run-$POPULATION); the run is not a success and the stage is not reused."
+            echo "### $msg" >> "$GITHUB_STEP_SUMMARY"
+          done
       - name: Job summary with per-stage timings and the artifacts this job uploads
         if: ${{ !cancelled() }}
         env:
@@ -277,7 +349,7 @@ jobs:
           ARTIFACT: ${{ inputs.mode == 'diagnostic' && 'diagnostic-' || (inputs.attribution != '' && format('attribution-{0}-', inputs.attribution) || 'official-run-') }}${{ matrix.population }}
         run: >
           node scripts/stage-timing-summary.mjs --timings "$STAGE_TIMINGS" --title "$MODE: $POPULATION"
-          --note "Measurements are fresh in this job (no receipt reuse); only the view stage can reuse an earlier run (reuse_run_id)."
+          --note "Stage receipts (#762): each finished stage is uploaded as stage-<stage>-$POPULATION; a retry reuses it only on an identical identity (the driver's log names the source)."
           --note "Retry of run ${RETRY_RUN_ID:-none}: plain receipt ${PLAIN_RECEIPT:-n/a}, methods receipt ${METHODS_RECEIPT:-n/a} (reuse = offered to the driver; the stage timing shows whether the engine ran)."
           --note "Engine build cache: ${{ steps.engine-cache.outputs.cache-hit == 'true' && 'hit' || 'miss' }}. Artifact: $ARTIFACT (this run's Artifacts section)."
           >> "$GITHUB_STEP_SUMMARY"
@@ -286,18 +358,18 @@ jobs:
         env:
           POPULATION: ${{ matrix.population }}
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        if: ${{ !cancelled() }} # keep the plain artifact when the methods step fails
+        if: ${{ always() }} # keep the plain artifact when the methods step fails, and the finished engine output (with its INCOMPLETE marker) when the checks after it fail or the job is cancelled (#762)
         with:
           name: ${{ inputs.mode == 'diagnostic' && 'diagnostic-' || (inputs.candidate != '' && 'candidate-run-' || (inputs.attribution != '' && format('attribution-{0}-', inputs.attribution) || 'official-run-')) }}${{ matrix.population }}
           path: official-out/${{ matrix.population }}
-          if-no-files-found: error
+          if-no-files-found: ${{ job.status == 'success' && 'error' || 'ignore' }}
           retention-days: 90
 
   qualification-view:
     name: Qualification view
     needs: [plan, official-run]
     # A skipped scanner job is the view-only retry (reuse_run_id); a failed one is not retried here. A diagnostic run builds no view (#705); a candidate replay builds none either (#698).
-    if: ${{ !cancelled() && inputs.mode != 'diagnostic' && inputs.attribution == '' && inputs.candidate == '' && needs.plan.result == 'success' && (needs.official-run.result == 'success' || needs.official-run.result == 'skipped') }}
+    if: ${{ !cancelled() && inputs.mode != 'diagnostic' && inputs.attribution == '' && inputs.candidate == '' && needs.plan.result == 'success' && needs.plan.outputs.rehearsal != 'true' && (needs.official-run.result == 'success' || needs.official-run.result == 'skipped') }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:

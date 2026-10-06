@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "scanner-roster-v1",
+  "note": "Which scanners a run class must measure and which it may leave unmeasured (#763, docs/specs/qualification-adapter.md, 'The scanner roster'). Read by the adapter and the official-run driver. Not a component of the product policy revision: it names who is measured, not what a status requires, so it moves no support status.",
+  "runClasses": {
+    "official": {
+      "required": ["flare-redact", "gitleaks", "redact-secret", "trufflehog"],
+      "optional": ["openredaction"]
+    },
+    "diagnostic": {
+      "required": ["redact-secret"],
+      "optional": []
+    }
+  },
+  "optionalScanners": {
+    "openredaction": {
+      "label": "OpenRedaction default",
+      "profile": "default",
+      "reason": "The default (all-pattern) profile is slow and noisy for credential evaluation: personal data and resource identifiers dominate its findings, and its methods run takes 40+ minutes, so it is a manual measurement and never blocks other scanners or core verification (#763). Its earlier results stay as history with their run identity; a credential profile is a separate scanner, never spliced with it.",
+      "withoutConfigs": {
+        "linux-x64": "credential-public-v1.without-openredaction.json",
+        "darwin-arm64": "credential-public-v1.without-openredaction.darwin-arm64.json"
+      },
+      "engineRelease": "pending"
+    }
+  }
+}

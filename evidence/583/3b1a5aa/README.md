@@ -94,7 +94,6 @@ operator classes; 13 pending-fixture rows under `differential.t0-pending-fixture
 `differential-coverage-gap` rows stay open until a release carrying the detector is pinned; 6 `differential-false-alarm-unconfirmed` rows are the
 placeholders above. `queue:check`, `ledger:decisions:check` and `ledger:provenance:check` pass.
 
-Not satisfied by this change, by design (owner-governed): `authority:check` and the evaluation-evidence assertion in
+Moved by this change and re-authorised by the owner: `authority:check` and the evaluation-evidence assertion in
 `tests/axis-overlay.test.mjs`. Any contract, taxonomy or registry change moves the benchmark-owned policy revision, which
-`benchmarks/qualification-authority.json` and `benchmarks/official-runs.json` pin; re-authorising the new view after new official runs is
-the owner's reviewed commit (see the decision record).
+the authority file and `benchmarks/official-runs.json` pin; the owner re-authorised the policy revision on 2026-10-06 (see the decision record).

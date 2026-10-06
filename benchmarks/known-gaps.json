@@ -4,7 +4,7 @@
   "measuredVersion": "0.1.0-beta.13",
   "milestone": "v0.1.0-beta.13",
   "milestoneUrl": "https://github.com/redact-secret/redact-secret/milestone/16",
-  "reviewedAt": "2026-10-05",
+  "reviewedAt": "2026-10-06",
   "reverification": {
     "checkedOn": "2026-10-05",
     "run": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37296823599",
@@ -7929,6 +7929,102 @@
           "https://github.com/redact-secret/redact-secret-benchmarks/blob/59fecf5393bf726ad8c6e27ff36c6f877137384e/evidence/528/99c8c2b/candidate-evidence-v1.json"
         ]
       }
+    },
+    {
+      "id": "product-1236",
+      "title": "Square placeholders are still reported: EAAA-your-access-token, EAAA<your-production-access-token>, sandbox-sq0csb-<your-sandbox-application-secret>",
+      "url": "https://github.com/redact-secret/redact-secret/issues/1236",
+      "number": 1236,
+      "fixtures": [
+        "beta8-583a--square-token-your-access-token-placeholder",
+        "beta8-583a--square-token-angle-brackets-placeholder",
+        "beta8-583a--square-oauth-application-secret-angle-brackets-placeholder"
+      ],
+      "kind": "false-positive",
+      "status": "promoted",
+      "candidate": {
+        "package": "@redact-secret/core",
+        "version": "0.1.0-beta.13",
+        "lockHash": "3d0195434810dcd3c6315fd472e88c7baf2ad4d3ceabf4f2bf58573cb57de474",
+        "sourceCommit": "66b492bdff5e6751fc6b5409266916346ed7c723"
+      },
+      "expectationReview": {
+        "method": "authored-independent-of-scanner-output",
+        "evidence": [
+          "https://github.com/redact-secret/redact-secret/blob/fa955d28eed59c70a9c4380ed130d1b82d439cd9/docs/audits/evidence/1014/square.md"
+        ]
+      },
+      "history": {
+        "observed": {
+          "at": "2026-10-06",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret-benchmarks/blob/814f07b9f0e1f2517aba8c6056cbd92c4e63ccf9/fixtures/generated/beta8/583a.mjs",
+            "https://github.com/redact-secret/redact-secret/issues/1236"
+          ]
+        },
+        "reviewed": {
+          "at": "2026-10-06",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/blob/fa955d28eed59c70a9c4380ed130d1b82d439cd9/docs/audits/evidence/1014/square.md"
+          ]
+        },
+        "promoted": {
+          "at": "2026-10-06",
+          "evidence": [
+            "https://github.com/redact-secret/redact-secret/issues/1236"
+          ]
+        }
+      },
+      "promotion": {
+        "productIssue": "https://github.com/redact-secret/redact-secret/issues/1236",
+        "productManifest": "https://github.com/redact-secret/redact-secret/blob/main/conformance/benchmark-regressions.json",
+        "productManifestRecordId": "benchmark-gap-1236",
+        "canonicalFixtureIds": []
+      },
+      "evidence": [
+        {
+          "fixture": "beta8-583a--square-token-your-access-token-placeholder",
+          "corpusHash": "cd45f2c2f163226e999566d0087d55db6e266e23e846256403b9e82f415a12c1",
+          "expected": [],
+          "actual": [
+            {
+              "start": 20,
+              "end": 42,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-583a--square-token-angle-brackets-placeholder",
+          "corpusHash": "cd45f2c2f163226e999566d0087d55db6e266e23e846256403b9e82f415a12c1",
+          "expected": [],
+          "actual": [
+            {
+              "start": 28,
+              "end": 62,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        },
+        {
+          "fixture": "beta8-583a--square-oauth-application-secret-angle-brackets-placeholder",
+          "corpusHash": "cd45f2c2f163226e999566d0087d55db6e266e23e846256403b9e82f415a12c1",
+          "expected": [],
+          "actual": [
+            {
+              "start": 15,
+              "end": 63,
+              "type": "contextual_secret",
+              "confidence": "high",
+              "action": "redact"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

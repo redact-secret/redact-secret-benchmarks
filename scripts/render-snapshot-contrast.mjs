@@ -52,6 +52,7 @@ export function renderMarkdown(tag, comparisons, reading = []) {
     `Every case, assertion and review occurrence of the newer run is compared by semantic id with the older run (\`scripts/contrast-snapshots.ts\`, \`--strict\`). A difference is attributed to the evidence change that explains it; anything else is unexplained, and a worse outcome that no evidence change explains is a regression. **${DISCLOSURE}.**`, '',
     '| Comparison | Differences | Explained | Unexplained | Regressions |', '| --- | ---: | ---: | ---: | ---: |',
     ...comparisons.map(c => `| ${c.kind}: ${c.newer} vs ${c.older} | ${c.differences} | ${c.explained} | ${c.unexplained} | ${c.regressions} |`), '',
+    'Limit of the attribution: causes are assigned by rule on semantic ids (corpus, engine, roster), not by an isolating replay. An engine-only replay is not offered (by decision, CI cost), so an engine cause is read from the case data of both artifacts; two mechanisms can sit behind one scored change, and a cause string names the one the case data shows.', '',
     'The plain-population differences are listed per case below; the methods run adds the generated variants and the assertions of the same cases, all attributed to the same cause (see the data file).', '',
   ];
   for (const c of comparisons) {

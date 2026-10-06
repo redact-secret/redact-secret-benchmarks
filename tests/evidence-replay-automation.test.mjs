@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { branchName, replayablePin, replayEntry, reusableRun } from '../scripts/run-evidence-replay.mjs';
+import { branchName, moveEnginePin, replayablePin, replayEntry, reusableRun } from '../scripts/run-evidence-replay.mjs';
+import { sha256Digest } from '../scripts/evidence-adoption.mjs';
+import { attributeEngineEffect, ENGINE_TWIN_SCOPING } from '../scripts/attribute-engine-effect.mjs';
 import { buildReceipt, receiptProblems, expectedStamps, DISCLOSURE, PAGES } from '../scripts/record-deployment-receipt.mjs';
 
 const D = c => `sha256:${c.repeat(64)}`;
@@ -80,4 +82,29 @@ test('the contrast attributes a difference to the evidence change the report nam
   assert.equal(entry.plainCases.length, 2);
   assert.match(renderMarkdown('t', [entry]), /\*\*unexplained\*\*/);
   assert.match(renderMarkdown('t', [entry]), /UNEXPLAINED DIFFERENCES OR REGRESSIONS REMAIN/);
+});
+
+test('a moved engine is replayed only with the record\'s engineChange, and the moved pin is digest-checked (#773)', () => {
+  const schema = Buffer.from('{"schema":"x"}');
+  const to = { tag: 'v9.0.0', revision: 'b'.repeat(40) };
+  const engineChange = { from: registry.engine, to, runArtifactSchemaSha256: sha256Digest(schema) };
+  const moved = { ...ec, engine: to, engineChange };
+  assert.equal(replayablePin({ adoption: { ...adoption, evidenceCandidate: moved }, registry, tag: ec.evidenceRelease, manifestDigest: D('1') }), moved);
+  assert.throws(() => replayablePin({ adoption: { ...adoption, evidenceCandidate: { ...moved, engineChange: { ...engineChange, from: { tag: 'v1', revision: 'c'.repeat(40) } } } }, registry, tag: ec.evidenceRelease, manifestDigest: D('1') }), /engineChange/);
+  const pinned = moveEnginePin({ engine: { ...registry.engine, version: '0.1.0-alpha.5', runArtifactSchema: { path: 'schemas/r.json', sha256: D('0') } }, scanners: [] }, engineChange, schema);
+  assert.deepEqual(pinned.engine, { tag: 'v9.0.0', revision: to.revision, version: '9.0.0', runArtifactSchema: { path: 'schemas/r.json', sha256: sha256Digest(schema) } });
+  assert.throws(() => moveEnginePin({ engine: registry.engine, scanners: [] }, engineChange, Buffer.from('other')), /record names/);
+});
+
+test('engine-effect attribution splits the mechanisms and keeps the generic twin-scoping cause for the rest (#772)', () => {
+  const twinOf = { 'anthropic--anthropic-admin01-key-api03-prefix-twin': 'anthropic--anthropic-admin01-key-dotenv', 'vercel--vercel-app-access-token-body-55-twin': 'vercel--vercel-app-access-token-dotenv', 'sendgrid--sendgrid-1-twin': 'sendgrid--sendgrid-dotenv' };
+  const caseDiff = id => ({ kind: 'case', id });
+  const assertion = id => ({ kind: 'assertion', id: `${id}|mutation|a|b|must-flip|` });
+  const out = attributeEngineEffect([caseDiff('anthropic--anthropic-admin01-key-api03-prefix-twin'), assertion('anthropic--anthropic-admin01-key-dotenv'), caseDiff('vercel--vercel-app-access-token-body-55-twin'), assertion('vercel--vercel-app-access-token-dotenv'), caseDiff('sendgrid--sendgrid-1-twin'), caseDiff('polar--polar-1')], { 'polar--polar-1': 'changed' }, twinOf);
+  assert.match(out['anthropic--anthropic-admin01-key-api03-prefix-twin'], /provider-wide coverage/);
+  assert.equal(out['anthropic--anthropic-admin01-key-dotenv'], out['anthropic--anthropic-admin01-key-api03-prefix-twin']);
+  assert.match(out['vercel--vercel-app-access-token-body-55-twin'], /security-first fallback/);
+  assert.equal(out['vercel--vercel-app-access-token-dotenv'], out['vercel--vercel-app-access-token-body-55-twin']);
+  assert.equal(out['sendgrid--sendgrid-1-twin'], ENGINE_TWIN_SCOPING);
+  assert.equal(out['polar--polar-1'], 'changed');
 });

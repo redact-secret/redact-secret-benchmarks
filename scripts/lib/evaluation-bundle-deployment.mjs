@@ -5,6 +5,7 @@
  * assembled `dist/`, on a read-back of what was uploaded, and in the synthetic rehearsal tests (which use local directories as the bucket).
  * It imports the bundle validator, so run it under tsx (`node --import tsx`).
  */
+import { createHash } from 'node:crypto';
 import { readdir, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { BUNDLES_DIR, POINTER_FILE, resolveBundle, validateBundle } from '../../benchmarks/evaluation/bundle/bundle.ts';
@@ -126,4 +127,30 @@ export function retentionPlan({ present, current, previous = null, live = null }
   for (const id of keep) if (!ids.includes(id) && id !== previous) throw new Error(`The live bundle ${id} is not stored; refusing to plan a prune`);
   const prune = ids.filter(id => BUNDLE_ID.test(id) && !keep.includes(id)).sort();
   return { keep: keep.filter(id => ids.includes(id)), prune, ignored: ids.filter(id => !BUNDLE_ID.test(id)) };
+}
+
+/**
+ * Availability of an uploaded bundle without reading the objects back: the publisher role may list and write the bucket but not read objects (s3:GetObject is not granted), so the upload is
+ * verified from `aws s3api list-objects-v2` rows ({ Key, Size, ETag }) against the files of the already-validated dist directory: every file present under the bundle's prefix with the same size,
+ * and the same MD5 where the object is a single-part upload (its ETag has no '-'). The bytes were digest-validated locally before the upload; this proves the bucket holds them.
+ * Returns the problems (empty when the whole bundle is available).
+ */
+export async function listingProblems({ rows, dist, bundleId, prefix = 'results' }) {
+  const problems = [];
+  if (!BUNDLE_ID.test(bundleId)) return ['the bundle id is not a 32-hex id'];
+  const base = path.join(dist, 'results', BUNDLES_DIR, bundleId);
+  const walk = async dir => (await readdir(dir, { withFileTypes: true })).flatMap(entry => entry.isDirectory() ? [] : [path.join(dir, entry.name)]).concat(
+    ...await Promise.all((await readdir(dir, { withFileTypes: true })).filter(entry => entry.isDirectory()).map(entry => walk(path.join(dir, entry.name)))));
+  const present = new Map((rows ?? []).map(row => [row.Key, row]));
+  const files = await walk(base);
+  if (!files.length) return [`dist has no files for bundle ${bundleId}`];
+  for (const file of files) {
+    const key = `${prefix}/${BUNDLES_DIR}/${bundleId}/${path.relative(base, file).split(path.sep).join('/')}`, row = present.get(key);
+    const bytes = await readFile(file);
+    if (!row) { problems.push(`${key} is not in the bucket`); continue; }
+    if (row.Size !== bytes.length) problems.push(`${key} is ${row.Size} bytes in the bucket, ${bytes.length} locally`);
+    const etag = String(row.ETag ?? '').replaceAll('"', '');
+    if (etag && !etag.includes('-') && etag !== createHash('md5').update(bytes).digest('hex')) problems.push(`${key} has another MD5 in the bucket than the validated file`);
+  }
+  return problems;
 }

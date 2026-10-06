@@ -486,21 +486,20 @@ jobs:
           # are uploaded first, without --delete, and kept long-lived. The live pointer is read before anything changes: it names the bundle that
           # stays reachable for readers mid-deployment and for rollback.
           bundle_id=$(jq -r .bundleId dist/results/evaluation-bundle-v1.json)
-          manifest_sha=$(jq -r .manifest.sha256 dist/results/evaluation-bundle-v1.json)
           [[ "$bundle_id" =~ ^[a-f0-9]{32}$ ]]
+          # The publisher role may list and write the bucket but not read objects, so what is live is read over HTTPS from the site itself (public files).
+          origin="https://$([ "$TARGET" = production ] && echo benchmarks.redactsecret.dev || echo staging.benchmarks.redactsecret.dev)"
           previous_id=
-          if aws s3 cp "s3://$bucket/results/evaluation-bundle-v1.json" "$RUNNER_TEMP/previous-pointer.json" --only-show-errors 2>/dev/null; then
+          if curl --fail --silent --show-error "$origin/results/evaluation-bundle-v1.json" --output "$RUNNER_TEMP/previous-pointer.json" 2>/dev/null \
+            && curl --fail --silent --show-error "$origin/results/evaluation-domains-v2.json" --output "$RUNNER_TEMP/previous-index.json" 2>/dev/null \
+            && jq -e '.bundleId | test("^[a-f0-9]{32}$")' "$RUNNER_TEMP/previous-pointer.json" >/dev/null; then
             previous_id=$(jq -r .bundleId "$RUNNER_TEMP/previous-pointer.json")
           fi
           aws s3 sync "dist/results/evaluation-bundles/$bundle_id" "s3://$bucket/results/evaluation-bundles/$bundle_id" --only-show-errors \
             --cache-control 'public, max-age=31536000, immutable'
-          # Availability before publication: read the uploaded bundle back and validate every part against the manifest the pointer will commit to.
-          readback="$RUNNER_TEMP/readback/results"
-          rm -rf "$RUNNER_TEMP/readback"
-          mkdir -p "$readback/evaluation-bundles/$bundle_id"
-          aws s3 sync "s3://$bucket/results/evaluation-bundles/$bundle_id" "$readback/evaluation-bundles/$bundle_id" --only-show-errors
-          cp dist/results/evaluation-bundle-v1.json "$readback/evaluation-bundle-v1.json"
-          node --import tsx scripts/check-evaluation-bundle-publication.mjs --readback="$readback" --sha256="$manifest_sha"
+          # Availability before publication: the bucket must list every file of the validated bundle with its size and MD5 (the role cannot read objects back; the bytes were validated in dist).
+          aws s3api list-objects-v2 --bucket "$bucket" --prefix "results/evaluation-bundles/$bundle_id/" --query 'Contents[].{Key:Key,Size:Size,ETag:ETag}' --output json > "$RUNNER_TEMP/bundle-listing.json"
+          node --import tsx scripts/check-evaluation-bundle-publication.mjs --listing="$RUNNER_TEMP/bundle-listing.json" --bundle="$bundle_id" --dist=dist
 
           # Everything else, with revalidation and stale files removed. The bundles, the pointer, the rollback copies and the domain index are not this sync's:
           # old bundle directories must survive --delete while a reader or a rollback may still need them, and the two mutable commit markers move last.
@@ -516,11 +515,8 @@ jobs:
 
           # Rollback copies of the live pointer and index, taken before they move (skipped when this bundle is already live, so a re-run never overwrites the rollback target).
           if [ -n "$previous_id" ] && [ "$previous_id" != "$bundle_id" ]; then
-            for marker in evaluation-bundle-v1.json evaluation-domains-v2.json; do
-              if aws s3 ls "s3://$bucket/results/$marker" >/dev/null; then
-                aws s3 cp "s3://$bucket/results/$marker" "s3://$bucket/results/rollback/$marker" --only-show-errors --cache-control 'no-cache'
-              fi
-            done
+            aws s3 cp "$RUNNER_TEMP/previous-pointer.json" "s3://$bucket/results/rollback/evaluation-bundle-v1.json" --only-show-errors --cache-control 'no-cache'
+            aws s3 cp "$RUNNER_TEMP/previous-index.json" "s3://$bucket/results/rollback/evaluation-domains-v2.json" --only-show-errors --cache-control 'no-cache'
           fi
           # The pointer, then the v2 index, are the sole mutable commit markers and are always last. Each is one object replaced atomically by S3, but the two
           # are separate objects: a reader that sees the new pointer with the old index refuses the mismatch (check-evaluation-bundle-publication) instead of combining them.
@@ -546,7 +542,9 @@ jobs:
           PREVIOUS_ID: ${{ steps.publish.outputs.previous-id }}
         run: |
           set -euo pipefail
-          live_id=$(aws s3 cp "s3://$BUCKET/results/evaluation-bundle-v1.json" - --only-show-errors | jq -r .bundleId)
+          # The live pointer is read over HTTPS (the role cannot read objects). A cached older pointer only names the previous bundle, which is kept anyway.
+          origin="https://$([ "$TARGET" = production ] && echo benchmarks.redactsecret.dev || echo staging.benchmarks.redactsecret.dev)"
+          live_id=$(curl --fail --silent --show-error "$origin/results/evaluation-bundle-v1.json" | jq -r .bundleId)
           aws s3api list-objects-v2 --bucket "$BUCKET" --prefix results/evaluation-bundles/ --delimiter / \
             --query 'CommonPrefixes[].Prefix' --output json | jq -r '.[]?' > "$RUNNER_TEMP/present-bundles.txt"
           node --import tsx scripts/evaluation-bundle-retention.mjs --present="$RUNNER_TEMP/present-bundles.txt" \

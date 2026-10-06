@@ -33,6 +33,7 @@ export const CAUSES: Cause[] = [
   { id: 'twin-scope-vocabulary', change: 'A twin control is scoped to its declared family, and a finding of another known family is co-detection, not a flag. The legacy path scoped a twin by the product contract of the positive it mutates (a detector id); the evidence snapshot gives the twin its own family (a taxonomy id), so the twin can belong to another family and the same finding can swap between flagged and co-detected. A cross-provider twin has no family at all in the snapshot, so the engine cannot scope it and reads a finding of another known detector as flagged; recognised from the matched cases (the new twin is flagged with no family, the legacy twin was not). The adapter does not re-score it. Confirmed by the project twin-scope corpus (#602): the same bytes carried with the parent\'s family (twin-scope-regressions, a product regression-corpus addition) are read as co-detected, as the legacy path read them, so the public engine verdict on the unscoped copy stays a difference of the public population and the twin gate reads the project case (population-policy.json twinScope).', confirmation: 'confirmed', owner: 'credential-eval' },
   { id: 'pending-not-scored', change: 'A T0 (pending) non-twin fixture has no scored outcome in credential-eval, so the adapter excludes it from the floor counts; the legacy path counted it as a fixture of its family. A T0 twin is in this cause only when the legacy fixture was scored (the release moved it to an unresolved class later; the legacy path counted it and the new one cannot); when the legacy fixture is T0 too, the legacy path drops it, so neither side counts it.', confirmation: 'confirmed', owner: 'benchmarks' },
   { id: 'canonical-evidence-membership', change: 'The evidence snapshot holds fixtures with no legacy counterpart (intended canonical-evidence change): they count in the new floors and in no legacy count, and their methods-run variants add review occurrences, failed assertions and unresolved differential disagreements no legacy count or ledger decision covers (#680). Recognised for a method figure only when the residual equals, exactly, the unsettled occurrences or failed assertions of the cases with no legacy counterpart; a review occurrence of such a case stays unreviewed until a decision is made for it.', confirmation: 'confirmed', owner: 'credential-evidence' },
+  { id: 'family-not-in-accepted-evidence', change: 'A second-wave detector family (registered after the accepted evidence snapshot was cut) has no case in any accepted population: the evidence snapshot, its methods run and the project populations carry none of its fixtures, so the new path has nothing to count, and the legacy path counts the project\'s own fixtures of the family (benchmarks/lib/beta8). Recognised only for a family whose new-side fixture total is 0 and whose populations hold 0 cases; every figure of it is then unmeasured on the new side and the family stays provisional by contract (T3 placeholder) or by the open ruling it names. It is cleared by an evidence snapshot that carries the family, adopted by the owner.', confirmation: 'confirmed', owner: 'benchmarks' },
   { id: 'owner-ledger-settlement', change: 'The repository owner decided (2026-10-05, #698) to settle review occurrences of the accepted run by ledger rows keyed by the canonical occurrence id (scripts/apply-ledger-settlements.ts), only where the same occurrence was proposed by the triage of the previous snapshot and the observation is identical. The legacy ledger holds no decision for those occurrences, so the new path reads more of them settled than the legacy mapping. Recognised only when the residual equals, exactly, the occurrences settled by such rows. Not an independent review.', confirmation: 'confirmed', owner: 'repository owner' },
   { id: 'fixture-attribution', change: 'The legacy path attributed a fixture to its declared contract and targets; the adapter attributes a case to the detectors named by its targets, its family, or the taxonomy family it belongs to and, where the snapshot names none, to the legacy targets the product overlay carries, then to its twin parent (population-policy.json attribution). What remains is a case the legacy path scoped to a family the overlay does not carry (no legacy counterpart) or that the legacy path attributed to a detector the adapter attributes elsewhere.', confirmation: 'inferred', owner: 'benchmarks' },
 ];
@@ -196,12 +197,15 @@ export function compareFamilies(legacy: LegacyFamily[], next: NextFamily[], opti
     membership.tally.equal++;
     membership.compare(id, 'taxonomyFamilies', [...l.taxonomyFamilies].sort(), [...n.taxonomyFamilies].sort());
 
+    // A family with no case on the new side at all is a family the accepted evidence does not carry (family-not-in-accepted-evidence).
+    const notInEvidence = Number(n.evidence.totalFixtures) === 0 && Number(l.evidence.totalFixtures) > 0 && n.populations.every(p => p.cases === 0);
+    const ev = (field: string, lv: unknown, nv: unknown, attribute?: () => { cause: string; note?: string } | undefined) => evidence.compare(id, field, lv, nv, () => (notInEvidence ? { cause: 'family-not-in-accepted-evidence', note: `the accepted evidence carries no case of ${id}` } : attribute?.()));
     // Evidence first: the status attribution needs to know whether the counts differ.
     let countCause: string | undefined;
     const floors = n.populations.find(p => p.population === options.floorsPopulation);
-    for (const field of MUST_EQUAL_EVIDENCE) evidence.compare(id, field, l.evidence[field], n.evidence[field]);
+    for (const field of MUST_EQUAL_EVIDENCE) ev(field, l.evidence[field], n.evidence[field]);
     for (const field of COUNT_EVIDENCE) {
-      evidence.compare(id, field, l.evidence[field], n.evidence[field], () => {
+      ev(field, l.evidence[field], n.evidence[field], () => {
         const legacyValue = l.evidence[field], nextValue = n.evidence[field];
         if (typeof legacyValue !== 'number' || typeof nextValue !== 'number') return undefined;
         if (field === 'twinFailures' || field === 'benignFalseAlarms') {
@@ -230,7 +234,7 @@ export function compareFamilies(legacy: LegacyFamily[], next: NextFamily[], opti
     const moved = (cause: string) => Object.values(options.adjustmentsByFamily?.[id]?.[cause] ?? {}).some(v => v !== 0);
     const attributionShift = moved('fixture-attribution') || moved('twin-scope-vocabulary');
     for (const field of AXIS_EVIDENCE) {
-      evidence.compare(id, field, l.evidence[field], n.evidence[field], () => {
+      ev(field, l.evidence[field], n.evidence[field], () => {
         if (!options.axisOverlay) return (axisCause ??= 'axis-vocabulary', { cause: 'axis-vocabulary' });
         const ids = { legacy: axisIdsOf(l.axisIds, field), next: axisIdsOf(n.axisIds, field) };
         if (!ids.legacy || !ids.next) return undefined;
@@ -253,7 +257,7 @@ export function compareFamilies(legacy: LegacyFamily[], next: NextFamily[], opti
       if (n.status.methodsNotRun.includes(method)) {
         evidence.tally.compared++;
         evidence.record(id, field, l.evidence[field], 'not measured', { cause: 'methods-not-run', note: `${method} did not run in the qualification view` });
-      } else evidence.compare(id, field, l.evidence[field], n.evidence[field], () => {
+      } else ev(field, l.evidence[field], n.evidence[field], () => {
         const review = options.reviewByFamily?.[id];
         if (!review) return undefined;
         if (method === 'differential' && review.occurrences > 0 && review.inLedger === 0) {
@@ -269,7 +273,7 @@ export function compareFamilies(legacy: LegacyFamily[], next: NextFamily[], opti
         return { cause: 'canonical-evidence-membership', note: `residual ${residual} = ${unjoined} ${method === 'differential' ? 'unsettled differential occurrence(s)' : `failed ${method} assertion(s)`} of cases with no legacy counterpart` };
       });
     }
-    evidence.compare(id, 'policyQualification', l.evidence.policyQualification, n.evidence.policyQualification, () => ({ cause: 'policy-corpus-bounded' }));
+    ev('policyQualification', l.evidence.policyQualification, n.evidence.policyQualification, () => ({ cause: 'policy-corpus-bounded' }));
     evidence.compare(id, 'evidenceTier', l.evidenceTier, n.status.evidenceTier);
 
     // Status.
@@ -483,7 +487,8 @@ export function compareSupportMatrix(legacy: MatrixEntry[], next: MatrixEntry[],
       c.compare(id, path, a[path], b[path], () => {
         const [group, leaf] = path.split('.');
         let attribution: Attribution;
-        if (path === 'status' || path === 'qualificationProfile') attribution = through(detector, [], true);
+        if (detector && evidenceDiff.get(`${detector}\0totalFixtures`)?.cause === 'family-not-in-accepted-evidence') attribution = { cause: 'family-not-in-accepted-evidence', note: `the accepted evidence carries no case of ${detector}` };
+        else if (path === 'status' || path === 'qualificationProfile') attribution = through(detector, [], true);
         else if (path === 'reason') {
           const codes = (value: unknown) => String(value ?? '').split(' | ').filter(Boolean).map(reasonCode);
           const was = codes(a.reason), now = codes(b.reason);

@@ -13,7 +13,7 @@
   "sources": {
     "reviewedMetadata": {
       "algorithm": "sha256",
-      "digest": "ba47172f0772773092a386af517892ae114f8ff27ef96f1387f87fb3cd6ce2f2"
+      "digest": "7f99bc66861d6c1526e0076837fe2f65fd79ea484eff1c6c6fe4dfcefff49351"
     },
     "scenarios": {
       "algorithm": "sha256",
@@ -21,7 +21,7 @@
     },
     "taxonomy": {
       "algorithm": "sha256",
-      "digest": "7a210894da37b6641543d6faf7acf75d670eec74618111bd3311621fbf3844fc"
+      "digest": "8cf64cf99bba74229d36ca971d8b1e3539a3fb1a1f20f07d0b7eefb620424bed"
     }
   },
   "fixtures": [
@@ -83445,6 +83445,1606 @@
       }
     },
     {
+      "slug": "beta8-583a--square-oauth-application-secret-actions-env",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-actions-env",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-actions-env.yml"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-angle-brackets-placeholder",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-angle-brackets-placeholder",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-angle-brackets-placeholder.yml"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-application-id-prefix-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-application-id-prefix-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-application-id-prefix-twin.json"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-oauth-application-secret-mcp-env"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-application-id-public-id",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-application-id-public-id",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-application-id-public-id.env"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-bare-prose",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-bare-prose",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-bare-prose.md"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-bearer-header",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-bearer-header",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-bearer-header.http"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-browser-application-id-public-id",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-browser-application-id-public-id",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-browser-application-id-public-id.html"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-chat-paste",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-chat-paste",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-chat-paste.txt"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-dotenv",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-dotenv",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-dotenv.env"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-env-reference-reference",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-env-reference-reference",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-env-reference-reference.env"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-export",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-export",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-export.sh"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-json-api-key",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-json-api-key",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-json-api-key.json"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-json-token",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-json-token",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-json-token.json"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-leading-glue-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-leading-glue-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-leading-glue-twin.txt"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-oauth-application-secret-chat-paste"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-long-run-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-long-run-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-long-run-twin.py"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-oauth-application-secret-sdk-kwarg"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-mcp-env",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-mcp-env",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-mcp-env.json"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-node-sdk-obtain-token",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-node-sdk-obtain-token",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-node-sdk-obtain-token.ts"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-obtain-token-json",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-obtain-token-json",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-obtain-token-json.http"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-plus-in-body-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-plus-in-body-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-plus-in-body-twin.json"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-oauth-application-secret-json-token"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-prefix-only-near-miss",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-prefix-only-near-miss",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-prefix-only-near-miss.md"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-process-env-reference",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-process-env-reference",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-process-env-reference.ts"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-production-42-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-production-42-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-production-42-twin.env"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-oauth-application-secret-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-production-45-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-production-45-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-production-45-twin.sh"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-oauth-application-secret-export"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-sandbox-42-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-sandbox-42-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-sandbox-42-twin.env"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-oauth-application-secret-sandbox-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-sandbox-44-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-sandbox-44-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-sandbox-44-twin.json"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-oauth-application-secret-sandbox-json"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-sandbox-application-id-prefix-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-sandbox-application-id-prefix-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-sandbox-application-id-prefix-twin.env"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-oauth-application-secret-sandbox-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-sandbox-application-id-public-id",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-sandbox-application-id-public-id",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-sandbox-application-id-public-id.env"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-sandbox-dotenv",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-sandbox-dotenv",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-sandbox-dotenv.env"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-sandbox-json",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-sandbox-json",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-sandbox-json.json"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-sdk-kwarg",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-sdk-kwarg",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-sdk-kwarg.py"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-secret-guidance-prose",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-secret-guidance-prose",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-secret-guidance-prose.md"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-sha256-digest-encoded-value",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-sha256-digest-encoded-value",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-sha256-digest-encoded-value.txt"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-short-prefix-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-short-prefix-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-short-prefix-twin.env"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-oauth-application-secret-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-slash-in-body-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-slash-in-body-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-slash-in-body-twin.http"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-oauth-application-secret-x-api-key-header"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-underscore-separator-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-underscore-separator-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-underscore-separator-twin.http"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-oauth-application-secret-bearer-header"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-uppercase-prefix-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-uppercase-prefix-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-uppercase-prefix-twin.md"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-oauth-application-secret-bare-prose"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-x-api-key-header",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-x-api-key-header",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-x-api-key-header.http"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-oauth-application-secret-x-run-placeholder",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-oauth-application-secret-x-run-placeholder",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-oauth-application-secret-x-run-placeholder.env"
+      },
+      "familyIds": [
+        "square:oauth-application-secret"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-actions-env",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-actions-env",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-actions-env.yml"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-actions-secret-reference",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-actions-secret-reference",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-actions-secret-reference.yml"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-angle-brackets-placeholder",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-angle-brackets-placeholder",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-angle-brackets-placeholder.sh"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-application-id-public-id",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-application-id-public-id",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-application-id-public-id.ts"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-bare-prose",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-bare-prose",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-bare-prose.md"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-base64-blob-padding-encoded-value",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-base64-blob-padding-encoded-value",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-base64-blob-padding-encoded-value.yml"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-bearer-header",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-bearer-header",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-bearer-header.http"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-body-59-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-body-59-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-body-59-twin.sh"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-token-export"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-body-61-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-body-61-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-body-61-twin.ts"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-token-node-sdk-client"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-chat-paste",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-chat-paste",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-chat-paste.txt"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-curl-bearer",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-curl-bearer",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-curl-bearer.sh"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-docker-digest-encoded-value",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-docker-digest-encoded-value",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-docker-digest-encoded-value.yml"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-docker-env",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-docker-env",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-docker-env.sh"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-dotenv",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-dotenv",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-dotenv.env"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-eaab-prefix-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-eaab-prefix-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-eaab-prefix-twin.http"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-token-bearer-header"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-eaal-59-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-eaal-59-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-eaal-59-twin.json"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-token-mcp-env"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-env-reference-reference",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-env-reference-reference",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-env-reference-reference.env"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-eqaa-60-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-eqaa-60-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-eqaa-60-twin.sh"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-token-curl-bearer"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-equals-in-body-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-equals-in-body-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-equals-in-body-twin.http"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-token-x-api-key-header"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-export",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-export",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-export.sh"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-json-api-key",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-json-api-key",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-json-api-key.json"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-json-token",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-json-token",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-json-token.json"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-leading-glue-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-leading-glue-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-leading-glue-twin.md"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-token-bare-prose"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-legacy-sq0atp-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-legacy-sq0atp-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-legacy-sq0atp-twin.sh"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-token-docker-env"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-lowercase-prefix-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-lowercase-prefix-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-lowercase-prefix-twin.env"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-token-dotenv"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-mcp-env",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-mcp-env",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-mcp-env.json"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-meta-graph-token-near-miss",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-meta-graph-token-near-miss",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-meta-graph-token-near-miss.log"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-meta-style-long-run-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-meta-style-long-run-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-meta-style-long-run-twin.txt"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-token-chat-paste"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-node-sdk-client",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-node-sdk-client",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-node-sdk-client.ts"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-plus-in-body-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-plus-in-body-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-plus-in-body-twin.json"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-token-json-token"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-prefix-only-near-miss",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-prefix-only-near-miss",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-prefix-only-near-miss.md"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-sandbox-application-id-public-id",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-sandbox-application-id-public-id",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-sandbox-application-id-public-id.md"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-sdk-kwarg",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-sdk-kwarg",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-sdk-kwarg.py"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-slash-in-body-twin",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-slash-in-body-twin",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-slash-in-body-twin.py"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      },
+      "relations": {
+        "twinOf": "beta8-583a--square-token-sdk-kwarg"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-token-guidance-prose",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-token-guidance-prose",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-token-guidance-prose.md"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-x-api-key-header",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-x-api-key-header",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-x-api-key-header.http"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "context-and-encoding",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
+      "slug": "beta8-583a--square-token-your-access-token-placeholder",
+      "source": {
+        "categoryId": "beta8-583a",
+        "fixtureId": "square-token-your-access-token-placeholder",
+        "corpus": "fixtures/generated/beta8-583a.json",
+        "path": "cases/square-token-your-access-token-placeholder.env"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "regression-behavior"
+      ],
+      "provenance": {
+        "categoryId": "beta8-583a",
+        "milestone": "beta.12"
+      }
+    },
+    {
       "slug": "beta8-948--datadog-api-key-truncated-in-prose-near-miss",
       "source": {
         "categoryId": "beta8-948",
@@ -93322,6 +94922,155 @@
       }
     },
     {
+      "slug": "detector-coverage--buildkite-token-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "buildkite-token-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/buildkite-token-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "buildkite:access-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--buildkite-token-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "buildkite-token-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/buildkite-token-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "buildkite:access-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--buildkite-token-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "buildkite-token-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/buildkite-token-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "buildkite:access-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--buildkite-token-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "buildkite-token-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/buildkite-token-label-prose.txt"
+      },
+      "familyIds": [
+        "buildkite:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--buildkite-token-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "buildkite-token-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/buildkite-token-mask.txt"
+      },
+      "familyIds": [
+        "buildkite:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--buildkite-token-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "buildkite-token-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/buildkite-token-prefix-only.txt"
+      },
+      "familyIds": [
+        "buildkite:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--buildkite-token-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "buildkite-token-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/buildkite-token-reference.txt"
+      },
+      "familyIds": [
+        "buildkite:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--buildkite-token-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "buildkite-token-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/buildkite-token-short-body.txt"
+      },
+      "familyIds": [
+        "buildkite:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
       "slug": "detector-coverage--cerebras-api-key-key-shape-bare",
       "source": {
         "categoryId": "detector-coverage",
@@ -99614,6 +101363,155 @@
       }
     },
     {
+      "slug": "detector-coverage--fly-token-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "fly-token-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/fly-token-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "fly:access-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--fly-token-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "fly-token-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/fly-token-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "fly:access-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--fly-token-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "fly-token-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/fly-token-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "fly:access-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--fly-token-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "fly-token-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/fly-token-label-prose.txt"
+      },
+      "familyIds": [
+        "fly:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--fly-token-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "fly-token-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/fly-token-mask.txt"
+      },
+      "familyIds": [
+        "fly:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--fly-token-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "fly-token-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/fly-token-prefix-only.txt"
+      },
+      "familyIds": [
+        "fly:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--fly-token-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "fly-token-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/fly-token-reference.txt"
+      },
+      "familyIds": [
+        "fly:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--fly-token-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "fly-token-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/fly-token-short-body.txt"
+      },
+      "familyIds": [
+        "fly:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
       "slug": "detector-coverage--generic-token-api-key-bare",
       "source": {
         "categoryId": "detector-coverage",
@@ -104570,6 +106468,155 @@
         "generic:unclassified-assignment-literal"
       ],
       "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mapbox-token-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mapbox-token-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mapbox-token-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "mapbox:secret-access-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mapbox-token-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mapbox-token-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mapbox-token-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "mapbox:secret-access-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mapbox-token-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mapbox-token-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mapbox-token-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "mapbox:secret-access-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mapbox-token-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mapbox-token-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mapbox-token-label-prose.txt"
+      },
+      "familyIds": [
+        "mapbox:secret-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mapbox-token-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mapbox-token-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mapbox-token-mask.txt"
+      },
+      "familyIds": [
+        "mapbox:secret-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mapbox-token-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mapbox-token-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mapbox-token-prefix-only.txt"
+      },
+      "familyIds": [
+        "mapbox:secret-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mapbox-token-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mapbox-token-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mapbox-token-reference.txt"
+      },
+      "familyIds": [
+        "mapbox:secret-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--mapbox-token-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "mapbox-token-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/mapbox-token-short-body.txt"
+      },
+      "familyIds": [
+        "mapbox:secret-access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
         "credential-shape-grammar"
       ],
       "provenance": {
@@ -110391,6 +112438,155 @@
       }
     },
     {
+      "slug": "detector-coverage--pydantic-logfire-token-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "pydantic-logfire-token-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/pydantic-logfire-token-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "pydantic:logfire-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--pydantic-logfire-token-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "pydantic-logfire-token-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/pydantic-logfire-token-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "pydantic:logfire-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--pydantic-logfire-token-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "pydantic-logfire-token-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/pydantic-logfire-token-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "pydantic:logfire-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--pydantic-logfire-token-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "pydantic-logfire-token-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/pydantic-logfire-token-label-prose.txt"
+      },
+      "familyIds": [
+        "pydantic:logfire-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--pydantic-logfire-token-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "pydantic-logfire-token-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/pydantic-logfire-token-mask.txt"
+      },
+      "familyIds": [
+        "pydantic:logfire-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--pydantic-logfire-token-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "pydantic-logfire-token-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/pydantic-logfire-token-prefix-only.txt"
+      },
+      "familyIds": [
+        "pydantic:logfire-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--pydantic-logfire-token-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "pydantic-logfire-token-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/pydantic-logfire-token-reference.txt"
+      },
+      "familyIds": [
+        "pydantic:logfire-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--pydantic-logfire-token-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "pydantic-logfire-token-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/pydantic-logfire-token-short-body.txt"
+      },
+      "familyIds": [
+        "pydantic:logfire-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
       "slug": "detector-coverage--pypi-token-encoded-value",
       "source": {
         "categoryId": "detector-coverage",
@@ -112697,6 +114893,304 @@
       },
       "familyIds": [
         "sonarqube:user-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--sourcegraph-token-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "sourcegraph-token-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/sourcegraph-token-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "sourcegraph:access-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--sourcegraph-token-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "sourcegraph-token-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/sourcegraph-token-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "sourcegraph:access-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--sourcegraph-token-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "sourcegraph-token-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/sourcegraph-token-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "sourcegraph:access-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--sourcegraph-token-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "sourcegraph-token-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/sourcegraph-token-label-prose.txt"
+      },
+      "familyIds": [
+        "sourcegraph:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--sourcegraph-token-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "sourcegraph-token-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/sourcegraph-token-mask.txt"
+      },
+      "familyIds": [
+        "sourcegraph:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--sourcegraph-token-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "sourcegraph-token-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/sourcegraph-token-prefix-only.txt"
+      },
+      "familyIds": [
+        "sourcegraph:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--sourcegraph-token-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "sourcegraph-token-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/sourcegraph-token-reference.txt"
+      },
+      "familyIds": [
+        "sourcegraph:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--sourcegraph-token-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "sourcegraph-token-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/sourcegraph-token-short-body.txt"
+      },
+      "familyIds": [
+        "sourcegraph:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--square-token-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "square-token-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/square-token-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--square-token-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "square-token-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/square-token-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--square-token-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "square-token-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/square-token-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--square-token-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "square-token-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/square-token-label-prose.txt"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--square-token-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "square-token-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/square-token-mask.txt"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--square-token-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "square-token-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/square-token-prefix-only.txt"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--square-token-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "square-token-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/square-token-reference.txt"
+      },
+      "familyIds": [
+        "square:access-token"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--square-token-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "square-token-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/square-token-short-body.txt"
+      },
+      "familyIds": [
+        "square:access-token"
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
@@ -115558,6 +118052,155 @@
       }
     },
     {
+      "slug": "detector-coverage--unkey-root-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "unkey-root-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/unkey-root-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "unkey:root-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--unkey-root-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "unkey-root-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/unkey-root-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "unkey:root-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--unkey-root-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "unkey-root-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/unkey-root-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "unkey:root-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--unkey-root-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "unkey-root-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/unkey-root-key-label-prose.txt"
+      },
+      "familyIds": [
+        "unkey:root-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--unkey-root-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "unkey-root-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/unkey-root-key-mask.txt"
+      },
+      "familyIds": [
+        "unkey:root-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--unkey-root-key-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "unkey-root-key-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/unkey-root-key-prefix-only.txt"
+      },
+      "familyIds": [
+        "unkey:root-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--unkey-root-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "unkey-root-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/unkey-root-key-reference.txt"
+      },
+      "familyIds": [
+        "unkey:root-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--unkey-root-key-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "unkey-root-key-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/unkey-root-key-short-body.txt"
+      },
+      "familyIds": [
+        "unkey:root-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
       "slug": "detector-coverage--vault-token-label-prose",
       "source": {
         "categoryId": "detector-coverage",
@@ -116477,6 +119120,155 @@
       },
       "familyIds": [
         "xai:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--xata-api-key-key-shape-bare",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "xata-api-key-key-shape-bare",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/xata-api-key-key-shape-bare.txt"
+      },
+      "familyIds": [
+        "xata:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--xata-api-key-key-shape-quoted",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "xata-api-key-key-shape-quoted",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/xata-api-key-key-shape-quoted.txt"
+      },
+      "familyIds": [
+        "xata:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--xata-api-key-key-shape-unicode-crlf",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "xata-api-key-key-shape-unicode-crlf",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/xata-api-key-key-shape-unicode-crlf.txt"
+      },
+      "familyIds": [
+        "xata:api-key"
+      ],
+      "scenarioIds": [
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--xata-api-key-label-prose",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "xata-api-key-label-prose",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/xata-api-key-label-prose.txt"
+      },
+      "familyIds": [
+        "xata:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--xata-api-key-mask",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "xata-api-key-mask",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/xata-api-key-mask.txt"
+      },
+      "familyIds": [
+        "xata:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--xata-api-key-prefix-only",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "xata-api-key-prefix-only",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/xata-api-key-prefix-only.txt"
+      },
+      "familyIds": [
+        "xata:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--xata-api-key-reference",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "xata-api-key-reference",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/xata-api-key-reference.txt"
+      },
+      "familyIds": [
+        "xata:api-key"
+      ],
+      "scenarioIds": [
+        "benign-controls-and-twins",
+        "credential-shape-grammar"
+      ],
+      "provenance": {
+        "categoryId": "detector-coverage"
+      }
+    },
+    {
+      "slug": "detector-coverage--xata-api-key-short-body",
+      "source": {
+        "categoryId": "detector-coverage",
+        "fixtureId": "xata-api-key-short-body",
+        "corpus": "fixtures/generated/detector-coverage.json",
+        "path": "cases/xata-api-key-short-body.txt"
+      },
+      "familyIds": [
+        "xata:api-key"
       ],
       "scenarioIds": [
         "benign-controls-and-twins",
@@ -122885,7 +125677,7 @@
   "identity": {
     "schemaVersion": 1,
     "algorithm": "sha256",
-    "digest": "58f09c3544bf7238dcd076a7c1379681a302adef9ba66ee14dc801f95cfdbbdd",
-    "fixtureCount": 5950
+    "digest": "6fc68fe094f1f96d6c3f57fc305d09d21a8b9a92bb55a2c2580a5c07b4c32d6e",
+    "fixtureCount": 6089
   }
 }

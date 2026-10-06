@@ -1,0 +1,375 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-05T19:48:30.675Z",
+  "sourceRun": {
+    "runId": "2026-10-05T19:48:30.675Z-3c8a81",
+    "benchmarkRevision": "d7bc783c6ee274a83eeb8bc3b7d4b3be54ab9254"
+  },
+  "input": {
+    "surface": "comparison/beta8-583a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "607795f49291b8e25e4a8a7950fe48903d0c608716b2ae7d9cd1ba9877982cfc",
+    "fixtureCount": 75,
+    "fixturesDigest": "d123ec60a9dfab223bc7a64a645edbcdb02405bf5dc7636b5c2224654647e705",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "6fc68fe094f1f96d6c3f57fc305d09d21a8b9a92bb55a2c2580a5c07b4c32d6e",
+      "fixtureCount": 6089
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/square-oauth-application-secret-angle-brackets-placeholder.yml",
+      "start": 56,
+      "end": 62
+    },
+    {
+      "path": "cases/square-oauth-application-secret-bare-prose.md",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/square-oauth-application-secret-bare-prose.md",
+      "start": 37,
+      "end": 47
+    },
+    {
+      "path": "cases/square-oauth-application-secret-bearer-header.http",
+      "start": 66,
+      "end": 72
+    },
+    {
+      "path": "cases/square-oauth-application-secret-bearer-header.http",
+      "start": 73,
+      "end": 123,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-chat-paste.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/square-oauth-application-secret-export.sh",
+      "start": 39,
+      "end": 79,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-json-api-key.json",
+      "start": 5,
+      "end": 12
+    },
+    {
+      "path": "cases/square-oauth-application-secret-json-api-key.json",
+      "start": 16,
+      "end": 22
+    },
+    {
+      "path": "cases/square-oauth-application-secret-json-api-key.json",
+      "start": 73,
+      "end": 80
+    },
+    {
+      "path": "cases/square-oauth-application-secret-leading-glue-twin.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/square-oauth-application-secret-node-sdk-obtain-token.ts",
+      "start": 67,
+      "end": 74
+    },
+    {
+      "path": "cases/square-oauth-application-secret-node-sdk-obtain-token.ts",
+      "start": 110,
+      "end": 116
+    },
+    {
+      "path": "cases/square-oauth-application-secret-node-sdk-obtain-token.ts",
+      "start": 175,
+      "end": 184
+    },
+    {
+      "path": "cases/square-oauth-application-secret-prefix-only-near-miss.md",
+      "start": 22,
+      "end": 28
+    },
+    {
+      "path": "cases/square-oauth-application-secret-prefix-only-near-miss.md",
+      "start": 56,
+      "end": 62
+    },
+    {
+      "path": "cases/square-oauth-application-secret-process-env-reference.ts",
+      "start": 12,
+      "end": 18
+    },
+    {
+      "path": "cases/square-oauth-application-secret-production-45-twin.sh",
+      "start": 41,
+      "end": 81,
+      "family": "aws-secret-access-key"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-sandbox-44-twin.json",
+      "start": 39,
+      "end": 45
+    },
+    {
+      "path": "cases/square-oauth-application-secret-sandbox-json.json",
+      "start": 39,
+      "end": 45
+    },
+    {
+      "path": "cases/square-oauth-application-secret-secret-guidance-prose.md",
+      "start": 16,
+      "end": 22
+    },
+    {
+      "path": "cases/square-oauth-application-secret-secret-guidance-prose.md",
+      "start": 56,
+      "end": 65
+    },
+    {
+      "path": "cases/square-oauth-application-secret-sha256-digest-encoded-value.txt",
+      "start": 0,
+      "end": 8
+    },
+    {
+      "path": "cases/square-oauth-application-secret-sha256-digest-encoded-value.txt",
+      "start": 9,
+      "end": 15
+    },
+    {
+      "path": "cases/square-oauth-application-secret-sha256-digest-encoded-value.txt",
+      "start": 16,
+      "end": 22
+    },
+    {
+      "path": "cases/square-oauth-application-secret-slash-in-body-twin.http",
+      "start": 61,
+      "end": 99,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-underscore-separator-twin.http",
+      "start": 66,
+      "end": 72
+    },
+    {
+      "path": "cases/square-oauth-application-secret-underscore-separator-twin.http",
+      "start": 73,
+      "end": 123,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-uppercase-prefix-twin.md",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/square-oauth-application-secret-uppercase-prefix-twin.md",
+      "start": 37,
+      "end": 47
+    },
+    {
+      "path": "cases/square-oauth-application-secret-x-api-key-header.http",
+      "start": 61,
+      "end": 111,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-token-angle-brackets-placeholder.sh",
+      "start": 49,
+      "end": 55
+    },
+    {
+      "path": "cases/square-token-bare-prose.md",
+      "start": 0,
+      "end": 29
+    },
+    {
+      "path": "cases/square-token-bearer-header.http",
+      "start": 66,
+      "end": 72
+    },
+    {
+      "path": "cases/square-token-bearer-header.http",
+      "start": 73,
+      "end": 137,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/square-token-bearer-header.http",
+      "start": 138,
+      "end": 144
+    },
+    {
+      "path": "cases/square-token-bearer-header.http",
+      "start": 146,
+      "end": 157
+    },
+    {
+      "path": "cases/square-token-bearer-header.http",
+      "start": 158,
+      "end": 162
+    },
+    {
+      "path": "cases/square-token-body-61-twin.ts",
+      "start": 186,
+      "end": 192
+    },
+    {
+      "path": "cases/square-token-chat-paste.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/square-token-chat-paste.txt",
+      "start": 24,
+      "end": 36
+    },
+    {
+      "path": "cases/square-token-curl-bearer.sh",
+      "start": 101,
+      "end": 107
+    },
+    {
+      "path": "cases/square-token-curl-bearer.sh",
+      "start": 108,
+      "end": 172,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/square-token-eaab-prefix-twin.http",
+      "start": 66,
+      "end": 72
+    },
+    {
+      "path": "cases/square-token-eaab-prefix-twin.http",
+      "start": 73,
+      "end": 137,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/square-token-eaab-prefix-twin.http",
+      "start": 138,
+      "end": 144
+    },
+    {
+      "path": "cases/square-token-eaab-prefix-twin.http",
+      "start": 146,
+      "end": 157
+    },
+    {
+      "path": "cases/square-token-eaab-prefix-twin.http",
+      "start": 158,
+      "end": 162
+    },
+    {
+      "path": "cases/square-token-eqaa-60-twin.sh",
+      "start": 101,
+      "end": 107
+    },
+    {
+      "path": "cases/square-token-eqaa-60-twin.sh",
+      "start": 108,
+      "end": 172,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/square-token-equals-in-body-twin.http",
+      "start": 61,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-token-json-api-key.json",
+      "start": 18,
+      "end": 33
+    },
+    {
+      "path": "cases/square-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 29
+    },
+    {
+      "path": "cases/square-token-meta-graph-token-near-miss.log",
+      "start": 21,
+      "end": 26
+    },
+    {
+      "path": "cases/square-token-meta-graph-token-near-miss.log",
+      "start": 28,
+      "end": 37
+    },
+    {
+      "path": "cases/square-token-meta-graph-token-near-miss.log",
+      "start": 38,
+      "end": 42
+    },
+    {
+      "path": "cases/square-token-meta-graph-token-near-miss.log",
+      "start": 43,
+      "end": 48
+    },
+    {
+      "path": "cases/square-token-meta-style-long-run-twin.txt",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/square-token-node-sdk-client.ts",
+      "start": 185,
+      "end": 191
+    },
+    {
+      "path": "cases/square-token-prefix-only-near-miss.md",
+      "start": 0,
+      "end": 26
+    },
+    {
+      "path": "cases/square-token-sandbox-application-id-public-id.md",
+      "start": 24,
+      "end": 31
+    },
+    {
+      "path": "cases/square-token-token-guidance-prose.md",
+      "start": 26,
+      "end": 32
+    },
+    {
+      "path": "cases/square-token-x-api-key-header.http",
+      "start": 61,
+      "end": 125,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "190ed5cd33a20d718b39a8a5319738240eb5ee7f1c46b3ccd9c40bcbadbc404e"
+}

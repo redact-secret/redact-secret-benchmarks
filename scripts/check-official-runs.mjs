@@ -75,6 +75,8 @@ export function officialRunProblems(registry, { schemaDigest, inputs, evaluation
     if (!methodsRun.reference || !['case-id', 'legacy-category'].includes(methodsRun.seed)) problems.push('methodsRun needs a reference scanner and a seed of case-id or legacy-category');
     if (!scanners.some(s => s.id === methodsRun.reference)) problems.push(`methodsRun.reference ${methodsRun.reference} is not a pinned scanner`);
     if (!methodsRun.evaluationEvidence?.file || !DIGEST.test(methodsRun.evaluationEvidence?.digest ?? '')) problems.push('methodsRun.evaluationEvidence needs a file and a sha256 digest');
+    // `measuredWith`: digests of the earlier evidence files the recorded canonical methods runs actually read. A contract change re-derives the file; the recorded run keeps the digest it was measured with (its record is never rewritten) until a new methods run is made.
+    for (const d of methodsRun.evaluationEvidence?.measuredWith ?? []) if (!DIGEST.test(d) || d === methodsRun.evaluationEvidence?.digest) problems.push('methodsRun.evaluationEvidence.measuredWith must list sha256 digests other than the pinned one');
     if (evaluationEvidenceDigest && evaluationEvidenceDigest !== methodsRun.evaluationEvidence?.digest) problems.push(`the evaluation evidence file has digest ${evaluationEvidenceDigest}, methodsRun pins ${methodsRun.evaluationEvidence?.digest}`);
   }
 
@@ -91,7 +93,7 @@ export function officialRunProblems(registry, { schemaDigest, inputs, evaluation
       if (!methodsRun || run.population !== methodsRun.population) problems.push(`${at}: a methods run is recorded for the pinned methodsRun population only`);
       else {
         if (JSON.stringify(run.methods) !== JSON.stringify(methodsRun.methods)) problems.push(`${at}: methods differ from the pinned methodsRun.methods`);
-        if (run.evaluation?.evidenceDigest !== methodsRun.evaluationEvidence?.digest || run.evaluation?.reference !== methodsRun.reference || run.evaluation?.seed !== methodsRun.seed) problems.push(`${at}: evaluation (reference, seed, evidence digest) differs from the pinned methodsRun`);
+        if (![methodsRun.evaluationEvidence?.digest, ...(methodsRun.evaluationEvidence?.measuredWith ?? [])].includes(run.evaluation?.evidenceDigest) || run.evaluation?.reference !== methodsRun.reference || run.evaluation?.seed !== methodsRun.seed) problems.push(`${at}: evaluation (reference, seed, evidence digest) differs from the pinned methodsRun`);
       }
     } else if (run.kind !== undefined) problems.push(`${at}: unknown kind ${run.kind}`);
     if (!PLATFORMS.includes(run.platform)) problems.push(`${at}: unknown platform ${run.platform}`);

@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "reviewedAt": "2026-10-03",
   "redactSecretVersion": "0.1.0-beta.13",
-  "redactSecretRevision": "66b492bdff5e6751fc6b5409266916346ed7c723",
+  "redactSecretRevision": "3b1a5aa9935c57416a026a44f45501fd41ffeac8",
   "redactSecretReleaseRevision": "66b492bdff5e6751fc6b5409266916346ed7c723",
-  "method": "Explicit provider-family mapping against the 110 registered beta.13 detectors. No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
+  "method": "Explicit provider-family mapping against the 118 detectors registered at product revision 3b1a5aa (published package beta.13; detectors added after that release are included). No dedicated detector means no named equivalent in that registry; generic/contextual detection may still match. Related families have unverified format parity. Upstream entries and versions are not deduplicated into providers. Feature-gated registrations may be disabled at runtime. No runtime accuracy claim.",
   "sources": {
     "gitleaks": {
       "version": "8.30.1",
@@ -2290,8 +2290,8 @@
       "id": "square-access-token",
       "sourceUrl": "https://github.com/gitleaks/gitleaks/blob/83d9cd684c87d95d656c1458ef04895a7f1cbd8e/config/gitleaks.toml#L3061",
       "activation": "default-rule",
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "square-token",
+      "status": "related-family"
     },
     {
       "tool": "gitleaks",
@@ -9074,8 +9074,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1667",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "square-token",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",
@@ -9083,8 +9083,8 @@
       "sourceUrl": "https://github.com/trufflesecurity/trufflehog/blob/363923b901c911a9164f50b6c423f47c15372b1c/pkg/engine/defaults/defaults.go#L1668",
       "activation": "registered",
       "featureFlag": null,
-      "relatedDetector": null,
-      "status": "no-dedicated-detector"
+      "relatedDetector": "square-token",
+      "status": "related-family"
     },
     {
       "tool": "trufflehog",

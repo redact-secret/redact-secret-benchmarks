@@ -231,7 +231,7 @@ test('#730: the scored ids are the registry ids plus exactly the arrival familie
     'doppler-scim-token', 'doppler-service-account-identity-token', 'doppler-service-account-token',
     'github-fine-grained-pat', 'helicone-write-api-key', 'openai-admin-api-key', 'polar-api-credential',
     'posthog-project-secret-api-key', 'slack-app-level-token', 'slack-user-token', 'sonarqube-analysis-token',
-    'stripe-webhook-signing-secret', 'trigger-dev-personal-access-token', 'vercel-app-access-token',
+    'square-oauth-application-secret', 'stripe-webhook-signing-secret', 'trigger-dev-personal-access-token', 'vercel-app-access-token',
     'vercel-app-refresh-token', 'vercel-personal-access-token']);
   assert.deepEqual([...scoredContractIds], [...registryContractIds, ...scoredArrivalIds]);
   for (const id of scoredArrivalIds) assert.ok(!registryContractIds.includes(id), `${id} is an arrival id, never a registry id`);

@@ -158,6 +158,6 @@ test('the committed snapshots measured the pinned published release, not a local
     const tool = JSON.parse(await readFile(new URL(name, dir), 'utf8')).tools.find(t => t.id === 'redact-secret');
     assert.equal(tool.provenance.kind, 'published-npm-package', `${name} must be re-measured against the published package`);
     assert.equal(tool.version, manifest.pins.packageVersion, `${name} version differs from pin-manifest packageVersion: re-measure (scripts/run-runtime-comparison-docker.sh)`);
-    assert.equal(tool.provenance.commit, manifest.pins.redactSecretRevision, `${name} commit differs from pin-manifest redactSecretRevision`);
+    assert.equal(tool.provenance.commit, manifest.pins.releaseSourceRevision, `${name} commit differs from pin-manifest releaseSourceRevision (the published package's source; the registry pin may sit ahead of it, #583)`);
   }
 });

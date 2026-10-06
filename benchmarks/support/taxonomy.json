@@ -369,6 +369,38 @@
     {
       "id": "axiom",
       "name": "Axiom"
+    },
+    {
+      "id": "square",
+      "name": "Square"
+    },
+    {
+      "id": "xata",
+      "name": "Xata"
+    },
+    {
+      "id": "sourcegraph",
+      "name": "Sourcegraph"
+    },
+    {
+      "id": "unkey",
+      "name": "Unkey"
+    },
+    {
+      "id": "buildkite",
+      "name": "Buildkite"
+    },
+    {
+      "id": "pydantic",
+      "name": "Pydantic"
+    },
+    {
+      "id": "mapbox",
+      "name": "Mapbox"
+    },
+    {
+      "id": "fly",
+      "name": "Fly.io"
     }
   ],
   "families": [
@@ -1212,6 +1244,126 @@
       "detectors": [
         "pulumi-access-token"
       ]
+    },
+    {
+      "id": "square:access-token",
+      "provider": "square",
+      "name": "Access token (EAAA)",
+      "description": "EAAA + exactly 60 [A-Za-z0-9_-] (64 in all); Square disclaims length validation and its examples disagree (EAAl + 59 is unclaimed), so the claim rests on the open Q8 ruling.",
+      "detectors": [
+        "square-token"
+      ],
+      "sources": [
+        "https://developer.squareup.com/docs/oauth-api/receive-and-manage-tokens",
+        "https://github.com/redact-secret/redact-secret/blob/fa955d28eed59c70a9c4380ed130d1b82d439cd9/docs/audits/evidence/1014/square.md"
+      ],
+      "note": "Beta.14 registry family square-token (#583, product redact-secret#1107), contract in benchmarks/lib/beta8/583a.ts from the #1014 handoff square.md. T1 by example under R5, conditional on Q8; conflicting widths are unclaimed. JWT-format tokens stay with jwt (R7). trufflehog square and gitleaks square-access-token are both measured. A structure-only issuance check is recommended (#584)."
+    },
+    {
+      "id": "square:oauth-application-secret",
+      "provider": "square",
+      "name": "OAuth application secret (sq0csp-, sandbox-sq0csb-)",
+      "description": "sq0csp- + 43 or 44, or sandbox-sq0csb- + 43, over [A-Za-z0-9_-]; application ids (sq0idp-, sandbox-sq0idb-) are public.",
+      "detectors": [
+        "square-oauth-application-secret"
+      ],
+      "sources": [
+        "https://developer.squareup.com/docs/oauth-api/walkthrough",
+        "https://developer.squareup.com/reference/square/o-auth-api/obtain-token",
+        "https://github.com/redact-secret/redact-secret/blob/fa955d28eed59c70a9c4380ed130d1b82d439cd9/docs/audits/evidence/1014/square.md"
+      ],
+      "note": "Beta.14 arrival family square-oauth-application-secret (#583, product redact-secret#1107), contract in benchmarks/lib/beta8/583a.ts from the #1014 handoff square.md. T1 by example under R5 (the 43 or 44 union follows the Polar era-union precedent), conditional on Q8. Shares the square-token detector (finding type square_oauth_application_secret), so it is an arrival family scored by that finding type (scanners/families.mjs arrivalFindingTypes)."
+    },
+    {
+      "id": "xata:api-key",
+      "provider": "xata",
+      "name": "API key (xau_, xao_)",
+      "description": "xau_ (user) or xao_ (organization) + a base62 body of 20 random bytes plus a CRC32; the validator caps the key at 40 characters.",
+      "detectors": [
+        "xata-api-key"
+      ],
+      "sources": [
+        "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/xata.md"
+      ],
+      "note": "Registered in the product at the 3b1a5aa re-pin (redact-secret PR #1214, unreleased), but the benchmark contract and corpus are pending (#583): the contract is a T3 placeholder that asserts no format and only the registry-wide coverage minimum measures it. Not a support claim. Handoff xata.md (READY)."
+    },
+    {
+      "id": "sourcegraph:access-token",
+      "provider": "sourcegraph",
+      "name": "Personal access token (sgp_)",
+      "description": "sgp_ + an optional instance identifier + 40 lowercase hex.",
+      "detectors": [
+        "sourcegraph-token"
+      ],
+      "sources": [
+        "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/sourcegraph.md"
+      ],
+      "note": "Registered in the product at the 3b1a5aa re-pin (redact-secret PR #1214, unreleased), but the benchmark contract and corpus are pending (#583): the contract is a T3 placeholder that asserts no format and only the registry-wide coverage minimum measures it. Not a support claim. Handoff sourcegraph.md (READY for sgp_)."
+    },
+    {
+      "id": "unkey:root-key",
+      "provider": "unkey",
+      "name": "Root key (unkey_)",
+      "description": "unkey_ + 8 + unkeyv1 + 42 base58 (version 1, CRC-32C checksum) and the dashboard 3Z form.",
+      "detectors": [
+        "unkey-root-key"
+      ],
+      "sources": [
+        "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/unkey.md"
+      ],
+      "note": "Registered in the product at the 3b1a5aa re-pin (redact-secret PR #1214, unreleased), but the benchmark contract and corpus are pending (#583): the contract is a T3 placeholder that asserts no format and only the registry-wide coverage minimum measures it. Not a support claim. Handoff unkey.md (READY for the two current root-key grammars)."
+    },
+    {
+      "id": "buildkite:access-token",
+      "provider": "buildkite",
+      "name": "Tokens (bkua_ and sibling role prefixes)",
+      "description": "One of 15 provider-listed prefixes + a base64url-and-dot body of 24 or more characters.",
+      "detectors": [
+        "buildkite-token"
+      ],
+      "sources": [
+        "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/buildkite.md"
+      ],
+      "note": "Registered in the product at the 3b1a5aa re-pin (redact-secret PR #1214, unreleased), but the benchmark contract and corpus are pending (#583): the contract is a T3 placeholder that asserts no format and only the registry-wide coverage minimum measures it. Not a support claim. Handoff buildkite.md (READY); includes a JWT-body case the existing peer rule does not know."
+    },
+    {
+      "id": "pydantic:logfire-token",
+      "provider": "pydantic",
+      "name": "Logfire token (pylf_v)",
+      "description": "pylf_v<n>_<region>_ + an optional organization UUID + an alphanumeric body.",
+      "detectors": [
+        "pydantic-logfire-token"
+      ],
+      "sources": [
+        "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/pydantic-logfire.md"
+      ],
+      "note": "Registered in the product at the 3b1a5aa re-pin (redact-secret PR #1227, unreleased), but the benchmark contract and corpus are pending (#583): the contract is a T3 placeholder that asserts no format and only the registry-wide coverage minimum measures it. Not a support claim. Handoff pydantic-logfire.md (READY; the body floor is the Q7 policy)."
+    },
+    {
+      "id": "mapbox:secret-access-token",
+      "provider": "mapbox",
+      "name": "Secret access token (sk.)",
+      "description": "sk. + a base64url JSON payload (eyJ lead) + . + a 22-character base64url signature.",
+      "detectors": [
+        "mapbox-token"
+      ],
+      "sources": [
+        "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/mapbox.md"
+      ],
+      "note": "Registered in the product at the 3b1a5aa re-pin (redact-secret PR #1227, unreleased), but the benchmark contract and corpus are pending (#583): the contract is a T3 placeholder that asserts no format and only the registry-wide coverage minimum measures it. Not a support claim. Handoff mapbox.md (READY, conditional on Q7); must not double-report with jwt."
+    },
+    {
+      "id": "fly:access-token",
+      "provider": "fly",
+      "name": "Access token (fm1r_, fm1a_, fm2_)",
+      "description": "A macaroon member run starting at the first fm1r_, fm1a_ or fm2_ (std Base64, 64 or more characters), including comma-joined fo1_ members.",
+      "detectors": [
+        "fly-token"
+      ],
+      "sources": [
+        "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/fly.md"
+      ],
+      "note": "Registered in the product at the 3b1a5aa re-pin (redact-secret PR #1227, unreleased), but the benchmark contract and corpus are pending (#583): the contract is a T3 placeholder that asserts no format and only the registry-wide coverage minimum measures it. Not a support claim. Handoff fly.md (READY, conditional on Q7); the span starts at fm, the FlyV1 scheme stays outside."
     },
     {
       "id": "generic:private-key",

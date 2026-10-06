@@ -42,6 +42,7 @@ async function main() {
     registrySourceRevision: registry.sourceRevision,
     inventoryRedactSecretRevision: inventory.redactSecretRevision,
     inventoryRedactSecretVersion: inventory.redactSecretVersion,
+    inventoryRedactSecretReleaseRevision: inventory.redactSecretReleaseRevision,
     packageVersion: packageJson.dependencies['@redact-secret/core'],
     performanceCriteriaVerifiedCommit: performanceCriteria.baseline.verifiedCommit,
   };

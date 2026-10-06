@@ -51,13 +51,15 @@ import * as i1012b from './1012b.ts';
 import * as i1012c from './1012c.ts';
 import * as i1012d from './1012d.ts';
 import * as i1012e from './1012e.ts';
+import * as i583a from './583a.ts';
+import * as i583p from './583p.ts';
 
 /**
  * Beta.8 evidence modules, one per consumer issue (#207–#212, #259, #263), #213 corpus key (213b, 213c, 213d, 213e, 213f) Beta.10 #384 corpus key (384a–384e) Beta.11 #434 corpus key (434a–434g), Beta.11 #436 corpus key (436a–436f) Beta.12 #464 corpus key (464a–464f) Beta.12 #528 corpus key (528a–528j) or Beta.12 #1012 corpus key (1012a–1012e). Each owns its
  * arrival families, their contracts and its profile declarations, so parallel
  * issue work never edits a shared table. See docs/specs/beta8-evidence.md.
  */
-export const BETA8_MODULES = [i207, i208, i209, i210, i211, i212, i213c, i213b, i213d, i213e, i213f, i259, i263, i384a, i384b, i384c, i384d, i384e, i434a, i434b, i434c, i434d, i434e, i434f, i434g, i436a, i436b, i436c, i436d, i436e, i436f, i464a, i464b, i464c, i464d, i464e, i464f, i528a, i528b, i528c, i528d, i528e, i528f, i528g, i528h, i528i, i528j, i1012a, i1012b, i1012c, i1012d, i1012e];
+export const BETA8_MODULES = [i207, i208, i209, i210, i211, i212, i213c, i213b, i213d, i213e, i213f, i259, i263, i384a, i384b, i384c, i384d, i384e, i434a, i434b, i434c, i434d, i434e, i434f, i434g, i436a, i436b, i436c, i436d, i436e, i436f, i464a, i464b, i464c, i464d, i464e, i464f, i528a, i528b, i528c, i528d, i528e, i528f, i528g, i528h, i528i, i528j, i1012a, i1012b, i1012c, i1012d, i1012e, i583a, i583p];
 export const arrivalFamilies: ArrivalFamily[] = BETA8_MODULES.flatMap(m => m.arrivalFamilies);
 export const arrivalIds = new Set(arrivalFamilies.map(f => f.id));
 export const arrivalContracts: Record<string, FormatContract> = {};

@@ -116,6 +116,12 @@ too. The unit this taxonomy fixes on is **provider x credential family**.
   scored arrival ids (redact-secret#1036). `gitlab:routable-personal-access-token` and `aws:sts-temporary-access-key`
   are measured as unscored arrival families (their findings share the owning detector's finding type) and map no
   detector. `vercel:integration-token` and `vercel:api-key` stay pending (ruling Q-VC).
+- **Beta.14 second-wave families (#583).** Nine rows across eight providers whose detectors are in the pinned registry
+  (product main `3b1a5aa`): `square:access-token` and `square:oauth-application-secret` (contract and corpus in
+  `benchmarks/lib/beta8/583a.ts`), and `xata:api-key`, `sourcegraph:access-token`, `unkey:root-key`,
+  `buildkite:access-token`, `pydantic:logfire-token`, `mapbox:secret-access-token` and `fly:access-token`, whose benchmark
+  contract and corpus are pending (`583p.ts`: a T3 placeholder that claims nothing). Each maps its detector, so none is a
+  zero-detector row.
 - **`families[].provider: null`** marks a family that is not provider-specific
   at all: `private-key`, `jwt`, `bearer-token`, `connection-string`,
   `otpauth-uri` and `generic-token` are structural or protocol-level formats
@@ -220,8 +226,8 @@ without one.
 
 ## Current counts
 
-173 families total: 167 across 92 providers plus 6 non-provider-specific
-formats; 152 carry at least one detector, 21 currently do not (counts as of 2026-09-29;
+182 families total: 176 across 100 providers plus 6 non-provider-specific
+formats; 161 carry at least one detector, 21 currently do not (counts as of 2026-10-05;
 `benchmarks/support/taxonomy.json` is the source of truth). This is a taxonomy, not a
 support claim — a family having a detector says nothing about that
 detector's evidence tier (T0-T3, see `benchmarks/lib/assessment.ts`) or

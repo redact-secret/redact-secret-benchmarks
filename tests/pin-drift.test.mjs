@@ -15,10 +15,26 @@ test('pin consistency check passes against the real, refreshed tree', () => {
     registrySourceRevision: registry.sourceRevision,
     inventoryRedactSecretRevision: inventory.redactSecretRevision,
     inventoryRedactSecretVersion: inventory.redactSecretVersion,
+    inventoryRedactSecretReleaseRevision: inventory.redactSecretReleaseRevision,
     packageVersion: packageJson.dependencies['@redact-secret/core'],
     performanceCriteriaVerifiedCommit: performanceCriteria.baseline.verifiedCommit,
   };
   assert.deepEqual(checkPinConsistency(facts), []);
+});
+
+test('the registry snapshot may sit ahead of the release; performance and runtime snapshots follow the release revision (#583)', () => {
+  const facts = {
+    registrySourceRevision: 'b'.repeat(40),
+    inventoryRedactSecretRevision: 'b'.repeat(40),
+    inventoryRedactSecretReleaseRevision: 'a'.repeat(40),
+    inventoryRedactSecretVersion: '0.1.0-beta.13',
+    packageVersion: '0.1.0-beta.13',
+    performanceCriteriaVerifiedCommit: 'a'.repeat(40),
+    runtimeComparisonSnapshots: [{ file: 'x.json', version: '0.1.0-beta.13', kind: 'published-npm-package', commit: 'a'.repeat(40) }],
+  };
+  assert.deepEqual(checkPinConsistency(facts), []);
+  assert.equal(checkPinConsistency({ ...facts, performanceCriteriaVerifiedCommit: 'b'.repeat(40) }).length, 1);
+  assert.equal(checkPinConsistency({ ...facts, inventoryRedactSecretRevision: 'c'.repeat(40) }).length, 1);
 });
 
 test('pin consistency check passes when every pin aligns', () => {

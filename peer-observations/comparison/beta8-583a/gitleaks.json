@@ -1,0 +1,285 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-05T19:48:30.675Z",
+  "sourceRun": {
+    "runId": "2026-10-05T19:48:30.675Z-3c8a81",
+    "benchmarkRevision": "d7bc783c6ee274a83eeb8bc3b7d4b3be54ab9254"
+  },
+  "input": {
+    "surface": "comparison/beta8-583a",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "607795f49291b8e25e4a8a7950fe48903d0c608716b2ae7d9cd1ba9877982cfc",
+    "fixtureCount": 75,
+    "fixturesDigest": "d123ec60a9dfab223bc7a64a645edbcdb02405bf5dc7636b5c2224654647e705",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "6fc68fe094f1f96d6c3f57fc305d09d21a8b9a92bb55a2c2580a5c07b4c32d6e",
+      "fixtureCount": 6089
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "bfbc883ee23e1b5c3d3c25aa3754935a9631c166844cd42fa32e2efce58b4a05",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 67108864
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/square-oauth-application-secret-actions-env.yml",
+      "start": 103,
+      "end": 153,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-application-id-prefix-twin.json",
+      "start": 148,
+      "end": 198,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-dotenv.env",
+      "start": 28,
+      "end": 78,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-export.sh",
+      "start": 29,
+      "end": 79,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-json-api-key.json",
+      "start": 16,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-json-token.json",
+      "start": 14,
+      "end": 64,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-long-run-twin.py",
+      "start": 30,
+      "end": 167,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-mcp-env.json",
+      "start": 148,
+      "end": 198,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-node-sdk-obtain-token.ts",
+      "start": 119,
+      "end": 170,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-obtain-token-json.http",
+      "start": 157,
+      "end": 208,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-production-42-twin.env",
+      "start": 28,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-production-45-twin.sh",
+      "start": 29,
+      "end": 81,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-sdk-kwarg.py",
+      "start": 30,
+      "end": 81,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-short-prefix-twin.env",
+      "start": 28,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-oauth-application-secret-x-api-key-header.http",
+      "start": 61,
+      "end": 111,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-token-actions-env.yml",
+      "start": 102,
+      "end": 166,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-bare-prose.md",
+      "start": 60,
+      "end": 124,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-bearer-header.http",
+      "start": 73,
+      "end": 137,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-body-59-twin.sh",
+      "start": 28,
+      "end": 91,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-body-61-twin.ts",
+      "start": 89,
+      "end": 154,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-token-chat-paste.txt",
+      "start": 22,
+      "end": 86,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-curl-bearer.sh",
+      "start": 108,
+      "end": 172
+    },
+    {
+      "path": "cases/square-token-curl-bearer.sh",
+      "start": 108,
+      "end": 172,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-docker-env.sh",
+      "start": 39,
+      "end": 103,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-dotenv.env",
+      "start": 27,
+      "end": 91,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-eaal-59-twin.json",
+      "start": 142,
+      "end": 205,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-token-eqaa-60-twin.sh",
+      "start": 108,
+      "end": 172
+    },
+    {
+      "path": "cases/square-token-equals-in-body-twin.http",
+      "start": 61,
+      "end": 125,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-token-export.sh",
+      "start": 28,
+      "end": 92,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-json-api-key.json",
+      "start": 16,
+      "end": 80,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-json-token.json",
+      "start": 14,
+      "end": 78,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-legacy-sq0atp-twin.sh",
+      "start": 39,
+      "end": 68,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-lowercase-prefix-twin.env",
+      "start": 27,
+      "end": 91,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/square-token-mcp-env.json",
+      "start": 142,
+      "end": 206,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-node-sdk-client.ts",
+      "start": 89,
+      "end": 153,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-sdk-kwarg.py",
+      "start": 31,
+      "end": 95,
+      "family": "square-token"
+    },
+    {
+      "path": "cases/square-token-x-api-key-header.http",
+      "start": 61,
+      "end": 125,
+      "family": "square-token"
+    }
+  ],
+  "digest": "ebf3f17243403364a5224aca76120deef664666d80b7a98576046f229b76994d"
+}

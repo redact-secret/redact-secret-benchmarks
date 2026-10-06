@@ -462,6 +462,13 @@
     "corpus": "fixtures/generated/beta8-1012e.json"
   },
   {
+    "id": "beta8-583a",
+    "title": "Beta.14 evidence for the Square access token and OAuth application secret (#583, slice a)",
+    "description": "Fixtures for square-token (EAAA + exactly 60 [A-Za-z0-9_-]) and square-oauth-application-secret (sq0csp- + 43 or 44, sandbox-sq0csb- + 43), a registry detector and an arrival family scored by the finding types product redact-secret#1107 gives them, authored from the #1014 handoff https://github.com/redact-secret/redact-secret/blob/fa955d28eed59c70a9c4380ed130d1b82d439cd9/docs/audits/evidence/1014/square.md. Square disclaims length validation and its own examples disagree (63 vs 64, 43 vs 44): the conflicting widths are unclaimed twins scored T0, and the claim depends on the open Q8 ruling. All values are built at generation time from synthetic filler.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-583a.json"
+  },
+  {
     "id": "policy-qualified-credentials",
     "title": "Public policy qualification controls for bounded T3 credentials (#365)",
     "description": "Independent deterministic action, exact-span, benign and context-twin controls for bearer credentials, connection-string passwords, OTP seeds and supported assignment literals. These public rows exercise the frozen project-policy contracts and remain separate from protected holdout evidence and PII claims.",

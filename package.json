@@ -157,6 +157,7 @@
     "study:pii-readiness": "node --import tsx benchmarks/studies/pii-readiness.ts",
     "evidence:query": "node --import tsx benchmarks/evidence-query.ts",
     "observations:capture": "node --import tsx scripts/capture-empirical-observation.ts",
+    "issuance:square": "node --import tsx scripts/measure-square-issuance.ts",
     "peers:provision": "node scripts/provision-peers.mjs",
     "peers:snapshots:refresh": "npm run bench -- --strict --refresh-peer-snapshots && npm run eval:classify -- --refresh-peer-snapshots",
     "peers:snapshots:live": "npm run bench -- --strict --live-peers && npm run eval:classify -- --live-peers",

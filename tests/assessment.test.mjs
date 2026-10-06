@@ -159,8 +159,10 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #464/#528 graduation and #1012 (registry pin 4fb7882): 51 more detector-coverage positives (key-shape × bare, quoted,
   // unicode-crlf) for the sixteen new T1 registry detectors (daytona-api-key … axiom-token) and the T2
   // google-oauth-client-secret; aws-secret-access-key is context-gated and its coverage positive scores as policy.
-  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 530);
-  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 536);
+  // #583 (registry pin 3b1a5aa): square-token's three detector-coverage positives (T1, key-shape × bare, quoted, unicode-crlf) add 3;
+  // the other seven second-wave registry detectors carry a pending T3 contract, so their coverage positives score as policy.
+  assert.equal(tally['must-redact/T1'].files + tally['must-redact/T2'].files, 533);
+  assert.equal(tally['must-redact/T1'].spans + tally['must-redact/T2'].spans, 539);
   // #66: 3 new policy/T3 positives (generic-token's markdown-inline-code
   // boundary, one per field) pin the exact metamorphic-derived shape
   // redact-secret#552 found undetected, independent of a fresh metamorphic run.
@@ -182,7 +184,8 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // #1012 (registry pin 4fb7882): aws-secret-access-key's context-gated coverage positive in three contexts (+3).
   // redact-secret#1030 (product #1101): the three existing sk_org_ shape-5 positives move from must-redact/T0 to policy/T3 (+3, T0 -3)
   // and the 15 new sk_org_ policy-floor positives are policy/T3 (+15).
-  assert.deepEqual(tally['policy/T3'], { files: 256, spans: 256 });
+  // #583 (registry pin 3b1a5aa): the seven second-wave detectors with a pending T3 contract (xata … fly) x three coverage positives score as policy (+21).
+  assert.deepEqual(tally['policy/T3'], { files: 277, spans: 277 });
   assert.deepEqual(tally['must-redact/T0'], { files: 27, spans: 27 });
   const twins = all.filter(([category]) => !category.startsWith('beta8-')).flatMap(([, c]) => c.fixtures.filter(f => f.twinOf));
   // #62: 6 new independent benign controls (aws-access-key-mask,
@@ -253,7 +256,8 @@ test('every fixture has an input-derived (kind, tier) and the mechanical v3 → 
   // the sixteen new registry detectors and google-oauth-client-secret (85), and missing-keyword, mask, reference and label-prose
   // for the context-gated aws-secret-access-key (4; its 39-character near-miss is a length twin).
   // redact-secret#1030 adds ten sk_org_ policy-floor controls to stripe-token (no body, 19 bytes, `_`/`-` in the body, a wider identifier, rk_org_): +10.
-  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 684);
+  // #583 (registry pin 3b1a5aa) adds 40: prefix-only, short-body, mask, reference and label-prose for the eight second-wave registry detectors.
+  assert.equal(tally['must-not-flag/T1'].files + tally['must-not-flag/T2'].files + tally['must-not-flag/T3'].files - twins.length, 724);
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'secret', expected: [{ start: 0, end: 6, role: 'secret' }] }).tier, 'T0');
   assert.equal(classifyFixture('unknown', { id: 'future', content: 'benign', expected: [] }).tier, 'T0');
 });

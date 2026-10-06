@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-06T12:26:29.300Z",
+  "sourceRun": {
+    "runId": "2026-10-06T12:26:29.300Z-9aad9b",
+    "benchmarkRevision": "56cee45b718a68d50739d59c16135dbd99639617"
+  },
+  "input": {
+    "surface": "comparison/beta8-583f",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "5a05baabba541514adcc38035e9ed8fbc7834e5a400ee7405ddf742813acb710",
+    "fixtureCount": 50,
+    "fixturesDigest": "1cdbc6e9219c665dbc69b53b8c7cb681495fcb513bb88b2795c520e330ebe95d",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
+      "fixtureCount": 6423
+    }
+  },
+  "peer": {
+    "id": "openredaction",
+    "version": "1.1.5",
+    "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+    "configurationHash": "eb66067ad5134d19ef74c64e4a577bce97916d37fa3c50027b6d071a7581c01e",
+    "configuration": {
+      "adapterVersion": 1,
+      "familyMappingVersion": 2,
+      "package": "@openredaction/core",
+      "options": {}
+    },
+    "artifactDigest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe",
+    "observedArtifact": {
+      "platform": "npm-lock",
+      "digest": "2ab2d2e9ab3df5470fb9f978b009679751af359f2dc93db254c26ee5f93a6cbe"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/pydantic-logfire-token-bare-prose.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/pydantic-logfire-token-bearer-header.http",
+      "start": 69,
+      "end": 75
+    },
+    {
+      "path": "cases/pydantic-logfire-token-bearer-header.http",
+      "start": 76,
+      "end": 168,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-chat-paste.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/pydantic-logfire-token-configure-token.py",
+      "start": 7,
+      "end": 14
+    },
+    {
+      "path": "cases/pydantic-logfire-token-configure-token.py",
+      "start": 16,
+      "end": 33
+    },
+    {
+      "path": "cases/pydantic-logfire-token-configure-token.py",
+      "start": 34,
+      "end": 39
+    },
+    {
+      "path": "cases/pydantic-logfire-token-dash-in-body-twin.py",
+      "start": 7,
+      "end": 14
+    },
+    {
+      "path": "cases/pydantic-logfire-token-dash-in-body-twin.py",
+      "start": 16,
+      "end": 33
+    },
+    {
+      "path": "cases/pydantic-logfire-token-dash-in-body-twin.py",
+      "start": 34,
+      "end": 39
+    },
+    {
+      "path": "cases/pydantic-logfire-token-dash-in-body-twin.py",
+      "start": 41,
+      "end": 64
+    },
+    {
+      "path": "cases/pydantic-logfire-token-leading-glue-twin.md",
+      "start": 0,
+      "end": 30
+    },
+    {
+      "path": "cases/pydantic-logfire-token-logfire-api-key.env",
+      "start": 11,
+      "end": 17
+    },
+    {
+      "path": "cases/pydantic-logfire-token-logfire-api-key.env",
+      "start": 143,
+      "end": 150
+    },
+    {
+      "path": "cases/pydantic-logfire-token-logfire-api-key.env",
+      "start": 151,
+      "end": 154
+    },
+    {
+      "path": "cases/pydantic-logfire-token-no-region-twin.http",
+      "start": 69,
+      "end": 75
+    },
+    {
+      "path": "cases/pydantic-logfire-token-no-region-twin.http",
+      "start": 76,
+      "end": 166,
+      "family": "bearer-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-os-environ-reference.py",
+      "start": 0,
+      "end": 17
+    },
+    {
+      "path": "cases/pydantic-logfire-token-os-environ-reference.py",
+      "start": 18,
+      "end": 23
+    },
+    {
+      "path": "cases/pydantic-logfire-token-os-environ-reference.py",
+      "start": 24,
+      "end": 34
+    },
+    {
+      "path": "cases/pydantic-logfire-token-os-environ-reference.py",
+      "start": 36,
+      "end": 49
+    },
+    {
+      "path": "cases/pydantic-logfire-token-otel-headers.sh",
+      "start": 106,
+      "end": 115
+    },
+    {
+      "path": "cases/pydantic-logfire-token-prefix-only-near-miss.md",
+      "start": 0,
+      "end": 25
+    },
+    {
+      "path": "cases/pydantic-logfire-token-project-url-public-id.md",
+      "start": 69,
+      "end": 77
+    },
+    {
+      "path": "cases/pydantic-logfire-token-region-over-16-twin.http",
+      "start": 64,
+      "end": 134,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-sha256-digest-encoded-value.txt",
+      "start": 0,
+      "end": 8
+    },
+    {
+      "path": "cases/pydantic-logfire-token-sha256-digest-encoded-value.txt",
+      "start": 9,
+      "end": 15
+    },
+    {
+      "path": "cases/pydantic-logfire-token-sha256-digest-encoded-value.txt",
+      "start": 16,
+      "end": 22
+    },
+    {
+      "path": "cases/pydantic-logfire-token-token-guidance-prose.md",
+      "start": 37,
+      "end": 55
+    },
+    {
+      "path": "cases/pydantic-logfire-token-token-guidance-prose.md",
+      "start": 122,
+      "end": 130
+    },
+    {
+      "path": "cases/pydantic-logfire-token-trailing-glue-twin.txt",
+      "start": 0,
+      "end": 18
+    },
+    {
+      "path": "cases/pydantic-logfire-token-underscore-in-body-twin.sh",
+      "start": 106,
+      "end": 115
+    },
+    {
+      "path": "cases/pydantic-logfire-token-uppercase-region-twin.http",
+      "start": 64,
+      "end": 119,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-uuid-body-19-twin.env",
+      "start": 11,
+      "end": 17
+    },
+    {
+      "path": "cases/pydantic-logfire-token-x-api-key-header.http",
+      "start": 64,
+      "end": 119,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "495f6f976e905e69d58f454e2a73466e79f3660fa7c499eada7422ca964fccf3"
+}

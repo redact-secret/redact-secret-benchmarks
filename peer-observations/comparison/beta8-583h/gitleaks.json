@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-06T12:26:29.300Z",
+  "sourceRun": {
+    "runId": "2026-10-06T12:26:29.300Z-9aad9b",
+    "benchmarkRevision": "56cee45b718a68d50739d59c16135dbd99639617"
+  },
+  "input": {
+    "surface": "comparison/beta8-583h",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "f89af7542219aba563f7f998652f310f6150af54ce03d12247e632ec9761534f",
+    "fixtureCount": 44,
+    "fixturesDigest": "b848c92254d71df979820b22925702eb3967bca33d9bd787273d249a691ebdad",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
+      "fixtureCount": 6423
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "bfbc883ee23e1b5c3d3c25aa3754935a9631c166844cd42fa32e2efce58b4a05",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 67108864
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/fly-token-auth-token-output.log",
+      "start": 204,
+      "end": 251
+    },
+    {
+      "path": "cases/fly-token-body-63-twin.http",
+      "start": 57,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/fly-token-fo1-standalone-43-twin.env",
+      "start": 21,
+      "end": 68
+    },
+    {
+      "path": "cases/fly-token-json-api-key.json",
+      "start": 16,
+      "end": 122
+    },
+    {
+      "path": "cases/fly-token-session-bundle.txt",
+      "start": 422,
+      "end": 469
+    }
+  ],
+  "digest": "787ac0adf813af3d616f8b4a0bf298bfd8b81678f95ba214cb4a2272c7ae38ab"
+}

@@ -1093,8 +1093,8 @@ export function buildDetectorCoverage({ fixture, synthetic, wrap, quoted, uri, E
   }
 
   // Beta.14 #583 second wave: the registry detectors at the 3b1a5aa re-pin (redact-secret#1102-#1109, product PR #1214 and
-  // #1227). square-token has its contract and corpus (benchmarks/lib/beta8/583a.ts); the other seven are registered with the
-  // benchmark contract and corpus pending (benchmarks/lib/beta8/583p.ts), so these rows are only the registry-wide minimum,
+  // #1227). Every one has its contract and corpus (benchmarks/lib/beta8/583a.ts to 583h.ts); the rows below are only the
+  // registry-wide minimum,
   // one detector-id shape each, built from public synthetic seeds in the handoff's shape and never copied from a provider example.
   const BASE58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
   const beta14 = [

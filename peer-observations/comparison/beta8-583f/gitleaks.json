@@ -1,0 +1,203 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-06T12:26:29.300Z",
+  "sourceRun": {
+    "runId": "2026-10-06T12:26:29.300Z-9aad9b",
+    "benchmarkRevision": "56cee45b718a68d50739d59c16135dbd99639617"
+  },
+  "input": {
+    "surface": "comparison/beta8-583f",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "5a05baabba541514adcc38035e9ed8fbc7834e5a400ee7405ddf742813acb710",
+    "fixtureCount": 50,
+    "fixturesDigest": "1cdbc6e9219c665dbc69b53b8c7cb681495fcb513bb88b2795c520e330ebe95d",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
+      "fixtureCount": 6423
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "bfbc883ee23e1b5c3d3c25aa3754935a9631c166844cd42fa32e2efce58b4a05",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 67108864
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/pydantic-logfire-token-actions-env.yml",
+      "start": 83,
+      "end": 158,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-body-19-twin.env",
+      "start": 21,
+      "end": 51,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-configure-token.py",
+      "start": 41,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-dash-in-body-twin.py",
+      "start": 41,
+      "end": 96,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-different-prefix-twin.env",
+      "start": 35,
+      "end": 127,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-dotenv.env",
+      "start": 21,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-export.sh",
+      "start": 22,
+      "end": 77,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-gateway-key.env",
+      "start": 35,
+      "end": 127,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-json-api-key.json",
+      "start": 16,
+      "end": 108,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-json-token.json",
+      "start": 14,
+      "end": 106,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-logfire-api-key.env",
+      "start": 34,
+      "end": 126,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-logfire-read-token.env",
+      "start": 26,
+      "end": 81,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-no-version-digits-twin.sh",
+      "start": 22,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-read-body-19-twin.env",
+      "start": 26,
+      "end": 56,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-region-digit-twin.py",
+      "start": 32,
+      "end": 88,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-region-over-16-twin.http",
+      "start": 64,
+      "end": 134,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-uppercase-prefix-twin.env",
+      "start": 21,
+      "end": 76,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-uppercase-region-twin.http",
+      "start": 64,
+      "end": 119,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-uuid-body-19-twin.env",
+      "start": 34,
+      "end": 101,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-uuid-short-first-group-twin.json",
+      "start": 14,
+      "end": 105,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-uuid-wide-fourth-group-twin.json",
+      "start": 16,
+      "end": 109,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-version-four-digits-twin.sh",
+      "start": 22,
+      "end": 80,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/pydantic-logfire-token-x-api-key-header.http",
+      "start": 64,
+      "end": 119,
+      "family": "generic-token"
+    }
+  ],
+  "digest": "698cf2bc045be53065dfff2f2a25e0f74e3947b529b80d61140272cddb9b4259"
+}

@@ -3,9 +3,9 @@
   "identities": {
     "legacy": {
       "package": "@redact-secret/core@0.1.0-beta.13",
-      "fixtureIndex": "6fc68fe094f1f96d6c3f57fc305d09d21a8b9a92bb55a2c2580a5c07b4c32d6e",
-      "fixtureCount": 6089,
-      "taxonomyDigest": "8cf64cf99bba74229d36ca971d8b1e3539a3fb1a1f20f07d0b7eefb620424bed",
+      "fixtureIndex": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
+      "fixtureCount": 6423,
+      "taxonomyDigest": "41d23792c6a99862ce14620d391a74ce0057638597c9aea7be70bed14d124f05",
       "scanners": {
         "redact-secret": "0.1.0-beta.13",
         "gitleaks": "8.30.1",
@@ -13,7 +13,7 @@
         "flare-redact": "1.6.1",
         "openredaction": "1.1.5"
       },
-      "caseCount": 19026,
+      "caseCount": 20009,
       "familyCount": 144,
       "distribution": {
         "stable": 127,
@@ -24,7 +24,7 @@
     },
     "new": {
       "publication": "public",
-      "policyRevision": "rs-policy-1:sha256:20f1b70bde51fc9ac0f866cdf78713f02d1458001cbc35a65fcf942b2874067c",
+      "policyRevision": "rs-policy-1:sha256:7b4e41c22fad63e30397cc21268d7d8485144861c7fe25d35679c4f11ad34b7a",
       "adapter": {
         "id": "credential-eval-run-artifact",
         "version": 1
@@ -278,13 +278,13 @@
     "evidence": {
       "tally": {
         "compared": 4752,
-        "equal": 4548,
-        "explained": 204,
+        "equal": 4528,
+        "explained": 224,
         "unexplained": 0,
         "byCause": {
           "canonical-evidence-membership": 90,
           "policy-corpus-bounded": 4,
-          "family-not-in-accepted-evidence": 101,
+          "family-not-in-accepted-evidence": 121,
           "pending-not-scored": 9
         }
       },
@@ -590,7 +590,7 @@
         {
           "subject": "buildkite-token",
           "field": "benignAxes",
-          "legacy": 3,
+          "legacy": 6,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -600,8 +600,11 @@
           "subject": "buildkite-token",
           "field": "benignAxisIds",
           "legacy": [
+            "encoded-value",
             "near-miss",
+            "ordinary-prose",
             "placeholder",
+            "public-identifier",
             "reference"
           ],
           "next": [],
@@ -612,7 +615,7 @@
         {
           "subject": "buildkite-token",
           "field": "benignCases",
-          "legacy": 5,
+          "legacy": 20,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -621,7 +624,7 @@
         {
           "subject": "buildkite-token",
           "field": "confusionAxes",
-          "legacy": 3,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -630,7 +633,7 @@
         {
           "subject": "buildkite-token",
           "field": "controlAxes",
-          "legacy": 3,
+          "legacy": 6,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -639,7 +642,7 @@
         {
           "subject": "buildkite-token",
           "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 3,
+          "legacy": 11,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -648,7 +651,7 @@
         {
           "subject": "buildkite-token",
           "field": "metamorphicCriticalFailures",
-          "legacy": 27,
+          "legacy": 111,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -657,7 +660,7 @@
         {
           "subject": "buildkite-token",
           "field": "mutationUnresolvedCritical",
-          "legacy": 3,
+          "legacy": 111,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -666,7 +669,7 @@
         {
           "subject": "buildkite-token",
           "field": "positiveAxes",
-          "legacy": 1,
+          "legacy": 12,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -675,7 +678,7 @@
         {
           "subject": "buildkite-token",
           "field": "positiveCases",
-          "legacy": 3,
+          "legacy": 32,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -684,7 +687,25 @@
         {
           "subject": "buildkite-token",
           "field": "totalFixtures",
-          "legacy": 8,
+          "legacy": 64,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of buildkite-token"
+        },
+        {
+          "subject": "buildkite-token",
+          "field": "twinFailures",
+          "legacy": 5,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of buildkite-token"
+        },
+        {
+          "subject": "buildkite-token",
+          "field": "twinPairs",
+          "legacy": 12,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -936,7 +957,7 @@
         {
           "subject": "fly-token",
           "field": "benignAxes",
-          "legacy": 3,
+          "legacy": 6,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -946,8 +967,11 @@
           "subject": "fly-token",
           "field": "benignAxisIds",
           "legacy": [
+            "encoded-value",
             "near-miss",
+            "ordinary-prose",
             "placeholder",
+            "public-identifier",
             "reference"
           ],
           "next": [],
@@ -958,7 +982,7 @@
         {
           "subject": "fly-token",
           "field": "benignCases",
-          "legacy": 5,
+          "legacy": 18,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -967,7 +991,7 @@
         {
           "subject": "fly-token",
           "field": "confusionAxes",
-          "legacy": 3,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -976,7 +1000,7 @@
         {
           "subject": "fly-token",
           "field": "controlAxes",
-          "legacy": 3,
+          "legacy": 6,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -985,7 +1009,7 @@
         {
           "subject": "fly-token",
           "field": "differentialUnresolvedContractDisagreements",
-          "legacy": 3,
+          "legacy": 9,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -994,7 +1018,7 @@
         {
           "subject": "fly-token",
           "field": "metamorphicCriticalFailures",
-          "legacy": 27,
+          "legacy": 97,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1003,7 +1027,7 @@
         {
           "subject": "fly-token",
           "field": "mutationUnresolvedCritical",
-          "legacy": 3,
+          "legacy": 108,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1012,7 +1036,7 @@
         {
           "subject": "fly-token",
           "field": "positiveAxes",
-          "legacy": 1,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1021,7 +1045,7 @@
         {
           "subject": "fly-token",
           "field": "positiveCases",
-          "legacy": 3,
+          "legacy": 22,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1030,7 +1054,25 @@
         {
           "subject": "fly-token",
           "field": "totalFixtures",
-          "legacy": 8,
+          "legacy": 50,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of fly-token"
+        },
+        {
+          "subject": "fly-token",
+          "field": "twinFailures",
+          "legacy": 3,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of fly-token"
+        },
+        {
+          "subject": "fly-token",
+          "field": "twinPairs",
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1472,7 +1514,7 @@
         {
           "subject": "mapbox-token",
           "field": "benignAxes",
-          "legacy": 3,
+          "legacy": 6,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1482,8 +1524,11 @@
           "subject": "mapbox-token",
           "field": "benignAxisIds",
           "legacy": [
+            "encoded-value",
             "near-miss",
+            "ordinary-prose",
             "placeholder",
+            "public-identifier",
             "reference"
           ],
           "next": [],
@@ -1494,7 +1539,16 @@
         {
           "subject": "mapbox-token",
           "field": "benignCases",
-          "legacy": 5,
+          "legacy": 15,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of mapbox-token"
+        },
+        {
+          "subject": "mapbox-token",
+          "field": "benignFalseAlarms",
+          "legacy": 2,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1503,7 +1557,7 @@
         {
           "subject": "mapbox-token",
           "field": "confusionAxes",
-          "legacy": 3,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1512,7 +1566,16 @@
         {
           "subject": "mapbox-token",
           "field": "controlAxes",
-          "legacy": 3,
+          "legacy": 6,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of mapbox-token"
+        },
+        {
+          "subject": "mapbox-token",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 4,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1521,7 +1584,7 @@
         {
           "subject": "mapbox-token",
           "field": "metamorphicCriticalFailures",
-          "legacy": 27,
+          "legacy": 69,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1530,7 +1593,7 @@
         {
           "subject": "mapbox-token",
           "field": "mutationUnresolvedCritical",
-          "legacy": 3,
+          "legacy": 26,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1539,7 +1602,7 @@
         {
           "subject": "mapbox-token",
           "field": "positiveAxes",
-          "legacy": 1,
+          "legacy": 12,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1548,7 +1611,7 @@
         {
           "subject": "mapbox-token",
           "field": "positiveCases",
-          "legacy": 3,
+          "legacy": 20,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1557,7 +1620,25 @@
         {
           "subject": "mapbox-token",
           "field": "totalFixtures",
-          "legacy": 8,
+          "legacy": 46,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of mapbox-token"
+        },
+        {
+          "subject": "mapbox-token",
+          "field": "twinFailures",
+          "legacy": 3,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of mapbox-token"
+        },
+        {
+          "subject": "mapbox-token",
+          "field": "twinPairs",
+          "legacy": 11,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1816,7 +1897,7 @@
         {
           "subject": "pydantic-logfire-token",
           "field": "benignAxes",
-          "legacy": 3,
+          "legacy": 6,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1826,8 +1907,11 @@
           "subject": "pydantic-logfire-token",
           "field": "benignAxisIds",
           "legacy": [
+            "encoded-value",
             "near-miss",
+            "ordinary-prose",
             "placeholder",
+            "public-identifier",
             "reference"
           ],
           "next": [],
@@ -1838,7 +1922,7 @@
         {
           "subject": "pydantic-logfire-token",
           "field": "benignCases",
-          "legacy": 5,
+          "legacy": 19,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1847,7 +1931,7 @@
         {
           "subject": "pydantic-logfire-token",
           "field": "confusionAxes",
-          "legacy": 3,
+          "legacy": 8,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1856,7 +1940,16 @@
         {
           "subject": "pydantic-logfire-token",
           "field": "controlAxes",
-          "legacy": 3,
+          "legacy": 6,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of pydantic-logfire-token"
+        },
+        {
+          "subject": "pydantic-logfire-token",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 2,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1865,7 +1958,7 @@
         {
           "subject": "pydantic-logfire-token",
           "field": "metamorphicCriticalFailures",
-          "legacy": 27,
+          "legacy": 62,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1874,7 +1967,7 @@
         {
           "subject": "pydantic-logfire-token",
           "field": "mutationUnresolvedCritical",
-          "legacy": 3,
+          "legacy": 59,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1883,7 +1976,7 @@
         {
           "subject": "pydantic-logfire-token",
           "field": "positiveAxes",
-          "legacy": 1,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1892,7 +1985,7 @@
         {
           "subject": "pydantic-logfire-token",
           "field": "positiveCases",
-          "legacy": 3,
+          "legacy": 19,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -1901,7 +1994,25 @@
         {
           "subject": "pydantic-logfire-token",
           "field": "totalFixtures",
-          "legacy": 8,
+          "legacy": 49,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of pydantic-logfire-token"
+        },
+        {
+          "subject": "pydantic-logfire-token",
+          "field": "twinFailures",
+          "legacy": 3,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of pydantic-logfire-token"
+        },
+        {
+          "subject": "pydantic-logfire-token",
+          "field": "twinPairs",
+          "legacy": 11,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2049,7 +2160,7 @@
         {
           "subject": "sourcegraph-token",
           "field": "benignAxes",
-          "legacy": 3,
+          "legacy": 6,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2059,8 +2170,11 @@
           "subject": "sourcegraph-token",
           "field": "benignAxisIds",
           "legacy": [
+            "encoded-value",
             "near-miss",
+            "ordinary-prose",
             "placeholder",
+            "public-identifier",
             "reference"
           ],
           "next": [],
@@ -2071,7 +2185,7 @@
         {
           "subject": "sourcegraph-token",
           "field": "benignCases",
-          "legacy": 5,
+          "legacy": 17,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2080,7 +2194,7 @@
         {
           "subject": "sourcegraph-token",
           "field": "confusionAxes",
-          "legacy": 3,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2089,15 +2203,6 @@
         {
           "subject": "sourcegraph-token",
           "field": "controlAxes",
-          "legacy": 3,
-          "next": 0,
-          "verdict": "explained",
-          "cause": "family-not-in-accepted-evidence",
-          "note": "the accepted evidence carries no case of sourcegraph-token"
-        },
-        {
-          "subject": "sourcegraph-token",
-          "field": "differentialUnresolvedContractDisagreements",
           "legacy": 6,
           "next": 0,
           "verdict": "explained",
@@ -2106,8 +2211,17 @@
         },
         {
           "subject": "sourcegraph-token",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 11,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of sourcegraph-token"
+        },
+        {
+          "subject": "sourcegraph-token",
           "field": "metamorphicCriticalFailures",
-          "legacy": 27,
+          "legacy": 55,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2116,7 +2230,7 @@
         {
           "subject": "sourcegraph-token",
           "field": "mutationUnresolvedCritical",
-          "legacy": 3,
+          "legacy": 25,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2125,7 +2239,7 @@
         {
           "subject": "sourcegraph-token",
           "field": "positiveAxes",
-          "legacy": 1,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2134,7 +2248,7 @@
         {
           "subject": "sourcegraph-token",
           "field": "positiveCases",
-          "legacy": 3,
+          "legacy": 16,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2143,7 +2257,25 @@
         {
           "subject": "sourcegraph-token",
           "field": "totalFixtures",
-          "legacy": 8,
+          "legacy": 43,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of sourcegraph-token"
+        },
+        {
+          "subject": "sourcegraph-token",
+          "field": "twinFailures",
+          "legacy": 4,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of sourcegraph-token"
+        },
+        {
+          "subject": "sourcegraph-token",
+          "field": "twinPairs",
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2571,7 +2703,7 @@
         {
           "subject": "unkey-root-key",
           "field": "benignAxes",
-          "legacy": 3,
+          "legacy": 6,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2581,8 +2713,11 @@
           "subject": "unkey-root-key",
           "field": "benignAxisIds",
           "legacy": [
+            "encoded-value",
             "near-miss",
+            "ordinary-prose",
             "placeholder",
+            "public-identifier",
             "reference"
           ],
           "next": [],
@@ -2593,7 +2728,7 @@
         {
           "subject": "unkey-root-key",
           "field": "benignCases",
-          "legacy": 5,
+          "legacy": 18,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2602,7 +2737,7 @@
         {
           "subject": "unkey-root-key",
           "field": "confusionAxes",
-          "legacy": 3,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2611,7 +2746,16 @@
         {
           "subject": "unkey-root-key",
           "field": "controlAxes",
-          "legacy": 3,
+          "legacy": 6,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of unkey-root-key"
+        },
+        {
+          "subject": "unkey-root-key",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 9,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2620,7 +2764,7 @@
         {
           "subject": "unkey-root-key",
           "field": "metamorphicCriticalFailures",
-          "legacy": 27,
+          "legacy": 111,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2629,7 +2773,7 @@
         {
           "subject": "unkey-root-key",
           "field": "mutationUnresolvedCritical",
-          "legacy": 3,
+          "legacy": 57,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2638,7 +2782,7 @@
         {
           "subject": "unkey-root-key",
           "field": "positiveAxes",
-          "legacy": 1,
+          "legacy": 11,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2647,7 +2791,7 @@
         {
           "subject": "unkey-root-key",
           "field": "positiveCases",
-          "legacy": 3,
+          "legacy": 21,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2656,7 +2800,25 @@
         {
           "subject": "unkey-root-key",
           "field": "totalFixtures",
-          "legacy": 8,
+          "legacy": 58,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of unkey-root-key"
+        },
+        {
+          "subject": "unkey-root-key",
+          "field": "twinFailures",
+          "legacy": 13,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of unkey-root-key"
+        },
+        {
+          "subject": "unkey-root-key",
+          "field": "twinPairs",
+          "legacy": 19,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2692,7 +2854,7 @@
         {
           "subject": "xata-api-key",
           "field": "benignAxes",
-          "legacy": 3,
+          "legacy": 6,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2702,8 +2864,11 @@
           "subject": "xata-api-key",
           "field": "benignAxisIds",
           "legacy": [
+            "encoded-value",
             "near-miss",
+            "ordinary-prose",
             "placeholder",
+            "public-identifier",
             "reference"
           ],
           "next": [],
@@ -2714,7 +2879,16 @@
         {
           "subject": "xata-api-key",
           "field": "benignCases",
-          "legacy": 5,
+          "legacy": 21,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of xata-api-key"
+        },
+        {
+          "subject": "xata-api-key",
+          "field": "benignFalseAlarms",
+          "legacy": 2,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2723,7 +2897,7 @@
         {
           "subject": "xata-api-key",
           "field": "confusionAxes",
-          "legacy": 3,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2732,7 +2906,16 @@
         {
           "subject": "xata-api-key",
           "field": "controlAxes",
-          "legacy": 3,
+          "legacy": 6,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of xata-api-key"
+        },
+        {
+          "subject": "xata-api-key",
+          "field": "differentialUnresolvedContractDisagreements",
+          "legacy": 5,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2741,7 +2924,7 @@
         {
           "subject": "xata-api-key",
           "field": "metamorphicCriticalFailures",
-          "legacy": 27,
+          "legacy": 62,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2750,7 +2933,7 @@
         {
           "subject": "xata-api-key",
           "field": "mutationUnresolvedCritical",
-          "legacy": 3,
+          "legacy": 47,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2759,7 +2942,7 @@
         {
           "subject": "xata-api-key",
           "field": "positiveAxes",
-          "legacy": 1,
+          "legacy": 11,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2768,7 +2951,7 @@
         {
           "subject": "xata-api-key",
           "field": "positiveCases",
-          "legacy": 3,
+          "legacy": 20,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2777,7 +2960,25 @@
         {
           "subject": "xata-api-key",
           "field": "totalFixtures",
-          "legacy": 8,
+          "legacy": 52,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of xata-api-key"
+        },
+        {
+          "subject": "xata-api-key",
+          "field": "twinFailures",
+          "legacy": 3,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of xata-api-key"
+        },
+        {
+          "subject": "xata-api-key",
+          "field": "twinPairs",
+          "legacy": 11,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -2799,12 +3000,12 @@
     },
     "knownGaps": {
       "tally": {
-        "compared": 409,
-        "equal": 256,
-        "explained": 153,
+        "compared": 416,
+        "equal": 260,
+        "explained": 156,
         "unexplained": 0,
         "byCause": {
-          "legacy-id-rekey": 153
+          "legacy-id-rekey": 156
         }
       },
       "differences": [
@@ -2945,6 +3146,33 @@
         },
         {
           "subject": "product-1042/beta8-528h--paddle-api-key-ellipsis-placeholder",
+          "field": "matched in a new population",
+          "legacy": true,
+          "next": false,
+          "verdict": "explained",
+          "cause": "legacy-id-rekey",
+          "note": "public-evidence-snapshot ids are canonical ids; the legacy slug does not resolve"
+        },
+        {
+          "subject": "product-1236/beta8-583a--square-oauth-application-secret-angle-brackets-placeholder",
+          "field": "matched in a new population",
+          "legacy": true,
+          "next": false,
+          "verdict": "explained",
+          "cause": "legacy-id-rekey",
+          "note": "public-evidence-snapshot ids are canonical ids; the legacy slug does not resolve"
+        },
+        {
+          "subject": "product-1236/beta8-583a--square-token-angle-brackets-placeholder",
+          "field": "matched in a new population",
+          "legacy": true,
+          "next": false,
+          "verdict": "explained",
+          "cause": "legacy-id-rekey",
+          "note": "public-evidence-snapshot ids are canonical ids; the legacy slug does not resolve"
+        },
+        {
+          "subject": "product-1236/beta8-583a--square-token-your-access-token-placeholder",
           "field": "matched in a new population",
           "legacy": true,
           "next": false,
@@ -4190,12 +4418,12 @@
     "supportMatrix": {
       "tally": {
         "compared": 7932,
-        "equal": 7604,
-        "explained": 328,
+        "equal": 7572,
+        "explained": 360,
         "unexplained": 0,
         "byCause": {
           "canonical-evidence-membership": 176,
-          "family-not-in-accepted-evidence": 121,
+          "family-not-in-accepted-evidence": 153,
           "policy-corpus-bounded": 5,
           "pending-not-scored": 26
         }
@@ -4495,7 +4723,7 @@
         {
           "subject": "buildkite:access-token",
           "field": "fixtureProfile.benignCases",
-          "legacy": 5,
+          "legacy": 20,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4504,7 +4732,7 @@
         {
           "subject": "buildkite:access-token",
           "field": "fixtureProfile.confusionAxes",
-          "legacy": 3,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4513,7 +4741,7 @@
         {
           "subject": "buildkite:access-token",
           "field": "fixtureProfile.controlAxes",
-          "legacy": 3,
+          "legacy": 6,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4522,7 +4750,7 @@
         {
           "subject": "buildkite:access-token",
           "field": "fixtureProfile.positiveAxes",
-          "legacy": 1,
+          "legacy": 12,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4531,7 +4759,7 @@
         {
           "subject": "buildkite:access-token",
           "field": "fixtureProfile.positiveCases",
-          "legacy": 3,
+          "legacy": 32,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4540,7 +4768,16 @@
         {
           "subject": "buildkite:access-token",
           "field": "fixtureProfile.totalFixtures",
-          "legacy": 8,
+          "legacy": 64,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of buildkite-token"
+        },
+        {
+          "subject": "buildkite:access-token",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 12,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4550,25 +4787,46 @@
           "subject": "buildkite:access-token",
           "field": "profileCoverage.cells",
           "legacy": {
-            "totalFixtures": 8,
-            "positiveCases": 3,
-            "benignControls": 5,
-            "twinPairs": 0,
-            "positiveContextAxes": 1,
-            "controlAxes": 3,
-            "confusionAxes": 3,
+            "totalFixtures": 64,
+            "positiveCases": 20,
+            "benignControls": 20,
+            "twinPairs": 12,
+            "positiveContextAxes": 12,
+            "controlAxes": 6,
+            "confusionAxes": 10,
             "positiveContextAxisIds": [
+              "#583e · buildkite-token · ci-config",
+              "#583e · buildkite-token · cli",
+              "#583e · buildkite-token · container-config",
+              "#583e · buildkite-token · env",
+              "#583e · buildkite-token · header",
+              "#583e · buildkite-token · log",
+              "#583e · buildkite-token · prose",
+              "#583e · buildkite-token · sdk-config",
+              "#583e · buildkite-token · shell-export",
+              "#583e · buildkite-token · structured-file",
+              "#583e · buildkite-token · tool-output",
               "buildkite-token"
             ],
             "controlAxisIds": [
+              "encoded-value",
               "near-miss",
+              "ordinary-prose",
               "placeholder",
+              "public-identifier",
               "reference"
             ],
             "confusionAxisIds": [
+              "encoded-value",
               "near-miss",
+              "ordinary-prose",
               "placeholder",
-              "reference"
+              "public-identifier",
+              "reference",
+              "twin:alphabet",
+              "twin:boundary",
+              "twin:length",
+              "twin:prefix"
             ]
           },
           "next": {
@@ -4589,45 +4847,22 @@
         },
         {
           "subject": "buildkite:access-token",
-          "field": "profileCoverage.debt",
+          "field": "profileCoverage.cellsMet",
           "legacy": [
-            {
-              "cell": "totalFixtures",
-              "actual": 8,
-              "required": 24,
-              "shortfall": 16
-            },
-            {
-              "cell": "positiveCases",
-              "actual": 3,
-              "required": 6,
-              "shortfall": 3
-            },
-            {
-              "cell": "benignControls",
-              "actual": 5,
-              "required": 8,
-              "shortfall": 3
-            },
-            {
-              "cell": "twinPairs",
-              "actual": 0,
-              "required": 5,
-              "shortfall": 5
-            },
-            {
-              "cell": "positiveContextAxes",
-              "actual": 1,
-              "required": 4,
-              "shortfall": 3
-            },
-            {
-              "cell": "controlAxes",
-              "actual": 3,
-              "required": 4,
-              "shortfall": 1
-            }
+            "arrival-provisional",
+            "stable-documented",
+            "stable-empirical",
+            "context-constrained-empirical"
           ],
+          "next": [],
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of buildkite-token"
+        },
+        {
+          "subject": "buildkite:access-token",
+          "field": "profileCoverage.debt",
+          "legacy": [],
           "next": [
             {
               "actual": 0,
@@ -4685,8 +4920,26 @@
         {
           "subject": "buildkite:access-token",
           "field": "reason",
-          "legacy": "qualificationProfile: tier T3 has no eligible documented, empirical, or bounded policy-qualified route | metamorphic.criticalFailures: 27 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 3 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 3 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
-          "next": "qualificationProfile: tier T3 has no eligible documented, empirical, or bounded policy-qualified route | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
+          "legacy": "twinFailures: 5 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | metamorphic.criticalFailures: 111 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 111 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 11 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "next": "documented.minimumPositiveCases: 0 < 6 — The documented profile requires six independently authored positive or supported-context fixtures. | documented.minimumPositiveAxes: 0 < 4 — Positive coverage must span four source-context axes rather than repeat one serialization. | documented.minimumBenignCases: 0 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumControlAxes: 0 < 4 — Benign coverage must span four reviewed confusion axes. | documented.minimumTwinPairs: 0 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile. | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of buildkite-token"
+        },
+        {
+          "subject": "buildkite:access-token",
+          "field": "twinCoverage.failures",
+          "legacy": 5,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of buildkite-token"
+        },
+        {
+          "subject": "buildkite:access-token",
+          "field": "twinCoverage.pairs",
+          "legacy": 12,
+          "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
           "note": "the accepted evidence carries no case of buildkite-token"
@@ -4694,7 +4947,7 @@
         {
           "subject": "buildkite:access-token",
           "field": "unresolvedCriticalItems.differential",
-          "legacy": 3,
+          "legacy": 11,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4703,7 +4956,7 @@
         {
           "subject": "buildkite:access-token",
           "field": "unresolvedCriticalItems.metamorphic",
-          "legacy": 27,
+          "legacy": 111,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4712,7 +4965,7 @@
         {
           "subject": "buildkite:access-token",
           "field": "unresolvedCriticalItems.mutation",
-          "legacy": 3,
+          "legacy": 111,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4721,7 +4974,7 @@
         {
           "subject": "fly:access-token",
           "field": "fixtureProfile.benignCases",
-          "legacy": 5,
+          "legacy": 18,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4730,7 +4983,7 @@
         {
           "subject": "fly:access-token",
           "field": "fixtureProfile.confusionAxes",
-          "legacy": 3,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4739,7 +4992,7 @@
         {
           "subject": "fly:access-token",
           "field": "fixtureProfile.controlAxes",
-          "legacy": 3,
+          "legacy": 6,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4748,7 +5001,7 @@
         {
           "subject": "fly:access-token",
           "field": "fixtureProfile.positiveAxes",
-          "legacy": 1,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4757,7 +5010,7 @@
         {
           "subject": "fly:access-token",
           "field": "fixtureProfile.positiveCases",
-          "legacy": 3,
+          "legacy": 22,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4766,7 +5019,16 @@
         {
           "subject": "fly:access-token",
           "field": "fixtureProfile.totalFixtures",
-          "legacy": 8,
+          "legacy": 50,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of fly-token"
+        },
+        {
+          "subject": "fly:access-token",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4776,25 +5038,44 @@
           "subject": "fly:access-token",
           "field": "profileCoverage.cells",
           "legacy": {
-            "totalFixtures": 8,
-            "positiveCases": 3,
-            "benignControls": 5,
-            "twinPairs": 0,
-            "positiveContextAxes": 1,
-            "controlAxes": 3,
-            "confusionAxes": 3,
+            "totalFixtures": 50,
+            "positiveCases": 12,
+            "benignControls": 18,
+            "twinPairs": 10,
+            "positiveContextAxes": 10,
+            "controlAxes": 6,
+            "confusionAxes": 10,
             "positiveContextAxisIds": [
+              "#583h · fly-token · ci-config",
+              "#583h · fly-token · cli",
+              "#583h · fly-token · env",
+              "#583h · fly-token · header",
+              "#583h · fly-token · prose",
+              "#583h · fly-token · sdk-config",
+              "#583h · fly-token · shell-export",
+              "#583h · fly-token · structured-file",
+              "#583h · fly-token · tool-output",
               "fly-token"
             ],
             "controlAxisIds": [
+              "encoded-value",
               "near-miss",
+              "ordinary-prose",
               "placeholder",
+              "public-identifier",
               "reference"
             ],
             "confusionAxisIds": [
+              "encoded-value",
               "near-miss",
+              "ordinary-prose",
               "placeholder",
-              "reference"
+              "public-identifier",
+              "reference",
+              "twin:alphabet",
+              "twin:boundary",
+              "twin:length",
+              "twin:prefix"
             ]
           },
           "next": {
@@ -4815,45 +5096,22 @@
         },
         {
           "subject": "fly:access-token",
-          "field": "profileCoverage.debt",
+          "field": "profileCoverage.cellsMet",
           "legacy": [
-            {
-              "cell": "totalFixtures",
-              "actual": 8,
-              "required": 24,
-              "shortfall": 16
-            },
-            {
-              "cell": "positiveCases",
-              "actual": 3,
-              "required": 6,
-              "shortfall": 3
-            },
-            {
-              "cell": "benignControls",
-              "actual": 5,
-              "required": 8,
-              "shortfall": 3
-            },
-            {
-              "cell": "twinPairs",
-              "actual": 0,
-              "required": 5,
-              "shortfall": 5
-            },
-            {
-              "cell": "positiveContextAxes",
-              "actual": 1,
-              "required": 4,
-              "shortfall": 3
-            },
-            {
-              "cell": "controlAxes",
-              "actual": 3,
-              "required": 4,
-              "shortfall": 1
-            }
+            "arrival-provisional",
+            "stable-documented",
+            "stable-empirical",
+            "context-constrained-empirical"
           ],
+          "next": [],
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of fly-token"
+        },
+        {
+          "subject": "fly:access-token",
+          "field": "profileCoverage.debt",
+          "legacy": [],
           "next": [
             {
               "actual": 0,
@@ -4911,8 +5169,26 @@
         {
           "subject": "fly:access-token",
           "field": "reason",
-          "legacy": "qualificationProfile: tier T3 has no eligible documented, empirical, or bounded policy-qualified route | metamorphic.criticalFailures: 27 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 3 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 3 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
-          "next": "qualificationProfile: tier T3 has no eligible documented, empirical, or bounded policy-qualified route | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
+          "legacy": "twinFailures: 3 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | metamorphic.criticalFailures: 97 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 108 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 9 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "next": "documented.minimumPositiveCases: 0 < 6 — The documented profile requires six independently authored positive or supported-context fixtures. | documented.minimumPositiveAxes: 0 < 4 — Positive coverage must span four source-context axes rather than repeat one serialization. | documented.minimumBenignCases: 0 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumControlAxes: 0 < 4 — Benign coverage must span four reviewed confusion axes. | documented.minimumTwinPairs: 0 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile. | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of fly-token"
+        },
+        {
+          "subject": "fly:access-token",
+          "field": "twinCoverage.failures",
+          "legacy": 3,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of fly-token"
+        },
+        {
+          "subject": "fly:access-token",
+          "field": "twinCoverage.pairs",
+          "legacy": 10,
+          "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
           "note": "the accepted evidence carries no case of fly-token"
@@ -4920,7 +5196,7 @@
         {
           "subject": "fly:access-token",
           "field": "unresolvedCriticalItems.differential",
-          "legacy": 3,
+          "legacy": 9,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4929,7 +5205,7 @@
         {
           "subject": "fly:access-token",
           "field": "unresolvedCriticalItems.metamorphic",
-          "legacy": 27,
+          "legacy": 97,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -4938,7 +5214,7 @@
         {
           "subject": "fly:access-token",
           "field": "unresolvedCriticalItems.mutation",
-          "legacy": 3,
+          "legacy": 108,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -7557,7 +7833,7 @@
         {
           "subject": "mapbox:secret-access-token",
           "field": "fixtureProfile.benignCases",
-          "legacy": 5,
+          "legacy": 15,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -7566,7 +7842,7 @@
         {
           "subject": "mapbox:secret-access-token",
           "field": "fixtureProfile.confusionAxes",
-          "legacy": 3,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -7575,7 +7851,7 @@
         {
           "subject": "mapbox:secret-access-token",
           "field": "fixtureProfile.controlAxes",
-          "legacy": 3,
+          "legacy": 6,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -7584,7 +7860,7 @@
         {
           "subject": "mapbox:secret-access-token",
           "field": "fixtureProfile.positiveAxes",
-          "legacy": 1,
+          "legacy": 12,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -7593,7 +7869,7 @@
         {
           "subject": "mapbox:secret-access-token",
           "field": "fixtureProfile.positiveCases",
-          "legacy": 3,
+          "legacy": 20,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -7602,7 +7878,16 @@
         {
           "subject": "mapbox:secret-access-token",
           "field": "fixtureProfile.totalFixtures",
-          "legacy": 8,
+          "legacy": 46,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of mapbox-token"
+        },
+        {
+          "subject": "mapbox:secret-access-token",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 11,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -7612,25 +7897,46 @@
           "subject": "mapbox:secret-access-token",
           "field": "profileCoverage.cells",
           "legacy": {
-            "totalFixtures": 8,
-            "positiveCases": 3,
-            "benignControls": 5,
-            "twinPairs": 0,
-            "positiveContextAxes": 1,
-            "controlAxes": 3,
-            "confusionAxes": 3,
+            "totalFixtures": 46,
+            "positiveCases": 9,
+            "benignControls": 15,
+            "twinPairs": 11,
+            "positiveContextAxes": 12,
+            "controlAxes": 6,
+            "confusionAxes": 10,
             "positiveContextAxisIds": [
+              "#583g · mapbox-token · basic-auth",
+              "#583g · mapbox-token · ci-config",
+              "#583g · mapbox-token · cli",
+              "#583g · mapbox-token · env",
+              "#583g · mapbox-token · header",
+              "#583g · mapbox-token · prose",
+              "#583g · mapbox-token · sdk-config",
+              "#583g · mapbox-token · shell-export",
+              "#583g · mapbox-token · source-code",
+              "#583g · mapbox-token · structured-file",
+              "#583g · mapbox-token · url",
               "mapbox-token"
             ],
             "controlAxisIds": [
+              "encoded-value",
               "near-miss",
+              "ordinary-prose",
               "placeholder",
+              "public-identifier",
               "reference"
             ],
             "confusionAxisIds": [
+              "encoded-value",
               "near-miss",
+              "ordinary-prose",
               "placeholder",
-              "reference"
+              "public-identifier",
+              "reference",
+              "twin:alphabet",
+              "twin:boundary",
+              "twin:length",
+              "twin:prefix"
             ]
           },
           "next": {
@@ -7651,45 +7957,20 @@
         },
         {
           "subject": "mapbox:secret-access-token",
-          "field": "profileCoverage.debt",
+          "field": "profileCoverage.cellsMet",
           "legacy": [
-            {
-              "cell": "totalFixtures",
-              "actual": 8,
-              "required": 24,
-              "shortfall": 16
-            },
-            {
-              "cell": "positiveCases",
-              "actual": 3,
-              "required": 6,
-              "shortfall": 3
-            },
-            {
-              "cell": "benignControls",
-              "actual": 5,
-              "required": 8,
-              "shortfall": 3
-            },
-            {
-              "cell": "twinPairs",
-              "actual": 0,
-              "required": 5,
-              "shortfall": 5
-            },
-            {
-              "cell": "positiveContextAxes",
-              "actual": 1,
-              "required": 4,
-              "shortfall": 3
-            },
-            {
-              "cell": "controlAxes",
-              "actual": 3,
-              "required": 4,
-              "shortfall": 1
-            }
+            "arrival-provisional",
+            "stable-documented"
           ],
+          "next": [],
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of mapbox-token"
+        },
+        {
+          "subject": "mapbox:secret-access-token",
+          "field": "profileCoverage.debt",
+          "legacy": [],
           "next": [
             {
               "actual": 0,
@@ -7747,8 +8028,35 @@
         {
           "subject": "mapbox:secret-access-token",
           "field": "reason",
-          "legacy": "qualificationProfile: tier T3 has no eligible documented, empirical, or bounded policy-qualified route | metamorphic.criticalFailures: 27 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 3 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
-          "next": "qualificationProfile: tier T3 has no eligible documented, empirical, or bounded policy-qualified route | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
+          "legacy": "twinFailures: 3 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | benign.falseAlarms: 2 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none. | metamorphic.criticalFailures: 69 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 26 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 4 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "next": "documented.minimumPositiveCases: 0 < 6 — The documented profile requires six independently authored positive or supported-context fixtures. | documented.minimumPositiveAxes: 0 < 4 — Positive coverage must span four source-context axes rather than repeat one serialization. | documented.minimumBenignCases: 0 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumControlAxes: 0 < 4 — Benign coverage must span four reviewed confusion axes. | documented.minimumTwinPairs: 0 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile. | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of mapbox-token"
+        },
+        {
+          "subject": "mapbox:secret-access-token",
+          "field": "twinCoverage.failures",
+          "legacy": 3,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of mapbox-token"
+        },
+        {
+          "subject": "mapbox:secret-access-token",
+          "field": "twinCoverage.pairs",
+          "legacy": 11,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of mapbox-token"
+        },
+        {
+          "subject": "mapbox:secret-access-token",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 4,
+          "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
           "note": "the accepted evidence carries no case of mapbox-token"
@@ -7756,7 +8064,7 @@
         {
           "subject": "mapbox:secret-access-token",
           "field": "unresolvedCriticalItems.metamorphic",
-          "legacy": 27,
+          "legacy": 69,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -7765,7 +8073,7 @@
         {
           "subject": "mapbox:secret-access-token",
           "field": "unresolvedCriticalItems.mutation",
-          "legacy": 3,
+          "legacy": 26,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8087,7 +8395,7 @@
         {
           "subject": "pydantic:logfire-token",
           "field": "fixtureProfile.benignCases",
-          "legacy": 5,
+          "legacy": 19,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8096,7 +8404,7 @@
         {
           "subject": "pydantic:logfire-token",
           "field": "fixtureProfile.confusionAxes",
-          "legacy": 3,
+          "legacy": 8,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8105,7 +8413,7 @@
         {
           "subject": "pydantic:logfire-token",
           "field": "fixtureProfile.controlAxes",
-          "legacy": 3,
+          "legacy": 6,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8114,7 +8422,7 @@
         {
           "subject": "pydantic:logfire-token",
           "field": "fixtureProfile.positiveAxes",
-          "legacy": 1,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8123,7 +8431,7 @@
         {
           "subject": "pydantic:logfire-token",
           "field": "fixtureProfile.positiveCases",
-          "legacy": 3,
+          "legacy": 19,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8132,7 +8440,16 @@
         {
           "subject": "pydantic:logfire-token",
           "field": "fixtureProfile.totalFixtures",
-          "legacy": 8,
+          "legacy": 49,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of pydantic-logfire-token"
+        },
+        {
+          "subject": "pydantic:logfire-token",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 11,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8142,25 +8459,42 @@
           "subject": "pydantic:logfire-token",
           "field": "profileCoverage.cells",
           "legacy": {
-            "totalFixtures": 8,
-            "positiveCases": 3,
-            "benignControls": 5,
-            "twinPairs": 0,
-            "positiveContextAxes": 1,
-            "controlAxes": 3,
-            "confusionAxes": 3,
+            "totalFixtures": 49,
+            "positiveCases": 8,
+            "benignControls": 19,
+            "twinPairs": 11,
+            "positiveContextAxes": 10,
+            "controlAxes": 6,
+            "confusionAxes": 8,
             "positiveContextAxisIds": [
+              "#583f · pydantic-logfire-token · ci-config",
+              "#583f · pydantic-logfire-token · cli",
+              "#583f · pydantic-logfire-token · container-config",
+              "#583f · pydantic-logfire-token · env",
+              "#583f · pydantic-logfire-token · header",
+              "#583f · pydantic-logfire-token · prose",
+              "#583f · pydantic-logfire-token · sdk-config",
+              "#583f · pydantic-logfire-token · shell-export",
+              "#583f · pydantic-logfire-token · structured-file",
               "pydantic-logfire-token"
             ],
             "controlAxisIds": [
+              "encoded-value",
               "near-miss",
+              "ordinary-prose",
               "placeholder",
+              "public-identifier",
               "reference"
             ],
             "confusionAxisIds": [
+              "encoded-value",
               "near-miss",
+              "ordinary-prose",
               "placeholder",
-              "reference"
+              "public-identifier",
+              "reference",
+              "twin:boundary",
+              "twin:prefix"
             ]
           },
           "next": {
@@ -8181,45 +8515,21 @@
         },
         {
           "subject": "pydantic:logfire-token",
-          "field": "profileCoverage.debt",
+          "field": "profileCoverage.cellsMet",
           "legacy": [
-            {
-              "cell": "totalFixtures",
-              "actual": 8,
-              "required": 24,
-              "shortfall": 16
-            },
-            {
-              "cell": "positiveCases",
-              "actual": 3,
-              "required": 6,
-              "shortfall": 3
-            },
-            {
-              "cell": "benignControls",
-              "actual": 5,
-              "required": 8,
-              "shortfall": 3
-            },
-            {
-              "cell": "twinPairs",
-              "actual": 0,
-              "required": 5,
-              "shortfall": 5
-            },
-            {
-              "cell": "positiveContextAxes",
-              "actual": 1,
-              "required": 4,
-              "shortfall": 3
-            },
-            {
-              "cell": "controlAxes",
-              "actual": 3,
-              "required": 4,
-              "shortfall": 1
-            }
+            "arrival-provisional",
+            "stable-documented",
+            "context-constrained-empirical"
           ],
+          "next": [],
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of pydantic-logfire-token"
+        },
+        {
+          "subject": "pydantic:logfire-token",
+          "field": "profileCoverage.debt",
+          "legacy": [],
           "next": [
             {
               "actual": 0,
@@ -8277,8 +8587,35 @@
         {
           "subject": "pydantic:logfire-token",
           "field": "reason",
-          "legacy": "qualificationProfile: tier T3 has no eligible documented, empirical, or bounded policy-qualified route | metamorphic.criticalFailures: 27 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 3 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
-          "next": "qualificationProfile: tier T3 has no eligible documented, empirical, or bounded policy-qualified route | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
+          "legacy": "twinFailures: 3 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | metamorphic.criticalFailures: 62 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 59 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 2 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "next": "documented.minimumPositiveCases: 0 < 6 — The documented profile requires six independently authored positive or supported-context fixtures. | documented.minimumPositiveAxes: 0 < 4 — Positive coverage must span four source-context axes rather than repeat one serialization. | documented.minimumBenignCases: 0 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumControlAxes: 0 < 4 — Benign coverage must span four reviewed confusion axes. | documented.minimumTwinPairs: 0 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile. | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of pydantic-logfire-token"
+        },
+        {
+          "subject": "pydantic:logfire-token",
+          "field": "twinCoverage.failures",
+          "legacy": 3,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of pydantic-logfire-token"
+        },
+        {
+          "subject": "pydantic:logfire-token",
+          "field": "twinCoverage.pairs",
+          "legacy": 11,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of pydantic-logfire-token"
+        },
+        {
+          "subject": "pydantic:logfire-token",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 2,
+          "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
           "note": "the accepted evidence carries no case of pydantic-logfire-token"
@@ -8286,7 +8623,7 @@
         {
           "subject": "pydantic:logfire-token",
           "field": "unresolvedCriticalItems.metamorphic",
-          "legacy": 27,
+          "legacy": 62,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8295,7 +8632,7 @@
         {
           "subject": "pydantic:logfire-token",
           "field": "unresolvedCriticalItems.mutation",
-          "legacy": 3,
+          "legacy": 59,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8641,7 +8978,7 @@
         {
           "subject": "sourcegraph:access-token",
           "field": "fixtureProfile.benignCases",
-          "legacy": 5,
+          "legacy": 17,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8650,7 +8987,7 @@
         {
           "subject": "sourcegraph:access-token",
           "field": "fixtureProfile.confusionAxes",
-          "legacy": 3,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8659,7 +8996,7 @@
         {
           "subject": "sourcegraph:access-token",
           "field": "fixtureProfile.controlAxes",
-          "legacy": 3,
+          "legacy": 6,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8668,7 +9005,7 @@
         {
           "subject": "sourcegraph:access-token",
           "field": "fixtureProfile.positiveAxes",
-          "legacy": 1,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8677,7 +9014,7 @@
         {
           "subject": "sourcegraph:access-token",
           "field": "fixtureProfile.positiveCases",
-          "legacy": 3,
+          "legacy": 16,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8686,7 +9023,16 @@
         {
           "subject": "sourcegraph:access-token",
           "field": "fixtureProfile.totalFixtures",
-          "legacy": 8,
+          "legacy": 43,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of sourcegraph-token"
+        },
+        {
+          "subject": "sourcegraph:access-token",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8696,25 +9042,44 @@
           "subject": "sourcegraph:access-token",
           "field": "profileCoverage.cells",
           "legacy": {
-            "totalFixtures": 8,
-            "positiveCases": 3,
-            "benignControls": 5,
-            "twinPairs": 0,
-            "positiveContextAxes": 1,
-            "controlAxes": 3,
-            "confusionAxes": 3,
+            "totalFixtures": 43,
+            "positiveCases": 6,
+            "benignControls": 17,
+            "twinPairs": 10,
+            "positiveContextAxes": 10,
+            "controlAxes": 6,
+            "confusionAxes": 10,
             "positiveContextAxisIds": [
+              "#583c · sourcegraph-token · ci-config",
+              "#583c · sourcegraph-token · cli",
+              "#583c · sourcegraph-token · env",
+              "#583c · sourcegraph-token · header",
+              "#583c · sourcegraph-token · prose",
+              "#583c · sourcegraph-token · sdk-config",
+              "#583c · sourcegraph-token · shell-export",
+              "#583c · sourcegraph-token · structured-file",
+              "#583c · sourcegraph-token · tool-output",
               "sourcegraph-token"
             ],
             "controlAxisIds": [
+              "encoded-value",
               "near-miss",
+              "ordinary-prose",
               "placeholder",
+              "public-identifier",
               "reference"
             ],
             "confusionAxisIds": [
+              "encoded-value",
               "near-miss",
+              "ordinary-prose",
               "placeholder",
-              "reference"
+              "public-identifier",
+              "reference",
+              "twin:alphabet",
+              "twin:boundary",
+              "twin:length",
+              "twin:prefix"
             ]
           },
           "next": {
@@ -8735,45 +9100,20 @@
         },
         {
           "subject": "sourcegraph:access-token",
-          "field": "profileCoverage.debt",
+          "field": "profileCoverage.cellsMet",
           "legacy": [
-            {
-              "cell": "totalFixtures",
-              "actual": 8,
-              "required": 24,
-              "shortfall": 16
-            },
-            {
-              "cell": "positiveCases",
-              "actual": 3,
-              "required": 6,
-              "shortfall": 3
-            },
-            {
-              "cell": "benignControls",
-              "actual": 5,
-              "required": 8,
-              "shortfall": 3
-            },
-            {
-              "cell": "twinPairs",
-              "actual": 0,
-              "required": 5,
-              "shortfall": 5
-            },
-            {
-              "cell": "positiveContextAxes",
-              "actual": 1,
-              "required": 4,
-              "shortfall": 3
-            },
-            {
-              "cell": "controlAxes",
-              "actual": 3,
-              "required": 4,
-              "shortfall": 1
-            }
+            "arrival-provisional",
+            "stable-documented"
           ],
+          "next": [],
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of sourcegraph-token"
+        },
+        {
+          "subject": "sourcegraph:access-token",
+          "field": "profileCoverage.debt",
+          "legacy": [],
           "next": [
             {
               "actual": 0,
@@ -8831,8 +9171,26 @@
         {
           "subject": "sourcegraph:access-token",
           "field": "reason",
-          "legacy": "qualificationProfile: tier T3 has no eligible documented, empirical, or bounded policy-qualified route | metamorphic.criticalFailures: 27 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 3 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 6 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
-          "next": "qualificationProfile: tier T3 has no eligible documented, empirical, or bounded policy-qualified route | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
+          "legacy": "twinFailures: 4 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | metamorphic.criticalFailures: 55 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 25 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 11 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "next": "documented.minimumPositiveCases: 0 < 6 — The documented profile requires six independently authored positive or supported-context fixtures. | documented.minimumPositiveAxes: 0 < 4 — Positive coverage must span four source-context axes rather than repeat one serialization. | documented.minimumBenignCases: 0 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumControlAxes: 0 < 4 — Benign coverage must span four reviewed confusion axes. | documented.minimumTwinPairs: 0 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile. | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of sourcegraph-token"
+        },
+        {
+          "subject": "sourcegraph:access-token",
+          "field": "twinCoverage.failures",
+          "legacy": 4,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of sourcegraph-token"
+        },
+        {
+          "subject": "sourcegraph:access-token",
+          "field": "twinCoverage.pairs",
+          "legacy": 10,
+          "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
           "note": "the accepted evidence carries no case of sourcegraph-token"
@@ -8840,7 +9198,7 @@
         {
           "subject": "sourcegraph:access-token",
           "field": "unresolvedCriticalItems.differential",
-          "legacy": 6,
+          "legacy": 11,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8849,7 +9207,7 @@
         {
           "subject": "sourcegraph:access-token",
           "field": "unresolvedCriticalItems.metamorphic",
-          "legacy": 27,
+          "legacy": 55,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -8858,7 +9216,7 @@
         {
           "subject": "sourcegraph:access-token",
           "field": "unresolvedCriticalItems.mutation",
-          "legacy": 3,
+          "legacy": 25,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10300,7 +10658,7 @@
         {
           "subject": "unkey:root-key",
           "field": "fixtureProfile.benignCases",
-          "legacy": 5,
+          "legacy": 18,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10309,7 +10667,7 @@
         {
           "subject": "unkey:root-key",
           "field": "fixtureProfile.confusionAxes",
-          "legacy": 3,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10318,7 +10676,7 @@
         {
           "subject": "unkey:root-key",
           "field": "fixtureProfile.controlAxes",
-          "legacy": 3,
+          "legacy": 6,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10327,7 +10685,7 @@
         {
           "subject": "unkey:root-key",
           "field": "fixtureProfile.positiveAxes",
-          "legacy": 1,
+          "legacy": 11,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10336,7 +10694,7 @@
         {
           "subject": "unkey:root-key",
           "field": "fixtureProfile.positiveCases",
-          "legacy": 3,
+          "legacy": 21,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10345,7 +10703,16 @@
         {
           "subject": "unkey:root-key",
           "field": "fixtureProfile.totalFixtures",
-          "legacy": 8,
+          "legacy": 58,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of unkey-root-key"
+        },
+        {
+          "subject": "unkey:root-key",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 19,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10355,25 +10722,45 @@
           "subject": "unkey:root-key",
           "field": "profileCoverage.cells",
           "legacy": {
-            "totalFixtures": 8,
+            "totalFixtures": 58,
             "positiveCases": 3,
-            "benignControls": 5,
-            "twinPairs": 0,
-            "positiveContextAxes": 1,
-            "controlAxes": 3,
-            "confusionAxes": 3,
+            "benignControls": 18,
+            "twinPairs": 19,
+            "positiveContextAxes": 11,
+            "controlAxes": 6,
+            "confusionAxes": 10,
             "positiveContextAxisIds": [
+              "#583d · unkey-root-key · ci-config",
+              "#583d · unkey-root-key · cli",
+              "#583d · unkey-root-key · container-config",
+              "#583d · unkey-root-key · env",
+              "#583d · unkey-root-key · header",
+              "#583d · unkey-root-key · prose",
+              "#583d · unkey-root-key · sdk-config",
+              "#583d · unkey-root-key · shell-export",
+              "#583d · unkey-root-key · structured-file",
+              "#583d · unkey-root-key · tool-output",
               "unkey-root-key"
             ],
             "controlAxisIds": [
+              "encoded-value",
               "near-miss",
+              "ordinary-prose",
               "placeholder",
+              "public-identifier",
               "reference"
             ],
             "confusionAxisIds": [
+              "encoded-value",
               "near-miss",
+              "ordinary-prose",
               "placeholder",
-              "reference"
+              "public-identifier",
+              "reference",
+              "twin:alphabet",
+              "twin:boundary",
+              "twin:length",
+              "twin:prefix"
             ]
           },
           "next": {
@@ -10394,43 +10781,24 @@
         },
         {
           "subject": "unkey:root-key",
+          "field": "profileCoverage.cellsMet",
+          "legacy": [
+            "context-constrained-empirical"
+          ],
+          "next": [],
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of unkey-root-key"
+        },
+        {
+          "subject": "unkey:root-key",
           "field": "profileCoverage.debt",
           "legacy": [
-            {
-              "cell": "totalFixtures",
-              "actual": 8,
-              "required": 24,
-              "shortfall": 16
-            },
             {
               "cell": "positiveCases",
               "actual": 3,
               "required": 6,
               "shortfall": 3
-            },
-            {
-              "cell": "benignControls",
-              "actual": 5,
-              "required": 8,
-              "shortfall": 3
-            },
-            {
-              "cell": "twinPairs",
-              "actual": 0,
-              "required": 5,
-              "shortfall": 5
-            },
-            {
-              "cell": "positiveContextAxes",
-              "actual": 1,
-              "required": 4,
-              "shortfall": 3
-            },
-            {
-              "cell": "controlAxes",
-              "actual": 3,
-              "required": 4,
-              "shortfall": 1
             }
           ],
           "next": [
@@ -10490,8 +10858,35 @@
         {
           "subject": "unkey:root-key",
           "field": "reason",
-          "legacy": "qualificationProfile: tier T3 has no eligible documented, empirical, or bounded policy-qualified route | metamorphic.criticalFailures: 27 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 3 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
-          "next": "qualificationProfile: tier T3 has no eligible documented, empirical, or bounded policy-qualified route | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
+          "legacy": "twinFailures: 13 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | metamorphic.criticalFailures: 111 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 57 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 9 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "next": "documented.minimumPositiveCases: 0 < 6 — The documented profile requires six independently authored positive or supported-context fixtures. | documented.minimumPositiveAxes: 0 < 4 — Positive coverage must span four source-context axes rather than repeat one serialization. | documented.minimumBenignCases: 0 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumControlAxes: 0 < 4 — Benign coverage must span four reviewed confusion axes. | documented.minimumTwinPairs: 0 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile. | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of unkey-root-key"
+        },
+        {
+          "subject": "unkey:root-key",
+          "field": "twinCoverage.failures",
+          "legacy": 13,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of unkey-root-key"
+        },
+        {
+          "subject": "unkey:root-key",
+          "field": "twinCoverage.pairs",
+          "legacy": 19,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of unkey-root-key"
+        },
+        {
+          "subject": "unkey:root-key",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 9,
+          "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
           "note": "the accepted evidence carries no case of unkey-root-key"
@@ -10499,7 +10894,7 @@
         {
           "subject": "unkey:root-key",
           "field": "unresolvedCriticalItems.metamorphic",
-          "legacy": 27,
+          "legacy": 111,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10508,7 +10903,7 @@
         {
           "subject": "unkey:root-key",
           "field": "unresolvedCriticalItems.mutation",
-          "legacy": 3,
+          "legacy": 57,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10681,7 +11076,7 @@
         {
           "subject": "xata:api-key",
           "field": "fixtureProfile.benignCases",
-          "legacy": 5,
+          "legacy": 21,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10690,7 +11085,7 @@
         {
           "subject": "xata:api-key",
           "field": "fixtureProfile.confusionAxes",
-          "legacy": 3,
+          "legacy": 10,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10699,7 +11094,7 @@
         {
           "subject": "xata:api-key",
           "field": "fixtureProfile.controlAxes",
-          "legacy": 3,
+          "legacy": 6,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10708,7 +11103,7 @@
         {
           "subject": "xata:api-key",
           "field": "fixtureProfile.positiveAxes",
-          "legacy": 1,
+          "legacy": 11,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10717,7 +11112,7 @@
         {
           "subject": "xata:api-key",
           "field": "fixtureProfile.positiveCases",
-          "legacy": 3,
+          "legacy": 20,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10726,7 +11121,16 @@
         {
           "subject": "xata:api-key",
           "field": "fixtureProfile.totalFixtures",
-          "legacy": 8,
+          "legacy": 52,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of xata-api-key"
+        },
+        {
+          "subject": "xata:api-key",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 11,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10736,25 +11140,45 @@
           "subject": "xata:api-key",
           "field": "profileCoverage.cells",
           "legacy": {
-            "totalFixtures": 8,
-            "positiveCases": 3,
-            "benignControls": 5,
-            "twinPairs": 0,
-            "positiveContextAxes": 1,
-            "controlAxes": 3,
-            "confusionAxes": 3,
+            "totalFixtures": 52,
+            "positiveCases": 9,
+            "benignControls": 21,
+            "twinPairs": 11,
+            "positiveContextAxes": 11,
+            "controlAxes": 6,
+            "confusionAxes": 10,
             "positiveContextAxisIds": [
+              "#583b · xata-api-key · ci-config",
+              "#583b · xata-api-key · cli",
+              "#583b · xata-api-key · container-config",
+              "#583b · xata-api-key · env",
+              "#583b · xata-api-key · header",
+              "#583b · xata-api-key · prose",
+              "#583b · xata-api-key · sdk-config",
+              "#583b · xata-api-key · shell-export",
+              "#583b · xata-api-key · structured-file",
+              "#583b · xata-api-key · tool-output",
               "xata-api-key"
             ],
             "controlAxisIds": [
+              "encoded-value",
               "near-miss",
+              "ordinary-prose",
               "placeholder",
+              "public-identifier",
               "reference"
             ],
             "confusionAxisIds": [
+              "encoded-value",
               "near-miss",
+              "ordinary-prose",
               "placeholder",
-              "reference"
+              "public-identifier",
+              "reference",
+              "twin:alphabet",
+              "twin:boundary",
+              "twin:length",
+              "twin:prefix"
             ]
           },
           "next": {
@@ -10775,45 +11199,21 @@
         },
         {
           "subject": "xata:api-key",
-          "field": "profileCoverage.debt",
+          "field": "profileCoverage.cellsMet",
           "legacy": [
-            {
-              "cell": "totalFixtures",
-              "actual": 8,
-              "required": 24,
-              "shortfall": 16
-            },
-            {
-              "cell": "positiveCases",
-              "actual": 3,
-              "required": 6,
-              "shortfall": 3
-            },
-            {
-              "cell": "benignControls",
-              "actual": 5,
-              "required": 8,
-              "shortfall": 3
-            },
-            {
-              "cell": "twinPairs",
-              "actual": 0,
-              "required": 5,
-              "shortfall": 5
-            },
-            {
-              "cell": "positiveContextAxes",
-              "actual": 1,
-              "required": 4,
-              "shortfall": 3
-            },
-            {
-              "cell": "controlAxes",
-              "actual": 3,
-              "required": 4,
-              "shortfall": 1
-            }
+            "arrival-provisional",
+            "stable-documented",
+            "context-constrained-empirical"
           ],
+          "next": [],
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of xata-api-key"
+        },
+        {
+          "subject": "xata:api-key",
+          "field": "profileCoverage.debt",
+          "legacy": [],
           "next": [
             {
               "actual": 0,
@@ -10871,8 +11271,35 @@
         {
           "subject": "xata:api-key",
           "field": "reason",
-          "legacy": "qualificationProfile: tier T3 has no eligible documented, empirical, or bounded policy-qualified route | metamorphic.criticalFailures: 27 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 3 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
-          "next": "qualificationProfile: tier T3 has no eligible documented, empirical, or bounded policy-qualified route | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
+          "legacy": "twinFailures: 3 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | benign.falseAlarms: 2 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none. | metamorphic.criticalFailures: 62 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 47 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 5 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "next": "documented.minimumPositiveCases: 0 < 6 — The documented profile requires six independently authored positive or supported-context fixtures. | documented.minimumPositiveAxes: 0 < 4 — Positive coverage must span four source-context axes rather than repeat one serialization. | documented.minimumBenignCases: 0 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumControlAxes: 0 < 4 — Benign coverage must span four reviewed confusion axes. | documented.minimumTwinPairs: 0 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile. | benign.minimumCases: 0 < 5 — Five benign controls is the minimum sample to claim the detector stays quiet on adjacent, non-secret shapes for this family. | benign.minimumAxes: 0 < 3 (axes present: none) — A bare case count is satisfied by five copies of the same near-miss and proves nothing about diversity. Staged at 2 immediately after #91 merged (the minimum then met by every family reading stable: gitlab-token, npm-token), per docs/decisions/2026-09-21-measure-benign-axis-diversity.md's ratchet plan. Raised to 3 once #93 (#90's part A3) authored the missing placeholder/reference axes for the 23 families that previously carried only a same-axis near-miss pair, plus one reference control each for gitlab-token and npm-token so the ratchet lands with zero regressions; measured via `npm run eval:classify` immediately before this value changed.",
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of xata-api-key"
+        },
+        {
+          "subject": "xata:api-key",
+          "field": "twinCoverage.failures",
+          "legacy": 3,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of xata-api-key"
+        },
+        {
+          "subject": "xata:api-key",
+          "field": "twinCoverage.pairs",
+          "legacy": 11,
+          "next": 0,
+          "verdict": "explained",
+          "cause": "family-not-in-accepted-evidence",
+          "note": "the accepted evidence carries no case of xata-api-key"
+        },
+        {
+          "subject": "xata:api-key",
+          "field": "unresolvedCriticalItems.differential",
+          "legacy": 5,
+          "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
           "note": "the accepted evidence carries no case of xata-api-key"
@@ -10880,7 +11307,7 @@
         {
           "subject": "xata:api-key",
           "field": "unresolvedCriticalItems.metamorphic",
-          "legacy": 27,
+          "legacy": 62,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -10889,7 +11316,7 @@
         {
           "subject": "xata:api-key",
           "field": "unresolvedCriticalItems.mutation",
-          "legacy": 3,
+          "legacy": 47,
           "next": 0,
           "verdict": "explained",
           "cause": "family-not-in-accepted-evidence",
@@ -11231,6 +11658,11 @@
       "causes": [],
       "heldBackBy": [],
       "unattributedReasons": [
+        "documented.minimumPositiveCases",
+        "documented.minimumPositiveAxes",
+        "documented.minimumBenignCases",
+        "documented.minimumControlAxes",
+        "documented.minimumTwinPairs",
         "benign.minimumCases",
         "benign.minimumAxes"
       ]
@@ -11647,6 +12079,11 @@
       "causes": [],
       "heldBackBy": [],
       "unattributedReasons": [
+        "documented.minimumPositiveCases",
+        "documented.minimumPositiveAxes",
+        "documented.minimumBenignCases",
+        "documented.minimumControlAxes",
+        "documented.minimumTwinPairs",
         "benign.minimumCases",
         "benign.minimumAxes"
       ]
@@ -11924,6 +12361,11 @@
       "causes": [],
       "heldBackBy": [],
       "unattributedReasons": [
+        "documented.minimumPositiveCases",
+        "documented.minimumPositiveAxes",
+        "documented.minimumBenignCases",
+        "documented.minimumControlAxes",
+        "documented.minimumTwinPairs",
         "benign.minimumCases",
         "benign.minimumAxes"
       ]
@@ -12228,6 +12670,11 @@
       "causes": [],
       "heldBackBy": [],
       "unattributedReasons": [
+        "documented.minimumPositiveCases",
+        "documented.minimumPositiveAxes",
+        "documented.minimumBenignCases",
+        "documented.minimumControlAxes",
+        "documented.minimumTwinPairs",
         "benign.minimumCases",
         "benign.minimumAxes"
       ]
@@ -12400,6 +12847,11 @@
       "causes": [],
       "heldBackBy": [],
       "unattributedReasons": [
+        "documented.minimumPositiveCases",
+        "documented.minimumPositiveAxes",
+        "documented.minimumBenignCases",
+        "documented.minimumControlAxes",
+        "documented.minimumTwinPairs",
         "benign.minimumCases",
         "benign.minimumAxes"
       ]
@@ -12599,6 +13051,11 @@
       "causes": [],
       "heldBackBy": [],
       "unattributedReasons": [
+        "documented.minimumPositiveCases",
+        "documented.minimumPositiveAxes",
+        "documented.minimumBenignCases",
+        "documented.minimumControlAxes",
+        "documented.minimumTwinPairs",
         "benign.minimumCases",
         "benign.minimumAxes"
       ]
@@ -12690,6 +13147,11 @@
       "causes": [],
       "heldBackBy": [],
       "unattributedReasons": [
+        "documented.minimumPositiveCases",
+        "documented.minimumPositiveAxes",
+        "documented.minimumBenignCases",
+        "documented.minimumControlAxes",
+        "documented.minimumTwinPairs",
         "benign.minimumCases",
         "benign.minimumAxes"
       ]
@@ -12858,7 +13320,7 @@
         0
       ],
       "pairs": 5790,
-      "unmatchedLegacy": 139,
+      "unmatchedLegacy": 473,
       "unmatchedNext": 729,
       "ambiguousLegacy": 0,
       "ambiguousNext": 0
@@ -12913,14 +13375,14 @@
     }
   ],
   "summary": {
-    "compared": 43358,
-    "equal": 42533,
-    "explained": 825,
+    "compared": 43365,
+    "equal": 42485,
+    "explained": 880,
     "unexplained": 0,
     "byCause": {
       "canonical-evidence-membership": 276,
-      "family-not-in-accepted-evidence": 222,
-      "legacy-id-rekey": 153,
+      "family-not-in-accepted-evidence": 274,
+      "legacy-id-rekey": 156,
       "owner-ledger-settlement": 2,
       "pending-not-scored": 35,
       "policy-corpus-bounded": 9,
@@ -12928,8 +13390,8 @@
       "twin-scope-vocabulary": 124
     },
     "classes": {
-      "must-equal": 42533,
-      "expected-structural": 825,
+      "must-equal": 42485,
+      "expected-structural": 880,
       "unexplained": 0
     }
   },

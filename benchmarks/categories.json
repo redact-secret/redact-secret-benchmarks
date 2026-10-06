@@ -469,6 +469,55 @@
     "corpus": "fixtures/generated/beta8-583a.json"
   },
   {
+    "id": "beta8-583b",
+    "title": "Beta.14 evidence for the Xata API key (#583, slice b)",
+    "description": "Fixtures for xata-api-key (xau_/xao_ + a base62 body of 32 to 34 characters (35 and 36 are lexical-only; the CRC32 post-check is Q1, open)), a registry detector at the 3b1a5aa re-pin, authored from the #1014 handoff https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/xata.md: positives in the probe and provider-native contexts, one-property twins, and independent benign, placeholder and reference controls. Shapes that rest on an open ruling question or a single provider source are unclaimed twins scored T0. All values are built at generation time from synthetic filler.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-583b.json"
+  },
+  {
+    "id": "beta8-583c",
+    "title": "Beta.14 evidence for the Sourcegraph access token (#583, slice c)",
+    "description": "Fixtures for sourcegraph-token (sgp_ + an optional instance identifier + 40 lowercase hex), a registry detector at the 3b1a5aa re-pin, authored from the #1014 handoff https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/sourcegraph.md: positives in the probe and provider-native contexts, one-property twins, and independent benign, placeholder and reference controls. Shapes that rest on an open ruling question or a single provider source are unclaimed twins scored T0. All values are built at generation time from synthetic filler.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-583c.json"
+  },
+  {
+    "id": "beta8-583d",
+    "title": "Beta.14 evidence for the Unkey root key (#583, slice d)",
+    "description": "Fixtures for unkey-root-key (unkey_ + 8 + the unkeyv1 marker + 42 with a CRC-32C checksum, and the dashboard 3Z form (the checksum post-check is Q1, open)), a registry detector at the 3b1a5aa re-pin, authored from the #1014 handoff https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/unkey.md: positives in the probe and provider-native contexts, one-property twins, and independent benign, placeholder and reference controls. Shapes that rest on an open ruling question or a single provider source are unclaimed twins scored T0. All values are built at generation time from synthetic filler.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-583d.json"
+  },
+  {
+    "id": "beta8-583e",
+    "title": "Beta.14 evidence for the Buildkite token (#583, slice e)",
+    "description": "Fixtures for buildkite-token (fifteen role prefixes + a 24 to 2048 body over [A-Za-z0-9_.-] (the floor is Q7), including the JWT-body bkjat_ and bkaj_ forms), a registry detector at the 3b1a5aa re-pin, authored from the #1014 handoff https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/buildkite.md: positives in the probe and provider-native contexts, one-property twins, and independent benign, placeholder and reference controls. Shapes that rest on an open ruling question or a single provider source are unclaimed twins scored T0. All values are built at generation time from synthetic filler.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-583e.json"
+  },
+  {
+    "id": "beta8-583f",
+    "title": "Beta.14 evidence for the Pydantic Logfire token (#583, slice f)",
+    "description": "Fixtures for pydantic-logfire-token (pylf_v<n>_<region>_ + an optional organization UUID + a body (the floor of 20 is Q7)), a registry detector at the 3b1a5aa re-pin, authored from the #1014 handoff https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/pydantic-logfire.md: positives in the probe and provider-native contexts, one-property twins, and independent benign, placeholder and reference controls. Shapes that rest on an open ruling question or a single provider source are unclaimed twins scored T0. All values are built at generation time from synthetic filler.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-583f.json"
+  },
+  {
+    "id": "beta8-583g",
+    "title": "Beta.14 evidence for the Mapbox secret access token (#583, slice g)",
+    "description": "Fixtures for mapbox-token (sk. three-part base64url token, eyJ + a payload floor (Q7) and a 22-character signature, with a no-double-report case against jwt), a registry detector at the 3b1a5aa re-pin, authored from the #1014 handoff https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/mapbox.md: positives in the probe and provider-native contexts, one-property twins, and independent benign, placeholder and reference controls. Shapes that rest on an open ruling question or a single provider source are unclaimed twins scored T0. All values are built at generation time from synthetic filler.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-583g.json"
+  },
+  {
+    "id": "beta8-583h",
+    "title": "Beta.14 evidence for the Fly.io access token (#583, slice h)",
+    "description": "Fixtures for fly-token (fm1r_/fm1a_/fm2_ macaroon members and the comma-joined bundle span that starts at fm with the scheme outside (the floor of 64 is Q7)), a registry detector at the 3b1a5aa re-pin, authored from the #1014 handoff https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/fly.md: positives in the probe and provider-native contexts, one-property twins, and independent benign, placeholder and reference controls. Shapes that rest on an open ruling question or a single provider source are unclaimed twins scored T0. All values are built at generation time from synthetic filler.",
+    "kind": "accuracy",
+    "corpus": "fixtures/generated/beta8-583h.json"
+  },
+  {
     "id": "policy-qualified-credentials",
     "title": "Public policy qualification controls for bounded T3 credentials (#365)",
     "description": "Independent deterministic action, exact-span, benign and context-twin controls for bearer credentials, connection-string passwords, OTP seeds and supported assignment literals. These public rows exercise the frozen project-policy contracts and remain separate from protected holdout evidence and PII claims.",

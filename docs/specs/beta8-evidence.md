@@ -550,9 +550,10 @@ The corpus adds one authored calibration row pair per family to
 ## Beta.14 second-wave slices (#583)
 
 The benchmarks side of the #1014 second wave (Xata, Sourcegraph, Unkey, Buildkite, Pydantic Logfire, Square, Mapbox, Fly,
-Ory siblings; product issues redact-secret#1102 to #1110). Only **Square** (slice `583a`) has a contract, a corpus and
-arrival evidence so far; the other detectors that the registry now carries are recorded as "detector present in the
-registry, benchmark contract/corpus pending (#583)" (slice `583p`) and claim nothing. The registry snapshot
+Ory siblings; product issues redact-secret#1102 to #1110). **Square** (slice `583a`) and the seven other registered
+detectors (slices `583b` to `583h`) have a contract, a corpus and arrival evidence; the Ory siblings (#1110) are not in
+the registry and wait for the issuance check (#584). Slice `583p` is empty now and stays as the place a future registered
+detector without a slice would be recorded as "detector present in the registry, benchmark contract/corpus pending (#583)". The registry snapshot
 (`benchmarks/detectors.json`, `detector-inventory.json`, `detector-finding-types.json`) is pinned to product main
 `3b1a5aa` (redact-secret PR #1214 and #1227), ahead of the published `@redact-secret/core` 0.1.0-beta.13; see the
 [decision](../decisions/2026-10-05-claim-square-stable-widths-under-q8-and-pin-the-registry-ahead-of-the-release.md).
@@ -573,15 +574,34 @@ registry, benchmark contract/corpus pending (#583)" (slice `583p`) and claim not
   at 42 and 45, `sandbox-sq0csb-` at 42 and 44. They are authored, listed in `DISPUTED_PROPERTIES`
   (`square-access-token-widths`, `square-oauth-secret-widths`) and read T0, so no fixture asserts silence or detection on
   them, and the T1 twin dimensions for `square-token` are `alphabet`, `boundary` and `prefix` (no `length`).
-- **`583p` (`benchmarks/lib/beta8/583p.ts`).** A T3, `contextGated`, `unprobeable` placeholder contract for each of
-  `xata-api-key`, `sourcegraph-token`, `unkey-root-key`, `buildkite-token`, `pydantic-logfire-token`, `mapbox-token`
-  and `fly-token`, with the handoff as `candidateSource`. It asserts no format; the registry-wide detector-coverage
-  minimum (`fixtures/generated/detector-coverage.mjs`, one detector-id shape each) and one static calibration row per
-  family in `corpora/development/shadow-scoring-authored.json` (first character `\u`-escaped) are the only evidence.
-  A slice that authors one of these moves its entry into that slice's `registryContracts`.
-- **Provenance.** Every `583a` fixture cites the Square handoff permalink and product issue redact-secret#1107 through the
-  contract's `references`. All values are built at generation time from `synthetic()` filler; no complete Square key
-  literal exists in a source file (the static calibration rows use repeated filler with the first character escaped).
+- **`583b` to `583h`.** One T1 registry contract and one seeded corpus per detector, authored from the #1014 handoffs at
+  `3b1a5aa` and never from product detector code. None adds an arrival family (each shares one finding type per
+  taxonomy row). Every policy-dependent claim is a `policy-*` field (research-hypothesis, provisional, never T1); shapes
+  that rest on an open ruling question or a single provider source are unclaimed twins (`DISPUTED_PROPERTIES`, read T0).
+
+  | Slice | Detector | Frozen grammar | Policy fields | Unclaimed twins |
+  | --- | --- | --- | --- | --- |
+  | `583b` | `xata-api-key` | `xa[uo]_` + 32 to 36 base62 | width window, Q1 checksum post-check | CRC32 data and stored byte (Q1) |
+  | `583c` | `sourcegraph-token` | `sgp_` + optional instance identifier (up to 32) + 40 hex | union grammar, identifier cap, boundary | identifier of 33, `sgph_`, `sgd_` + 64 hex |
+  | `583d` | `unkey-root-key` | version 1 (`unkey_` + 8 + `unkeyv1` + 42) or the dashboard `3Z` form, base58 | Q1 CRC-32C post-check | checksum mismatch, customer-prefixed (Q10), Go 21 and 22 |
+  | `583e` | `buildkite-token` | fifteen role prefixes + 24 to 2048 `[A-Za-z0-9_.-]`, including the JWT-body forms | Q7 floor | body of 2049, trailing dot, third-party `bka_`, bare hex, snake-case identifier |
+  | `583f` | `pydantic-logfire-token` | `pylf_v<n>_<region>_` + optional UUID + 20 or more base62 | body floor (Q7) | bodies under the floor, `+ / - _` in the body, region over 16, four-digit version |
+  | `583g` | `mapbox-token` | `sk.eyJ` + 20 or more payload + 22-character signature | payload floor (Q7) | payload under the floor, temporary `tk.` (Q9) |
+  | `583h` | `fly-token` | `fm1r_`, `fm1a_` or `fm2_` member of 64 or more + comma-joined members; the span starts at `fm` and the scheme is outside it | floor of 64 (Q7) | standalone `fo1_` (Q9), padding of three |
+
+  The checksum of Xata (CRC32) and Unkey (CRC-32C) is implemented in the generators (the CRC-32C is checked against the
+  standard value) and is never part of a contract's lexical pattern; whether a checksum post-check may reject a lexically
+  valid key is ruling question Q1 (open), so the mismatch twins are unclaimed. A Q7 refusal (a body floor is a policy, not
+  provider fact) moves the floor-dependent twins of `583e`, `583f`, `583g` and `583h` to `DISPUTED_PROPERTIES`.
+- **`583p` (`benchmarks/lib/beta8/583p.ts`).** The T3, `contextGated`, `unprobeable` placeholders of the seven detectors
+  were replaced by slices `583b` to `583h`; the file stays with no entries. A new registered detector without a slice is
+  recorded here until its slice lands. The registry-wide detector-coverage minimum
+  (`fixtures/generated/detector-coverage.mjs`) and one static calibration row per family in
+  `corpora/development/shadow-scoring-authored.json` (first character `\u`-escaped) remain; with a T1 contract the
+  calibration positives now classify `must-redact`/T1 instead of `policy`/T3.
+- **Provenance.** Every `583a` to `583h` fixture cites its family's handoff permalink and product issue (redact-secret#1102 to
+  #1109) through the contract's `references`. All values are built at generation time from `synthetic()` filler; no complete
+  key literal exists in a source file (the static calibration rows use repeated filler with the first character escaped).
 - **Peers.** trufflehog 3.97.4 `square` (EAAA + 60, keyword `square`) and `squareapp` (`sq0c??` + 40 to 50, and the public
   `sq0i??` application ids) are mapped; gitleaks 8.30.1 `square-access-token` is mapped (it has no `sq0csp-` rule in its
   default config). The measured lag and overreach are in `evidence/583/`.

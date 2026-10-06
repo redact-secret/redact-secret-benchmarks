@@ -8108,12 +8108,21 @@
         "xata-api-key"
       ],
       "assessment": {
-        "kind": "policy",
-        "tier": "T3",
-        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
         "contract": "xata-api-key",
         "sources": [
+          "https://github.com/xataio/xata/blob/fc4ac97f62a3830c4e4202b08a3ca51855970113/internal/api/key/key.go#L19-L57",
+          "https://github.com/xataio/xata/blob/fc4ac97f62a3830c4e4202b08a3ca51855970113/internal/api/key/key.go#L19-L57",
+          "https://github.com/xataio/xata/blob/fc4ac97f62a3830c4e4202b08a3ca51855970113/internal/api/key/key_test.go#L31-L40",
+          "https://github.com/xataio/client-ts/blob/394dad90297568bd990b15f673de82605dcfa46d/packages/cli/src/commands/init/index.ts#L468",
+          "https://github.com/jxskiss/base62/blob/master/base62.go",
           "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/xata.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
           "https://github.com/redact-secret/redact-secret/issues/1102",
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
         ]
@@ -8134,7 +8143,16 @@
         "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "contract": "xata-api-key",
         "sources": [
+          "https://github.com/xataio/xata/blob/fc4ac97f62a3830c4e4202b08a3ca51855970113/internal/api/key/key.go#L19-L57",
+          "https://github.com/xataio/xata/blob/fc4ac97f62a3830c4e4202b08a3ca51855970113/internal/api/key/key.go#L19-L57",
+          "https://github.com/xataio/xata/blob/fc4ac97f62a3830c4e4202b08a3ca51855970113/internal/api/key/key_test.go#L31-L40",
+          "https://github.com/xataio/client-ts/blob/394dad90297568bd990b15f673de82605dcfa46d/packages/cli/src/commands/init/index.ts#L468",
+          "https://github.com/jxskiss/base62/blob/master/base62.go",
           "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/xata.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447540",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
           "https://github.com/redact-secret/redact-secret/issues/1102",
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
         ]
@@ -8157,12 +8175,23 @@
         "sourcegraph-token"
       ],
       "assessment": {
-        "kind": "policy",
-        "tier": "T3",
-        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
         "contract": "sourcegraph-token",
         "sources": [
+          "https://github.com/sourcegraph/sourcegraph-public-snapshot/blob/c864f15af264f0f456a6d8a83290b5c940715349/lib/accesstoken/personal_access_token.go",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/sourcegraph/sourcegraph.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/sourcegraph/sourcegraph-public-snapshot/blob/c864f15af264f0f456a6d8a83290b5c940715349/internal/accesstoken/personal_access_token.go#L13-L48",
+          "https://github.com/sourcegraph/sourcegraph-public-snapshot/blob/c864f15af264f0f456a6d8a83290b5c940715349/lib/accesstoken/personal_access_token.go",
+          "https://github.com/sourcegraph/src-cli/commit/7cb402a6c3730d375ec167ab295d331d855fa5a4",
+          "https://github.com/1Password/shell-plugins/issues/233",
           "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/sourcegraph.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
           "https://github.com/redact-secret/redact-secret/issues/1103",
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
         ]
@@ -8183,7 +8212,18 @@
         "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "contract": "sourcegraph-token",
         "sources": [
+          "https://github.com/sourcegraph/sourcegraph-public-snapshot/blob/c864f15af264f0f456a6d8a83290b5c940715349/lib/accesstoken/personal_access_token.go",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/sourcegraph/sourcegraph.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://github.com/sourcegraph/sourcegraph-public-snapshot/blob/c864f15af264f0f456a6d8a83290b5c940715349/internal/accesstoken/personal_access_token.go#L13-L48",
+          "https://github.com/sourcegraph/sourcegraph-public-snapshot/blob/c864f15af264f0f456a6d8a83290b5c940715349/lib/accesstoken/personal_access_token.go",
+          "https://github.com/sourcegraph/src-cli/commit/7cb402a6c3730d375ec167ab295d331d855fa5a4",
+          "https://github.com/1Password/shell-plugins/issues/233",
           "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/sourcegraph.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
           "https://github.com/redact-secret/redact-secret/issues/1103",
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
         ]
@@ -8206,12 +8246,22 @@
         "unkey-root-key"
       ],
       "assessment": {
-        "kind": "policy",
-        "tier": "T3",
-        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
         "contract": "unkey-root-key",
         "sources": [
+          "https://github.com/unkeyed/unkey/blob/20378e892035dad8ca3590765651cd25c964f78e/docs/engineering/architecture/rfcs/0017-api-key-plaintext-format.mdx",
+          "https://github.com/unkeyed/unkey/blob/20378e892035dad8ca3590765651cd25c964f78e/docs/engineering/architecture/rfcs/0017-api-key-plaintext-format.mdx",
+          "https://github.com/unkeyed/unkey/blob/20378e892035dad8ca3590765651cd25c964f78e/internal/services/keys/create_v1.go",
+          "https://github.com/unkeyed/unkey/blob/20378e892035dad8ca3590765651cd25c964f78e/svc/api/routes/v2_root_keys_create_key/handler.go",
+          "https://github.com/unkeyed/unkey/blob/6c9bc65125dd2c8b5038ac80a11e173767dc9e52/web/apps/dashboard/lib/trpc/routers/key/createRootKey.ts#L56-L59",
+          "https://github.com/unkeyed/unkey/blob/6c9bc65125dd2c8b5038ac80a11e173767dc9e52/web/internal/keys/src/v1.ts#L1-L80",
           "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/unkey.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
           "https://github.com/redact-secret/redact-secret/issues/1104",
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
         ]
@@ -8232,7 +8282,17 @@
         "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "contract": "unkey-root-key",
         "sources": [
+          "https://github.com/unkeyed/unkey/blob/20378e892035dad8ca3590765651cd25c964f78e/docs/engineering/architecture/rfcs/0017-api-key-plaintext-format.mdx",
+          "https://github.com/unkeyed/unkey/blob/20378e892035dad8ca3590765651cd25c964f78e/docs/engineering/architecture/rfcs/0017-api-key-plaintext-format.mdx",
+          "https://github.com/unkeyed/unkey/blob/20378e892035dad8ca3590765651cd25c964f78e/internal/services/keys/create_v1.go",
+          "https://github.com/unkeyed/unkey/blob/20378e892035dad8ca3590765651cd25c964f78e/svc/api/routes/v2_root_keys_create_key/handler.go",
+          "https://github.com/unkeyed/unkey/blob/6c9bc65125dd2c8b5038ac80a11e173767dc9e52/web/apps/dashboard/lib/trpc/routers/key/createRootKey.ts#L56-L59",
+          "https://github.com/unkeyed/unkey/blob/6c9bc65125dd2c8b5038ac80a11e173767dc9e52/web/internal/keys/src/v1.ts#L1-L80",
           "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/unkey.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447282",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
           "https://github.com/redact-secret/redact-secret/issues/1104",
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
         ]
@@ -8255,12 +8315,24 @@
         "buildkite-token"
       ],
       "assessment": {
-        "kind": "policy",
-        "tier": "T3",
-        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
         "contract": "buildkite-token",
         "sources": [
+          "https://github.com/buildkite/agent/blob/4b52e509c730797c2a97487972fdf99477fd07e6/internal/redact/redact.go#L30-L69",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/buildkite/v2/buildkite.go",
+          "https://github.com/buildkite/agent/blob/4b52e509c730797c2a97487972fdf99477fd07e6/internal/redact/redact.go#L30-L69",
+          "https://github.com/buildkite/agent/blob/4b52e509c730797c2a97487972fdf99477fd07e6/internal/redact/redact_test.go#L128-L190",
+          "https://github.com/buildkite/agent/pull/4425",
+          "https://buildkite.com/docs/platform/security/tokens",
+          "https://github.com/buildkite/docs/blob/0d9908248f21aa3beec6e417de99c6164360e25f/pages/platform/security/tokens.md#L18-L21",
           "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/buildkite.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
           "https://github.com/redact-secret/redact-secret/issues/1105",
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
         ]
@@ -8281,7 +8353,19 @@
         "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "contract": "buildkite-token",
         "sources": [
+          "https://github.com/buildkite/agent/blob/4b52e509c730797c2a97487972fdf99477fd07e6/internal/redact/redact.go#L30-L69",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/buildkite/v2/buildkite.go",
+          "https://github.com/buildkite/agent/blob/4b52e509c730797c2a97487972fdf99477fd07e6/internal/redact/redact.go#L30-L69",
+          "https://github.com/buildkite/agent/blob/4b52e509c730797c2a97487972fdf99477fd07e6/internal/redact/redact_test.go#L128-L190",
+          "https://github.com/buildkite/agent/pull/4425",
+          "https://buildkite.com/docs/platform/security/tokens",
+          "https://github.com/buildkite/docs/blob/0d9908248f21aa3beec6e417de99c6164360e25f/pages/platform/security/tokens.md#L18-L21",
           "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/buildkite.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
           "https://github.com/redact-secret/redact-secret/issues/1105",
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
         ]
@@ -8304,12 +8388,21 @@
         "pydantic-logfire-token"
       ],
       "assessment": {
-        "kind": "policy",
-        "tier": "T3",
-        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
         "contract": "pydantic-logfire-token",
         "sources": [
+          "https://github.com/pydantic/logfire/blob/a413dc789002d35cbc3b1a281e0d936c0930762e/logfire-sdk/logfire/_internal/auth.py#L36-L41",
+          "https://github.com/ghostsecurity/poltergeist/blob/main/pkg/rules/logfire.yaml",
+          "https://github.com/pydantic/logfire/blob/a413dc789002d35cbc3b1a281e0d936c0930762e/logfire-sdk/logfire/_internal/auth.py#L36-L41",
+          "https://github.com/pydantic/pydantic-ai/blob/b2e37b94a275084716c820065e8c912809daed7c/pydantic_ai_slim/pydantic_ai/providers/gateway.py#L407-L418",
           "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/pydantic-logfire.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900446812",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
           "https://github.com/redact-secret/redact-secret/issues/1106",
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
         ]
@@ -8330,7 +8423,16 @@
         "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "contract": "pydantic-logfire-token",
         "sources": [
+          "https://github.com/pydantic/logfire/blob/a413dc789002d35cbc3b1a281e0d936c0930762e/logfire-sdk/logfire/_internal/auth.py#L36-L41",
+          "https://github.com/ghostsecurity/poltergeist/blob/main/pkg/rules/logfire.yaml",
+          "https://github.com/pydantic/logfire/blob/a413dc789002d35cbc3b1a281e0d936c0930762e/logfire-sdk/logfire/_internal/auth.py#L36-L41",
+          "https://github.com/pydantic/pydantic-ai/blob/b2e37b94a275084716c820065e8c912809daed7c/pydantic_ai_slim/pydantic_ai/providers/gateway.py#L407-L418",
           "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/pydantic-logfire.md",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900446812",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
           "https://github.com/redact-secret/redact-secret/issues/1106",
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
         ]
@@ -8353,12 +8455,23 @@
         "mapbox-token"
       ],
       "assessment": {
-        "kind": "policy",
-        "tier": "T3",
-        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
         "contract": "mapbox-token",
         "sources": [
+          "https://docs.mapbox.com/api/accounts/tokens/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/mapbox/mapbox.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.mapbox.com/api/accounts/tokens/",
+          "https://github.com/mapbox/parse-mapbox-token/blob/015a6b470fdb489a2635a4889c9f5b1d545a512c/index.js",
+          "https://www.drupal.org/project/mapbox/issues/3302050",
+          "https://github.com/orgs/community/discussions/198585",
           "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/mapbox.md",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
           "https://github.com/redact-secret/redact-secret/issues/1108",
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
         ]
@@ -8379,7 +8492,18 @@
         "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "contract": "mapbox-token",
         "sources": [
+          "https://docs.mapbox.com/api/accounts/tokens/",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/mapbox/mapbox.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
+          "https://docs.mapbox.com/api/accounts/tokens/",
+          "https://github.com/mapbox/parse-mapbox-token/blob/015a6b470fdb489a2635a4889c9f5b1d545a512c/index.js",
+          "https://www.drupal.org/project/mapbox/issues/3302050",
+          "https://github.com/orgs/community/discussions/198585",
           "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/mapbox.md",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
           "https://github.com/redact-secret/redact-secret/issues/1108",
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
         ]
@@ -8402,12 +8526,23 @@
         "fly-token"
       ],
       "assessment": {
-        "kind": "policy",
-        "tier": "T3",
-        "reason": "Independently authored never-issued value exercises a contextual or structural policy contract; provider issuance and liveness are not claimed.",
+        "kind": "must-redact",
+        "tier": "T1",
+        "reason": "Independently authored never-issued value satisfies the reviewed format contract; provider issuance and liveness are not claimed.",
         "contract": "fly-token",
         "sources": [
+          "https://github.com/superfly/macaroon/blob/a0202e10fd947786884323dcbce46efbe8652171/format.go#L11-L60",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/flyio/flyio.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
           "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/fly.md",
+          "https://github.com/superfly/macaroon/blob/a0202e10fd947786884323dcbce46efbe8652171/format.go#L11-L60",
+          "https://github.com/superfly/flyctl/blob/fe73b7215a0ce2ed8e846d927446c1577cbcc217/agent/server/session.go#L685",
+          "https://docs.fly.io/security/tokens/",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
           "https://github.com/redact-secret/redact-secret/issues/1109",
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
         ]
@@ -8428,7 +8563,18 @@
         "reason": "Placeholder, reference, template, mask, documentation or ordinary text. Expected silence is project policy.",
         "contract": "fly-token",
         "sources": [
+          "https://github.com/superfly/macaroon/blob/a0202e10fd947786884323dcbce46efbe8652171/format.go#L11-L60",
+          "https://github.com/trufflesecurity/trufflehog/blob/v3.97.4/pkg/detectors/flyio/flyio.go",
+          "https://github.com/gitleaks/gitleaks/blob/v8.30.1/config/gitleaks.toml",
           "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/fly.md",
+          "https://github.com/superfly/macaroon/blob/a0202e10fd947786884323dcbce46efbe8652171/format.go#L11-L60",
+          "https://github.com/superfly/flyctl/blob/fe73b7215a0ce2ed8e846d927446c1577cbcc217/agent/server/session.go#L685",
+          "https://docs.fly.io/security/tokens/",
+          "https://github.com/redact-secret/redact-secret/issues/1014#issuecomment-5900447016",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md",
+          "https://github.com/redact-secret/redact-secret/blob/3b1a5aa9935c57416a026a44f45501fd41ffeac8/docs/audits/evidence/1014/README.md#ruling-questions-for-the-maintainer",
+          "https://github.com/redact-secret/redact-secret/issues/1014",
+          "https://github.com/redact-secret/redact-secret/issues/860#issuecomment-5871306275",
           "https://github.com/redact-secret/redact-secret/issues/1109",
           "https://github.com/redact-secret/redact-secret-benchmarks/issues/583"
         ]

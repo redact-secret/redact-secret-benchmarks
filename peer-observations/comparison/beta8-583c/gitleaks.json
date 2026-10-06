@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "reportType": "normalized-peer-observation",
+  "observedAt": "2026-10-06T12:26:29.300Z",
+  "sourceRun": {
+    "runId": "2026-10-06T12:26:29.300Z-9aad9b",
+    "benchmarkRevision": "56cee45b718a68d50739d59c16135dbd99639617"
+  },
+  "input": {
+    "surface": "comparison/beta8-583c",
+    "suiteHash": "04ad4cc930c380ef46321a874f3e9ac8fe5cc7a56b28ba350c0e2a4b85b1de34",
+    "corpusHash": "2b19aac5f27837741a321932d39ecea43ce3d8e7b6e4608f56e38c10fff04580",
+    "fixtureCount": 38,
+    "fixturesDigest": "8e8d3e7b6d7235d7a692cc2ae64245a90b158efd991415af795ca0e03d32526d",
+    "semanticIndex": {
+      "schemaVersion": 1,
+      "algorithm": "sha256",
+      "digest": "e486ab4d8ebbc8e5a6f06c1cdd9d3093f228e8c0720050b7dd24bb73f980f254",
+      "fixtureCount": 6423
+    }
+  },
+  "peer": {
+    "id": "gitleaks",
+    "version": "8.30.1",
+    "mode": "Directory scan · default rules",
+    "configurationHash": "bfbc883ee23e1b5c3d3c25aa3754935a9631c166844cd42fa32e2efce58b4a05",
+    "configuration": {
+      "adapterVersion": 2,
+      "familyMappingVersion": 2,
+      "binary": "gitleaks",
+      "arguments": [
+        "dir",
+        "<input-root>",
+        "--no-banner",
+        "--no-color",
+        "--exit-code",
+        "0",
+        "--report-format",
+        "json",
+        "--report-path",
+        "-"
+      ],
+      "processLimits": {
+        "timeout": 120000,
+        "maxBuffer": 67108864
+      },
+      "rules": "default",
+      "environmentRuleOverrides": false
+    },
+    "artifactDigest": "d9c650e3c5dadf2ac78c1d7210ab769e830e4992f65bbd39568c22e93c7f5342",
+    "observedArtifact": {
+      "platform": "darwin-arm64",
+      "digest": "b40ab0ae55c505963e365f271a8d3846efbc170aa17f2607f13df610a9aeb6a5"
+    },
+    "adapterDigest": "d6bb2cfd694cf7ab89f247f963c617ded19f42e4095dece57e7a9d174f6d74d8"
+  },
+  "replay": {
+    "protocol": "sorted-normalized-ranges-v1",
+    "count": 2,
+    "agreed": true
+  },
+  "findings": [
+    {
+      "path": "cases/sourcegraph-token-actions-env.yml",
+      "start": 118,
+      "end": 162
+    },
+    {
+      "path": "cases/sourcegraph-token-auth-token-header.sh",
+      "start": 78,
+      "end": 139
+    },
+    {
+      "path": "cases/sourcegraph-token-auth-token-header.sh",
+      "start": 78,
+      "end": 139
+    },
+    {
+      "path": "cases/sourcegraph-token-bare-prose.md",
+      "start": 65,
+      "end": 126
+    },
+    {
+      "path": "cases/sourcegraph-token-bearer-header.http",
+      "start": 76,
+      "end": 120
+    },
+    {
+      "path": "cases/sourcegraph-token-body-39-twin.env",
+      "start": 24,
+      "end": 67,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sourcegraph-token-dash-separator-twin.json",
+      "start": 16,
+      "end": 60,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sourcegraph-token-dotenv.env",
+      "start": 24,
+      "end": 68
+    },
+    {
+      "path": "cases/sourcegraph-token-export.sh",
+      "start": 25,
+      "end": 75
+    },
+    {
+      "path": "cases/sourcegraph-token-identifier-33-twin.json",
+      "start": 200,
+      "end": 278,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sourcegraph-token-identifier-hyphen-twin.py",
+      "start": 36,
+      "end": 90,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sourcegraph-token-identifier-without-underscore-twin.http",
+      "start": 64,
+      "end": 124,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sourcegraph-token-json-api-key.json",
+      "start": 16,
+      "end": 60
+    },
+    {
+      "path": "cases/sourcegraph-token-json-token.json",
+      "start": 14,
+      "end": 64
+    },
+    {
+      "path": "cases/sourcegraph-token-mcp-env.json",
+      "start": 200,
+      "end": 244
+    },
+    {
+      "path": "cases/sourcegraph-token-sdk-kwarg.py",
+      "start": 36,
+      "end": 80
+    },
+    {
+      "path": "cases/sourcegraph-token-sgd-64-twin.yml",
+      "start": 118,
+      "end": 186,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sourcegraph-token-sgph-prefix-twin.sh",
+      "start": 62,
+      "end": 107,
+      "family": "generic-token"
+    },
+    {
+      "path": "cases/sourcegraph-token-src-login.sh",
+      "start": 62,
+      "end": 112
+    },
+    {
+      "path": "cases/sourcegraph-token-trailing-underscore-glue-twin.sh",
+      "start": 78,
+      "end": 140
+    },
+    {
+      "path": "cases/sourcegraph-token-uppercase-prefix-twin.json",
+      "start": 14,
+      "end": 64
+    },
+    {
+      "path": "cases/sourcegraph-token-x-api-key-header.http",
+      "start": 64,
+      "end": 125
+    }
+  ],
+  "digest": "b398fd3b81f47cce7ae44430a92c2081963f32ce32a2b94ee5324bd677fafc55"
+}

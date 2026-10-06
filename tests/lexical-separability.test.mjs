@@ -23,6 +23,11 @@ test('a deliberately introduced inseparable pair fails the check', () => {
   assert.equal(violations[0].examplePositiveId, 'test-family-positive');
 });
 
+test('an unscored T0 control (a disputed property) never conflicts with a same-contract positive', () => {
+  const t0 = negative('value="tf_abcd1234"\n', { assessment: { kind: 'must-not-flag', tier: 'T0', reason: 'Not asserted: disputed property', sources: [], contract: 'test-family' } });
+  assert.deepEqual(checkLexicalSeparability([positive(), t0], testContracts), []);
+});
+
 test('a twin mutated outside the pattern is separable', () => {
   const violations = checkLexicalSeparability([positive(), negative('value="tf_abcd123"\n', { twinOf: 'test-family-positive', mutation: 'length: 7 vs contracted 8', mutationKind: 'length' })], testContracts);
   assert.equal(violations.length, 0);

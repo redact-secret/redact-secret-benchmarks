@@ -16,7 +16,7 @@ The pointer and the index are two separate objects. S3 sync and `s3 cp` are not 
 1. Local, before signing in: `eval:publish` writes and validates the bundle in `public/results`; `node --import tsx scripts/assemble-site.mjs` copies only the bundle the pointer names (staging directories, `*.tmp` renames, `results-output/`, raw discovery files and every other bundle are filtered out), validates the whole bundle by streaming, and asserts nothing staged is in `dist`; `features:check-public`, `blind:check-public` and `evaluation-bundle:check-publication` then run over `dist`.
 2. `_next/static` (immutable), then the PII immutable artifact (existing order, unchanged).
 3. Read the live pointer (`previous_id`), then upload `results/evaluation-bundles/<id>/` with `aws s3 sync` (no `--delete`, immutable cache-control).
-4. Read back the uploaded directory from S3 and run `check-evaluation-bundle-publication.mjs --readback` (digest, schema, totals, exclusion rules over every referenced file, no unreferenced object, manifest digest equal to the one the pointer will commit to). Failure stops the publish with the old pointer and index untouched.
+4. Verify availability from the bucket listing and run `check-evaluation-bundle-publication.mjs --listing` (every file of the validated bundle present with its size and, for single-part uploads, its MD5). The publisher role can list and write the bucket but cannot read objects (no `s3:GetObject`), so the bytes are validated in `dist` before the upload and the listing proves the bucket holds them; what is live (the previous pointer and index, the retention planner's live pointer) is read over HTTPS from the site. Failure stops the publish with the old pointer and index untouched. `--readback=<dir>` remains for rehearsals and for an operator who has read access.
 5. `aws s3 sync dist ... --delete` for everything else (HTML, the ledger and support artifacts), excluding `assets/*`, `_next/static/*`, the PII artifacts, `results/evaluation-bundles/*`, `results/evaluation-bundle-v1.json`, `results/rollback/*` and the domain index. Old bundle directories therefore survive `--delete`.
 6. Copy the live pointer and index to `results/rollback/` (skipped when the bundle being published is already live, so a re-run never overwrites the rollback target).
 7. Upload `evaluation-bundle-v1.json`, then `evaluation-domains-v2.json`, last.
@@ -46,7 +46,7 @@ aws s3 cp "s3://$BUCKET/results/rollback/evaluation-bundle-v1.json" "s3://$BUCKE
 aws s3 cp "s3://$BUCKET/results/rollback/evaluation-domains-v2.json" "s3://$BUCKET/results/evaluation-domains-v2.json" --cache-control no-cache
 ```
 
-Then invalidate `/results/*`. The previous bundle's directory is retained by the rule above, so every part is present; verify with `check-evaluation-bundle-publication.mjs --readback=<synced results dir>`. Rolling the whole site back (HTML included) is still redeploying an earlier workflow commit.
+Then invalidate `/results/*`. The previous bundle's directory is retained by the rule above, so every part is present; verify with `check-evaluation-bundle-publication.mjs --listing` (or `--readback=<synced results dir>` with read access). Rolling the whole site back (HTML included) is still redeploying an earlier workflow commit.
 
 ## Guards
 

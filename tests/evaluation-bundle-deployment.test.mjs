@@ -222,9 +222,30 @@ test('assembling filters staging files and unreferenced bundles, validates the b
 test('publish-site.yml uploads the bundle, verifies it, and moves the pointer and the index last, outside the --delete sync', async () => {
   const workflow = await readFile(new URL('../.github/workflows/publish-site.yml', import.meta.url), 'utf8');
   const at = text => { const i = workflow.indexOf(text); assert.ok(i >= 0, `publish-site.yml has no ${text}`); return i; };
-  const order = ['evaluation-bundles/$bundle_id" --only-show-errors', 'check-evaluation-bundle-publication.mjs --readback', 'aws s3 sync dist "s3://$bucket"', 'results/rollback/$marker', 'aws s3 cp dist/results/evaluation-bundle-v1.json "s3://$bucket', 'aws s3 cp dist/results/evaluation-domains-v2.json "s3://$bucket', 'evaluation-bundle-retention.mjs'].map(at);
+  const order = ['evaluation-bundles/$bundle_id" --only-show-errors', 'check-evaluation-bundle-publication.mjs --listing', 'aws s3 sync dist "s3://$bucket"', 'results/rollback/evaluation-bundle-v1.json', 'aws s3 cp dist/results/evaluation-bundle-v1.json "s3://$bucket', 'aws s3 cp dist/results/evaluation-domains-v2.json "s3://$bucket', 'evaluation-bundle-retention.mjs'].map(at);
   assert.deepEqual(order, [...order].sort((x, y) => x - y), 'bundle directory, read-back, sync, rollback copies, pointer, index, then the separate prune');
   const sync = workflow.slice(at('aws s3 sync dist "s3://$bucket"'), at('aws s3 sync dist "s3://$bucket"') + 600);
   for (const excluded of ["'results/evaluation-bundles/*'", "'results/evaluation-bundle-v1.json'", "'results/rollback/*'"]) assert.ok(sync.includes(excluded), `the --delete sync excludes ${excluded}`);
   assert.ok(workflow.includes('public, max-age=31536000, immutable') && workflow.includes("'no-cache'"));
+});
+
+test('the upload is verified from the bucket listing (the publisher role cannot read objects): missing, resized and altered objects are refused', async () => {
+  const { createHash } = await import('node:crypto');
+  const { listingProblems } = await import('../scripts/lib/evaluation-bundle-deployment.mjs');
+  const { mkdtemp, mkdir, writeFile } = await import('node:fs/promises');
+  const { tmpdir } = await import('node:os');
+  const dist = await mkdtemp(path.join(tmpdir(), 'listing-'));
+  const id = 'a'.repeat(32), dir = path.join(dist, 'results', 'evaluation-bundles', id);
+  try {
+    await mkdir(path.join(dir, 'cases'), { recursive: true });
+    const files = { 'manifest.json': '{"a":1}\n', 'cases/twin-0000.json': '{"b":2}\n' };
+    for (const [name, text] of Object.entries(files)) await writeFile(path.join(dir, name), text);
+    const rows = Object.entries(files).map(([name, text]) => ({ Key: `results/evaluation-bundles/${id}/${name}`, Size: Buffer.byteLength(text), ETag: `"${createHash('md5').update(text).digest('hex')}"` }));
+    assert.deepEqual(await listingProblems({ rows, dist, bundleId: id }), []);
+    assert.match((await listingProblems({ rows: rows.slice(1), dist, bundleId: id })).join(), /is not in the bucket/);
+    assert.match((await listingProblems({ rows: [{ ...rows[0], Size: 1 }, rows[1]], dist, bundleId: id })).join(), /bytes in the bucket/);
+    assert.match((await listingProblems({ rows: [{ ...rows[0], ETag: '"' + '0'.repeat(32) + '"' }, rows[1]], dist, bundleId: id })).join(), /another MD5/);
+    assert.deepEqual(await listingProblems({ rows: [{ ...rows[0], ETag: '"abc-3"' }, rows[1]], dist, bundleId: id }), [], 'a multipart ETag is not an MD5, the size still binds');
+    assert.match((await listingProblems({ rows: null, dist, bundleId: id })).join(), /not in the bucket/);
+  } finally { await rm(dist, { recursive: true, force: true }); }
 });

@@ -4,6 +4,7 @@
  *
  *   node --import tsx scripts/check-evaluation-bundle-publication.mjs [--dist=dist] [--no-index]
  *   node --import tsx scripts/check-evaluation-bundle-publication.mjs --readback=<results dir> --sha256=<manifest sha256>
+ *   node --import tsx scripts/check-evaluation-bundle-publication.mjs --listing=<list-objects-v2 rows json> --bundle=<id> [--dist=dist]
  *
  * Site mode: no staging or internal raw file anywhere under dist; the pointer resolves to its manifest; the bundle directory holds exactly the referenced files; the whole bundle validates by streaming
  * (digests, schema, totals); the feature-dataset and blind-public rules run over every referenced file; and the domain index commits to the same manifest digest as the pointer.
@@ -12,12 +13,20 @@
  */
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { bundleProblems, publicationProblems } from './lib/evaluation-bundle-deployment.mjs';
+import { readFile } from 'node:fs/promises';
+import { bundleProblems, listingProblems, publicationProblems } from './lib/evaluation-bundle-deployment.mjs';
 
 const args = Object.fromEntries(process.argv.slice(2).map(arg => { const m = /^--([a-z0-9-]+)(?:=(.*))?$/.exec(arg); if (!m) throw new Error(`Unknown argument ${arg}`); return [m[1], m[2] ?? true]; }));
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   let report;
+  if (args.listing) {
+    // The publisher role cannot read objects back, so availability is the bucket listing (keys, sizes, MD5 ETags) against the validated dist files.
+    const problems = await listingProblems({ rows: JSON.parse(await readFile(String(args.listing), 'utf8')) ?? [], dist: path.resolve(String(args.dist ?? 'dist')), bundleId: String(args.bundle ?? '') });
+    if (problems.length) { console.error(`Evaluation bundle availability check failed:\n${problems.map(p => `  - ${p}`).join('\n')}`); process.exitCode = 1; }
+    else console.log(`Evaluation bundle ${args.bundle}: every file is in the bucket with its size and MD5.`);
+    process.exit(process.exitCode ?? 0);
+  }
   if (args.readback) {
     report = await bundleProblems(path.resolve(String(args.readback)), { onlyCurrentBundle: false });
     if (args.sha256 && report.pointer && report.pointer.manifest.sha256 !== args.sha256) report.problems.push('the read-back pointer commits to another manifest than the one published');

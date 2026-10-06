@@ -132,7 +132,7 @@
         "runId": "37314155819",
         "conclusion": "success",
         "verifiedOn": "2026-10-05",
-        "verified": "/evaluation/credential/, /report/, /report/families/ and /evaluation/qualification/ fetched: 123 stable of 135 families, 0.1.0-beta.13, snapshot-2026.10.05, credential-eval alpha.5, and the disclosure \"Maintainer-reviewed (independent review pending)\" / \"\uba54\uc778\ud14c\uc774\ub108 \uac80\ud1a0 (\ub3c5\ub9bd \uac80\ud1a0 \ub300\uae30)\""
+        "verified": "/evaluation/credential/, /report/, /report/families/ and /evaluation/qualification/ fetched: 123 stable of 135 families, 0.1.0-beta.13, snapshot-2026.10.05, credential-eval alpha.5, and the disclosure \"Maintainer-reviewed (independent review pending)\" / \"메인테이너 검토 (독립 검토 대기)\""
       },
       "production": {
         "environment": "production",
@@ -142,7 +142,7 @@
         "runId": "37317385667",
         "conclusion": "success",
         "verifiedOn": "2026-10-05",
-        "verified": "/evaluation/credential/, /report/, /report/families/ and /evaluation/qualification/ fetched: 123 stable of 135 families, 0.1.0-beta.13, snapshot-2026.10.05, credential-eval alpha.5, and the disclosure \"Maintainer-reviewed (independent review pending)\" / \"\uba54\uc778\ud14c\uc774\ub108 \uac80\ud1a0 (\ub3c5\ub9bd \uac80\ud1a0 \ub300\uae30)\"",
+        "verified": "/evaluation/credential/, /report/, /report/families/ and /evaluation/qualification/ fetched: 123 stable of 135 families, 0.1.0-beta.13, snapshot-2026.10.05, credential-eval alpha.5, and the disclosure \"Maintainer-reviewed (independent review pending)\" / \"메인테이너 검토 (독립 검토 대기)\"",
         "promotion": "npm run go-production: pull request #716 fast-forwarded main to develop; no merge commit"
       }
     },
@@ -190,16 +190,16 @@
     }
   },
   "evidenceCandidate": {
-    "evidenceRelease": "snapshot-2026.10.06.2",
-    "sourceRevision": "dd0e16d6df612aac0b3944e3fb5d49eb70b46b05",
-    "manifestDigest": "sha256:439d250706947044aaad6fe4d06363f935c4706b0871dc1868dd0c5350e16d05",
-    "snapshotDigest": "sha256:ee5b4fcfd8c4a695d18c574eb336cc77c8586be15db20ccb31b7526e610028d2",
-    "evidenceSchema": "credential-evidence/schema/1.7.0",
-    "evidenceRevision": "records-tree-sha256:f4eeee99f42af86125926de3173e645ec98dc0a2f83ef37461419cad569b869a",
-    "adoptionKey": "sha256:b837e97b4b4392dffea924874bee27a20a56838d808f3b5f573e5d29b99a1aad",
+    "evidenceRelease": "snapshot-2026.10.06.4",
+    "sourceRevision": "77ce7618d104ff30588a6ec96cc392645a5c0e5b",
+    "manifestDigest": "sha256:d2e966e6106d4e5de2b79cc301149a70c950bec313ae981f3877ab2e81fcdda3",
+    "snapshotDigest": "sha256:2319e44084d4db2fc984c31fd07f091c6228e360ea5e6b9b5d65dabaae9d809a",
+    "evidenceSchema": "credential-evidence/schema/1.8.0",
+    "evidenceRevision": "records-tree-sha256:392a04e91c9ba774e16c33b4443039e506f6d641fe1a2fd082c0aeb0929234b6",
+    "adoptionKey": "sha256:95ff2d213b4ee15c814a50355a9dc0a4c23267762c38b8a21ac5ec86446f219d",
     "engine": {
-      "tag": "v0.1.0-alpha.13",
-      "revision": "c640c89d4ef95b949682f87b5bc4e8f238dc31e2"
+      "tag": "v0.1.0-alpha.15",
+      "revision": "0024de695a8225974e7b8a60197f0804cffef1f7"
     },
     "engineCompatibility": {
       "compatible": true,
@@ -215,8 +215,8 @@
         "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d"
       },
       "to": {
-        "tag": "v0.1.0-alpha.13",
-        "revision": "c640c89d4ef95b949682f87b5bc4e8f238dc31e2"
+        "tag": "v0.1.0-alpha.15",
+        "revision": "0024de695a8225974e7b8a60197f0804cffef1f7"
       },
       "runArtifactSchemaSha256": "sha256:cd80c3df7fd8c788cf6de97fe36f5da6041398c6217e8b845a7803b294f14a9a",
       "note": "Applied only at acceptance, by candidate.acceptance.patch; the active registry stays on the previous engine and the old accepted runs until the owner accepts."
@@ -226,79 +226,14 @@
       "new": 7036,
       "added": 517,
       "removed": 0,
-      "changed": 11,
-      "unchanged": 6508
+      "changed": 28,
+      "unchanged": 6491
     },
-    "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.06.2.json",
+    "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.06.4.json",
     "replay": {
-      "state": "replayed",
-      "via": "The PUBLISHED @redact-secret/core 0.1.0-beta.13 on credential-eval v0.1.0-alpha.13, WITHOUT the optional OpenRedaction default profile (official-runs.yml input omit_optional=openredaction, #763): one dispatch on the transient replay branch replay/snapshot-2026.10.06.2-b837e97b4b43-control (revision 8a681bf19644a9c4ebabb45697265340cfcb8142: the repository at the candidate commit plus the evidence pin, the engine pin (alpha.13 and its RunArtifact schema) and an empty runs[] only; patch kept as docs/generated/evidence-adoption/snapshot-2026.10.06.2.replay-pins.patch; branch deleted after archiving), plain and methods, linux-x64, two engine runs each with equal semantic digests. The moved engine is why scripts/run-evidence-replay.mjs (which refuses an engine other than the active pin) was not used for dispatch; the archive and checks mirror its collect step.",
-      "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37447804171",
-      "benchmarkRevision": "8a681bf19644a9c4ebabb45697265340cfcb8142",
-      "archive": {
-        "release": "official-runs-37447804171",
-        "sha256": "sha256:19146812863b7319bec701d34453c6667cb4414323cef96acfc1d1dd33e867c4"
-      },
-      "semanticDigests": {
-        "public-evidence-snapshot": "sha256:5fbd028caba76d2f2473655f9f6345f5bbe94ca6c1ee309847a8ecbc17327f31",
-        "public-evidence-snapshot+methods": "sha256:8a47aee163658fbd87b5e5c3c5f043924f22f9b2e52a0a968b89da0cdca2dcd6",
-        "regression-corpus": "sha256:844e3bf7ec40c6362a2d19be74b68819c525ba95d9c3151b9675c56bec18b88c",
-        "policy-corpus": "sha256:7e609c90cc2fe777904e4f7cf454f15be9dff0aa784e63b57b6c9b63758d5f4e"
-      },
-      "recordedRuns": [
-        {
-          "id": "policy-corpus@linux-x64",
-          "semanticDigest": "sha256:7e609c90cc2fe777904e4f7cf454f15be9dff0aa784e63b57b6c9b63758d5f4e",
-          "byteDigest": "sha256:f7d340243a3df337b3a36a2b3a3aa30cd18a7ed3acc233f235258ca753082466",
-          "configHash": "sha256:da7118d90b6791f27e32ca4d6363ce9ad9610d0a2d4b992b160d968e6bda87b0",
-          "caseCounts": {
-            "flare-redact": 19,
-            "gitleaks": 19,
-            "redact-secret": 19,
-            "trufflehog": 19
-          }
-        },
-        {
-          "id": "public-evidence-snapshot+methods@linux-x64",
-          "semanticDigest": "sha256:8a47aee163658fbd87b5e5c3c5f043924f22f9b2e52a0a968b89da0cdca2dcd6",
-          "byteDigest": "sha256:51836c5db51f12ab0f76cc7ef5a85ec4662d4d13f0cfe5d651413f996baf7246",
-          "configHash": "sha256:95bd486e034d2f13890e7da727cdc17771c4c2518d207e005428af05ee7cdfb4",
-          "caseCounts": {
-            "flare-redact": 38849,
-            "gitleaks": 38849,
-            "redact-secret": 38849,
-            "trufflehog": 38849
-          }
-        },
-        {
-          "id": "public-evidence-snapshot@linux-x64",
-          "semanticDigest": "sha256:5fbd028caba76d2f2473655f9f6345f5bbe94ca6c1ee309847a8ecbc17327f31",
-          "byteDigest": "sha256:e96e08873b75f2ff8aa9bd3d925b60ce46c792a204ee52e16e79b35d64d418ad",
-          "configHash": "sha256:da7118d90b6791f27e32ca4d6363ce9ad9610d0a2d4b992b160d968e6bda87b0",
-          "caseCounts": {
-            "flare-redact": 7036,
-            "gitleaks": 7036,
-            "redact-secret": 7036,
-            "trufflehog": 7036
-          }
-        },
-        {
-          "id": "regression-corpus@linux-x64",
-          "semanticDigest": "sha256:844e3bf7ec40c6362a2d19be74b68819c525ba95d9c3151b9675c56bec18b88c",
-          "byteDigest": "sha256:07303ef7769e259c2e68182061608fbe73a98376d212c3852cff4bf006d7d0a2",
-          "configHash": "sha256:da7118d90b6791f27e32ca4d6363ce9ad9610d0a2d4b992b160d968e6bda87b0",
-          "caseCounts": {
-            "flare-redact": 153,
-            "gitleaks": 153,
-            "redact-secret": 153,
-            "trufflehog": 153
-          }
-        }
-      ],
-      "note": "An exploratory replay for the evidence candidate: never an accepted run, and nothing is recorded in runs[]. OpenRedaction default: not measured in this run (optional); its last measurement is the accepted run's (engine alpha.5, 2026-10-05, historicalRuns). 8.3 runner-minutes.",
-      "omittedOptionalScanners": [
-        "openredaction"
-      ]
+      "state": "pending",
+      "via": ".github/workflows/official-runs.yml after the acceptance repin",
+      "recordedRuns": []
     },
     "ownerAcceptance": null,
     "deployment": {
@@ -311,20 +246,9 @@
       "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
     },
     "supersedesEvidenceCandidate": {
-      "evidenceRelease": "snapshot-2026.10.05.2",
-      "adoptionKey": "sha256:fbbeeca867db0f3db61e687709e22d7deb29792fcabb8a6f520302ae5f1256cb",
-      "removedAcceptancePatch": "docs/generated/evidence-adoption/snapshot-2026.10.05.2.acceptance.patch",
-      "note": "Superseded before acceptance by snapshot-2026.10.06.2. Its prepared acceptance patch and digest file are removed (a patch that no longer matches the record must not be applied by mistake); its report and data stay as history."
-    },
-    "contrast": {
-      "report": "docs/generated/evidence-adoption/snapshot-2026.10.06.2.contrast.md",
-      "data": "docs/generated/evidence-adoption/snapshot-2026.10.06.2.contrast.json",
-      "note": "Control against the accepted control by semantic id: 4,925 differences, all attributed (corpus 244, engine twin scoping 613 with two mechanisms for five families, roster 4,068), 0 unexplained, 0 regressions. Mechanisms (#772): provider-wide coverage (anthropic, draft 01) and the product's security-first Vercel fallback (draft 02); no isolating replay was made."
-    },
-    "viewEffect": {
-      "report": "docs/generated/evidence-adoption/snapshot-2026.10.06.2.view-effect.md",
-      "data": "docs/generated/evidence-adoption/snapshot-2026.10.06.2.view-effect.json",
-      "note": "If accepted: stable 123 -> 116, provisional 20 -> 27 (two Polar families by the corpus, five anthropic/vercel families by the engine twin scoring: two Anthropic by provider-wide coverage, three Vercel by the product's documented fallback, #772); OpenRedaction default not measured."
+      "evidenceRelease": "snapshot-2026.10.06.2",
+      "adoptionKey": "sha256:b837e97b4b4392dffea924874bee27a20a56838d808f3b5f573e5d29b99a1aad",
+      "note": "Superseded before acceptance by snapshot-2026.10.06.4. its report and data stay as history."
     }
   },
   "engineCandidate": {

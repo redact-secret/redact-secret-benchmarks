@@ -6,14 +6,19 @@
  *
  *   node scripts/record-deployment-receipt.mjs --environment staging|production --run <publish-site.yml run id> [--promotion <text>] [--write]
  *
- * Without --write the receipt is printed and nothing changes. The accepted adoption must exist (state `accepted`, an owner acceptance) and the run's commit must contain it, so a
+ * Without --write the receipt is printed, the report update is rendered and validated, and nothing changes (a dry run writes nothing). The accepted adoption must exist (state `accepted`, an owner acceptance) and the run's commit must contain it, so a
  * deployment that predates the acceptance cannot be recorded as the acceptance's. The record is `candidate.deployment.<environment>`; a different receipt already recorded for the
  * environment is refused (a later deployment is a new receipt only with --replace). It never writes the authority file or an owner acceptance, and never promotes anything.
+ *
+ * The adoption report follows the record (#792): the comparison state and the Markdown report are re-rendered from the updated record by the unchanged `compare-adoption-views.ts --from-comparison`
+ * (original inputs, identity-checked, measurements frozen), validated, and committed with the record by one recoverable commit (adoption-report-sync.mjs, #793). A pre-apply failure changes no file.
+ * Recording the same run again keeps the recorded receipt and repairs a stale report; another run needs --replace; the other environment's receipt is preserved. No scanner, release, acceptance or deployment is triggered.
  */
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { RECORD, commitFiles, finishCommit, pendingCommit, sha, stageReport } from './adoption-report-sync.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPOSITORY = 'redact-secret/redact-secret-benchmarks';
@@ -63,6 +68,19 @@ export function buildReceipt({ environment, run, pages, accepted, verifiedOn, pr
   };
 }
 
+/**
+ * Pure: the updated record text for a receipt. The same run again keeps the recorded receipt (its verification date is evidence, not a clock); another run needs `replace`.
+ * Returns { text, receipt, repair } where `repair` means the record is unchanged and only the report is re-rendered.
+ */
+export function planRecord({ adoption, environment, receipt, replace }) {
+  const accepted = adoption.candidate, existing = accepted.deployment?.[environment];
+  if (existing && existing.runId !== receipt.runId && !replace) throw new Error(`a receipt for run ${existing.runId} is recorded for ${environment}; pass --replace to record run ${receipt.runId}`);
+  const repair = Boolean(existing && existing.runId === receipt.runId);
+  const kept = repair ? existing : receipt;
+  const next = { ...adoption, candidate: { ...accepted, deployment: { ...(accepted.deployment ?? { staging: null, production: null }), [environment]: kept } } };
+  return { text: `${JSON.stringify(next, null, 2)}\n`, receipt: kept, repair };
+}
+
 const sh = (command, args) => execFileSync(command, args, { encoding: 'utf8', cwd: root, stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 64 * 1024 * 1024 });
 
 async function fetchPages(environment) {
@@ -79,8 +97,10 @@ if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.ar
   try {
     const environment = option('environment'), runId = option('run');
     if (!SITES[environment] || !/^\d+$/.test(runId ?? '')) throw new Error('--environment staging|production and --run <publish-site.yml run id> are required');
-    const file = path.join(root, 'benchmarks/evidence-adoption.json');
-    const adoption = JSON.parse(readFileSync(file, 'utf8'));
+    if (pendingCommit(root)) await finishCommit({ root }); // an interrupted earlier commit is rolled forward before anything new is staged
+    const read = p => readFileSync(path.join(root, p));
+    const recordBytes = read(RECORD);
+    const adoption = JSON.parse(recordBytes.toString('utf8'));
     if (adoption.state !== 'accepted' || !adoption.candidate?.ownerAcceptance) throw new Error('there is no accepted adoption with an owner acceptance to record a deployment of');
     const accepted = adoption.candidate;
     const run = JSON.parse(sh('gh', ['run', 'view', runId, '-R', REPOSITORY, '--json', 'databaseId,conclusion,event,headBranch,headSha,workflowName']));
@@ -88,14 +108,22 @@ if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.ar
     // The commit must hold the acceptance of this release: read the record as it was at that commit.
     let commitHasAcceptance = false;
     try {
-      const at = JSON.parse(sh('git', ['show', `${run.headSha}:benchmarks/evidence-adoption.json`]));
+      const at = JSON.parse(sh('git', ['show', `${run.headSha}:${RECORD}`]));
       commitHasAcceptance = at.state === 'accepted' && at.candidate?.evidenceRelease === accepted.evidenceRelease && Boolean(at.candidate?.ownerAcceptance);
     } catch { commitHasAcceptance = false; }
     const receipt = buildReceipt({ environment, run, pages: await fetchPages(environment), accepted, commitHasAcceptance, verifiedOn: new Date().toISOString().slice(0, 10), promotion: option('promotion') });
-    const existing = accepted.deployment?.[environment];
-    if (existing && existing.runId !== receipt.runId && !args.includes('--replace')) throw new Error(`a receipt for run ${existing.runId} is recorded for ${environment}; pass --replace to record run ${receipt.runId}`);
-    if (!args.includes('--write')) { console.log(JSON.stringify(receipt, null, 2)); process.exit(0); }
-    writeFileSync(file, `${JSON.stringify({ ...adoption, candidate: { ...accepted, deployment: { ...(accepted.deployment ?? { staging: null, production: null }), [environment]: receipt } } }, null, 2)}\n`);
-    console.log(`Recorded the ${environment} receipt of ${accepted.evidenceRelease} (run ${receipt.runId}).`);
+    const plan = planRecord({ adoption, environment, receipt, replace: args.includes('--replace') });
+    // Stage and validate the whole update (record + comparison state + Markdown) before anything is written.
+    const staged = await stageReport({ root, recordText: plan.text });
+    const files = { [RECORD]: plan.text, ...staged.files };
+    const expected = { [RECORD]: sha(recordBytes), ...staged.sources };
+    const changed = Object.fromEntries(Object.entries(files).filter(([p, text]) => read(p).toString('utf8') !== text));
+    if (!args.includes('--write')) {
+      console.log(JSON.stringify(plan.receipt, null, 2));
+      console.error(`Dry run: ${plan.repair ? 'the receipt is already recorded; ' : ''}would write ${Object.keys(changed).join(', ') || 'nothing (the record and the report are current)'}.`);
+      process.exit(0);
+    }
+    await commitFiles({ root, files: changed, expected });
+    console.log(`Recorded the ${environment} receipt of ${accepted.evidenceRelease} (run ${plan.receipt.runId}); updated ${Object.keys(changed).join(', ') || 'nothing'}.`);
   } catch (error) { console.error(`deployment receipt refused: ${error.message}`); process.exit(1); }
 }

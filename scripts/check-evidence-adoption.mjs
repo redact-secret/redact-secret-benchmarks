@@ -1,7 +1,7 @@
 /**
  * CI gate (#690): `benchmarks/evidence-adoption.json` records the one evidence-snapshot adoption in flight. This gate checks structure
  * and consistency only: a candidate is never the active pin, never carries an owner acceptance, and names an existing change report;
- * an accepted adoption is the active pin and carries the owner's acceptance. It reads no measurement and writes nothing. It never
+ * an accepted adoption is the active pin and carries the owner's acceptance. It reads no measurement and writes nothing; for an accepted adoption it also re-renders the active report from the record and refuses a stale comparison state or Markdown, or a pending interrupted receipt commit (#793, `adoption-report-sync.mjs`). It never
  * reads or writes the authority file: renewing that is the owner's separate, reviewed change. Spec: docs/specs/evidence-adoption.md.
  *
  * Run: npm run adoption:check
@@ -9,6 +9,7 @@
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
+import { freshnessProblems } from './adoption-report-sync.mjs';
 
 const root = new URL('../', import.meta.url);
 const DIGEST = /^sha256:[0-9a-f]{64}$/;
@@ -111,7 +112,9 @@ export function checkEvidenceAdoption() {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const problems = checkEvidenceAdoption();
+  // Structure first; then the freshness of the ACTIVE report against the record (#793): a local, deterministic re-render, no remote receipt check and no scanner. Superseded reports stay historical.
+  const structure = checkEvidenceAdoption();
+  const problems = [...structure, ...(structure.length ? [] : await freshnessProblems())];
   if (problems.length) { console.error(`${problems.length} evidence-adoption problem(s):\n${problems.map(p => `  - ${p}`).join('\n')}`); process.exit(1); }
   console.log(`Evidence adoption: ${readJson('benchmarks/evidence-adoption.json').state}; active pins are untouched by a candidate and no owner acceptance is fabricated.`);
 }

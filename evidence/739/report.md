@@ -1,5 +1,7 @@
 # Batch 2 (#739): measured results
 
+> Round 3 (replay of candidate 4e004108 on the unchanged corpora; the 17 rows with a reproduced gap are fixed and replay-verified) is in `round3/report.md`; round 2 is in `round2/report.md`. This file is the round-1 report.
+
 Frozen corpus `sha256:74fed38245503b63d55247f0da2da8e27a271de5467b3b06146ebef0c4f7a4f1` (486 cases: 200 positives, 203 controls, 81 unsupported, 2 conflict), committed before any scan. Expectations come from the evidence handoff (credential-evidence `005a7331`) and the adopted product contract (redact-secret #1231, `a148dadf`), never from observed output.
 
 - Baseline: npm @redact-secret/core 0.1.0-beta.13 (+ @redact-secret/wasm, node-darwin-arm64), PyPI redact-secret 0.1.0b13, crates.io redact-secret-cli 0.1.0-beta.13 built with cargo install --locked. Versions: {"node":"0.1.0-beta.13","wasm":"0.1.0-beta.13","python":"0.1.0b13","cli":"0.1.0-beta.13"}.

@@ -32,7 +32,7 @@ const registryOf = (version = '0.1.0-beta.1') => ({ scanners: [{ id: 'redact-sec
 const run = (files, strict = false) => {
   const dir = mkdtempSync(path.join(tmpdir(), 'compare-views-'));
   const write = (name, value) => { const file = path.join(dir, name); writeFileSync(file, JSON.stringify(value)); return file; };
-  const args = ['--import', 'tsx', script, '--accepted', write('a.json', files.A), '--replay-old', write('b.json', files.B), '--candidate', write('c.json', files.C), '--report', write('r.json', { evidenceRelease: 'snapshot-test', diff: { added: files.added, evidenceClassTransitions: {} }, ...(files.report ?? {}) }), '--out-json', path.join(dir, 'out.json'), '--out-md', path.join(dir, 'out.md'), ...(files.superseded ? ['--superseded-comparison', write('s.json', files.superseded)] : []), '--record', write('record.json', files.record ?? recordOf('candidate')), '--registry', write('registry.json', registryOf()), ...(strict ? ['--strict'] : [])];
+  const args = ['--import', 'tsx', script, '--accepted', write('a.json', files.A), '--replay-old', write('b.json', files.B), '--candidate', write('c.json', files.C), '--report', write('r.json', { evidenceRelease: 'snapshot-test', diff: { added: files.added, evidenceClassTransitions: {} }, ...(files.report ?? {}) }), '--out-json', path.join(dir, 'out.json'), '--out-md', path.join(dir, 'out.md'), ...(files.superseded ? ['--superseded-comparison', write('s.json', files.superseded)] : []), '--record', write('record.json', files.record ?? recordOf('candidate')), '--registry', write('registry.json', registryOf()), ...(files.engineMoved ? ['--engine-from', 'v0.1.0-alpha.5', '--engine-to', 'v0.1.0-alpha.15'] : []), ...(strict ? ['--strict'] : [])];
   files.dir = dir;
   const proc = spawnSync('node', args, { encoding: 'utf8' });
   return { status: proc.status, stderr: proc.stderr, out: proc.status === 0 || strict ? JSON.parse(readFileSync(path.join(dir, 'out.json'), 'utf8')) : null, md: readFileSync(path.join(dir, 'out.md'), 'utf8') };
@@ -71,6 +71,16 @@ test('an engine effect is never hidden: a replayed corpus that differs from the 
   const { out } = run({ A: base, B: replay, C: structuredClone(base), added: [] });
   assert.equal(out.engineEffect.publicCasesWithAnyDifference, 1);
   assert.ok(out.unexplained.some(u => /engine effect/.test(u)));
+});
+
+test('when the adoption moves the engine, an engine effect on the same corpus is reported, never refused; with the same engine it stays a defect (#690)', () => {
+  const base = view({ families: [family('fam-a', {})], cases: [makeCase('c1')] });
+  const replay = view({ families: [family('fam-a', {})], cases: [makeCase('c1', { results: [result('s', true)] })] });
+  const moved = run({ A: base, B: replay, C: structuredClone(replay), added: [], engineMoved: true });
+  assert.equal(moved.out.engineEffect.publicCasesWithAnyDifference, 1, 'the effect is reported');
+  assert.ok(!moved.out.unexplained.some(u => /engine effect/.test(u)), 'a moved engine is not a refusal');
+  const same = run({ A: base, B: replay, C: structuredClone(replay), added: [] });
+  assert.ok(same.out.unexplained.some(u => /engine effect/.test(u)), 'the same engine is');
 });
 
 test('a common case whose outcome changes without a twin family assignment is unexplained', () => {

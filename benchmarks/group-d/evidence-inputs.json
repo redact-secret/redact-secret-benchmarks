@@ -1,0 +1,2341 @@
+{
+  "schema": "group-d-evidence-inputs-v1",
+  "source": {
+    "repo": "redact-secret/credential-evidence",
+    "tag": "snapshot-2026.10.06.5"
+  },
+  "cases": [
+    {
+      "id": "algolia-admin-api-key-create-key-request-header-value",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "must-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "algolia:admin-api-key",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "algolia:admin-api-key"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "admin-api-key/admin-api-key-create-key-endpoint-requires-admin",
+        "admin-api-key/admin-api-key-handling",
+        "admin-api-key/admin-api-key-intended-use"
+      ]
+    },
+    {
+      "id": "algolia-analytics-api-key-acl-profile-and-data-sensitivity-unsettled",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "algolia:analytics-api-key",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "algolia:analytics-api-key"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "analytics-api-key/analytics-api-key-accepts-any-key-with-acl",
+        "analytics-api-key/analytics-api-key-regional-hosts"
+      ]
+    },
+    {
+      "id": "algolia-api-key-placeholders-references-and-index-names-non-values",
+      "caseTypes": [
+        "benign"
+      ],
+      "outcome": "must-not-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "algolia:admin-api-key",
+          "role": "lookalike"
+        },
+        {
+          "family": "algolia:write-api-key",
+          "role": "lookalike"
+        },
+        {
+          "family": "algolia:search-only-api-key",
+          "role": "lookalike"
+        },
+        {
+          "family": "algolia:secured-api-key",
+          "role": "lookalike"
+        }
+      ],
+      "inRows": [
+        "algolia:admin-api-key",
+        "algolia:write-api-key",
+        "algolia:search-only-api-key",
+        "algolia:secured-api-key"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "write-api-key/write-api-key-handling",
+        "search-only-api-key/search-only-api-key-index-names-are-public"
+      ]
+    },
+    {
+      "id": "algolia-monitoring-api-key-confidentiality-unsettled",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "algolia:monitoring-api-key",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "algolia:monitoring-api-key"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "monitoring-api-key/monitoring-api-key-infrastructure-scope",
+        "monitoring-api-key/monitoring-api-key-plan-and-host"
+      ]
+    },
+    {
+      "id": "algolia-search-only-api-key-frontend-exposure-unsettled",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "algolia:search-only-api-key",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "algolia:search-only-api-key"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "search-only-api-key/search-only-api-key-exposure",
+        "search-only-api-key/search-only-api-key-restricted-derivation-and-mitigation"
+      ]
+    },
+    {
+      "id": "algolia-secured-api-key-derived-value-confidentiality-unsettled",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "algolia:secured-api-key",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "algolia:secured-api-key"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "secured-api-key/secured-api-key-construction-documented",
+        "secured-api-key/secured-api-key-frontend-delivery",
+        "secured-api-key/secured-api-key-inherits-restrictions"
+      ]
+    },
+    {
+      "id": "algolia-usage-api-key-confidentiality-and-era-unsettled",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "algolia:usage-api-key",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "algolia:usage-api-key"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "usage-api-key/usage-api-key-acl-and-source",
+        "usage-api-key/usage-api-key-monitoring-usage-endpoints-deprecated"
+      ]
+    },
+    {
+      "id": "algolia-write-api-key-header-carrier-shared-with-every-role-unsettled",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "algolia:write-api-key",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "algolia:write-api-key"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "write-api-key/write-api-key-handling",
+        "write-api-key/write-api-key-write-acls",
+        "write-api-key/write-api-key-header-carrier"
+      ]
+    },
+    {
+      "id": "asana-service-account-token-carrier-unconfirmed",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "asana:service-account-token",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "asana:service-account-token"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "service-account-token/sa-org-wide-access-and-endpoints",
+        "service-account-token/audit-log-page-calls-it-a-personal-access-token",
+        "service-account-token/pat-page-carrier-is-authorization-header"
+      ]
+    },
+    {
+      "id": "canva-authorization-code-redirect-query-parameter-unsettled",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "canva:authorization-code",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "canva:authorization-code"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "authorization-code/code-redirect-query-parameter",
+        "authorization-code/code-exchange-inputs",
+        "authorization-code/single-use-stated-for-refresh-token-only"
+      ]
+    },
+    {
+      "id": "contentful-api-token-placeholders-and-token-free-preview-url-non-values",
+      "caseTypes": [
+        "benign"
+      ],
+      "outcome": "must-not-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "contentful:delivery-api-access-token",
+          "role": "lookalike"
+        },
+        {
+          "family": "contentful:preview-api-access-token",
+          "role": "lookalike"
+        }
+      ],
+      "inRows": [
+        "contentful:delivery-api-access-token",
+        "contentful:preview-api-access-token"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "delivery-api-access-token/delivery-api-token-transport",
+        "preview-api-access-token/preview-token-not-in-preview-url"
+      ]
+    },
+    {
+      "id": "contentful-delivery-api-access-token-public-or-confidential-unsettled",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "contentful:delivery-api-access-token",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "contentful:delivery-api-access-token"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "delivery-api-access-token/delivery-api-token-transport",
+        "delivery-api-access-token/delivery-api-key-resource-carries-access-token",
+        "delivery-api-access-token/delivery-api-key-read-only-and-environment-scoped"
+      ]
+    },
+    {
+      "id": "contentful-preview-api-access-token-confidentiality-unsettled",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "contentful:preview-api-access-token",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "contentful:preview-api-access-token"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "preview-api-access-token/preview-token-is-distinct-from-delivery-token",
+        "preview-api-access-token/preview-token-purpose-unpublished-content",
+        "preview-api-access-token/preview-token-not-in-preview-url"
+      ]
+    },
+    {
+      "id": "dropbox-app-auth-token-bearer-authorization-header-value",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "must-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "dropbox:app-auth-token",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "dropbox:app-auth-token"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "app-auth-token/app-auth-token-bearer-carrier",
+        "app-auth-token/app-auth-token-exists"
+      ]
+    },
+    {
+      "id": "dropbox-app-auth-token-placeholders-and-references-non-values",
+      "caseTypes": [
+        "benign"
+      ],
+      "outcome": "must-not-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "dropbox:app-auth-token",
+          "role": "lookalike"
+        }
+      ],
+      "inRows": [
+        "dropbox:app-auth-token"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "app-auth-token/app-auth-token-bearer-carrier",
+        "app-auth-token/app-auth-token-request-inputs"
+      ]
+    },
+    {
+      "id": "dropbox-app-auth-token-response-member-and-lifetime-undocumented",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "dropbox:app-auth-token",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "dropbox:app-auth-token"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "app-auth-token/app-auth-token-response-undocumented",
+        "app-auth-token/app-auth-token-request-inputs"
+      ]
+    },
+    {
+      "id": "dropbox-app-secret-lookalikes-and-non-values",
+      "caseTypes": [
+        "benign"
+      ],
+      "outcome": "must-not-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "dropbox:app-secret",
+          "role": "lookalike"
+        }
+      ],
+      "inRows": [],
+      "adjacent": true,
+      "claimsCited": []
+    },
+    {
+      "id": "elastic-cross-cluster-api-key-binding-attributes-and-references-non-values",
+      "caseTypes": [
+        "benign"
+      ],
+      "outcome": "must-not-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "elastic:cross-cluster-api-key",
+          "role": "lookalike"
+        }
+      ],
+      "inRows": [
+        "elastic:cross-cluster-api-key"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "cross-cluster-api-key/cross-cluster-key-optional-certificate-identity",
+        "cross-cluster-api-key/cross-cluster-key-effective-access"
+      ]
+    },
+    {
+      "id": "elastic-cross-cluster-api-key-create-response-members",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "must-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "elastic:cross-cluster-api-key",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "elastic:cross-cluster-api-key"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "cross-cluster-api-key/cross-cluster-response-members-match-user-key",
+        "cross-cluster-api-key/cross-cluster-key-carrier-is-local-cluster-keystore"
+      ]
+    },
+    {
+      "id": "elastic-cross-cluster-api-key-keystore-slot-unconfirmed",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "elastic:cross-cluster-api-key",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "elastic:cross-cluster-api-key"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "cross-cluster-api-key/cross-cluster-key-carrier-is-local-cluster-keystore",
+        "cross-cluster-api-key/cross-cluster-key-refused-on-rest-interface"
+      ]
+    },
+    {
+      "id": "elastic-serverless-project-api-key-authorization-header-value",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "must-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "elastic:serverless-project-api-key",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "elastic:serverless-project-api-key"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "serverless-project-api-key/encoded-carrier",
+        "serverless-project-api-key/stack-page-calls-serverless-keys-equivalent"
+      ]
+    },
+    {
+      "id": "elastic-serverless-project-api-key-placeholders-and-references-non-values",
+      "caseTypes": [
+        "benign"
+      ],
+      "outcome": "must-not-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "elastic:serverless-project-api-key",
+          "role": "lookalike"
+        }
+      ],
+      "inRows": [
+        "elastic:serverless-project-api-key"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "serverless-project-api-key/encoded-carrier"
+      ]
+    },
+    {
+      "id": "figma-cli-plan-access-token-carrier-unstated",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "figma:cli-plan-access-token",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "figma:cli-plan-access-token"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "cli-plan-access-token/cli-token-creation-fixed-scope-plan-wide",
+        "cli-plan-access-token/code-connect-cli-carrier-documented-for-personal-token"
+      ]
+    },
+    {
+      "id": "figma-plan-access-token-id-refresh-window-and-category-grammar-unsettled",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "figma:plan-access-token",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "figma:plan-access-token"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "plan-access-token/plan-token-secret-shown-once-id-viewable",
+        "plan-access-token/plan-token-refresh-previous-secret-valid-24h",
+        "plan-access-token/x-figma-token-header-shared-with-personal-token"
+      ]
+    },
+    {
+      "id": "figma-x-figma-token-header-value",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "must-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "figma:personal-access-token",
+          "role": "subject"
+        },
+        {
+          "family": "figma:plan-access-token",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "figma:plan-access-token"
+      ],
+      "adjacent": false,
+      "claimsCited": []
+    },
+    {
+      "id": "figma-x-figma-token-lookalikes-and-non-values",
+      "caseTypes": [
+        "benign"
+      ],
+      "outcome": "must-not-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "figma:personal-access-token",
+          "role": "lookalike"
+        },
+        {
+          "family": "figma:plan-access-token",
+          "role": "lookalike"
+        }
+      ],
+      "inRows": [
+        "figma:plan-access-token"
+      ],
+      "adjacent": false,
+      "claimsCited": []
+    },
+    {
+      "id": "hubspot-static-auth-access-token-bearer-authorization-header-value",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "must-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "hubspot:static-auth-access-token",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "hubspot:static-auth-access-token"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "static-auth-access-token/static-auth-token-exists",
+        "static-auth-access-token/bearer-carrier-shared-by-oauth-static-and-private-app-tokens",
+        "static-auth-access-token/static-auth-placeholder-is-not-a-format-statement"
+      ]
+    },
+    {
+      "id": "hubspot-static-auth-access-token-masked-placeholder-and-references-non-values",
+      "caseTypes": [
+        "benign"
+      ],
+      "outcome": "must-not-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "hubspot:static-auth-access-token",
+          "role": "lookalike"
+        }
+      ],
+      "inRows": [
+        "hubspot:static-auth-access-token"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "static-auth-access-token/static-auth-placeholder-is-not-a-format-statement"
+      ]
+    },
+    {
+      "id": "hubspot-static-auth-access-token-private-app-and-service-key-relation-unsettled",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "hubspot:static-auth-access-token",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "hubspot:static-auth-access-token"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "static-auth-access-token/pages-do-not-relate-static-auth-and-private-app-tokens",
+        "static-auth-access-token/bearer-carrier-shared-by-oauth-static-and-private-app-tokens"
+      ]
+    },
+    {
+      "id": "jfrog-pairing-token-form-and-exchange-carrier-unstated",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "jfrog:pairing-token",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "jfrog:pairing-token"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "pairing-token/pairing-token-purpose-and-signed-extension",
+        "pairing-token/pairing-token-generation-display",
+        "pairing-token/pairing-result-is-a-master-token"
+      ]
+    },
+    {
+      "id": "meta-app-access-token-generated-token-response-unstated",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "meta:app-access-token",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "meta:app-access-token"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "app-access-token/generation-call",
+        "app-access-token/exposure-statements",
+        "app-access-token/token-length-variable"
+      ]
+    },
+    {
+      "id": "meta-app-secret-bare-thirty-two-character-values",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "meta:app-secret",
+          "role": "subject"
+        },
+        {
+          "family": "meta:instagram-app-secret",
+          "role": "companion"
+        }
+      ],
+      "inRows": [
+        "meta:instagram-app-secret"
+      ],
+      "adjacent": false,
+      "claimsCited": []
+    },
+    {
+      "id": "meta-app-secret-in-app-id-pipe-access-token",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "must-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "meta:app-secret",
+          "role": "subject"
+        },
+        {
+          "family": "meta:app-access-token",
+          "role": "companion"
+        }
+      ],
+      "inRows": [
+        "meta:app-access-token"
+      ],
+      "adjacent": false,
+      "claimsCited": []
+    },
+    {
+      "id": "meta-app-secret-pipe-placeholders-derived-proof-and-non-values",
+      "caseTypes": [
+        "benign"
+      ],
+      "outcome": "must-not-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "meta:app-secret",
+          "role": "lookalike"
+        },
+        {
+          "family": "meta:app-access-token",
+          "role": "lookalike"
+        }
+      ],
+      "inRows": [
+        "meta:app-access-token"
+      ],
+      "adjacent": false,
+      "claimsCited": []
+    },
+    {
+      "id": "meta-instagram-app-id-and-secret-relation-unsettled",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "meta:instagram-app-secret",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "meta:instagram-app-secret"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "instagram-app-secret/instagram-app-secret-shown-with-instagram-app-id",
+        "instagram-app-secret/instagram-app-id-differs-by-login-type"
+      ]
+    },
+    {
+      "id": "meta-instagram-app-secret-client-secret-parameter",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "must-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "meta:instagram-app-secret",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "meta:instagram-app-secret"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "instagram-app-secret/instagram-app-secret-carrier-in-code-exchange",
+        "instagram-app-secret/instagram-app-secret-carrier-in-long-lived-exchange"
+      ]
+    },
+    {
+      "id": "meta-instagram-app-secret-placeholders-and-references-non-values",
+      "caseTypes": [
+        "benign"
+      ],
+      "outcome": "must-not-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "meta:instagram-app-secret",
+          "role": "lookalike"
+        }
+      ],
+      "inRows": [
+        "meta:instagram-app-secret"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "instagram-app-secret/instagram-docs-use-short-placeholder-secret"
+      ]
+    },
+    {
+      "id": "x-oauth1-access-token-half-and-request-token-collision-unsettled",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "x:oauth1-access-token",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "x:oauth1-access-token"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "oauth1-access-token/access-token-in-authorization-header",
+        "oauth1-access-token/signature-derived-from-two-secrets",
+        "oauth1-access-token/token-exchange-carrier",
+        "oauth1-access-token/temporary-and-token-credentials-share-names"
+      ]
+    },
+    {
+      "id": "x-oauth1-token-identity-and-signature-non-values",
+      "caseTypes": [
+        "benign"
+      ],
+      "outcome": "must-not-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "x:oauth1-access-token-secret",
+          "role": "lookalike"
+        }
+      ],
+      "inRows": [],
+      "adjacent": true,
+      "claimsCited": []
+    },
+    {
+      "id": "zoom-build-api-key-placeholders-and-non-values",
+      "caseTypes": [
+        "benign"
+      ],
+      "outcome": "must-not-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "zoom:build-platform-api-key",
+          "role": "lookalike"
+        }
+      ],
+      "inRows": [
+        "zoom:build-platform-api-key"
+      ],
+      "adjacent": false,
+      "claimsCited": []
+    },
+    {
+      "id": "zoom-build-api-key-x-api-key-header-value",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "must-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "zoom:build-platform-api-key",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "zoom:build-platform-api-key"
+      ],
+      "adjacent": false,
+      "claimsCited": []
+    },
+    {
+      "id": "zoom-build-platform-api-key-authorization-bearer-slot-shared-with-jwt",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "zoom:build-platform-api-key",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "zoom:build-platform-api-key"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "build-platform-api-key/api-request-carriers",
+        "build-platform-api-key/usage-guidance-key-versus-jwt"
+      ]
+    },
+    {
+      "id": "zoom-webhook-secret-token-carrier-wording-conflict",
+      "caseTypes": [
+        "positive"
+      ],
+      "outcome": "not-assertable",
+      "basis": "unresolved",
+      "lifecycle": "draft",
+      "families": [
+        {
+          "family": "zoom:webhook-secret-token",
+          "role": "subject"
+        }
+      ],
+      "inRows": [
+        "zoom:webhook-secret-token"
+      ],
+      "adjacent": false,
+      "claimsCited": [
+        "webhook-secret-token/secret-token-sent-wording",
+        "webhook-secret-token/secret-token-hash-wording",
+        "webhook-secret-token/carrier-wording-conflict"
+      ]
+    },
+    {
+      "id": "zoom-webhook-signature-and-challenge-derived-values-non-values",
+      "caseTypes": [
+        "benign"
+      ],
+      "outcome": "must-not-flag",
+      "basis": "project-policy",
+      "lifecycle": "maintainer-only",
+      "families": [
+        {
+          "family": "zoom:webhook-secret-token",
+          "role": "lookalike"
+        }
+      ],
+      "inRows": [
+        "zoom:webhook-secret-token"
+      ],
+      "adjacent": false,
+      "claimsCited": []
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "algolia-authored--admin-key-create-key-curl-header",
+      "case": "algolia-admin-api-key-create-key-request-header-value",
+      "set": "algolia-authored",
+      "context": "cli",
+      "outcome": "must-flag",
+      "text": "curl -X POST \"https://example-dsn.example.test/synthetic-create-api-key\" -H \"x-algolia-application-id: SYNTHETIC-algolia-application-id-0001\" -H \"x-algolia-api-key: SYNTHETIC-algolia-admin-api-key-never-issued-0002\" -d '{\"acl\":[\"addObject\"],\"validity\":3600}'\n",
+      "sha256": "ef10d8e99aa3ff6e2165d304c2f23695af9015979f82895e56a839fa5aca65c9",
+      "spans": [
+        {
+          "start": 165,
+          "end": 214,
+          "role": "secret",
+          "value": "SYNTHETIC-algolia-admin-api-key-never-issued-0002"
+        }
+      ]
+    },
+    {
+      "id": "algolia-authored--admin-key-create-key-json-header-map",
+      "case": "algolia-admin-api-key-create-key-request-header-value",
+      "set": "algolia-authored",
+      "context": "structured-file",
+      "outcome": "must-flag",
+      "text": "{\n  \"method\": \"POST\",\n  \"url\": \"https://example-dsn.example.test/synthetic-create-api-key\",\n  \"headers\": {\n    \"x-algolia-application-id\": \"SYNTHETIC-algolia-application-id-0001\",\n    \"x-algolia-api-key\": \"SYNTHETIC-algolia-admin-api-key-never-issued-0003\"\n  }\n}\n",
+      "sha256": "64cc94b296bb608342d40a0289f042e3cbbdf371784344484d558b2d1b023645",
+      "spans": [
+        {
+          "start": 206,
+          "end": 255,
+          "role": "secret",
+          "value": "SYNTHETIC-algolia-admin-api-key-never-issued-0003"
+        }
+      ]
+    },
+    {
+      "id": "algolia-authored--admin-key-create-key-raw-http",
+      "case": "algolia-admin-api-key-create-key-request-header-value",
+      "set": "algolia-authored",
+      "context": "header",
+      "outcome": "must-flag",
+      "text": "POST /synthetic-create-api-key HTTP/1.1\nHost: example-dsn.example.test\nx-algolia-application-id: SYNTHETIC-algolia-application-id-0001\nx-algolia-api-key: SYNTHETIC-algolia-admin-api-key-never-issued-0001\nContent-Type: application/json\n\n{\"acl\":[\"addObject\"],\"validity\":3600}\n",
+      "sha256": "114b490593c6f74ecc4985b30c30a3016be753d39cbf6dcb3be5c0fbbb7efb69",
+      "spans": [
+        {
+          "start": 154,
+          "end": 203,
+          "role": "secret",
+          "value": "SYNTHETIC-algolia-admin-api-key-never-issued-0001"
+        }
+      ]
+    },
+    {
+      "id": "algolia-authored--index-name-in-request-body-without-key",
+      "case": "algolia-api-key-placeholders-references-and-index-names-non-values",
+      "set": "algolia-authored",
+      "context": "structured-file",
+      "outcome": "must-not-flag",
+      "text": "{\n  \"indexName\": \"synthetic_products\",\n  \"params\": \"query=shoes\"\n}\n",
+      "sha256": "ed8ca406e70754333d667aa2eb40d64c3b1f0f9b178d4cc8e52e376ae7c3d380",
+      "spans": []
+    },
+    {
+      "id": "algolia-authored--key-header-angle-placeholder",
+      "case": "algolia-api-key-placeholders-references-and-index-names-non-values",
+      "set": "algolia-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /synthetic-search HTTP/1.1\nHost: example-dsn.example.test\nx-algolia-application-id: <ALGOLIA_APPLICATION_ID>\nx-algolia-api-key: <ALGOLIA_ADMIN_API_KEY>\n",
+      "sha256": "4d4066ba2dded31dce930c312c85336aa08ae69da05bf315e4cc7ddb97916a8f",
+      "spans": []
+    },
+    {
+      "id": "algolia-authored--key-header-curl-environment-reference",
+      "case": "algolia-api-key-placeholders-references-and-index-names-non-values",
+      "set": "algolia-authored",
+      "context": "cli",
+      "outcome": "must-not-flag",
+      "text": "curl -H \"x-algolia-application-id: $ALGOLIA_APPLICATION_ID\" -H \"x-algolia-api-key: $ALGOLIA_WRITE_API_KEY\" \"https://example-dsn.example.test/synthetic-search\"\n",
+      "sha256": "ea4267b20f14dbc782e0f2618ec333709140b70b67febb6b5bf219ef16885a33",
+      "spans": []
+    },
+    {
+      "id": "algolia-authored--key-header-empty-value",
+      "case": "algolia-api-key-placeholders-references-and-index-names-non-values",
+      "set": "algolia-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /synthetic-search HTTP/1.1\nHost: example-dsn.example.test\nx-algolia-api-key:\n",
+      "sha256": "fc6aa8cb1b0f2929a284b991055d337df22fb51b1949749e8913c34cb09a7c23",
+      "spans": []
+    },
+    {
+      "id": "algolia-authored--key-header-masked-display",
+      "case": "algolia-api-key-placeholders-references-and-index-names-non-values",
+      "set": "algolia-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /synthetic-search HTTP/1.1\nHost: example-dsn.example.test\nx-algolia-api-key: ********\n",
+      "sha256": "e01a6360b4257a0f1d2edbf1100f862d8ff964e8e02227272dddbc37b00c492e",
+      "spans": []
+    },
+    {
+      "id": "algolia-authored--key-header-prose-mention",
+      "case": "algolia-api-key-placeholders-references-and-index-names-non-values",
+      "set": "algolia-authored",
+      "context": "prose",
+      "outcome": "must-not-flag",
+      "text": "Send the key in the x-algolia-api-key header and keep it out of frontend code.\n",
+      "sha256": "3e05c9fe42c8bc8de85ff63be313637aac14bac574afc1e71828f739a36c3a0a",
+      "spans": []
+    },
+    {
+      "id": "algolia-authored--key-header-template-reference",
+      "case": "algolia-api-key-placeholders-references-and-index-names-non-values",
+      "set": "algolia-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /synthetic-search HTTP/1.1\nHost: example-dsn.example.test\nx-algolia-api-key: {{ secrets.ALGOLIA_WRITE_API_KEY }}\n",
+      "sha256": "cd3703cd94899deaef57081e9041dc0ab6769c574263fc580e0f2dc9d03dd0b0",
+      "spans": []
+    },
+    {
+      "id": "contentful-authored--bearer-angle-placeholder",
+      "case": "contentful-api-token-placeholders-and-token-free-preview-url-non-values",
+      "set": "contentful-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /spaces/{space_id}/environments/master/entries HTTP/1.1\nHost: cdn.contentful.com\nAuthorization: Bearer <DELIVERY_API_ACCESS_TOKEN>\n",
+      "sha256": "42930ccebbd7b8bb55a6bad5236b549f406a82181afd1d9584a7b65898368e27",
+      "spans": []
+    },
+    {
+      "id": "contentful-authored--bearer-curl-environment-reference",
+      "case": "contentful-api-token-placeholders-and-token-free-preview-url-non-values",
+      "set": "contentful-authored",
+      "context": "cli",
+      "outcome": "must-not-flag",
+      "text": "curl -H \"Authorization: Bearer $CONTENTFUL_DELIVERY_TOKEN\" \"https://cdn.contentful.com/spaces/{space_id}/environments/master/entries\"\n",
+      "sha256": "87c1f5012b6270c0a66a77a168ddc2db86bb5e9d51ccba74fdb05d107e9d8104",
+      "spans": []
+    },
+    {
+      "id": "contentful-authored--bearer-masked-display",
+      "case": "contentful-api-token-placeholders-and-token-free-preview-url-non-values",
+      "set": "contentful-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /spaces/{space_id}/environments/master/entries HTTP/1.1\nHost: preview.contentful.com\nAuthorization: Bearer ********\n",
+      "sha256": "57702859958dc7671b90c4745521eb34bbb62cdae4aec3edf76fcb995346b797",
+      "spans": []
+    },
+    {
+      "id": "contentful-authored--bearer-scheme-only",
+      "case": "contentful-api-token-placeholders-and-token-free-preview-url-non-values",
+      "set": "contentful-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /spaces/{space_id}/environments/master/entries HTTP/1.1\nHost: cdn.contentful.com\nAuthorization: Bearer\n",
+      "sha256": "bcea3574b1af3b907025694b6b725035e58e7a96f44b3f513ee1da7be4f85f0e",
+      "spans": []
+    },
+    {
+      "id": "contentful-authored--preview-query-parameter-environment-reference",
+      "case": "contentful-api-token-placeholders-and-token-free-preview-url-non-values",
+      "set": "contentful-authored",
+      "context": "url",
+      "outcome": "must-not-flag",
+      "text": "https://preview.contentful.com/spaces/{space_id}/environments/master/entries?access_token=$CONTENTFUL_PREVIEW_TOKEN\n",
+      "sha256": "299f38790c08888038af9933435b5acd9936348a7881875d698042d6cb772d98",
+      "spans": []
+    },
+    {
+      "id": "contentful-authored--preview-url-without-token",
+      "case": "contentful-api-token-placeholders-and-token-free-preview-url-non-values",
+      "set": "contentful-authored",
+      "context": "url",
+      "outcome": "must-not-flag",
+      "text": "https://app.example.test/preview/{entry.fields.slug}\n",
+      "sha256": "7e8fbc1c5e1e9d6a1e1098aa2d8e6cdc2999cdd8e4e2a945c510d5bd164a2402",
+      "spans": []
+    },
+    {
+      "id": "contentful-authored--query-parameter-empty-value",
+      "case": "contentful-api-token-placeholders-and-token-free-preview-url-non-values",
+      "set": "contentful-authored",
+      "context": "url",
+      "outcome": "must-not-flag",
+      "text": "https://cdn.contentful.com/spaces/{space_id}/environments/master/entries?access_token=&content_type=page\n",
+      "sha256": "d5f4fedca327d570ff86fa531521246a56190b45c2fbb52c29f8783e156085f5",
+      "spans": []
+    },
+    {
+      "id": "contentful-authored--token-slots-prose-mention",
+      "case": "contentful-api-token-placeholders-and-token-free-preview-url-non-values",
+      "set": "contentful-authored",
+      "context": "prose",
+      "outcome": "must-not-flag",
+      "text": "Send the token in the Authorization header or in the access_token query parameter.\n",
+      "sha256": "5c2f8c54656844a9786b007cf4fbd347c702a95b0c65dca45abb7a5e47133ceb",
+      "spans": []
+    },
+    {
+      "id": "dropbox-authored--app-auth-token-bearer-scheme-only",
+      "case": "dropbox-app-auth-token-placeholders-and-references-non-values",
+      "set": "dropbox-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "POST /2/synthetic-app-authenticated-call HTTP/1.1\nHost: api.example.test\nAuthorization: Bearer\n",
+      "sha256": "06ceeb1f079847cd8edd1f91b24d529b38c05d4009ba115cbf365893d7326585",
+      "spans": []
+    },
+    {
+      "id": "dropbox-authored--app-auth-token-curl-bearer-header",
+      "case": "dropbox-app-auth-token-bearer-authorization-header-value",
+      "set": "dropbox-authored",
+      "context": "cli",
+      "outcome": "must-flag",
+      "text": "curl -X POST https://api.example.test/2/synthetic-app-authenticated-call -H \"Authorization: Bearer SYNTHETIC-dropbox-app-auth-token-never-issued-0002\" -H \"Content-Type: application/json\"\n",
+      "sha256": "06cf8313d47fd0046a0cb3cd97327339db7959bda43e727980c5c16c39098c25",
+      "spans": [
+        {
+          "start": 99,
+          "end": 149,
+          "role": "secret",
+          "value": "SYNTHETIC-dropbox-app-auth-token-never-issued-0002"
+        }
+      ]
+    },
+    {
+      "id": "dropbox-authored--app-auth-token-curl-environment-reference",
+      "case": "dropbox-app-auth-token-placeholders-and-references-non-values",
+      "set": "dropbox-authored",
+      "context": "cli",
+      "outcome": "must-not-flag",
+      "text": "curl -X POST https://api.example.test/2/synthetic-app-authenticated-call -H \"Authorization: Bearer $DROPBOX_APP_AUTH_TOKEN\"\n",
+      "sha256": "8a1cb5016d5f8c6120586d3a18bafbb584a65fb549e5bcb2284d38a2dddcc5c0",
+      "spans": []
+    },
+    {
+      "id": "dropbox-authored--app-auth-token-documented-placeholder",
+      "case": "dropbox-app-auth-token-placeholders-and-references-non-values",
+      "set": "dropbox-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "POST /2/synthetic-app-authenticated-call HTTP/1.1\nHost: api.example.test\nAuthorization: Bearer <OAUTH2_APP_AUTH_TOKEN>\n",
+      "sha256": "8eb18d9aa21172ab9c9d74cd898a6bf9cee8ae2e03aaa86bca02a930ac2df280",
+      "spans": []
+    },
+    {
+      "id": "dropbox-authored--app-auth-token-json-header-map",
+      "case": "dropbox-app-auth-token-bearer-authorization-header-value",
+      "set": "dropbox-authored",
+      "context": "structured-file",
+      "outcome": "must-flag",
+      "text": "{\n  \"headers\": {\n    \"Authorization\": \"Bearer SYNTHETIC-dropbox-app-auth-token-never-issued-0003\",\n    \"Content-Type\": \"application/json\"\n  }\n}\n",
+      "sha256": "aef50e5218dff3a4058b447c4fb5d8b5278583b3b37c5c54cd0c1e171106301b",
+      "spans": [
+        {
+          "start": 46,
+          "end": 96,
+          "role": "secret",
+          "value": "SYNTHETIC-dropbox-app-auth-token-never-issued-0003"
+        }
+      ]
+    },
+    {
+      "id": "dropbox-authored--app-auth-token-masked-display",
+      "case": "dropbox-app-auth-token-placeholders-and-references-non-values",
+      "set": "dropbox-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "POST /2/synthetic-app-authenticated-call HTTP/1.1\nHost: api.example.test\nAuthorization: Bearer ********\n",
+      "sha256": "9c186bc5deb8a3472e8f2f0658b9f03f2402fe58e3bd139d31cdcac596cca895",
+      "spans": []
+    },
+    {
+      "id": "dropbox-authored--app-auth-token-raw-http-bearer-header",
+      "case": "dropbox-app-auth-token-bearer-authorization-header-value",
+      "set": "dropbox-authored",
+      "context": "header",
+      "outcome": "must-flag",
+      "text": "POST /2/synthetic-app-authenticated-call HTTP/1.1\nHost: api.example.test\nAuthorization: Bearer SYNTHETIC-dropbox-app-auth-token-never-issued-0001\nContent-Type: application/json\n",
+      "sha256": "0e3c034e6a36f37d08196446a54ff53a8f8e94d2426e9ed59a0b2aab943c80f5",
+      "spans": [
+        {
+          "start": 95,
+          "end": 145,
+          "role": "secret",
+          "value": "SYNTHETIC-dropbox-app-auth-token-never-issued-0001"
+        }
+      ]
+    },
+    {
+      "id": "dropbox-authored--app-auth-token-template-reference",
+      "case": "dropbox-app-auth-token-placeholders-and-references-non-values",
+      "set": "dropbox-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "POST /2/synthetic-app-authenticated-call HTTP/1.1\nHost: api.example.test\nAuthorization: Bearer {{ secrets.DROPBOX_APP_AUTH_TOKEN }}\n",
+      "sha256": "4565e3d0495831a7604290307cd192af2188c8880e819ff4d85389045fb47b04",
+      "spans": []
+    },
+    {
+      "id": "dropbox-authored--app-secret-lookalike-app-key-only",
+      "case": "dropbox-app-secret-lookalikes-and-non-values",
+      "set": "dropbox-authored",
+      "context": "form-body",
+      "outcome": "must-not-flag",
+      "text": "grant_type=authorization_code&code=SYNTHETICcode01&client_id=SYNTHETICappkey01\n",
+      "sha256": "ba16e9f4248fe17c0f79ea143ddf0e03683e6c5739279539b4643b2adbed3145",
+      "spans": []
+    },
+    {
+      "id": "dropbox-authored--basic-header-angle-placeholder",
+      "case": "dropbox-app-auth-token-placeholders-and-references-non-values",
+      "set": "dropbox-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "POST /oauth2/token HTTP/1.1\nHost: api.example.test\nAuthorization: Basic <BASE64_OF_APP_KEY_COLON_APP_SECRET>\n",
+      "sha256": "ac386224253c6314ddefcb465a37c80379d1296c30672c83f3379f79cb7b9cf0",
+      "spans": []
+    },
+    {
+      "id": "dropbox-authored--client-credentials-request-placeholders",
+      "case": "dropbox-app-auth-token-placeholders-and-references-non-values",
+      "set": "dropbox-authored",
+      "context": "form-body",
+      "outcome": "must-not-flag",
+      "text": "grant_type=client_credentials&client_id=<APP_KEY>&client_secret=<APP_SECRET>\n",
+      "sha256": "db4cd26e1086bf20c5ba2ebc43d13debd03ed51004d01b85dc36ebfe8753da86",
+      "spans": []
+    },
+    {
+      "id": "elastic-authored--cross-cluster-members-prose-mention",
+      "case": "elastic-cross-cluster-api-key-binding-attributes-and-references-non-values",
+      "set": "elastic-authored",
+      "context": "prose",
+      "outcome": "must-not-flag",
+      "text": "Copy the encoded member of the response to a safe place; it is needed for the local cluster configuration.\n",
+      "sha256": "a19a739fd2a5a548b24f061db51b0b99f274022cebca63bdef2eb761dfd9d980",
+      "spans": []
+    },
+    {
+      "id": "elastic-authored--cross-cluster-request-certificate-identity",
+      "case": "elastic-cross-cluster-api-key-binding-attributes-and-references-non-values",
+      "set": "elastic-authored",
+      "context": "structured-file",
+      "outcome": "must-not-flag",
+      "text": "{\n  \"name\": \"synthetic-cross-cluster-key\",\n  \"access\": {\n    \"search\": [ { \"names\": [ \"synthetic-index-*\" ] } ]\n  },\n  \"certificate_identity\": \"CN=remote-cluster.example.test\"\n}\n",
+      "sha256": "5d5d1af92089a619b6b115fd9fa63befeab995cf77d4fa089cac75a97cf03f40",
+      "spans": []
+    },
+    {
+      "id": "elastic-authored--cross-cluster-response-angle-placeholders",
+      "case": "elastic-cross-cluster-api-key-binding-attributes-and-references-non-values",
+      "set": "elastic-authored",
+      "context": "tool-output",
+      "outcome": "must-not-flag",
+      "text": "{\n  \"name\": \"synthetic-cross-cluster-key\",\n  \"api_key\": \"<API_KEY>\",\n  \"encoded\": \"<ENCODED_API_KEY>\"\n}\n",
+      "sha256": "893a27550fb5ca02dd980e89b2f1a3386d418d6a694c6cf8e8983f03eaaacfb2",
+      "spans": []
+    },
+    {
+      "id": "elastic-authored--cross-cluster-response-curl-output",
+      "case": "elastic-cross-cluster-api-key-create-response-members",
+      "set": "elastic-authored",
+      "context": "tool-output",
+      "outcome": "must-flag",
+      "text": "$ curl -s -X POST \"https://cluster.example.test/synthetic-create-cross-cluster-api-key\"\n{\"id\":\"SYNTHETIC-cross-cluster-key-id-0003\",\"name\":\"synthetic-cross-cluster-key\",\"api_key\":\"SYNTHETIC-elastic-cross-cluster-api-key-never-issued-0003\",\"encoded\":\"U1lOVEhFVElDLWNyb3NzLWNsdXN0ZXIta2V5LWlkLTAwMDM6U1lOVEhFVElDLWVsYXN0aWMtY3Jvc3MtY2x1c3Rlci1hcGkta2V5LW5ldmVyLWlzc3VlZC0wMDAz\"}\n",
+      "sha256": "2af0898694f4daa3d794ec0a4e8896bb27dce46a9228d0eb9ea4f1bd4b1d81fc",
+      "spans": [
+        {
+          "start": 180,
+          "end": 237,
+          "role": "secret",
+          "value": "SYNTHETIC-elastic-cross-cluster-api-key-never-issued-0003"
+        },
+        {
+          "start": 250,
+          "end": 374,
+          "role": "secret",
+          "value": "U1lOVEhFVElDLWNyb3NzLWNsdXN0ZXIta2V5LWlkLTAwMDM6U1lOVEhFVElDLWVsYXN0aWMtY3Jvc3MtY2x1c3Rlci1hcGkta2V5LW5ldmVyLWlzc3VlZC0wMDAz"
+        }
+      ]
+    },
+    {
+      "id": "elastic-authored--cross-cluster-response-empty-members",
+      "case": "elastic-cross-cluster-api-key-binding-attributes-and-references-non-values",
+      "set": "elastic-authored",
+      "context": "tool-output",
+      "outcome": "must-not-flag",
+      "text": "{\n  \"name\": \"synthetic-cross-cluster-key\",\n  \"api_key\": \"\",\n  \"encoded\": \"\"\n}\n",
+      "sha256": "a02b68261c1c78b10d8e6f99903d5190cc6f15e6094e9f4cc4bab538d60d3392",
+      "spans": []
+    },
+    {
+      "id": "elastic-authored--cross-cluster-response-masked-display",
+      "case": "elastic-cross-cluster-api-key-binding-attributes-and-references-non-values",
+      "set": "elastic-authored",
+      "context": "tool-output",
+      "outcome": "must-not-flag",
+      "text": "{\n  \"name\": \"synthetic-cross-cluster-key\",\n  \"api_key\": \"********\",\n  \"encoded\": \"********\"\n}\n",
+      "sha256": "8bf5a2790eff8c266ffe733225b0e7358fa33807869a57f70cf63b67fc06e3ad",
+      "spans": []
+    },
+    {
+      "id": "elastic-authored--cross-cluster-response-pretty-json",
+      "case": "elastic-cross-cluster-api-key-create-response-members",
+      "set": "elastic-authored",
+      "context": "tool-output",
+      "outcome": "must-flag",
+      "text": "{\n  \"id\": \"SYNTHETIC-cross-cluster-key-id-0001\",\n  \"name\": \"synthetic-cross-cluster-key\",\n  \"api_key\": \"SYNTHETIC-elastic-cross-cluster-api-key-never-issued-0001\",\n  \"encoded\": \"U1lOVEhFVElDLWNyb3NzLWNsdXN0ZXIta2V5LWlkLTAwMDE6U1lOVEhFVElDLWVsYXN0aWMtY3Jvc3MtY2x1c3Rlci1hcGkta2V5LW5ldmVyLWlzc3VlZC0wMDAx\"\n}\n",
+      "sha256": "6d2b0271f0e8d14501ed41d6fc16d8b82dae626fc5b273611e64df79f53e0b1d",
+      "spans": [
+        {
+          "start": 104,
+          "end": 161,
+          "role": "secret",
+          "value": "SYNTHETIC-elastic-cross-cluster-api-key-never-issued-0001"
+        },
+        {
+          "start": 178,
+          "end": 302,
+          "role": "secret",
+          "value": "U1lOVEhFVElDLWNyb3NzLWNsdXN0ZXIta2V5LWlkLTAwMDE6U1lOVEhFVElDLWVsYXN0aWMtY3Jvc3MtY2x1c3Rlci1hcGkta2V5LW5ldmVyLWlzc3VlZC0wMDAx"
+        }
+      ]
+    },
+    {
+      "id": "elastic-authored--cross-cluster-response-raw-http-compact-json",
+      "case": "elastic-cross-cluster-api-key-create-response-members",
+      "set": "elastic-authored",
+      "context": "tool-output",
+      "outcome": "must-flag",
+      "text": "HTTP/1.1 200 OK\ncontent-type: application/json\n\n{\"id\":\"SYNTHETIC-cross-cluster-key-id-0002\",\"name\":\"synthetic-cross-cluster-key\",\"api_key\":\"SYNTHETIC-elastic-cross-cluster-api-key-never-issued-0002\",\"encoded\":\"U1lOVEhFVElDLWNyb3NzLWNsdXN0ZXIta2V5LWlkLTAwMDI6U1lOVEhFVElDLWVsYXN0aWMtY3Jvc3MtY2x1c3Rlci1hcGkta2V5LW5ldmVyLWlzc3VlZC0wMDAy\"}\n",
+      "sha256": "0bc02c4f2bbc7ea953e0554751773253628a7f2feca880a04f9aba9166d0a24e",
+      "spans": [
+        {
+          "start": 140,
+          "end": 197,
+          "role": "secret",
+          "value": "SYNTHETIC-elastic-cross-cluster-api-key-never-issued-0002"
+        },
+        {
+          "start": 210,
+          "end": 334,
+          "role": "secret",
+          "value": "U1lOVEhFVElDLWNyb3NzLWNsdXN0ZXIta2V5LWlkLTAwMDI6U1lOVEhFVElDLWVsYXN0aWMtY3Jvc3MtY2x1c3Rlci1hcGkta2V5LW5ldmVyLWlzc3VlZC0wMDAy"
+        }
+      ]
+    },
+    {
+      "id": "elastic-authored--cross-cluster-response-template-references",
+      "case": "elastic-cross-cluster-api-key-binding-attributes-and-references-non-values",
+      "set": "elastic-authored",
+      "context": "structured-file",
+      "outcome": "must-not-flag",
+      "text": "{\n  \"api_key\": \"{{ outputs.api_key }}\",\n  \"encoded\": \"{{ outputs.encoded }}\"\n}\n",
+      "sha256": "22a37f4c70b9a8e970025da0a124e91bfe9d473ffb26cb80bed05fba2dfd22ea",
+      "spans": []
+    },
+    {
+      "id": "elastic-authored--serverless-project-apikey-angle-placeholder",
+      "case": "elastic-serverless-project-api-key-placeholders-and-references-non-values",
+      "set": "elastic-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /synthetic-search HTTP/1.1\nHost: project.example.test\nAuthorization: ApiKey <ENCODED_API_KEY>\n",
+      "sha256": "998f84a723ab050ce9643456f79b97481f5827e6e69ecf9619fad36635384976",
+      "spans": []
+    },
+    {
+      "id": "elastic-authored--serverless-project-apikey-curl-header",
+      "case": "elastic-serverless-project-api-key-authorization-header-value",
+      "set": "elastic-authored",
+      "context": "cli",
+      "outcome": "must-flag",
+      "text": "curl -H \"Authorization: ApiKey U1lOVEhFVElDLXNlcnZlcmxlc3Mta2V5LWlkLTAwMDI6U1lOVEhFVElDLWVsYXN0aWMtc2VydmVybGVzcy1wcm9qZWN0LWFwaS1rZXktbmV2ZXItaXNzdWVkLTAwMDI=\" https://project.example.test/synthetic-search\n",
+      "sha256": "800d8fdcf23d3c354f1a20e944447029b6bb3c10e71f044eb181495d111b48f4",
+      "spans": [
+        {
+          "start": 31,
+          "end": 159,
+          "role": "secret",
+          "value": "U1lOVEhFVElDLXNlcnZlcmxlc3Mta2V5LWlkLTAwMDI6U1lOVEhFVElDLWVsYXN0aWMtc2VydmVybGVzcy1wcm9qZWN0LWFwaS1rZXktbmV2ZXItaXNzdWVkLTAwMDI="
+        }
+      ]
+    },
+    {
+      "id": "elastic-authored--serverless-project-apikey-documented-environment-reference",
+      "case": "elastic-serverless-project-api-key-placeholders-and-references-non-values",
+      "set": "elastic-authored",
+      "context": "cli",
+      "outcome": "must-not-flag",
+      "text": "curl -H \"Authorization: ApiKey ${API_KEY}\" https://project.example.test/synthetic-search\n",
+      "sha256": "ea357641af6c971c535b8463f3a01cc45e199cb4b253607894fc014961914dc4",
+      "spans": []
+    },
+    {
+      "id": "elastic-authored--serverless-project-apikey-json-header-map",
+      "case": "elastic-serverless-project-api-key-authorization-header-value",
+      "set": "elastic-authored",
+      "context": "structured-file",
+      "outcome": "must-flag",
+      "text": "{\n  \"headers\": {\n    \"Authorization\": \"ApiKey U1lOVEhFVElDLXNlcnZlcmxlc3Mta2V5LWlkLTAwMDM6U1lOVEhFVElDLWVsYXN0aWMtc2VydmVybGVzcy1wcm9qZWN0LWFwaS1rZXktbmV2ZXItaXNzdWVkLTAwMDM=\"\n  }\n}\n",
+      "sha256": "d0db8e94751a3b5c5f8c2634550927064740d2082b5739f1c8f3023e7334c197",
+      "spans": [
+        {
+          "start": 46,
+          "end": 174,
+          "role": "secret",
+          "value": "U1lOVEhFVElDLXNlcnZlcmxlc3Mta2V5LWlkLTAwMDM6U1lOVEhFVElDLWVsYXN0aWMtc2VydmVybGVzcy1wcm9qZWN0LWFwaS1rZXktbmV2ZXItaXNzdWVkLTAwMDM="
+        }
+      ]
+    },
+    {
+      "id": "elastic-authored--serverless-project-apikey-masked-display",
+      "case": "elastic-serverless-project-api-key-placeholders-and-references-non-values",
+      "set": "elastic-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /synthetic-search HTTP/1.1\nHost: project.example.test\nAuthorization: ApiKey ********\n",
+      "sha256": "0429c652ea24dc9a31e9f5ff454b77d662d7e76483b4bf33842fedf14739af13",
+      "spans": []
+    },
+    {
+      "id": "elastic-authored--serverless-project-apikey-prose-mention",
+      "case": "elastic-serverless-project-api-key-placeholders-and-references-non-values",
+      "set": "elastic-authored",
+      "context": "prose",
+      "outcome": "must-not-flag",
+      "text": "Copy the encoded API key and send it in the Authorization header with the ApiKey scheme.\n",
+      "sha256": "fcff36c4f8d3894e76afd8a3f914cbb73adb7fec18d55fd4324946d37be4ef20",
+      "spans": []
+    },
+    {
+      "id": "elastic-authored--serverless-project-apikey-raw-http",
+      "case": "elastic-serverless-project-api-key-authorization-header-value",
+      "set": "elastic-authored",
+      "context": "header",
+      "outcome": "must-flag",
+      "text": "GET /synthetic-search HTTP/1.1\nHost: project.example.test\nAuthorization: ApiKey U1lOVEhFVElDLXNlcnZlcmxlc3Mta2V5LWlkLTAwMDE6U1lOVEhFVElDLWVsYXN0aWMtc2VydmVybGVzcy1wcm9qZWN0LWFwaS1rZXktbmV2ZXItaXNzdWVkLTAwMDE=\n",
+      "sha256": "a9f3097fba2054f23167ca46103cd7148e7a931b74491338403b4a1276bb3629",
+      "spans": [
+        {
+          "start": 80,
+          "end": 208,
+          "role": "secret",
+          "value": "U1lOVEhFVElDLXNlcnZlcmxlc3Mta2V5LWlkLTAwMDE6U1lOVEhFVElDLWVsYXN0aWMtc2VydmVybGVzcy1wcm9qZWN0LWFwaS1rZXktbmV2ZXItaXNzdWVkLTAwMDE="
+        }
+      ]
+    },
+    {
+      "id": "elastic-authored--serverless-project-apikey-scheme-only",
+      "case": "elastic-serverless-project-api-key-placeholders-and-references-non-values",
+      "set": "elastic-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /synthetic-search HTTP/1.1\nHost: project.example.test\nAuthorization: ApiKey\n",
+      "sha256": "b7f3f1e8099b700d118be30ad14491ad17da950b7f99754cff83a80c5237df24",
+      "spans": []
+    },
+    {
+      "id": "elastic-authored--serverless-project-apikey-template-reference",
+      "case": "elastic-serverless-project-api-key-placeholders-and-references-non-values",
+      "set": "elastic-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /synthetic-search HTTP/1.1\nHost: project.example.test\nAuthorization: ApiKey {{ secrets.ELASTIC_API_KEY }}\n",
+      "sha256": "a50d17a26812e10f1ee7df724bb0c0833d0bb53988fd5076ffb3a3f7969e2adf",
+      "spans": []
+    },
+    {
+      "id": "figma-authored--public-file-key-and-user-id",
+      "case": "figma-x-figma-token-lookalikes-and-non-values",
+      "set": "figma-authored",
+      "context": "structured-file",
+      "outcome": "must-not-flag",
+      "text": "{\n  \"file_key\": \"SYNTHETICfileKey01\",\n  \"user_id\": \"1234567890123\"\n}\n",
+      "sha256": "cc2f915cb39bb4a2ca2cf35028bc3098486542494129661769b2a2cb2845afda",
+      "spans": []
+    },
+    {
+      "id": "figma-authored--suffixed-header-with-public-id",
+      "case": "figma-x-figma-token-lookalikes-and-non-values",
+      "set": "figma-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /v1/me HTTP/1.1\nHost: api.example.test\nX-Figma-Token-Owner: user-1234567890\n",
+      "sha256": "54c617491ec9ed948c0faf3055999ab8f5b8c3aa1897cfefd316009cff0c992b",
+      "spans": []
+    },
+    {
+      "id": "figma-authored--token-id-header-with-public-id",
+      "case": "figma-x-figma-token-lookalikes-and-non-values",
+      "set": "figma-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /v1/me HTTP/1.1\nHost: api.example.test\nX-Figma-Token-Id: 1234567890123\n",
+      "sha256": "f8525f0a1707fa3db0c2caaa6d0a5bdafd379208e890f86bcc470bfcee1fcb4b",
+      "spans": []
+    },
+    {
+      "id": "figma-authored--x-figma-token-angle-placeholder",
+      "case": "figma-x-figma-token-lookalikes-and-non-values",
+      "set": "figma-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /v1/me HTTP/1.1\nHost: api.example.test\nX-Figma-Token: <YOUR_FIGMA_TOKEN>\n",
+      "sha256": "7208a5b5fedbf2a8ea2597eaacbba7b55aa2016f988e02ed1ac5bf4e3b5b7c74",
+      "spans": []
+    },
+    {
+      "id": "figma-authored--x-figma-token-curl-environment-reference",
+      "case": "figma-x-figma-token-lookalikes-and-non-values",
+      "set": "figma-authored",
+      "context": "cli",
+      "outcome": "must-not-flag",
+      "text": "curl -H \"X-Figma-Token: $FIGMA_TOKEN\" https://api.example.test/v1/me\n",
+      "sha256": "e2d0dc43737b09544ce625d5309f0fd1ff70cd384c8e80c2f9a44d09dddf9460",
+      "spans": []
+    },
+    {
+      "id": "figma-authored--x-figma-token-curl-header",
+      "case": "figma-x-figma-token-header-value",
+      "set": "figma-authored",
+      "context": "cli",
+      "outcome": "must-flag",
+      "text": "curl -H \"X-Figma-Token: {{figd_}}SYNTHETIC-never-issued-figma-0001\" https://api.example.test/v1/files/SYNTHETICfileKey01\n",
+      "sha256": "bfe852ce5ef4f8892e09420c41804f944477ab32afaf3335f4996ac335e2000b",
+      "spans": [
+        {
+          "start": 24,
+          "end": 62,
+          "role": "secret",
+          "value": "{{figd_}}SYNTHETIC-never-issued-figma-0001"
+        }
+      ]
+    },
+    {
+      "id": "figma-authored--x-figma-token-json-header-map",
+      "case": "figma-x-figma-token-header-value",
+      "set": "figma-authored",
+      "context": "structured-file",
+      "outcome": "must-flag",
+      "text": "{\n  \"headers\": {\n    \"X-Figma-Token\": \"{{figd_}}SYNTHETIC-never-issued-figma-0001\",\n    \"Accept\": \"application/json\"\n  }\n}\n",
+      "sha256": "8fc1a1b294dc8b51c0d4d2aad6bc4ef9771938898111049742ced08c51c5f3f5",
+      "spans": [
+        {
+          "start": 39,
+          "end": 77,
+          "role": "secret",
+          "value": "{{figd_}}SYNTHETIC-never-issued-figma-0001"
+        }
+      ]
+    },
+    {
+      "id": "figma-authored--x-figma-token-json-placeholder",
+      "case": "figma-x-figma-token-lookalikes-and-non-values",
+      "set": "figma-authored",
+      "context": "structured-file",
+      "outcome": "must-not-flag",
+      "text": "{\n  \"headers\": {\n    \"X-Figma-Token\": \"<YOUR_FIGMA_TOKEN>\",\n    \"Accept\": \"application/json\"\n  }\n}\n",
+      "sha256": "69f4992374bafe875fa6d926de8443c46c8f8cfdd5da93bc7df6d3149cf435e7",
+      "spans": []
+    },
+    {
+      "id": "figma-authored--x-figma-token-lowercase-name",
+      "case": "figma-x-figma-token-header-value",
+      "set": "figma-authored",
+      "context": "header",
+      "outcome": "must-flag",
+      "text": "GET /v1/files/SYNTHETICfileKey01 HTTP/1.1\nHost: api.example.test\nx-figma-token: {{figd_}}SYNTHETIC-never-issued-figma-0001\n",
+      "sha256": "dd186844f2856ef7c68b7f870d06411d44014d6fa27395e00181891d508ccc60",
+      "spans": [
+        {
+          "start": 80,
+          "end": 118,
+          "role": "secret",
+          "value": "{{figd_}}SYNTHETIC-never-issued-figma-0001"
+        }
+      ]
+    },
+    {
+      "id": "figma-authored--x-figma-token-masked-display",
+      "case": "figma-x-figma-token-lookalikes-and-non-values",
+      "set": "figma-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /v1/me HTTP/1.1\nHost: api.example.test\nX-Figma-Token: ********\n",
+      "sha256": "6075765146199f1293a7f16c753568c2faf4b8b8c442b1797d519910ca9e8b2e",
+      "spans": []
+    },
+    {
+      "id": "figma-authored--x-figma-token-raw-http",
+      "case": "figma-x-figma-token-header-value",
+      "set": "figma-authored",
+      "context": "header",
+      "outcome": "must-flag",
+      "text": "GET /v1/files/SYNTHETICfileKey01 HTTP/1.1\nHost: api.example.test\nX-Figma-Token: {{figd_}}SYNTHETIC-never-issued-figma-0001\n",
+      "sha256": "d45274705ff2a058879e66cd5ec6d67f3af1efde2305664f8cdb96bc243a1827",
+      "spans": [
+        {
+          "start": 80,
+          "end": 118,
+          "role": "secret",
+          "value": "{{figd_}}SYNTHETIC-never-issued-figma-0001"
+        }
+      ]
+    },
+    {
+      "id": "figma-authored--x-figma-token-template-reference",
+      "case": "figma-x-figma-token-lookalikes-and-non-values",
+      "set": "figma-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /v1/me HTTP/1.1\nHost: api.example.test\nX-Figma-Token: {{ secrets.FIGMA_TOKEN }}\n",
+      "sha256": "cc47e227f687e272dfc562b20a2dbfee1e741968340fd766ef07718da7813646",
+      "spans": []
+    },
+    {
+      "id": "figma-authored--x-figma-token-value-without-figd-prefix",
+      "case": "figma-x-figma-token-header-value",
+      "set": "figma-authored",
+      "context": "header",
+      "outcome": "must-flag",
+      "text": "GET /v1/me HTTP/1.1\nHost: api.example.test\nX-Figma-Token: SYNTHETIC-opaque-never-issued-figma-0002\n",
+      "sha256": "3cf2a76cbac3cf8b5894739e6c3f8bc8fa2562389b394174f3aa84e84e63c192",
+      "spans": [
+        {
+          "start": 58,
+          "end": 98,
+          "role": "secret",
+          "value": "SYNTHETIC-opaque-never-issued-figma-0002"
+        }
+      ]
+    },
+    {
+      "id": "hubspot-authored--static-auth-angle-placeholder",
+      "case": "hubspot-static-auth-access-token-masked-placeholder-and-references-non-values",
+      "set": "hubspot-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /crm/v3/objects/contacts HTTP/1.1\nHost: api.example.test\nAuthorization: Bearer <STATIC_AUTH_ACCESS_TOKEN>\n",
+      "sha256": "60ca25cc8bf13b73fce7ba7c776e3d4ba322c38028fe68d488df102502d79f94",
+      "spans": []
+    },
+    {
+      "id": "hubspot-authored--static-auth-bearer-scheme-only",
+      "case": "hubspot-static-auth-access-token-masked-placeholder-and-references-non-values",
+      "set": "hubspot-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /crm/v3/objects/contacts HTTP/1.1\nHost: api.example.test\nAuthorization: Bearer\n",
+      "sha256": "1fadc5f14c255d669ae759008858cf6391491e0cb11f15bb7347afb283ca8331",
+      "spans": []
+    },
+    {
+      "id": "hubspot-authored--static-auth-curl-bearer-header",
+      "case": "hubspot-static-auth-access-token-bearer-authorization-header-value",
+      "set": "hubspot-authored",
+      "context": "cli",
+      "outcome": "must-flag",
+      "text": "curl -H \"Authorization: Bearer SYNTHETIC-hubspot-static-auth-access-token-never-issued-0002\" https://api.example.test/crm/v3/objects/contacts\n",
+      "sha256": "462c36e57698a825b32b0b9abaab3aa611401f7c509877307cb5bd07f846eae1",
+      "spans": [
+        {
+          "start": 31,
+          "end": 91,
+          "role": "secret",
+          "value": "SYNTHETIC-hubspot-static-auth-access-token-never-issued-0002"
+        }
+      ]
+    },
+    {
+      "id": "hubspot-authored--static-auth-curl-environment-reference",
+      "case": "hubspot-static-auth-access-token-masked-placeholder-and-references-non-values",
+      "set": "hubspot-authored",
+      "context": "cli",
+      "outcome": "must-not-flag",
+      "text": "curl -H \"Authorization: Bearer ${STATIC_AUTH_ACCESS_TOKEN}\" https://api.example.test/crm/v3/objects/contacts\n",
+      "sha256": "2a62dd65ec385dd3379d9d26fd4ad1aab3edd7a8010a67b51ae8e2e0987ac279",
+      "spans": []
+    },
+    {
+      "id": "hubspot-authored--static-auth-documented-masked-placeholder",
+      "case": "hubspot-static-auth-access-token-masked-placeholder-and-references-non-values",
+      "set": "hubspot-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /crm/v3/objects/contacts HTTP/1.1\nHost: api.example.test\nAuthorization: Bearer ***-***-*********-****-****-****-************\n",
+      "sha256": "f06b3db84c9e795b5d35c7e94ed2a5bc23807f79b56261c7d5a9fbd48d0e6e7d",
+      "spans": []
+    },
+    {
+      "id": "hubspot-authored--static-auth-json-header-map",
+      "case": "hubspot-static-auth-access-token-bearer-authorization-header-value",
+      "set": "hubspot-authored",
+      "context": "structured-file",
+      "outcome": "must-flag",
+      "text": "{\n  \"headers\": {\n    \"Authorization\": \"Bearer SYNTHETIC-hubspot-static-auth-access-token-never-issued-0003\"\n  }\n}\n",
+      "sha256": "ab4704dc7f2fb6e0af3332365fb7f7d3be79d76765c0f288bcd6ab38fea6c910",
+      "spans": [
+        {
+          "start": 46,
+          "end": 106,
+          "role": "secret",
+          "value": "SYNTHETIC-hubspot-static-auth-access-token-never-issued-0003"
+        }
+      ]
+    },
+    {
+      "id": "hubspot-authored--static-auth-masked-display",
+      "case": "hubspot-static-auth-access-token-masked-placeholder-and-references-non-values",
+      "set": "hubspot-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /crm/v3/objects/contacts HTTP/1.1\nHost: api.example.test\nAuthorization: Bearer ********\n",
+      "sha256": "1a6281c87ae1113f0a720ccc087abdecf2db0e0ea066aea6d0db2b6e2b8a0a1f",
+      "spans": []
+    },
+    {
+      "id": "hubspot-authored--static-auth-prose-mention",
+      "case": "hubspot-static-auth-access-token-masked-placeholder-and-references-non-values",
+      "set": "hubspot-authored",
+      "context": "prose",
+      "outcome": "must-not-flag",
+      "text": "The static auth access token is found in the app settings and is sent as a Bearer token.\n",
+      "sha256": "e24f21f80d81e4d69ddaca0cd3b11998c9cd547001263e3453fe62178148727c",
+      "spans": []
+    },
+    {
+      "id": "hubspot-authored--static-auth-raw-http-bearer-header",
+      "case": "hubspot-static-auth-access-token-bearer-authorization-header-value",
+      "set": "hubspot-authored",
+      "context": "header",
+      "outcome": "must-flag",
+      "text": "GET /crm/v3/objects/contacts HTTP/1.1\nHost: api.example.test\nAuthorization: Bearer SYNTHETIC-hubspot-static-auth-access-token-never-issued-0001\n",
+      "sha256": "471b3868313c119f943608b559da41c5a78cfd13c40978a67dc529137ee6feea",
+      "spans": [
+        {
+          "start": 83,
+          "end": 143,
+          "role": "secret",
+          "value": "SYNTHETIC-hubspot-static-auth-access-token-never-issued-0001"
+        }
+      ]
+    },
+    {
+      "id": "hubspot-authored--static-auth-template-reference",
+      "case": "hubspot-static-auth-access-token-masked-placeholder-and-references-non-values",
+      "set": "hubspot-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /crm/v3/objects/contacts HTTP/1.1\nHost: api.example.test\nAuthorization: Bearer {{ secrets.STATIC_AUTH_ACCESS_TOKEN }}\n",
+      "sha256": "e61d2f2b74b7ed7031c5ea6369723ab580dad5aaeb6a07c2b4e7e96578495652",
+      "spans": []
+    },
+    {
+      "id": "meta-authored--app-pair-curl-url",
+      "case": "meta-app-secret-in-app-id-pipe-access-token",
+      "set": "meta-authored",
+      "context": "cli",
+      "outcome": "must-flag",
+      "text": "curl -i -X GET \"https://graph.example.test/v26.0/me?access_token=1000000000000001|SYNTHETIC-meta-app-secret-never-issued-0002\"\n",
+      "sha256": "8a858015ff13b1c1dce16053dc6ec3f9327b375854e77f2b0f4345260c7dc0b0",
+      "spans": [
+        {
+          "start": 82,
+          "end": 125,
+          "role": "secret",
+          "value": "SYNTHETIC-meta-app-secret-never-issued-0002"
+        }
+      ]
+    },
+    {
+      "id": "meta-authored--app-pair-lookalike-appsecret-proof-derived",
+      "case": "meta-app-secret-pipe-placeholders-derived-proof-and-non-values",
+      "set": "meta-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /v26.0/me?access_token={user-access-token}&appsecret_proof={{hex64}} HTTP/1.1\nHost: graph.example.test\n",
+      "sha256": "6035a1eef90f928a0c054e421cc283747d1abaac712c85724a4d68cbb21b5404",
+      "spans": []
+    },
+    {
+      "id": "meta-authored--app-pair-lookalike-documented-template",
+      "case": "meta-app-secret-pipe-placeholders-derived-proof-and-non-values",
+      "set": "meta-authored",
+      "context": "cli",
+      "outcome": "must-not-flag",
+      "text": "curl -i -X GET \"https://graph.example.test/{api-endpoint}?access_token={your-app_id}|{your-app_secret}\"\n",
+      "sha256": "fd5744ac3c54618f4fcc210b4e2774c8c6e075478b02fb58ac62ed06eec233c0",
+      "spans": []
+    },
+    {
+      "id": "meta-authored--app-pair-lookalike-environment-reference",
+      "case": "meta-app-secret-pipe-placeholders-derived-proof-and-non-values",
+      "set": "meta-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /v26.0/me?access_token=${META_APP_ID}|${META_APP_SECRET} HTTP/1.1\nHost: graph.example.test\n",
+      "sha256": "d77880c93dd481f09d8315b839e5b712406aebde38de1aac3afd60cb53551316",
+      "spans": []
+    },
+    {
+      "id": "meta-authored--app-pair-lookalike-generation-call-placeholder",
+      "case": "meta-app-secret-pipe-placeholders-derived-proof-and-non-values",
+      "set": "meta-authored",
+      "context": "cli",
+      "outcome": "must-not-flag",
+      "text": "curl -X GET \"https://graph.example.test/oauth/access_token?client_id=1000000000000001&client_secret=<your-app-secret>&grant_type=client_credentials\"\n",
+      "sha256": "85badf4197591232afa328910602ab694ee21dc99ed500b68e734365b5cedf89",
+      "spans": []
+    },
+    {
+      "id": "meta-authored--app-pair-lookalike-masked-secret",
+      "case": "meta-app-secret-pipe-placeholders-derived-proof-and-non-values",
+      "set": "meta-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /v26.0/me?access_token=1000000000000001|******** HTTP/1.1\nHost: graph.example.test\n",
+      "sha256": "d7d1928eabb7263baaf037bb2e2002e721f54d720e22164d67e3678acf77cf24",
+      "spans": []
+    },
+    {
+      "id": "meta-authored--app-pair-lookalike-prose-mention",
+      "case": "meta-app-secret-pipe-placeholders-derived-proof-and-non-values",
+      "set": "meta-authored",
+      "context": "prose",
+      "outcome": "must-not-flag",
+      "text": "The app id and the app secret can be joined by a pipe and passed in the access_token parameter of a server-side call.\n",
+      "sha256": "4451ddbdffa73639a75c7b029a14d309f4badcf1c89d0ae5461e7013ece2949d",
+      "spans": []
+    },
+    {
+      "id": "meta-authored--app-pair-raw-http",
+      "case": "meta-app-secret-in-app-id-pipe-access-token",
+      "set": "meta-authored",
+      "context": "header",
+      "outcome": "must-flag",
+      "text": "GET /v26.0/me?access_token=1000000000000001|SYNTHETIC-meta-app-secret-never-issued-0001 HTTP/1.1\nHost: graph.example.test\n",
+      "sha256": "5e6e73ab2a201fc4f62cba7a0e9c573b68a37e8cf565892b752486da37d12eb3",
+      "spans": [
+        {
+          "start": 44,
+          "end": 87,
+          "role": "secret",
+          "value": "SYNTHETIC-meta-app-secret-never-issued-0001"
+        }
+      ]
+    },
+    {
+      "id": "meta-authored--app-pair-url-query-continues",
+      "case": "meta-app-secret-in-app-id-pipe-access-token",
+      "set": "meta-authored",
+      "context": "url",
+      "outcome": "must-flag",
+      "text": "https://graph.example.test/v26.0/me?fields=id&access_token=1000000000000001|SYNTHETIC-meta-app-secret-never-issued-0003&debug=all\n",
+      "sha256": "dd049b1287fe80bec274178349c4a00b4f42dc3f91a2a16098e85c71efe39805",
+      "spans": [
+        {
+          "start": 76,
+          "end": 119,
+          "role": "secret",
+          "value": "SYNTHETIC-meta-app-secret-never-issued-0003"
+        }
+      ]
+    },
+    {
+      "id": "meta-authored--app-secret-alphanumeric-thirty-two-in-facebook-environment",
+      "case": "meta-app-secret-bare-thirty-two-character-values",
+      "set": "meta-authored",
+      "context": "env",
+      "outcome": "not-assertable",
+      "text": "FACEBOOK_APP_SECRET=SYNTHETICNEVERISSUED0123456789SY\n",
+      "sha256": "8b77902c4aa3a971513573a7774915715dd0b8e0f5ed255a13b6d3136090eedb",
+      "spans": []
+    },
+    {
+      "id": "meta-authored--app-secret-alphanumeric-thirty-two-in-instagram-environment",
+      "case": "meta-app-secret-bare-thirty-two-character-values",
+      "set": "meta-authored",
+      "context": "env",
+      "outcome": "not-assertable",
+      "text": "INSTAGRAM_APP_SECRET=SYNTHETICNEVERISSUED0123456789SY\n",
+      "sha256": "0233e84c9145bc7240784b68c19e88901bdcf0e8329119de1abf5940f8464733",
+      "spans": []
+    },
+    {
+      "id": "meta-authored--app-secret-bare-hexadecimal-thirty-two-in-prose",
+      "case": "meta-app-secret-bare-thirty-two-character-values",
+      "set": "meta-authored",
+      "context": "prose",
+      "outcome": "not-assertable",
+      "text": "Keep this for later: {{hex32}}\n",
+      "sha256": "3c594c14512dd1c4b609b968fc1e1f74f909b5ac224dbc7ea183436a8fc13912",
+      "spans": []
+    },
+    {
+      "id": "meta-authored--instagram-secret-angle-placeholder",
+      "case": "meta-instagram-app-secret-placeholders-and-references-non-values",
+      "set": "meta-authored",
+      "context": "form-body",
+      "outcome": "must-not-flag",
+      "text": "client_secret=<INSTAGRAM_APP_SECRET>&grant_type=authorization_code\n",
+      "sha256": "91053bd460e0652e5489825480a1de06b283fdf33ca078529406a1d08c5bf135",
+      "spans": []
+    },
+    {
+      "id": "meta-authored--instagram-secret-code-exchange-curl-form-fields",
+      "case": "meta-instagram-app-secret-client-secret-parameter",
+      "set": "meta-authored",
+      "context": "cli",
+      "outcome": "must-flag",
+      "text": "curl -X POST \"https://api.instagram.example.test/oauth/access_token\" -F client_id=1000000000000011 -F client_secret=SYNTHETIC-meta-instagram-app-secret-never-issued-0002 -F grant_type=authorization_code -F redirect_uri=https://example.test/callback -F code={authorization-code}\n",
+      "sha256": "c737023f3f7a3c493618d2a9a91830f714b537c6577a3feaa742117f33d981d2",
+      "spans": [
+        {
+          "start": 116,
+          "end": 169,
+          "role": "secret",
+          "value": "SYNTHETIC-meta-instagram-app-secret-never-issued-0002"
+        }
+      ]
+    },
+    {
+      "id": "meta-authored--instagram-secret-code-exchange-raw-http-form-body",
+      "case": "meta-instagram-app-secret-client-secret-parameter",
+      "set": "meta-authored",
+      "context": "form-body",
+      "outcome": "must-flag",
+      "text": "POST /oauth/access_token HTTP/1.1\nHost: api.instagram.example.test\nContent-Type: application/x-www-form-urlencoded\n\nclient_id=1000000000000011&client_secret=SYNTHETIC-meta-instagram-app-secret-never-issued-0001&grant_type=authorization_code&redirect_uri=https%3A%2F%2Fexample.test%2Fcallback&code={authorization-code}\n",
+      "sha256": "6352bace06af0c7859b7cc76fdb5ec4b77402484e93be766fd7a9aad265751c9",
+      "spans": [
+        {
+          "start": 157,
+          "end": 210,
+          "role": "secret",
+          "value": "SYNTHETIC-meta-instagram-app-secret-never-issued-0001"
+        }
+      ]
+    },
+    {
+      "id": "meta-authored--instagram-secret-empty-value",
+      "case": "meta-instagram-app-secret-placeholders-and-references-non-values",
+      "set": "meta-authored",
+      "context": "form-body",
+      "outcome": "must-not-flag",
+      "text": "client_secret=&grant_type=authorization_code\n",
+      "sha256": "a4dcd9693feeb6e620ba6e0a7745e3911fa3ad5cbc293492963507ec730f5790",
+      "spans": []
+    },
+    {
+      "id": "meta-authored--instagram-secret-environment-reference",
+      "case": "meta-instagram-app-secret-placeholders-and-references-non-values",
+      "set": "meta-authored",
+      "context": "url",
+      "outcome": "must-not-flag",
+      "text": "GET /access_token?grant_type=ig_exchange_token&client_secret=${INSTAGRAM_APP_SECRET}&access_token={short-lived-access-token} HTTP/1.1\nHost: graph.instagram.example.test\n",
+      "sha256": "abfb91dd43d4b919936486a889d7bc3850a3d6b16033ab1a94ff83b598fe422e",
+      "spans": []
+    },
+    {
+      "id": "meta-authored--instagram-secret-field-prose-mention",
+      "case": "meta-instagram-app-secret-placeholders-and-references-non-values",
+      "set": "meta-authored",
+      "context": "prose",
+      "outcome": "must-not-flag",
+      "text": "Send your Instagram App Secret as the client_secret field from server-side code only.\n",
+      "sha256": "e078136b4fe441e728d3206a6735d8c1e36f0717a4de39b1032b7c7d74eff1d6",
+      "spans": []
+    },
+    {
+      "id": "meta-authored--instagram-secret-long-lived-exchange-query-string",
+      "case": "meta-instagram-app-secret-client-secret-parameter",
+      "set": "meta-authored",
+      "context": "url",
+      "outcome": "must-flag",
+      "text": "GET /access_token?grant_type=ig_exchange_token&client_secret=SYNTHETIC-meta-instagram-app-secret-never-issued-0003&access_token={short-lived-access-token} HTTP/1.1\nHost: graph.instagram.example.test\n",
+      "sha256": "14e71d2c048a1d514612e5894aa08381455fb229eafd80df3fd2af16dccb888b",
+      "spans": [
+        {
+          "start": 61,
+          "end": 114,
+          "role": "secret",
+          "value": "SYNTHETIC-meta-instagram-app-secret-never-issued-0003"
+        }
+      ]
+    },
+    {
+      "id": "meta-authored--instagram-secret-masked-display",
+      "case": "meta-instagram-app-secret-placeholders-and-references-non-values",
+      "set": "meta-authored",
+      "context": "form-body",
+      "outcome": "must-not-flag",
+      "text": "client_secret=********&grant_type=authorization_code\n",
+      "sha256": "4e45b2bb74aa1658be3300833fde44fb2ca35cb7d1e845d8c2e25df8c53ba6a2",
+      "spans": []
+    },
+    {
+      "id": "meta-authored--instagram-secret-template-reference",
+      "case": "meta-instagram-app-secret-placeholders-and-references-non-values",
+      "set": "meta-authored",
+      "context": "cli",
+      "outcome": "must-not-flag",
+      "text": "curl -F client_secret={{ secrets.INSTAGRAM_APP_SECRET }} -F grant_type=authorization_code \"https://api.instagram.example.test/oauth/access_token\"\n",
+      "sha256": "c3ff5841960290148cea3de86355260ba8f235a498fcb2e1b706fb763bd515c9",
+      "spans": []
+    },
+    {
+      "id": "x-authored--oauth-authorization-header-identity-and-signature",
+      "case": "x-oauth1-token-identity-and-signature-non-values",
+      "set": "x-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /1.1/account/verify_credentials.json HTTP/1.1\nHost: api.example.test\nAuthorization: OAuth oauth_nonce=\"SYNTHETICnonce0001\", oauth_signature=\"SYNTHETICsignatureValue0001\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"1700000000\", oauth_token=\"SYNTHETIC-x-oauth-token-identity-0001\", oauth_version=\"1.0\"\n",
+      "sha256": "505f5b746a33d803926ab6cccaf0556edafd7794cb0d799912ce6de87c7e4fac",
+      "spans": []
+    },
+    {
+      "id": "zoom-authored--build-key-curl-x-api-key",
+      "case": "zoom-build-api-key-x-api-key-header-value",
+      "set": "zoom-authored",
+      "context": "cli",
+      "outcome": "must-flag",
+      "text": "curl https://api.example.test/v2/videosdk/sessions -H \"x-api-key: SYNTHETIC-zoom-build-api-key-never-issued-0002\" -H \"Content-Type: application/json\"\n",
+      "sha256": "f7715c51f6ebe744bf335fcf2b6c82182b0077d9352f407960fe76ed7376f962",
+      "spans": [
+        {
+          "start": 66,
+          "end": 112,
+          "role": "secret",
+          "value": "SYNTHETIC-zoom-build-api-key-never-issued-0002"
+        }
+      ]
+    },
+    {
+      "id": "zoom-authored--build-key-json-header-map",
+      "case": "zoom-build-api-key-x-api-key-header-value",
+      "set": "zoom-authored",
+      "context": "structured-file",
+      "outcome": "must-flag",
+      "text": "{\n  \"headers\": {\n    \"x-api-key\": \"SYNTHETIC-zoom-build-api-key-never-issued-0003\"\n  }\n}\n",
+      "sha256": "2f61f96168333c39495e5c23aa9480f9c4a76938437c810203e65d72a98bdb8b",
+      "spans": [
+        {
+          "start": 35,
+          "end": 81,
+          "role": "secret",
+          "value": "SYNTHETIC-zoom-build-api-key-never-issued-0003"
+        }
+      ]
+    },
+    {
+      "id": "zoom-authored--build-key-lookalike-bearer-template",
+      "case": "zoom-build-api-key-placeholders-and-non-values",
+      "set": "zoom-authored",
+      "context": "cli",
+      "outcome": "must-not-flag",
+      "text": "curl https://api.example.test/v2/videosdk/sessions -H \"Authorization: Bearer TOKEN\" -H \"Content-Type: application/json\"\n",
+      "sha256": "1881705a6d73ba4bb64fb17888abe8cb6e979ab335e090d9a9b871d8c6956f89",
+      "spans": []
+    },
+    {
+      "id": "zoom-authored--build-key-lookalike-documented-placeholder",
+      "case": "zoom-build-api-key-placeholders-and-non-values",
+      "set": "zoom-authored",
+      "context": "cli",
+      "outcome": "must-not-flag",
+      "text": "curl https://api.example.test/v2/videosdk/sessions -H \"x-api-key: ZOOM_API_KEY\" -H \"Content-Type: application/json\"\n",
+      "sha256": "9593af0252caa466b8cce7ec3693d171f1b044cdf4bd5885582c45dffe9e84cc",
+      "spans": []
+    },
+    {
+      "id": "zoom-authored--build-key-lookalike-empty-value",
+      "case": "zoom-build-api-key-placeholders-and-non-values",
+      "set": "zoom-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /v2/videosdk/sessions HTTP/1.1\nHost: api.example.test\nx-api-key:\n",
+      "sha256": "17d098f46b944549b4da3412faeb6af16a28f647034b26d09bce3e5927991ce5",
+      "spans": []
+    },
+    {
+      "id": "zoom-authored--build-key-lookalike-environment-reference",
+      "case": "zoom-build-api-key-placeholders-and-non-values",
+      "set": "zoom-authored",
+      "context": "cli",
+      "outcome": "must-not-flag",
+      "text": "curl https://api.example.test/v2/videosdk/sessions -H \"x-api-key: $ZOOM_API_KEY\" -H \"Content-Type: application/json\"\n",
+      "sha256": "66a7e054bec73cc4f0f01736a13e55e2cdd2067ef87aa9825263660a2a6b595a",
+      "spans": []
+    },
+    {
+      "id": "zoom-authored--build-key-lookalike-masked-display",
+      "case": "zoom-build-api-key-placeholders-and-non-values",
+      "set": "zoom-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "GET /v2/videosdk/sessions HTTP/1.1\nHost: api.example.test\nx-api-key: ********\n",
+      "sha256": "e350f38670e54952206db8809aa1539f2db101891bcc4864a0cfc018410cf4a5",
+      "spans": []
+    },
+    {
+      "id": "zoom-authored--build-key-lookalike-prose-mention",
+      "case": "zoom-build-api-key-placeholders-and-non-values",
+      "set": "zoom-authored",
+      "context": "prose",
+      "outcome": "must-not-flag",
+      "text": "Send the API key in the x-api-key header, or send an API key or a JWT in an Authorization Bearer header.\n",
+      "sha256": "284547b57588b4a2f625d842b8af8c7f52207b6dacf951288d386ed928856626",
+      "spans": []
+    },
+    {
+      "id": "zoom-authored--build-key-raw-http-x-api-key",
+      "case": "zoom-build-api-key-x-api-key-header-value",
+      "set": "zoom-authored",
+      "context": "header",
+      "outcome": "must-flag",
+      "text": "GET /v2/videosdk/sessions HTTP/1.1\nHost: api.example.test\nx-api-key: SYNTHETIC-zoom-build-api-key-never-issued-0001\nContent-Type: application/json\n",
+      "sha256": "8ec9592b5b43da6218933788af2d390cd4dd57695bee6a00bc550c60971d394a",
+      "spans": [
+        {
+          "start": 69,
+          "end": 115,
+          "role": "secret",
+          "value": "SYNTHETIC-zoom-build-api-key-never-issued-0001"
+        }
+      ]
+    },
+    {
+      "id": "zoom-authored--webhook-lookalike-secret-token-environment-reference",
+      "case": "zoom-webhook-signature-and-challenge-derived-values-non-values",
+      "set": "zoom-authored",
+      "context": "cli",
+      "outcome": "must-not-flag",
+      "text": "const hash = crypto.createHmac(\"sha256\", process.env.ZOOM_WEBHOOK_SECRET_TOKEN).update(message).digest(\"hex\");\n",
+      "sha256": "2ac3ea08998558b78bcd7b3f44aec255b80e42e591cbaa3d9c6a9de20535d45c",
+      "spans": []
+    },
+    {
+      "id": "zoom-authored--webhook-lookalike-secret-token-masked-display",
+      "case": "zoom-webhook-signature-and-challenge-derived-values-non-values",
+      "set": "zoom-authored",
+      "context": "env",
+      "outcome": "must-not-flag",
+      "text": "ZOOM_WEBHOOK_SECRET_TOKEN=********\n",
+      "sha256": "05cf4b595e2cbf34a700e156f8195e93e34ba088e91e19201a18aa3af5d93569",
+      "spans": []
+    },
+    {
+      "id": "zoom-authored--webhook-lookalike-secret-token-prose-mention",
+      "case": "zoom-webhook-signature-and-challenge-derived-values-non-values",
+      "set": "zoom-authored",
+      "context": "prose",
+      "outcome": "must-not-flag",
+      "text": "Recompute x-zm-signature with the webhook secret token as the HMAC key and compare it with the header value.\n",
+      "sha256": "8051be6823836f59f5ff5ceeac9edf5dc4ef7307bc8d7f6583cb152c6605d77a",
+      "spans": []
+    },
+    {
+      "id": "zoom-authored--webhook-lookalike-signature-and-timestamp-headers",
+      "case": "zoom-webhook-signature-and-challenge-derived-values-non-values",
+      "set": "zoom-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "POST /webhook HTTP/1.1\nHost: example.test\nx-zm-request-timestamp: 1700000000\nx-zm-signature: v0={{hex64}}\nContent-Type: application/json\n",
+      "sha256": "e0c8dd26e388e2e3cbce3ff1ee2e45e80c99018f3302c57c851819bf17171e46",
+      "spans": []
+    },
+    {
+      "id": "zoom-authored--webhook-lookalike-signature-placeholder",
+      "case": "zoom-webhook-signature-and-challenge-derived-values-non-values",
+      "set": "zoom-authored",
+      "context": "header",
+      "outcome": "must-not-flag",
+      "text": "POST /webhook HTTP/1.1\nHost: example.test\nx-zm-request-timestamp: 1700000000\nx-zm-signature: v0={HASHED_WEBHOOK_SECRET_TOKEN}\n",
+      "sha256": "92a8c44bb43a3e18a9b4dff362ca9053d23f2fa3c88e44b74e3cb05e31571e4a",
+      "spans": []
+    },
+    {
+      "id": "zoom-authored--webhook-lookalike-signed-message-string",
+      "case": "zoom-webhook-signature-and-challenge-derived-values-non-values",
+      "set": "zoom-authored",
+      "context": "structured-file",
+      "outcome": "must-not-flag",
+      "text": "v0:1700000000:{\"event\":\"synthetic.event\",\"payload\":{\"object\":{\"id\":\"1\"}}}\n",
+      "sha256": "9572a937f8fedc84356b832c75c4ac362ea759fe1e76aa4c2e3b21f6420e4baf",
+      "spans": []
+    },
+    {
+      "id": "zoom-authored--webhook-lookalike-validation-response",
+      "case": "zoom-webhook-signature-and-challenge-derived-values-non-values",
+      "set": "zoom-authored",
+      "context": "structured-file",
+      "outcome": "must-not-flag",
+      "text": "{\n  \"plainToken\": \"SYNTHETIC-zoom-challenge-plain-token-0001\",\n  \"encryptedToken\": \"{{hex64}}\"\n}\n",
+      "sha256": "ba22a1a6c54e3170f774d72fb18dfc08d62d75fd3cedc9e1367fbbd4b75b5e62",
+      "spans": []
+    }
+  ]
+}

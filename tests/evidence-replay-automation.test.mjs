@@ -122,3 +122,15 @@ test('the view effect reads two views only: status and reason changes, counts, a
   assert.deepEqual(e.policyRevision, { accepted: 'rev-a', candidate: 'rev-c' });
   assert.match(renderMarkdown({ release: 'snapshot-x', disclosure: 'd', basis: 'b', effect: e }), /1 families lose `stable` and 0 gain it\./);
 });
+
+test('an accepted engine move keeps the previous engine\'s runs as historical receipts instead of dropping them (#773)', () => {
+  const schema = Buffer.from('{"schema":"y"}');
+  const to = { tag: 'v9.0.0', revision: 'b'.repeat(40) };
+  const change = { from: registry.engine, to, runArtifactSchemaSha256: sha256Digest(schema) };
+  const reg = { engine: { ...registry.engine, runArtifactSchema: { path: 'schemas/r.json', sha256: D('0') } }, scanners: [], runs: [{ id: 'old', engine: { revision: registry.engine.revision } }, { id: 'new', engine: { revision: to.revision } }] };
+  const by = { evidenceRelease: 'snapshot-x', manifestDigest: D('4') };
+  const out = moveEnginePin(reg, change, schema, { supersededBy: by, supersededOn: '2026-10-06' });
+  assert.deepEqual(out.runs.map(r => r.id), ['new']);
+  assert.deepEqual(out.historicalRuns.map(r => [r.id, r.status, r.supersededBy, r.supersededOn]), [['old', 'historical', by, '2026-10-06']]);
+  assert.equal(moveEnginePin(reg, change, schema).historicalRuns, undefined, 'without a historical option nothing is kept');
+});

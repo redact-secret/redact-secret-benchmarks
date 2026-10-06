@@ -21,6 +21,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { fetchArchive } from './replay-archive.mjs';
+import { moveEngineInTree } from './run-evidence-replay.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPOSITORY = 'redact-secret/redact-secret-benchmarks';
@@ -30,7 +31,7 @@ const POPULATIONS = ['public-evidence-snapshot', 'regression-corpus', 'policy-co
 const readJson = (file, base = root) => JSON.parse(readFileSync(path.join(base, file), 'utf8'));
 const writeJson = (file, value, base = root) => { mkdirSync(path.dirname(path.join(base, file)), { recursive: true }); writeFileSync(path.join(base, file), `${JSON.stringify(value, null, 2)}\n`); };
 
-export const adrPath = tag => `docs/decisions/${new Date().toISOString().slice(0, 10)}-accept-${tag.replace(/\./g, '-')}-on-credential-eval-${'alpha-5'}.md`;
+export const adrPath = (tag, engineTag = 'v0.1.0-alpha.5') => `docs/decisions/${new Date().toISOString().slice(0, 10)}-accept-${tag.replace(/\./g, '-')}-on-credential-eval-${engineTag.replace(/^v0\.1\.0-/, '').replace(/\./g, '-')}.md`;
 
 /** Pure: the accepted record the owner's acceptance would write. The previous accepted adoption stays in it as history; the owner fields are OWNER-TO-SET. */
 export function acceptedRecord({ record, decision }) {
@@ -98,6 +99,8 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
     const runId = ec.replay.ciRun.split('/').pop();
     // 2. Repin and record the four runs.
     run('node', ['scripts/adopt-evidence-snapshot.mjs', 'repin', '--superseded-on', supersededOn ?? new Date().toISOString().slice(0, 10)]);
+    // A candidate that moves the engine (record `engineChange`): the engine pin and schema move with it and the earlier runs of the other populations become historical receipts (#773).
+    moveEngineInTree(tree, ec, { supersededBy: { evidenceRelease: ec.evidenceRelease, manifestDigest: ec.manifestDigest }, supersededOn: supersededOn ?? new Date().toISOString().slice(0, 10) });
     for (const rel of ['policy-corpus', 'public-evidence-snapshot', 'public-evidence-snapshot/methods', 'regression-corpus']) run('npm', ['run', '-s', 'official-runs:record', '--', path.join(replay, rel, 'run-record.json'), '--date', supersededOn ?? new Date().toISOString().slice(0, 10)]);
     // 3. The registry-format archive, stored in a release (storage of bytes, not an acceptance) and fetched back against the registry.
     const archiveFile = readJson('benchmarks/official-run-archive.json', tree);
@@ -136,7 +139,7 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
     run('npm', ['run', '-s', 'qualification:parity', '--', '--legacy-status', 'results-output/support-status.json', '--legacy-results', 'public/results', '--view', view, '--artifacts', replay, '--public-snapshot', snapshotFile, '--strict']);
     // 7. The prepared-acceptance block is part of the base the patch applies to (the patch removes the evidence candidate it lives in), so it is committed to the transient tree first and
     //    written to this checkout's record at the end, by the same code from the same record.
-    const decision = adrPath(tag);
+    const decision = adrPath(tag, ec.engine.tag);
     const patchFile = `${GENERATED}/${tag}.acceptance.patch`;
     const derivedDigest = f => `sha256:${createHash('sha256').update(readFileSync(path.join(derived, f))).digest('hex')}`;
     const viewData = JSON.parse(readFileSync(view, 'utf8'));

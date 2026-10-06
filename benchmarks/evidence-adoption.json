@@ -107,7 +107,21 @@
           }
         }
       ],
-      "note": "An exploratory replay for the evidence candidate: never an accepted run, and nothing is recorded in runs[]."
+      "note": "An exploratory replay for the evidence candidate: never an accepted run, and nothing is recorded in runs[].",
+      "replayCopy": {
+        "release": "official-runs-37546897867",
+        "sha256": "sha256:db0c73b0f6ac57bd2daeb8693674156ff813bcd0338e2324e9ae934feadbdb7d",
+        "files": 8,
+        "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37546897867",
+        "benchmarkRevision": "3acfde6d58761c888809d9da1338e96fec81525c",
+        "semanticDigests": {
+          "public-evidence-snapshot": "sha256:d1d596d60532b98ffc26a2c07c7f1dad287e473652d5514e9ac5eb6f031e31e9",
+          "public-evidence-snapshot+methods": "sha256:1bd8fdbb083ea05b5ce3cce657efaa3e3f55315d9bbe60f8377a87edfb95b6ac",
+          "regression-corpus": "sha256:5a3bf5030823913cb193f8a9bb388c7d05ab804c500e266145c2e0fe07e730c0",
+          "policy-corpus": "sha256:71a11b17d308f23e252cc4118d94558a2b2cb292f79334c10549fa1c946ff13b"
+        },
+        "note": "A control copy: the published @redact-secret/core 0.1.0-beta.13 on credential-eval alpha.15 and the accepted snapshot-2026.10.06.4, re-measured at the current pins (evaluation evidence 1a3be8dd, the pin of the acceptance) with omit_optional=openredaction, plain and methods, two engine runs with equal semantic digests. The replay recorded beside it predates the acceptance repin and holds the earlier evaluation evidence (8213183b), so its methods configuration hash differs from any run at the current pins. Not an accepted run, nothing in runs[], never public evidence (#657)."
+      }
     },
     "ownerAcceptance": {
       "acceptedBy": "Milo Kang",

@@ -275,7 +275,7 @@ test('the traceability table names a Case, a fixture or the absence of one, and 
 test('reviewer rulings: a scored expectation needs Case support, otherwise the case is observed only and kept', () => {
   const id = (family, layout, kind) => cases.find((c) => c.family === family && c.layout === layout && c.kind === kind);
   // E-B1: every scored Reddit bearer positive carries the oauth.reddit.com host
-  for (const c of cases.filter((x) => x.family === 'reddit:oauth-access-token' && x.layout.startsWith('header-') && x.kind === 'positive')) assert.ok(c.text.includes('oauth.reddit.com'), c.id);
+  for (const c of cases.filter((x) => x.family === 'reddit:oauth-access-token' && x.layout.startsWith('header-') && x.kind === 'positive')) assert.match(c.text, /(?:^|[\s/@])oauth\.reddit\.com(?=[\s:/]|$)/, c.id);
   // E-B2: no scored or control Zendesk text carries the literal email in a generated control; the four fixture mirrors are conflicts
   const zdLookalikes = cases.filter((c) => c.family === 'zendesk:api-token' && c.layout.startsWith('lookalike-'));
   assert.ok(zdLookalikes.length >= 13);

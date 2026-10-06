@@ -20,7 +20,7 @@ const chunks = (s, n) => s.match(new RegExp(`.{1,${n}}`, 'g')) ?? [];
 export function tokenize(text) {
   let out = text;
   PREFIXES.forEach(([lit], i) => {
-    out = out.replace(new RegExp(`(^|[\\s=:"'])${lit.replace(/[.\-]/g, '\\$&')}(?=[A-Za-z0-9.\\-])`, 'g'), (_, lead) => `${lead}${OPEN}px:${i}${CLOSE}`);
+    out = out.replace(new RegExp(`(^|[\\s=:"'])${lit.replace(/[\\.\-]/g, '\\$&')}(?=[A-Za-z0-9.\\-])`, 'g'), (_, lead) => `${lead}${OPEN}px:${i}${CLOSE}`);
   });
   out = out.replace(/\b[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}\b/g, m => `${OPEN}id:${m.split('-').join(',')}${CLOSE}`);
   out = out.replace(/[0-9a-f]{32,}/g, m => `${OPEN}hx:${chunks(m, 8).join(',')}${CLOSE}`);

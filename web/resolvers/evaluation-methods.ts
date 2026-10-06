@@ -22,9 +22,20 @@ import { count, int, isoDate } from './format';
 
 const PRODUCT = 'redact-secret';
 
+/**
+ * The evaluation without its two large arrays (#789): the page reads the summary, the cases of its own method (`casesOf`, called
+ * for that method only) and the one count it takes from the reviews. The accounting below is the same for every source; only the
+ * way the cases reach it changed.
+ */
+export type EvaluationSummary = Omit<EvaluationReport, 'cases' | 'reviews'>;
+
 /** What the page reads. `report` is absent when no usable evaluation was published; `reason` then says why. */
 export interface MethodInput {
-  report?: EvaluationReport;
+  report?: EvaluationSummary;
+  /** The cases of one method. Called with the page's own method; never for the whole report. */
+  casesOf?: (method: string) => EvaluationCase[];
+  /** Reviews that name a peer (differential comparisons queued for review). */
+  peerReviews?: number;
   reason?: string;
   /** The qualification aggregate, for the holdout page. */
   qualification: { state: 'recorded'; source: 'run' | 'frozen'; report: QualificationEvidence } | { state: 'not-recorded'; reason: string };
@@ -44,7 +55,7 @@ const emptyTally = (): Tally => ({ pass: 0, fail: 0, review: 0 });
 interface Spec { group: string; groupOrder: number; key: string; order: number; label: string; note?: string }
 type Classify = (c: EvaluationCase, a: EvaluationAssertion, variant: EvaluationVariant, baseline: EvaluationVariant | undefined) => Spec | null;
 
-const columnsOf = (report: EvaluationReport, only?: (id: string) => boolean): EvidenceColumn[] =>
+const columnsOf = (report: EvaluationSummary, only?: (id: string) => boolean): EvidenceColumn[] =>
   report.scanners.filter(s => !only || only(s.id)).map(s => ({ id: s.id, name: toolName(s.id), ...(s.version ? { version: s.version } : {}) }));
 
 /** The cell for one scanner and one row: "n of N" over scored checks, or the state that stops a count. */
@@ -58,11 +69,10 @@ function cellOf(tally: Tally | undefined, complete: boolean): EvidenceCell {
 }
 
 /** Count the assertions of one method into rows chosen by `classify`, grouped and ordered by the spec. */
-function tallyRows(report: EvaluationReport, method: string, columns: EvidenceColumn[], classify: Classify): EvidenceGroup[] {
+function tallyRows(report: EvaluationSummary, cases: EvaluationCase[], columns: EvidenceColumn[], classify: Classify): EvidenceGroup[] {
   const complete = new Map(report.scanners.map(s => [s.id, s.status === 'complete']));
   const rows = new Map<string, { spec: Spec; byScanner: Map<string, Tally> }>();
-  for (const c of report.cases) {
-    if (c.method !== method) continue;
+  for (const c of cases) {
     const variants = new Map(c.variants.map(v => [v.id, v]));
     for (const a of c.assertions) {
       const variant = variants.get(a.variant || a.candidate);
@@ -102,13 +112,12 @@ function tallyRows(report: EvaluationReport, method: string, columns: EvidenceCo
 
 // ---- Shapes of the inputs -------------------------------------------------------------------------
 
-const methodCases = (report: EvaluationReport, method: string) => report.cases.filter(c => c.method === method);
 const suiteOf = (c: EvaluationCase) => c.sourceSlug.split('--')[0];
 const isIdentity = (v: EvaluationVariant) => v.operator === 'identity';
-const OPERATOR_ORDER = (report: EvaluationReport) => new Map(report.provenance.operators.map((o, i) => [o.id, i]));
+const OPERATOR_ORDER = (report: EvaluationSummary) => new Map(report.provenance.operators.map((o, i) => [o.id, i]));
 const titleCase = (id: string) => { const words = id.replace(/-/g, ' '); return words.charAt(0).toUpperCase() + words.slice(1); };
 
-function suitesTable(report: EvaluationReport, cases: EvaluationCase[], suites: Map<string, string>, noun: { one: string; other: string }): TextTable {
+function suitesTable(report: EvaluationSummary, cases: EvaluationCase[], suites: Map<string, string>, noun: { one: string; other: string }): TextTable {
   const counts = new Map<string, number>();
   for (const c of cases) counts.set(suiteOf(c), (counts.get(suiteOf(c)) ?? 0) + 1);
   const order = Object.keys(report.corpusHashes);
@@ -127,7 +136,7 @@ function suitesTable(report: EvaluationReport, cases: EvaluationCase[], suites: 
 }
 
 /** The operators a method generated, with what each did to its sources. Generation counts come from the cases of this method only. */
-function operatorsTable(report: EvaluationReport, cases: EvaluationCase[], exclude: (id: string) => boolean, scored: boolean): TextTable {
+function operatorsTable(report: EvaluationSummary, cases: EvaluationCase[], exclude: (id: string) => boolean, scored: boolean): TextTable {
   const order = OPERATOR_ORDER(report);
   const per = new Map<string, { generated: number; valid: number; deferred: number; unsupported: number; error: number }>();
   const row = (id: string) => { const r = per.get(id) ?? { generated: 0, valid: 0, deferred: 0, unsupported: 0, error: 0 }; per.set(id, r); return r; };
@@ -192,7 +201,7 @@ function classifyBenign(): Classify {
   };
 }
 
-function classifyTransform(report: EvaluationReport, groups: { relation: string; alone: string }, skip: (v: EvaluationVariant) => boolean): Classify {
+function classifyTransform(report: EvaluationSummary, groups: { relation: string; alone: string }, skip: (v: EvaluationVariant) => boolean): Classify {
   const order = OPERATOR_ORDER(report);
   return (_c, a, variant) => {
     if (isIdentity(variant) || skip(variant)) return null;
@@ -220,14 +229,14 @@ const DIFFERENCES: { key: string; label: string; note: string; disagreement: str
   { key: 'classification', label: 'Same ranges, different family', note: 'The ranges match and the families they map to differ', disagreement: 'classification-disagreement' },
 ];
 
-function differentialRecorded(report: EvaluationReport): MethodRecordedData | NotMeasuredData {
+function differentialRecorded(report: EvaluationSummary, cases: EvaluationCase[], peerReviews: number): MethodRecordedData | NotMeasuredData {
   const copy = METHOD_COPY.differential;
   const peers = report.scanners.filter(s => s.id !== PRODUCT);
   if (peers.length === 0) return notMeasured('No peer scanner ran', `The evaluation was published with ${PRODUCT} alone, so there is nothing to compare it with. Run the evaluation with its peers.`);
   const columns = columnsOf(report, id => id !== PRODUCT);
   type Counts = { complete: number; kinds: Map<string, number>; compared: number; notCompared: number };
   const per = new Map<string, Counts>(peers.map(p => [p.id, { complete: 0, kinds: new Map(), compared: 0, notCompared: 0 }]));
-  for (const c of methodCases(report, 'differential')) {
+  for (const c of cases) {
     for (const x of c.comparisons) {
       const p = per.get(x.peer);
       if (!p) continue;
@@ -252,7 +261,7 @@ function differentialRecorded(report: EvaluationReport): MethodRecordedData | No
       ],
     },
   ];
-  const queued = report.reviews.filter(r => r.peer).length;
+  const queued = peerReviews;
   const notCompared = [...per.values()].reduce((n, p) => Math.max(n, p.notCompared), 0);
   return {
     state: 'recorded',
@@ -330,7 +339,7 @@ function holdoutInputs(q: QualificationEvidence): MethodInputsData {
 
 // ---- The page -------------------------------------------------------------------------------------
 
-function metaFor(report: EvaluationReport): MetaItem[] {
+function metaFor(report: EvaluationSummary): MetaItem[] {
   const product = report.scanners.find(s => s.id === PRODUCT);
   return [
     { label: 'Run', value: `${report.runId.slice(0, 8)} · ${isoDate(report.finishedAt)}` },
@@ -343,8 +352,7 @@ function holdoutFigures(q: QualificationEvidence): { term: string; description: 
   return [{ term: 'Cases', description: int(q.holdout.caseCount) }, { term: 'Variants', description: int(q.holdout.variantCount) }, { term: 'Scanners', description: int(q.holdout.scanners.length) }];
 }
 
-function figuresFor(id: Exclude<MethodId, 'holdout'>, report: EvaluationReport): { term: string; description: string }[] {
-  const cases = methodCases(report, id);
+function figuresFor(id: Exclude<MethodId, 'holdout'>, report: EvaluationSummary, cases: EvaluationCase[]): { term: string; description: string }[] {
   const suites = new Set(cases.map(suiteOf)).size;
   const transformed = cases.reduce((n, c) => n + c.variants.filter(v => !isIdentity(v) && v.operator !== 'authored.twin').length, 0);
   const operators = new Set(cases.flatMap(c => c.variants.filter(v => !isIdentity(v) && v.operator !== 'authored.twin').map(v => v.operator))).size;
@@ -358,10 +366,9 @@ function figuresFor(id: Exclude<MethodId, 'holdout'>, report: EvaluationReport):
   }
 }
 
-function recordedFor(id: Exclude<MethodId, 'holdout' | 'differential'>, report: EvaluationReport): MethodRecordedData {
+function recordedFor(id: Exclude<MethodId, 'holdout' | 'differential'>, report: EvaluationSummary, cases: EvaluationCase[]): MethodRecordedData {
   const copy = METHOD_COPY[id];
   const columns = columnsOf(report);
-  const cases = methodCases(report, id);
   let groups: EvidenceGroup[];
   let title: string;
   let description: string;
@@ -369,26 +376,26 @@ function recordedFor(id: Exclude<MethodId, 'holdout' | 'differential'>, report: 
   let unscored: MethodRecordedData['unscored'];
   switch (id) {
     case 'twin':
-      groups = tallyRows(report, id, columns, classifyTwin());
+      groups = tallyRows(report, cases, columns, classifyTwin());
       title = 'Do the pairs come apart?';
       description = 'One row for the pair and one for each side, per scanner.';
       break;
     case 'benign': {
-      groups = tallyRows(report, id, columns, classifyBenign());
-      groups.push(...untargetedActions(report, columns));
+      groups = tallyRows(report, cases, columns, classifyBenign());
+      groups.push(...untargetedActions(report, cases, columns));
       title = 'Which controls were flagged?';
       description = 'Controls by taxonomy, per scanner. Findings are not counted, only whether a control was flagged.';
       rowHeader = 'Taxonomy';
       break;
     }
     case 'metamorphic':
-      groups = tallyRows(report, id, columns, classifyTransform(report, { relation: 'Same detection after the transform', alone: 'The transformed text on its own' }, () => false));
+      groups = tallyRows(report, cases, columns, classifyTransform(report, { relation: 'Same detection after the transform', alone: 'The transformed text on its own' }, () => false));
       title = 'Does detection survive a change of context?';
       description = 'One row per transform, then the transformed text read on its own.';
       rowHeader = 'Transform';
       break;
     default:
-      groups = tallyRows(report, id, columns, classifyTransform(report, { relation: 'Same detection, format still valid', alone: 'The altered value on its own' }, v => v.operator === 'authored.twin'));
+      groups = tallyRows(report, cases, columns, classifyTransform(report, { relation: 'Same detection, format still valid', alone: 'The altered value on its own' }, v => v.operator === 'authored.twin'));
       title = 'Does detection survive an altered value?';
       description = 'Only values that still match the format contract are scored. One row per operator.';
       rowHeader = 'Operator';
@@ -406,8 +413,8 @@ function recordedFor(id: Exclude<MethodId, 'holdout' | 'differential'>, report: 
 }
 
 /** Untargeted real-world-shaped controls, split by the policy action a finding carried (#95): only a scanner that reports an action has numbers here. */
-function untargetedActions(report: EvaluationReport, columns: EvidenceColumn[]): EvidenceGroup[] {
-  const cases = methodCases(report, 'benign').filter(c => c.taxonomy.startsWith('realworld-'));
+function untargetedActions(report: EvaluationSummary, benign: EvaluationCase[], columns: EvidenceColumn[]): EvidenceGroup[] {
+  const cases = benign.filter(c => c.taxonomy.startsWith('realworld-'));
   if (cases.length === 0) return [];
   const complete = new Map(report.scanners.map(s => [s.id, s.status === 'complete']));
   const per = new Map<string, { controls: number; flagged: number; gating: number; actions: boolean }>();
@@ -435,9 +442,8 @@ function untargetedActions(report: EvaluationReport, columns: EvidenceColumn[]):
   }];
 }
 
-function inputsFor(id: Exclude<MethodId, 'holdout'>, report: EvaluationReport, suites: Map<string, string>): MethodInputsData {
+function inputsFor(id: Exclude<MethodId, 'holdout'>, report: EvaluationSummary, cases: EvaluationCase[], suites: Map<string, string>): MethodInputsData {
   const copy = METHOD_COPY[id];
-  const cases = methodCases(report, id);
   const suiteTable = suitesTable(report, cases, suites, copy.unit);
   const tables: MethodInputsData['tables'] = [{ title: 'Suites', description: 'Every case comes from a published suite. Open a suite to read its fixtures.', summary: `Show the ${count(suiteTable.rows.length, 'suite')}`, table: suiteTable }];
   if (id === 'mutation' || id === 'metamorphic') {
@@ -484,15 +490,16 @@ export function resolveMethodPage(id: MethodId, input: MethodInput): MethodPageP
   }
 
   const report = input.report;
-  if (!report) {
-    const missing = notMeasured('Not measured: no evaluation published', `${input.reason ?? 'No evaluation was published for this checkout.'} Method pages read public/results/evaluation-v1.json.`);
+  if (!report || !input.casesOf) {
+    const missing = notMeasured('Not measured: no evaluation published', `${input.reason ?? 'No evaluation was published for this checkout.'} Method pages read the evaluation bundle (public/results/evaluation-bundle-v1.json).`);
     return { ...common, meta: [{ value: 'Not measured' }], how: how([]), recorded: missing, inputs: missing };
   }
+  const cases = input.casesOf(id);
   return {
     ...common,
     meta: metaFor(report),
-    how: how(figuresFor(id, report)),
-    recorded: id === 'differential' ? differentialRecorded(report) : recordedFor(id, report),
-    inputs: inputsFor(id, report, input.suites),
+    how: how(figuresFor(id, report, cases)),
+    recorded: id === 'differential' ? differentialRecorded(report, cases, input.peerReviews ?? 0) : recordedFor(id, report, cases),
+    inputs: inputsFor(id, report, cases, input.suites),
   };
 }

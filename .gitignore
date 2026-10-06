@@ -32,6 +32,10 @@ public/results/.*.json
 /web/test-results/
 /web/playwright-report/
 
+# The sharded public evaluation bundle (#788): generated, regenerable, never committed.
+/public/results/evaluation-bundles/
+/public/results/evaluation-bundle-v1.json
+/public/results/.evaluation-bundle-*
 # Interrupted adoption-report commit scratch (adoption-report-sync.mjs); the journal itself stays visible.
 /benchmarks/evidence-adoption.json.next
 /benchmarks/.adoption-commit.json.tmp

@@ -16,15 +16,16 @@ const builtHrefs = (): Set<string> => new Set(SECTIONS.find(s => s.href === '/ev
 
 async function sources() {
   const [evaluation, qualification, suites] = await Promise.all([loadEvaluation(), loadQualification(), loadSuites()]);
-  const report = evaluation.state === 'measured' ? evaluation.report : undefined;
+  const measured = evaluation.state === 'measured' ? evaluation : undefined;
   const reason = evaluation.state === 'measured' ? undefined : evaluation.reason;
-  return { report, reason, qualification, suites: new Map(suites.map(s => [s.id, s.title])) };
+  return { evaluation: measured, reason, qualification, suites: new Map(suites.map(s => [s.id, s.title])) };
 }
 
 export async function resolveEvaluationHubPage(): Promise<EvaluationHubProps> {
-  const { report, reason, qualification } = await sources();
+  const { evaluation, reason, qualification } = await sources();
   return resolveEvaluationHub({
-    report,
+    report: evaluation?.report,
+    caseCounts: evaluation?.caseCounts,
     reason,
     qualification: qualification.state === 'recorded' ? qualification.report : undefined,
     phases: EVALUATION_PHASES,
@@ -33,5 +34,13 @@ export async function resolveEvaluationHubPage(): Promise<EvaluationHubProps> {
 }
 
 export async function resolveMethodPageFor(id: MethodId): Promise<MethodPageProps> {
-  return resolveMethodPage(id, await sources());
+  const { evaluation, reason, qualification, suites } = await sources();
+  // Only this method's cases are read (holdout reads none); the pure resolver is handed them already in memory.
+  const cases = evaluation && id !== 'holdout' ? await evaluation.casesOf(id) : [];
+  return resolveMethodPage(id, {
+    report: evaluation?.report,
+    casesOf: evaluation ? method => { if (method !== id) throw new Error(`The ${id} page asked for the ${method} cases.`); return cases; } : undefined,
+    peerReviews: evaluation?.peerReviews,
+    reason, qualification, suites,
+  });
 }

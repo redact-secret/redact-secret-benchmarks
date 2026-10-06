@@ -252,8 +252,15 @@ The browser may make exactly one kind of request: a same-origin `GET` of a JSON 
 
 - `/evaluation` and `/evaluation/method/<method>/` (#614): the six method pages share one schema (head, how it runs, recorded now,
   how to read it, exact inputs) and one table (`EvidenceTable`: scanners across, checks down, a cell is "n of N did not hold",
-  no total, no sort). `services/evaluation.ts` reads `public/results/evaluation-v1.json` (CI writes it with
-  `npm run eval:discover` and `npm run eval:publish`) and checks it with `evaluationProblem`; `resolvers/evaluation-methods.ts`
+  no total, no sort). `services/evaluation.ts` (#789) validates the evaluation bundle `public/results/evaluation-bundle-v1.json` (CI writes
+  it with `npm run eval:discover` and `npm run eval:publish`; contract `docs/specs/evaluation-report-storage.md`) once by streaming
+  (`validateBundle`), keeps the summary, the per-method case counts and the peer review count, and reads the cases of one method
+  when its page asks (`casesOf`); it never rebuilds the whole report, and a resolver is handed one method's cases. States: `measured`
+  (`source: 'bundle'`), `not-published`, `unusable` (missing, corrupt, mixed or incompatible), `stale` (fixture corpus changed); none
+  resolves to zero. Supported legacy: only when no bundle pointer exists, the old whole file `public/results/evaluation-v1.json` is read and
+  checked with `evaluationProblem` (`source: 'legacy'`), so the oracle and the rollback stay; a bundle wins when both exist, and a pointer
+  whose bundle fails never falls back to the legacy file. Tests build bundles with `BundleWriter` and `commitBundle`
+  (`tests/unit/evaluation-bundle-data.ts`), and `tests/unit/evaluation-equivalence.test.ts` holds bundle-derived pages equal to legacy-derived ones. `resolvers/evaluation-methods.ts`
   and `evaluation-hub.ts` are pure, `evaluation-pages.ts` awaits the services. A phase page the hub links is a link only once
   its entry is in the Evaluation section of `lib/routes.ts`: add yours there. Decision:
   `docs/decisions/2026-10-01-show-each-evaluation-method-in-one-fixed-order.md`.

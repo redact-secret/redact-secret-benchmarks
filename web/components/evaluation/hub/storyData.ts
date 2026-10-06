@@ -45,7 +45,7 @@ export const missingRun: HubRunData = {
   state: 'not-measured',
   title: 'The run behind these pages',
   description: 'Every method page except holdout reads one evaluation run.',
-  reason: 'public/results/evaluation-v1.json is absent: no evaluation was published for this checkout.',
+  reason: 'public/results/evaluation-bundle-v1.json is absent: no evaluation was published for this checkout.',
   command: 'npm run eval:discover\nnpm run eval:publish',
 };
 

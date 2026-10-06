@@ -100,6 +100,7 @@ async function renderWorkbench(current: ReturnType<typeof route>, token: number,
   const [{ workbenchPage }, { reviewPage, bindCopy }, { changesPage }, { qualificationPage }, { methodPage, bindExplorer }, { reviewClasses, evaluationProblem, candidateProblem, reviewLedgerPublicationProblem }, { default: sourceLedger }] = await Promise.all([
     import('./pages/workbench/index'), import('./pages/workbench/review'), import('./pages/workbench/changes'), import('./pages/workbench/qualification'), import('./pages/workbench/method'), import('./evaluation-model'), import('../benchmarks/review-ledger.json'),
   ]);
+  // Supported legacy/oracle reader (#790): the whole evaluation-v1.json and its review ledger, written only by the opt-in `npm run eval:publish -- --legacy-v1` export. Normal publication writes the evaluation bundle (pointer + manifest), which this reader does not know and never mistakes for a report.
   const needsEvaluation = current.view !== 'changes';
   const [data, evaluationText, reviewLedgerText, candidateText] = await Promise.all([loadBench(), needsEvaluation ? text('/results/evaluation-v1.json') : '', needsEvaluation ? text('/results/review-ledger-v2.json') : '', text('/results/candidate-evidence-v1.json')]);
   if (token !== request || path !== location.pathname) return;
@@ -148,6 +149,7 @@ async function renderSupport(token: number, path: string, force: boolean) {
     return;
   }
   const { supportPage } = await import('./pages/support');
+  // evaluation-domains-v1.json is the legacy index (credential evaluation = evaluation-v1.json): produced only by `eval:publish:domains -- --legacy-v1`; the v2 index references the bundle.
   const [body, indexText] = await Promise.all([text('/results/support-matrix-v1.json'), text('/results/evaluation-domains-v1.json')]);
   if (token !== request || path !== location.pathname) return;
   const payload = JSON.stringify([path, location.search, body, indexText]);

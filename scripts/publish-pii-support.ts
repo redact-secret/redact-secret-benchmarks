@@ -2,8 +2,7 @@ import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { evaluationProblem } from '../benchmarks/shared/evaluation-model.ts';
-import { supportMatrixProblem } from '../benchmarks/shared/support-model.ts';
+import { credentialEvaluationReference, credentialEvidenceChangeProblem, readCredentialEvidence } from '../benchmarks/shared/credential-evidence.ts';
 import { buildPiiSupportMatrixV2, validatePiiSupportMatrixV2, type PiiSupportBuildOptions } from '../benchmarks/evaluation/domains/pii/support-v2.ts';
 import { custodianConformanceFrom, piiEvalMeasurementFrom, populationBindingsFrom, productEvidenceFor, type PiiMeasuredProduct } from './pii-publication-inputs.ts';
 import { bindPiiProtectedSupport } from '../benchmarks/evaluation/domains/pii/protected-support-binding.ts';
@@ -14,20 +13,19 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const args = process.argv.slice(2), piiEvalArtifacts = args.flatMap(arg => /^--pii-eval-artifact=(.+)$/.exec(arg)?.[1] ?? []);
 const piiEvalPinFiles = args.flatMap(arg => /^--pii-eval-pins=(.+)$/.exec(arg)?.[1] ?? []);
 const options = Object.fromEntries(args.filter(arg => !arg.startsWith('--pii-eval-artifact=') && !arg.startsWith('--pii-eval-pins=')).map(arg => {
-  const match = /^--(evaluation|credential-support|pii-directory|output|population-bundle|population-mode|product-commit|product-core|evidence-root|custodian-bundle)=(.+)$/.exec(arg);
-  if (!match) throw new Error('Usage: npm run eval:publish:pii-support -- [--evaluation=...] [--credential-support=...] [--pii-directory=...] [--output=...] [--product-commit=<sha> --product-core=<core.tgz>] [--pii-eval-pins=<pins> --pii-eval-artifact=<artifact>...] [--custodian-bundle=<public-synthetic-bundle>] (--population-bundle=... | --population-mode=not-measured)');
+  if (arg.startsWith('--evaluation=')) throw new Error('--evaluation (a full evaluation-v1.json) is the legacy credential contract and is no longer an input: pass --credential-results=<results directory with evaluation-bundle-v1.json>');
+  const match = /^--(credential-results|credential-support|pii-directory|output|population-bundle|population-mode|product-commit|product-core|evidence-root|custodian-bundle)=(.+)$/.exec(arg);
+  if (!match) throw new Error('Usage: npm run eval:publish:pii-support -- [--credential-results=<results directory holding evaluation-bundle-v1.json>] [--credential-support=...] [--pii-directory=...] [--output=...] [--product-commit=<sha> --product-core=<core.tgz>] [--pii-eval-pins=<pins> --pii-eval-artifact=<artifact>...] [--custodian-bundle=<public-synthetic-bundle>] (--population-bundle=... | --population-mode=not-measured)');
   return [match[1], match[2]];
 }));
 const location = (key: string, fallback: string) => path.resolve(root, options[key] ?? fallback);
-const credentialEvaluation = location('evaluation', 'public/results/evaluation-v1.json');
+const credentialResults = location('credential-results', 'public/results');
 const credentialSupport = location('credential-support', 'public/results/support-matrix-v1.json');
 const indexTarget = location('output', 'public/results/evaluation-domains-v2.json');
-// Validate every referenced artifact before the first write. Credential v1 files are read-only inputs.
-const [evaluationBytes, supportBytes] = await Promise.all([readFile(credentialEvaluation), readFile(credentialSupport)]);
-const evaluationIssue = evaluationProblem(JSON.parse(evaluationBytes.toString('utf8')));
-if (evaluationIssue) throw new Error(`Credential evaluation artifact is incompatible: ${evaluationIssue}`);
-const supportIssue = supportMatrixProblem(JSON.parse(supportBytes.toString('utf8')));
-if (supportIssue) throw new Error(`Credential support artifact is incompatible: ${supportIssue}`);
+// Validate every referenced artifact before the first write. Credential evidence is a read-only input: the evaluation bundle is validated by streaming (one part in memory at a time) and the
+// publication binds its pointer, bundle id and manifest digest as a read set that is re-checked before the index moves.
+const evidence = await readCredentialEvidence(credentialResults, credentialSupport);
+console.log(`Credential evidence: bundle ${evidence.bundleId} (${evidence.totals.cases} cases in ${evidence.totals.caseParts} parts, ${evidence.totals.reviews} reviews in ${evidence.totals.reviewParts} parts; largest part ${evidence.totals.maxPartBytes} bytes)`);
 const hasBundle = Boolean(options['population-bundle']);
 if (hasBundle === (options['population-mode'] === 'not-measured'))
   throw new Error('Choose exactly one of --population-bundle or --population-mode=not-measured');
@@ -54,16 +52,17 @@ if (!bindings.product) {
 if (hasBundle) Object.assign(bindings, populationBindingsFrom(JSON.parse(await readFile(location('population-bundle', 'results-output/pii/population-release-v1.json'), 'utf8')), product));
 const pii = validatePiiSupportMatrixV2(buildPiiSupportMatrixV2(bindings), bindings);
 const piiTarget = path.join(location('pii-directory', 'public/results'), `pii-support-matrix-v2-${pii.artifactCommitment}.json`);
-const index = buildEvaluationDomainsV2(pii.artifactCommitment);
+const index = buildEvaluationDomainsV2(pii.artifactCommitment, evidence);
 const indexIssue = evaluationDomainsV2Problem(index);
 if (indexIssue) throw new Error(indexIssue);
 
 await publishArtifactAndIndex(piiTarget, JSON.stringify(pii) + '\n', indexTarget, JSON.stringify(index) + '\n', {
   artifact(bytes) { const value = JSON.parse(bytes.toString('utf8')); validatePiiSupportMatrixV2(value); if (value.artifactCommitment !== pii.artifactCommitment) throw new Error('PII artifact readback commitment mismatch'); },
   index(bytes) { const value = JSON.parse(bytes.toString('utf8')); const issue = evaluationDomainsV2Problem(value); if (issue) throw new Error(issue);
-    if (value.domains[1].support.href !== `/results/${path.basename(piiTarget)}` || value.domains[1].support.artifactCommitment !== pii.artifactCommitment) throw new Error('PII index does not bind its immutable artifact'); },
-  async beforeCommit() { const [evaluationAfter, supportAfter] = await Promise.all([readFile(credentialEvaluation), readFile(credentialSupport)]);
-    if (!evaluationAfter.equals(evaluationBytes) || !supportAfter.equals(supportBytes)) throw new Error('Credential v1 artifact bytes changed during PII publication'); },
+    if (value.domains[1].support.href !== `/results/${path.basename(piiTarget)}` || value.domains[1].support.artifactCommitment !== pii.artifactCommitment) throw new Error('PII index does not bind its immutable artifact');
+    const reference = credentialEvaluationReference(evidence), credential = value.domains[0].evaluation;
+    if (credential.href !== reference.href || credential.artifactCommitment !== reference.artifactCommitment) throw new Error('Domain index does not bind the credential evaluation bundle that was read'); },
+  async beforeCommit() { const changed = await credentialEvidenceChangeProblem(evidence); if (changed) throw new Error(changed); },
 });
 console.log(`Published ${path.relative(root, piiTarget)} and committed it through ${path.relative(root, indexTarget)}`);
 console.log(`PII support: ${pii.families.map(row => `${row.family}=${row.status.state}`).join(', ')}`);

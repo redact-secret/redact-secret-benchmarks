@@ -4,15 +4,16 @@ import { buildPiiSupportMatrixV2 } from '../benchmarks/evaluation/domains/pii/su
 import { PII_METRIC_IDS } from '../benchmarks/evaluation/domains/pii/profile.ts';
 import { PII_JURISDICTION_STANDARD } from '../benchmarks/evaluation/domains/pii/jurisdictions.ts';
 import { buildEvaluationDomainsV2, domainDescriptorV2 } from '../src/evaluation-domains-v2.ts';
+const credentialReference = { bundleId: 'a'.repeat(32), manifestSha256: 'b'.repeat(64) };
 import { piiSupportPage, piiSupportQueryOf } from '../src/pages/pii-support.ts';
 import { domainEvaluationPage } from '../src/pages/domain-evaluation.ts';
 import { commitmentChip, domainBar } from '../src/components/index.ts';
 
 const text = html => html.replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ');
 const matrix = buildPiiSupportMatrixV2();
-const descriptor = domainDescriptorV2(buildEvaluationDomainsV2(matrix.artifactCommitment), 'pii');
+const descriptor = domainDescriptorV2(buildEvaluationDomainsV2(matrix.artifactCommitment, credentialReference), 'pii');
 const page = (value = matrix, search = '?domain=pii') => piiSupportPage(descriptor, value, piiSupportQueryOf(search));
-const piiSupportPiiPage = value => piiSupportPage(domainDescriptorV2(buildEvaluationDomainsV2(value.artifactCommitment), 'pii'), value, piiSupportQueryOf('?domain=pii'));
+const piiSupportPiiPage = value => piiSupportPage(domainDescriptorV2(buildEvaluationDomainsV2(value.artifactCommitment, credentialReference), 'pii'), value, piiSupportQueryOf('?domain=pii'));
 const piiEvaluation = { domain: 'pii', reportProfile: { id: 'pii-evaluation', version: 1 }, evaluationProfile: 'pii-v1', domainAccountingVersion: 'pii-v1',
   qualificationProfiles: [{ id: 'pii-v1', version: 1 }], evaluation: { state: 'schema-only', href: null }, support: { state: 'schema-only', href: null } };
 

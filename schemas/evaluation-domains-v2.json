@@ -19,7 +19,7 @@
           "evaluationProfile": { "enum": ["evaluation-v1", "pii-v1"] },
           "domainAccountingVersion": { "enum": ["credential-v4", "pii-v1"] },
           "qualificationProfiles": { "type": "array", "minItems": 1, "maxItems": 2, "items": { "$ref": "#/$defs/profile" } },
-          "evaluation": { "$ref": "#/$defs/publication" },
+          "evaluation": { "oneOf": [{ "$ref": "#/$defs/publication" }, { "$ref": "#/$defs/bundlePublication" }] },
           "support": { "$ref": "#/$defs/publication" }
         }
       }
@@ -28,6 +28,11 @@
   "$defs": {
     "profile": { "type": "object", "additionalProperties": false, "required": ["id", "version"], "properties": {
       "id": { "enum": ["credential-evaluation", "pii-evaluation", "documented", "empirical", "pii-v1"] }, "version": { "const": 1 }
+    } },
+    "bundlePublication": { "type": "object", "additionalProperties": false, "required": ["state", "href", "artifactCommitment"], "properties": {
+      "state": { "const": "published" },
+      "href": { "type": "string", "pattern": "^/results/evaluation-bundles/[a-f0-9]{32}/manifest\\.json$" },
+      "artifactCommitment": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
     } },
     "publication": { "type": "object", "additionalProperties": false, "required": ["state", "href", "artifactCommitment"], "properties": {
       "state": { "enum": ["published", "schema-only"] },

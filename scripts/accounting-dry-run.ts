@@ -1,7 +1,8 @@
 // Read-only v1.1 scorer over rows an existing run already produced. It runs
 // no scanner, enforces no floor and writes nothing but a Markdown table of
 // group keys and counts: no fixture bytes, seeds, ranges or scanner output.
-import { readFile, readdir } from 'node:fs/promises';
+import { readFile, readdir, stat } from 'node:fs/promises';
+import { openDiscovery } from '../benchmarks/evaluation/storage/discovery-store.ts';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type { ScoredRow, AccountingConfig } from '../benchmarks/types.ts';
@@ -63,7 +64,10 @@ for (const scanner of scannerIds) {
 }
 
 try {
-  const evaluation = JSON.parse(await readFile(path.join(root, 'results-output/evaluation.json'), 'utf8'));
+  // The summary tables read the store header and its review-queue total only; a legacy single file is still read through the same interface.
+  const exists = (file: string) => stat(path.join(root, file)).then(() => true, () => false);
+  const reader = await openDiscovery<{ byMethod: Record<string, Record<string, number>> }>(path.join(root, (await exists('results-output/evaluation/manifest.json')) || !(await exists('results-output/evaluation.json')) ? 'results-output/evaluation' : 'results-output/evaluation.json'));
+  const evaluation = { byMethod: (await reader.header()).byMethod, reviewQueue: { length: reader.totals.reviewQueue } };
   // Review-required rows come from T0 tiers and deferred expectations, so collapse scanners and assertion types.
   const strata: Record<string, Record<string, number>> = {};
   for (const [key, counts] of Object.entries<Record<string, number>>(evaluation.byMethod)) {
@@ -80,6 +84,6 @@ try {
   }
   lines.push('', `Review queue entries: ${evaluation.reviewQueue.length} (differential disagreements and deferred mutation expectations).`);
 } catch {
-  lines.push('', '_No results-output/evaluation.json: run `npm run eval` to include the resolvedRate table._');
+  lines.push('', '_No results-output/evaluation (store) or evaluation.json: run `npm run eval` to include the resolvedRate table._');
 }
 console.log(lines.join('\n'));

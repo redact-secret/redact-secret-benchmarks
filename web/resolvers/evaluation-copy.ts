@@ -131,7 +131,7 @@ export const OPERATOR_COPY: Record<string, string> = {
   'structural.remove-segment': 'Removes one delimited segment (SendGrid and Slack token formats only)',
 };
 
-/** The commands that write public/results/evaluation-v1.json, named wherever a page has nothing to show without it. */
+/** The commands that write the evaluation bundle (public/results/evaluation-bundle-v1.json), named wherever a page has nothing to show without it. */
 export const EVAL_COMMANDS = 'npm run eval:discover\nnpm run eval:publish';
 
 export const HUB_COPY = {

@@ -4,7 +4,10 @@
  * the evidence change does not explain is `unexplained` (and `--strict` exits 1). Cases only in the newer run are counted as added, only in
  * the older as removed. A regression is an unexplained difference that makes the newer outcome worse.
  *
- *   node --import tsx scripts/contrast-snapshots.ts --from <dir> --to <dir> --label <text> --explain <explain.json> [--out <json>] [--strict]
+ *   node --import tsx scripts/contrast-snapshots.ts --from <dir> --to <dir> --label <text> --explain <explain.json> [--roster-omit <scanner id>]... [--out <json>] [--strict]
+ *
+ * `--roster-omit <id>` (repeatable): the newer run left an OPTIONAL scanner of the evaluation contract out on purpose (#763, `omit_optional`). Its absence is the roster, not an
+ * outcome: the scanner entry and the review occurrences whose peer is that scanner are attributed to it. Everything else is compared exactly as before.
  *
  * <dir> holds <population>/artifact.json and public-evidence-snapshot/methods/artifact.json (the layout of an official-runs archive).
  * explain.json: { "<case id>": "<cause>" } for the cases whose evidence changed between the two snapshots (the change reports name them). A
@@ -19,6 +22,8 @@ const option = (name: string) => { const at = args.indexOf(`--${name}`); return 
 const need = (name: string) => option(name) ?? (() => { throw new Error(`--${name} is required`); })();
 const from = path.resolve(need('from')), to = path.resolve(need('to'));
 const explain: Record<string, string> = JSON.parse(readFileSync(need('explain'), 'utf8'));
+const rosterOmit = new Set<string>(args.flatMap((a, i) => a === '--roster-omit' ? [args[i + 1]] : []));
+const rosterCause = (id: string) => `roster: ${id} not measured in the newer run (optional scanner, #763)`;
 type A = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 const load = (file: string): A => readRunArtifact(readFileSync(file), { forceBytes: statSync(file).size > LARGE_ARTIFACT_BYTES }).artifact;
 const j = (v: unknown) => JSON.stringify(v);
@@ -43,7 +48,7 @@ function compare(population: string, a: A, b: A) {
   const scanners = new Set<string>([...a.scanners.map((s: A) => s.scanner), ...b.scanners.map((s: A) => s.scanner)]);
   for (const name of scanners) {
     const sa = a.scanners.find((s: A) => s.scanner === name), sb = b.scanners.find((s: A) => s.scanner === name);
-    if (!sa || !sb) { diffs.push({ population, scanner: name, kind: 'scanner', id: name, before: !!sa, after: !!sb, cause: null, regression: false }); continue; }
+    if (!sa || !sb) { diffs.push({ population, scanner: name, kind: 'scanner', id: name, before: !!sa, after: !!sb, cause: sa && !sb && rosterOmit.has(name) ? rosterCause(name) : null, regression: false }); continue; }
     const ca = new Map<string, A>(sa.cases.map((c: A) => [c.case_id, c])), cb = new Map<string, A>(sb.cases.map((c: A) => [c.case_id, c]));
     for (const [id, y] of cb) {
       const x = ca.get(id);
@@ -75,7 +80,8 @@ function compare(population: string, a: A, b: A) {
   for (const [k, q] of ra) {
     if (rb.has(k)) continue;
     bump(population, 'review-removed');
-    if (!causeOf(q.case_id)) diffs.push({ population, scanner: String(q.peer ?? ''), kind: 'review-occurrence-removed', id: k, before: { id: q.id }, after: null, cause: null, regression: false });
+    const peerOmitted = rosterOmit.has(String(q.peer ?? ''));
+    if (peerOmitted || !causeOf(q.case_id)) diffs.push({ population, scanner: String(q.peer ?? ''), kind: 'review-occurrence-removed', id: k, before: { id: q.id }, after: null, cause: peerOmitted ? rosterCause(String(q.peer)) : null, regression: false });
   }
 }
 

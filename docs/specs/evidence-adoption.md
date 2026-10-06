@@ -153,6 +153,15 @@ What the entry point did and did not do, in order.
 
 Result for the adoption: the corpus effect is exactly the 11 Polar negatives (pending, in no denominator), two families (`polar-api-credential`, `polar-token`) lose their stable status because the scored floors are no longer met, everything else is unchanged, 0 unexplained. The 2x2 on the unpublished build shows 4 fixed, 2 improved, 0 regressed and 0 interaction.
 
+## Third real use (#690, snapshot-2026.10.06.2 on credential-eval alpha.13, without OpenRedaction default)
+
+| Step | Result |
+| --- | --- |
+| `adopt-evidence-snapshot.mjs prepare --engine-tag v0.1.0-alpha.13 ... --supersede`, run locally | `ready`; recorded as `evidenceCandidate` next to the accepted adoption (7,036 cases, 517 added, 11 changed), superseding the recorded `snapshot-2026.10.05.2`. For a superseded **evidence** candidate the command does not remove the old prepared acceptance patch (it does for a superseded `candidate`); it was removed by hand and the record says so (`supersedesEvidenceCandidate.removedAcceptancePatch`). |
+| Control replay | `run-evidence-replay.mjs` refuses a moved engine, so the transient branch was cut by hand: `repin`, the engine pin and RunArtifact schema of alpha.13, `runs: []` (patch: `snapshot-2026.10.06.2.replay-pins.patch`). One dispatch of `official-runs.yml` with `omit_optional=openredaction` (run 37447804171): 8.3 runner-minutes (about 8 minutes of wall time), against about 39 for the same shape with OpenRedaction (run 37332934881). The archive and the record checks were the `collect` step's. |
+| Contrast | `render-snapshot-contrast.mjs` against the accepted control (run 37296823599) with `omittedScanners: ["openredaction"]` (new `--roster-omit` of `contrast-snapshots.ts`: the scanner entry and the review occurrences whose peer it is are attributed to the roster). Corpus, engine (twin scoring) and roster effects are separated by rule on semantic ids because no isolating replay was made; the rule and its limits are in `snapshot-2026.10.06.2.contrast.md`. |
+| Acceptance package | Not prepared: it needs the registry-format archive, the legacy oracle and the parity report, and a without-OpenRedaction run changes the registry's run shape, which is the owner's decision first. |
+
 ## Rollback
 
 Before acceptance: nothing changed; withdraw by resetting the record to `none`. After acceptance: revert the acceptance PR (the pins and the historical receipts return to `runs[]` with it), or set the authority back to `legacy` (one value, rehearsed in `qualification-cutover.md`). Old public numbers stay usable until the new results are accepted.

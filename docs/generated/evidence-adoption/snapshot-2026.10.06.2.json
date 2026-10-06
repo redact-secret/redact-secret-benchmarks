@@ -1793,7 +1793,1114 @@
     }
   },
   "replay": {
-    "state": "pending",
-    "note": "Outcome drift, added-case outcomes, unmeasured/errors and qualification changes are added from the official replay (adopt-evidence-snapshot.mjs compare-runs)."
+    "state": "control-replayed",
+    "note": "One control replay (CI run 37447804171: published @redact-secret/core 0.1.0-beta.13 on credential-eval alpha.13, without the optional OpenRedaction default profile). Corpus, engine and roster effects are separated by semantic id in snapshot-2026.10.06.2.contrast.md; the effect of acceptance on the view is in snapshot-2026.10.06.2.view-effect.md. No candidate replay, 2x2 or attribution run was made. Nothing is accepted.",
+    "representationEffect": {
+      "note": "The representation contract (credential-eval v1.3) kept apart from the corpus and the product. Facts are the release's; verified means the engine re-derived them (manifest.representation); mapped findings carry a mapping and are scored by the unchanged lattice against the span as authored. Cases whose expectation is pending (T0) or an expected rejection, and cases a scanner left unmeasured, are in no denominator and never a zero detection. Nothing here is a product assertion.",
+      "engines": {
+        "previous": {
+          "manifestRepresentation": {
+            "contract": "credential-eval/representation/1",
+            "facts_digest": "sha256:f25bf9f34e276a86f3b34a71c51ebf3f782fa16a196c0d1d544f76c94fd25f80",
+            "cases": 385,
+            "transformed_cases": 309,
+            "chunked_cases": 9,
+            "expected_rejections": 3,
+            "fragmented_spans": 18,
+            "fragments": 37,
+            "decoded_spans": 55,
+            "decoded_verified": 55,
+            "decoded_unverified": 0
+          }
+        },
+        "candidate": {
+          "manifestRepresentation": {
+            "contract": "credential-eval/representation/1",
+            "facts_digest": "sha256:f25bf9f34e276a86f3b34a71c51ebf3f782fa16a196c0d1d544f76c94fd25f80",
+            "cases": 385,
+            "transformed_cases": 309,
+            "chunked_cases": 9,
+            "expected_rejections": 3,
+            "fragmented_spans": 18,
+            "fragments": 37,
+            "decoded_spans": 55,
+            "decoded_verified": 55,
+            "decoded_unverified": 0
+          }
+        }
+      },
+      "factClasses": {
+        "authored-base": 76,
+        "carrier-or-placement": 272,
+        "chunked": 9,
+        "encode:base64": 40,
+        "encode:hex": 28,
+        "escape": 7,
+        "expected-rejection:unpaired-surrogate-split": 3,
+        "expected-span-decoded-via:base64": 29,
+        "expected-span-decoded-via:hex": 24,
+        "expected-span-decoded-via:strip-codepoints": 8,
+        "expected-span-with-fragments": 18,
+        "fragment": 24,
+        "insert-codepoints": 17,
+        "none": 6651,
+        "normalize": 1
+      },
+      "unmeasuredPlain": {
+        "previousEngine": {
+          "flare-redact": {
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          "gitleaks": {
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          "openredaction": {
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          "redact-secret": {
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          "trufflehog": {
+            "unmeasured": 0,
+            "reasons": {}
+          }
+        },
+        "previousEngineNewCorpus": null,
+        "candidate": {
+          "flare-redact": {
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          "gitleaks": {
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          "redact-secret": {
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          "trufflehog": {
+            "unmeasured": 0,
+            "reasons": {}
+          }
+        }
+      },
+      "mappedFindings": {
+        "previousEngine": {
+          "flare-redact": {
+            "findingsByMapping": {},
+            "cases": 0,
+            "casesByOutcome": {}
+          },
+          "gitleaks": {
+            "findingsByMapping": {
+              "source-block | layers 1 | base64": 18,
+              "source-segment | layers 1 | base64": 4,
+              "source-segment | layers 1 | hex": 4,
+              "source-segment | layers 2 | base64": 1,
+              "source-segment | layers 2 | base64+hex": 1,
+              "source-segment | layers 2 | hex": 1,
+              "source-segment | layers 3 | base64": 1,
+              "source-segment | layers 3 | base64+hex": 1
+            },
+            "cases": 31,
+            "casesByOutcome": {
+              "control:clear": 1,
+              "positive:exact": 30
+            }
+          },
+          "openredaction": {
+            "findingsByMapping": {},
+            "cases": 0,
+            "casesByOutcome": {}
+          },
+          "redact-secret": {
+            "findingsByMapping": {},
+            "cases": 0,
+            "casesByOutcome": {}
+          },
+          "trufflehog": {
+            "findingsByMapping": {},
+            "cases": 0,
+            "casesByOutcome": {}
+          }
+        },
+        "candidate": {
+          "flare-redact": {
+            "findingsByMapping": {},
+            "cases": 0,
+            "casesByOutcome": {}
+          },
+          "gitleaks": {
+            "findingsByMapping": {
+              "source-block | layers 1 | base64": 18,
+              "source-segment | layers 1 | base64": 4,
+              "source-segment | layers 1 | hex": 4,
+              "source-segment | layers 2 | base64": 1,
+              "source-segment | layers 2 | base64+hex": 1,
+              "source-segment | layers 2 | hex": 1,
+              "source-segment | layers 3 | base64": 1,
+              "source-segment | layers 3 | base64+hex": 1
+            },
+            "cases": 31,
+            "casesByOutcome": {
+              "control:clear": 1,
+              "positive:exact": 30
+            }
+          },
+          "redact-secret": {
+            "findingsByMapping": {},
+            "cases": 0,
+            "casesByOutcome": {}
+          },
+          "trufflehog": {
+            "findingsByMapping": {},
+            "cases": 0,
+            "casesByOutcome": {}
+          }
+        }
+      },
+      "outcomesByFactClass": {
+        "previousEngine": {
+          "flare-redact": {
+            "authored-base": {
+              "control:clear": 33,
+              "pending": 6,
+              "positive:exact": 28,
+              "positive:miss": 6,
+              "positive:other": 3
+            },
+            "carrier-or-placement": {
+              "control:clear": 32,
+              "pending": 20,
+              "positive:exact": 164,
+              "positive:miss": 50,
+              "positive:other": 6
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:exact": 5,
+              "positive:other": 1
+            },
+            "encode:base64": {
+              "control:clear": 9,
+              "pending": 2,
+              "positive:miss": 29
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:miss": 24
+            },
+            "escape": {
+              "pending": 1,
+              "positive:exact": 3,
+              "positive:miss": 3
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:miss": 29
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:miss": 24
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:exact": 7,
+              "positive:miss": 1
+            },
+            "expected-span-with-fragments": {
+              "positive:miss": 15,
+              "positive:other": 3
+            },
+            "fragment": {
+              "control:clear": 2,
+              "pending": 4,
+              "positive:miss": 15,
+              "positive:other": 3
+            },
+            "insert-codepoints": {
+              "control:clear": 2,
+              "pending": 1,
+              "positive:exact": 13,
+              "positive:miss": 1
+            },
+            "none": {
+              "control:clear": 3493,
+              "control:flagged": 65,
+              "pending": 67,
+              "positive:exact": 640,
+              "positive:miss": 1622,
+              "positive:other": 247
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          },
+          "gitleaks": {
+            "authored-base": {
+              "control:clear": 31,
+              "control:flagged": 2,
+              "pending": 6,
+              "positive:exact": 26,
+              "positive:miss": 11
+            },
+            "carrier-or-placement": {
+              "control:clear": 29,
+              "control:flagged": 3,
+              "pending": 20,
+              "positive:exact": 134,
+              "positive:miss": 77,
+              "positive:other": 9
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:exact": 5,
+              "positive:miss": 1
+            },
+            "encode:base64": {
+              "control:clear": 9,
+              "pending": 2,
+              "positive:exact": 6,
+              "positive:miss": 23
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:exact": 7,
+              "positive:miss": 17
+            },
+            "escape": {
+              "pending": 1,
+              "positive:exact": 1,
+              "positive:miss": 4,
+              "positive:other": 1
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:exact": 6,
+              "positive:miss": 23
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:exact": 7,
+              "positive:miss": 17
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:miss": 8
+            },
+            "expected-span-with-fragments": {
+              "positive:miss": 18
+            },
+            "fragment": {
+              "control:clear": 2,
+              "pending": 4,
+              "positive:miss": 18
+            },
+            "insert-codepoints": {
+              "control:clear": 2,
+              "pending": 1,
+              "positive:exact": 4,
+              "positive:miss": 10
+            },
+            "none": {
+              "control:clear": 3422,
+              "control:flagged": 136,
+              "pending": 67,
+              "positive:exact": 1623,
+              "positive:miss": 855,
+              "positive:other": 31
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          },
+          "openredaction": {
+            "authored-base": {
+              "control:clear": 22,
+              "control:flagged": 11,
+              "pending": 6,
+              "positive:exact": 27,
+              "positive:miss": 7,
+              "positive:other": 3
+            },
+            "carrier-or-placement": {
+              "control:clear": 15,
+              "control:flagged": 17,
+              "pending": 20,
+              "positive:exact": 116,
+              "positive:miss": 63,
+              "positive:other": 41
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:exact": 4,
+              "positive:miss": 2
+            },
+            "encode:base64": {
+              "control:clear": 3,
+              "control:flagged": 6,
+              "pending": 2,
+              "positive:miss": 27,
+              "positive:other": 2
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:miss": 24
+            },
+            "escape": {
+              "pending": 1,
+              "positive:exact": 3,
+              "positive:miss": 3
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:miss": 27,
+              "positive:other": 2
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:miss": 24
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:miss": 8
+            },
+            "expected-span-with-fragments": {
+              "positive:miss": 18
+            },
+            "fragment": {
+              "control:clear": 1,
+              "control:flagged": 1,
+              "pending": 4,
+              "positive:miss": 18
+            },
+            "insert-codepoints": {
+              "control:clear": 1,
+              "control:flagged": 1,
+              "pending": 1,
+              "positive:exact": 6,
+              "positive:miss": 8
+            },
+            "none": {
+              "control:clear": 2472,
+              "control:flagged": 1086,
+              "pending": 67,
+              "positive:exact": 562,
+              "positive:miss": 1697,
+              "positive:other": 250
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          },
+          "redact-secret": {
+            "authored-base": {
+              "control:clear": 33,
+              "pending": 6,
+              "positive:exact": 36,
+              "positive:miss": 1
+            },
+            "carrier-or-placement": {
+              "control:clear": 32,
+              "pending": 20,
+              "positive:exact": 171,
+              "positive:miss": 49
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:exact": 6
+            },
+            "encode:base64": {
+              "control:clear": 9,
+              "pending": 2,
+              "positive:miss": 29
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:miss": 24
+            },
+            "escape": {
+              "pending": 1,
+              "positive:exact": 4,
+              "positive:miss": 2
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:miss": 29
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:miss": 24
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:exact": 8
+            },
+            "expected-span-with-fragments": {
+              "positive:exact": 1,
+              "positive:miss": 13,
+              "positive:other": 4
+            },
+            "fragment": {
+              "control:clear": 2,
+              "pending": 4,
+              "positive:exact": 1,
+              "positive:miss": 13,
+              "positive:other": 4
+            },
+            "insert-codepoints": {
+              "control:clear": 2,
+              "pending": 1,
+              "positive:exact": 14
+            },
+            "none": {
+              "control:clear": 3547,
+              "control:flagged": 11,
+              "pending": 67,
+              "positive:exact": 2489,
+              "positive:miss": 14,
+              "positive:other": 6
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          },
+          "trufflehog": {
+            "authored-base": {
+              "control:clear": 32,
+              "control:flagged": 1,
+              "pending": 6,
+              "positive:exact": 1,
+              "positive:miss": 34,
+              "positive:other": 2
+            },
+            "carrier-or-placement": {
+              "control:clear": 32,
+              "pending": 20,
+              "positive:miss": 220
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:miss": 6
+            },
+            "encode:base64": {
+              "control:clear": 9,
+              "pending": 2,
+              "positive:miss": 29
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:miss": 24
+            },
+            "escape": {
+              "pending": 1,
+              "positive:miss": 6
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:miss": 29
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:miss": 24
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:miss": 8
+            },
+            "expected-span-with-fragments": {
+              "positive:miss": 18
+            },
+            "fragment": {
+              "control:clear": 2,
+              "pending": 4,
+              "positive:miss": 18
+            },
+            "insert-codepoints": {
+              "control:clear": 2,
+              "pending": 1,
+              "positive:miss": 14
+            },
+            "none": {
+              "control:clear": 3500,
+              "control:flagged": 58,
+              "pending": 67,
+              "positive:exact": 889,
+              "positive:miss": 1582,
+              "positive:other": 38
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          }
+        },
+        "previousEngineNewCorpus": null,
+        "candidate": {
+          "flare-redact": {
+            "authored-base": {
+              "control:clear": 33,
+              "pending": 6,
+              "positive:exact": 28,
+              "positive:miss": 6,
+              "positive:other": 3
+            },
+            "carrier-or-placement": {
+              "control:clear": 32,
+              "pending": 20,
+              "positive:exact": 164,
+              "positive:miss": 50,
+              "positive:other": 6
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:exact": 5,
+              "positive:other": 1
+            },
+            "encode:base64": {
+              "control:clear": 9,
+              "pending": 2,
+              "positive:miss": 29
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:miss": 24
+            },
+            "escape": {
+              "pending": 1,
+              "positive:exact": 3,
+              "positive:miss": 3
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:miss": 29
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:miss": 24
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:exact": 7,
+              "positive:miss": 1
+            },
+            "expected-span-with-fragments": {
+              "positive:miss": 15,
+              "positive:other": 3
+            },
+            "fragment": {
+              "control:clear": 2,
+              "pending": 4,
+              "positive:miss": 15,
+              "positive:other": 3
+            },
+            "insert-codepoints": {
+              "control:clear": 2,
+              "pending": 1,
+              "positive:exact": 13,
+              "positive:miss": 1
+            },
+            "none": {
+              "control:clear": 3726,
+              "control:flagged": 126,
+              "pending": 93,
+              "positive:exact": 640,
+              "positive:miss": 1757,
+              "positive:other": 309
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          },
+          "gitleaks": {
+            "authored-base": {
+              "control:clear": 31,
+              "control:flagged": 2,
+              "pending": 6,
+              "positive:exact": 26,
+              "positive:miss": 11
+            },
+            "carrier-or-placement": {
+              "control:clear": 29,
+              "control:flagged": 3,
+              "pending": 20,
+              "positive:exact": 134,
+              "positive:miss": 77,
+              "positive:other": 9
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:exact": 5,
+              "positive:miss": 1
+            },
+            "encode:base64": {
+              "control:clear": 9,
+              "pending": 2,
+              "positive:exact": 6,
+              "positive:miss": 23
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:exact": 7,
+              "positive:miss": 17
+            },
+            "escape": {
+              "pending": 1,
+              "positive:exact": 1,
+              "positive:miss": 4,
+              "positive:other": 1
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:exact": 6,
+              "positive:miss": 23
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:exact": 7,
+              "positive:miss": 17
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:miss": 8
+            },
+            "expected-span-with-fragments": {
+              "positive:miss": 18
+            },
+            "fragment": {
+              "control:clear": 2,
+              "pending": 4,
+              "positive:miss": 18
+            },
+            "insert-codepoints": {
+              "control:clear": 2,
+              "pending": 1,
+              "positive:exact": 4,
+              "positive:miss": 10
+            },
+            "none": {
+              "control:clear": 3672,
+              "control:flagged": 180,
+              "pending": 93,
+              "positive:exact": 1652,
+              "positive:miss": 1021,
+              "positive:other": 33
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          },
+          "redact-secret": {
+            "authored-base": {
+              "control:clear": 33,
+              "pending": 6,
+              "positive:exact": 36,
+              "positive:miss": 1
+            },
+            "carrier-or-placement": {
+              "control:clear": 32,
+              "pending": 20,
+              "positive:exact": 171,
+              "positive:miss": 49
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:exact": 6
+            },
+            "encode:base64": {
+              "control:clear": 9,
+              "pending": 2,
+              "positive:miss": 29
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:miss": 24
+            },
+            "escape": {
+              "pending": 1,
+              "positive:exact": 4,
+              "positive:miss": 2
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:miss": 29
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:miss": 24
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:exact": 8
+            },
+            "expected-span-with-fragments": {
+              "positive:exact": 1,
+              "positive:miss": 13,
+              "positive:other": 4
+            },
+            "fragment": {
+              "control:clear": 2,
+              "pending": 4,
+              "positive:exact": 1,
+              "positive:miss": 13,
+              "positive:other": 4
+            },
+            "insert-codepoints": {
+              "control:clear": 2,
+              "pending": 1,
+              "positive:exact": 14
+            },
+            "none": {
+              "control:clear": 3801,
+              "control:flagged": 51,
+              "pending": 93,
+              "positive:exact": 2657,
+              "positive:miss": 38,
+              "positive:other": 11
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          },
+          "trufflehog": {
+            "authored-base": {
+              "control:clear": 32,
+              "control:flagged": 1,
+              "pending": 6,
+              "positive:exact": 1,
+              "positive:miss": 34,
+              "positive:other": 2
+            },
+            "carrier-or-placement": {
+              "control:clear": 32,
+              "pending": 20,
+              "positive:miss": 220
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:miss": 6
+            },
+            "encode:base64": {
+              "control:clear": 9,
+              "pending": 2,
+              "positive:miss": 29
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:miss": 24
+            },
+            "escape": {
+              "pending": 1,
+              "positive:miss": 6
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:miss": 29
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:miss": 24
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:miss": 8
+            },
+            "expected-span-with-fragments": {
+              "positive:miss": 18
+            },
+            "fragment": {
+              "control:clear": 2,
+              "pending": 4,
+              "positive:miss": 18
+            },
+            "insert-codepoints": {
+              "control:clear": 2,
+              "pending": 1,
+              "positive:miss": 14
+            },
+            "none": {
+              "control:clear": 3750,
+              "control:flagged": 102,
+              "pending": 93,
+              "positive:exact": 889,
+              "positive:miss": 1779,
+              "positive:other": 38
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          }
+        }
+      },
+      "engineEffect": null,
+      "corpusEffect": null,
+      "combined": {
+        "note": "The superseded candidate (previous engine, previous release) versus this candidate (new engine, new release): both effects together.",
+        "scanners": {
+          "flare-redact": {
+            "compared": 6519,
+            "unchanged": 6448,
+            "moves": {
+              "control:clear -> control:flagged": 60,
+              "control:clear -> pending": 11
+            },
+            "movesByFactClass": {
+              "control:clear -> control:flagged | none": 60,
+              "control:clear -> pending | none": 11
+            },
+            "cases": {
+              "control:clear -> control:flagged": [
+                "anthropic--anthropic-admin01-key-admim-letter-twin",
+                "anthropic--anthropic-admin01-key-api01-prefix-twin",
+                "anthropic--anthropic-admin01-key-api03-prefix-twin",
+                "anthropic--anthropic-admin01-key-underscore-after-version-twin",
+                "anthropic--anthropic-api01-key-admin01-prefix-twin",
+                "anthropic--anthropic-api01-key-api03-prefix-twin",
+                "anthropic--anthropic-api01-key-apl-letter-twin",
+                "anthropic--anthropic-token-api03-no-final-hyphen-prefix-twin",
+                "anthropic--anthropic-token-api03-plain-twin",
+                "anthropic--anthropic-token-api03-unicode-crlf-twin",
+                "aws--aws-access-key-shape-1-bare-twin",
+                "aws--aws-access-key-shape-1-quoted-twin",
+                "aws--aws-access-key-shape-1-unicode-crlf-twin",
+                "aws--aws-access-key-shape-2-bare-twin",
+                "aws--aws-access-key-shape-2-quoted-twin",
+                "aws--aws-access-key-shape-2-unicode-crlf-twin",
+                "aws--aws-secret-access-key-aida-akia-next-line-twin",
+                "aws--aws-secret-access-key-aida-akia-same-line-twin",
+                "generic--bearer-token-authorization-header-twin",
+                "generic--bearer-token-header-bare-twin",
+                "generic--bearer-token-header-quoted-twin",
+                "generic--bearer-token-header-unicode-crlf-twin",
+                "groq--groq-api-key-env-short-body-twin",
+                "groq--groq-api-key-short-body-twin",
+                "hashicorp-vault--vault-token-service-plain-twin",
+                "hashicorp-vault--vault-token-service-unicode-crlf-twin",
+                "huggingface--huggingface-token-user-plain-twin",
+                "huggingface--huggingface-token-user-unicode-crlf-twin",
+                "openai--openai-admin-api-key-admn-prefix-twin",
+                "openai--openai-admin-api-key-first-segment-57-twin",
+                "openai--openai-admin-api-key-lowercase-marker-twin",
+                "openai--openai-token-alphabet-twin",
+                "openai--openai-token-compose-short-twin",
+                "openai--openai-token-legacy-plain-twin",
+                "openai--openai-token-legacy-unicode-crlf-twin",
+                "perplexity--perplexity-api-key-short-body-twin",
+                "perplexity--perplexity-api-key-short-body-twin-wrong-length",
+                "replicate--replicate-api-token-env-short-body-twin",
+                "sendgrid--base62-bare-twin",
+                "sendgrid--base62-crlf-twin"
+              ],
+              "control:clear -> pending": [
+                "polar--polar-api-credential-body-42-twin",
+                "polar--polar-api-credential-body-44-twin",
+                "polar--polar-api-credential-checkout-link-secret-public-id",
+                "polar--polar-api-credential-client-id-in-url-public-id",
+                "polar--polar-api-credential-leading-glue-twin",
+                "polar--polar-api-credential-setting-names-public-id",
+                "polar--polar-token-body-44-twin",
+                "polar--polar-token-leading-glue-twin",
+                "polar--polar-token-oauth-client-id-public-id",
+                "polar--polar-token-trailing-hyphen-twin",
+                "polar--polar-token-trailing-underscore-twin"
+              ]
+            }
+          },
+          "gitleaks": {
+            "compared": 6519,
+            "unchanged": 6469,
+            "moves": {
+              "control:clear -> control:flagged": 39,
+              "control:clear -> pending": 11
+            },
+            "movesByFactClass": {
+              "control:clear -> control:flagged | none": 39,
+              "control:clear -> pending | none": 11
+            },
+            "cases": {
+              "control:clear -> control:flagged": [
+                "anthropic--anthropic-admin01-key-api03-prefix-twin",
+                "anthropic--anthropic-api01-key-api03-prefix-twin",
+                "aws-bedrock--aws-bedrock-short-term-api-key-embedded-leading-twin",
+                "aws-bedrock--aws-bedrock-short-term-api-key-head-only-twin",
+                "aws-bedrock--aws-bedrock-short-term-api-key-urlsafe-body-twin",
+                "clickhouse-cloud--clickhouse-cloud-api-secret-trailing-hyphen-twin",
+                "clojars--clojars-deploy-token-body-61-twin",
+                "clojars--clojars-deploy-token-leading-glue-twin",
+                "clojars--clojars-deploy-token-lowercase-prefix-twin",
+                "clojars--clojars-deploy-token-non-hex-letter-twin",
+                "clojars--clojars-deploy-token-trailing-hyphen-twin",
+                "clojars--clojars-deploy-token-trailing-underscore-twin",
+                "clojars--clojars-deploy-token-uppercase-hex-byte-twin",
+                "cohere--cohere-api-key-id-named-env-alt-twin",
+                "cohere--cohere-api-key-id-named-json-twin",
+                "cohere--cohere-api-key-id-named-kwarg-twin",
+                "doppler--doppler-personal-token-body-45-twin",
+                "doppler--doppler-personal-token-leading-glue-twin",
+                "doppler--doppler-personal-token-leading-underscore-twin",
+                "doppler--doppler-personal-token-trailing-glue-twin",
+                "dynatrace--dynatrace-token-digit-outside-base32-twin",
+                "dynatrace--dynatrace-token-leading-glue-twin",
+                "dynatrace--dynatrace-token-secret-65-twin",
+                "dynatrace--dynatrace-token-trailing-underscore-twin",
+                "generic--jwt-eddsa-plain-twin",
+                "generic--jwt-eddsa-unicode-crlf-twin",
+                "gitlab--gitlab-routable-personal-access-token-checksum-mismatch-twin",
+                "gitlab--gitlab-routable-personal-access-token-leading-glue-twin",
+                "gitlab--gitlab-routable-personal-access-token-length-holder-mismatch-twin",
+                "gitlab--gitlab-routable-personal-access-token-payload-26-twin",
+                "gitlab--gitlab-routable-personal-access-token-trailing-glue-twin",
+                "gitlab--gitlab-routable-personal-access-token-uppercase-base36-twin",
+                "gitlab--gitlab-routable-personal-access-token-version-one-char-twin",
+                "gitlab--gitlab-runner-authentication-token-checksum-mismatch-twin",
+                "gitlab--gitlab-runner-authentication-token-length-holder-mismatch-twin",
+                "gitlab--gitlab-runner-authentication-token-uppercase-base36-twin",
+                "travis-ci--travisci-api-token-context-1-twin",
+                "travis-ci--travisci-api-token-context-8-twin",
+                "travis-ci--travisci-api-token-identifier-key-twin"
+              ],
+              "control:clear -> pending": [
+                "polar--polar-api-credential-body-42-twin",
+                "polar--polar-api-credential-body-44-twin",
+                "polar--polar-api-credential-checkout-link-secret-public-id",
+                "polar--polar-api-credential-client-id-in-url-public-id",
+                "polar--polar-api-credential-leading-glue-twin",
+                "polar--polar-api-credential-setting-names-public-id",
+                "polar--polar-token-body-44-twin",
+                "polar--polar-token-leading-glue-twin",
+                "polar--polar-token-oauth-client-id-public-id",
+                "polar--polar-token-trailing-hyphen-twin",
+                "polar--polar-token-trailing-underscore-twin"
+              ]
+            }
+          },
+          "redact-secret": {
+            "compared": 6519,
+            "unchanged": 6486,
+            "moves": {
+              "control:clear -> control:flagged": 22,
+              "control:clear -> pending": 11
+            },
+            "movesByFactClass": {
+              "control:clear -> control:flagged | none": 22,
+              "control:clear -> pending | none": 11
+            },
+            "cases": {
+              "control:clear -> control:flagged": [
+                "anthropic--anthropic-admin01-key-api03-prefix-twin",
+                "anthropic--anthropic-api01-key-api03-prefix-twin",
+                "docker-compose-resolution-authored--required-message",
+                "gitlab--gitlab-routable-personal-access-token-checksum-mismatch-twin",
+                "gitlab--gitlab-routable-personal-access-token-length-holder-mismatch-twin",
+                "gitlab--gitlab-routable-personal-access-token-missing-separator-twin",
+                "gitlab--gitlab-routable-personal-access-token-payload-26-twin",
+                "gitlab--gitlab-routable-personal-access-token-trailing-glue-twin",
+                "gitlab--gitlab-routable-personal-access-token-uppercase-base36-twin",
+                "gitlab--gitlab-routable-personal-access-token-version-one-char-twin",
+                "vercel--vercel-app-access-token-body-55-twin",
+                "vercel--vercel-app-access-token-body-57-twin",
+                "vercel--vercel-app-access-token-hyphen-in-body-twin",
+                "vercel--vercel-app-access-token-underscore-in-body-twin",
+                "vercel--vercel-app-refresh-token-body-55-twin",
+                "vercel--vercel-app-refresh-token-body-57-twin",
+                "vercel--vercel-app-refresh-token-hyphen-in-body-twin",
+                "vercel--vercel-app-refresh-token-underscore-in-body-twin",
+                "vercel--vercel-personal-access-token-body-55-twin",
+                "vercel--vercel-personal-access-token-body-57-twin",
+                "vercel--vercel-personal-access-token-hyphen-in-body-twin",
+                "vercel--vercel-personal-access-token-underscore-in-body-twin"
+              ],
+              "control:clear -> pending": [
+                "polar--polar-api-credential-body-42-twin",
+                "polar--polar-api-credential-body-44-twin",
+                "polar--polar-api-credential-checkout-link-secret-public-id",
+                "polar--polar-api-credential-client-id-in-url-public-id",
+                "polar--polar-api-credential-leading-glue-twin",
+                "polar--polar-api-credential-setting-names-public-id",
+                "polar--polar-token-body-44-twin",
+                "polar--polar-token-leading-glue-twin",
+                "polar--polar-token-oauth-client-id-public-id",
+                "polar--polar-token-trailing-hyphen-twin",
+                "polar--polar-token-trailing-underscore-twin"
+              ]
+            }
+          },
+          "trufflehog": {
+            "compared": 6519,
+            "unchanged": 6464,
+            "moves": {
+              "control:clear -> control:flagged": 44,
+              "control:clear -> pending": 11
+            },
+            "movesByFactClass": {
+              "control:clear -> control:flagged | none": 44,
+              "control:clear -> pending | none": 11
+            },
+            "cases": {
+              "control:clear -> control:flagged": [
+                "anthropic--anthropic-admin01-key-api03-prefix-twin",
+                "anthropic--anthropic-api01-key-admin01-prefix-twin",
+                "anthropic--anthropic-api01-key-api03-prefix-twin",
+                "apify--apify-api-token-trailing-hyphen-twin",
+                "deepgram--deepgram-api-key-id-named-compose-twin",
+                "deepgram--deepgram-api-key-id-named-env-twin",
+                "deepgram--deepgram-api-key-id-named-export-twin",
+                "deepgram--deepgram-api-key-id-named-tool-call-twin",
+                "deepgram--deepgram-api-key-model-revision-field-twin",
+                "deepgram--deepgram-api-key-unrelated-python-ctor-twin",
+                "github--github-fine-grained-pat-terraform-provider-alphabet-twin",
+                "github--github-token-ghp-prefix-plain-twin",
+                "github--github-token-ghp-prefix-unicode-crlf-twin",
+                "gitlab--gitlab-routable-personal-access-token-checksum-mismatch-twin",
+                "gitlab--gitlab-routable-personal-access-token-length-holder-mismatch-twin",
+                "gitlab--gitlab-routable-personal-access-token-missing-separator-twin",
+                "gitlab--gitlab-runner-authentication-token-prefix-letter-twin",
+                "langfuse--langfuse-secret-key-version-nibble-twin-wrong-alphabet",
+                "openai--openai-token-compose-short-twin",
+                "openai--openai-token-proj-plain-twin",
+                "openai--openai-token-proj-unicode-crlf-twin",
+                "posthog--posthog-token-underscore-in-body-twin",
+                "rubygems--rubygems-api-key-non-hex-letter-twin",
+                "sendgrid--base62-bare-twin",
+                "sendgrid--base62-crlf-twin",
+                "sendgrid--base62-env-key-twin",
+                "sendgrid--base62-env-token-twin",
+                "sendgrid--base62-json-twin",
+                "sendgrid--base62-markdown-twin",
+                "sendgrid--base62-quoted-env-twin",
+                "sendgrid--base62-unicode-twin",
+                "sendgrid--sendgrid-1-twin",
+                "sendgrid--sendgrid-2-twin",
+                "sendgrid--sendgrid-3-twin",
+                "sendgrid--sendgrid-token-segmented-length-plain-twin",
+                "sendgrid--sendgrid-token-segmented-length-unicode-crlf-twin",
+                "sendgrid--url-safe-bare-twin",
+                "slack--slack-token-bot-plain-twin",
+                "slack--slack-token-bot-unicode-crlf-twin",
+                "slack--slack-user-token-missing-secret-twin"
+              ],
+              "control:clear -> pending": [
+                "polar--polar-api-credential-body-42-twin",
+                "polar--polar-api-credential-body-44-twin",
+                "polar--polar-api-credential-checkout-link-secret-public-id",
+                "polar--polar-api-credential-client-id-in-url-public-id",
+                "polar--polar-api-credential-leading-glue-twin",
+                "polar--polar-api-credential-setting-names-public-id",
+                "polar--polar-token-body-44-twin",
+                "polar--polar-token-leading-glue-twin",
+                "polar--polar-token-oauth-client-id-public-id",
+                "polar--polar-token-trailing-hyphen-twin",
+                "polar--polar-token-trailing-underscore-twin"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37447804171"
   }
 }

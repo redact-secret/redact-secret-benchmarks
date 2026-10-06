@@ -27,11 +27,11 @@ import {
   type MatrixEntry, type ReviewSide, type CasePair, type CaseSide, type JoinResult, type Joinable, type LegacyFamily, type NextFamily, type Normalised, type ParityReport,
 } from '../benchmarks/qualification/parity.ts';
 
-const usage = 'Usage: qualification:parity --legacy-status <file> --legacy-results <dir> --view <file> --artifacts <dir> [--public-snapshot <file>] [--out <prefix>] [--strict]';
+const usage = 'Usage: qualification:parity --legacy-status <file> --legacy-results <dir> --view <file> --artifacts <dir> [--public-snapshot <file>] [--change-report <file>] [--out <prefix>] [--strict]';
 const args = process.argv.slice(2);
 const flag = (name: string) => args.includes(`--${name}`);
 const option = (name: string) => { const at = args.indexOf(`--${name}`); return at >= 0 ? args[at + 1] : undefined; };
-for (const [i, a] of args.entries()) if (a.startsWith('--') && !['--strict'].includes(a) && !/^--(legacy-status|legacy-results|view|artifacts|public-snapshot|out)$/.test(a)) throw new Error(`${usage}\nUnknown option ${a} at ${i}`);
+for (const [i, a] of args.entries()) if (a.startsWith('--') && !['--strict'].includes(a) && !/^--(legacy-status|legacy-results|view|artifacts|public-snapshot|change-report|out)$/.test(a)) throw new Error(`${usage}\nUnknown option ${a} at ${i}`);
 const need = (name: string) => option(name) ?? (() => { throw new Error(usage); })();
 const root = path.resolve(import.meta.dirname, '..');
 const resolve = (p: string) => path.resolve(p);
@@ -112,6 +112,15 @@ const notCompared: ParityReport['notCompared'] = [];
 const snapshotFile = option('public-snapshot');
 let snapshot: { identity: { corpus_digest: string }; cases: { id: string; content: string; expected: { start: number; end: number }[] }[] } | undefined;
 if (snapshotFile) snapshot = await readJson(resolve(snapshotFile));
+// The cases the evidence release changed (its change report) and the seeds whose twin changed: the mutation assertions that flip a seed to its twin read the changed twin (the same rule the contrast uses).
+const twinOfById = new Map<string, string>(((snapshot as unknown as { cases?: { id: string; twin?: { twin_of?: string } }[] } | undefined)?.cases ?? []).filter(c => c.twin?.twin_of).map(c => [c.id, c.twin!.twin_of!]));
+const engineTwinSeeds = new Set<string>();
+const changeReportFile = option('change-report');
+const changedSeeds = new Set<string>();
+if (changeReportFile && snapshot) {
+  const changedIds = new Set<string>(((await readJson(resolve(changeReportFile))).diff?.changed ?? []).map((c: { id: string }) => c.id));
+  for (const c of (snapshot as unknown as { cases: { id: string; twin?: { twin_of?: string } }[] }).cases) if (changedIds.has(c.id)) { changedSeeds.add(c.id); if (c.twin?.twin_of) changedSeeds.add(c.twin.twin_of); }
+}
 
 // The project twin-scope copies (#602) are byte-identical copies of development fixtures the legacy path measures in the public population, so they have no
 // legacy fixture of their own: each is compared with its original (`<copyOf>--<fixture>`), and none is a legacy count of the regression population.
@@ -156,7 +165,8 @@ for (const population of [PUBLIC, REGRESSION, POLICY, COPIES]) {
   pairs.push(...result.pairs);
   joins[population] = { byTier: result.byTier, pairs: result.pairs.length, unmatchedLegacy: result.unmatchedLegacy.length, unmatchedNext: result.unmatchedNext.length, ambiguousLegacy: result.ambiguous.legacy, ambiguousNext: result.ambiguous.next };
 }
-const outcomes = compareOutcomes(pairs);
+const notMeasured = new Set<string>((view.scannerRoster?.notMeasured ?? []).map((n: { scanner: string }) => n.scanner));
+const outcomes = compareOutcomes(pairs, notMeasured);
 
 // -- families --------------------------------------------------------------------------------------------------------
 const legacyFamilies: LegacyFamily[] = legacyStatus.families.map((f: any) => ({
@@ -221,6 +231,12 @@ const adjustmentsByFamily: Record<string, Record<string, Record<string, number>>
       const ls = pair.legacy.scanners[SCANNER], ns = pair.next.scanners[SCANNER];
       if (ls?.kind === 'control' && ns?.kind === 'control' && ns.flagged && !ls.flagged) for (const d of n.detectors) add(d, 'twin-scope-vocabulary', 'twinFailures', -1);
     }
+    // A twin the snapshot DOES give a family, read as co-detected by the legacy path and as flagged by the engine (twin scoring of credential-eval alpha.13 and later, ADR 0018, scopes it to its own family):
+    // a new twin failure no legacy count holds. Recognised only when the family's twinFailures residual equals the count of such twins exactly; their seeds' failed mutation assertions are booked the same way.
+    if (kind === 'twin' && (n.family || product.twinScope?.twins[n.key])) {
+      const ls = pair.legacy.scanners[SCANNER], ns = pair.next.scanners[SCANNER];
+      if (ls?.kind === 'control' && ns?.kind === 'control' && ns.flagged && !ls.flagged) { for (const d of n.detectors) add(d, 'engine-twin-scoring', 'twinFailures', -1); const seed = twinOfById.get(n.key); if (seed) engineTwinSeeds.add(seed); }
+    }
     for (const d of new Set([...l.detectors, ...n.detectors])) {
       const delta = Number(l.detectors.includes(d)) - Number(n.detectors.includes(d));
       if (!delta) continue;
@@ -261,8 +277,13 @@ if (existsSync(methodsFile)) {
   }
   // The reference scanner's failed assertions on cases the legacy path never had.
   for (const x of methods.scanners.find(s => s.scanner === (view.policy.scanner ?? 'redact-secret'))?.assertions ?? []) {
-    if (x.status !== 'fail' || !unjoinedSeeds.has(seedCaseId(x.case_id, x.method))) continue;
-    for (const d of detectorsOfSeed.get(seedCaseId(x.case_id, x.method)) ?? []) { const row = (reviewByFamily[d] ??= { occurrences: 0, inLedger: 0, byPeer: {} }); row.failuresUnjoined ??= {}; row.failuresUnjoined[x.method] = (row.failuresUnjoined[x.method] ?? 0) + 1; }
+    const seed = seedCaseId(x.case_id, x.method);
+    if (x.status !== 'fail') continue;
+    if (unjoinedSeeds.has(seed)) { for (const d of detectorsOfSeed.get(seed) ?? []) { const row = (reviewByFamily[d] ??= { occurrences: 0, inLedger: 0, byPeer: {} }); row.failuresUnjoined ??= {}; row.failuresUnjoined[x.method] = (row.failuresUnjoined[x.method] ?? 0) + 1; } }
+    // A failed assertion on a seed whose own case or twin the release changed (a joined case: the legacy path has it).
+    else if (changedSeeds.has(seed)) for (const d of detectorsOfSeed.get(seed) ?? []) { const row = (reviewByFamily[d] ??= { occurrences: 0, inLedger: 0, byPeer: {} }); row.failuresChanged ??= {}; row.failuresChanged[x.method] = (row.failuresChanged[x.method] ?? 0) + 1; }
+    // ... or whose twin the reference flags on both sides, which only the engine's twin scoring books as a failure.
+    else if (engineTwinSeeds.has(seed)) for (const d of detectorsOfSeed.get(seed) ?? []) { const row = (reviewByFamily[d] ??= { occurrences: 0, inLedger: 0, byPeer: {} }); row.failuresEngine ??= {}; row.failuresEngine[x.method] = (row.failuresEngine[x.method] ?? 0) + 1; }
   }
 }
 const families = compareFamilies(legacyFamilies, nextFamilies, { floorsPopulation: PUBLIC, adjustmentsByFamily, axisOverlay: Boolean(view.policy.axisOverlay), reviewByFamily });
@@ -304,7 +325,16 @@ if (existsSync(methodsFile) && reviewDerivation) {
     reviewLegacy[peer] = ids?.size ? { occurrences: ids.size, settled: [...ids].filter(id => ['resolved', 'not-assertable'].includes(String(product.ledger.entries[id]?.status))).length } : null;
   }
 }
-const reviewSection = compareReview(reviewLegacy, reviewNext, { differential: reviewDerivation?.legacy.differential ?? 0, mapped: new Set(Object.values(product.ledgerRekey?.occurrences ?? {})).size }, reviewMapped, unjoinedByPeer);
+// The differential occurrences of seeds the release changed, whose canonical ids the legacy mapping cannot hold (their content changed): the part of a count residual the corpus change explains.
+const changedUnmappedByPeer: Record<string, number> = {};
+if (existsSync(methodsFile) && reviewDerivation && changedSeeds.size) {
+  for (const q of readRunArtifact(await readFile(methodsFile)).artifact.review_queue ?? []) {
+    if (q.method !== 'differential' || !changedSeeds.has(seedCaseId(q.case_id, 'differential')) || Object.hasOwn(product.ledgerRekey?.occurrences ?? {}, q.id)) continue;
+    if (unjoinedSeeds.has(seedCaseId(q.case_id, 'differential'))) continue;
+    const peer = String(q.peer ?? 'unknown'); changedUnmappedByPeer[peer] = (changedUnmappedByPeer[peer] ?? 0) + 1;
+  }
+}
+const reviewSection = compareReview(reviewLegacy, reviewNext, { differential: reviewDerivation?.legacy.differential ?? 0, mapped: new Set(Object.values(product.ledgerRekey?.occurrences ?? {})).size }, reviewMapped, unjoinedByPeer, changedUnmappedByPeer);
 
 // -- identity ----------------------------------------------------------------------------------------------------------
 const nextVersions: Record<string, string | null> = {};
@@ -312,7 +342,7 @@ for (const population of view.populations) for (const s of population.artifact.s
   if (s.id in nextVersions && nextVersions[s.id] !== s.version) nextVersions[s.id] = `${nextVersions[s.id]} / ${s.version}`; else nextVersions[s.id] = s.version;
 }
 const legacyRun = await readJson(path.join(resultsDir, 'run.json'));
-const identity = compareIdentity(legacyRun.scannerVersions, nextVersions);
+const identity = compareIdentity(legacyRun.scannerVersions, nextVersions, notMeasured);
 
 // -- known gaps -----------------------------------------------------------------------------------------------------------
 const knownGaps = await readJson(path.join(root, 'benchmarks/known-gaps.json'));

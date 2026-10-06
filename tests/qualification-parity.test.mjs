@@ -378,3 +378,24 @@ test('a twin-failure difference is attributed to the twin scope only when the ma
   assert.equal(causeOfReason('twinFailures', undefined), undefined);
   assert.equal(causeOfReason('twinFailures', 'twin-scope-vocabulary'), 'twin-scope-vocabulary');
 });
+
+test('an optional scanner the new run left out on purpose is a cause, never a silent drop or a zero (#763)', () => {
+  const pairs = [pair({ s: { kind: 'positive', spans: ['EXACT'] }, o: { kind: 'positive', spans: ['EXACT'] } }, { s: { kind: 'positive', spans: ['EXACT'] } })];
+  const stated = compareOutcomes(pairs, new Set(['o']));
+  assert.equal(stated.section.tally.unexplained, 0);
+  assert.equal(stated.groups.find(g => g.scanner === 'o').cause, 'optional-scanner-not-measured');
+  assert.equal(compareOutcomes(pairs).section.tally.unexplained, 1, 'without the statement the absence is unexplained');
+  assert.equal(compareIdentity({ s: '1', o: '2' }, { s: '1' }, new Set(['o'])).tally.unexplained, 0);
+  assert.equal(compareIdentity({ s: '1', o: '2' }, { s: '1' }).tally.unexplained, 1);
+});
+
+test('review occurrences of seeds the release changed explain a count residual only when it equals them plus the new cases exactly', () => {
+  const legacy = { p: { occurrences: 10, settled: 10 } }, next = { p: { occurrences: 17, settled: 10 } };
+  const explained = compareReview(legacy, next, { differential: 10, mapped: 10 }, 8, { p: 5 }, { p: 2 });
+  assert.equal(explained.differences.filter(d => d.field === 'occurrences' && d.verdict === 'explained').length, 1);
+  assert.equal(explained.differences.find(d => d.field === 'occurrences').cause, 'corpus-twin-change');
+  const off = compareReview(legacy, next, { differential: 10, mapped: 10 }, 8, { p: 5 }, { p: 1 });
+  assert.equal(off.differences.find(d => d.field === 'occurrences').verdict, 'unexplained');
+  const lost = compareReview(legacy, next, { differential: 10, mapped: 10 }, 8, { p: 5 }, { p: 2 });
+  assert.equal(lost.differences.find(d => d.field === 'legacy entries mapped, against canonical occurrences the mapping settles').cause, 'corpus-twin-change');
+});

@@ -136,7 +136,7 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
     // 6. The legacy oracle and the parity report (strict).
     run('npm', ['run', '-s', 'bench'], { stdio: ['ignore', 'ignore', 'inherit'] });
     run('npm', ['run', '-s', 'eval:classify'], { stdio: ['ignore', 'ignore', 'inherit'] });
-    run('npm', ['run', '-s', 'qualification:parity', '--', '--legacy-status', 'results-output/support-status.json', '--legacy-results', 'public/results', '--view', view, '--artifacts', replay, '--public-snapshot', snapshotFile, '--strict']);
+    run('npm', ['run', '-s', 'qualification:parity', '--', '--legacy-status', 'results-output/support-status.json', '--legacy-results', 'public/results', '--view', view, '--artifacts', replay, '--public-snapshot', snapshotFile, '--change-report', ec.changeReport, '--strict']);
     // 7. The prepared-acceptance block is part of the base the patch applies to (the patch removes the evidence candidate it lives in), so it is committed to the transient tree first and
     //    written to this checkout's record at the end, by the same code from the same record.
     const decision = adrPath(tag, ec.engine.tag);

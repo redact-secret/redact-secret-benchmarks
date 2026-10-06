@@ -35,6 +35,9 @@ export const CAUSES: Cause[] = [
   { id: 'canonical-evidence-membership', change: 'The evidence snapshot holds fixtures with no legacy counterpart (intended canonical-evidence change): they count in the new floors and in no legacy count, and their methods-run variants add review occurrences, failed assertions and unresolved differential disagreements no legacy count or ledger decision covers (#680). Recognised for a method figure only when the residual equals, exactly, the unsettled occurrences or failed assertions of the cases with no legacy counterpart; a review occurrence of such a case stays unreviewed until a decision is made for it.', confirmation: 'confirmed', owner: 'credential-evidence' },
   { id: 'family-not-in-accepted-evidence', change: 'A second-wave detector family (registered after the accepted evidence snapshot was cut) has no case in any accepted population: the evidence snapshot, its methods run and the project populations carry none of its fixtures, so the new path has nothing to count, and the legacy path counts the project\'s own fixtures of the family (benchmarks/lib/beta8). Recognised only for a family whose new-side fixture total is 0 and whose populations hold 0 cases; every figure of it is then unmeasured on the new side and the family stays provisional by contract (T3 placeholder) or by the open ruling it names. It is cleared by an evidence snapshot that carries the family, adopted by the owner.', confirmation: 'confirmed', owner: 'benchmarks' },
   { id: 'owner-ledger-settlement', change: 'The repository owner decided (2026-10-05, #698) to settle review occurrences of the accepted run by ledger rows keyed by the canonical occurrence id (scripts/apply-ledger-settlements.ts), only where the same occurrence was proposed by the triage of the previous snapshot and the observation is identical. The legacy ledger holds no decision for those occurrences, so the new path reads more of them settled than the legacy mapping. Recognised only when the residual equals, exactly, the occurrences settled by such rows. Not an independent review.', confirmation: 'confirmed', owner: 'repository owner' },
+  { id: 'optional-scanner-not-measured', change: 'An optional scanner of the evaluation contract (benchmarks/support/scanner-roster.json, #763) was left out of the new run on purpose (omit_optional; its default profile takes too long), so the new side has no outcome for it. The view states it in scannerRoster.notMeasured and fabricates no zero; the legacy path scored it.', confirmation: 'confirmed', owner: 'repository owner' },
+  { id: 'corpus-twin-change', change: 'The evidence release changed a twin (a twin of a seed gained sibling_family, or moved to unresolved), so the mutation or metamorphic assertions that flip the seed to that twin read the changed case (a failed assertion the legacy path never had) and the review occurrences of those seeds are keyed by changed content (no legacy mapping holds them). Recognised only when the failed assertions of the seeds whose own case or twin the release changed (its change report) equal the residual exactly.', confirmation: 'confirmed', owner: 'evidence release' },
+  { id: 'engine-twin-scoring', change: 'A twin control the snapshot scopes to its own family was read as co-detected by the legacy path (a finding of another known family) and is read as flagged by the engine (credential-eval alpha.13 and later, ADR 0018), so it is a twin failure no legacy count holds and the mutation assertions that flip its seed to it fail. Recognised only when the family residual equals the count of such twins (and of their seeds failed assertions) exactly.', confirmation: 'confirmed', owner: 'credential-eval engine' },
   { id: 'fixture-attribution', change: 'The legacy path attributed a fixture to its declared contract and targets; the adapter attributes a case to the detectors named by its targets, its family, or the taxonomy family it belongs to and, where the snapshot names none, to the legacy targets the product overlay carries, then to its twin parent (population-policy.json attribution). What remains is a case the legacy path scoped to a family the overlay does not carry (no legacy counterpart) or that the legacy path attributed to a detector the adapter attributes elsewhere.', confirmation: 'inferred', owner: 'benchmarks' },
 ];
 const CAUSE_IDS = new Set(CAUSES.map(c => c.id));
@@ -79,10 +82,10 @@ class Collector {
 
 export interface ScannerVersions { [scanner: string]: string | null }
 /** Must-equal: the product release and each peer version. A comparison needs equal identities to mean anything. */
-export function compareIdentity(legacy: ScannerVersions, next: ScannerVersions): Section {
+export function compareIdentity(legacy: ScannerVersions, next: ScannerVersions, notMeasured: ReadonlySet<string> = new Set()): Section {
   const c = new Collector();
   for (const id of [...new Set([...Object.keys(legacy), ...Object.keys(next)])].sort()) {
-    if (!(id in legacy) || !(id in next)) { c.record(id, 'scanner version', id in legacy ? legacy[id] : 'not run', id in next ? next[id] : 'not run', undefined); c.tally.compared++; continue; }
+    if (!(id in legacy) || !(id in next)) { c.record(id, 'scanner version', id in legacy ? legacy[id] : 'not run', id in next ? next[id] : 'not run', id in legacy && notMeasured.has(id) ? { cause: 'optional-scanner-not-measured', note: `${id} is an optional scanner not measured in the new run (scannerRoster.notMeasured)` } : undefined); c.tally.compared++; continue; }
     c.compare(id, 'scanner version', legacy[id], next[id]);
   }
   return c.section();
@@ -154,6 +157,10 @@ export interface ReviewOfFamily {
   unsettledUnjoined?: number;
   /** Failed assertions of the reference scanner, by method, on cases that have no legacy counterpart. */
   failuresUnjoined?: Record<string, number>;
+  /** Failed assertions of the reference scanner, by method, on seeds whose own case or twin the evidence release changed. */
+  failuresChanged?: Record<string, number>;
+  /** Failed assertions of the reference scanner, by method, on seeds whose twin the legacy path read as co-detected and the engine reads as flagged. */
+  failuresEngine?: Record<string, number>;
 }
 
 export interface StatusRow {
@@ -267,7 +274,17 @@ export function compareFamilies(legacy: LegacyFamily[], next: NextFamily[], opti
         // The residual is the methods run of cases with no legacy counterpart: explained only when it equals their unsettled occurrences (differential) or failed assertions (metamorphic, mutation) exactly.
         const residual = Number(n.evidence[field]) - Number(l.evidence[field]);
         const unjoined = method === 'differential' ? review.unsettledUnjoined : review.failuresUnjoined?.[method];
-        if (!(residual > 0) || unjoined !== residual) return undefined;
+        const changed = method === 'differential' ? 0 : (review.failuresChanged?.[method] ?? 0);
+        const engine = method === 'differential' ? 0 : (review.failuresEngine?.[method] ?? 0);
+        if (!(residual > 0) || (unjoined ?? 0) + changed + engine !== residual) return undefined;
+        if (engine > 0 && changed === 0) {
+          methodCause[method] = 'engine-twin-scoring';
+          return { cause: 'engine-twin-scoring', note: `residual ${residual} = ${engine} failed ${method} assertion(s) of seeds whose twin the engine now reads as flagged${unjoined ? ` + ${unjoined} of cases with no legacy counterpart` : ''}` };
+        }
+        if (changed > 0) {
+          methodCause[method] = 'corpus-twin-change';
+          return { cause: 'corpus-twin-change', note: `residual ${residual} = ${changed} failed ${method} assertion(s) of seeds whose twin the release changed${unjoined ? ` + ${unjoined} of cases with no legacy counterpart` : ''}` };
+        }
         methodCause[method] = 'canonical-evidence-membership';
         if (method === 'differential') reviewCause ??= 'canonical-evidence-membership';
         return { cause: 'canonical-evidence-membership', note: `residual ${residual} = ${unjoined} ${method === 'differential' ? 'unsettled differential occurrence(s)' : `failed ${method} assertion(s)`} of cases with no legacy counterpart` };
@@ -330,7 +347,7 @@ const describe = (n: Normalised | undefined): string => {
 };
 
 /** Compare matched cases scanner by scanner. A twin control with a finding on both sides but a different flagged or co-detected verdict is the twin-scope pattern. */
-export function compareOutcomes(pairs: CasePair[]): OutcomeReport {
+export function compareOutcomes(pairs: CasePair[], notMeasured: ReadonlySet<string> = new Set()): OutcomeReport {
   const c = new Collector();
   const groups = new Map<string, OutcomeReport['groups'][number]>();
   for (const pair of [...pairs].sort((a, b) => (a.next.key < b.next.key ? -1 : 1))) {
@@ -342,6 +359,8 @@ export function compareOutcomes(pairs: CasePair[]): OutcomeReport {
       if (l?.kind === 'control' && n?.kind === 'control' && l.observed && n.observed && l.twin && n.twin && (l.coDetected !== n.coDetected || l.flagged !== n.flagged)) attribution = { cause: 'twin-scope-vocabulary', note: 'finding present on both sides; the flagged and co-detected verdicts differ' };
       // A case the legacy path scored and the evidence now records as T0 (pending, not assertable) has no scored outcome in credential-eval: the legacy path counted it, the new one cannot.
       if (!attribution && (l?.kind === 'positive' || l?.kind === 'control') && n?.kind === 'pending') attribution = { cause: 'pending-not-scored', note: 'scored by the legacy path; the evidence records the case as T0 (pending), which no scanner is scored on' };
+      // A scanner the new run left out on purpose and states in the view has no new-side outcome by design, never an unexplained difference.
+      if (!attribution && l && !n && notMeasured.has(scanner)) attribution = { cause: 'optional-scanner-not-measured', note: `${scanner} is an optional scanner not measured in the new run (scannerRoster.notMeasured)` };
       const legacy = describe(l), next = describe(n);
       if (attribution) { c.tally.explained++; c.tally.byCause[attribution.cause] = (c.tally.byCause[attribution.cause] ?? 0) + 1; } else c.tally.unexplained++;
       const key = [scanner, pair.population, legacy, next, attribution?.cause ?? 'unexplained'].join('|');
@@ -552,10 +571,12 @@ export function compareDistributions(legacy: DistributionSide & { familyCount: n
 
 /** Per peer, the differential occurrences and how many a decision settles. `null` is a peer the legacy run never scanned, so it holds no legacy entry. */
 export type ReviewSide = Record<string, { occurrences: number; settled: number; /** Settled by a ledger row keyed by the canonical occurrence id itself (an owner-decided settlement of the accepted run), not through the legacy mapping. */ ownSettled?: number } | null>;
-export function compareReview(legacy: ReviewSide, next: ReviewSide, legacyEntries: { differential: number; mapped: number }, nextMapped: number, unjoinedByPeer: Record<string, number> = {}): Section {
+export function compareReview(legacy: ReviewSide, next: ReviewSide, legacyEntries: { differential: number; mapped: number }, nextMapped: number, unjoinedByPeer: Record<string, number> = {}, changedUnmappedByPeer: Record<string, number> = {}): Section {
   const c = new Collector();
   c.compare('ledger', 'legacy differential entries, against those mapped to a canonical occurrence', legacyEntries.differential, legacyEntries.mapped);
-  c.compare('ledger', 'legacy entries mapped, against canonical occurrences the mapping settles', legacyEntries.mapped, nextMapped);
+  // The legacy entries that map to an occurrence of a seed the release changed no longer map: exactly the occurrences of those seeds the mapping cannot hold (peers the legacy run scanned).
+  const lostByChange = Object.entries(changedUnmappedByPeer).filter(([peer]) => legacy[peer]).reduce((a, [, n]) => a + n, 0);
+  c.compare('ledger', 'legacy entries mapped, against canonical occurrences the mapping settles', legacyEntries.mapped, nextMapped, () => (lostByChange > 0 && legacyEntries.mapped - nextMapped === lostByChange ? { cause: 'corpus-twin-change', note: `${lostByChange} legacy entr(ies) map to occurrences of seeds whose own case or twin the release changed` } : undefined));
   for (const peer of [...new Set([...Object.keys(legacy), ...Object.keys(next)])].sort()) {
     const l = legacy[peer], n = next[peer];
     for (const field of ['occurrences', 'settled'] as const) {
@@ -564,6 +585,8 @@ export function compareReview(legacy: ReviewSide, next: ReviewSide, legacyEntrie
         const residual = (n?.[field] ?? 0) - (l?.[field] ?? 0), unjoined = unjoinedByPeer[peer] ?? 0;
         // Occurrences of cases the legacy path never had hold no legacy entry: explained only when they are exactly the residual of the count, and they are all unsettled.
         if (field === 'settled' && (n?.ownSettled ?? 0) > 0 && residual === n!.ownSettled) return { cause: 'owner-ledger-settlement', note: `${residual} occurrence(s) settled by the owner-decided ledger rows keyed by the accepted run's occurrence ids (not a legacy decision)` };
+        const changedUnmapped = changedUnmappedByPeer[peer] ?? 0;
+        if (field === 'occurrences' && changedUnmapped > 0 && residual === unjoined + changedUnmapped) return { cause: 'corpus-twin-change', note: `${residual} occurrence(s) = ${unjoined} of cases with no legacy counterpart + ${changedUnmapped} of seeds the release changed (their content changed, so the legacy mapping cannot hold them)` };
         return field === 'occurrences' && unjoined > 0 && residual === unjoined ? { cause: 'canonical-evidence-membership', note: `${unjoined} occurrence(s) of cases with no legacy counterpart` } : undefined;
       });
     }

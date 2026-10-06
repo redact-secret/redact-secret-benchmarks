@@ -213,7 +213,8 @@ test.describe('one fixture (?fixture=)', () => {
     await page.goto(`${BASE}/report/fixtures/${SUITE}/?fixture=${encodeURIComponent(FIXTURE)}`);
     const view = page.locator('[data-fixture-state="ready"]');
     await expect(view.getByRole('heading', { level: 1 })).toHaveText(FIXTURE);
-    await expect(view.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Providers' })).toBeVisible();
+    // The way back to the report is the first crumb of every fixture page; the crumbs after it depend on the suite (a provider suite names its provider, a qualification-view suite names the suites index).
+    await expect(view.getByRole('navigation', { name: 'Breadcrumb' }).getByRole('link', { name: 'Report', exact: true })).toBeVisible();
     // Exactly one fixture page is visible, not the list and the fixture at once.
     await expect(page.getByRole('heading', { level: 1 }).filter({ visible: true })).toHaveCount(1);
   });

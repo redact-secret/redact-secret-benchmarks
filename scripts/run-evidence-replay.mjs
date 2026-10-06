@@ -60,28 +60,25 @@ export function replayablePin({ adoption, registry, tag, manifestDigest }) {
 }
 
 /**
- * Pure: the registry with its engine pin moved to the recorded engine candidate. Refuses a schema whose digest is not the recorded one. A recorded run of the previous engine can no
- * longer match the moved pin: on the transient replay branch they are dropped (the accepted ones stay in the history of the real branch and are never replayed here); with
- * `historical` ({ supersededBy: { evidenceRelease, manifestDigest }, supersededOn }) they become `historicalRuns[]` receipts, never relabelled as evidence of the new pin (the acceptance).
+ * Pure: the registry with its engine pin moved to the recorded engine candidate. Refuses a schema whose digest is not the recorded one. A recorded run of the previous engine can no longer
+ * match the moved pin, so it is dropped: the accepted ones stay in git history (a population whose evidence is not the candidate's, such as the project corpora, has no receipt shape: its
+ * pin is unchanged, so a run of it belongs in runs[] or nowhere), and the floors population's earlier runs are the receipts `repin` already moved.
  */
-export function moveEnginePin(registry, engineChange, schemaBytes, historical) {
+export function moveEnginePin(registry, engineChange, schemaBytes) {
   const digest = sha256Digest(schemaBytes);
   if (digest !== engineChange.runArtifactSchemaSha256) throw new Error(`the engine run-artifact schema at ${engineChange.to.tag} is ${digest}, the record names ${engineChange.runArtifactSchemaSha256}`);
-  const current = r => r.engine?.revision === engineChange.to.revision;
-  const moved = historical ? (registry.runs ?? []).filter(r => !current(r)).map(r => ({ ...r, status: 'historical', supersededBy: historical.supersededBy, supersededOn: historical.supersededOn })) : [];
   return {
-    ...registry, runs: (registry.runs ?? []).filter(current),
-    ...(historical ? { historicalRuns: [...(registry.historicalRuns ?? []), ...moved] } : {}),
+    ...registry, runs: (registry.runs ?? []).filter(r => r.engine?.revision === engineChange.to.revision),
     engine: { ...registry.engine, tag: engineChange.to.tag, revision: engineChange.to.revision, version: engineChange.to.tag.replace(/^v/, ''), runArtifactSchema: { ...registry.engine.runArtifactSchema, sha256: digest } },
   };
 }
 
 /** Move the engine pin (and its run-artifact schema) of the tree at `tree` to the candidate's recorded engine, when it differs. Returns whether it moved. */
-export function moveEngineInTree(tree, ec, historical) {
+export function moveEngineInTree(tree, ec) {
   const file = path.join(tree, 'benchmarks/official-runs.json'), registry = JSON.parse(readFileSync(file, 'utf8'));
   if (!ec.engineChange || ec.engine.tag === registry.engine.tag) return false;
   const schema = execFileSync('gh', ['api', '-H', 'Accept: application/vnd.github.raw', `repos/redact-secret/credential-eval/contents/schemas/run-artifact-v1.schema.json?ref=${ec.engine.tag}`], { cwd: root, maxBuffer: 64 << 20 });
-  const pins = moveEnginePin(registry, ec.engineChange, schema, historical);
+  const pins = moveEnginePin(registry, ec.engineChange, schema);
   writeFileSync(file, `${JSON.stringify(pins, null, 2)}\n`);
   writeFileSync(path.join(tree, pins.engine.runArtifactSchema.path), schema);
   return true;

@@ -99,8 +99,8 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
     const runId = ec.replay.ciRun.split('/').pop();
     // 2. Repin and record the four runs.
     run('node', ['scripts/adopt-evidence-snapshot.mjs', 'repin', '--superseded-on', supersededOn ?? new Date().toISOString().slice(0, 10)]);
-    // A candidate that moves the engine (record `engineChange`): the engine pin and schema move with it and the earlier runs of the other populations become historical receipts (#773).
-    moveEngineInTree(tree, ec, { supersededBy: { evidenceRelease: ec.evidenceRelease, manifestDigest: ec.manifestDigest }, supersededOn: supersededOn ?? new Date().toISOString().slice(0, 10) });
+    // A candidate that moves the engine (record `engineChange`): the engine pin and schema move with it and the previous engine's runs of the other populations are dropped (#773).
+    moveEngineInTree(tree, ec);
     for (const rel of ['policy-corpus', 'public-evidence-snapshot', 'public-evidence-snapshot/methods', 'regression-corpus']) run('npm', ['run', '-s', 'official-runs:record', '--', path.join(replay, rel, 'run-record.json'), '--date', supersededOn ?? new Date().toISOString().slice(0, 10)]);
     // 3. The registry-format archive, stored in a release (storage of bytes, not an acceptance) and fetched back against the registry.
     const archiveFile = readJson('benchmarks/official-run-archive.json', tree);

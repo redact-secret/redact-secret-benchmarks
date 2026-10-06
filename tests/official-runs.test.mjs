@@ -47,6 +47,15 @@ test('a recorded run must match the pinned engine, evidence, scanners and determ
   assert.ok(mutate(r => { r.runClass = 'public'; r.publication = 'internal'; }).some(p => /public run needs publication public/.test(p)));
 });
 
+test('an optional scanner may be left out of a run only when the run says so; a required one never (#763)', () => {
+  const mutate = change => { const r = clone(); change(r.runs[0], r); return officialRunProblems(r, context); };
+  const without = (r, id, omitted) => { r.scanners = r.scanners.filter(s => s.id !== id); if (omitted) r.omittedOptionalScanners = omitted; };
+  assert.deepEqual(mutate(r => without(r, 'openredaction', ['openredaction'])), []);
+  assert.ok(mutate(r => without(r, 'openredaction')).some(p => /scanner openredaction is missing/.test(p)), 'a silent drop is refused');
+  assert.ok(mutate(r => without(r, 'trufflehog', ['trufflehog'])).some(p => /scanner trufflehog is missing/.test(p) || /omittedOptionalScanners names trufflehog/.test(p)), 'a required scanner cannot be omitted');
+  assert.ok(mutate(r => { r.omittedOptionalScanners = ['openredaction']; }).some(p => /omittedOptionalScanners names openredaction/.test(p)), 'a scanner that ran cannot be listed as omitted');
+});
+
 test('a product population is content-addressed, so a corpus change must be re-pinned', () => {
   const stale = clone();
   stale.populations.find(p => p.id === 'regression-corpus').evidence.release.tag = 'regression-000000000000';

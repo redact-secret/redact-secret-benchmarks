@@ -7,6 +7,7 @@
  *
  * Run: npm run official-runs:check [-- --bindings]
  */
+import { readFileSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
@@ -16,6 +17,8 @@ const DIGEST = /^sha256:[0-9a-f]{64}$/;
 const PLATFORMS = ['linux-x64', 'darwin-arm64'];
 const POPULATIONS = ['public-evidence-snapshot', 'regression-corpus', 'policy-corpus'];
 const PRODUCT = ['regression-corpus', 'policy-corpus'];
+/** The scanners the roster lets an official run leave out when it says so (#763): benchmarks/support/scanner-roster.json, the same file the adapter reads. */
+const optionalOfficial = new Set(JSON.parse(readFileSync(new URL('../benchmarks/support/scanner-roster.json', import.meta.url), 'utf8')).runClasses.official.optional);
 
 /** Pure consistency check of a parsed registry. `schemaDigest` is the digest of the vendored RunArtifact schema; `inputs` is the parsed qualification-inputs manifest. */
 export function officialRunProblems(registry, { schemaDigest, inputs, evaluationEvidenceDigest }) {
@@ -111,8 +114,12 @@ export function officialRunProblems(registry, { schemaDigest, inputs, evaluation
     if (!DIGEST.test(run.configHash ?? '')) problems.push(`${at}: configHash is required`);
     const pinnedConfig = isMethods ? undefined : registry.config?.platforms?.[run.platform]?.configHash;
     if (typeof pinnedConfig === 'string' && pinnedConfig !== run.configHash) problems.push(`${at}: configHash differs from the pinned ${pinnedConfig}`);
+    const omittedOptional = new Set(run.omittedOptionalScanners ?? []);
+    for (const id of omittedOptional) if (!optionalOfficial.has(id) || (run.scanners ?? []).some(x => x.id === id)) problems.push(`${at}: omittedOptionalScanners names ${id}, which is not an optional scanner left out of this run`);
     for (const s of scanners) {
       const got = (run.scanners ?? []).find(x => x.id === s.id);
+      // An OPTIONAL scanner of the roster may be left out of a run that says so (#763): never silently, and never a required one.
+      if (!got && omittedOptional.has(s.id) && optionalOfficial.has(s.id)) continue;
       if (!got) { problems.push(`${at}: scanner ${s.id} is missing`); continue; }
       if (got.version !== s.version) problems.push(`${at}: scanner ${s.id} ran ${got.version}, pinned ${s.version}`);
       if (got.build !== 'released') problems.push(`${at}: scanner ${s.id} is a ${got.build} build; only released builds are recorded as public evidence`);

@@ -1,0 +1,19 @@
+{
+  "rules": [
+    {
+      "name": "hubspot personalAccessKey / HUBSPOT_PERSONAL_ACCESS_KEY positives",
+      "match": "^hubspot:personal-access-key:r2:.*:positive$",
+      "issue": "redact-secret#1233"
+    },
+    {
+      "name": "empty form value takes the next parameter as its value",
+      "match": ":r2:[a-z_A-Z]+-form-empty-null:control$",
+      "issue": "redact-secret#1232"
+    },
+    {
+      "name": "YOUR_PASSWORD placeholder under password",
+      "match": "^mongodb-atlas:database-user-password:r2:password-member-placeholders:control$",
+      "issue": "redact-secret#1234"
+    }
+  ]
+}

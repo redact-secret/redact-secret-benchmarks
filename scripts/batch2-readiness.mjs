@@ -57,7 +57,9 @@ for (const line of handoffText.split('\n')) {
   const c = line.split('|').slice(1, -1).map((x) => x.trim());
   if (c.length !== 7) throw new Error(`handoff row has ${c.length} cells: ${line.slice(0, 60)}`);
   handoff.set(c[0].replace(/`/g, ''), {
-    status: c[1],
+    status: c[1].split(/[ (]/)[0],
+    statusNote: c[1],
+    researchDoc: (c[1].match(/\(([^)]*\.md)\)/) ?? [])[1] ?? null,
     slot: c[2],
     publicLookalikes: c[3],
     claimIds: c[4].split(',').map((x) => x.trim()),
@@ -85,6 +87,8 @@ for (const f of fams) {
     coreIssue: f.coreIssue,
     // Evidence's status. A ready row still has no adopted product contract (core #1223-#1226 are open).
     status: h.status,
+    statusNote: h.statusNote,
+    researchDoc: h.researchDoc,
     handoff: { slot: h.slot, publicLookalikes: h.publicLookalikes, claimIds: h.claimIds, followUp: h.followUp === 'none' ? null : h.followUp },
     contract: {
       path: contractPath,

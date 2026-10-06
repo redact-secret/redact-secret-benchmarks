@@ -14,11 +14,23 @@ import { parseArgs } from 'node:util';
 const here = path.dirname(fileURLToPath(import.meta.url));
 // The corpus module is chosen by `--corpus` (default: the Batch 1 corpus, so Batch 1 runs are unchanged).
 let cases;
-const CHUNK = 7;
+let CHUNK = 7; // `--chunk N` overrides it (default 7, the size every earlier run used)
 const LIMITS = { maxInputBytes: 1_000_000, maxBufferedBytes: 32_896, maxTokenBytes: 8_192, maxMultilineBytes: 32_768 };
 const bytes = (text, index) => Buffer.byteLength(text.slice(0, index));
 const norm = (text, findings) => findings.map(f => ({ start: bytes(text, f.start), end: bytes(text, f.end), type: f.type, detector: f.detector, action: f.action }));
-const chunks = text => { const out = []; for (let i = 0; i < text.length; i += CHUNK) out.push(text.slice(i, i + CHUNK)); return out; };
+// UTF-16 chunks of CHUNK code units; a chunk never ends between a surrogate pair (the JS APIs reject lone surrogates).
+// Identical to fixed slicing whenever no pair would be split, so earlier runs are unchanged.
+const chunks = text => {
+  const out = [];
+  for (let i = 0; i < text.length;) {
+    let end = Math.min(text.length, i + CHUNK);
+    const last = text.charCodeAt(end - 1);
+    if (end < text.length && last >= 0xd800 && last <= 0xdbff) end += 1;
+    out.push(text.slice(i, end));
+    i = end;
+  }
+  return out;
+};
 
 /** A UTF-16 surface (the Node core and the WASM package share the API shape). */
 function jsSurface(api, factory) {
@@ -51,7 +63,7 @@ async function wasmSurface(dir) {
 function pythonSurface(python, scratch) {
   const file = path.join(scratch, 'corpus.json');
   writeFileSync(file, JSON.stringify(cases.map(({ id, text }) => ({ id, text }))));
-  const raw = execFileSync(python, [path.join(here, '../benchmarks/batch1/python-surface.py'), file], { encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  const raw = execFileSync(python, [path.join(here, '../benchmarks/batch1/python-surface.py'), file], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024, env: { ...process.env, BATCH_CHUNK: String(CHUNK) } });
   const parsed = JSON.parse(raw);
   const version = execFileSync(python, ['-c', 'import importlib.metadata as m; print(m.version("redact-secret"))'], { encoding: 'utf8' }).trim();
   return { version, rangeUnit: parsed.rangeUnit, cases: parsed.cases };
@@ -90,7 +102,8 @@ async function cliSurface(binary, scratch) {
   return { version, rangeUnit: 'utf8-bytes', cases: out };
 }
 
-const { values } = parseArgs({ options: { label: { type: 'string' }, out: { type: 'string' }, 'node-root': { type: 'string' }, 'wasm-dir': { type: 'string' }, python: { type: 'string' }, cli: { type: 'string' }, 'source-commit': { type: 'string' }, corpus: { type: 'string' } } });
+const { values } = parseArgs({ options: { label: { type: 'string' }, out: { type: 'string' }, 'node-root': { type: 'string' }, 'wasm-dir': { type: 'string' }, python: { type: 'string' }, cli: { type: 'string' }, 'source-commit': { type: 'string' }, corpus: { type: 'string' }, chunk: { type: 'string' } } });
+if (values.chunk) CHUNK = Number(values.chunk);
 const corpusModule = await import(pathToFileURL(path.resolve(here, values.corpus ?? '../benchmarks/batch1/corpus.mjs')).href);
 cases = corpusModule.cases;
 const { corpusDigest, CORPUS_VERSION } = corpusModule;

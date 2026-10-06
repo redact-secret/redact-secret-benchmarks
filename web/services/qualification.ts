@@ -92,6 +92,12 @@ export interface QualificationView {
     notMeasured: {
       scanner: string; profile: string; optional: true; label: string; statement: string; reason: string;
       lastMeasurement: { recordedOn: string; engine: { version: string; revision: string }; registry: 'runs' | 'historicalRuns'; runs: { id: string; configHash: string; scannerVersion: string | null; scannerConfigurationHash: string | null }[] } | null;
+      officialMeasurement?: string; decision?: string;
+    }[];
+    /** Every optional scanner, measured or not, labelled as its own profile (#764). */
+    profiles?: {
+      scanner: string; label: string; profile: string; measured: boolean; detects?: string; profileOf?: string; disclosure?: string; decision?: string;
+      identity?: { adapter: { id: string; version: string }; package: string; patterns?: number; scannerConfigurationHash: string; runConfig?: string; runConfigHash?: string };
     }[];
   };
   distribution: Record<string, number>;

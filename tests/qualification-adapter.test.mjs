@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { existsSync, readFileSync } from 'node:fs';
 import { buildQualificationView, serializeView, detectorsOf, attributeCase } from '../benchmarks/qualification/adapter.ts';
 import { policyRevision } from '../benchmarks/qualification/inputs.ts';
 import { canonical } from '../benchmarks/qualification/canonical.ts';
@@ -775,13 +776,70 @@ test('the roster is validated: disjoint lists, a spec for every optional scanner
   assert.throws(() => rosterFor(r, 'nonexistent'), /no run class/);
 });
 
-test('the committed roster is valid, keeps the product required, and makes only the OpenRedaction default optional (#763)', () => {
+test('the committed roster is valid, keeps the product required, and makes only the two OpenRedaction profiles optional (#763, #764)', () => {
   const committed = readScannerRoster();
   const official = rosterFor(committed, 'official');
   assert.ok(official.required.includes('redact-secret'));
-  assert.deepEqual(official.optional, ['openredaction']);
+  assert.deepEqual(official.optional, ['openredaction', 'openredaction-credential-bearing']);
   assert.equal(committed.optionalScanners.openredaction.profile, 'default');
   assert.ok(!official.required.includes('openredaction'));
-  // a credential profile is a separate scanner id, never the default's optional slot
-  assert.ok(!['openredaction-credentials', 'openredaction-mapped', 'openredaction-credential-bearing'].some(id => official.optional.includes(id) || official.required.includes(id)));
+  // the other diagnostic profiles are separate scanner ids that no roster slot names
+  assert.ok(!['openredaction-credentials', 'openredaction-mapped'].some(id => official.optional.includes(id) || official.required.includes(id)));
+  assert.ok(!official.required.includes('openredaction-credential-bearing'), 'optional: a required profile would refuse every official view until its measurement exists');
+});
+
+test('the credential profile is its own scanner, labelled separately from the default, with its own identity (#764)', () => {
+  const { openredaction: dflt, 'openredaction-credential-bearing': prof } = readScannerRoster().optionalScanners;
+  assert.equal(dflt.label, 'OpenRedaction default (all patterns)');
+  assert.equal(prof.label, 'OpenRedaction credential profile (33 types)');
+  assert.notEqual(prof.profile, dflt.profile);
+  assert.equal(prof.profileOf, 'openredaction');
+  assert.equal(prof.identity.adapter.id, 'openredaction-credential-bearing');
+  assert.equal(prof.identity.patterns, 33);
+  assert.match(prof.identity.scannerConfigurationHash, /^sha256:[0-9a-f]{64}$/);
+  assert.match(prof.disclosure, /not a more accurate OpenRedaction/);
+  assert.match(prof.statement, /not measured in an official run \(local exploratory diagnostics only: see ADR\)/);
+  assert.deepEqual(prof.withoutConfigs, {}, 'it is in no official configuration, so there is nothing to leave out');
+  assert.ok(existsSync(new URL(`../${prof.decision}`, import.meta.url)));
+});
+
+test('a view without the credential profile states that it was not measured in an official run, with no number and no history of the default, and keeps the default labelled (#764)', () => {
+  const real = readScannerRoster();
+  const history = { runs: [{ id: 'old@linux-x64', recordedOn: '2026-10-05', configHash: DIGEST(9), engine: { version: '0.0.1', revision: 'abc' }, scanners: [{ id: 'openredaction', version: '1.1.5', configurationHash: DIGEST(10) }] }] };
+  const populations = [{ population: 'p', scanners: ['redact-secret', 'flare-redact', 'gitleaks', 'trufflehog'].map(id => ({ id, status: 'complete' })) }];
+  const { problems, view } = assessRoster({ roster: real, runClass: 'official', populations, history });
+  assert.deepEqual(problems, []);
+  const byId = Object.fromEntries(view.notMeasured.map(n => [n.scanner, n]));
+  assert.equal(byId.openredaction.statement, 'OpenRedaction default (all patterns): not measured in this run (optional)');
+  assert.equal(byId.openredaction.lastMeasurement.runs[0].id, 'old@linux-x64');
+  assert.equal(byId['openredaction-credential-bearing'].lastMeasurement, null, 'the default\'s history is never lent to the profile');
+  assert.match(byId['openredaction-credential-bearing'].statement, /^OpenRedaction credential profile \(33 types\): not measured in an official run/);
+  assert.match(byId['openredaction-credential-bearing'].officialMeasurement, /pending: requires owner approval/);
+  assert.deepEqual(view.profiles.map(p => [p.scanner, p.measured, p.profileOf ?? null]), [['openredaction', false, null], ['openredaction-credential-bearing', false, 'openredaction']]);
+  // measured in the whole view: no longer "not measured", and still its own labelled entry
+  const both = assessRoster({ roster: real, runClass: 'official', populations: populations.map(p => ({ ...p, scanners: [...p.scanners, { id: 'openredaction-credential-bearing', status: 'complete' }] })), history }).view;
+  assert.deepEqual(both.notMeasured.map(n => n.scanner), ['openredaction']);
+  assert.equal(both.profiles.find(p => p.scanner === 'openredaction-credential-bearing').measured, true);
+});
+
+test('two profiles may not share a label or be the same profile of the same scanner; a profile names another optional scanner (#764)', () => {
+  const r = () => JSON.parse(JSON.stringify(readScannerRoster()));
+  const a = r(); a.optionalScanners['openredaction-credential-bearing'].label = a.optionalScanners.openredaction.label;
+  assert.throws(() => validateRoster(a), /share a label/);
+  const b = r(); b.optionalScanners['openredaction-credential-bearing'].profile = 'default';
+  assert.throws(() => validateRoster(b), /same profile of the same scanner/);
+  const c = r(); c.optionalScanners['openredaction-credential-bearing'].profileOf = 'ghost';
+  assert.throws(() => validateRoster(c), /profileOf ghost is not another optional scanner/);
+});
+
+test('the profile run configuration holds exactly the profile scanner, pinned, and none of the default (#764)', () => {
+  const prof = readScannerRoster().optionalScanners['openredaction-credential-bearing'];
+  const config = JSON.parse(readFileSync(new URL(`../${prof.identity.runConfig}`, import.meta.url), 'utf8'));
+  assert.deepEqual(config.scanners.map(x => x.id), ['openredaction-credential-bearing']);
+  const [scanner] = config.scanners;
+  assert.equal(scanner.configuration.options.patterns.length, prof.identity.patterns);
+  assert.equal(scanner.configuration.package_source, 'published');
+  assert.match(scanner.pin.integrity, /^sha512-/);
+  assert.deepEqual(config.methods, []);
+  assert.equal(scanner.adapter.version, prof.identity.adapter.version);
 });

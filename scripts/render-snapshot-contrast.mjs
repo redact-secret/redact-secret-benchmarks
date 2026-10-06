@@ -7,7 +7,8 @@
  *
  * spec.json: { "evidenceRelease": "snapshot-2026.10.05.2", "reading": ["...optional sentences..."],
  *   "comparisons": [{ "kind": "control: published beta.13 on alpha.5", "newer": { "label": "snapshot-2026.10.05.2 (run 1)", "dir": "<dir>" },
- *                     "older": { "label": "snapshot-2026.10.05 (run 2)", "dir": "<dir>" }, "explain": { "<case id>": "<cause>" } }] }
+ *                     "older": { "label": "snapshot-2026.10.05 (run 2)", "dir": "<dir>" }, "explain": { "<case id>": "<cause>" }, "omittedScanners": ["openredaction"] }] }
+ * `omittedScanners` (optional) names OPTIONAL scanners the newer run left out on purpose (#763): the contrast attributes their absence to the roster (`--roster-omit`).
  * Each <dir> holds <population>/artifact.json and public-evidence-snapshot/methods/artifact.json. A difference no `explain` entry attributes is unexplained and a worse unexplained
  * outcome is a regression; with --strict the command exits 1 on either (after writing the files). Nothing here asserts a product result.
  */
@@ -73,7 +74,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.ar
       const explain = path.join(scratch, `explain-${i}.json`), out = path.join(scratch, `result-${i}.json`);
       writeFileSync(explain, JSON.stringify(c.explain ?? {}));
       try {
-        execFileSync('node', ['--import', 'tsx', 'scripts/contrast-snapshots.ts', '--from', c.older.dir, '--to', c.newer.dir, '--label', c.kind, '--explain', explain, '--out', out], { cwd: root, stdio: ['ignore', 'ignore', 'inherit'], env: { ...process.env, NODE_OPTIONS: '--max-old-space-size=8192' } });
+        execFileSync('node', ['--import', 'tsx', 'scripts/contrast-snapshots.ts', '--from', c.older.dir, '--to', c.newer.dir, '--label', c.kind, '--explain', explain, ...(c.omittedScanners ?? []).flatMap(id => ['--roster-omit', id]), '--out', out], { cwd: root, stdio: ['ignore', 'ignore', 'inherit'], env: { ...process.env, NODE_OPTIONS: '--max-old-space-size=8192' } });
       } catch { /* a strict failure is reported from the written result below */ }
       return comparisonEntry(c, JSON.parse(readFileSync(out, 'utf8')));
     });

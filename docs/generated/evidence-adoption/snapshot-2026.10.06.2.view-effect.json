@@ -1,0 +1,176 @@
+{
+  "schema": "redact-secret/adoption-view-effect/v1",
+  "evidenceRelease": "snapshot-2026.10.06.2",
+  "disclosure": "Maintainer-reviewed (independent review pending) / 메인테이너 검토 (독립 검토 대기): 598 of the release's 7,041 fixtures are maintainer-only (ADR 0020), 0 independently reviewed. A larger denominator is not an improvement. Nothing here is accepted.",
+  "basis": "View A: the accepted runs (snapshot-2026.10.05, alpha.5, run 37296823599) read by the current code and the committed accepted inputs. View C: the candidate control replay (run 37447804171: published beta.13 on alpha.13 without OpenRedaction default), built by the replay's own view job (qualification-view artifact). Same adapter and policy code; the policy revision differs because its axis overlay, twin-scope map and review-ledger re-key are derived from the corpus.",
+  "policyRevision": {
+    "accepted": "rs-policy-1:sha256:20f1b70bde51fc9ac0f866cdf78713f02d1458001cbc35a65fcf942b2874067c",
+    "candidate": "rs-policy-1:sha256:37dcfb3f7066a4485f29b22358f7a94fca0b154e4e260b6714e242ac596eb729"
+  },
+  "distribution": {
+    "accepted": {
+      "pending": 1,
+      "provisional": 20,
+      "stable": 123,
+      "unsupported": 0
+    },
+    "candidate": {
+      "pending": 1,
+      "provisional": 27,
+      "stable": 116,
+      "unsupported": 0
+    }
+  },
+  "stableDistribution": {
+    "accepted": {
+      "documented": 87,
+      "empirical": 36,
+      "policy-qualified": 0
+    },
+    "candidate": {
+      "documented": 83,
+      "empirical": 33,
+      "policy-qualified": 0
+    }
+  },
+  "families": {
+    "accepted": 144,
+    "candidate": 144
+  },
+  "unmappedFamilies": {
+    "accepted": 16,
+    "candidate": 72,
+    "note": "the release adds 56 families no registry entry maps; they are listed as unmapped, never as detected or undetected"
+  },
+  "undetected": {
+    "accepted": 21,
+    "candidate": 21
+  },
+  "knownGaps": {
+    "accepted": 64,
+    "candidate": 64
+  },
+  "statusChanges": [
+    {
+      "family": "anthropic-admin01-key",
+      "before": "stable",
+      "after": "provisional",
+      "reasonsAdded": [
+        "mutation.unresolvedCritical: 2 > 0",
+        "twinFailures: 1 > 0"
+      ],
+      "reasonsRemoved": [],
+      "effect": "engine: twin scoping (alpha.13, ADR 0018) records one twin failure and unresolved critical mutation findings on identical findings"
+    },
+    {
+      "family": "anthropic-api01-key",
+      "before": "stable",
+      "after": "provisional",
+      "reasonsAdded": [
+        "mutation.unresolvedCritical: 2 > 0",
+        "twinFailures: 1 > 0"
+      ],
+      "reasonsRemoved": [],
+      "effect": "engine: as above"
+    },
+    {
+      "family": "polar-api-credential",
+      "before": "stable",
+      "after": "provisional",
+      "reasonsAdded": [
+        "documented.minimumBenignCases: 6 < 8",
+        "documented.minimumTwinPairs: 4 < 5"
+      ],
+      "reasonsRemoved": [],
+      "effect": "corpus: the 11 Polar cases moved to unresolved (outcome pending, outside the denominators), so the documented fixture profile floors (benign controls, twin pairs) are no longer met"
+    },
+    {
+      "family": "polar-token",
+      "before": "stable",
+      "after": "provisional",
+      "reasonsAdded": [
+        "documented.minimumTwinPairs: 4 < 5"
+      ],
+      "reasonsRemoved": [],
+      "effect": "corpus: as above (twin pairs 4 < 5)"
+    },
+    {
+      "family": "vercel-app-access-token",
+      "before": "stable",
+      "after": "provisional",
+      "reasonsAdded": [
+        "mutation.unresolvedCritical: 8 > 0",
+        "twinFailures: 4 > 0"
+      ],
+      "reasonsRemoved": [],
+      "effect": "engine: as above (4 twin failures)"
+    },
+    {
+      "family": "vercel-app-refresh-token",
+      "before": "stable",
+      "after": "provisional",
+      "reasonsAdded": [
+        "mutation.unresolvedCritical: 8 > 0",
+        "twinFailures: 4 > 0"
+      ],
+      "reasonsRemoved": [],
+      "effect": "engine: as above"
+    },
+    {
+      "family": "vercel-personal-access-token",
+      "before": "stable",
+      "after": "provisional",
+      "reasonsAdded": [
+        "mutation.unresolvedCritical: 8 > 0",
+        "twinFailures: 4 > 0"
+      ],
+      "reasonsRemoved": [],
+      "effect": "engine: as above"
+    }
+  ],
+  "reasonChangesWithoutStatusChange": [
+    {
+      "family": "generic-token",
+      "before": "provisional",
+      "after": "provisional",
+      "reasonsAdded": [
+        "twinFailures: 1 > 0"
+      ],
+      "reasonsRemoved": [],
+      "effect": "engine: provisional before and after; one more reason (a twin failure) under alpha.13"
+    }
+  ],
+  "scannerRoster": {
+    "measured": [
+      "flare-redact",
+      "gitleaks",
+      "redact-secret",
+      "trufflehog"
+    ],
+    "openredactionDefault": [
+      "OpenRedaction default (all patterns): not measured in this run (optional)"
+    ],
+    "lastMeasurementPointer": {
+      "engine": {
+        "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d",
+        "version": "0.1.0-alpha.5"
+      },
+      "recordedOn": "2026-10-05",
+      "registry": "historicalRuns",
+      "runs": [
+        {
+          "configHash": "sha256:d47d081ce5fb1265aeebe7fdee9fea27a3b01b2fa0e36ce6ee679706d2a924b2",
+          "id": "public-evidence-snapshot+methods@linux-x64",
+          "scannerConfigurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
+          "scannerVersion": "1.1.5"
+        },
+        {
+          "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+          "id": "public-evidence-snapshot@linux-x64",
+          "scannerConfigurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
+          "scannerVersion": "1.1.5"
+        }
+      ]
+    }
+  }
+}

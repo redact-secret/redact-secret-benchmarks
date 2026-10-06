@@ -1,0 +1,2906 @@
+{
+  "schema": "redact-secret/evidence-adoption-change-report/v1",
+  "evidenceRelease": "snapshot-2026.10.06.2",
+  "previous": {
+    "evidenceRelease": "snapshot-2026.10.05",
+    "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
+  },
+  "adoptionKey": "sha256:b837e97b4b4392dffea924874bee27a20a56838d808f3b5f573e5d29b99a1aad",
+  "scope": "Corpus evidence only: scanner and configuration pins are unchanged; the engine moves from v0.1.0-alpha.5 to v0.1.0-alpha.13, so a later difference is the corpus and the engine together and is reported apart by the replay.",
+  "diff": {
+    "cases": {
+      "old": 6519,
+      "new": 7036,
+      "added": 517,
+      "removed": 0,
+      "changed": 11,
+      "unchanged": 6508
+    },
+    "added": [
+      "adobe-authored--lookalike-access-token-angle-placeholder",
+      "adobe-authored--lookalike-access-token-template-reference",
+      "adobe-authored--lookalike-client-id-expiry-and-scope-only",
+      "adobe-authored--lookalike-refresh-token-environment-reference",
+      "adobe-authored--lookalike-refresh-token-masked-display",
+      "adobe-authored--refresh-curl-response-output",
+      "adobe-authored--refresh-pretty-json-response",
+      "adobe-authored--refresh-raw-http-response-compact-json",
+      "adobe-authored--s2s-access-curl-response-output",
+      "adobe-authored--s2s-access-pretty-json-response",
+      "adobe-authored--s2s-access-raw-http-response-compact-json",
+      "airtable-authored--access-curl-bearer-header",
+      "airtable-authored--access-json-header-map",
+      "airtable-authored--access-lookalike-access-token-masked-display",
+      "airtable-authored--access-lookalike-access-token-template-reference",
+      "airtable-authored--access-lookalike-bearer-angle-placeholder",
+      "airtable-authored--access-lookalike-bearer-environment-reference",
+      "airtable-authored--access-lookalike-bearer-scheme-only",
+      "airtable-authored--access-lookalike-client-id-and-expiry-only",
+      "airtable-authored--access-raw-http-bearer-header",
+      "airtable-authored--access-token-response-access-token-member",
+      "airtable-authored--bare-base64-string-without-field",
+      "airtable-authored--client-secret-basic-curl-header",
+      "airtable-authored--client-secret-basic-json-header-map",
+      "airtable-authored--client-secret-basic-raw-http",
+      "airtable-authored--longer-field-name-with-base64-value",
+      "airtable-authored--mac-header-hmac-output",
+      "airtable-authored--mac-secret-angle-placeholder",
+      "airtable-authored--mac-secret-environment-reference",
+      "airtable-authored--mac-secret-json-response",
+      "airtable-authored--mac-secret-masked-display",
+      "airtable-authored--mac-secret-presence-flag",
+      "airtable-authored--mac-secret-shell-assignment",
+      "airtable-authored--mac-secret-unquoted-assignment",
+      "airtable-authored--mac-secret-yaml-config",
+      "airtable-authored--mac-secret-yaml-quoted",
+      "airtable-authored--mac-secret-yaml-template-reference",
+      "airtable-authored--oauth-lookalike-basic-angle-placeholder",
+      "airtable-authored--oauth-lookalike-basic-curl-environment-reference",
+      "airtable-authored--oauth-lookalike-basic-documented-template",
+      "airtable-authored--oauth-lookalike-basic-masked-display",
+      "airtable-authored--oauth-lookalike-basic-scheme-only",
+      "airtable-authored--oauth-lookalike-basic-template-reference",
+      "airtable-authored--oauth-lookalike-client-id-and-lifetimes-only",
+      "airtable-authored--oauth-lookalike-refresh-token-angle-placeholder",
+      "airtable-authored--oauth-lookalike-refresh-token-environment-reference",
+      "airtable-authored--refresh-curl-data-refresh-token",
+      "airtable-authored--refresh-pretty-json-response",
+      "airtable-authored--refresh-raw-http-form-request",
+      "airtable-authored--similarly-named-field-with-base64-value",
+      "airtable-authored--webhook-and-base-ids-only",
+      "asana-authored--bare-string-without-carrier",
+      "asana-authored--longer-header-name-with-credential-shaped-value",
+      "asana-authored--oauth-access-curl-bearer-header",
+      "asana-authored--oauth-access-pretty-json-response",
+      "asana-authored--oauth-access-raw-http-bearer-header",
+      "asana-authored--oauth-client-secret-curl-data-urlencode",
+      "asana-authored--oauth-client-secret-form-body",
+      "asana-authored--oauth-client-secret-json-body",
+      "asana-authored--oauth-lookalike-access-token-angle-placeholder",
+      "asana-authored--oauth-lookalike-access-token-documented-placeholder",
+      "asana-authored--oauth-lookalike-client-id-and-user-ids-only",
+      "asana-authored--oauth-lookalike-client-secret-documented-placeholder",
+      "asana-authored--oauth-lookalike-client-secret-template-reference",
+      "asana-authored--oauth-lookalike-refresh-token-documented-placeholder",
+      "asana-authored--oauth-lookalike-refresh-token-environment-reference",
+      "asana-authored--oauth-lookalike-request-signature-header",
+      "asana-authored--oauth-lookalike-token-members-masked-display",
+      "asana-authored--oauth-refresh-curl-data-urlencode",
+      "asana-authored--oauth-refresh-pretty-json-response",
+      "asana-authored--oauth-refresh-raw-http-form-request",
+      "asana-authored--pat-curl-bearer-header",
+      "asana-authored--pat-json-header-map",
+      "asana-authored--pat-lookalike-bearer-angle-placeholder",
+      "asana-authored--pat-lookalike-bearer-environment-reference",
+      "asana-authored--pat-lookalike-bearer-masked-display",
+      "asana-authored--pat-lookalike-bearer-scheme-only",
+      "asana-authored--pat-lookalike-bearer-template-reference",
+      "asana-authored--pat-lookalike-gids-in-json-body",
+      "asana-authored--pat-lookalike-gids-in-request-path",
+      "asana-authored--pat-raw-http-bearer-header",
+      "asana-authored--x-hook-secret-angle-placeholder",
+      "asana-authored--x-hook-secret-curl-environment-reference",
+      "asana-authored--x-hook-secret-curl-header",
+      "asana-authored--x-hook-secret-id-header-with-identifier",
+      "asana-authored--x-hook-secret-json-header-map",
+      "asana-authored--x-hook-secret-json-placeholder",
+      "asana-authored--x-hook-secret-lowercase-name",
+      "asana-authored--x-hook-secret-masked-display",
+      "asana-authored--x-hook-secret-raw-http",
+      "asana-authored--x-hook-signature-hmac-output",
+      "box-authored--oauth-access-curl-bearer-header",
+      "box-authored--oauth-access-pretty-json-response",
+      "box-authored--oauth-access-raw-http-bearer-header",
+      "box-authored--oauth-client-secret-curl-data",
+      "box-authored--oauth-client-secret-form-body",
+      "box-authored--oauth-client-secret-python-form-dictionary",
+      "box-authored--oauth-lookalike-access-token-documented-placeholder",
+      "box-authored--oauth-lookalike-client-id-and-token-type-only",
+      "box-authored--oauth-lookalike-client-secret-documented-placeholder",
+      "box-authored--oauth-lookalike-client-secret-template-reference",
+      "box-authored--oauth-lookalike-refresh-token-documented-placeholder",
+      "box-authored--oauth-lookalike-refresh-token-environment-reference",
+      "box-authored--oauth-lookalike-token-members-masked-display",
+      "box-authored--oauth-refresh-curl-data-refresh-token",
+      "box-authored--oauth-refresh-pretty-json-response",
+      "box-authored--oauth-refresh-raw-http-form-request",
+      "canva-authored--access-curl-response-output",
+      "canva-authored--access-pretty-json-response",
+      "canva-authored--access-raw-http-response-compact-json",
+      "canva-authored--authorization-basic-envelope",
+      "canva-authored--authorization-basic-envelope-curl-header",
+      "canva-authored--authorization-basic-placeholder",
+      "canva-authored--authorization-basic-token-split-by-newline",
+      "canva-authored--bare-prefixed-string-without-carrier",
+      "canva-authored--client-id-only",
+      "canva-authored--client-secret-angle-placeholder",
+      "canva-authored--client-secret-environment-reference",
+      "canva-authored--client-secret-form-body",
+      "canva-authored--client-secret-form-body-last-parameter",
+      "canva-authored--client-secret-json-body",
+      "canva-authored--client-secret-masked-display",
+      "canva-authored--client-secret-shell-assignment",
+      "canva-authored--client-secret-template-reference",
+      "canva-authored--client-secret-without-prefix",
+      "canva-authored--cnvca-prefix-prose",
+      "canva-authored--refresh-curl-response-output",
+      "canva-authored--refresh-pretty-json-response",
+      "canva-authored--refresh-raw-http-response-compact-json",
+      "canva-authored--token-lookalike-access-token-angle-placeholder",
+      "canva-authored--token-lookalike-access-token-template-reference",
+      "canva-authored--token-lookalike-client-id-type-and-expiry-only",
+      "canva-authored--token-lookalike-refresh-token-environment-reference",
+      "canva-authored--token-lookalike-refresh-token-masked-display",
+      "contentful-authored--authorize-request-client-id",
+      "contentful-authored--fragment-documented-placeholder",
+      "contentful-authored--fragment-environment-reference",
+      "contentful-authored--fragment-location-header",
+      "contentful-authored--fragment-masked-display",
+      "contentful-authored--fragment-parameter-prose-mention",
+      "contentful-authored--fragment-quoted-json-string",
+      "contentful-authored--fragment-redirect-url",
+      "dropbox-authored--app-secret-curl-data-client-secret",
+      "dropbox-authored--app-secret-form-body-client-secret",
+      "dropbox-authored--app-secret-json-body-client-secret",
+      "dropbox-authored--app-secret-lookalike-app-key-only",
+      "dropbox-authored--app-secret-lookalike-client-secret-angle-placeholder",
+      "dropbox-authored--app-secret-lookalike-client-secret-environment-reference",
+      "dropbox-authored--app-secret-lookalike-client-secret-masked-display",
+      "dropbox-authored--app-secret-lookalike-client-secret-template-reference",
+      "dropbox-authored--app-secret-lookalike-webhook-signature-header",
+      "dropbox-authored--refresh-token-curl-data-refresh-token",
+      "dropbox-authored--refresh-token-lookalike-app-key-and-grant-type-only",
+      "dropbox-authored--refresh-token-lookalike-documented-placeholder",
+      "dropbox-authored--refresh-token-lookalike-environment-reference",
+      "dropbox-authored--refresh-token-lookalike-masked-display",
+      "dropbox-authored--refresh-token-lookalike-response-without-refresh-token",
+      "dropbox-authored--refresh-token-lookalike-template-reference",
+      "dropbox-authored--refresh-token-pretty-json-response",
+      "dropbox-authored--refresh-token-raw-http-form-request",
+      "elastic-authored--apikey-angle-placeholder",
+      "elastic-authored--apikey-curl-environment-reference",
+      "elastic-authored--apikey-json-placeholder",
+      "elastic-authored--apikey-masked-display",
+      "elastic-authored--apikey-prose-mention",
+      "elastic-authored--apikey-scheme-only",
+      "elastic-authored--apikey-template-reference",
+      "elastic-authored--apikey-value-on-next-line",
+      "elastic-authored--authorization-apikey-curl-header",
+      "elastic-authored--authorization-apikey-json-header-map",
+      "elastic-authored--authorization-apikey-lowercase-name-and-scheme",
+      "elastic-authored--authorization-apikey-raw-http",
+      "elastic-authored--bearer-curl-header",
+      "elastic-authored--bearer-json-header-map",
+      "elastic-authored--bearer-raw-http",
+      "elastic-authored--bearer-token-angle-placeholder",
+      "elastic-authored--bearer-token-curl-environment-reference",
+      "elastic-authored--bearer-token-masked-display",
+      "elastic-authored--bearer-token-prose-mention",
+      "elastic-authored--bearer-token-scheme-only",
+      "elastic-authored--bearer-token-template-reference",
+      "elastic-authored--bearer-token-type-and-lifetime-only",
+      "elastic-authored--cloud-apikey-angle-placeholder",
+      "elastic-authored--cloud-apikey-curl-environment-reference",
+      "elastic-authored--cloud-apikey-curl-header",
+      "elastic-authored--cloud-apikey-json-header-map",
+      "elastic-authored--cloud-apikey-masked-display",
+      "elastic-authored--cloud-apikey-prose-mention",
+      "elastic-authored--cloud-apikey-raw-http",
+      "elastic-authored--cloud-apikey-scheme-only",
+      "elastic-authored--cloud-apikey-template-reference",
+      "elastic-authored--create-response-id-and-api-key-fields",
+      "elastic-authored--ece-apikey-angle-placeholder",
+      "elastic-authored--ece-apikey-curl-environment-reference",
+      "elastic-authored--ece-apikey-curl-header",
+      "elastic-authored--ece-apikey-expiration-response-header-only",
+      "elastic-authored--ece-apikey-json-header-map",
+      "elastic-authored--ece-apikey-masked-display",
+      "elastic-authored--ece-apikey-prose-mention",
+      "elastic-authored--ece-apikey-raw-http",
+      "elastic-authored--ece-apikey-scheme-only",
+      "elastic-authored--ece-apikey-template-reference",
+      "elastic-authored--key-id-alone",
+      "elastic-authored--prefixed-header-name-with-encoded-value",
+      "elastic-authored--proxy-authorization-apikey-json-header-map",
+      "elastic-authored--proxy-authorization-apikey-raw-http",
+      "elastic-authored--refresh-request-angle-placeholder",
+      "elastic-authored--refresh-request-curl-environment-reference",
+      "elastic-authored--refresh-request-curl-json-body",
+      "elastic-authored--refresh-request-empty-value",
+      "elastic-authored--refresh-request-masked-display",
+      "elastic-authored--refresh-request-raw-http-json-body",
+      "elastic-authored--refresh-request-template-reference",
+      "elastic-authored--refresh-response-json-excerpt",
+      "elastic-authored--refresh-response-type-and-lifetime-only",
+      "elastic-authored--refresh-token-prose-mention",
+      "elastic-authored--suffixed-header-name-with-encoded-value",
+      "figma-authored--bare-prefixed-strings-in-prose",
+      "figma-authored--bearer-angle-placeholder",
+      "figma-authored--bearer-curl-environment-reference",
+      "figma-authored--bearer-curl-header",
+      "figma-authored--bearer-json-header-map",
+      "figma-authored--bearer-masked-display",
+      "figma-authored--bearer-prose-mention",
+      "figma-authored--bearer-public-identifiers",
+      "figma-authored--bearer-raw-http",
+      "figma-authored--bearer-scheme-only",
+      "figma-authored--bearer-template-reference",
+      "figma-authored--client-secret-basic-angle-placeholder",
+      "figma-authored--client-secret-basic-curl-environment-reference",
+      "figma-authored--client-secret-basic-curl-header",
+      "figma-authored--client-secret-basic-json-header-map",
+      "figma-authored--client-secret-basic-masked-display",
+      "figma-authored--client-secret-basic-raw-http",
+      "figma-authored--client-secret-basic-scheme-only",
+      "figma-authored--client-secret-basic-template-reference",
+      "figma-authored--client-secret-client-id-only",
+      "figma-authored--client-secret-masked-field",
+      "figma-authored--longer-header-name-with-credential-shaped-value",
+      "figma-authored--oauth-refresh-response-access-token-only",
+      "figma-authored--oauth-response-angle-placeholders",
+      "figma-authored--oauth-response-compact-json",
+      "figma-authored--oauth-response-empty-values",
+      "figma-authored--oauth-response-masked-display",
+      "figma-authored--oauth-response-non-secret-members",
+      "figma-authored--oauth-response-pretty-json",
+      "figma-authored--oauth-response-template-references",
+      "figma-authored--oauth-token-members-prose-mention",
+      "figma-authored--public-file-key-and-user-id",
+      "figma-authored--suffixed-header-with-public-id",
+      "figma-authored--token-id-header-with-public-id",
+      "figma-authored--x-figma-token-angle-placeholder",
+      "figma-authored--x-figma-token-curl-environment-reference",
+      "figma-authored--x-figma-token-curl-header",
+      "figma-authored--x-figma-token-json-header-map",
+      "figma-authored--x-figma-token-json-placeholder",
+      "figma-authored--x-figma-token-lowercase-name",
+      "figma-authored--x-figma-token-masked-display",
+      "figma-authored--x-figma-token-raw-http",
+      "figma-authored--x-figma-token-template-reference",
+      "figma-authored--x-figma-token-value-on-next-line",
+      "figma-authored--x-figma-token-value-without-figd-prefix",
+      "hubspot-authored--bearer-angle-placeholder",
+      "hubspot-authored--bearer-curl-environment-reference",
+      "hubspot-authored--bearer-curl-header",
+      "hubspot-authored--bearer-json-header-map",
+      "hubspot-authored--bearer-masked-display",
+      "hubspot-authored--bearer-prose-mention",
+      "hubspot-authored--bearer-public-identifiers",
+      "hubspot-authored--bearer-raw-http",
+      "hubspot-authored--bearer-scheme-only",
+      "hubspot-authored--bearer-template-reference",
+      "hubspot-authored--client-secret-angle-placeholder",
+      "hubspot-authored--client-secret-client-id-only",
+      "hubspot-authored--client-secret-curl-data-client-secret",
+      "hubspot-authored--client-secret-curl-environment-reference",
+      "hubspot-authored--client-secret-empty-value",
+      "hubspot-authored--client-secret-introspect-request-body",
+      "hubspot-authored--client-secret-masked-display",
+      "hubspot-authored--client-secret-prose-mention",
+      "hubspot-authored--client-secret-raw-http-form-body",
+      "hubspot-authored--client-secret-signature-header-name-only",
+      "hubspot-authored--client-secret-template-reference",
+      "hubspot-authored--pak-angle-placeholder",
+      "hubspot-authored--pak-empty-value",
+      "hubspot-authored--pak-environment-assignment",
+      "hubspot-authored--pak-environment-reference",
+      "hubspot-authored--pak-global-config-accounts",
+      "hubspot-authored--pak-legacy-portals-config-quoted",
+      "hubspot-authored--pak-masked-display",
+      "hubspot-authored--pak-prose-mention",
+      "hubspot-authored--pak-public-account-fields-only",
+      "hubspot-authored--pak-template-reference",
+      "hubspot-authored--refresh-angle-placeholder",
+      "hubspot-authored--refresh-curl-data-refresh-token",
+      "hubspot-authored--refresh-curl-environment-reference",
+      "hubspot-authored--refresh-empty-value",
+      "hubspot-authored--refresh-masked-display",
+      "hubspot-authored--refresh-raw-http-form-body-refresh-token",
+      "hubspot-authored--refresh-response-json-excerpt",
+      "hubspot-authored--refresh-response-public-members",
+      "hubspot-authored--refresh-template-reference",
+      "hubspot-authored--refresh-token-prose-mention",
+      "jfrog-authored--api-key-curl-art-api-header",
+      "jfrog-authored--api-key-curl-basic-password",
+      "jfrog-authored--api-key-lookalike-angle-placeholder",
+      "jfrog-authored--api-key-lookalike-documented-pattern-prose",
+      "jfrog-authored--api-key-lookalike-environment-reference",
+      "jfrog-authored--api-key-lookalike-header-name-only",
+      "jfrog-authored--api-key-lookalike-masked-display",
+      "jfrog-authored--api-key-lookalike-username-without-password",
+      "jfrog-authored--api-key-raw-http-art-api-header",
+      "jfrog-authored--basic-documented-placeholder",
+      "jfrog-authored--bearer-curl-header",
+      "jfrog-authored--bearer-documented-placeholder",
+      "jfrog-authored--bearer-environment-reference",
+      "jfrog-authored--bearer-header-prose-mention",
+      "jfrog-authored--bearer-json-header-map",
+      "jfrog-authored--bearer-raw-http",
+      "jfrog-authored--bearer-scheme-only",
+      "jfrog-authored--myjfrog-bearer-curl-header",
+      "jfrog-authored--myjfrog-bearer-documented-placeholder",
+      "jfrog-authored--myjfrog-bearer-json-header-map",
+      "jfrog-authored--myjfrog-bearer-raw-http",
+      "jfrog-authored--token-masked-display",
+      "meta-authored--access-token-documented-template",
+      "meta-authored--access-token-environment-reference",
+      "meta-authored--access-token-masked-display",
+      "meta-authored--access-token-parameter-prose-mention",
+      "meta-authored--accounts-entry-without-token",
+      "meta-authored--accounts-response-compact",
+      "meta-authored--accounts-response-pretty",
+      "meta-authored--accounts-response-two-pages",
+      "meta-authored--app-pair-curl-url",
+      "meta-authored--app-pair-lookalike-appsecret-proof-derived",
+      "meta-authored--app-pair-lookalike-documented-template",
+      "meta-authored--app-pair-lookalike-environment-reference",
+      "meta-authored--app-pair-lookalike-generation-call-placeholder",
+      "meta-authored--app-pair-lookalike-masked-secret",
+      "meta-authored--app-pair-lookalike-prose-mention",
+      "meta-authored--app-pair-raw-http",
+      "meta-authored--app-pair-url-query-continues",
+      "meta-authored--client-token-pair-parameter",
+      "meta-authored--exchange-response-member",
+      "meta-authored--generation-response-member",
+      "meta-authored--long-lived-raw-http",
+      "meta-authored--long-lived-response-member",
+      "meta-authored--query-curl-argument",
+      "meta-authored--query-raw-http",
+      "meta-authored--refresh-response-member",
+      "meta-authored--refresh-response-raw-http",
+      "meta-authored--short-lived-data-entry",
+      "meta-authored--token-response-lifetime-members",
+      "mongodb-atlas-authored--basic-angle-placeholder",
+      "mongodb-atlas-authored--basic-curl-header",
+      "mongodb-atlas-authored--basic-json-header-map",
+      "mongodb-atlas-authored--basic-masked-display",
+      "mongodb-atlas-authored--basic-raw-http",
+      "mongodb-atlas-authored--bearer-curl-header",
+      "mongodb-atlas-authored--bearer-environment-reference",
+      "mongodb-atlas-authored--bearer-json-header-map",
+      "mongodb-atlas-authored--bearer-raw-http",
+      "mongodb-atlas-authored--client-id-and-name",
+      "mongodb-atlas-authored--digest-authorization-header",
+      "mongodb-atlas-authored--digest-client-environment-reference",
+      "mongodb-atlas-authored--example-prefix-prose-mention",
+      "mongodb-atlas-authored--masked-secret-truncated-example",
+      "mongodb-atlas-authored--password-angle-placeholder",
+      "mongodb-atlas-authored--password-curl-data",
+      "mongodb-atlas-authored--password-environment-reference",
+      "mongodb-atlas-authored--password-json-file",
+      "mongodb-atlas-authored--password-masked-display",
+      "mongodb-atlas-authored--password-raw-http-json-body",
+      "mongodb-atlas-authored--private-key-redacted-display",
+      "mongodb-atlas-authored--public-key-field",
+      "mongodb-atlas-authored--token-response-lifetime-members",
+      "mongodb-atlas-authored--user-response-without-password",
+      "salesforce-authored--access-token-masked-display",
+      "salesforce-authored--basic-documented-placeholder",
+      "salesforce-authored--basic-raw-http",
+      "salesforce-authored--bearer-curl-header",
+      "salesforce-authored--bearer-documented-placeholder",
+      "salesforce-authored--bearer-raw-http",
+      "salesforce-authored--client-secret-curl-data",
+      "salesforce-authored--client-secret-environment-reference",
+      "salesforce-authored--client-secret-form-body",
+      "salesforce-authored--client-secret-masked-display",
+      "salesforce-authored--client-secret-parameter-prose-mention",
+      "salesforce-authored--token-request-consumer-key-only",
+      "salesforce-authored--token-response-member",
+      "salesforce-authored--token-response-non-secret-members",
+      "spotify-authored--basic-curl-header",
+      "spotify-authored--basic-documented-placeholder",
+      "spotify-authored--basic-environment-reference",
+      "spotify-authored--basic-json-header-map",
+      "spotify-authored--basic-raw-http",
+      "spotify-authored--basic-scheme-only",
+      "spotify-authored--bearer-curl-header",
+      "spotify-authored--bearer-documented-form-placeholder",
+      "spotify-authored--bearer-environment-reference",
+      "spotify-authored--bearer-json-header-map",
+      "spotify-authored--bearer-raw-http",
+      "spotify-authored--client-credentials-client-id-query",
+      "spotify-authored--client-id-authorization-query",
+      "spotify-authored--client-secret-masked-display",
+      "spotify-authored--client-secret-prose-mention",
+      "spotify-authored--client-secret-variable-placeholder",
+      "spotify-authored--refresh-token-angle-placeholder",
+      "spotify-authored--refresh-token-compact-json",
+      "spotify-authored--refresh-token-json-file",
+      "spotify-authored--refresh-token-masked-display",
+      "spotify-authored--refresh-token-raw-http-response",
+      "spotify-authored--refresh-token-template-reference",
+      "spotify-authored--token-response-lifetime-and-scope",
+      "x-authored--basic-angle-placeholder",
+      "x-authored--basic-curl-header",
+      "x-authored--basic-json-header-map",
+      "x-authored--basic-raw-http",
+      "x-authored--basic-template-reference",
+      "x-authored--bearer-angle-placeholder",
+      "x-authored--bearer-curl-header",
+      "x-authored--bearer-environment-reference",
+      "x-authored--bearer-json-header-map",
+      "x-authored--bearer-masked-display",
+      "x-authored--bearer-raw-http",
+      "x-authored--bearer-scheme-only",
+      "x-authored--client-id-authorization-query",
+      "x-authored--oauth-authorization-header-identity-and-signature",
+      "x-authored--refresh-angle-placeholder",
+      "x-authored--refresh-curl-data-urlencode-refresh-token",
+      "x-authored--refresh-curl-environment-reference",
+      "x-authored--refresh-empty-value",
+      "x-authored--refresh-masked-display",
+      "x-authored--refresh-raw-http-form-body-refresh-token",
+      "x-authored--refresh-response-json-excerpt",
+      "x-authored--refresh-response-public-members",
+      "x-authored--refresh-template-reference",
+      "x-authored--refresh-token-prose-mention",
+      "x-authored--token-secret-angle-placeholder",
+      "x-authored--token-secret-environment-reference",
+      "x-authored--token-secret-field-prose-mention",
+      "x-authored--token-secret-form-body",
+      "x-authored--token-secret-json-field",
+      "x-authored--token-secret-masked-display",
+      "x-authored--token-secret-shell-assignment",
+      "x-authored--user-id-response",
+      "zendesk-authored--access-curl-bearer-header",
+      "zendesk-authored--access-json-header-map",
+      "zendesk-authored--access-raw-http-bearer-header",
+      "zendesk-authored--api-token-curl-basic-credential",
+      "zendesk-authored--api-token-env-assignment",
+      "zendesk-authored--api-token-json-credentials-string",
+      "zendesk-authored--api-token-lookalike-documented-template",
+      "zendesk-authored--api-token-lookalike-email-and-subdomain-only",
+      "zendesk-authored--api-token-lookalike-environment-reference",
+      "zendesk-authored--api-token-lookalike-masked-display",
+      "zendesk-authored--api-token-lookalike-separator-without-token",
+      "zendesk-authored--client-secret-curl-data-client-secret",
+      "zendesk-authored--client-secret-form-body-client-secret",
+      "zendesk-authored--client-secret-json-body-client-secret",
+      "zendesk-authored--lookalike-bearer-documented-template",
+      "zendesk-authored--lookalike-bearer-environment-reference",
+      "zendesk-authored--lookalike-bearer-scheme-only",
+      "zendesk-authored--lookalike-client-identifier-and-subdomain-only",
+      "zendesk-authored--lookalike-client-secret-angle-placeholder",
+      "zendesk-authored--lookalike-client-secret-masked-display",
+      "zendesk-authored--refresh-angle-placeholder",
+      "zendesk-authored--refresh-curl-environment-reference",
+      "zendesk-authored--refresh-documented-template",
+      "zendesk-authored--refresh-empty-value",
+      "zendesk-authored--refresh-masked-display",
+      "zendesk-authored--refresh-request-curl-json-body",
+      "zendesk-authored--refresh-request-json-body",
+      "zendesk-authored--refresh-response-json-excerpt",
+      "zendesk-authored--refresh-response-public-members",
+      "zendesk-authored--refresh-template-reference",
+      "zendesk-authored--refresh-token-prose-mention",
+      "zoom-authored--build-key-curl-x-api-key",
+      "zoom-authored--build-key-json-header-map",
+      "zoom-authored--build-key-lookalike-bearer-template",
+      "zoom-authored--build-key-lookalike-documented-placeholder",
+      "zoom-authored--build-key-lookalike-empty-value",
+      "zoom-authored--build-key-lookalike-environment-reference",
+      "zoom-authored--build-key-lookalike-masked-display",
+      "zoom-authored--build-key-lookalike-prose-mention",
+      "zoom-authored--build-key-raw-http-x-api-key",
+      "zoom-authored--client-secret-account-and-client-id-only",
+      "zoom-authored--client-secret-basic-angle-placeholder",
+      "zoom-authored--client-secret-basic-curl-environment-reference",
+      "zoom-authored--client-secret-basic-curl-header",
+      "zoom-authored--client-secret-basic-json-header-map",
+      "zoom-authored--client-secret-basic-masked-display",
+      "zoom-authored--client-secret-basic-raw-http",
+      "zoom-authored--client-secret-basic-scheme-only",
+      "zoom-authored--client-secret-basic-template-reference",
+      "zoom-authored--client-secret-development-form-field",
+      "zoom-authored--client-secret-field-masked-and-placeholder",
+      "zoom-authored--client-secret-prose-mention",
+      "zoom-authored--lookalike-access-token-documentation-placeholder",
+      "zoom-authored--lookalike-account-id-and-client-id-only",
+      "zoom-authored--lookalike-bearer-environment-reference",
+      "zoom-authored--lookalike-bearer-scheme-only",
+      "zoom-authored--lookalike-refresh-token-documentation-placeholder",
+      "zoom-authored--lookalike-refresh-token-masked-display",
+      "zoom-authored--refresh-curl-response-output",
+      "zoom-authored--refresh-pretty-json-response",
+      "zoom-authored--refresh-raw-http-response-compact-json",
+      "zoom-authored--s2s-access-curl-bearer-header",
+      "zoom-authored--s2s-access-raw-http-bearer-header",
+      "zoom-authored--s2s-access-token-response-access-token-member",
+      "zoom-authored--webhook-lookalike-secret-token-environment-reference",
+      "zoom-authored--webhook-lookalike-secret-token-masked-display",
+      "zoom-authored--webhook-lookalike-secret-token-prose-mention",
+      "zoom-authored--webhook-lookalike-signature-and-timestamp-headers",
+      "zoom-authored--webhook-lookalike-signature-placeholder",
+      "zoom-authored--webhook-lookalike-signed-message-string",
+      "zoom-authored--webhook-lookalike-validation-response"
+    ],
+    "removed": [],
+    "changed": [
+      {
+        "id": "polar--polar-api-credential-body-42-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-api-credential-body-44-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-api-credential-checkout-link-secret-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-api-credential-client-id-in-url-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-api-credential-leading-glue-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-api-credential-setting-names-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-body-44-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-leading-glue-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-oauth-client-id-public-id",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-trailing-hyphen-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      },
+      {
+        "id": "polar--polar-token-trailing-underscore-twin",
+        "fields": [
+          "grouping"
+        ],
+        "kind": [
+          "must-not-flag",
+          "must-not-flag"
+        ],
+        "evidenceClass": [
+          "project-policy",
+          "unresolved"
+        ],
+        "expectedSpans": [
+          0,
+          0
+        ]
+      }
+    ],
+    "addedByKind": {
+      "must-not-flag": 320,
+      "policy": 197
+    },
+    "addedByEvidenceClass": {
+      "project-policy": 502,
+      "unresolved": 15
+    },
+    "addedByGroup": {
+      "adobe-token-response-access-token-member": 3,
+      "adobe-token-response-lookalikes-and-non-values": 5,
+      "adobe-token-response-refresh-token-member": 3,
+      "airtable-access-token-bearer-header-and-response-member": 4,
+      "airtable-access-token-lookalikes-and-non-values": 6,
+      "airtable-mac-header-output-ids-and-non-values": 7,
+      "airtable-mac-secret-base64-field-value": 5,
+      "airtable-mac-secret-base64-unsupported-variants": 3,
+      "airtable-oauth-client-secret-basic-envelope": 3,
+      "airtable-oauth-lookalikes-and-non-values": 9,
+      "airtable-oauth-refresh-token-response-member-and-request-field": 3,
+      "asana-hook-header-lookalikes-and-non-values": 6,
+      "asana-oauth-client-secret-token-request-field": 3,
+      "asana-oauth-lookalikes-and-non-values": 9,
+      "asana-oauth-refresh-token-response-member-and-request-field": 3,
+      "asana-oauth-token-response-access-token-member": 3,
+      "asana-personal-access-token-bearer-header-value": 3,
+      "asana-personal-access-token-lookalikes-and-non-values": 7,
+      "asana-x-hook-secret-header-value": 4,
+      "asana-x-hook-secret-unsupported-variants": 2,
+      "box-oauth-client-secret-token-request-field": 3,
+      "box-oauth-lookalikes-and-non-values": 7,
+      "box-oauth-refresh-token-response-member-and-request-field": 3,
+      "box-oauth-token-response-access-token-member": 3,
+      "canva-client-id-placeholders-and-prefix-prose": 7,
+      "canva-client-secret-parameter-and-basic-envelope": 7,
+      "canva-client-secret-unsupported-variants": 2,
+      "canva-token-response-access-token-member": 3,
+      "canva-token-response-lookalikes-and-non-values": 5,
+      "canva-token-response-refresh-token-member": 3,
+      "contentful-oauth-access-token-redirect-fragment": 3,
+      "contentful-oauth-client-id-and-token-placeholders-non-values": 5,
+      "dropbox-app-secret-lookalikes-and-non-values": 6,
+      "dropbox-app-secret-token-request-field": 3,
+      "dropbox-refresh-token-lookalikes-and-non-values": 6,
+      "dropbox-refresh-token-response-member-and-request-field": 3,
+      "elastic-apikey-authorization-header-value": 6,
+      "elastic-apikey-lookalikes-and-non-values": 7,
+      "elastic-apikey-unsupported-variants": 5,
+      "elastic-bearer-authorization-header-value": 3,
+      "elastic-bearer-placeholders-and-non-values": 7,
+      "elastic-cloud-apikey-authorization-header-value": 3,
+      "elastic-cloud-apikey-placeholders-and-non-values": 6,
+      "elastic-ece-apikey-authorization-header-value": 3,
+      "elastic-ece-apikey-placeholders-and-non-values": 7,
+      "elastic-token-refresh-token-placeholders-and-non-values": 7,
+      "elastic-token-refresh-token-request-and-response-member": 3,
+      "figma-bearer-authorization-header-value": 3,
+      "figma-bearer-placeholders-and-public-identifiers": 7,
+      "figma-oauth-client-secret-basic-envelope": 3,
+      "figma-oauth-client-secret-placeholders-and-client-id": 7,
+      "figma-oauth-token-response-members": 3,
+      "figma-oauth-token-response-placeholders-and-non-secret-members": 6,
+      "figma-x-figma-token-header-value": 5,
+      "figma-x-figma-token-lookalikes-and-non-values": 8,
+      "figma-x-figma-token-unsupported-variants": 3,
+      "hubspot-bearer-authorization-header-value": 3,
+      "hubspot-bearer-placeholders-and-public-identifiers": 7,
+      "hubspot-oauth-client-secret-form-field": 3,
+      "hubspot-oauth-client-secret-placeholders-and-client-id": 8,
+      "hubspot-oauth-refresh-token-member-and-form-field": 3,
+      "hubspot-oauth-refresh-token-placeholders-and-non-values": 7,
+      "hubspot-personal-access-key-config-field": 3,
+      "hubspot-personal-access-key-placeholders-and-non-values": 7,
+      "jfrog-access-token-bearer-header": 3,
+      "jfrog-api-key-header-and-basic-password-value": 3,
+      "jfrog-api-key-lookalikes-and-non-values": 6,
+      "jfrog-token-placeholders-and-references-non-values": 7,
+      "meta-app-secret-in-app-id-pipe-access-token": 3,
+      "meta-app-secret-pipe-placeholders-derived-proof-and-non-values": 6,
+      "meta-ids-lifetimes-and-token-placeholders-non-values": 7,
+      "meta-instagram-user-access-token-response-member": 3,
+      "meta-page-access-token-accounts-response-member": 3,
+      "meta-system-user-access-token-response-member": 3,
+      "meta-user-access-token-query-parameter-and-response-member": 3,
+      "mongodb-atlas-database-user-identity-and-password-placeholders": 4,
+      "mongodb-atlas-database-user-password-request-field": 3,
+      "mongodb-atlas-digest-header-and-public-key-non-values": 4,
+      "mongodb-atlas-service-account-access-token-bearer-header": 3,
+      "mongodb-atlas-service-account-public-values-and-masked-outputs": 7,
+      "mongodb-atlas-service-account-secret-basic-envelope": 3,
+      "myjfrog-api-token-bearer-header": 3,
+      "salesforce-external-client-app-consumer-secret-token-request-field": 3,
+      "salesforce-oauth-access-token-response-member-and-bearer-header": 3,
+      "salesforce-oauth-ids-signature-and-placeholders-non-values": 8,
+      "spotify-access-token-bearer-header": 3,
+      "spotify-client-credentials-request-placeholders-non-values": 7,
+      "spotify-client-id-and-token-placeholders-non-values": 7,
+      "spotify-client-secret-basic-envelope": 3,
+      "spotify-refresh-token-response-member": 3,
+      "x-bearer-token-authorization-header-value": 3,
+      "x-oauth1-access-token-secret-field": 3,
+      "x-oauth1-token-identity-and-signature-non-values": 5,
+      "x-oauth2-client-secret-basic-envelope": 3,
+      "x-oauth2-ids-and-bearer-placeholders-non-values": 8,
+      "x-oauth2-refresh-token-form-field-and-response-member": 3,
+      "x-oauth2-refresh-token-placeholders-and-non-values": 7,
+      "zendesk-api-token-basic-credential-token-part": 3,
+      "zendesk-api-token-lookalikes-and-non-values": 5,
+      "zendesk-oauth-access-token-bearer-header-value": 3,
+      "zendesk-oauth-client-secret-token-request-field": 3,
+      "zendesk-oauth-lookalikes-and-non-values": 6,
+      "zendesk-oauth-refresh-token-json-member": 3,
+      "zendesk-oauth-refresh-token-placeholders-and-non-values": 8,
+      "zoom-build-api-key-placeholders-and-non-values": 6,
+      "zoom-build-api-key-x-api-key-header-value": 3,
+      "zoom-client-secret-basic-envelope-and-form-field": 4,
+      "zoom-client-secret-placeholders-and-public-ids": 8,
+      "zoom-oauth-refresh-token-response-member": 3,
+      "zoom-server-to-server-access-token-bearer-header-and-response-member": 3,
+      "zoom-token-lookalikes-and-non-values": 6,
+      "zoom-webhook-signature-and-challenge-derived-values-non-values": 7
+    },
+    "changedFields": {
+      "grouping": 11
+    },
+    "evidenceClassTransitions": {
+      "project-policy -> unresolved": 11
+    },
+    "diversity": {
+      "providers": {
+        "old": 95,
+        "new": 113,
+        "added": [
+          "adobe",
+          "airtable",
+          "asana",
+          "box",
+          "canva",
+          "contentful",
+          "dropbox",
+          "elastic",
+          "figma",
+          "hubspot",
+          "jfrog",
+          "meta",
+          "mongodb-atlas",
+          "salesforce",
+          "spotify",
+          "x",
+          "zendesk",
+          "zoom"
+        ],
+        "removed": []
+      },
+      "families": {
+        "old": 169,
+        "new": 225,
+        "addedFamilies": [
+          "adobe:oauth-server-to-server-access-token",
+          "adobe:oauth-user-refresh-token",
+          "airtable:oauth-access-token",
+          "airtable:oauth-client-secret",
+          "airtable:oauth-refresh-token",
+          "airtable:webhook-mac-secret",
+          "asana:oauth-access-token",
+          "asana:oauth-client-secret",
+          "asana:oauth-refresh-token",
+          "asana:personal-access-token",
+          "asana:webhook-secret",
+          "box:oauth-access-token",
+          "box:oauth-client-secret",
+          "box:oauth-refresh-token",
+          "canva:access-token",
+          "canva:client-secret",
+          "canva:refresh-token",
+          "contentful:oauth-application-access-token",
+          "dropbox:app-secret",
+          "dropbox:refresh-token",
+          "elastic:cloud-api-key",
+          "elastic:ece-api-key",
+          "elastic:elasticsearch-api-key",
+          "elastic:refresh-token",
+          "figma:oauth-client-secret",
+          "figma:personal-access-token",
+          "hubspot:app-client-secret",
+          "hubspot:oauth-refresh-token",
+          "hubspot:personal-access-key",
+          "jfrog:access-token",
+          "jfrog:api-key",
+          "jfrog:myjfrog-api-token",
+          "meta:instagram-user-access-token",
+          "meta:page-access-token",
+          "meta:system-user-access-token",
+          "meta:user-access-token",
+          "mongodb-atlas:database-user-password",
+          "mongodb-atlas:programmatic-api-private-key",
+          "mongodb-atlas:service-account-access-token",
+          "mongodb-atlas:service-account-secret",
+          "salesforce:external-client-app-consumer-secret",
+          "salesforce:oauth-access-token",
+          "spotify:access-token",
+          "spotify:client-secret",
+          "spotify:refresh-token",
+          "x:oauth1-access-token-secret",
+          "x:oauth2-client-secret",
+          "x:oauth2-refresh-token",
+          "zendesk:api-token",
+          "zendesk:oauth-access-token",
+          "zendesk:oauth-client-secret",
+          "zendesk:oauth-refresh-token",
+          "zoom:build-platform-api-key",
+          "zoom:oauth-refresh-token",
+          "zoom:server-to-server-access-token",
+          "zoom:webhook-secret-token"
+        ]
+      }
+    }
+  },
+  "representation": {
+    "present": true,
+    "contract": "credential-eval/representation/1",
+    "factsDigest": "sha256:f25bf9f34e276a86f3b34a71c51ebf3f782fa16a196c0d1d544f76c94fd25f80",
+    "manifestCounts": {
+      "contract": "credential-eval/representation/1",
+      "facts_digest": "sha256:f25bf9f34e276a86f3b34a71c51ebf3f782fa16a196c0d1d544f76c94fd25f80",
+      "cases": 385,
+      "transformed_cases": 309,
+      "chunked_cases": 9,
+      "expected_rejections": 3,
+      "fragmented_spans": 18,
+      "fragments": 37,
+      "decoded_spans": 55,
+      "decoded_verified": 55,
+      "decoded_unverified": 0
+    },
+    "casesWithFacts": 385,
+    "derivation": {
+      "authored-base": 76,
+      "projection": 309
+    },
+    "inputValidity": {
+      "unpaired-surrogate-split": 3
+    },
+    "casesByTransformationOp": {
+      "embed": 206,
+      "encode": 62,
+      "escape": 7,
+      "fragment": 24,
+      "insert-codepoints": 17,
+      "normalize": 1,
+      "place": 66,
+      "repeat": 14
+    },
+    "casesByEncodeCodec": {
+      "encode:base64": 40,
+      "encode:hex": 28
+    },
+    "fragmentMechanisms": {
+      "adjacent-string-literals": 1,
+      "escaped-newline-text": 2,
+      "fixed-width-wrap": 1,
+      "json-string-array-elements": 1,
+      "literal-crlf": 1,
+      "literal-line-feed": 1,
+      "markdown-code-span-line-ending": 1,
+      "markdown-soft-line-break": 1,
+      "mime-base64-line-wrap": 3,
+      "quoted-printable-soft-line-break": 1,
+      "shell-line-continuation": 5,
+      "shell-line-continuation-in-single-quotes": 1,
+      "string-literal-addition": 2,
+      "string-literal-line-continuation": 2,
+      "trailing-equals-and-crlf-in-7bit-part": 1
+    },
+    "expectedSpansWithFragments": 18,
+    "expectedSpansWithDecoded": 55,
+    "decodedByCodec": {
+      "base64": 41,
+      "hex": 27,
+      "strip-codepoints": 8
+    },
+    "notExported": {
+      "materialized": 7041,
+      "exported": 7036,
+      "invalidUtf8": {
+        "total": 5,
+        "byReason": {
+          "invalid-utf8": 5
+        },
+        "cases": [
+          {
+            "id": "sendgrid-unicode-authored--key-a-byte-ff-before-key",
+            "reason": "invalid-utf8",
+            "bytes": 93
+          },
+          {
+            "id": "sendgrid-unicode-authored--key-a-encoded-surrogate-before-key",
+            "reason": "invalid-utf8",
+            "bytes": 95
+          },
+          {
+            "id": "sendgrid-unicode-authored--key-a-lone-continuation-byte-before-key",
+            "reason": "invalid-utf8",
+            "bytes": 93
+          },
+          {
+            "id": "sendgrid-unicode-authored--key-a-overlong-slash-before-key",
+            "reason": "invalid-utf8",
+            "bytes": 94
+          },
+          {
+            "id": "sendgrid-unicode-authored--key-a-truncated-four-byte-sequence-before-key",
+            "reason": "invalid-utf8",
+            "bytes": 95
+          }
+        ]
+      },
+      "twinLineageNotExported": 29
+    }
+  },
+  "reviewState": {
+    "previous": {
+      "present": true,
+      "contract": "credential-evidence/review-state/1",
+      "rule": "solo-maintainer-period (ADR 0020)",
+      "note": "maintainer-only: finalized by the sole maintainer, never reviewed, never independent validation, queued for retro-review. The credential-eval snapshot does not carry review state.",
+      "fixtures": {
+        "total": 6524,
+        "draft": 6428,
+        "maintainerOnly": 96,
+        "reviewed": 0
+      },
+      "maintainerOnly": {
+        "fixtures": 96,
+        "fixturesByOutcome": {
+          "must-flag": 71,
+          "must-not-flag": 25
+        },
+        "records": {
+          "case": 17,
+          "scenario": 6
+        },
+        "decisions": 23
+      },
+      "attributedFixtures": 84,
+      "attributedByOutcome": {
+        "must-flag": 71,
+        "must-not-flag": 13
+      },
+      "unattributedFixtures": 12,
+      "maintainerOnlyFixtureIds": [
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-url",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-three-layers-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-unpadded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-json",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-url",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-in-url",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-of-hex-lower-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-mixed-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-upper-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-upper-in-json",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-url",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-three-layers-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-json",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-url",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-in-url",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-of-hex-lower-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-mixed-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-upper-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-upper-in-json",
+        "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-url",
+        "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-three-layers-in-env",
+        "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--sendgrid-key-hex-lower-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-lower-in-url",
+        "base64-hex-representation-projections--sendgrid-key-hex-lower-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-lower-of-hex-lower-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-mixed-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-upper-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-upper-in-json",
+        "developer-artifact-lookalikes-authored--actions-cache-restore-log-key",
+        "developer-artifact-lookalikes-authored--actions-cache-step-key-input",
+        "developer-artifact-lookalikes-authored--go-mod-pseudo-version-requirement",
+        "developer-artifact-lookalikes-authored--go-sum-module-and-go-mod-hashes",
+        "developer-artifact-lookalikes-authored--npm-lock-integrity-sha512",
+        "developer-artifact-lookalikes-authored--oci-image-reference-pinned-by-digest",
+        "developer-artifact-lookalikes-authored--pip-requirements-hash-checking",
+        "developer-artifact-lookalikes-authored--semver-full-commit-build-metadata",
+        "developer-artifact-lookalikes-authored--semver-sha-tagged-build-metadata",
+        "developer-artifact-lookalikes-authored--sri-script-tag-sha384",
+        "developer-artifact-lookalikes-authored--webpack-contenthash-output-filenames",
+        "environment-and-test-values-authored--installation-token-lifetime-note",
+        "environment-and-test-values-authored--stripe-rotated-key-note",
+        "environment-and-test-values-authored--sts-credentials-past-expiration",
+        "http-auth-carriers-authored--basic-empty-password",
+        "http-auth-carriers-authored--basic-rfc-published-example",
+        "http-auth-carriers-authored--basic-token-split-by-space",
+        "http-auth-carriers-authored--basic-token-url-safe-alphabet",
+        "http-auth-carriers-authored--basic-token-without-padding",
+        "http-auth-carriers-authored--basic-user-id-in-cleartext-beside-token",
+        "line-break-and-fragment-authored--key-split-by-backslash-crlf-continuation",
+        "line-break-and-fragment-authored--key-split-by-backslash-newline-in-single-quotes",
+        "line-break-and-fragment-authored--key-split-by-literal-crlf",
+        "line-break-and-fragment-authored--key-split-by-literal-line-feed",
+        "line-break-and-fragment-authored--key-with-json-escaped-line-feed",
+        "line-break-and-fragment-authored--key-with-literal-backslash-n-in-log-line",
+        "line-break-and-fragment-authored--key-wrapped-in-markdown-code-span",
+        "line-break-and-fragment-authored--key-wrapped-in-markdown-paragraph",
+        "policy-ambiguous-assignment-bases-authored--aws-key-id-shaped-body-of-example-marker-base",
+        "policy-ambiguous-assignment-bases-authored--stripe-shaped-body-of-example-marker-base",
+        "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-english-prose",
+        "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-korean-prose",
+        "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-markdown-fence",
+        "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-english-prose",
+        "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-korean-prose",
+        "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-markdown-fence",
+        "sendgrid-unicode-authored--key-a-with-no-break-space-inside"
+      ]
+    },
+    "candidate": {
+      "present": true,
+      "contract": "credential-evidence/review-state/1",
+      "rule": "solo-maintainer-period (ADR 0020)",
+      "note": "maintainer-only: finalized by the sole maintainer, never reviewed, never independent validation, queued for retro-review. The credential-eval snapshot does not carry review state.",
+      "fixtures": {
+        "total": 7041,
+        "draft": 6443,
+        "maintainerOnly": 598,
+        "reviewed": 0
+      },
+      "maintainerOnly": {
+        "fixtures": 598,
+        "fixturesByOutcome": {
+          "must-flag": 268,
+          "must-not-flag": 330
+        },
+        "records": {
+          "case": 124,
+          "scenario": 6
+        },
+        "decisions": 130
+      },
+      "attributedFixtures": 586,
+      "attributedByOutcome": {
+        "must-not-flag": 318,
+        "must-flag": 268
+      },
+      "unattributedFixtures": 12,
+      "maintainerOnlyFixtureIds": [
+        "adobe-authored--lookalike-access-token-angle-placeholder",
+        "adobe-authored--lookalike-access-token-template-reference",
+        "adobe-authored--lookalike-client-id-expiry-and-scope-only",
+        "adobe-authored--lookalike-refresh-token-environment-reference",
+        "adobe-authored--lookalike-refresh-token-masked-display",
+        "adobe-authored--refresh-curl-response-output",
+        "adobe-authored--refresh-pretty-json-response",
+        "adobe-authored--refresh-raw-http-response-compact-json",
+        "adobe-authored--s2s-access-curl-response-output",
+        "adobe-authored--s2s-access-pretty-json-response",
+        "adobe-authored--s2s-access-raw-http-response-compact-json",
+        "airtable-authored--access-curl-bearer-header",
+        "airtable-authored--access-json-header-map",
+        "airtable-authored--access-lookalike-access-token-masked-display",
+        "airtable-authored--access-lookalike-access-token-template-reference",
+        "airtable-authored--access-lookalike-bearer-angle-placeholder",
+        "airtable-authored--access-lookalike-bearer-environment-reference",
+        "airtable-authored--access-lookalike-bearer-scheme-only",
+        "airtable-authored--access-lookalike-client-id-and-expiry-only",
+        "airtable-authored--access-raw-http-bearer-header",
+        "airtable-authored--access-token-response-access-token-member",
+        "airtable-authored--client-secret-basic-curl-header",
+        "airtable-authored--client-secret-basic-json-header-map",
+        "airtable-authored--client-secret-basic-raw-http",
+        "airtable-authored--mac-header-hmac-output",
+        "airtable-authored--mac-secret-angle-placeholder",
+        "airtable-authored--mac-secret-environment-reference",
+        "airtable-authored--mac-secret-json-response",
+        "airtable-authored--mac-secret-masked-display",
+        "airtable-authored--mac-secret-presence-flag",
+        "airtable-authored--mac-secret-shell-assignment",
+        "airtable-authored--mac-secret-unquoted-assignment",
+        "airtable-authored--mac-secret-yaml-config",
+        "airtable-authored--mac-secret-yaml-quoted",
+        "airtable-authored--mac-secret-yaml-template-reference",
+        "airtable-authored--oauth-lookalike-basic-angle-placeholder",
+        "airtable-authored--oauth-lookalike-basic-curl-environment-reference",
+        "airtable-authored--oauth-lookalike-basic-documented-template",
+        "airtable-authored--oauth-lookalike-basic-masked-display",
+        "airtable-authored--oauth-lookalike-basic-scheme-only",
+        "airtable-authored--oauth-lookalike-basic-template-reference",
+        "airtable-authored--oauth-lookalike-client-id-and-lifetimes-only",
+        "airtable-authored--oauth-lookalike-refresh-token-angle-placeholder",
+        "airtable-authored--oauth-lookalike-refresh-token-environment-reference",
+        "airtable-authored--refresh-curl-data-refresh-token",
+        "airtable-authored--refresh-pretty-json-response",
+        "airtable-authored--refresh-raw-http-form-request",
+        "airtable-authored--webhook-and-base-ids-only",
+        "asana-authored--oauth-access-curl-bearer-header",
+        "asana-authored--oauth-access-pretty-json-response",
+        "asana-authored--oauth-access-raw-http-bearer-header",
+        "asana-authored--oauth-client-secret-curl-data-urlencode",
+        "asana-authored--oauth-client-secret-form-body",
+        "asana-authored--oauth-client-secret-json-body",
+        "asana-authored--oauth-lookalike-access-token-angle-placeholder",
+        "asana-authored--oauth-lookalike-access-token-documented-placeholder",
+        "asana-authored--oauth-lookalike-client-id-and-user-ids-only",
+        "asana-authored--oauth-lookalike-client-secret-documented-placeholder",
+        "asana-authored--oauth-lookalike-client-secret-template-reference",
+        "asana-authored--oauth-lookalike-refresh-token-documented-placeholder",
+        "asana-authored--oauth-lookalike-refresh-token-environment-reference",
+        "asana-authored--oauth-lookalike-request-signature-header",
+        "asana-authored--oauth-lookalike-token-members-masked-display",
+        "asana-authored--oauth-refresh-curl-data-urlencode",
+        "asana-authored--oauth-refresh-pretty-json-response",
+        "asana-authored--oauth-refresh-raw-http-form-request",
+        "asana-authored--pat-curl-bearer-header",
+        "asana-authored--pat-json-header-map",
+        "asana-authored--pat-lookalike-bearer-angle-placeholder",
+        "asana-authored--pat-lookalike-bearer-environment-reference",
+        "asana-authored--pat-lookalike-bearer-masked-display",
+        "asana-authored--pat-lookalike-bearer-scheme-only",
+        "asana-authored--pat-lookalike-bearer-template-reference",
+        "asana-authored--pat-lookalike-gids-in-json-body",
+        "asana-authored--pat-lookalike-gids-in-request-path",
+        "asana-authored--pat-raw-http-bearer-header",
+        "asana-authored--x-hook-secret-angle-placeholder",
+        "asana-authored--x-hook-secret-curl-environment-reference",
+        "asana-authored--x-hook-secret-curl-header",
+        "asana-authored--x-hook-secret-id-header-with-identifier",
+        "asana-authored--x-hook-secret-json-header-map",
+        "asana-authored--x-hook-secret-json-placeholder",
+        "asana-authored--x-hook-secret-lowercase-name",
+        "asana-authored--x-hook-secret-masked-display",
+        "asana-authored--x-hook-secret-raw-http",
+        "asana-authored--x-hook-signature-hmac-output",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-in-url",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-padded-three-layers-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-standard-unpadded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-json",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-in-url",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-in-url",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-lower-of-hex-lower-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-mixed-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-upper-in-env",
+        "base64-hex-representation-projections--generic-literal-alphabet-edge-hex-upper-in-json",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-in-url",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-standard-padded-three-layers-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-json",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-in-url",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-in-url",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-lower-of-hex-lower-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-mixed-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-upper-in-env",
+        "base64-hex-representation-projections--generic-literal-padding-edge-hex-upper-in-json",
+        "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-in-url",
+        "base64-hex-representation-projections--sendgrid-key-base64-standard-padded-three-layers-in-env",
+        "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--sendgrid-key-base64-url-safe-unpadded-of-hex-upper-of-base64-standard-padded-in-json",
+        "base64-hex-representation-projections--sendgrid-key-hex-lower-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-lower-in-url",
+        "base64-hex-representation-projections--sendgrid-key-hex-lower-of-base64-standard-padded-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-lower-of-hex-lower-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-mixed-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-upper-in-env",
+        "base64-hex-representation-projections--sendgrid-key-hex-upper-in-json",
+        "box-authored--oauth-access-curl-bearer-header",
+        "box-authored--oauth-access-pretty-json-response",
+        "box-authored--oauth-access-raw-http-bearer-header",
+        "box-authored--oauth-client-secret-curl-data",
+        "box-authored--oauth-client-secret-form-body",
+        "box-authored--oauth-client-secret-python-form-dictionary",
+        "box-authored--oauth-lookalike-access-token-documented-placeholder",
+        "box-authored--oauth-lookalike-client-id-and-token-type-only",
+        "box-authored--oauth-lookalike-client-secret-documented-placeholder",
+        "box-authored--oauth-lookalike-client-secret-template-reference",
+        "box-authored--oauth-lookalike-refresh-token-documented-placeholder",
+        "box-authored--oauth-lookalike-refresh-token-environment-reference",
+        "box-authored--oauth-lookalike-token-members-masked-display",
+        "box-authored--oauth-refresh-curl-data-refresh-token",
+        "box-authored--oauth-refresh-pretty-json-response",
+        "box-authored--oauth-refresh-raw-http-form-request",
+        "canva-authored--access-curl-response-output",
+        "canva-authored--access-pretty-json-response",
+        "canva-authored--access-raw-http-response-compact-json",
+        "canva-authored--authorization-basic-envelope",
+        "canva-authored--authorization-basic-envelope-curl-header",
+        "canva-authored--authorization-basic-placeholder",
+        "canva-authored--client-id-only",
+        "canva-authored--client-secret-angle-placeholder",
+        "canva-authored--client-secret-environment-reference",
+        "canva-authored--client-secret-form-body",
+        "canva-authored--client-secret-form-body-last-parameter",
+        "canva-authored--client-secret-json-body",
+        "canva-authored--client-secret-masked-display",
+        "canva-authored--client-secret-shell-assignment",
+        "canva-authored--client-secret-template-reference",
+        "canva-authored--client-secret-without-prefix",
+        "canva-authored--cnvca-prefix-prose",
+        "canva-authored--refresh-curl-response-output",
+        "canva-authored--refresh-pretty-json-response",
+        "canva-authored--refresh-raw-http-response-compact-json",
+        "canva-authored--token-lookalike-access-token-angle-placeholder",
+        "canva-authored--token-lookalike-access-token-template-reference",
+        "canva-authored--token-lookalike-client-id-type-and-expiry-only",
+        "canva-authored--token-lookalike-refresh-token-environment-reference",
+        "canva-authored--token-lookalike-refresh-token-masked-display",
+        "contentful-authored--authorize-request-client-id",
+        "contentful-authored--fragment-documented-placeholder",
+        "contentful-authored--fragment-environment-reference",
+        "contentful-authored--fragment-location-header",
+        "contentful-authored--fragment-masked-display",
+        "contentful-authored--fragment-parameter-prose-mention",
+        "contentful-authored--fragment-quoted-json-string",
+        "contentful-authored--fragment-redirect-url",
+        "developer-artifact-lookalikes-authored--actions-cache-restore-log-key",
+        "developer-artifact-lookalikes-authored--actions-cache-step-key-input",
+        "developer-artifact-lookalikes-authored--go-mod-pseudo-version-requirement",
+        "developer-artifact-lookalikes-authored--go-sum-module-and-go-mod-hashes",
+        "developer-artifact-lookalikes-authored--npm-lock-integrity-sha512",
+        "developer-artifact-lookalikes-authored--oci-image-reference-pinned-by-digest",
+        "developer-artifact-lookalikes-authored--pip-requirements-hash-checking",
+        "developer-artifact-lookalikes-authored--semver-full-commit-build-metadata",
+        "developer-artifact-lookalikes-authored--semver-sha-tagged-build-metadata",
+        "developer-artifact-lookalikes-authored--sri-script-tag-sha384",
+        "developer-artifact-lookalikes-authored--webpack-contenthash-output-filenames",
+        "dropbox-authored--app-secret-curl-data-client-secret",
+        "dropbox-authored--app-secret-form-body-client-secret",
+        "dropbox-authored--app-secret-json-body-client-secret",
+        "dropbox-authored--app-secret-lookalike-app-key-only",
+        "dropbox-authored--app-secret-lookalike-client-secret-angle-placeholder",
+        "dropbox-authored--app-secret-lookalike-client-secret-environment-reference",
+        "dropbox-authored--app-secret-lookalike-client-secret-masked-display",
+        "dropbox-authored--app-secret-lookalike-client-secret-template-reference",
+        "dropbox-authored--app-secret-lookalike-webhook-signature-header",
+        "dropbox-authored--refresh-token-curl-data-refresh-token",
+        "dropbox-authored--refresh-token-lookalike-app-key-and-grant-type-only",
+        "dropbox-authored--refresh-token-lookalike-documented-placeholder",
+        "dropbox-authored--refresh-token-lookalike-environment-reference",
+        "dropbox-authored--refresh-token-lookalike-masked-display",
+        "dropbox-authored--refresh-token-lookalike-response-without-refresh-token",
+        "dropbox-authored--refresh-token-lookalike-template-reference",
+        "dropbox-authored--refresh-token-pretty-json-response",
+        "dropbox-authored--refresh-token-raw-http-form-request",
+        "elastic-authored--apikey-angle-placeholder",
+        "elastic-authored--apikey-curl-environment-reference",
+        "elastic-authored--apikey-json-placeholder",
+        "elastic-authored--apikey-masked-display",
+        "elastic-authored--apikey-prose-mention",
+        "elastic-authored--apikey-scheme-only",
+        "elastic-authored--apikey-template-reference",
+        "elastic-authored--authorization-apikey-curl-header",
+        "elastic-authored--authorization-apikey-json-header-map",
+        "elastic-authored--authorization-apikey-lowercase-name-and-scheme",
+        "elastic-authored--authorization-apikey-raw-http",
+        "elastic-authored--bearer-curl-header",
+        "elastic-authored--bearer-json-header-map",
+        "elastic-authored--bearer-raw-http",
+        "elastic-authored--bearer-token-angle-placeholder",
+        "elastic-authored--bearer-token-curl-environment-reference",
+        "elastic-authored--bearer-token-masked-display",
+        "elastic-authored--bearer-token-prose-mention",
+        "elastic-authored--bearer-token-scheme-only",
+        "elastic-authored--bearer-token-template-reference",
+        "elastic-authored--bearer-token-type-and-lifetime-only",
+        "elastic-authored--cloud-apikey-angle-placeholder",
+        "elastic-authored--cloud-apikey-curl-environment-reference",
+        "elastic-authored--cloud-apikey-curl-header",
+        "elastic-authored--cloud-apikey-json-header-map",
+        "elastic-authored--cloud-apikey-masked-display",
+        "elastic-authored--cloud-apikey-prose-mention",
+        "elastic-authored--cloud-apikey-raw-http",
+        "elastic-authored--cloud-apikey-scheme-only",
+        "elastic-authored--cloud-apikey-template-reference",
+        "elastic-authored--ece-apikey-angle-placeholder",
+        "elastic-authored--ece-apikey-curl-environment-reference",
+        "elastic-authored--ece-apikey-curl-header",
+        "elastic-authored--ece-apikey-expiration-response-header-only",
+        "elastic-authored--ece-apikey-json-header-map",
+        "elastic-authored--ece-apikey-masked-display",
+        "elastic-authored--ece-apikey-prose-mention",
+        "elastic-authored--ece-apikey-raw-http",
+        "elastic-authored--ece-apikey-scheme-only",
+        "elastic-authored--ece-apikey-template-reference",
+        "elastic-authored--proxy-authorization-apikey-json-header-map",
+        "elastic-authored--proxy-authorization-apikey-raw-http",
+        "elastic-authored--refresh-request-angle-placeholder",
+        "elastic-authored--refresh-request-curl-environment-reference",
+        "elastic-authored--refresh-request-curl-json-body",
+        "elastic-authored--refresh-request-empty-value",
+        "elastic-authored--refresh-request-masked-display",
+        "elastic-authored--refresh-request-raw-http-json-body",
+        "elastic-authored--refresh-request-template-reference",
+        "elastic-authored--refresh-response-json-excerpt",
+        "elastic-authored--refresh-response-type-and-lifetime-only",
+        "elastic-authored--refresh-token-prose-mention",
+        "environment-and-test-values-authored--installation-token-lifetime-note",
+        "environment-and-test-values-authored--stripe-rotated-key-note",
+        "environment-and-test-values-authored--sts-credentials-past-expiration",
+        "figma-authored--bearer-angle-placeholder",
+        "figma-authored--bearer-curl-environment-reference",
+        "figma-authored--bearer-curl-header",
+        "figma-authored--bearer-json-header-map",
+        "figma-authored--bearer-masked-display",
+        "figma-authored--bearer-prose-mention",
+        "figma-authored--bearer-public-identifiers",
+        "figma-authored--bearer-raw-http",
+        "figma-authored--bearer-scheme-only",
+        "figma-authored--bearer-template-reference",
+        "figma-authored--client-secret-basic-angle-placeholder",
+        "figma-authored--client-secret-basic-curl-environment-reference",
+        "figma-authored--client-secret-basic-curl-header",
+        "figma-authored--client-secret-basic-json-header-map",
+        "figma-authored--client-secret-basic-masked-display",
+        "figma-authored--client-secret-basic-raw-http",
+        "figma-authored--client-secret-basic-scheme-only",
+        "figma-authored--client-secret-basic-template-reference",
+        "figma-authored--client-secret-client-id-only",
+        "figma-authored--client-secret-masked-field",
+        "figma-authored--oauth-refresh-response-access-token-only",
+        "figma-authored--oauth-response-angle-placeholders",
+        "figma-authored--oauth-response-compact-json",
+        "figma-authored--oauth-response-empty-values",
+        "figma-authored--oauth-response-masked-display",
+        "figma-authored--oauth-response-non-secret-members",
+        "figma-authored--oauth-response-pretty-json",
+        "figma-authored--oauth-response-template-references",
+        "figma-authored--oauth-token-members-prose-mention",
+        "figma-authored--public-file-key-and-user-id",
+        "figma-authored--suffixed-header-with-public-id",
+        "figma-authored--token-id-header-with-public-id",
+        "figma-authored--x-figma-token-angle-placeholder",
+        "figma-authored--x-figma-token-curl-environment-reference",
+        "figma-authored--x-figma-token-curl-header",
+        "figma-authored--x-figma-token-json-header-map",
+        "figma-authored--x-figma-token-json-placeholder",
+        "figma-authored--x-figma-token-lowercase-name",
+        "figma-authored--x-figma-token-masked-display",
+        "figma-authored--x-figma-token-raw-http",
+        "figma-authored--x-figma-token-template-reference",
+        "figma-authored--x-figma-token-value-without-figd-prefix",
+        "http-auth-carriers-authored--basic-empty-password",
+        "http-auth-carriers-authored--basic-rfc-published-example",
+        "http-auth-carriers-authored--basic-token-split-by-space",
+        "http-auth-carriers-authored--basic-token-url-safe-alphabet",
+        "http-auth-carriers-authored--basic-token-without-padding",
+        "http-auth-carriers-authored--basic-user-id-in-cleartext-beside-token",
+        "hubspot-authored--bearer-angle-placeholder",
+        "hubspot-authored--bearer-curl-environment-reference",
+        "hubspot-authored--bearer-curl-header",
+        "hubspot-authored--bearer-json-header-map",
+        "hubspot-authored--bearer-masked-display",
+        "hubspot-authored--bearer-prose-mention",
+        "hubspot-authored--bearer-public-identifiers",
+        "hubspot-authored--bearer-raw-http",
+        "hubspot-authored--bearer-scheme-only",
+        "hubspot-authored--bearer-template-reference",
+        "hubspot-authored--client-secret-angle-placeholder",
+        "hubspot-authored--client-secret-client-id-only",
+        "hubspot-authored--client-secret-curl-data-client-secret",
+        "hubspot-authored--client-secret-curl-environment-reference",
+        "hubspot-authored--client-secret-empty-value",
+        "hubspot-authored--client-secret-introspect-request-body",
+        "hubspot-authored--client-secret-masked-display",
+        "hubspot-authored--client-secret-prose-mention",
+        "hubspot-authored--client-secret-raw-http-form-body",
+        "hubspot-authored--client-secret-signature-header-name-only",
+        "hubspot-authored--client-secret-template-reference",
+        "hubspot-authored--pak-angle-placeholder",
+        "hubspot-authored--pak-empty-value",
+        "hubspot-authored--pak-environment-assignment",
+        "hubspot-authored--pak-environment-reference",
+        "hubspot-authored--pak-global-config-accounts",
+        "hubspot-authored--pak-legacy-portals-config-quoted",
+        "hubspot-authored--pak-masked-display",
+        "hubspot-authored--pak-prose-mention",
+        "hubspot-authored--pak-public-account-fields-only",
+        "hubspot-authored--pak-template-reference",
+        "hubspot-authored--refresh-angle-placeholder",
+        "hubspot-authored--refresh-curl-data-refresh-token",
+        "hubspot-authored--refresh-curl-environment-reference",
+        "hubspot-authored--refresh-empty-value",
+        "hubspot-authored--refresh-masked-display",
+        "hubspot-authored--refresh-raw-http-form-body-refresh-token",
+        "hubspot-authored--refresh-response-json-excerpt",
+        "hubspot-authored--refresh-response-public-members",
+        "hubspot-authored--refresh-template-reference",
+        "hubspot-authored--refresh-token-prose-mention",
+        "jfrog-authored--api-key-curl-art-api-header",
+        "jfrog-authored--api-key-curl-basic-password",
+        "jfrog-authored--api-key-lookalike-angle-placeholder",
+        "jfrog-authored--api-key-lookalike-documented-pattern-prose",
+        "jfrog-authored--api-key-lookalike-environment-reference",
+        "jfrog-authored--api-key-lookalike-header-name-only",
+        "jfrog-authored--api-key-lookalike-masked-display",
+        "jfrog-authored--api-key-lookalike-username-without-password",
+        "jfrog-authored--api-key-raw-http-art-api-header",
+        "jfrog-authored--basic-documented-placeholder",
+        "jfrog-authored--bearer-curl-header",
+        "jfrog-authored--bearer-documented-placeholder",
+        "jfrog-authored--bearer-environment-reference",
+        "jfrog-authored--bearer-header-prose-mention",
+        "jfrog-authored--bearer-json-header-map",
+        "jfrog-authored--bearer-raw-http",
+        "jfrog-authored--bearer-scheme-only",
+        "jfrog-authored--myjfrog-bearer-curl-header",
+        "jfrog-authored--myjfrog-bearer-documented-placeholder",
+        "jfrog-authored--myjfrog-bearer-json-header-map",
+        "jfrog-authored--myjfrog-bearer-raw-http",
+        "jfrog-authored--token-masked-display",
+        "line-break-and-fragment-authored--key-split-by-backslash-crlf-continuation",
+        "line-break-and-fragment-authored--key-split-by-backslash-newline-in-single-quotes",
+        "line-break-and-fragment-authored--key-split-by-literal-crlf",
+        "line-break-and-fragment-authored--key-split-by-literal-line-feed",
+        "line-break-and-fragment-authored--key-with-json-escaped-line-feed",
+        "line-break-and-fragment-authored--key-with-literal-backslash-n-in-log-line",
+        "line-break-and-fragment-authored--key-wrapped-in-markdown-code-span",
+        "line-break-and-fragment-authored--key-wrapped-in-markdown-paragraph",
+        "meta-authored--access-token-documented-template",
+        "meta-authored--access-token-environment-reference",
+        "meta-authored--access-token-masked-display",
+        "meta-authored--access-token-parameter-prose-mention",
+        "meta-authored--accounts-entry-without-token",
+        "meta-authored--accounts-response-compact",
+        "meta-authored--accounts-response-pretty",
+        "meta-authored--accounts-response-two-pages",
+        "meta-authored--app-pair-curl-url",
+        "meta-authored--app-pair-lookalike-appsecret-proof-derived",
+        "meta-authored--app-pair-lookalike-documented-template",
+        "meta-authored--app-pair-lookalike-environment-reference",
+        "meta-authored--app-pair-lookalike-generation-call-placeholder",
+        "meta-authored--app-pair-lookalike-masked-secret",
+        "meta-authored--app-pair-lookalike-prose-mention",
+        "meta-authored--app-pair-raw-http",
+        "meta-authored--app-pair-url-query-continues",
+        "meta-authored--client-token-pair-parameter",
+        "meta-authored--exchange-response-member",
+        "meta-authored--generation-response-member",
+        "meta-authored--long-lived-raw-http",
+        "meta-authored--long-lived-response-member",
+        "meta-authored--query-curl-argument",
+        "meta-authored--query-raw-http",
+        "meta-authored--refresh-response-member",
+        "meta-authored--refresh-response-raw-http",
+        "meta-authored--short-lived-data-entry",
+        "meta-authored--token-response-lifetime-members",
+        "mongodb-atlas-authored--basic-angle-placeholder",
+        "mongodb-atlas-authored--basic-curl-header",
+        "mongodb-atlas-authored--basic-json-header-map",
+        "mongodb-atlas-authored--basic-masked-display",
+        "mongodb-atlas-authored--basic-raw-http",
+        "mongodb-atlas-authored--bearer-curl-header",
+        "mongodb-atlas-authored--bearer-environment-reference",
+        "mongodb-atlas-authored--bearer-json-header-map",
+        "mongodb-atlas-authored--bearer-raw-http",
+        "mongodb-atlas-authored--client-id-and-name",
+        "mongodb-atlas-authored--digest-authorization-header",
+        "mongodb-atlas-authored--digest-client-environment-reference",
+        "mongodb-atlas-authored--example-prefix-prose-mention",
+        "mongodb-atlas-authored--masked-secret-truncated-example",
+        "mongodb-atlas-authored--password-angle-placeholder",
+        "mongodb-atlas-authored--password-curl-data",
+        "mongodb-atlas-authored--password-environment-reference",
+        "mongodb-atlas-authored--password-json-file",
+        "mongodb-atlas-authored--password-masked-display",
+        "mongodb-atlas-authored--password-raw-http-json-body",
+        "mongodb-atlas-authored--private-key-redacted-display",
+        "mongodb-atlas-authored--public-key-field",
+        "mongodb-atlas-authored--token-response-lifetime-members",
+        "mongodb-atlas-authored--user-response-without-password",
+        "policy-ambiguous-assignment-bases-authored--aws-key-id-shaped-body-of-example-marker-base",
+        "policy-ambiguous-assignment-bases-authored--stripe-shaped-body-of-example-marker-base",
+        "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-english-prose",
+        "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-korean-prose",
+        "policy-ambiguous-assignment-projections-generated--aws-key-id-shaped-body-of-example-marker-in-markdown-fence",
+        "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-english-prose",
+        "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-korean-prose",
+        "policy-ambiguous-assignment-projections-generated--stripe-shaped-body-of-example-marker-in-markdown-fence",
+        "salesforce-authored--access-token-masked-display",
+        "salesforce-authored--basic-documented-placeholder",
+        "salesforce-authored--basic-raw-http",
+        "salesforce-authored--bearer-curl-header",
+        "salesforce-authored--bearer-documented-placeholder",
+        "salesforce-authored--bearer-raw-http",
+        "salesforce-authored--client-secret-curl-data",
+        "salesforce-authored--client-secret-environment-reference",
+        "salesforce-authored--client-secret-form-body",
+        "salesforce-authored--client-secret-masked-display",
+        "salesforce-authored--client-secret-parameter-prose-mention",
+        "salesforce-authored--token-request-consumer-key-only",
+        "salesforce-authored--token-response-member",
+        "salesforce-authored--token-response-non-secret-members",
+        "sendgrid-unicode-authored--key-a-with-no-break-space-inside",
+        "spotify-authored--basic-curl-header",
+        "spotify-authored--basic-documented-placeholder",
+        "spotify-authored--basic-environment-reference",
+        "spotify-authored--basic-json-header-map",
+        "spotify-authored--basic-raw-http",
+        "spotify-authored--basic-scheme-only",
+        "spotify-authored--bearer-curl-header",
+        "spotify-authored--bearer-documented-form-placeholder",
+        "spotify-authored--bearer-environment-reference",
+        "spotify-authored--bearer-json-header-map",
+        "spotify-authored--bearer-raw-http",
+        "spotify-authored--client-credentials-client-id-query",
+        "spotify-authored--client-id-authorization-query",
+        "spotify-authored--client-secret-masked-display",
+        "spotify-authored--client-secret-prose-mention",
+        "spotify-authored--client-secret-variable-placeholder",
+        "spotify-authored--refresh-token-angle-placeholder",
+        "spotify-authored--refresh-token-compact-json",
+        "spotify-authored--refresh-token-json-file",
+        "spotify-authored--refresh-token-masked-display",
+        "spotify-authored--refresh-token-raw-http-response",
+        "spotify-authored--refresh-token-template-reference",
+        "spotify-authored--token-response-lifetime-and-scope",
+        "x-authored--basic-angle-placeholder",
+        "x-authored--basic-curl-header",
+        "x-authored--basic-json-header-map",
+        "x-authored--basic-raw-http",
+        "x-authored--basic-template-reference",
+        "x-authored--bearer-angle-placeholder",
+        "x-authored--bearer-curl-header",
+        "x-authored--bearer-environment-reference",
+        "x-authored--bearer-json-header-map",
+        "x-authored--bearer-masked-display",
+        "x-authored--bearer-raw-http",
+        "x-authored--bearer-scheme-only",
+        "x-authored--client-id-authorization-query",
+        "x-authored--oauth-authorization-header-identity-and-signature",
+        "x-authored--refresh-angle-placeholder",
+        "x-authored--refresh-curl-data-urlencode-refresh-token",
+        "x-authored--refresh-curl-environment-reference",
+        "x-authored--refresh-empty-value",
+        "x-authored--refresh-masked-display",
+        "x-authored--refresh-raw-http-form-body-refresh-token",
+        "x-authored--refresh-response-json-excerpt",
+        "x-authored--refresh-response-public-members",
+        "x-authored--refresh-template-reference",
+        "x-authored--refresh-token-prose-mention",
+        "x-authored--token-secret-angle-placeholder",
+        "x-authored--token-secret-environment-reference",
+        "x-authored--token-secret-field-prose-mention",
+        "x-authored--token-secret-form-body",
+        "x-authored--token-secret-json-field",
+        "x-authored--token-secret-masked-display",
+        "x-authored--token-secret-shell-assignment",
+        "x-authored--user-id-response",
+        "zendesk-authored--access-curl-bearer-header",
+        "zendesk-authored--access-json-header-map",
+        "zendesk-authored--access-raw-http-bearer-header",
+        "zendesk-authored--api-token-curl-basic-credential",
+        "zendesk-authored--api-token-env-assignment",
+        "zendesk-authored--api-token-json-credentials-string",
+        "zendesk-authored--api-token-lookalike-documented-template",
+        "zendesk-authored--api-token-lookalike-email-and-subdomain-only",
+        "zendesk-authored--api-token-lookalike-environment-reference",
+        "zendesk-authored--api-token-lookalike-masked-display",
+        "zendesk-authored--api-token-lookalike-separator-without-token",
+        "zendesk-authored--client-secret-curl-data-client-secret",
+        "zendesk-authored--client-secret-form-body-client-secret",
+        "zendesk-authored--client-secret-json-body-client-secret",
+        "zendesk-authored--lookalike-bearer-documented-template",
+        "zendesk-authored--lookalike-bearer-environment-reference",
+        "zendesk-authored--lookalike-bearer-scheme-only",
+        "zendesk-authored--lookalike-client-identifier-and-subdomain-only",
+        "zendesk-authored--lookalike-client-secret-angle-placeholder",
+        "zendesk-authored--lookalike-client-secret-masked-display",
+        "zendesk-authored--refresh-angle-placeholder",
+        "zendesk-authored--refresh-curl-environment-reference",
+        "zendesk-authored--refresh-documented-template",
+        "zendesk-authored--refresh-empty-value",
+        "zendesk-authored--refresh-masked-display",
+        "zendesk-authored--refresh-request-curl-json-body",
+        "zendesk-authored--refresh-request-json-body",
+        "zendesk-authored--refresh-response-json-excerpt",
+        "zendesk-authored--refresh-response-public-members",
+        "zendesk-authored--refresh-template-reference",
+        "zendesk-authored--refresh-token-prose-mention",
+        "zoom-authored--build-key-curl-x-api-key",
+        "zoom-authored--build-key-json-header-map",
+        "zoom-authored--build-key-lookalike-bearer-template",
+        "zoom-authored--build-key-lookalike-documented-placeholder",
+        "zoom-authored--build-key-lookalike-empty-value",
+        "zoom-authored--build-key-lookalike-environment-reference",
+        "zoom-authored--build-key-lookalike-masked-display",
+        "zoom-authored--build-key-lookalike-prose-mention",
+        "zoom-authored--build-key-raw-http-x-api-key",
+        "zoom-authored--client-secret-account-and-client-id-only",
+        "zoom-authored--client-secret-basic-angle-placeholder",
+        "zoom-authored--client-secret-basic-curl-environment-reference",
+        "zoom-authored--client-secret-basic-curl-header",
+        "zoom-authored--client-secret-basic-json-header-map",
+        "zoom-authored--client-secret-basic-masked-display",
+        "zoom-authored--client-secret-basic-raw-http",
+        "zoom-authored--client-secret-basic-scheme-only",
+        "zoom-authored--client-secret-basic-template-reference",
+        "zoom-authored--client-secret-development-form-field",
+        "zoom-authored--client-secret-field-masked-and-placeholder",
+        "zoom-authored--client-secret-prose-mention",
+        "zoom-authored--lookalike-access-token-documentation-placeholder",
+        "zoom-authored--lookalike-account-id-and-client-id-only",
+        "zoom-authored--lookalike-bearer-environment-reference",
+        "zoom-authored--lookalike-bearer-scheme-only",
+        "zoom-authored--lookalike-refresh-token-documentation-placeholder",
+        "zoom-authored--lookalike-refresh-token-masked-display",
+        "zoom-authored--refresh-curl-response-output",
+        "zoom-authored--refresh-pretty-json-response",
+        "zoom-authored--refresh-raw-http-response-compact-json",
+        "zoom-authored--s2s-access-curl-bearer-header",
+        "zoom-authored--s2s-access-raw-http-bearer-header",
+        "zoom-authored--s2s-access-token-response-access-token-member",
+        "zoom-authored--webhook-lookalike-secret-token-environment-reference",
+        "zoom-authored--webhook-lookalike-secret-token-masked-display",
+        "zoom-authored--webhook-lookalike-secret-token-prose-mention",
+        "zoom-authored--webhook-lookalike-signature-and-timestamp-headers",
+        "zoom-authored--webhook-lookalike-signature-placeholder",
+        "zoom-authored--webhook-lookalike-signed-message-string",
+        "zoom-authored--webhook-lookalike-validation-response"
+      ]
+    }
+  },
+  "replay": {
+    "state": "control-replayed",
+    "note": "One control replay (CI run 37447804171: published @redact-secret/core 0.1.0-beta.13 on credential-eval alpha.13, without the optional OpenRedaction default profile). Corpus, engine and roster effects are separated by semantic id in snapshot-2026.10.06.2.contrast.md; the effect of acceptance on the view is in snapshot-2026.10.06.2.view-effect.md. No candidate replay, 2x2 or attribution run was made. Nothing is accepted.",
+    "representationEffect": {
+      "note": "The representation contract (credential-eval v1.3) kept apart from the corpus and the product. Facts are the release's; verified means the engine re-derived them (manifest.representation); mapped findings carry a mapping and are scored by the unchanged lattice against the span as authored. Cases whose expectation is pending (T0) or an expected rejection, and cases a scanner left unmeasured, are in no denominator and never a zero detection. Nothing here is a product assertion.",
+      "engines": {
+        "previous": {
+          "manifestRepresentation": {
+            "contract": "credential-eval/representation/1",
+            "facts_digest": "sha256:f25bf9f34e276a86f3b34a71c51ebf3f782fa16a196c0d1d544f76c94fd25f80",
+            "cases": 385,
+            "transformed_cases": 309,
+            "chunked_cases": 9,
+            "expected_rejections": 3,
+            "fragmented_spans": 18,
+            "fragments": 37,
+            "decoded_spans": 55,
+            "decoded_verified": 55,
+            "decoded_unverified": 0
+          }
+        },
+        "candidate": {
+          "manifestRepresentation": {
+            "contract": "credential-eval/representation/1",
+            "facts_digest": "sha256:f25bf9f34e276a86f3b34a71c51ebf3f782fa16a196c0d1d544f76c94fd25f80",
+            "cases": 385,
+            "transformed_cases": 309,
+            "chunked_cases": 9,
+            "expected_rejections": 3,
+            "fragmented_spans": 18,
+            "fragments": 37,
+            "decoded_spans": 55,
+            "decoded_verified": 55,
+            "decoded_unverified": 0
+          }
+        }
+      },
+      "factClasses": {
+        "authored-base": 76,
+        "carrier-or-placement": 272,
+        "chunked": 9,
+        "encode:base64": 40,
+        "encode:hex": 28,
+        "escape": 7,
+        "expected-rejection:unpaired-surrogate-split": 3,
+        "expected-span-decoded-via:base64": 29,
+        "expected-span-decoded-via:hex": 24,
+        "expected-span-decoded-via:strip-codepoints": 8,
+        "expected-span-with-fragments": 18,
+        "fragment": 24,
+        "insert-codepoints": 17,
+        "none": 6651,
+        "normalize": 1
+      },
+      "unmeasuredPlain": {
+        "previousEngine": {
+          "flare-redact": {
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          "gitleaks": {
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          "openredaction": {
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          "redact-secret": {
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          "trufflehog": {
+            "unmeasured": 0,
+            "reasons": {}
+          }
+        },
+        "previousEngineNewCorpus": null,
+        "candidate": {
+          "flare-redact": {
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          "gitleaks": {
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          "redact-secret": {
+            "unmeasured": 0,
+            "reasons": {}
+          },
+          "trufflehog": {
+            "unmeasured": 0,
+            "reasons": {}
+          }
+        }
+      },
+      "mappedFindings": {
+        "previousEngine": {
+          "flare-redact": {
+            "findingsByMapping": {},
+            "cases": 0,
+            "casesByOutcome": {}
+          },
+          "gitleaks": {
+            "findingsByMapping": {
+              "source-block | layers 1 | base64": 18,
+              "source-segment | layers 1 | base64": 4,
+              "source-segment | layers 1 | hex": 4,
+              "source-segment | layers 2 | base64": 1,
+              "source-segment | layers 2 | base64+hex": 1,
+              "source-segment | layers 2 | hex": 1,
+              "source-segment | layers 3 | base64": 1,
+              "source-segment | layers 3 | base64+hex": 1
+            },
+            "cases": 31,
+            "casesByOutcome": {
+              "control:clear": 1,
+              "positive:exact": 30
+            }
+          },
+          "openredaction": {
+            "findingsByMapping": {},
+            "cases": 0,
+            "casesByOutcome": {}
+          },
+          "redact-secret": {
+            "findingsByMapping": {},
+            "cases": 0,
+            "casesByOutcome": {}
+          },
+          "trufflehog": {
+            "findingsByMapping": {},
+            "cases": 0,
+            "casesByOutcome": {}
+          }
+        },
+        "candidate": {
+          "flare-redact": {
+            "findingsByMapping": {},
+            "cases": 0,
+            "casesByOutcome": {}
+          },
+          "gitleaks": {
+            "findingsByMapping": {
+              "source-block | layers 1 | base64": 18,
+              "source-segment | layers 1 | base64": 4,
+              "source-segment | layers 1 | hex": 4,
+              "source-segment | layers 2 | base64": 1,
+              "source-segment | layers 2 | base64+hex": 1,
+              "source-segment | layers 2 | hex": 1,
+              "source-segment | layers 3 | base64": 1,
+              "source-segment | layers 3 | base64+hex": 1
+            },
+            "cases": 31,
+            "casesByOutcome": {
+              "control:clear": 1,
+              "positive:exact": 30
+            }
+          },
+          "redact-secret": {
+            "findingsByMapping": {},
+            "cases": 0,
+            "casesByOutcome": {}
+          },
+          "trufflehog": {
+            "findingsByMapping": {},
+            "cases": 0,
+            "casesByOutcome": {}
+          }
+        }
+      },
+      "outcomesByFactClass": {
+        "previousEngine": {
+          "flare-redact": {
+            "authored-base": {
+              "control:clear": 33,
+              "pending": 6,
+              "positive:exact": 28,
+              "positive:miss": 6,
+              "positive:other": 3
+            },
+            "carrier-or-placement": {
+              "control:clear": 32,
+              "pending": 20,
+              "positive:exact": 164,
+              "positive:miss": 50,
+              "positive:other": 6
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:exact": 5,
+              "positive:other": 1
+            },
+            "encode:base64": {
+              "control:clear": 9,
+              "pending": 2,
+              "positive:miss": 29
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:miss": 24
+            },
+            "escape": {
+              "pending": 1,
+              "positive:exact": 3,
+              "positive:miss": 3
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:miss": 29
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:miss": 24
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:exact": 7,
+              "positive:miss": 1
+            },
+            "expected-span-with-fragments": {
+              "positive:miss": 15,
+              "positive:other": 3
+            },
+            "fragment": {
+              "control:clear": 2,
+              "pending": 4,
+              "positive:miss": 15,
+              "positive:other": 3
+            },
+            "insert-codepoints": {
+              "control:clear": 2,
+              "pending": 1,
+              "positive:exact": 13,
+              "positive:miss": 1
+            },
+            "none": {
+              "control:clear": 3493,
+              "control:flagged": 65,
+              "pending": 67,
+              "positive:exact": 640,
+              "positive:miss": 1622,
+              "positive:other": 247
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          },
+          "gitleaks": {
+            "authored-base": {
+              "control:clear": 31,
+              "control:flagged": 2,
+              "pending": 6,
+              "positive:exact": 26,
+              "positive:miss": 11
+            },
+            "carrier-or-placement": {
+              "control:clear": 29,
+              "control:flagged": 3,
+              "pending": 20,
+              "positive:exact": 134,
+              "positive:miss": 77,
+              "positive:other": 9
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:exact": 5,
+              "positive:miss": 1
+            },
+            "encode:base64": {
+              "control:clear": 9,
+              "pending": 2,
+              "positive:exact": 6,
+              "positive:miss": 23
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:exact": 7,
+              "positive:miss": 17
+            },
+            "escape": {
+              "pending": 1,
+              "positive:exact": 1,
+              "positive:miss": 4,
+              "positive:other": 1
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:exact": 6,
+              "positive:miss": 23
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:exact": 7,
+              "positive:miss": 17
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:miss": 8
+            },
+            "expected-span-with-fragments": {
+              "positive:miss": 18
+            },
+            "fragment": {
+              "control:clear": 2,
+              "pending": 4,
+              "positive:miss": 18
+            },
+            "insert-codepoints": {
+              "control:clear": 2,
+              "pending": 1,
+              "positive:exact": 4,
+              "positive:miss": 10
+            },
+            "none": {
+              "control:clear": 3422,
+              "control:flagged": 136,
+              "pending": 67,
+              "positive:exact": 1623,
+              "positive:miss": 855,
+              "positive:other": 31
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          },
+          "openredaction": {
+            "authored-base": {
+              "control:clear": 22,
+              "control:flagged": 11,
+              "pending": 6,
+              "positive:exact": 27,
+              "positive:miss": 7,
+              "positive:other": 3
+            },
+            "carrier-or-placement": {
+              "control:clear": 15,
+              "control:flagged": 17,
+              "pending": 20,
+              "positive:exact": 116,
+              "positive:miss": 63,
+              "positive:other": 41
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:exact": 4,
+              "positive:miss": 2
+            },
+            "encode:base64": {
+              "control:clear": 3,
+              "control:flagged": 6,
+              "pending": 2,
+              "positive:miss": 27,
+              "positive:other": 2
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:miss": 24
+            },
+            "escape": {
+              "pending": 1,
+              "positive:exact": 3,
+              "positive:miss": 3
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:miss": 27,
+              "positive:other": 2
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:miss": 24
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:miss": 8
+            },
+            "expected-span-with-fragments": {
+              "positive:miss": 18
+            },
+            "fragment": {
+              "control:clear": 1,
+              "control:flagged": 1,
+              "pending": 4,
+              "positive:miss": 18
+            },
+            "insert-codepoints": {
+              "control:clear": 1,
+              "control:flagged": 1,
+              "pending": 1,
+              "positive:exact": 6,
+              "positive:miss": 8
+            },
+            "none": {
+              "control:clear": 2472,
+              "control:flagged": 1086,
+              "pending": 67,
+              "positive:exact": 562,
+              "positive:miss": 1697,
+              "positive:other": 250
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          },
+          "redact-secret": {
+            "authored-base": {
+              "control:clear": 33,
+              "pending": 6,
+              "positive:exact": 36,
+              "positive:miss": 1
+            },
+            "carrier-or-placement": {
+              "control:clear": 32,
+              "pending": 20,
+              "positive:exact": 171,
+              "positive:miss": 49
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:exact": 6
+            },
+            "encode:base64": {
+              "control:clear": 9,
+              "pending": 2,
+              "positive:miss": 29
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:miss": 24
+            },
+            "escape": {
+              "pending": 1,
+              "positive:exact": 4,
+              "positive:miss": 2
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:miss": 29
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:miss": 24
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:exact": 8
+            },
+            "expected-span-with-fragments": {
+              "positive:exact": 1,
+              "positive:miss": 13,
+              "positive:other": 4
+            },
+            "fragment": {
+              "control:clear": 2,
+              "pending": 4,
+              "positive:exact": 1,
+              "positive:miss": 13,
+              "positive:other": 4
+            },
+            "insert-codepoints": {
+              "control:clear": 2,
+              "pending": 1,
+              "positive:exact": 14
+            },
+            "none": {
+              "control:clear": 3547,
+              "control:flagged": 11,
+              "pending": 67,
+              "positive:exact": 2489,
+              "positive:miss": 14,
+              "positive:other": 6
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          },
+          "trufflehog": {
+            "authored-base": {
+              "control:clear": 32,
+              "control:flagged": 1,
+              "pending": 6,
+              "positive:exact": 1,
+              "positive:miss": 34,
+              "positive:other": 2
+            },
+            "carrier-or-placement": {
+              "control:clear": 32,
+              "pending": 20,
+              "positive:miss": 220
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:miss": 6
+            },
+            "encode:base64": {
+              "control:clear": 9,
+              "pending": 2,
+              "positive:miss": 29
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:miss": 24
+            },
+            "escape": {
+              "pending": 1,
+              "positive:miss": 6
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:miss": 29
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:miss": 24
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:miss": 8
+            },
+            "expected-span-with-fragments": {
+              "positive:miss": 18
+            },
+            "fragment": {
+              "control:clear": 2,
+              "pending": 4,
+              "positive:miss": 18
+            },
+            "insert-codepoints": {
+              "control:clear": 2,
+              "pending": 1,
+              "positive:miss": 14
+            },
+            "none": {
+              "control:clear": 3500,
+              "control:flagged": 58,
+              "pending": 67,
+              "positive:exact": 889,
+              "positive:miss": 1582,
+              "positive:other": 38
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          }
+        },
+        "previousEngineNewCorpus": null,
+        "candidate": {
+          "flare-redact": {
+            "authored-base": {
+              "control:clear": 33,
+              "pending": 6,
+              "positive:exact": 28,
+              "positive:miss": 6,
+              "positive:other": 3
+            },
+            "carrier-or-placement": {
+              "control:clear": 32,
+              "pending": 20,
+              "positive:exact": 164,
+              "positive:miss": 50,
+              "positive:other": 6
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:exact": 5,
+              "positive:other": 1
+            },
+            "encode:base64": {
+              "control:clear": 9,
+              "pending": 2,
+              "positive:miss": 29
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:miss": 24
+            },
+            "escape": {
+              "pending": 1,
+              "positive:exact": 3,
+              "positive:miss": 3
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:miss": 29
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:miss": 24
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:exact": 7,
+              "positive:miss": 1
+            },
+            "expected-span-with-fragments": {
+              "positive:miss": 15,
+              "positive:other": 3
+            },
+            "fragment": {
+              "control:clear": 2,
+              "pending": 4,
+              "positive:miss": 15,
+              "positive:other": 3
+            },
+            "insert-codepoints": {
+              "control:clear": 2,
+              "pending": 1,
+              "positive:exact": 13,
+              "positive:miss": 1
+            },
+            "none": {
+              "control:clear": 3726,
+              "control:flagged": 126,
+              "pending": 93,
+              "positive:exact": 640,
+              "positive:miss": 1757,
+              "positive:other": 309
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          },
+          "gitleaks": {
+            "authored-base": {
+              "control:clear": 31,
+              "control:flagged": 2,
+              "pending": 6,
+              "positive:exact": 26,
+              "positive:miss": 11
+            },
+            "carrier-or-placement": {
+              "control:clear": 29,
+              "control:flagged": 3,
+              "pending": 20,
+              "positive:exact": 134,
+              "positive:miss": 77,
+              "positive:other": 9
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:exact": 5,
+              "positive:miss": 1
+            },
+            "encode:base64": {
+              "control:clear": 9,
+              "pending": 2,
+              "positive:exact": 6,
+              "positive:miss": 23
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:exact": 7,
+              "positive:miss": 17
+            },
+            "escape": {
+              "pending": 1,
+              "positive:exact": 1,
+              "positive:miss": 4,
+              "positive:other": 1
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:exact": 6,
+              "positive:miss": 23
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:exact": 7,
+              "positive:miss": 17
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:miss": 8
+            },
+            "expected-span-with-fragments": {
+              "positive:miss": 18
+            },
+            "fragment": {
+              "control:clear": 2,
+              "pending": 4,
+              "positive:miss": 18
+            },
+            "insert-codepoints": {
+              "control:clear": 2,
+              "pending": 1,
+              "positive:exact": 4,
+              "positive:miss": 10
+            },
+            "none": {
+              "control:clear": 3672,
+              "control:flagged": 180,
+              "pending": 93,
+              "positive:exact": 1652,
+              "positive:miss": 1021,
+              "positive:other": 33
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          },
+          "redact-secret": {
+            "authored-base": {
+              "control:clear": 33,
+              "pending": 6,
+              "positive:exact": 36,
+              "positive:miss": 1
+            },
+            "carrier-or-placement": {
+              "control:clear": 32,
+              "pending": 20,
+              "positive:exact": 171,
+              "positive:miss": 49
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:exact": 6
+            },
+            "encode:base64": {
+              "control:clear": 9,
+              "pending": 2,
+              "positive:miss": 29
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:miss": 24
+            },
+            "escape": {
+              "pending": 1,
+              "positive:exact": 4,
+              "positive:miss": 2
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:miss": 29
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:miss": 24
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:exact": 8
+            },
+            "expected-span-with-fragments": {
+              "positive:exact": 1,
+              "positive:miss": 13,
+              "positive:other": 4
+            },
+            "fragment": {
+              "control:clear": 2,
+              "pending": 4,
+              "positive:exact": 1,
+              "positive:miss": 13,
+              "positive:other": 4
+            },
+            "insert-codepoints": {
+              "control:clear": 2,
+              "pending": 1,
+              "positive:exact": 14
+            },
+            "none": {
+              "control:clear": 3801,
+              "control:flagged": 51,
+              "pending": 93,
+              "positive:exact": 2657,
+              "positive:miss": 38,
+              "positive:other": 11
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          },
+          "trufflehog": {
+            "authored-base": {
+              "control:clear": 32,
+              "control:flagged": 1,
+              "pending": 6,
+              "positive:exact": 1,
+              "positive:miss": 34,
+              "positive:other": 2
+            },
+            "carrier-or-placement": {
+              "control:clear": 32,
+              "pending": 20,
+              "positive:miss": 220
+            },
+            "chunked": {
+              "pending": 3,
+              "positive:miss": 6
+            },
+            "encode:base64": {
+              "control:clear": 9,
+              "pending": 2,
+              "positive:miss": 29
+            },
+            "encode:hex": {
+              "control:clear": 4,
+              "positive:miss": 24
+            },
+            "escape": {
+              "pending": 1,
+              "positive:miss": 6
+            },
+            "expected-rejection:unpaired-surrogate-split": {
+              "pending": 3
+            },
+            "expected-span-decoded-via:base64": {
+              "positive:miss": 29
+            },
+            "expected-span-decoded-via:hex": {
+              "positive:miss": 24
+            },
+            "expected-span-decoded-via:strip-codepoints": {
+              "positive:miss": 8
+            },
+            "expected-span-with-fragments": {
+              "positive:miss": 18
+            },
+            "fragment": {
+              "control:clear": 2,
+              "pending": 4,
+              "positive:miss": 18
+            },
+            "insert-codepoints": {
+              "control:clear": 2,
+              "pending": 1,
+              "positive:miss": 14
+            },
+            "none": {
+              "control:clear": 3750,
+              "control:flagged": 102,
+              "pending": 93,
+              "positive:exact": 889,
+              "positive:miss": 1779,
+              "positive:other": 38
+            },
+            "normalize": {
+              "control:clear": 1
+            }
+          }
+        }
+      },
+      "engineEffect": null,
+      "corpusEffect": null,
+      "combined": {
+        "note": "The superseded candidate (previous engine, previous release) versus this candidate (new engine, new release): both effects together.",
+        "scanners": {
+          "flare-redact": {
+            "compared": 6519,
+            "unchanged": 6448,
+            "moves": {
+              "control:clear -> control:flagged": 60,
+              "control:clear -> pending": 11
+            },
+            "movesByFactClass": {
+              "control:clear -> control:flagged | none": 60,
+              "control:clear -> pending | none": 11
+            },
+            "cases": {
+              "control:clear -> control:flagged": [
+                "anthropic--anthropic-admin01-key-admim-letter-twin",
+                "anthropic--anthropic-admin01-key-api01-prefix-twin",
+                "anthropic--anthropic-admin01-key-api03-prefix-twin",
+                "anthropic--anthropic-admin01-key-underscore-after-version-twin",
+                "anthropic--anthropic-api01-key-admin01-prefix-twin",
+                "anthropic--anthropic-api01-key-api03-prefix-twin",
+                "anthropic--anthropic-api01-key-apl-letter-twin",
+                "anthropic--anthropic-token-api03-no-final-hyphen-prefix-twin",
+                "anthropic--anthropic-token-api03-plain-twin",
+                "anthropic--anthropic-token-api03-unicode-crlf-twin",
+                "aws--aws-access-key-shape-1-bare-twin",
+                "aws--aws-access-key-shape-1-quoted-twin",
+                "aws--aws-access-key-shape-1-unicode-crlf-twin",
+                "aws--aws-access-key-shape-2-bare-twin",
+                "aws--aws-access-key-shape-2-quoted-twin",
+                "aws--aws-access-key-shape-2-unicode-crlf-twin",
+                "aws--aws-secret-access-key-aida-akia-next-line-twin",
+                "aws--aws-secret-access-key-aida-akia-same-line-twin",
+                "generic--bearer-token-authorization-header-twin",
+                "generic--bearer-token-header-bare-twin",
+                "generic--bearer-token-header-quoted-twin",
+                "generic--bearer-token-header-unicode-crlf-twin",
+                "groq--groq-api-key-env-short-body-twin",
+                "groq--groq-api-key-short-body-twin",
+                "hashicorp-vault--vault-token-service-plain-twin",
+                "hashicorp-vault--vault-token-service-unicode-crlf-twin",
+                "huggingface--huggingface-token-user-plain-twin",
+                "huggingface--huggingface-token-user-unicode-crlf-twin",
+                "openai--openai-admin-api-key-admn-prefix-twin",
+                "openai--openai-admin-api-key-first-segment-57-twin",
+                "openai--openai-admin-api-key-lowercase-marker-twin",
+                "openai--openai-token-alphabet-twin",
+                "openai--openai-token-compose-short-twin",
+                "openai--openai-token-legacy-plain-twin",
+                "openai--openai-token-legacy-unicode-crlf-twin",
+                "perplexity--perplexity-api-key-short-body-twin",
+                "perplexity--perplexity-api-key-short-body-twin-wrong-length",
+                "replicate--replicate-api-token-env-short-body-twin",
+                "sendgrid--base62-bare-twin",
+                "sendgrid--base62-crlf-twin"
+              ],
+              "control:clear -> pending": [
+                "polar--polar-api-credential-body-42-twin",
+                "polar--polar-api-credential-body-44-twin",
+                "polar--polar-api-credential-checkout-link-secret-public-id",
+                "polar--polar-api-credential-client-id-in-url-public-id",
+                "polar--polar-api-credential-leading-glue-twin",
+                "polar--polar-api-credential-setting-names-public-id",
+                "polar--polar-token-body-44-twin",
+                "polar--polar-token-leading-glue-twin",
+                "polar--polar-token-oauth-client-id-public-id",
+                "polar--polar-token-trailing-hyphen-twin",
+                "polar--polar-token-trailing-underscore-twin"
+              ]
+            }
+          },
+          "gitleaks": {
+            "compared": 6519,
+            "unchanged": 6469,
+            "moves": {
+              "control:clear -> control:flagged": 39,
+              "control:clear -> pending": 11
+            },
+            "movesByFactClass": {
+              "control:clear -> control:flagged | none": 39,
+              "control:clear -> pending | none": 11
+            },
+            "cases": {
+              "control:clear -> control:flagged": [
+                "anthropic--anthropic-admin01-key-api03-prefix-twin",
+                "anthropic--anthropic-api01-key-api03-prefix-twin",
+                "aws-bedrock--aws-bedrock-short-term-api-key-embedded-leading-twin",
+                "aws-bedrock--aws-bedrock-short-term-api-key-head-only-twin",
+                "aws-bedrock--aws-bedrock-short-term-api-key-urlsafe-body-twin",
+                "clickhouse-cloud--clickhouse-cloud-api-secret-trailing-hyphen-twin",
+                "clojars--clojars-deploy-token-body-61-twin",
+                "clojars--clojars-deploy-token-leading-glue-twin",
+                "clojars--clojars-deploy-token-lowercase-prefix-twin",
+                "clojars--clojars-deploy-token-non-hex-letter-twin",
+                "clojars--clojars-deploy-token-trailing-hyphen-twin",
+                "clojars--clojars-deploy-token-trailing-underscore-twin",
+                "clojars--clojars-deploy-token-uppercase-hex-byte-twin",
+                "cohere--cohere-api-key-id-named-env-alt-twin",
+                "cohere--cohere-api-key-id-named-json-twin",
+                "cohere--cohere-api-key-id-named-kwarg-twin",
+                "doppler--doppler-personal-token-body-45-twin",
+                "doppler--doppler-personal-token-leading-glue-twin",
+                "doppler--doppler-personal-token-leading-underscore-twin",
+                "doppler--doppler-personal-token-trailing-glue-twin",
+                "dynatrace--dynatrace-token-digit-outside-base32-twin",
+                "dynatrace--dynatrace-token-leading-glue-twin",
+                "dynatrace--dynatrace-token-secret-65-twin",
+                "dynatrace--dynatrace-token-trailing-underscore-twin",
+                "generic--jwt-eddsa-plain-twin",
+                "generic--jwt-eddsa-unicode-crlf-twin",
+                "gitlab--gitlab-routable-personal-access-token-checksum-mismatch-twin",
+                "gitlab--gitlab-routable-personal-access-token-leading-glue-twin",
+                "gitlab--gitlab-routable-personal-access-token-length-holder-mismatch-twin",
+                "gitlab--gitlab-routable-personal-access-token-payload-26-twin",
+                "gitlab--gitlab-routable-personal-access-token-trailing-glue-twin",
+                "gitlab--gitlab-routable-personal-access-token-uppercase-base36-twin",
+                "gitlab--gitlab-routable-personal-access-token-version-one-char-twin",
+                "gitlab--gitlab-runner-authentication-token-checksum-mismatch-twin",
+                "gitlab--gitlab-runner-authentication-token-length-holder-mismatch-twin",
+                "gitlab--gitlab-runner-authentication-token-uppercase-base36-twin",
+                "travis-ci--travisci-api-token-context-1-twin",
+                "travis-ci--travisci-api-token-context-8-twin",
+                "travis-ci--travisci-api-token-identifier-key-twin"
+              ],
+              "control:clear -> pending": [
+                "polar--polar-api-credential-body-42-twin",
+                "polar--polar-api-credential-body-44-twin",
+                "polar--polar-api-credential-checkout-link-secret-public-id",
+                "polar--polar-api-credential-client-id-in-url-public-id",
+                "polar--polar-api-credential-leading-glue-twin",
+                "polar--polar-api-credential-setting-names-public-id",
+                "polar--polar-token-body-44-twin",
+                "polar--polar-token-leading-glue-twin",
+                "polar--polar-token-oauth-client-id-public-id",
+                "polar--polar-token-trailing-hyphen-twin",
+                "polar--polar-token-trailing-underscore-twin"
+              ]
+            }
+          },
+          "redact-secret": {
+            "compared": 6519,
+            "unchanged": 6486,
+            "moves": {
+              "control:clear -> control:flagged": 22,
+              "control:clear -> pending": 11
+            },
+            "movesByFactClass": {
+              "control:clear -> control:flagged | none": 22,
+              "control:clear -> pending | none": 11
+            },
+            "cases": {
+              "control:clear -> control:flagged": [
+                "anthropic--anthropic-admin01-key-api03-prefix-twin",
+                "anthropic--anthropic-api01-key-api03-prefix-twin",
+                "docker-compose-resolution-authored--required-message",
+                "gitlab--gitlab-routable-personal-access-token-checksum-mismatch-twin",
+                "gitlab--gitlab-routable-personal-access-token-length-holder-mismatch-twin",
+                "gitlab--gitlab-routable-personal-access-token-missing-separator-twin",
+                "gitlab--gitlab-routable-personal-access-token-payload-26-twin",
+                "gitlab--gitlab-routable-personal-access-token-trailing-glue-twin",
+                "gitlab--gitlab-routable-personal-access-token-uppercase-base36-twin",
+                "gitlab--gitlab-routable-personal-access-token-version-one-char-twin",
+                "vercel--vercel-app-access-token-body-55-twin",
+                "vercel--vercel-app-access-token-body-57-twin",
+                "vercel--vercel-app-access-token-hyphen-in-body-twin",
+                "vercel--vercel-app-access-token-underscore-in-body-twin",
+                "vercel--vercel-app-refresh-token-body-55-twin",
+                "vercel--vercel-app-refresh-token-body-57-twin",
+                "vercel--vercel-app-refresh-token-hyphen-in-body-twin",
+                "vercel--vercel-app-refresh-token-underscore-in-body-twin",
+                "vercel--vercel-personal-access-token-body-55-twin",
+                "vercel--vercel-personal-access-token-body-57-twin",
+                "vercel--vercel-personal-access-token-hyphen-in-body-twin",
+                "vercel--vercel-personal-access-token-underscore-in-body-twin"
+              ],
+              "control:clear -> pending": [
+                "polar--polar-api-credential-body-42-twin",
+                "polar--polar-api-credential-body-44-twin",
+                "polar--polar-api-credential-checkout-link-secret-public-id",
+                "polar--polar-api-credential-client-id-in-url-public-id",
+                "polar--polar-api-credential-leading-glue-twin",
+                "polar--polar-api-credential-setting-names-public-id",
+                "polar--polar-token-body-44-twin",
+                "polar--polar-token-leading-glue-twin",
+                "polar--polar-token-oauth-client-id-public-id",
+                "polar--polar-token-trailing-hyphen-twin",
+                "polar--polar-token-trailing-underscore-twin"
+              ]
+            }
+          },
+          "trufflehog": {
+            "compared": 6519,
+            "unchanged": 6464,
+            "moves": {
+              "control:clear -> control:flagged": 44,
+              "control:clear -> pending": 11
+            },
+            "movesByFactClass": {
+              "control:clear -> control:flagged | none": 44,
+              "control:clear -> pending | none": 11
+            },
+            "cases": {
+              "control:clear -> control:flagged": [
+                "anthropic--anthropic-admin01-key-api03-prefix-twin",
+                "anthropic--anthropic-api01-key-admin01-prefix-twin",
+                "anthropic--anthropic-api01-key-api03-prefix-twin",
+                "apify--apify-api-token-trailing-hyphen-twin",
+                "deepgram--deepgram-api-key-id-named-compose-twin",
+                "deepgram--deepgram-api-key-id-named-env-twin",
+                "deepgram--deepgram-api-key-id-named-export-twin",
+                "deepgram--deepgram-api-key-id-named-tool-call-twin",
+                "deepgram--deepgram-api-key-model-revision-field-twin",
+                "deepgram--deepgram-api-key-unrelated-python-ctor-twin",
+                "github--github-fine-grained-pat-terraform-provider-alphabet-twin",
+                "github--github-token-ghp-prefix-plain-twin",
+                "github--github-token-ghp-prefix-unicode-crlf-twin",
+                "gitlab--gitlab-routable-personal-access-token-checksum-mismatch-twin",
+                "gitlab--gitlab-routable-personal-access-token-length-holder-mismatch-twin",
+                "gitlab--gitlab-routable-personal-access-token-missing-separator-twin",
+                "gitlab--gitlab-runner-authentication-token-prefix-letter-twin",
+                "langfuse--langfuse-secret-key-version-nibble-twin-wrong-alphabet",
+                "openai--openai-token-compose-short-twin",
+                "openai--openai-token-proj-plain-twin",
+                "openai--openai-token-proj-unicode-crlf-twin",
+                "posthog--posthog-token-underscore-in-body-twin",
+                "rubygems--rubygems-api-key-non-hex-letter-twin",
+                "sendgrid--base62-bare-twin",
+                "sendgrid--base62-crlf-twin",
+                "sendgrid--base62-env-key-twin",
+                "sendgrid--base62-env-token-twin",
+                "sendgrid--base62-json-twin",
+                "sendgrid--base62-markdown-twin",
+                "sendgrid--base62-quoted-env-twin",
+                "sendgrid--base62-unicode-twin",
+                "sendgrid--sendgrid-1-twin",
+                "sendgrid--sendgrid-2-twin",
+                "sendgrid--sendgrid-3-twin",
+                "sendgrid--sendgrid-token-segmented-length-plain-twin",
+                "sendgrid--sendgrid-token-segmented-length-unicode-crlf-twin",
+                "sendgrid--url-safe-bare-twin",
+                "slack--slack-token-bot-plain-twin",
+                "slack--slack-token-bot-unicode-crlf-twin",
+                "slack--slack-user-token-missing-secret-twin"
+              ],
+              "control:clear -> pending": [
+                "polar--polar-api-credential-body-42-twin",
+                "polar--polar-api-credential-body-44-twin",
+                "polar--polar-api-credential-checkout-link-secret-public-id",
+                "polar--polar-api-credential-client-id-in-url-public-id",
+                "polar--polar-api-credential-leading-glue-twin",
+                "polar--polar-api-credential-setting-names-public-id",
+                "polar--polar-token-body-44-twin",
+                "polar--polar-token-leading-glue-twin",
+                "polar--polar-token-oauth-client-id-public-id",
+                "polar--polar-token-trailing-hyphen-twin",
+                "polar--polar-token-trailing-underscore-twin"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37447804171"
+  }
+}

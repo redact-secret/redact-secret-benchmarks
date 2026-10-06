@@ -118,7 +118,7 @@ export const holdoutInputs: MethodInputsData = {
 export const missingEvaluation: NotMeasuredData = {
   state: 'not-measured',
   title: 'Not measured: no evaluation published',
-  body: 'public/results/evaluation-v1.json is absent: no evaluation was published for this checkout. Method pages read public/results/evaluation-v1.json.',
+  body: 'public/results/evaluation-bundle-v1.json is absent: no evaluation was published for this checkout. Method pages read the evaluation bundle (public/results/evaluation-bundle-v1.json).',
   command: 'npm run eval:discover\nnpm run eval:publish',
 };
 

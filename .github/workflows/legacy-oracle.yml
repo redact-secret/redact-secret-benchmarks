@@ -98,6 +98,8 @@ jobs:
           npm run bench
           npm run eval:discover -- --scanner=redact-secret
           npm run eval:publish
+          # The legacy oracle UI reads the whole evaluation-v1.json: the opt-in compatibility export of this small run (#788); the bundle above is what the Next pages read.
+          npm run eval:publish -- --legacy-v1
       - name: Static export of the legacy pipeline (the oracle) builds and contains the six routes (#547, #608)
         run: node scripts/with-authority.mjs legacy -- npm run build
         working-directory: web

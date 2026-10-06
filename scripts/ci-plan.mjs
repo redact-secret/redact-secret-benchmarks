@@ -23,8 +23,12 @@ const EVERYTHING = [
   /^web\/package(-lock)?\.json$/, /^scripts\/ci-plan\.mjs$/, /^scripts\/legacy-callers\.mjs$/, /^schemas\//, /^Dockerfile$/, /^\.dockerignore$/,
 ]
 
-/** Scripts that only the new path (official runs, the view, the adoption of an evidence snapshot) runs. Any other script is shared code. */
-const NEW_PATH_SCRIPTS = /^scripts\/(build-qualification-|export-qualification-|official-run|run-official-|check-official-runs|check-qualification-|record-official-run|provision-official-peers|adopt-evidence-snapshot|check-evidence-adoption|compare-adoption-views|derive-snapshot-inputs|export-)/
+/**
+ * Scripts that only the new path (official runs, the view, the adoption of an evidence snapshot) runs, and the publication-side scripts (#791: site assembly, the public exclusion guards,
+ * the evaluation bundle publication check and retention planner): none is read by a measurement, so changing one re-runs the site build and `validate-sources`, never the scanners.
+ * Any other script is shared code.
+ */
+const NEW_PATH_SCRIPTS = /^scripts\/(build-qualification-|export-qualification-|official-run|run-official-|check-official-runs|check-qualification-|record-official-run|provision-official-peers|adopt-evidence-snapshot|check-evidence-adoption|compare-adoption-views|derive-snapshot-inputs|export-|assemble-site|check-evaluation-bundle-publication|evaluation-bundle-retention|lib\/evaluation-bundle-deployment|check-feature-dataset-exclusion|check-blind-public)/
 
 /** Benchmark-owned files only the new path reads: they change the view, never the legacy measurement. */
 const NEW_PATH_BENCHMARKS = /^benchmarks\/(qualification\/|evidence-adoption\.json$|official-run|qualification-)/

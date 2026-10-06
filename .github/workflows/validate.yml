@@ -245,6 +245,8 @@ jobs:
           npm run bench
           npm run eval:discover -- --scanner=redact-secret
           npm run eval:publish
+          # The legacy oracle UI reads the whole evaluation-v1.json: the opt-in compatibility export of this small run (#788); the bundle above is what the Next pages read.
+          npm run eval:publish -- --legacy-v1
       - name: Keep the result for the next change with the same inputs
         if: steps.cache.outputs.cache-hit != 'true'
         uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
@@ -390,9 +392,11 @@ jobs:
       # guards read dist/ and public/ of the repository root, so the site root is assembled there (dist/ is ignored).
       - name: The assembled site root is the export plus /results/ and carries no leak the publication guards refuse (#142, #254, #602)
         run: |
-          node scripts/assemble-site.mjs
+          node --import tsx scripts/assemble-site.mjs
           npm run features:check-public
           npm run blind:check-public
+          # The bundle half only: this job has no domain index (publish-site writes and checks it).
+          npm run evaluation-bundle:check-publication -- --no-index
 
   # Unit and component tests (#598): Vitest with V8 coverage over web/app, components, lib, resolvers,
   # services and theme. Fails below 80% of lines, statements, functions or branches (vitest.config.mts).

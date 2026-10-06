@@ -153,6 +153,7 @@
     "features:check-public": "node scripts/check-feature-dataset-exclusion.mjs",
     "blind:run": "node --import tsx benchmarks/blind.ts",
     "blind:check-public": "node --import tsx scripts/check-blind-public.mjs",
+    "evaluation-bundle:check-publication": "node --import tsx scripts/check-evaluation-bundle-publication.mjs",
     "calibration:run": "node --import tsx benchmarks/calibration-experiments.ts",
     "study:pii-readiness": "node --import tsx benchmarks/studies/pii-readiness.ts",
     "evidence:query": "node --import tsx benchmarks/evidence-query.ts",

@@ -5,7 +5,8 @@ import holdoutSchema from '../../schemas/holdout-report-v1.json';
 import reviewCategories from '../review-categories.json';
 import { reviewLedgerProblem, type ReviewLedger, type ReviewLedgerEntry } from '../evaluation/model/review-ledger.ts';
 export { reviewLedgerProblem } from '../evaluation/model/review-ledger.ts';
-const ajv = new Ajv({ strict: true });
+/** One Ajv instance holds the holdout and qualification schemas the public contract references; the bundle schemas are compiled on it. */
+export const ajv = new Ajv({ strict: true });
 ajv.addSchema(holdoutSchema); ajv.addSchema(qualificationSchema);
 const validPublicReport = ajv.compile(publicSchema);
 import type { EvaluationReport, EvaluationCase, Counts, EvidenceRow, QualificationEvidence } from './evaluation-types.ts';
@@ -45,29 +46,55 @@ export function summarizeEvaluation(cases: EvaluationCase[]) {
     generationErrors: cases.reduce((n, c) => n + c.generation.filter(g => g.status === 'error').length, 0),
     unsupported: cases.reduce((n, c) => n + c.generation.filter(g => g.status === 'unsupported').length, 0) };
 }
+/** Add one public case to operator summaries; operatorEvidence and the bundle validator share it, so a stored summary is reconciled by the one rule. */
+export function addOperatorEvidence(result: EvaluationReport['byOperator'], c: EvaluationCase): void {
+  for (const g of c.generation) {
+    const bucket = result[g.operator] ??= { generated: 0, unsupported: 0, error: 0, assertions: {} };
+    bucket[g.status]++;
+  }
+  for (const a of c.assertions) {
+    const v = c.variants.find(v => v.id === (a.variant || a.candidate))!;
+    const b = c.variants.find(v => v.id === a.baseline);
+    const bucket = result[v.operator];
+    if (!bucket) continue;
+    const stratum = b ? `${b.kind}:${b.tier}->${v.kind}:${v.tier}` : `${v.kind}:${v.tier}`;
+    const key = `${c.method}/${a.scanner}/${stratum}/${a.type}`;
+    (bucket.assertions[key] ??= counts())[a.status]++;
+  }
+}
 /** Recompute operator summaries from the same public cases used by explorers. */
 export function operatorEvidence(cases: EvaluationCase[]): EvaluationReport['byOperator'] {
   const result: EvaluationReport['byOperator'] = {};
-  for (const c of cases) {
-    for (const g of c.generation) {
-      const bucket = result[g.operator] ??= { generated: 0, unsupported: 0, error: 0, assertions: {} };
-      bucket[g.status]++;
-    }
-    for (const a of c.assertions) {
-      const v = c.variants.find(v => v.id === (a.variant || a.candidate))!;
-      const b = c.variants.find(v => v.id === a.baseline);
-      const bucket = result[v.operator];
-      if (!bucket) continue;
-      const stratum = b ? `${b.kind}:${b.tier}->${v.kind}:${v.tier}` : `${v.kind}:${v.tier}`;
-      const key = `${c.method}/${a.scanner}/${stratum}/${a.type}`;
-      (bucket.assertions[key] ??= counts())[a.status]++;
-    }
-  }
+  for (const c of cases) addOperatorEvidence(result, c);
   return result;
 }
-const canonical = (value: unknown): string => JSON.stringify(value, function(_key, item) {
+export const canonical = (value: unknown): string => JSON.stringify(value, function(_key, item) {
   return item && typeof item === 'object' && !Array.isArray(item) ? Object.fromEntries(Object.entries(item).sort(([a],[b]) => a.localeCompare(b))) : item;
 });
+/** The per-case rules of the public contract, shared by the whole-report check and the streaming bundle validator. Throws on a violation. */
+export function checkPublicCase(c: EvaluationCase, scanners: EvaluationReport['scanners']): void {
+  const scannerIds = new Set(scanners.map(s => s.id));
+  if (!METHODS.slice(0, 5).includes(c.method) || !/^[a-z0-9-]+$/.test(c.id) || !/^[a-z0-9-]+--[a-z0-9-]+$/.test(c.sourceSlug) || !Array.isArray(c.targets)) throw Error();
+  const variants = new Map(c.variants.map(v => [v.id, v]));
+  if (!variants.size || variants.size !== c.variants.length) throw Error();
+  for (const a of c.assertions) {
+    const v = variants.get(a.variant || a.candidate), b = a.baseline ? variants.get(a.baseline) : null;
+    if (!v || (a.baseline && !b) || !scannerIds.has(a.scanner) || !['pass','fail','review-required','not-measured'].includes(a.status)) throw Error();
+    // A scanner that did not complete measured nothing, and says so on every variant.
+    if ((scanners.find(s => s.id === a.scanner)?.status !== 'complete') !== (a.status === 'not-measured')) throw Error();
+    if (a.status !== 'not-measured' && [v, b].some(x => x && (x.tier === 'T0' || x.strategy === 'review-required')) && a.status !== 'review-required') throw Error();
+  }
+  if (c.method === 'differential' && c.assertions.length) throw Error();
+  if (c.generation.some(g => !['generated','unsupported','error'].includes(g.status))) throw Error();
+  if (c.findings.some(f => !Number.isInteger(f.count) || f.count < 0 || !variants.has(f.variant))) throw Error();
+  if (!Array.isArray(c.comparisons)) throw Error();
+}
+/** The per-review rules; `c` is the case the review names (undefined when it does not exist). Throws on a violation. */
+export function checkPublicReview(q: EvaluationReport['reviews'][number], c: Pick<EvaluationCase, 'method' | 'variants' | 'comparisons'> | undefined): void {
+  if (!c || !c.variants.some(v => v.id === q.variant) || !['mutation','differential'].includes(c.method)) throw Error();
+  if (c.method === 'mutation' && (q.peer || q.disagreement || !c.variants.some(v => v.id === q.variant && v.strategy === 'review-required'))) throw Error();
+  if (c.method === 'differential' && (!q.peer || !q.disagreement || !c.comparisons.some(x => x.peer === q.peer && x.variant === q.variant && x.disagreement === q.disagreement && x.status === 'complete'))) throw Error();
+}
 /** Reject incompatible/malformed evidence before rendering, including T0 scoring. */
 export function evaluationProblem(value: unknown, corpusHashes?: Record<string, string>): string | null {
   try {
@@ -80,29 +107,9 @@ export function evaluationProblem(value: unknown, corpusHashes?: Record<string, 
     if (scannerIds.size !== r.scanners.length || r.scanners.some(s => !['complete','unavailable','error','unsupported','unstable'].includes(s.status) ||
       !Number.isFinite(Date.parse(s.observation?.observedAt)) || !s.observation?.sourceRunId ||
       (s.observation.source === 'snapshot') !== Boolean(s.observation.snapshotDigest && s.observation.inputDigest))) throw Error();
-    for (const c of r.cases) {
-      if (!METHODS.slice(0, 5).includes(c.method) || !/^[a-z0-9-]+$/.test(c.id) || !/^[a-z0-9-]+--[a-z0-9-]+$/.test(c.sourceSlug) || !Array.isArray(c.targets)) throw Error();
-      const variants = new Map(c.variants.map(v => [v.id, v]));
-      if (!variants.size || variants.size !== c.variants.length) throw Error();
-      for (const a of c.assertions) {
-        const v = variants.get(a.variant || a.candidate), b = a.baseline ? variants.get(a.baseline) : null;
-        if (!v || (a.baseline && !b) || !scannerIds.has(a.scanner) || !['pass','fail','review-required','not-measured'].includes(a.status)) throw Error();
-        // A scanner that did not complete measured nothing, and says so on every variant.
-        if ((r.scanners.find(s => s.id === a.scanner)?.status !== 'complete') !== (a.status === 'not-measured')) throw Error();
-        if (a.status !== 'not-measured' && [v, b].some(x => x && (x.tier === 'T0' || x.strategy === 'review-required')) && a.status !== 'review-required') throw Error();
-      }
-      if (c.method === 'differential' && c.assertions.length) throw Error();
-      if (c.generation.some(g => !['generated','unsupported','error'].includes(g.status))) throw Error();
-      if (c.findings.some(f => !Number.isInteger(f.count) || f.count < 0 || !variants.has(f.variant))) throw Error();
-      if (!Array.isArray(c.comparisons)) throw Error();
-    }
+    for (const c of r.cases) checkPublicCase(c, r.scanners);
     if (new Set(r.reviews.map(x => x.id)).size !== r.reviews.length || r.review.open + r.review.resolved + r.review.notAssertable + r.review.unknown !== r.reviews.length) throw Error();
-    for (const q of r.reviews) {
-      const c = r.cases.find(c => c.id === q.caseId);
-      if (!c || !c.variants.some(v => v.id === q.variant) || !['mutation','differential'].includes(c.method)) throw Error();
-      if (c.method === 'mutation' && (q.peer || q.disagreement || !c.variants.some(v => v.id === q.variant && v.strategy === 'review-required'))) throw Error();
-      if (c.method === 'differential' && (!q.peer || !q.disagreement || !c.comparisons.some(x => x.peer === q.peer && x.variant === q.variant && x.disagreement === q.disagreement && x.status === 'complete'))) throw Error();
-    }
+    for (const q of r.reviews) checkPublicReview(q, r.cases.find(c => c.id === q.caseId));
     if (canonical(r.byOperator) !== canonical(operatorEvidence(r.cases))) return 'Operator totals do not match case evidence';
     if (!r.byOperator || !r.provenance || !Object.keys(r.corpusHashes).length) throw Error();
     if (corpusHashes && Object.entries(r.corpusHashes).some(([id, hash]) => corpusHashes[id] !== hash)) return 'Stale evaluation: fixture corpus changed';
@@ -157,22 +164,29 @@ export function reviewClasses(ledger: ReviewLedgerFile): ReviewClass[] {
   return [...classes.values()].sort((a, b) => b.open - a.open || a.label.localeCompare(b.label));
 }
 
+/** What the ledger binding reads of a published evaluation: the run, its reviews by id, and the source slug of a case. A whole report and a bundle's streaming index both provide it. */
+export interface EvaluationLedgerView { runId: string; finishedAt: string; reviews: ReadonlyMap<string, { caseId: string; variant: string }>; sourceSlugOf(caseId: string): string | undefined }
+export const ledgerViewOfReport = (evaluation: Pick<EvaluationReport, 'runId' | 'finishedAt' | 'reviews' | 'cases'>): EvaluationLedgerView => {
+  const slugs = new Map(evaluation.cases.map(c => [c.id, c.sourceSlug]));
+  return { runId: evaluation.runId, finishedAt: evaluation.finishedAt, reviews: new Map(evaluation.reviews.map(r => [r.id, r])), sourceSlugOf: id => slugs.get(id) };
+};
+
 /** Bind the generated last-observation artifact to both checked-in decisions and the validated public run. */
-export function reviewLedgerPublicationProblem(published: ReviewLedgerFile, source: ReviewLedgerFile, evaluation: EvaluationReport): string | null {
+export function reviewLedgerPublicationProblem(published: ReviewLedgerFile, source: ReviewLedgerFile, evaluation: EvaluationReport | EvaluationLedgerView): string | null {
+  const view = 'cases' in evaluation ? ledgerViewOfReport(evaluation) : evaluation;
   const problem = reviewLedgerProblem(published) ?? reviewLedgerProblem(source);
   if (problem) return problem;
-  if (published.observationRun?.runId !== evaluation.runId || published.observationRun.observedAt !== evaluation.finishedAt) return 'Review ledger does not describe the published evaluation run';
+  if (published.observationRun?.runId !== view.runId || published.observationRun.observedAt !== view.finishedAt) return 'Review ledger does not describe the published evaluation run';
   const sourceIds = Object.keys(source.entries), publishedIds = Object.keys(published.entries);
   if (canonical(sourceIds.sort()) !== canonical(publishedIds.sort())) return 'Review ledger membership differs from the checked-in ledger';
-  if (evaluation.reviews.some(review => !Object.hasOwn(published.entries, review.id))) return 'Published evaluation contains a review absent from the ledger';
-  const observed = new Set(evaluation.reviews.map(review => review.id));
+  for (const id of view.reviews.keys()) if (!Object.hasOwn(published.entries, id)) return 'Published evaluation contains a review absent from the ledger';
   for (const id of sourceIds) {
     const base = source.entries[id], entry = published.entries[id];
     const immutable = ({ lastSeenRun: _run, lastSeenAt: _at, lastSeenEvidence: _evidence, ...rest }: LedgerEntry) => rest;
     if (canonical(immutable(base)) !== canonical(immutable(entry))) return `Review ledger decision differs for ${id.slice(0, 12)}`;
-    const namesCurrent = entry.lastSeenRun === evaluation.runId || entry.lastSeenAt === evaluation.finishedAt;
-    const review = evaluation.reviews.find(item => item.id === id), caseSource = review && evaluation.cases.find(item => item.id === review.caseId);
-    if (observed.has(id) !== namesCurrent || (review && (entry.lastSeenRun !== evaluation.runId || entry.lastSeenAt !== evaluation.finishedAt || entry.lastSeenEvidence?.caseId !== review.caseId || entry.lastSeenEvidence.sourceSlug !== caseSource?.sourceSlug || entry.lastSeenEvidence.variant !== review.variant))) return `Review observation mismatch for ${id.slice(0, 12)}`;
+    const namesCurrent = entry.lastSeenRun === view.runId || entry.lastSeenAt === view.finishedAt;
+    const review = view.reviews.get(id), caseSlug = review && view.sourceSlugOf(review.caseId);
+    if (view.reviews.has(id) !== namesCurrent || (review && (entry.lastSeenRun !== view.runId || entry.lastSeenAt !== view.finishedAt || entry.lastSeenEvidence?.caseId !== review.caseId || entry.lastSeenEvidence.sourceSlug !== caseSlug || entry.lastSeenEvidence.variant !== review.variant))) return `Review observation mismatch for ${id.slice(0, 12)}`;
   }
   return null;
 }

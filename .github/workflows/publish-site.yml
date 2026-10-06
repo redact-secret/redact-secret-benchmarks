@@ -32,7 +32,11 @@
 # workflow commit. The Next qualification pages read a view built here from the
 # canonical official RunArtifacts, fetched from their durable archive and checked
 # byte for byte against benchmarks/official-runs.json; a publish without that view
-# fails. Staging is kept out of search indexes by CloudFront's X-Robots-Tag, not by
+# fails. The credential evaluation is a sharded bundle, not one file (#791; docs/specs/evaluation-bundle-deployment.md):
+# immutable parts under /results/evaluation-bundles/<bundleId>/ are uploaded and read back before the
+# mutable pointer (/results/evaluation-bundle-v1.json) and the domain index (evaluation-domains-v2.json) move,
+# in that order, last. S3 sync is not a multi-file transaction, so the ordering, not the sync, is what keeps
+# every reader on one coherent run. Staging is kept out of search indexes by CloudFront's X-Robots-Tag, not by
 # the build, so the same export is indexable on production.
 #
 # Per-environment configuration lives in the repository's GitHub environments,
@@ -274,7 +278,7 @@ jobs:
 
       # Both environments (#213): the Workbench Qualification checklist reads its
       # three engine floors (scanners complete, resolved rate, ledger rows for every
-      # entry) from a qualification run published inside evaluation-v1.json.
+      # entry) from a qualification run published inside the evaluation bundle's summary part.
       # eval:qualify loads the lockfile package the suite pins
       # (qualification/suite-v1.json) with the pinned peers provisioned above, on
       # staging too, and the page names that version. Its public-control holdout is
@@ -287,7 +291,10 @@ jobs:
           # The REQUIRED scanners of the official run class (benchmarks/support/scanner-roster.json), not the optional ones: OpenRedaction's default profile is an optional,
           # manual measurement (#763; it takes about five minutes here and its findings alone push the report past V8's string limit, which failed the publish of c336c331).
           scanners="$(jq -r '.runClasses.official.required | join(",")' benchmarks/support/scanner-roster.json)"
+          # Only the store written by this run may be published: drop any earlier discovery store or single-file report and bundle pointer.
+          rm -rf results-output/evaluation results-output/evaluation.json public/results/evaluation-bundle-v1.json
           npm run eval -- --scanner="$scanners"
+          test -s results-output/evaluation/manifest.json || { echo "::error::npm run eval wrote no discovery store (results-output/evaluation/manifest.json)"; exit 1; }
           qualification=results-output/qualification/engine-v1.json
           rm -f "$qualification"
           if ! npm run eval:qualify; then
@@ -304,9 +311,12 @@ jobs:
             echo "::notice::No prior review observation artifact; legacy entries remain cannot-verify until observed."
             npm run eval:publish -- --qualification="$qualification"
           fi
+          # The immutable bundle and its pointer, validated by eval:publish itself; nothing public/ names a staging directory after a success.
+          test -s public/results/evaluation-bundle-v1.json
+          if find public/results -maxdepth 1 -name '.evaluation-bundle-*' | grep -q .; then echo "::error::a bundle staging directory was left in public/results"; exit 1; fi
 
       # Writes public/results/candidate-evidence-v1.json (reportType "candidate",
-      # supportClaims false) beside, never into, evaluation-v1.json; the page shows
+      # supportClaims false) beside, never into, the evaluation bundle; the page shows
       # it only as candidate evidence for the named commit. --expected-artifact-sha256
       # is the core tarball digest the product's qualification recorded, so
       # eval:candidate itself refuses any other core package. An incomplete
@@ -357,12 +367,13 @@ jobs:
           # research date, joining the provider dossiers with this matrix. Every
           # stage is derived, so no status is hand-written on the site.
           npm run dossiers:publish -- --require-matrix
-          # Publish the strict domain descriptor only after both referenced
-          # credential artifacts pass their existing validators. This v1 index
-          # remains byte-compatible for existing credential consumers.
+          # Gate: the credential evaluation bundle and the support matrix pass
+          # their validators before the v2 domain index is written below. The
+          # v1 index and evaluation-v1.json are the opt-in --legacy-v1 contract
+          # and are not part of normal publication (#790).
           npm run eval:publish:domains
           # PII support is a separate v2 artifact. The publisher validates the
-          # complete credential-v1 + PII set and renames the v2 index last.
+          # complete credential bundle + PII set and renames the v2 index last.
           # Staging names the product it measured, so committed activation
           # evidence recorded for exactly that product (evidence/<n>/) binds;
           # production measures the release and binds none.
@@ -429,10 +440,13 @@ jobs:
       - name: Assemble the site root and run the publication guards on it
         run: |
           set -euo pipefail
-          node scripts/assemble-site.mjs
+          # Under tsx: assembling validates the whole evaluation bundle (every part, one at a time) and copies only the bundle the pointer names.
+          node --import tsx scripts/assemble-site.mjs
           npm run features:check-public
           npm run blind:check-public
-          test -s dist/robots.txt -a -s dist/favicon.svg -a -s dist/results/run.json
+          # One coherent run: the pointer, its manifest, every referenced part and the domain index commitment agree; no staging or raw discovery file is in dist.
+          npm run evaluation-bundle:check-publication
+          test -s dist/robots.txt -a -s dist/favicon.svg -a -s dist/results/run.json -a -s dist/results/evaluation-bundle-v1.json
           echo "site root: $(find dist -type f | wc -l) files, $(du -sm dist | cut -f1) MB"
 
       - uses: aws-actions/configure-aws-credentials@e1253824e5c10ff9df46874f81ed3ec929e19cfd # v6.3.0
@@ -447,6 +461,7 @@ jobs:
       # legacy index.html and the old next/ preview: neither is in dist; the legacy assets/ are removed after the swap), then
       # the fingerprinted chunks pruned once the new HTML is live.
       - name: Publish
+        id: publish
         env:
           SITE_STACK: ${{ vars.SITE_STACK }}
         run: |
@@ -466,25 +481,85 @@ jobs:
           # Upload the immutable artifact before anything can point at it.
           aws s3 cp "dist/$pii_artifact" "s3://$bucket/$pii_artifact" --only-show-errors \
             --cache-control 'public, max-age=31536000, immutable'
+
+          # The evaluation bundle (#791). Its parts are immutable and content-addressed (the directory name is derived from their digests), so they
+          # are uploaded first, without --delete, and kept long-lived. The live pointer is read before anything changes: it names the bundle that
+          # stays reachable for readers mid-deployment and for rollback.
+          bundle_id=$(jq -r .bundleId dist/results/evaluation-bundle-v1.json)
+          manifest_sha=$(jq -r .manifest.sha256 dist/results/evaluation-bundle-v1.json)
+          [[ "$bundle_id" =~ ^[a-f0-9]{32}$ ]]
+          previous_id=
+          if aws s3 cp "s3://$bucket/results/evaluation-bundle-v1.json" "$RUNNER_TEMP/previous-pointer.json" --only-show-errors 2>/dev/null; then
+            previous_id=$(jq -r .bundleId "$RUNNER_TEMP/previous-pointer.json")
+          fi
+          aws s3 sync "dist/results/evaluation-bundles/$bundle_id" "s3://$bucket/results/evaluation-bundles/$bundle_id" --only-show-errors \
+            --cache-control 'public, max-age=31536000, immutable'
+          # Availability before publication: read the uploaded bundle back and validate every part against the manifest the pointer will commit to.
+          readback="$RUNNER_TEMP/readback/results"
+          rm -rf "$RUNNER_TEMP/readback"
+          mkdir -p "$readback/evaluation-bundles/$bundle_id"
+          aws s3 sync "s3://$bucket/results/evaluation-bundles/$bundle_id" "$readback/evaluation-bundles/$bundle_id" --only-show-errors
+          cp dist/results/evaluation-bundle-v1.json "$readback/evaluation-bundle-v1.json"
+          node --import tsx scripts/check-evaluation-bundle-publication.mjs --readback="$readback" --sha256="$manifest_sha"
+
+          # Everything else, with revalidation and stale files removed. The bundles, the pointer, the rollback copies and the domain index are not this sync's:
+          # old bundle directories must survive --delete while a reader or a rollback may still need them, and the two mutable commit markers move last.
           aws s3 sync dist "s3://$bucket" --only-show-errors --delete \
             --exclude 'assets/*' --exclude '_next/static/*' --exclude 'results/pii-support-matrix-v2-*.json' \
+            --exclude 'results/evaluation-bundles/*' --exclude 'results/evaluation-bundle-v1.json' --exclude 'results/rollback/*' \
             --exclude 'results/evaluation-domains-v2.json' --cache-control 'no-cache'
           aws s3 sync dist/_next/static "s3://$bucket/_next/static" --only-show-errors --delete \
             --cache-control 'public, max-age=31536000, immutable'
           # The legacy build's fingerprinted assets, kept through the HTML swap above and removed now that no HTML names them.
           # Empty (a no-op) once the first root publish has run.
           aws s3 rm "s3://$bucket/assets/" --recursive --only-show-errors
-          # The v2 index is the sole mutable commit marker and is always last.
+
+          # Rollback copies of the live pointer and index, taken before they move (skipped when this bundle is already live, so a re-run never overwrites the rollback target).
+          if [ -n "$previous_id" ] && [ "$previous_id" != "$bundle_id" ]; then
+            for marker in evaluation-bundle-v1.json evaluation-domains-v2.json; do
+              if aws s3 ls "s3://$bucket/results/$marker" >/dev/null; then
+                aws s3 cp "s3://$bucket/results/$marker" "s3://$bucket/results/rollback/$marker" --only-show-errors --cache-control 'no-cache'
+              fi
+            done
+          fi
+          # The pointer, then the v2 index, are the sole mutable commit markers and are always last. Each is one object replaced atomically by S3, but the two
+          # are separate objects: a reader that sees the new pointer with the old index refuses the mismatch (check-evaluation-bundle-publication) instead of combining them.
+          aws s3 cp dist/results/evaluation-bundle-v1.json "s3://$bucket/results/evaluation-bundle-v1.json" \
+            --only-show-errors --cache-control 'no-cache'
           aws s3 cp dist/results/evaluation-domains-v2.json "s3://$bucket/results/evaluation-domains-v2.json" \
             --only-show-errors --cache-control 'no-cache'
+          {
+            echo "bucket=$bucket"
+            echo "bundle-id=$bundle_id"
+            echo "previous-id=$previous_id"
+          } >> "$GITHUB_OUTPUT"
 
           aws cloudfront create-invalidation --distribution-id "$distribution" --paths '/*' \
             --query 'Invalidation.Id' --output text
+
+      # Retention (#791), a separate explicit step after the commit and the invalidation: keep the bundle just published and the one that was live before it
+      # (the rollback target), prune the rest. The live pointer is read again, and the planner refuses to prune anything it names or the current bundle.
+      - name: Prune evaluation bundles beyond the current and the previous one
+        env:
+          BUCKET: ${{ steps.publish.outputs.bucket }}
+          BUNDLE_ID: ${{ steps.publish.outputs.bundle-id }}
+          PREVIOUS_ID: ${{ steps.publish.outputs.previous-id }}
+        run: |
+          set -euo pipefail
+          live_id=$(aws s3 cp "s3://$BUCKET/results/evaluation-bundle-v1.json" - --only-show-errors | jq -r .bundleId)
+          aws s3api list-objects-v2 --bucket "$BUCKET" --prefix results/evaluation-bundles/ --delimiter / \
+            --query 'CommonPrefixes[].Prefix' --output json | jq -r '.[]?' > "$RUNNER_TEMP/present-bundles.txt"
+          node --import tsx scripts/evaluation-bundle-retention.mjs --present="$RUNNER_TEMP/present-bundles.txt" \
+            --current="$BUNDLE_ID" --previous="$PREVIOUS_ID" --live="$live_id" | tee "$RUNNER_TEMP/retention-plan.txt"
+          while read -r action id; do
+            if [ "$action" = prune ]; then aws s3 rm "s3://$BUCKET/results/evaluation-bundles/$id/" --recursive --only-show-errors; fi
+          done < "$RUNNER_TEMP/retention-plan.txt"
 
       - name: Record what was published
         env:
           PRODUCT_COMMIT: ${{ steps.product.outputs.sha }}
           QUALIFICATION_RUN_URL: ${{ steps.product.outputs.run-url }}
+          PREVIOUS_BUNDLE: ${{ steps.publish.outputs.previous-id }}
         run: |
           {
             echo "### Published to $TARGET"
@@ -492,7 +567,10 @@ jobs:
             echo "- benchmarks commit: \`${{ github.sha }}\`"
             echo "- run id: $(jq -r .runId public/results/run.json)"
             echo "- redact-secret measured: $(jq -r '.scannerVersions["redact-secret"] + (if .candidate then " (candidate " + .candidate.sourceCommit[0:7] + ", unreleased)" else " (released)" end)' public/results/run.json)"
-            echo "- qualification: $(jq -r '.qualification.status + " with redact-secret " + (.qualification.holdout.scanners[] | select(.id == "redact-secret") | .version)' public/results/evaluation-v1.json)"
+            bundle_id=$(jq -r .bundleId public/results/evaluation-bundle-v1.json)
+            bundle="public/results/evaluation-bundles/$bundle_id"
+            echo "- evaluation bundle \`$bundle_id\`: $(jq -r '"\(.totals.cases) cases, \(.totals.reviews) reviews in \(.cases | length) case parts and \(.reviews | length) review parts"' "$bundle/manifest.json"); previous live bundle \`${PREVIOUS_BUNDLE:-none}\` kept for rollback"
+            echo "- qualification: $(jq -r '.report.qualification.status + " with redact-secret " + (.report.qualification.holdout.scanners[] | select(.id == "redact-secret") | .version)' "$bundle/summary.json")"
             echo "- support matrix: $(jq -r '.distribution.stable|tostring' public/results/support-matrix-v1.json) stable, $(jq -r 'if .sourceReport.product then "candidate " + .sourceReport.product.sourceCommit[0:7] else "released " + (.sourceReport.publishedPackage.version // "package") end' public/results/support-matrix-v1.json)"
             echo "- site root (Next export at /, measured files at /results/): $(find dist -type f | wc -l) files; qualification view $(jq -r '.distribution.stable|tostring' public/results/qualification-v1.json) stable, policy \`$(jq -r .policy.revision public/results/qualification-v1.json)\`, official run artifacts checked against benchmarks/official-runs.json"
             pii_artifact=$(jq -r '.domains[] | select(.domain=="pii") | .support.href | ltrimstr("/")' public/results/evaluation-domains-v2.json)

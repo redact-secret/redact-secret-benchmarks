@@ -14,11 +14,13 @@ import { METHOD_IDS, isMethodId, methodHref } from '../../lib/methods';
 import { resolveEvaluationHub, resolvePhases } from '../../resolvers/evaluation-hub';
 import { resolveMethodPage, type MethodInput } from '../../resolvers/evaluation-methods';
 import { HUB_COPY, METHOD_COPY } from '../../resolvers/evaluation-copy';
-import { syntheticQualification, syntheticReport } from './evaluation-data';
+import type { EvaluationReport } from '../../../benchmarks/shared/evaluation-types.ts';
+import { evidenceOf, syntheticQualification, syntheticReport } from './evaluation-data';
 
 const suites = new Map([['suite-a', 'Suite A']]);
-const input = (over: Partial<MethodInput> = {}): MethodInput => ({
-  report: syntheticReport(), qualification: { state: 'recorded', source: 'run', report: syntheticQualification() }, suites, ...over,
+/** A method page input from a full synthetic report; `report: undefined` is "no evaluation", as the service says it. */
+const input = ({ report = syntheticReport(), ...over }: Partial<Omit<MethodInput, 'report' | 'casesOf' | 'peerReviews'>> & { report?: EvaluationReport } = {}, absent = false): MethodInput => ({
+  ...(absent ? {} : evidenceOf(report)), qualification: { state: 'recorded', source: 'run', report: syntheticQualification() }, suites, ...over,
 });
 const recorded = (page: MethodPageProps): MethodRecordedData => {
   if (page.recorded.state !== 'recorded') throw new Error('this page has no recorded section: the input lacks what it reads');
@@ -172,7 +174,7 @@ describe('holdout', () => {
 
 describe('no evaluation published', () => {
   test.each(METHOD_IDS.filter(id => id !== 'holdout'))('%s says Not measured and names the commands, never a zero', id => {
-    const page = resolveMethodPage(id, input({ report: undefined, reason: 'public/results/evaluation-v1.json is absent.' }));
+    const page = resolveMethodPage(id, input({ reason: 'public/results/evaluation-v1.json is absent.' }, true));
     expect(page.recorded).toMatchObject({ state: 'not-measured', command: expect.stringContaining('eval:publish') });
     expect(page.inputs).toMatchObject({ state: 'not-measured' });
     expect(page.meta).toEqual([{ value: 'Not measured' }]);
@@ -180,7 +182,7 @@ describe('no evaluation published', () => {
   });
 
   test('without a reason it still says so', () => {
-    expect(resolveMethodPage('twin', input({ report: undefined })).recorded).toMatchObject({ state: 'not-measured' });
+    expect(resolveMethodPage('twin', input({}, true)).recorded).toMatchObject({ state: 'not-measured' });
   });
 });
 
@@ -207,7 +209,7 @@ describe('hub', () => {
   });
 
   test('lists the six methods with a count each and the run once', () => {
-    const props = resolveEvaluationHub({ report: syntheticReport(), qualification: syntheticQualification(), phases: EVALUATION_PHASES, builtHrefs });
+    const props = resolveEvaluationHub({ ...evidenceOf(syntheticReport()), qualification: syntheticQualification(), phases: EVALUATION_PHASES, builtHrefs });
     expect(props.methods.map(m => m.href)).toEqual(METHOD_IDS.map(methodHref));
     expect(props.methods.find(m => m.id === 'twin')?.fact).toBe('2 pairs');
     expect(props.methods.find(m => m.id === 'holdout')?.fact).toBe('12 cases');
@@ -225,7 +227,7 @@ describe('hub', () => {
     for (const m of props.methods) expect(m.fact).toBeUndefined();
     expect(props.run).toMatchObject({ state: 'not-measured', reason: 'absent', command: expect.stringContaining('eval:publish') });
     expect(props.meta).toEqual([{ value: 'Not measured' }]);
-    expect(resolveEvaluationHub({ phases: [], builtHrefs, report: syntheticReport() }).methods.find(m => m.id === 'holdout')?.fact).toBeUndefined();
+    expect(resolveEvaluationHub({ phases: [], builtHrefs, ...evidenceOf(syntheticReport()) }).methods.find(m => m.id === 'holdout')?.fact).toBeUndefined();
     expect(resolveEvaluationHub({ phases: [], builtHrefs }).run).toMatchObject({ reason: expect.stringContaining('No evaluation') });
   });
 });
@@ -248,7 +250,7 @@ describe('blocks', () => {
   });
 
   test('a missing evaluation shows the command, not a table', () => {
-    render(<MethodPage {...resolveMethodPage('benign', input({ report: undefined }))} />);
+    render(<MethodPage {...resolveMethodPage('benign', input({}, true))} />);
     expect(screen.queryByRole('table')).not.toBeInTheDocument();
     expect(screen.getAllByLabelText(/^Command:/).length).toBeGreaterThan(0);
   });
@@ -265,7 +267,7 @@ describe('blocks', () => {
   });
 
   test('the hub renders a link for a built phase and plain text for one that is not', () => {
-    const props = resolveEvaluationHub({ report: syntheticReport(), qualification: syntheticQualification(), phases: EVALUATION_PHASES, builtHrefs: new Set(['/evaluation/scanner/']) });
+    const props = resolveEvaluationHub({ ...evidenceOf(syntheticReport()), qualification: syntheticQualification(), phases: EVALUATION_PHASES, builtHrefs: new Set(['/evaluation/scanner/']) });
     render(<EvaluationHub {...props} />);
     const phases = screen.getByRole('navigation', { name: 'Evaluation pages' });
     expect(within(phases).getAllByRole('link')).toHaveLength(1);

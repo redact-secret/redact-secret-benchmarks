@@ -32,7 +32,7 @@ const ROLES: Record<string, Record<string, Role>> = {
     'benchmarks/accounting/index': 'keep', 'benchmarks/shared/evaluation-domains-v2.ts': 'other-domain',
   },
   'services/dossiers.ts': { 'benchmarks/support/taxonomy': 'keep' },
-  'services/evaluation.ts': { 'benchmarks/shared/evaluation-model.ts': 'keep', 'benchmarks/shared/evaluation-types.ts': 'keep' },
+  'services/evaluation.ts': { 'benchmarks/evaluation/bundle/bundle.ts': 'keep', 'benchmarks/shared/evaluation-model.ts': 'keep', 'benchmarks/shared/evaluation-types.ts': 'keep' },
   'services/findings.ts': { 'benchmarks/lib/promotion': 'keep' },
   'services/pii-authority.ts': { 'benchmarks/evaluation/domains/pii/authority': 'other-domain' },
   'services/peers.ts': { 'benchmarks/lib/peer-rule-families': 'keep', 'benchmarks/support/taxonomy': 'keep' },

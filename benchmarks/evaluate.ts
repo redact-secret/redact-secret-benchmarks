@@ -1,4 +1,5 @@
 import { readFile, mkdir, writeFile, rename } from 'node:fs/promises';
+import { writeDiscoveryStore } from './evaluation/storage/discovery-store.ts';
 import { execFileSync } from 'node:child_process';
 import { platform, arch } from 'node:os';
 import path from 'node:path';
@@ -9,7 +10,7 @@ import { hash } from './evaluation/model/model.ts';
 import { runEvaluation, exitCode } from './evaluation/domains/credential/runner.ts';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
-const usage = 'npm run eval -- [--domain=credential] [--method=twin,benign] [--detector=github-token] [--scanner=redact-secret,gitleaks,trufflehog] [--seed=experiment-1] [--strict] [--fail-on-assertions] [--output=results-output/evaluation.json]';
+const usage = 'npm run eval -- [--domain=credential] [--method=twin,benign] [--detector=github-token] [--scanner=redact-secret,gitleaks,trufflehog] [--seed=experiment-1] [--strict] [--fail-on-assertions] [--output=results-output/evaluation (a sharded store directory; a path ending in .json writes the legacy single file)]';
 const args = process.argv.slice(2), options: Record<string, string | boolean> = {};
 for (const arg of args) {
   const match = /^--(domain|method|detector|scanner|output|seed)=(.+)$/.exec(arg);
@@ -49,11 +50,17 @@ const report = await runEvaluation({ cases, methods, operators,
     runtime: { node: process.version, platform: platform(), arch: arch() },
     selection: { methods: methodIds, detectors: options.detector ? detectorIds : 'all', scanners: scannerIds } },
 });
-const target = path.resolve(root, typeof options.output === 'string' ? options.output : 'results-output/evaluation.json');
+const target = path.resolve(root, typeof options.output === 'string' ? options.output : 'results-output/evaluation');
 await mkdir(path.dirname(target), { recursive: true });
-const temporary = `${target}.${report.runId}.tmp`;
-await writeFile(temporary, JSON.stringify(report, null, 2) + '\n', { mode: 0o600 });
-await rename(temporary, target);
+if (target.endsWith('.json')) {
+  // Legacy single-file report (small selections, tests): one string, bounded by V8's string limit. A large run uses the default sharded store.
+  const temporary = `${target}.${report.runId}.tmp`;
+  await writeFile(temporary, JSON.stringify(report, null, 2) + '\n', { mode: 0o600 });
+  await rename(temporary, target);
+} else {
+  const manifest = await writeDiscoveryStore(target, report);
+  console.log(`Store: ${manifest.parts.results.length} result parts, ${manifest.parts.failures.length} failure parts, ${manifest.parts.reviewQueue.length} review-queue parts; largest single write ${manifest.maxChunkBytes} bytes; peak RSS ${Math.round(process.resourceUsage().maxRSS / 1024)} MB.`);
+}
 console.log(`${report.caseCount} cases / ${report.variantCount} variants; ${report.generationErrors.length} generation errors; ${report.failures.length} failed assertions; ${report.reviewQueue.length} review entries.`);
 console.log(`Report: ${path.relative(root, target)}`);
 process.exitCode = exitCode(report, { strict: Boolean(options.strict), failOnAssertions: Boolean(options['fail-on-assertions']) });

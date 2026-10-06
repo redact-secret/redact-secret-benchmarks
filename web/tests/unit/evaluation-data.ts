@@ -3,6 +3,7 @@
  * evaluation resolver and page tests. Every id, count and version here is made up: a test asserts what the
  * resolver derives from THESE rows, never a figure the committed ledger or the run holds.
  */
+import { operatorEvidence } from '../../../benchmarks/shared/evaluation-model.ts';
 import type { AssertionStatus, EvaluationAssertion, EvaluationCase, EvaluationReport, EvaluationVariant, QualificationEvidence } from '../../../benchmarks/shared/evaluation-types.ts';
 
 const variant = (id: string, over: Partial<EvaluationVariant> = {}): EvaluationVariant => ({
@@ -103,13 +104,13 @@ export function syntheticReport(over: Partial<EvaluationReport> = {}): Evaluatio
     corpusHashes: { 'suite-a': 'a', 'suite-b': 'b', 'real-world-shapes': 'r' },
     scanners: [
       { id: PRODUCT_ID, version: '1.2.3', status: 'complete', mode: 'Published npm package · default detectors', configurationHash: 'h', observation },
-      { id: 'peer-a', version: '4.5.6', status: 'complete', mode: 'Directory scan · default rules', configurationHash: 'h', observation: { ...observation, source: 'snapshot', snapshotDigest: 's', inputDigest: 'i' } },
+      { id: 'peer-a', version: '4.5.6', status: 'complete', mode: 'Directory scan · default rules', configurationHash: 'h', observation: { ...observation, source: 'snapshot', snapshotDigest: 'a'.repeat(64), inputDigest: 'b'.repeat(64) } },
       { id: 'peer-b', version: null, status: 'unavailable', mode: 'Not installed', configurationHash: 'h', observation },
     ],
     cases,
     reviews: [{ id: 'r1', caseId: 'input-1', variant: 'canonical', peer: 'peer-a', disagreement: 'redact-secret-only' }],
     review: { open: 1, resolved: 0, notAssertable: 0, unknown: 0, oldestOpenRun: null },
-    byOperator: {},
+    byOperator: operatorEvidence(cases),
     qualification: null,
     ...over,
   };
@@ -132,4 +133,22 @@ export function syntheticQualification(): QualificationEvidence {
       ],
     },
   };
+}
+
+/**
+ * A full synthetic report cut the way the pages now read it (#789): the summary, the cases per method, the per-method counts and the peer
+ * review count. What a legacy-file load and a bundle load both hand the resolvers, and what the equivalence tests compare against.
+ */
+export function evidenceOf(report: EvaluationReport) {
+  const { cases, reviews, ...summary } = report;
+  const caseCounts: Record<string, number> = {};
+  for (const c of cases) caseCounts[c.method] = (caseCounts[c.method] ?? 0) + 1;
+  return { report: summary, caseCounts, peerReviews: reviews.filter(r => r.peer).length, casesOf: (method: string) => cases.filter(c => c.method === method) };
+}
+
+/** The report with `n` more twin pairs (copies of the second pair under new ids), so a method spans several small bundle parts. Operator totals are recomputed. */
+export function withExtraTwins(report: EvaluationReport, n: number): EvaluationReport {
+  const template = report.cases.find(c => c.id === 'pair-2')!;
+  const cases = [...report.cases, ...Array.from({ length: n }, (_, i) => ({ ...template, id: `pair-extra-${i}`, sourceSlug: `suite-b--pair-extra-${i}` }))];
+  return { ...report, cases, byOperator: operatorEvidence(cases) };
 }

@@ -80,6 +80,23 @@ export function trackedEvasionProblems(root) {
   return problems;
 }
 
+/** The file-name rule for one public path (relative to the root); null when the name is allowed. */
+export function nameProblem(relative) {
+  return NAME.test(path.basename(relative)) ? `${relative}: a candidate-feature dataset file is on the public surface` : null;
+}
+
+/** The content rules for one public text file; `exclusionProblems` and the evaluation-bundle publication check (#791) apply exactly these to every file they inspect, so a sharded part is held to the same rules as a single file. */
+export function textProblems(relative, text) {
+  if (MARKERS.some(marker => marker.test(text))) return [`${relative}: embeds candidate-feature dataset or calibration experiment content; both are maintainer-local only`];
+  if (EVASION_MARKERS.some(marker => marker.test(text))) return [`${relative}: embeds score-evasion variants, shadow-evaluation records or per-variant detail; only the aggregate may be published`];
+  if (PROJECTION.test(text)) {
+    let parsed = null;
+    try { parsed = JSON.parse(text); } catch { return [`${relative}: embeds a calibration projection that is not a standalone JSON document, so its shape cannot be checked`]; }
+    return projectionProblems(parsed).map(problem => `${relative}: ${problem}`);
+  }
+  return [];
+}
+
 export function exclusionProblems(root, { checkIgnore = true, checkTracked = true } = {}) {
   const problems = [];
   for (const name of PUBLIC_DIRECTORIES) {
@@ -87,16 +104,10 @@ export function exclusionProblems(root, { checkIgnore = true, checkTracked = tru
     if (!existsSync(directory) || !statSync(directory).isDirectory()) continue;
     for (const file of walk(directory)) {
       const relative = path.relative(root, file);
-      if (NAME.test(path.basename(file))) { problems.push(`${relative}: a candidate-feature dataset file is on the public surface`); continue; }
+      const named = nameProblem(relative);
+      if (named) { problems.push(named); continue; }
       if (!TEXT.test(file)) continue;
-      const text = readFileSync(file, 'utf8');
-      if (MARKERS.some(marker => marker.test(text))) { problems.push(`${relative}: embeds candidate-feature dataset or calibration experiment content; both are maintainer-local only`); continue; }
-      if (EVASION_MARKERS.some(marker => marker.test(text))) { problems.push(`${relative}: embeds score-evasion variants, shadow-evaluation records or per-variant detail; only the aggregate may be published`); continue; }
-      if (PROJECTION.test(text)) {
-        let parsed = null;
-        try { parsed = JSON.parse(text); } catch { problems.push(`${relative}: embeds a calibration projection that is not a standalone JSON document, so its shape cannot be checked`); continue; }
-        for (const problem of projectionProblems(parsed)) problems.push(`${relative}: ${problem}`);
-      }
+      problems.push(...textProblems(relative, readFileSync(file, 'utf8')));
     }
   }
   if (checkTracked) problems.push(...trackedEvasionProblems(root));

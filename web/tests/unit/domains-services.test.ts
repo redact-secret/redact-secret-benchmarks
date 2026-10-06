@@ -63,7 +63,7 @@ describe('PII evaluation', () => {
     ]);
     const custodianConformance = await custodianConformanceFrom(`${REAL}/tests/fixtures/custodian/synthetic-pii-bundle.json`);
     const matrix = buildPiiSupportMatrixV2({ piiEvalMeasurement: measurement, custodianConformance });
-    const index = buildEvaluationDomainsV2(matrix.artifactCommitment);
+    const index = buildEvaluationDomainsV2(matrix.artifactCommitment, { bundleId: 'a'.repeat(32), manifestSha256: 'b'.repeat(64) });
     const descriptor = domainDescriptorV2(index, 'pii');
     if (!descriptor?.support.href) throw new Error('PII descriptor did not bind its support artifact');
     const href = descriptor.support.href;
@@ -110,7 +110,7 @@ describe('PII evaluation', () => {
     const matrix = buildPiiSupportMatrixV2({ piiEvalMeasurement: measurement });
     expect(matrix.distribution).toEqual(baseline.distribution);
     expect(matrix.families).toEqual(baseline.families);
-    const index = buildEvaluationDomainsV2(matrix.artifactCommitment);
+    const index = buildEvaluationDomainsV2(matrix.artifactCommitment, { bundleId: 'a'.repeat(32), manifestSha256: 'b'.repeat(64) });
     const href = domainDescriptorV2(index, 'pii')!.support.href!;
     const pii = await (await domains(overlay({ 'public/results/evaluation-domains-v2.json': JSON.stringify(index), [`public${href}`]: JSON.stringify(matrix) }))).loadPiiEvaluation();
     const shown = pii.state === 'recorded' || pii.state === 'public-recorded' ? pii.piiEvalMeasurement : null;

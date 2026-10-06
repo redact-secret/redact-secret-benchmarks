@@ -1,0 +1,396 @@
+{
+  "schema": "redact-secret/evaluation-report-baseline/v1",
+  "issue": 786,
+  "measuredAt": "2026-10-06T20:22:07.975Z",
+  "runsScanners": false,
+  "runtime": {
+    "node": "v22.16.0",
+    "v8": "12.4.254.21-node.26",
+    "platform": "darwin",
+    "arch": "arm64",
+    "maxStringLengthChars": 536870888,
+    "maxBufferBytes": 9007199254740991,
+    "heapSizeLimitBytes": 4345298944
+  },
+  "memoryNote": "peakRssBytes is the process high-water mark and only grows: the files are measured in order discovery, public, ledger, qualification, projection in one process, so a later stage inherits the earlier peak. heapUsedBytes is the live heap at that moment.",
+  "note": "results-output/evaluation.json is the discovery source and is the single large report; the public projection, the ledger and the qualification artifact are separate contracts. Site and Next export totals are not report sizes.",
+  "discovery": {
+    "file": "results-output/evaluation.json",
+    "present": true,
+    "sha256": "a485f7e565c01bcd6b6c0d1ac261530e0eff9fc5d740fcf9e182b555a3281a57",
+    "bytes": 420169790,
+    "MB": 420.17,
+    "MiB": 400.705,
+    "utf16Length": 419813243,
+    "prettyPrinted": true,
+    "readUtf8Ms": 676,
+    "parseMs": 2649,
+    "stringifyCompactMs": 1025,
+    "stringifyPrettyMs": 2276,
+    "compactUtf16Length": 256189572,
+    "compactToFileRatio": 0.6102,
+    "prettyReserialisedLength": 419813242,
+    "fractionOfStringLimit": 0.782,
+    "memoryAfterParse": {
+      "peakRssBytes": 2416394240,
+      "heapUsedBytes": 1264707368,
+      "heapTotalBytes": 1306116096
+    },
+    "memoryAfterStages": {
+      "peakRssBytes": 3648389120,
+      "heapUsedBytes": 2624553280,
+      "heapTotalBytes": 2660483072
+    },
+    "sections": {
+      "topLevelCompactUtf16": {
+        "schemaVersion": 1,
+        "engineVersion": 7,
+        "accountingVersion": 5,
+        "accounting": 237,
+        "domain": 12,
+        "evaluationProfile": 15,
+        "domainAccountingVersion": 15,
+        "runId": 38,
+        "startedAt": 26,
+        "finishedAt": 26,
+        "mode": 11,
+        "scope": 87,
+        "provenance": 1309,
+        "scanners": 2455,
+        "caseCount": 5,
+        "variantCount": 5,
+        "byMethod": 23578,
+        "byDetector": 1212880,
+        "byTaxonomy": 5610,
+        "byOperator": 73515,
+        "axesByDetector": 16524,
+        "resolution": 45410,
+        "unresolvedGroups": 2,
+        "accountingDelta": 2238,
+        "review": 78,
+        "results": 209340985,
+        "failures": 30779658,
+        "generationErrors": 2,
+        "reviewQueue": 14684409
+      },
+      "headerCompactUtf16": 1384482,
+      "counts": {
+        "results": 20009,
+        "variants": 52075,
+        "failures": 58037,
+        "reviewQueue": 17027,
+        "generationErrors": 0,
+        "scanners": 4
+      },
+      "perRecordCompactUtf16": {
+        "results": {
+          "count": 20009,
+          "total": 209320975,
+          "max": 33825,
+          "p50": 6887,
+          "p99": 29911
+        },
+        "failures": {
+          "count": 58037,
+          "total": 30721620,
+          "max": 650,
+          "p50": 544,
+          "p99": 619
+        },
+        "reviewQueue": {
+          "count": 17027,
+          "total": 14667381,
+          "max": 1873,
+          "p50": 342,
+          "p99": 1685
+        }
+      },
+      "resultFieldsCompactUtf16": {
+        "id": 1266880,
+        "method": 229819,
+        "targets": 439099,
+        "visibility": 259638,
+        "source": 2478402,
+        "provenance": 20241268,
+        "variants": 43880701,
+        "generation": 17489871,
+        "scanners": 103685907,
+        "comparisons": 2415913,
+        "queue": 10115378,
+        "observations": 3844713,
+        "capabilities": 412312,
+        "complete": 80036,
+        "taxonomy": 102188
+      },
+      "byMethod": {
+        "differential": {
+          "cases": 6423,
+          "variants": 6423,
+          "compactUtf16": 30814190
+        },
+        "metamorphic": {
+          "cases": 4895,
+          "variants": 22045,
+          "compactUtf16": 86199328
+        },
+        "mutation": {
+          "cases": 4895,
+          "variants": 18283,
+          "compactUtf16": 70868009
+        },
+        "twin": {
+          "cases": 1528,
+          "variants": 3056,
+          "compactUtf16": 12112929
+        },
+        "benign": {
+          "cases": 2268,
+          "variants": 2268,
+          "compactUtf16": 9326519
+        }
+      },
+      "perCaseCompactUtf16": 10461.3,
+      "perVariantCompactUtf16": 4019.6
+    }
+  },
+  "public": {
+    "file": "public/results/evaluation-v1.json",
+    "present": true,
+    "sha256": "32584f20bc3c2aa6a2f7dca2dfca56fc931ed2bbd19d5f69b07aec750b9b2887",
+    "bytes": 76513429,
+    "MB": 76.513,
+    "MiB": 72.969,
+    "utf16Length": 76513424,
+    "prettyPrinted": false,
+    "readUtf8Ms": 40,
+    "parseMs": 490,
+    "stringifyCompactMs": 367,
+    "stringifyPrettyMs": 833,
+    "compactUtf16Length": 76513423,
+    "compactToFileRatio": 1,
+    "prettyReserialisedLength": 128529043,
+    "fractionOfStringLimit": 0.1425,
+    "memoryAfterParse": {
+      "peakRssBytes": 3648389120,
+      "heapUsedBytes": 185691472,
+      "heapTotalBytes": 228999168
+    },
+    "memoryAfterStages": {
+      "peakRssBytes": 3648389120,
+      "heapUsedBytes": 402091144,
+      "heapTotalBytes": 435126272
+    },
+    "sections": {
+      "topLevelCompactUtf16": {
+        "schemaVersion": 1,
+        "accountingVersion": 5,
+        "reportType": 19,
+        "supportClaims": 5,
+        "runId": 38,
+        "startedAt": 26,
+        "finishedAt": 26,
+        "provenance": 1052,
+        "corpusHashes": 6076,
+        "scanners": 1339,
+        "cases": 71842170,
+        "reviews": 3668927,
+        "review": 78,
+        "byOperator": 73515,
+        "qualification": 919937
+      },
+      "summaryCompactUtf16": 1002306,
+      "counts": {
+        "cases": 20009,
+        "variants": 52075,
+        "assertions": 272684,
+        "findings": 182608,
+        "comparisons": 19269,
+        "reviews": 17027,
+        "scanners": 4
+      },
+      "perCaseCompactUtf16": {
+        "count": 20009,
+        "total": 71822160,
+        "max": 12999,
+        "p50": 1616,
+        "p99": 12702
+      },
+      "perReviewCompactUtf16": {
+        "count": 17027,
+        "total": 3651899,
+        "max": 270,
+        "p50": 214,
+        "p99": 249
+      },
+      "caseFieldsCompactUtf16": {
+        "variants": 10242264,
+        "assertions": 34732957,
+        "findings": 14629513,
+        "generation": 4368031,
+        "comparisons": 2388741
+      },
+      "reviewsCompactUtf16": 3651899,
+      "byMethod": {
+        "differential": {
+          "cases": 6423,
+          "variants": 6423,
+          "assertions": 0,
+          "compactUtf16": 5268896
+        },
+        "metamorphic": {
+          "cases": 4895,
+          "variants": 22045,
+          "assertions": 156780,
+          "compactUtf16": 34817123
+        },
+        "mutation": {
+          "cases": 4895,
+          "variants": 18283,
+          "assertions": 88496,
+          "compactUtf16": 24813985
+        },
+        "twin": {
+          "cases": 1528,
+          "variants": 3056,
+          "assertions": 18336,
+          "compactUtf16": 4231499
+        },
+        "benign": {
+          "cases": 2268,
+          "variants": 2268,
+          "assertions": 9072,
+          "compactUtf16": 2690657
+        }
+      }
+    }
+  },
+  "ledger": {
+    "file": "public/results/review-ledger-v2.json",
+    "present": true,
+    "sha256": "0d23e9770648530c510a96339c20b3e5ca3aaa06b1a5b32a9bd42256fdc9021d",
+    "bytes": 26937085,
+    "MB": 26.937,
+    "MiB": 25.689,
+    "utf16Length": 26881355,
+    "prettyPrinted": false,
+    "readUtf8Ms": 80,
+    "parseMs": 89,
+    "stringifyCompactMs": 73,
+    "stringifyPrettyMs": 69,
+    "compactUtf16Length": 26881354,
+    "compactToFileRatio": 1,
+    "prettyReserialisedLength": 29056697,
+    "fractionOfStringLimit": 0.0501,
+    "memoryAfterParse": {
+      "peakRssBytes": 3648389120,
+      "heapUsedBytes": 492046800,
+      "heapTotalBytes": 519323648
+    },
+    "memoryAfterStages": {
+      "peakRssBytes": 3648389120,
+      "heapUsedBytes": 613552712,
+      "heapTotalBytes": 642039808
+    },
+    "sections": {
+      "topLevelCompactUtf16": {
+        "schemaVersion": 1,
+        "observationRun": 88,
+        "entries": 26881218
+      },
+      "entries": 33137,
+      "perEntryCompactUtf16": {
+        "count": 33137,
+        "total": 24625143,
+        "max": 1694,
+        "p50": 758,
+        "p99": 1387
+      }
+    }
+  },
+  "qualification": {
+    "file": "results-output/qualification/engine-v1.json",
+    "present": true,
+    "sha256": "ce635517cf6927dec900e07753b34be7105381fc8d4cbb1c3d67e299ce387587",
+    "bytes": 1457553,
+    "MB": 1.458,
+    "MiB": 1.39,
+    "utf16Length": 1457553,
+    "prettyPrinted": true,
+    "readUtf8Ms": 2,
+    "parseMs": 3,
+    "stringifyCompactMs": 1,
+    "stringifyPrettyMs": 4,
+    "compactUtf16Length": 919937,
+    "compactToFileRatio": 0.6312,
+    "prettyReserialisedLength": 1457552,
+    "fractionOfStringLimit": 0.0027,
+    "memoryAfterParse": {
+      "peakRssBytes": 3648389120,
+      "heapUsedBytes": 617032176,
+      "heapTotalBytes": 645283840
+    },
+    "memoryAfterStages": {
+      "peakRssBytes": 3648389120,
+      "heapUsedBytes": 620351344,
+      "heapTotalBytes": 648626176
+    },
+    "sections": {
+      "topLevelCompactUtf16": {
+        "schemaVersion": 1,
+        "reportType": 15,
+        "engineVersion": 7,
+        "accountingVersion": 5,
+        "suiteId": 11,
+        "suiteHash": 66,
+        "runId": 38,
+        "startedAt": 26,
+        "finishedAt": 26,
+        "scope": 20,
+        "status": 21,
+        "supportClaims": 5,
+        "provenance": 383,
+        "development": 913524,
+        "accounting": 162,
+        "methods": 2535,
+        "holdout": 2686,
+        "milestone": 162
+      }
+    }
+  },
+  "projection": {
+    "wholeReportProjectionMs": 2216,
+    "stringifyPublicMs": 136,
+    "publicCompactBytes": 75593495,
+    "publicCompactUtf16Length": 75593490,
+    "memoryBefore": {
+      "peakRssBytes": 3648389120,
+      "heapUsedBytes": 2081545376,
+      "heapTotalBytes": 2135031808
+    },
+    "memoryAfter": {
+      "peakRssBytes": 3648389120,
+      "heapUsedBytes": 2219850224,
+      "heapTotalBytes": 2277654528
+    },
+    "note": "one discovery parse, one projection and one stringify held at once; this is the legacy publication cost, not the bundle path"
+  },
+  "growth": {
+    "basis": "Linear extrapolation from this one run; the figure is a measurement of today's ratio, not a forecast of corpus growth.",
+    "discoveryPrettyUtf16PerCase": 20981.2,
+    "discoveryPrettyUtf16PerVariant": 8061.7,
+    "discoveryCompactUtf16PerCase": 12803.7,
+    "casesAtStringLimitPretty": 25588,
+    "casesAtStringLimitCompact": 41930,
+    "casesNow": 20009,
+    "variantsNow": 52075,
+    "publicUtf16PerCase": 3824,
+    "casesAtStringLimitPublic": 140396,
+    "discoveryHeadroomFactorPretty": 1.279,
+    "discoveryHeadroomFactorCompact": 2.096
+  },
+  "finalMemory": {
+    "peakRssBytes": 3648389120,
+    "heapUsedBytes": 2219869256,
+    "heapTotalBytes": 2277654528
+  }
+}

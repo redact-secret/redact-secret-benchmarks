@@ -14,6 +14,7 @@ import { piiBindingArtifactCommitment } from '../benchmarks/evaluation/domains/p
 import { buildPiiPopulationReport, piiPopulationContract } from '../benchmarks/evaluation/domains/pii/populations.ts';
 import { piiBenignCollisionEvidence } from '../benchmarks/evaluation/domains/pii/benign-collision-evidence.ts';
 import { buildEvaluationDomainsV2, domainDescriptorV2, evaluationDomainsV2Problem } from '../src/evaluation-domains-v2.ts';
+const credentialReference = { bundleId: 'a'.repeat(32), manifestSha256: 'b'.repeat(64) };
 import { piiSupportMatrixProblem } from '../src/pii-support-model.ts';
 import { credentialSupportPage, piiSupportPage, piiSupportQueryOf } from '../src/pages/pii-support.ts';
 import { publishArtifactAndIndex } from '../scripts/atomic-publication.ts';
@@ -378,12 +379,12 @@ test('registry is commitment-bound and keeps global and jurisdiction identities 
   assert.throws(() => validatePiiSupportRegistry(unknown));
 });
 
-test('evaluation-domain v2 index preserves credential v1 hrefs and binds PII support', async () => {
+test('evaluation-domain v2 index keeps the credential support href, points the credential evaluation at its bundle and binds PII support', async () => {
   const matrix = buildPiiSupportMatrixV2();
-  const index = buildEvaluationDomainsV2(matrix.artifactCommitment);
+  const index = buildEvaluationDomainsV2(matrix.artifactCommitment, credentialReference);
   assert.equal(evaluationDomainsV2Problem(index), null);
   assert.deepEqual(domainDescriptorV2(index, 'credential').support, { state: 'published', href: '/results/support-matrix-v1.json', artifactCommitment: null });
-  assert.deepEqual(domainDescriptorV2(index, 'credential').evaluation, { state: 'published', href: '/results/evaluation-v1.json', artifactCommitment: null });
+  assert.deepEqual(domainDescriptorV2(index, 'credential').evaluation, { state: 'published', href: `/results/evaluation-bundles/${credentialReference.bundleId}/manifest.json`, artifactCommitment: credentialReference.manifestSha256 });
   assert.equal(domainDescriptorV2(index, 'pii').support.artifactCommitment, matrix.artifactCommitment);
   assert.equal(domainDescriptorV2(index, 'pii').support.href, `/results/pii-support-matrix-v2-${matrix.artifactCommitment}.json`);
   assert.equal(await piiSupportMatrixProblem(matrix, matrix.artifactCommitment), null);
@@ -395,7 +396,7 @@ test('evaluation-domain v2 index preserves credential v1 hrefs and binds PII sup
 });
 
 test('PII page shows exact profile/reasons and supports encoded two-colon family identities', () => {
-  const matrix = buildPiiSupportMatrixV2({ registry: registry() }), index = buildEvaluationDomainsV2(matrix.artifactCommitment);
+  const matrix = buildPiiSupportMatrixV2({ registry: registry() }), index = buildEvaluationDomainsV2(matrix.artifactCommitment, credentialReference);
   const query = piiSupportQueryOf('?domain=pii&family=pii%3Aca%3Asin');
   assert.deepEqual(query, { domain: 'pii', family: 'pii:ca:sin', jurisdiction: null });
   const html = piiSupportPage(domainDescriptorV2(index, 'pii'), matrix, query);
@@ -404,17 +405,18 @@ test('PII page shows exact profile/reasons and supports encoded two-colon family
   assert.match(html, /supportClaims=false/);
 });
 
-test('failed v2 publication preserves credential-v1 and existing index bytes', async () => {
+test('failed v2 publication preserves the credential evidence and the existing index bytes', async () => {
   const directory = await mkdtemp(path.join(tmpdir(), 'pii-support-publish-'));
-  const evaluation = path.join(directory, 'evaluation-v1.json'), support = path.join(directory, 'support-matrix-v1.json');
+  const support = path.join(directory, 'support-matrix-v1.json'), pointer = path.join(directory, 'evaluation-bundle-v1.json');
   const index = path.join(directory, 'evaluation-domains-v2.json');
-  const evaluationBytes = Buffer.from('{"credential":"golden-evaluation"}\n'), supportBytes = Buffer.from('{"credential":"golden-support"}\n');
+  const pointerBytes = Buffer.from('{"credential":"not-a-pointer"}\n'), supportBytes = Buffer.from('{"credential":"golden-support"}\n');
   const indexBytes = Buffer.from('{"existing":"index"}\n');
-  await Promise.all([writeFile(evaluation, evaluationBytes), writeFile(support, supportBytes), writeFile(index, indexBytes)]);
-  await assert.rejects(execute(process.execPath, ['--import', 'tsx', 'scripts/publish-pii-support.ts', `--evaluation=${evaluation}`,
-    `--credential-support=${support}`, `--pii-directory=${directory}`, `--output=${index}`], { cwd: path.resolve('.') }), /Credential evaluation artifact is incompatible/);
-  assert.deepEqual(await readFile(evaluation), evaluationBytes); assert.deepEqual(await readFile(support), supportBytes);
+  await Promise.all([writeFile(pointer, pointerBytes), writeFile(support, supportBytes), writeFile(index, indexBytes)]);
+  await assert.rejects(execute(process.execPath, ['--import', 'tsx', 'scripts/publish-pii-support.ts', `--credential-results=${directory}`,
+    `--credential-support=${support}`, `--pii-directory=${directory}`, `--output=${index}`], { cwd: path.resolve('.') }), /Credential evaluation bundle is incompatible/);
+  assert.deepEqual(await readFile(pointer), pointerBytes); assert.deepEqual(await readFile(support), supportBytes);
   assert.deepEqual(await readFile(index), indexBytes);
+  await assert.rejects(execute(process.execPath, ['--import', 'tsx', 'scripts/publish-pii-support.ts', `--evaluation=${directory}/evaluation-v1.json`], { cwd: path.resolve('.') }), /legacy credential contract/);
 });
 
 test('index rename failure leaves the old immutable set valid without rollback', async () => {
@@ -474,7 +476,7 @@ test('browser and Node reject rehashed semantic forgeries alike', async () => {
     const value = structuredClone(original); mutate(value);
     value.registryCommitment = createHash('sha256').update(JSON.stringify(canonical(piiSupportRegistryProjection(value)))).digest('hex');
     value.artifactCommitment = piiSupportMatrixV2Commitment(value);
-    const index = buildEvaluationDomainsV2(value.artifactCommitment), expected = domainDescriptorV2(index, 'pii').support.artifactCommitment;
+    const index = buildEvaluationDomainsV2(value.artifactCommitment, credentialReference), expected = domainDescriptorV2(index, 'pii').support.artifactCommitment;
     assert.throws(() => validatePiiSupportMatrixV2(value));
     assert.ok(await piiSupportMatrixProblem(value, expected));
   }
@@ -501,4 +503,69 @@ test('credential support renderer keeps its golden bytes', () => {
   // Pins the domain chrome (the beta.10 DomainBar); the credential matrix after it is asserted byte-identical in support-ui.test.mjs.
   const digest = createHash('sha256').update(credentialSupportPage('<golden/>', domain)).digest('hex');
   assert.equal(digest, '3d7fb5ee532e50bc943dfc1c8a4fa9463f88eb40d9f057baeccf73255edec707');
+});
+
+// ---- #790: PII publication reads credential evidence as a verified bundle read set ----
+import { readdir as readDirectory } from 'node:fs/promises';
+import { credentialEvidenceChangeProblem, readCredentialEvidence } from '../benchmarks/shared/credential-evidence.ts';
+import { publishSyntheticBundle, syntheticSupportMatrix, tempDirectory } from './support/evaluation-bundle-fixture.mjs';
+
+const credentialNames = ['evaluation-bundle-v1.json', 'evaluation-bundles', 'support-matrix-v1.json'];
+const treeDigest = async directory => {
+  const hash = createHash('sha256');
+  const walk = async (dir, top = true) => { for (const entry of (await readDirectory(dir, { withFileTypes: true })).filter(e => !top || credentialNames.includes(e.name)).sort((a, b) => a.name.localeCompare(b.name))) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) await walk(full, false); else hash.update(`${path.relative(directory, full)}\0`).update(await readFile(full));
+  } };
+  await walk(directory);
+  return hash.digest('hex');
+};
+
+test('credential and PII publish together from a bundle: credential evidence untouched, index binds the bundle and the PII artifact', async () => {
+  const results = await tempDirectory('pii-bundle-publish-'), supportFile = path.join(results, 'support-matrix-v1.json');
+  await writeFile(supportFile, JSON.stringify(syntheticSupportMatrix()) + '\n');
+  const { pointer } = await publishSyntheticBundle(results);
+  const before = await treeDigest(results);
+  const { stdout } = await execute(process.execPath, ['--import', 'tsx', 'scripts/publish-pii-support.ts', `--credential-results=${results}`, `--credential-support=${supportFile}`,
+    `--pii-directory=${results}`, `--output=${path.join(results, 'evaluation-domains-v2.json')}`, '--population-mode=not-measured'], { cwd: path.resolve('.') });
+  assert.match(stdout, new RegExp(`Credential evidence: bundle ${pointer.bundleId}`));
+  const index = JSON.parse(await readFile(path.join(results, 'evaluation-domains-v2.json'), 'utf8'));
+  assert.equal(evaluationDomainsV2Problem(index), null);
+  assert.deepEqual(domainDescriptorV2(index, 'credential').evaluation,
+    { state: 'published', href: `/results/evaluation-bundles/${pointer.bundleId}/manifest.json`, artifactCommitment: pointer.manifest.sha256 });
+  const artifact = (await readDirectory(results)).find(name => name.startsWith('pii-support-matrix-v2-'));
+  assert.equal(JSON.parse(await readFile(path.join(results, artifact), 'utf8')).artifactCommitment, domainDescriptorV2(index, 'pii').support.artifactCommitment);
+  // Only the two PII outputs were added; every credential file (pointer, bundle, support matrix) is byte-identical.
+  const added = (await readDirectory(results)).filter(name => !credentialNames.includes(name)).sort();
+  assert.deepEqual(added, ['evaluation-domains-v2.json', artifact].sort());
+  assert.equal(await treeDigest(results), before);
+  assert.equal(await credentialEvidenceChangeProblem(await readCredentialEvidence(results, supportFile)), null);
+});
+
+test('a concurrent credential replacement between read and commit is refused and the existing index survives', async () => {
+  const results = await tempDirectory('pii-bundle-concurrent-'), supportFile = path.join(results, 'support-matrix-v1.json');
+  await writeFile(supportFile, JSON.stringify(syntheticSupportMatrix()) + '\n');
+  await publishSyntheticBundle(results);
+  const evidence = await readCredentialEvidence(results, supportFile);
+  const oldIndex = path.join(results, 'index.json'), newPii = path.join(results, 'pii-new.json');
+  await writeFile(oldIndex, 'old-index\n');
+  const validations = { artifact: () => {}, index: () => {}, async beforeCommit() { const problem = await credentialEvidenceChangeProblem(evidence); if (problem) throw new Error(problem); } };
+  // Replacement of the credential bundle after the read set was taken (a concurrent eval:publish moves the pointer).
+  await publishSyntheticBundle(results, { runId: 'replacement-run' });
+  await assert.rejects(publishArtifactAndIndex(newPii, 'new-pii\n', oldIndex, 'new-index\n', validations), /Credential evaluation pointer changed/);
+  assert.equal(await readFile(oldIndex, 'utf8'), 'old-index\n');
+  assert.equal(await readFile(newPii, 'utf8'), 'new-pii\n');
+  // A support-matrix replacement is detected the same way.
+  const fresh = await readCredentialEvidence(results, supportFile);
+  await writeFile(supportFile, JSON.stringify({ ...syntheticSupportMatrix(), generatedNote: 'changed' }) + '\n');
+  assert.match(await credentialEvidenceChangeProblem(fresh), /support artifact bytes changed/);
+});
+
+test('a manifest rewritten in place under the same pointer is detected', async () => {
+  const results = await tempDirectory('pii-bundle-manifest-'), supportFile = path.join(results, 'support-matrix-v1.json');
+  await writeFile(supportFile, JSON.stringify(syntheticSupportMatrix()) + '\n');
+  const { directory } = await publishSyntheticBundle(results);
+  const evidence = await readCredentialEvidence(results, supportFile);
+  await writeFile(path.join(directory, 'manifest.json'), `${await readFile(path.join(directory, 'manifest.json'), 'utf8')} `);
+  assert.match(await credentialEvidenceChangeProblem(evidence), /changed during publication|unreadable/);
 });

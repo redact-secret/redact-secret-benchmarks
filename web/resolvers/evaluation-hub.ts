@@ -8,15 +8,18 @@
  */
 import type { EvaluationHubProps } from '../components/evaluation/hub/EvaluationHub';
 import type { HubMethod, HubPhase, HubRunData, HubScanner } from '../components/evaluation/hub/types';
-import type { EvaluationReport, QualificationEvidence } from '../../benchmarks/shared/evaluation-types.ts';
+import type { QualificationEvidence } from '../../benchmarks/shared/evaluation-types.ts';
 import { METHOD_IDS, methodHref } from '../lib/methods';
 import type { RouteEntry } from '../lib/routes';
 import { toolName } from './comparison';
 import { EVAL_COMMANDS, HUB_COPY, METHOD_COPY } from './evaluation-copy';
 import { count, isoDate } from './format';
+import type { EvaluationSummary } from './evaluation-methods';
 
 export interface HubInput {
-  report?: EvaluationReport;
+  report?: EvaluationSummary;
+  /** Cases per method, counted while the evidence was validated. */
+  caseCounts?: Record<string, number>;
   reason?: string;
   qualification?: QualificationEvidence;
   phases: RouteEntry[];
@@ -30,13 +33,13 @@ export function resolvePhases(phases: RouteEntry[], builtHrefs: Set<string>): Hu
     : { label: p.label, title: p.title, description: p.summary, action: 'Not in this build yet' }));
 }
 
-function methodFact(id: (typeof METHOD_IDS)[number], report: EvaluationReport | undefined, qualification: QualificationEvidence | undefined): string | undefined {
+function methodFact(id: (typeof METHOD_IDS)[number], report: EvaluationSummary | undefined, caseCounts: Record<string, number> | undefined, qualification: QualificationEvidence | undefined): string | undefined {
   const unit = METHOD_COPY[id].unit;
   if (id === 'holdout') return qualification ? count(qualification.holdout.caseCount, unit.one, unit.other) : undefined;
-  return report ? count(report.cases.filter(c => c.method === id).length, unit.one, unit.other) : undefined;
+  return report && caseCounts ? count(caseCounts[id] ?? 0, unit.one, unit.other) : undefined;
 }
 
-function runFor(report: EvaluationReport | undefined, reason: string | undefined): HubRunData {
+function runFor(report: EvaluationSummary | undefined, reason: string | undefined): HubRunData {
   if (!report) {
     return {
       state: 'not-measured',
@@ -69,7 +72,7 @@ export function resolveEvaluationHub(input: HubInput): EvaluationHubProps {
     href: methodHref(id),
     name: METHOD_COPY[id].name,
     question: METHOD_COPY[id].question,
-    fact: methodFact(id, report, qualification),
+    fact: methodFact(id, report, input.caseCounts, qualification),
   }));
   return {
     eyebrow: HUB_COPY.eyebrow,

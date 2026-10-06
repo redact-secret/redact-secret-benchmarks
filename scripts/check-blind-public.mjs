@@ -44,6 +44,18 @@ function tracked(root) {
   catch { return []; }
 }
 
+/** The content rule for one public text file; the evaluation-bundle publication check (#791) applies it to every referenced part. */
+export function blindTextProblems(relative, text) {
+  if (PRIVATE_MARKERS.some(marker => marker.test(text))) return [`${relative}: carries a private blind corpus, freeze or ledger; these stay in the custodian's private root`];
+  if (!AGGREGATE.test(text)) return [];
+  let parsed;
+  try { parsed = JSON.parse(text); }
+  catch { return [`${relative}: embeds a blind aggregate that is not a standalone JSON document, so its shape cannot be checked`]; }
+  try { validateAggregate(parsed); }
+  catch (error) { return [`${relative}: blind aggregate fails the release whitelist (${error.code ?? 'invalid'})`]; }
+  return [];
+}
+
 /** Problems for one repository root; empty when no public or tracked surface carries blind material. */
 export function blindPublicProblems(root, { files = tracked(root), checkIgnore = true } = {}) {
   const candidates = new Set(files);
@@ -56,17 +68,7 @@ export function blindPublicProblems(root, { files = tracked(root), checkIgnore =
     if (ALLOWED.has(relative) || !TEXT.test(relative)) continue;
     const file = path.join(root, relative);
     if (!existsSync(file) || !statSync(file).isFile()) continue;
-    const text = readFileSync(file, 'utf8');
-    if (PRIVATE_MARKERS.some(marker => marker.test(text))) {
-      problems.push(`${relative}: carries a private blind corpus, freeze or ledger; these stay in the custodian's private root`);
-      continue;
-    }
-    if (!AGGREGATE.test(text)) continue;
-    let parsed;
-    try { parsed = JSON.parse(text); }
-    catch { problems.push(`${relative}: embeds a blind aggregate that is not a standalone JSON document, so its shape cannot be checked`); continue; }
-    try { validateAggregate(parsed); }
-    catch (error) { problems.push(`${relative}: blind aggregate fails the release whitelist (${error.code ?? 'invalid'})`); }
+    problems.push(...blindTextProblems(relative, readFileSync(file, 'utf8')));
   }
   if (checkIgnore) {
     try { execFileSync('git', ['check-ignore', '-q', IGNORED_OUTPUT], { cwd: root, stdio: 'ignore' }); }

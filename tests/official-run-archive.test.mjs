@@ -93,7 +93,7 @@ test('publish-site.yml fetches the artifacts first, builds the view and the expo
   assert.match(build, /npm run check:routes/);
   assert.match(build, /BASE_PATH: ''/, 'the export is built for the root');
   const assemble = workflow.slice(at('- name: Assemble the site root'), at('aws-actions/configure-aws-credentials'));
-  assert.match(assemble, /node scripts\/assemble-site\.mjs/);
+  assert.match(assemble, /node (--import tsx )?scripts\/assemble-site\.mjs/);
   assert.match(assemble, /npm run features:check-public/);
   assert.match(assemble, /npm run blind:check-public/);
   assert.doesNotMatch(workflow, /dist\/next|dist\/assets|next\/_next/, 'nothing is placed under /next/ or synced from the legacy assets');

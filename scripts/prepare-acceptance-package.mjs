@@ -187,8 +187,9 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
     writeJson(candidateRecord, { schema: adoption.schema, state: 'candidate', candidate: ec }, '/');
     const changeReport = ec.changeReport;
     const comparison = (out, extra = []) => sh('node', ['--import', 'tsx', 'scripts/compare-adoption-views.ts', '--accepted', viewA, '--replay-old', viewA, '--candidate', view, '--candidate-methods', methods, '--candidate-inputs', derived,
-      '--report', changeReport, '--record', candidateRecord, '--engine-from', adoption.candidate.engine.tag, '--engine-to', ec.engine.tag, ...out, '--strict', ...extra], { cwd: root, env, stdio: ['ignore', 'inherit', 'inherit'] });
-    comparison(['--out-json', `${GENERATED}/${tag}.comparison.json`, '--out-md', `${GENERATED}/${tag}.md`]);
+      '--report', changeReport, '--record', candidateRecord, '--engine-from', adoption.candidate.engine.tag, '--engine-to', ec.engine.tag, ...out, '--strict', ...extra], { cwd: tree, env, stdio: ['ignore', 'inherit', 'inherit'] });
+    // The comparison and the triage queue read the candidate's artifacts, whose schema is the moved engine's: they run in the transient tree, whose pins match, and write into this checkout by absolute path.
+    comparison(['--out-json', path.join(root, `${GENERATED}/${tag}.comparison.json`), '--out-md', path.join(root, `${GENERATED}/${tag}.md`)]);
     // 11. The triage queue, exported with the ledger as it was before the owner's settlement rows (so it does not depend on them), and the re-evaluation of the settlements on this run's identities.
     const ledger = readJson('benchmarks/review-ledger.json');
     const preOwner = path.join(scratch, 'ledger-pre-owner.json');
@@ -197,7 +198,7 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
     comparison(['--out-json', queueComparison, '--out-md', path.join(scratch, 'comparison-pre-owner.md')], ['--ledger', preOwner]);
     const baseReport = adoption.candidate.changeReport;
     sh('node', ['--import', 'tsx', 'scripts/export-triage-queue.ts', '--artifacts', replay, '--snapshot', snapshotFile, '--record', candidateRecord, '--report', baseReport, '--comparison', queueComparison, '--run-records', replay,
-      '--out-json', `${GENERATED}/${tag}.triage-queue.json`, '--out-md', `${GENERATED}/${tag}.triage-queue.md`], { cwd: root, env, stdio: ['ignore', 'inherit', 'inherit'] });
+      '--out-json', path.join(root, `${GENERATED}/${tag}.triage-queue.json`), '--out-md', path.join(root, `${GENERATED}/${tag}.triage-queue.md`)], { cwd: tree, env, stdio: ['ignore', 'inherit', 'inherit'] });
     const previousQueue = `${GENERATED}/${adoption.candidate.supersedes?.evidenceRelease}.triage-queue.json`;
     const reauthored = new Set();
     for (const t of [adoption.candidate.supersedes?.evidenceRelease, adoption.candidate.evidenceRelease, tag].filter(Boolean)) for (const f of ['snapshot-2026.10.04.4', t]) if (existsSync(path.join(root, `${GENERATED}/${f}.json`))) for (const c of readJson(`${GENERATED}/${f}.json`).diff?.changed ?? []) if ((c.fields ?? []).includes('content')) reauthored.add(c.id);

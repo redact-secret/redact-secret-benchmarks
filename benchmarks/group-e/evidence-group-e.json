@@ -1,0 +1,1763 @@
+{
+ "schema": "group-e-evidence-v1",
+ "snapshot": {
+  "repo": "redact-secret/credential-evidence",
+  "tag": "snapshot-2026.10.06.5",
+  "commit": "574b52ba367e2071d5a9bea3e2da7a9c5057f633"
+ },
+ "cases": {
+  "adobe-jwt-service-account-identifiers-and-private-key-references": {
+   "sha256": "0dc0818d144f4f9809c3afa013f3039efc2c20375b3d3646713e03604e05afe1",
+   "outcome": "must-not-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "adobe:service-account-jwt-private-key",
+     "role": "lookalike"
+    }
+   ],
+   "scenarios": [
+    "benign-lookalike",
+    "public-identifier",
+    "templated-reference",
+    "prose-mention"
+   ],
+   "sources": [
+    {
+     "sourceId": "web-archive-org-dabac41130",
+     "locator": "section \"Required Claims for a Service Account JWT\""
+    },
+    {
+     "sourceId": "web-archive-org-048c2face6",
+     "locator": "section \"Create a Public Key Certificate\", MacOS and Linux"
+    },
+    {
+     "sourceId": "web-archive-org-dabac41130",
+     "locator": "sections \"Exchanging JWT to retrieve an access token\" and \"Request parameters\""
+    }
+   ]
+  },
+  "adobe-jwt-private-key-file-contents-unsettled": {
+   "sha256": "d6330c4999e31986306b9cc17720c57a38ff7eb5d0a9310f016faa25dff6e9f4",
+   "outcome": "not-assertable",
+   "basis": "unresolved",
+   "lifecycle": "draft",
+   "families": [
+    {
+     "family": "adobe:service-account-jwt-private-key",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "unsettled-evidence-input"
+   ],
+   "sources": [
+    {
+     "sourceId": "web-archive-org-048c2face6",
+     "locator": "section \"Create a Public Key Certificate\", MacOS and Linux"
+    },
+    {
+     "sourceId": "web-archive-org-dabac41130",
+     "locator": "section \"Sign and Encode your JWT\""
+    },
+    {
+     "sourceId": "developer-adobe-com-e0b4921a8f",
+     "locator": "section \"Why OAuth Server-to-Server credentials?\""
+    }
+   ]
+  },
+  "adobe-jwt-signed-assertion-form-field-unsettled": {
+   "sha256": "07a507ab93be64067ccd351bee15ade03d8212ad4ebd0eca2803fd09f4e4d0b7",
+   "outcome": "not-assertable",
+   "basis": "unresolved",
+   "lifecycle": "draft",
+   "families": [
+    {
+     "family": "adobe:service-account-jwt-private-key",
+     "role": "context"
+    }
+   ],
+   "scenarios": [
+    "unsettled-evidence-input"
+   ],
+   "sources": [
+    {
+     "sourceId": "web-archive-org-dabac41130",
+     "locator": "sections \"Exchanging JWT to retrieve an access token\" and \"Request parameters\""
+    },
+    {
+     "sourceId": "web-archive-org-dabac41130",
+     "locator": "section \"Sign and Encode your JWT\""
+    },
+    {
+     "sourceId": "web-archive-org-dabac41130",
+     "locator": "section \"Required Claims for a Service Account JWT\", exp claim"
+    }
+   ]
+  },
+  "airtable-legacy-api-key-url-parameter-value": {
+   "sha256": "1339c5a6e51777763a82a0449d8a7cb5604586be5f4e9958e85f460e354c8f77",
+   "outcome": "must-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "airtable:legacy-api-key",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "missing-context-marker"
+   ],
+   "sources": [
+    {
+     "sourceId": "airtable-com-c31dd3fe16",
+     "locator": "#basics"
+    },
+    {
+     "sourceId": "web-archive-org-50b6543c04",
+     "locator": "sections \"How can I find what is using my API key?\" and FAQ \"Why are we doing this?\""
+    },
+    {
+     "sourceId": "web-archive-org-50b6543c04",
+     "locator": "section \"Timeline\""
+    }
+   ]
+  },
+  "airtable-legacy-api-key-placeholders-references-and-non-values": {
+   "sha256": "b107d56b18eb3e4d148cf6ab0f815637fb5fea2dc70e96d5f940208a6461aaa0",
+   "outcome": "must-not-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "airtable:legacy-api-key",
+     "role": "lookalike"
+    }
+   ],
+   "scenarios": [
+    "benign-lookalike",
+    "templated-reference",
+    "prose-mention"
+   ],
+   "sources": [
+    {
+     "sourceId": "airtable-com-c31dd3fe16",
+     "locator": "#basics"
+    }
+   ]
+  },
+  "airtable-legacy-api-key-bearer-header-and-bare-value-unsettled": {
+   "sha256": "0a6f83c02b11b74c8cd53a3b25f596686cdfaf1ed764e33e0a10f41d5854f1db",
+   "outcome": "not-assertable",
+   "basis": "unresolved",
+   "lifecycle": "draft",
+   "families": [
+    {
+     "family": "airtable:legacy-api-key",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "unsettled-evidence-input"
+   ],
+   "sources": [
+    {
+     "sourceId": "airtable-com-c31dd3fe16",
+     "locator": "#basics"
+    },
+    {
+     "sourceId": "web-archive-org-50b6543c04",
+     "locator": "section \"Timeline\""
+    }
+   ]
+  },
+  "dropbox-legacy-long-lived-access-token-response-member": {
+   "sha256": "f63713d4f991cf6377ca892526148a4fe199926c2284c545d6c8b8e3d5610e19",
+   "outcome": "must-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "dropbox:legacy-long-lived-access-token",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "structured-text-value"
+   ],
+   "sources": [
+    {
+     "sourceId": "docs-dropboxapi-com-2835da9ecb",
+     "locator": "#oauth2token, response examples"
+    },
+    {
+     "sourceId": "web-archive-org-d0baf6f549",
+     "locator": "section \"Retiring Legacy Tokens\""
+    },
+    {
+     "sourceId": "docs-dropboxapi-com-aea155a830",
+     "locator": "#using-refresh-tokens"
+    }
+   ]
+  },
+  "dropbox-legacy-long-lived-access-token-placeholders-and-references": {
+   "sha256": "c96a4175060365c6975a646955f3d436a094702cc31ecd47ab4e871b825a2ff8",
+   "outcome": "must-not-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "dropbox:legacy-long-lived-access-token",
+     "role": "lookalike"
+    }
+   ],
+   "scenarios": [
+    "benign-lookalike",
+    "templated-reference"
+   ],
+   "sources": [
+    {
+     "sourceId": "docs-dropboxapi-com-2835da9ecb",
+     "locator": "#oauth2token, response examples"
+    }
+   ]
+  },
+  "dropbox-legacy-long-lived-access-token-bare-value-and-lone-member-unsettled": {
+   "sha256": "e5aebd2e85b27dbbbbd92bfc4f7e90f6cb50ffaf5f9d033b1a0317566c837061",
+   "outcome": "not-assertable",
+   "basis": "unresolved",
+   "lifecycle": "draft",
+   "families": [
+    {
+     "family": "dropbox:legacy-long-lived-access-token",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "unsettled-evidence-input"
+   ],
+   "sources": [
+    {
+     "sourceId": "docs-dropboxapi-com-aea155a830",
+     "locator": "#using-refresh-tokens"
+    },
+    {
+     "sourceId": "web-archive-org-d0baf6f549",
+     "locator": "section \"Retiring Legacy Tokens\""
+    }
+   ]
+  },
+  "hubspot-legacy-api-key-hapikey-query-parameter-value": {
+   "sha256": "a9c757f7ade39a4b426cc93197f014ee5b091fb18d4f0084c1f1cd0ab10ab9e0",
+   "outcome": "must-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "hubspot:legacy-api-key",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "missing-context-marker"
+   ],
+   "sources": [
+    {
+     "sourceId": "web-archive-org-edd2016419",
+     "locator": "section \"API key\""
+    },
+    {
+     "sourceId": "web-archive-org-edd2016419",
+     "locator": "section \"Authentication methods on HubSpot\""
+    },
+    {
+     "sourceId": "developers-hubspot-com-1876a2b7bb",
+     "locator": "section \"Developer API keys\""
+    },
+    {
+     "sourceId": "web-archive-org-1433438df3",
+     "locator": "section \"When is this change happening?\""
+    }
+   ]
+  },
+  "hubspot-legacy-api-key-placeholders-masked-display-and-references": {
+   "sha256": "f52db0311e5e794b6f637b03954afa9558d3fbbd1fa28d48bcb2e344c1a55d7e",
+   "outcome": "must-not-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "hubspot:legacy-api-key",
+     "role": "lookalike"
+    }
+   ],
+   "scenarios": [
+    "benign-lookalike",
+    "templated-reference",
+    "documentation-placeholder",
+    "prose-mention"
+   ],
+   "sources": [
+    {
+     "sourceId": "developers-hubspot-com-1876a2b7bb",
+     "locator": "section \"Developer API keys\""
+    },
+    {
+     "sourceId": "web-archive-org-edd2016419",
+     "locator": "section \"API key\""
+    }
+   ]
+  },
+  "hubspot-legacy-api-key-hyphen-grouped-bare-value-unsettled": {
+   "sha256": "2eceb8a978e0029ab53f22c7602cbb0ad9354967937d73a2cb46016db4e42a6a",
+   "outcome": "not-assertable",
+   "basis": "unresolved",
+   "lifecycle": "draft",
+   "families": [
+    {
+     "family": "hubspot:legacy-api-key",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "unsettled-evidence-input"
+   ],
+   "sources": [
+    {
+     "sourceId": "developers-hubspot-com-1876a2b7bb",
+     "locator": "section \"Developer API keys\""
+    },
+    {
+     "sourceId": "web-archive-org-edd2016419",
+     "locator": "section \"Authentication methods on HubSpot\""
+    }
+   ]
+  },
+  "jfrog-api-key-header-and-basic-password-value": {
+   "sha256": "a50ce8a8f58ac6ba899392b1e21aa5b21e497e7c3d299a46f46b47b691269d87",
+   "outcome": "must-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "jfrog:api-key",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "missing-context-marker"
+   ],
+   "sources": [
+    {
+     "sourceId": "docs-jfrog-com-fd72df859f",
+     "locator": "API Key, introduction"
+    },
+    {
+     "sourceId": "docs-jfrog-com-9efead811f",
+     "locator": "Comparing Identity Reference Tokens With API Keys"
+    }
+   ]
+  },
+  "jfrog-api-key-lookalikes-and-non-values": {
+   "sha256": "b619a5ddabbb2a48950460451e41de6b19680e0fb22d1d6529d8a16079b3fc65",
+   "outcome": "must-not-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "jfrog:api-key",
+     "role": "lookalike"
+    }
+   ],
+   "scenarios": [
+    "benign-lookalike",
+    "templated-reference",
+    "prose-mention"
+   ],
+   "sources": [
+    {
+     "sourceId": "docs-jfrog-com-fd72df859f",
+     "locator": "API Key, introduction"
+    },
+    {
+     "sourceId": "docs-jfrog-com-9efead811f",
+     "locator": "Comparing Identity Reference Tokens With API Keys"
+    }
+   ]
+  },
+  "jfrog-api-key-bare-value-and-format-conflict-unsettled": {
+   "sha256": "b44fe404106fad27d6847483e59678b8dec7616e0e2928c14cccf3669846e3fb",
+   "outcome": "not-assertable",
+   "basis": "unresolved",
+   "lifecycle": "draft",
+   "families": [
+    {
+     "family": "jfrog:api-key",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "unsettled-evidence-input"
+   ],
+   "sources": [
+    {
+     "sourceId": "docs-jfrog-com-9efead811f",
+     "locator": "Comparing Identity Reference Tokens With API Keys"
+    },
+    {
+     "sourceId": "docs-jfrog-com-cb04684087",
+     "locator": "Create API Key, sample output"
+    }
+   ]
+  },
+  "zendesk-api-token-basic-credential-token-part": {
+   "sha256": "084a84e8d528213e00329d2c934e30d63f43ac793ef4a5b53484741b06059544",
+   "outcome": "must-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "zendesk:api-token",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "missing-context-marker"
+   ],
+   "sources": [
+    {
+     "sourceId": "developer-zendesk-com-73874c42bb",
+     "locator": "#api-token-deprecated"
+    },
+    {
+     "sourceId": "developer-zendesk-com-a681e17a67",
+     "locator": "What this means for existing tokens"
+    }
+   ]
+  },
+  "zendesk-api-token-lookalikes-and-non-values": {
+   "sha256": "5545fd8cf93781bbea85fdd30963dd48fa6fe15c497f7e03d1c840ea530a4655",
+   "outcome": "must-not-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "zendesk:api-token",
+     "role": "lookalike"
+    }
+   ],
+   "scenarios": [
+    "benign-lookalike",
+    "templated-reference",
+    "public-identifier"
+   ],
+   "sources": [
+    {
+     "sourceId": "developer-zendesk-com-73874c42bb",
+     "locator": "#api-token-deprecated"
+    },
+    {
+     "sourceId": "developer-zendesk-com-e25743b4de",
+     "locator": "Differences table"
+    }
+   ]
+  },
+  "zendesk-api-token-basic-credential-encoded-header-value": {
+   "sha256": "b3e160b03501595361bf76f612f08023ddbb33df42fc5db73c41c732c28ad1ac",
+   "outcome": "must-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "zendesk:api-token",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "missing-context-marker"
+   ],
+   "sources": [
+    {
+     "sourceId": "developer-zendesk-com-73874c42bb",
+     "locator": "API token (deprecated)"
+    },
+    {
+     "sourceId": "web-archive-org-b03c7ae811",
+     "locator": "API token section, capture of 2022-12-03"
+    },
+    {
+     "sourceId": "developer-zendesk-com-a681e17a67",
+     "locator": "What this means for existing tokens"
+    }
+   ]
+  },
+  "zendesk-api-token-bare-value-and-grammar-unsettled": {
+   "sha256": "efa47e6ec6b41dc92c537764bfc1bb942dfb6ea7feb3d4581ac967ec7df9f9c7",
+   "outcome": "not-assertable",
+   "basis": "unresolved",
+   "lifecycle": "draft",
+   "families": [
+    {
+     "family": "zendesk:api-token",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "unsettled-evidence-input"
+   ],
+   "sources": [
+    {
+     "sourceId": "developer-zendesk-com-73874c42bb",
+     "locator": "API token (deprecated), Example"
+    },
+    {
+     "sourceId": "developer-zendesk-com-a681e17a67",
+     "locator": "Migration timeline, Phase 1 to Phase 3"
+    }
+   ]
+  },
+  "reddit-app-client-secret-basic-password": {
+   "sha256": "b3c813ac751c823ee4227a9132e834b944609e2e901b512f708036786d0aab9d",
+   "outcome": "must-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "reddit:app-client-secret",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "missing-context-marker"
+   ],
+   "sources": [
+    {
+     "sourceId": "github-com-reddit-archive-reddit-e2ca394517",
+     "locator": "Getting Started; Retrieving the access token"
+    },
+    {
+     "sourceId": "web-archive-org-c53a558744",
+     "locator": "Resources; opening notice"
+    },
+    {
+     "sourceId": "web-archive-org-c53a558744",
+     "locator": "Rules; Rate Limits"
+    }
+   ]
+  },
+  "reddit-installed-app-non-empty-basic-password-unsettled": {
+   "sha256": "e88e6fbd93ebc483f121944d4ff53e200c92020d7f11036be43e7f8539eebb6c",
+   "outcome": "not-assertable",
+   "basis": "unresolved",
+   "lifecycle": "draft",
+   "families": [
+    {
+     "family": "reddit:app-client-secret",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "unsettled-evidence-input"
+   ],
+   "sources": [
+    {
+     "sourceId": "github-com-reddit-archive-reddit-e2ca394517",
+     "locator": "Getting Started"
+    },
+    {
+     "sourceId": "github-com-reddit-archive-reddit-b8d4025e45",
+     "locator": "Installed app"
+    }
+   ]
+  },
+  "reddit-oauth-access-token-response-member": {
+   "sha256": "8a002f07bc041e2706ad44824c78234c6b4db0113f095ef31b062acae70b4b07",
+   "outcome": "must-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "reddit:oauth-access-token",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "structured-text-value"
+   ],
+   "sources": [
+    {
+     "sourceId": "github-com-reddit-archive-reddit-e2ca394517",
+     "locator": "Retrieving the access token; Token Retrieval (Implicit grant flow)"
+    },
+    {
+     "sourceId": "github-com-reddit-archive-reddit-e2ca394517",
+     "locator": "Authorization (duration); Retrieving the access token"
+    },
+    {
+     "sourceId": "web-archive-org-c53a558744",
+     "locator": "Resources; opening notice"
+    }
+   ]
+  },
+  "reddit-oauth-access-token-bearer-header-and-redirect-fragment": {
+   "sha256": "37174f3a1c44355898cebad1cc631acce659725475c22ba74521e2f54bb64fe5",
+   "outcome": "must-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "reddit:oauth-access-token",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "missing-context-marker"
+   ],
+   "sources": [
+    {
+     "sourceId": "github-com-reddit-archive-reddit-e2ca394517",
+     "locator": "Authorization (duration); Retrieving the access token"
+    },
+    {
+     "sourceId": "github-com-reddit-archive-reddit-e2ca394517",
+     "locator": "Retrieving the access token; Token Retrieval (Implicit grant flow)"
+    },
+    {
+     "sourceId": "web-archive-org-c53a558744",
+     "locator": "Resources; opening notice"
+    }
+   ]
+  },
+  "reddit-oauth-refresh-token-response-member-and-request-field": {
+   "sha256": "1aacac6ca25c2452cc18adb56f058af2e91796f3824eaced47be536adb6a5a27",
+   "outcome": "must-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "reddit:oauth-refresh-token",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "structured-text-value"
+   ],
+   "sources": [
+    {
+     "sourceId": "github-com-reddit-archive-reddit-e2ca394517",
+     "locator": "Authorization (duration); Refreshing the token"
+    },
+    {
+     "sourceId": "github-com-reddit-archive-reddit-e2ca394517",
+     "locator": "Refreshing the token"
+    },
+    {
+     "sourceId": "web-archive-org-c53a558744",
+     "locator": "Resources; opening notice"
+    }
+   ]
+  },
+  "reddit-oauth-revoke-token-request-body-token-field": {
+   "sha256": "aa2aa46955b2106f654412e72a32de899daf757611f020a1fa0e58e09a67ff59",
+   "outcome": "must-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "reddit:oauth-access-token",
+     "role": "subject"
+    },
+    {
+     "family": "reddit:oauth-refresh-token",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "structured-text-value"
+   ],
+   "sources": [
+    {
+     "sourceId": "github-com-reddit-archive-reddit-e2ca394517",
+     "locator": "Manually Revoking a Token"
+    },
+    {
+     "sourceId": "web-archive-org-c53a558744",
+     "locator": "Resources; opening notice"
+    }
+   ]
+  },
+  "reddit-oauth-documentation-template-words-references-and-non-values": {
+   "sha256": "4b7252379613bc7487c027d754b8cc001e0aca2b30ab90b0a4a100a5be3b5398",
+   "outcome": "must-not-flag",
+   "basis": "project-policy",
+   "lifecycle": "maintainer-only",
+   "families": [
+    {
+     "family": "reddit:app-client-secret",
+     "role": "lookalike"
+    },
+    {
+     "family": "reddit:oauth-access-token",
+     "role": "lookalike"
+    },
+    {
+     "family": "reddit:oauth-refresh-token",
+     "role": "lookalike"
+    }
+   ],
+   "scenarios": [
+    "benign-lookalike",
+    "templated-reference",
+    "documentation-placeholder"
+   ],
+   "sources": [
+    {
+     "sourceId": "github-com-reddit-archive-reddit-e2ca394517",
+     "locator": "Application Only OAuth"
+    },
+    {
+     "sourceId": "github-com-reddit-archive-reddit-e2ca394517",
+     "locator": "Getting Started"
+    },
+    {
+     "sourceId": "github-com-reddit-archive-reddit-e2ca394517",
+     "locator": "Manually Revoking a Token"
+    }
+   ]
+  },
+  "reddit-oauth-bare-values-and-encoded-basic-header-unsettled": {
+   "sha256": "207dd5c943fb0d38ebb32f88633f454a685fff26558566e88c5a1646ed4a3ae8",
+   "outcome": "not-assertable",
+   "basis": "unresolved",
+   "lifecycle": "draft",
+   "families": [
+    {
+     "family": "reddit:oauth-access-token",
+     "role": "subject"
+    },
+    {
+     "family": "reddit:oauth-refresh-token",
+     "role": "subject"
+    },
+    {
+     "family": "reddit:app-client-secret",
+     "role": "subject"
+    }
+   ],
+   "scenarios": [
+    "unsettled-evidence-input"
+   ],
+   "sources": [
+    {
+     "sourceId": "github-com-reddit-archive-reddit-e2ca394517",
+     "locator": "Getting Started; Retrieving the access token"
+    },
+    {
+     "sourceId": "github-com-reddit-archive-reddit-e2ca394517",
+     "locator": "Retrieving the access token; Token Retrieval (Implicit grant flow)"
+    },
+    {
+     "sourceId": "github-com-reddit-archive-reddit-e2ca394517",
+     "locator": "Refreshing the token"
+    }
+   ]
+  }
+ },
+ "fixtures": [
+  {
+   "id": "adobe-authored--jwt-claims-payload-identifiers",
+   "case": "adobe-jwt-service-account-identifiers-and-private-key-references",
+   "context": "structured-file",
+   "sha256": "2bc519941b29ef9dfc2fadfffb5b9682911a3fbd1c5ea00fb8b1ead77940c788",
+   "text": "{\n  \"iss\": \"SYNTHETICORG0001@AdobeOrg\",\n  \"sub\": \"SYNTHETICTECH0001@techacct.adobe.com\",\n  \"aud\": \"https://ims-na1.adobelogin.com/c/SYNTHETICAPIKEY0001\",\n  \"exp\": 1\n}\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "adobe-authored--key-generation-command",
+   "case": "adobe-jwt-service-account-identifiers-and-private-key-references",
+   "context": "cli",
+   "sha256": "ae0611716276ef070abfc2724d4cd86e62aee88cd62cb68780896edc8aae8b4a",
+   "text": "openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -keyout private.key -out certificate_pub.crt\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "adobe-authored--key-file-path-reference",
+   "case": "adobe-jwt-service-account-identifiers-and-private-key-references",
+   "context": "env-assignment",
+   "sha256": "f027ec92cb9542d12bc6d00759f094489cc893ee4161d305631ddc4c83be8dce",
+   "text": "ADOBE_PRIVATE_KEY_PATH=./private.key\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "adobe-authored--public-certificate-upload-prose",
+   "case": "adobe-jwt-service-account-identifiers-and-private-key-references",
+   "context": "prose",
+   "sha256": "db2bc1a9e263ce0cb219f6aea825f53b45056f731ab2d987d83cab2632be7628",
+   "text": "Upload the public certificate (certificate_pub.crt) when you create the integration; keep private.key on your own machine.\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "adobe-authored--jwt-token-form-body",
+   "case": "adobe-jwt-signed-assertion-form-field-unsettled",
+   "context": "form-body",
+   "sha256": "82ee4493377df5c5cd41cda1a4c84fc256d81180ad320dd71d1031ccda0d5762",
+   "text": "POST /ims/exchange/jwt/ HTTP/1.1\nHost: ims-na1.adobelogin.example.test\nContent-Type: application/x-www-form-urlencoded\n\nclient_id=SYNTHETICAPIKEY0001&jwt_token=eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJTWU5USEVUSUNPUkcwMDAxQEFkb2JlT3JnIiwic3ViIjoiU1lOVEhFVElDVEVDSDAwMDFAdGVjaGFjY3QuYWRvYmUuY29tIiwiZXhwIjoxfQ.U1lOVEhFVElDLXNpZ25hdHVyZS1uZXZlci1pc3N1ZWQtMDAwMQ\n",
+   "outcome": "not-assertable",
+   "spans": []
+  },
+  {
+   "id": "adobe-authored--jwt-token-curl-form-argument",
+   "case": "adobe-jwt-signed-assertion-form-field-unsettled",
+   "context": "cli",
+   "sha256": "fcb0b4810cf6af3a28f6ec2729bc5b48be8eba428af858b429045a148af50065",
+   "text": "curl -X POST https://ims-na1.adobelogin.example.test/ims/exchange/jwt/ -F client_id=SYNTHETICAPIKEY0001 -F jwt_token=eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJTWU5USEVUSUNPUkcwMDAxQEFkb2JlT3JnIiwic3ViIjoiU1lOVEhFVElDVEVDSDAwMDFAdGVjaGFjY3QuYWRvYmUuY29tIiwiZXhwIjoxfQ.U1lOVEhFVElDLXNpZ25hdHVyZS1uZXZlci1pc3N1ZWQtMDAwMQ\n",
+   "outcome": "not-assertable",
+   "spans": []
+  },
+  {
+   "id": "airtable-authored--raw-http-api-key-query",
+   "case": "airtable-legacy-api-key-url-parameter-value",
+   "context": "header",
+   "sha256": "c62ca7961f5d1c6873f068bca7cc8a269848842fdc7644c1532226cda13b2b6e",
+   "text": "GET /v0/appSYNTHETIC0001/Table?maxRecords=3&api_key=SYNTHETIC-airtable-legacy-api-key-never-issued-0001 HTTP/1.1\nHost: api.airtable.example.test\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 52,
+     "end": 103,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "airtable-authored--curl-api-key-query",
+   "case": "airtable-legacy-api-key-url-parameter-value",
+   "context": "cli",
+   "sha256": "1c75a168b260da7294919a71e744b9d1f888b5ddfc57df95578827a3e707735e",
+   "text": "curl \"https://api.airtable.example.test/v0/appSYNTHETIC0001/Table?api_key=SYNTHETIC-airtable-legacy-api-key-never-issued-0002\"\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 74,
+     "end": 125,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "airtable-authored--json-config-url-with-api-key-query",
+   "case": "airtable-legacy-api-key-url-parameter-value",
+   "context": "structured-file",
+   "sha256": "f6755b4ac7b602f21dd78c4c6b164af636f32df5d5ba69b90aa7eeffd2905c76",
+   "text": "{\n  \"baseUrl\": \"https://api.airtable.example.test/v0/appSYNTHETIC0001/Table?api_key=SYNTHETIC-airtable-legacy-api-key-never-issued-0003\"\n}\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 84,
+     "end": 135,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "airtable-authored--empty-value",
+   "case": "airtable-legacy-api-key-placeholders-references-and-non-values",
+   "context": "header",
+   "sha256": "dcdd08abfcbaf31a854460244ed13be64786ab842468b028e5190b5a1007043d",
+   "text": "GET /v0/appSYNTHETIC0001/Table?maxRecords=3&api_key= HTTP/1.1\nHost: api.airtable.example.test\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "airtable-authored--angle-placeholder",
+   "case": "airtable-legacy-api-key-placeholders-references-and-non-values",
+   "context": "cli",
+   "sha256": "ba5483746014c233a5e50c0f08f44467b33d67deeb5bf907af6feadb06a6edf7",
+   "text": "curl \"https://api.airtable.example.test/v0/appSYNTHETIC0001/Table?api_key=<YOUR_API_KEY>\"\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "airtable-authored--environment-reference",
+   "case": "airtable-legacy-api-key-placeholders-references-and-non-values",
+   "context": "cli",
+   "sha256": "f86e3053ed1320c3eb1b00c81ba6e5e467539ec34ab30466cd78b09cb6a9e44d",
+   "text": "curl \"https://api.airtable.example.test/v0/appSYNTHETIC0001/Table?api_key=${AIRTABLE_API_KEY}\"\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "airtable-authored--masked-display",
+   "case": "airtable-legacy-api-key-placeholders-references-and-non-values",
+   "context": "structured-file",
+   "sha256": "6de67246f730932ca861e23c2918661840c8f564e7cd579c71e4e5ef14c1c837",
+   "text": "{\n  \"apiKey\": \"********\"\n}\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "airtable-authored--parameter-named-in-prose",
+   "case": "airtable-legacy-api-key-placeholders-references-and-non-values",
+   "context": "prose",
+   "sha256": "8b22c41958d905d381d1ea37d5a7c36a78c81b6e26d466ce5e551d8121520b17",
+   "text": "Airtable stopped accepting the legacy api_key URL parameter for tokens.\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "airtable-authored--bearer-header-value",
+   "case": "airtable-legacy-api-key-bearer-header-and-bare-value-unsettled",
+   "context": "header",
+   "sha256": "4623918a64b715926891d4869578079cb5e08998eb236a89bf4a5e488a8360b1",
+   "text": "GET /v0/appSYNTHETIC0001/Table HTTP/1.1\nHost: api.airtable.example.test\nAuthorization: Bearer SYNTHETIC-airtable-legacy-api-key-never-issued-0004\n",
+   "outcome": "not-assertable",
+   "spans": []
+  },
+  {
+   "id": "airtable-authored--bare-value-in-prose",
+   "case": "airtable-legacy-api-key-bearer-header-and-bare-value-unsettled",
+   "context": "prose",
+   "sha256": "79a8f6597d6cd36389e9136a06e5f18a0f6ae1dd981c69d4c5fdaa6e02806f8f",
+   "text": "Old key: SYNTHETIC-airtable-legacy-api-key-never-issued-0005\n",
+   "outcome": "not-assertable",
+   "spans": []
+  },
+  {
+   "id": "dropbox-authored--pretty-json-response",
+   "case": "dropbox-legacy-long-lived-access-token-response-member",
+   "context": "structured-file",
+   "sha256": "5afc978f3f013a22d2caf7efb55826012703b70ee489fc4d00ef952012e94bcc",
+   "text": "{\n  \"access_token\": \"SYNTHETIC-never-issued-dropbox-legacy-0001\",\n  \"token_type\": \"bearer\",\n  \"account_id\": \"SYNTHETIC-account-id-0001\",\n  \"uid\": \"SYNTHETIC-uid-0001\"\n}\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 21,
+     "end": 63,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "dropbox-authored--raw-http-response-compact-json",
+   "case": "dropbox-legacy-long-lived-access-token-response-member",
+   "context": "header",
+   "sha256": "9c3aceb9942c7a96fc7ada59de7b4215ccb9731a0799e2f94bc6a95f28327e57",
+   "text": "HTTP/1.1 200 OK\nContent-Type: application/json\n\n{\"access_token\":\"SYNTHETIC-never-issued-dropbox-legacy-0002\",\"token_type\":\"bearer\",\"account_id\":\"SYNTHETIC-account-id-0002\",\"uid\":\"SYNTHETIC-uid-0002\"}\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 65,
+     "end": 107,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "dropbox-authored--curl-response-output",
+   "case": "dropbox-legacy-long-lived-access-token-response-member",
+   "context": "cli",
+   "sha256": "b93ebd293224d16eeb653e030f4502d9b5ca92f2b09013a476f1d93dae0013ba",
+   "text": "$ curl -s https://api.example.test/oauth2/token -d grant_type=authorization_code -d code=SYNTHETICCODE0001\n{\"access_token\": \"SYNTHETIC-never-issued-dropbox-legacy-0003\", \"token_type\": \"bearer\", \"account_id\": \"SYNTHETIC-account-id-0003\", \"uid\": \"SYNTHETIC-uid-0003\"}\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 125,
+     "end": 167,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "dropbox-authored--access-token-angle-placeholder",
+   "case": "dropbox-legacy-long-lived-access-token-placeholders-and-references",
+   "context": "structured-file",
+   "sha256": "8da454fba0bcd651e0ea17a2ea339b263368070be442955d16dba2a06330b059",
+   "text": "{\n  \"access_token\": \"<ACCESS_TOKEN>\",\n  \"token_type\": \"bearer\"\n}\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "dropbox-authored--access-token-template-reference",
+   "case": "dropbox-legacy-long-lived-access-token-placeholders-and-references",
+   "context": "structured-file",
+   "sha256": "68cbb7d568eea7e74934ae567114299a5616c60daa686f789c61cc3beb6e7895",
+   "text": "{\n  \"access_token\": \"{{ dropbox_access_token }}\",\n  \"token_type\": \"bearer\"\n}\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "dropbox-authored--access-token-environment-reference",
+   "case": "dropbox-legacy-long-lived-access-token-placeholders-and-references",
+   "context": "cli",
+   "sha256": "658ede2569c2e6372fcfd4c47e14d77f18be45c2627a8ed04fa47438cd1a9948",
+   "text": "curl -s https://api.example.test/oauth2/token_info -H \"Authorization: Bearer ${DROPBOX_ACCESS_TOKEN}\"\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "dropbox-authored--access-token-masked-display",
+   "case": "dropbox-legacy-long-lived-access-token-placeholders-and-references",
+   "context": "structured-file",
+   "sha256": "3a863bc06b39c5c433e12153680eeab18720aa1e680e85f2db3b1ba7664930f3",
+   "text": "{\n  \"access_token\": \"********\",\n  \"token_type\": \"bearer\"\n}\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "dropbox-authored--token-type-only-response",
+   "case": "dropbox-legacy-long-lived-access-token-placeholders-and-references",
+   "context": "structured-file",
+   "sha256": "0d75d21e9c4e7961cdeaa49747403795fb17354d9f146b9725084c17f3062aae",
+   "text": "{\n  \"token_type\": \"bearer\"\n}\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "dropbox-authored--bare-value-in-prose",
+   "case": "dropbox-legacy-long-lived-access-token-bare-value-and-lone-member-unsettled",
+   "context": "prose",
+   "sha256": "029f1420f41c93a94518bccde00a039ab224238963510023ef49898031bb28e3",
+   "text": "Saved token: SYNTHETIC-never-issued-dropbox-legacy-0004\n",
+   "outcome": "not-assertable",
+   "spans": []
+  },
+  {
+   "id": "dropbox-authored--lone-access-token-member",
+   "case": "dropbox-legacy-long-lived-access-token-bare-value-and-lone-member-unsettled",
+   "context": "structured-file",
+   "sha256": "8edbfdf24e96155d81caa5049612f8579c69bdee5617bc203516a4b45f1a96df",
+   "text": "{\n  \"access_token\": \"SYNTHETIC-never-issued-dropbox-legacy-0005\"\n}\n",
+   "outcome": "not-assertable",
+   "spans": []
+  },
+  {
+   "id": "hubspot-authored--raw-http-hapikey-query",
+   "case": "hubspot-legacy-api-key-hapikey-query-parameter-value",
+   "context": "header",
+   "sha256": "0409ac4dbb8f410d088c22bd6e34c23438c73347229997ec949dbfd6d1b5cb04",
+   "text": "GET /contacts/v1/lists/all/contacts/all?count=10&hapikey=SYNTHETIC-hubspot-api-key-never-issued-0001 HTTP/1.1\nHost: api.hubspot.example.test\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 57,
+     "end": 100,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "hubspot-authored--curl-hapikey-query",
+   "case": "hubspot-legacy-api-key-hapikey-query-parameter-value",
+   "context": "cli",
+   "sha256": "9e189b45f890c0457da7e6325053a5d67bc113fcd91169eddc897dc75948e978",
+   "text": "curl \"https://api.hubspot.example.test/contacts/v1/lists/all/contacts/all?hapikey=SYNTHETIC-hubspot-api-key-never-issued-0002\"\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 82,
+     "end": 125,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "hubspot-authored--curl-developer-key-with-app-id",
+   "case": "hubspot-legacy-api-key-hapikey-query-parameter-value",
+   "context": "cli",
+   "sha256": "1315866ab543a9756a1cb4798e34dcd4f4616ec2049cfb3475e6d2bf16bafcef",
+   "text": "curl -X POST \"https://api.hubspot.example.test/integrators/timeline/v3/events?hapikey=SYNTHETIC-hubspot-developer-key-never-issued-0003&appId=SYNTHETICAPPID0001\"\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 86,
+     "end": 135,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "hubspot-authored--documented-developer-key-placeholder",
+   "case": "hubspot-legacy-api-key-placeholders-masked-display-and-references",
+   "context": "cli",
+   "sha256": "0ad4aafc6f36b40468f99de24010d2a66c7fe680bf9d4144233442d37552b408",
+   "text": "curl -X POST \"https://api.hubspot.example.test/integrators/timeline/v3/events?hapikey={YOUR_DEVELOPER_API_KEY}\"\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "hubspot-authored--masked-display-in-url",
+   "case": "hubspot-legacy-api-key-placeholders-masked-display-and-references",
+   "context": "cli",
+   "sha256": "dae8733fd53dce8b7c8d9519ba5d5eb3c0734bef545530b276113836a4116346",
+   "text": "curl \"https://api.hubspot.example.test/contacts/v1/lists/all/contacts/all?hapikey=SY************01\"\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "hubspot-authored--angle-placeholder",
+   "case": "hubspot-legacy-api-key-placeholders-masked-display-and-references",
+   "context": "cli",
+   "sha256": "84daca6a3beb70046e5adfdcedc0ea5903661f87faa098b7ec08478f51dcbe85",
+   "text": "curl \"https://api.hubspot.example.test/contacts/v1/lists/all/contacts/all?hapikey=<your-api-key>\"\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "hubspot-authored--environment-reference",
+   "case": "hubspot-legacy-api-key-placeholders-masked-display-and-references",
+   "context": "cli",
+   "sha256": "4b675271c4a2d3c2020e98691c9bad83a8ef9edb492cb9135e6961801d1fa0d0",
+   "text": "curl \"https://api.hubspot.example.test/contacts/v1/lists/all/contacts/all?hapikey=${HUBSPOT_API_KEY}\"\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "hubspot-authored--empty-value",
+   "case": "hubspot-legacy-api-key-placeholders-masked-display-and-references",
+   "context": "header",
+   "sha256": "83438a9f996bf373397baa1293639f041c74bf19cae0cbb045aad2c313c68105",
+   "text": "GET /contacts/v1/lists/all/contacts/all?count=10&hapikey= HTTP/1.1\nHost: api.hubspot.example.test\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "hubspot-authored--parameter-named-in-prose",
+   "case": "hubspot-legacy-api-key-placeholders-masked-display-and-references",
+   "context": "prose",
+   "sha256": "d8c57bd02851ee4019a8723b10b26c347d4c552f52a1346458d5b1622ca3d805",
+   "text": "Older integrations pass the key in the hapikey query parameter of each request.\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "hubspot-authored--grouped-value-in-prose",
+   "case": "hubspot-legacy-api-key-hyphen-grouped-bare-value-unsettled",
+   "context": "prose",
+   "sha256": "979637d4c3b58b49e44d8af169a0f89965b50fcbed36198b3bda0423aea8ad6e",
+   "text": "The HubSpot key for this portal is 53594e54-4845-5449-4300-000000000001 and should be rotated.\n",
+   "outcome": "not-assertable",
+   "spans": []
+  },
+  {
+   "id": "hubspot-authored--grouped-value-alone-on-line",
+   "case": "hubspot-legacy-api-key-hyphen-grouped-bare-value-unsettled",
+   "context": "prose",
+   "sha256": "4271513901d0c0d6de5ec626873a84d6b7e12f0faa29718c03962ef57d63b6b7",
+   "text": "53594e54-4845-5449-4300-000000000002\n",
+   "outcome": "not-assertable",
+   "spans": []
+  },
+  {
+   "id": "jfrog-authored--api-key-raw-http-art-api-header",
+   "case": "jfrog-api-key-header-and-basic-password-value",
+   "context": "header",
+   "sha256": "e09bc325133900eab2869273a8f9fbc97b31183183ee52012e32a6d4157f86f0",
+   "text": "GET /artifactory/api/system/ping HTTP/1.1\nHost: example-host.jfrog.example.test\nX-JFrog-Art-API: SYNTHETICJFrogApiKeyNeverIssued0001\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 97,
+     "end": 132,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "jfrog-authored--api-key-curl-art-api-header",
+   "case": "jfrog-api-key-header-and-basic-password-value",
+   "context": "cli",
+   "sha256": "965ea508e69a344e60323c7de2f5f741e77637f772b67d854b809ba751492d0d",
+   "text": "curl -H \"X-JFrog-Art-API: SYNTHETICJFrogApiKeyNeverIssued0002\" https://example-host.jfrog.example.test/artifactory/api/system/ping\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 26,
+     "end": 61,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "jfrog-authored--api-key-curl-basic-password",
+   "case": "jfrog-api-key-header-and-basic-password-value",
+   "context": "cli",
+   "sha256": "2f8abfafbbd1b8ec93c7ca2e20e406d91cb3ac33f264c6398d88d6d57a080fde",
+   "text": "curl -u example-user:SYNTHETICJFrogApiKeyNeverIssued0003 https://example-host.jfrog.example.test/artifactory/api/system/ping\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 21,
+     "end": 56,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "jfrog-authored--api-key-lookalike-header-name-only",
+   "case": "jfrog-api-key-lookalikes-and-non-values",
+   "context": "header",
+   "sha256": "d15a752e195730bb458cca79e3ff2f6532ec59c0d05b4467df64648bbc1bceea",
+   "text": "GET /artifactory/api/system/ping HTTP/1.1\nHost: example-host.jfrog.example.test\nX-JFrog-Art-API:\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "jfrog-authored--api-key-lookalike-angle-placeholder",
+   "case": "jfrog-api-key-lookalikes-and-non-values",
+   "context": "cli",
+   "sha256": "17fe9166c9281f1743303de4647be1ad4029e3ece41e66c69602ba0479e97d2f",
+   "text": "curl -H \"X-JFrog-Art-API: <YOUR_API_KEY>\" https://example-host.jfrog.example.test/artifactory/api/system/ping\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "jfrog-authored--api-key-lookalike-environment-reference",
+   "case": "jfrog-api-key-lookalikes-and-non-values",
+   "context": "cli",
+   "sha256": "a04893edabd4644a0884d8ba8f655517113b4b41fd00f34cb5e77b036951b32e",
+   "text": "curl -H \"X-JFrog-Art-API: ${JFROG_API_KEY}\" https://example-host.jfrog.example.test/artifactory/api/system/ping\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "jfrog-authored--api-key-lookalike-masked-display",
+   "case": "jfrog-api-key-lookalikes-and-non-values",
+   "context": "structured-file",
+   "sha256": "6de67246f730932ca861e23c2918661840c8f564e7cd579c71e4e5ef14c1c837",
+   "text": "{\n  \"apiKey\": \"********\"\n}\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "jfrog-authored--api-key-lookalike-username-without-password",
+   "case": "jfrog-api-key-lookalikes-and-non-values",
+   "context": "cli",
+   "sha256": "c955dc4714e12844a5e07a949ebe170df1c48a06af0119a6a11cc0d00d8e9598",
+   "text": "curl -u example-user https://example-host.jfrog.example.test/artifactory/api/system/ping\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "jfrog-authored--api-key-lookalike-documented-pattern-prose",
+   "case": "jfrog-api-key-lookalikes-and-non-values",
+   "context": "prose",
+   "sha256": "6ee3f0a4ed4f775a7bc2faff0870520e01fff6efe3cbb6685a978b1fcb59a534",
+   "text": "An API key is written as the four characters AKCp followed by 69 alphanumeric characters, 73 in all; the pattern is .*\\bAKCp[A-Za-z0-9]{69}\\b.* .\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "jfrog-authored--api-key-bare-value-in-prose",
+   "case": "jfrog-api-key-bare-value-and-format-conflict-unsettled",
+   "context": "prose",
+   "sha256": "36f4b3375cfe83e19ff3b8dc6fcf637433221a25fe04bf7fd12b006a982dbc98",
+   "text": "Key to rotate: SYNTHETICJFrogApiKeyNeverIssued0004\n",
+   "outcome": "not-assertable",
+   "spans": []
+  },
+  {
+   "id": "reddit-authored--access-response-pretty-json-response",
+   "case": "reddit-oauth-access-token-response-member",
+   "context": "structured-file",
+   "sha256": "e1298083b9c317dde45919fb6db746ff8bbae983178aa5ac2a704ad3991eef5c",
+   "text": "{\n  \"access_token\": \"SYNTHETIC-reddit-access-token-never-issued-0001\",\n  \"token_type\": \"bearer\",\n  \"scope\": \"identity\"\n}\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 21,
+     "end": 68,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "reddit-authored--access-response-raw-http-response-compact-json",
+   "case": "reddit-oauth-access-token-response-member",
+   "context": "header",
+   "sha256": "09251c183b7f92f3fe2c9dc18db6e87b6f54ce8b694dd2f03eac6f837f5c2f2a",
+   "text": "HTTP/1.1 200 OK\nContent-Type: application/json\n\n{\"access_token\":\"SYNTHETIC-reddit-access-token-never-issued-0002\",\"token_type\":\"bearer\",\"scope\":\"identity\"}\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 65,
+     "end": 112,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "reddit-authored--access-response-curl-response-output",
+   "case": "reddit-oauth-access-token-response-member",
+   "context": "cli",
+   "sha256": "3fe882575afd56282c6fe78c4ba7df025989f13f9c87188d95d0d59364365cf6",
+   "text": "$ curl -s -X POST https://www.reddit.example.test/api/v1/access_token -d grant_type=authorization_code -d code=CODE -d redirect_uri=URI --user 'CLIENT_ID:CLIENT_SECRET'\n{\"access_token\": \"SYNTHETIC-reddit-access-token-never-issued-0003\", \"token_type\": \"bearer\", \"scope\": \"identity\"}\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 187,
+     "end": 234,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "reddit-authored--access-carrier-bearer-raw-http",
+   "case": "reddit-oauth-access-token-bearer-header-and-redirect-fragment",
+   "context": "header",
+   "sha256": "fbc96e500f1b26da37100db8e29b69d57cf18b4372e7cc18a009137b7b97ecc0",
+   "text": "GET /api/v1/scopes HTTP/1.1\nHost: oauth.reddit.com\nAuthorization: bearer SYNTHETIC-reddit-access-token-never-issued-0004\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 73,
+     "end": 120,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "reddit-authored--access-carrier-bearer-curl-header",
+   "case": "reddit-oauth-access-token-bearer-header-and-redirect-fragment",
+   "context": "cli",
+   "sha256": "37f0f1ef5d49a91ffa8674aa5dd05939eb37e887929cd18cf8c4cb2ac4eee1e1",
+   "text": "curl -H \"Authorization: bearer SYNTHETIC-reddit-access-token-never-issued-0005\" https://oauth.reddit.com/api/v1/scopes\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 31,
+     "end": 78,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "reddit-authored--access-carrier-redirect-fragment",
+   "case": "reddit-oauth-access-token-bearer-header-and-redirect-fragment",
+   "context": "url-fragment",
+   "sha256": "1452d2ee2114d5b282e55ce1a83b21c7a3a1ec97f3103348808dc73c6dc0dcce",
+   "text": "https://client.example.test/callback#access_token=SYNTHETIC-reddit-access-token-never-issued-0006&token_type=bearer&scope=identity&state=SYNTHETICSTATE0001\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 50,
+     "end": 97,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "reddit-authored--refresh-pretty-json-response",
+   "case": "reddit-oauth-refresh-token-response-member-and-request-field",
+   "context": "structured-file",
+   "sha256": "25a576e54bf33e798b558c2b6778c97ea6c19f0596e6a42b63347ce2f0e0cb2a",
+   "text": "{\n  \"token_type\": \"bearer\",\n  \"scope\": \"identity\",\n  \"refresh_token\": \"SYNTHETIC-reddit-refresh-token-never-issued-0001\"\n}\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 71,
+     "end": 119,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "reddit-authored--refresh-raw-http-form-request",
+   "case": "reddit-oauth-refresh-token-response-member-and-request-field",
+   "context": "form-body",
+   "sha256": "bd3d8446fb773b237bdee0e3a3b3e878c1bfcd74432be54f67b597d5342f501e",
+   "text": "POST /api/v1/access_token HTTP/1.1\nHost: www.reddit.example.test\nContent-Type: application/x-www-form-urlencoded\n\ngrant_type=refresh_token&refresh_token=SYNTHETIC-reddit-refresh-token-never-issued-0002\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 153,
+     "end": 201,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "reddit-authored--refresh-curl-data-refresh-token",
+   "case": "reddit-oauth-refresh-token-response-member-and-request-field",
+   "context": "cli",
+   "sha256": "a9311d578cad38459c0a62225cbe85eefd286c0c4b32833c71d2f09398f033b7",
+   "text": "curl -X POST https://www.reddit.example.test/api/v1/access_token -d grant_type=refresh_token -d refresh_token=SYNTHETIC-reddit-refresh-token-never-issued-0003 --user 'CLIENT_ID:CLIENT_SECRET'\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 110,
+     "end": 158,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "reddit-authored--revoke-raw-http-form-request-no-hint",
+   "case": "reddit-oauth-revoke-token-request-body-token-field",
+   "context": "form-body",
+   "sha256": "6911e927090b06e452fa2b06516b43fde077aff09bc2e524730803c4685d56d0",
+   "text": "POST /api/v1/revoke_token HTTP/1.1\nHost: www.reddit.example.test\nContent-Type: application/x-www-form-urlencoded\n\ntoken=SYNTHETIC-reddit-revoked-token-never-issued-0001\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 120,
+     "end": 168,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "reddit-authored--revoke-curl-data-token-with-refresh-hint",
+   "case": "reddit-oauth-revoke-token-request-body-token-field",
+   "context": "cli",
+   "sha256": "33964850b74eeb595262687810d2421d80445fb23d0d66ceb4ec06d8c64ffd19",
+   "text": "curl -X POST https://www.reddit.example.test/api/v1/revoke_token -d token=SYNTHETIC-reddit-revoked-token-never-issued-0002 -d token_type_hint=refresh_token --user 'CLIENT_ID:CLIENT_SECRET'\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 74,
+     "end": 122,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "reddit-authored--secret-curl-user-code-flow",
+   "case": "reddit-app-client-secret-basic-password",
+   "context": "cli",
+   "sha256": "a0f564222b797a089b4b787e92856c1507d293aca52848bf1b9b3a39b54cd604",
+   "text": "curl -X POST https://www.reddit.example.test/api/v1/access_token -d 'grant_type=authorization_code&code=CODE&redirect_uri=URI' --user 'SYNTHETIC-reddit-client-id-0001:SYNTHETIC-reddit-client-secret-never-issued-0001'\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 167,
+     "end": 215,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "reddit-authored--secret-curl-u-application-only",
+   "case": "reddit-app-client-secret-basic-password",
+   "context": "cli",
+   "sha256": "9b153196f7ac35891a442eedb5e4c22f1be08c2d2b82a7114a74f2273ae5858d",
+   "text": "curl -X POST https://www.reddit.example.test/api/v1/access_token -d grant_type=client_credentials -u SYNTHETIC-reddit-client-id-0002:SYNTHETIC-reddit-client-secret-never-issued-0002\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 133,
+     "end": 181,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "reddit-authored--secret-curl-user-revocation",
+   "case": "reddit-app-client-secret-basic-password",
+   "context": "cli",
+   "sha256": "b45d1ba630f7ba6370f9fca74dffb949b8c2d6e2c073d8996a3641bfc3dc531f",
+   "text": "curl -X POST https://www.reddit.example.test/api/v1/revoke_token -d token=TOKEN --user 'SYNTHETIC-reddit-client-id-0003:SYNTHETIC-reddit-client-secret-never-issued-0003'\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 120,
+     "end": 168,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "reddit-authored--non-value-bearer-template-word",
+   "case": "reddit-oauth-documentation-template-words-references-and-non-values",
+   "context": "header",
+   "sha256": "503a410a9a19ed37508851c0b926dc9e5acb42c7ad424f18c3974af134d1cb5e",
+   "text": "GET /api/v1/scopes HTTP/1.1\nHost: oauth.reddit.com\nAuthorization: bearer TOKEN\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "reddit-authored--non-value-refresh-token-template-word",
+   "case": "reddit-oauth-documentation-template-words-references-and-non-values",
+   "context": "cli",
+   "sha256": "ffeb2294dca9fc7a1d3a1ed24d9cd744236483cff4834a16c13e7952d1383d9a",
+   "text": "curl -X POST https://www.reddit.example.test/api/v1/access_token -d grant_type=refresh_token -d refresh_token=TOKEN --user 'CLIENT_ID:CLIENT_SECRET'\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "reddit-authored--non-value-basic-user-template-words",
+   "case": "reddit-oauth-documentation-template-words-references-and-non-values",
+   "context": "cli",
+   "sha256": "99800a2270d2d5ec5ecf7c135eee841561025aae252a9778cbb13935aade99f3",
+   "text": "curl -X POST https://www.reddit.example.test/api/v1/access_token -d 'grant_type=authorization_code&code=CODE&redirect_uri=URI' --user 'CLIENT_ID:CLIENT_SECRET'\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "reddit-authored--non-value-environment-references",
+   "case": "reddit-oauth-documentation-template-words-references-and-non-values",
+   "context": "cli",
+   "sha256": "9dc529a1fa7b63f7a44f6f08c2fb5f8a9ae1a4e464fb65824954da47dba928c4",
+   "text": "curl -X POST https://www.reddit.example.test/api/v1/access_token -d grant_type=client_credentials --user \"${REDDIT_CLIENT_ID}:${REDDIT_CLIENT_SECRET}\"\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "reddit-authored--non-value-access-token-angle-placeholder",
+   "case": "reddit-oauth-documentation-template-words-references-and-non-values",
+   "context": "structured-file",
+   "sha256": "c8e6f045048285d481efc136a8d6910776bc4125236f726a2c11a0fd0f3a8ca2",
+   "text": "{\n  \"access_token\": \"<access_token>\",\n  \"token_type\": \"bearer\"\n}\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "reddit-authored--non-value-refresh-token-masked-display",
+   "case": "reddit-oauth-documentation-template-words-references-and-non-values",
+   "context": "structured-file",
+   "sha256": "b6d98471fb0eb44ad0a69ea96246410e8184e79066b4c30ca5de6a44e4f8d8d5",
+   "text": "{\n  \"refresh_token\": \"********\",\n  \"token_type\": \"bearer\"\n}\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "reddit-authored--non-value-installed-app-empty-basic-password",
+   "case": "reddit-oauth-documentation-template-words-references-and-non-values",
+   "context": "cli",
+   "sha256": "da0f23a6f26a4130cf1689f3961f711f1c30fc9ba1aaf92d4dce0f1e1bf44bd9",
+   "text": "curl -X POST https://www.reddit.example.test/api/v1/access_token -d 'grant_type=https://oauth.reddit.com/grants/installed_client&device_id=DO_NOT_TRACK_THIS_DEVICE' --user 'CLIENT_ID:'\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "reddit-authored--non-value-device-id-do-not-track-literal",
+   "case": "reddit-oauth-documentation-template-words-references-and-non-values",
+   "context": "form-body",
+   "sha256": "4f544770ba7a02b10f149e549604b2014183e9cf796f440f6844014adb296909",
+   "text": "grant_type=https://oauth.reddit.com/grants/installed_client&device_id=DO_NOT_TRACK_THIS_DEVICE\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "reddit-authored--non-value-token-response-without-token-member",
+   "case": "reddit-oauth-documentation-template-words-references-and-non-values",
+   "context": "structured-file",
+   "sha256": "d7b42dc345503f08c7f262367e426498296533a8e0c42ecd2601fe68ac5e9280",
+   "text": "{\n  \"token_type\": \"bearer\",\n  \"scope\": \"identity\"\n}\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "reddit-authored--non-value-revocation-success-response",
+   "case": "reddit-oauth-documentation-template-words-references-and-non-values",
+   "context": "header",
+   "sha256": "2894bdc06b26e0e5becd0968ed3f05fce4ccf1de165d450188d7def942723061",
+   "text": "HTTP/1.1 204 No Content\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "reddit-authored--installed-installed-client-non-empty-password",
+   "case": "reddit-installed-app-non-empty-basic-password-unsettled",
+   "context": "cli",
+   "sha256": "61514f4b65347b3f7091319103208fa9e7109a08fb1295fb1d6cff2b43a5bcf7",
+   "text": "curl -X POST https://www.reddit.example.test/api/v1/access_token -d 'grant_type=https://oauth.reddit.com/grants/installed_client&device_id=DO_NOT_TRACK_THIS_DEVICE' --user 'CLIENT_ID:SYNTHETIC-reddit-installed-app-secret-0001'\n",
+   "outcome": "not-assertable",
+   "spans": []
+  },
+  {
+   "id": "reddit-authored--unsettled-bare-access-token-like-value",
+   "case": "reddit-oauth-bare-values-and-encoded-basic-header-unsettled",
+   "context": "prose",
+   "sha256": "88aca2c39f93721a548ab62d4e3f821e121217e40c4360812bd2d19fcbc792ad",
+   "text": "Last token: SYNTHETIC-reddit-access-token-never-issued-0007\n",
+   "outcome": "not-assertable",
+   "spans": []
+  },
+  {
+   "id": "reddit-authored--unsettled-bare-refresh-token-like-value",
+   "case": "reddit-oauth-bare-values-and-encoded-basic-header-unsettled",
+   "context": "prose",
+   "sha256": "b539aa831979feed312bd64ad50d110ede508f72d36e6c982c8bfca521cd9231",
+   "text": "Permanent token: SYNTHETIC-reddit-refresh-token-never-issued-0004\n",
+   "outcome": "not-assertable",
+   "spans": []
+  },
+  {
+   "id": "reddit-authored--unsettled-bare-client-secret-like-value",
+   "case": "reddit-oauth-bare-values-and-encoded-basic-header-unsettled",
+   "context": "prose",
+   "sha256": "4a79b301550b5bbd78e3bc6bfc4a32acb857805ccb596e1ae944052ec5439bdf",
+   "text": "App secret: SYNTHETIC-reddit-client-secret-never-issued-0004\n",
+   "outcome": "not-assertable",
+   "spans": []
+  },
+  {
+   "id": "reddit-authored--unsettled-basic-header-encoded-client-credential",
+   "case": "reddit-oauth-bare-values-and-encoded-basic-header-unsettled",
+   "context": "header",
+   "sha256": "9a9c7c57695ae75a4940fde7264d7da16f7fd50ff2daa64e6107d3c262b27991",
+   "text": "POST /api/v1/access_token HTTP/1.1\nHost: www.reddit.example.test\nAuthorization: Basic U1lOVEhFVElDLXJlZGRpdC1jbGllbnQtaWQtMDAwNDpTWU5USEVUSUMtcmVkZGl0LWNsaWVudC1zZWNyZXQtbmV2ZXItaXNzdWVkLTAwMDU=\nContent-Type: application/x-www-form-urlencoded\n",
+   "outcome": "not-assertable",
+   "spans": []
+  },
+  {
+   "id": "zendesk-authored--api-token-curl-basic-credential",
+   "case": "zendesk-api-token-basic-credential-token-part",
+   "context": "cli",
+   "sha256": "3c7d3291102cbc80f4c71f572c2f551fb77e769c81a3dd5a763e6166ccaf4b1c",
+   "text": "curl https://example-subdomain.zendesk.example.test/api/v2/users.json -u \"agent@example.test/token:SYNTHETICZendeskApiTokenNeverIssued0001\"\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 99,
+     "end": 138,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "zendesk-authored--api-token-json-credentials-string",
+   "case": "zendesk-api-token-basic-credential-token-part",
+   "context": "structured-file",
+   "sha256": "a783f8cb66cd4fd34f7c5228fa1b85b6a175657dcd9fc9b834f37d68c0b887fb",
+   "text": "{\n  \"zendesk\": {\n    \"credentials\": \"agent@example.test/token:SYNTHETICZendeskApiTokenNeverIssued0002\"\n  }\n}\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 62,
+     "end": 101,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "zendesk-authored--api-token-env-assignment",
+   "case": "zendesk-api-token-basic-credential-token-part",
+   "context": "env-assignment",
+   "sha256": "ea39244d5370363c29671406b497c1f517f34ed53aa156d45f4cfc0f969e82ff",
+   "text": "ZENDESK_BASIC_CREDENTIALS=agent@example.test/token:SYNTHETICZendeskApiTokenNeverIssued0003\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 51,
+     "end": 90,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "zendesk-authored--api-token-lookalike-email-and-subdomain-only",
+   "case": "zendesk-api-token-lookalikes-and-non-values",
+   "context": "structured-file",
+   "sha256": "364eccd09a64ebeb8c526ab70c45c6b88bbf5c70acc4c47f4f73696dfda7a2c4",
+   "text": "{\n  \"subdomain\": \"example-subdomain\",\n  \"email\": \"agent@example.test\"\n}\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "zendesk-authored--api-token-lookalike-documented-template",
+   "case": "zendesk-api-token-lookalikes-and-non-values",
+   "context": "cli",
+   "sha256": "0d846f26173fb8825946ffb848fbe9f863427f3486b62b6ea3de8b182b6d95a6",
+   "text": "curl https://example-subdomain.zendesk.example.test/api/v2/users.json -u {email_address}/token:{api_token}\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "zendesk-authored--api-token-lookalike-environment-reference",
+   "case": "zendesk-api-token-lookalikes-and-non-values",
+   "context": "cli",
+   "sha256": "7c888a5150388aca2330bfcd57d0d507cc3a91f2c7d6a04d64df7a7b976f5b78",
+   "text": "curl https://example-subdomain.zendesk.example.test/api/v2/users.json -u \"agent@example.test/token:${ZENDESK_API_TOKEN}\"\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "zendesk-authored--api-token-lookalike-masked-display",
+   "case": "zendesk-api-token-lookalikes-and-non-values",
+   "context": "env-assignment",
+   "sha256": "9a7f3f7990ec0d4a8d585413ef242e3cad837d86e32cf35cfbba5463571f427b",
+   "text": "ZENDESK_BASIC_CREDENTIALS=agent@example.test/token:********\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "zendesk-authored--api-token-lookalike-separator-without-token",
+   "case": "zendesk-api-token-lookalikes-and-non-values",
+   "context": "cli",
+   "sha256": "c47e3addc5b1217ef7de78c90049d205e1a4eb89206e5444a299496f1cff400b",
+   "text": "curl https://example-subdomain.zendesk.example.test/api/v2/users.json -u \"agent@example.test/token\"\n",
+   "outcome": "must-not-flag",
+   "spans": []
+  },
+  {
+   "id": "zendesk-authored--api-token-basic-raw-http",
+   "case": "zendesk-api-token-basic-credential-encoded-header-value",
+   "context": "header",
+   "sha256": "51c75c09607be920adfc018401ba3a9fa9907d429294707f7c552a7857c0d2b5",
+   "text": "GET /api/v2/users.json HTTP/1.1\nHost: example-subdomain.zendesk.example.test\nAuthorization: Basic YWdlbnRAZXhhbXBsZS50ZXN0L3Rva2VuOlNZTlRIRVRJQ1plbmRlc2tBcGlUb2tlbk5ldmVySXNzdWVkMDAxMTAx\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 98,
+     "end": 186,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "zendesk-authored--api-token-basic-curl-header",
+   "case": "zendesk-api-token-basic-credential-encoded-header-value",
+   "context": "cli",
+   "sha256": "a8b84c95e2f630a4677c221a657a9f78aaeb6c483b67dcc339c619e3cd3fb57e",
+   "text": "curl -H \"Authorization: Basic YWdlbnRAZXhhbXBsZS50ZXN0L3Rva2VuOlNZTlRIRVRJQ1plbmRlc2tBcGlUb2tlbk5ldmVySXNzdWVkMDAxMTAy\" https://example-subdomain.zendesk.example.test/api/v2/users.json\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 30,
+     "end": 118,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "zendesk-authored--api-token-basic-json-header-map",
+   "case": "zendesk-api-token-basic-credential-encoded-header-value",
+   "context": "structured-file",
+   "sha256": "2f5fab01badc84c55ccfe23e32c257a65d522f5214816e1763511c5ad6630e33",
+   "text": "{\n  \"headers\": {\n    \"Authorization\": \"Basic YWdlbnRAZXhhbXBsZS50ZXN0L3Rva2VuOlNZTlRIRVRJQ1plbmRlc2tBcGlUb2tlbk5ldmVySXNzdWVkMDAxMTAz\",\n    \"Accept\": \"application/json\"\n  }\n}\n",
+   "outcome": "must-flag",
+   "spans": [
+    {
+     "start": 45,
+     "end": 133,
+     "role": "secret"
+    }
+   ]
+  },
+  {
+   "id": "zendesk-authored--api-token-bare-value-in-prose",
+   "case": "zendesk-api-token-bare-value-and-grammar-unsettled",
+   "context": "prose",
+   "sha256": "2a30978495010458183c308623364fe68a6db4aa4cf82e66513790e7bdc36d25",
+   "text": "Token to rotate: SYNTHETICZendeskApiTokenNeverIssued0004\n",
+   "outcome": "not-assertable",
+   "spans": []
+  },
+  {
+   "id": "zendesk-authored--api-token-json-token-member",
+   "case": "zendesk-api-token-bare-value-and-grammar-unsettled",
+   "context": "structured-file",
+   "sha256": "8e78654c046687518200fc1e4448b41773578e23f5507fc7e17e91ff92b6586d",
+   "text": "{\n  \"token\": \"SYNTHETICZendeskApiTokenNeverIssued0005\"\n}\n",
+   "outcome": "not-assertable",
+   "spans": []
+  }
+ ]
+}

@@ -5,11 +5,12 @@ byte offsets. Ranges from the binding are Unicode code points and are converted
 here; no finding text is read or printed.
 """
 import json
+import os
 import sys
 
 import redact_secret
 
-CHUNK = 7
+CHUNK = int(os.environ.get("BATCH_CHUNK", "7"))
 LIMITS = dict(max_input_bytes=1_000_000, max_buffered_bytes=32_896, max_token_bytes=8_192, max_multiline_bytes=32_768)
 
 

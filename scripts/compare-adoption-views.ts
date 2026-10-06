@@ -11,7 +11,7 @@
  *
  * The report states the CURRENT adoption state (#700): acceptance, deployment receipts, scanned product and capability come from the structured record
  * (`--record`, default benchmarks/evidence-adoption.json) and the registry, so a report regenerated after the owner accepted no longer asks for acceptance.
- * `--from-comparison` renders again from a recorded comparison (no views needed): the data is kept, the state sections are recomputed.
+ * `--from-comparison` renders again from a recorded comparison (no views needed): the data is kept, the state sections are recomputed; a comparison or change report that is not the record's own (release, adoption key, engine, replay provenance) is refused (#792).
  *
  * The three views, all built by `npm run qualification:view` from official RunArtifacts:
  *   accepted    the previous accepted runs (previous corpus, previous engine, previous overlays)         = A
@@ -25,6 +25,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { readRunArtifact } from '../benchmarks/qualification/run-artifact.ts';
 import { seedCaseId } from '../benchmarks/qualification/adapter.ts';
 import { ledgerSettledId } from '../benchmarks/qualification/ledger-rekey.ts';
+import { reportIdentityProblems } from './adoption-report-sync.mjs';
 import { MAINTAINER_REVIEWED_EN, MAINTAINER_REVIEWED_KO, SCOPE_LINE, adoptionReportState, sideLabels, statusLines } from './adoption-report-state.mjs';
 
 const args = process.argv.slice(2);
@@ -53,6 +54,9 @@ const unexplained: string[] = [];
 // Re-render a recorded comparison against the current adoption state, without the views (the data is kept, the state sections are recomputed).
 if (option('from-comparison')) {
   const recorded: Json = readJson(option('from-comparison')!);
+  // The comparison and the change report must be this record's own before the record's state is applied to them (#792): another release's comparison is refused, not relabelled.
+  const identity: string[] = reportIdentityProblems({ comparison: recorded, changeReport: report, candidate: record });
+  if (identity.length) { console.error(`--from-comparison refused: ${identity.join('; ')}`); process.exit(1); }
   const o: Json = { ...recorded, scope: SCOPE_LINE, adoptionState };
   if (option('out-json')) writeFileSync(option('out-json')!, `${JSON.stringify(o, null, 2)}\n`);
   if (option('out-md')) writeFileSync(option('out-md')!, renderMarkdown(o, option('parity') ? readJson(option('parity')!) : null));

@@ -75,7 +75,7 @@ export function draftDecision({ tag, ec, decision, summary }) {
 
 const sh = (command, args, options = {}) => execFileSync(command, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'], maxBuffer: 512 * 1024 * 1024, ...options });
 
-export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
+export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineReplayRun }) {
   const adoption = readJson('benchmarks/evidence-adoption.json');
   const ec = adoption.evidenceCandidate;
   if (adoption.state !== 'accepted' || ec?.evidenceRelease !== tag || ec.manifestDigest !== manifestDigest) throw new Error(`benchmarks/evidence-adoption.json records no evidence candidate ${tag} with that manifest digest`);
@@ -184,10 +184,29 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
     for (const population of ['regression-corpus', 'policy-corpus']) { mkdirSync(path.join(dirA, population, 'inputs'), { recursive: true }); cpSync(path.join(replay, population, 'inputs/case-metadata.json'), path.join(dirA, population, 'inputs/case-metadata.json')); }
     const viewA = path.join(scratch, 'view-accepted.json');
     sh('npm', ['run', '-s', 'qualification:view', '--', '--artifacts', dirA, '--out', viewA], { cwd: root, env });
+    // The ENGINE effect (view B of the comparison): the accepted corpus replayed on the candidate's engine (`run-evidence-replay.mjs branch --engine-only`, one dispatch). Its artifacts have the moved
+    // engine's schema, so the view is built with the engine-only pin patch applied to this checkout for that one command.
+    let viewB = viewA;
+    if (ec.engineChange) {
+      if (!engineReplayRun) throw new Error(`${tag} moves the engine to ${ec.engine.tag}: pass --engine-replay-run <id> (the official run of \`run-evidence-replay.mjs branch --engine-only\`), so the engine effect is separated from the corpus effect`);
+      const dirB = path.join(scratch, 'engine-replay');
+      for (const population of POPULATIONS) {
+        const into = path.join(scratch, `dl-${population}`);
+        sh('gh', ['run', 'download', engineReplayRun, '-R', REPOSITORY, '-n', `official-run-${population}`, '-D', into], { cwd: root });
+        cpSync(into, path.join(dirB, population), { recursive: true });
+      }
+      const enginePatch = path.join(root, `${GENERATED}/${tag}.engine-replay-pins.patch`);
+      if (!existsSync(enginePatch)) throw new Error(`${enginePatch} is missing: cut the engine-effect branch first (run-evidence-replay.mjs branch --engine-only)`);
+      sh('git', ['apply', enginePatch], { cwd: root });
+      try {
+        viewB = path.join(scratch, 'view-engine.json');
+        sh('npm', ['run', '-s', 'qualification:view', '--', '--artifacts', dirB, '--out', viewB], { cwd: root, env });
+      } finally { sh('git', ['apply', '-R', enginePatch], { cwd: root }); }
+    }
     const candidateRecord = path.join(scratch, 'record-candidate.json');
     writeJson(candidateRecord, { schema: adoption.schema, state: 'candidate', candidate: ec }, '/');
     const changeReport = ec.changeReport;
-    const comparison = (out, extra = []) => sh('node', ['--import', 'tsx', 'scripts/compare-adoption-views.ts', '--accepted', viewA, '--replay-old', viewA, '--candidate', view, '--candidate-methods', methods, '--candidate-inputs', derived,
+    const comparison = (out, extra = []) => sh('node', ['--import', 'tsx', 'scripts/compare-adoption-views.ts', '--accepted', viewA, '--replay-old', viewB, '--candidate', view, '--candidate-methods', methods, '--candidate-inputs', derived,
       '--report', changeReport, '--record', candidateRecord, '--engine-from', adoption.candidate.engine.tag, '--engine-to', ec.engine.tag, ...out, '--strict', ...extra], { cwd: tree, env, stdio: ['ignore', 'inherit', 'inherit'] });
     // The comparison and the triage queue read the candidate's artifacts, whose schema is the moved engine's: they run in the transient tree, whose pins match, and write into this checkout by absolute path.
     comparison(['--out-json', path.join(root, `${GENERATED}/${tag}.comparison.json`), '--out-md', path.join(root, `${GENERATED}/${tag}.md`)]);
@@ -218,6 +237,6 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   const args = process.argv.slice(2);
   const option = name => { const at = args.indexOf(`--${name}`); return at >= 0 ? args[at + 1] : undefined; };
-  try { console.log(JSON.stringify(prepare({ tag: option('tag'), manifestDigest: option('manifest-digest'), peersDir: option('peers-dir'), supersededOn: option('superseded-on') }), null, 1)); }
+  try { console.log(JSON.stringify(prepare({ tag: option('tag'), manifestDigest: option('manifest-digest'), peersDir: option('peers-dir'), supersededOn: option('superseded-on'), engineReplayRun: option('engine-replay-run') }), null, 1)); }
   catch (error) { console.error(`acceptance package refused: ${error.message}`); process.exit(1); }
 }

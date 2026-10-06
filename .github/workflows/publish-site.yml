@@ -284,7 +284,10 @@ jobs:
       - name: Produce the evaluation and qualification reports the site reads
         run: |
           set -euo pipefail
-          npm run eval
+          # The REQUIRED scanners of the official run class (benchmarks/support/scanner-roster.json), not the optional ones: OpenRedaction's default profile is an optional,
+          # manual measurement (#763; it takes about five minutes here and its findings alone push the report past V8's string limit, which failed the publish of c336c331).
+          scanners="$(jq -r '.runClasses.official.required | join(",")' benchmarks/support/scanner-roster.json)"
+          npm run eval -- --scanner="$scanners"
           qualification=results-output/qualification/engine-v1.json
           rm -f "$qualification"
           if ! npm run eval:qualify; then

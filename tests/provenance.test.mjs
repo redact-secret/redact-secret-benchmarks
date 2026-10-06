@@ -55,7 +55,8 @@ test('staging measures the corpus against the qualified candidate; production ag
   assert.match(step.slice(step.indexOf('else')), /else\n\s+npm run bench -- --strict\n\s+fi/, 'production runs bench with no candidate flag');
   const evaluation = workflow.slice(workflow.indexOf('- name: Produce the evaluation and qualification reports the site reads'), workflow.indexOf('- name: Measure the qualified redact-secret commit as candidate evidence'));
   assert.ok(!evaluation.includes('if:'), 'both environments publish evaluation and qualification evidence (#213)');
-  assert.match(evaluation, /\n\s+npm run eval\n/, 'evaluation-v1.json keeps measuring the released package');
+  assert.match(evaluation, /\n\s+npm run eval -- --scanner="\$scanners"\n/, 'evaluation-v1.json keeps measuring the released package');
+  assert.match(evaluation, /scanners="\$\(jq -r '\.runClasses\.official\.required \| join\(","\)' benchmarks\/support\/scanner-roster\.json\)"/, 'with the required scanners of the roster, never the optional OpenRedaction default (#763)');
   assert.match(evaluation, /\n\s+if ! npm run eval:qualify; then\n/, 'eval:qualify runs with the suite pins, no candidate flag');
   assert.match(evaluation, /npm run eval:publish -- --qualification="\$qualification"\n/, 'the qualification run is published with the evaluation report');
   assert.ok(!evaluation.includes('--candidate'), 'evaluation and qualification take no candidate flag');

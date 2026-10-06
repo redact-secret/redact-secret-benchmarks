@@ -59,12 +59,29 @@ export function replayablePin({ adoption, registry, tag, manifestDigest }) {
   return ec;
 }
 
-/** Pure: the registry with its engine pin moved to the recorded engine candidate, for the transient replay branch only, with the runs of the previous engine dropped. Refuses a schema whose digest is not the recorded one. */
+/**
+ * Pure: the registry with its engine pin moved to the recorded engine candidate. Refuses a schema whose digest is not the recorded one. A recorded run of the previous engine can no longer
+ * match the moved pin, so it is dropped: the accepted ones stay in git history (a population whose evidence is not the candidate's, such as the project corpora, has no receipt shape: its
+ * pin is unchanged, so a run of it belongs in runs[] or nowhere), and the floors population's earlier runs are the receipts `repin` already moved.
+ */
 export function moveEnginePin(registry, engineChange, schemaBytes) {
   const digest = sha256Digest(schemaBytes);
   if (digest !== engineChange.runArtifactSchemaSha256) throw new Error(`the engine run-artifact schema at ${engineChange.to.tag} is ${digest}, the record names ${engineChange.runArtifactSchemaSha256}`);
-  // A recorded run of the previous engine can no longer match the moved pin; the transient branch carries none (the accepted ones stay in the history of the real branch and are never replayed here).
-  return { ...registry, runs: (registry.runs ?? []).filter(r => r.engine?.revision === engineChange.to.revision), engine: { ...registry.engine, tag: engineChange.to.tag, revision: engineChange.to.revision, version: engineChange.to.tag.replace(/^v/, ''), runArtifactSchema: { ...registry.engine.runArtifactSchema, sha256: digest } } };
+  return {
+    ...registry, runs: (registry.runs ?? []).filter(r => r.engine?.revision === engineChange.to.revision),
+    engine: { ...registry.engine, tag: engineChange.to.tag, revision: engineChange.to.revision, version: engineChange.to.tag.replace(/^v/, ''), runArtifactSchema: { ...registry.engine.runArtifactSchema, sha256: digest } },
+  };
+}
+
+/** Move the engine pin (and its run-artifact schema) of the tree at `tree` to the candidate's recorded engine, when it differs. Returns whether it moved. */
+export function moveEngineInTree(tree, ec) {
+  const file = path.join(tree, 'benchmarks/official-runs.json'), registry = JSON.parse(readFileSync(file, 'utf8'));
+  if (!ec.engineChange || ec.engine.tag === registry.engine.tag) return false;
+  const schema = execFileSync('gh', ['api', '-H', 'Accept: application/vnd.github.raw', `repos/redact-secret/credential-eval/contents/schemas/run-artifact-v1.schema.json?ref=${ec.engine.tag}`], { cwd: root, maxBuffer: 64 << 20 });
+  const pins = moveEnginePin(registry, ec.engineChange, schema);
+  writeFileSync(file, `${JSON.stringify(pins, null, 2)}\n`);
+  writeFileSync(path.join(tree, pins.engine.runArtifactSchema.path), schema);
+  return true;
 }
 
 /** Pure: the run this dispatch may reuse (same commit, not failed or cancelled), the newest first. */
@@ -121,8 +138,16 @@ function context(tag, manifestDigest) {
 
 function remoteSha(branch) { return run('git', ['ls-remote', 'origin', `refs/heads/${branch}`]).split('\t')[0] || null; }
 
-export function branch(tag, manifestDigest) {
-  const { branch: name, patchPath, ec } = context(tag, manifestDigest);
+/**
+ * `engineOnly`: the transient branch for the ENGINE effect (#697, #773): the accepted evidence pin stays and only the engine pin and schema move, so the previous corpus is replayed on the
+ * candidate's engine. With the control replay it separates the corpus effect from the engine effect; the comparison of an adoption that moves the engine refuses without it.
+ */
+export function branch(tag, manifestDigest, { engineOnly = false } = {}) {
+  const context0 = context(tag, manifestDigest);
+  const ec = context0.ec;
+  const name = engineOnly ? context0.branch.replace(/-control$/, '-engine') : context0.branch;
+  const patchPath = engineOnly ? context0.patchPath.replace('.replay-pins.patch', '.engine-replay-pins.patch') : context0.patchPath;
+  if (engineOnly && !ec.engineChange) throw new Error(`${tag} does not move the engine: there is no engine effect to replay`);
   const existing = remoteSha(name);
   if (existing) return { branch: name, sha: existing, reused: true };
   cleanTree();
@@ -132,14 +157,8 @@ export function branch(tag, manifestDigest) {
     run('git', ['worktree', 'add', '--detach', tree, 'HEAD']);
     symlinkSync(path.join(root, 'node_modules'), path.join(tree, 'node_modules'), 'dir'); // untracked: the commit below takes tracked files only
     // The same `repin` the owner's acceptance branch runs: the floors population's pin moves to the candidate, its earlier runs become historical receipts. Nothing else changes.
-    run('node', ['scripts/adopt-evidence-snapshot.mjs', 'repin', '--superseded-on', new Date().toISOString().slice(0, 10)], { cwd: tree, stdio: ['ignore', 'inherit', 'inherit'] });
-    const treeRegistryFile = path.join(tree, 'benchmarks/official-runs.json'), treeRegistry = JSON.parse(readFileSync(treeRegistryFile, 'utf8'));
-    if (ec.engineChange && ec.engine.tag !== treeRegistry.engine.tag) {
-      const schema = execFileSync('gh', ['api', '-H', 'Accept: application/vnd.github.raw', `repos/redact-secret/credential-eval/contents/schemas/run-artifact-v1.schema.json?ref=${ec.engine.tag}`], { cwd: root, maxBuffer: 64 << 20 });
-      const pins = moveEnginePin(treeRegistry, ec.engineChange, schema);
-      writeFileSync(treeRegistryFile, `${JSON.stringify(pins, null, 2)}\n`);
-      writeFileSync(path.join(tree, pins.engine.runArtifactSchema.path), schema);
-    }
+    if (!engineOnly) run('node', ['scripts/adopt-evidence-snapshot.mjs', 'repin', '--superseded-on', new Date().toISOString().slice(0, 10)], { cwd: tree, stdio: ['ignore', 'inherit', 'inherit'] });
+    moveEngineInTree(tree, ec);
     run('git', ['-c', 'user.name=replay', '-c', 'user.email=replay@localhost', 'commit', '-qam', `replay(${tag}): the candidate's evidence pin only (transient; never merged)`], { cwd: tree });
     const patch = run('git', ['diff', 'HEAD~1', 'HEAD'], { cwd: tree });
     mkdirSync(path.dirname(path.join(root, patchPath)), { recursive: true });
@@ -304,7 +323,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.ar
   const option = name => { const at = rest.indexOf(`--${name}`); return at >= 0 ? rest[at + 1] : undefined; };
   const tag = option('tag'), digest = option('manifest-digest');
   try {
-    if (command === 'branch') console.log(JSON.stringify(branch(tag, digest)));
+    if (command === 'branch') console.log(JSON.stringify(branch(tag, digest, { engineOnly: rest.includes('--engine-only') })));
     else if (command === 'dispatch') console.log(JSON.stringify(dispatch(tag, digest)));
     else if (command === 'wait') wait(option('run'));
     else if (command === 'collect') console.log(JSON.stringify(collect(tag, digest, option('run'), { keepBranch: rest.includes('--keep-branch') })));

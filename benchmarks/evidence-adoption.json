@@ -2,194 +2,6 @@
   "schema": "redact-secret/evidence-adoption/v1",
   "state": "accepted",
   "candidate": {
-    "evidenceRelease": "snapshot-2026.10.05",
-    "sourceRevision": "225f7ae74a986a40fe857371b393ebfdb7d2268a",
-    "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef",
-    "snapshotDigest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
-    "evidenceSchema": "credential-evidence/schema/1.7.0",
-    "evidenceRevision": "records-tree-sha256:924cd5b9b068e0d5ec5039bce962c63a484cb7fdec61b8b1e6603b1c530884b7",
-    "adoptionKey": "sha256:ca0c493e352d0bb592a5f8a3d45ef68ad4810607b8a60af3a0509ac7cd709f01",
-    "engine": {
-      "tag": "v0.1.0-alpha.5",
-      "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d"
-    },
-    "engineCompatibility": {
-      "compatible": true,
-      "cases": 6519
-    },
-    "supersedes": {
-      "evidenceRelease": "snapshot-2026.10.04.3",
-      "manifestDigest": "sha256:690ed57312d576fd6a614d40de10efe8bbc89431693aa4fbaa99979d69c0da8a"
-    },
-    "engineChange": {
-      "from": {
-        "tag": "v0.1.0-alpha.4",
-        "revision": "57858c9d1bdfad3d65e22d24b089b27189a0cf33"
-      },
-      "to": {
-        "tag": "v0.1.0-alpha.5",
-        "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d"
-      },
-      "runArtifactSchemaSha256": "sha256:9a82f152e09d31a4373b010b362266e564cb2c2ea272f6fbf79f1ce8b4a75809",
-      "note": "Applied by the acceptance: the engine pin, the product pin (published @redact-secret/core 0.1.0-beta.13), the recorded runs and the regenerated overlays are this change."
-    },
-    "changeSummary": {
-      "old": 6449,
-      "new": 6519,
-      "added": 70,
-      "removed": 0,
-      "changed": 8,
-      "unchanged": 6441
-    },
-    "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.05.json",
-    "replay": {
-      "state": "replayed",
-      "via": "The PUBLISHED @redact-secret/core 0.1.0-beta.13 on credential-eval alpha.5: .github/workflows/official-runs.yml dispatched on the transient replay branch replay/680-050-control-alpha5-beta13 (revision d4b9f1e96fc06c08d44554e4b2cc18a4a0872d0a: the repository at the reviewed code plus the engine, product and evidence pins only, patch kept as docs/generated/evidence-adoption/snapshot-2026.10.05.replay-pins.patch; branch deleted after archiving), plain and methods, linux-x64, two engine runs each with equal semantic digests; the control of the product candidate 2x2",
-      "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37296823599",
-      "benchmarkRevision": "d4b9f1e96fc06c08d44554e4b2cc18a4a0872d0a",
-      "archive": {
-        "release": "official-runs-registry-37296823599",
-        "asset": "official-runs-37296823599.tar.gz",
-        "sha256": "sha256:180b7cc61d2edd0b421ef8c2d69806583bd773efd3537c727acb81945eae1a9e"
-      },
-      "replayCopy": {
-        "release": "official-runs-37296823599",
-        "sha256": "sha256:57accf3d9229e287c95d7f3c34904c97866bb52295776e24d8a8ece9264f1578"
-      },
-      "semanticDigests": {
-        "public-evidence-snapshot": "sha256:4bbbebc2ca24f190a3c69b0ff9dd7e97e744bba9e54e266a3caf11702018fc66",
-        "public-evidence-snapshot+methods": "sha256:3b5c750a1f973760b4f08d748525e280b6a516feb0e013ccfdc8c87ff66e2442",
-        "regression-corpus": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
-        "policy-corpus": "sha256:9a6576c90e30907dee3b6e2b368d2791a29865fa8215790b0ef9cf6f75b66f9e"
-      },
-      "recordedRuns": [
-        {
-          "id": "policy-corpus@linux-x64",
-          "semanticDigest": "sha256:9a6576c90e30907dee3b6e2b368d2791a29865fa8215790b0ef9cf6f75b66f9e",
-          "byteDigest": "sha256:400da577902a97d63100da1166ede6a6bc7ee4a016c98489102fd6401a2fe226",
-          "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
-          "caseCounts": {
-            "flare-redact": 19,
-            "gitleaks": 19,
-            "openredaction": 19,
-            "redact-secret": 19,
-            "trufflehog": 19
-          }
-        },
-        {
-          "id": "public-evidence-snapshot+methods@linux-x64",
-          "semanticDigest": "sha256:3b5c750a1f973760b4f08d748525e280b6a516feb0e013ccfdc8c87ff66e2442",
-          "byteDigest": "sha256:d4e9a1b0b373ec404cfafa629b985b68eb161276b14da8dcb01bb81fb99d90ec",
-          "configHash": "sha256:d47d081ce5fb1265aeebe7fdee9fea27a3b01b2fa0e36ce6ee679706d2a924b2",
-          "caseCounts": {
-            "flare-redact": 35747,
-            "gitleaks": 35747,
-            "openredaction": 35747,
-            "redact-secret": 35747,
-            "trufflehog": 35747
-          }
-        },
-        {
-          "id": "public-evidence-snapshot@linux-x64",
-          "semanticDigest": "sha256:4bbbebc2ca24f190a3c69b0ff9dd7e97e744bba9e54e266a3caf11702018fc66",
-          "byteDigest": "sha256:31ebec733e4e715fafe5d8ee8af826c864d4cc61a3f49eca19242fce2ba4e3ea",
-          "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
-          "caseCounts": {
-            "flare-redact": 6519,
-            "gitleaks": 6519,
-            "openredaction": 6519,
-            "redact-secret": 6519,
-            "trufflehog": 6519
-          }
-        },
-        {
-          "id": "regression-corpus@linux-x64",
-          "semanticDigest": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
-          "byteDigest": "sha256:50687e1c6a38410db5686ec8c1c3ce6f46a7585bc4e8cf5bfcdfa22cf6411340",
-          "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
-          "caseCounts": {
-            "flare-redact": 153,
-            "gitleaks": 153,
-            "openredaction": 153,
-            "redact-secret": 153,
-            "trufflehog": 153
-          }
-        }
-      ],
-      "note": "The accepted runs: the control replay of the PUBLISHED @redact-secret/core 0.1.0-beta.13 on credential-eval alpha.5. The unpublished core build 1e45cecf is exploratory, internal evidence and is not part of this acceptance."
-    },
-    "ownerAcceptance": {
-      "acceptedBy": "Milo Kang",
-      "acceptedOn": "2026-10-05",
-      "decision": "docs/decisions/2026-10-05-accept-snapshot-2026-10-05-on-credential-eval-alpha-5.md"
-    },
-    "deployment": {
-      "staging": {
-        "environment": "staging",
-        "site": "https://staging.benchmarks.redactsecret.dev",
-        "commit": "e140f05b1670aeb5a7e0e009f4656ac56446c83b",
-        "workflowRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37314155819",
-        "runId": "37314155819",
-        "conclusion": "success",
-        "verifiedOn": "2026-10-05",
-        "verified": "/evaluation/credential/, /report/, /report/families/ and /evaluation/qualification/ fetched: 123 stable of 135 families, 0.1.0-beta.13, snapshot-2026.10.05, credential-eval alpha.5, and the disclosure \"Maintainer-reviewed (independent review pending)\" / \"메인테이너 검토 (독립 검토 대기)\""
-      },
-      "production": {
-        "environment": "production",
-        "site": "https://benchmarks.redactsecret.dev",
-        "commit": "e140f05b1670aeb5a7e0e009f4656ac56446c83b",
-        "workflowRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37317385667",
-        "runId": "37317385667",
-        "conclusion": "success",
-        "verifiedOn": "2026-10-05",
-        "verified": "/evaluation/credential/, /report/, /report/families/ and /evaluation/qualification/ fetched: 123 stable of 135 families, 0.1.0-beta.13, snapshot-2026.10.05, credential-eval alpha.5, and the disclosure \"Maintainer-reviewed (independent review pending)\" / \"메인테이너 검토 (독립 검토 대기)\"",
-        "promotion": "npm run go-production: pull request #716 fast-forwarded main to develop; no merge commit"
-      }
-    },
-    "product": {
-      "package": "@redact-secret/core",
-      "version": "0.1.0-beta.13",
-      "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
-    },
-    "supersedesEvidenceCandidate": {
-      "evidenceRelease": "snapshot-2026.10.04.4",
-      "manifestDigest": "sha256:f75a46f855e6daf82fbd94bf6f13e187e5b110a4e473b9045e7db47a74b65f1f",
-      "adoptionKey": "sha256:0d0b84ba2fd343237e6d155276bee2ccb9019c0ee200e7fdc42e5cc871b0c74f",
-      "note": "Superseded before acceptance by snapshot-2026.10.05. Its prepared acceptance patch is removed; its report and data stay as history."
-    },
-    "ledgerSettlements": {
-      "receipt": "docs/generated/evidence-adoption/snapshot-2026.10.05.ledger-settlements.json",
-      "applied": {
-        "occurrences": 394,
-        "byProposal": {
-          "not-assertable": 30,
-          "resolved": 364
-        }
-      },
-      "previousProposals": {
-        "occurrences": 398,
-        "byProposal": {
-          "resolved": 368,
-          "not-assertable": 30
-        }
-      },
-      "unapplied": {
-        "new-case-or-occurrence (no settled occurrence of the previous snapshot)": 61,
-        "observation differs from the previous snapshot": 2,
-        "accepted triage proposes another settlement": 0
-      },
-      "note": "Owner decision of 2026-10-05. Rows keyed by the accepted run's occurrence ids; the legacy rows are untouched. No independent review."
-    },
-    "productScope": {
-      "file": "scanners/product-scope.json",
-      "note": "The 13 provisional product-scope statements are confirmed as the owner's product-scope decision, based on the product's documentation (#622)."
-    },
-    "contrast": {
-      "report": "docs/generated/evidence-adoption/snapshot-2026.10.05.contrast.md",
-      "data": "docs/generated/evidence-adoption/snapshot-2026.10.05.contrast.json"
-    }
-  },
-  "evidenceCandidate": {
     "evidenceRelease": "snapshot-2026.10.06.4",
     "sourceRevision": "77ce7618d104ff30588a6ec96cc392645a5c0e5b",
     "manifestDigest": "sha256:d2e966e6106d4e5de2b79cc301149a70c950bec313ae981f3877ab2e81fcdda3",
@@ -297,7 +109,11 @@
       ],
       "note": "An exploratory replay for the evidence candidate: never an accepted run, and nothing is recorded in runs[]."
     },
-    "ownerAcceptance": null,
+    "ownerAcceptance": {
+      "acceptedBy": "Milo Kang",
+      "acceptedOn": "2026-10-06",
+      "decision": "docs/decisions/2026-10-06-accept-snapshot-2026-10-06-4-on-credential-eval-alpha-15.md"
+    },
     "deployment": {
       "staging": null,
       "production": null
@@ -321,74 +137,48 @@
       "report": "docs/generated/evidence-adoption/snapshot-2026.10.06.4.view-effect.md",
       "data": "docs/generated/evidence-adoption/snapshot-2026.10.06.4.view-effect.json",
       "note": "If accepted: stable 123 -> 116, provisional 20 -> 27 (two Polar families and three Vercel families by the corpus with one Vercel fallback twin failure each, two Anthropic families by one unresolved critical mutation finding after the corpus twin change; alpha.15 removes their twin failure); OpenRedaction default not measured."
-    }
-  },
-  "engineCandidate": {
-    "kind": "engine-product",
-    "evidenceRelease": "snapshot-2026.10.05",
-    "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef",
-    "snapshotDigest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
-    "sourceRevision": "225f7ae74a986a40fe857371b393ebfdb7d2268a",
-    "adoptionKey": "sha256:7469c61c7277228c302796b00ae986972d482ca820091cd5dceb18d529d5f9d4",
-    "engine": {
-      "tag": "v0.1.0-alpha.12",
-      "revision": "d9d83b9d3e5435f8f8858f84254824932c5e827a"
     },
-    "engineChange": {
-      "from": {
-        "tag": "v0.1.0-alpha.5",
-        "revision": "c1802a6b7c81f9ef16b0b70778be293821d7a31d"
+    "supersedesAccepted": {
+      "evidenceRelease": "snapshot-2026.10.05",
+      "manifestDigest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef",
+      "adoptionKey": "sha256:ca0c493e352d0bb592a5f8a3d45ef68ad4810607b8a60af3a0509ac7cd709f01",
+      "ownerDecision": {
+        "by": "Milo Kang",
+        "on": "2026-10-05",
+        "decision": "docs/decisions/2026-10-05-accept-snapshot-2026-10-05-on-credential-eval-alpha-5.md"
       },
-      "to": {
-        "tag": "v0.1.0-alpha.12",
-        "revision": "d9d83b9d3e5435f8f8858f84254824932c5e827a"
+      "replay": {
+        "ciRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37296823599",
+        "archive": {
+          "release": "official-runs-registry-37296823599",
+          "asset": "official-runs-37296823599.tar.gz",
+          "sha256": "sha256:180b7cc61d2edd0b421ef8c2d69806583bd773efd3537c727acb81945eae1a9e"
+        }
       },
-      "runArtifactSchemaSha256": "sha256:cd80c3df7fd8c788cf6de97fe36f5da6041398c6217e8b845a7803b294f14a9a"
-    },
-    "product": {
-      "package": "@redact-secret/core",
-      "version": "0.1.0-beta.13",
-      "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
-    },
-    "productChange": {
-      "from": {
-        "version": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
+      "deployment": {
+        "staging": {
+          "environment": "staging",
+          "site": "https://staging.benchmarks.redactsecret.dev",
+          "commit": "e140f05b1670aeb5a7e0e009f4656ac56446c83b",
+          "workflowRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37314155819",
+          "runId": "37314155819",
+          "conclusion": "success",
+          "verifiedOn": "2026-10-05",
+          "verified": "/evaluation/credential/, /report/, /report/families/ and /evaluation/qualification/ fetched: 123 stable of 135 families, 0.1.0-beta.13, snapshot-2026.10.05, credential-eval alpha.5, and the disclosure \"Maintainer-reviewed (independent review pending)\" / \"메인테이너 검토 (독립 검토 대기)\""
+        },
+        "production": {
+          "environment": "production",
+          "site": "https://benchmarks.redactsecret.dev",
+          "commit": "e140f05b1670aeb5a7e0e009f4656ac56446c83b",
+          "workflowRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37317385667",
+          "runId": "37317385667",
+          "conclusion": "success",
+          "verifiedOn": "2026-10-05",
+          "verified": "/evaluation/credential/, /report/, /report/families/ and /evaluation/qualification/ fetched: 123 stable of 135 families, 0.1.0-beta.13, snapshot-2026.10.05, credential-eval alpha.5, and the disclosure \"Maintainer-reviewed (independent review pending)\" / \"메인테이너 검토 (독립 검토 대기)\"",
+          "promotion": "npm run go-production: pull request #716 fast-forwarded main to develop; no merge commit"
+        }
       },
-      "to": {
-        "version": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
-      }
-    },
-    "engineCompatibility": {
-      "compatible": true,
-      "cases": 6519
-    },
-    "supersedesCandidate": {
-      "adoptionKey": "sha256:bdb7e6b007a3083d5e1e700aefdca5d51fa9344d9e1e04948d99a15743f0743b",
-      "engine": {
-        "tag": "v0.1.0-alpha.11",
-        "revision": "eec5d0d3548ddb232a996c11c4e2b1a65a436489"
-      },
-      "product": {
-        "package": "@redact-secret/core",
-        "version": "0.1.0-beta.13",
-        "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ=="
-      },
-      "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.05.engine-alpha.11.json",
-      "note": "Superseded before acceptance by engine candidate v0.1.0-alpha.12 with 0.1.0-beta.13."
-    },
-    "changeReport": "docs/generated/evidence-adoption/snapshot-2026.10.05.engine-alpha.12.json",
-    "replay": {
-      "state": "pending",
-      "via": ".github/workflows/official-runs.yml on a transient replay branch (engine and product pins only), plus an attribution run of the previous product build",
-      "recordedRuns": []
-    },
-    "note": "The evidence bytes are identical to the accepted adoption. The active registry, vendored schemas, runs and authority stay on the accepted engine and product until the owner accepts this candidate; nothing here is an owner acceptance.",
-    "ownerAcceptance": null,
-    "deployment": {
-      "staging": null,
-      "production": null
+      "note": "The previously accepted adoption stays the public numbers until this change is applied by the owner and deployed; its runs become historical receipts in benchmarks/official-runs.json."
     }
   }
 }

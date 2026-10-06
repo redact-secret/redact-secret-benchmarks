@@ -51,6 +51,8 @@ const entry = {
   },
   determinism: record.determinism,
   scanners: record.scanners,
+  // An optional scanner of the roster the run left out on purpose (#763): carried so the registry check can tell it from a silent drop.
+  ...(record.omittedOptionalScanners?.length ? { omittedOptionalScanners: record.omittedOptionalScanners } : {}),
   caseCounts: record.caseCounts,
 };
 const runs = [...registry.runs.filter(run => run.id !== entry.id), entry].sort((a, b) => (a.id < b.id ? -1 : 1));

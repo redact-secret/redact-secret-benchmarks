@@ -21,6 +21,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { fetchArchive } from './replay-archive.mjs';
+import { moveEngineInTree } from './run-evidence-replay.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPOSITORY = 'redact-secret/redact-secret-benchmarks';
@@ -30,7 +31,7 @@ const POPULATIONS = ['public-evidence-snapshot', 'regression-corpus', 'policy-co
 const readJson = (file, base = root) => JSON.parse(readFileSync(path.join(base, file), 'utf8'));
 const writeJson = (file, value, base = root) => { mkdirSync(path.dirname(path.join(base, file)), { recursive: true }); writeFileSync(path.join(base, file), `${JSON.stringify(value, null, 2)}\n`); };
 
-export const adrPath = tag => `docs/decisions/${new Date().toISOString().slice(0, 10)}-accept-${tag.replace(/\./g, '-')}-on-credential-eval-${'alpha-5'}.md`;
+export const adrPath = (tag, engineTag = 'v0.1.0-alpha.5') => `docs/decisions/${new Date().toISOString().slice(0, 10)}-accept-${tag.replace(/\./g, '-')}-on-credential-eval-${engineTag.replace(/^v0\.1\.0-/, '').replace(/\./g, '-')}.md`;
 
 /** Pure: the accepted record the owner's acceptance would write. The previous accepted adoption stays in it as history; the owner fields are OWNER-TO-SET. */
 export function acceptedRecord({ record, decision }) {
@@ -74,7 +75,7 @@ export function draftDecision({ tag, ec, decision, summary }) {
 
 const sh = (command, args, options = {}) => execFileSync(command, args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'], maxBuffer: 512 * 1024 * 1024, ...options });
 
-export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
+export function prepare({ tag, manifestDigest, peersDir, supersededOn, engineReplayRun }) {
   const adoption = readJson('benchmarks/evidence-adoption.json');
   const ec = adoption.evidenceCandidate;
   if (adoption.state !== 'accepted' || ec?.evidenceRelease !== tag || ec.manifestDigest !== manifestDigest) throw new Error(`benchmarks/evidence-adoption.json records no evidence candidate ${tag} with that manifest digest`);
@@ -98,6 +99,8 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
     const runId = ec.replay.ciRun.split('/').pop();
     // 2. Repin and record the four runs.
     run('node', ['scripts/adopt-evidence-snapshot.mjs', 'repin', '--superseded-on', supersededOn ?? new Date().toISOString().slice(0, 10)]);
+    // A candidate that moves the engine (record `engineChange`): the engine pin and schema move with it and the previous engine's runs of the other populations are dropped (#773).
+    moveEngineInTree(tree, ec);
     for (const rel of ['policy-corpus', 'public-evidence-snapshot', 'public-evidence-snapshot/methods', 'regression-corpus']) run('npm', ['run', '-s', 'official-runs:record', '--', path.join(replay, rel, 'run-record.json'), '--date', supersededOn ?? new Date().toISOString().slice(0, 10)]);
     // 3. The registry-format archive, stored in a release (storage of bytes, not an acceptance) and fetched back against the registry.
     const archiveFile = readJson('benchmarks/official-run-archive.json', tree);
@@ -133,10 +136,10 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
     // 6. The legacy oracle and the parity report (strict).
     run('npm', ['run', '-s', 'bench'], { stdio: ['ignore', 'ignore', 'inherit'] });
     run('npm', ['run', '-s', 'eval:classify'], { stdio: ['ignore', 'ignore', 'inherit'] });
-    run('npm', ['run', '-s', 'qualification:parity', '--', '--legacy-status', 'results-output/support-status.json', '--legacy-results', 'public/results', '--view', view, '--artifacts', replay, '--public-snapshot', snapshotFile, '--strict']);
+    run('npm', ['run', '-s', 'qualification:parity', '--', '--legacy-status', 'results-output/support-status.json', '--legacy-results', 'public/results', '--view', view, '--artifacts', replay, '--public-snapshot', snapshotFile, '--change-report', ec.changeReport, '--strict']);
     // 7. The prepared-acceptance block is part of the base the patch applies to (the patch removes the evidence candidate it lives in), so it is committed to the transient tree first and
     //    written to this checkout's record at the end, by the same code from the same record.
-    const decision = adrPath(tag);
+    const decision = adrPath(tag, ec.engine.tag);
     const patchFile = `${GENERATED}/${tag}.acceptance.patch`;
     const derivedDigest = f => `sha256:${createHash('sha256').update(readFileSync(path.join(derived, f))).digest('hex')}`;
     const viewData = JSON.parse(readFileSync(view, 'utf8'));
@@ -173,6 +176,7 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
     const digest = createHash('sha256').update(patch).digest('hex');
     writeFileSync(path.join(root, `${patchFile}.sha256`), `${digest}  ${path.basename(patchFile)}\n`);
     writeJson('benchmarks/evidence-adoption.json', withAcceptance);
+    symlinkSync(path.join(root, 'node_modules'), path.join(tree, 'node_modules'), 'dir'); // back for the comparison, which runs in the tree (the patch is already taken)
     // 10. The views A and C for the owner report: the accepted runs of this checkout and the candidate's, with the product populations' case metadata (a deterministic export of the checkout).
     const dirA = path.join(scratch, 'accepted');
     sh('node', ['scripts/official-run-archive.mjs', 'fetch', '--out', dirA], { cwd: root, env: { ...env, GITHUB_REPOSITORY: REPOSITORY } });
@@ -180,12 +184,32 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
     for (const population of ['regression-corpus', 'policy-corpus']) { mkdirSync(path.join(dirA, population, 'inputs'), { recursive: true }); cpSync(path.join(replay, population, 'inputs/case-metadata.json'), path.join(dirA, population, 'inputs/case-metadata.json')); }
     const viewA = path.join(scratch, 'view-accepted.json');
     sh('npm', ['run', '-s', 'qualification:view', '--', '--artifacts', dirA, '--out', viewA], { cwd: root, env });
+    // The ENGINE effect (view B of the comparison): the accepted corpus replayed on the candidate's engine (`run-evidence-replay.mjs branch --engine-only`, one dispatch). Its artifacts have the moved
+    // engine's schema, so the view is built with the engine-only pin patch applied to this checkout for that one command.
+    let viewB = viewA;
+    if (ec.engineChange) {
+      if (!engineReplayRun) throw new Error(`${tag} moves the engine to ${ec.engine.tag}: pass --engine-replay-run <id> (the official run of \`run-evidence-replay.mjs branch --engine-only\`), so the engine effect is separated from the corpus effect`);
+      const dirB = path.join(scratch, 'engine-replay');
+      for (const population of POPULATIONS) {
+        const into = path.join(scratch, `dl-${population}`);
+        sh('gh', ['run', 'download', engineReplayRun, '-R', REPOSITORY, '-n', `official-run-${population}`, '-D', into], { cwd: root });
+        cpSync(into, path.join(dirB, population), { recursive: true });
+      }
+      const enginePatch = path.join(root, `${GENERATED}/${tag}.engine-replay-pins.patch`);
+      if (!existsSync(enginePatch)) throw new Error(`${enginePatch} is missing: cut the engine-effect branch first (run-evidence-replay.mjs branch --engine-only)`);
+      sh('git', ['apply', enginePatch], { cwd: root });
+      try {
+        viewB = path.join(scratch, 'view-engine.json');
+        sh('npm', ['run', '-s', 'qualification:view', '--', '--artifacts', dirB, '--out', viewB], { cwd: root, env });
+      } finally { sh('git', ['apply', '-R', enginePatch], { cwd: root }); }
+    }
     const candidateRecord = path.join(scratch, 'record-candidate.json');
     writeJson(candidateRecord, { schema: adoption.schema, state: 'candidate', candidate: ec }, '/');
     const changeReport = ec.changeReport;
-    const comparison = (out, extra = []) => sh('node', ['--import', 'tsx', 'scripts/compare-adoption-views.ts', '--accepted', viewA, '--replay-old', viewA, '--candidate', view, '--candidate-methods', methods, '--candidate-inputs', derived,
-      '--report', changeReport, '--record', candidateRecord, '--engine-from', adoption.candidate.engine.tag, '--engine-to', ec.engine.tag, ...out, '--strict', ...extra], { cwd: root, env, stdio: ['ignore', 'inherit', 'inherit'] });
-    comparison(['--out-json', `${GENERATED}/${tag}.comparison.json`, '--out-md', `${GENERATED}/${tag}.md`]);
+    const comparison = (out, extra = []) => sh('node', ['--import', 'tsx', 'scripts/compare-adoption-views.ts', '--accepted', viewA, '--replay-old', viewB, '--candidate', view, '--candidate-methods', methods, '--candidate-inputs', derived,
+      '--report', changeReport, '--record', candidateRecord, '--engine-from', adoption.candidate.engine.tag, '--engine-to', ec.engine.tag, ...out, '--strict', ...extra], { cwd: tree, env, stdio: ['ignore', 'inherit', 'inherit'] });
+    // The comparison and the triage queue read the candidate's artifacts, whose schema is the moved engine's: they run in the transient tree, whose pins match, and write into this checkout by absolute path.
+    comparison(['--out-json', path.join(root, `${GENERATED}/${tag}.comparison.json`), '--out-md', path.join(root, `${GENERATED}/${tag}.md`)]);
     // 11. The triage queue, exported with the ledger as it was before the owner's settlement rows (so it does not depend on them), and the re-evaluation of the settlements on this run's identities.
     const ledger = readJson('benchmarks/review-ledger.json');
     const preOwner = path.join(scratch, 'ledger-pre-owner.json');
@@ -194,7 +218,7 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
     comparison(['--out-json', queueComparison, '--out-md', path.join(scratch, 'comparison-pre-owner.md')], ['--ledger', preOwner]);
     const baseReport = adoption.candidate.changeReport;
     sh('node', ['--import', 'tsx', 'scripts/export-triage-queue.ts', '--artifacts', replay, '--snapshot', snapshotFile, '--record', candidateRecord, '--report', baseReport, '--comparison', queueComparison, '--run-records', replay,
-      '--out-json', `${GENERATED}/${tag}.triage-queue.json`, '--out-md', `${GENERATED}/${tag}.triage-queue.md`], { cwd: root, env, stdio: ['ignore', 'inherit', 'inherit'] });
+      '--out-json', path.join(root, `${GENERATED}/${tag}.triage-queue.json`), '--out-md', path.join(root, `${GENERATED}/${tag}.triage-queue.md`)], { cwd: tree, env, stdio: ['ignore', 'inherit', 'inherit'] });
     const previousQueue = `${GENERATED}/${adoption.candidate.supersedes?.evidenceRelease}.triage-queue.json`;
     const reauthored = new Set();
     for (const t of [adoption.candidate.supersedes?.evidenceRelease, adoption.candidate.evidenceRelease, tag].filter(Boolean)) for (const f of ['snapshot-2026.10.04.4', t]) if (existsSync(path.join(root, `${GENERATED}/${f}.json`))) for (const c of readJson(`${GENERATED}/${f}.json`).diff?.changed ?? []) if ((c.fields ?? []).includes('content')) reauthored.add(c.id);
@@ -213,6 +237,6 @@ export function prepare({ tag, manifestDigest, peersDir, supersededOn }) {
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   const args = process.argv.slice(2);
   const option = name => { const at = args.indexOf(`--${name}`); return at >= 0 ? args[at + 1] : undefined; };
-  try { console.log(JSON.stringify(prepare({ tag: option('tag'), manifestDigest: option('manifest-digest'), peersDir: option('peers-dir'), supersededOn: option('superseded-on') }), null, 1)); }
+  try { console.log(JSON.stringify(prepare({ tag: option('tag'), manifestDigest: option('manifest-digest'), peersDir: option('peers-dir'), supersededOn: option('superseded-on'), engineReplayRun: option('engine-replay-run') }), null, 1)); }
   catch (error) { console.error(`acceptance package refused: ${error.message}`); process.exit(1); }
 }

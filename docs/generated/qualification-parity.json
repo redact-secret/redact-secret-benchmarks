@@ -24,7 +24,7 @@
     },
     "new": {
       "publication": "public",
-      "policyRevision": "rs-policy-1:sha256:7b4e41c22fad63e30397cc21268d7d8485144861c7fe25d35679c4f11ad34b7a",
+      "policyRevision": "rs-policy-1:sha256:393b37e95a723e8af365c32431b874a341751df2d19590a1eda622828f7b01bc",
       "adapter": {
         "id": "credential-eval-run-artifact",
         "version": 1
@@ -32,19 +32,18 @@
       "scanners": {
         "flare-redact": "1.6.1",
         "gitleaks": "8.30.1",
-        "openredaction": "1.1.5",
         "redact-secret": "0.1.0-beta.13",
         "trufflehog": "3.97.4"
       },
       "distribution": {
         "pending": 1,
-        "provisional": 20,
-        "stable": 123,
+        "provisional": 27,
+        "stable": 116,
         "unsupported": 0
       },
       "stableDistribution": {
-        "documented": 87,
-        "empirical": 36,
+        "documented": 83,
+        "empirical": 33,
         "policy-qualified": 0
       },
       "populations": [
@@ -53,8 +52,8 @@
           "population": "policy-corpus",
           "role": "policy-route",
           "runClass": "public",
-          "semanticDigest": "sha256:9a6576c90e30907dee3b6e2b368d2791a29865fa8215790b0ef9cf6f75b66f9e",
-          "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+          "semanticDigest": "sha256:71a11b17d308f23e252cc4118d94558a2b2cb292f79334c10549fa1c946ff13b",
+          "configHash": "sha256:da7118d90b6791f27e32ca4d6363ce9ad9610d0a2d4b992b160d968e6bda87b0",
           "evidenceTag": "policy-37293aba657d",
           "methods": [],
           "caseCount": 19
@@ -64,21 +63,21 @@
           "population": "public-evidence-snapshot",
           "role": "floors-and-gates",
           "runClass": "public",
-          "semanticDigest": "sha256:4bbbebc2ca24f190a3c69b0ff9dd7e97e744bba9e54e266a3caf11702018fc66",
-          "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
-          "evidenceTag": "snapshot-2026.10.05",
+          "semanticDigest": "sha256:d1d596d60532b98ffc26a2c07c7f1dad287e473652d5514e9ac5eb6f031e31e9",
+          "configHash": "sha256:da7118d90b6791f27e32ca4d6363ce9ad9610d0a2d4b992b160d968e6bda87b0",
+          "evidenceTag": "snapshot-2026.10.06.4",
           "methods": [],
-          "caseCount": 6519,
+          "caseCount": 7036,
           "methodsRun": {
             "run": "public-evidence-snapshot+methods@linux-x64",
-            "semanticDigest": "sha256:3b5c750a1f973760b4f08d748525e280b6a516feb0e013ccfdc8c87ff66e2442",
-            "configHash": "sha256:d47d081ce5fb1265aeebe7fdee9fea27a3b01b2fa0e36ce6ee679706d2a924b2",
+            "semanticDigest": "sha256:1f97705aaaa623915734ba127761cb32551e1fc3c5934658022c0d59ddafed5e",
+            "configHash": "sha256:95bd486e034d2f13890e7da727cdc17771c4c2518d207e005428af05ee7cdfb4",
             "methods": [
               "differential",
               "metamorphic",
               "mutation"
             ],
-            "caseCount": 35747
+            "caseCount": 38849
           }
         },
         {
@@ -86,8 +85,8 @@
           "population": "regression-corpus",
           "role": "gates",
           "runClass": "public",
-          "semanticDigest": "sha256:933286b10c070029fd5ac2f9ebd8a72a130d74c342b5ddf74b6de748b9fa1728",
-          "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+          "semanticDigest": "sha256:5a3bf5030823913cb193f8a9bb388c7d05ab804c500e266145c2e0fe07e730c0",
+          "configHash": "sha256:da7118d90b6791f27e32ca4d6363ce9ad9610d0a2d4b992b160d968e6bda87b0",
           "evidenceTag": "regression-b7b236c5ad1a",
           "methods": [],
           "caseCount": 153
@@ -96,7 +95,7 @@
       "axisOverlay": {
         "contexts": 2354,
         "controls": 2075,
-        "corpusDigest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
+        "corpusDigest": "sha256:2319e44084d4db2fc984c31fd07f091c6228e360ea5e6b9b5d65dabaae9d809a",
         "detectors": 5466,
         "id": "credential-public-axis-overlay-v1",
         "population": "public-evidence-snapshot"
@@ -109,14 +108,14 @@
         ]
       },
       "twinScope": {
-        "corpusDigest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
+        "corpusDigest": "sha256:2319e44084d4db2fc984c31fd07f091c6228e360ea5e6b9b5d65dabaae9d809a",
         "id": "credential-public-twin-scope-map-v1",
         "population": "public-evidence-snapshot",
         "scopedBy": "regression-corpus",
         "twins": 0
       },
       "ledgerRekey": {
-        "corpusDigest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
+        "corpusDigest": "sha256:2319e44084d4db2fc984c31fd07f091c6228e360ea5e6b9b5d65dabaae9d809a",
         "id": "credential-public-review-ledger-rekey-v1",
         "occurrences": 4268,
         "population": "public-evidence-snapshot"
@@ -199,6 +198,24 @@
       "owner": "repository owner"
     },
     {
+      "id": "optional-scanner-not-measured",
+      "change": "An optional scanner of the evaluation contract (benchmarks/support/scanner-roster.json, #763) was left out of the new run on purpose (omit_optional; its default profile takes too long), so the new side has no outcome for it. The view states it in scannerRoster.notMeasured and fabricates no zero; the legacy path scored it.",
+      "confirmation": "confirmed",
+      "owner": "repository owner"
+    },
+    {
+      "id": "corpus-twin-change",
+      "change": "The evidence release changed a twin (a twin of a seed gained sibling_family, or moved to unresolved), so the mutation or metamorphic assertions that flip the seed to that twin read the changed case (a failed assertion the legacy path never had) and the review occurrences of those seeds are keyed by changed content (no legacy mapping holds them). Recognised only when the failed assertions of the seeds whose own case or twin the release changed (its change report) equal the residual exactly.",
+      "confirmation": "confirmed",
+      "owner": "evidence release"
+    },
+    {
+      "id": "engine-twin-scoring",
+      "change": "A twin control the snapshot scopes to its own family was read as co-detected by the legacy path (a finding of another known family) and is read as flagged by the engine (credential-eval alpha.13 and later, ADR 0018), so it is a twin failure no legacy count holds and the mutation assertions that flip its seed to it fail. Recognised only when the family residual equals the count of such twins (and of their seeds failed assertions) exactly.",
+      "confirmation": "confirmed",
+      "owner": "credential-eval engine"
+    },
+    {
       "id": "fixture-attribution",
       "change": "The legacy path attributed a fixture to its declared contract and targets; the adapter attributes a case to the detectors named by its targets, its family, or the taxonomy family it belongs to and, where the snapshot names none, to the legacy targets the product overlay carries, then to its twin parent (population-policy.json attribution). What remains is a case the legacy path scoped to a family the overlay does not carry (no legacy counterpart) or that the legacy path attributed to a detector the adapter attributes elsewhere.",
       "confirmation": "inferred",
@@ -209,12 +226,24 @@
     "identity": {
       "tally": {
         "compared": 5,
-        "equal": 5,
-        "explained": 0,
+        "equal": 4,
+        "explained": 1,
         "unexplained": 0,
-        "byCause": {}
+        "byCause": {
+          "optional-scanner-not-measured": 1
+        }
       },
-      "differences": []
+      "differences": [
+        {
+          "subject": "openredaction",
+          "field": "scanner version",
+          "legacy": "1.1.5",
+          "next": "not run",
+          "verdict": "explained",
+          "cause": "optional-scanner-not-measured",
+          "note": "openredaction is an optional scanner not measured in the new run (scannerRoster.notMeasured)"
+        }
+      ]
     },
     "membership": {
       "tally": {
@@ -229,14 +258,35 @@
     "status": {
       "tally": {
         "compared": 144,
-        "equal": 140,
-        "explained": 4,
+        "equal": 133,
+        "explained": 11,
         "unexplained": 0,
         "byCause": {
-          "canonical-evidence-membership": 4
+          "corpus-twin-change": 2,
+          "canonical-evidence-membership": 4,
+          "pending-not-scored": 2,
+          "engine-twin-scoring": 3
         }
       },
       "differences": [
+        {
+          "subject": "anthropic-admin01-key",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "corpus-twin-change",
+          "note": "new-only reasons: corpus-twin-change"
+        },
+        {
+          "subject": "anthropic-api01-key",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "corpus-twin-change",
+          "note": "new-only reasons: corpus-twin-change"
+        },
         {
           "subject": "aws-secret-access-key",
           "field": "status",
@@ -256,6 +306,24 @@
           "note": "new-only reasons: canonical-evidence-membership"
         },
         {
+          "subject": "polar-api-credential",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "new-only reasons: pending-not-scored"
+        },
+        {
+          "subject": "polar-token",
+          "field": "status",
+          "legacy": "stable/documented",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "new-only reasons: pending-not-scored"
+        },
+        {
           "subject": "sendgrid-token",
           "field": "status",
           "legacy": "stable/documented",
@@ -272,23 +340,70 @@
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "new-only reasons: canonical-evidence-membership"
+        },
+        {
+          "subject": "vercel-app-access-token",
+          "field": "status",
+          "legacy": "stable/empirical",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "new-only reasons: engine-twin-scoring, pending-not-scored"
+        },
+        {
+          "subject": "vercel-app-refresh-token",
+          "field": "status",
+          "legacy": "stable/empirical",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "new-only reasons: engine-twin-scoring, pending-not-scored"
+        },
+        {
+          "subject": "vercel-personal-access-token",
+          "field": "status",
+          "legacy": "stable/empirical",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "new-only reasons: engine-twin-scoring, pending-not-scored"
         }
       ]
     },
     "evidence": {
       "tally": {
         "compared": 4752,
-        "equal": 4528,
-        "explained": 224,
+        "equal": 4499,
+        "explained": 253,
         "unexplained": 0,
         "byCause": {
-          "canonical-evidence-membership": 90,
+          "corpus-twin-change": 2,
+          "canonical-evidence-membership": 91,
           "policy-corpus-bounded": 4,
           "family-not-in-accepted-evidence": 121,
-          "pending-not-scored": 9
+          "pending-not-scored": 29,
+          "engine-twin-scoring": 6
         }
       },
       "differences": [
+        {
+          "subject": "anthropic-admin01-key",
+          "field": "mutationUnresolvedCritical",
+          "legacy": 0,
+          "next": 2,
+          "verdict": "explained",
+          "cause": "corpus-twin-change",
+          "note": "residual 2 = 2 failed mutation assertion(s) of seeds whose twin the release changed"
+        },
+        {
+          "subject": "anthropic-api01-key",
+          "field": "mutationUnresolvedCritical",
+          "legacy": 0,
+          "next": 2,
+          "verdict": "explained",
+          "cause": "corpus-twin-change",
+          "note": "residual 2 = 2 failed mutation assertion(s) of seeds whose twin the release changed"
+        },
         {
           "subject": "aws-access-key",
           "field": "benignAxes",
@@ -1352,6 +1467,15 @@
         },
         {
           "subject": "generic-token",
+          "field": "twinFailures",
+          "legacy": 0,
+          "next": 1,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "residual -1 = -1 canonical-evidence-membership"
+        },
+        {
+          "subject": "generic-token",
           "field": "twinPairs",
           "legacy": 10,
           "next": 13,
@@ -1797,6 +1921,116 @@
           },
           "verdict": "explained",
           "cause": "policy-corpus-bounded"
+        },
+        {
+          "subject": "polar-api-credential",
+          "field": "benignAxes",
+          "legacy": 5,
+          "next": 4,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "1 only on the legacy side (pending-not-scored)"
+        },
+        {
+          "subject": "polar-api-credential",
+          "field": "benignAxisIds",
+          "legacy": [
+            "near-miss",
+            "ordinary-prose",
+            "placeholder",
+            "public-identifier",
+            "reference"
+          ],
+          "next": [
+            "near-miss",
+            "ordinary-prose",
+            "placeholder",
+            "reference"
+          ],
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "1 only on the legacy side (pending-not-scored)"
+        },
+        {
+          "subject": "polar-api-credential",
+          "field": "benignCases",
+          "legacy": 9,
+          "next": 6,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "residual 3 = 3 pending-not-scored"
+        },
+        {
+          "subject": "polar-api-credential",
+          "field": "confusionAxes",
+          "legacy": 9,
+          "next": 6,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "3 only on the legacy side (pending-not-scored)"
+        },
+        {
+          "subject": "polar-api-credential",
+          "field": "controlAxes",
+          "legacy": 5,
+          "next": 4,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "1 only on the legacy side (pending-not-scored)"
+        },
+        {
+          "subject": "polar-api-credential",
+          "field": "totalFixtures",
+          "legacy": 28,
+          "next": 22,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "residual 6 = 6 pending-not-scored"
+        },
+        {
+          "subject": "polar-api-credential",
+          "field": "twinPairs",
+          "legacy": 7,
+          "next": 4,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "residual 3 = 3 pending-not-scored"
+        },
+        {
+          "subject": "polar-token",
+          "field": "benignCases",
+          "legacy": 13,
+          "next": 12,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "residual 1 = 1 pending-not-scored"
+        },
+        {
+          "subject": "polar-token",
+          "field": "confusionAxes",
+          "legacy": 9,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "1 only on the legacy side (pending-not-scored)"
+        },
+        {
+          "subject": "polar-token",
+          "field": "totalFixtures",
+          "legacy": 38,
+          "next": 33,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "residual 5 = 5 pending-not-scored"
+        },
+        {
+          "subject": "polar-token",
+          "field": "twinPairs",
+          "legacy": 8,
+          "next": 4,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "residual 4 = 4 pending-not-scored"
         },
         {
           "subject": "postman-api-key",
@@ -2825,6 +3059,141 @@
           "note": "the accepted evidence carries no case of unkey-root-key"
         },
         {
+          "subject": "vercel-app-access-token",
+          "field": "confusionAxes",
+          "legacy": 9,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "1 only on the legacy side (pending-not-scored)"
+        },
+        {
+          "subject": "vercel-app-access-token",
+          "field": "mutationUnresolvedCritical",
+          "legacy": 0,
+          "next": 2,
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "residual 2 = 2 failed mutation assertion(s) of seeds whose twin the engine now reads as flagged"
+        },
+        {
+          "subject": "vercel-app-access-token",
+          "field": "totalFixtures",
+          "legacy": 40,
+          "next": 37,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "residual 3 = 3 pending-not-scored"
+        },
+        {
+          "subject": "vercel-app-access-token",
+          "field": "twinFailures",
+          "legacy": 0,
+          "next": 1,
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "residual -1 = -1 engine-twin-scoring"
+        },
+        {
+          "subject": "vercel-app-access-token",
+          "field": "twinPairs",
+          "legacy": 8,
+          "next": 5,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "residual 3 = 3 pending-not-scored"
+        },
+        {
+          "subject": "vercel-app-refresh-token",
+          "field": "confusionAxes",
+          "legacy": 9,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "1 only on the legacy side (pending-not-scored)"
+        },
+        {
+          "subject": "vercel-app-refresh-token",
+          "field": "mutationUnresolvedCritical",
+          "legacy": 0,
+          "next": 2,
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "residual 2 = 2 failed mutation assertion(s) of seeds whose twin the engine now reads as flagged"
+        },
+        {
+          "subject": "vercel-app-refresh-token",
+          "field": "totalFixtures",
+          "legacy": 40,
+          "next": 37,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "residual 3 = 3 pending-not-scored"
+        },
+        {
+          "subject": "vercel-app-refresh-token",
+          "field": "twinFailures",
+          "legacy": 0,
+          "next": 1,
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "residual -1 = -1 engine-twin-scoring"
+        },
+        {
+          "subject": "vercel-app-refresh-token",
+          "field": "twinPairs",
+          "legacy": 8,
+          "next": 5,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "residual 3 = 3 pending-not-scored"
+        },
+        {
+          "subject": "vercel-personal-access-token",
+          "field": "confusionAxes",
+          "legacy": 9,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "1 only on the legacy side (pending-not-scored)"
+        },
+        {
+          "subject": "vercel-personal-access-token",
+          "field": "mutationUnresolvedCritical",
+          "legacy": 0,
+          "next": 2,
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "residual 2 = 2 failed mutation assertion(s) of seeds whose twin the engine now reads as flagged"
+        },
+        {
+          "subject": "vercel-personal-access-token",
+          "field": "totalFixtures",
+          "legacy": 40,
+          "next": 37,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "residual 3 = 3 pending-not-scored"
+        },
+        {
+          "subject": "vercel-personal-access-token",
+          "field": "twinFailures",
+          "legacy": 0,
+          "next": 1,
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "residual -1 = -1 engine-twin-scoring"
+        },
+        {
+          "subject": "vercel-personal-access-token",
+          "field": "twinPairs",
+          "legacy": 8,
+          "next": 5,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "residual 3 = 3 pending-not-scored"
+        },
+        {
           "subject": "vercel-token",
           "field": "positiveAxes",
           "legacy": 1,
@@ -2989,11 +3358,13 @@
     "outcomes": {
       "tally": {
         "compared": 29810,
-        "equal": 29686,
-        "explained": 124,
+        "equal": 23728,
+        "explained": 6082,
         "unexplained": 0,
         "byCause": {
-          "twin-scope-vocabulary": 124
+          "optional-scanner-not-measured": 5962,
+          "twin-scope-vocabulary": 40,
+          "pending-not-scored": 80
         }
       },
       "differences": []
@@ -4418,17 +4789,91 @@
     "supportMatrix": {
       "tally": {
         "compared": 7932,
-        "equal": 7572,
-        "explained": 360,
+        "equal": 7505,
+        "explained": 427,
         "unexplained": 0,
         "byCause": {
-          "canonical-evidence-membership": 176,
+          "corpus-twin-change": 8,
+          "canonical-evidence-membership": 177,
           "family-not-in-accepted-evidence": 153,
           "policy-corpus-bounded": 5,
-          "pending-not-scored": 26
+          "pending-not-scored": 60,
+          "engine-twin-scoring": 24
         }
       },
       "differences": [
+        {
+          "subject": "anthropic:admin-api-key",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "corpus-twin-change",
+          "note": "follows the status of anthropic-admin01-key"
+        },
+        {
+          "subject": "anthropic:admin-api-key",
+          "field": "reason",
+          "legacy": null,
+          "next": "mutation.unresolvedCritical: 2 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
+          "verdict": "explained",
+          "cause": "corpus-twin-change",
+          "note": "new-only reason(s) mutation.unresolvedCritical"
+        },
+        {
+          "subject": "anthropic:admin-api-key",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "corpus-twin-change",
+          "note": "follows the status of anthropic-admin01-key"
+        },
+        {
+          "subject": "anthropic:admin-api-key",
+          "field": "unresolvedCriticalItems.mutation",
+          "legacy": 0,
+          "next": 2,
+          "verdict": "explained",
+          "cause": "corpus-twin-change",
+          "note": "follows evidence.mutationUnresolvedCritical of anthropic-admin01-key"
+        },
+        {
+          "subject": "anthropic:compliance-access-key",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "corpus-twin-change",
+          "note": "follows the status of anthropic-api01-key"
+        },
+        {
+          "subject": "anthropic:compliance-access-key",
+          "field": "reason",
+          "legacy": null,
+          "next": "mutation.unresolvedCritical: 2 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review.",
+          "verdict": "explained",
+          "cause": "corpus-twin-change",
+          "note": "new-only reason(s) mutation.unresolvedCritical"
+        },
+        {
+          "subject": "anthropic:compliance-access-key",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "corpus-twin-change",
+          "note": "follows the status of anthropic-api01-key"
+        },
+        {
+          "subject": "anthropic:compliance-access-key",
+          "field": "unresolvedCriticalItems.mutation",
+          "legacy": 0,
+          "next": 2,
+          "verdict": "explained",
+          "cause": "corpus-twin-change",
+          "note": "follows evidence.mutationUnresolvedCritical of anthropic-api01-key"
+        },
         {
           "subject": "aws:iam-user-access-key",
           "field": "fixtureProfile.confusionAxes",
@@ -6337,10 +6782,19 @@
           "subject": "generic:unclassified-assignment-literal",
           "field": "reason",
           "legacy": "policy.exact-span: 1 (requires 0) | policy.leaked-span: 1 (requires 0) | policy.protected-holdout: not-run (requires pass on frozen candidate)",
-          "next": "policy.positive-cases: 2 (requires 6) | policy.positive-axes: 2 (requires 4) | policy.benign-cases: 1 (requires 8) | policy.benign-axes: 1 (requires 4) | policy.twin-pairs: 1 (requires 5) | policy.critical-failure: 296 (requires 0) | policy.protected-holdout: not-run (requires pass on frozen candidate) | benign.falseAlarms: 1 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none. | metamorphic.criticalFailures: 252 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 36 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 8 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
+          "next": "policy.positive-cases: 2 (requires 6) | policy.positive-axes: 2 (requires 4) | policy.benign-cases: 1 (requires 8) | policy.benign-axes: 1 (requires 4) | policy.twin-pairs: 1 (requires 5) | policy.critical-failure: 296 (requires 0) | policy.protected-holdout: not-run (requires pass on frozen candidate) | twinFailures: 1 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | benign.falseAlarms: 1 > 0 — A false alarm on a benign control is a recorded false positive; stable tolerates none. | metamorphic.criticalFailures: 252 > 0 — A metamorphic invariant violation (for example, detection lost after an envelope-preserving transform) shows the detector is not robust to construction, independent of how many cases were run. | mutation.unresolvedCritical: 36 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | differential.unresolvedContractDisagreements: 8 > 0 — An unresolved disagreement with a peer scanner over what the provider contract requires means the contract itself may be wrong; stable requires it settled.",
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "new-only reason(s) policy.positive-cases, policy.positive-axes, policy.benign-cases, policy.benign-axes, policy.twin-pairs, policy.critical-failure, benign.falseAlarms, metamorphic.criticalFailures, mutation.unresolvedCritical, differential.unresolvedContractDisagreements; legacy-only policy.exact-span, policy.leaked-span"
+          "note": "new-only reason(s) policy.positive-cases, policy.positive-axes, policy.benign-cases, policy.benign-axes, policy.twin-pairs, policy.critical-failure, twinFailures, benign.falseAlarms, metamorphic.criticalFailures, mutation.unresolvedCritical, differential.unresolvedContractDisagreements; legacy-only policy.exact-span, policy.leaked-span"
+        },
+        {
+          "subject": "generic:unclassified-assignment-literal",
+          "field": "twinCoverage.failures",
+          "legacy": 0,
+          "next": 1,
+          "verdict": "explained",
+          "cause": "canonical-evidence-membership",
+          "note": "follows evidence.twinFailures of generic-token"
         },
         {
           "subject": "generic:unclassified-assignment-literal",
@@ -8083,37 +8537,37 @@
           "subject": "matrix",
           "field": "distribution.provisional",
           "legacy": 16,
-          "next": 24,
+          "next": 31,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "8 family status change(s) account for the difference (canonical-evidence-membership)"
+          "note": "15 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, engine-twin-scoring, pending-not-scored)"
         },
         {
           "subject": "matrix",
           "field": "distribution.stable",
           "legacy": 144,
-          "next": 136,
+          "next": 129,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "8 family status change(s) account for the difference (canonical-evidence-membership)"
+          "note": "15 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, engine-twin-scoring, pending-not-scored)"
         },
         {
           "subject": "matrix",
           "field": "stableDistribution.documented",
           "legacy": 106,
-          "next": 100,
+          "next": 96,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "6 family status change(s) account for the difference (canonical-evidence-membership)"
+          "note": "10 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, pending-not-scored)"
         },
         {
           "subject": "matrix",
           "field": "stableDistribution.empirical",
           "legacy": 38,
-          "next": 36,
+          "next": 33,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "2 family status change(s) account for the difference (canonical-evidence-membership)"
+          "note": "5 family status change(s) account for the difference (canonical-evidence-membership, engine-twin-scoring)"
         },
         {
           "subject": "npm:granular-access-token",
@@ -8222,6 +8676,381 @@
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
           "note": "follows evidence.positiveCases of npm-token"
+        },
+        {
+          "subject": "polar:api-credential",
+          "field": "fixtureProfile.benignCases",
+          "legacy": 9,
+          "next": 6,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.benignCases of polar-api-credential"
+        },
+        {
+          "subject": "polar:api-credential",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 9,
+          "next": 6,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.confusionAxes of polar-api-credential"
+        },
+        {
+          "subject": "polar:api-credential",
+          "field": "fixtureProfile.controlAxes",
+          "legacy": 5,
+          "next": 4,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.controlAxes of polar-api-credential"
+        },
+        {
+          "subject": "polar:api-credential",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 28,
+          "next": 22,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.totalFixtures of polar-api-credential"
+        },
+        {
+          "subject": "polar:api-credential",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 7,
+          "next": 4,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.twinPairs of polar-api-credential"
+        },
+        {
+          "subject": "polar:api-credential",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 28,
+            "positiveCases": 5,
+            "benignControls": 9,
+            "twinPairs": 7,
+            "positiveContextAxes": 7,
+            "controlAxes": 5,
+            "confusionAxes": 9,
+            "positiveContextAxisIds": [
+              "#528b · polar-api-credential · env",
+              "#528b · polar-api-credential · header",
+              "#528b · polar-api-credential · prose",
+              "#528b · polar-api-credential · sdk-config",
+              "#528b · polar-api-credential · shell-export",
+              "#528b · polar-api-credential · structured-file",
+              "#528b · polar-api-credential · tool-output"
+            ],
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:alphabet",
+              "twin:boundary",
+              "twin:length",
+              "twin:prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 6,
+            "confusionAxes": 6,
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "reference",
+              "twin:alphabet",
+              "twin:prefix"
+            ],
+            "controlAxes": 4,
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "reference"
+            ],
+            "positiveCases": 8,
+            "positiveContextAxes": 7,
+            "positiveContextAxisIds": [
+              "#528b · polar-api-credential · env",
+              "#528b · polar-api-credential · header",
+              "#528b · polar-api-credential · prose",
+              "#528b · polar-api-credential · sdk-config",
+              "#528b · polar-api-credential · shell-export",
+              "#528b · polar-api-credential · structured-file",
+              "#528b · polar-api-credential · tool-output"
+            ],
+            "totalFixtures": 22,
+            "twinPairs": 4
+          },
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows the status of polar-api-credential"
+        },
+        {
+          "subject": "polar:api-credential",
+          "field": "profileCoverage.debt",
+          "legacy": [
+            {
+              "cell": "positiveCases",
+              "actual": 5,
+              "required": 6,
+              "shortfall": 1
+            }
+          ],
+          "next": [
+            {
+              "actual": 22,
+              "cell": "totalFixtures",
+              "required": 24,
+              "shortfall": 2
+            },
+            {
+              "actual": 6,
+              "cell": "benignControls",
+              "required": 8,
+              "shortfall": 2
+            },
+            {
+              "actual": 4,
+              "cell": "twinPairs",
+              "required": 5,
+              "shortfall": 1
+            }
+          ],
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows the status of polar-api-credential"
+        },
+        {
+          "subject": "polar:api-credential",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows the status of polar-api-credential"
+        },
+        {
+          "subject": "polar:api-credential",
+          "field": "reason",
+          "legacy": null,
+          "next": "documented.minimumBenignCases: 6 < 8 — Eight independent benign controls are required by the documented fixture profile. | documented.minimumTwinPairs: 4 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile.",
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "new-only reason(s) documented.minimumBenignCases, documented.minimumTwinPairs"
+        },
+        {
+          "subject": "polar:api-credential",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows the status of polar-api-credential"
+        },
+        {
+          "subject": "polar:api-credential",
+          "field": "twinCoverage.pairs",
+          "legacy": 7,
+          "next": 4,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.twinPairs of polar-api-credential"
+        },
+        {
+          "subject": "polar:organization-access-token",
+          "field": "fixtureProfile.benignCases",
+          "legacy": 13,
+          "next": 12,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.benignCases of polar-token"
+        },
+        {
+          "subject": "polar:organization-access-token",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 9,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.confusionAxes of polar-token"
+        },
+        {
+          "subject": "polar:organization-access-token",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 38,
+          "next": 33,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.totalFixtures of polar-token"
+        },
+        {
+          "subject": "polar:organization-access-token",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 8,
+          "next": 4,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.twinPairs of polar-token"
+        },
+        {
+          "subject": "polar:organization-access-token",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 38,
+            "positiveCases": 9,
+            "benignControls": 13,
+            "twinPairs": 8,
+            "positiveContextAxes": 10,
+            "controlAxes": 5,
+            "confusionAxes": 9,
+            "positiveContextAxisIds": [
+              "#528b · polar-token · env",
+              "#528b · polar-token · header",
+              "#528b · polar-token · log",
+              "#528b · polar-token · prose",
+              "#528b · polar-token · sdk-config",
+              "#528b · polar-token · shell-export",
+              "#528b · polar-token · source-code",
+              "#528b · polar-token · structured-file",
+              "#528b · polar-token · tool-output",
+              "polar-token"
+            ],
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:alphabet",
+              "twin:boundary",
+              "twin:length",
+              "twin:prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 12,
+            "confusionAxes": 8,
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:alphabet",
+              "twin:length",
+              "twin:prefix"
+            ],
+            "controlAxes": 5,
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 13,
+            "positiveContextAxes": 10,
+            "positiveContextAxisIds": [
+              "#528b · polar-token · env",
+              "#528b · polar-token · header",
+              "#528b · polar-token · log",
+              "#528b · polar-token · prose",
+              "#528b · polar-token · sdk-config",
+              "#528b · polar-token · shell-export",
+              "#528b · polar-token · source-code",
+              "#528b · polar-token · structured-file",
+              "#528b · polar-token · tool-output",
+              "polar-token"
+            ],
+            "totalFixtures": 33,
+            "twinPairs": 4
+          },
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows the status of polar-token"
+        },
+        {
+          "subject": "polar:organization-access-token",
+          "field": "profileCoverage.cellsMet",
+          "legacy": [
+            "arrival-provisional",
+            "stable-documented"
+          ],
+          "next": [],
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows the status of polar-token"
+        },
+        {
+          "subject": "polar:organization-access-token",
+          "field": "profileCoverage.debt",
+          "legacy": [],
+          "next": [
+            {
+              "actual": 4,
+              "cell": "twinPairs",
+              "required": 5,
+              "shortfall": 1
+            }
+          ],
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows the status of polar-token"
+        },
+        {
+          "subject": "polar:organization-access-token",
+          "field": "qualificationProfile",
+          "legacy": "documented",
+          "next": null,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows the status of polar-token"
+        },
+        {
+          "subject": "polar:organization-access-token",
+          "field": "reason",
+          "legacy": null,
+          "next": "documented.minimumTwinPairs: 4 < 5 — Five authored positive/negative twin pairs are required by the documented fixture profile.",
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "new-only reason(s) documented.minimumTwinPairs"
+        },
+        {
+          "subject": "polar:organization-access-token",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows the status of polar-token"
+        },
+        {
+          "subject": "polar:organization-access-token",
+          "field": "twinCoverage.pairs",
+          "legacy": 8,
+          "next": 4,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.twinPairs of polar-token"
         },
         {
           "subject": "postman:api-key",
@@ -11074,6 +11903,615 @@
           "note": "follows evidence.positiveCases of vercel-token"
         },
         {
+          "subject": "vercel:app-access-token",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 9,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.confusionAxes of vercel-app-access-token"
+        },
+        {
+          "subject": "vercel:app-access-token",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 40,
+          "next": 37,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.totalFixtures of vercel-app-access-token"
+        },
+        {
+          "subject": "vercel:app-access-token",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 8,
+          "next": 5,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.twinPairs of vercel-app-access-token"
+        },
+        {
+          "subject": "vercel:app-access-token",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 40,
+            "positiveCases": 11,
+            "benignControls": 14,
+            "twinPairs": 8,
+            "positiveContextAxes": 11,
+            "controlAxes": 5,
+            "confusionAxes": 9,
+            "positiveContextAxisIds": [
+              "#1012e · vercel-app-access-token · ci-config",
+              "#1012e · vercel-app-access-token · cli",
+              "#1012e · vercel-app-access-token · env",
+              "#1012e · vercel-app-access-token · header",
+              "#1012e · vercel-app-access-token · log",
+              "#1012e · vercel-app-access-token · prose",
+              "#1012e · vercel-app-access-token · sdk-config",
+              "#1012e · vercel-app-access-token · shell-export",
+              "#1012e · vercel-app-access-token · source-code",
+              "#1012e · vercel-app-access-token · structured-file",
+              "#1012e · vercel-app-access-token · tool-output"
+            ],
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:alphabet",
+              "twin:boundary",
+              "twin:length",
+              "twin:prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 14,
+            "confusionAxes": 8,
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:boundary",
+              "twin:length",
+              "twin:prefix"
+            ],
+            "controlAxes": 5,
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 14,
+            "positiveContextAxes": 11,
+            "positiveContextAxisIds": [
+              "#1012e · vercel-app-access-token · ci-config",
+              "#1012e · vercel-app-access-token · cli",
+              "#1012e · vercel-app-access-token · env",
+              "#1012e · vercel-app-access-token · header",
+              "#1012e · vercel-app-access-token · log",
+              "#1012e · vercel-app-access-token · prose",
+              "#1012e · vercel-app-access-token · sdk-config",
+              "#1012e · vercel-app-access-token · shell-export",
+              "#1012e · vercel-app-access-token · source-code",
+              "#1012e · vercel-app-access-token · structured-file",
+              "#1012e · vercel-app-access-token · tool-output"
+            ],
+            "totalFixtures": 37,
+            "twinPairs": 5
+          },
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows the status of vercel-app-access-token"
+        },
+        {
+          "subject": "vercel:app-access-token",
+          "field": "profileCoverage.cellsMet",
+          "legacy": [
+            "arrival-provisional",
+            "stable-documented",
+            "stable-empirical"
+          ],
+          "next": [
+            "arrival-provisional",
+            "stable-documented"
+          ],
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows the status of vercel-app-access-token"
+        },
+        {
+          "subject": "vercel:app-access-token",
+          "field": "profileCoverage.debt",
+          "legacy": [],
+          "next": [
+            {
+              "actual": 37,
+              "cell": "totalFixtures",
+              "required": 40,
+              "shortfall": 3
+            },
+            {
+              "actual": 5,
+              "cell": "twinPairs",
+              "required": 8,
+              "shortfall": 3
+            }
+          ],
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows the status of vercel-app-access-token"
+        },
+        {
+          "subject": "vercel:app-access-token",
+          "field": "qualificationProfile",
+          "legacy": "empirical",
+          "next": null,
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows the status of vercel-app-access-token"
+        },
+        {
+          "subject": "vercel:app-access-token",
+          "field": "reason",
+          "legacy": null,
+          "next": "empirical.minimumTwinPairs: 5 < 8 — Eight independently authored twin pairs complete the 40-fixture empirical profile. | twinFailures: 1 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | mutation.unresolvedCritical: 2 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | fixtureProfile stable-empirical: 37 total fixtures < 40 (3 short) | fixtureProfile stable-empirical: 5 twin pairs < 8 (3 short)",
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "new-only reason(s) empirical.minimumTwinPairs, twinFailures, mutation.unresolvedCritical, fixtureProfile stable-empirical, fixtureProfile stable-empirical"
+        },
+        {
+          "subject": "vercel:app-access-token",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows the status of vercel-app-access-token"
+        },
+        {
+          "subject": "vercel:app-access-token",
+          "field": "twinCoverage.failures",
+          "legacy": 0,
+          "next": 1,
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows evidence.twinFailures of vercel-app-access-token"
+        },
+        {
+          "subject": "vercel:app-access-token",
+          "field": "twinCoverage.pairs",
+          "legacy": 8,
+          "next": 5,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.twinPairs of vercel-app-access-token"
+        },
+        {
+          "subject": "vercel:app-access-token",
+          "field": "unresolvedCriticalItems.mutation",
+          "legacy": 0,
+          "next": 2,
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows evidence.mutationUnresolvedCritical of vercel-app-access-token"
+        },
+        {
+          "subject": "vercel:app-refresh-token",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 9,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.confusionAxes of vercel-app-refresh-token"
+        },
+        {
+          "subject": "vercel:app-refresh-token",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 40,
+          "next": 37,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.totalFixtures of vercel-app-refresh-token"
+        },
+        {
+          "subject": "vercel:app-refresh-token",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 8,
+          "next": 5,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.twinPairs of vercel-app-refresh-token"
+        },
+        {
+          "subject": "vercel:app-refresh-token",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 40,
+            "positiveCases": 11,
+            "benignControls": 14,
+            "twinPairs": 8,
+            "positiveContextAxes": 10,
+            "controlAxes": 5,
+            "confusionAxes": 9,
+            "positiveContextAxisIds": [
+              "#1012e · vercel-app-refresh-token · cli",
+              "#1012e · vercel-app-refresh-token · env",
+              "#1012e · vercel-app-refresh-token · header",
+              "#1012e · vercel-app-refresh-token · log",
+              "#1012e · vercel-app-refresh-token · prose",
+              "#1012e · vercel-app-refresh-token · sdk-config",
+              "#1012e · vercel-app-refresh-token · shell-export",
+              "#1012e · vercel-app-refresh-token · source-code",
+              "#1012e · vercel-app-refresh-token · structured-file",
+              "#1012e · vercel-app-refresh-token · tool-output"
+            ],
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:alphabet",
+              "twin:boundary",
+              "twin:length",
+              "twin:prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 14,
+            "confusionAxes": 8,
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:boundary",
+              "twin:length",
+              "twin:prefix"
+            ],
+            "controlAxes": 5,
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 14,
+            "positiveContextAxes": 10,
+            "positiveContextAxisIds": [
+              "#1012e · vercel-app-refresh-token · cli",
+              "#1012e · vercel-app-refresh-token · env",
+              "#1012e · vercel-app-refresh-token · header",
+              "#1012e · vercel-app-refresh-token · log",
+              "#1012e · vercel-app-refresh-token · prose",
+              "#1012e · vercel-app-refresh-token · sdk-config",
+              "#1012e · vercel-app-refresh-token · shell-export",
+              "#1012e · vercel-app-refresh-token · source-code",
+              "#1012e · vercel-app-refresh-token · structured-file",
+              "#1012e · vercel-app-refresh-token · tool-output"
+            ],
+            "totalFixtures": 37,
+            "twinPairs": 5
+          },
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows the status of vercel-app-refresh-token"
+        },
+        {
+          "subject": "vercel:app-refresh-token",
+          "field": "profileCoverage.cellsMet",
+          "legacy": [
+            "arrival-provisional",
+            "stable-documented",
+            "stable-empirical"
+          ],
+          "next": [
+            "arrival-provisional",
+            "stable-documented"
+          ],
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows the status of vercel-app-refresh-token"
+        },
+        {
+          "subject": "vercel:app-refresh-token",
+          "field": "profileCoverage.debt",
+          "legacy": [],
+          "next": [
+            {
+              "actual": 37,
+              "cell": "totalFixtures",
+              "required": 40,
+              "shortfall": 3
+            },
+            {
+              "actual": 5,
+              "cell": "twinPairs",
+              "required": 8,
+              "shortfall": 3
+            }
+          ],
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows the status of vercel-app-refresh-token"
+        },
+        {
+          "subject": "vercel:app-refresh-token",
+          "field": "qualificationProfile",
+          "legacy": "empirical",
+          "next": null,
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows the status of vercel-app-refresh-token"
+        },
+        {
+          "subject": "vercel:app-refresh-token",
+          "field": "reason",
+          "legacy": null,
+          "next": "empirical.minimumTwinPairs: 5 < 8 — Eight independently authored twin pairs complete the 40-fixture empirical profile. | twinFailures: 1 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | mutation.unresolvedCritical: 2 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | fixtureProfile stable-empirical: 37 total fixtures < 40 (3 short) | fixtureProfile stable-empirical: 5 twin pairs < 8 (3 short)",
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "new-only reason(s) empirical.minimumTwinPairs, twinFailures, mutation.unresolvedCritical, fixtureProfile stable-empirical, fixtureProfile stable-empirical"
+        },
+        {
+          "subject": "vercel:app-refresh-token",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows the status of vercel-app-refresh-token"
+        },
+        {
+          "subject": "vercel:app-refresh-token",
+          "field": "twinCoverage.failures",
+          "legacy": 0,
+          "next": 1,
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows evidence.twinFailures of vercel-app-refresh-token"
+        },
+        {
+          "subject": "vercel:app-refresh-token",
+          "field": "twinCoverage.pairs",
+          "legacy": 8,
+          "next": 5,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.twinPairs of vercel-app-refresh-token"
+        },
+        {
+          "subject": "vercel:app-refresh-token",
+          "field": "unresolvedCriticalItems.mutation",
+          "legacy": 0,
+          "next": 2,
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows evidence.mutationUnresolvedCritical of vercel-app-refresh-token"
+        },
+        {
+          "subject": "vercel:personal-access-token",
+          "field": "fixtureProfile.confusionAxes",
+          "legacy": 9,
+          "next": 8,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.confusionAxes of vercel-personal-access-token"
+        },
+        {
+          "subject": "vercel:personal-access-token",
+          "field": "fixtureProfile.totalFixtures",
+          "legacy": 40,
+          "next": 37,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.totalFixtures of vercel-personal-access-token"
+        },
+        {
+          "subject": "vercel:personal-access-token",
+          "field": "fixtureProfile.twinPairs",
+          "legacy": 8,
+          "next": 5,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.twinPairs of vercel-personal-access-token"
+        },
+        {
+          "subject": "vercel:personal-access-token",
+          "field": "profileCoverage.cells",
+          "legacy": {
+            "totalFixtures": 40,
+            "positiveCases": 11,
+            "benignControls": 14,
+            "twinPairs": 8,
+            "positiveContextAxes": 9,
+            "controlAxes": 5,
+            "confusionAxes": 9,
+            "positiveContextAxisIds": [
+              "#1012e · vercel-personal-access-token · ci-config",
+              "#1012e · vercel-personal-access-token · cli",
+              "#1012e · vercel-personal-access-token · env",
+              "#1012e · vercel-personal-access-token · header",
+              "#1012e · vercel-personal-access-token · log",
+              "#1012e · vercel-personal-access-token · prose",
+              "#1012e · vercel-personal-access-token · sdk-config",
+              "#1012e · vercel-personal-access-token · shell-export",
+              "#1012e · vercel-personal-access-token · structured-file"
+            ],
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:alphabet",
+              "twin:boundary",
+              "twin:length",
+              "twin:prefix"
+            ]
+          },
+          "next": {
+            "benignControls": 14,
+            "confusionAxes": 8,
+            "confusionAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference",
+              "twin:boundary",
+              "twin:length",
+              "twin:prefix"
+            ],
+            "controlAxes": 5,
+            "controlAxisIds": [
+              "near-miss",
+              "ordinary-prose",
+              "placeholder",
+              "public-identifier",
+              "reference"
+            ],
+            "positiveCases": 14,
+            "positiveContextAxes": 9,
+            "positiveContextAxisIds": [
+              "#1012e · vercel-personal-access-token · ci-config",
+              "#1012e · vercel-personal-access-token · cli",
+              "#1012e · vercel-personal-access-token · env",
+              "#1012e · vercel-personal-access-token · header",
+              "#1012e · vercel-personal-access-token · log",
+              "#1012e · vercel-personal-access-token · prose",
+              "#1012e · vercel-personal-access-token · sdk-config",
+              "#1012e · vercel-personal-access-token · shell-export",
+              "#1012e · vercel-personal-access-token · structured-file"
+            ],
+            "totalFixtures": 37,
+            "twinPairs": 5
+          },
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows the status of vercel-personal-access-token"
+        },
+        {
+          "subject": "vercel:personal-access-token",
+          "field": "profileCoverage.cellsMet",
+          "legacy": [
+            "arrival-provisional",
+            "stable-documented",
+            "stable-empirical"
+          ],
+          "next": [
+            "arrival-provisional",
+            "stable-documented"
+          ],
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows the status of vercel-personal-access-token"
+        },
+        {
+          "subject": "vercel:personal-access-token",
+          "field": "profileCoverage.debt",
+          "legacy": [],
+          "next": [
+            {
+              "actual": 37,
+              "cell": "totalFixtures",
+              "required": 40,
+              "shortfall": 3
+            },
+            {
+              "actual": 5,
+              "cell": "twinPairs",
+              "required": 8,
+              "shortfall": 3
+            }
+          ],
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows the status of vercel-personal-access-token"
+        },
+        {
+          "subject": "vercel:personal-access-token",
+          "field": "qualificationProfile",
+          "legacy": "empirical",
+          "next": null,
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows the status of vercel-personal-access-token"
+        },
+        {
+          "subject": "vercel:personal-access-token",
+          "field": "reason",
+          "legacy": null,
+          "next": "empirical.minimumTwinPairs: 5 < 8 — Eight independently authored twin pairs complete the 40-fixture empirical profile. | twinFailures: 1 > 0 — A twin failure is a recorded false negative on the exact discrimination this project exists to make; stable tolerates none, however small the sample. | mutation.unresolvedCritical: 2 > 0 — An unresolved critical mutation finding is a fixture-versus-detector disagreement nobody has reviewed yet; tier or sample size cannot substitute for that review. | fixtureProfile stable-empirical: 37 total fixtures < 40 (3 short) | fixtureProfile stable-empirical: 5 twin pairs < 8 (3 short)",
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "new-only reason(s) empirical.minimumTwinPairs, twinFailures, mutation.unresolvedCritical, fixtureProfile stable-empirical, fixtureProfile stable-empirical"
+        },
+        {
+          "subject": "vercel:personal-access-token",
+          "field": "status",
+          "legacy": "stable",
+          "next": "provisional",
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows the status of vercel-personal-access-token"
+        },
+        {
+          "subject": "vercel:personal-access-token",
+          "field": "twinCoverage.failures",
+          "legacy": 0,
+          "next": 1,
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows evidence.twinFailures of vercel-personal-access-token"
+        },
+        {
+          "subject": "vercel:personal-access-token",
+          "field": "twinCoverage.pairs",
+          "legacy": 8,
+          "next": 5,
+          "verdict": "explained",
+          "cause": "pending-not-scored",
+          "note": "follows evidence.twinPairs of vercel-personal-access-token"
+        },
+        {
+          "subject": "vercel:personal-access-token",
+          "field": "unresolvedCriticalItems.mutation",
+          "legacy": 0,
+          "next": 2,
+          "verdict": "explained",
+          "cause": "engine-twin-scoring",
+          "note": "follows evidence.mutationUnresolvedCritical of vercel-personal-access-token"
+        },
+        {
           "subject": "xata:api-key",
           "field": "fixtureProfile.benignCases",
           "legacy": 21,
@@ -11339,48 +12777,48 @@
           "subject": "overview",
           "field": "distribution.provisional",
           "legacy": 16,
-          "next": 20,
+          "next": 27,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "4 family status change(s) account for the difference (canonical-evidence-membership)"
+          "note": "11 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, engine-twin-scoring, pending-not-scored)"
         },
         {
           "subject": "overview",
           "field": "distribution.stable",
           "legacy": 127,
-          "next": 123,
+          "next": 116,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "4 family status change(s) account for the difference (canonical-evidence-membership)"
+          "note": "11 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, engine-twin-scoring, pending-not-scored)"
         },
         {
           "subject": "overview",
           "field": "stableDistribution.documented",
           "legacy": 89,
-          "next": 87,
+          "next": 83,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "2 family status change(s) account for the difference (canonical-evidence-membership)"
+          "note": "6 family status change(s) account for the difference (canonical-evidence-membership, corpus-twin-change, pending-not-scored)"
         },
         {
           "subject": "overview",
           "field": "stableDistribution.empirical",
           "legacy": 38,
-          "next": 36,
+          "next": 33,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "2 family status change(s) account for the difference (canonical-evidence-membership)"
+          "note": "5 family status change(s) account for the difference (canonical-evidence-membership, engine-twin-scoring)"
         }
       ]
     },
     "review": {
       "tally": {
-        "compared": 10,
+        "compared": 8,
         "equal": 2,
-        "explained": 8,
+        "explained": 6,
         "unexplained": 0,
         "byCause": {
-          "review-occurrence-identity": 4,
+          "review-occurrence-identity": 2,
           "canonical-evidence-membership": 2,
           "owner-ledger-settlement": 2
         }
@@ -11390,7 +12828,7 @@
           "subject": "flare-redact",
           "field": "occurrences",
           "legacy": "not run",
-          "next": 2799,
+          "next": 2992,
           "verdict": "explained",
           "cause": "review-occurrence-identity",
           "note": "flare-redact was never scanned by the legacy run, so the legacy ledger holds no entry for it"
@@ -11408,10 +12846,10 @@
           "subject": "gitleaks",
           "field": "occurrences",
           "legacy": 1811,
-          "next": 1978,
+          "next": 2156,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "167 occurrence(s) of cases with no legacy counterpart"
+          "note": "345 occurrence(s) of cases with no legacy counterpart"
         },
         {
           "subject": "gitleaks",
@@ -11423,31 +12861,13 @@
           "note": "119 occurrence(s) settled by the owner-decided ledger rows keyed by the accepted run's occurrence ids (not a legacy decision)"
         },
         {
-          "subject": "openredaction",
-          "field": "occurrences",
-          "legacy": "not run",
-          "next": 4064,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "openredaction was never scanned by the legacy run, so the legacy ledger holds no entry for it"
-        },
-        {
-          "subject": "openredaction",
-          "field": "settled",
-          "legacy": "not run",
-          "next": 0,
-          "verdict": "explained",
-          "cause": "review-occurrence-identity",
-          "note": "openredaction was never scanned by the legacy run, so the legacy ledger holds no entry for it"
-        },
-        {
           "subject": "trufflehog",
           "field": "occurrences",
           "legacy": 2457,
-          "next": 2781,
+          "next": 2974,
           "verdict": "explained",
           "cause": "canonical-evidence-membership",
-          "note": "324 occurrence(s) of cases with no legacy counterpart"
+          "note": "517 occurrence(s) of cases with no legacy counterpart"
         },
         {
           "subject": "trufflehog",
@@ -11476,23 +12896,31 @@
     {
       "family": "anthropic-admin01-key",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "documented",
-      "nextProfile": "documented",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "corpus-twin-change"
+      ],
+      "heldBackBy": [
+        "corpus-twin-change"
+      ],
       "unattributedReasons": []
     },
     {
       "family": "anthropic-api01-key",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "documented",
-      "nextProfile": "documented",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "corpus-twin-change"
+      ],
+      "heldBackBy": [
+        "corpus-twin-change"
+      ],
       "unattributedReasons": []
     },
     {
@@ -12575,23 +14003,31 @@
     {
       "family": "polar-api-credential",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "documented",
-      "nextProfile": "documented",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "pending-not-scored"
+      ],
+      "heldBackBy": [
+        "pending-not-scored"
+      ],
       "unattributedReasons": []
     },
     {
       "family": "polar-token",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "documented",
-      "nextProfile": "documented",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "pending-not-scored"
+      ],
+      "heldBackBy": [
+        "pending-not-scored"
+      ],
       "unattributedReasons": []
     },
     {
@@ -13074,34 +14510,52 @@
     {
       "family": "vercel-app-access-token",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "empirical",
-      "nextProfile": "empirical",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "engine-twin-scoring",
+        "pending-not-scored"
+      ],
+      "heldBackBy": [
+        "engine-twin-scoring",
+        "pending-not-scored"
+      ],
       "unattributedReasons": []
     },
     {
       "family": "vercel-app-refresh-token",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "empirical",
-      "nextProfile": "empirical",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "engine-twin-scoring",
+        "pending-not-scored"
+      ],
+      "heldBackBy": [
+        "engine-twin-scoring",
+        "pending-not-scored"
+      ],
       "unattributedReasons": []
     },
     {
       "family": "vercel-personal-access-token",
       "legacy": "stable",
-      "next": "stable",
+      "next": "provisional",
       "legacyProfile": "empirical",
-      "nextProfile": "empirical",
-      "verdict": "equal",
-      "causes": [],
-      "heldBackBy": [],
+      "nextProfile": null,
+      "verdict": "explained",
+      "causes": [
+        "engine-twin-scoring",
+        "pending-not-scored"
+      ],
+      "heldBackBy": [
+        "engine-twin-scoring",
+        "pending-not-scored"
+      ],
       "unattributedReasons": []
     },
     {
@@ -13171,8 +14625,8 @@
       },
       "next": {
         "pending": 5,
-        "provisional": 24,
-        "stable": 136,
+        "provisional": 31,
+        "stable": 129,
         "unsupported": 17
       }
     },
@@ -13183,35 +14637,147 @@
         "policy-qualified": 0
       },
       "next": {
-        "documented": 100,
-        "empirical": 36,
+        "documented": 96,
+        "empirical": 33,
         "policy-qualified": 0
       }
     }
   },
   "counterfactual": {
     "legacyStable": 127,
-    "nextStable": 123,
+    "nextStable": 116,
     "heldOnlyByMethods": 0,
     "heldByMethodsAndOthers": 0,
-    "heldWithoutMethods": 4
+    "heldWithoutMethods": 11
   },
   "heldBy": {
-    "canonical-evidence-membership": 4
+    "canonical-evidence-membership": 4,
+    "corpus-twin-change": 2,
+    "engine-twin-scoring + pending-not-scored": 3,
+    "pending-not-scored": 2
   },
   "outcomeGroups": [
     {
+      "scanner": "openredaction",
+      "population": "policy-corpus",
+      "legacy": "control clean",
+      "next": "absent",
+      "count": 4,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "policy-qualified-credentials--generic-token-high-signal-redact-twin",
+        "policy-qualified-credentials--generic-token-reference",
+        "policy-qualified-credentials--otpauth-uri-duplicate-first-control"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "policy-corpus",
+      "legacy": "control co-detected",
+      "next": "absent",
+      "count": 1,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "policy-qualified-credentials--otpauth-uri-query-order-twin"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "policy-corpus",
+      "legacy": "control flagged",
+      "next": "absent",
+      "count": 5,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "policy-qualified-credentials--bearer-token-authorization-header-twin",
+        "policy-qualified-credentials--bearer-token-reference",
+        "policy-qualified-credentials--connection-string-postgres-userinfo-twin"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "policy-corpus",
+      "legacy": "positive EXACT",
+      "next": "absent",
+      "count": 3,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "policy-qualified-credentials--bearer-token-authorization-header",
+        "policy-qualified-credentials--bearer-token-proxy-header",
+        "policy-qualified-credentials--generic-token-high-signal-warn"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "policy-corpus",
+      "legacy": "positive MISS",
+      "next": "absent",
+      "count": 2,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "policy-qualified-credentials--connection-string-rediss-password-only",
+        "policy-qualified-credentials--generic-token-high-signal-redact"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "policy-corpus",
+      "legacy": "positive OVERBROAD",
+      "next": "absent",
+      "count": 4,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "policy-qualified-credentials--connection-string-postgres-userinfo",
+        "policy-qualified-credentials--otpauth-uri-query-order",
+        "policy-qualified-credentials--otpauth-uri-quoted-config"
+      ]
+    },
+    {
       "scanner": "flare-redact",
       "population": "public-evidence-snapshot",
-      "legacy": "control flagged",
-      "next": "control co-detected",
-      "count": 36,
+      "legacy": "control clean",
+      "next": "pending",
+      "count": 20,
+      "verdict": "explained",
+      "cause": "pending-not-scored",
+      "examples": [
+        "polar--polar-api-credential-body-42-twin",
+        "polar--polar-api-credential-body-44-twin",
+        "polar--polar-api-credential-checkout-link-secret-public-id"
+      ]
+    },
+    {
+      "scanner": "flare-redact",
+      "population": "public-evidence-snapshot",
+      "legacy": "control co-detected",
+      "next": "control flagged",
+      "count": 10,
       "verdict": "explained",
       "cause": "twin-scope-vocabulary",
       "examples": [
-        "anthropic--anthropic-token-api03-no-final-hyphen-prefix-twin",
-        "anthropic--anthropic-token-api03-plain-twin",
-        "anthropic--anthropic-token-api03-unicode-crlf-twin"
+        "anthropic--anthropic-admin01-key-admim-letter-twin",
+        "anthropic--anthropic-admin01-key-underscore-after-version-twin",
+        "anthropic--anthropic-api01-key-apl-letter-twin"
+      ]
+    },
+    {
+      "scanner": "gitleaks",
+      "population": "public-evidence-snapshot",
+      "legacy": "control clean",
+      "next": "pending",
+      "count": 8,
+      "verdict": "explained",
+      "cause": "pending-not-scored",
+      "examples": [
+        "polar--polar-api-credential-body-42-twin",
+        "polar--polar-api-credential-checkout-link-secret-public-id",
+        "polar--polar-api-credential-client-id-in-url-public-id"
       ]
     },
     {
@@ -13219,27 +14785,27 @@
       "population": "public-evidence-snapshot",
       "legacy": "control co-detected",
       "next": "control flagged",
-      "count": 4,
+      "count": 11,
       "verdict": "explained",
       "cause": "twin-scope-vocabulary",
       "examples": [
-        "mailgun--mailgun-api-key-triplet-merged-last-segments-twin",
-        "mailgun--mailgun-api-key-triplet-node-client-context-twin",
-        "mailgun--mailgun-api-key-triplet-python-client-context-twin"
+        "gitlab--gitlab-routable-personal-access-token-checksum-mismatch-twin",
+        "gitlab--gitlab-routable-personal-access-token-leading-glue-twin",
+        "gitlab--gitlab-routable-personal-access-token-length-holder-mismatch-twin"
       ]
     },
     {
       "scanner": "gitleaks",
       "population": "public-evidence-snapshot",
-      "legacy": "control flagged",
-      "next": "control co-detected",
-      "count": 30,
+      "legacy": "control co-detected",
+      "next": "pending",
+      "count": 12,
       "verdict": "explained",
-      "cause": "twin-scope-vocabulary",
+      "cause": "pending-not-scored",
       "examples": [
-        "aws-bedrock--aws-bedrock-short-term-api-key-embedded-leading-twin",
-        "aws-bedrock--aws-bedrock-short-term-api-key-head-only-twin",
-        "aws-bedrock--aws-bedrock-short-term-api-key-urlsafe-body-twin"
+        "polar--polar-api-credential-body-44-twin",
+        "polar--polar-token-body-44-twin",
+        "polar--polar-token-trailing-hyphen-twin"
       ]
     },
     {
@@ -13247,40 +14813,178 @@
       "population": "public-evidence-snapshot",
       "legacy": "control flagged",
       "next": "control flagged",
+      "count": 1,
+      "verdict": "explained",
+      "cause": "twin-scope-vocabulary",
+      "examples": [
+        "gitlab--gitlab-routable-personal-access-token-missing-separator-twin"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "public-evidence-snapshot",
+      "legacy": "control clean",
+      "next": "absent",
+      "count": 2262,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "ai21--ai21-api-key-actions-secret-reference",
+        "ai21--ai21-api-key-angle-key-placeholder",
+        "ai21--ai21-api-key-bare-line-near-miss"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "public-evidence-snapshot",
+      "legacy": "control co-detected",
+      "next": "absent",
+      "count": 93,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "anthropic--anthropic-admin01-key-underscore-after-version-twin",
+        "anthropic--anthropic-admin01-key-underscore-delimiters-twin",
+        "anthropic--anthropic-api01-key-api03-prefix-twin"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "public-evidence-snapshot",
+      "legacy": "control flagged",
+      "next": "absent",
+      "count": 1043,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "ai21--ai21-api-key-bare-in-prose-near-miss",
+        "ai21--ai21-api-key-base64-text-encoded-value",
+        "ai21--ai21-api-key-key-guidance-prose"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "public-evidence-snapshot",
+      "legacy": "pending",
+      "next": "absent",
+      "count": 47,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "anthropic--anthropic-token-api03-admin-prefix-plain-twin",
+        "anthropic--anthropic-token-api03-admin-prefix-unicode-crlf-twin",
+        "anthropic--anthropic-token-api03-compliance-prefix-plain-twin"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "public-evidence-snapshot",
+      "legacy": "positive COVERED",
+      "next": "absent",
+      "count": 21,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "azure-devops--azure-devops-personal-access-token-git-remote-url",
+        "generic--connection-string-mongodb-bare",
+        "generic--connection-string-mongodb-unicode-crlf"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "public-evidence-snapshot",
+      "legacy": "positive EXACT,EXACT",
+      "next": "absent",
+      "count": 6,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "aws--aws-access-key-pair-plain",
+        "aws--aws-access-key-pair-unicode-crlf",
+        "github--repeated-lines"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "public-evidence-snapshot",
+      "legacy": "positive EXACT",
+      "next": "absent",
+      "count": 488,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "ai21--ai21-api-key-curl-header",
+        "ai21--ai21-api-key-litellm-yaml",
+        "anthropic--anthropic-admin01-key-curl-x-api-key"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "public-evidence-snapshot",
+      "legacy": "positive MISS,MISS",
+      "next": "absent",
       "count": 2,
       "verdict": "explained",
-      "cause": "twin-scope-vocabulary",
+      "cause": "optional-scanner-not-measured",
       "examples": [
-        "slack--slack-token-bot-plain-twin",
-        "slack--slack-token-bot-unicode-crlf-twin"
+        "digitalocean--digitalocean-token-repeated",
+        "stripe--stripe-webhook-signing-secret-rails-credentials-rolling"
       ]
     },
     {
       "scanner": "openredaction",
       "population": "public-evidence-snapshot",
-      "legacy": "control flagged",
-      "next": "control co-detected",
-      "count": 20,
+      "legacy": "positive MISS",
+      "next": "absent",
+      "count": 1627,
       "verdict": "explained",
-      "cause": "twin-scope-vocabulary",
+      "cause": "optional-scanner-not-measured",
       "examples": [
-        "aws--aws-secret-access-key-key-shape-bare-twin",
-        "aws--aws-secret-access-key-key-shape-quoted-twin",
-        "aws--aws-secret-access-key-key-shape-unicode-crlf-twin"
+        "ai21--ai21-api-key-actions-env-literal",
+        "ai21--ai21-api-key-compose-env",
+        "ai21--ai21-api-key-docker-run-env"
       ]
     },
     {
       "scanner": "openredaction",
       "population": "public-evidence-snapshot",
-      "legacy": "control flagged",
-      "next": "control flagged",
-      "count": 4,
+      "legacy": "positive OVERBROAD",
+      "next": "absent",
+      "count": 5,
       "verdict": "explained",
-      "cause": "twin-scope-vocabulary",
+      "cause": "optional-scanner-not-measured",
       "examples": [
-        "aws--aws-secret-access-key-artifact-digest-actions-twin",
-        "aws--aws-secret-access-key-equals-inside-twin",
-        "stripe--stripe-token-live-unicode-crlf-twin"
+        "generic--connection-string-mongodb-quoted",
+        "generic--connection-string-mysql-quoted",
+        "generic--connection-string-postgres-quoted"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "public-evidence-snapshot",
+      "legacy": "positive PARTIAL",
+      "next": "absent",
+      "count": 196,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "anthropic--anthropic-admin01-key-pasted-key",
+        "anthropic--anthropic-api01-key-buildkite-env",
+        "anthropic--anthropic-api01-key-compose-env"
+      ]
+    },
+    {
+      "scanner": "redact-secret",
+      "population": "public-evidence-snapshot",
+      "legacy": "control clean",
+      "next": "pending",
+      "count": 8,
+      "verdict": "explained",
+      "cause": "pending-not-scored",
+      "examples": [
+        "polar--polar-api-credential-body-42-twin",
+        "polar--polar-api-credential-checkout-link-secret-public-id",
+        "polar--polar-api-credential-client-id-in-url-public-id"
       ]
     },
     {
@@ -13288,26 +14992,204 @@
       "population": "public-evidence-snapshot",
       "legacy": "control co-detected",
       "next": "control flagged",
-      "count": 2,
+      "count": 12,
       "verdict": "explained",
       "cause": "twin-scope-vocabulary",
       "examples": [
-        "mailgun--mailgun-api-key-triplet-merged-last-segments-twin",
-        "mailgun--mailgun-api-key-triplet-short-first-segment-twin"
+        "gitlab--gitlab-routable-personal-access-token-checksum-mismatch-twin",
+        "gitlab--gitlab-routable-personal-access-token-length-holder-mismatch-twin",
+        "gitlab--gitlab-routable-personal-access-token-missing-separator-twin"
+      ]
+    },
+    {
+      "scanner": "redact-secret",
+      "population": "public-evidence-snapshot",
+      "legacy": "control co-detected",
+      "next": "pending",
+      "count": 12,
+      "verdict": "explained",
+      "cause": "pending-not-scored",
+      "examples": [
+        "polar--polar-api-credential-body-44-twin",
+        "polar--polar-token-body-44-twin",
+        "polar--polar-token-trailing-hyphen-twin"
       ]
     },
     {
       "scanner": "trufflehog",
       "population": "public-evidence-snapshot",
-      "legacy": "control flagged",
-      "next": "control co-detected",
-      "count": 26,
+      "legacy": "control clean",
+      "next": "pending",
+      "count": 20,
+      "verdict": "explained",
+      "cause": "pending-not-scored",
+      "examples": [
+        "polar--polar-api-credential-body-42-twin",
+        "polar--polar-api-credential-body-44-twin",
+        "polar--polar-api-credential-checkout-link-secret-public-id"
+      ]
+    },
+    {
+      "scanner": "trufflehog",
+      "population": "public-evidence-snapshot",
+      "legacy": "control co-detected",
+      "next": "control flagged",
+      "count": 6,
       "verdict": "explained",
       "cause": "twin-scope-vocabulary",
       "examples": [
-        "apify--apify-api-token-trailing-hyphen-twin",
-        "deepgram--deepgram-api-key-id-named-compose-twin",
-        "deepgram--deepgram-api-key-id-named-env-twin"
+        "github--github-fine-grained-pat-terraform-provider-alphabet-twin",
+        "gitlab--gitlab-routable-personal-access-token-checksum-mismatch-twin",
+        "gitlab--gitlab-routable-personal-access-token-length-holder-mismatch-twin"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "regression-corpus (project twin-scope copies)",
+      "legacy": "control clean",
+      "next": "absent",
+      "count": 3,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "twin-scope-regressions--anthropic-admin01-key-api01-prefix-twin",
+        "twin-scope-regressions--anthropic-admin01-key-api03-prefix-twin",
+        "twin-scope-regressions--anthropic-api01-key-admin01-prefix-twin"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "regression-corpus (project twin-scope copies)",
+      "legacy": "control co-detected",
+      "next": "absent",
+      "count": 2,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "twin-scope-regressions--anthropic-api01-key-api03-prefix-twin",
+        "twin-scope-regressions--elevenlabs-api-key-stripe-test-shaped-twin"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "regression-corpus (project twin-scope copies)",
+      "legacy": "control flagged",
+      "next": "absent",
+      "count": 1,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "twin-scope-regressions--elevenlabs-api-key-stripe-shaped-twin"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "regression-corpus (project twin-scope copies)",
+      "legacy": "positive MISS",
+      "next": "absent",
+      "count": 5,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "twin-scope-regressions--anthropic-admin01-key-dotenv",
+        "twin-scope-regressions--anthropic-admin01-key-export",
+        "twin-scope-regressions--anthropic-api01-key-export"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "regression-corpus (project twin-scope copies)",
+      "legacy": "positive PARTIAL",
+      "next": "absent",
+      "count": 1,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "twin-scope-regressions--anthropic-api01-key-dotenv"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "regression-corpus",
+      "legacy": "control clean",
+      "next": "absent",
+      "count": 51,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "milestone-6-closed--issue-255-mariadb-default",
+        "milestone-6-closed--issue-257-compound",
+        "milestone-6-closed--issue-257-leading-space"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "regression-corpus",
+      "legacy": "control flagged",
+      "next": "absent",
+      "count": 27,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "milestone-6-closed--issue-254-id-bare",
+        "milestone-6-closed--issue-254-id-env",
+        "milestone-6-closed--issue-254-secret-json"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "regression-corpus",
+      "legacy": "positive COVERED",
+      "next": "absent",
+      "count": 7,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "milestone-6-closed--issue-255-mongodb-literal",
+        "milestone-6-closed--issue-255-mysql-literal",
+        "milestone-6-closed--issue-255-postgres-literal"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "regression-corpus",
+      "legacy": "positive EXACT",
+      "next": "absent",
+      "count": 32,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "milestone-6-closed--issue-254-changed-id",
+        "milestone-6-closed--issue-254-changed-secret",
+        "milestone-6-closed--issue-262-horizontal-tab"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "regression-corpus",
+      "legacy": "positive MISS",
+      "next": "absent",
+      "count": 20,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "milestone-6-closed--issue-255-mariadb-literal",
+        "milestone-6-closed--issue-257-password-digit",
+        "milestone-6-closed--issue-257-secret-digit"
+      ]
+    },
+    {
+      "scanner": "openredaction",
+      "population": "regression-corpus",
+      "legacy": "positive PARTIAL",
+      "next": "absent",
+      "count": 4,
+      "verdict": "explained",
+      "cause": "optional-scanner-not-measured",
+      "examples": [
+        "milestone-6-closed--issue-257-embedded-word",
+        "milestone-6-closed--issue-257-url-embedded",
+        "milestone-6-closed--issue-280-arn-account"
       ]
     }
   ],
@@ -13321,7 +15203,7 @@
       ],
       "pairs": 5790,
       "unmatchedLegacy": 473,
-      "unmatchedNext": 729,
+      "unmatchedNext": 1246,
       "ambiguousLegacy": 0,
       "ambiguousNext": 0
     },
@@ -13363,7 +15245,7 @@
     },
     {
       "area": "review ledger entries outside the mapping",
-      "reason": "the mapped decisions are compared per peer in the review section; the methods run has a review queue keyed by canonical occurrence ids; the legacy review ledger is keyed by legacy ids, and a decision applies to a canonical occurrence only through benchmarks/support/public-review-ledger-map.json (same case, peer, disagreement property and bytes): 4268 of 11622 canonical occurrences are mapped (4268 of 4268 legacy differential entries), 6863 are occurrences of peers the legacy run never scanned (unreviewed, and not gate-bearing) and 491 are unmatched for another reason. The 8845 legacy mutation review entries have no canonical counterpart (the canonical review queue holds differential occurrences only) and are not compared."
+      "reason": "the mapped decisions are compared per peer in the review section; the methods run has a review queue keyed by canonical occurrence ids; the legacy review ledger is keyed by legacy ids, and a decision applies to a canonical occurrence only through benchmarks/support/public-review-ledger-map.json (same case, peer, disagreement property and bytes): 4268 of 8122 canonical occurrences are mapped (4268 of 4268 legacy differential entries), 2992 are occurrences of peers the legacy run never scanned (unreviewed, and not gate-bearing) and 862 are unmatched for another reason. The 8845 legacy mutation review entries have no canonical counterpart (the canonical review queue holds differential occurrences only) and are not compared."
     },
     {
       "area": "candidate-regression inputs and protected holdout",
@@ -13375,29 +15257,32 @@
     }
   ],
   "summary": {
-    "compared": 43365,
-    "equal": 42485,
-    "explained": 880,
+    "compared": 43363,
+    "equal": 36423,
+    "explained": 6940,
     "unexplained": 0,
     "byCause": {
-      "canonical-evidence-membership": 276,
+      "canonical-evidence-membership": 278,
+      "corpus-twin-change": 12,
+      "engine-twin-scoring": 33,
       "family-not-in-accepted-evidence": 274,
       "legacy-id-rekey": 156,
+      "optional-scanner-not-measured": 5963,
       "owner-ledger-settlement": 2,
-      "pending-not-scored": 35,
+      "pending-not-scored": 171,
       "policy-corpus-bounded": 9,
-      "review-occurrence-identity": 4,
-      "twin-scope-vocabulary": 124
+      "review-occurrence-identity": 2,
+      "twin-scope-vocabulary": 40
     },
     "classes": {
-      "must-equal": 42485,
-      "expected-structural": 880,
+      "must-equal": 36423,
+      "expected-structural": 6940,
       "unexplained": 0
     }
   },
   "recommendations": [
-    "Status: the legacy path reads 127 stable families and the new path 123. Held back (legacy-stable families the new path does not read stable): 4 by canonical-evidence-membership. Not applied: nothing here changes a status.",
-    "Review ledger: 4460 of 10971 family-attributed differential occurrences of the methods run are settled by a legacy decision through the generated mapping; per peer, occurrences {\"openredaction\":3757,\"trufflehog\":2657,\"flare-redact\":2677,\"gitleaks\":1880}. The differential gate reads the peers named in benchmarks/support/population-policy.json (gitleaks, trufflehog); the other peers are measured and listed per family (families[].differential) and are not gate-bearing until reviewed. Applied by product policy (docs/decisions, #638); nothing here changes a status.",
+    "Status: the legacy path reads 127 stable families and the new path 116. Held back (legacy-stable families the new path does not read stable): 4 by canonical-evidence-membership; 2 by corpus-twin-change; 3 by engine-twin-scoring + pending-not-scored; 2 by pending-not-scored. Not applied: nothing here changes a status.",
+    "Review ledger: 4460 of 7214 family-attributed differential occurrences of the methods run are settled by a legacy decision through the generated mapping; per peer, occurrences {\"flare-redact\":2677,\"gitleaks\":1880,\"trufflehog\":2657}. The differential gate reads the peers named in benchmarks/support/population-policy.json (gitleaks, trufflehog); the other peers are measured and listed per family (families[].differential) and are not gate-bearing until reviewed. Applied by product policy (docs/decisions, #638); nothing here changes a status.",
     "Policy corpus: the T3 route floors read the 19-case policy corpus alone. Whether the floors, the corpus or the route change is a product policy decision. Not applied.",
     "Twin scope: credential-eval scopes a twin by the twin's own family, and the snapshot gives a cross-provider twin none, so the engine reads a finding of another known detector as flagged where the legacy twin read it as co-detected (twin-scope-vocabulary). The adapter does not re-score it. The product carries those twins itself with their parent's family (the twin-scope-regressions category of the regression corpus, 0 public twins mapped by content); the engine reads each as co-detected, as the legacy path did, and the twin gate reads that verdict. The public population's own verdict is unchanged and listed per family (gates[].twinFailuresScopedElsewhere). A request that credential-evidence give a cross-provider twin its parent's family would remove the difference at the source; it is not needed for the qualification.",
     "Re-key: the review-ledger decisions are mapped to canonical occurrence ids by content (public-review-ledger-map.json). The legacy-id re-key of known gaps and disputed properties (qualification-inputs.json populations[0].rekey) with the evidence release id map is still open."

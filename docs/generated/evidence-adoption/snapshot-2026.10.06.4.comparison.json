@@ -21,7 +21,16 @@
       "benchmarkRevision": "cdcd6f3899c95429b662339a19bb5ece0ce9b200"
     },
     "deployment": {
-      "staging": null,
+      "staging": {
+        "environment": "staging",
+        "site": "https://staging.benchmarks.redactsecret.dev",
+        "commit": "f06fa57972658265bb8aa96b7bd0853e47006279",
+        "workflowRun": "https://github.com/redact-secret/redact-secret-benchmarks/actions/runs/37513643096",
+        "runId": "37513643096",
+        "conclusion": "success",
+        "verifiedOn": "2026-10-06",
+        "verified": "/evaluation/credential/, /report/, /report/families/, /evaluation/qualification/ fetched: each carries snapshot-2026.10.06.4, credential-eval alpha.15, @redact-secret/core 0.1.0-beta.13 and the disclosure \"Maintainer-reviewed (independent review pending)\" / \"메인테이너 검토 (독립 검토 대기)\""
+      },
       "production": null
     },
     "product": {

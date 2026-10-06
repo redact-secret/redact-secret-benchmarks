@@ -18,7 +18,19 @@ let CHUNK = 7; // `--chunk N` overrides it (default 7, the size every earlier ru
 const LIMITS = { maxInputBytes: 1_000_000, maxBufferedBytes: 32_896, maxTokenBytes: 8_192, maxMultilineBytes: 32_768 };
 const bytes = (text, index) => Buffer.byteLength(text.slice(0, index));
 const norm = (text, findings) => findings.map(f => ({ start: bytes(text, f.start), end: bytes(text, f.end), type: f.type, detector: f.detector, action: f.action }));
-const chunks = text => { const out = []; for (let i = 0; i < text.length; i += CHUNK) out.push(text.slice(i, i + CHUNK)); return out; };
+// UTF-16 chunks of CHUNK code units; a chunk never ends between a surrogate pair (the JS APIs reject lone surrogates).
+// Identical to fixed slicing whenever no pair would be split, so earlier runs are unchanged.
+const chunks = text => {
+  const out = [];
+  for (let i = 0; i < text.length;) {
+    let end = Math.min(text.length, i + CHUNK);
+    const last = text.charCodeAt(end - 1);
+    if (end < text.length && last >= 0xd800 && last <= 0xdbff) end += 1;
+    out.push(text.slice(i, end));
+    i = end;
+  }
+  return out;
+};
 
 /** A UTF-16 surface (the Node core and the WASM package share the API shape). */
 function jsSurface(api, factory) {

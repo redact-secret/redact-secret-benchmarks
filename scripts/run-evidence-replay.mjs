@@ -138,8 +138,16 @@ function context(tag, manifestDigest) {
 
 function remoteSha(branch) { return run('git', ['ls-remote', 'origin', `refs/heads/${branch}`]).split('\t')[0] || null; }
 
-export function branch(tag, manifestDigest) {
-  const { branch: name, patchPath, ec } = context(tag, manifestDigest);
+/**
+ * `engineOnly`: the transient branch for the ENGINE effect (#697, #773): the accepted evidence pin stays and only the engine pin and schema move, so the previous corpus is replayed on the
+ * candidate's engine. With the control replay it separates the corpus effect from the engine effect; the comparison of an adoption that moves the engine refuses without it.
+ */
+export function branch(tag, manifestDigest, { engineOnly = false } = {}) {
+  const context0 = context(tag, manifestDigest);
+  const ec = context0.ec;
+  const name = engineOnly ? context0.branch.replace(/-control$/, '-engine') : context0.branch;
+  const patchPath = engineOnly ? context0.patchPath.replace('.replay-pins.patch', '.engine-replay-pins.patch') : context0.patchPath;
+  if (engineOnly && !ec.engineChange) throw new Error(`${tag} does not move the engine: there is no engine effect to replay`);
   const existing = remoteSha(name);
   if (existing) return { branch: name, sha: existing, reused: true };
   cleanTree();
@@ -149,7 +157,7 @@ export function branch(tag, manifestDigest) {
     run('git', ['worktree', 'add', '--detach', tree, 'HEAD']);
     symlinkSync(path.join(root, 'node_modules'), path.join(tree, 'node_modules'), 'dir'); // untracked: the commit below takes tracked files only
     // The same `repin` the owner's acceptance branch runs: the floors population's pin moves to the candidate, its earlier runs become historical receipts. Nothing else changes.
-    run('node', ['scripts/adopt-evidence-snapshot.mjs', 'repin', '--superseded-on', new Date().toISOString().slice(0, 10)], { cwd: tree, stdio: ['ignore', 'inherit', 'inherit'] });
+    if (!engineOnly) run('node', ['scripts/adopt-evidence-snapshot.mjs', 'repin', '--superseded-on', new Date().toISOString().slice(0, 10)], { cwd: tree, stdio: ['ignore', 'inherit', 'inherit'] });
     moveEngineInTree(tree, ec);
     run('git', ['-c', 'user.name=replay', '-c', 'user.email=replay@localhost', 'commit', '-qam', `replay(${tag}): the candidate's evidence pin only (transient; never merged)`], { cwd: tree });
     const patch = run('git', ['diff', 'HEAD~1', 'HEAD'], { cwd: tree });
@@ -315,7 +323,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.ar
   const option = name => { const at = rest.indexOf(`--${name}`); return at >= 0 ? rest[at + 1] : undefined; };
   const tag = option('tag'), digest = option('manifest-digest');
   try {
-    if (command === 'branch') console.log(JSON.stringify(branch(tag, digest)));
+    if (command === 'branch') console.log(JSON.stringify(branch(tag, digest, { engineOnly: rest.includes('--engine-only') })));
     else if (command === 'dispatch') console.log(JSON.stringify(dispatch(tag, digest)));
     else if (command === 'wait') wait(option('run'));
     else if (command === 'collect') console.log(JSON.stringify(collect(tag, digest, option('run'), { keepBranch: rest.includes('--keep-branch') })));

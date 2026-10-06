@@ -45,8 +45,8 @@ test('no fixture content matches any contracts[*].pattern — the machine-checka
 
 // #378: a larger corpus is more evidence only when its files are independent and balanced.
 import { independenceProblems, independentShapeCount, distributionProblems, DEFAULT_DISTRIBUTION, frozenSubsetProblems, axisCounts, maxPairwiseSimilarity, NEAR_DUPLICATE_THRESHOLD } from '../benchmarks/lib/corpus-independence.ts';
-import { loadCases } from '../benchmarks/engine/cases.ts';
-import { createOperators } from '../benchmarks/operators/index.ts';
+import { loadCases } from '../benchmarks/evaluation/domains/credential/cases.ts';
+import { createOperators } from '../benchmarks/evaluation/domains/credential/operators/index.ts';
 
 const frozen = await read('fixtures/real-world-shapes/frozen-baseline-v1.json');
 

@@ -3,8 +3,9 @@
  * formatting is here. Nothing is summed across populations or scanners, a population with no case for a family says so, and
  * a gate that did not run is "not measured", never a zero. The support status is the adapter's: it is displayed, never derived.
  */
-import type { QualificationOverviewProps, QualificationFamilyProps, QualificationUnavailableProps, StatusWord, CountsRow, FamilyRow, GapRow } from '../components/qualification/types';
-import type { FamilyView, PopulationSlice, QualificationLoad, QualificationView, ScannerCounts } from '../services/qualification';
+import type { ScopeAccountingProps, ScopeRow, ProfileEffectRow, QualificationOverviewProps, QualificationFamilyProps, QualificationUnavailableProps, StatusWord, CountsRow, FamilyRow, GapRow, NotMeasuredScanner, ScannerProfiles } from '../components/qualification/types';
+import type { DeclaredConfiguration } from '../services/peers';
+import type { ScopeEntry, FamilyView, PopulationSlice, QualificationLoad, QualificationView, ScannerCounts } from '../services/qualification';
 import { QUALIFICATION_COMMANDS, QUALIFICATION_FILE } from '../lib/qualification';
 import { int } from './format';
 
@@ -58,7 +59,109 @@ const unmeasuredOf = (c: ScannerCounts): string => {
   return parts.length ? parts.join(' · ') : 'None';
 };
 
-export function resolveQualificationOverview(view: QualificationView): QualificationOverviewProps {
+const LABELS_SHOWN = 12;
+const STATE_WORD: Record<ScopeEntry['state'], string> = { accounted: 'Accounted', 'legacy-native-label-unavailable': 'Legacy: native labels unavailable', 'not-accounted': 'Not accounted', 'not-measured': 'Not measured' };
+const UNKNOWN = 'Unknown';
+
+/**
+ * The optional scanners the view did not measure (#763), in the contract's own words, with the pointer to the last recorded measurement (run, engine,
+ * configuration, date). A view built before the roster, or one that measured every optional scanner, says nothing here.
+ */
+export function resolveNotMeasured(view: QualificationView): NotMeasuredScanner[] | undefined {
+  const rows = (view.scannerRoster?.notMeasured ?? []).map(n => {
+    const last = n.lastMeasurement;
+    const pointer = last
+      ? `Last measurement: ${last.runs.map(r => `${r.id} (configuration ${shortDigest(r.configHash)})`).join(', ')} · engine ${last.engine.version} · recorded ${last.recordedOn}${last.registry === 'historicalRuns' ? ' · superseded, kept as history' : ''}. It stays labelled with that run identity and is never combined with another profile or another run.`
+      : 'No earlier measurement of it is recorded. Nothing is shown in its place.';
+    return { key: n.scanner, statement: n.statement, reason: n.reason, lastMeasurement: pointer, ...(n.officialMeasurement ? { officialMeasurement: `Official measurement: ${n.officialMeasurement}.` } : {}) };
+  });
+  return rows.length ? rows : undefined;
+}
+
+/**
+ * The profiles of a scanner the roster names (#764), each under its own label with what it detects and its configuration identity, so the default (all patterns)
+ * and the credential profile (33 types) are never read as one scanner. Only a roster that declares a profile of another scanner shows this; the disclosure says
+ * the results differ by configuration and that no accuracy claim follows. Nothing here is a result.
+ */
+export function resolveScannerProfiles(view: QualificationView): ScannerProfiles | undefined {
+  const all = view.scannerRoster?.profiles ?? [];
+  if (!all.some(p => p.profileOf)) return undefined;
+  const parents = new Set(all.filter(p => p.profileOf).map(p => p.profileOf));
+  const rows = all.filter(p => p.profileOf || parents.has(p.scanner)).map(p => ({
+    key: p.scanner, label: p.label, scanner: p.scanner,
+    detects: p.detects ?? 'Not stated',
+    identity: p.identity ? `${p.identity.adapter.id} adapter ${p.identity.adapter.version} · ${p.identity.package}${p.identity.patterns ? ` · ${p.identity.patterns} types` : ''} · configuration ${shortDigest(p.identity.scannerConfigurationHash)}` : 'Every built-in pattern; its history is labelled with each run, engine, configuration and date',
+    status: p.measured ? 'Measured in this view' : 'Not measured in this view',
+  }));
+  return {
+    title: 'Profiles of one scanner',
+    description: 'The same package runs under two configurations. Each is its own scanner with its own results and history; they are never added together or spliced.',
+    rows,
+    disclosure: all.find(p => p.profileOf && p.disclosure)?.disclosure,
+  };
+}
+
+function scopeRow(population: string, artifact: string, e: ScopeEntry, declared: Map<string, DeclaredConfiguration>): ScopeRow {
+  const unaccounted = e.state !== 'accounted';
+  const d = e.dispositions;
+  const n = (value: number | undefined | null): string => (value === null || value === undefined ? UNKNOWN : int(value));
+  const configuration = declared.get(e.scanner)?.label ?? 'Configuration not declared';
+  const shown = e.labels.slice(0, LABELS_SHOWN);
+  return {
+    key: `${population}/${artifact}/${e.scanner}`,
+    population, artifact, scanner: e.scanner, configuration,
+    identity: `config ${shortDigest(e.profile.configurationHash)} · adapter ${e.profile.adapterVersion}${e.profile.version ? ` · ${e.profile.version}` : ''}`,
+    classification: e.classification ? `engine ${e.engineVersion} · ${e.classification.table.id} · accounting v${e.classification.accountingVersion}` : `engine ${e.engineVersion} · no classification recorded`,
+    state: STATE_WORD[e.state], unaccounted,
+    coverage: e.labelled === null || e.retainedFindings === null ? UNKNOWN : `${int(e.labelled)} of ${int(e.retainedFindings)} findings carry a native label`,
+    mapped: n(d?.mapped_credential), credentialRelated: n(d?.credential_related_unmapped), outOfScope: n(d?.out_of_scope), ambiguous: n(d?.ambiguous),
+    unavailable: n(d?.native_label_unavailable), unrecognized: n(d?.unrecognized_label),
+    labels: shown.map(l => ({ label: l.label, findings: `${int(l.findings)} findings`, scope: l.scope ?? 'outside the reviewed set', reason: l.reason ?? 'not classified' })),
+    labelsMore: e.labels.length > shown.length ? `${int(e.labels.length - shown.length)} more native types are recorded and not listed here.` : null,
+    limits: e.limits,
+  };
+}
+
+const signed = (n: number): string => `${n > 0 ? '+' : n < 0 ? '-' : ''}${int(Math.abs(n))}`;
+
+/** Scope accounting rows next to the scanner counts (#724). Nothing is computed: the view's engine counts are formatted, and an absent count reads "Unknown". */
+export function resolveScopeAccounting(view: QualificationView, declared: Map<string, DeclaredConfiguration>): ScopeAccountingProps | undefined {
+  if (!view.populations.some(p => p.scope?.length || p.methodsScope?.length)) return undefined;
+  const rows = view.populations.flatMap(p => [
+    ...(p.scope ?? []).map(e => scopeRow(p.population, 'plain run', e, declared)),
+    ...(p.methodsScope ?? []).map(e => scopeRow(p.population, 'methods run', e, declared)),
+  ]);
+  const profileRows: ProfileEffectRow[] = view.populations.flatMap(p => (p.profileEffects ?? []).map(x => ({
+    key: `${p.population}/${x.profile.scanner}`,
+    population: p.population,
+    pair: `${x.profile.scanner} against ${x.default.scanner}`,
+    identities: `${shortDigest(x.profile.configurationHash)} against ${shortDigest(x.default.configurationHash)}`,
+    outcomes: (['EXACT', 'COVERED', 'OVERBROAD', 'PARTIAL', 'MISS'] as const).map(o => `${o} ${signed(x.delta.outcomes[o])}`).join(' · '),
+    benign: `${signed(x.delta.benignFlagged)} flagged of ${int(x.default.totals.benignCases)}`,
+    findings: x.delta.retainedFindings === null ? UNKNOWN : signed(x.delta.retainedFindings),
+    denominators: x.denominatorsEqual ? 'Equal: no case or span was dropped' : 'Different: the two runs measured different cases or spans',
+    note: x.note,
+  })));
+  return {
+    title: 'Findings by scope',
+    description: 'What the engine recorded for the findings each scanner produced, per population and per artifact. A different count here is not a different accuracy.',
+    mode: modeLine(view),
+    notes: [
+      'Native type (what the scanner said), derived family (the adapter’s classification) and reviewed scope (the engine’s table, with its reason) are separate. An unmapped finding is neither a false positive nor ignored, and a type reviewed as not a credential is shown as an out-of-scope diagnostic, not a credential detection.',
+      'Unknown means no accounting was recorded for that artifact (an older engine, a scanner with no reviewed table, or a scanner that did not complete). It is not zero. Each artifact is accounted apart; nothing is added across populations, scanners or the plain and methods runs.',
+      'A credential profile is a separate scanner configuration with its own identity, shown beside the default and never in its place. No finding is removed from any score, and no evidence denominator shrinks.',
+    ],
+    rows,
+    profiles: {
+      title: 'Credential profiles against the default',
+      description: 'A declared profile and its default scanner measured on the same population, as separate observations. The difference is a recorded configuration effect, not a speed-up and not a change of any outcome.',
+      rows: profileRows,
+      empty: 'No declared profile was measured on the same population as its default scanner.',
+    },
+  };
+}
+
+export function resolveQualificationOverview(view: QualificationView, declared: Map<string, DeclaredConfiguration> = new Map()): QualificationOverviewProps {
   const methodsNotRun = [...new Set(view.families.flatMap(f => f.status.methodsNotRun))].sort();
   const populationNames = view.populations.map(p => p.population);
   const familyRows: FamilyRow[] = view.families.map(f => {
@@ -145,6 +248,8 @@ export function resolveQualificationOverview(view: QualificationView): Qualifica
       title: 'Scanners',
       description: 'The scanners each population ran with, as the run artifact recorded them.',
       rows: view.populations.flatMap(p => p.artifact.scanners.map(s => ({ key: `${p.population}/${s.id}`, population: p.population, scanner: s.id, version: s.version ?? 'Not recorded', build: s.build ?? 'Not recorded', mode: s.mode }))),
+      ...(resolveNotMeasured(view) ? { notMeasured: resolveNotMeasured(view) } : {}),
+      ...(resolveScannerProfiles(view) ? { profiles: resolveScannerProfiles(view) } : {}),
     },
     families: {
       title: 'Detector families',
@@ -162,6 +267,7 @@ export function resolveQualificationOverview(view: QualificationView): Qualifica
       href: qualificationUnattributedHref(1),
       label: 'Open the unattributed cases',
     },
+    ...(resolveScopeAccounting(view, declared) ? { scope: resolveScopeAccounting(view, declared) } : {}),
     gaps: { title: 'Known-gap inputs', description: 'Each record’s fixtures matched to cases by id, per population. A public fixture keeps its legacy id until the re-key, so it matches nothing here.', rows: gapRows },
   };
 }

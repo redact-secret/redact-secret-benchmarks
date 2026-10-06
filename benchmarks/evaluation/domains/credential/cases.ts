@@ -1,13 +1,13 @@
 import type { Fixture, Corpus } from '../../../types.ts';
-import type { Registry, Operator, EvaluationCase, CaseSeed } from '../../../engine/types.ts';
+import type { Registry, Operator, EvaluationCase, CaseSeed } from '../../model/types.ts';
 import { readFile, realpath } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { buildCorpora } from '../../../../fixtures/generated/build.mjs';
-import { validateCorpus } from '../../../lib/scoring.ts';
+import { validateCorpus } from '../../../scoring/scoring.ts';
 import { validateAssessment, classifyFixture, validateContracts, controlAxis } from './assessment.ts';
 import { validateStructures } from '../../../lib/validate-structures.ts';
-import { hash, secrets } from '../../../engine/model.ts';
+import { hash, secrets } from '../../model/model.ts';
 
 const root = fileURLToPath(new URL('../../../../', import.meta.url));
 /** Fail closed (#91): a reviewed must-not-flag control always has an axis. T0 controls are unscored and carry the explicit `pending` axis instead. */

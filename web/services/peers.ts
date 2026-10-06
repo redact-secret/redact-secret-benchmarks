@@ -13,7 +13,7 @@
  * by the pipeline test against the installed package, so here its ids are trusted.
  */
 import {
-  PEER_KINDS, peerRegistryProblems, peerRuleFamilyProblems, targetedFamilies,
+  DECLARED_SCOPES, PEER_KINDS, peerRegistryProblems, peerRuleFamilyProblems, targetedFamilies,
   type PeerId, type PeerInventories, type PeerKind, type PeerRegistry, type PeerRuleFamilies,
 } from '../../benchmarks/lib/peer-rule-families';
 import type { Taxonomy } from '../../benchmarks/support/taxonomy';
@@ -68,5 +68,21 @@ export function loadPeerProfiles(): Promise<Map<string, PeerProfile>> {
       });
     }
     return profiles;
+  });
+}
+
+/** A scanner id's declared configuration for the scope tables (#724): the peer's default, or a declared diagnostic profile of it. */
+export interface DeclaredConfiguration { scanner: string; of: string | null; label: string; description: string }
+
+/** From the same reviewed registry as the peer profiles (#558): no second registry. Product and unknown scanner ids have no entry. */
+export function loadDeclaredConfigurations(): Promise<Map<string, DeclaredConfiguration>> {
+  return once('declared-configurations', async () => {
+    const registry = await readJson<PeerRegistry>('scanners/peer-registry.json');
+    const out = new Map<string, DeclaredConfiguration>();
+    for (const [id, entry] of Object.entries(registry.scanners ?? {})) {
+      out.set(id, { scanner: id, of: null, label: 'Default configuration', description: entry.description });
+      for (const [profileId, profile] of Object.entries(entry.diagnosticProfiles ?? {})) out.set(profileId, { scanner: profileId, of: id, label: `Diagnostic profile: ${DECLARED_SCOPES[profile.declaredScope].toLowerCase()}`, description: profile.description });
+    }
+    return out;
   });
 }

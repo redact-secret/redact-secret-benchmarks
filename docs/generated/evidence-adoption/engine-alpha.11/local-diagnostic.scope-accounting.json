@@ -1,0 +1,1657 @@
+{
+  "schema": "redact-secret-benchmarks/scope-accounting-summary/v1",
+  "mode": "published",
+  "origin": "local exploratory run, engine v0.1.0-alpha.11 (released tag), snapshot-2026.10.05",
+  "platform": "darwin-arm64",
+  "note": null,
+  "boundary": "Counts are the engine's (credential-eval ADR 0016) over the findings each artifact retains. Nothing was re-classified, filtered or scored here; an unresolved type is neither a false positive nor ignored; a profile is a separate configuration, not a speed-up; Unknown means no accounting was recorded, not zero.",
+  "artifacts": [
+    {
+      "name": "local-diagnostic",
+      "file": "artifact.json",
+      "bytes": 162385556,
+      "engine": {
+        "name": "credential-eval",
+        "version": "0.1.0-alpha.11"
+      },
+      "protocol": "credential-eval-protocol/1",
+      "runClass": "exploratory",
+      "publication": "internal",
+      "configHash": "sha256:f7e51869466f2bc6b31990e3bcca3dea98aa471f00a8093f2c5d2950295abc9c",
+      "evidence": {
+        "revision": "records-tree-sha256:924cd5b9b068e0d5ec5039bce962c63a484cb7fdec61b8b1e6603b1c530884b7",
+        "corpusDigest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
+        "release": null
+      },
+      "methods": [],
+      "scope": [
+        {
+          "scanner": "openredaction",
+          "profile": {
+            "scanner": "openredaction",
+            "version": "1.1.5",
+            "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+            "build": "released",
+            "configurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
+            "adapterVersion": "2"
+          },
+          "engineVersion": "0.1.0-alpha.11",
+          "classification": {
+            "accountingVersion": "1",
+            "table": {
+              "id": "openredaction-1.1.5",
+              "package": "@openredaction/core",
+              "version": "1.1.5",
+              "integrity": "sha512-SpQTBhVV4p3rmge818NH6iJiL/fvwFlDvhGaejoL0wbzY7jRHIhU5vEf3KzNARsIZmpCJV1eHdiavIjQyN1hXQ=="
+            }
+          },
+          "labelled": 360782,
+          "dispositions": {
+            "mapped_credential": 1260,
+            "credential_related_unmapped": 102,
+            "out_of_scope": 359420,
+            "ambiguous": 0,
+            "native_label_unavailable": 0,
+            "unrecognized_label": 0
+          },
+          "multiLabelFindings": 0,
+          "conflictingLabelFindings": 0,
+          "labels": [
+            {
+              "label": "NAME",
+              "findings": 333419,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "INSTAGRAM_USERNAME",
+              "findings": 23904,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "XBOX_GAMERTAG",
+              "findings": 656,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "CARD_AUTH_CODE",
+              "findings": 454,
+              "withFamily": 0,
+              "scope": "pii",
+              "status": "not-credential",
+              "reason": "Payment authorization code; also fires on \"Authorization\" text next to bearer tokens."
+            },
+            {
+              "label": "BEARER_TOKEN",
+              "findings": 229,
+              "withFamily": 229,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "The token after \"Bearer \", 20 or more characters; the scheme word is outside the span. The same text also draws CARD_AUTH_CODE from an unrelated pattern."
+            },
+            {
+              "label": "AWS_SECRET_KEY",
+              "findings": 206,
+              "withFamily": 206,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "40 base64-alphabet characters accepted when the surrounding text mentions aws, amazon, secret or access key. The probe observed it firing on the body of a PEM public key, so a benign public key can carry this type and its family. The mapping is unchanged; the probe records the behavior."
+            },
+            {
+              "label": "GENERIC_SECRET",
+              "findings": 156,
+              "withFamily": 156,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "Value after password, passwd, pwd or secret; maps only to the generic family, never to a provider family. Also claims Kubernetes Secret data under a key named password."
+            },
+            {
+              "label": "GITHUB_TOKEN",
+              "findings": 140,
+              "withFamily": 140,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "Prefixes ghp_, gho_, ghu_, ghs_ and ghr_ with 36 or more characters; one umbrella family covers classic, OAuth, app user and server and refresh tokens, which the evidence splits into separate families. Fine-grained github_pat_ tokens are not matched."
+            },
+            {
+              "label": "GENERIC_API_KEY",
+              "findings": 137,
+              "withFamily": 137,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "Value after api key, apikey or api token; generic family only. Also wins over HEROKU_API_KEY when the text says \"heroku api key\"."
+            },
+            {
+              "label": "USERNAME",
+              "findings": 88,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "STRIPE_API_KEY",
+              "findings": 86,
+              "withFamily": 86,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "Accepts sk_ and pk_ with live or test: pk_ is a publishable key, which is not a secret, yet the family claim is the same. The native type cannot tell them apart; a safe non-secret prefix class (sk or pk, live or test) at the adapter boundary would. Left unresolved; the mapping is unchanged."
+            },
+            {
+              "label": "PHONE_UK",
+              "findings": 79,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "SENDGRID_API_KEY",
+              "findings": 79,
+              "withFamily": 79,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "SG.<22>.<43> format."
+            },
+            {
+              "label": "STANDING_ORDER_REF",
+              "findings": 70,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "HEROKU_API_KEY",
+              "findings": 65,
+              "withFamily": 0,
+              "scope": "credential",
+              "status": "unresolved",
+              "reason": "A UUID accepted only with heroku, api key or auth nearby. The plain-UUID shape is ambiguous; \"heroku api key\" text is claimed first by GENERIC_API_KEY. The candidate family has no structure."
+            },
+            {
+              "label": "ZIP_CODE_US",
+              "findings": 60,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "CLIENT_ID",
+              "findings": 45,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "DATE",
+              "findings": 43,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "TNT_TRACKING",
+              "findings": 42,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "DATABASE_CONNECTION",
+              "findings": 38,
+              "withFamily": 38,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "postgres, mysql, mongodb, redis or sqlite URL with user:password@; the whole URL is the span, not the password."
+            },
+            {
+              "label": "SLACK_TOKEN",
+              "findings": 38,
+              "withFamily": 38,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "xox[baprs]- tokens; one umbrella family for bot, user and other xox tokens. App-level xapp- tokens are not matched."
+            },
+            {
+              "label": "EMAIL",
+              "findings": 36,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "NPM_TOKEN",
+              "findings": 34,
+              "withFamily": 34,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "npm_ plus 36 characters: granular access tokens. Legacy UUID tokens are not matched."
+            },
+            {
+              "label": "TERMINAL_ID",
+              "findings": 32,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "EMERGENCY_CONTACT",
+              "findings": 29,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "PRODUCTION_ID",
+              "findings": 29,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "PSN_ID",
+              "findings": 28,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "AWS_ARN",
+              "findings": 27,
+              "withFamily": 0,
+              "scope": "resource-identifier",
+              "status": "not-credential",
+              "reason": "An ARN is a resource identifier, not a credential. No family."
+            },
+            {
+              "label": "OPENAI_API_KEY",
+              "findings": 27,
+              "withFamily": 27,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "sk-proj- keys or sk- plus 48 to 52 characters; the plain sk- shape is not exclusive to one provider."
+            },
+            {
+              "label": "PROJECT_CODE",
+              "findings": 26,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "AWS_ACCESS_KEY",
+              "findings": 24,
+              "withFamily": 24,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "AKIA plus 16 characters: a long-term access key id. The id alone is not the secret half; temporary ASIA ids are not matched."
+            },
+            {
+              "label": "IPV4",
+              "findings": 23,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "LICENSE_PLATE",
+              "findings": 22,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "SEARCH_RESCUE_MISSION_ID",
+              "findings": 19,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "TWITTER_USER_ID",
+              "findings": 19,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "WORK_ORDER_NUMBER",
+              "findings": 19,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "PRIVATE_KEY",
+              "findings": 16,
+              "withFamily": 16,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "The whole PEM block, header to footer. A PEM public key is not matched as PRIVATE_KEY."
+            },
+            {
+              "label": "GOOGLE_API_KEY",
+              "findings": 15,
+              "withFamily": 0,
+              "scope": "credential",
+              "status": "unresolved",
+              "reason": "AIza plus 35 characters. Many Google API keys are public identifiers in client code, so the sensitivity policy is open. Candidate family is draft and has no structure."
+            },
+            {
+              "label": "INVOICE_NUMBER",
+              "findings": 15,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "MAILGUN_API_KEY",
+              "findings": 15,
+              "withFamily": 15,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "key- plus 32 hex, accepted only when nearby text mentions mailgun, email or mail."
+            },
+            {
+              "label": "MINECRAFT_UUID",
+              "findings": 15,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "AWS_CERTIFICATION",
+              "findings": 14,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "URL_WITH_AUTH",
+              "findings": 13,
+              "withFamily": 13,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "http, https or ftp URL with user:password@; the span is the whole URL, not the password, so a password-only authored span scores wider. Userinfo of an http(s) URL is closer to HTTP basic credentials than to a database connection string. Outside the credentials category: absent under categories [\"credentials\"]. The mapping is unchanged."
+            },
+            {
+              "label": "JWT_TOKEN",
+              "findings": 12,
+              "withFamily": 12,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "Three dot-separated base64url segments, the first two starting eyJ."
+            },
+            {
+              "label": "TRAINING_CERT_ID",
+              "findings": 12,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "OAUTH_TOKEN",
+              "findings": 10,
+              "withFamily": 0,
+              "scope": "credential",
+              "status": "unresolved",
+              "reason": "Provider-agnostic access token value; no provider-neutral evidence family; not forced into one."
+            },
+            {
+              "label": "CAMPAIGN_CODE",
+              "findings": 9,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "DEGREE_NUMBER",
+              "findings": 9,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "LAB_TEST_ID",
+              "findings": 9,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "TIKTOK_USERNAME",
+              "findings": 9,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "SERVICE_REQUEST_NUMBER",
+              "findings": 8,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "SOURCE_ID",
+              "findings": 8,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "PYPI_TOKEN",
+              "findings": 7,
+              "withFamily": 7,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "pypi- plus 100 or more characters."
+            },
+            {
+              "label": "TWILIO_API_KEY",
+              "findings": 7,
+              "withFamily": 0,
+              "scope": "identifier-of-credential",
+              "status": "unresolved",
+              "reason": "SK plus 32 characters is the key SID, the public identifier; the secret is a separate value. No compatible secret family: twilio:api-key-secret names the secret."
+            },
+            {
+              "label": "DD_MANDATE",
+              "findings": 6,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "IPV6",
+              "findings": 6,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "TOURNAMENT_REGISTRATION_ID",
+              "findings": 6,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "BITCOIN_ADDRESS",
+              "findings": 5,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "EPIC_GAMES_ID",
+              "findings": 5,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "MISSING_PERSON_CASE",
+              "findings": 5,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "SOCIAL_MEDIA_HANDLE",
+              "findings": 5,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "TRANSACTION_ID",
+              "findings": 5,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "WIRE_TRANSFER_REF",
+              "findings": 5,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "APEX_PLAYER_ID",
+              "findings": 4,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "DOCKER_AUTH",
+              "findings": 4,
+              "withFamily": 0,
+              "scope": "credential",
+              "status": "unresolved",
+              "reason": "The span is the base64 auth value, which fits the auth body of docker:registry-auth-config-entry, but the pattern is not Docker-specific: it matches the auth field of any JSON object. In snapshot-2026.10.01.2 its one finding is on a deepgram case (deepgram--deepgram-api-key-worker-json-log), so a docker family claim would be unsupported. Needs a provider-neutral disposition or a registry-key check, not a mapping."
+            },
+            {
+              "label": "EXAM_ID",
+              "findings": 4,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "GENERIC_TRACKING_NUMBER",
+              "findings": 4,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "HOUSING_ASSIGNMENT",
+              "findings": 4,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "INSURANCE_CERTIFICATE",
+              "findings": 4,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "OREGON_LICENSE_PLATE",
+              "findings": 4,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "APPLICATION_ID",
+              "findings": 3,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "EMERGENCY_CALL_REF",
+              "findings": 3,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "EXIT_INTERVIEW_ID",
+              "findings": 3,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "JUDGMENT_NUMBER",
+              "findings": 3,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "RMA_NUMBER",
+              "findings": 3,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "SEDOL",
+              "findings": 3,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "SOLANA_ADDRESS",
+              "findings": 3,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "SSH_PRIVATE_KEY",
+              "findings": 3,
+              "withFamily": 3,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "The whole OpenSSH private key block."
+            },
+            {
+              "label": "TELEGRAM_USER_ID",
+              "findings": 3,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "AUSTRALIAN_MEDICARE",
+              "findings": 2,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "BATCH_LOT_NUMBER",
+              "findings": 2,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "CATALOG_NUMBER",
+              "findings": 2,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "CUSTOMER_ID",
+              "findings": 2,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "EMPLOYEE_ID",
+              "findings": 2,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "MANUSCRIPT_ID",
+              "findings": 2,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "PAYMENT_REFERENCE",
+              "findings": 2,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "PUBLISHING_CONTRACT",
+              "findings": 2,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "RESUME_ID",
+              "findings": 2,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "SWIFT_BIC",
+              "findings": 2,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "US_LICENSE_PLATE",
+              "findings": 2,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "APPOINTMENT_REF",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "BIOMETRIC_ID",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "COURSE_CODE",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "CUSIP",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "DEVICE_UUID",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "DISCORD_USER_ID",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "DISCOVERY_NUMBER",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "EDITORIAL_TICKET",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "FACEBOOK_ID",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "FIREFIGHTER_BADGE",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "GERMAN_LICENSE_PLATE",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "HEALTH_PLAN_NUMBER",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "HOTEL_LOYALTY_NUMBER",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "LOAN_ACCOUNT",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "MERCHANT_ID",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "MEXICAN_RFC",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "OAUTH_CLIENT_SECRET",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "credential",
+              "status": "unresolved",
+              "reason": "Provider-agnostic; every evidence OAuth client secret family is provider-specific, so no family fits without guessing."
+            },
+            {
+              "label": "OKLAHOMA_LICENSE_PLATE",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "PAYMENT_CUSTOMER_ID",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "PRESCRIPTION_NUMBER",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "PRODUCT_SKU",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "REAL_ESTATE_LICENSE",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "ROUTING_NUMBER_MFG",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "SOUTH_AFRICA_ID",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "TITLE_DEED_NUMBER",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            },
+            {
+              "label": "VENDOR_CODE",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "pii-or-identifier",
+              "status": "not-credential",
+              "reason": "Outside the credentials category; a personal-data, identifier or document pattern. No credential family claim is made."
+            }
+          ],
+          "state": "accounted",
+          "retainedFindings": 360782,
+          "limits": [
+            "Counts describe the findings the artifact retains. No finding was removed, relabelled or excluded, and no case outcome, denominator or floor depends on them.",
+            "A native type reviewed as not a credential is out of scope for a credential evaluation; it is shown as a diagnostic and is not a credential detection.",
+            "An unresolved type is unresolved: it is neither a false positive nor ignored.",
+            "A finding with several native labels is counted once by disposition and once under each label, so label counts can exceed the finding count."
+          ],
+          "declared": {
+            "default": true
+          },
+          "totals": {
+            "outcomes": {
+              "EXACT": 758,
+              "COVERED": 28,
+              "OVERBROAD": 63,
+              "PARTIAL": 211,
+              "MISS": 1809
+            },
+            "positiveSpans": 2869,
+            "leakedSpans": 2020,
+            "benignCases": 2250,
+            "benignFlagged": 740,
+            "benignFindings": 4272,
+            "notMeasured": 0,
+            "pending": 94,
+            "retainedFindings": 360782
+          }
+        },
+        {
+          "scanner": "openredaction-credential-bearing",
+          "profile": {
+            "scanner": "openredaction-credential-bearing",
+            "version": "1.1.5",
+            "mode": "Published npm package · explicit allowlist of credential-bearing types · diagnostic profile",
+            "build": "released",
+            "configurationHash": "sha256:cf4b7c9a535f0375129e10d9b8a5abdf056287a31998792d5e3b43fac8d3b34a",
+            "adapterVersion": "1"
+          },
+          "engineVersion": "0.1.0-alpha.11",
+          "classification": {
+            "accountingVersion": "1",
+            "table": {
+              "id": "openredaction-1.1.5",
+              "package": "@openredaction/core",
+              "version": "1.1.5",
+              "integrity": "sha512-SpQTBhVV4p3rmge818NH6iJiL/fvwFlDvhGaejoL0wbzY7jRHIhU5vEf3KzNARsIZmpCJV1eHdiavIjQyN1hXQ=="
+            }
+          },
+          "labelled": 1393,
+          "dispositions": {
+            "mapped_credential": 1261,
+            "credential_related_unmapped": 104,
+            "out_of_scope": 28,
+            "ambiguous": 0,
+            "native_label_unavailable": 0,
+            "unrecognized_label": 0
+          },
+          "multiLabelFindings": 0,
+          "conflictingLabelFindings": 0,
+          "labels": [
+            {
+              "label": "BEARER_TOKEN",
+              "findings": 229,
+              "withFamily": 229,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "The token after \"Bearer \", 20 or more characters; the scheme word is outside the span. The same text also draws CARD_AUTH_CODE from an unrelated pattern."
+            },
+            {
+              "label": "AWS_SECRET_KEY",
+              "findings": 206,
+              "withFamily": 206,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "40 base64-alphabet characters accepted when the surrounding text mentions aws, amazon, secret or access key. The probe observed it firing on the body of a PEM public key, so a benign public key can carry this type and its family. The mapping is unchanged; the probe records the behavior."
+            },
+            {
+              "label": "GENERIC_SECRET",
+              "findings": 156,
+              "withFamily": 156,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "Value after password, passwd, pwd or secret; maps only to the generic family, never to a provider family. Also claims Kubernetes Secret data under a key named password."
+            },
+            {
+              "label": "GITHUB_TOKEN",
+              "findings": 140,
+              "withFamily": 140,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "Prefixes ghp_, gho_, ghu_, ghs_ and ghr_ with 36 or more characters; one umbrella family covers classic, OAuth, app user and server and refresh tokens, which the evidence splits into separate families. Fine-grained github_pat_ tokens are not matched."
+            },
+            {
+              "label": "GENERIC_API_KEY",
+              "findings": 137,
+              "withFamily": 137,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "Value after api key, apikey or api token; generic family only. Also wins over HEROKU_API_KEY when the text says \"heroku api key\"."
+            },
+            {
+              "label": "STRIPE_API_KEY",
+              "findings": 86,
+              "withFamily": 86,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "Accepts sk_ and pk_ with live or test: pk_ is a publishable key, which is not a secret, yet the family claim is the same. The native type cannot tell them apart; a safe non-secret prefix class (sk or pk, live or test) at the adapter boundary would. Left unresolved; the mapping is unchanged."
+            },
+            {
+              "label": "SENDGRID_API_KEY",
+              "findings": 80,
+              "withFamily": 80,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "SG.<22>.<43> format."
+            },
+            {
+              "label": "HEROKU_API_KEY",
+              "findings": 67,
+              "withFamily": 0,
+              "scope": "credential",
+              "status": "unresolved",
+              "reason": "A UUID accepted only with heroku, api key or auth nearby. The plain-UUID shape is ambiguous; \"heroku api key\" text is claimed first by GENERIC_API_KEY. The candidate family has no structure."
+            },
+            {
+              "label": "DATABASE_CONNECTION",
+              "findings": 38,
+              "withFamily": 38,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "postgres, mysql, mongodb, redis or sqlite URL with user:password@; the whole URL is the span, not the password."
+            },
+            {
+              "label": "SLACK_TOKEN",
+              "findings": 38,
+              "withFamily": 38,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "xox[baprs]- tokens; one umbrella family for bot, user and other xox tokens. App-level xapp- tokens are not matched."
+            },
+            {
+              "label": "NPM_TOKEN",
+              "findings": 34,
+              "withFamily": 34,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "npm_ plus 36 characters: granular access tokens. Legacy UUID tokens are not matched."
+            },
+            {
+              "label": "AWS_ARN",
+              "findings": 28,
+              "withFamily": 0,
+              "scope": "resource-identifier",
+              "status": "not-credential",
+              "reason": "An ARN is a resource identifier, not a credential. No family."
+            },
+            {
+              "label": "OPENAI_API_KEY",
+              "findings": 27,
+              "withFamily": 27,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "sk-proj- keys or sk- plus 48 to 52 characters; the plain sk- shape is not exclusive to one provider."
+            },
+            {
+              "label": "AWS_ACCESS_KEY",
+              "findings": 24,
+              "withFamily": 24,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "AKIA plus 16 characters: a long-term access key id. The id alone is not the secret half; temporary ASIA ids are not matched."
+            },
+            {
+              "label": "PRIVATE_KEY",
+              "findings": 16,
+              "withFamily": 16,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "The whole PEM block, header to footer. A PEM public key is not matched as PRIVATE_KEY."
+            },
+            {
+              "label": "GOOGLE_API_KEY",
+              "findings": 15,
+              "withFamily": 0,
+              "scope": "credential",
+              "status": "unresolved",
+              "reason": "AIza plus 35 characters. Many Google API keys are public identifiers in client code, so the sensitivity policy is open. Candidate family is draft and has no structure."
+            },
+            {
+              "label": "MAILGUN_API_KEY",
+              "findings": 15,
+              "withFamily": 15,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "key- plus 32 hex, accepted only when nearby text mentions mailgun, email or mail."
+            },
+            {
+              "label": "URL_WITH_AUTH",
+              "findings": 13,
+              "withFamily": 13,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "http, https or ftp URL with user:password@; the span is the whole URL, not the password, so a password-only authored span scores wider. Userinfo of an http(s) URL is closer to HTTP basic credentials than to a database connection string. Outside the credentials category: absent under categories [\"credentials\"]. The mapping is unchanged."
+            },
+            {
+              "label": "JWT_TOKEN",
+              "findings": 12,
+              "withFamily": 12,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "Three dot-separated base64url segments, the first two starting eyJ."
+            },
+            {
+              "label": "OAUTH_TOKEN",
+              "findings": 10,
+              "withFamily": 0,
+              "scope": "credential",
+              "status": "unresolved",
+              "reason": "Provider-agnostic access token value; no provider-neutral evidence family; not forced into one."
+            },
+            {
+              "label": "PYPI_TOKEN",
+              "findings": 7,
+              "withFamily": 7,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "pypi- plus 100 or more characters."
+            },
+            {
+              "label": "TWILIO_API_KEY",
+              "findings": 7,
+              "withFamily": 0,
+              "scope": "identifier-of-credential",
+              "status": "unresolved",
+              "reason": "SK plus 32 characters is the key SID, the public identifier; the secret is a separate value. No compatible secret family: twilio:api-key-secret names the secret."
+            },
+            {
+              "label": "DOCKER_AUTH",
+              "findings": 4,
+              "withFamily": 0,
+              "scope": "credential",
+              "status": "unresolved",
+              "reason": "The span is the base64 auth value, which fits the auth body of docker:registry-auth-config-entry, but the pattern is not Docker-specific: it matches the auth field of any JSON object. In snapshot-2026.10.01.2 its one finding is on a deepgram case (deepgram--deepgram-api-key-worker-json-log), so a docker family claim would be unsupported. Needs a provider-neutral disposition or a registry-key check, not a mapping."
+            },
+            {
+              "label": "SSH_PRIVATE_KEY",
+              "findings": 3,
+              "withFamily": 3,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "The whole OpenSSH private key block."
+            },
+            {
+              "label": "OAUTH_CLIENT_SECRET",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "credential",
+              "status": "unresolved",
+              "reason": "Provider-agnostic; every evidence OAuth client secret family is provider-specific, so no family fits without guessing."
+            }
+          ],
+          "state": "accounted",
+          "retainedFindings": 1393,
+          "limits": [
+            "Counts describe the findings the artifact retains. No finding was removed, relabelled or excluded, and no case outcome, denominator or floor depends on them.",
+            "A native type reviewed as not a credential is out of scope for a credential evaluation; it is shown as a diagnostic and is not a credential detection.",
+            "An unresolved type is unresolved: it is neither a false positive nor ignored.",
+            "A finding with several native labels is counted once by disposition and once under each label, so label counts can exceed the finding count."
+          ],
+          "declared": {
+            "profileOf": "openredaction"
+          },
+          "totals": {
+            "outcomes": {
+              "EXACT": 751,
+              "COVERED": 28,
+              "OVERBROAD": 63,
+              "PARTIAL": 120,
+              "MISS": 1907
+            },
+            "positiveSpans": 2869,
+            "leakedSpans": 2027,
+            "benignCases": 2250,
+            "benignFlagged": 111,
+            "benignFindings": 127,
+            "notMeasured": 0,
+            "pending": 94,
+            "retainedFindings": 1393
+          }
+        },
+        {
+          "scanner": "openredaction-credentials",
+          "profile": {
+            "scanner": "openredaction-credentials",
+            "version": "1.1.5",
+            "mode": "Published npm package · categories [credentials] · diagnostic profile",
+            "build": "released",
+            "configurationHash": "sha256:6ebc6c1388206ba80d8f07b2bb45adec37cc65a43e85142c193d317d87b4e763",
+            "adapterVersion": "1"
+          },
+          "engineVersion": "0.1.0-alpha.11",
+          "classification": {
+            "accountingVersion": "1",
+            "table": {
+              "id": "openredaction-1.1.5",
+              "package": "@openredaction/core",
+              "version": "1.1.5",
+              "integrity": "sha512-SpQTBhVV4p3rmge818NH6iJiL/fvwFlDvhGaejoL0wbzY7jRHIhU5vEf3KzNARsIZmpCJV1eHdiavIjQyN1hXQ=="
+            }
+          },
+          "labelled": 1383,
+          "dispositions": {
+            "mapped_credential": 1249,
+            "credential_related_unmapped": 106,
+            "out_of_scope": 28,
+            "ambiguous": 0,
+            "native_label_unavailable": 0,
+            "unrecognized_label": 0
+          },
+          "multiLabelFindings": 0,
+          "conflictingLabelFindings": 0,
+          "labels": [
+            {
+              "label": "BEARER_TOKEN",
+              "findings": 229,
+              "withFamily": 229,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "The token after \"Bearer \", 20 or more characters; the scheme word is outside the span. The same text also draws CARD_AUTH_CODE from an unrelated pattern."
+            },
+            {
+              "label": "AWS_SECRET_KEY",
+              "findings": 206,
+              "withFamily": 206,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "40 base64-alphabet characters accepted when the surrounding text mentions aws, amazon, secret or access key. The probe observed it firing on the body of a PEM public key, so a benign public key can carry this type and its family. The mapping is unchanged; the probe records the behavior."
+            },
+            {
+              "label": "GENERIC_SECRET",
+              "findings": 156,
+              "withFamily": 156,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "Value after password, passwd, pwd or secret; maps only to the generic family, never to a provider family. Also claims Kubernetes Secret data under a key named password."
+            },
+            {
+              "label": "GITHUB_TOKEN",
+              "findings": 141,
+              "withFamily": 141,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "Prefixes ghp_, gho_, ghu_, ghs_ and ghr_ with 36 or more characters; one umbrella family covers classic, OAuth, app user and server and refresh tokens, which the evidence splits into separate families. Fine-grained github_pat_ tokens are not matched."
+            },
+            {
+              "label": "GENERIC_API_KEY",
+              "findings": 137,
+              "withFamily": 137,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "Value after api key, apikey or api token; generic family only. Also wins over HEROKU_API_KEY when the text says \"heroku api key\"."
+            },
+            {
+              "label": "STRIPE_API_KEY",
+              "findings": 86,
+              "withFamily": 86,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "Accepts sk_ and pk_ with live or test: pk_ is a publishable key, which is not a secret, yet the family claim is the same. The native type cannot tell them apart; a safe non-secret prefix class (sk or pk, live or test) at the adapter boundary would. Left unresolved; the mapping is unchanged."
+            },
+            {
+              "label": "SENDGRID_API_KEY",
+              "findings": 80,
+              "withFamily": 80,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "SG.<22>.<43> format."
+            },
+            {
+              "label": "HEROKU_API_KEY",
+              "findings": 67,
+              "withFamily": 0,
+              "scope": "credential",
+              "status": "unresolved",
+              "reason": "A UUID accepted only with heroku, api key or auth nearby. The plain-UUID shape is ambiguous; \"heroku api key\" text is claimed first by GENERIC_API_KEY. The candidate family has no structure."
+            },
+            {
+              "label": "DATABASE_CONNECTION",
+              "findings": 38,
+              "withFamily": 38,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "postgres, mysql, mongodb, redis or sqlite URL with user:password@; the whole URL is the span, not the password."
+            },
+            {
+              "label": "SLACK_TOKEN",
+              "findings": 38,
+              "withFamily": 38,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "xox[baprs]- tokens; one umbrella family for bot, user and other xox tokens. App-level xapp- tokens are not matched."
+            },
+            {
+              "label": "NPM_TOKEN",
+              "findings": 34,
+              "withFamily": 34,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "npm_ plus 36 characters: granular access tokens. Legacy UUID tokens are not matched."
+            },
+            {
+              "label": "AWS_ARN",
+              "findings": 28,
+              "withFamily": 0,
+              "scope": "resource-identifier",
+              "status": "not-credential",
+              "reason": "An ARN is a resource identifier, not a credential. No family."
+            },
+            {
+              "label": "OPENAI_API_KEY",
+              "findings": 27,
+              "withFamily": 27,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "sk-proj- keys or sk- plus 48 to 52 characters; the plain sk- shape is not exclusive to one provider."
+            },
+            {
+              "label": "AWS_ACCESS_KEY",
+              "findings": 24,
+              "withFamily": 24,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "AKIA plus 16 characters: a long-term access key id. The id alone is not the secret half; temporary ASIA ids are not matched."
+            },
+            {
+              "label": "PRIVATE_KEY",
+              "findings": 16,
+              "withFamily": 16,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "The whole PEM block, header to footer. A PEM public key is not matched as PRIVATE_KEY."
+            },
+            {
+              "label": "GOOGLE_API_KEY",
+              "findings": 15,
+              "withFamily": 0,
+              "scope": "credential",
+              "status": "unresolved",
+              "reason": "AIza plus 35 characters. Many Google API keys are public identifiers in client code, so the sensitivity policy is open. Candidate family is draft and has no structure."
+            },
+            {
+              "label": "MAILGUN_API_KEY",
+              "findings": 15,
+              "withFamily": 15,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "key- plus 32 hex, accepted only when nearby text mentions mailgun, email or mail."
+            },
+            {
+              "label": "JWT_TOKEN",
+              "findings": 12,
+              "withFamily": 12,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "Three dot-separated base64url segments, the first two starting eyJ."
+            },
+            {
+              "label": "OAUTH_TOKEN",
+              "findings": 12,
+              "withFamily": 0,
+              "scope": "credential",
+              "status": "unresolved",
+              "reason": "Provider-agnostic access token value; no provider-neutral evidence family; not forced into one."
+            },
+            {
+              "label": "PYPI_TOKEN",
+              "findings": 7,
+              "withFamily": 7,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "pypi- plus 100 or more characters."
+            },
+            {
+              "label": "TWILIO_API_KEY",
+              "findings": 7,
+              "withFamily": 0,
+              "scope": "identifier-of-credential",
+              "status": "unresolved",
+              "reason": "SK plus 32 characters is the key SID, the public identifier; the secret is a separate value. No compatible secret family: twilio:api-key-secret names the secret."
+            },
+            {
+              "label": "DOCKER_AUTH",
+              "findings": 4,
+              "withFamily": 0,
+              "scope": "credential",
+              "status": "unresolved",
+              "reason": "The span is the base64 auth value, which fits the auth body of docker:registry-auth-config-entry, but the pattern is not Docker-specific: it matches the auth field of any JSON object. In snapshot-2026.10.01.2 its one finding is on a deepgram case (deepgram--deepgram-api-key-worker-json-log), so a docker family claim would be unsupported. Needs a provider-neutral disposition or a registry-key check, not a mapping."
+            },
+            {
+              "label": "SSH_PRIVATE_KEY",
+              "findings": 3,
+              "withFamily": 3,
+              "scope": "credential",
+              "status": "mapped",
+              "reason": "The whole OpenSSH private key block."
+            },
+            {
+              "label": "OAUTH_CLIENT_SECRET",
+              "findings": 1,
+              "withFamily": 0,
+              "scope": "credential",
+              "status": "unresolved",
+              "reason": "Provider-agnostic; every evidence OAuth client secret family is provider-specific, so no family fits without guessing."
+            }
+          ],
+          "state": "accounted",
+          "retainedFindings": 1383,
+          "limits": [
+            "Counts describe the findings the artifact retains. No finding was removed, relabelled or excluded, and no case outcome, denominator or floor depends on them.",
+            "A native type reviewed as not a credential is out of scope for a credential evaluation; it is shown as a diagnostic and is not a credential detection.",
+            "An unresolved type is unresolved: it is neither a false positive nor ignored.",
+            "A finding with several native labels is counted once by disposition and once under each label, so label counts can exceed the finding count."
+          ],
+          "declared": {
+            "profileOf": "openredaction"
+          },
+          "totals": {
+            "outcomes": {
+              "EXACT": 753,
+              "COVERED": 23,
+              "OVERBROAD": 59,
+              "PARTIAL": 120,
+              "MISS": 1914
+            },
+            "positiveSpans": 2869,
+            "leakedSpans": 2034,
+            "benignCases": 2250,
+            "benignFlagged": 111,
+            "benignFindings": 127,
+            "notMeasured": 0,
+            "pending": 94,
+            "retainedFindings": 1383
+          }
+        }
+      ],
+      "profileEffects": [
+        {
+          "population": "public-evidence-snapshot",
+          "default": {
+            "scanner": "openredaction",
+            "configurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
+            "totals": {
+              "outcomes": {
+                "EXACT": 758,
+                "COVERED": 28,
+                "OVERBROAD": 63,
+                "PARTIAL": 211,
+                "MISS": 1809
+              },
+              "positiveSpans": 2869,
+              "leakedSpans": 2020,
+              "benignCases": 2250,
+              "benignFlagged": 740,
+              "benignFindings": 4272,
+              "notMeasured": 0,
+              "pending": 94,
+              "retainedFindings": 360782
+            }
+          },
+          "profile": {
+            "scanner": "openredaction-credential-bearing",
+            "configurationHash": "sha256:cf4b7c9a535f0375129e10d9b8a5abdf056287a31998792d5e3b43fac8d3b34a",
+            "totals": {
+              "outcomes": {
+                "EXACT": 751,
+                "COVERED": 28,
+                "OVERBROAD": 63,
+                "PARTIAL": 120,
+                "MISS": 1907
+              },
+              "positiveSpans": 2869,
+              "leakedSpans": 2027,
+              "benignCases": 2250,
+              "benignFlagged": 111,
+              "benignFindings": 127,
+              "notMeasured": 0,
+              "pending": 94,
+              "retainedFindings": 1393
+            }
+          },
+          "delta": {
+            "outcomes": {
+              "EXACT": -7,
+              "COVERED": 0,
+              "OVERBROAD": 0,
+              "PARTIAL": -91,
+              "MISS": 98
+            },
+            "benignFlagged": -629,
+            "benignFindings": -4145,
+            "retainedFindings": -359389
+          },
+          "denominatorsEqual": true,
+          "note": "The profile is a separate scanner configuration, not a speed-up of the default. Both results are kept; the difference is a recorded configuration effect, not a change of any outcome."
+        },
+        {
+          "population": "public-evidence-snapshot",
+          "default": {
+            "scanner": "openredaction",
+            "configurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
+            "totals": {
+              "outcomes": {
+                "EXACT": 758,
+                "COVERED": 28,
+                "OVERBROAD": 63,
+                "PARTIAL": 211,
+                "MISS": 1809
+              },
+              "positiveSpans": 2869,
+              "leakedSpans": 2020,
+              "benignCases": 2250,
+              "benignFlagged": 740,
+              "benignFindings": 4272,
+              "notMeasured": 0,
+              "pending": 94,
+              "retainedFindings": 360782
+            }
+          },
+          "profile": {
+            "scanner": "openredaction-credentials",
+            "configurationHash": "sha256:6ebc6c1388206ba80d8f07b2bb45adec37cc65a43e85142c193d317d87b4e763",
+            "totals": {
+              "outcomes": {
+                "EXACT": 753,
+                "COVERED": 23,
+                "OVERBROAD": 59,
+                "PARTIAL": 120,
+                "MISS": 1914
+              },
+              "positiveSpans": 2869,
+              "leakedSpans": 2034,
+              "benignCases": 2250,
+              "benignFlagged": 111,
+              "benignFindings": 127,
+              "notMeasured": 0,
+              "pending": 94,
+              "retainedFindings": 1383
+            }
+          },
+          "delta": {
+            "outcomes": {
+              "EXACT": -5,
+              "COVERED": -5,
+              "OVERBROAD": -4,
+              "PARTIAL": -91,
+              "MISS": 105
+            },
+            "benignFlagged": -629,
+            "benignFindings": -4145,
+            "retainedFindings": -359399
+          },
+          "denominatorsEqual": true,
+          "note": "The profile is a separate scanner configuration, not a speed-up of the default. Both results are kept; the difference is a recorded configuration effect, not a change of any outcome."
+        }
+      ]
+    }
+  ]
+}

@@ -4,9 +4,9 @@
 // It is the "list its callers first" step of docs/specs/qualification-cutover.md#file-level-inventory (#653). Read-only:
 // it removes and changes nothing, and it asserts nothing about product output.
 //
-//   node scripts/legacy-callers.mjs benchmarks/engine/runner.ts
-//   node scripts/legacy-callers.mjs benchmarks/engine/            (every file below it, callers outside it only)
-//   node scripts/legacy-callers.mjs --json benchmarks/lib/lattice.ts
+//   node scripts/legacy-callers.mjs benchmarks/evaluation/domains/credential/runner.ts
+//   node scripts/legacy-callers.mjs benchmarks/evaluation/domains/credential/  (every file below it, callers outside it only)
+//   node scripts/legacy-callers.mjs --json benchmarks/scoring/lattice.ts
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { dirname, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -76,7 +76,7 @@ export function callersOf(target) {
   const ownSet = new Set(own)
   const result = new Map()
   const add = (f, why) => {
-    if (ownSet.has(f) || f === 'scripts/legacy-callers.mjs') return
+    if (ownSet.has(f) || f === 'scripts/legacy-callers.mjs' || f === 'scripts/legacy-inventory.mjs') return
     if (!result.has(f)) result.set(f, new Set())
     result.get(f).add(why)
   }

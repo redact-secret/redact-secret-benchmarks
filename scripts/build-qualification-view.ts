@@ -16,7 +16,9 @@ import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { buildQualificationView, serializeView, type ArtifactInput } from '../benchmarks/qualification/adapter.ts';
 import { loadProductInputs, loadRegistry } from '../benchmarks/qualification/inputs.ts';
+import { readScannerRoster, type MeasurementHistory } from '../benchmarks/qualification/scanner-roster.ts';
 import { validateQualificationView } from '../benchmarks/qualification/view-schema.ts';
+import { declaredProfiles } from '../benchmarks/lib/peer-rule-families.ts';
 import { validatePolicyHoldoutReceipt } from '../benchmarks/support/policy-holdout-receipt.ts';
 
 const usage = 'Usage: qualification:view --artifacts <dir> [--out <file>] [--holdout-receipt <aggregate.json>] [--inputs <derived dir>]';
@@ -44,7 +46,10 @@ for (const id of Object.keys(product.policy.populations)) {
   });
 }
 
-const view = buildQualificationView({ registry: populations, engine, artifacts, product });
+const profiles = declaredProfiles(JSON.parse(await readFile(new URL('../scanners/peer-registry.json', import.meta.url), 'utf8')));
+// The evaluation contract (#763): the roster says which scanners are required and which optional; the registry's recorded runs are read only to point at the last measurement of an optional scanner this view does not carry.
+const history = JSON.parse(await readFile(new URL('../benchmarks/official-runs.json', import.meta.url), 'utf8')) as MeasurementHistory;
+const view = buildQualificationView({ registry: populations, engine, artifacts, product, profiles, roster: readScannerRoster(), history });
 const problems = validateQualificationView(view);
 if (problems.length) throw new Error(`The qualification view does not match schemas/qualification-view-v1.json: ${problems.join('; ')}`);
 await mkdir(path.dirname(out), { recursive: true });
@@ -52,6 +57,7 @@ const temporary = `${out}.tmp`;
 await writeFile(temporary, serializeView(view), { mode: 0o644 });
 await rename(temporary, out);
 console.log(`Qualification view (${view.publication}): ${view.families.length} families, ${JSON.stringify(view.distribution)}, policy ${view.policy.revision}`);
+for (const n of view.scannerRoster?.notMeasured ?? []) console.log(`${n.statement}; last measurement: ${n.lastMeasurement ? `${n.lastMeasurement.runs.map(r => r.id).join(', ')} on engine ${n.lastMeasurement.engine.version}, ${n.lastMeasurement.recordedOn}` : 'none recorded'}`);
 console.log(`Populations: ${view.populations.map(p => `${p.population} ${p.runClass} ${p.artifact.semanticDigest.slice(0, 19)}`).join('; ')}`);
 if (inputsDir) console.log(`Candidate view: overlay, twin-scope map and review-ledger re-key derived from ${path.resolve(inputsDir)} (receipt snapshot ${(await readFile(path.join(path.resolve(inputsDir), 'derived-inputs.json'), 'utf8').then(JSON.parse)).snapshot.corpusDigest}); the committed inputs were not read`);
 console.log(`Wrote ${path.relative(process.cwd(), out)}`);

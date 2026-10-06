@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { loadCases } from '../benchmarks/engine/cases.ts';
-import { createOperators } from '../benchmarks/operators/index.ts';
+import { loadCases } from '../benchmarks/evaluation/domains/credential/cases.ts';
+import { createOperators } from '../benchmarks/evaluation/domains/credential/operators/index.ts';
 import { AXES, REAL_WORLD_AXES } from '../benchmarks/lib/assessment.ts';
 
 const operators = createOperators();

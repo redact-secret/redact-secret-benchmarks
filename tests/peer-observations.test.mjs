@@ -7,10 +7,10 @@ import {
   digest, executionIdentity, repositoryPeerIdentity, inputIdentity, makeSnapshot, readSnapshot, snapshotObservation,
   observationSuiteIdentity, validateSnapshot, writeSnapshot,
 } from '../benchmarks/lib/peer-observations.ts';
-import { createMethods } from '../benchmarks/methods/index.ts';
-import { createOperators } from '../benchmarks/operators/index.ts';
-import { runEvaluation } from '../benchmarks/engine/runner.ts';
-import { loadCases } from '../benchmarks/engine/cases.ts';
+import { createMethods } from '../benchmarks/evaluation/domains/credential/methods/index.ts';
+import { createOperators } from '../benchmarks/evaluation/domains/credential/operators/index.ts';
+import { runEvaluation } from '../benchmarks/evaluation/domains/credential/runner.ts';
+import { loadCases } from '../benchmarks/evaluation/domains/credential/cases.ts';
 
 const fixtures = [{ id: 'case', path: 'provider/case.env', content: 'TOKEN=benchmark-never-issued-secret' }];
 const input = () => inputIdentity({ surface: 'comparison/accuracy', suite: { replays: 2 }, corpus: { revision: 1 }, fixtures,

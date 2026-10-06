@@ -392,6 +392,27 @@
                 }
               }
             }
+          },
+          "scope": {
+            "type": "array",
+            "description": "Scope accounting per scanner of the plain artifact (#724), sorted by scanner id. Additive within v1.",
+            "items": {
+              "$ref": "#/$defs/scopeEntry"
+            }
+          },
+          "methodsScope": {
+            "type": "array",
+            "description": "The same for the methods artifact, kept apart from the plain one.",
+            "items": {
+              "$ref": "#/$defs/scopeEntry"
+            }
+          },
+          "profileEffects": {
+            "type": "array",
+            "description": "Declared credential profiles against their default scanner, plain artifact only.",
+            "items": {
+              "$ref": "#/$defs/profileEffect"
+            }
           }
         }
       }
@@ -1285,6 +1306,243 @@
       "items": {
         "type": "string"
       }
+    },
+    "scannerRoster": {
+      "description": "The evaluation contract's scanner roster as applied to this view (#763, benchmarks/support/scanner-roster.json): the required and optional scanners of the official run class, the scanners this view measured, and every optional scanner it did NOT measure, with the reason and the pointer to its last recorded measurement. A scanner not measured is stated here; it is never a zero.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "runClass",
+        "required",
+        "optional",
+        "measured",
+        "notMeasured",
+        "profiles"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "runClass": {
+          "type": "string"
+        },
+        "required": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "optional": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "measured": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notMeasured": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "scanner",
+              "profile",
+              "optional",
+              "label",
+              "statement",
+              "reason",
+              "lastMeasurement"
+            ],
+            "properties": {
+              "scanner": {
+                "type": "string"
+              },
+              "profile": {
+                "type": "string"
+              },
+              "optional": {
+                "const": true
+              },
+              "label": {
+                "type": "string"
+              },
+              "statement": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "lastMeasurement": {
+                "type": [
+                  "object",
+                  "null"
+                ],
+                "additionalProperties": false,
+                "required": [
+                  "recordedOn",
+                  "engine",
+                  "registry",
+                  "runs"
+                ],
+                "properties": {
+                  "recordedOn": {
+                    "type": "string"
+                  },
+                  "engine": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "version",
+                      "revision"
+                    ],
+                    "properties": {
+                      "version": {
+                        "type": "string"
+                      },
+                      "revision": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "registry": {
+                    "enum": [
+                      "runs",
+                      "historicalRuns"
+                    ]
+                  },
+                  "runs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "additionalProperties": false,
+                      "required": [
+                        "id",
+                        "configHash",
+                        "scannerVersion",
+                        "scannerConfigurationHash"
+                      ],
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "configHash": {
+                          "type": "string"
+                        },
+                        "scannerVersion": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "scannerConfigurationHash": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "officialMeasurement": {
+                "type": "string"
+              },
+              "decision": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "profiles": {
+          "description": "Every optional scanner of the roster, measured or not (#764): its label, the profile it is, what it detects, the scanner it is a profile of and its configuration identity. A profile is labelled separately from the default and never spliced with it; both are the same package under different configurations, so results differ by configuration and no accuracy claim follows.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "scanner",
+              "label",
+              "profile",
+              "measured"
+            ],
+            "properties": {
+              "scanner": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "profile": {
+                "type": "string"
+              },
+              "measured": {
+                "type": "boolean"
+              },
+              "detects": {
+                "type": "string"
+              },
+              "profileOf": {
+                "type": "string"
+              },
+              "disclosure": {
+                "type": "string"
+              },
+              "identity": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "adapter",
+                  "package",
+                  "scannerConfigurationHash"
+                ],
+                "properties": {
+                  "adapter": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "id",
+                      "version"
+                    ],
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "version": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "package": {
+                    "type": "string"
+                  },
+                  "patterns": {
+                    "type": "integer"
+                  },
+                  "scannerConfigurationHash": {
+                    "type": "string"
+                  },
+                  "runConfig": {
+                    "type": "string"
+                  },
+                  "runConfigHash": {
+                    "type": "string"
+                  }
+                }
+              },
+              "decision": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "$defs": {
@@ -1837,6 +2095,273 @@
             "$ref": "#/$defs/caseResult"
           },
           "description": "One entry per scanner that ran the population."
+        }
+      }
+    },
+    "scopeEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One scanner's scope accounting for one artifact (#724): what the ENGINE's reviewed disposition table (credential-eval ADR 0016) says about the findings the artifact retains. Never recomputed here; an accounting that does not reconcile to the retained findings is refused at build time. Null counts mean not accounted (legacy engine, no reviewed table, not measured), never zero.",
+      "required": [
+        "scanner",
+        "profile",
+        "engineVersion",
+        "state",
+        "retainedFindings",
+        "classification",
+        "labelled",
+        "dispositions",
+        "multiLabelFindings",
+        "conflictingLabelFindings",
+        "labels",
+        "limits"
+      ],
+      "properties": {
+        "scanner": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "scanner",
+            "version",
+            "mode",
+            "build",
+            "configurationHash",
+            "adapterVersion"
+          ],
+          "properties": {
+            "scanner": {
+              "type": "string"
+            },
+            "version": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "mode": {
+              "type": "string"
+            },
+            "build": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "configurationHash": {
+              "type": "string"
+            },
+            "adapterVersion": {
+              "type": "string"
+            }
+          }
+        },
+        "engineVersion": {
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "accounted",
+            "legacy-native-label-unavailable",
+            "not-accounted",
+            "not-measured"
+          ]
+        },
+        "retainedFindings": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "classification": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "required": [
+            "accountingVersion",
+            "table"
+          ],
+          "properties": {
+            "accountingVersion": {
+              "type": "string"
+            },
+            "table": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "package",
+                "version",
+                "integrity"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "package": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                },
+                "integrity": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "labelled": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "dispositions": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "required": [
+            "mapped_credential",
+            "credential_related_unmapped",
+            "out_of_scope",
+            "ambiguous",
+            "native_label_unavailable",
+            "unrecognized_label"
+          ],
+          "properties": {
+            "mapped_credential": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "credential_related_unmapped": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "out_of_scope": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "ambiguous": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "native_label_unavailable": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "unrecognized_label": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "multiLabelFindings": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "conflictingLabelFindings": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "label",
+              "findings",
+              "withFamily",
+              "scope",
+              "status",
+              "reason"
+            ],
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "findings": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "withFamily": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "scope": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "status": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "reason": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "limits": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "profileEffect": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Before/after of a declared credential profile against the default result of the same scanner on the same population (delta = profile - default). Separate observations with their own identities; nothing is spliced, excluded or re-scored.",
+      "required": [
+        "population",
+        "default",
+        "profile",
+        "delta",
+        "denominatorsEqual",
+        "note"
+      ],
+      "properties": {
+        "population": {
+          "type": "string"
+        },
+        "default": {
+          "type": "object"
+        },
+        "profile": {
+          "type": "object"
+        },
+        "delta": {
+          "type": "object"
+        },
+        "denominatorsEqual": {
+          "type": "boolean"
+        },
+        "note": {
+          "type": "string"
         }
       }
     }

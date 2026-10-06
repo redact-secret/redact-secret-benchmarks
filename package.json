@@ -90,6 +90,7 @@
     "pii:authority:rehearse": "node --import tsx scripts/rehearse-pii-authority-rollback.mjs",
     "pii:legacy-inventory": "node scripts/pii-legacy-inventory.mjs",
     "pii:legacy-inventory:check": "node scripts/pii-legacy-inventory.mjs --check",
+    "legacy-inventory:check": "node scripts/legacy-inventory.mjs --check",
     "official-runs:record": "node --import tsx scripts/record-official-run.mjs",
     "qualification:axis-overlay": "node --import tsx scripts/build-axis-overlay.ts",
     "qualification:twin-scope": "node --import tsx scripts/build-twin-scope-map.ts",
@@ -177,9 +178,9 @@
   "devDependencies": {
     "@types/node": "22.20.3",
     "ajv": "8.20.0",
-    "tsx": "4.23.13",
+    "tsx": "4.23.15",
     "typescript": "7.0.2",
-    "vite": "8.3.0",
+    "vite": "8.3.2",
     "yaml": "2.9.1"
   }
 }

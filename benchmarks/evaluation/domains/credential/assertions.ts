@@ -1,9 +1,9 @@
 import type { Finding, ScoredRow } from '../../../types.ts';
-import type { GeneratedVariant, Assertion, Relation, EvaluationContext, ScannerResult } from '../../../engine/types.ts';
-import { score } from '../../../lib/scoring.ts';
-import { scoreRow } from '../../../lib/lattice.ts';
-import { findingsForPath } from '../../../lib/findings-by-path.ts';
-import { secrets } from '../../../engine/model.ts';
+import type { GeneratedVariant, Assertion, Relation, EvaluationContext, ScannerResult } from '../../model/types.ts';
+import { score } from '../../../scoring/scoring.ts';
+import { scoreRow } from '../../../scoring/lattice.ts';
+import { findingsForPath } from '../../../scoring/findings-by-path.ts';
+import { secrets } from '../../model/model.ts';
 
 export function observe(variant: GeneratedVariant, findings: Finding[]) {
   const row = score([variant.fixture], findingsForPath(findings, variant.fixture.path)).rows[0];

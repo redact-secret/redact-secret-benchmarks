@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises';
-import { reviewLedgerProblem } from '../benchmarks/engine/review-ledger.ts';
+import { reviewLedgerProblem } from '../benchmarks/evaluation/model/review-ledger.ts';
 import { reviewClasses } from '../benchmarks/shared/evaluation-model.ts';
 
 const ledger = JSON.parse(await readFile(new URL('../benchmarks/review-ledger.json', import.meta.url), 'utf8'));

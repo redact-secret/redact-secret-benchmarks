@@ -6,9 +6,10 @@ import { Stack, Section } from '../layout';
 import { Breadcrumb, PageHead } from '../page';
 import { Code } from '../text';
 import { ReviewDisclosure } from './ReviewDisclosure';
+import { ScopeAccounting } from './ScopeAccounting';
 import { cx } from '../../lib/cx';
 import styles from './QualificationOverview.module.css';
-import type { FamilyRow, GapRow, PopulationRow, QualificationOverviewProps, ScannerRow, StatusWord } from './types';
+import type { FamilyRow, GapRow, PopulationRow, QualificationOverviewProps, ScannerProfileRow, ScannerRow, StatusWord } from './types';
 
 const BADGE: Record<StatusWord['tone'], 'info' | 'review' | 'none'> = { info: 'info', review: 'review', none: 'none' };
 export const StatusWordBadge = ({ value }: { value: StatusWord }) => <StatusBadge status={BADGE[value.tone]}>{value.word}</StatusBadge>;
@@ -31,6 +32,14 @@ const scannerColumns: DataTableColumn<ScannerRow>[] = [
   { key: 'version', header: 'Version', cell: r => <Code>{r.version}</Code> },
   { key: 'build', header: 'Build', cell: r => r.build },
   { key: 'mode', header: 'Mode line of the run', cell: r => r.mode },
+];
+
+const profileColumns: DataTableColumn<ScannerProfileRow>[] = [
+  { key: 'label', header: 'Profile', rowHeader: true, cell: r => r.label },
+  { key: 'scanner', header: 'Scanner id', cell: r => <Code>{r.scanner}</Code> },
+  { key: 'detects', header: 'What it detects', cell: r => r.detects },
+  { key: 'identity', header: 'Configuration identity', cell: r => r.identity },
+  { key: 'status', header: 'In this view', cell: r => r.status },
 ];
 
 const familyColumns: DataTableColumn<FamilyRow>[] = [
@@ -61,7 +70,7 @@ const gapColumns: DataTableColumn<GapRow>[] = [
  * one population at a time. The support status is the product's own qualification and is shown apart from the scanner
  * observations on each family page; no count here is a sum across populations or scanners.
  */
-export function QualificationOverview({ breadcrumb, eyebrow, title, lede, meta, boundary, disclosure, summary, identity, populations, scanners, families, unattributed, gaps }: QualificationOverviewProps) {
+export function QualificationOverview({ breadcrumb, eyebrow, title, lede, meta, boundary, disclosure, summary, identity, populations, scanners, families, unattributed, gaps, scope }: QualificationOverviewProps) {
   return (
     <Stack gap="xl" className={styles.overview}>
       <PageHead before={<Breadcrumb items={breadcrumb} />} eyebrow={eyebrow} title={title} lede={lede} meta={meta} />
@@ -85,7 +94,23 @@ export function QualificationOverview({ breadcrumb, eyebrow, title, lede, meta, 
 
       <Section title={scanners.title} description={scanners.description}>
         <DataTable<ScannerRow> columns={scannerColumns} rows={scanners.rows} getRowKey={r => r.key} caption={scanners.title} wide empty="No scanner is recorded in this view." />
+        {scanners.profiles && (
+          <>
+            <p>{scanners.profiles.description}</p>
+            <DataTable<ScannerProfileRow> columns={profileColumns} rows={scanners.profiles.rows} getRowKey={r => r.key} caption={scanners.profiles.title} wide />
+            {scanners.profiles.disclosure && <Note tone="info" title="Results differ by configuration">{scanners.profiles.disclosure}</Note>}
+          </>
+        )}
+        {scanners.notMeasured?.map(n => (
+          <Note key={n.key} tone="info" title={n.statement}>
+            <p>{n.reason}</p>
+            <p>{n.lastMeasurement}</p>
+            {n.officialMeasurement && <p>{n.officialMeasurement}</p>}
+          </Note>
+        ))}
       </Section>
+
+      {scope && <ScopeAccounting {...scope} />}
 
       <Section title={families.title} description={families.description}>
         <DataTable<FamilyRow> columns={familyColumns} rows={families.rows} getRowKey={r => r.family} caption={families.title} wide empty="No detector family is recorded in this view." />

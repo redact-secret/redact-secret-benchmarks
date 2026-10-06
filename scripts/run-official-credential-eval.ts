@@ -33,14 +33,17 @@
  * Never publish an artifact from a non-zero exit, and never an `internal` one outside product qualification.
  */
 import { spawnSync, execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, writeFileSync, copyFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync, copyFileSync, rmSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { canonical, sha256Digest } from '../benchmarks/qualification/canonical.ts';
 import { buildEvaluationEvidence } from '../benchmarks/qualification/evaluation-evidence.ts';
 import { exportPopulation, PRODUCT_POPULATIONS, type ProductPopulation } from '../benchmarks/qualification/population-snapshot.ts';
+import { readScannerRoster, rosterFor } from '../benchmarks/qualification/scanner-roster.ts';
 import { receiptProblems } from '../benchmarks/qualification/receipt-reuse.ts';
 import { bindingProblems, readRunArtifact, type RunArtifact } from '../benchmarks/qualification/run-artifact.ts';
 import { controlFor } from './candidate-control.mjs';
+import { incompleteProblem, readJsonIfPresent, STAGE_INCOMPLETE_FILE, STAGE_INCOMPLETE_SCHEMA, stageReceiptProblems } from './stage-receipts.mjs';
+import { createHash } from 'node:crypto';
 import { releaseIdentityProblems } from './evidence-adoption.mjs';
 import { candidateOf, install as installCandidate, readRegistry as readCandidateRegistry, verifyLoaded } from './install-product-candidate.mjs';
 import { diagnosticBindingProblems, diagnosticSummary, outcomesOf, parseSelectedScanners, renderDiagnosticSummary, selectedScannerConfig, DIAGNOSTIC_PRODUCT_SCANNER, type PopulationOutcomes } from '../benchmarks/qualification/diagnostic-lane.ts';
@@ -48,19 +51,31 @@ import { diagnosticBindingProblems, diagnosticSummary, outcomesOf, parseSelected
 const registry = JSON.parse(readFileSync(new URL('../benchmarks/official-runs.json', import.meta.url), 'utf8'));
 const args = process.argv.slice(2);
 const option = (name: string, fallback?: string) => { const at = args.indexOf(`--${name}`); return at >= 0 ? args[at + 1] : fallback; };
-const fail = (message: string): never => { console.error(`official run refused: ${message}`); process.exit(4); };
+// A stage whose engine output is finished but not yet verified carries stage-incomplete.json (#762): a failure or a cancel in the checks that follow must not
+// discard that output, and the run is explicitly INCOMPLETE, never a success. The marker is replaced by the run record when the stage verifies.
+let incomplete: ((reason: string) => void) | undefined;
+const fail = (message: string): never => { incomplete?.(message); console.error(`official run refused: ${message}`); process.exit(4); };
 
 const mode = option('mode', 'full');
 if (mode !== 'full' && mode !== 'diagnostic') fail(`--mode must be full or diagnostic, not ${mode}`);
 const diagnostic = mode === 'diagnostic';
 if (!diagnostic && args.includes('--scanners')) fail('--scanners is for --mode diagnostic; a full run uses every pinned scanner');
 const registryScannerIds: string[] = registry.scanners.map((s: { id: string }) => s.id);
-const selectedScanners: string[] = diagnostic ? (() => { try { return parseSelectedScanners(option('scanners'), registryScannerIds); } catch (e) { return fail((e as Error).message); } })() : registryScannerIds;
+// An OPTIONAL scanner of the evaluation contract (#763, benchmarks/support/scanner-roster.json) is left out on request: the run is complete without it and its record names what was omitted.
+const roster = readScannerRoster();
+const omitOptional = option('omit-optional');
+if (omitOptional !== undefined) {
+  if (diagnostic) fail('--omit-optional is for an official run; the diagnostic lane selects its scanners with --scanners');
+  if (!rosterFor(roster, 'official').optional.includes(omitOptional)) fail(`--omit-optional ${omitOptional}: not an optional scanner of the official run class (benchmarks/support/scanner-roster.json); a required scanner cannot be omitted`);
+  if (!Object.keys(roster.optionalScanners[omitOptional].withoutConfigs).length) fail(`--omit-optional ${omitOptional}: it is in no official configuration, so there is nothing to leave out (#764: the credential profile is measured only by its own profile-only run, pending the owner's approval)`);
+}
+const selectedScanners: string[] = diagnostic ? (() => { try { return parseSelectedScanners(option('scanners'), registryScannerIds); } catch (e) { return fail((e as Error).message); } })() : registryScannerIds.filter(id => id !== omitOptional);
 const reuseSet = option('reuse-observations');
 const freshScanners = args.flatMap((a, i) => a === '--fresh' ? [args[i + 1]] : []);
 const observationsOut = option('observations-out');
 if (!diagnostic && (reuseSet !== undefined || freshScanners.length || observationsOut !== undefined)) fail('--reuse-observations, --fresh and --observations-out are for --mode diagnostic; an official run measures every scanner fresh');
 if (reuseSet === undefined && freshScanners.length) fail('--fresh needs --reuse-observations');
+// One or more directories (comma separated) that may hold this stage of an earlier run (#762); the first that is identical is reused.
 const reuseReceipt = option('reuse-receipt');
 if (diagnostic && reuseReceipt !== undefined) fail('--reuse-receipt is for an official retry (#707); a diagnostic run is always fresh');
 const attributionId = option('attribution');
@@ -112,12 +127,16 @@ if (evidenceTag && !/^snapshot-\d{4}\.\d{2}\.\d{2}(\.\d+)?$/.test(evidenceTag)) 
 if (evidenceManifestDigest && !/^sha256:[0-9a-f]{64}$/.test(evidenceManifestDigest)) fail('--evidence-manifest-digest must be sha256:<64 hex>');
 const expectedEngine = engineCandidate ? { revision: engineCandidate.engine.revision, version: engineCandidate.engine.tag.replace(/^v/, '') } : { revision: registry.engine.revision, version: registry.engine.version };
 const candidate = candidateId ? candidateOf(readCandidateRegistry(), candidateId) : undefined;
-const configFile = (attribution ? attribution.configs[platform] : registry.config.platforms[platform]?.file) ?? fail(`no run configuration pinned for platform ${platform}`);
+if (omitOptional !== undefined && (attributionId || candidateId)) fail('--omit-optional is for the accepted official run, not an attribution or candidate run');
+const withoutConfig = omitOptional === undefined ? undefined : (roster.optionalScanners[omitOptional].withoutConfigs[platform] ?? fail(`the scanner roster names no run configuration without ${omitOptional} for platform ${platform}`));
+const configFile = (withoutConfig ?? (attribution ? attribution.configs[platform] : registry.config.platforms[platform]?.file)) ?? fail(`no run configuration pinned for platform ${platform}`);
 const nodeDir = path.join(engineDir, attribution?.nodeDir ?? 'adapters/node');
 // The scanners this run is pinned to: the registry's, with the attributed product build in place of the product pin.
 const runScanners: typeof registry.scanners = registry.scanners.filter((s: { id: string }) => selectedScanners.includes(s.id)).map((s: { id: string }) => (attribution?.scanners[s.id] ? { ...s, ...attribution.scanners[s.id] } : s));
 const pinnedConfigPath = path.join(engineDir, 'configs/official', configFile);
 const binary = path.join(engineDir, 'target/release/credential-eval');
+// The without-optional configuration ships with an engine release; a pinned engine that predates it is refused plainly, never measured with the optional scanner by accident.
+if (withoutConfig !== undefined && !existsSync(pinnedConfigPath)) fail(`the pinned engine ${registry.engine.tag} has no configuration ${withoutConfig} (engine release pending, #763): an official run without ${omitOptional} needs an engine release that ships it, and the pin moves only by the owner's repin`);
 mkdirSync(out, { recursive: true });
 
 // 1. Engine identity: the tag's commit, the version string and the protocol. A different engine is a different measurement.
@@ -201,30 +220,48 @@ if ((PRODUCT_POPULATIONS as readonly string[]).includes(populationId)) {
 // 4. Run the engine; any exit but 0 is a failed job. A retry (#707) first tries the receipt of the same stage of an earlier run: an artifact that passed this
 // same determinism check and is the identity this run would produce. It is bound to the current pins in step 5 like a fresh artifact; any doubt measures fresh.
 const artifacts: string[] = [];
-let receiptReuse: { reused: boolean; artifactDigest?: string; reasons?: string[] } | undefined;
+let receiptReuse: { reused: boolean; source?: string; artifactDigest?: string; reasons?: string[] } | undefined;
 if (reuseReceipt !== undefined) {
-  const dir = path.join(path.resolve(reuseReceipt), methodsMode ? 'methods' : '');
-  const problems: string[] = [];
-  try {
-    const bytes = readFileSync(path.join(dir, 'artifact.json'));
-    const found = JSON.parse(readFileSync(path.join(dir, 'run-record.json'), 'utf8'));
-    const digest = readRunArtifact(bytes).artifactDigest;
-    problems.push(...receiptProblems(found, digest, {
-      population: populationId, platform, methods: methodsMode, engineRevision: revision, runs,
-      candidateId: candidateId ?? null, attributionId: attributionId ?? null, evidenceTag: evidenceTag ?? null,
-      ...(methodsMode ? { methodsRun: { methods: methodsRun!.methods, reference: methodsRun!.reference, seed: methodsRun!.seed, evidenceDigest: methodsRun!.evaluationEvidence.digest } } : {}),
-    }));
-    if (!problems.length) {
-      const kept = path.join(out, 'artifact-1.json');
-      writeFileSync(kept, bytes);
-      artifacts.push(kept);
-      receiptReuse = { reused: true, artifactDigest: digest };
-    }
-  } catch (error) { problems.push(`the receipt is unreadable: ${(error as Error).message}`); }
+  const stage = methodsMode ? 'methods' : 'plain';
+  const sources = reuseReceipt.split(',').filter(Boolean);
+  const rejected: string[] = [];
+  for (const source of sources) {
+    const dir = path.resolve(source);
+    const problems: string[] = [];
+    try {
+      const marker = readJsonIfPresent(path.join(dir, STAGE_INCOMPLETE_FILE));
+      const blocked = incompleteProblem(marker);
+      if (blocked) problems.push(blocked);
+      else {
+        const bytes = readFileSync(path.join(dir, 'artifact.json'));
+        const recordBytes = readFileSync(path.join(dir, 'run-record.json'));
+        const found = JSON.parse(recordBytes.toString('utf8'));
+        const digest = readRunArtifact(bytes).artifactDigest;
+        problems.push(...receiptProblems(found, digest, {
+          population: populationId, platform, methods: methodsMode, engineRevision: revision, runs,
+          candidateId: candidateId ?? null, attributionId: attributionId ?? null, evidenceTag: evidenceTag ?? null, scannerIds: selectedScanners,
+          ...(methodsMode ? { methodsRun: { methods: methodsRun!.methods, reference: methodsRun!.reference, seed: methodsRun!.seed, evidenceDigest: methodsRun!.evaluationEvidence.digest } } : {}),
+        }));
+        // The stage receipt (#762) is optional: an artifact of an earlier workflow (official-run-*, early-plain-*) has the run record only. When there is one, it must hold.
+        const receipt = readJsonIfPresent(path.join(dir, 'stage-receipt.json'));
+        if (receipt) problems.push(...stageReceiptProblems(receipt, { stage, population: populationId, artifactSha256: `sha256:${createHash('sha256').update(bytes).digest('hex')}`, recordSha256: `sha256:${createHash('sha256').update(recordBytes).digest('hex')}`, engineRevision: revision }));
+        if (!problems.length) {
+          const kept = path.join(out, 'artifact-1.json');
+          writeFileSync(kept, bytes);
+          artifacts.push(kept);
+          receiptReuse = { reused: true, source: source.replace(/^.*receipts-in\//, ''), artifactDigest: digest };
+          console.log(`receipt reused (${stage} stage of ${populationId}, source ${receiptReuse.source}${receipt ? `, stage receipt measured in run ${receipt.measuredInRun}` : ', run record only'}): engine ${revision}, artifact ${digest}; the engine is not run for this stage`);
+          break;
+        }
+      }
+    } catch (error) { problems.push(`the receipt is unreadable: ${(error as Error).message}`); }
+    rejected.push(`${source}: ${problems.join('; ')}`);
+    console.log(`receipt source ${source} not usable for the ${stage} stage: ${problems.join('; ')}`);
+  }
   if (!receiptReuse) {
-    receiptReuse = { reused: false, reasons: problems };
-    console.log(`receipt not reused (${problems.join('; ')}): measuring fresh`);
-  } else console.log(`receipt reused: ${receiptReuse.artifactDigest}; the engine is not run for this stage`);
+    receiptReuse = { reused: false, reasons: rejected.length ? rejected : ['no source was offered'] };
+    console.log(`receipt not reused (${receiptReuse.reasons!.join(' | ')}): measuring fresh`);
+  }
 }
 for (let n = 1; n <= runs && !receiptReuse?.reused; n++) {
   const artifact = path.join(out, `artifact-${n}.json`);
@@ -239,6 +276,20 @@ for (let n = 1; n <= runs && !receiptReuse?.reused; n++) {
   if (result.status !== 0) fail(`credential-eval run ${n} exited ${result.status}; no artifact is accepted`);
   artifacts.push(artifact);
 }
+
+// The engine output is finished (or a verified receipt stands in for it). From here until the run record is written, a failure or a cancel leaves the output in
+// place and the stage explicitly INCOMPLETE (#762); the CI uploads the directory with its marker.
+const markerFile = path.join(out, STAGE_INCOMPLETE_FILE);
+const writeMarker = (reason: string) => {
+  try {
+    writeFileSync(markerFile, `${JSON.stringify({
+      schema: STAGE_INCOMPLETE_SCHEMA, status: 'incomplete', stage: methodsMode ? 'methods' : 'plain', population: populationId, platform,
+      reason, engineOutputKept: artifacts.map(file => ({ file: path.basename(file), bytes: statSync(file).size })),
+      note: 'the engine run finished; the checks after it did not. The output is kept as evidence and is never reused or counted as a success.',
+    }, null, 2)}\n`);
+  } catch { /* the marker is best effort: the exit status already says the run failed */ }
+};
+if (!diagnostic) { writeMarker('engine output finished; verification not completed'); incomplete = writeMarker; }
 
 // 5. Accept only schema-valid artifacts that bind to the population and agree semantically. They are read one at a time: a methods
 // artifact is a few hundred MB, and only the first one's identity is kept.
@@ -277,6 +328,7 @@ const record = {
   evidence: kept.manifest.evidence, configHash: kept.manifest.config_hash,
   artifact: { digest: kept.artifactDigest, semanticDigest: kept.semanticDigest, schemaDigest: sha256Digest(readFileSync(new URL('../schemas/credential-eval-run-artifact-v1.json', import.meta.url))) },
   determinism: { runs, semanticDigestsEqual: true },
+  ...(omitOptional !== undefined ? { omittedOptionalScanners: [omitOptional] } : {}),
   ...(receiptReuse ? { receiptReuse } : {}),
   ...(evidenceTag && !(PRODUCT_POPULATIONS as readonly string[]).includes(populationId) ? { evidenceOverride: { tag: evidenceTag, manifestDigest: evidenceManifestDigest } } : {}),
   ...(candidate ? { productCandidate: { id: candidateId, commit: candidate.product.commit, version: candidate.product.version, published: false, packages: candidate.packages.map(x => ({ name: x.name, sha256: x.sha256 })), control: engineCandidate!.product, receipt: 'product-candidate-receipt.json' } } : {}),
@@ -290,6 +342,7 @@ const record = {
   caseCounts: kept.caseCounts,
 };
 writeFileSync(path.join(out, diagnostic ? 'diagnostic-record.json' : 'run-record.json'), `${JSON.stringify(record, null, 2)}\n`);
+incomplete = undefined; rmSync(markerFile, { force: true });
 if (diagnostic) {
   const summary = diagnosticSummary({
     populations: [populationId], selected: selectedScanners, registryScanners: registryScannerIds,

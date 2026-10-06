@@ -1,0 +1,255 @@
+{
+  "schema": "redact-secret-benchmarks/scope-accounting-summary/v1",
+  "mode": "published",
+  "origin": "official run 37296823599 (engine v0.1.0-alpha.5), linux-x64, snapshot-2026.10.05, plain run",
+  "platform": null,
+  "note": null,
+  "boundary": "Counts are the engine's (credential-eval ADR 0016) over the findings each artifact retains. Nothing was re-classified, filtered or scored here; an unresolved type is neither a false positive nor ignored; a profile is a separate configuration, not a speed-up; Unknown means no accounting was recorded, not zero.",
+  "artifacts": [
+    {
+      "name": "baseline-alpha.5",
+      "file": "artifact.json",
+      "bytes": 124233308,
+      "engine": {
+        "name": "credential-eval",
+        "version": "0.1.0-alpha.5"
+      },
+      "protocol": "credential-eval-protocol/1",
+      "runClass": "official",
+      "publication": "public",
+      "configHash": "sha256:2451ce7bf380fdeb25df8098bc3ec39d4dfbf178ba9fb821e577b6e71239682c",
+      "evidence": {
+        "revision": "records-tree-sha256:924cd5b9b068e0d5ec5039bce962c63a484cb7fdec61b8b1e6603b1c530884b7",
+        "corpusDigest": "sha256:df0dcfc2ba9d25d1034da986b0e4db22ed21526b90a27d43955ce47e3c7ae5d9",
+        "release": {
+          "tag": "snapshot-2026.10.05",
+          "manifest_digest": "sha256:510836b02c271bec28797cbbc71a8ee1ad4cf9a86fd644884116b1b68c5bacef"
+        }
+      },
+      "methods": [],
+      "scope": [
+        {
+          "scanner": "flare-redact",
+          "profile": {
+            "scanner": "flare-redact",
+            "version": "1.6.1",
+            "mode": "Published npm package · secrets-only (pii, generic_assignment disabled) · JavaScript engine",
+            "build": "released",
+            "configurationHash": "sha256:f111f4606c9185205f16555c97493f82a9165e19afe05c38a9d4a4b399b36300",
+            "adapterVersion": "1"
+          },
+          "engineVersion": "0.1.0-alpha.5",
+          "classification": null,
+          "labelled": null,
+          "dispositions": null,
+          "multiLabelFindings": null,
+          "conflictingLabelFindings": null,
+          "labels": [],
+          "state": "legacy-native-label-unavailable",
+          "retainedFindings": 1461,
+          "limits": [
+            "This artifact was produced by an engine that did not record native labels or scope accounting. Its findings are legacy historical evidence: nothing is classified retrospectively and unmapped findings are unknown, not zero.",
+            "Counts describe the findings the artifact retains. No finding was removed, relabelled or excluded, and no case outcome, denominator or floor depends on them."
+          ],
+          "declared": {
+            "default": true
+          },
+          "totals": {
+            "outcomes": {
+              "EXACT": 907,
+              "COVERED": 61,
+              "OVERBROAD": 147,
+              "PARTIAL": 50,
+              "MISS": 1704
+            },
+            "positiveSpans": 2869,
+            "leakedSpans": 1754,
+            "benignCases": 2250,
+            "benignFlagged": 61,
+            "benignFindings": 63,
+            "notMeasured": 0,
+            "pending": 94,
+            "retainedFindings": 1461
+          }
+        },
+        {
+          "scanner": "gitleaks",
+          "profile": {
+            "scanner": "gitleaks",
+            "version": "8.30.1",
+            "mode": "Directory scan · default rules",
+            "build": "released",
+            "configurationHash": "sha256:f091a51ed948545f0ef07b2c29940ef1f84af58262f0888b6433fb60ec4c7337",
+            "adapterVersion": "2"
+          },
+          "engineVersion": "0.1.0-alpha.5",
+          "classification": null,
+          "labelled": null,
+          "dispositions": null,
+          "multiLabelFindings": null,
+          "conflictingLabelFindings": null,
+          "labels": [],
+          "state": "legacy-native-label-unavailable",
+          "retainedFindings": 2697,
+          "limits": [
+            "This artifact was produced by an engine that did not record native labels or scope accounting. Its findings are legacy historical evidence: nothing is classified retrospectively and unmapped findings are unknown, not zero.",
+            "Counts describe the findings the artifact retains. No finding was removed, relabelled or excluded, and no case outcome, denominator or floor depends on them."
+          ],
+          "declared": {
+            "default": true
+          },
+          "totals": {
+            "outcomes": {
+              "EXACT": 1835,
+              "COVERED": 0,
+              "OVERBROAD": 9,
+              "PARTIAL": 22,
+              "MISS": 1003
+            },
+            "positiveSpans": 2869,
+            "leakedSpans": 1025,
+            "benignCases": 2250,
+            "benignFlagged": 72,
+            "benignFindings": 73,
+            "notMeasured": 0,
+            "pending": 94,
+            "retainedFindings": 2697
+          }
+        },
+        {
+          "scanner": "openredaction",
+          "profile": {
+            "scanner": "openredaction",
+            "version": "1.1.5",
+            "mode": "Published npm package · default patterns (PII enabled) · pattern coverage only",
+            "build": "released",
+            "configurationHash": "sha256:b1db3e9c340b201725f947ea0cffd597ba64a20a5674f3dd57e50bef38e29974",
+            "adapterVersion": "1"
+          },
+          "engineVersion": "0.1.0-alpha.5",
+          "classification": null,
+          "labelled": null,
+          "dispositions": null,
+          "multiLabelFindings": null,
+          "conflictingLabelFindings": null,
+          "labels": [],
+          "state": "legacy-native-label-unavailable",
+          "retainedFindings": 360782,
+          "limits": [
+            "This artifact was produced by an engine that did not record native labels or scope accounting. Its findings are legacy historical evidence: nothing is classified retrospectively and unmapped findings are unknown, not zero.",
+            "Counts describe the findings the artifact retains. No finding was removed, relabelled or excluded, and no case outcome, denominator or floor depends on them."
+          ],
+          "declared": {
+            "default": true
+          },
+          "totals": {
+            "outcomes": {
+              "EXACT": 758,
+              "COVERED": 28,
+              "OVERBROAD": 63,
+              "PARTIAL": 211,
+              "MISS": 1809
+            },
+            "positiveSpans": 2869,
+            "leakedSpans": 2020,
+            "benignCases": 2250,
+            "benignFlagged": 740,
+            "benignFindings": 4272,
+            "notMeasured": 0,
+            "pending": 94,
+            "retainedFindings": 360782
+          }
+        },
+        {
+          "scanner": "redact-secret",
+          "profile": {
+            "scanner": "redact-secret",
+            "version": "0.1.0-beta.13",
+            "mode": "Published npm package · default detectors",
+            "build": "released",
+            "configurationHash": "sha256:e8d78f1359d1d918a77664b56e8a54a0838a8d6e3509ce0ab60e18e9c76a8ea2",
+            "adapterVersion": "3"
+          },
+          "engineVersion": "0.1.0-alpha.5",
+          "classification": null,
+          "labelled": null,
+          "dispositions": null,
+          "multiLabelFindings": null,
+          "conflictingLabelFindings": null,
+          "labels": [],
+          "state": "legacy-native-label-unavailable",
+          "retainedFindings": 3558,
+          "limits": [
+            "This artifact was produced by an engine that did not record native labels or scope accounting. Its findings are legacy historical evidence: nothing is classified retrospectively and unmapped findings are unknown, not zero.",
+            "Counts describe the findings the artifact retains. No finding was removed, relabelled or excluded, and no case outcome, denominator or floor depends on them."
+          ],
+          "declared": {
+            "default": true
+          },
+          "totals": {
+            "outcomes": {
+              "EXACT": 2778,
+              "COVERED": 1,
+              "OVERBROAD": 0,
+              "PARTIAL": 7,
+              "MISS": 83
+            },
+            "positiveSpans": 2869,
+            "leakedSpans": 90,
+            "benignCases": 2250,
+            "benignFlagged": 7,
+            "benignFindings": 7,
+            "notMeasured": 0,
+            "pending": 94,
+            "retainedFindings": 3558
+          }
+        },
+        {
+          "scanner": "trufflehog",
+          "profile": {
+            "scanner": "trufflehog",
+            "version": "3.97.4",
+            "mode": "Filesystem scan · verification disabled",
+            "build": "released",
+            "configurationHash": "sha256:d077d8241c93abc23a64c8f9278475c779e1beaaa302f0d43a072284f6cf1678",
+            "adapterVersion": "2"
+          },
+          "engineVersion": "0.1.0-alpha.5",
+          "classification": null,
+          "labelled": null,
+          "dispositions": null,
+          "multiLabelFindings": null,
+          "conflictingLabelFindings": null,
+          "labels": [],
+          "state": "legacy-native-label-unavailable",
+          "retainedFindings": 1073,
+          "limits": [
+            "This artifact was produced by an engine that did not record native labels or scope accounting. Its findings are legacy historical evidence: nothing is classified retrospectively and unmapped findings are unknown, not zero.",
+            "Counts describe the findings the artifact retains. No finding was removed, relabelled or excluded, and no case outcome, denominator or floor depends on them."
+          ],
+          "declared": {
+            "default": true
+          },
+          "totals": {
+            "outcomes": {
+              "EXACT": 897,
+              "COVERED": 17,
+              "OVERBROAD": 7,
+              "PARTIAL": 15,
+              "MISS": 1933
+            },
+            "positiveSpans": 2869,
+            "leakedSpans": 1948,
+            "benignCases": 2250,
+            "benignFlagged": 32,
+            "benignFindings": 32,
+            "notMeasured": 0,
+            "pending": 94,
+            "retainedFindings": 1073
+          }
+        }
+      ],
+      "profileEffects": []
+    }
+  ]
+}

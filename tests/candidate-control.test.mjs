@@ -34,3 +34,12 @@ test('the CLI fields the workflow reads resolve on the real record (archive.rele
   assert.match(out('archive.sha256'), /^sha256:[0-9a-f]{64}$/);
   assert.match(out('engine.tag'), /^v\d+\.\d+\.\d+/);
 });
+
+test('an engine candidate whose replay is still pending is not a control: the accepted replay is', () => {
+  const accepted = { evidenceRelease: 'snapshot-2026.10.04.3', engine: { tag: 'v0.1.0-alpha.5' }, product: { version: '0.1.0-beta.13' }, replay: { archive } };
+  const pending = { state: 'accepted', candidate: accepted, engineCandidate: { evidenceRelease: 'snapshot-2026.10.04.3', engine: { tag: 'v0.1.0-alpha.12' }, replay: { state: 'pending', recordedRuns: [] } } };
+  const c = controlFor(pending);
+  assert.equal(c.source, 'candidate');
+  assert.equal(c.engine.tag, 'v0.1.0-alpha.5');
+  assert.equal(controlFor({ ...pending, engineCandidate: { ...pending.engineCandidate, replay: { archive } } }).source, 'engineCandidate');
+});

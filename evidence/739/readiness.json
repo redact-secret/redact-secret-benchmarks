@@ -1,0 +1,1798 @@
+{
+  "schemaVersion": 2,
+  "kind": "batch2-readiness-inventory",
+  "epic": 739,
+  "generatedBy": "scripts/batch2-readiness.mjs",
+  "inputs": {
+    "assignment": "benchmarks/batch2/families.json",
+    "observedState": "benchmarks/batch2/sources.json",
+    "evidenceCommit": "65602481b83532b8acd6caf0d51b8552873e0d98",
+    "handoff": "credential-evidence docs/handoffs/batch-2-bounded-carriers.md (issue #235)"
+  },
+  "rule": "ready / carrier-unresolved is evidence's status from the reviewed handoff, copied verbatim. A ready row means the existing provider-documented claims name the carrier; it is not a product contract. Core #1223-#1226 are open, so no row has an adopted product contract: expectations come only from the handoff slot. carrier-unresolved is not a false negative, true negative or passing coverage.",
+  "productContractAdopted": {
+    "1223": {
+      "state": "open",
+      "gatesChecked": 0,
+      "gatesTotal": 8,
+      "evidenceDirPublished": false
+    },
+    "1224": {
+      "state": "open",
+      "gatesChecked": 0,
+      "gatesTotal": 8,
+      "evidenceDirPublished": false
+    },
+    "1225": {
+      "state": "open",
+      "gatesChecked": 0,
+      "gatesTotal": 8,
+      "evidenceDirPublished": false
+    },
+    "1226": {
+      "state": "open",
+      "gatesChecked": 0,
+      "gatesTotal": 8,
+      "evidenceDirPublished": false
+    }
+  },
+  "counts": {
+    "G1": {
+      "ready": 23,
+      "carrier-unresolved": 0,
+      "total": 23
+    },
+    "G2": {
+      "ready": 13,
+      "carrier-unresolved": 0,
+      "total": 13
+    },
+    "G3": {
+      "ready": 12,
+      "carrier-unresolved": 0,
+      "total": 12
+    },
+    "G4": {
+      "ready": 4,
+      "carrier-unresolved": 0,
+      "total": 4
+    },
+    "G5": {
+      "ready": 3,
+      "carrier-unresolved": 0,
+      "total": 3
+    },
+    "G6": {
+      "ready": 3,
+      "carrier-unresolved": 0,
+      "total": 3
+    },
+    "total": {
+      "ready": 58,
+      "carrier-unresolved": 0,
+      "total": 58
+    }
+  },
+  "families": [
+    {
+      "family": "adobe:oauth-server-to-server-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`access_token` member of the token endpoint response (token_type bearer, expires_in seconds)",
+        "publicLookalikes": "client_id, expires_in value",
+        "claimIds": [
+          "s2s-access-token-bearer-expiry"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/adobe/oauth-server-to-server-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "413d96e026b1",
+        "sha12AtEvidenceCommit": "413d96e026b1",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "airtable:oauth-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "bearer token after OAuth authorization (opaque, variable length)",
+        "publicLookalikes": "client id, expires_in",
+        "claimIds": [
+          "existence",
+          "opaque-format"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/airtable/oauth-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "1f66597af510",
+        "sha12AtEvidenceCommit": "1f66597af510",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "asana:oauth-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r1.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r1.md",
+      "handoff": {
+        "slot": "role only (bearer-type token from the token exchange endpoint); no field or header named in the claims",
+        "publicLookalikes": "task/project/user GIDs",
+        "claimIds": [
+          "existence",
+          "format-opaque"
+        ],
+        "followUp": "Asana \"Authentication\" / \"OAuth\" pages: token response member name and the Authorization form for an OAuth access token"
+      },
+      "contract": {
+        "path": "records/contracts/asana/oauth-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "695c27bd7ecc",
+        "sha12AtEvidenceCommit": "644aaa6c5422",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "asana:personal-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`Authorization: Bearer` header (documented: passed like an OAuth access token)",
+        "publicLookalikes": "task/project/user/workspace GIDs (benign siblings, not tokens)",
+        "claimIds": [
+          "existence",
+          "presentation-bearer-header",
+          "format-opaque"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/asana/personal-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "4b4e9ce02f62",
+        "sha12AtEvidenceCommit": "4b4e9ce02f62",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "box:oauth-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r1.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r1.md",
+      "handoff": {
+        "slot": "token endpoint `AccessToken` schema with token_type bearer; no response member name or request header named in the claims",
+        "publicLookalikes": "client id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "Box developer docs (not readable in the first pass): authorization header form and the `access_token` member; app and developer token subtypes"
+      },
+      "contract": {
+        "path": "records/contracts/box/oauth-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "e34353e73314",
+        "sha12AtEvidenceCommit": "97ca80fda952",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "canva:access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`access_token` member of the token endpoint response, described as the bearer access token for the REST API",
+        "publicLookalikes": "client id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/canva/access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "510659fb3719",
+        "sha12AtEvidenceCommit": "510659fb3719",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "contentful:oauth-application-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r2.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r2.md",
+      "handoff": {
+        "slot": "role only (OAuth token for public integrations); the claim records no field or header",
+        "publicLookalikes": "content management personal access token (distinct family)",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "Contentful \"Authentication\" page: header form for an OAuth token and the token-response field"
+      },
+      "contract": {
+        "path": "records/contracts/contentful/oauth-application-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "058ad040ef31",
+        "sha12AtEvidenceCommit": "126d018afc16",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "elastic:access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`Authorization: Bearer` header (token-service access token)",
+        "publicLookalikes": "refresh token (distinct, G2), api key",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/elastic/access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "e266196c8e82",
+        "sha12AtEvidenceCommit": "e266196c8e82",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "elastic:service-account-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`Authorization: Bearer` header (service token as bearer token)",
+        "publicLookalikes": "22-character secret component is not the full token width",
+        "claimIds": [
+          "existence",
+          "secret-string-length",
+          "no-expiry"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/elastic/service-account-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "c8df09a254f6",
+        "sha12AtEvidenceCommit": "c8df09a254f6",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "figma:oauth-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`access_token` member of the token endpoint response and `Authorization: Bearer` header",
+        "publicLookalikes": "client id, file key, user id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/figma/oauth-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "23522bec4454",
+        "sha12AtEvidenceCommit": "23522bec4454",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "figma:scim-api-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`Authorization: Bearer` header on the SCIM base URL (different from REST API auth)",
+        "publicLookalikes": "REST personal access token (`X-Figma-Token`, Batch 1)",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/figma/scim-api-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "e2275e129354",
+        "sha12AtEvidenceCommit": "e2275e129354",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "hubspot:oauth-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`Authorization: Bearer` header on every API request",
+        "publicLookalikes": "client id, hubId/account id",
+        "claimIds": [
+          "oauth-access-token-exists"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/hubspot/oauth-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "f1775858b5c8",
+        "sha12AtEvidenceCommit": "f1775858b5c8",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "hubspot:service-key",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`Authorization: Bearer` header (Service Keys, Settings > Integrations)",
+        "publicLookalikes": "account id, scope names",
+        "claimIds": [
+          "service-key-exists"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/hubspot/service-key@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "8e56cb30d78a",
+        "sha12AtEvidenceCommit": "8e56cb30d78a",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "meta:instagram-user-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r2.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r2.md",
+      "handoff": {
+        "slot": "role only; the claim records no field or header and does not prove a shared Bearer header",
+        "publicLookalikes": "app id, Instagram user id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "Meta developer docs: how each token kind is passed (`access_token` parameter vs Authorization header) per token kind, kept separate"
+      },
+      "contract": {
+        "path": "records/contracts/meta/instagram-user-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "6e23726b489e",
+        "sha12AtEvidenceCommit": "619776125555",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "meta:page-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r2.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r2.md",
+      "handoff": {
+        "slot": "role only; no carrier recorded",
+        "publicLookalikes": "page id, app id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "Meta docs: carrier for a Page token; do not assume it equals the user-token carrier"
+      },
+      "contract": {
+        "path": "records/contracts/meta/page-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "a1973708e2dc",
+        "sha12AtEvidenceCommit": "acd626e4e3c2",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "meta:system-user-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r2.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r2.md",
+      "handoff": {
+        "slot": "role only; no carrier recorded",
+        "publicLookalikes": "system user id, business id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "Meta docs: carrier for a system user token"
+      },
+      "contract": {
+        "path": "records/contracts/meta/system-user-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "ef14a8e47cf9",
+        "sha12AtEvidenceCommit": "8baf1d2b3510",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "meta:user-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r2.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r2.md",
+      "handoff": {
+        "slot": "role only; no carrier recorded",
+        "publicLookalikes": "app id, user id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "Meta docs: carrier for a user token and short-lived vs long-lived forms"
+      },
+      "contract": {
+        "path": "records/contracts/meta/user-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "bafaa49d6eb0",
+        "sha12AtEvidenceCommit": "b6626b9b6c25",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "mongodb-atlas:service-account-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`Authorization: Bearer` header to Atlas Administration API; issued at `POST /api/oauth/token` (1 hour)",
+        "publicLookalikes": "client id (`mdb_sa_id_` + 24 hex), expires_in",
+        "claimIds": [
+          "issuance-and-lifetime",
+          "bearer-carrier",
+          "ip-access-list"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/mongodb-atlas/service-account-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "2c2f10461a9a",
+        "sha12AtEvidenceCommit": "2c2f10461a9a",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "salesforce:oauth-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r2.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r2.md",
+      "handoff": {
+        "slot": "role only (granted by the authorizing server under OAuth 2.0); no field or header recorded",
+        "publicLookalikes": "consumer key",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "Salesforce OAuth docs: `access_token` response member and Authorization form; subtype between connected and external client app tokens"
+      },
+      "contract": {
+        "path": "records/contracts/salesforce/oauth-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "81f330b2f4c4",
+        "sha12AtEvidenceCommit": "1c762c027269",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "spotify:access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`Authorization: Bearer` header (`Bearer <Access Token>`, 3600 seconds)",
+        "publicLookalikes": "client id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/spotify/access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "85836d1f738e",
+        "sha12AtEvidenceCommit": "85836d1f738e",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "x:oauth2-user-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`Authorization: Bearer` header (replaces the app-only bearer token)",
+        "publicLookalikes": "client id, user id",
+        "claimIds": [
+          "issued-by-authorization-code-flow",
+          "lifetime-two-hours"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/x/oauth2-user-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "a9e23514d742",
+        "sha12AtEvidenceCommit": "a9e23514d742",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "zendesk:oauth-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`Authorization: Bearer` header (`Bearer {access_token}`); documented maximum length 184, no minimum, alphabet or prefix",
+        "publicLookalikes": "client identifier, subdomain",
+        "claimIds": [
+          "existence",
+          "documented-maximum-length",
+          "lifetime-and-legacy-clients",
+          "global-token-context"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/zendesk/oauth-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "0cd0b9626533",
+        "sha12AtEvidenceCommit": "0cd0b9626533",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "zoom:server-to-server-access-token",
+      "group": "G1",
+      "measurementIssue": 740,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "Bearer access token from the `account_credentials` grant (3600 seconds, no refresh token)",
+        "publicLookalikes": "account id, client id; JWT app mention is not a format statement",
+        "claimIds": [
+          "existence",
+          "jwt-app-mention"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/zoom/server-to-server-access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "8563d52a8298",
+        "sha12AtEvidenceCommit": "8563d52a8298",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "adobe:oauth-user-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`refresh_token` member of the token endpoint response (authorization code flow with offline_access)",
+        "publicLookalikes": "client id, scope list",
+        "claimIds": [
+          "refresh-token-offline-access"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/adobe/oauth-user-refresh-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "3d5bac3c4b8e",
+        "sha12AtEvidenceCommit": "3d5bac3c4b8e",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "airtable:oauth-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r1.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r1.md",
+      "handoff": {
+        "slot": "role only (returned with an access token; opaque); the claims name no field",
+        "publicLookalikes": "client id",
+        "claimIds": [
+          "existence",
+          "opaque-format"
+        ],
+        "followUp": "Airtable OAuth reference: token response and refresh request member names, delimiters and adjacent client_id/scope"
+      },
+      "contract": {
+        "path": "records/contracts/airtable/oauth-refresh-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "ef9605bbcda6",
+        "sha12AtEvidenceCommit": "b8221d2fa90e",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "asana:oauth-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r1.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r1.md",
+      "handoff": {
+        "slot": "role only (token exchange response and refresh request); no field named",
+        "publicLookalikes": "client id",
+        "claimIds": [
+          "existence",
+          "format-opaque"
+        ],
+        "followUp": "Asana OAuth docs: `refresh_token` member and request form fields"
+      },
+      "contract": {
+        "path": "records/contracts/asana/oauth-refresh-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "c325e301337c",
+        "sha12AtEvidenceCommit": "8f7916905040",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "box:oauth-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r1.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r1.md",
+      "handoff": {
+        "slot": "role only (returned alongside an access token, used with client id and secret)",
+        "publicLookalikes": "client id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "Box developer docs: `refresh_token` member and refresh request form"
+      },
+      "contract": {
+        "path": "records/contracts/box/oauth-refresh-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "5ef575c9576f",
+        "sha12AtEvidenceCommit": "5dffa9089971",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "canva:refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`refresh_token` member of the token endpoint response (single use)",
+        "publicLookalikes": "client id, access token (distinct, resource-API bearer)",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/canva/refresh-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "72c0232eeba5",
+        "sha12AtEvidenceCommit": "72c0232eeba5",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "dropbox:refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r1.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r1.md",
+      "handoff": {
+        "slot": "role only (`/oauth2/token` with token_access_type=offline; refresh request uses grant_type=refresh_token); response member name not in the claim",
+        "publicLookalikes": "app key",
+        "claimIds": [
+          "refresh-token-exists"
+        ],
+        "followUp": "Dropbox OAuth guide: response member name and the form body of the refresh request"
+      },
+      "contract": {
+        "path": "records/contracts/dropbox/refresh-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "a85e14974f72",
+        "sha12AtEvidenceCommit": "8cf6f2d2eb0b",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "elastic:refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r3.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r3.md",
+      "handoff": {
+        "slot": "role only (token-service refresh token, 24 hours); not a resource Bearer token",
+        "publicLookalikes": "access token (distinct)",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "Elasticsearch get-token API reference: `refresh_token` response member and refresh request body"
+      },
+      "contract": {
+        "path": "records/contracts/elastic/refresh-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "f7fe7256a274",
+        "sha12AtEvidenceCommit": "a6e9507b041b",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "figma:oauth-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`refresh_token` member of the token endpoint response; request at `POST /v1/oauth/refresh`",
+        "publicLookalikes": "client id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/figma/oauth-refresh-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "6195ef20af3a",
+        "sha12AtEvidenceCommit": "6195ef20af3a",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "hubspot:oauth-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r3.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r3.md",
+      "handoff": {
+        "slot": "role only (long-term credential); no field named",
+        "publicLookalikes": "client id",
+        "claimIds": [
+          "oauth-refresh-token-exists"
+        ],
+        "followUp": "HubSpot OAuth docs: `refresh_token` member and the form body of the refresh request"
+      },
+      "contract": {
+        "path": "records/contracts/hubspot/oauth-refresh-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "7be9a36c42c2",
+        "sha12AtEvidenceCommit": "0a9cfbccc3e9",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "spotify:refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`refresh_token` member of the token endpoint response; request with grant_type refresh_token",
+        "publicLookalikes": "client id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/spotify/refresh-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "9201e08a692e",
+        "sha12AtEvidenceCommit": "9201e08a692e",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "x:oauth2-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r3.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r3.md",
+      "handoff": {
+        "slot": "role only (issued with offline.access); response member and request form not named",
+        "publicLookalikes": "client id, scope",
+        "claimIds": [
+          "issued-with-offline-access",
+          "lifetime-and-single-use"
+        ],
+        "followUp": "X OAuth 2.0 docs: refresh_token member and refresh form. The 6 month, single-use sentence is attributed to the OAuth 1.0a exchange in the claim; its scope is itself unresolved"
+      },
+      "contract": {
+        "path": "records/contracts/x/oauth2-refresh-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "a7a3af0d6c0d",
+        "sha12AtEvidenceCommit": "429645163dae",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "zendesk:oauth-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r3.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r3.md",
+      "handoff": {
+        "slot": "role only (returned with the access token, exchanged with grant_type refresh_token)",
+        "publicLookalikes": "client identifier",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "Zendesk OAuth docs: `refresh_token` member and refresh form fields"
+      },
+      "contract": {
+        "path": "records/contracts/zendesk/oauth-refresh-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "e61a9e5ffcc7",
+        "sha12AtEvidenceCommit": "2c7860b211c7",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "zoom:oauth-refresh-token",
+      "group": "G2",
+      "measurementIssue": 741,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`refresh_token` member of the token endpoint response (90 days; latest one is used for the next refresh)",
+        "publicLookalikes": "client id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/zoom/oauth-refresh-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "3bf1818b8773",
+        "sha12AtEvidenceCommit": "3bf1818b8773",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "airtable:oauth-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r1.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r1.md",
+      "handoff": {
+        "slot": "role only (authenticates the integration when requesting a token); field or header not named",
+        "publicLookalikes": "client id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "Airtable OAuth reference: token request authentication form"
+      },
+      "contract": {
+        "path": "records/contracts/airtable/oauth-client-secret@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "bd8f7e40b26a",
+        "sha12AtEvidenceCommit": "565a18c786ec",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "asana:oauth-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r1.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r1.md",
+      "handoff": {
+        "slot": "role only (sent to the token endpoint from the app server); field not named. HMAC output `x-asana-request-signature` is not the secret",
+        "publicLookalikes": "client id; `x-asana-request-signature`",
+        "claimIds": [
+          "existence",
+          "also-signs-app-component-requests"
+        ],
+        "followUp": "Asana docs: token exchange form field name"
+      },
+      "contract": {
+        "path": "records/contracts/asana/oauth-client-secret@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "d4501587d50d",
+        "sha12AtEvidenceCommit": "44d5bb93b1f0",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "box:oauth-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r1.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r1.md",
+      "handoff": {
+        "slot": "role only (sent with the client ID); no field named",
+        "publicLookalikes": "client id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "Box docs: request body field and any Basic form"
+      },
+      "contract": {
+        "path": "records/contracts/box/oauth-client-secret@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "a0b5fc774e8f",
+        "sha12AtEvidenceCommit": "d79bc99459df",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "dropbox:app-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`client_secret` (with `client_id`) at `/oauth2/token`; also the webhook signing key (HMAC output is not the secret)",
+        "publicLookalikes": "app key (client_id), webhook signature",
+        "claimIds": [
+          "app-secret-exists"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/dropbox/app-secret@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "8578d71bed8e",
+        "sha12AtEvidenceCommit": "8578d71bed8e",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "figma:oauth-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "client id and client secret sent in an HTTP Basic `Authorization` header (token exchange and refresh)",
+        "publicLookalikes": "client id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/figma/oauth-client-secret@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "18648d33f173",
+        "sha12AtEvidenceCommit": "18648d33f173",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "hubspot:app-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r3.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r3.md",
+      "handoff": {
+        "slot": "role only (manages tokens, validates requests, client credentials token); field not named. Request signatures are derived outputs",
+        "publicLookalikes": "client id, app id",
+        "claimIds": [
+          "client-secret-exists"
+        ],
+        "followUp": "HubSpot OAuth docs: `client_secret` form field"
+      },
+      "contract": {
+        "path": "records/contracts/hubspot/app-client-secret@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "5cc8d4a4eeb3",
+        "sha12AtEvidenceCommit": "f6666ed16b1b",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "salesforce:external-client-app-consumer-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r2.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r2.md",
+      "handoff": {
+        "slot": "role only (optional Consumer Secret in app settings); wire field not recorded",
+        "publicLookalikes": "consumer key",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "Salesforce docs: `client_secret` parameter and web server flow"
+      },
+      "contract": {
+        "path": "records/contracts/salesforce/external-client-app-consumer-secret@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "1022600d2fa1",
+        "sha12AtEvidenceCommit": "a097fe09850c",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "spotify:client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r2.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r2.md",
+      "handoff": {
+        "slot": "role only (dashboard value); wire field and Basic form not recorded",
+        "publicLookalikes": "client id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "Spotify authorization guide: token request header and body"
+      },
+      "contract": {
+        "path": "records/contracts/spotify/client-secret@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "ea16107141d3",
+        "sha12AtEvidenceCommit": "2dca11f68794",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "x:oauth2-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "client id and client secret sent as a base64 Basic `Authorization` header to the token endpoints (confidential clients only)",
+        "publicLookalikes": "client id; OAuth 1.0a consumer key and secret are distinct",
+        "claimIds": [
+          "confidential-clients-receive-secret",
+          "used-for-token-endpoint-auth"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/x/oauth2-client-secret@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "0e3b7108abce",
+        "sha12AtEvidenceCommit": "0e3b7108abce",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "zendesk:oauth-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`client_secret` in token requests",
+        "publicLookalikes": "identifier (`client_id`)",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/zendesk/oauth-client-secret@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "ea73bf3b3cad",
+        "sha12AtEvidenceCommit": "ea73bf3b3cad",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "zoom:oauth-app-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r3.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r3.md",
+      "handoff": {
+        "slot": "role only (confidential key assigned to an app); wire field not recorded",
+        "publicLookalikes": "client id, account id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "Zoom OAuth docs: Basic header and form form"
+      },
+      "contract": {
+        "path": "records/contracts/zoom/oauth-app-client-secret@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "e514a82ea303",
+        "sha12AtEvidenceCommit": "754222be8454",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "zoom:server-to-server-client-secret",
+      "group": "G3",
+      "measurementIssue": 742,
+      "coreIssue": 1223,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r3.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r3.md",
+      "handoff": {
+        "slot": "role only (shown with account id and client id); wire form not recorded",
+        "publicLookalikes": "account id, client id",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "Zoom S2S docs: token request authentication form"
+      },
+      "contract": {
+        "path": "records/contracts/zoom/server-to-server-client-secret@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "4c6937182e54",
+        "sha12AtEvidenceCommit": "77c8b1c424d5",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "elastic:cloud-api-key",
+      "group": "G4",
+      "measurementIssue": 743,
+      "coreIssue": 1224,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`Authorization: ApiKey <key>` (reuses the reviewed Batch 1 generic envelope; no prefix or width claimed)",
+        "publicLookalikes": "not a hosted Elasticsearch API key",
+        "claimIds": [
+          "existence",
+          "authorization-carrier",
+          "lifecycle",
+          "not-for-hosted-elasticsearch"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/elastic/cloud-api-key@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "18f415350aa1",
+        "sha12AtEvidenceCommit": "18f415350aa1",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "elastic:ece-api-key",
+      "group": "G4",
+      "measurementIssue": 743,
+      "coreIssue": 1224,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r3.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r3.md",
+      "handoff": {
+        "slot": "role only (UI-created key for the ECE REST API); carrier needs its own source confirmation",
+        "publicLookalikes": "Cloud API key (distinct)",
+        "claimIds": [
+          "existence",
+          "lifecycle"
+        ],
+        "followUp": "Elastic Cloud Enterprise API reference: authentication header for the API key"
+      },
+      "contract": {
+        "path": "records/contracts/elastic/ece-api-key@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "cd6eee3f4a9f",
+        "sha12AtEvidenceCommit": "de75a317ef31",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "jfrog:access-token",
+      "group": "G4",
+      "measurementIssue": 743,
+      "coreIssue": 1224,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r2.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r2.md",
+      "handoff": {
+        "slot": "role only (a JSON Web Token used as the bearer credential); request header or form not named. A JWT is not an exclusive identifying grammar",
+        "publicLookalikes": "JWTs of other providers; references or reference tokens",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "JFrog access token docs: header and `access_token` form; representation of a reference token"
+      },
+      "contract": {
+        "path": "records/contracts/jfrog/access-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "febe2a861061",
+        "sha12AtEvidenceCommit": "c2cc09bf4d9d",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "x:app-only-bearer-token",
+      "group": "G4",
+      "measurementIssue": 743,
+      "coreIssue": 1224,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "Bearer Token (bearer role documented); byte format unspecified. Percent-containing shapes are tool leads, not provider-proven, and stay unresolved",
+        "publicLookalikes": "consumer key and secret that generate it",
+        "claimIds": [
+          "generated-from-consumer-credentials",
+          "format-unspecified",
+          "sensitivity-and-rotation",
+          "artifacts-bearer-leading-run-and-percent"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/x/app-only-bearer-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "752810e7ec5d",
+        "sha12AtEvidenceCommit": "752810e7ec5d",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "hubspot:personal-access-key",
+      "group": "G5",
+      "measurementIssue": 744,
+      "coreIssue": 1225,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r3.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r3.md",
+      "handoff": {
+        "slot": "role only (stored in a local global config file); the field name is not recorded",
+        "publicLookalikes": "portal/account id",
+        "claimIds": [
+          "personal-access-key-exists"
+        ],
+        "followUp": "HubSpot CLI docs and `hs` config reference: exact config field and file layout"
+      },
+      "contract": {
+        "path": "records/contracts/hubspot/personal-access-key@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "c32123658964",
+        "sha12AtEvidenceCommit": "39801f7f51a4",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "jfrog:myjfrog-api-token",
+      "group": "G5",
+      "measurementIssue": 744,
+      "coreIssue": 1225,
+      "status": "ready",
+      "statusNote": "ready (researched, [carrier](batch-2-research-r2.md))",
+      "researchDoc": "researched, [carrier](batch-2-research-r2.md",
+      "handoff": {
+        "slot": "role only (MyJFrog API token, one year); carrier not recorded",
+        "publicLookalikes": "JFrog platform access token (distinct)",
+        "claimIds": [
+          "existence"
+        ],
+        "followUp": "JFrog MyJFrog API docs: header form"
+      },
+      "contract": {
+        "path": "records/contracts/jfrog/myjfrog-api-token@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "964062ba1e9f",
+        "sha12AtEvidenceCommit": "93893bf199a5",
+        "unchangedSinceHandoff": false,
+        "claimIdsMatchHandoff": false
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "x:oauth1-access-token-secret",
+      "group": "G5",
+      "measurementIssue": 744,
+      "coreIssue": 1225,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`oauth_token_secret`, the secret half issued with `oauth_token` (3-legged flow)",
+        "publicLookalikes": "`oauth_token`, `oauth_signature`, OAuth 2.0 client id and secret (distinct)",
+        "claimIds": [
+          "paired-secret-of-access-token",
+          "distinct-from-oauth2-client-credentials"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/x/oauth1-access-token-secret@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "380dfecdf407",
+        "sha12AtEvidenceCommit": "380dfecdf407",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "mongodb-atlas:database-user-password",
+      "group": "G6",
+      "measurementIssue": 745,
+      "coreIssue": 1226,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "`password` request property of the Atlas database user (write-only, caller chosen, min 8, not in responses)",
+        "publicLookalikes": "username, database name; user-chosen text has no format, percent encoding when placed in a connection string is unresolved",
+        "claimIds": [
+          "api-field",
+          "chosen-by-caller"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/mongodb-atlas/database-user-password@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "8f67a633cfc5",
+        "sha12AtEvidenceCommit": "8f67a633cfc5",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "mongodb-atlas:programmatic-api-private-key",
+      "group": "G6",
+      "measurementIssue": 745,
+      "coreIssue": 1226,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "client-configured Digest input paired with the 8-character public key; no wire carrier. A Digest header holds a hash, not the private key. Returned unredacted once at creation",
+        "publicLookalikes": "public key (exactly 8 characters), digest response value, redacted later responses",
+        "claimIds": [
+          "two-part-key",
+          "legacy-method",
+          "private-key-unredacted-once",
+          "public-key-length",
+          "digest-not-bearer",
+          "no-ui-or-data-access"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/mongodb-atlas/programmatic-api-private-key@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "d7ba7f305131",
+        "sha12AtEvidenceCommit": "d7ba7f305131",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    },
+    {
+      "family": "mongodb-atlas:service-account-secret",
+      "group": "G6",
+      "measurementIssue": 745,
+      "coreIssue": 1226,
+      "status": "ready",
+      "statusNote": "ready",
+      "researchDoc": null,
+      "handoff": {
+        "slot": "HTTP Basic `Authorization` header carrying base64 of `CLIENT_ID:CLIENT_SECRET` at `/api/oauth/token` with grant_type=client_credentials",
+        "publicLookalikes": "client id (`mdb_sa_id_` + 24 hex, public), masked form; `mdb_sa_sk_` plus ellipsis is a truncated example, not a grammar",
+        "claimIds": [
+          "pair-and-role",
+          "shown-once",
+          "example-prefix",
+          "client-id-pattern",
+          "expiry-and-rotation",
+          "basic-carrier",
+          "recommended-method"
+        ],
+        "followUp": null
+      },
+      "contract": {
+        "path": "records/contracts/mongodb-atlas/service-account-secret@1.json",
+        "period": "proposed",
+        "lifecycle": "draft",
+        "frozenSha12InHandoff": "5248f65035fd",
+        "sha12AtEvidenceCommit": "5248f65035fd",
+        "unchangedSinceHandoff": true,
+        "claimIdsMatchHandoff": true
+      },
+      "productContractAdopted": false,
+      "independentBaseline": false,
+      "expectationBasis": "source-established slot only (handoff row and contract claims); no adopted product contract, so no action or finding type is asserted"
+    }
+  ]
+}

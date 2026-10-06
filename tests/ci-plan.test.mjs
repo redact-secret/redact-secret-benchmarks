@@ -50,7 +50,7 @@ test('docs the site reads are not prose-only', () => {
 });
 
 test('every input of the legacy measurement selects it, and the new path alone does not', () => {
-  for (const f of ['benchmarks/engine/runner.ts', 'benchmarks/lib/lattice.ts', 'benchmarks/support/status.ts', 'benchmarks/known-gaps.json', 'benchmarks/review-ledger.json', 'benchmarks/run.ts',
+  for (const f of ['benchmarks/evaluation/domains/credential/runner.ts', 'benchmarks/scoring/lattice.ts', 'benchmarks/support/status.ts', 'benchmarks/known-gaps.json', 'benchmarks/review-ledger.json', 'benchmarks/run.ts',
     'scanners/candidate.mjs', 'corpora/regression/manifest.json', 'fixtures/x.mjs', 'peer-observations/comparison/x.json', 'qualification/suite-v1.json', 'scripts/generate-fixtures.mjs', 'src/model.mjs']) {
     assert.equal(pr([f]).legacy, true, f);
   }
@@ -123,20 +123,20 @@ test('the full suite is requested for any change a selection cannot bound', () =
 });
 
 test('the cache keys follow their inputs: equal bytes, equal key, and only the inputs of that result change it', () => {
-  const tracked = ['package.json', 'package-lock.json', '.github/workflows/validate.yml', 'benchmarks/engine/runner.ts', 'benchmarks/qualification/adapter.ts', 'web/components/x/X.tsx', 'docs/specs/a.md', 'scanners/x.mjs'];
-  const bytes = { 'benchmarks/engine/runner.ts': 'a', 'benchmarks/qualification/adapter.ts': 'b', 'web/components/x/X.tsx': 'c', 'docs/specs/a.md': 'd', 'scanners/x.mjs': 'e' };
+  const tracked = ['package.json', 'package-lock.json', '.github/workflows/validate.yml', 'benchmarks/evaluation/domains/credential/runner.ts', 'benchmarks/qualification/adapter.ts', 'web/components/x/X.tsx', 'docs/specs/a.md', 'scanners/x.mjs'];
+  const bytes = { 'benchmarks/evaluation/domains/credential/runner.ts': 'a', 'benchmarks/qualification/adapter.ts': 'b', 'web/components/x/X.tsx': 'c', 'docs/specs/a.md': 'd', 'scanners/x.mjs': 'e' };
   const keys = (change = {}) => { const read = f => Buffer.from({ ...bytes, ...change }[f] ?? 'same'); return { legacy: keyOf('legacy', tracked, read), view: keyOf('view', tracked, read) }; };
   const base = keys();
   assert.deepEqual(keys(), base);
   assert.deepEqual(keys({ 'web/components/x/X.tsx': 'changed' }), base, 'a UI change re-measures nothing');
   assert.deepEqual(keys({ 'docs/specs/a.md': 'changed' }), base, 'prose re-measures nothing');
-  assert.notEqual(keys({ 'benchmarks/engine/runner.ts': 'changed' }).legacy, base.legacy);
-  assert.notEqual(keys({ 'benchmarks/engine/runner.ts': 'changed' }).view, base.view, 'the view is built from the benchmark inputs too');
+  assert.notEqual(keys({ 'benchmarks/evaluation/domains/credential/runner.ts': 'changed' }).legacy, base.legacy);
+  assert.notEqual(keys({ 'benchmarks/evaluation/domains/credential/runner.ts': 'changed' }).view, base.view, 'the view is built from the benchmark inputs too');
   assert.equal(keys({ 'benchmarks/qualification/adapter.ts': 'changed' }).legacy, base.legacy, 'the new path alone does not re-measure the legacy results');
   assert.notEqual(keys({ 'benchmarks/qualification/adapter.ts': 'changed' }).view, base.view);
   assert.notEqual(keys({ 'package-lock.json': 'changed' }).legacy, base.legacy);
   assert.notEqual(keys({ '.github/workflows/validate.yml': 'changed' }).view, base.view, 'a changed producer step rebuilds');
-  assert.deepEqual(inputFiles('view', tracked), ['.github/workflows/validate.yml', 'benchmarks/qualification/adapter.ts', 'benchmarks/engine/runner.ts', 'package-lock.json', 'package.json', 'scanners/x.mjs'].sort());
+  assert.deepEqual(inputFiles('view', tracked), ['.github/workflows/validate.yml', 'benchmarks/qualification/adapter.ts', 'benchmarks/evaluation/domains/credential/runner.ts', 'package-lock.json', 'package.json', 'scanners/x.mjs'].sort());
 });
 
 test('validate.yml takes its flags from the plan and accepts a skipped job only when the plan did not select it', async () => {

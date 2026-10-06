@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { validateEvidence } from '../benchmarks/evaluation/domains/credential/evidence.ts';
+import { validateEvidence } from '../benchmarks/evaluation/evidence.ts';
 import { piiHoldoutDomain } from '../benchmarks/evaluation/domains/pii/holdout.ts';
 import { validatePiiPopulationArrivalBundle, piiArrivalCommitment } from '../benchmarks/evaluation/domains/pii/arrival-evidence.ts';
 import { runHoldout } from '../holdout/lifecycle.ts';

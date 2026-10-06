@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "kind": "batch2-observed-external-state",
+  "observedAt": "2026-10-05",
+  "note": "Facts read from GitHub and npm when the inventory was generated. They are inputs, recorded so the inventory can be re-run and compared; refresh them by hand when the issues change.",
+  "evidence": {
+    "repo": "redact-secret/credential-evidence",
+    "commit": "65602481b83532b8acd6caf0d51b8552873e0d98",
+    "handoffIssue": 235,
+    "handoffComments": 2,
+    "handoffPerRowReadinessStatus": true,
+    "handoffNote": "Round 2: Groups C, D, E finished (credential-evidence PR #253, snapshot-2026.10.06 manifest sha256:568f2a7f414f21e03b169c5706a57a2c3d63e69053199006ca44725404c30c6a). The handoff status cell now reads 'ready (researched, [carrier](batch-2-research-rN.md))' for rows researched after round 1; the carrier facts are in those research docs and docs/handoffs/batch-2-cases-*.md. Contracts remain proposed/draft unless the readiness inventory says otherwise.",
+    "handoffDoc": "docs/handoffs/batch-2-bounded-carriers.md (credential-evidence PR #248, 2026-10-05T19:19Z)",
+    "round1Commit": "005a7331cf90403bd4ce4abcb93bd8b085d315a9"
+  },
+  "core": {
+    "repo": "redact-secret/redact-secret",
+    "mainCommitObserved": "3b1a5aa9935c57416a026a44f45501fd41ffeac8",
+    "packages": {
+      "1223": {
+        "state": "open",
+        "gatesChecked": 0,
+        "gatesTotal": 8,
+        "evidenceDirPublished": false
+      },
+      "1224": {
+        "state": "open",
+        "gatesChecked": 0,
+        "gatesTotal": 8,
+        "evidenceDirPublished": false
+      },
+      "1225": {
+        "state": "open",
+        "gatesChecked": 0,
+        "gatesTotal": 8,
+        "evidenceDirPublished": false
+      },
+      "1226": {
+        "state": "open",
+        "gatesChecked": 0,
+        "gatesTotal": 8,
+        "evidenceDirPublished": false
+      }
+    },
+    "adoptedContractNote": "Each package's first gate is to freeze each ready row's layout, value admission, span, attribution and action under docs/audits/evidence/<issue>/. None is ticked and docs/audits/evidence/1223..1226 does not exist on core main."
+  },
+  "baseline": {
+    "publishedPin": {
+      "package": "@redact-secret/core",
+      "version": "0.1.0-beta.13",
+      "integrity": "sha512-qZkqRN7CIJ+pc0IteRCXSucr1l9KtTc/nJaM5wPL0NvCiZ4AGWLCyrLy8KD95a2MBgxo8vuUJ/UaKhrny7gMJQ==",
+      "shasum": "1a3e312c8b6740582345b2561ed134bfe7ad8ddd",
+      "source": "npm view @redact-secret/core dist-tags (latest and beta both 0.1.0-beta.13)"
+    },
+    "batch1CandidateIdentity": "af1e71e0a0d5a7d8162c3b06a684d2736d2558e1",
+    "batch1Corpus": "benchmarks/batch1/corpus.mjs",
+    "independentBaselineForBatch2Rows": false,
+    "independentBaselineNote": "The Batch 1 corpus covers five other families (figma:personal-access-token, asana:webhook-secret, airtable:webhook-mac-secret, elastic:elasticsearch-api-key, canva:client-secret). No Batch 2 family has a corpus case, so no baseline observation exists for any of the 58 rows."
+  },
+  "peers": {
+    "trufflehogOnPath": "3.97.6",
+    "pinned": "3.97.4",
+    "note": "No peer ran. Batch 2 starts with product-only diagnostics; a peer run requires 3.97.4 first on PATH."
+  }
+}

@@ -1,5 +1,5 @@
 import { isPiiContextVocabulary, type PiiContextVocabulary } from './context-vocabulary.ts';
-import { validateEvidence } from '../credential/evidence.ts';
+import { validateEvidence } from '../../evidence.ts';
 import { hash } from '../../substrate/hash.ts';
 import trustedBindings from './trusted-product-bindings-v1.json';
 import { validatePiiIdentityOracleProjection, type PiiIdentityOracleProjection } from './identity-oracle.ts';

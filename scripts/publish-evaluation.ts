@@ -1,7 +1,7 @@
 import { readFile, mkdir, writeFile, rename } from 'node:fs/promises';
 import { credentialDomain } from '../benchmarks/evaluation/domains/credential/contract.ts';
-import { hash } from '../benchmarks/engine/model.ts';
-import { carryReviewHistory, observeReviewEntries, reviewLedgerProblem, type ReviewLedger } from '../benchmarks/engine/review-ledger.ts';
+import { hash } from '../benchmarks/evaluation/model/model.ts';
+import { carryReviewHistory, observeReviewEntries, reviewLedgerProblem, type ReviewLedger } from '../benchmarks/evaluation/model/review-ledger.ts';
 const options = Object.fromEntries(process.argv.slice(2).map(arg => {
   const match = /^--(input|qualification|ledger-history)=(.+)$/.exec(arg);
   if (!match) throw Error('Usage: npm run eval:publish -- [--input=results-output/evaluation.json] [--qualification=path] [--ledger-history=previous-review-ledger-v2.json]');

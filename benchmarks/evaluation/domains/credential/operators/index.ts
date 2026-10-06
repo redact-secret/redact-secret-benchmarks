@@ -1,5 +1,5 @@
-import type { Operator } from '../../../../engine/types.ts';
-import { createRegistry } from '../../../../engine/registry.ts';
+import type { Operator } from '../../../model/types.ts';
+import { createRegistry } from '../../../substrate/registry.ts';
 import { contextOperators } from './context.ts';
 import { lexicalOperators } from './lexical.ts';
 import { authoredTwin } from './authored-twin.ts';

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "id": "scanner-roster-v1",
+  "note": "Which scanners a run class must measure and which it may leave unmeasured (#763, #764, docs/specs/qualification-adapter.md, 'The scanner roster'). Read by the adapter and the official-run driver. Not a component of the product policy revision: it names who is measured, not what a status requires, so it moves no support status.",
+  "runClasses": {
+    "official": {
+      "required": [
+        "flare-redact",
+        "gitleaks",
+        "redact-secret",
+        "trufflehog"
+      ],
+      "optional": [
+        "openredaction",
+        "openredaction-credential-bearing"
+      ]
+    },
+    "diagnostic": {
+      "required": [
+        "redact-secret"
+      ],
+      "optional": []
+    }
+  },
+  "optionalScanners": {
+    "openredaction": {
+      "label": "OpenRedaction default (all patterns)",
+      "profile": "default",
+      "reason": "The default (all-pattern) profile is slow and noisy for credential evaluation: personal data and resource identifiers dominate its findings, and its last official measurement took 7 minutes of scanner time on a population the credential profile scans in seconds (its methods run takes 40+ minutes), so it is a manual measurement and never blocks other scanners or core verification (#763). Its earlier results stay as history with their run identity; the credential profile is a separate scanner, never spliced with it.",
+      "withoutConfigs": {
+        "linux-x64": "credential-public-v1.without-openredaction.json",
+        "darwin-arm64": "credential-public-v1.without-openredaction.darwin-arm64.json"
+      },
+      "engineRelease": "pending",
+      "detects": "Every built-in OpenRedaction pattern (579 in 1.1.5): credentials and also personal data (names, phone numbers, handles) and resource identifiers. Most of its findings are out of scope for credential evaluation."
+    },
+    "openredaction-credential-bearing": {
+      "label": "OpenRedaction credential profile (33 types)",
+      "profile": "credential-bearing",
+      "profileOf": "openredaction",
+      "detects": "Only the 33 credential-bearing OpenRedaction pattern types (the credentials category plus URL_WITH_AUTH): API keys and tokens, private keys, connection strings, session identifiers. No personal-data or resource-identifier pattern runs, so it cannot flag or accidentally overlap them.",
+      "disclosure": "Both are OpenRedaction 1.1.5 under different configurations. The profile scans less, so its results differ from the default's by configuration: it is not a more accurate OpenRedaction, and no accuracy claim is made for either profile.",
+      "statement": "OpenRedaction credential profile (33 types): not measured in an official run (local exploratory diagnostics only: see ADR)",
+      "reason": "The credential profile is the comparison profile chosen in docs/decisions/2026-10-06-choose-the-openredaction-credential-bearing-profile-as-the-comparison-scanner.md. It is optional in the official run class because no pinned engine configuration measures it yet: making it required would refuse every official view until the owner approves the one profile-only run. Its own history starts with that run; nothing of the default's is reused for it.",
+      "identity": {
+        "adapter": {
+          "id": "openredaction-credential-bearing",
+          "version": "1"
+        },
+        "package": "@openredaction/core 1.1.5",
+        "patterns": 33,
+        "scannerConfigurationHash": "sha256:cf4b7c9a535f0375129e10d9b8a5abdf056287a31998792d5e3b43fac8d3b34a",
+        "runConfig": "benchmarks/support/openredaction-credential-profile.run-config.json",
+        "runConfigHash": "sha256:7c2b208e6fc31c0545c061c3f4c7e5062ba5215f7c31b610c4f969c057775444"
+      },
+      "decision": "docs/decisions/2026-10-06-choose-the-openredaction-credential-bearing-profile-as-the-comparison-scanner.md",
+      "officialMeasurement": "pending: requires owner approval (one profile-only run; see the decision)",
+      "withoutConfigs": {},
+      "engineRelease": "not needed: the released alpha.12 engine runs the profile from a configuration held in this repository"
+    }
+  }
+}

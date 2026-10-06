@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { buildCorpora } from '../../fixtures/generated/build.mjs';
 import { buildTwinScopeCorpus, TWIN_SCOPE_CATEGORY } from '../../fixtures/generated/twin-scope.mjs';
-import { validateCorpus } from '../lib/scoring.ts';
+import { validateCorpus } from '../scoring/scoring.ts';
 import { classifyFixture, controlAxis, validateAssessment, validateContracts } from '../evaluation/domains/credential/assessment.ts';
 import type { Corpus, Fixture } from '../types.ts';
 import { canonical, sha256Hex } from './canonical.ts';

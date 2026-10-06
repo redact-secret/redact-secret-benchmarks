@@ -1,11 +1,12 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { AXIS_OVERLAY_ID, axisOverlayProblems, buildAxisOverlay, joinLegacyToSnapshot, serializeAxisOverlay, type AxisOverlay, type SnapshotLike } from './axis-overlay.ts';
+import { AXIS_OVERLAY_ID, axisOverlayProblems, buildAxisOverlay, serializeAxisOverlay, type AxisOverlay, type SnapshotLike } from './axis-overlay.ts';
 import { TWIN_SCOPE_ID, buildTwinScopeMap, serializeTwinScopeMap, twinScopeMapProblems, type PublicSnapshotLike, type TwinScopeMap } from './twin-scope.ts';
 import { LEDGER_REKEY_ID, buildLedgerRekey, ledgerRekeyProblems, serializeLedgerRekey, type LedgerRekey } from './ledger-rekey.ts';
 import { sha256Digest } from './canonical.ts';
 import type { RunArtifact } from './run-artifact.ts';
+import { legacyReview, type LegacyReviewSource } from './legacy-review.ts';
 
 /**
  * Snapshot-derived qualification inputs (#699): the axis overlay, the twin-scope map and the review-ledger re-key of ONE evidence snapshot, derived
@@ -36,43 +37,13 @@ const root = fileURLToPath(new URL('../../', import.meta.url));
 const readJson = async (file: string) => JSON.parse(await readFile(path.join(root, file), 'utf8'));
 const corpusOf = (artifact: RunArtifact) => artifact.manifest.evidence.corpus_digest;
 
-/**
- * The legacy review queue, recomputed from the committed development corpora and the validated peer snapshots exactly as `queue:check` does (only
- * redact-secret executes), joined to the snapshot cases. Nothing here decides anything.
- */
-async function legacyReview(snapshot: SnapshotLike) {
-  const imp = (p: string) => import(path.join(root, p));
-  const { scanners: available } = await imp('scanners/index.mjs');
-  const { credentialDomain } = await imp('benchmarks/evaluation/domains/credential/contract.ts');
-  const { runEvaluation } = await imp('benchmarks/engine/runner.ts');
-  const { evaluationInputs } = await imp('benchmarks/engine/execution.ts');
-  const peerObservations = await imp('benchmarks/lib/peer-observations.ts');
-  const ledger = await readJson('benchmarks/review-ledger.json');
-  const suite = await readJson('qualification/suite-v1.json');
-  const scanners = available.filter((s: { id: string }) => Object.hasOwn(suite.scanners, s.id));
-  const operators = credentialDomain.createOperators(), engineMethods = credentialDomain.createMethods();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const cases = (await credentialDomain.loadCases(operators)).map((c: any) => ({ ...c, provenance: { ...c.provenance, seed: `${suite.developmentSeed}/${c.provenance.seed}` } }));
-  const input = peerObservations.inputIdentity({
-    surface: 'evaluation/suite-development', suite: peerObservations.observationSuiteIdentity(suite),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    corpus: cases.map((c: any) => ({ id: c.id, sourceHash: c.provenance.sourceHash, seed: c.provenance.seed })), fixtures: evaluationInputs(cases, engineMethods, operators).fixtures,
-    semanticIndex: await peerObservations.semanticIndexIdentity(root),
-  });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const reusedObservations = await Promise.all(scanners.filter((s: { id: string }) => s.id !== 'redact-secret').map(async (peer: any) => peerObservations.snapshotObservation(await peerObservations.readSnapshot(
-    peerObservations.snapshotPath(root, 'evaluation/suite-development', peer.id), { input, peer: await peerObservations.repositoryPeerIdentity(peer, root) }))));
-  const legacy = await runEvaluation({ cases, methods: engineMethods, operators, scanners: scanners.filter((s: { id: string }) => s.id === 'redact-secret'), reusedObservations, ledger, normalizeFinding: credentialDomain.normalizeFinding });
-  return { ledger, legacyQueue: legacy.reviewQueue, joined: await joinLegacyToSnapshot(snapshot) };
-}
-
 /** The review-ledger re-key of a methods artifact over the snapshot it ran on. `run` names the methods run in the re-key (the registry id, or `replay` for an unrecorded run). */
-export async function deriveLedgerRekey(snapshot: SnapshotLike, methods: RunArtifact, semanticDigest: string, run: string): Promise<{ map: LedgerRekey; ledger: unknown }> {
-  const { ledger, legacyQueue, joined } = await legacyReview(snapshot);
+export async function deriveLedgerRekey(snapshot: SnapshotLike, methods: RunArtifact, semanticDigest: string, run: string, source: LegacyReviewSource = legacyReview): Promise<{ map: LedgerRekey; ledger: unknown }> {
+  const { ledger, legacyQueue, legacyOtherMethods, joined } = await source(snapshot);
   const map = buildLedgerRekey({
     snapshot: { corpusDigest: snapshot.identity.corpus_digest, cases: snapshot.cases.length },
     methodsRun: { run, semanticDigest, reviewQueue: methods.review_queue as never, variants: (methods as unknown as { variants: never }).variants },
-    legacyQueue, joined, ledger,
+    legacyQueue, legacyOtherMethods, joined, ledger,
   });
   const problems = ledgerRekeyProblems(map, ledger);
   if (problems.length) throw new Error(`The derived re-key is invalid:\n  - ${problems.join('\n  - ')}`);

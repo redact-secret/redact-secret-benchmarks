@@ -1,0 +1,162 @@
+{
+  "schema": "batch2-frozen-corpus-v2",
+  "issue": 739,
+  "round": 2,
+  "corpusVersion": 2,
+  "sha256": "a312308a141e3157c859f62e53c5e0762ca91c2e0083d0e02497848ebee8b921",
+  "cases": 1935,
+  "parts": {
+    "new-rows": {
+      "sha256": "54a805a361917ff3c537167d7a67d1d9d025bcc8c221fa4eb021199c1cf862b1",
+      "cases": 1048,
+      "positives": 544,
+      "controls": 307,
+      "unsupported": 197,
+      "conflict": 0,
+      "families": 28
+    },
+    "round1-adversarial": {
+      "sha256": "446454b0f90cd7d732ab95bc987a4b9aef5c0cc5f9cde6dc4314a83ae37f5724",
+      "cases": 887,
+      "positives": 466,
+      "controls": 248,
+      "unsupported": 171,
+      "conflict": 2,
+      "families": 29
+    }
+  },
+  "axes": {
+    "direct-slot": {
+      "tests": "the value sits in the evidence-established slot in its plainest layout",
+      "cases": 135
+    },
+    "delimiter-after": {
+      "tests": "the byte right after the value (quote, ampersand, comma, brace, space, semicolon, CRLF, end of input) decides the span end",
+      "cases": 371
+    },
+    "delimiter-before": {
+      "tests": "the byte right before the value (quote, equals, space, colon, tab) decides the span start",
+      "cases": 107
+    },
+    "neighbouring-public-field": {
+      "tests": "a public lookalike (id, expiry, type, scope) next to the secret must stay outside the span",
+      "cases": 187
+    },
+    "same-shape-neighbour": {
+      "tests": "a public value with the same alphabet and length as the secret sits next to it: shape alone must not decide",
+      "cases": 134
+    },
+    "neighbouring-secret": {
+      "tests": "a second credential in the same document does not shift the first span",
+      "cases": 57
+    },
+    "repeat-secret": {
+      "tests": "the same value appears twice in one document: both occurrences are the sensitive span",
+      "cases": 72
+    },
+    "utf8-preceding": {
+      "tests": "multi-byte text (emoji, CJK, combining marks) before the slot: byte vs UTF-16 vs code point offsets",
+      "cases": 102
+    },
+    "utf8-following": {
+      "tests": "multi-byte text right after the value or delimiter",
+      "cases": 74
+    },
+    "end-of-input": {
+      "tests": "the value is the last bytes of the input, with no terminator (finalize path)",
+      "cases": 131
+    },
+    "line-ending": {
+      "tests": "CRLF, tabs, indentation and trailing whitespace around the slot",
+      "cases": 90
+    },
+    "nesting": {
+      "tests": "the slot is inside a nested JSON array/object, YAML list or URL with other parameters",
+      "cases": 93
+    },
+    "big-preceding": {
+      "tests": "a few KB of unrelated text before the slot",
+      "cases": 47
+    },
+    "glued-name": {
+      "tests": "a name lookalike glued to the slot name (suffix) that must stay a control, or a prefixed name observed as unsupported",
+      "cases": 134
+    },
+    "near-miss-value": {
+      "tests": "the name is right but the value is a placeholder, reference, mask, empty, null or too short",
+      "cases": 363
+    },
+    "near-miss-name": {
+      "tests": "the value is secret-shaped but the name or header is not the slot",
+      "cases": 188
+    },
+    "alphabet": {
+      "tests": "Bearer values using the whole RFC 6750 b64token alphabet and padding",
+      "cases": 48
+    },
+    "value-entropy": {
+      "tests": "a low-entropy literal in the slot: medium confidence and warn",
+      "cases": 43
+    },
+    "representation": {
+      "tests": "a variant the handoff or the contract leaves unassertable (percent forms, quote styles, case, ambiguous layouts): observed only",
+      "cases": 298
+    },
+    "stream-cut": {
+      "tests": "tiny chunk boundaries (7-byte and 1-byte runs): a cut inside the name, between name and value, inside the value and at the delimiter",
+      "cases": 60
+    },
+    "jwt-overlap": {
+      "tests": "a JWT-shaped value under Bearer: one final finding, exact JWT",
+      "cases": 1
+    }
+  },
+  "round1Untouched": {
+    "file": "benchmarks/batch2/FROZEN.json",
+    "sha256": "74fed38245503b63d55247f0da2da8e27a271de5467b3b06146ebef0c4f7a4f1"
+  },
+  "frozenBeforeAnyScan": true,
+  "expectationSources": {
+    "contract": {
+      "repo": "redact-secret/redact-secret",
+      "pr": 1231,
+      "merge": "a148dadf4a43b5441ed88386d055428b2e278f25"
+    },
+    "handoff": {
+      "repo": "redact-secret/credential-evidence",
+      "commit": "65602481b83532b8acd6caf0d51b8552873e0d98",
+      "docs": [
+        "docs/handoffs/batch-2-bounded-carriers.md",
+        "docs/handoffs/batch-2-research-r1.md",
+        "docs/handoffs/batch-2-research-r2.md",
+        "docs/handoffs/batch-2-research-r3.md"
+      ]
+    }
+  },
+  "firstFreeze": {
+    "sha256": "46a555b8d3bc4e72986259806d17c84f047883290ea47f012493375f3a6ad192",
+    "cases": 1907,
+    "commit": "8e447629",
+    "parts": {
+      "new-rows": "f38b66e3debdf85af7b7ae6f8970fdd4c17946d97a0e5b32fe29cf4d44815852",
+      "round1-adversarial": "6cce4ba88e9b66de040eb2bbbe5c6a5ecb54114c18e8bf65a0f640d865954371"
+    }
+  },
+  "errata": {
+    "note": "After the first scan three authoring defects were found in the frozen corpus. Each is a fixture-validity or contract-fidelity correction, made from the contract and the evidence, not from observed output; the amended corpus was re-measured in full. The first scan results for the affected cases are described in the report.",
+    "items": [
+      {
+        "id": "E1",
+        "what": "member-assignment-eof: first frozen as an unterminated quote at the end of input, which the contract does not name as a layout. Now an unquoted assignment at end of input (positive) plus the unterminated-quote variant as unsupported."
+      },
+      {
+        "id": "E2",
+        "what": "x:oauth1-access-token-secret: oauth_token was used as a public control field, but the adopted contract reads it as a credential (the recorded round-1 conflict). It is removed from the public fields and has its own conflict case."
+      },
+      {
+        "id": "E3",
+        "what": "jfrog:access-token JWT fixture: the payload segment was random filler, not an encoded JSON object, so it was not a JWT. Now header and payload are encoded JSON objects with a filler signature."
+      }
+    ]
+  }
+}

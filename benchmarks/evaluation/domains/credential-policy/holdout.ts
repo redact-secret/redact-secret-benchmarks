@@ -1,12 +1,11 @@
-import type { Scanner, EvaluationCase } from '../../../engine/types.ts';
+import type { Scanner, EvaluationCase } from '../../model/types.ts';
 import type { Candidate, HoldoutManifest } from '../../../../holdout/types.ts';
 import type { Fixture, Finding, Outcome } from '../../../types.ts';
 import type { HoldoutDomainAdapter, HoldoutLifecycleCommon } from '../../../../holdout/lifecycle.ts';
 import { executeEvaluation } from '../credential/execution.ts';
-import { createHoldoutMethods } from '../credential/methods/holdout.ts';
-import { createOperators } from '../credential/operators/index.ts';
+import { createHoldoutMethods, createHoldoutOperators } from '../credential/holdout-method.ts';
 import { normalizeFinding } from '../credential/normalization.ts';
-import { scoreRow } from '../../../lib/lattice.ts';
+import { scoreRow } from '../../../scoring/lattice.ts';
 import { hash } from '../../substrate/hash.ts';
 import { buildCorpora } from '../../../../fixtures/generated/build.mjs';
 import Ajv from 'ajv';
@@ -47,7 +46,7 @@ export const credentialPolicyHoldoutDomain: HoldoutDomainAdapter<Scanner, Return
     const cases: EvaluationCase[] = corpus.fixtures.map((fixture, index) => ({ id: `policy-holdout-${index}`, method: 'holdout', visibility: 'holdout', seed: fixture,
       targets: [fixture.policyFamily!], operators: [], source: { category: 'credential-policy-holdout', fixtureId: fixture.id, path: 'protected' },
       provenance: { source: 'credential-policy-holdout', sourceHash: manifest.corpusHash, rationale: fixture.assessment.reason, seed: corpus.seed, reviewStatus: manifest.review, sources: fixture.assessment.sources } }));
-    const raw = await executeEvaluation({ cases, methods: createHoldoutMethods(), operators: createOperators(), scanners, runId,
+    const raw = await executeEvaluation({ cases, methods: createHoldoutMethods(), operators: createHoldoutOperators(), scanners, runId,
       scratchParent: directory, provenance: { planHash }, normalizeFinding });
     const candidateStable = hash(await verifyCandidate()) === hash(candidate);
     const scannerSummary = raw.scanners.map(scanner => { const expected = toolPlan.find(tool => tool.id === scanner.id)!;

@@ -11,6 +11,12 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    ignore:
+      # CI and the supported runtime are Node 22/24 (package.json engines). A newer
+      # @types/node major would type-check APIs that do not exist at runtime, so
+      # hold majors until the supported Node range moves.
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: pip
     directory: /.github/ci-locks
     schedule:

@@ -7,7 +7,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { hash } from './substrate/hash.ts';
-import { validateEvidence, type QualificationSuite } from './domains/credential/evidence.ts';
+import { validateEvidence, type QualificationSuite } from './evidence.ts';
 import { bindPiiProtectedSupport } from './domains/pii/protected-support-binding.ts';
 import { PII_PROTECTED_ROUTE } from './domains/pii/support-semantics.ts';
 import { validateReleaseRecordV2, type ReleaseRecordV2, type ReleaseSourceEquivalence } from './release-record.ts';

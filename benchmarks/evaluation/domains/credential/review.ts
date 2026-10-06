@@ -1,4 +1,4 @@
-import { hash } from '../../../engine/model.ts';
+import { hash } from '../../model/model.ts';
 
 /** Product identity is intentionally excluded so reviewed peer disagreements survive releases. */
 export function reviewEntryId(caseId: string, sourceHash: unknown, entry: Record<string, any>, legacy = false) {

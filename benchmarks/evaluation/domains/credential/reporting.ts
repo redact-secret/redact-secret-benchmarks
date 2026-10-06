@@ -1,5 +1,5 @@
-import type { EvaluationCase, GeneratedVariant, CaseResult, Summary, AssertionStatus } from '../../../engine/types.ts';
-import { hash, safeParameters } from '../../../engine/model.ts';
+import type { EvaluationCase, GeneratedVariant, CaseResult, Summary, AssertionStatus } from '../../model/types.ts';
+import { hash, safeParameters } from '../../model/model.ts';
 
 // Explicit allowlist: never spread a fixture or raw scanner error into reports.
 export function describeVariant(v: GeneratedVariant) {

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
-import { hash } from '../benchmarks/engine/model.ts';
+import { hash } from '../benchmarks/evaluation/model/model.ts';
 import registry from '../benchmarks/evaluation/domains/pii/support-registry-v1.json' with { type: 'json' };
 import { assembleReleaseRecord, assertNoCrossDomainAggregate, validateReleaseRecord } from '../benchmarks/evaluation/release-record.ts';
 import { candidateConfiguration } from '../scanners/candidate.mjs';

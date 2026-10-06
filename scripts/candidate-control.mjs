@@ -16,7 +16,8 @@ const DIGEST = /^sha256:[0-9a-f]{64}$/;
 export function controlFor(adoption, { evidenceTag, manifestDigest, requireArchive = true } = {}) {
   const ec = adoption.engineCandidate;
   if (!evidenceTag) {
-    if (ec) return { ...ec, source: 'engineCandidate' };
+    // An engine candidate whose replay is not recorded yet (state pending, no archive) is not a control: there is nothing to replay a product candidate against.
+    if (ec && (ec.replay?.archive?.release || ec.replay?.state !== 'pending')) return { ...ec, source: 'engineCandidate' };
     // The accepted evidence's own replay is the control once the adoption is accepted: the published product on the accepted engine (its replay copy holds the run records).
     const accepted = adoption.state === 'accepted' ? adoption.candidate : undefined;
     const copy = accepted?.replay?.replayCopy ?? accepted?.replay?.archive;
